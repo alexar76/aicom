@@ -448,7 +448,7 @@ export function SettingsTab() {
   };
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="w-full min-w-0 max-w-2xl space-y-6">
       <h2 className="text-xl font-semibold text-white mb-4">Settings</h2>
 
       {/* ── Director AI: autonomous development vs ideas-only ── */}
@@ -470,8 +470,8 @@ export function SettingsTab() {
         ) : (
           <div className="space-y-4">
             {/* Autonomous development (general.auto_pipeline) */}
-            <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-              <div>
+            <label className="flex cursor-pointer flex-col gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1">
                 <div className="text-sm font-medium text-white">Autonomous development</div>
                 <div className="text-xs text-gray-400 mt-0.5">
                   On: scheduled market research + idea generation enqueue products into the same pipeline. Off: new products only
@@ -574,11 +574,11 @@ export function SettingsTab() {
                 onChange={(e) => setAutoGenIntervalDraft(clampAutoPipelineMinutes(parseInt(e.target.value, 10) || 60))}
                 className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-sm text-white mb-4 focus:outline-none focus:border-indigo-500/50"
               />
-              <div className="flex justify-end gap-2">
-                <Button size="sm" variant="ghost" onClick={() => !autoGenSaving && setAutoGenModalOpen(false)}>
+              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                <Button size="sm" variant="ghost" onClick={() => !autoGenSaving && setAutoGenModalOpen(false)} className="w-full sm:w-auto">
                   Cancel
                 </Button>
-                <Button size="sm" onClick={() => void handleAutoGenConfirm()} disabled={autoGenSaving}>
+                <Button size="sm" onClick={() => void handleAutoGenConfirm()} disabled={autoGenSaving} className="w-full sm:w-auto">
                   {autoGenSaving ? 'Saving…' : 'Enable'}
                 </Button>
               </div>
@@ -624,7 +624,7 @@ export function SettingsTab() {
           <code className="text-xs bg-black/30 px-1 rounded">docs/corporate-chat-vs-discussions.md</code>.
         </p>
         <div className="space-y-4 max-w-md">
-          <label className="flex items-center gap-3 cursor-pointer">
+          <label className="flex cursor-pointer items-start gap-3 sm:items-center">
             <input
               type="checkbox"
               checked={corpChatSettings.director_standup_enabled}
@@ -752,15 +752,15 @@ export function SettingsTab() {
           </div>
         ) : (
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-              <div>
+            <label className="flex cursor-pointer flex-col gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1">
                 <div className="text-sm font-medium text-white">Enable auto-publish</div>
                 <div className="text-xs text-gray-400 mt-0.5">Runs after DevOps completes (non-blocking).</div>
               </div>
               <button
                 type="button"
                 onClick={() => handleSettingChange('auto_publish_enabled', !settings.auto_publish_enabled)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${
+                className={`relative w-12 h-6 shrink-0 rounded-full transition-colors ${
                   settings.auto_publish_enabled ? 'bg-emerald-600' : 'bg-white/20'
                 }`}
               >
@@ -828,8 +828,8 @@ export function SettingsTab() {
           </div>
         ) : (
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-              <div>
+            <label className="flex cursor-pointer flex-col gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1">
                 <div className="text-sm font-medium text-white">Record Railway deploy intent after DevOps</div>
                 <div className="text-xs text-gray-400 mt-0.5">
                   Only for <code className="text-[11px]">full_software</code> specs; requires{' '}
@@ -839,7 +839,7 @@ export function SettingsTab() {
               <button
                 type="button"
                 onClick={() => handleSettingChange('railway_deploy_enabled', !settings.railway_deploy_enabled)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${
+                className={`relative w-12 h-6 shrink-0 rounded-full transition-colors ${
                   settings.railway_deploy_enabled ? 'bg-violet-600' : 'bg-white/20'
                 }`}
               >
@@ -900,8 +900,8 @@ export function SettingsTab() {
           </div>
         ) : (
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-              <div>
+            <label className="flex cursor-pointer flex-col gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1">
                 <div className="text-sm font-medium text-white">Inject reference shell into Developer prompt</div>
                 <div className="text-xs text-gray-400 mt-0.5">
                   Web deliverables only. Requires a generated pool (manifest + template folders on disk).
@@ -912,7 +912,7 @@ export function SettingsTab() {
                 onClick={() =>
                   handleSettingChange('reference_templates_enabled', !settings.reference_templates_enabled)
                 }
-                className={`relative w-12 h-6 rounded-full transition-colors ${
+                className={`relative w-12 h-6 shrink-0 rounded-full transition-colors ${
                   settings.reference_templates_enabled ? 'bg-fuchsia-600' : 'bg-white/20'
                 }`}
               >
@@ -959,7 +959,7 @@ export function SettingsTab() {
                 {referenceTemplatesCatalog.map((t) => (
                   <div
                     key={t.path}
-                    className="flex items-center justify-between gap-2 py-2 border-b border-white/5 last:border-0"
+                    className="flex flex-col gap-2 border-b border-white/5 py-3 last:border-0 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:py-2"
                   >
                     <div className="min-w-0 flex-1">
                       <div className="text-sm text-white truncate">{t.title}</div>
@@ -969,7 +969,7 @@ export function SettingsTab() {
                       type="button"
                       disabled={refUploadBusy}
                       onClick={() => void handleReferenceTemplateDelete(t.path)}
-                      className="shrink-0 text-xs text-red-400 hover:text-red-300 disabled:opacity-40 px-2 py-1 rounded-lg hover:bg-red-500/10"
+                      className="self-end text-xs text-red-400 hover:text-red-300 disabled:opacity-40 px-2 py-1 rounded-lg hover:bg-red-500/10 sm:self-center"
                     >
                       Remove
                     </button>
@@ -1091,8 +1091,8 @@ export function SettingsTab() {
                 )}
               </div>
             )}
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5">
-              <label className="text-sm text-gray-300 whitespace-nowrap">Max prompt chars:</label>
+            <div className="flex flex-col gap-2 rounded-xl bg-white/5 p-3 sm:flex-row sm:items-center sm:gap-3">
+              <label className="shrink-0 text-sm text-gray-300 sm:whitespace-nowrap">Max prompt chars:</label>
               <input
                 type="number"
                 min={2000}
@@ -1126,15 +1126,15 @@ export function SettingsTab() {
           </div>
         ) : (
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-              <div>
+            <label className="flex cursor-pointer flex-col gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1">
                 <div className="text-sm font-medium text-white">Enable badge on generated sites</div>
                 <div className="text-xs text-gray-400 mt-0.5">Runs when Developer completes (needs HTTPS URL below).</div>
               </div>
               <button
                 type="button"
                 onClick={() => handleSettingChange('site_badge_enabled', !settings.site_badge_enabled)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${
+                className={`relative w-12 h-6 shrink-0 rounded-full transition-colors ${
                   settings.site_badge_enabled ? 'bg-amber-600' : 'bg-white/20'
                 }`}
               >
@@ -1181,15 +1181,15 @@ export function SettingsTab() {
           </div>
         ) : (
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-              <div>
+            <label className="flex cursor-pointer flex-col gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1">
                 <div className="text-sm font-medium text-white">Enable Telegram alerts</div>
                 <div className="text-xs text-gray-400 mt-0.5">Master switch — requires bot token and chat id.</div>
               </div>
               <button
                 type="button"
                 onClick={() => handleSettingChange('telegram_notify_enabled', !settings.telegram_notify_enabled)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${
+                className={`relative w-12 h-6 shrink-0 rounded-full transition-colors ${
                   settings.telegram_notify_enabled ? 'bg-sky-600' : 'bg-white/20'
                 }`}
               >
@@ -1201,14 +1201,14 @@ export function SettingsTab() {
               </button>
             </label>
 
-            <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-              <div className="text-sm text-gray-300">Notify pipeline stages</div>
+            <label className="flex cursor-pointer flex-col gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1 text-sm text-gray-300">Notify pipeline stages</div>
               <button
                 type="button"
                 onClick={() =>
                   handleSettingChange('telegram_notify_pipeline_stages', !settings.telegram_notify_pipeline_stages)
                 }
-                className={`relative w-12 h-6 rounded-full transition-colors ${
+                className={`relative w-12 h-6 shrink-0 rounded-full transition-colors ${
                   settings.telegram_notify_pipeline_stages ? 'bg-sky-600' : 'bg-white/20'
                 }`}
               >
@@ -1220,14 +1220,14 @@ export function SettingsTab() {
               </button>
             </label>
 
-            <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-              <div className="text-sm text-gray-300">Notify new products</div>
+            <label className="flex cursor-pointer flex-col gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1 text-sm text-gray-300">Notify new products</div>
               <button
                 type="button"
                 onClick={() =>
                   handleSettingChange('telegram_notify_new_products', !settings.telegram_notify_new_products)
                 }
-                className={`relative w-12 h-6 rounded-full transition-colors ${
+                className={`relative w-12 h-6 shrink-0 rounded-full transition-colors ${
                   settings.telegram_notify_new_products ? 'bg-sky-600' : 'bg-white/20'
                 }`}
               >
@@ -1283,8 +1283,8 @@ export function SettingsTab() {
 
       {/* ── Save Button ── */}
       {!settingsLoading && (
-        <div className="flex items-center gap-3">
-          <Button onClick={handleSaveSettings} disabled={settingsSaving}>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Button onClick={handleSaveSettings} disabled={settingsSaving} className="w-full sm:w-auto">
             {settingsSaving ? (
               <span className="flex items-center gap-2">
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -1295,7 +1295,7 @@ export function SettingsTab() {
             )}
           </Button>
           {settingsMessage && (
-            <span className="text-sm text-gray-400">{settingsMessage}</span>
+            <span className="text-sm text-gray-400 break-words">{settingsMessage}</span>
           )}
         </div>
       )}

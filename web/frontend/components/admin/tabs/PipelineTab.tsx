@@ -606,7 +606,7 @@ export function PipelineTab() {
           setActiveCategory('all');
         }}
         summary={`Showing ${filteredProducts.length} of ${products.length} loaded (${totalProducts || products.length} in catalog)`}
-        gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 mb-2"
+        gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2"
       >
         <Input
           value={productSearch}
@@ -673,8 +673,8 @@ export function PipelineTab() {
               transition={{ delay: i * 0.05 }}
             >
               <GlassCard>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3 min-w-0">
+                <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="flex min-w-0 items-start gap-3">
                     <span className={`shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[catId] || 'bg-gray-500/20 text-gray-300 border-gray-500/30'}`}>
                       {CATEGORY_LABELS[catId] || catId}
                     </span>
@@ -690,7 +690,7 @@ export function PipelineTab() {
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex flex-wrap items-center gap-2 sm:shrink-0 sm:justify-end">
                     <Badge variant={product.production_mode ? 'warning' : 'info'}>
                       {product.production_mode ? 'production' : 'prototype'}
                     </Badge>

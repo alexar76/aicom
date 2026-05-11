@@ -396,9 +396,9 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
       </div>
 
       <GlassCard>
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-lg font-medium text-white">{t(locale, 'discovery.ideaQueueSection')}</h3>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Badge variant="info" className="text-xs">
               {discoveryQueue.length} {t(locale, 'discovery.ideasLabel')}
             </Badge>
@@ -414,7 +414,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
             setDirectorMinScore('');
           }}
           summary={`${filteredDirectorDiscoveryQueue.length} / ${discoveryQueue.length}`}
-          gridClassName="grid grid-cols-1 md:grid-cols-4 gap-2 mb-3"
+          gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2"
         >
           <Input
             value={directorQuery}
@@ -462,7 +462,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
 
       {benchmarkData?.scorecard && (
         <GlassCard>
-          <div className="flex items-center justify-between mb-3">
+          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="text-lg font-medium text-white">Regression League Scorecard</h3>
             <Badge variant="info" className="text-xs">
               {benchmarkData.scorecard.runs_total ?? 0} runs
@@ -527,7 +527,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
 
       {feedbackSummary && (
         <GlassCard>
-          <div className="flex items-center justify-between mb-3">
+          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="text-lg font-medium text-white">Real User Feedback (7d)</h3>
             <Badge variant="info" className="text-xs">
               {feedbackSummary.count ?? 0} items
@@ -556,9 +556,9 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
           {Array.isArray(feedbackSummary.top_products) && feedbackSummary.top_products.length > 0 && (
             <div className="mt-3 space-y-2">
               {feedbackSummary.top_products.slice(0, 5).map((p: any) => (
-                <div key={p.product_id} className="text-xs p-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 flex items-center justify-between">
-                  <span className="font-mono">{p.product_id}</span>
-                  <span>feedback={p.count} • bugs={p.bugs} • avg={p.avg_rating}</span>
+                <div key={p.product_id} className="flex flex-col gap-1 rounded-lg border border-white/10 bg-white/5 p-2 text-xs text-gray-300 sm:flex-row sm:items-center sm:justify-between">
+                  <span className="font-mono break-all">{p.product_id}</span>
+                  <span className="text-gray-400 sm:text-right">feedback={p.count} • bugs={p.bugs} • avg={p.avg_rating}</span>
                 </div>
               ))}
             </div>
@@ -567,18 +567,18 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
       )}
 
       <GlassCard>
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-lg font-medium text-white">Session Replay (Telemetry Timeline)</h3>
           <Badge variant="info" className="text-xs">{replayTimeline.length} events</Badge>
         </div>
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <Input
             placeholder="prod-xxxxxxxxxxxx"
             value={replayProductId}
             onChange={(e) => setReplayProductId(e.target.value)}
-            className="max-w-xs"
+            className="w-full max-w-full sm:max-w-xs"
           />
-          <Button size="sm" variant="secondary" onClick={loadReplaySessions} disabled={replayLoading}>
+          <Button size="sm" variant="secondary" onClick={loadReplaySessions} disabled={replayLoading} className="w-full sm:w-auto">
             {replayLoading ? 'Loading…' : 'Load Sessions'}
           </Button>
         </div>
@@ -623,7 +623,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
       </GlassCard>
 
       <GlassCard>
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-lg font-medium text-white">Go / No-Go Cockpit</h3>
           {cockpit?.go_no_go && (
             <Badge variant={cockpit.go_no_go === 'go' ? 'success' : 'error'} className="text-xs">
@@ -631,17 +631,17 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
             </Badge>
           )}
         </div>
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <Input
             placeholder="prod-xxxxxxxxxxxx"
             value={cockpitProductId}
             onChange={(e) => setCockpitProductId(e.target.value)}
-            className="max-w-xs"
+            className="w-full max-w-full sm:max-w-xs"
           />
-          <Button size="sm" variant="secondary" onClick={loadCockpit} disabled={cockpitLoading}>
+          <Button size="sm" variant="secondary" onClick={loadCockpit} disabled={cockpitLoading} className="w-full sm:w-auto">
             {cockpitLoading ? 'Loading…' : 'Evaluate'}
           </Button>
-          <Button size="sm" onClick={executeProtocol} disabled={cockpitLoading}>
+          <Button size="sm" onClick={executeProtocol} disabled={cockpitLoading} className="w-full sm:w-auto">
             Execute Release Protocol
           </Button>
         </div>
@@ -669,7 +669,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
       {/* ── Pending Decisions ── */}
       {filteredPendingDecisions.length > 0 && (
         <GlassCard>
-          <div className="flex items-center justify-between mb-3">
+          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="text-lg font-medium text-white">Pending Decisions</h3>
             <Badge variant="error" className="text-xs">
               {filteredPendingDecisions.length} need review
@@ -678,7 +678,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
           <div className="space-y-3">
             {filteredPendingDecisions.map((d: any) => (
               <div key={d.id} className="p-3 bg-white/5 rounded-xl border border-yellow-500/20">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-sm font-medium text-white">{getActionLabel(d.action)}</span>
@@ -697,7 +697,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
                       {d.new_value !== undefined && <span>Value: {d.new_value}</span>}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
                     <Button
                       size="sm"
                       variant="primary"
@@ -738,7 +738,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
             {analysisData.reports.slice(0, 5).map((r: any, i: number) => (
               <div key={i} className="py-2 first:pt-0 last:pb-0">
                 <div
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex cursor-pointer items-center justify-between gap-2"
                   onClick={() => setExpandedReport(expandedReport === i ? null : i)}
                 >
                   <div className="flex items-center gap-2">
@@ -766,7 +766,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
           <h3 className="text-lg font-medium text-white mb-3">Decision History</h3>
           <div className="space-y-1">
             {decisions.applied.slice(0, 10).map((d: any) => (
-              <div key={d.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors text-xs">
+              <div key={d.id} className="flex flex-wrap items-center gap-x-3 gap-y-2 p-2 rounded-lg hover:bg-white/5 transition-colors text-xs">
                 {d.status === 'approved' || d.status === 'applied' ? (
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 ) : d.status === 'rejected' ? (
@@ -782,7 +782,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
                 <Badge variant={d.status === 'rejected' ? 'error' : 'success'} className="text-[10px]">
                   {d.status}
                 </Badge>
-                <span className="text-gray-600 shrink-0 w-16 text-right">
+                <span className="ml-auto w-full shrink-0 text-right text-gray-600 sm:ml-0 sm:w-24">
                   {formatDecisionTime(d.applied_at || d.approved_at || d.rejected_at)}
                 </span>
               </div>
@@ -805,14 +805,16 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
         ) : (
           <div className="space-y-2">
             {filteredReports.map((report, i) => (
-              <div key={i} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
-                <div>
+              <div key={i} className="flex flex-col gap-3 rounded-xl bg-white/5 p-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
                   <p className="text-sm text-white font-medium">{report.filename}</p>
                   {report.date && (
                     <p className="text-xs text-gray-500">{report.date}{report.period ? ` • ${report.period}` : ''}</p>
                   )}
                 </div>
-                <Button variant="secondary" size="sm">View</Button>
+                <Button variant="secondary" size="sm" className="w-full shrink-0 sm:w-auto">
+                  View
+                </Button>
               </div>
             ))}
           </div>

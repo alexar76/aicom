@@ -241,12 +241,13 @@ Example:
             </div>
 
             {/* Submit */}
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
               <Button
                 onClick={handleSubmit}
                 loading={submitting}
                 disabled={!idea.trim()}
                 icon={<Send className="w-4 h-4" />}
+                className="w-full sm:w-auto"
               >
                 Start Building
               </Button>

@@ -298,7 +298,7 @@ export function SecurityTab() {
               }}
               resetLabel="Reset audit filters"
               summary={`Showing ${filteredLogs.length} of ${logs.length}`}
-              gridClassName="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2"
+              gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2"
             >
               <Input
                 value={auditSearch}
@@ -318,9 +318,9 @@ export function SecurityTab() {
             {filteredLogs.map((log, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between py-2 border-b border-white/5 last:border-0"
+                className="flex flex-col gap-2 border-b border-white/5 py-3 last:border-0 sm:flex-row sm:items-center sm:justify-between sm:py-2"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-center gap-3">
                   <Badge
                     variant={
                       log.severity === 'critical' || log.severity === 'error'
@@ -332,12 +332,12 @@ export function SecurityTab() {
                   >
                     {log.severity}
                   </Badge>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-sm text-gray-300">{log.action}</p>
-                    <p className="text-xs text-gray-500">{log.actor} • {log.resource}</p>
+                    <p className="text-xs text-gray-500 break-all">{log.actor} • {log.resource}</p>
                   </div>
                 </div>
-                <span className="text-xs text-gray-500">
+                <span className="shrink-0 text-xs text-gray-500 sm:text-right">
                   {formatRelativeTime(log.timestamp)}
                 </span>
               </div>

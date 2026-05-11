@@ -180,8 +180,8 @@ export function DemoReplayMonitorSection({
             </p>
           )}
         </div>
-        <label className="flex flex-col items-end gap-1 shrink-0 cursor-pointer select-none">
-          <span className="flex items-center gap-2 text-sm text-gray-300">
+        <label className="flex w-full flex-col gap-1 self-stretch sm:w-auto sm:shrink-0 sm:items-end cursor-pointer select-none">
+          <span className="flex items-center justify-end gap-2 text-sm text-gray-300 sm:justify-end">
             <input
               type="checkbox"
               className="rounded border-white/20 bg-white/5"

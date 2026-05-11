@@ -60,12 +60,6 @@ import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Input';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Modal } from '@/components/ui/Modal';
-import {
-  FilterControlsPanel,
-  FilterNumberInput,
-  FilterResetSummary,
-  FilterSelect,
-} from '@/components/admin/FilterControls';
 import BrainstormingTab from '@/components/BrainstormingTab';
 import SupportQueueTab from '@/components/SupportQueueTab';
 import OutreachTab from '@/components/OutreachTab';
@@ -288,8 +282,8 @@ export function MonitorTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
           <h2 className="text-xl font-semibold text-white">Live Monitor</h2>
           <div className="flex items-center gap-2">
             <span className={`w-2 h-2 rounded-full ${
@@ -303,7 +297,7 @@ export function MonitorTab() {
           variant={paused ? 'primary' : 'secondary'}
           size="sm"
           onClick={() => setPaused(!paused)}
-          className="flex items-center gap-2"
+          className="flex w-full shrink-0 items-center justify-center gap-2 sm:w-auto"
         >
           {paused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
           {paused ? 'Resume' : 'Pause'}
@@ -317,8 +311,8 @@ export function MonitorTab() {
         {/* ── Pipeline Ring Gauge ── */}
         <GlassCard>
           <h3 className="text-sm font-medium text-gray-400 mb-4">Pipeline Completion</h3>
-          <div className="flex items-center gap-6">
-            <div className="relative w-36 h-36 shrink-0">
+          <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center">
+            <div className="relative h-36 w-36 shrink-0">
               <svg className="w-full h-full -rotate-90" viewBox="0 0 144 144">
                 <circle cx="72" cy="72" r={ringRadius} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8" />
                 <circle
@@ -341,7 +335,7 @@ export function MonitorTab() {
                 <span className="text-xs text-gray-500">complete</span>
               </div>
             </div>
-            <div className="space-y-2 text-sm">
+            <div className="w-full min-w-0 space-y-2 text-sm sm:flex-1">
               <div className="flex items-center justify-between gap-4">
                 <span className="text-gray-400">Total</span>
                 <span className="text-white font-medium">{totalPipeline}</span>
@@ -606,13 +600,20 @@ export function MonitorTab() {
                                       entry.severity === 'warn' || entry.severity === 'warning' ? 'text-yellow-400' :
                                       entry.severity === 'info' ? 'text-blue-400' : 'text-gray-400';
                 return (
-                  <div key={`${entry.time}-${i}`} className="flex items-start gap-2 py-1.5 text-xs border-b border-white/5 last:border-0">
-                    <Circle className={`w-1.5 h-1.5 mt-1.5 shrink-0 ${severityColor}`} fill="currentColor" />
-                    <span className="text-gray-500 shrink-0 w-16 font-mono">
-                      {entry.time ? fmtTime(entry.time) : ''}
-                    </span>
-                    <span className="text-gray-400 font-medium shrink-0">{entry.agent || entry.type}:</span>
-                    <span className="text-gray-500 truncate">{entry.message}</span>
+                  <div
+                    key={`${entry.time}-${i}`}
+                    className="flex flex-col gap-1 border-b border-white/5 py-2 text-xs last:border-0 sm:flex-row sm:items-start sm:gap-2 sm:py-1.5"
+                  >
+                    <div className="flex shrink-0 items-center gap-2 sm:w-28">
+                      <Circle className={`h-1.5 w-1.5 shrink-0 ${severityColor}`} fill="currentColor" />
+                      <span className="font-mono text-[10px] text-gray-500 sm:text-xs">
+                        {entry.time ? fmtTime(entry.time) : ''}
+                      </span>
+                    </div>
+                    <div className="min-w-0 flex-1 sm:flex sm:min-w-0 sm:gap-2">
+                      <span className="shrink-0 font-medium text-gray-400">{entry.agent || entry.type}:</span>
+                      <span className="break-words text-gray-500">{entry.message}</span>
+                    </div>
                   </div>
                 );
               })
@@ -622,16 +623,16 @@ export function MonitorTab() {
 
         {/* ── Escalations ── */}
         <GlassCard>
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="text-sm font-medium text-gray-400">Escalations</h3>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
               <span className={`text-xs ${(escalationSummary.recent_1h || 0) > 0 ? 'text-red-400' : 'text-gray-500'}`}>
                 {(escalationSummary.recent_1h || 0)} in last hour
               </span>
               <select
                 value={escEventFilter}
                 onChange={(e) => setEscEventFilter(e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-lg text-xs text-gray-400 px-2 py-1"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-xs text-gray-400 sm:w-auto sm:py-1"
               >
                 <option value="all">All</option>
                 {agentTypes.map((t) => (

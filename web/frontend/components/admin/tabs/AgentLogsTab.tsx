@@ -156,43 +156,47 @@ export function AgentLogsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-3">
-        <h2 className="text-xl font-semibold text-white">Agent Execution Logs</h2>
-        <div className="flex-1" />
-        <Input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search message / agent / payload..."
-          className="min-w-[16rem]"
-        />
-        <label className="text-xs text-gray-400 flex items-center gap-1.5">
-          <input
-            type="checkbox"
-            checked={onlyErrors}
-            onChange={(e) => setOnlyErrors(e.target.checked)}
-            className="accent-indigo-500"
-          />
-          Errors only
-        </label>
-        <select
-          value={agentFilter}
-          onChange={(e) => setAgentFilter(e.target.value)}
-          className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-gray-300 focus:outline-none focus:border-indigo-500/50"
-        >
-          <option value="all">All Agents</option>
-          {agentTypes.map((agent) => (
-            <option key={agent} value={agent}>{agent}</option>
-          ))}
-        </select>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => loadLogs(agentFilter)}
-          disabled={loading}
-        >
-          <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <h2 className="text-xl font-semibold text-white shrink-0">Agent Execution Logs</h2>
+        <div className="flex min-w-0 flex-1 flex-col gap-2 sm:max-w-3xl lg:ml-auto">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search message / agent / payload..."
+              className="min-w-0 w-full sm:min-w-[12rem] sm:flex-1"
+            />
+            <label className="text-xs text-gray-400 flex shrink-0 items-center gap-1.5">
+              <input
+                type="checkbox"
+                checked={onlyErrors}
+                onChange={(e) => setOnlyErrors(e.target.checked)}
+                className="accent-indigo-500"
+              />
+              Errors only
+            </label>
+            <select
+              value={agentFilter}
+              onChange={(e) => setAgentFilter(e.target.value)}
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none sm:w-auto"
+            >
+              <option value="all">All Agents</option>
+              {agentTypes.map((agent) => (
+                <option key={agent} value={agent}>{agent}</option>
+              ))}
+            </select>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => loadLogs(agentFilter)}
+              disabled={loading}
+              className="w-full shrink-0 sm:w-auto"
+            >
+              <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+          </div>
+        </div>
       </div>
 
       <FilterResetSummary

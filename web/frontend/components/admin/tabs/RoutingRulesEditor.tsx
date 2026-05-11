@@ -84,6 +84,7 @@ import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTh
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
 
+import { AdminScrollArea } from '@/components/admin/AdminScrollArea';
 import { ROUTING_TASK_TYPES } from './ProviderFormModal';
 
 export function RoutingRulesEditor({ providers }: { providers: ProviderStatus[] }) {
@@ -144,22 +145,22 @@ export function RoutingRulesEditor({ providers }: { providers: ProviderStatus[] 
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h3 className="text-white font-medium flex items-center gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <h3 className="flex items-center gap-2 font-medium text-white">
           <List className="w-4 h-4 text-indigo-400" />
           Routing Rules
         </h3>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {saved && <span className="text-green-400 text-xs">Saved!</span>}
-          <Button size="sm" onClick={handleSave} disabled={saving}>
+          <Button size="sm" onClick={handleSave} disabled={saving} className="w-full sm:w-auto">
             <Save className="w-3 h-3 mr-1" />
             {saving ? 'Saving...' : 'Save Rules'}
           </Button>
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-xs">
+      <AdminScrollArea>
+        <table className="w-full min-w-[520px] text-xs">
           <thead>
             <tr className="text-gray-500 border-b border-white/5">
               <th className="text-left py-2 pr-2">Task Type</th>
@@ -221,7 +222,7 @@ export function RoutingRulesEditor({ providers }: { providers: ProviderStatus[] 
             ))}
           </tbody>
         </table>
-      </div>
+      </AdminScrollArea>
     </div>
   );
 }

@@ -178,8 +178,8 @@ export function DashboardTab() {
             transition={{ delay: i * 0.1 }}
           >
             <GlassCard>
-              <div className="flex items-start justify-between">
-                <div>
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
                   <p className="text-sm text-gray-400 mb-1">{stat.label}</p>
                   <p className="text-3xl font-bold text-white">
                     {stat.value === null ? (

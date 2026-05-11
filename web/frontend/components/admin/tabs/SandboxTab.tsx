@@ -210,9 +210,9 @@ export function SandboxTab() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl font-semibold text-white">Sandbox & Git</h2>
-        <Button variant="secondary" size="sm" onClick={loadData}>
+        <Button variant="secondary" size="sm" onClick={loadData} className="w-full shrink-0 sm:w-auto">
           <RefreshCw className="w-4 h-4 mr-1" /> Refresh
         </Button>
       </div>
@@ -231,9 +231,9 @@ export function SandboxTab() {
 
       {/* Active Sandboxes Summary */}
       <GlassCard>
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-lg font-semibold text-white">Active Sandboxes</h3>
-          <Badge variant={activeSandboxes.length > 0 ? 'success' : 'info'}>
+          <Badge variant={activeSandboxes.length > 0 ? 'success' : 'info'} className="w-fit">
             {activeSandboxes.length} running
           </Badge>
         </div>
@@ -242,15 +242,15 @@ export function SandboxTab() {
         ) : (
           <div className="space-y-2">
             {activeSandboxes.map((sb: any) => (
-              <div key={sb.id} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <div>
-                    <p className="text-sm text-white font-medium">{sb.product_id}</p>
-                    <p className="text-xs text-gray-500">ID: {sb.id}</p>
+              <div key={sb.id} className="flex flex-col gap-3 p-3 bg-white/5 rounded-xl sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="w-2 h-2 shrink-0 rounded-full bg-emerald-400 animate-pulse" />
+                  <div className="min-w-0">
+                    <p className="text-sm text-white font-medium break-all">{sb.product_id}</p>
+                    <p className="text-xs text-gray-500 break-all">ID: {sb.id}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 sm:justify-end">
                   <Button
                     variant="secondary"
                     size="sm"
@@ -291,18 +291,18 @@ export function SandboxTab() {
             {products.map((product: any) => (
               <div key={product.product_id} className="border border-white/5 rounded-xl overflow-hidden">
                 {/* Product header */}
-                <div className="flex items-center justify-between p-4 hover:bg-white/5 transition-colors cursor-pointer"
+                <div className="flex flex-col gap-3 p-4 hover:bg-white/5 transition-colors cursor-pointer sm:flex-row sm:items-center sm:justify-between"
                      onClick={() => toggleExpand(product.product_id)}>
-                  <div className="flex items-center gap-3">
-                    <ChevronRight className={`w-4 h-4 text-gray-500 transition-transform ${
+                  <div className="flex min-w-0 items-center gap-3">
+                    <ChevronRight className={`w-4 h-4 shrink-0 text-gray-500 transition-transform ${
                       expandedProduct === product.product_id ? 'rotate-90' : ''
                     }`} />
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-sm text-white font-medium">{product.product_name || product.product_id}</p>
-                      <p className="text-xs text-gray-500">{product.product_id} · {product.code_dir}</p>
+                      <p className="text-xs text-gray-500 break-all">{product.product_id} · {product.code_dir}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2 sm:justify-end">
                     <Badge variant={product.git_status === 'initialized' ? 'success' : 'info'}>
                       {product.git_status === 'initialized' ? 'git' : 'no git'}
                     </Badge>
@@ -319,7 +319,7 @@ export function SandboxTab() {
                     {gitStatuses[product.product_id] ? (
                       <div className="space-y-2">
                         <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Git Status</p>
-                        <div className="grid grid-cols-2 gap-3 text-xs">
+                        <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
                           <div className="bg-white/5 rounded-lg p-2">
                             <span className="text-gray-500">Branch:</span>{' '}
                             <span className="text-white">{gitStatuses[product.product_id].branch || 'N/A'}</span>

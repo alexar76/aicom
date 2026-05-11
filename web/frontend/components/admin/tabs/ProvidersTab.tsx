@@ -257,18 +257,19 @@ export function ProvidersTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl font-semibold text-white">LLM Providers</h2>
-        <div className="flex gap-2">
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:justify-end">
           <Button
             variant="secondary"
             size="sm"
             onClick={() => setShowRoutingRules(!showRoutingRules)}
+            className="w-full sm:w-auto"
           >
             <List className="w-4 h-4 mr-1" />
             Routing Rules
           </Button>
-          <Button size="sm" onClick={() => { setEditingProvider(null); setShowAddModal(true); }}>
+          <Button size="sm" onClick={() => { setEditingProvider(null); setShowAddModal(true); }} className="w-full sm:w-auto">
             <Plus className="w-4 h-4 mr-1" />
             Add Provider
           </Button>
@@ -286,9 +287,9 @@ export function ProvidersTab() {
           >
             <GlassCard>
               {/* Header with actions */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <Cpu className="w-5 h-5 text-indigo-400" />
+              <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex min-w-0 flex-wrap items-center gap-3">
+                  <Cpu className="h-5 w-5 shrink-0 text-indigo-400" />
                   <h3 className="text-white font-medium">{provider.name}</h3>
                   {provider.is_default && (
                     <span className="text-xs text-amber-400 font-medium bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
@@ -296,7 +297,7 @@ export function ProvidersTab() {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center justify-end gap-1 sm:gap-2">
                   <button
                     onClick={() => handleTest(provider.name, 'heavy')}
                     disabled={testResults[provider.name]?.testing}

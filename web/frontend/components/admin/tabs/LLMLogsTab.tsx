@@ -367,61 +367,65 @@ export function LLMLogsTab() {
       )}
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3">
-        <Input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search provider/model/task/prompt/response/error..."
-          className="min-w-[18rem]"
-        />
-        <select
-          value={filterProvider}
-          onChange={(e) => setFilterProvider(e.target.value)}
-          className="glass-input px-3 py-1.5 text-sm rounded-lg border border-white/10 bg-white/5 text-gray-300 focus:outline-none focus:border-indigo-500/50"
-        >
-          <option value="">All Providers</option>
-          {providers.map((p) => (
-            <option key={p} value={p}>{p}</option>
-          ))}
-        </select>
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value as 'all' | 'ok' | 'error')}
-          className="glass-input px-3 py-1.5 text-sm rounded-lg border border-white/10 bg-white/5 text-gray-300 focus:outline-none focus:border-indigo-500/50"
-        >
-          <option value="all">Status: all</option>
-          <option value="ok">Status: success</option>
-          <option value="error">Status: error</option>
-        </select>
-        <select
-          value={agentTypeFilter}
-          onChange={(e) => setAgentTypeFilter(e.target.value)}
-          className="glass-input px-3 py-1.5 text-sm rounded-lg border border-white/10 bg-white/5 text-gray-300 focus:outline-none focus:border-indigo-500/50"
-        >
-          <option value="all">All agents</option>
-          {agentTypes.map((a) => (
-            <option key={a} value={a}>{a}</option>
-          ))}
-        </select>
-        <FilterResetSummary
-          onReset={() => {
-            setQuery('');
-            setStatusFilter('all');
-            setAgentTypeFilter('all');
-            setFilterProvider('');
-          }}
-          summary={`${filteredLogs.length} / ${logs.length} entries · est. $${filteredReport.sumCost.toFixed(4)} (${filteredReport.withCost} calls w/ cost)`}
-          className="text-xs text-gray-500 flex items-center gap-2"
-        />
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => loadLogs(filterProvider || undefined)}
-          className="ml-auto"
-        >
-          <RefreshCw className="w-3.5 h-3.5 mr-1" />
-          Refresh
-        </Button>
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search provider/model/task/prompt/response/error..."
+            className="min-w-0 w-full sm:min-w-[14rem] sm:flex-1 sm:max-w-xl"
+          />
+          <select
+            value={filterProvider}
+            onChange={(e) => setFilterProvider(e.target.value)}
+            className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none sm:w-auto sm:py-1.5"
+          >
+            <option value="">All Providers</option>
+            {providers.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
+          </select>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as 'all' | 'ok' | 'error')}
+            className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none sm:w-auto sm:py-1.5"
+          >
+            <option value="all">Status: all</option>
+            <option value="ok">Status: success</option>
+            <option value="error">Status: error</option>
+          </select>
+          <select
+            value={agentTypeFilter}
+            onChange={(e) => setAgentTypeFilter(e.target.value)}
+            className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none sm:w-auto sm:py-1.5"
+          >
+            <option value="all">All agents</option>
+            {agentTypes.map((a) => (
+              <option key={a} value={a}>{a}</option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <FilterResetSummary
+            onReset={() => {
+              setQuery('');
+              setStatusFilter('all');
+              setAgentTypeFilter('all');
+              setFilterProvider('');
+            }}
+            summary={`${filteredLogs.length} / ${logs.length} entries · est. $${filteredReport.sumCost.toFixed(4)} (${filteredReport.withCost} calls w/ cost)`}
+            className="text-xs text-gray-500 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4 min-w-0 pr-1"
+          />
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => loadLogs(filterProvider || undefined)}
+            className="w-full shrink-0 sm:w-auto"
+          >
+            <RefreshCw className="w-3.5 h-3.5 mr-1" />
+            Refresh
+          </Button>
+        </div>
       </div>
 
       <GlassCard>
@@ -454,7 +458,8 @@ export function LLMLogsTab() {
                     }`}
                   />
                 </div>
-                <div className="flex-1 min-w-0">
+                <div className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                     <span className="text-xs font-medium text-indigo-300">
                       {log.provider}
@@ -546,13 +551,14 @@ export function LLMLogsTab() {
                     )}
                   </div>
                 </div>
-                <span className="text-xs text-gray-600 flex-shrink-0 whitespace-nowrap">
+                <span className="shrink-0 text-xs text-gray-600 sm:whitespace-nowrap sm:pt-0.5 sm:text-right">
                   {llmLogTimeMs(log) > 0
                     ? new Date(llmLogTimeMs(log)).toLocaleTimeString()
                     : log.timestamp != null && log.timestamp !== ''
                       ? String(log.timestamp)
                       : ''}
                 </span>
+                </div>
               </div>
             ))}
           </div>

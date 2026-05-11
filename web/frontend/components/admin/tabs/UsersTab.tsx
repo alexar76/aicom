@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { UserPlus, Trash2, Shield, Loader2, RefreshCw } from 'lucide-react';
+import { AdminScrollArea } from '@/components/admin/AdminScrollArea';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -177,20 +178,20 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
   return (
     <div className="space-y-6 max-w-5xl">
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
-          <div className="flex items-center gap-3">
-            <Shield className="w-8 h-8 text-indigo-400" />
-            <div>
+        <div className="mb-2 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <div className="flex min-w-0 items-center gap-3">
+            <Shield className="h-8 w-8 shrink-0 text-indigo-400" />
+            <div className="min-w-0">
               <h1 className="text-2xl font-semibold text-white">{t(locale, 'users.title')}</h1>
               <p className="text-sm text-gray-400">{t(locale, 'users.subtitle')}</p>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button variant="secondary" onClick={() => load()} disabled={loading}>
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+            <Button variant="secondary" onClick={() => load()} disabled={loading} className="w-full sm:w-auto">
               <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               {t(locale, 'users.refresh')}
             </Button>
-            <Button onClick={() => setModalOpen(true)}>
+            <Button onClick={() => setModalOpen(true)} className="w-full sm:w-auto">
               <UserPlus className="w-4 h-4 mr-2" />
               {t(locale, 'users.add')}
             </Button>
@@ -205,8 +206,8 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
             {t(locale, 'users.loading')}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <AdminScrollArea>
+            <table className="w-full min-w-[560px] text-sm">
               <thead className="bg-white/5 text-left text-gray-400 uppercase text-xs tracking-wide">
                 <tr>
                   <th className="px-4 py-3">{t(locale, 'users.colUser')}</th>
@@ -259,7 +260,7 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
                 ))}
               </tbody>
             </table>
-          </div>
+          </AdminScrollArea>
         )}
       </GlassCard>
 

@@ -80,7 +80,7 @@ export function Sidebar({
       )}
 
       <aside
-        className={`fixed md:sticky top-0 left-0 h-screen z-50 glass border-r border-white/10 transition-all duration-300 flex flex-col min-h-0 ${
+        className={`fixed md:sticky top-0 left-0 h-[100dvh] max-h-[100dvh] z-50 glass border-r border-white/10 transition-all duration-300 flex flex-col min-h-0 ${
           collapsed ? '-translate-x-full md:translate-x-0 md:w-20' : 'w-64'
         }`}
       >
@@ -117,7 +117,7 @@ export function Sidebar({
           ))}
         </nav>
 
-        <div className="shrink-0 mt-auto border-t border-white/10 left-0 right-0 p-3 space-y-2 bg-[rgb(15_23_42/0.85)] backdrop-blur-sm">
+        <div className="shrink-0 mt-auto border-t border-white/10 left-0 right-0 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] space-y-2 bg-[rgb(15_23_42/0.85)] backdrop-blur-sm">
           {!collapsed && (
             <div className="px-3">
               <label className="text-[11px] text-gray-500 uppercase tracking-wide">{t(locale, 'app.language')}</label>

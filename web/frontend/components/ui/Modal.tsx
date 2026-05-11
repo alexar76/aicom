@@ -51,7 +51,7 @@ export function Modal({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -61,14 +61,14 @@ export function Modal({
             onClick={onClose}
           />
 
-          {/* Modal */}
+          {/* Modal — bottom sheet on narrow viewports, centered from sm+ */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.98, y: 24 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            exit={{ opacity: 0, scale: 0.98, y: 24 }}
             transition={{ type: 'spring', duration: 0.5 }}
             className={cn(
-              'relative w-full glass-strong rounded-2xl p-6',
+              'relative w-full max-h-[min(92dvh,calc(100vh-1rem))] overflow-y-auto overscroll-contain glass-strong rounded-t-2xl rounded-b-none p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:max-h-[min(90vh,92dvh)] sm:rounded-2xl sm:p-6 sm:pb-6',
               sizeClasses[size],
               className
             )}

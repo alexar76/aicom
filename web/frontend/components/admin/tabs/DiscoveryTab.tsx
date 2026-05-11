@@ -148,20 +148,22 @@ export function DiscoveryTab({ locale }: { locale: AdminLocale }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         <h2 className="text-xl font-semibold text-white">{t(locale, 'discovery.pageTitle')}</h2>
-        <Badge variant="info" className="text-xs">
-          {queue.length} {t(locale, 'discovery.ideasLabel')}
-        </Badge>
-        <Badge variant="info" className="text-xs">
-          {t(locale, 'discovery.signalsLabel')} {meta?.signals_total ?? 0}
-        </Badge>
-        <Button variant="secondary" size="sm" onClick={() => refresh(false)} disabled={loading} className="ml-auto">
-          {loading ? t(locale, 'discovery.refreshing') : t(locale, 'discovery.refresh')}
-        </Button>
-        <Button variant="secondary" size="sm" onClick={() => refresh(true)} disabled={loading}>
-          {loading ? t(locale, 'discovery.queueing') : t(locale, 'discovery.queueTop')}
-        </Button>
+        <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
+          <Badge variant="info" className="text-xs">
+            {queue.length} {t(locale, 'discovery.ideasLabel')}
+          </Badge>
+          <Badge variant="info" className="text-xs">
+            {t(locale, 'discovery.signalsLabel')} {meta?.signals_total ?? 0}
+          </Badge>
+          <Button variant="secondary" size="sm" onClick={() => refresh(false)} disabled={loading}>
+            {loading ? t(locale, 'discovery.refreshing') : t(locale, 'discovery.refresh')}
+          </Button>
+          <Button variant="secondary" size="sm" onClick={() => refresh(true)} disabled={loading}>
+            {loading ? t(locale, 'discovery.queueing') : t(locale, 'discovery.queueTop')}
+          </Button>
+        </div>
       </div>
       <GlassCard>
         <FilterControlsPanel
@@ -171,7 +173,7 @@ export function DiscoveryTab({ locale }: { locale: AdminLocale }) {
             setMinScore('');
           }}
           summary={`${filteredQueue.length} / ${queue.length}`}
-          gridClassName="grid grid-cols-1 md:grid-cols-4 gap-2 mb-3"
+          gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2"
         >
           <Input
             value={query}
@@ -199,7 +201,7 @@ export function DiscoveryTab({ locale }: { locale: AdminLocale }) {
           <div className="space-y-2">
             {filteredQueue.map((idea: any, idx: number) => (
               <div key={`${idea.idea}-${idx}`} className="p-3 rounded-lg bg-white/5 border border-white/10">
-                <div className="flex items-center justify-between gap-2 mb-1">
+                <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
                   <span className="text-xs text-gray-400">#{idx + 1} · {idea.category}</span>
                   <span className="text-xs text-cyan-300">
                     {Number(idea.balanced_score ?? idea.score_total ?? 0).toFixed(2)}

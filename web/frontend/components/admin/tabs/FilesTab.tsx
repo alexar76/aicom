@@ -257,14 +257,14 @@ export function FilesTab() {
               <div className="text-gray-500 text-center py-12">Select a product to browse its files</div>
             ) : (
               <>
-                <div className="flex flex-wrap items-center gap-3 mb-3 p-3 rounded-xl bg-white/[0.03] border border-white/10">
+                <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:flex-row sm:flex-wrap sm:items-center">
                   <Button
                     type="button"
                     variant="secondary"
                     size="sm"
                     disabled={sandboxOpening}
                     onClick={() => void openSandboxPreview()}
-                    className="flex items-center gap-2"
+                    className="flex w-full items-center justify-center gap-2 sm:w-auto"
                   >
                     {sandboxOpening ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -273,11 +273,11 @@ export function FilesTab() {
                     )}
                     {sandboxOpening ? 'Starting…' : 'Open sandbox preview'}
                   </Button>
-                  <p className="text-xs text-gray-500 max-w-xl">
+                  <p className="max-w-xl text-xs text-gray-500">
                     Starts a sandbox for this product and opens the HTML demo (iframe) in a new tab — same viewer as the product page.
                   </p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">
+                <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   <Input
                     value={fileSearch}
                     onChange={(e) => setFileSearch(e.target.value)}
@@ -316,16 +316,16 @@ export function FilesTab() {
                   <GlassCard key={file.path} className="overflow-hidden">
                     <button
                       onClick={() => setExpandedFile(expandedFile === file.path ? null : file.path)}
-                      className="w-full text-left p-3 flex items-center justify-between"
+                      className="flex w-full flex-col gap-2 p-3 text-left sm:flex-row sm:items-center sm:justify-between"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-2 h-2 rounded-full bg-gradient-to-br ${categoryColors[file.category] || 'from-gray-500 to-gray-600'}`} />
-                        <div>
-                          <span className="text-white text-sm font-medium">{file.filename}</span>
-                          <span className="text-gray-500 text-xs ml-2">({(file.size_bytes / 1024).toFixed(1)} KB)</span>
+                      <div className="flex min-w-0 items-center gap-3">
+                        <div className={`h-2 w-2 shrink-0 rounded-full bg-gradient-to-br ${categoryColors[file.category] || 'from-gray-500 to-gray-600'}`} />
+                        <div className="min-w-0">
+                          <span className="text-sm font-medium text-white">{file.filename}</span>
+                          <span className="ml-2 text-xs text-gray-500">({(file.size_bytes / 1024).toFixed(1)} KB)</span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex shrink-0 items-center gap-2 sm:ml-2">
                         <span className="text-xs text-gray-500 bg-white/5 px-2 py-0.5 rounded">{file.category}</span>
                         <span className="text-gray-500 text-xs">{expandedFile === file.path ? '▲' : '▼'}</span>
                       </div>

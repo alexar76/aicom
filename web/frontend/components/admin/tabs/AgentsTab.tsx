@@ -117,9 +117,9 @@ export function AgentsTab() {
           >
             <GlassCard>
               <div className="flex items-center gap-4">
-                <div className="text-3xl">{getAgentIcon(agent.type)}</div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
+                <div className="text-3xl shrink-0">{getAgentIcon(agent.type)}</div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <h3 className="text-white font-medium capitalize">
                       {agent.type === 'designer'
                         ? 'Designer (UX)'

@@ -6,7 +6,7 @@ export function FilterResetSummary({
   onReset,
   summary,
   resetLabel = 'Reset filters',
-  className = 'text-xs text-gray-500 flex items-center justify-between pr-1',
+  className = 'text-xs text-gray-500 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 pr-1',
 }: {
   onReset: () => void;
   summary: React.ReactNode;
@@ -18,11 +18,11 @@ export function FilterResetSummary({
       <button
         type="button"
         onClick={onReset}
-        className="text-indigo-300 hover:text-indigo-200 underline underline-offset-2"
+        className="shrink-0 text-left text-indigo-300 hover:text-indigo-200 underline underline-offset-2"
       >
         {resetLabel}
       </button>
-      <span>{summary}</span>
+      <span className="min-w-0 break-words text-gray-400 sm:text-right">{summary}</span>
     </div>
   );
 }
@@ -32,7 +32,7 @@ export function FilterControlsPanel({
   onReset,
   summary,
   resetLabel = 'Reset filters',
-  gridClassName = 'grid grid-cols-1 md:grid-cols-4 gap-2 mb-2',
+  gridClassName = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2',
 }: {
   children: React.ReactNode;
   onReset: () => void;
@@ -41,8 +41,8 @@ export function FilterControlsPanel({
   gridClassName?: string;
 }) {
   return (
-    <div className={gridClassName}>
-      {children}
+    <div className="flex flex-col gap-2">
+      <div className={gridClassName}>{children}</div>
       <FilterResetSummary onReset={onReset} resetLabel={resetLabel} summary={summary} />
     </div>
   );

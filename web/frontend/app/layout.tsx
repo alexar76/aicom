@@ -1,15 +1,17 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
 import '@/styles/globals.css';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { MarketingShell } from '@/components/MarketingShell';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
+import { PwaRegister } from '@/components/PwaRegister';
 
 const site =
-  (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
+  (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:9080').replace(/\/$/, '');
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
+  applicationName: 'AI-Factory',
   title: {
     default: 'AI-Factory — Generate landings from one phrase',
     template: '%s — AI-Factory',
@@ -26,6 +28,15 @@ export const metadata: Metadata = {
     'autonomous',
     'software development',
   ],
+  icons: {
+    icon: [{ url: '/icon', sizes: '512x512', type: 'image/png' }],
+    apple: [{ url: '/icon', sizes: '512x512', type: 'image/png' }],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'AI-Factory',
+  },
   openGraph: {
     title: 'AI-Factory',
     description:
@@ -41,6 +52,17 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+    { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -48,12 +70,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="cyber-grid min-h-screen">
+      <body className="cyber-grid min-h-screen min-w-0 overflow-x-hidden antialiased">
+        <PwaRegister />
         <GoogleAnalytics />
         <ThemeProvider>
           <Suspense fallback={null}>
             <MarketingShell>
-              <div className="relative z-10">{children}</div>
+              <div className="relative z-10 min-w-0">{children}</div>
             </MarketingShell>
           </Suspense>
         </ThemeProvider>

@@ -205,28 +205,29 @@ export function CorporateChatTab() {
   return (
     <GlassCard className="p-6 flex flex-col h-[calc(100vh-12rem)]">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
-        <div className="flex items-center gap-3 flex-wrap">
-          <MessageCircle className="w-6 h-6 text-cyan-400" />
+      <div className="mb-4 flex flex-col gap-4 border-b border-white/10 pb-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
+          <MessageCircle className="h-6 w-6 shrink-0 text-cyan-400" />
           <h2 className="text-xl font-bold text-white">Corporate Chat</h2>
           <span className="text-sm text-gray-400">
             You are <span className="text-cyan-300 font-medium">Owner</span>:{' '}
             <span className="text-white">{chatUsername}</span>
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
           <Button
             variant="secondary"
             size="sm"
             onClick={handleRunStandup}
             disabled={standupRunning}
             title="Post a standup now (same flow as scheduled)"
+            className="flex-1 sm:flex-initial"
           >
             {standupRunning ? 'Running…' : 'Run standup now'}
           </Button>
           <button
             onClick={() => { setShowSettings(!showSettings); setSettingsUsername(chatUsername); }}
-            className="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
+            className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/5 hover:text-white"
             title="Chat Settings"
           >
             <Settings className="w-5 h-5" />
@@ -247,19 +248,21 @@ export function CorporateChatTab() {
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Owner display name (shown on your messages)
           </label>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Input
               value={settingsUsername}
               onChange={(e) => setSettingsUsername(e.target.value)}
               placeholder="Enter username"
-              className="flex-1"
+              className="min-w-0 flex-1"
             />
-            <Button onClick={handleSaveSettings} variant="primary">
-              Save
-            </Button>
-            <Button onClick={() => setShowSettings(false)} variant="ghost">
-              Cancel
-            </Button>
+            <div className="flex gap-2 shrink-0">
+              <Button onClick={handleSaveSettings} variant="primary">
+                Save
+              </Button>
+              <Button onClick={() => setShowSettings(false)} variant="ghost">
+                Cancel
+              </Button>
+            </div>
           </div>
         </div>
       )}

@@ -206,9 +206,9 @@ export default function OutreachTab({ locale = 'en' }: { locale?: AdminLocale })
       ) : (
         <>
           <GlassCard className="p-4 space-y-3">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <h3 className="text-sm font-medium text-white">{tt(locale, 'channels')}</h3>
-              <Button variant="primary" onClick={() => void saveChannels()} disabled={saving}>
+              <Button variant="primary" onClick={() => void saveChannels()} disabled={saving} className="w-full sm:w-auto">
                 <Save className="w-4 h-4 mr-1" />
                 {saving ? '…' : tt(locale, 'save')}
               </Button>
@@ -284,8 +284,8 @@ export default function OutreachTab({ locale = 'en' }: { locale?: AdminLocale })
             <h3 className="text-sm font-medium text-white mb-2">{tt(locale, 'history')}</h3>
             <div className="space-y-2">
               {announcements.map((a) => (
-                <GlassCard key={a.id} className="p-3 flex flex-wrap items-center justify-between gap-3">
-                  <div>
+                <GlassCard key={a.id} className="flex flex-col gap-3 p-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+                  <div className="min-w-0">
                     <div className="text-sm text-white font-medium">{a.title}</div>
                     <div className="text-xs text-gray-500">
                       {a.author_role} · {a.status} · {new Date((a.sent_at || a.created_at) * 1000).toLocaleString()}
