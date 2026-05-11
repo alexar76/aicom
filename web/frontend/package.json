@@ -1,0 +1,38 @@
+{
+  "name": "ai-factory-frontend",
+  "version": "2.1.0",
+  "private": true,
+  "description": "AUTONOMOUS AI-FACTORY v2.1 — Premium Storefront & Admin Panel",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "playwright test",
+    "test:visual": "AI_FACTORY_E2E_TESTS=1 playwright test",
+    "capture-docs-screenshots": "node scripts/capture-docs-screenshots.mjs"
+  },
+  "dependencies": {
+    "clsx": "^2.1.0",
+    "ethers": "^6.16.0",
+    "framer-motion": "^11.5.0",
+    "lucide-react": "^0.441.0",
+    "next": "^14.2.0",
+    "qrcode.react": "^4.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-hot-toast": "^2.4.1",
+    "recharts": "^2.12.0",
+    "tailwind-merge": "^2.5.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.5.0"
+  }
+}

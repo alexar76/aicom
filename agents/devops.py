@@ -1,0 +1,172 @@
+"""
+DevOps Agent
+============
+Responsible for:
+- Security scanning
+- Deployment configuration
+- Docker/container setup
+- CI/CD pipeline configuration
+- Sandbox environment setup
+"""
+
+from __future__ import annotations
+
+import json
+import time
+from pathlib import Path
+
+from .base_agent import BaseAgent, AgentInput, AgentOutput
+from llm import LLMRouter, GenerationConfig
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
+
+DEVOPS_SYSTEM_PROMPT = """You are the DevOps Agent for an AI-powered software factory.
+Your role is to handle deployment, security, and infrastructure.
+
+For each product, you must:
+1. Perform security vulnerability scanning
+2. Create Docker configuration
+3. Set up deployment scripts
+4. Configure CI/CD pipeline
+5. Ensure sandbox isolation
+6. Generate security report
+7. Define release lifecycle artifacts: versioning, migration, canary, rollback
+
+**When `delivery_profile` is full_software** (infer from specification/architecture/code manifest — apps with DB + API + SPA):
+- **Database migrations:** Alembic / Prisma / Flyway revision folders + documented apply step (`alembic upgrade head`, `prisma migrate deploy`, or compose entrypoint) before serving traffic.
+- **OpenAPI:** expose `/openapi.json` (FastAPI default) and persist `docs/openapi.json` in the shipped tree when possible.
+- **Compose:** DB healthy before API; migrations on `docker compose up` or startup script.
+
+Output format: JSON with fields:
+- security_scan: {vulnerabilities_found, critical_count, high_count, medium_count, low_count, details}
+- docker_config: {dockerfile_content, docker_compose_content, dockerignore}
+- deployment: {type, script, requirements, ports, environment_variables}
+- security_recommendations: list of string
+- sandbox_config: {memory_limit, cpu_limit, network_access, allowed_ports}
+- lifecycle_release: {versioning_strategy, migration_plan, canary_plan, rollback_plan, release_checks}
+"""
+
+
+class DevOpsAgent(BaseAgent):
+    """DevOps Agent - handles deployment, security, and infrastructure."""
+
+    def __init__(self, llm_router: LLMRouter):
+        super().__init__(
+            agent_type="devops",
+            llm_router=llm_router,
+            task_type="devops_setup",
+        )
+
+    async def execute(self, agent_input: AgentInput) -> AgentOutput:
+        start_time = time.time()
+        product_id = agent_input.product_id
+        code_data = agent_input.data.get("code_data", {})
+
+        self._log("INFO", f"Running DevOps tasks for {product_id}")
+
+        try:
+            # Load code manifest
+            manifest = self._load_artifact(product_id, "code", "code_manifest.json")
+            code_files = manifest.get("files", []) if manifest else []
+
+            code_str = json.dumps({"file_count": len(code_files), "files": code_files[:20]}, indent=2)
+
+            spec_hint = ""
+            sp = Path("/app/data/specs") / product_id / "specification.json"
+            if sp.is_file():
+                try:
+                    raw_sp = json.loads(sp.read_text(encoding="utf-8"))
+                    dp = (raw_sp or {}).get("delivery_profile") if isinstance(raw_sp, dict) else None
+                    if dp:
+                        spec_hint = f"\nSpecification delivery_profile: {dp}\n"
+                except Exception:
+                    pass
+
+            prompt = f"""{DEVOPS_SYSTEM_PROMPT}
+
+Product ID: {product_id}
+{spec_hint}
+Code Files:
+{code_str}
+
+Please perform security scanning and create deployment configuration.
+"""
+
+            config = GenerationConfig(
+                temperature=0.7,
+                max_tokens=FACTORY_MAX_OUTPUT_TOKENS_HEAVY,
+                timeout_sec=FACTORY_TIMEOUT_DEFAULT_AGENT_SEC,
+                json_mode=True,  # openai_compatible skips response_format for reasoning models
+            )
+
+            response = await self._generate(prompt, config=config, agent_input=agent_input)
+
+            devops_result = self._extract_json(response)
+            if devops_result is None:
+                elapsed = time.time() - start_time
+                self._log("WARNING", f"DevOps analysis failed: LLM returned non-JSON response for {product_id}")
+                return AgentOutput(
+                    task_id=agent_input.task_id,
+                    product_id=product_id,
+                    agent_type=self.agent_type,
+                    success=False,
+                    error="LLM returned invalid/non-JSON response — DevOps analysis failed",
+                    timestamp=time.time(),
+                    metrics={"elapsed_seconds": elapsed},
+                )
+
+            # Save security report
+            self._save_artifact(product_id, "bugs", {
+                "product_id": product_id,
+                "devops_result": devops_result,
+                "created_at": time.time(),
+                "agent": "devops",
+            }, "security_report.json")
+            lifecycle = devops_result.get("lifecycle_release") if isinstance(devops_result, dict) else None
+            if isinstance(lifecycle, dict):
+                self._save_artifact(
+                    product_id,
+                    "state",
+                    {
+                        "product_id": product_id,
+                        "lifecycle_release": lifecycle,
+                        "created_at": time.time(),
+                        "agent": "devops",
+                    },
+                    "lifecycle_release.json",
+                )
+
+            elapsed = time.time() - start_time
+            vulns = devops_result.get("security_scan", {}).get("vulnerabilities_found", 0)
+            self._log("INFO", f"DevOps complete: {vulns} vulnerabilities ({elapsed:.1f}s)")
+
+            return AgentOutput(
+                task_id=agent_input.task_id,
+                product_id=product_id,
+                agent_type=self.agent_type,
+                success=True,
+                data={
+                    "devops_result": devops_result,
+                    "vulnerabilities_found": vulns,
+                    "has_docker_config": bool(devops_result.get("docker_config")),
+                    "security_file": f"bugs/{product_id}/security_report.json",
+                    "lifecycle_release_file": (f"state/{product_id}/lifecycle_release.json" if isinstance(lifecycle, dict) else None),
+                },
+                timestamp=time.time(),
+                metrics={
+                    "elapsed_seconds": elapsed,
+                    "vulnerabilities": vulns,
+                },
+            )
+
+        except Exception as e:
+            elapsed = time.time() - start_time
+            self._log("ERROR", f"DevOps tasks failed: {e}")
+            return AgentOutput(
+                task_id=agent_input.task_id,
+                product_id=product_id,
+                agent_type=self.agent_type,
+                success=False,
+                error=str(e),
+                timestamp=time.time(),
+                metrics={"elapsed_seconds": elapsed},
+            )

@@ -1,0 +1,23 @@
+'use client';
+
+export { DashboardTab } from './tabs/DashboardTab';
+export { NewProductTab } from './tabs/NewProductTab';
+export { HumanReviewGatePanel } from './tabs/HumanReviewGatePanel';
+export { StorefrontFollowupPanel } from './tabs/StorefrontFollowupPanel';
+export { PipelineTab } from './tabs/PipelineTab';
+export { AgentsTab } from './tabs/AgentsTab';
+export { FilesTab } from './tabs/FilesTab';
+export { ProviderFormModal } from './tabs/ProviderFormModal';
+export { RoutingRulesEditor } from './tabs/RoutingRulesEditor';
+export { ProvidersTab } from './tabs/ProvidersTab';
+export { SecurityTab } from './tabs/SecurityTab';
+export { LLMLogsTab } from './tabs/LLMLogsTab';
+export { AgentLogsTab } from './tabs/AgentLogsTab';
+export { SandboxTab } from './tabs/SandboxTab';
+export { DemoReplayMonitorSection } from './tabs/DemoReplayMonitorSection';
+export { MonitorTab } from './tabs/MonitorTab';
+export { DirectorTab } from './tabs/DirectorTab';
+export { DiscoveryTab } from './tabs/DiscoveryTab';
+export { SettingsTab } from './tabs/SettingsTab';
+export { CorporateChatTab } from './tabs/CorporateChatTab';
+export { UsersTab } from './tabs/UsersTab';

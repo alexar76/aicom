@@ -1,0 +1,179 @@
+#!/bin/bash
+# ============================================================================
+# AUTONOMOUS AI-FACTORY v2.1 — Entrypoint
+# ============================================================================
+# Starts all services:
+#   1. FastAPI backend (port 8081)
+#   2. Pipeline Worker (background)
+#   3. Next.js frontend (port 8080) — main user-facing port
+# ============================================================================
+
+set -e
+
+echo "=== AI-Factory v2.1 Starting ==="
+
+# Activate Python virtual environment
+source /app/venv/bin/activate
+
+# ── Ensure All Data Directories Exist (bind mount compatibility) ──────────
+mkdir -p /app/data/config /app/data/logs /app/data/secrets /app/data/state
+mkdir -p /app/data/arch /app/data/bugs /app/data/code /app/data/specs
+mkdir -p /app/data/telemetry /app/data/feedback
+mkdir -p /app/data/reports/director
+echo "✓ Data directories verified"
+
+# ── First run: autonomous pipeline (Director periodically creates products) ─
+PIPELINE_FIRST_RUN="/app/data/config/first_run_pipeline_mode.done"
+if [ ! -f "$PIPELINE_FIRST_RUN" ]; then
+    echo ""
+    echo "┌──────────────────────────────────────────────────────────────────────────┐"
+    echo "│ AI-Factory — pipeline mode (first run with this data volume)             │"
+    echo "│                                                                          │"
+    echo "│  1) Autonomous development — AI Director creates products on a schedule   │"
+    echo "│     (general.auto_pipeline = true).                                       │"
+    echo "│  2) Ideas only — new products only when you provide an idea               │"
+    echo "│     (admin UI / CLI).                                                     │"
+    echo "└──────────────────────────────────────────────────────────────────────────┘"
+    AP_RAW=""
+    if [ -n "${AIFACTORY_AUTONOMOUS_PIPELINE:-}" ]; then
+        AP_RAW="${AIFACTORY_AUTONOMOUS_PIPELINE}"
+        echo "Mode from AIFACTORY_AUTONOMOUS_PIPELINE=${AP_RAW}"
+    elif [ -t 0 ]; then
+        read -r -p "Choose [1 or 2], Enter = 2 (ideas only): " choice || true
+        choice="${choice:-2}"
+        case "$choice" in
+            1) AP_RAW="1" ;;
+            *) AP_RAW="0" ;;
+        esac
+    else
+        AP_RAW="0"
+        echo "Non-interactive mode: default is 0 — ideas only."
+        echo "Tip: docker run -e AIFACTORY_AUTONOMOUS_PIPELINE=1 … or enable in Admin → Settings."
+    fi
+    export AUTO_PIPELINE_VALUE="${AP_RAW}"
+    python3 /app/scripts/set_auto_pipeline.py
+    touch "$PIPELINE_FIRST_RUN"
+    echo "✓ Mode saved to config (change anytime: Admin → Settings → Autonomous development)."
+    echo ""
+fi
+
+# ── Persistent JWT Secret Key ──────────────────────────────────────────────
+# Generate a persistent secret key so multiple workers can validate tokens.
+JWT_SECRET_FILE="/app/data/secrets/jwt_secret.key"
+mkdir -p /app/data/secrets
+if [ ! -f "$JWT_SECRET_FILE" ]; then
+    echo "Generating persistent JWT secret key..."
+    python3 -c "
+import os, hashlib
+# Generate a 64-char hex key from random data
+key = hashlib.sha256(os.urandom(64)).hexdigest()
+with open('$JWT_SECRET_FILE', 'w') as f:
+    f.write(key)
+print('JWT secret key created')
+"
+fi
+export JWT_SECRET_KEY=$(cat "$JWT_SECRET_FILE")
+echo "JWT secret key loaded (persistent across restarts)"
+
+# ── Customer storefront JWT (persistent; invalidates logins if rotated) ───
+CUSTOMER_JWT_FILE="/app/data/secrets/customer_jwt.key"
+if [ -z "${CUSTOMER_JWT_SECRET:-}" ]; then
+    if [ ! -f "$CUSTOMER_JWT_FILE" ]; then
+        echo "Generating persistent customer JWT secret..."
+        python3 -c "import secrets; open('$CUSTOMER_JWT_FILE','w').write(secrets.token_hex(48))"
+    fi
+    export CUSTOMER_JWT_SECRET=$(cat "$CUSTOMER_JWT_FILE")
+    echo "Customer JWT secret loaded (persistent across restarts)"
+else
+    echo "CUSTOMER_JWT_SECRET provided via environment (not using file)"
+fi
+
+# ── Default Admin Credentials ──────────────────────────────────────────────
+mkdir -p /app/data/config
+ADMIN_CONFIG="/app/data/config/admin.json"
+if [ ! -f "$ADMIN_CONFIG" ]; then
+    echo "Creating default admin credentials..."
+    python3 -c "
+import json, hashlib, os
+# Use SHA256-based hash as a fallback (bcrypt has compatibility issues)
+salt = os.urandom(16).hex()
+password_hash = hashlib.sha256(('admin123' + salt).encode()).hexdigest()
+admin_config = {
+    \"username\": \"admin\",
+    \"password_hash\": password_hash,
+    \"hash_salt\": salt,
+    \"hash_type\": \"sha256_salted\",
+    \"totp_enabled\": False,
+    \"created_at\": __import__('time').time()
+}
+with open('$ADMIN_CONFIG', 'w') as f:
+    json.dump(admin_config, f, indent=2)
+print('Default admin created: username=admin, password=admin123')
+"
+fi
+
+# ── Prometheus Multiproc Directory ─────────────────────────────────────────
+# The prometheus_client library requires this directory to exist when
+# PROMETHEUS_MULTIPROC_DIR is set (multiprocess mode). Without it, the
+# backend crashes on startup with FileNotFoundError.
+mkdir -p "${PROMETHEUS_MULTIPROC_DIR:-/tmp/prometheus_multiproc}"
+
+# ── SQLite Auto-Migration ─────────────────────────────────────────────────
+# When USE_SQLITE=true, automatically migrate existing JSON data to SQLite.
+# The migration is idempotent — safe to run on every container start.
+SQLITE_PATH="${SQLITE_PATH:-/app/data/state/pipeline.db}"
+if [[ "${USE_SQLITE,,}" == "true" ]]; then
+    echo "USE_SQLITE=true — checking SQLite backend..."
+    mkdir -p "$(dirname "$SQLITE_PATH")"
+
+    if [ -f "/app/data/state/pipeline.json" ]; then
+        echo "Running JSON → SQLite migration..."
+        python3 -m orchestrator.migrate \
+            --json /app/data/state/pipeline.json \
+            --db "$SQLITE_PATH" \
+        && echo "✓ SQLite migration complete" \
+        || echo "⚠ Migration failed or no data to migrate — SQLite will start fresh"
+    else
+        echo "No existing pipeline.json found — SQLite will initialize empty"
+    fi
+
+    export USE_SQLITE=true
+    echo "✓ SQLite backend enabled (path: $SQLITE_PATH)"
+else
+    echo "USE_SQLITE not set or false — using default JSON backend"
+fi
+
+# ── Pipeline Worker ────────────────────────────────────────────────────────
+echo "Starting Pipeline Worker..."
+cd /app
+python3 -m pipeline_worker &
+WORKER_PID=$!
+echo "Pipeline Worker started (PID: $WORKER_PID)"
+
+# ── Director AI Worker ─────────────────────────────────────────────────────
+echo "Starting Director AI Worker..."
+cd /app
+python3 -m director.worker &
+DIRECTOR_PID=$!
+echo "Director AI Worker started (PID: $DIRECTOR_PID)"
+
+# ── FastAPI Backend ────────────────────────────────────────────────────────
+# Default: 1 worker (each process would otherwise pick a random JWT secret).
+# Set JWT_SECRET_KEY in the environment to allow multiple workers (recommended under load).
+if [ -z "${UVICORN_WORKERS:-}" ]; then
+  if [ -n "${JWT_SECRET_KEY:-}" ]; then
+    UVICORN_WORKERS=2
+  else
+    UVICORN_WORKERS=1
+  fi
+fi
+echo "Starting FastAPI backend on port 8081 (${UVICORN_WORKERS} worker(s))..."
+cd /app
+python3 -m uvicorn web.backend.main:app --host 0.0.0.0 --port 8081 --workers "${UVICORN_WORKERS}" &
+BACKEND_PID=$!
+echo "Backend started (PID: $BACKEND_PID)"
+
+# ── Next.js Frontend ──────────────────────────────────────────────────────
+echo "Starting Next.js frontend on port 8080..."
+cd /app/web/frontend
+exec npx next start -p 8080

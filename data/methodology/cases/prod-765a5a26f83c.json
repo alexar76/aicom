@@ -1,0 +1,33 @@
+{
+  "product_id": "prod-765a5a26f83c",
+  "history": [
+    {
+      "case_id": "b21accbd6ad1",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 75,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778512060.1911027
+    }
+  ]
+}

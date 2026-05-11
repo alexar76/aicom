@@ -1,0 +1,116 @@
+# ============================================================================
+# AUTONOMOUS AI-FACTORY v2.1 — Dockerfile
+# ============================================================================
+# Single-container deployment with all components:
+#   - Python 3.12 backend (FastAPI + Uvicorn)
+#   - Node.js 20 + Next.js frontend
+#   - Docker-in-Docker for sandbox execution
+#   - All data persisted in /app/data
+# ============================================================================
+
+FROM ubuntu:24.04 AS base
+
+LABEL version="2.1.0"
+LABEL description="AUTONOMOUS AI-FACTORY — Autonomous AI Company Platform"
+LABEL maintainer="AI-Factory Team"
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# ── System Dependencies ────────────────────────────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # Python
+    python3.12 \
+    python3.12-dev \
+    python3-pip \
+    python3-venv \
+    # Node.js
+    curl \
+    gnupg \
+    ca-certificates \
+    # Build tools
+    build-essential \
+    pkg-config \
+    libssl-dev \
+    libffi-dev \
+    # Docker-in-Docker
+    docker.io \
+    docker-compose-v2 \
+    # Utilities
+    git \
+    nano \
+    htop \
+    net-tools \
+    iproute2 \
+    procps \
+    lsof \
+    # Monitoring
+    prometheus-node-exporter \
+    # Cleanup
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# ── Node.js 20 LTS ─────────────────────────────────────────────────────────
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# ── Application Directory ──────────────────────────────────────────────────
+WORKDIR /app
+
+# ── Python Virtual Environment ─────────────────────────────────────────────
+RUN python3.12 -m venv /app/venv
+ENV PATH="/app/venv/bin:$PATH"
+
+# ── Python Dependencies ────────────────────────────────────────────────────
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Headless Chromium for QA browser E2E (Playwright)
+RUN /app/venv/bin/python -m playwright install chromium \
+    && /app/venv/bin/python -m playwright install-deps chromium
+
+# ── Application Code ───────────────────────────────────────────────────────
+COPY . .
+
+# ── Frontend Build ─────────────────────────────────────────────────────────
+# NEXT_PUBLIC_* is inlined at `next build`; override via compose build args for production domains.
+ARG NEXT_PUBLIC_SITE_URL=http://localhost:9080
+ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+WORKDIR /app/web/frontend
+RUN npm install \
+    && npm run build \
+    && npm prune --production
+
+# ── Runtime Configuration ──────────────────────────────────────────────────
+WORKDIR /app
+
+# Create data directories
+# Bind-mount ./data hides image /app/data at runtime — keep LLM template under /app/llm for first-run bootstrap.
+RUN mkdir -p /app/data/config /app/data/specs /app/data/arch /app/data/code /app/data/bugs /app/data/state /app/data/logs /app/data/telemetry /app/data/reports/director /app/data/secrets /app/data/sandboxes /app/data/public/pipeline_demo_replay \
+    && mkdir -p /app/git-repos \
+    && mkdir -p /app/llm/_defaults \
+    && cp /app/data/config/model_providers.example.yaml /app/llm/_defaults/model_providers.example.yaml
+
+# Set permissions
+RUN chmod -R 755 /app \
+    && chmod -R 700 /app/data/secrets
+
+# ── Health Check ───────────────────────────────────────────────────────────
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD python3 -c "import urllib.request; urllib.request.urlopen('http://localhost:8081/api/health')" || exit 1
+
+# ── Entry Point ────────────────────────────────────────────────────────────
+EXPOSE 8080
+
+# Make entrypoint executable
+RUN chmod +x /app/entrypoint.sh
+
+# Start all services via the platform entry point
+CMD ["/app/entrypoint.sh"]

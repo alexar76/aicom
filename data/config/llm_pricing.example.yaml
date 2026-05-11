@@ -1,0 +1,32 @@
+# Copy to data/config/llm_pricing.yaml (same dir as model_providers.yaml).
+#
+# Rates are USD per 1 million tokens (admin estimate — adjust from vendor invoices).
+#
+# models:
+#   - Scalar = blended $/Mtok for totals when prompt/completion split is unknown
+#   - Or dict with input_per_mtok / output_per_mtok (used when logs include both counts)
+#   - Optional blended_per_mtok inside dict for totals-only estimates
+#
+# providers:
+#   - Scalar = blended fallback for unknown models
+#   - Or dict with heavy_per_mtok / light_per_mtok (when only tokens_used total is logged;
+#     role comes from routing vs configured heavy/light model ids)
+#   - Optional blended_per_mtok
+
+models:
+  deepseek-chat:
+    input_per_mtok: 0.14
+    output_per_mtok: 0.28
+    blended_per_mtok: 0.27
+  deepseek-reasoner: 0.95
+
+providers:
+  deep-seek:
+    blended_per_mtok: 0.35
+    heavy_per_mtok: 0.40
+    light_per_mtok: 0.22
+  groq_api:
+    heavy_per_mtok: 0.08
+    light_per_mtok: 0.05
+
+default_per_mtok: 0.5

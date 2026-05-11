@@ -1,0 +1,115 @@
+# AI-Factory v2.1 — Docker Compose
+# Use Docker Compose V2 (`docker compose`). Ubuntu: docker-compose-plugin
+# Project `.env` is auto-loaded for variable substitution (copy from .env.example).
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:9080}
+    ports:
+      - "${AICOM_PORT_FRONTEND:-9080}:8080"
+      - "${AICOM_PORT_API:-9081}:8081"
+    volumes:
+      - ./data:/app/data
+    environment:
+      # Shared across Uvicorn workers; required for JWT/session consistency when workers > 1.
+      # Override in production: openssl rand -hex 32
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-aicom_local_dev_jwt_not_for_production}
+      USE_SQLITE: "true"
+      SQLITE_PATH: /app/data/state/pipeline.db
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      TOGETHER_API_KEY: ${TOGETHER_API_KEY:-}
+      # Same container: Next.js SSR & explore pages call the API on loopback
+      INTERNAL_API_URL: http://127.0.0.1:8081
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
+      PROMETHEUS_MULTIPROC_DIR: /tmp/prometheus_multiproc
+      # First-run only: 1 = autonomous pipeline, 0 = ideas only (default; see entrypoint wizard)
+      AIFACTORY_AUTONOMOUS_PIPELINE: ${AIFACTORY_AUTONOMOUS_PIPELINE:-}
+      # Discovery must not silently enqueue ranked ideas unless you opt in (1).
+      AIFACTORY_DISCOVERY_AUTO_ENQUEUE: ${AIFACTORY_DISCOVERY_AUTO_ENQUEUE:-0}
+      AIFACTORY_PIPELINE_SLO_TARGET_PASS_RATE: ${AIFACTORY_PIPELINE_SLO_TARGET_PASS_RATE:-0.75}
+      AIFACTORY_PIPELINE_SLO_MAX_REGRESSION: ${AIFACTORY_PIPELINE_SLO_MAX_REGRESSION:-0.05}
+      AIFACTORY_PIPELINE_SLO_MAX_MTTR_HOURS: ${AIFACTORY_PIPELINE_SLO_MAX_MTTR_HOURS:-12}
+      AIFACTORY_AI_MARKET_CHAIN: ${AIFACTORY_AI_MARKET_CHAIN:-base}
+      AIFACTORY_AI_MARKET_TOKEN: ${AIFACTORY_AI_MARKET_TOKEN:-USDT}
+      AIFACTORY_AI_MARKET_CONTRACT: ${AIFACTORY_AI_MARKET_CONTRACT:-}
+      AIFACTORY_AI_MARKET_ENTITLEMENT_DAYS: ${AIFACTORY_AI_MARKET_ENTITLEMENT_DAYS:-30}
+      AIFACTORY_AI_MARKET_WEBHOOK_1: ${AIFACTORY_AI_MARKET_WEBHOOK_1:-}
+      AIFACTORY_AI_MARKET_WEBHOOK_2: ${AIFACTORY_AI_MARKET_WEBHOOK_2:-}
+      # Pipeline remediation and throughput controls
+      AIFACTORY_MAX_QUALITY_LOOPS: ${AIFACTORY_MAX_QUALITY_LOOPS:-25}
+      AIFACTORY_MAX_RUNNING_TASKS: ${AIFACTORY_MAX_RUNNING_TASKS:-24}
+      AIFACTORY_TASK_EXECUTOR_CONCURRENCY: ${AIFACTORY_TASK_EXECUTOR_CONCURRENCY:-12}
+      # Generated FastAPI live preview in sandbox iframe + QA-style uvicorn (sessions/cookies)
+      AIFACTORY_SANDBOX_PREVIEW_API: ${AIFACTORY_SANDBOX_PREVIEW_API:-0}
+      # Run product docker-compose.yml in sandbox (DB + API + web); set 0 to disable
+      AIFACTORY_SANDBOX_COMPOSE_PREVIEW: ${AIFACTORY_SANDBOX_COMPOSE_PREVIEW:-1}
+      AIFACTORY_SANDBOX_DEMO_EMAIL: ${AIFACTORY_SANDBOX_DEMO_EMAIL:-sandbox.demo@aicom.local}
+      AIFACTORY_SANDBOX_DEMO_PASSWORD: ${AIFACTORY_SANDBOX_DEMO_PASSWORD:-SandboxDemo!2026}
+      # Playwright deep crawl budget (see docs/pipeline-operations.md)
+      AIFACTORY_BROWSER_MAX_PAGES: ${AIFACTORY_BROWSER_MAX_PAGES:-100}
+      AIFACTORY_BROWSER_E2E_SERVE_MODE: ${AIFACTORY_BROWSER_E2E_SERVE_MODE:-auto}
+      # Admin Live Monitor demo replay uploads (see docs/pipeline-operations.md)
+      AIFACTORY_PIPELINE_DEMO_MAX_MB: ${AIFACTORY_PIPELINE_DEMO_MAX_MB:-120}
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8081/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 120s
+
+  prometheus:
+    image: prom/prometheus:v3.11.3
+    user: "65534:65534"
+    ports:
+      - "${AICOM_PORT_PROMETHEUS:-9090}:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./data/prometheus:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    depends_on:
+      app:
+        condition: service_healthy
+
+  grafana:
+    image: grafana/grafana:13.0.1
+    user: "472:472"
+    # Bind mount must be owned by UID/GID 472 on the host, or SQLite logs
+    # "attempt to write a readonly database". Fix: chown -R 472:472 ./data/grafana
+    ports:
+      - "${AICOM_PORT_GRAFANA:-9082}:3000"
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_INSTALL_PLUGINS: ""
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    depends_on:
+      prometheus:
+        condition: service_started
+
+networks:
+  aicom_net:
+    driver: bridge

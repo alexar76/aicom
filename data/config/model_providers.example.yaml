@@ -1,0 +1,147 @@
+# Copy to model_providers.yaml and set keys (never commit model_providers.yaml).
+default_provider: deep-seek
+providers:
+  deep-seek:
+    api_key: null
+    api_key_env: DEEPSEEK_API_KEY
+    base_url: https://api.deepseek.com/v1
+    capabilities:
+      context_window: 128000
+      max_tokens: 32000
+      supports_streaming: true
+      supports_vision: false
+    enabled: true
+    health_check_endpoint: /v1/models
+    models:
+      heavy: deepseek-reasoner
+      light: deepseek-chat
+    priority: 10
+    provider_type: openai_compatible
+  anthropic_cloud:
+    api_key: null
+    api_key_env: ANTHROPIC_API_KEY
+    base_url: https://api.anthropic.com/v1
+    capabilities:
+      context_window: 200000
+      max_tokens: 8192
+      supports_streaming: true
+      supports_vision: true
+    enabled: false
+    models:
+      heavy: claude-3-5-sonnet-latest
+      light: claude-3-5-haiku-latest
+    priority: 8
+    provider_type: anthropic
+  groq_api:
+    api_key_env: GROQ_API_KEY
+    base_url: https://api.groq.com/openai/v1
+    capabilities:
+      context_window: 8192
+      max_tokens: 4096
+      supports_streaming: true
+      supports_vision: false
+    enabled: false
+    fallback: local_ollama
+    models:
+      heavy: llama3-70b-8192
+      light: llama3-8b-8192
+      vision: null
+    priority: 4
+    provider_type: openai_compatible
+  local_ollama:
+    api_key_env: null
+    base_url: http://localhost:11434
+    capabilities:
+      context_window: 128000
+      max_tokens: 8192
+      supports_streaming: true
+      supports_vision: false
+    enabled: false
+    models:
+      heavy: qwen2.5:14b
+      light: qwen2.5:7b
+    priority: 2
+    provider_type: local_ollama
+  lm_studio:
+    api_key_env: null
+    base_url: http://host.docker.internal:1234/v1
+    capabilities:
+      context_window: 128000
+      max_tokens: 32000
+      supports_streaming: true
+      supports_vision: false
+    enabled: true
+    health_check_endpoint: /v1/models
+    models:
+      heavy: qwen/qwen3.6-35b-a3b
+      light: qwen/qwen3-coder-30b
+      vision: null
+    priority: 1
+    provider_type: openai_compatible
+  together_ai:
+    api_key_env: TOGETHER_API_KEY
+    base_url: https://api.together.xyz/v1
+    capabilities:
+      context_window: 32768
+      max_tokens: 4096
+      supports_streaming: true
+      supports_vision: false
+    enabled: false
+    fallback: local_ollama
+    models:
+      heavy: meta-llama/Llama-3.1-70B-Instruct-Turbo
+      light: mistralai/Mixtral-8x7B-Instruct-v0.1
+      vision: null
+    priority: 3
+    provider_type: openai_compatible
+routing_rules:
+  - fallback_provider: null
+    model_role: heavy
+    preferred_provider: auto
+    task_type: architecture_design
+    timeout_sec: 120
+  - fallback_provider: null
+    model_role: light
+    preferred_provider: auto
+    task_type: marketing_copy
+    timeout_sec: 30
+  - fallback_provider: null
+    model_role: light
+    preferred_provider: auto
+    task_type: code_generation
+    timeout_sec: 120
+  - fallback_provider: null
+    model_role: light
+    preferred_provider: auto
+    task_type: qa_testing
+    timeout_sec: 60
+  - fallback_provider: null
+    model_role: light
+    preferred_provider: auto
+    task_type: pm_analysis
+    timeout_sec: 60
+  - fallback_provider: null
+    model_role: light
+    preferred_provider: auto
+    task_type: market_research
+    timeout_sec: 120
+  - fallback_provider: null
+    model_role: light
+    preferred_provider: auto
+    task_type: devops_setup
+    timeout_sec: 60
+  - fallback_provider: null
+    model_role: light
+    preferred_provider: auto
+    task_type: sales_response
+    timeout_sec: 30
+  - fallback_provider: null
+    model_role: light
+    preferred_provider: auto
+    task_type: evolution_analysis
+    timeout_sec: 60
+  - fallback_provider: null
+    model_role: light
+    preferred_provider: auto
+    task_type: security_scan
+    timeout_sec: 60

@@ -1,0 +1,265 @@
+# ============================================================================
+# AUTONOMOUS AI-FACTORY v2.1 — Global Configuration
+# ============================================================================
+# This file defines the global settings for the AI-Factory platform.
+# All paths are relative to /app/data inside the container.
+# ============================================================================
+
+version: "2.1.0"
+environment: "production"  # production | development | testing
+
+# ── General Settings ───────────────────────────────────────────────────────
+general:
+  platform_name: "AI-Factory"
+  # Consumer-facing tagline (mirrors homepage promise; UI strings also in web/frontend/lib/marketing.ts)
+  platform_tagline: "One pipeline: autonomous market research & ideas, or your brief — same agents to a share-ready page."
+  admin_email: "admin@ai-factory.local"
+  default_language: "en"
+  timezone: "UTC"
+  # Auto-pipeline (autonomous development): Director periodically creates new products.
+  # Default is OFF. Enable explicitly in Admin → Settings (or via AIFACTORY_AUTONOMOUS_PIPELINE=1 on first run).
+  # Interval is a minimum cadence (minutes): at most one auto-enqueued product per N minutes; allowed range 15 … 10080.
+  auto_pipeline: false
+  auto_pipeline_interval_minutes: 60
+  # Git remote settings for code pushing
+  git_remote_url: ""
+  git_default_branch: "main"
+  # Docker registry credentials for pushing images
+  docker_registry: ""
+  docker_username: ""
+  docker_password: ""
+  # Telegram (optional): Admin → Settings toggles below; bot token + chat id live in
+  # TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID (.env) or data/secrets/telegram.yaml — never commit secrets here.
+  telegram_notify_enabled: false
+  telegram_notify_pipeline_stages: true
+  telegram_notify_new_products: true
+  # Railway hook after DevOps for full_software stacks (token via RAILWAY_TOKEN in env; never commit).
+  # Records deploy intent under data/state/<product_id>/railway_deploy.json — pair with external CI / Git integration.
+  railway_deploy_enabled: false
+  railway_project_id: ""
+  railway_environment: ""       # e.g. production (display name)
+  railway_environment_id: ""    # Railway GraphQL environment UUID — for CI/API redeploy
+  railway_service_id: ""          # optional — Railway service UUID
+  # Auto-publish static output after DevOps (requires CLI + env tokens on the host/container).
+  auto_publish_enabled: false
+  auto_publish_provider: "none"   # none | vercel | netlify | cloudflare_pages
+  auto_publish_netlify_site_id: ""   # optional existing Netlify site UUID
+  auto_publish_cf_project_name: ""   # Cloudflare Pages project name (default: aifactory-<short-id>)
+  # Viral badge on generated static HTML (Developer stage — injects before </body>)
+  site_badge_enabled: false
+  site_badge_link_url: ""   # https://github.com/you/aicom — required when enabled
+  # Neural UI reference pool (Developer/Hardening prompt). Generate templates: scripts/generate_reference_templates.py
+  # Env AIFACTORY_REFERENCE_* overrides these values when set on the worker/container.
+  reference_templates_enabled: false
+  reference_templates_dir: ""       # empty → <data_root>/reference_templates
+  reference_template_mode: "random"   # random | round_robin | fixed | match_spec
+  reference_template_id: ""         # template folder name when mode=fixed
+  reference_prompt_max_chars: 14000
+
+# ── Paths ──────────────────────────────────────────────────────────────────
+paths:
+  data_root: "/app/data"
+  specs: "/app/data/specs"
+  arch: "/app/data/arch"
+  code: "/app/data/code"
+  bugs: "/app/data/bugs"
+  state: "/app/data/state"
+  logs: "/app/data/logs"
+  telemetry: "/app/data/telemetry"
+  config: "/app/data/config"
+  reports: "/app/data/reports"
+  secrets: "/app/data/secrets"
+  git_repos: "/app/git-repos"
+
+# ── Orchestrator Settings ──────────────────────────────────────────────────
+orchestrator:
+  max_concurrent_tasks: 5
+  task_queue_size: 100
+  state_file: "/app/data/state/pipeline.json"
+  polling_interval_sec: 1.0
+  max_retries_per_step: 3
+  enable_director_integration: true
+
+# ── Agent Defaults ─────────────────────────────────────────────────────────
+agents:
+  default_timeout_sec: 30
+  default_max_retries: 3
+  log_level: "INFO"  # DEBUG | INFO | WARNING | ERROR
+  priorities:
+    pm: 1
+    architect: 2
+    developer: 3
+    qa: 4
+    devops: 5
+    marketing: 6
+    sales: 7
+    evolution_analyst: 8
+
+# ── LLM Provider Defaults ──────────────────────────────────────────────────
+llm:
+  default_provider: "deepseek_api"
+  health_check_interval_sec: 60
+  max_failures_before_unavailable: 3
+  routing_rules:
+    - task_type: "architecture_design"
+      preferred_provider: "local_ollama"
+      model_role: "heavy"
+      timeout_sec: 240
+    - task_type: "marketing_copy"
+      preferred_provider: "auto"
+      model_role: "light"
+      timeout_sec: 30
+    - task_type: "code_generation"
+      preferred_provider: "local_ollama"
+      model_role: "heavy"
+      fallback_provider: "deepseek_api"
+      timeout_sec: 300
+    - task_type: "qa_testing"
+      preferred_provider: "auto"
+      model_role: "light"
+      timeout_sec: 180
+    - task_type: "pm_analysis"
+      preferred_provider: "auto"
+      model_role: "light"
+      timeout_sec: 180
+    - task_type: "market_research"
+      preferred_provider: "auto"
+      model_role: "light"
+      timeout_sec: 120
+    - task_type: "sales_response"
+      preferred_provider: "auto"
+      model_role: "light"
+      timeout_sec: 15
+    - task_type: "evolution_analysis"
+      preferred_provider: "local_ollama"
+      model_role: "heavy"
+      timeout_sec: 90
+
+# ── Director AI Settings ───────────────────────────────────────────────────
+director:
+  enabled: true
+  analysis_interval_hours: 4
+  analysis_timeout_sec: 120
+  inspector_timeout_sec: 120
+  auto_actions_enabled: true
+  allowed_auto_actions:
+    - "increase_agent_timeout"
+    - "switch_provider_fallback"
+    - "adjust_agent_priority"
+  report_retention_days: 30
+  metrics_window_hours: 24
+
+# ── Web Server Settings ────────────────────────────────────────────────────
+web:
+  backend_host: "0.0.0.0"
+  backend_port: 8080
+  frontend_port: 3000
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:8080"
+  session_timeout_minutes: 30
+  max_login_attempts: 5
+  login_ban_minutes: 15
+
+# ── Crypto Settings ────────────────────────────────────────────────────────
+crypto:
+  supported_chains:
+    - "base"
+    - "solana"
+    - "arbitrum"
+    - "ethereum"
+  default_chain: "base"
+  wallet_addresses:
+    # Keep empty in VCS. Provide real values via local runtime config/secrets.
+    evm: ""
+    solana: ""
+  min_confirmation_amounts:
+    base: 10.0  # USDT
+    solana: 10.0  # USDC
+    arbitrum: 10.0  # USDT
+    ethereum: 10.0  # USDT
+  payment_timeout_sec: 3600
+  confirmation_poll_interval_sec: 15
+
+# ── Security Settings ──────────────────────────────────────────────────────
+security:
+  admin_password_min_length: 12
+  jwt_algorithm: "HS256"
+  jwt_expiry_minutes: 30
+  bcrypt_rounds: 12
+  enable_2fa: true
+  enable_fail2ban: true
+  audit_log_retention_days: 90
+  sandbox_network_access: false
+  sandbox_memory_limit_mb: 512
+  sandbox_cpu_limit: 0.5
+
+# ── Storefront Theme Defaults ──────────────────────────────────────────────
+storefront:
+  active_theme: "cyberpunk"
+  themes:
+    cyberpunk:
+      name: "Cyberpunk"
+      primary: "#00f5ff"
+      secondary: "#9d4edd"
+      accent: "#00ff9d"
+      bg_start: "#0f0f1b"
+      bg_end: "#1a1a2e"
+      text: "#ffffff"
+      text_secondary: "rgba(255,255,255,0.7)"
+      font_heading: "Orbitron"
+      font_body: "Inter"
+      animations_enabled: true
+      animation_speed: "normal"  # slow | normal | fast
+    minimal:
+      name: "Minimal"
+      primary: "#2563eb"
+      secondary: "#7c3aed"
+      accent: "#059669"
+      bg_start: "#ffffff"
+      bg_end: "#f1f5f9"
+      text: "#000000"
+      text_secondary: "#444444"
+      font_heading: "Inter"
+      font_body: "Inter"
+      animations_enabled: false
+      animation_speed: "normal"
+    glass:
+      name: "Glass"
+      primary: "#6366f1"
+      secondary: "#ec4899"
+      accent: "#14b8a6"
+      bg_start: "#0a0a1a"
+      bg_end: "#1a1a2e"
+      text: "#ffffff"
+      text_secondary: "rgba(255,255,255,0.7)"
+      font_heading: "Space Grotesk"
+      font_body: "Inter"
+      animations_enabled: true
+      animation_speed: "normal"
+    neon:
+      name: "Neon"
+      primary: "#ff00ff"
+      secondary: "#00ffff"
+      accent: "#ffff00"
+      bg_start: "#000000"
+      bg_end: "#0a0a0a"
+      text: "#ffffff"
+      text_secondary: "rgba(255,255,255,0.7)"
+      font_heading: "Press Start 2P"
+      font_body: "Inter"
+      animations_enabled: true
+      animation_speed: "fast"
+    corporate:
+      name: "Corporate"
+      primary: "#1e3a5f"
+      secondary: "#5b21b6"
+      accent: "#0f766e"
+      bg_start: "#d6dee7"
+      bg_end: "#b8c5d4"
+      text: "#0b1a2e"
+      text_secondary: "#3a4a5c"
+      font_heading: "Plus Jakarta Sans"
+      font_body: "Inter"
+      animations_enabled: false
+      animation_speed: "normal"

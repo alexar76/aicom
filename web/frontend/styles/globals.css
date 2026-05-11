@@ -1,0 +1,452 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   AUTONOMOUS AI-FACTORY v2.1 — Global Styles
+   Cyberpunk meets Glassmorphism design system
+   =========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ── CSS Custom Properties ─────────────────────────────────────────────── */
+:root {
+  /* Glassmorphism — these CAN be overridden by applyTheme() for light themes */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-hover: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-blur: blur(16px);
+  
+  /* Card backgrounds */
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-bg-hover: rgba(255, 255, 255, 0.06);
+  
+  /* Input backgrounds */
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-border: rgba(255, 255, 255, 0.1);
+  
+  /* Shimmer / skeleton */
+  --shimmer-from: transparent;
+  --shimmer-to: rgba(255, 255, 255, 0.05);
+  
+  /* Dynamic theme colors — overridden by JS at runtime */
+  --neon-primary: #6366f1;
+  --neon-primary-rgb: 99, 102, 241;
+  --neon-accent: #ff3366;
+  --neon-accent-rgb: 255, 51, 102;
+  --neon-glow: 0 0 10px rgba(var(--neon-primary-rgb), 0.5), 0 0 20px rgba(var(--neon-primary-rgb), 0.3);
+  --neon-glow-accent: 0 0 10px rgba(var(--neon-accent-rgb), 0.5), 0 0 20px rgba(var(--neon-accent-rgb), 0.3);
+  
+  /* Background */
+  --bg-primary: #0a0a1a;
+  --bg-secondary: #060612;
+  
+  /* Text */
+  --text-primary: #e0e0ff;
+  --text-secondary: #8888aa;
+  --text-muted: #666688;
+  
+  /* Spacing */
+  --header-height: 72px;
+}
+
+/* ── Base Styles ───────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Cyber Grid Background ─────────────────────────────────────────────── */
+.cyber-grid {
+  background-image:
+    linear-gradient(rgba(var(--neon-primary-rgb), 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--neon-primary-rgb), 0.08) 1px, transparent 1px);
+  background-size: 50px 50px;
+  position: relative;
+}
+
+.cyber-grid::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(var(--neon-primary-rgb), 0.15) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Glassmorphism Components ──────────────────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-strong {
+  background: var(--card-bg-hover);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border-hover);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    var(--card-bg) 0%,
+    color-mix(in srgb, var(--card-bg) 50%, transparent) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: linear-gradient(
+    135deg,
+    var(--card-bg-hover) 0%,
+    color-mix(in srgb, var(--card-bg-hover) 50%, transparent) 100%
+  );
+  border-color: rgba(var(--neon-primary-rgb), 0.3);
+  box-shadow: 0 8px 32px rgba(var(--neon-primary-rgb), 0.15);
+  transform: translateY(-2px);
+}
+
+/* ── Neon Effects ──────────────────────────────────────────────────────── */
+.neon-text {
+  text-shadow: 0 0 10px rgba(var(--neon-primary-rgb), 0.8), 0 0 20px rgba(var(--neon-primary-rgb), 0.4);
+}
+
+.neon-border {
+  box-shadow:
+    0 0 5px rgba(var(--neon-primary-rgb), 0.5),
+    0 0 10px rgba(var(--neon-primary-rgb), 0.3),
+    inset 0 0 5px rgba(var(--neon-primary-rgb), 0.1);
+}
+
+.neon-border-accent {
+  box-shadow:
+    0 0 5px rgba(var(--neon-accent-rgb), 0.5),
+    0 0 10px rgba(var(--neon-accent-rgb), 0.3),
+    inset 0 0 5px rgba(var(--neon-accent-rgb), 0.1);
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--neon-primary) 0%, color-mix(in srgb, var(--neon-primary) 80%, black) 100%);
+  /* Always light label on saturated fill — do not use --text-primary (dark on light themes). */
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(var(--neon-primary-rgb), 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(var(--neon-primary-rgb), 0.08);
+  border-color: rgba(var(--neon-primary-rgb), 0.3);
+}
+
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--neon-accent) 0%, color-mix(in srgb, var(--neon-accent) 80%, black) 100%);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(var(--neon-accent-rgb), 0.4);
+}
+
+/* ── Inputs ────────────────────────────────────────────────────────────── */
+.input-glass {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.input-glass:focus {
+  border-color: rgba(var(--neon-primary-rgb), 0.5);
+  box-shadow: 0 0 0 3px rgba(var(--neon-primary-rgb), 0.1);
+}
+
+.input-glass::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--neon-primary-rgb), 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--neon-primary-rgb), 0.5);
+}
+
+/* ── Selection ─────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(var(--neon-primary-rgb), 0.3);
+  color: white;
+}
+
+/* ── Animations ────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--shimmer-from) 0%,
+    var(--shimmer-to) 50%,
+    var(--shimmer-from) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+/* ── Typography ────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+code, pre {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, var(--neon-primary) 0%, color-mix(in srgb, var(--neon-primary) 70%, white) 50%, var(--neon-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-primary {
+  background: linear-gradient(135deg, var(--neon-primary) 0%, color-mix(in srgb, var(--neon-primary) 70%, white) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Loading States ────────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--card-bg) 0%,
+    var(--card-bg-hover) 50%,
+    var(--card-bg) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ── Status Badges ─────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-success {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* ── Light Theme Text Overrides ──────────────────────────────────────────── */
+/* The entire UI uses hardcoded Tailwind text-white / text-gray-* classes.
+   On light themes (Minimal, Corporate) these produce invisible/pale text.
+   We override them via CSS cascade using [data-theme-bg="light"].
+   The --tw-* variables are set at runtime by applyTheme() in utils.ts. */
+[data-theme-bg="light"] {
+  --override-text: var(--tw-white, #000000);
+  --override-text-secondary: var(--tw-gray-400, #444444);
+  --override-text-muted: var(--tw-gray-500, #666666);
+  --override-text-dim: var(--tw-gray-600, #555555);
+}
+
+[data-theme-bg="light"] .text-white,
+[data-theme-bg="light"] .text-gray-50,
+[data-theme-bg="light"] .text-gray-100,
+[data-theme-bg="light"] .text-gray-200,
+[data-theme-bg="light"] .text-gray-300 {
+  color: var(--override-text) !important;
+}
+
+[data-theme-bg="light"] .text-gray-400 {
+  color: var(--override-text-secondary) !important;
+}
+
+[data-theme-bg="light"] .text-gray-500 {
+  color: var(--override-text-muted) !important;
+}
+
+[data-theme-bg="light"] .text-gray-600,
+[data-theme-bg="light"] .text-gray-700 {
+  color: var(--override-text-dim) !important;
+}
+
+/* Also fix select/input text in light themes */
+[data-theme-bg="light"] select,
+[data-theme-bg="light"] input,
+[data-theme-bg="light"] textarea {
+  color: var(--override-text) !important;
+}
+
+/* Border colors — on light themes use dark-tinted borders for visibility */
+[data-theme-bg="light"] .border-white\/5,
+[data-theme-bg="light"] .border-white\/10,
+[data-theme-bg="light"] .border-white\/20 {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme-bg="light"] .bg-white\/5,
+[data-theme-bg="light"] .bg-white\/10 {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Fix the text-primary class for light themes */
+[data-theme-bg="light"] .text-indigo-400,
+[data-theme-bg="light"] .text-indigo-300 {
+  color: var(--neon-primary) !important;
+}
+
+[data-theme-bg="light"] .text-emerald-400,
+[data-theme-bg="light"] .text-emerald-300 {
+  color: var(--text-primary) !important;
+  opacity: 0.75;
+}
+
+/* Filled CTA buttons: keep white labels on primary/accent fills (theme sets dark body text). */
+[data-theme-bg="light"] .btn-primary,
+[data-theme-bg="light"] .btn-accent {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+}
+
+.badge-warning {
+  background: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.badge-error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-info {
+  background: rgba(var(--neon-primary-rgb), 0.15);
+  color: var(--neon-primary);
+  border: 1px solid rgba(var(--neon-primary-rgb), 0.3);
+}

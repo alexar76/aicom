@@ -1,0 +1,191 @@
+"""
+Marketing Agent
+===============
+Responsible for:
+- Creating product descriptions and marketing copy for marketplace listing
+- Generating promotional content (taglines, social media posts)
+- SEO optimization
+- Product naming and branding
+
+Note: Market research and monetization scheme design is now handled
+by the Market Research Analyst (analyst) agent.
+"""
+
+from __future__ import annotations
+
+import json
+import time
+from pathlib import Path
+
+from .base_agent import BaseAgent, AgentInput, AgentOutput
+from llm import LLMRouter, GenerationConfig
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
+from marketplace_taxonomy import slug_to_marketplace_category
+
+MARKETING_SYSTEM_PROMPT = """You are the Marketing Agent for an AI-powered software factory.
+Your role is to create compelling marketing content for the marketplace listing.
+
+NAMING (you own the public-facing title — make it artful):
+- `product_name` must feel **beautiful and intentional**: like a boutique brand, album title, or evocative studio name — memorable in 1–4 words, emotional or sensory when it fits.
+- **Forbidden:** trademark glyphs or fake legal marks — no ™, ®, (TM), or "* trademark pending*".
+- **Forbidden:** sterile enterprise SKU vibes — no "SolutionPro 360", "CloudSuite Enterprise", "AI Platform Hub", ALL‑CAPS megabrand stacks, or pasted‑together tech buzzwords unless clearly ironic.
+- Prefer subtle metaphor, rhythm, or imagery over descriptive jargon (users still get detail from description/tagline).
+
+You will receive:
+- The product specification (features, target audience, user stories)
+- Market research data (competitors, trends, positioning)
+- Category and tags assigned by the Market Research Analyst
+- Monetization scheme with pricing tiers
+
+Your task is to create:
+
+1. product_name: string (evocative, artistic — see NAMING rules above; never ™/®/(TM) or corporate SKU titles)
+2. tagline: string (catchy one-liner, max 80 chars)
+3. short_description: string (max 150 chars)
+4. long_description: string (detailed product description highlighting value)
+5. key_benefits: list of string (3-5 compelling benefits)
+6. seo_metadata: {title, description, keywords}
+7. social_media_posts: list of {platform, content, hashtags} (3-5 posts)
+8. selling_description: string (short compelling marketplace description, max 200 chars)
+
+Do **not** add a `category` field unless it is exactly one storefront slug:
+ai_ml, devtools, fintech, saas, ecommerce, iot, security, productivity. If unsure, omit `category`.
+
+Output format: JSON with fields:
+- product_name: string
+- tagline: string (max 80 chars)
+- short_description: string (max 150 chars)
+- long_description: string
+- key_benefits: list of string
+- selling_description: string (max 200 chars)
+- seo_metadata: {title: string, description: string, keywords: list of string}
+- social_media_posts: list of {platform: string, content: string, hashtags: list of string}
+"""
+
+
+class MarketingAgent(BaseAgent):
+    """Marketing Agent - creates marketing content for products."""
+
+    def __init__(self, llm_router: LLMRouter):
+        super().__init__(
+            agent_type="marketing",
+            llm_router=llm_router,
+            task_type="marketing_copy",
+        )
+
+    async def execute(self, agent_input: AgentInput) -> AgentOutput:
+        start_time = time.time()
+        product_id = agent_input.product_id
+        spec = agent_input.data.get("specification", {})
+        idea = agent_input.data.get("idea", "")
+
+        self._log("INFO", f"Creating marketing content for {product_id}")
+
+        # Load market research data if available (from analyst stage)
+        research_context = ""
+        research_file = Path(f"/app/data/state/{product_id}/market_research.json")
+        if research_file.exists():
+            try:
+                with open(research_file) as f:
+                    research_data = json.load(f)
+                research_context = json.dumps(research_data, indent=2)
+                self._log("INFO", f"Loaded market research for {product_id}")
+            except (json.JSONDecodeError, IOError) as e:
+                self._log("WARNING", f"Could not load market research: {e}")
+
+        try:
+            spec_str = json.dumps(spec, indent=2) if spec else idea
+
+            if research_context:
+                prompt = f"""{MARKETING_SYSTEM_PROMPT}
+
+Product Information:
+{spec_str}
+
+=== MARKET RESEARCH DATA ===
+{research_context}
+
+Please create compelling marketing content for this product based on the specification and market research above.
+Focus on highlighting the product's unique value proposition and key benefits.
+"""
+            else:
+                prompt = f"""{MARKETING_SYSTEM_PROMPT}
+
+Product Information:
+{spec_str}
+
+Please create compelling marketing content for this product based on the specification above.
+Focus on highlighting the product's unique value proposition and key benefits.
+"""
+
+            config = GenerationConfig(
+                temperature=0.8,
+                max_tokens=FACTORY_MAX_OUTPUT_TOKENS_HEAVY,
+                timeout_sec=FACTORY_TIMEOUT_DEFAULT_AGENT_SEC,
+                json_mode=True,  # openai_compatible skips response_format for reasoning models
+            )
+
+            response = await self._generate(prompt, config=config, agent_input=agent_input)
+
+            marketing = self._extract_json(response)
+            if isinstance(marketing, dict) and marketing.get("category") is not None:
+                if slug_to_marketplace_category(marketing.get("category")) is None:
+                    marketing.pop("category", None)
+
+            if marketing is None:
+                elapsed = time.time() - start_time
+                self._log("WARNING", f"Marketing content generation failed: LLM returned non-JSON response for {product_id}")
+                return AgentOutput(
+                    task_id=agent_input.task_id,
+                    product_id=product_id,
+                    agent_type=self.agent_type,
+                    success=False,
+                    error="LLM returned invalid/non-JSON response — marketing content generation failed",
+                    timestamp=time.time(),
+                    metrics={"elapsed_seconds": elapsed},
+                )
+
+            # Save marketing content
+            self._save_artifact(product_id, "state", {
+                "product_id": product_id,
+                "marketing": marketing,
+                "created_at": time.time(),
+                "agent": "marketing",
+            }, "marketing_content.json")
+
+            elapsed = time.time() - start_time
+            self._log("INFO", f"Marketing content created ({elapsed:.1f}s)")
+
+            return AgentOutput(
+                task_id=agent_input.task_id,
+                product_id=product_id,
+                agent_type=self.agent_type,
+                success=True,
+                data={
+                    "marketing": marketing,
+                    "product_name": marketing.get("product_name", ""),
+                    "tagline": marketing.get("tagline", ""),
+                    "short_description": marketing.get("short_description", ""),
+                    "long_description": marketing.get("long_description", ""),
+                    "key_benefits": marketing.get("key_benefits", []),
+                    "selling_description": marketing.get("selling_description", ""),
+                    "seo_metadata": marketing.get("seo_metadata", {}),
+                    "social_media_posts": marketing.get("social_media_posts", []),
+                    "marketing_file": f"state/{product_id}/marketing_content.json",
+                },
+                timestamp=time.time(),
+                metrics={"elapsed_seconds": elapsed},
+            )
+
+        except Exception as e:
+            elapsed = time.time() - start_time
+            self._log("ERROR", f"Marketing content creation failed: {e}")
+            return AgentOutput(
+                task_id=agent_input.task_id,
+                product_id=product_id,
+                agent_type=self.agent_type,
+                success=False,
+                error=str(e),
+                timestamp=time.time(),
+                metrics={"elapsed_seconds": elapsed},
+            )

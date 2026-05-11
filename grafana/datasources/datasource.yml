@@ -1,0 +1,16 @@
+# ============================================================================
+# AI-Factory v2.1 — Grafana Datasource Provisioning
+# ============================================================================
+# Auto-provisioned Prometheus datasource.
+# Connects to the Prometheus service via the docker-compose internal network.
+# ============================================================================
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false

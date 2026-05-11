@@ -1,0 +1,1258 @@
+'use client';
+
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import {
+  LayoutDashboard,
+  Cpu,
+  Bot,
+  Shield,
+  FileText,
+  BarChart3,
+  Settings,
+  LogOut,
+  Plus,
+  Send,
+  Activity,
+  Users,
+  DollarSign,
+  AlertTriangle,
+  CheckCircle2,
+  Clock,
+  Sparkles,
+  MessageCircle,
+  Menu,
+  X,
+  Trash2,
+  Edit3,
+  RefreshCw,
+  Globe,
+  ToggleLeft,
+  ToggleRight,
+  Save,
+  List,
+  ScrollText,
+  ChevronRight,
+  Terminal,
+  Radio,
+  Pause,
+  Play,
+  Gauge,
+  Circle,
+  Star,
+  ExternalLink,
+  Zap,
+  GitBranch,
+  Container,
+  Layers,
+  FlaskConical,
+  BrainCircuit,
+  ClipboardList,
+  Inbox,
+  Megaphone,
+  Store,
+  Loader2,
+  Upload,
+} from 'lucide-react';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
+import { Input } from '@/components/ui/Input';
+import { ProgressBar } from '@/components/ui/ProgressBar';
+import { Modal } from '@/components/ui/Modal';
+import {
+  FilterControlsPanel,
+  FilterNumberInput,
+  FilterResetSummary,
+  FilterSelect,
+} from '@/components/admin/FilterControls';
+import BrainstormingTab from '@/components/BrainstormingTab';
+import SupportQueueTab from '@/components/SupportQueueTab';
+import OutreachTab from '@/components/OutreachTab';
+import { QRCodeSVG } from 'qrcode.react';
+import api, {
+  DashboardData,
+  ProviderStatus,
+  AgentStatus,
+  CreateProviderPayload,
+  RoutingRule,
+  ChatMessage,
+  DemoReplayAdminConfig,
+} from '@/lib/api';
+import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
+import { PIPELINE_PRODUCT_STATES_FOR_FILTER } from '@/lib/pipelineStages';
+import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
+import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
+import toast from 'react-hot-toast';
+
+import { CATEGORY_LABELS, CATEGORY_COLORS, STAGE_AGENT_TITLE } from './pipelineConstants';
+import { HumanReviewGatePanel } from './HumanReviewGatePanel';
+import { StorefrontFollowupPanel } from './StorefrontFollowupPanel';
+import {
+  PIPELINE_CATEGORY_FILTER_ORDER,
+  bucketPipelineProductForCategoryFilter,
+  countPipelineProductsByCategory,
+} from '@/lib/pipelineCategoryBucket';
+
+type PipelineCatalogSummary = NonNullable<
+  Awaited<ReturnType<typeof api.getPipelineProducts>>['catalog_summary']
+>;
+
+export function PipelineTab() {
+  /** First chunk + background pages (API max 2000/request). Full catalog streams in until total reached. */
+  const FIRST_PAGE_SIZE = 200;
+  const BACKGROUND_PAGE_SIZE = 500;
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [catalogSummary, setCatalogSummary] = useState<PipelineCatalogSummary | null>(null);
+  /** Default shipped_first so COMPLETED / DEPLOYED rows are not buried under thousands of new drafts. */
+  const [pipelineSort, setPipelineSort] = useState<'newest' | 'shipped_first'>('shipped_first');
+  const [expandedProduct, setExpandedProduct] = useState<string | null>(null);
+  const [expandedFailureProduct, setExpandedFailureProduct] = useState<string | null>(null);
+  const [specModalProduct, setSpecModalProduct] = useState<string | null>(null);
+  const [specData, setSpecData] = useState<any>(null);
+  const [specLoading, setSpecLoading] = useState(false);
+  const [handoffModalProduct, setHandoffModalProduct] = useState<string | null>(null);
+  const [handoffData, setHandoffData] = useState<Awaited<ReturnType<typeof api.getDeveloperHandoff>> | null>(null);
+  const [handoffLoading, setHandoffLoading] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [productSearch, setProductSearch] = useState('');
+  const [stateFilter, setStateFilter] = useState('all');
+  const [storefrontFilter, setStorefrontFilter] = useState<'all' | 'listed' | 'not_listed'>('all');
+  const [taskStageModal, setTaskStageModal] = useState<{
+    productId: string;
+    productName: string;
+    agentType: string;
+    task: Record<string, unknown> | null;
+  } | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setLoadingMore(false);
+    setProducts([]);
+    (async () => {
+      try {
+        const first = await api.getPipelineProducts(FIRST_PAGE_SIZE, 0, pipelineSort);
+        if (cancelled) return;
+        const firstBatch = first.products || [];
+        setProducts(firstBatch);
+        setTotalProducts(first.total || firstBatch.length);
+        if (first.catalog_summary) {
+          setCatalogSummary(first.catalog_summary);
+        }
+        setLoading(false);
+
+        let offset = firstBatch.length;
+        let knownTotal = first.total || firstBatch.length;
+        if (offset < knownTotal) {
+          setLoadingMore(true);
+        }
+        while (!cancelled && offset < knownTotal) {
+          const next = await api.getPipelineProducts(BACKGROUND_PAGE_SIZE, offset, pipelineSort);
+          if (cancelled) return;
+          const batch = next.products || [];
+          knownTotal = next.total || knownTotal;
+          if (batch.length === 0) break;
+          setProducts((prev) => [...prev, ...batch]);
+          setTotalProducts(knownTotal);
+          offset += batch.length;
+        }
+      } catch {
+        if (!cancelled) setLoading(false);
+      } finally {
+        if (!cancelled) setLoadingMore(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [pipelineSort]);
+
+  const loadSpec = async (productId: string) => {
+    setSpecModalProduct(productId);
+    setSpecLoading(true);
+    setSpecData(null);
+    try {
+      const result = await api.getProductSpec(productId);
+      setSpecData(result.spec);
+    } catch {
+      setSpecData(null);
+    } finally {
+      setSpecLoading(false);
+    }
+  };
+
+  const loadDeveloperHandoff = async (productId: string) => {
+    setHandoffModalProduct(productId);
+    setHandoffLoading(true);
+    setHandoffData(null);
+    try {
+      const result = await api.getDeveloperHandoff(productId);
+      setHandoffData(result);
+    } catch {
+      setHandoffData(null);
+    } finally {
+      setHandoffLoading(false);
+    }
+  };
+
+  const getFailureSummary = (product: any): string[] => {
+    const lines: string[] = [];
+    const primary = String(product?.failure_reason || '').trim();
+    const lastError = String(product?.last_error || '').trim();
+    const taskErrors = Array.isArray(product?.failed_task_errors)
+      ? product.failed_task_errors.map((x: unknown) => String(x || '').trim()).filter(Boolean)
+      : [];
+
+    if (primary) lines.push(primary);
+    if (lastError && !lines.includes(lastError)) lines.push(lastError);
+    for (const err of taskErrors) {
+      if (!lines.includes(err)) lines.push(err);
+      if (lines.length >= 3) break;
+    }
+    if (lines.length === 0) {
+      lines.push('Failure reason is not stored. Open failed task details.');
+    }
+    return lines.slice(0, 3);
+  };
+
+  const getLatestFailedTask = (taskList: any[]): any | null => {
+    const failed = taskList.filter((t) => String(t?.status || '').toLowerCase() === 'failed');
+    if (failed.length === 0) return null;
+    const score = (t: any) => {
+      const endAt = toUnixSeconds(t?.ended_at) || 0;
+      const updatedAt = toUnixSeconds(t?.updated_at) || 0;
+      const startAt = toUnixSeconds(t?.started_at) || 0;
+      return endAt || updatedAt || startAt;
+    };
+    return failed.sort((a, b) => score(b) - score(a))[0] || null;
+  };
+
+  const getAgentIcon = (agentType: string) => {
+    const icons: Record<string, string> = {
+      analyst: '🔍',
+      pm: '📋',
+      architect: '🏗️',
+      developer: '💻',
+      dev: '💻',
+      qa: '🧪',
+      devops: '🚀',
+      marketing: '📢',
+      sales: '💰',
+      security: '🛡️',
+      evolution_analyst: '📈',
+      designer: '🎨',
+      methodologist: '🧭',
+    };
+    return icons[agentType] || '⚙️';
+  };
+
+  const formatDuration = (start?: number, end?: number) => {
+    if (!start || !end) return '';
+    const secs = Math.round(end - start);
+    if (secs < 1) return '<1s';
+    if (secs < 60) return `${secs}s`;
+    return `${Math.floor(secs / 60)}m ${secs % 60}s`;
+  };
+
+  /** Task timestamps in pipeline state are Unix seconds; tolerate ms. */
+  const toUnixSeconds = (v: unknown): number | undefined => {
+    if (typeof v !== 'number' || !Number.isFinite(v)) return undefined;
+    return v > 1e12 ? v / 1000 : v;
+  };
+
+  const formatTaskWhen = (v: unknown) => {
+    const s = toUnixSeconds(v);
+    if (s === undefined) return '—';
+    try {
+      return new Date(s * 1000).toLocaleString();
+    } catch {
+      return String(v);
+    }
+  };
+
+  const safeJson = (val: unknown, max = 48_000) => {
+    try {
+      const s = JSON.stringify(val, null, 2);
+      if (s.length <= max) return s;
+      return `${s.slice(0, max)}\n… (${s.length} chars total)`;
+    } catch {
+      return String(val);
+    }
+  };
+
+  const openTaskDetailModal = (
+    productId: string,
+    productTitle: string,
+    agentType: string,
+    task: Record<string, unknown> | null | undefined
+  ) => {
+    setTaskStageModal({
+      productId,
+      productName: productTitle,
+      agentType,
+      task: task ? { ...task } : null,
+    });
+  };
+
+  /** Match API task row to a pipeline stage (handles dev vs developer, etc.) */
+  const findTaskForStage = (taskList: any[], stage: string) => {
+    if (stage === 'designer') {
+      return taskList.find((x: any) => x.agent_type === 'architect');
+    }
+    if (stage === 'methodologist') {
+      const direct = taskList.find((x: any) => x.agent_type === 'methodologist');
+      if (direct) return direct;
+      // Legacy: methodology was only visible via PM/QA embedded reviews.
+      const pm = taskList.find((x: any) => x.agent_type === 'pm');
+      const qa = taskList.find((x: any) => x.agent_type === 'qa');
+      const pmReview = pm?.result?.methodology_spec_review || pm?.data?.methodology_spec_review;
+      const qaReview = qa?.result?.methodology_review || qa?.data?.methodology_review;
+      const pmPassed = pmReview ? !!pmReview.passed : null;
+      const qaPassed = qaReview ? !!qaReview.passed : null;
+      let status: string = 'pending';
+      if (pmPassed === false || qaPassed === false) status = 'failed';
+      else if (pm?.status === 'running' || qa?.status === 'running') status = 'running';
+      else if (pmPassed === true || qaPassed === true) status = 'completed';
+      else if (pm?.status === 'completed') status = 'completed';
+      return {
+        agent_type: 'methodologist',
+        status,
+        data: { methodology_spec_review: pmReview, methodology_review: qaReview },
+      };
+    }
+    const t = taskList.find((x: any) => x.agent_type === stage);
+    if (t) return t;
+    if (stage === 'developer') {
+      return taskList.find((x: any) => x.agent_type === 'dev');
+    }
+    if (stage === 'dev') {
+      return taskList.find((x: any) => x.agent_type === 'developer');
+    }
+    return undefined;
+  };
+
+  const mergeProductPatch = (productId: string, patch: Record<string, unknown>) => {
+    setProducts((prev) => prev.map((p) => (p.id === productId ? { ...p, ...patch } : p)));
+  };
+
+  /** Full pipeline state list for filter (not only states present in the current page — avoids “2 options” UX). */
+  const stateFilterOptions = useMemo(() => {
+    const s = new Set<string>([...PIPELINE_PRODUCT_STATES_FOR_FILTER]);
+    for (const p of products) {
+      const st = String(p?.state || '').toUpperCase();
+      if (st) s.add(st);
+    }
+    return Array.from(s).sort();
+  }, [products]);
+
+  /** Pipeline-local category counts (aligned with filter), not storefront /api/products/categories. */
+  const pipelineCategoryCounts = useMemo(
+    () => countPipelineProductsByCategory(products as Record<string, unknown>[]),
+    [products]
+  );
+  const pipelineCategoryCountsReady =
+    !loadingMore &&
+    (totalProducts === 0 || (products.length > 0 && products.length === totalProducts));
+
+  // Filter products by selected controls
+  const filteredProducts = products.filter((p) => {
+    const bucket = bucketPipelineProductForCategoryFilter(p as Record<string, unknown>);
+    const catOk = activeCategory === 'all' || bucket === activeCategory;
+    if (!catOk) return false;
+
+    const st = String(p?.state || '').toUpperCase();
+    const stateOk = stateFilter === 'all' || st === stateFilter;
+    if (!stateOk) return false;
+
+    const listed = Boolean(p?.storefront_visible);
+    const storefrontOk =
+      storefrontFilter === 'all' ||
+      (storefrontFilter === 'listed' ? listed : !listed);
+    if (!storefrontOk) return false;
+
+    const q = productSearch.trim().toLowerCase();
+    if (!q) return true;
+    const title = String(p?.spec?.product_name || p?.idea || '').toLowerCase();
+    const id = String(p?.id || '').toLowerCase();
+    const desc = String(p?.spec?.description || '').toLowerCase();
+    const followup = String(p?.storefront_followup?.followup || '').toLowerCase();
+    return title.includes(q) || id.includes(q) || desc.includes(q) || followup.includes(q);
+  });
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+        <div>
+          <h2 className="text-xl font-semibold text-white">Pipeline Monitor</h2>
+          {loadingMore && totalProducts > 0 && (
+            <p className="text-xs text-amber-200/90 mt-1">
+              Loading full catalog… {products.length} / {totalProducts} products (keep this tab open)
+            </p>
+          )}
+          {!loadingMore && totalProducts > 0 && products.length >= totalProducts && (
+            <p className="text-xs text-gray-500 mt-1">All {totalProducts} products loaded in this view</p>
+          )}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <FilterSelect
+            value={pipelineSort}
+            onChange={(e) => setPipelineSort(e.target.value as 'newest' | 'shipped_first')}
+            className="px-3 py-1.5 min-w-[11rem]"
+            title="Server-side sort for the whole catalog"
+          >
+            <option value="shipped_first">Sort: shipped first</option>
+            <option value="newest">Sort: newest first</option>
+          </FilterSelect>
+          <Layers className="w-4 h-4 text-gray-500 hidden sm:block" />
+          <FilterSelect
+            value={activeCategory}
+            onChange={(e) => setActiveCategory(e.target.value)}
+            className="px-3 py-1.5"
+          >
+            <option value="all">All Categories ({totalProducts || products.length})</option>
+            {PIPELINE_CATEGORY_FILTER_ORDER.map((catId) => (
+              <option key={catId} value={catId}>
+                {CATEGORY_LABELS[catId] || catId} (
+                {pipelineCategoryCountsReady ? pipelineCategoryCounts[catId] ?? 0 : '—'})
+              </option>
+            ))}
+          </FilterSelect>
+        </div>
+      </div>
+
+      {catalogSummary && catalogSummary.total_products > 0 && (
+        <GlassCard className="p-4 border border-cyan-500/20 bg-cyan-500/[0.04]">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
+            <div>
+              <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                <Store className="w-4 h-4 text-cyan-400" />
+                Catalog vs first rows
+              </h3>
+              <p className="text-xs text-gray-400 mt-1 max-w-3xl">
+                The monitor loads the <strong className="text-gray-300">entire catalog</strong> in chunks (see counter
+                above). Default sort is <strong className="text-gray-300">shipped first</strong> so finished builds are
+                not buried under new ideas. Switch to <strong className="text-gray-300">newest first</strong> for a
+                strict time line, or use filters (
+                <strong className="text-gray-300">State</strong>, <strong className="text-gray-300">Storefront</strong>
+                ).
+              </p>
+            </div>
+            <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs shrink-0 min-w-[min(100%,28rem)]">
+              <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
+                <dt className="text-gray-500">In catalog</dt>
+                <dd className="text-lg font-semibold text-white tabular-nums">{catalogSummary.total_products}</dd>
+              </div>
+              <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
+                <dt className="text-gray-500">Shipped state</dt>
+                <dd className="text-lg font-semibold text-emerald-300 tabular-nums">{catalogSummary.shipped_products}</dd>
+              </div>
+              <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
+                <dt className="text-gray-500">Public storefront</dt>
+                <dd className="text-lg font-semibold text-cyan-300 tabular-nums">
+                  {catalogSummary.storefront_listable_products}
+                </dd>
+              </div>
+              <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
+                <dt className="text-gray-500">Failed</dt>
+                <dd className="text-lg font-semibold text-rose-300 tabular-nums">{catalogSummary.failed_products}</dd>
+              </div>
+            </dl>
+          </div>
+        </GlassCard>
+      )}
+
+      <FilterControlsPanel
+        onReset={() => {
+          setProductSearch('');
+          setStateFilter('all');
+          setStorefrontFilter('all');
+          setActiveCategory('all');
+        }}
+        summary={`Showing ${filteredProducts.length} of ${products.length} loaded (${totalProducts || products.length} in catalog)`}
+        gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 mb-2"
+      >
+        <Input
+          value={productSearch}
+          onChange={(e) => setProductSearch(e.target.value)}
+          placeholder="Search by name, id, description, follow-up..."
+        />
+        <FilterSelect
+          value={stateFilter}
+          onChange={(e) => setStateFilter(e.target.value)}
+          className="px-3 py-2"
+        >
+          <option value="all">All states</option>
+          {stateFilterOptions.map((st) => (
+            <option key={st} value={st}>
+              {getStateLabel(st)}
+            </option>
+          ))}
+        </FilterSelect>
+        <FilterSelect
+          value={storefrontFilter}
+          onChange={(e) => setStorefrontFilter(e.target.value as 'all' | 'listed' | 'not_listed')}
+          className="px-3 py-2"
+        >
+          <option value="all">Storefront: all</option>
+          <option value="listed">Storefront: listed</option>
+          <option value="not_listed">Storefront: not listed</option>
+        </FilterSelect>
+      </FilterControlsPanel>
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="w-8 h-8 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-gray-500">Loading pipeline data...</p>
+        </div>
+      ) : filteredProducts.length === 0 ? (
+        <div className="text-center py-12">
+          <Activity className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+          <p className="text-gray-500">
+            {activeCategory !== 'all'
+              ? `No products in "${CATEGORY_LABELS[activeCategory] || activeCategory}" category.`
+              : 'No active products in the pipeline.'}
+          </p>
+        </div>
+      ) : (
+        <>
+        {filteredProducts.map((product, i) => {
+          const taskCounts = product.task_counts || {};
+          const totalTasks = taskCounts.total || 0;
+          const completedTasks = taskCounts.completed || 0;
+          const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+          const isExpanded = expandedProduct === product.id;
+          const tasks = product.tasks || [];
+          const productTitle = product.spec?.product_name || product.idea || product.id;
+          const catId = bucketPipelineProductForCategoryFilter(product as Record<string, unknown>);
+          
+          return (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <GlassCard>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className={`shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[catId] || 'bg-gray-500/20 text-gray-300 border-gray-500/30'}`}>
+                      {CATEGORY_LABELS[catId] || catId}
+                    </span>
+                    <div className="min-w-0">
+                      <h3 className="text-white font-medium">
+                        {product.spec?.product_name || product.idea || product.id}
+                      </h3>
+                      <p className="text-xs text-gray-500 font-mono mt-0.5">{product.id}</p>
+                      {(product.spec?.description || (product.idea && product.idea !== productTitle)) && (
+                        <p className="text-sm text-gray-400 mt-1.5 leading-relaxed">
+                          {product.spec?.description || product.idea}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Badge variant={product.production_mode ? 'warning' : 'info'}>
+                      {product.production_mode ? 'production' : 'prototype'}
+                    </Badge>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => loadSpec(product.id)}
+                    >
+                      <FileText className="w-3.5 h-3.5 mr-1" />
+                      Spec
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => loadDeveloperHandoff(product.id)}
+                      title="What the Developer agent receives (spec handoff quality)"
+                    >
+                      <ClipboardList className="w-3.5 h-3.5 mr-1" />
+                      Dev handoff
+                    </Button>
+                    {String(product.state || '').toUpperCase() === 'FAILED' ? (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedFailureProduct(
+                            expandedFailureProduct === product.id ? null : product.id,
+                          )
+                        }
+                        className="rounded focus:outline-none focus:ring-2 focus:ring-red-400/40"
+                        title="Show failure reason"
+                      >
+                        <Badge variant="error">{getStateLabel(product.state)}</Badge>
+                      </button>
+                    ) : (
+                      <Badge
+                        variant={
+                          product.state === 'COMPLETED' || product.state === 'completed'
+                            ? 'success'
+                            : String(product.state || '').toUpperCase() === 'HUMAN_REVIEW_PENDING'
+                              ? 'warning'
+                              : 'info'
+                        }
+                      >
+                        {getStateLabel(product.state)}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+
+                {String(product.state || '').toUpperCase() === 'FAILED' &&
+                  expandedFailureProduct === product.id && (
+                    <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 p-3">
+                      <p className="text-xs uppercase tracking-wide text-red-300 mb-2">
+                        Failure reason
+                      </p>
+                      {getFailureSummary(product).map((line, idx) => (
+                        <p key={`${product.id}-fail-${idx}`} className="text-sm text-red-100 mb-1 last:mb-0">
+                          - {line}
+                        </p>
+                      ))}
+                      {typeof product.quality_repair_round === 'number' && (
+                        <p className="text-xs text-red-200/80 mt-2">
+                          repair round: {product.quality_repair_round}
+                        </p>
+                      )}
+                      {(() => {
+                        const latestFailedTask = getLatestFailedTask(tasks);
+                        if (!latestFailedTask) return null;
+                        return (
+                          <div className="mt-3">
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              onClick={() =>
+                                openTaskDetailModal(
+                                  product.id,
+                                  productTitle,
+                                  String(latestFailedTask.agent_type || 'unknown'),
+                                  latestFailedTask,
+                                )
+                              }
+                            >
+                              Details
+                            </Button>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  )}
+
+                {String(product.state || '').toUpperCase() === 'HUMAN_REVIEW_PENDING' && (
+                  <HumanReviewGatePanel product={product} onPatch={mergeProductPatch} />
+                )}
+
+                {(String(product.state || '').toUpperCase() === 'COMPLETED' ||
+                  String(product.state || '').toUpperCase() === 'DEPLOYED_PRODUCTION') && (
+                  <StorefrontFollowupPanel product={product} onPatch={mergeProductPatch} />
+                )}
+
+                {/* Pipeline Stage Flow Bar — always show full stage row (incl. Designer) even before tasks land in queue */}
+                <div className="mb-4 overflow-x-auto">
+                  <p className="text-[10px] text-gray-500 mb-2">
+                    Click an agent tile, a green link between tiles, or a task circle below for full task details.
+                  </p>
+                  <div className="flex items-center min-w-max gap-0">
+                    {(PIPELINE_STAGE_ORDER as readonly string[]).map((agentType, ai, arr) => {
+                        const task = findTaskForStage(tasks, agentType);
+                        const status = task?.status || 'pending';
+                        const stageColors: Record<string, string> = {
+                          completed: 'bg-emerald-500 border-emerald-400 text-emerald-900',
+                          running: 'bg-amber-500 border-amber-400 text-amber-900 animate-pulse',
+                          failed: 'bg-red-500 border-red-400 text-red-900',
+                          pending: 'bg-white/5 border-white/10 text-gray-500',
+                        };
+                        const stageIcons: Record<string, string> = {
+                          analyst: '🔍', pm: '📋', methodologist: '🧭',
+                          architect: '🏗️', designer: '🎨', developer: '💻', qa: '🧪',
+                          security: '🛡️', devops: '🚀', marketing: '📢',
+                          sales: '💰',
+                        };
+                        const productTitle =
+                          product.spec?.product_name || product.idea || product.id;
+                        return (
+                          <React.Fragment key={agentType}>
+                            <div className="flex flex-col items-center gap-1 shrink-0 min-w-[2.5rem]">
+                              <button
+                                type="button"
+                                title={
+                                  agentType === 'designer'
+                                    ? 'Designer (UX): status follows Architect — opens Architect task details'
+                                    : agentType === 'methodologist'
+                                      ? 'Methodologist: domain methodology snapshot after marketing; backlog for Architect'
+                                      : 'Task details for this agent stage'
+                                }
+                                onClick={() =>
+                                  openTaskDetailModal(product.id, productTitle, agentType, task ? { ...task } : null)
+                                }
+                                className="flex flex-col items-center gap-1 rounded-xl p-0.5 -m-0.5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 transition-colors cursor-pointer group"
+                              >
+                                <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs border-2 transition-all group-hover:scale-105 ${stageColors[status] || 'bg-white/5 border-white/10 text-gray-500'}`}>
+                                  {stageIcons[agentType] || '⚙️'}
+                                </div>
+                                <span className={`text-[10px] font-medium ${
+                                  status === 'completed' ? 'text-emerald-400' :
+                                  status === 'running' ? 'text-amber-400' :
+                                  status === 'failed' ? 'text-red-400' : 'text-gray-600'
+                                }`}>
+                                  {agentType === 'analyst'
+                                    ? 'Anl'
+                                    : agentType === 'marketing'
+                                      ? 'Mkt'
+                                      : agentType === 'designer'
+                                        ? 'UX'
+                                        : agentType === 'methodologist'
+                                          ? 'Mth'
+                                          : agentType.charAt(0).toUpperCase() + agentType.slice(1, 3)}
+                                </span>
+                              </button>
+                            </div>
+                            {ai < arr.length - 1 && (
+                              <div className={`h-0.5 w-6 mx-1 rounded-full mt-[-18px] ${
+                                status === 'completed' ? 'bg-emerald-500/50' :
+                                status === 'running' ? 'bg-amber-500/30' :
+                                'bg-white/5'
+                              }`} />
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+                  </div>
+                </div>
+
+                {/* Progress bar */}
+                {totalTasks > 0 && (
+                  <div className="mb-3">
+                    <div className="flex justify-between text-xs text-gray-500 mb-1">
+                      <span>Progress</span>
+                      <span>{completedTasks}/{totalTasks} tasks ({progress}%)</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progress}%` }}
+                        transition={{ duration: 0.5 }}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <div className="flex items-center gap-4">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {formatRelativeTime(product.created_at)}
+                    </span>
+                    <span>{totalTasks} tasks ({completedTasks} done)</span>
+                    {taskCounts.running > 0 && (
+                      <span className="text-amber-400">{taskCounts.running} running...</span>
+                    )}
+                    {taskCounts.failed > 0 && (
+                      <span className="text-red-400">{taskCounts.failed} failed</span>
+                    )}
+                  </div>
+                  {tasks.length > 0 && (
+                    <button
+                      onClick={() => setExpandedProduct(isExpanded ? null : product.id)}
+                      className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 transition-colors"
+                    >
+                      {isExpanded ? 'Hide Tasks' : 'Show Tasks'}
+                      <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+                    </button>
+                  )}
+                </div>
+
+                {/* Expandable Task Timeline */}
+                {isExpanded && tasks.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mt-4 border-t border-white/5 pt-4"
+                  >
+                    <div className="space-y-0">
+                      {tasks.map((task: any, ti: number) => {
+                        const taskStatus = task.status || 'pending';
+                        const statusColors: Record<string, string> = {
+                          completed: 'border-emerald-500 bg-emerald-500/20',
+                          running: 'border-amber-500 bg-amber-500/20',
+                          failed: 'border-red-500 bg-red-500/20',
+                          pending: 'border-gray-600 bg-gray-600/20',
+                        };
+                        const dotColors: Record<string, string> = {
+                          completed: 'bg-emerald-500 shadow-emerald-500/50',
+                          running: 'bg-amber-500 animate-pulse shadow-amber-500/50',
+                          failed: 'bg-red-500 shadow-red-500/50',
+                          pending: 'bg-gray-600',
+                        };
+                        
+                        return (
+                          <div key={task.id || ti} className="flex gap-3 relative pb-4 last:pb-0">
+                            {/* Timeline connector line */}
+                            {ti < tasks.length - 1 && (
+                              <div className="absolute left-[15px] top-[30px] bottom-0 w-px bg-white/5" />
+                            )}
+                            
+                            {/* Status dot — click opens same detail modal as the stage bar */}
+                            <div className="flex-shrink-0 mt-1.5">
+                              <button
+                                type="button"
+                                title="Open full task details"
+                                onClick={() =>
+                                  openTaskDetailModal(
+                                    product.id,
+                                    product.spec?.product_name || product.idea || product.id,
+                                    String(task.agent_type || ''),
+                                    task as Record<string, unknown>
+                                  )
+                                }
+                                className={`w-[30px] h-[30px] rounded-full flex items-center justify-center border transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${statusColors[taskStatus] || 'border-gray-600 bg-gray-600/20'}`}
+                              >
+                                <span className="text-xs">{getAgentIcon(task.agent_type)}</span>
+                              </button>
+                            </div>
+
+                            {/* Task details */}
+                            <div className="flex-1 min-w-0 pt-0.5">
+                              <div className="flex items-center justify-between mb-0.5">
+                                <span className="text-sm font-medium text-white capitalize">
+                                  {task.agent_type?.replace(/_/g, ' ') || 'Unknown'}
+                                </span>
+                                <div className="flex items-center gap-2">
+                                  <span className={`text-[10px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded ${
+                                    taskStatus === 'completed' ? 'text-emerald-400 bg-emerald-500/10' :
+                                    taskStatus === 'running' ? 'text-amber-400 bg-amber-500/10' :
+                                    taskStatus === 'failed' ? 'text-red-400 bg-red-500/10' :
+                                    'text-gray-500 bg-gray-500/10'
+                                  }`}>
+                                    {taskStatus}
+                                  </span>
+                                </div>
+                              </div>
+                              
+                              <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-500">
+                                {task.started_at && (
+                                  <span>Started: {new Date(task.started_at * 1000).toLocaleTimeString()}</span>
+                                )}
+                                {task.completed_at && (
+                                  <span>Completed: {new Date(task.completed_at * 1000).toLocaleTimeString()}</span>
+                                )}
+                                {task.started_at && task.completed_at && (
+                                  <span>Duration: {formatDuration(task.started_at, task.completed_at)}</span>
+                                )}
+                                {task.metrics?.llm_time_ms && (
+                                  <span>LLM: {(task.metrics.llm_time_ms / 1000).toFixed(1)}s</span>
+                                )}
+                              </div>
+
+                              {/* Error message for failed tasks */}
+                              {task.error && (
+                                <div className="mt-1 text-[11px] text-red-400 bg-red-500/5 rounded px-2 py-1 border border-red-500/10">
+                                  {task.error}
+                                </div>
+                              )}
+
+                              {/* State info */}
+                              {task.state && (
+                                <div className="mt-0.5 text-[10px] text-gray-600 font-mono">
+                                  State: {task.state}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </GlassCard>
+            </motion.div>
+          );
+        })}
+        {loadingMore && (
+          <div className="py-6 flex items-center justify-center">
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              Loading more products...
+            </div>
+          </div>
+        )}
+        {!loadingMore && products.length > 0 && products.length >= totalProducts && (
+          <p className="text-center text-xs text-gray-600 py-2">
+            End of list ({totalProducts || products.length} products)
+          </p>
+        )}
+        </>
+      )}
+
+      {/* Spec Viewer Modal */}
+      <Modal
+        isOpen={specModalProduct !== null}
+        onClose={() => { setSpecModalProduct(null); setSpecData(null); }}
+        title="Product Specification"
+        size="xl"
+      >
+        {specLoading ? (
+          <div className="text-center py-12">
+            <div className="w-8 h-8 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mx-auto mb-3" />
+            <p className="text-gray-500">Loading specification...</p>
+          </div>
+        ) : specData ? (
+          <div className="space-y-6 max-h-[70vh] overflow-y-auto">
+            {specData.product_name && (
+              <div>
+                <h3 className="text-sm text-gray-500 mb-1">Product Name</h3>
+                <p className="text-white font-medium text-lg">{specData.product_name}</p>
+              </div>
+            )}
+            {specData.description && (
+              <div>
+                <h3 className="text-sm text-gray-500 mb-1">Description</h3>
+                <p className="text-gray-300 text-sm whitespace-pre-wrap">{specData.description}</p>
+              </div>
+            )}
+            {specData.core_features && specData.core_features.length > 0 && (
+              <div>
+                <h3 className="text-sm text-gray-500 mb-2">Core Features</h3>
+                <ul className="space-y-1.5">
+                  {specData.core_features.map((feature: string, fi: number) => (
+                    <li key={fi} className="flex items-start gap-2 text-sm text-gray-300">
+                      <span className="text-indigo-400 mt-0.5">•</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {specData.user_stories && specData.user_stories.length > 0 && (
+              <div>
+                <h3 className="text-sm text-gray-500 mb-2">User Stories</h3>
+                <ul className="space-y-1.5">
+                  {specData.user_stories.map((story: string, si: number) => (
+                    <li key={si} className="flex items-start gap-2 text-sm text-gray-300">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      {story}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {specData.technical_risks && specData.technical_risks.length > 0 && (
+              <div>
+                <h3 className="text-sm text-gray-500 mb-2">Technical Risks</h3>
+                <ul className="space-y-1.5">
+                  {specData.technical_risks.map((risk: string, ri: number) => (
+                    <li key={ri} className="flex items-start gap-2 text-sm text-amber-300">
+                      <span className="text-amber-400 mt-0.5">⚠</span>
+                      {risk}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {!specData.product_name && !specData.description && !specData.core_features && (
+              <pre className="text-xs text-gray-400 whitespace-pre-wrap font-mono bg-black/30 p-4 rounded-lg max-h-[50vh] overflow-y-auto">
+                {JSON.stringify(specData, null, 2)}
+              </pre>
+            )}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <FileText className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+            <p className="text-gray-500">No specification found for this product.</p>
+          </div>
+        )}
+      </Modal>
+
+      <Modal
+        isOpen={handoffModalProduct !== null}
+        onClose={() => {
+          setHandoffModalProduct(null);
+          setHandoffData(null);
+        }}
+        title="Developer handoff (inputs to code agent)"
+        size="xl"
+      >
+        {handoffLoading ? (
+          <div className="text-center py-12">
+            <div className="w-8 h-8 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mx-auto mb-3" />
+            <p className="text-gray-500">Loading developer inputs...</p>
+          </div>
+        ) : handoffData ? (
+          <div className="space-y-4 max-h-[72vh] overflow-y-auto pr-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs text-gray-500">Product</span>
+              <code className="text-[11px] text-cyan-300 bg-black/30 px-2 py-0.5 rounded">{handoffData.product_id}</code>
+              <Badge
+                variant={
+                  handoffData.material_summary.quality_band === 'weak'
+                    ? 'error'
+                    : handoffData.material_summary.quality_band === 'thin'
+                      ? 'warning'
+                      : 'success'
+                }
+              >
+                Material: {handoffData.material_summary.quality_band}
+              </Badge>
+              <span className="text-xs text-gray-500">
+                delivery_mode={handoffData.delivery_mode}
+                {handoffData.delivery_profile ? ` · profile=${handoffData.delivery_profile}` : ''}
+              </span>
+            </div>
+            {handoffData.material_summary.warnings.length > 0 && (
+              <div className="rounded-lg border border-amber-500/25 bg-amber-500/10 p-3 space-y-1.5">
+                <p className="text-xs font-medium text-amber-200">Warnings</p>
+                <ul className="list-disc list-inside text-xs text-amber-100/90 space-y-1">
+                  {handoffData.material_summary.warnings.map((w, wi) => (
+                    <li key={wi}>{w}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="flex flex-wrap gap-2 text-[11px] text-gray-400">
+              {Object.entries(handoffData.material_summary.stats || {}).map(([k, v]) => (
+                <span key={k} className="rounded-md bg-white/5 border border-white/10 px-2 py-0.5 font-mono">
+                  {k}: {v}
+                </span>
+              ))}
+            </div>
+            <details className="rounded-lg border border-white/10 bg-black/20 open:bg-black/30">
+              <summary className="cursor-pointer text-sm text-indigo-300 px-3 py-2">Admin instructions</summary>
+              <pre className="text-xs text-gray-300 whitespace-pre-wrap font-sans px-3 pb-3 max-h-48 overflow-y-auto">
+                {handoffData.admin_instructions?.trim() || '(empty)'}
+              </pre>
+            </details>
+            <details className="rounded-lg border border-white/10 bg-black/20 open:bg-black/30">
+              <summary className="cursor-pointer text-sm text-indigo-300 px-3 py-2">
+                Analyst → developer brief (developer_investigation_brief)
+              </summary>
+              <pre className="text-xs text-gray-300 whitespace-pre-wrap font-sans px-3 pb-3 max-h-56 overflow-y-auto">
+                {handoffData.analyst_brief_for_developer?.trim() ||
+                  '(empty — for web_app this block is omitted from the developer prompt)'}
+              </pre>
+            </details>
+            <details className="rounded-lg border border-white/10 bg-black/20 open:bg-black/30">
+              <summary className="cursor-pointer text-sm text-indigo-300 px-3 py-2">Specification (JSON)</summary>
+              <pre className="text-[11px] text-gray-400 font-mono px-3 pb-3 max-h-64 overflow-y-auto whitespace-pre-wrap">
+                {safeJson(handoffData.specification)}
+              </pre>
+            </details>
+            <details className="rounded-lg border border-white/10 bg-black/20 open:bg-black/30">
+              <summary className="cursor-pointer text-sm text-indigo-300 px-3 py-2">Architecture (JSON)</summary>
+              <pre className="text-[11px] text-gray-400 font-mono px-3 pb-3 max-h-64 overflow-y-auto whitespace-pre-wrap">
+                {safeJson(handoffData.architecture)}
+              </pre>
+            </details>
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <ClipboardList className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+            <p className="text-gray-500">Could not load developer handoff for this product.</p>
+          </div>
+        )}
+      </Modal>
+
+      <Modal
+        isOpen={taskStageModal !== null}
+        onClose={() => setTaskStageModal(null)}
+        title={
+          taskStageModal
+            ? `${STAGE_AGENT_TITLE[taskStageModal.agentType] || taskStageModal.agentType} — pipeline task`
+            : ''
+        }
+        size="xl"
+        className="max-w-2xl max-h-[90vh] flex flex-col"
+      >
+        {taskStageModal && (
+          <div className="space-y-4 max-h-[75vh] overflow-y-auto pr-1 text-sm">
+            <div className="rounded-xl bg-white/5 border border-white/10 p-3">
+              <p className="text-xs text-gray-500 mb-0.5">Product</p>
+              <p className="text-white font-medium">{taskStageModal.productName}</p>
+              <p className="text-[11px] text-gray-500 font-mono mt-1">{taskStageModal.productId}</p>
+            </div>
+
+            {taskStageModal.agentType === 'designer' && taskStageModal.task && (
+              <p className="text-xs text-fuchsia-200/95 bg-fuchsia-500/10 border border-fuchsia-500/25 rounded-lg px-3 py-2 leading-relaxed">
+                <strong className="text-fuchsia-100">Designer</strong> is a pipeline visualization: UX direction is
+                authored with the <strong className="text-fuchsia-100">Architect</strong> output (
+                <code className="text-cyan-300/90">ui_experience</code>
+                ). The task record below is the <strong className="text-fuchsia-100">Architect</strong> task.
+              </p>
+            )}
+
+            {!taskStageModal.task && (
+              <p className="text-gray-400 text-sm leading-relaxed">
+                No queued task for this stage yet: the pipeline has not reached it, the task was not created, or data
+                is still loading. Expand <span className="text-indigo-300">Show Tasks</span> on the product card below for the full task list.
+              </p>
+            )}
+
+            {taskStageModal.task && (() => {
+              const t = taskStageModal.task;
+              const st = (t.status as string) || 'unknown';
+              const sc = toUnixSeconds(t.started_at);
+              const ec = toUnixSeconds(t.completed_at);
+              const cc = toUnixSeconds(t.created_at);
+              const durMain =
+                sc !== undefined && ec !== undefined ? formatDuration(sc, ec) : '';
+              const durQueue =
+                cc !== undefined && sc !== undefined ? formatDuration(cc, sc) : '';
+              const out = t.output_data as Record<string, unknown> | undefined;
+              const inp = t.input_data as Record<string, unknown> | undefined;
+              const criticFeedback =
+                (inp && typeof inp.critic_feedback === 'object' && inp.critic_feedback !== null
+                  ? (inp.critic_feedback as Record<string, unknown>)
+                  : undefined) ||
+                (out && typeof out.critic_feedback === 'object' && out.critic_feedback !== null
+                  ? (out.critic_feedback as Record<string, unknown>)
+                  : undefined);
+              const metrics =
+                (t.metrics as Record<string, unknown> | undefined) ||
+                (out && typeof out.metrics === 'object' && out.metrics !== null
+                  ? (out.metrics as Record<string, unknown>)
+                  : undefined);
+
+              return (
+                <>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs text-gray-500">Task ID</span>
+                    <code className="text-[11px] text-cyan-300 bg-black/30 px-2 py-0.5 rounded">{String(t.id ?? '—')}</code>
+                    <span
+                      className={`text-[10px] uppercase tracking-wide px-2 py-0.5 rounded font-medium ${
+                        st === 'completed'
+                          ? 'bg-emerald-500/15 text-emerald-300'
+                          : st === 'running'
+                            ? 'bg-amber-500/15 text-amber-300'
+                            : st === 'failed'
+                              ? 'bg-red-500/15 text-red-400'
+                              : 'bg-white/10 text-gray-400'
+                      }`}
+                    >
+                      {st}
+                    </span>
+                  </div>
+
+                  {t.state != null && (
+                    <p className="text-xs text-gray-500">
+                      Target pipeline state:{' '}
+                      <span className="text-gray-300 font-mono">{String(t.state)}</span>
+                    </p>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div className="rounded-lg bg-black/20 border border-white/10 p-2.5">
+                      <p className="text-gray-500 mb-1">Created</p>
+                      <p className="text-gray-200">{formatTaskWhen(t.created_at)}</p>
+                    </div>
+                    <div className="rounded-lg bg-black/20 border border-white/10 p-2.5">
+                      <p className="text-gray-500 mb-1">Started</p>
+                      <p className="text-gray-200">{formatTaskWhen(t.started_at)}</p>
+                    </div>
+                    <div className="rounded-lg bg-black/20 border border-white/10 p-2.5">
+                      <p className="text-gray-500 mb-1">Completed</p>
+                      <p className="text-gray-200">{formatTaskWhen(t.completed_at)}</p>
+                    </div>
+                    <div className="rounded-lg bg-black/20 border border-white/10 p-2.5">
+                      <p className="text-gray-500 mb-1">Durations</p>
+                      <p className="text-gray-200">
+                        {durMain ? (
+                          <span>
+                            Work: <strong className="text-white">{durMain}</strong>
+                          </span>
+                        ) : (
+                          <span className="text-gray-500">Work: —</span>
+                        )}
+                        {durQueue ? (
+                          <span className="block mt-0.5">
+                            In queue: <strong className="text-gray-300">{durQueue}</strong>
+                          </span>
+                        ) : null}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-400">
+                    {t.timeout_sec != null && (
+                      <span>
+                        Timeout: <span className="text-gray-200">{String(t.timeout_sec)}s</span>
+                      </span>
+                    )}
+                    {t.priority != null && (
+                      <span>
+                        Priority: <span className="text-gray-200">{String(t.priority)}</span>
+                      </span>
+                    )}
+                    {(t.retry_count != null || t.max_retries != null) && (
+                      <span>
+                        Retries:{' '}
+                        <span className="text-gray-200">
+                          {String(t.retry_count ?? 0)} / {String(t.max_retries ?? '—')}
+                        </span>
+                      </span>
+                    )}
+                  </div>
+
+                  {metrics && Object.keys(metrics).length > 0 && (
+                    <details open className="rounded-lg border border-indigo-500/20 bg-indigo-500/5">
+                      <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-indigo-200">
+                        Metrics
+                      </summary>
+                      <pre className="text-[11px] text-gray-400 font-mono px-3 pb-3 overflow-x-auto">
+                        {safeJson(metrics, 32_000)}
+                      </pre>
+                    </details>
+                  )}
+
+                  {criticFeedback && (
+                    <details open className="rounded-lg border border-amber-500/30 bg-amber-500/10">
+                      <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-amber-200">
+                        Critic findings
+                      </summary>
+                      <pre className="text-[11px] text-amber-100/90 font-mono px-3 pb-3 overflow-x-auto whitespace-pre-wrap">
+                        {safeJson(criticFeedback, 24_000)}
+                      </pre>
+                    </details>
+                  )}
+
+                  {t.error != null && String(t.error).trim() !== '' && (
+                    <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300 whitespace-pre-wrap">
+                      {String(t.error)}
+                    </div>
+                  )}
+
+                  {inp && Object.keys(inp).length > 0 && (
+                    <details className="rounded-lg border border-white/10 bg-black/20">
+                      <summary className="cursor-pointer px-3 py-2 text-xs text-gray-400">
+                        input_data
+                      </summary>
+                      <pre className="text-[11px] text-gray-500 font-mono px-3 pb-3 max-h-48 overflow-auto">
+                        {safeJson(inp)}
+                      </pre>
+                    </details>
+                  )}
+
+                  {out && Object.keys(out).length > 0 && (
+                    <details className="rounded-lg border border-white/10 bg-black/20">
+                      <summary className="cursor-pointer px-3 py-2 text-xs text-gray-400">
+                        output_data
+                      </summary>
+                      <pre className="text-[11px] text-gray-500 font-mono px-3 pb-3 max-h-64 overflow-auto">
+                        {safeJson(out)}
+                      </pre>
+                    </details>
+                  )}
+                </>
+              );
+            })()}
+          </div>
+        )}
+      </Modal>
+    </div>
+  );
+}
