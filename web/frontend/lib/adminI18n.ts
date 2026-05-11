@@ -4,6 +4,12 @@ type Dict = Record<string, Record<AdminLocale, string>>;
 
 const DICT: Dict = {
   'app.adminPanel': { en: 'Admin Panel', ru: 'Админ-панель', es: 'Panel de administración' },
+  /** Logo link → marketing home */
+  'app.backToSite': {
+    en: 'Back to site',
+    ru: 'На главную (маркет)',
+    es: 'Volver al sitio',
+  },
   'app.logout': { en: 'Logout', ru: 'Выйти', es: 'Cerrar sesión' },
   'app.language': { en: 'Language', ru: 'Язык', es: 'Idioma' },
   'tab.dashboard': { en: 'Dashboard', ru: 'Дашборд', es: 'Panel' },

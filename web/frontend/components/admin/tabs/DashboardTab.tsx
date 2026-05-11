@@ -159,10 +159,10 @@ export function DashboardTab() {
       color: 'from-cyan-500 to-sky-500',
     },
     {
-      label: 'Failed',
+      label: 'Needs rework',
       value: failed,
       icon: AlertTriangle,
-      color: 'from-red-500 to-pink-500',
+      color: 'from-amber-500 to-orange-500',
     },
   ];
 

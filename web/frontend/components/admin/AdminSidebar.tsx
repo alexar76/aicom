@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import {
   LayoutDashboard,
   Cpu,
@@ -85,10 +86,16 @@ export function Sidebar({
         }`}
       >
         <div className="shrink-0 p-4 flex items-center justify-between border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <Cpu className="w-6 h-6 text-indigo-400" />
-            {!collapsed && <span className="font-semibold text-white">{t(locale, 'app.adminPanel')}</span>}
-          </div>
+          <Link
+            href="/"
+            className="flex min-w-0 items-center gap-3 rounded-lg p-1 -m-1 transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40"
+            title={t(locale, 'app.backToSite')}
+          >
+            <Cpu className="h-6 w-6 shrink-0 text-indigo-400" aria-hidden />
+            {!collapsed && (
+              <span className="font-semibold text-white truncate">{t(locale, 'app.adminPanel')}</span>
+            )}
+          </Link>
           <button
             onClick={onToggle}
             className="p-1 rounded-lg hover:bg-white/10 transition-colors md:hidden"

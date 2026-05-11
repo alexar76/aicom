@@ -546,8 +546,8 @@ export function PipelineTab() {
                 </dd>
               </div>
               <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
-                <dt className="text-gray-500">Failed</dt>
-                <dd className="text-lg font-semibold text-rose-300 tabular-nums">{catalogSummary.failed_products}</dd>
+                <dt className="text-gray-500">Needs rework</dt>
+                <dd className="text-lg font-semibold text-amber-300 tabular-nums">{catalogSummary.failed_products}</dd>
               </div>
             </dl>
           </div>
@@ -892,7 +892,7 @@ export function PipelineTab() {
                       <span className="text-amber-400">{taskCounts.running} running...</span>
                     )}
                     {taskCounts.failed > 0 && (
-                      <span className="text-red-400">{taskCounts.failed} failed</span>
+                      <span className="text-amber-400">{taskCounts.failed} rework</span>
                     )}
                   </div>
                   {tasks.length > 0 && (

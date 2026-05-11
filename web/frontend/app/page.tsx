@@ -1228,7 +1228,7 @@ function Footer({ copy }: { copy: MarketingStrings }) {
     { label: 'Launch Kit', href: '/launch-kit', icon: Rocket },
     { label: 'Embeddable Badge', href: '/badge', icon: Tag },
     { label: 'API Reference', href: '/api/docs', icon: Code2 },
-    { label: 'GitHub', href: 'https://github.com', icon: Github },
+    { label: 'GitHub', href: 'https://github.com/alexar76/aicom', icon: Github },
     { label: 'Admin Panel', href: '/admin', icon: Settings },
   ];
 

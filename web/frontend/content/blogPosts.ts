@@ -1,3 +1,14 @@
+/**
+ * Blog content is **versioned in this repo** (`content/blogPosts.ts`), not in a CMS.
+ *
+ * - **Who writes:** posts are editorial (human-authored copy). The `author` field is a byline for readers.
+ * - **Launch posts:** “product launch” articles use `img` blocks (place assets under `web/frontend/public/blog/`)
+ *   and optional `relatedProducts` / `product_link` to tie to `/product/{id}` — add these after a release when you want
+ *   an overview + screenshot story.
+ * - **Cadence / automation:** there is **no admin toggle yet** for posting frequency or “publish after pipeline COMPLETED”.
+ *   Today you edit this file (or add posts) and redeploy. Auto-generated ship logs are a sensible future pipeline hook.
+ */
+
 export type BlogBodyBlock =
   | { type: 'p'; text: string }
   | { type: 'h2'; text: string }

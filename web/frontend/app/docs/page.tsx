@@ -1425,10 +1425,18 @@ export default function DocsPage() {
             <Cpu className="w-5 h-5 text-indigo-400" />
             <span className="text-sm text-gray-400">AI-Factory v2.1 — Documentation</span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-gray-500">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
             <a href="/" className="hover:text-gray-300 transition-colors">Home</a>
             <a href="/admin" className="hover:text-gray-300 transition-colors">Admin</a>
             <a href="/api/docs" className="hover:text-gray-300 transition-colors">API Docs</a>
+            <a
+              href="https://github.com/alexar76/aicom"
+              className="hover:text-gray-300 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
           </div>
         </div>
       </footer>

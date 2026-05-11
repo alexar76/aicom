@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Cpu, Menu } from 'lucide-react';
 import BrainstormingTab from '@/components/BrainstormingTab';
 import SupportQueueTab from '@/components/SupportQueueTab';
@@ -24,7 +25,7 @@ import {
   SettingsTab,
   UsersTab,
 } from '@/components/admin/AdminTabs';
-import { AdminLocale, detectAdminLocale, saveAdminLocale } from '@/lib/adminI18n';
+import { AdminLocale, detectAdminLocale, saveAdminLocale, t } from '@/lib/adminI18n';
 import api from '@/lib/api';
 
 const ADMIN_TAB_IDS = new Set([
@@ -159,7 +160,14 @@ export default function AdminPage() {
           >
             <Menu className="w-6 h-6 text-gray-400" />
           </button>
-          <Cpu className="w-6 h-6 text-indigo-400" />
+          <Link
+            href="/"
+            className="rounded-lg p-1 transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40"
+            aria-label={t(locale, 'app.backToSite')}
+            title={t(locale, 'app.backToSite')}
+          >
+            <Cpu className="h-6 w-6 text-indigo-400" aria-hidden />
+          </Link>
         </div>
 
         {renderTab()}

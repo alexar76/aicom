@@ -163,6 +163,10 @@ app = FastAPI(
     description="Autonomous AI-Factory v2.1 - Backend API",
     version="2.1.0",
     lifespan=lifespan,
+    # Match Next.js `/api/*` proxy so public Swagger stays at `/api/docs` (same-origin via frontend).
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
 )
 
 # CORS middleware

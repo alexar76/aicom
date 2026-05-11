@@ -363,10 +363,10 @@ export function MonitorTab() {
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-red-400" />
-                  <span className="text-gray-400">Failed</span>
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  <span className="text-gray-400">Needs rework</span>
                 </span>
-                <span className="text-red-400 font-medium">{failedPipeline}</span>
+                <span className="text-amber-400 font-medium">{failedPipeline}</span>
               </div>
             </div>
           </div>
