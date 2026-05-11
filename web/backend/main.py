@@ -30,6 +30,7 @@ from .core.admin_roles import require_admin_with_rbac
 from .core.security import SecurityManager
 from .core.telemetry import TelemetryCollector
 from .api import products, sandbox, payment, feedback, customer, marketing, support_chat, telemetry_events, ai_market
+from .api import pipeline_demo_replay_public
 from .api.admin import auth as admin_auth
 from .api.admin import dashboard as admin_dashboard
 from .api.admin import demo_replay_routes as admin_demo_replay_routes
@@ -231,6 +232,7 @@ async def get_theme():
 
 
 # Include routers
+app.include_router(pipeline_demo_replay_public.router, prefix="/api")
 app.include_router(products.router)
 app.include_router(sandbox.router)
 app.include_router(marketing.router)

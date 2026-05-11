@@ -83,8 +83,6 @@ import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineSta
 import { PIPELINE_PRODUCT_STATES_FOR_FILTER } from '@/lib/pipelineStages';
 import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
-import toast from 'react-hot-toast';
-
 import { CATEGORY_LABELS, CATEGORY_COLORS, STAGE_AGENT_TITLE } from './pipelineConstants';
 import { HumanReviewGatePanel } from './HumanReviewGatePanel';
 import { StorefrontFollowupPanel } from './StorefrontFollowupPanel';
@@ -97,6 +95,36 @@ import {
 type PipelineCatalogSummary = NonNullable<
   Awaited<ReturnType<typeof api.getPipelineProducts>>['catalog_summary']
 >;
+
+/** Per-mode retries (transient 502 / proxy / worker busy). */
+const PIPELINE_CATALOG_ATTEMPTS_LIGHT = 6;
+const PIPELINE_CATALOG_ATTEMPTS_FULL = 5;
+
+function _pipelineCatalogBackoffMs(attempt: number): number {
+  return Math.min(10_000, 400 * 2 ** attempt);
+}
+
+async function fetchPipelineCatalogPageSingleMode(
+  limit: number,
+  offset: number,
+  sort: 'newest' | 'shipped_first',
+  light: boolean,
+): Promise<Awaited<ReturnType<typeof api.getPipelineProducts>>> {
+  const max = light ? PIPELINE_CATALOG_ATTEMPTS_LIGHT : PIPELINE_CATALOG_ATTEMPTS_FULL;
+  let last: unknown;
+  for (let i = 0; i < max; i++) {
+    try {
+      return await api.getPipelineProducts(limit, offset, sort, light);
+    } catch (e) {
+      last = e;
+      if (i < max - 1) {
+        await new Promise((r) => setTimeout(r, _pipelineCatalogBackoffMs(i)));
+      }
+    }
+  }
+  if (last instanceof Error) throw last;
+  throw new Error(String(last));
+}
 
 export function PipelineTab() {
   /** First chunk + background pages (API max 2000/request). Full catalog streams in until total reached. */
@@ -127,16 +155,51 @@ export function PipelineTab() {
     agentType: string;
     task: Record<string, unknown> | null;
   } | null>(null);
+  /** Bump to re-run catalog fetch (Retry) without changing sort. */
+  const [catalogReloadKey, setCatalogReloadKey] = useState(0);
+  const [catalogLoadError, setCatalogLoadError] = useState<string | null>(null);
+  /** Shown when fast light catalog failed once and full hydration was used instead (non-blocking). */
+  const [catalogNotice, setCatalogNotice] = useState<string | null>(null);
+  const pipelineFetchGenerationRef = useRef(0);
+
   useEffect(() => {
+    const myGen = ++pipelineFetchGenerationRef.current;
+    const isStale = () => pipelineFetchGenerationRef.current !== myGen;
     let cancelled = false;
+
     setLoading(true);
     setLoadingMore(false);
+    setCatalogLoadError(null);
+    setCatalogNotice(null);
     setProducts([]);
+
     (async () => {
+      let rowsLoaded = 0;
+      let expectedTotal = 0;
+      let preferLight = true;
+      let fellBackToFullThisSession = false;
+
+      const loadCatalogPage = async (lim: number, off: number) => {
+        if (preferLight) {
+          try {
+            return await fetchPipelineCatalogPageSingleMode(lim, off, pipelineSort, true);
+          } catch {
+            preferLight = false;
+            fellBackToFullThisSession = true;
+            return await fetchPipelineCatalogPageSingleMode(lim, off, pipelineSort, false);
+          }
+        }
+        return await fetchPipelineCatalogPageSingleMode(lim, off, pipelineSort, false);
+      };
+
       try {
-        const first = await api.getPipelineProducts(FIRST_PAGE_SIZE, 0, pipelineSort);
-        if (cancelled) return;
+        const first = await loadCatalogPage(FIRST_PAGE_SIZE, 0);
+        if (cancelled || isStale()) return;
+
         const firstBatch = first.products || [];
+        rowsLoaded = firstBatch.length;
+        expectedTotal = typeof first.total === 'number' ? first.total : firstBatch.length;
+
         setProducts(firstBatch);
         setTotalProducts(first.total || firstBatch.length);
         if (first.catalog_summary) {
@@ -149,26 +212,48 @@ export function PipelineTab() {
         if (offset < knownTotal) {
           setLoadingMore(true);
         }
-        while (!cancelled && offset < knownTotal) {
-          const next = await api.getPipelineProducts(BACKGROUND_PAGE_SIZE, offset, pipelineSort);
-          if (cancelled) return;
+        while (!cancelled && !isStale() && offset < knownTotal) {
+          const next = await loadCatalogPage(BACKGROUND_PAGE_SIZE, offset);
+          if (cancelled || isStale()) return;
           const batch = next.products || [];
           knownTotal = next.total || knownTotal;
+          expectedTotal = knownTotal;
           if (batch.length === 0) break;
+          rowsLoaded += batch.length;
           setProducts((prev) => [...prev, ...batch]);
           setTotalProducts(knownTotal);
           offset += batch.length;
         }
-      } catch {
-        if (!cancelled) setLoading(false);
+
+        if (fellBackToFullThisSession && !cancelled && !isStale()) {
+          setCatalogNotice(
+            'Using full catalog mode for this load (the fast path was unavailable). Storefront counts and row details match the slower admin path.',
+          );
+        }
+      } catch (e: unknown) {
+        if (cancelled || isStale()) return;
+        const msg = e instanceof Error ? e.message : String(e);
+        if (rowsLoaded > 0) {
+          setCatalogLoadError(
+            `Some catalog pages did not load (${rowsLoaded} of ${expectedTotal || rowsLoaded} rows). ${msg}`,
+          );
+        } else {
+          setCatalogLoadError(
+            `${msg} — both the fast catalog path and the full path failed after automatic retries.`,
+          );
+        }
       } finally {
-        if (!cancelled) setLoadingMore(false);
+        if (!cancelled && !isStale()) {
+          setLoading(false);
+          setLoadingMore(false);
+        }
       }
     })();
+
     return () => {
       cancelled = true;
     };
-  }, [pipelineSort]);
+  }, [pipelineSort, catalogReloadKey]);
 
   const loadSpec = async (productId: string) => {
     setSpecModalProduct(productId);
@@ -433,11 +518,12 @@ export function PipelineTab() {
               </h3>
               <p className="text-xs text-gray-400 mt-1 max-w-3xl">
                 The monitor loads the <strong className="text-gray-300">entire catalog</strong> in chunks (see counter
-                above). Default sort is <strong className="text-gray-300">shipped first</strong> so finished builds are
-                not buried under new ideas. Switch to <strong className="text-gray-300">newest first</strong> for a
-                strict time line, or use filters (
+                above), using a <strong className="text-gray-300">light API mode</strong> (no per-row spec/marketing disk
+                scan) so large factories stay responsive. Default sort is <strong className="text-gray-300">shipped first</strong>{' '}
+                so finished builds are not buried under new ideas. Switch to <strong className="text-gray-300">newest first</strong>{' '}
+                for a strict time line, or use filters (
                 <strong className="text-gray-300">State</strong>, <strong className="text-gray-300">Storefront</strong>
-                ).
+                ). Public storefront totals use the <strong className="text-gray-300">Dashboard</strong> tab.
               </p>
             </div>
             <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs shrink-0 min-w-[min(100%,28rem)]">
@@ -450,9 +536,13 @@ export function PipelineTab() {
                 <dd className="text-lg font-semibold text-emerald-300 tabular-nums">{catalogSummary.shipped_products}</dd>
               </div>
               <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
-                <dt className="text-gray-500">Public storefront</dt>
+                <dt className="text-gray-500" title="Skipped in light catalog mode — see Dashboard for the full count.">
+                  Public storefront
+                </dt>
                 <dd className="text-lg font-semibold text-cyan-300 tabular-nums">
-                  {catalogSummary.storefront_listable_products}
+                  {typeof catalogSummary.storefront_listable_products === 'number'
+                    ? catalogSummary.storefront_listable_products
+                    : '—'}
                 </dd>
               </div>
               <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
@@ -460,6 +550,50 @@ export function PipelineTab() {
                 <dd className="text-lg font-semibold text-rose-300 tabular-nums">{catalogSummary.failed_products}</dd>
               </div>
             </dl>
+          </div>
+        </GlassCard>
+      )}
+
+      {catalogNotice && !loading && (
+        <GlassCard className="p-3 mb-2 border border-sky-500/20 bg-sky-950/20">
+          <div className="flex items-start justify-between gap-3 text-sm text-sky-100/90">
+            <p className="min-w-0 leading-relaxed">{catalogNotice}</p>
+            <button
+              type="button"
+              className="shrink-0 rounded-md p-1 text-sky-200/80 hover:bg-white/10 hover:text-white"
+              aria-label="Dismiss notice"
+              onClick={() => setCatalogNotice(null)}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </GlassCard>
+      )}
+
+      {catalogLoadError && !loading && (
+        <GlassCard className="p-4 border border-white/10 bg-white/[0.04] mb-2">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+            <div className="flex gap-3 text-sm min-w-0">
+              <AlertTriangle className="w-5 h-5 shrink-0 text-amber-400/90 mt-0.5" />
+              <div className="min-w-0">
+                <p className="font-medium text-white">Catalog did not finish loading</p>
+                <p className="text-xs text-gray-400 mt-1 break-words">
+                  The UI already retried automatically (fast path, then full). If this persists, use Retry — it is
+                  usually a temporary API or proxy issue, not an empty pipeline.
+                </p>
+                <p className="text-xs text-gray-500 mt-2 font-mono break-all">{catalogLoadError}</p>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="shrink-0 self-start"
+              onClick={() => setCatalogReloadKey((k) => k + 1)}
+            >
+              <RefreshCw className="w-4 h-4 mr-1.5 inline" aria-hidden />
+              Retry catalog
+            </Button>
           </div>
         </GlassCard>
       )}
@@ -510,9 +644,13 @@ export function PipelineTab() {
         <div className="text-center py-12">
           <Activity className="w-12 h-12 text-gray-600 mx-auto mb-3" />
           <p className="text-gray-500">
-            {activeCategory !== 'all'
-              ? `No products in "${CATEGORY_LABELS[activeCategory] || activeCategory}" category.`
-              : 'No active products in the pipeline.'}
+            {catalogLoadError && products.length === 0
+              ? 'Nothing loaded yet — tap “Retry catalog” above, or open the tab again in a few seconds.'
+              : activeCategory !== 'all'
+                ? `No products in "${CATEGORY_LABELS[activeCategory] || activeCategory}" category.`
+                : stateFilter !== 'all' || storefrontFilter !== 'all' || productSearch.trim()
+                  ? 'No products match the current filters or search.'
+                  : 'No products in the pipeline catalog yet.'}
           </p>
         </div>
       ) : (

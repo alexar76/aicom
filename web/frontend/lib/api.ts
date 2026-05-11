@@ -430,11 +430,17 @@ class ApiClient {
       headers['Authorization'] = `Bearer ${customerToken}`;
     }
 
-    const response = await fetch(`${this.baseUrl}${endpoint}`, {
-      ...options,
-      headers,
-      credentials: 'include',
-    });
+    let response: Response;
+    try {
+      response = await fetch(`${this.baseUrl}${endpoint}`, {
+        ...options,
+        headers,
+        credentials: 'include',
+      });
+    } catch (e: unknown) {
+      const m = e instanceof Error ? e.message : String(e);
+      throw new Error(m || 'Network error: could not reach the API');
+    }
 
     if (!response.ok) {
       // 401: redirect to admin login only for admin API — never on public /support or storefront
@@ -453,8 +459,24 @@ class ApiClient {
           localStorage.removeItem('customer_email');
         }
       }
-      const error = await response.json().catch(() => ({ detail: response.statusText }));
-      throw new Error(error.detail || `HTTP ${response.status}`);
+      const error = (await response.json().catch(() => ({}))) as { detail?: unknown };
+      let detail = error.detail;
+      if (Array.isArray(detail)) {
+        detail = detail
+          .map((d: unknown) =>
+            typeof d === 'object' && d !== null && 'msg' in d
+              ? String((d as { msg?: string }).msg)
+              : JSON.stringify(d),
+          )
+          .join('; ');
+      } else if (detail !== null && detail !== undefined && typeof detail !== 'string') {
+        detail = JSON.stringify(detail);
+      }
+      const msg =
+        typeof detail === 'string' && detail.trim()
+          ? detail.trim()
+          : `HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}`.trim();
+      throw new Error(msg);
     }
 
     return response.json();
@@ -879,7 +901,9 @@ class ApiClient {
   async getPipelineProducts(
     limit: number = 60,
     offset: number = 0,
-    sort: 'newest' | 'shipped_first' = 'newest'
+    sort: 'newest' | 'shipped_first' = 'newest',
+    /** Fast path: skip heavy per-row disk hydration (Pipeline Monitor). */
+    light: boolean = false
   ): Promise<{
     products: any[];
     count: number;
@@ -890,7 +914,8 @@ class ApiClient {
       total_products: number;
       shipped_products: number;
       failed_products: number;
-      storefront_listable_products: number;
+      storefront_listable_products: number | null;
+      light?: boolean;
       sort: string;
       sort_note?: string;
     };
@@ -900,6 +925,9 @@ class ApiClient {
       offset: String(offset),
       sort,
     });
+    if (light) {
+      q.set('light', '1');
+    }
     return this.request(`/admin/pipeline/products?${q.toString()}`);
   }
 

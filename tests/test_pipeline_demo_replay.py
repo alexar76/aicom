@@ -57,7 +57,44 @@ def test_upload_source_play_url(dr_root):
     save_config(cfg)
 
     m = metrics_demo_replay_slice()
-    assert m["play_url"] == "/api/admin/demo-replay/media/demo_123.webm"
+    assert m["play_url"] == "/api/public/pipeline-demo-replay"
+
+
+def test_public_demo_replay_no_auth(tmp_path, monkeypatch):
+    """Uploaded clip must stream without Bearer — HTML5 video cannot send it."""
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path))
+    from fastapi.testclient import TestClient
+
+    from web.backend.main import app
+
+    ud = tmp_path / "public" / "pipeline_demo_replay"
+    ud.mkdir(parents=True, exist_ok=True)
+    (ud / "demo_ci.webm").write_bytes(b"WEBM-TEST-BYTES")
+
+    cfg_path = tmp_path / "config" / "pipeline_demo_replay.json"
+    cfg_path.parent.mkdir(parents=True, exist_ok=True)
+    cfg_path.write_text(
+        json.dumps(
+            {
+                "enabled": True,
+                "title": "CI",
+                "source": "upload",
+                "media_filename": "demo_ci.webm",
+                "video_url": None,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with TestClient(app) as c:
+        r = c.get("/api/public/pipeline-demo-replay")
+        assert r.status_code == 200
+        assert "video/" in (r.headers.get("content-type") or "")
+        assert r.content == b"WEBM-TEST-BYTES"
+
+        cfg_path.write_text(json.dumps({"enabled": False}), encoding="utf-8")
+        r2 = c.get("/api/public/pipeline-demo-replay")
+        assert r2.status_code == 404
 
 
 def test_dashboard_includes_demo_replay(dr_root):

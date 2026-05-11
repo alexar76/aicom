@@ -83,8 +83,8 @@ BFS cannot exhaust arbitrary SPAs; add **`e2e-scenarios.json`** in the product c
 Admins can attach a **screen recording** of the landing/pipeline flow for operators:
 
 - **UI:** Admin → **Live Monitor** → **Demo replay**, or **Settings** → **Demo replay** (same controls: toggle, title, external URL, or upload `.webm` / `.mp4` / `.mov`).
-- **API:** `GET/PATCH /api/admin/demo-replay`, `POST /api/admin/demo-replay/upload`, streamed uploads at `GET /api/admin/demo-replay/media/<file>` (admin auth).
-- **Metrics:** Dashboard + SSE include **`demo_replay`** `{ enabled, title, play_url }` so other clients can mirror the clip.
+- **API:** `GET/PATCH /api/admin/demo-replay`, `POST /api/admin/demo-replay/upload`, and `GET /api/admin/demo-replay/media/<file>` (admin auth, for downloads). **Playback** uses `GET /api/public/pipeline-demo-replay` (no auth) because HTML5 `<video>` cannot send `Authorization: Bearer` — only the currently published upload is served.
+- **Metrics:** Dashboard + SSE include **`demo_replay`** `{ enabled, title, play_url }` so other clients can mirror the clip (`play_url` points at the public stream for uploads, or the external URL).
 - **Disk:** `{DATA_ROOT}/config/pipeline_demo_replay.json` and `{DATA_ROOT}/public/pipeline_demo_replay/`. Upload limit **`AIFACTORY_PIPELINE_DEMO_MAX_MB`** (default 120).
 
 Agent workflow guidance lives in **`.cursor/skills/pipeline-demo-video/SKILL.md`** (Playwright `record_video_dir`, upload path).

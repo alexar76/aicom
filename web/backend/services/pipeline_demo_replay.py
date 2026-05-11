@@ -85,7 +85,8 @@ def play_url_for_metrics(cfg: dict[str, Any]) -> str | None:
     if src == "upload":
         fn = cfg.get("media_filename")
         if isinstance(fn, str) and fn and FILENAME_SAFE.match(fn):
-            return f"/api/admin/demo-replay/media/{fn}"
+            # Public URL: <video> cannot send Bearer auth (admin media route would 401).
+            return "/api/public/pipeline-demo-replay"
         return None
     if src == "external_url":
         vu = cfg.get("video_url")

@@ -93,13 +93,23 @@ router = APIRouter(prefix="/api/admin", tags=["admin-dashboard"], dependencies=[
 METRICS_HISTORY_FILE = "/app/data/logs/metrics_history.jsonl"
 
 
-def _admin_pipeline_storefront_hints(product_id: str) -> tuple[bool, list[str]]:
+def _admin_pipeline_storefront_hints(
+    product_id: str, product_row: Optional[dict[str, Any]] = None
+) -> tuple[bool, list[str]]:
+    """Storefront eligibility for admin pipeline rows.
+
+    When ``product_row`` is provided (the same dict already held in the pipeline
+    catalog loop), reuse it — **do not** reload the full SQLite/JSON snapshot per
+    row (that was O(window × full DB) and caused timeouts on large catalogs).
+    """
+    from web.backend.api.products import public_storefront_listing_eligible
+
+    if isinstance(product_row, dict) and product_row:
+        return public_storefront_listing_eligible(product_id, product_row)
     products, _tasks = _load_pipeline_snapshot_for_metrics()
     row = products.get(product_id)
     if not isinstance(row, dict):
         return False, ["product_not_in_pipeline"]
-    from web.backend.api.products import public_storefront_listing_eligible
-
     return public_storefront_listing_eligible(product_id, row)
 
 
@@ -1639,6 +1649,15 @@ async def get_pipeline_products(
         "newest",
         description="newest = by created_at only; shipped_first = COMPLETED/DEPLOYED rows first, then newest.",
     ),
+    light: bool = Query(
+        False,
+        description=(
+            "When true, skip per-row disk reads for spec/arch/marketing/followup and omit the global "
+            "storefront listable scan — faster Pipeline Monitor pagination. Storefront eligibility still "
+            "uses the in-memory product row (SQLite metadata / pipeline.json) plus existing disk checks "
+            "inside eligibility for shipped rows."
+        ),
+    ),
 ):
     """Get pipeline products with pagination (same catalog as dashboard / storefront hints)."""
     pipeline_file = Path("/app/data/state/pipeline.json")
@@ -1681,6 +1700,7 @@ async def get_pipeline_products(
                     "shipped_products": 0,
                     "failed_products": 0,
                     "storefront_listable_products": 0,
+                    "light": light,
                     "sort": sort,
                 },
             }
@@ -1702,6 +1722,7 @@ async def get_pipeline_products(
                     "shipped_products": 0,
                     "failed_products": 0,
                     "storefront_listable_products": 0,
+                    "light": light,
                     "sort": sort,
                 },
             }
@@ -1734,34 +1755,46 @@ async def get_pipeline_products(
         failed_catalog = sum(
             1 for _, p in all_items if str(p.get("state", "")).strip().lower() == "failed"
         )
-        try:
-            storefront_listable = count_showcase_listable_products()
-        except Exception as ex:
-            logger.warning("pipeline products: storefront listable count failed (%s)", ex)
-            storefront_listable = 0
+        storefront_listable: int | None
+        if light:
+            storefront_listable = None
+        else:
+            try:
+                storefront_listable = count_showcase_listable_products()
+            except Exception as ex:
+                logger.warning("pipeline products: storefront listable count failed (%s)", ex)
+                storefront_listable = 0
 
         window = all_items[safe_offset:safe_offset + safe_limit]
 
         result = []
         for pid, product in window:
-            # Load spec if exists
+            meta = product.get("metadata") or {}
+            # Load spec / arch — prefer disk artifacts unless ``light`` (Pipeline Monitor catalog).
             spec = None
-            spec_file = Path(f"/app/data/specs/{pid}/specification.json")
-            if spec_file.exists():
-                try:
-                    spec = json.loads(spec_file.read_text())
-                except Exception:
-                    pass
-            
-            # Load architecture if exists
             arch = None
-            arch_file = Path(f"/app/data/arch/{pid}/architecture.json")
-            if arch_file.exists():
-                try:
-                    arch = json.loads(arch_file.read_text())
-                except Exception:
-                    pass
-            
+            if light:
+                spec = product.get("spec") or meta.get("spec")
+                arch = product.get("architecture") or meta.get("architecture")
+            else:
+                spec_file = Path(f"/app/data/specs/{pid}/specification.json")
+                if spec_file.exists():
+                    try:
+                        spec = json.loads(spec_file.read_text())
+                    except Exception:
+                        pass
+                if spec is None:
+                    spec = product.get("spec") or meta.get("spec")
+
+                arch_file = Path(f"/app/data/arch/{pid}/architecture.json")
+                if arch_file.exists():
+                    try:
+                        arch = json.loads(arch_file.read_text())
+                    except Exception:
+                        pass
+                if arch is None:
+                    arch = product.get("architecture") or meta.get("architecture")
+
             product_tasks = tasks_by_product.get(pid, [])
             completed_tasks = sum(1 for t in product_tasks if t.get("status") == "completed")
             failed_tasks = sum(1 for t in product_tasks if t.get("status") == "failed")
@@ -1777,29 +1810,28 @@ async def get_pipeline_products(
             storefront_visible = False
             storefront_gate_reasons: list[str] = []
             try:
-                storefront_visible, storefront_gate_reasons = _admin_pipeline_storefront_hints(pid)
+                storefront_visible, storefront_gate_reasons = _admin_pipeline_storefront_hints(pid, product)
             except Exception as ex:
                 logger.debug("storefront hints for %s: %s", pid, ex)
 
             fu_raw = read_followup(pid)
             storefront_followup = normalize_pipeline_followup(fu_raw)
-            
-            # Load marketing data for category/tags (SQLite stores these under metadata)
-            meta = product.get("metadata") or {}
+
             category = meta.get("category") or product.get("category", "uncategorized")
             tags = meta.get("tags") if meta.get("tags") is not None else product.get("tags", [])
-            marketing_file = Path(f"/app/data/state/{pid}/marketing_content.json")
             storefront_marketing_copy: dict[str, Any] = {}
-            if marketing_file.exists():
-                try:
-                    marketing = json.loads(marketing_file.read_text())
-                    category = marketing.get("category", category)
-                    tags = marketing.get("tags", tags)
-                    inner = marketing.get("marketing")
-                    if isinstance(inner, dict):
-                        storefront_marketing_copy = inner
-                except Exception:
-                    pass
+            if not light:
+                marketing_file = Path(f"/app/data/state/{pid}/marketing_content.json")
+                if marketing_file.exists():
+                    try:
+                        marketing = json.loads(marketing_file.read_text())
+                        category = marketing.get("category", category)
+                        tags = marketing.get("tags", tags)
+                        inner = marketing.get("marketing")
+                        if isinstance(inner, dict):
+                            storefront_marketing_copy = inner
+                    except Exception:
+                        pass
 
             result.append({
                 "id": pid,
@@ -1841,6 +1873,7 @@ async def get_pipeline_products(
                 "shipped_products": shipped_catalog,
                 "failed_products": failed_catalog,
                 "storefront_listable_products": storefront_listable,
+                "light": light,
                 "sort": sort,
                 "sort_note": (
                     "Shipped builds (COMPLETED / DEPLOYED_PRODUCTION) are listed first, then the newest in-progress work."

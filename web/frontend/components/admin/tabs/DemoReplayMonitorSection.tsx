@@ -161,7 +161,10 @@ export function DemoReplayMonitorSection({
   }, [adminCfg?.enabled, adminCfg?.play_url, demoReplay?.enabled, demoReplay?.play_url]);
 
   return (
-    <GlassCard>
+    <GlassCard
+      hover={false}
+      className="!backdrop-blur-none bg-slate-950/95 [backdrop-filter:none] [-webkit-backdrop-filter:none] border border-white/10 shadow-xl"
+    >
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
         <div>
           <h3 className="text-lg font-semibold text-white">Demo replay</h3>
@@ -197,13 +200,32 @@ export function DemoReplayMonitorSection({
       </div>
 
       {playSrc ? (
-        <video
-          key={playSrc}
-          controls
-          className="w-full max-h-[min(52vh,520px)] rounded-lg bg-black border border-white/10 mb-4"
-          src={playSrc}
-          preload="metadata"
-        />
+        /* Video + backdrop-filter on same ancestor → Chromium often composites a blurry / stuck first frame. */
+        <div className="relative mb-4 isolate overflow-hidden rounded-lg border border-white/10 bg-black">
+          <video
+            key={playSrc}
+            controls
+            playsInline
+            className="relative z-10 block w-full max-h-[min(52vh,520px)] object-contain bg-black [transform:translateZ(0)]"
+            src={playSrc}
+            preload="auto"
+            onError={(e) => {
+            const el = e.currentTarget;
+            const code = el.error?.code;
+            const hint =
+              code === 2
+                ? 'Network error loading media.'
+                : code === 3
+                  ? 'Decode error — try re-encoding (H.264/AAC for .mp4, VP9 for .webm).'
+                  : code === 4
+                    ? 'Source not supported for this browser.'
+                    : 'Playback failed.';
+            setErr(
+              `${hint} If this is an uploaded file, use “Upload video” again or check the network tab for 404/403 on the media URL.`,
+            );
+          }}
+          />
+        </div>
       ) : (
         <div className="mb-4 rounded-lg border border-dashed border-white/15 bg-white/[0.02] px-4 py-8 text-center text-sm text-gray-500">
           Enable above and set a URL or upload a file (.webm / .mp4 / .mov).
