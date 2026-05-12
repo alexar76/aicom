@@ -4,6 +4,10 @@
 
 **Website:** [magic-ai-factory.com](https://magic-ai-factory.com) · Production notes: [docs/production-domain.md](docs/production-domain.md)
 
+> **Product disclaimer**  
+> Not everyone will fully connect with the intent and scope of this project — that is expected.  
+> **This is not a quick landing-page generator.** It is an attempt to build an **autonomously operating AI company**: from discovering an idea through shipping a **real product**, with ongoing support, evolution, and monetization.
+
 Turn one sentence into a presentable site or MVP-shaped codebase — with demo gates, browser crawl, and an operator-grade admin UI.
 
 ### The pipeline at a glance

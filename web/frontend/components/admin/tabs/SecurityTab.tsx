@@ -79,6 +79,7 @@ import api, {
   ChatMessage,
   DemoReplayAdminConfig,
 } from '@/lib/api';
+import { fetchPipelineCatalogAllPages } from '@/lib/pipelineCatalogFetch';
 import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
 import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
@@ -96,8 +97,11 @@ export function SecurityTab() {
 
   useEffect(() => {
     api.getSecurityLogs(20).then(setLogs).catch(() => {});
-    api.getPipelineProducts(1000, 0).then((data) => {
-      setProducts(data.products || []);
+    setProducts([]);
+    fetchPipelineCatalogAllPages('shipped_first', {
+      onPage: ({ batch }) => {
+        setProducts((prev) => [...prev, ...batch]);
+      },
     }).catch(() => {});
   }, []);
 

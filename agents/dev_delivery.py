@@ -112,12 +112,13 @@ A **promotional landing** = one long scroll that **sells one offer** with emotio
 
 === MUST SHIP (check every box before you finish) ===
 1. **Hero**: one strong H1 (short), supportive subline, **one obvious primary button** (not a plain blue browser-default link). The primary CTA `<a>` **must not** use `href="#"` or an empty href — use `mailto:…`, `tel:…`, `https://…`, or `href="#section-id"` where that section exists on the same page (real `id="…"`).
-2. **At least two** styled sections below the hero (e.g. features/benefits grid, “how it works”, testimonials strip, pricing teaser, FAQ accordion — pick what fits the product).
-3. **Typography**: load **two named families** from Google Fonts (display + body) via `<link rel="preconnect">` + stylesheet — never deliver Arial/Times-only unless the spec explicitly demands it.
-4. **CSS variables** in `:root` for background, surface, text, accent, radius, shadow — then use them everywhere (no scattered magic hex except rare one-offs).
-5. **Visual depth**: at least one of — layered gradient background, soft glass card (`backdrop-filter`), subtle mesh/blur, or refined dual shadow on cards. Flat `#cccccc` boxes filling the screen are **not** acceptable as the whole design.
-6. **Motion**: transitions on buttons/links/cards (150–300ms); at least one tasteful `@keyframes` OR scroll reveal via small vanilla JS (`IntersectionObserver`). Honor `prefers-reduced-motion`.
-7. **Responsive**: flex/grid, fluid type with `clamp()`, readable line length, comfortable tap targets on mobile.
+2. **Same-page menu / anchors (critical):** Sticky or top `<nav>` links that jump to sections MUST use **hash-only** URLs on this document, e.g. `<a href="#pricing">` with a matching `<section id="pricing">` (or any element `id="pricing"`) in the **same** `index.html`. Do **not** point internal section jumps at another `.html` file, `/…` paths, or full `https://…` URLs — those reload the sandbox iframe instead of scrolling. Every `href="#…"` in the nav must have a visible target `id` on the page.
+3. **At least two** styled sections below the hero (e.g. features/benefits grid, “how it works”, testimonials strip, pricing teaser, FAQ accordion — pick what fits the product).
+4. **Typography**: load **two named families** from Google Fonts (display + body) via `<link rel="preconnect">` + stylesheet — never deliver Arial/Times-only unless the spec explicitly demands it.
+5. **CSS variables** in `:root` for background, surface, text, accent, radius, shadow — then use them everywhere (no scattered magic hex except rare one-offs).
+6. **Visual depth**: at least one of — layered gradient background, soft glass card (`backdrop-filter`), subtle mesh/blur, or refined dual shadow on cards. Flat `#cccccc` boxes filling the screen are **not** acceptable as the whole design.
+7. **Motion**: transitions on buttons/links/cards (150–300ms); at least one tasteful `@keyframes` OR scroll reveal via small vanilla JS (`IntersectionObserver`). Honor `prefers-reduced-motion`.
+8. **Responsive**: flex/grid, fluid type with `clamp()`, readable line length, comfortable tap targets on mobile.
 
 === SVG & VECTOR — USE THE FULL TOOLKIT (creativity on) ===
 You can generate **arbitrary SVG** (inline in HTML and/or dedicated `.svg` files). Treat SVG as a first-class art medium — not only 16px icons.

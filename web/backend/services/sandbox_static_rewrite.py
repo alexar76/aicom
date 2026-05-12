@@ -303,6 +303,42 @@ def _inject_loopback_navigation_guard(html: str) -> str:
     return html + _NAV_GUARD_SCRIPT
 
 
+# Smooth in-page jumps for marketing landings inside iframe (base href + long pages).
+_SANDBOX_INPAGE_NAV_SNIPPET = """<style id="aicom-sandbox-nav-smooth">@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}</style>
+<script id="aicom-sandbox-hash-nav">
+(function(){
+document.addEventListener('click',function(e){
+ var a=e.target&&e.target.closest&&e.target.closest('a[href]');
+ if(!a)return;
+ var raw=(a.getAttribute('href')||'').trim();
+ if(!raw||raw==='#'||raw.charAt(0)!=='#')return;
+ if(raw.indexOf('/',1)!==-1)return;
+ var id;
+ try{id=decodeURIComponent(raw.slice(1));}catch(x){id=raw.slice(1);}
+ if(!id)return;
+ var el=document.getElementById(id);
+ if(!el)return;
+ e.preventDefault();
+ var reduce=0;
+ try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches?1:0;}catch(x){}
+ try{el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}catch(x){el.scrollIntoView(true);}
+ try{history.replaceState(null,'',raw);}catch(x){}
+},true);
+})();
+</script>"""
+
+
+def inject_sandbox_in_page_nav_helpers(html: str) -> str:
+    """Ensure #section nav scrolls inside the iframe demo (single-page landings)."""
+    if 'id="aicom-sandbox-hash-nav"' in html:
+        return html
+    matches = list(re.finditer(r"</body\s*>", html, flags=re.I))
+    if matches:
+        pos = matches[-1].start()
+        return html[:pos] + _SANDBOX_INPAGE_NAV_SNIPPET + html[pos:]
+    return html + _SANDBOX_INPAGE_NAV_SNIPPET
+
+
 # CSP: keep navigations and form posts on our origin or HTTPS; block http://localhost etc.
 SANDBOX_HTML_CSP = (
     "default-src 'self'; "

@@ -120,3 +120,12 @@ def test_rewrite_loopback_location_header():
         sb.rewrite_loopback_location_header("https://other.example/y", 55123, "/api/sandbox/compose/x/")
         == "https://other.example/y"
     )
+
+
+def test_inject_in_page_nav_helpers_idempotent():
+    html = "<html><head></head><body><main></main></body></html>"
+    out = sb.inject_sandbox_in_page_nav_helpers(html)
+    assert "aicom-sandbox-hash-nav" in out
+    assert "scroll-behavior:smooth" in out.replace(" ", "")
+    out2 = sb.inject_sandbox_in_page_nav_helpers(out)
+    assert out2.count("aicom-sandbox-hash-nav") == 1

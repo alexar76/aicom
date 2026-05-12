@@ -4,6 +4,7 @@
   "private": true,
   "description": "AUTONOMOUS AI-FACTORY v2.1 — Premium Storefront & Admin Panel",
   "scripts": {
+    "prebuild": "python3 scripts/gen_pwa_icons.py",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

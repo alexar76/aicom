@@ -414,14 +414,15 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit & { clientTimeoutMs?: number } = {}
   ): Promise<T> {
+    const { clientTimeoutMs, ...fetchInit } = options;
     const adminToken = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
     const customerToken = typeof window !== 'undefined' ? localStorage.getItem('customer_token') : null;
     
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...(options.headers as Record<string, string>),
+      ...(fetchInit.headers as Record<string, string>),
     };
 
     if (adminToken) {
@@ -430,12 +431,20 @@ class ApiClient {
       headers['Authorization'] = `Bearer ${customerToken}`;
     }
 
+    const signal =
+      fetchInit.signal !== undefined
+        ? fetchInit.signal
+        : clientTimeoutMs && clientTimeoutMs > 0
+          ? AbortSignal.timeout(clientTimeoutMs)
+          : undefined;
+
     let response: Response;
     try {
       response = await fetch(`${this.baseUrl}${endpoint}`, {
-        ...options,
+        ...fetchInit,
         headers,
         credentials: 'include',
+        ...(signal ? { signal } : {}),
       });
     } catch (e: unknown) {
       const m = e instanceof Error ? e.message : String(e);
@@ -928,7 +937,8 @@ class ApiClient {
     if (light) {
       q.set('light', '1');
     }
-    return this.request(`/admin/pipeline/products?${q.toString()}`);
+    // Large catalog hydration can exceed default proxy/browser patience; allow long waits.
+    return this.request(`/admin/pipeline/products?${q.toString()}`, { clientTimeoutMs: 180_000 });
   }
 
   /** Manual storefront follow-up label (files under state/product_followup/). */

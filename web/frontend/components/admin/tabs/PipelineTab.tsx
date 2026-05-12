@@ -91,40 +91,11 @@ import {
   bucketPipelineProductForCategoryFilter,
   countPipelineProductsByCategory,
 } from '@/lib/pipelineCategoryBucket';
+import { fetchPipelineCatalogPageSingleMode } from '@/lib/pipelineCatalogFetch';
 
 type PipelineCatalogSummary = NonNullable<
   Awaited<ReturnType<typeof api.getPipelineProducts>>['catalog_summary']
 >;
-
-/** Per-mode retries (transient 502 / proxy / worker busy). */
-const PIPELINE_CATALOG_ATTEMPTS_LIGHT = 6;
-const PIPELINE_CATALOG_ATTEMPTS_FULL = 5;
-
-function _pipelineCatalogBackoffMs(attempt: number): number {
-  return Math.min(10_000, 400 * 2 ** attempt);
-}
-
-async function fetchPipelineCatalogPageSingleMode(
-  limit: number,
-  offset: number,
-  sort: 'newest' | 'shipped_first',
-  light: boolean,
-): Promise<Awaited<ReturnType<typeof api.getPipelineProducts>>> {
-  const max = light ? PIPELINE_CATALOG_ATTEMPTS_LIGHT : PIPELINE_CATALOG_ATTEMPTS_FULL;
-  let last: unknown;
-  for (let i = 0; i < max; i++) {
-    try {
-      return await api.getPipelineProducts(limit, offset, sort, light);
-    } catch (e) {
-      last = e;
-      if (i < max - 1) {
-        await new Promise((r) => setTimeout(r, _pipelineCatalogBackoffMs(i)));
-      }
-    }
-  }
-  if (last instanceof Error) throw last;
-  throw new Error(String(last));
-}
 
 export function PipelineTab() {
   /** First chunk + background pages (API max 2000/request). Full catalog streams in until total reached. */

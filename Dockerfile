@@ -84,6 +84,8 @@ COPY . .
 ARG NEXT_PUBLIC_SITE_URL=http://localhost:9080
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 WORKDIR /app/web/frontend
+# PWA manifest requires on-disk PNGs (prebuild); ensure icons exist if npm lifecycle changes.
+RUN python3 scripts/gen_pwa_icons.py
 RUN npm install \
     && npm run build \
     && npm prune --production

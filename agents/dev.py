@@ -267,12 +267,7 @@ class DeveloperAgent(BaseAgent):
             },
             "quality_targets": ["pass quality gates", "maintainability", "security", "a11y"],
         }
-        self._save_artifact(
-            product_id,
-            "code",
-            {"product_id": product_id, "implementation_plan": implementation_plan, "created_at": time.time()},
-            "implementation_plan.json",
-        )
+        # implementation_plan.json is written AFTER LLM files — shutil.rmtree(code_root) would delete an early save.
 
         patch_mode = bool(
             agent_input.data.get("qa_gate_blocked")
@@ -410,6 +405,13 @@ Regenerate the ENTIRE JSON object. Remove forbidden files; include only what del
                 )
 
             assert code_data is not None
+
+            self._save_artifact(
+                product_id,
+                "code",
+                {"product_id": product_id, "implementation_plan": implementation_plan, "created_at": time.time()},
+                "implementation_plan.json",
+            )
 
             self._save_artifact(product_id, "code", {
                 "product_id": product_id,

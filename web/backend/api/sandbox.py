@@ -44,6 +44,7 @@ from web.backend.services.sandbox_static_rewrite import (
     _rewrite_localhost_urls,
     _rewrite_root_absolute_paths,
     inject_preview_api_fetch_shim,
+    inject_sandbox_in_page_nav_helpers,
     public_origin_from_request,
     rewrite_loopback_location_header,
     rewrite_upstream_proxy_body,
@@ -536,6 +537,7 @@ async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
             if sbrec.get("backend_preview_port"):
                 content = inject_preview_api_fetch_shim(content, sandbox_id)
             content = _inject_loopback_navigation_guard(content)
+            content = inject_sandbox_in_page_nav_helpers(content)
             return Response(
                 content=content,
                 media_type=media_type,

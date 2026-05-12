@@ -1,94 +1,173 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
-  LayoutDashboard,
-  Cpu,
-  Bot,
-  Shield,
-  FileText,
-  BarChart3,
-  Settings,
-  LogOut,
-  Plus,
-  Send,
-  Activity,
-  Users,
-  DollarSign,
-  AlertTriangle,
-  CheckCircle2,
-  Clock,
-  Sparkles,
-  MessageCircle,
-  Menu,
-  X,
-  Trash2,
-  Edit3,
   RefreshCw,
-  Globe,
-  ToggleLeft,
-  ToggleRight,
-  Save,
-  List,
-  ScrollText,
-  ChevronRight,
-  Terminal,
-  Radio,
-  Pause,
-  Play,
-  Gauge,
-  Circle,
-  Star,
   ExternalLink,
-  Zap,
-  GitBranch,
-  Container,
-  Layers,
-  FlaskConical,
-  BrainCircuit,
-  ClipboardList,
-  Inbox,
-  Megaphone,
-  Store,
   Loader2,
-  Upload,
+  ChevronDown,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Input';
-import { ProgressBar } from '@/components/ui/ProgressBar';
-import { Modal } from '@/components/ui/Modal';
+import { FilterSelect, FilterResetSummary } from '@/components/admin/FilterControls';
+import api from '@/lib/api';
 import {
-  FilterControlsPanel,
-  FilterNumberInput,
-  FilterResetSummary,
-  FilterSelect,
-} from '@/components/admin/FilterControls';
-import BrainstormingTab from '@/components/BrainstormingTab';
-import SupportQueueTab from '@/components/SupportQueueTab';
-import OutreachTab from '@/components/OutreachTab';
-import { QRCodeSVG } from 'qrcode.react';
-import api, {
-  DashboardData,
-  ProviderStatus,
-  AgentStatus,
-  CreateProviderPayload,
-  RoutingRule,
-  ChatMessage,
-  DemoReplayAdminConfig,
-} from '@/lib/api';
-import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
-import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
-import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
+  fetchPipelineCatalogAllPages,
+  PIPELINE_CATALOG_MAX_PAGE,
+} from '@/lib/pipelineCatalogFetch';
 import toast from 'react-hot-toast';
+
+const FILE_CATEGORY_COLORS: Record<string, string> = {
+  specs: 'from-blue-500 to-blue-600',
+  architecture: 'from-purple-500 to-purple-600',
+  code: 'from-green-500 to-green-600',
+  bugs: 'from-red-500 to-red-600',
+  security: 'from-cyan-500 to-cyan-600',
+  marketing: 'from-amber-500 to-amber-600',
+  telemetry: 'from-pink-500 to-pink-600',
+};
+
+type ArtifactsPanelProps = {
+  selectedProduct: string;
+  files: any[];
+  fileLoading: boolean;
+  expandedFile: string | null;
+  setExpandedFile: (path: string | null) => void;
+  fileSearch: string;
+  setFileSearch: (v: string) => void;
+  fileCategoryFilter: string;
+  setFileCategoryFilter: (v: string) => void;
+  availableFileCategories: string[];
+  filteredFiles: any[];
+  sandboxOpening: boolean;
+  openSandboxPreview: () => void;
+};
+
+function ProductArtifactsPanel({
+  selectedProduct,
+  files,
+  fileLoading,
+  expandedFile,
+  setExpandedFile,
+  fileSearch,
+  setFileSearch,
+  fileCategoryFilter,
+  setFileCategoryFilter,
+  availableFileCategories,
+  filteredFiles,
+  sandboxOpening,
+  openSandboxPreview,
+}: ArtifactsPanelProps) {
+  return (
+    <>
+      <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          disabled={sandboxOpening}
+          onClick={() => void openSandboxPreview()}
+          className="flex w-full items-center justify-center gap-2 sm:w-auto"
+        >
+          {sandboxOpening ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <ExternalLink className="w-4 h-4" />
+          )}
+          {sandboxOpening ? 'Starting…' : 'Open sandbox preview'}
+        </Button>
+        <p className="max-w-xl text-xs text-gray-500">
+          Starts a sandbox for this product and opens the HTML demo (iframe) in a new tab — same viewer as the product page.
+        </p>
+      </div>
+      <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Input
+          value={fileSearch}
+          onChange={(e) => setFileSearch(e.target.value)}
+          placeholder="Search filename/path/content preview..."
+        />
+        <FilterSelect value={fileCategoryFilter} onChange={(e) => setFileCategoryFilter(e.target.value)}>
+          <option value="all">All categories</option>
+          {availableFileCategories.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </FilterSelect>
+        <FilterResetSummary
+          onReset={() => {
+            setFileSearch('');
+            setFileCategoryFilter('all');
+          }}
+          resetLabel="Reset file filters"
+          summary={`Showing ${filteredFiles.length} of ${files.length}`}
+        />
+      </div>
+      {fileLoading ? (
+        <div className="text-gray-400">Loading files…</div>
+      ) : files.length === 0 ? (
+        <div className="text-gray-500 py-6 text-center text-sm">No files found for this product</div>
+      ) : filteredFiles.length === 0 ? (
+        <div className="text-gray-500 py-6 text-center text-sm">No files match current filters</div>
+      ) : (
+        <>
+          <h3 className="mb-2 text-sm font-medium text-gray-400">
+            {filteredFiles.length} file{filteredFiles.length !== 1 ? 's' : ''} for {selectedProduct.slice(0, 12)}…
+          </h3>
+          <div className="max-h-[min(55vh,480px)] space-y-2 overflow-y-auto pr-1 md:max-h-[min(65vh,560px)]">
+            {filteredFiles.map((file: any) => (
+              <GlassCard key={file.path} className="overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setExpandedFile(expandedFile === file.path ? null : file.path)}
+                  className="flex w-full flex-col gap-2 p-3 text-left sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div
+                      className={`h-2 w-2 shrink-0 rounded-full bg-gradient-to-br ${
+                        FILE_CATEGORY_COLORS[file.category] || 'from-gray-500 to-gray-600'
+                      }`}
+                    />
+                    <div className="min-w-0">
+                      <span className="text-sm font-medium text-white">{file.filename}</span>
+                      <span className="ml-2 text-xs text-gray-500">({(file.size_bytes / 1024).toFixed(1)} KB)</span>
+                    </div>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2 sm:ml-2">
+                    <span className="rounded bg-white/5 px-2 py-0.5 text-xs text-gray-500">{file.category}</span>
+                    <span className="text-xs text-gray-500">{expandedFile === file.path ? '▲' : '▼'}</span>
+                  </div>
+                </button>
+                {expandedFile === file.path && (
+                  <div className="border-t border-white/5">
+                    <pre className="max-h-72 overflow-auto whitespace-pre-wrap p-4 font-mono text-xs text-gray-300">
+                      {file.error ? (
+                        <span className="text-red-400">Error: {file.error}</span>
+                      ) : (
+                        file.preview
+                      )}
+                    </pre>
+                  </div>
+                )}
+              </GlassCard>
+            ))}
+          </div>
+        </>
+      )}
+    </>
+  );
+}
 
 export function FilesTab() {
   const [products, setProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingCatalog, setLoadingCatalog] = useState(true);
+  const [loadingMoreCatalog, setLoadingMoreCatalog] = useState(false);
+  const [catalogProgress, setCatalogProgress] = useState<{ loaded: number; total: number | null } | null>(null);
+  const [productsLoadError, setProductsLoadError] = useState<string | null>(null);
+  const [productsReloadKey, setProductsReloadKey] = useState(0);
   const [fileLoading, setFileLoading] = useState(false);
   const [expandedFile, setExpandedFile] = useState<string | null>(null);
   const [sandboxOpening, setSandboxOpening] = useState(false);
@@ -98,27 +177,88 @@ export function FilesTab() {
   const [fileCategoryFilter, setFileCategoryFilter] = useState('all');
 
   useEffect(() => {
-    api.getPipelineProducts(1000, 0).then((data) => {
-      setProducts(data.products || []);
-      setLoading(false);
-    }).catch(() => setLoading(false));
-  }, []);
+    const ac = new AbortController();
+    setLoadingCatalog(true);
+    setLoadingMoreCatalog(false);
+    setProducts([]);
+    setCatalogProgress(null);
+    setProductsLoadError(null);
+    setSelectedProduct(null);
+    setFiles([]);
+
+    void (async () => {
+      try {
+        let first = true;
+        await fetchPipelineCatalogAllPages('shipped_first', {
+          signal: ac.signal,
+          onPage: ({ batch, loaded, total }) => {
+            if (ac.signal.aborted) return;
+            setProducts((prev) => [...prev, ...batch]);
+            setCatalogProgress({ loaded, total });
+            if (first && batch.length > 0) {
+              first = false;
+              setLoadingCatalog(false);
+              setLoadingMoreCatalog(true);
+            }
+          },
+        });
+        if (ac.signal.aborted) return;
+        setLoadingMoreCatalog(false);
+        setLoadingCatalog(false);
+      } catch (e: unknown) {
+        if (ac.signal.aborted) return;
+        setProductsLoadError(e instanceof Error ? e.message : String(e));
+        setLoadingCatalog(false);
+        setLoadingMoreCatalog(false);
+      }
+    })();
+
+    return () => ac.abort();
+  }, [productsReloadKey]);
+
+  const FILES_FETCH_MS = 120_000;
+  const FILES_ATTEMPTS = 5;
 
   const loadFiles = async (productId: string) => {
     setSelectedProduct(productId);
     setFileLoading(true);
     setExpandedFile(null);
-    try {
-      const token = localStorage.getItem('admin_token');
-      const res = await fetch(`/api/admin/products/${productId}/files`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      setFiles(data.files || []);
-    } catch (e) {
-      setFiles([]);
+    const token = localStorage.getItem('admin_token');
+    let lastErr: unknown;
+    for (let attempt = 0; attempt < FILES_ATTEMPTS; attempt++) {
+      try {
+        const res = await fetch(`/api/admin/products/${productId}/files`, {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: AbortSignal.timeout(FILES_FETCH_MS),
+        });
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        setFiles(data.files || []);
+        setFileLoading(false);
+        return;
+      } catch (e) {
+        lastErr = e;
+        if (attempt < FILES_ATTEMPTS - 1) {
+          await new Promise((r) => setTimeout(r, Math.min(8000, 400 * 2 ** attempt)));
+        }
+      }
     }
+    setFiles([]);
     setFileLoading(false);
+    const msg = lastErr instanceof Error ? lastErr.message : String(lastErr);
+    toast.error(`Could not load files: ${msg}`);
+  };
+
+  const toggleProduct = (id: string) => {
+    if (selectedProduct === id) {
+      setSelectedProduct(null);
+      setFiles([]);
+      setExpandedFile(null);
+      return;
+    }
+    void loadFiles(id);
   };
 
   const openSandboxPreview = async () => {
@@ -137,16 +277,6 @@ export function FilesTab() {
     } finally {
       setSandboxOpening(false);
     }
-  };
-
-  const categoryColors: Record<string, string> = {
-    specs: 'from-blue-500 to-blue-600',
-    architecture: 'from-purple-500 to-purple-600',
-    code: 'from-green-500 to-green-600',
-    bugs: 'from-red-500 to-red-600',
-    security: 'from-cyan-500 to-cyan-600',
-    marketing: 'from-amber-500 to-amber-600',
-    telemetry: 'from-pink-500 to-pink-600',
   };
 
   const filteredProducts = useMemo(() => {
@@ -191,162 +321,144 @@ export function FilesTab() {
     });
   }, [files, fileSearch, fileCategoryFilter]);
 
+  const artifactsPanel =
+    selectedProduct != null ? (
+      <ProductArtifactsPanel
+        selectedProduct={selectedProduct}
+        files={files}
+        fileLoading={fileLoading}
+        expandedFile={expandedFile}
+        setExpandedFile={setExpandedFile}
+        fileSearch={fileSearch}
+        setFileSearch={setFileSearch}
+        fileCategoryFilter={fileCategoryFilter}
+        setFileCategoryFilter={setFileCategoryFilter}
+        availableFileCategories={availableFileCategories}
+        filteredFiles={filteredFiles}
+        sandboxOpening={sandboxOpening}
+        openSandboxPreview={() => void openSandboxPreview()}
+      />
+    ) : null;
+
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold text-white">Generated Files Browser</h2>
       <p className="text-sm text-gray-400">Browse all artifacts generated by the AI pipeline for each product.</p>
 
-      {loading ? (
-        <div className="text-gray-400">Loading products...</div>
+      {loadingCatalog && products.length === 0 ? (
+        <div className="text-gray-400">Loading products…</div>
+      ) : productsLoadError && products.length === 0 ? (
+        <div className="space-y-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
+          <p className="text-sm text-amber-100/90">
+            Could not load the product list (server busy or timeout). You can retry without refreshing the page.
+          </p>
+          <p className="break-all font-mono text-xs text-amber-200/70">{productsLoadError}</p>
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            onClick={() => setProductsReloadKey((k) => k + 1)}
+            className="inline-flex items-center gap-2"
+          >
+            <RefreshCw className="h-4 w-4" />
+            Retry
+          </Button>
+        </div>
       ) : products.length === 0 ? (
         <div className="text-gray-500">No products found. Create a product first.</div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Product list */}
+        <div className="space-y-4">
+          {(loadingCatalog || loadingMoreCatalog) &&
+            catalogProgress &&
+            (catalogProgress.total == null || catalogProgress.loaded < catalogProgress.total) && (
+            <p className="text-xs text-gray-500">
+              Loading catalog… {catalogProgress.loaded}
+              {catalogProgress.total != null ? ` / ${catalogProgress.total}` : ''} (up to {PIPELINE_CATALOG_MAX_PAGE} per request)
+            </p>
+          )}
+
           <div className="space-y-2">
-            <h3 className="text-sm font-medium text-gray-400 mb-2">Products</h3>
-            <div className="space-y-2 mb-2">
-              <Input
-                value={productSearch}
-                onChange={(e) => setProductSearch(e.target.value)}
-                placeholder="Search products..."
-              />
-              <select
-                value={productStateFilter}
-                onChange={(e) => setProductStateFilter(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-sm text-gray-300 focus:outline-none focus:border-indigo-500/50"
-              >
-                <option value="all">All states</option>
-                {availableProductStates.map((st) => (
-                  <option key={st} value={st}>{st}</option>
-                ))}
-              </select>
-              <p className="text-[11px] text-gray-500">
-                Showing {filteredProducts.length} of {products.length}
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setProductSearch('');
-                  setProductStateFilter('all');
-                }}
-                className="text-[11px] text-indigo-300 hover:text-indigo-200 underline underline-offset-2"
-              >
-                Reset product filters
-              </button>
-            </div>
-            {filteredProducts.map((p: any) => (
-              <button
-                key={p.id}
-                onClick={() => loadFiles(p.id)}
-                className={`w-full text-left p-3 rounded-xl text-sm transition-all ${
-                  selectedProduct === p.id
-                    ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
-                }`}
-              >
-                <div className="font-medium">{p.idea || p.id}</div>
-                <div className="text-xs mt-1 opacity-60">{p.state} · {p.id?.slice(0, 12)}</div>
-              </button>
-            ))}
+            <h3 className="text-sm font-medium text-gray-400">Products</h3>
+            <Input
+              value={productSearch}
+              onChange={(e) => setProductSearch(e.target.value)}
+              placeholder="Search products..."
+            />
+            <select
+              value={productStateFilter}
+              onChange={(e) => setProductStateFilter(e.target.value)}
+              className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none"
+            >
+              <option value="all">All states</option>
+              {availableProductStates.map((st) => (
+                <option key={st} value={st}>
+                  {st}
+                </option>
+              ))}
+            </select>
+            <p className="text-[11px] text-gray-500">
+              Showing {filteredProducts.length} of {products.length} loaded
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setProductSearch('');
+                setProductStateFilter('all');
+              }}
+              className="text-[11px] text-indigo-300 underline underline-offset-2 hover:text-indigo-200"
+            >
+              Reset product filters
+            </button>
           </div>
 
-          {/* File list */}
-          <div className="md:col-span-2 space-y-2">
-            {!selectedProduct ? (
-              <div className="text-gray-500 text-center py-12">Select a product to browse its files</div>
-            ) : (
-              <>
-                <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:flex-row sm:flex-wrap sm:items-center">
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="sm"
-                    disabled={sandboxOpening}
-                    onClick={() => void openSandboxPreview()}
-                    className="flex w-full items-center justify-center gap-2 sm:w-auto"
-                  >
-                    {sandboxOpening ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <ExternalLink className="w-4 h-4" />
-                    )}
-                    {sandboxOpening ? 'Starting…' : 'Open sandbox preview'}
-                  </Button>
-                  <p className="max-w-xl text-xs text-gray-500">
-                    Starts a sandbox for this product and opens the HTML demo (iframe) in a new tab — same viewer as the product page.
-                  </p>
-                </div>
-                <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                  <Input
-                    value={fileSearch}
-                    onChange={(e) => setFileSearch(e.target.value)}
-                    placeholder="Search filename/path/content preview..."
-                  />
-                  <FilterSelect
-                    value={fileCategoryFilter}
-                    onChange={(e) => setFileCategoryFilter(e.target.value)}
-                  >
-                    <option value="all">All categories</option>
-                    {availableFileCategories.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </FilterSelect>
-                  <FilterResetSummary
-                    onReset={() => {
-                      setFileSearch('');
-                      setFileCategoryFilter('all');
-                    }}
-                    resetLabel="Reset file filters"
-                    summary={`Showing ${filteredFiles.length} of ${files.length}`}
-                  />
-                </div>
-                {fileLoading ? (
-                  <div className="text-gray-400">Loading files...</div>
-                ) : files.length === 0 ? (
-                  <div className="text-gray-500 text-center py-12">No files found for this product</div>
-                ) : filteredFiles.length === 0 ? (
-                  <div className="text-gray-500 text-center py-12">No files match current filters</div>
-                ) : (
-                  <>
-                <h3 className="text-sm font-medium text-gray-400 mb-2">
-                  {filteredFiles.length} file{filteredFiles.length !== 1 ? 's' : ''} for {selectedProduct?.slice(0, 12)}
-                </h3>
-                {filteredFiles.map((file: any) => (
-                  <GlassCard key={file.path} className="overflow-hidden">
-                    <button
-                      onClick={() => setExpandedFile(expandedFile === file.path ? null : file.path)}
-                      className="flex w-full flex-col gap-2 p-3 text-left sm:flex-row sm:items-center sm:justify-between"
+          <div className="items-start gap-6 md:grid md:grid-cols-3">
+            <div className="flex min-h-0 flex-col gap-2 md:col-span-1">
+              <div className="max-h-[min(50vh,420px)] space-y-2 overflow-y-auto pr-1 md:max-h-[min(72vh,640px)]">
+                {filteredProducts.map((p: any) => {
+                  const open = selectedProduct === p.id;
+                  return (
+                    <div
+                      key={p.id}
+                      className={`overflow-hidden rounded-xl border transition-colors ${
+                        open ? 'border-indigo-500/40 bg-indigo-500/10' : 'border-white/10 bg-white/[0.02]'
+                      }`}
                     >
-                      <div className="flex min-w-0 items-center gap-3">
-                        <div className={`h-2 w-2 shrink-0 rounded-full bg-gradient-to-br ${categoryColors[file.category] || 'from-gray-500 to-gray-600'}`} />
-                        <div className="min-w-0">
-                          <span className="text-sm font-medium text-white">{file.filename}</span>
-                          <span className="ml-2 text-xs text-gray-500">({(file.size_bytes / 1024).toFixed(1)} KB)</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleProduct(p.id)}
+                        className="flex w-full items-start gap-2 p-3 text-left text-sm"
+                      >
+                        <ChevronDown
+                          className={`mt-0.5 h-4 w-4 shrink-0 text-gray-500 transition-transform md:hidden ${
+                            open ? 'rotate-180' : ''
+                          }`}
+                          aria-hidden
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className={`font-medium ${open ? 'text-indigo-200' : 'text-gray-200'}`}>
+                            {p.idea || p.id}
+                          </div>
+                          <div className="mt-1 text-xs opacity-60">
+                            {p.state} · {p.id?.slice(0, 12)}
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex shrink-0 items-center gap-2 sm:ml-2">
-                        <span className="text-xs text-gray-500 bg-white/5 px-2 py-0.5 rounded">{file.category}</span>
-                        <span className="text-gray-500 text-xs">{expandedFile === file.path ? '▲' : '▼'}</span>
-                      </div>
-                    </button>
-                    {expandedFile === file.path && (
-                      <div className="border-t border-white/5">
-                        <pre className="p-4 text-xs text-gray-300 overflow-auto max-h-96 whitespace-pre-wrap font-mono">
-                          {file.error ? (
-                            <span className="text-red-400">Error: {file.error}</span>
-                          ) : (
-                            file.preview
-                          )}
-                        </pre>
-                      </div>
-                    )}
-                  </GlassCard>
-                ))}
-                  </>
-                )}
-              </>
-            )}
+                      </button>
+                      {open && (
+                        <div className="border-t border-white/10 p-3 md:hidden">{artifactsPanel}</div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="mt-6 hidden min-h-0 md:col-span-2 md:mt-0 md:block">
+              {!selectedProduct ? (
+                <div className="py-12 text-center text-gray-500">Select a product to browse its files</div>
+              ) : (
+                artifactsPanel
+              )}
+            </div>
           </div>
         </div>
       )}
