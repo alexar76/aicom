@@ -72,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" data-theme-bg="dark">
       <body className="cyber-grid min-h-screen min-w-0 overflow-x-hidden antialiased">
         <PwaRegister />
         <GoogleAnalytics />

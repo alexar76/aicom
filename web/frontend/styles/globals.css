@@ -112,6 +112,8 @@ body {
 }
 
 .glass-card {
+  /* Solid fallback if gradient/color-mix is unsupported — avoids “white card” flash */
+  background-color: var(--card-bg);
   background: linear-gradient(
     135deg,
     var(--card-bg) 0%,
@@ -125,6 +127,7 @@ body {
 }
 
 .glass-card:hover {
+  background-color: var(--card-bg-hover);
   background: linear-gradient(
     135deg,
     var(--card-bg-hover) 0%,
@@ -380,6 +383,23 @@ code, pre {
 [data-theme-bg="light"] .text-gray-200,
 [data-theme-bg="light"] .text-gray-300 {
   color: var(--override-text) !important;
+}
+
+/* Opacity utilities — Tailwind emits .text-white\\/NN; without these, light themes get white-on-white */
+[data-theme-bg="light"] .text-white\/60 {
+  color: rgba(17, 24, 39, 0.72) !important;
+}
+[data-theme-bg="light"] .text-white\/50 {
+  color: rgba(17, 24, 39, 0.62) !important;
+}
+[data-theme-bg="light"] .text-white\/40 {
+  color: rgba(17, 24, 39, 0.52) !important;
+}
+[data-theme-bg="light"] .text-white\/35 {
+  color: rgba(17, 24, 39, 0.48) !important;
+}
+[data-theme-bg="light"] .text-white\/30 {
+  color: rgba(17, 24, 39, 0.42) !important;
 }
 
 [data-theme-bg="light"] .text-gray-400 {

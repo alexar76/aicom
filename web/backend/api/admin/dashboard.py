@@ -2016,9 +2016,77 @@ async def post_pipeline_human_review_reject(product_id: str, body: HumanReviewRe
     return {"product_id": product_id, **res}
 
 
+_FILES_SKIP_DIR_NAMES = frozenset(
+    {
+        "node_modules",
+        ".git",
+        "__pycache__",
+        ".venv",
+        "venv",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".tox",
+        "dist",
+        "build",
+        ".next",
+        ".turbo",
+        "coverage",
+        "target",
+        ".cargo",
+        ".eggs",
+        "site-packages",
+    }
+)
+_FILES_MAX_PER_CATEGORY = 4000
+_FILES_PREVIEW_MAX_CHARS = 5000
+_FILES_PREVIEW_READ_BYTES = 262_144
+_FILES_PREVIEW_SKIP_BYTES = 8 * 1024 * 1024
+
+
+def _walk_artifact_files(category_root: Path) -> tuple[list[Path], bool]:
+    """List files under category_root, skipping heavy vendor/tool dirs. Returns (paths, truncated)."""
+    if not category_root.exists() or not category_root.is_dir():
+        return [], False
+    out: list[Path] = []
+    truncated = False
+    for dirpath, dirnames, filenames in os.walk(
+        category_root, topdown=True, followlinks=False
+    ):
+        dirnames[:] = sorted(d for d in dirnames if d not in _FILES_SKIP_DIR_NAMES)
+        for name in sorted(filenames):
+            if len(out) >= _FILES_MAX_PER_CATEGORY:
+                return out, True
+            out.append(Path(dirpath) / name)
+    return out, truncated
+
+
+def _preview_artifact_file(fpath: Path, *, size_bytes: int | None = None) -> tuple[str | None, str | None]:
+    """Return (preview, error); exactly one side is set (preview may be empty string)."""
+    try:
+        size = fpath.stat().st_size if size_bytes is None else size_bytes
+    except OSError as e:
+        return None, str(e)
+    if size == 0:
+        return "", None
+    if size > _FILES_PREVIEW_SKIP_BYTES:
+        return None, "file too large for preview (body not read)"
+    try:
+        data = fpath.read_bytes()[:_FILES_PREVIEW_READ_BYTES]
+    except OSError as e:
+        return None, str(e)
+    if b"\x00" in data[:8192]:
+        return None, "binary file (preview skipped)"
+    text = data.decode("utf-8", errors="replace")
+    if len(text) > _FILES_PREVIEW_MAX_CHARS:
+        return text[:_FILES_PREVIEW_MAX_CHARS] + "\n... (truncated)", None
+    if len(data) < size:
+        return text + "\n... (truncated; file larger than preview read limit)", None
+    return text, None
+
+
 @router.get("/products/{product_id}/files")
 async def get_product_files(product_id: str):
-    """Browse all generated files/artifacts for a product."""
+    """Browse all generated files/artifacts for a product (recursive per category)."""
     base_dirs = {
         "specs": Path(f"/app/data/specs/{product_id}"),
         "architecture": Path(f"/app/data/arch/{product_id}"),
@@ -2028,36 +2096,45 @@ async def get_product_files(product_id: str):
         "marketing": Path(f"/app/data/state/{product_id}"),
         "telemetry": Path(f"/app/data/telemetry/{product_id}"),
     }
-    
-    files = []
+
+    files: list[dict[str, Any]] = []
+    truncated_by_category: dict[str, bool] = {}
     for category, dir_path in base_dirs.items():
-        if dir_path.exists():
-            for fpath in sorted(dir_path.iterdir()):
-                if fpath.is_file():
-                    try:
-                        content = fpath.read_text()
-                        # Truncate if too large
-                        if len(content) > 5000:
-                            preview = content[:5000] + "\n... (truncated)"
-                        else:
-                            preview = content
-                        files.append({
-                            "category": category,
-                            "filename": fpath.name,
-                            "path": str(fpath),
-                            "size_bytes": fpath.stat().st_size,
-                            "preview": preview,
-                        })
-                    except Exception as e:
-                        files.append({
-                            "category": category,
-                            "filename": fpath.name,
-                            "path": str(fpath),
-                            "size_bytes": fpath.stat().st_size if fpath.exists() else 0,
-                            "error": str(e),
-                        })
-    
-    return {"product_id": product_id, "files": files, "count": len(files)}
+        paths, truncated = _walk_artifact_files(dir_path)
+        if truncated:
+            truncated_by_category[category] = True
+        for fpath in paths:
+            if not fpath.is_file():
+                continue
+            try:
+                rel = fpath.relative_to(dir_path).as_posix()
+            except ValueError:
+                rel = fpath.name
+            try:
+                size_bytes = fpath.stat().st_size
+            except OSError:
+                size_bytes = 0
+            preview, err = _preview_artifact_file(fpath, size_bytes=size_bytes)
+            entry: dict[str, Any] = {
+                "category": category,
+                "filename": rel,
+                "path": str(fpath),
+                "size_bytes": size_bytes,
+            }
+            if err is not None:
+                entry["error"] = err
+            else:
+                entry["preview"] = preview
+            files.append(entry)
+
+    payload: dict[str, Any] = {
+        "product_id": product_id,
+        "files": files,
+        "count": len(files),
+    }
+    if truncated_by_category:
+        payload["truncated_by_category"] = truncated_by_category
+    return payload
 
 
 @router.get("/products/{product_id}/spec")

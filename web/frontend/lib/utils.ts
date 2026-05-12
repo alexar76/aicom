@@ -306,3 +306,13 @@ export function applyTheme(theme: Record<string, any>): void {
     root.style.setProperty(key, value);
   }
 }
+
+/** Matches default :root cyber storefront — applied before /api/config/theme resolves (useLayoutEffect). */
+export const STOREFRONT_THEME_FALLBACK: Record<string, string> = {
+  primary: '#6366f1',
+  accent: '#ff3366',
+  bg_start: '#0a0a1a',
+  bg_end: '#060612',
+  text: '#e0e0ff',
+  text_secondary: '#8888aa',
+};

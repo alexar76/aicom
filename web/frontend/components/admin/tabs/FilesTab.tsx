@@ -40,6 +40,7 @@ type ArtifactsPanelProps = {
   setFileCategoryFilter: (v: string) => void;
   availableFileCategories: string[];
   filteredFiles: any[];
+  truncatedByCategory: Record<string, boolean> | null;
   sandboxOpening: boolean;
   openSandboxPreview: () => void;
 };
@@ -56,9 +57,15 @@ function ProductArtifactsPanel({
   setFileCategoryFilter,
   availableFileCategories,
   filteredFiles,
+  truncatedByCategory,
   sandboxOpening,
   openSandboxPreview,
 }: ArtifactsPanelProps) {
+  const truncatedCats =
+    truncatedByCategory && Object.keys(truncatedByCategory).length > 0
+      ? Object.keys(truncatedByCategory).sort().join(', ')
+      : null;
+
   return (
     <>
       <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:flex-row sm:flex-wrap sm:items-center">
@@ -104,6 +111,12 @@ function ProductArtifactsPanel({
           summary={`Showing ${filteredFiles.length} of ${files.length}`}
         />
       </div>
+      {truncatedCats ? (
+        <p className="mb-3 text-xs text-amber-200/90">
+          File list hit the per-category cap for: {truncatedCats}. Deeper paths under vendor dirs (e.g. node_modules) are
+          skipped.
+        </p>
+      ) : null}
       {fileLoading ? (
         <div className="text-gray-400">Loading files…</div>
       ) : files.length === 0 ? (
@@ -163,6 +176,7 @@ export function FilesTab() {
   const [products, setProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
+  const [truncatedByCategory, setTruncatedByCategory] = useState<Record<string, boolean> | null>(null);
   const [loadingCatalog, setLoadingCatalog] = useState(true);
   const [loadingMoreCatalog, setLoadingMoreCatalog] = useState(false);
   const [catalogProgress, setCatalogProgress] = useState<{ loaded: number; total: number | null } | null>(null);
@@ -185,6 +199,7 @@ export function FilesTab() {
     setProductsLoadError(null);
     setSelectedProduct(null);
     setFiles([]);
+    setTruncatedByCategory(null);
 
     void (async () => {
       try {
@@ -236,6 +251,11 @@ export function FilesTab() {
         }
         const data = await res.json();
         setFiles(data.files || []);
+        setTruncatedByCategory(
+          data.truncated_by_category && typeof data.truncated_by_category === 'object'
+            ? data.truncated_by_category
+            : null,
+        );
         setFileLoading(false);
         return;
       } catch (e) {
@@ -246,6 +266,7 @@ export function FilesTab() {
       }
     }
     setFiles([]);
+    setTruncatedByCategory(null);
     setFileLoading(false);
     const msg = lastErr instanceof Error ? lastErr.message : String(lastErr);
     toast.error(`Could not load files: ${msg}`);
@@ -255,6 +276,7 @@ export function FilesTab() {
     if (selectedProduct === id) {
       setSelectedProduct(null);
       setFiles([]);
+      setTruncatedByCategory(null);
       setExpandedFile(null);
       return;
     }
@@ -335,6 +357,7 @@ export function FilesTab() {
         setFileCategoryFilter={setFileCategoryFilter}
         availableFileCategories={availableFileCategories}
         filteredFiles={filteredFiles}
+        truncatedByCategory={truncatedByCategory}
         sandboxOpening={sandboxOpening}
         openSandboxPreview={() => void openSandboxPreview()}
       />

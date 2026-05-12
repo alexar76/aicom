@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { applyTheme } from '@/lib/utils';
+import { useEffect, useLayoutEffect } from 'react';
+import { applyTheme, STOREFRONT_THEME_FALLBACK } from '@/lib/utils';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
 
@@ -10,6 +10,10 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
  * and applies CSS variables globally via applyTheme().
  */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  useLayoutEffect(() => {
+    applyTheme(STOREFRONT_THEME_FALLBACK);
+  }, []);
+
   useEffect(() => {
     const loadTheme = async () => {
       try {
@@ -20,7 +24,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           applyTheme(data.theme);
         }
       } catch {
-        // Theme loading is non-critical; use defaults from CSS
+        /* keep STOREFRONT_THEME_FALLBACK from useLayoutEffect */
       }
     };
     loadTheme();

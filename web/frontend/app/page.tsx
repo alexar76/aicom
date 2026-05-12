@@ -705,7 +705,9 @@ function CatalogProductCard({
           }`}
         >
           <div className="flex justify-between items-start mb-3">
-            <h3 className="text-lg font-semibold text-white truncate mr-2">{getProductName(product)}</h3>
+            <h3 className="truncate mr-2 text-lg font-semibold text-[color:var(--text-primary)]">
+              {getProductName(product)}
+            </h3>
             <div className="shrink-0 flex items-center gap-1.5 flex-wrap justify-end">
               {product.is_template && (
                 <Badge variant="warning" className="text-[10px]">
@@ -727,7 +729,7 @@ function CatalogProductCard({
             </div>
           </div>
 
-          <p className="text-sm text-white/60 line-clamp-2 mb-3">{getProductDescription(product)}</p>
+          <p className="mb-3 line-clamp-2 text-sm text-[color:var(--text-secondary)]">{getProductDescription(product)}</p>
 
           {product.implementation_summary && Object.keys(product.implementation_summary).length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-4">
@@ -736,14 +738,14 @@ function CatalogProductCard({
                 .map(([k, v]) => (
                   <span
                     key={k}
-                    className="text-[10px] px-2 py-0.5 rounded-md bg-white/5 text-white/50 border border-white/10 truncate max-w-[160px]"
+                    className="max-w-[160px] truncate rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-[color:var(--text-muted)]"
                     title={`${labelTechStackKey(k)}: ${v}`}
                   >
-                    <span className="text-white/35">{labelTechStackKey(k)}:</span> {v}
+                    <span className="text-[color:var(--text-muted)] opacity-70">{labelTechStackKey(k)}:</span> {v}
                   </span>
                 ))}
               {Object.keys(product.implementation_summary).length > 4 && (
-                <span className="text-[10px] text-white/35">
+                <span className="text-[10px] text-[color:var(--text-muted)] opacity-80">
                   +{Object.keys(product.implementation_summary).length - 4}
                 </span>
               )}
@@ -753,12 +755,12 @@ function CatalogProductCard({
           {product.tags && product.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
               {product.tags.slice(0, 3).map((tag: string, ti: number) => (
-                <span key={ti} className="text-xs px-2 py-1 rounded-full bg-white/5 text-white/60">
+                <span key={ti} className="rounded-full bg-white/5 px-2 py-1 text-xs text-[color:var(--text-secondary)]">
                   {tag}
                 </span>
               ))}
               {product.tags.length > 3 && (
-                <span className="text-xs text-white/40">+{product.tags.length - 3}</span>
+                <span className="text-xs text-[color:var(--text-muted)]">+{product.tags.length - 3}</span>
               )}
             </div>
           )}
@@ -770,7 +772,7 @@ function CatalogProductCard({
               {product.price_usdt != null && product.price_usdt > 0 && (
                 <span className="text-sm font-semibold text-emerald-400">
                   ${product.price_usdt}
-                  <span className="text-[10px] text-white/40 font-normal">/mo</span>
+                  <span className="text-[10px] font-normal text-[color:var(--text-muted)]">/mo</span>
                 </span>
               )}
             </div>
