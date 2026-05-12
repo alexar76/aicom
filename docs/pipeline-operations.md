@@ -45,6 +45,8 @@ Runtime controls implemented in code:
 
 The worker re-evaluates products in **COMPLETED** / **DEPLOYED_PRODUCTION** against **current** marketplace / demo quality (`evaluate_marketplace_quality`). If they no longer qualify, the pipeline sets **BUG_FOUND** and enqueues a **developer** task (same repair path as QA gate failures), bounded by **`AIFACTORY_MAX_QUALITY_LOOPS`**.
 
+While a product is **COMPLETED** and passes the current quality bar, the worker records `storefront_established_listing` in `data/state/product_followup/<product_id>.json`. If rules later tighten and the product is reopened for repair, the **public storefront** may still list that product (same code on disk) until it returns to **COMPLETED**, so cards do not disappear during in-flight fixes. Operator **not pursuing** clears that flag with the rest of the follow-up record.
+
 | Variable | Default | Meaning |
 |----------|---------|--------|
 | `AIFACTORY_POLICY_AUDIT_ENABLED` | `1` | Master switch |

@@ -6,8 +6,10 @@ Creates several COMPLETED rows with on-disk specs, marketing, code manifests,
 and admin_force_list so the home page “Marketing landing pages” and “Full products”
 sections are populated without running the LLM pipeline.
 
-Run inside the app container:
-  docker compose exec app python3 /app/scripts/seed_marketplace_demo.py
+Run inside the app container **only when explicitly enabled** (does not run in production by default):
+
+    AIFACTORY_SEED_MARKETPLACE_DEMO=1 docker compose exec -T app \\
+      env AIFACTORY_SEED_MARKETPLACE_DEMO=1 python3 /app/scripts/seed_marketplace_demo.py
 """
 
 from __future__ import annotations
@@ -267,6 +269,14 @@ def _seed_one(sm: Any, cfg: dict[str, Any]) -> None:
 
 
 def main() -> None:
+    flag = os.environ.get("AIFACTORY_SEED_MARKETPLACE_DEMO", "").strip().lower()
+    if flag not in ("1", "true", "yes"):
+        print(
+            "Skipping marketplace demo seed (set AIFACTORY_SEED_MARKETPLACE_DEMO=1 to run).",
+            file=sys.stderr,
+        )
+        return
+
     os.environ.setdefault("USE_SQLITE", "true")
     os.environ.setdefault("SQLITE_PATH", str(DATA / "state" / "pipeline.db"))
 

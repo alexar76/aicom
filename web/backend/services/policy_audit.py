@@ -108,6 +108,14 @@ def apply_policy_audit(
             rr = int(product.get("quality_repair_round") or 0)
             product["last_policy_audit_at"] = now
             product["policy_audit_eligible"] = True
+            try:
+                from web.backend.services.product_followup import merge_mark_storefront_established_listing
+
+                if merge_mark_storefront_established_listing(pid):
+                    product["updated_at"] = now
+                    changed = True
+            except Exception:
+                logger.debug("merge_mark_storefront_established_listing (policy audit) failed for %s", pid, exc_info=True)
             if rr > 0:
                 product["quality_repair_round"] = 0
                 product["updated_at"] = now

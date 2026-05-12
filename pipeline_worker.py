@@ -1099,8 +1099,24 @@ class PipelineWorker:
                                 pid,
                                 dev_task["id"],
                             )
-                    if target_state == "COMPLETED" and not critic_blocked:
+                    if target_state == "COMPLETED" and not critic_blocked and pid in products:
                         logger.info(f"Product {pid} pipeline completed!")
+                        try:
+                            spec_done = self._load_spec(pid)
+                            mq_done = evaluate_marketplace_quality(pid, specification=spec_done)
+                            if mq_done.get("eligible"):
+                                from web.backend.services.product_followup import (
+                                    merge_mark_storefront_established_listing,
+                                )
+
+                                if merge_mark_storefront_established_listing(pid):
+                                    products[pid]["updated_at"] = time.time()
+                        except Exception:
+                            logger.debug(
+                                "merge_mark_storefront_established_listing at completion failed for %s",
+                                pid,
+                                exc_info=True,
+                            )
                     elif prev_state == "COMPLETED" and target_state == "EVOLUTION_ANALYZING":
                         # Periodic monitoring for COMPLETED product — don't create next sequential task
                         logger.info(f"Periodic market monitoring completed for product {pid}")
@@ -1308,6 +1324,22 @@ class PipelineWorker:
             # Check if product reached COMPLETED
             if target_state == "COMPLETED":
                 logger.info(f"Product {pid} pipeline completed! (fallback)")
+                try:
+                    spec_done = self._load_spec(pid)
+                    mq_done = evaluate_marketplace_quality(pid, specification=spec_done)
+                    if mq_done.get("eligible"):
+                        from web.backend.services.product_followup import (
+                            merge_mark_storefront_established_listing,
+                        )
+
+                        if merge_mark_storefront_established_listing(pid) and pid in products:
+                            products[pid]["updated_at"] = time.time()
+                except Exception:
+                    logger.debug(
+                        "merge_mark_storefront_established_listing (fallback completion) failed for %s",
+                        pid,
+                        exc_info=True,
+                    )
             elif prev_state == "COMPLETED" and target_state == "EVOLUTION_ANALYZING":
                 # Daily revision task for COMPLETED product — don't create next task
                 logger.info(f"Periodic market monitoring completed for product {pid} (fallback)")
@@ -1700,6 +1732,16 @@ class PipelineWorker:
                 continue
             ready, reasons = self._marketplace_readiness(pid)
             if ready:
+                try:
+                    from web.backend.services.product_followup import (
+                        merge_mark_storefront_established_listing,
+                    )
+
+                    if merge_mark_storefront_established_listing(pid):
+                        product["updated_at"] = now
+                        changed = True
+                except Exception:
+                    logger.debug("merge_mark_storefront_established_listing failed for %s", pid, exc_info=True)
                 continue
             candidates.append((pid, product, reasons))
 

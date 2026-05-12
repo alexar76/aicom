@@ -16,6 +16,8 @@ from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
+STOREFRONT_ESTABLISHED_LISTING_KEY = "storefront_established_listing"
+
 
 def _data_root() -> Path:
     return Path(os.environ.get("AIFACTORY_DATA_ROOT", "/app/data"))
@@ -71,6 +73,8 @@ def normalize_pipeline_followup(raw: Optional[dict[str, Any]]) -> dict[str, Any]
             "admin_force_list_at": None,
             "admin_hide_from_storefront": False,
             "admin_decisions_updated_at": None,
+            "storefront_established_listing": False,
+            "storefront_established_listing_at": None,
         }
     return {
         "followup": raw.get("followup"),
@@ -83,6 +87,8 @@ def normalize_pipeline_followup(raw: Optional[dict[str, Any]]) -> dict[str, Any]
         "admin_force_list_at": raw.get("admin_force_list_at"),
         "admin_hide_from_storefront": bool(raw.get("admin_hide_from_storefront")),
         "admin_decisions_updated_at": raw.get("admin_decisions_updated_at"),
+        "storefront_established_listing": bool(raw.get(STOREFRONT_ESTABLISHED_LISTING_KEY)),
+        "storefront_established_listing_at": raw.get("storefront_established_listing_at"),
     }
 
 
@@ -100,6 +106,24 @@ def normalize_followup_record(raw: Optional[dict[str, Any]]) -> dict[str, Any]:
 def admin_force_list_enabled(product_id: str) -> bool:
     raw = read_followup(product_id)
     return bool(raw and raw.get("admin_force_list"))
+
+
+def storefront_established_listing_enabled(product_id: str) -> bool:
+    """True once this product met storefront quality while shipped — keeps card visible during repair."""
+    raw = read_followup(product_id)
+    return bool(raw and raw.get(STOREFRONT_ESTABLISHED_LISTING_KEY))
+
+
+def merge_mark_storefront_established_listing(product_id: str) -> bool:
+    """Set storefront_established_listing in follow-up JSON. Returns True if newly set."""
+    cur = read_followup(product_id) or {}
+    if cur.get(STOREFRONT_ESTABLISHED_LISTING_KEY):
+        return False
+    merged = dict(cur)
+    merged[STOREFRONT_ESTABLISHED_LISTING_KEY] = True
+    merged["storefront_established_listing_at"] = time.time()
+    write_followup(product_id, merged)
+    return True
 
 
 def storefront_followup_not_pursuing(product_id: str) -> bool:
@@ -176,6 +200,8 @@ def patch_followup_only(
             cur["admin_force_list"] = False
             cur.pop("admin_force_list_note", None)
             cur.pop("admin_force_list_at", None)
+            cur.pop(STOREFRONT_ESTABLISHED_LISTING_KEY, None)
+            cur.pop("storefront_established_listing_at", None)
 
         cur["followup"] = fu
         cur["planned_notes"] = notes if fu == "planned" else None

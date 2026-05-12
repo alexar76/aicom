@@ -21,6 +21,7 @@ from web.backend.services.marketplace_quality import (
 )
 from web.backend.services.product_followup import public_storefront_blocked
 from web.backend.services.product_naming import resolve_product_name
+from web.backend.services.storefront_visibility import is_mid_repair_storefront_visible
 from web.backend.services.product_brief import build_stakeholder_brief
 from marketplace_taxonomy import MARKETPLACE_CATEGORY_IDS, canonical_marketplace_category
 
@@ -262,7 +263,7 @@ def _load_sales(pid: str) -> dict:
 @router.get("/categories")
 async def list_categories():
     """List all product categories with counts — only counting products that are
-    actually visible on the storefront (COMPLETED/DEPLOYED_PRODUCTION state with code files).
+    actually visible on the storefront (shipped, or mid-repair with prior listing; see ``_public_storefront_grid_accepts``).
 
     This must stay in sync with the filters in list_products().
     """
@@ -274,19 +275,7 @@ async def list_categories():
     category_counts: dict[str, int] = {}
     landings_count = 0
     for pid, product in products.items():
-        state = (product.get("state") or "").upper()
-        if state not in ("COMPLETED", "DEPLOYED_PRODUCTION"):
-            continue
-
-        # Skip products with no actual generated code (incomplete sandbox)
-        if not _product_has_code(pid):
-            continue
-
-        if public_storefront_blocked(pid):
-            continue
-
-        ok_mq, _mq_ev = _marketplace_quality_allowed(pid, product)
-        if not ok_mq and not _admin_force_list(pid):
+        if not _public_storefront_grid_accepts(pid, product):
             continue
 
         spec_inner = _spec_inner_for_storefront(pid, product)
@@ -356,12 +345,20 @@ def is_shipped_pipeline_product_state(state: Any) -> bool:
 def public_storefront_listing_eligible(pid: str, product: dict[str, Any]) -> tuple[bool, list[str]]:
     """Same gates as ``list_products`` / admin pipeline hints — shipped, code on disk, not hidden, quality or force."""
     state = (product.get("state") or "").upper()
-    if state not in ("COMPLETED", "DEPLOYED_PRODUCTION"):
-        return False, ["pipeline_state_not_shipped"]
     if not _product_has_code(pid):
         return False, ["no_generated_code_on_disk_or_empty_manifest"]
     if public_storefront_blocked(pid):
         return False, ["hidden_from_public_storefront"]
+    if is_mid_repair_storefront_visible(
+        pid,
+        product,
+        state_upper=state,
+        has_generated_code=True,
+        storefront_blocked=False,
+    ):
+        return True, ["listed_during_remediation_keeps_prior_storefront_visibility"]
+    if state not in ("COMPLETED", "DEPLOYED_PRODUCTION"):
+        return False, ["pipeline_state_not_shipped"]
     mq_ok, mq_ev = _marketplace_quality_allowed(pid, product)
     force = _admin_force_list(pid)
     if not mq_ok and not force:
@@ -395,25 +392,36 @@ def _product_has_code(pid: str) -> bool:
         return False
 
 
+def _public_storefront_grid_accepts(pid: str, product: dict[str, Any]) -> bool:
+    """Single source of truth for public grid inclusion (keep in sync with public_storefront_listing_eligible)."""
+    state = (product.get("state") or "").upper()
+    if not _product_has_code(pid):
+        return False
+    if public_storefront_blocked(pid):
+        return False
+    if is_mid_repair_storefront_visible(
+        pid,
+        product,
+        state_upper=state,
+        has_generated_code=True,
+        storefront_blocked=False,
+    ):
+        return True
+    if state not in ("COMPLETED", "DEPLOYED_PRODUCTION"):
+        return False
+    mq_ok, _ = _marketplace_quality_allowed(pid, product)
+    return bool(mq_ok) or bool(_admin_force_list(pid))
+
+
 def count_showcase_listable_products() -> int:
     """Products listed on the public storefront if ``category`` is unset — same gates as ``list_products``.
 
-    Counts COMPLETED/DEPLOYED_PRODUCTION rows with generated code on disk that pass
-    ``evaluate_marketplace_quality`` (must stay aligned with ``list_products`` / ``list_categories``).
+    Counts rows that pass ``_public_storefront_grid_accepts`` (shipped, repair-keep-visible, or force-list).
     """
     n = 0
     for pid, product in _get_products_map().items():
-        state = (product.get("state") or "").upper()
-        if state not in ("COMPLETED", "DEPLOYED_PRODUCTION"):
-            continue
-        if not _product_has_code(pid):
-            continue
-        if public_storefront_blocked(pid):
-            continue
-        mq_ok, _ = _marketplace_quality_allowed(pid, product)
-        if not mq_ok and not _admin_force_list(pid):
-            continue
-        n += 1
+        if _public_storefront_grid_accepts(pid, product):
+            n += 1
     return n
 
 
@@ -424,9 +432,9 @@ async def list_products(category: Optional[str] = Query(None, description="Filte
     Products without actual generated code files on disk are excluded
     (incomplete sandbox products should not appear in the marketplace).
 
-    Additionally, listings enforce **marketplace quality** (same demo gates as pipeline QA,
-    optional minimum spec coverage — see ``marketplace_quality.evaluate_marketplace_quality``).
-    Low-value / stub demos must not appear until the build is revised.
+    Additionally, listings enforce **marketplace quality** for first-time ship; products that already
+    met storefront rules keep their card visible while the pipeline re-opens them for fixes
+    (see ``product_followup.storefront_established_listing``).
     """
     products_dir = Path("/app/data/state")
     products = []
@@ -439,35 +447,12 @@ async def list_products(category: Optional[str] = Query(None, description="Filte
             data_products = _get_products_map()
             used_names: set[str] = set()
             for pid, product in data_products.items():
+                if not _public_storefront_grid_accepts(pid, product):
+                    continue
+
                 state = (product.get("state") or "").upper()
-                if state not in ("COMPLETED", "DEPLOYED_PRODUCTION"):
-                    continue
-
-                # Skip products with no actual generated code (incomplete sandbox)
-                if not _product_has_code(pid):
-                    logger.info(f"Skipping product {pid} from marketplace: no code files")
-                    continue
-
-                if public_storefront_blocked(pid):
-                    logger.info("Skipping product %s from marketplace: hidden by admin / not pursuing", pid)
-                    continue
-
-                mq_ok, mq_ev = _marketplace_quality_allowed(pid, product)
-                force = _admin_force_list(pid)
-                if not mq_ok and not force:
-                    logger.info(
-                        "Skipping product %s from marketplace: quality gate — %s",
-                        pid,
-                        mq_ev.get("reasons") or mq_ev.get("demo_quality", {}).get("issues"),
-                    )
-                    continue
-                if not mq_ok and force:
-                    logger.info(
-                        "Listing product %s on marketplace via admin_force_list override",
-                        pid,
-                    )
-
                 spec_inner = _spec_inner_for_storefront(pid, product)
+                _, mq_ev = _marketplace_quality_allowed(pid, product)
                 is_landing = _is_marketing_landing_listing(product, spec_inner)
 
                 # Load marketing (now done early in pipeline, has market research + monetization)

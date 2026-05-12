@@ -33,8 +33,8 @@ for i in $(seq 1 60); do
   fi
 done
 
-echo "== seed demo product =="
-${DC} exec -T app python3 /app/scripts/seed_marketplace_demo.py
+echo "== seed demo product (optional; AIFACTORY_SEED_MARKETPLACE_DEMO=1) =="
+AIFACTORY_SEED_MARKETPLACE_DEMO=1 ${DC} exec -T app env AIFACTORY_SEED_MARKETPLACE_DEMO=1 python3 /app/scripts/seed_marketplace_demo.py
 
 echo "== GET /api/products (direct API) =="
 curl -fsS "${APIB}/api/products" | head -c 400

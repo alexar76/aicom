@@ -91,10 +91,10 @@ Category slugs on the grid and in `/api/products` come from **`canonical_marketp
 
 **Important:** with `USE_SQLITE=true` the storefront must read products from SQLite (implemented in `web/backend/api/products.py`). Previously the list came only from `pipeline.json`, so the Docker marketplace could appear empty.
 
-Demo product for marketplace and sandbox checks:
+Demo product for marketplace and sandbox checks (optional; **off by default** — set `AIFACTORY_SEED_MARKETPLACE_DEMO=1`):
 
 ```bash
-docker-compose exec app python3 /app/scripts/seed_marketplace_demo.py
+docker compose exec -T app env AIFACTORY_SEED_MARKETPLACE_DEMO=1 python3 /app/scripts/seed_marketplace_demo.py
 ```
 
 This creates `prod-demo-market-01`, marketing files, `code_manifest.json`, and `index.html` for the sandbox.
