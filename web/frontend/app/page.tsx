@@ -110,12 +110,12 @@ function Navbar({ copy }: { copy: MarketingStrings }) {
   }, [moreOpen]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo */}
-        <a href="/" className="flex items-center gap-2 group">
-          <Cpu className="w-6 h-6 text-indigo-400 group-hover:text-indigo-300 transition-colors" />
-          <span className="text-lg font-bold text-white">{copy.brandName}</span>
+    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 min-w-0">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 flex items-center justify-between gap-2 min-w-0">
+        {/* Logo — shrink-0 keeps chip + wordmark on-screen when the row is tight */}
+        <a href="/" className="flex items-center gap-2 group min-w-0 shrink-0 max-w-[calc(100%-3.5rem)]">
+          <Cpu className="w-6 h-6 text-indigo-400 group-hover:text-indigo-300 transition-colors shrink-0" />
+          <span className="text-lg font-bold text-white truncate">{copy.brandName}</span>
         </a>
 
         {/* Desktop Nav */}
@@ -166,7 +166,7 @@ function Navbar({ copy }: { copy: MarketingStrings }) {
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-gray-400 hover:text-white transition-colors"
+          className="md:hidden text-gray-400 hover:text-white transition-colors shrink-0 p-1 -mr-1"
           aria-label="Toggle menu"
         >
           {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -1265,7 +1265,7 @@ function Footer({ copy }: { copy: MarketingStrings }) {
 
 export default function HomePage() {
   return (
-    <main>
+    <main className="min-w-0 overflow-x-clip">
       <Navbar copy={siteCopy} />
       <HeroSection copy={siteCopy} />
       <FeaturesSection copy={siteCopy} />
