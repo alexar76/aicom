@@ -764,18 +764,31 @@ export function PipelineTab() {
                 {/* Pipeline Stage Flow Bar — always show full stage row (incl. Designer) even before tasks land in queue */}
                 <div className="mb-4 overflow-x-auto">
                   <p className="text-[10px] text-gray-500 mb-2">
-                    Click an agent tile, a green link between tiles, or a task circle below for full task details.
+                    Click an agent tile, a colored link between stages, or a task circle below for full task details.
                   </p>
                   <div className="flex items-center min-w-max gap-0">
                     {(PIPELINE_STAGE_ORDER as readonly string[]).map((agentType, ai, arr) => {
                         const task = findTaskForStage(tasks, agentType);
                         const status = task?.status || 'pending';
-                        const stageColors: Record<string, string> = {
-                          completed: 'bg-emerald-500 border-emerald-400 text-emerald-900',
-                          running: 'bg-amber-500 border-amber-400 text-amber-900 animate-pulse',
-                          failed: 'bg-red-500 border-red-400 text-red-900',
-                          pending: 'bg-white/5 border-white/10 text-gray-500',
-                        };
+                        /** Designer (UX) mirrors Architect — use fuchsia, not emerald, so it is not mistaken for a generic “green done” pipeline cell. */
+                        const stageColors: Record<string, string> =
+                          agentType === 'designer'
+                            ? {
+                                completed:
+                                  'bg-fuchsia-600 border-fuchsia-400 text-white',
+                                running:
+                                  'bg-fuchsia-500 border-fuchsia-300 text-white animate-pulse',
+                                failed: 'bg-red-500 border-red-400 text-red-900',
+                                pending: 'bg-white/5 border-white/10 text-gray-500',
+                              }
+                            : {
+                                completed:
+                                  'bg-emerald-500 border-emerald-400 text-emerald-900',
+                                running:
+                                  'bg-amber-500 border-amber-400 text-amber-900 animate-pulse',
+                                failed: 'bg-red-500 border-red-400 text-red-900',
+                                pending: 'bg-white/5 border-white/10 text-gray-500',
+                              };
                         const stageIcons: Record<string, string> = {
                           analyst: '🔍', pm: '📋', methodologist: '🧭',
                           architect: '🏗️', designer: '🎨', developer: '💻', qa: '🧪',
@@ -805,9 +818,17 @@ export function PipelineTab() {
                                   {stageIcons[agentType] || '⚙️'}
                                 </div>
                                 <span className={`text-[10px] font-medium ${
-                                  status === 'completed' ? 'text-emerald-400' :
-                                  status === 'running' ? 'text-amber-400' :
-                                  status === 'failed' ? 'text-red-400' : 'text-gray-600'
+                                  status === 'completed'
+                                    ? agentType === 'designer'
+                                      ? 'text-fuchsia-400'
+                                      : 'text-emerald-400'
+                                    : status === 'running'
+                                      ? agentType === 'designer'
+                                        ? 'text-fuchsia-300'
+                                        : 'text-amber-400'
+                                      : status === 'failed'
+                                        ? 'text-red-400'
+                                        : 'text-gray-600'
                                 }`}>
                                   {agentType === 'analyst'
                                     ? 'Anl'
@@ -817,15 +838,23 @@ export function PipelineTab() {
                                         ? 'UX'
                                         : agentType === 'methodologist'
                                           ? 'Mth'
-                                          : agentType.charAt(0).toUpperCase() + agentType.slice(1, 3)}
+                                          : agentType === 'devops'
+                                            ? 'Ops'
+                                            : agentType.charAt(0).toUpperCase() + agentType.slice(1, 3)}
                                 </span>
                               </button>
                             </div>
                             {ai < arr.length - 1 && (
                               <div className={`h-0.5 w-6 mx-1 rounded-full mt-[-18px] ${
-                                status === 'completed' ? 'bg-emerald-500/50' :
-                                status === 'running' ? 'bg-amber-500/30' :
-                                'bg-white/5'
+                                status === 'completed'
+                                  ? agentType === 'designer'
+                                    ? 'bg-fuchsia-500/50'
+                                    : 'bg-emerald-500/50'
+                                  : status === 'running'
+                                    ? agentType === 'designer'
+                                      ? 'bg-fuchsia-500/30'
+                                      : 'bg-amber-500/30'
+                                    : 'bg-white/5'
                               }`} />
                             )}
                           </React.Fragment>

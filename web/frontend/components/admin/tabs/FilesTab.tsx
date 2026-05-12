@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import {
   RefreshCw,
-  ExternalLink,
   Loader2,
   ChevronDown,
+  Maximize2,
+  X,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
@@ -41,8 +42,13 @@ type ArtifactsPanelProps = {
   availableFileCategories: string[];
   filteredFiles: any[];
   truncatedByCategory: Record<string, boolean> | null;
-  sandboxOpening: boolean;
-  openSandboxPreview: () => void;
+  sandboxIframeSrc: string | null;
+  sandboxLoading: boolean;
+  sandboxError: string | null;
+  sandboxReloadKey: number;
+  sandboxModalOpen: boolean;
+  setSandboxModalOpen: (open: boolean) => void;
+  refreshSandbox: () => void;
 };
 
 function ProductArtifactsPanel({
@@ -58,36 +64,141 @@ function ProductArtifactsPanel({
   availableFileCategories,
   filteredFiles,
   truncatedByCategory,
-  sandboxOpening,
-  openSandboxPreview,
+  sandboxIframeSrc,
+  sandboxLoading,
+  sandboxError,
+  sandboxReloadKey,
+  sandboxModalOpen,
+  setSandboxModalOpen,
+  refreshSandbox,
 }: ArtifactsPanelProps) {
   const truncatedCats =
     truncatedByCategory && Object.keys(truncatedByCategory).length > 0
       ? Object.keys(truncatedByCategory).sort().join(', ')
       : null;
 
+  const canOpenFullscreen = Boolean(sandboxIframeSrc);
+
   return (
     <>
       <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:flex-row sm:flex-wrap sm:items-center">
-        <Button
-          type="button"
-          variant="secondary"
-          size="sm"
-          disabled={sandboxOpening}
-          onClick={() => void openSandboxPreview()}
-          className="flex w-full items-center justify-center gap-2 sm:w-auto"
-        >
-          {sandboxOpening ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <ExternalLink className="w-4 h-4" />
-          )}
-          {sandboxOpening ? 'Starting…' : 'Open sandbox preview'}
-        </Button>
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            disabled={!canOpenFullscreen}
+            onClick={() => {
+              if (!sandboxIframeSrc) return;
+              setSandboxModalOpen(true);
+            }}
+            className="inline-flex items-center justify-center gap-2"
+          >
+            <Maximize2 className="h-4 w-4" />
+            Full screen sandbox
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            disabled={sandboxLoading}
+            onClick={() => void refreshSandbox()}
+            className="inline-flex items-center gap-2 text-gray-300"
+          >
+            {sandboxLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+            Refresh
+          </Button>
+        </div>
         <p className="max-w-xl text-xs text-gray-500">
-          Starts a sandbox for this product and opens the HTML demo (iframe) in a new tab — same viewer as the product page.
+          Preview loads below. Full screen opens in this page (no popup) so the browser does not block it.
         </p>
       </div>
+
+      <div className="mb-3 overflow-hidden rounded-xl border border-white/10 bg-black/40">
+        {sandboxLoading && !sandboxIframeSrc ? (
+          <div className="flex aspect-video min-h-[200px] items-center justify-center gap-2 text-sm text-gray-400">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            Starting sandbox…
+          </div>
+        ) : sandboxError ? (
+          <div className="flex aspect-video min-h-[200px] flex-col items-center justify-center gap-2 px-4 text-center text-sm text-red-300">
+            <span>{sandboxError}</span>
+            <Button type="button" variant="secondary" size="sm" onClick={() => void refreshSandbox()}>
+              Retry
+            </Button>
+          </div>
+        ) : sandboxIframeSrc ? (
+          <div className="relative aspect-video h-[min(40vh,320px)] w-full sm:h-[min(45vh,380px)]">
+            <iframe
+              key={`prev-${sandboxReloadKey}`}
+              title="Sandbox preview"
+              src={sandboxIframeSrc}
+              className="h-full w-full border-0 bg-black"
+              referrerPolicy="no-referrer"
+            />
+            {sandboxLoading ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/55 backdrop-blur-[1px]">
+                <Loader2 className="h-8 w-8 animate-spin text-white" />
+              </div>
+            ) : null}
+          </div>
+        ) : (
+          <div className="flex aspect-video min-h-[200px] items-center justify-center text-sm text-gray-500">
+            Sandbox preview will appear after files load.
+          </div>
+        )}
+      </div>
+
+      {sandboxModalOpen && sandboxIframeSrc ? (
+        <div
+          className="fixed inset-0 z-[100] flex flex-col bg-zinc-950/95 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Sandbox full screen"
+        >
+          <div className="flex shrink-0 items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
+            <span className="truncate text-sm font-medium text-white">
+              Sandbox · {selectedProduct.slice(0, 14)}…
+            </span>
+            <div className="flex shrink-0 items-center gap-2">
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                disabled={sandboxLoading}
+                onClick={() => void refreshSandbox()}
+                className="inline-flex items-center gap-2"
+              >
+                {sandboxLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+                Reload
+              </Button>
+              <button
+                type="button"
+                onClick={() => setSandboxModalOpen(false)}
+                className="rounded-lg p-2 text-gray-400 hover:bg-white/10 hover:text-white"
+                aria-label="Close sandbox"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+          <div className="relative flex min-h-0 flex-1 flex-col">
+            <iframe
+              key={`modal-${sandboxReloadKey}`}
+              title="Sandbox full screen"
+              src={sandboxIframeSrc}
+              className="min-h-0 w-full flex-1 border-0 bg-black"
+              referrerPolicy="no-referrer"
+            />
+            {sandboxLoading ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/45 backdrop-blur-[1px]">
+                <Loader2 className="h-10 w-10 animate-spin text-white" />
+              </div>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+
       <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
         <Input
           value={fileSearch}
@@ -184,7 +295,11 @@ export function FilesTab() {
   const [productsReloadKey, setProductsReloadKey] = useState(0);
   const [fileLoading, setFileLoading] = useState(false);
   const [expandedFile, setExpandedFile] = useState<string | null>(null);
-  const [sandboxOpening, setSandboxOpening] = useState(false);
+  const [sandboxIframeSrc, setSandboxIframeSrc] = useState<string | null>(null);
+  const [sandboxLoading, setSandboxLoading] = useState(false);
+  const [sandboxError, setSandboxError] = useState<string | null>(null);
+  const [sandboxReloadKey, setSandboxReloadKey] = useState(0);
+  const [sandboxModalOpen, setSandboxModalOpen] = useState(false);
   const [productSearch, setProductSearch] = useState('');
   const [productStateFilter, setProductStateFilter] = useState('all');
   const [fileSearch, setFileSearch] = useState('');
@@ -200,6 +315,10 @@ export function FilesTab() {
     setSelectedProduct(null);
     setFiles([]);
     setTruncatedByCategory(null);
+    setSandboxIframeSrc(null);
+    setSandboxError(null);
+    setSandboxModalOpen(false);
+    setSandboxReloadKey(0);
 
     void (async () => {
       try {
@@ -238,6 +357,11 @@ export function FilesTab() {
     setSelectedProduct(productId);
     setFileLoading(true);
     setExpandedFile(null);
+    setSandboxIframeSrc(null);
+    setSandboxError(null);
+    setSandboxModalOpen(false);
+    setSandboxReloadKey(0);
+    setSandboxLoading(false);
     const token = localStorage.getItem('admin_token');
     let lastErr: unknown;
     for (let attempt = 0; attempt < FILES_ATTEMPTS; attempt++) {
@@ -257,6 +381,19 @@ export function FilesTab() {
             : null,
         );
         setFileLoading(false);
+        setSandboxLoading(true);
+
+        try {
+          const result = await api.startSandbox(productId);
+          const raw = result.url || `/api/sandbox/view/${result.sandbox_id}`;
+          const abs = raw.startsWith('http') ? raw : new URL(raw, window.location.origin).href;
+          setSandboxIframeSrc(abs);
+        } catch (se: unknown) {
+          setSandboxIframeSrc(null);
+          setSandboxError(se instanceof Error ? se.message : 'Failed to start sandbox');
+        } finally {
+          setSandboxLoading(false);
+        }
         return;
       } catch (e) {
         lastErr = e;
@@ -267,6 +404,9 @@ export function FilesTab() {
     }
     setFiles([]);
     setTruncatedByCategory(null);
+    setSandboxIframeSrc(null);
+    setSandboxError(null);
+    setSandboxLoading(false);
     setFileLoading(false);
     const msg = lastErr instanceof Error ? lastErr.message : String(lastErr);
     toast.error(`Could not load files: ${msg}`);
@@ -278,28 +418,44 @@ export function FilesTab() {
       setFiles([]);
       setTruncatedByCategory(null);
       setExpandedFile(null);
+      setSandboxIframeSrc(null);
+      setSandboxError(null);
+      setSandboxModalOpen(false);
+      setSandboxReloadKey(0);
+      setSandboxLoading(false);
       return;
     }
     void loadFiles(id);
   };
 
-  const openSandboxPreview = async () => {
+  const refreshSandbox = useCallback(async () => {
     if (!selectedProduct) return;
-    setSandboxOpening(true);
+    setSandboxLoading(true);
+    setSandboxError(null);
     try {
       const result = await api.startSandbox(selectedProduct);
       const raw = result.url || `/api/sandbox/view/${result.sandbox_id}`;
       const abs = raw.startsWith('http') ? raw : new URL(raw, window.location.origin).href;
-      const win = window.open(abs, '_blank', 'noopener,noreferrer');
-      if (!win) {
-        toast.error('Popup blocked — allow popups for this site or open the URL manually.');
-      }
+      setSandboxIframeSrc(abs);
+      setSandboxReloadKey((k) => k + 1);
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : 'Failed to start sandbox');
+      setSandboxIframeSrc(null);
+      const msg = e instanceof Error ? e.message : 'Failed to start sandbox';
+      setSandboxError(msg);
+      toast.error(msg);
     } finally {
-      setSandboxOpening(false);
+      setSandboxLoading(false);
     }
-  };
+  }, [selectedProduct]);
+
+  useEffect(() => {
+    if (!sandboxModalOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSandboxModalOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [sandboxModalOpen]);
 
   const filteredProducts = useMemo(() => {
     const q = productSearch.trim().toLowerCase();
@@ -358,8 +514,13 @@ export function FilesTab() {
         availableFileCategories={availableFileCategories}
         filteredFiles={filteredFiles}
         truncatedByCategory={truncatedByCategory}
-        sandboxOpening={sandboxOpening}
-        openSandboxPreview={() => void openSandboxPreview()}
+        sandboxIframeSrc={sandboxIframeSrc}
+        sandboxLoading={sandboxLoading}
+        sandboxError={sandboxError}
+        sandboxReloadKey={sandboxReloadKey}
+        sandboxModalOpen={sandboxModalOpen}
+        setSandboxModalOpen={setSandboxModalOpen}
+        refreshSandbox={refreshSandbox}
       />
     ) : null;
 

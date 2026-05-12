@@ -336,6 +336,21 @@ def _admin_force_list(pid: str) -> bool:
         return False
 
 
+def _touch_storefront_established_listing(pid: str) -> None:
+    """Persist follow-up flag the first time a build is publicly listable (shipped + quality or force)."""
+    try:
+        from web.backend.services.product_followup import (
+            merge_mark_storefront_established_listing,
+            storefront_established_listing_enabled,
+        )
+
+        if storefront_established_listing_enabled(pid):
+            return
+        merge_mark_storefront_established_listing(pid)
+    except Exception:
+        logger.debug("touch storefront_established_listing failed for %s", pid, exc_info=True)
+
+
 def is_shipped_pipeline_product_state(state: Any) -> bool:
     """True when the product row is a finished pipeline build (same family as storefront ship states)."""
     s = str(state or "").strip().upper()
@@ -367,7 +382,9 @@ def public_storefront_listing_eligible(pid: str, product: dict[str, Any]) -> tup
             return False, [str(x) for x in rs[:15]]
         return False, ["marketplace_quality_not_eligible"]
     if force and not mq_ok:
+        _touch_storefront_established_listing(pid)
         return True, ["listed_via_admin_force_list"]
+    _touch_storefront_established_listing(pid)
     return True, []
 
 
@@ -410,7 +427,12 @@ def _public_storefront_grid_accepts(pid: str, product: dict[str, Any]) -> bool:
     if state not in ("COMPLETED", "DEPLOYED_PRODUCTION"):
         return False
     mq_ok, _ = _marketplace_quality_allowed(pid, product)
-    return bool(mq_ok) or bool(_admin_force_list(pid))
+    force = _admin_force_list(pid)
+    if not mq_ok and not force:
+        return False
+    if mq_ok or force:
+        _touch_storefront_established_listing(pid)
+    return True
 
 
 def count_showcase_listable_products() -> int:
