@@ -15,9 +15,8 @@ import {
 
 const CX = 200;
 const CY = 200;
-/** Keep satellites inside the square: at R≈158 + ~31% card width the layout overflowed past 100%. */
-const R_ORBIT = 116;
-const R_LINE = 108;
+const R_ORBIT = 158;
+const R_LINE = 148;
 
 function polar(deg: number) {
   const rad = (deg * Math.PI) / 180;
@@ -62,7 +61,9 @@ export function ArchitectureOrbit() {
           </p>
         </motion.div>
 
-        <div className="relative mx-auto w-full max-w-[min(28rem,calc(100%-1rem))] sm:max-w-[min(480px,calc(100vw-2rem))] aspect-square min-h-0">
+        {/* Centered in the column, then shifted 50px left vs geometric center (visual balance). */}
+        <div className="flex w-full min-w-0 justify-center overflow-x-clip">
+          <div className="relative w-full max-w-[min(100vw-2rem,480px)] aspect-square min-h-0 -translate-x-[50px]">
           {/* Soft glow */}
           <div
             className="pointer-events-none absolute inset-[10%] rounded-full opacity-50 blur-3xl bg-[conic-gradient(from_180deg_at_50%_50%,rgba(99,102,241,0.35),rgba(168,85,247,0.25),rgba(34,211,238,0.3),rgba(99,102,241,0.35))]"
@@ -120,24 +121,24 @@ export function ArchitectureOrbit() {
           </svg>
 
           {/* Center hub */}
-          <div className="absolute left-1/2 top-1/2 z-10 w-[min(46%,11.5rem)] sm:w-[min(42%,200px)] -translate-x-1/2 -translate-y-1/2 px-0.5">
+          <div className="absolute left-1/2 top-1/2 z-10 w-[min(42%,200px)] -translate-x-1/2 -translate-y-1/2">
             <motion.div
               initial={{ scale: 0.92, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-              className="rounded-full border border-white/15 bg-gradient-to-br from-indigo-600/40 via-purple-600/30 to-cyan-600/25 p-3.5 sm:p-6 text-center shadow-[0_0_60px_-12px_rgba(99,102,241,0.55)] backdrop-blur-md ring-1 ring-white/10"
+              className="rounded-full border border-white/15 bg-gradient-to-br from-indigo-600/40 via-purple-600/30 to-cyan-600/25 p-6 text-center shadow-[0_0_60px_-12px_rgba(99,102,241,0.55)] backdrop-blur-md ring-1 ring-white/10"
             >
-              <div className="mx-auto mb-1.5 sm:mb-2 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-black/30 ring-1 ring-white/10">
-                <Bot className="h-6 w-6 sm:h-7 sm:w-7 text-indigo-200" aria-hidden />
+              <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-black/30 ring-1 ring-white/10">
+                <Bot className="h-7 w-7 text-indigo-200" aria-hidden />
               </div>
-              <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-indigo-200/90">Agents</p>
-              <p className="mt-1 text-[9px] sm:text-[11px] leading-snug text-gray-300/90">
+              <p className="text-xs font-semibold uppercase tracking-wider text-indigo-200/90">Agents</p>
+              <p className="mt-1 text-[11px] leading-snug text-gray-300/90">
                 PM · Architect · Dev · QA · Sec · Ops · Mkt · Sales · Evolution
               </p>
-              <div className="mt-2 sm:mt-3 flex items-center justify-center gap-1 text-[9px] sm:text-[10px] text-cyan-200/80">
-                <Cpu className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />
-                <span className="leading-tight">Single pipeline · shared gates</span>
+              <div className="mt-3 flex items-center justify-center gap-1 text-[10px] text-cyan-200/80">
+                <Cpu className="h-3 w-3" />
+                <span>Single pipeline · shared gates</span>
               </div>
             </motion.div>
           </div>
@@ -154,7 +155,7 @@ export function ArchitectureOrbit() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.06 * i, duration: 0.35 }}
-                className="absolute z-20 w-[31%] max-w-[8.25rem] min-w-0 sm:max-w-[9.5rem] sm:min-w-[6.5rem]"
+                className="absolute z-20 w-[30%] max-w-[9.5rem] min-w-[7rem]"
                 style={{
                   left: `${left}%`,
                   top: `${top}%`,
@@ -169,6 +170,7 @@ export function ArchitectureOrbit() {
               </motion.div>
             );
           })}
+          </div>
         </div>
       </div>
     </section>
