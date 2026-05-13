@@ -29,7 +29,6 @@ import {
   Globe,
   ToggleLeft,
   ToggleRight,
-  Save,
   List,
   ScrollText,
   ChevronRight,
@@ -96,6 +95,21 @@ import {
 type AdminThroughputSnapshot = NonNullable<
   Awaited<ReturnType<typeof api.getAdminSettings>>['throughput_effective']
 >;
+
+/** Deterministic JSON for autosave dedupe (key order must not cause false mismatches). */
+function stableStringify(value: unknown): string {
+  if (value === null || typeof value !== 'object') {
+    return JSON.stringify(value);
+  }
+  if (Array.isArray(value)) {
+    return `[${value.map((v) => stableStringify(v)).join(',')}]`;
+  }
+  const rec = value as Record<string, unknown>;
+  return `{${Object.keys(rec)
+    .sort()
+    .map((k) => `${JSON.stringify(k)}:${stableStringify(rec[k])}`)
+    .join(',')}}`;
+}
 
 export function SettingsTab() {
   const [currentTheme, setCurrentTheme] = useState<string>('cyberpunk');
@@ -183,6 +197,15 @@ export function SettingsTab() {
     ...DEFAULT_QUALITY_SETTINGS,
   }));
 
+  const ADMIN_AUTOSAVE_MS = 700;
+  const CORP_AUTOSAVE_MS = 650;
+  const adminBaselineReadyRef = useRef(false);
+  const adminAutosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastAdminPersistSigRef = useRef<string>('');
+  const corpChatHydratedRef = useRef(false);
+  const corpAutosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastCorpPersistSigRef = useRef<string>('');
+
   const clampAutoPipelineMinutes = (n: number) => Math.min(10080, Math.max(15, Math.round(n)));
 
   const ingestAdminSettingsResponse = (data: Awaited<ReturnType<typeof api.getAdminSettings>>) => {
@@ -206,6 +229,23 @@ export function SettingsTab() {
     if (qualityPayload && typeof qualityPayload === 'object') {
       setQualitySettings((prev) => ({ ...prev, ...DEFAULT_QUALITY_SETTINGS, ...qualityPayload }));
     }
+  };
+
+  /** Matches `buildAdminPayload` / `adminPayloadSignature` after a GET so autosave does not loop. */
+  const adminSigFromGetResponse = (data: Awaited<ReturnType<typeof api.getAdminSettings>>) => {
+    const {
+      throughput_effective: _te,
+      telegram_bot_token_configured: _tb,
+      railway_token_configured: _rw,
+      reference_templates_catalog: _rc,
+      quality,
+      ...rest
+    } = data;
+    const q =
+      quality && typeof quality === 'object'
+        ? { ...DEFAULT_QUALITY_SETTINGS, ...quality }
+        : { ...DEFAULT_QUALITY_SETTINGS };
+    return stableStringify({ ...rest, quality: q });
   };
 
   const refreshThroughputSnapshotOnly = async () => {
@@ -248,11 +288,14 @@ export function SettingsTab() {
       setSettingsLoading(false);
     });
     api.getChatSettings().then((s) => {
-      setCorpChatSettings({
+      const next = {
         director_standup_enabled: s.director_standup_enabled,
         director_standup_time: s.director_standup_time,
         director_standup_timezone: s.director_standup_timezone,
-      });
+      };
+      lastCorpPersistSigRef.current = stableStringify(next);
+      corpChatHydratedRef.current = true;
+      setCorpChatSettings(next);
     }).catch(() => {});
   }, []);
 
@@ -287,6 +330,7 @@ export function SettingsTab() {
         await api.updateAdminSettings({ auto_pipeline: false, auto_pipeline_interval_minutes: settings.auto_pipeline_interval_minutes });
         const fresh = await api.getAdminSettings();
         ingestAdminSettingsResponse(fresh);
+        lastAdminPersistSigRef.current = adminSigFromGetResponse(fresh);
         toast.success('Auto-generation turned off');
       } catch (e: unknown) {
         toast.error(e instanceof Error ? e.message : 'Failed to save');
@@ -309,6 +353,7 @@ export function SettingsTab() {
       });
       const fresh = await api.getAdminSettings();
       ingestAdminSettingsResponse(fresh);
+      lastAdminPersistSigRef.current = adminSigFromGetResponse(fresh);
       setAutoGenModalOpen(false);
       toast.success(`Auto-generation on: at most once every ${minutes} minutes.`);
     } catch (e: unknown) {
@@ -318,30 +363,112 @@ export function SettingsTab() {
     }
   };
 
-  const handleSaveSettings = async () => {
+  const buildAdminPayload = (): Record<string, unknown> => {
+    const payload: Record<string, unknown> = { ...settings };
+    delete payload.telegram_bot_token_configured;
+    delete payload.railway_token_configured;
+    delete payload.reference_templates_catalog;
+    delete payload.throughput_effective;
+    const tok = telegramBotTokenInput.trim();
+    if (tok.length >= 35) {
+      payload.telegram_bot_token = tok;
+    }
+    payload.quality = qualitySettings;
+    return payload;
+  };
+
+  const adminPayloadSignature = () => stableStringify(buildAdminPayload());
+
+  const persistAdminSettings = async (): Promise<boolean> => {
+    const sig = adminPayloadSignature();
+    if (sig === lastAdminPersistSigRef.current) {
+      return true;
+    }
+    const payload = buildAdminPayload();
     setSettingsSaving(true);
     setSettingsMessage(null);
     try {
-      const payload: Record<string, unknown> = { ...settings };
-      delete payload.telegram_bot_token_configured;
-      delete payload.railway_token_configured;
-      delete payload.reference_templates_catalog;
-      delete payload.throughput_effective;
-      if (telegramBotTokenInput.trim()) {
-        payload.telegram_bot_token = telegramBotTokenInput.trim();
-      }
-      payload.quality = qualitySettings;
-      const result = await api.updateAdminSettings(payload as typeof settings & { telegram_bot_token?: string });
+      const result = await api.updateAdminSettings(payload as Record<string, unknown>);
       setTelegramBotTokenInput('');
       const fresh = await api.getAdminSettings();
       ingestAdminSettingsResponse(fresh);
+      lastAdminPersistSigRef.current = adminSigFromGetResponse(fresh);
       setSettingsMessage(`✅ ${result.message}`);
+      window.setTimeout(() => setSettingsMessage(null), 3200);
+      return true;
     } catch (e: any) {
       setSettingsMessage(`❌ Failed to save: ${e.message || 'Unknown error'}`);
+      toast.error(e?.message || 'Failed to save settings');
+      return false;
     } finally {
       setSettingsSaving(false);
     }
   };
+
+  useEffect(() => {
+    if (settingsLoading) {
+      adminBaselineReadyRef.current = false;
+      return;
+    }
+    if (!adminBaselineReadyRef.current) {
+      adminBaselineReadyRef.current = true;
+      lastAdminPersistSigRef.current = adminPayloadSignature();
+      return;
+    }
+    const nextSig = adminPayloadSignature();
+    if (nextSig === lastAdminPersistSigRef.current) {
+      return;
+    }
+    if (adminAutosaveTimerRef.current) {
+      clearTimeout(adminAutosaveTimerRef.current);
+    }
+    adminAutosaveTimerRef.current = setTimeout(() => {
+      adminAutosaveTimerRef.current = null;
+      void persistAdminSettings();
+    }, ADMIN_AUTOSAVE_MS);
+    return () => {
+      if (adminAutosaveTimerRef.current) {
+        clearTimeout(adminAutosaveTimerRef.current);
+        adminAutosaveTimerRef.current = null;
+      }
+    };
+  }, [settings, qualitySettings, telegramBotTokenInput, settingsLoading]); // persistAdminSettings reads latest state when timer fires
+
+  // Autosave Corporate Chat standup schedule (debounced)
+  useEffect(() => {
+    if (!corpChatHydratedRef.current || settingsLoading) {
+      return;
+    }
+    const sig = stableStringify(corpChatSettings);
+    if (sig === lastCorpPersistSigRef.current) {
+      return;
+    }
+    if (corpAutosaveTimerRef.current) {
+      clearTimeout(corpAutosaveTimerRef.current);
+    }
+    corpAutosaveTimerRef.current = setTimeout(async () => {
+      corpAutosaveTimerRef.current = null;
+      setCorpChatSaving(true);
+      setSettingsMessage(null);
+      try {
+        await api.updateChatSettings(corpChatSettings);
+        lastCorpPersistSigRef.current = sig;
+        setSettingsMessage('✅ Corporate Chat / standup schedule saved');
+        window.setTimeout(() => setSettingsMessage(null), 2800);
+      } catch (e: any) {
+        setSettingsMessage(`❌ Failed to save standup: ${e.message || 'Unknown error'}`);
+        toast.error(e?.message || 'Failed to save standup schedule');
+      } finally {
+        setCorpChatSaving(false);
+      }
+    }, CORP_AUTOSAVE_MS);
+    return () => {
+      if (corpAutosaveTimerRef.current) {
+        clearTimeout(corpAutosaveTimerRef.current);
+        corpAutosaveTimerRef.current = null;
+      }
+    };
+  }, [corpChatSettings, settingsLoading]);
 
   const handleRevokeTelegramToken = async () => {
     if (!window.confirm('Remove the stored Telegram bot token? Alerts will stop until you save a new token.')) return;
@@ -353,6 +480,7 @@ export function SettingsTab() {
       setTelegramBotTokenInput('');
       const fresh = await api.getAdminSettings();
       ingestAdminSettingsResponse(fresh);
+      lastAdminPersistSigRef.current = adminSigFromGetResponse(fresh);
       toast.success('Telegram bot token removed');
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : 'Failed to revoke token');
@@ -449,19 +577,6 @@ export function SettingsTab() {
     }
   };
 
-  const handleSaveCorpChatStandup = async () => {
-    setCorpChatSaving(true);
-    setSettingsMessage(null);
-    try {
-      await api.updateChatSettings(corpChatSettings);
-      setSettingsMessage('✅ Corporate Chat / standup schedule saved');
-    } catch (e: any) {
-      setSettingsMessage(`❌ Failed to save: ${e.message || 'Unknown error'}`);
-    } finally {
-      setCorpChatSaving(false);
-    }
-  };
-
   return (
     <div className="w-full min-w-0 max-w-2xl space-y-6">
       <h2 className="text-xl font-semibold text-white mb-4">Settings</h2>
@@ -545,7 +660,7 @@ export function SettingsTab() {
                 }
                 className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500/50"
               />
-              <p className="text-xs text-gray-500">Range 15 minutes … 7 days (10080 min). Save settings below to apply.</p>
+              <p className="text-xs text-gray-500">Range 15 minutes … 7 days (10080 min). Changes save automatically after a short pause.</p>
             </div>
 
             <div className="border-t border-white/5 pt-4">
@@ -771,9 +886,9 @@ export function SettingsTab() {
               setCorpChatSettings((prev) => ({ ...prev, director_standup_timezone: e.target.value }))
             }
           />
-          <Button size="sm" onClick={handleSaveCorpChatStandup} disabled={corpChatSaving}>
-            {corpChatSaving ? 'Saving…' : 'Save standup schedule'}
-          </Button>
+          <p className="text-[11px] text-gray-500">
+            {corpChatSaving ? 'Saving standup schedule…' : 'Standup schedule saves automatically a moment after you change it.'}
+          </p>
         </div>
       </GlassCard>
 
@@ -1304,12 +1419,30 @@ export function SettingsTab() {
               placeholder={`<!-- Example: GA4 -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-XXXX');\n</script>`}
               value={settings.published_site_head_html}
               onChange={(e) => handleSettingChange('published_site_head_html', e.target.value)}
+              onBlur={() => {
+                if (adminAutosaveTimerRef.current) {
+                  clearTimeout(adminAutosaveTimerRef.current);
+                  adminAutosaveTimerRef.current = null;
+                }
+                void persistAdminSettings();
+              }}
               className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 font-mono text-xs text-white placeholder:text-gray-600 focus:border-emerald-500/40 focus:outline-none"
             />
-            <p className="text-xs text-gray-500">
-              Max ~100k characters. Already-built pages are not rewritten; run Developer again or edit HTML on disk to
-              apply changes retroactively.
-            </p>
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+              <p className="text-xs text-gray-500 min-w-0">
+                Max 100,000 characters (server truncates beyond that). Already-built pages are not rewritten; run Developer
+                again or edit HTML on disk to apply changes retroactively. This field{' '}
+                <span className="text-gray-400">autosaves</span> a few seconds after edits — blur the field to save immediately.
+              </p>
+              <p
+                className={`shrink-0 text-xs tabular-nums sm:text-right ${
+                  settings.published_site_head_html.length > 100_000 ? 'text-amber-400' : 'text-gray-400'
+                }`}
+                aria-live="polite"
+              >
+                {settings.published_site_head_html.length.toLocaleString()} / 100,000
+              </p>
+            </div>
           </div>
         )}
       </GlassCard>
@@ -1418,6 +1551,7 @@ export function SettingsTab() {
               />
               <p className="text-[11px] text-gray-500 mt-1">
                 Saved in <code className="text-gray-400">config.yaml</code> on the server (like other Settings secrets).
+                Bot token is sent only when it looks complete (≥35 chars), then saves automatically after you stop typing.
                 {telegramBotTokenConfigured ? (
                   <span className="text-emerald-400/90"> Token stored.</span>
                 ) : (
@@ -1440,19 +1574,19 @@ export function SettingsTab() {
         )}
       </GlassCard>
 
-      {/* ── Save Button ── */}
+      {/* ── Autosave status (main settings persist on edit, ~0.7s debounce) ── */}
       {!settingsLoading && (
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button onClick={handleSaveSettings} disabled={settingsSaving} className="w-full sm:w-auto">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+          <div className="flex items-center gap-2 text-sm">
             {settingsSaving ? (
-              <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Saving...
+              <span className="flex items-center gap-2 text-gray-300">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                Saving settings…
               </span>
             ) : (
-              'Save Settings'
+              <span className="text-emerald-400/90">Settings save automatically while you edit.</span>
             )}
-          </Button>
+          </div>
           {settingsMessage && (
             <span className="text-sm text-gray-400 break-words">{settingsMessage}</span>
           )}

@@ -215,7 +215,7 @@ export function CorporateChatTab() {
 
   if (loading) {
     return (
-      <GlassCard className="p-6">
+      <GlassCard hover={false} className="p-6">
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400" />
         </div>
@@ -224,9 +224,12 @@ export function CorporateChatTab() {
   }
 
   return (
-    <GlassCard className="p-6 flex flex-col h-[calc(100vh-12rem)]">
-      {/* Header */}
-      <div className="mb-4 flex flex-col gap-4 border-b border-white/10 pb-3 sm:flex-row sm:items-start sm:justify-between">
+    <GlassCard
+      hover={false}
+      className="flex min-h-0 flex-col overflow-hidden p-4 max-md:h-[calc(100dvh-8rem)] md:h-[calc(100vh-10rem)] md:p-6"
+    >
+      {/* Header — tighter on small screens so the thread stays visible */}
+      <div className="mb-2 flex shrink-0 flex-col gap-3 border-b border-white/10 pb-2 max-md:gap-2 md:mb-4 md:gap-4 md:pb-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex min-w-0 flex-wrap items-center gap-3">
           <MessageCircle className="h-6 w-6 shrink-0 text-cyan-400" />
           <h2 className="text-xl font-bold text-white">Corporate Chat</h2>
@@ -266,7 +269,23 @@ export function CorporateChatTab() {
         </div>
       </div>
 
-      <div className="mb-4 rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-4 py-3 text-sm text-gray-300">
+      {/* Mobile: long intro collapsed by default — otherwise it eats the whole viewport */}
+      <details className="mb-2 shrink-0 rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-3 py-2 text-sm text-gray-300 md:hidden">
+        <summary className="cursor-pointer list-none text-left marker:content-none [&::-webkit-details-marker]:hidden">
+          <span className="font-medium text-cyan-300">About this tab</span>
+          <span className="text-gray-400"> — Corporate Chat vs Brainstorming (tap to expand)</span>
+        </summary>
+        <div className="mt-3 border-t border-white/10 pt-3 text-[13px] leading-relaxed">
+          <strong className="text-cyan-300">Corporate Chat</strong> is the ongoing company channel: Owner, scheduled Director
+          standups, and agent-style updates.{' '}
+          <strong className="text-purple-300">Brainstorming &amp; Discussions</strong> are separate session-based workshops
+          with rounds and outcomes. Full comparison:{' '}
+          <code className="rounded bg-black/30 px-1 text-xs">docs/corporate-chat-vs-discussions.md</code>.
+        </div>
+      </details>
+
+      {/* Desktop: keep full explainer visible */}
+      <div className="mb-4 hidden shrink-0 rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-4 py-3 text-sm text-gray-300 md:block">
         <strong className="text-cyan-300">Corporate Chat</strong> is the ongoing company channel: Owner, scheduled Director standups,
         and agent-style updates.{' '}
         <strong className="text-purple-300">Brainstorming &amp; Discussions</strong> are separate session-based workshops with rounds and outcomes.
@@ -275,7 +294,7 @@ export function CorporateChatTab() {
 
       {/* Settings panel */}
       {showSettings && (
-        <div className="mb-4 p-4 rounded-lg bg-white/5 border border-white/10">
+        <div className="mb-4 shrink-0 rounded-lg border border-white/10 bg-white/5 p-4">
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Owner display name (shown on your messages)
           </label>
@@ -298,8 +317,8 @@ export function CorporateChatTab() {
         </div>
       )}
 
-      {/* Messages area */}
-      <div className="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+      {/* Messages area — flex-1 + min-h-0 so header/settings can grow without overflowing the card border */}
+      <div className="custom-scrollbar min-h-0 flex-1 space-y-3 overflow-y-auto pr-1 md:pr-2">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full text-gray-500">
             <div className="text-center">
@@ -349,7 +368,7 @@ export function CorporateChatTab() {
               {/* Delete button */}
               <button
                 onClick={() => handleDelete(msg.id)}
-                className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-500/20 text-gray-500 hover:text-red-400 transition-all"
+                className="touch-manipulation flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg p-1.5 text-gray-500 opacity-100 transition-all hover:bg-red-500/20 hover:text-red-400 max-md:active:bg-red-500/25 md:min-h-0 md:min-w-0 md:opacity-0 md:group-hover:opacity-100"
                 title="Delete message"
               >
                 <Trash2 className="w-4 h-4" />
@@ -361,7 +380,7 @@ export function CorporateChatTab() {
       </div>
 
       {/* Input area */}
-      <div className="mt-4 pt-3 border-t border-white/10">
+      <div className="mt-4 shrink-0 border-t border-white/10 pt-3">
         <div className="flex gap-2">
           <textarea
             value={newMessage}
