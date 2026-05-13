@@ -1,0 +1,17 @@
+crypto:
+  supported_chains:
+  - base
+  - solana
+  - arbitrum
+  - ethereum
+  default_chain: base
+  wallet_addresses:
+    evm: ''
+    solana: ''
+  min_confirmation_amounts:
+    base: 10.0
+    solana: 10.0
+    arbitrum: 10.0
+    ethereum: 10.0
+  payment_timeout_sec: 3600
+  confirmation_poll_interval_sec: 15

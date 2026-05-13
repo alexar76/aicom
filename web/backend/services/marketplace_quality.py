@@ -2,7 +2,9 @@
 Marketplace listing quality — generated programs must offer real user value before
 they appear on the public storefront (aligned with pipeline QA demo gates).
 
-Env:
+Primary source: ``quality.*`` in layered platform YAML (Admin → Settings → Pipeline & product quality).
+Env vars override YAML when set (non-empty). Legacy env names:
+
   AIFACTORY_MARKETPLACE_QUALITY_GATE — default 1; set 0 to disable storefront filter (debug).
   AIFACTORY_MARKETPLACE_REQUIRE_FULL_QA — default 0; set 1 to require telemetry
     demo_quality_gate.json with gates_all_passed true (includes browser E2E when QA ran).
@@ -18,6 +20,11 @@ Env:
   AIFACTORY_MARKETPLACE_REQUIRE_RELEASE_SCORE — default 1; if QA report has a
     release_score field, require minimum threshold.
   AIFACTORY_MARKETPLACE_MIN_RELEASE_SCORE — default 70.
+  AIFACTORY_LANDING_STOREFRONT_RELAXED — default 1; for ``marketing_landing`` only, relaxes
+    methodology + design-novelty storefront requirements and lowers effective min release score
+    (see ``AIFACTORY_LANDING_MIN_RELEASE_SCORE``, default 55 when unset).
+  AIFACTORY_LANDING_MIN_RELEASE_SCORE — optional; caps / lowers release score threshold for
+    relaxed landing storefront checks (0–100).
 """
 
 from __future__ import annotations
@@ -36,9 +43,57 @@ from web.backend.services.product_naming import is_placeholder_product_name
 from web.backend.services.quality_constitution import evaluate_quality_constitution
 from web.backend.services.release_cockpit import evaluate_release_cockpit
 
+from core.quality_settings import (
+    marketplace_min_design_novelty,
+    marketplace_min_release_score,
+    marketplace_min_spec_coverage,
+    marketplace_quality_gate,
+    marketplace_require_design_novelty,
+    marketplace_require_full_qa,
+    marketplace_require_methodology,
+    marketplace_require_non_placeholder_name,
+    marketplace_require_qa_realism,
+    marketplace_require_quality_constitution,
+    marketplace_require_release_cockpit,
+    marketplace_require_release_score,
+)
 
-def _truthy(name: str, default: str = "0") -> bool:
-    return os.environ.get(name, default).strip().lower() in ("1", "true", "yes")
+
+def _env_int_optional(name: str) -> int | None:
+    raw = os.environ.get(name)
+    if raw is None or str(raw).strip() == "":
+        return None
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return None
+
+
+def _resolve_delivery_profile_for_marketplace(
+    product_id: str,
+    specification: Optional[dict[str, Any]],
+    delivery_profile: Optional[str],
+    data_root: Path,
+) -> str:
+    from core.delivery_profile import FULL_SOFTWARE, normalize_delivery_profile
+
+    if delivery_profile:
+        return normalize_delivery_profile(str(delivery_profile))
+    if isinstance(specification, dict) and specification.get("delivery_profile"):
+        return normalize_delivery_profile(str(specification.get("delivery_profile")))
+    spec_path = data_root / "specs" / product_id / "specification.json"
+    if spec_path.is_file():
+        try:
+            raw = json.loads(spec_path.read_text(encoding="utf-8"))
+            if isinstance(raw, dict):
+                if raw.get("delivery_profile"):
+                    return normalize_delivery_profile(str(raw.get("delivery_profile")))
+                inner = raw.get("specification")
+                if isinstance(inner, dict) and inner.get("delivery_profile"):
+                    return normalize_delivery_profile(str(inner.get("delivery_profile")))
+        except (OSError, json.JSONDecodeError, TypeError):
+            pass
+    return FULL_SOFTWARE
 
 
 def _load_gate_telemetry(product_id: str, data_root: Path) -> Optional[dict[str, Any]]:
@@ -164,6 +219,7 @@ def evaluate_marketplace_quality(
     *,
     specification: Optional[dict] = None,
     data_root: str = "/app/data",
+    delivery_profile: Optional[str] = None,
 ) -> dict[str, Any]:
     """
     Decide whether a product may appear on the public marketplace grid.
@@ -171,30 +227,38 @@ def evaluate_marketplace_quality(
     Returns keys: eligible (bool), demo_quality (report), reasons (list[str]),
     telemetry_gates_all_passed (optional bool), marketplace_rules (dict summary).
     """
+    from core.delivery_profile import MARKETING_LANDING
+
     root = Path(data_root)
     reasons: list[str] = []
 
-    gate_enabled = _truthy("AIFACTORY_MARKETPLACE_QUALITY_GATE", "1")
-    require_full_qa = _truthy("AIFACTORY_MARKETPLACE_REQUIRE_FULL_QA", "0")
-    require_design_novelty = _truthy("AIFACTORY_MARKETPLACE_REQUIRE_DESIGN_NOVELTY", "1")
-    require_qa_realism = _truthy("AIFACTORY_MARKETPLACE_REQUIRE_QA_REALISM", "1")
-    require_release_score = _truthy("AIFACTORY_MARKETPLACE_REQUIRE_RELEASE_SCORE", "1")
-    require_quality_constitution = _truthy("AIFACTORY_MARKETPLACE_REQUIRE_QUALITY_CONSTITUTION", "0")
-    require_release_cockpit = _truthy("AIFACTORY_MARKETPLACE_REQUIRE_RELEASE_COCKPIT", "0")
-    require_non_placeholder_name = _truthy("AIFACTORY_MARKETPLACE_REQUIRE_NON_PLACEHOLDER_NAME", "1")
-    require_methodology = _truthy("AIFACTORY_MARKETPLACE_REQUIRE_METHODOLOGY", "1")
-    try:
-        min_cov = int(os.environ.get("AIFACTORY_MARKETPLACE_MIN_SPEC_COVERAGE", "15"))
-    except ValueError:
-        min_cov = 15
-    try:
-        min_design_novelty = float(os.environ.get("AIFACTORY_MARKETPLACE_MIN_DESIGN_NOVELTY", "0.18"))
-    except ValueError:
-        min_design_novelty = 0.18
-    try:
-        min_release_score = int(os.environ.get("AIFACTORY_MARKETPLACE_MIN_RELEASE_SCORE", "70"))
-    except ValueError:
-        min_release_score = 70
+    gate_enabled = marketplace_quality_gate()
+    require_full_qa = marketplace_require_full_qa()
+    require_design_novelty = marketplace_require_design_novelty()
+    require_qa_realism = marketplace_require_qa_realism()
+    require_release_score = marketplace_require_release_score()
+    require_quality_constitution = marketplace_require_quality_constitution()
+    require_release_cockpit = marketplace_require_release_cockpit()
+    require_non_placeholder_name = marketplace_require_non_placeholder_name()
+    require_methodology = marketplace_require_methodology()
+    min_cov = marketplace_min_spec_coverage()
+    min_design_novelty = marketplace_min_design_novelty()
+    min_release_score = marketplace_min_release_score()
+
+    resolved_profile = _resolve_delivery_profile_for_marketplace(
+        product_id, specification, delivery_profile, root
+    )
+    landing_relaxed = resolved_profile == MARKETING_LANDING and os.environ.get(
+        "AIFACTORY_LANDING_STOREFRONT_RELAXED", "1"
+    ).strip().lower() not in ("0", "false", "no", "off")
+    if landing_relaxed:
+        require_methodology = False
+        require_design_novelty = False
+        env_landing_min = _env_int_optional("AIFACTORY_LANDING_MIN_RELEASE_SCORE")
+        if env_landing_min is not None:
+            min_release_score = min(min_release_score, max(0, min(100, env_landing_min)))
+        else:
+            min_release_score = min(min_release_score, 55)
 
     demo = assess_product_demo(product_id, specification, data_root=data_root)
     static_ok = quality_gates_pass(demo)
@@ -225,6 +289,8 @@ def evaluate_marketplace_quality(
         "min_spec_coverage_pct": min_cov,
         "min_design_novelty": min_design_novelty,
         "min_release_score": min_release_score,
+        "delivery_profile_resolved": resolved_profile,
+        "landing_storefront_relaxed": landing_relaxed,
     }
 
     if not gate_enabled:

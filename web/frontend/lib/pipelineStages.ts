@@ -37,12 +37,23 @@ export const AGENTS_TAB_ORDER = [
 
 export type AgentsTabType = (typeof AGENTS_TAB_ORDER)[number];
 
+export interface AgentLogMetricsSlice {
+  total_entries: number;
+  recent_entries: number;
+  recent_errors: number;
+  last_active: number;
+  status: string;
+}
+
 export interface AgentRowInput {
   type: string;
   status: string;
   current_task: string | null;
   uptime: number;
   tasks_completed: number;
+  timeout?: number;
+  last_active?: number | null;
+  log_metrics?: AgentLogMetricsSlice | null;
 }
 
 const emptyRow = (type: string): AgentRowInput => ({
@@ -84,6 +95,15 @@ export function buildAgentsTabRows(fromApi: AgentRowInput[]): AgentRowInput[] {
     ),
     status: arch?.status || des.status || 'idle',
     uptime: arch?.uptime ?? des.uptime ?? 0,
+    current_task: des.current_task ?? arch?.current_task ?? null,
+    last_active: des.last_active ?? arch?.last_active ?? null,
+    timeout:
+      typeof des.timeout === 'number' && des.timeout > 0
+        ? des.timeout
+        : typeof arch?.timeout === 'number'
+          ? arch.timeout
+          : des.timeout,
+    log_metrics: des.log_metrics ?? arch?.log_metrics ?? null,
   });
   return AGENTS_TAB_ORDER.map((t) => map.get(t)!);
 }

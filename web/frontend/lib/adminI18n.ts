@@ -152,6 +152,26 @@ const DICT: Dict = {
     ru: 'Удалить пользователя {name}? Вход будет невозможен.',
     es: '¿Eliminar a {name}? Ya no podrá iniciar sesión.',
   },
+  'security.demoPassword.title': {
+    en: 'Change the sandbox demo password',
+    ru: 'Смените демо-пароль песочницы',
+    es: 'Cambie la contraseña demo del sandbox',
+  },
+  'security.demoPassword.body': {
+    en: 'The factory is still using the default AIFACTORY_SANDBOX_DEMO_PASSWORD. Anyone who can reach generated compose previews could sign in with the known demo credentials. Set a strong secret in your host environment (and .env), rebuild or restart the app, then rotate credentials in any already-running sandbox stacks.',
+    ru: 'Фабрика всё ещё использует значение AIFACTORY_SANDBOX_DEMO_PASSWORD по умолчанию. У кого есть доступ к поднятым compose-превью, тот может войти под известными демо-учётными данными. Задайте надёжный секрет в окружении хоста (и в .env), пересоберите или перезапустите приложение, затем смените учётные данные в уже запущенных песочницах при необходимости.',
+    es: 'La fábrica sigue usando AIFACTORY_SANDBOX_DEMO_PASSWORD por defecto. Quien acceda a las vistas previas compose podría iniciar sesión con credenciales demo conocidas. Defina un secreto fuerte en el entorno del host (.env), reconstruya o reinicie la app y rote credenciales en sandboxes ya en ejecución.',
+  },
+  'security.demoPassword.dismiss': {
+    en: 'Hide until next session',
+    ru: 'Скрыть до следующего сеанса',
+    es: 'Ocultar hasta la próxima sesión',
+  },
+  'security.demoPassword.openSandbox': {
+    en: 'Sandbox tab',
+    ru: 'Вкладка «Песочница»',
+    es: 'Pestaña Sandbox',
+  },
 };
 
 export function detectAdminLocale(): AdminLocale {

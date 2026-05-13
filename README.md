@@ -10,6 +10,18 @@
 
 Turn one sentence into a presentable site or MVP-shaped codebase — with demo gates, browser crawl, and an operator-grade admin UI.
 
+### Deploy (Docker Compose)
+
+**[`./scripts/deploy.sh`](scripts/deploy.sh)** appends **missing** keys to **`.env`** only (optional `--public-url` sets `NEXT_PUBLIC_SITE_URL` and `AIFACTORY_CORS_ORIGINS`; generates `AIFACTORY_FIREWALL_RULES_FERNET_KEY` when possible; defaults `AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION=1`), then runs `docker compose build` + `up -d app`. Logic: [`scripts/fill_production_env.py`](scripts/fill_production_env.py) (`--dry-run` supported).
+
+```bash
+chmod +x scripts/deploy.sh   # once
+cp -n .env.example .env      # if you do not have .env yet
+./scripts/deploy.sh --public-url https://your-factory.example.com
+```
+
+Why not fully automatic: the script cannot infer your real public URL without you (or your reverse proxy). Existing `.env` assignments are **never overwritten** so we do not clobber secrets you already set.
+
 ### The pipeline at a glance
 
 ```mermaid

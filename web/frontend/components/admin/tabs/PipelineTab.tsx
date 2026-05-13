@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo, startTransition } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -51,7 +52,6 @@ import {
   Inbox,
   Megaphone,
   Store,
-  Loader2,
   Upload,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -81,7 +81,7 @@ import api, {
 } from '@/lib/api';
 import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
 import { PIPELINE_PRODUCT_STATES_FOR_FILTER } from '@/lib/pipelineStages';
-import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
+import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme, formatDate, localDateInputStartSeconds, localDateInputEndSeconds } from '@/lib/utils';
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import { CATEGORY_LABELS, CATEGORY_COLORS, STAGE_AGENT_TITLE } from './pipelineConstants';
 import { HumanReviewGatePanel } from './HumanReviewGatePanel';
@@ -91,15 +91,15 @@ import {
   bucketPipelineProductForCategoryFilter,
   countPipelineProductsByCategory,
 } from '@/lib/pipelineCategoryBucket';
-import { fetchPipelineCatalogPageSingleMode } from '@/lib/pipelineCatalogFetch';
+import { fetchPipelineCatalogPageSingleMode, PIPELINE_CATALOG_ATTEMPTS_LIGHT } from '@/lib/pipelineCatalogFetch';
 
 type PipelineCatalogSummary = NonNullable<
   Awaited<ReturnType<typeof api.getPipelineProducts>>['catalog_summary']
 >;
 
 export function PipelineTab() {
-  /** First chunk + background pages (API max 2000/request). Full catalog streams in until total reached. */
-  const FIRST_PAGE_SIZE = 200;
+  /** Tiny first chunk = fastest first paint / TTFB; larger follow-up pages avoid many round-trips. */
+  const FIRST_PAGE_SIZE = 2;
   const BACKGROUND_PAGE_SIZE = 500;
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -120,6 +120,8 @@ export function PipelineTab() {
   const [productSearch, setProductSearch] = useState('');
   const [stateFilter, setStateFilter] = useState('all');
   const [storefrontFilter, setStorefrontFilter] = useState<'all' | 'listed' | 'not_listed'>('all');
+  const [createdFrom, setCreatedFrom] = useState('');
+  const [createdTo, setCreatedTo] = useState('');
   const [taskStageModal, setTaskStageModal] = useState<{
     productId: string;
     productName: string;
@@ -129,9 +131,20 @@ export function PipelineTab() {
   /** Bump to re-run catalog fetch (Retry) without changing sort. */
   const [catalogReloadKey, setCatalogReloadKey] = useState(0);
   const [catalogLoadError, setCatalogLoadError] = useState<string | null>(null);
+  /** First-page catalog API retries (light then full) — drives progress while `loading`. */
+  const [catalogFirstPageFetch, setCatalogFirstPageFetch] = useState<{
+    attempt: number;
+    maxAttempts: number;
+  } | null>(null);
   /** Shown when fast light catalog failed once and full hydration was used instead (non-blocking). */
   const [catalogNotice, setCatalogNotice] = useState<string | null>(null);
   const pipelineFetchGenerationRef = useRef(0);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const q = searchParams.get('pipelineSearch')?.trim();
+    if (q) setProductSearch(q);
+  }, [searchParams]);
 
   useEffect(() => {
     const myGen = ++pipelineFetchGenerationRef.current;
@@ -143,6 +156,7 @@ export function PipelineTab() {
     setCatalogLoadError(null);
     setCatalogNotice(null);
     setProducts([]);
+    setCatalogFirstPageFetch({ attempt: 0, maxAttempts: PIPELINE_CATALOG_ATTEMPTS_LIGHT });
 
     (async () => {
       let rowsLoaded = 0;
@@ -150,21 +164,52 @@ export function PipelineTab() {
       let preferLight = true;
       let fellBackToFullThisSession = false;
 
-      const loadCatalogPage = async (lim: number, off: number) => {
+      const loadCatalogPage = async (
+        lim: number,
+        off: number,
+        trackFirstPageRetries: boolean,
+      ) => {
+        const reporter = trackFirstPageRetries
+          ? (info: { attempt: number; maxAttempts: number }) => {
+              if (cancelled || isStale()) return;
+              setCatalogFirstPageFetch({
+                attempt: info.attempt,
+                maxAttempts: info.maxAttempts,
+              });
+            }
+          : undefined;
         if (preferLight) {
           try {
-            return await fetchPipelineCatalogPageSingleMode(lim, off, pipelineSort, true);
+            return await fetchPipelineCatalogPageSingleMode(
+              lim,
+              off,
+              pipelineSort,
+              true,
+              reporter,
+            );
           } catch {
             preferLight = false;
             fellBackToFullThisSession = true;
-            return await fetchPipelineCatalogPageSingleMode(lim, off, pipelineSort, false);
+            return await fetchPipelineCatalogPageSingleMode(
+              lim,
+              off,
+              pipelineSort,
+              false,
+              reporter,
+            );
           }
         }
-        return await fetchPipelineCatalogPageSingleMode(lim, off, pipelineSort, false);
+        return await fetchPipelineCatalogPageSingleMode(
+          lim,
+          off,
+          pipelineSort,
+          false,
+          reporter,
+        );
       };
 
       try {
-        const first = await loadCatalogPage(FIRST_PAGE_SIZE, 0);
+        const first = await loadCatalogPage(FIRST_PAGE_SIZE, 0, true);
         if (cancelled || isStale()) return;
 
         const firstBatch = first.products || [];
@@ -177,6 +222,7 @@ export function PipelineTab() {
           setCatalogSummary(first.catalog_summary);
         }
         setLoading(false);
+        setCatalogFirstPageFetch(null);
 
         let offset = firstBatch.length;
         let knownTotal = first.total || firstBatch.length;
@@ -184,15 +230,19 @@ export function PipelineTab() {
           setLoadingMore(true);
         }
         while (!cancelled && !isStale() && offset < knownTotal) {
-          const next = await loadCatalogPage(BACKGROUND_PAGE_SIZE, offset);
+          const next = await loadCatalogPage(BACKGROUND_PAGE_SIZE, offset, false);
           if (cancelled || isStale()) return;
           const batch = next.products || [];
           knownTotal = next.total || knownTotal;
           expectedTotal = knownTotal;
           if (batch.length === 0) break;
           rowsLoaded += batch.length;
-          setProducts((prev) => [...prev, ...batch]);
-          setTotalProducts(knownTotal);
+          const batchCopy = batch;
+          const totalCopy = knownTotal;
+          startTransition(() => {
+            setProducts((prev) => [...prev, ...batchCopy]);
+            setTotalProducts(totalCopy);
+          });
           offset += batch.length;
         }
 
@@ -217,6 +267,7 @@ export function PipelineTab() {
         if (!cancelled && !isStale()) {
           setLoading(false);
           setLoadingMore(false);
+          setCatalogFirstPageFetch(null);
         }
       }
     })();
@@ -409,9 +460,58 @@ export function PipelineTab() {
     () => countPipelineProductsByCategory(products as Record<string, unknown>[]),
     [products]
   );
-  const pipelineCategoryCountsReady =
-    !loadingMore &&
-    (totalProducts === 0 || (products.length > 0 && products.length === totalProducts));
+  /** Counts reflect loaded rows; suffix hints while more pages stream in. */
+  const pipelineCategoryCountsReady = totalProducts === 0 || products.length > 0;
+  const pipelineCategoryCountsPartial = loadingMore && products.length > 0 && products.length < totalProducts;
+
+  const catalogHydrationPercent = useMemo(() => {
+    if (!totalProducts || totalProducts <= 0) return 0;
+    return Math.min(100, Math.round((products.length / totalProducts) * 100));
+  }, [products.length, totalProducts]);
+
+  const firstCatalogPageProgress = useMemo(() => {
+    if (!catalogFirstPageFetch || catalogFirstPageFetch.maxAttempts <= 0) return 0;
+    return Math.min(
+      100,
+      Math.round(
+        ((catalogFirstPageFetch.attempt + 1) / catalogFirstPageFetch.maxAttempts) * 100,
+      ),
+    );
+  }, [catalogFirstPageFetch]);
+
+  /** Task queue rows summed across already-loaded catalog products (Pipeline API embeds tasks per row). */
+  const pipelineLoadedTaskStats = useMemo(() => {
+    let total = 0;
+    let completed = 0;
+    let running = 0;
+    let pending = 0;
+    let failed = 0;
+    for (const p of products) {
+      const tc = (p as { task_counts?: Record<string, unknown> }).task_counts;
+      if (!tc || typeof tc !== 'object') continue;
+      total += Number(tc.total) || 0;
+      completed += Number(tc.completed) || 0;
+      running += Number(tc.running) || 0;
+      pending += Number(tc.pending) || 0;
+      failed += Number(tc.failed) || 0;
+    }
+    return { total, completed, running, pending, failed };
+  }, [products]);
+
+  const pipelineLoadedTasksLabel = useMemo(() => {
+    const { total, completed, running, pending, failed } = pipelineLoadedTaskStats;
+    if (total <= 0 && running + pending + failed + completed === 0) {
+      return '0 tasks in loaded rows';
+    }
+    const bits: string[] = [`${total} tasks in loaded rows`];
+    const sub: string[] = [];
+    if (running) sub.push(`${running} running`);
+    if (pending) sub.push(`${pending} pending`);
+    if (completed) sub.push(`${completed} done`);
+    if (failed) sub.push(`${failed} failed`);
+    if (sub.length) bits.push(`(${sub.join(' · ')})`);
+    return bits.join(' ');
+  }, [pipelineLoadedTaskStats]);
 
   // Filter products by selected controls
   const filteredProducts = products.filter((p) => {
@@ -429,6 +529,16 @@ export function PipelineTab() {
       (storefrontFilter === 'listed' ? listed : !listed);
     if (!storefrontOk) return false;
 
+    const start = localDateInputStartSeconds(createdFrom);
+    const end = localDateInputEndSeconds(createdTo);
+    if (start != null || end != null) {
+      const raw = Number(p?.created_at) || 0;
+      const createdSec = raw > 1e12 ? raw / 1000 : raw;
+      if (!createdSec) return false;
+      if (start != null && createdSec < start) return false;
+      if (end != null && createdSec > end) return false;
+    }
+
     const q = productSearch.trim().toLowerCase();
     if (!q) return true;
     const title = String(p?.spec?.product_name || p?.idea || '').toLowerCase();
@@ -444,9 +554,20 @@ export function PipelineTab() {
         <div>
           <h2 className="text-xl font-semibold text-white">Pipeline Monitor</h2>
           {loadingMore && totalProducts > 0 && (
-            <p className="text-xs text-amber-200/90 mt-1">
-              Loading full catalog… {products.length} / {totalProducts} products (keep this tab open)
-            </p>
+            <div className="mt-2 max-w-lg space-y-2">
+              <p className="text-xs text-amber-200/90">
+                Loading full catalog… {products.length} / {totalProducts} products ({catalogHydrationPercent}%) ·{' '}
+                {pipelineLoadedTasksLabel}
+                <span className="text-amber-200/70"> (keep this tab open)</span>
+              </p>
+              <ProgressBar
+                value={catalogHydrationPercent}
+                max={100}
+                label="Rows loaded"
+                size="sm"
+                variant="warning"
+              />
+            </div>
           )}
           {!loadingMore && totalProducts > 0 && products.length >= totalProducts && (
             <p className="text-xs text-gray-500 mt-1">All {totalProducts} products loaded in this view</p>
@@ -472,7 +593,7 @@ export function PipelineTab() {
             {PIPELINE_CATEGORY_FILTER_ORDER.map((catId) => (
               <option key={catId} value={catId}>
                 {CATEGORY_LABELS[catId] || catId} (
-                {pipelineCategoryCountsReady ? pipelineCategoryCounts[catId] ?? 0 : '—'})
+                {pipelineCategoryCountsReady ? `${pipelineCategoryCounts[catId] ?? 0}${pipelineCategoryCountsPartial ? '+' : ''}` : '—'})
               </option>
             ))}
           </FilterSelect>
@@ -488,8 +609,9 @@ export function PipelineTab() {
                 Catalog vs first rows
               </h3>
               <p className="text-xs text-gray-400 mt-1 max-w-3xl">
-                The monitor loads the <strong className="text-gray-300">entire catalog</strong> in chunks (see counter
-                above), using a <strong className="text-gray-300">light API mode</strong> (no per-row spec/marketing disk
+                The monitor shows a <strong className="text-gray-300">small first batch</strong> immediately, then loads
+                the <strong className="text-gray-300">entire catalog</strong> in larger chunks (see counter above), using a{' '}
+                <strong className="text-gray-300">light API mode</strong> (no per-row spec/marketing disk
                 scan) so large factories stay responsive. Default sort is <strong className="text-gray-300">shipped first</strong>{' '}
                 so finished builds are not buried under new ideas. Switch to <strong className="text-gray-300">newest first</strong>{' '}
                 for a strict time line, or use filters (
@@ -507,7 +629,7 @@ export function PipelineTab() {
                 <dd className="text-lg font-semibold text-emerald-300 tabular-nums">{catalogSummary.shipped_products}</dd>
               </div>
               <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
-                <dt className="text-gray-500" title="Skipped in light catalog mode — see Dashboard for the full count.">
+                <dt className="text-gray-500" title="Products that would appear on the public storefront grid (same rules as /api/products).">
                   Public storefront
                 </dt>
                 <dd className="text-lg font-semibold text-cyan-300 tabular-nums">
@@ -575,9 +697,11 @@ export function PipelineTab() {
           setStateFilter('all');
           setStorefrontFilter('all');
           setActiveCategory('all');
+          setCreatedFrom('');
+          setCreatedTo('');
         }}
         summary={`Showing ${filteredProducts.length} of ${products.length} loaded (${totalProducts || products.length} in catalog)`}
-        gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2"
+        gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2"
       >
         <Input
           value={productSearch}
@@ -605,11 +729,61 @@ export function PipelineTab() {
           <option value="listed">Storefront: listed</option>
           <option value="not_listed">Storefront: not listed</option>
         </FilterSelect>
+        <label className="flex flex-col gap-0.5 text-[10px] text-gray-500">
+          <span>Created from (local day)</span>
+          <input
+            type="date"
+            value={createdFrom}
+            onChange={(e) => setCreatedFrom(e.target.value)}
+            className="rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:outline-none focus:border-indigo-500/50"
+          />
+        </label>
+        <label className="flex flex-col gap-0.5 text-[10px] text-gray-500">
+          <span>Created to (local day)</span>
+          <input
+            type="date"
+            value={createdTo}
+            onChange={(e) => setCreatedTo(e.target.value)}
+            className="rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:outline-none focus:border-indigo-500/50"
+          />
+        </label>
       </FilterControlsPanel>
       {loading ? (
-        <div className="text-center py-12">
-          <div className="w-8 h-8 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-gray-500">Loading pipeline data...</p>
+        <div className="space-y-3 py-6">
+          <div className="flex flex-col items-center justify-center gap-1 text-sm text-gray-400">
+            <div className="flex items-center gap-2">
+              <div className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-indigo-500/30 border-t-indigo-500" />
+              Loading first catalog page…
+            </div>
+            {catalogFirstPageFetch && (
+              <p className="text-[11px] text-gray-500">
+                Request attempt {catalogFirstPageFetch.attempt + 1} of {catalogFirstPageFetch.maxAttempts} (retries
+                with backoff if the API is busy)
+              </p>
+            )}
+            <p className="text-[11px] text-gray-500 text-center max-w-md px-2">
+              Task rows for each product arrive with the catalog — you will see live counts below as soon as the first
+              batch loads.
+            </p>
+          </div>
+          {catalogFirstPageFetch && (
+            <div className="max-w-md mx-auto px-2">
+              <ProgressBar
+                value={firstCatalogPageProgress}
+                max={100}
+                label="First request progress"
+                size="sm"
+              />
+            </div>
+          )}
+          <div className="grid gap-2 sm:grid-cols-2">
+            {Array.from({ length: 6 }).map((_, si) => (
+              <div
+                key={`sk-${si}`}
+                className="h-28 animate-pulse rounded-xl border border-white/5 bg-white/[0.04]"
+              />
+            ))}
+          </div>
         </div>
       ) : filteredProducts.length === 0 ? (
         <div className="text-center py-12">
@@ -641,7 +815,9 @@ export function PipelineTab() {
               key={product.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
+              transition={{
+                delay: filteredProducts.length > 40 ? 0 : Math.min(i, 10) * 0.018,
+              }}
             >
               <GlassCard>
                 <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -654,6 +830,16 @@ export function PipelineTab() {
                         {product.spec?.product_name || product.idea || product.id}
                       </h3>
                       <p className="text-xs text-gray-500 font-mono mt-0.5">{product.id}</p>
+                      {(() => {
+                        const raw = Number(product?.created_at) || 0;
+                        const sec = raw > 1e12 ? raw / 1000 : raw;
+                        if (!sec) return null;
+                        return (
+                          <p className="text-[11px] text-gray-500 mt-0.5">
+                            Created <span className="text-gray-400">{formatDate(sec)}</span>
+                          </p>
+                        );
+                      })()}
                       {(product.spec?.description || (product.idea && product.idea !== productTitle)) && (
                         <p className="text-sm text-gray-400 mt-1.5 leading-relaxed">
                           {product.spec?.description || product.idea}
@@ -1014,11 +1200,22 @@ export function PipelineTab() {
           );
         })}
         {loadingMore && (
-          <div className="py-6 flex items-center justify-center">
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-              Loading more products...
+          <div className="py-6 flex flex-col items-center justify-center gap-2 text-center px-2 max-w-md mx-auto">
+            <div className="flex items-center gap-2 text-xs text-gray-400">
+              <RefreshCw className="w-3.5 h-3.5 shrink-0 animate-spin" aria-hidden />
+              <span>Loading more products…</span>
             </div>
+            <p className="text-[11px] text-gray-500 max-w-lg">
+              {products.length} / {totalProducts} products in memory ({catalogHydrationPercent}%) ·{' '}
+              {pipelineLoadedTasksLabel}
+            </p>
+            <ProgressBar
+              value={catalogHydrationPercent}
+              max={100}
+              label="Catalog pages"
+              size="sm"
+              variant="primary"
+            />
           </div>
         )}
         {!loadingMore && products.length > 0 && products.length >= totalProducts && (

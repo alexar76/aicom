@@ -18,7 +18,8 @@ import time
 from pathlib import Path
 from typing import Any, Optional
 
-import yaml
+from core.paths import config_path
+from core.config_merge import load_merged_config
 
 logger = logging.getLogger(__name__)
 
@@ -30,13 +31,9 @@ RESERVED_TEMPLATE_IDS = frozenset({"manifest"})
 _CONFIG_GENERAL_CACHE: dict[str, tuple[float, dict[str, Any]]] = {}
 
 
-def _config_yaml_path() -> Path:
-    return Path(os.environ.get("AIFACTORY_CONFIG_YAML", "/app/config.yaml"))
-
-
 def _general_from_config() -> dict[str, Any]:
-    """Load ``general`` from config.yaml. Env vars ``AIFACTORY_REFERENCE_*`` override these (see callers)."""
-    p = _config_yaml_path()
+    """Load ``general`` from merged platform YAML. Env vars ``AIFACTORY_REFERENCE_*`` override these (see callers)."""
+    p = config_path()
     try:
         mtime = p.stat().st_mtime
     except OSError:
@@ -46,7 +43,7 @@ def _general_from_config() -> dict[str, Any]:
     if hit and hit[0] == mtime:
         return hit[1]
     try:
-        raw = yaml.safe_load(p.read_text(encoding="utf-8"))
+        raw = load_merged_config(p)
     except Exception:
         out: dict[str, Any] = {}
         _CONFIG_GENERAL_CACHE[key] = (mtime, out)

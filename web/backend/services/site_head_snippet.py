@@ -8,16 +8,16 @@ Injected when Developer completes — same hook as ``site_badge``.
 from __future__ import annotations
 
 import logging
-import os
 import re
 from pathlib import Path
 from typing import Any
 
-import yaml
+from core.paths import config_path
+from core.config_merge import load_merged_config
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(os.environ.get("AIFACTORY_CONFIG_YAML", "/app/config.yaml"))
+CONFIG_PATH = config_path()
 MARKER_BEGIN = "aifactory-published-site-head begin"
 MARKER_END = "aifactory-published-site-head end"
 MAX_SNIPPET_CHARS = 100_000
@@ -25,9 +25,7 @@ MAX_SNIPPET_CHARS = 100_000
 
 def _read_general() -> dict[str, Any]:
     try:
-        if not CONFIG_PATH.is_file():
-            return {}
-        raw = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+        raw = load_merged_config(CONFIG_PATH)
         if not isinstance(raw, dict):
             return {}
         g = raw.get("general")

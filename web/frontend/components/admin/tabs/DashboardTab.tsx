@@ -232,7 +232,7 @@ export function DashboardTab() {
         {sfPending ? (
           <p className="text-sm text-gray-500 flex items-center gap-2">
             <Loader2 className="w-4 h-4 animate-spin shrink-0" aria-hidden />
-            Loading marketplace storefront count (heavy check runs in the background)…
+            Loading public storefront totals (cached scan, short wait)…
           </p>
         ) : storefrontYieldPct !== null ? (
           <>

@@ -53,6 +53,7 @@ import {
   Store,
   Loader2,
   Upload,
+  Search,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
@@ -93,6 +94,7 @@ export function CorporateChatTab() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [standupRunning, setStandupRunning] = useState(false);
+  const [messageSearch, setMessageSearch] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   function roleLabel(msg: ChatMessage): string | null {
@@ -112,7 +114,7 @@ export function CorporateChatTab() {
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, messageSearch]);
 
   async function loadData() {
     try {
@@ -192,6 +194,25 @@ export function CorporateChatTab() {
     }
   }
 
+  const filteredMessages = useMemo(() => {
+    const q = messageSearch.trim().toLowerCase();
+    if (!q) return messages;
+    return messages.filter((msg) => {
+      const text = String(msg.text || '').toLowerCase();
+      const user = String(msg.username || '').toLowerCase();
+      const role = String(msg.role || '').toLowerCase();
+      const agent = String(msg.agent_type || '').toLowerCase();
+      const id = String(msg.id || '').toLowerCase();
+      return (
+        text.includes(q) ||
+        user.includes(q) ||
+        role.includes(q) ||
+        agent.includes(q) ||
+        id.includes(q)
+      );
+    });
+  }, [messages, messageSearch]);
+
   if (loading) {
     return (
       <GlassCard className="p-6">
@@ -215,6 +236,16 @@ export function CorporateChatTab() {
           </span>
         </div>
         <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
+          <div className="relative min-w-[12rem] flex-1 sm:max-w-xs">
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" aria-hidden />
+            <Input
+              value={messageSearch}
+              onChange={(e) => setMessageSearch(e.target.value)}
+              placeholder="Search chat…"
+              className="w-full pl-9"
+              aria-label="Search messages in corporate chat"
+            />
+          </div>
           <Button
             variant="secondary"
             size="sm"
@@ -276,8 +307,22 @@ export function CorporateChatTab() {
               <p>No messages yet. Start the conversation!</p>
             </div>
           </div>
+        ) : filteredMessages.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-gray-500">
+            <div className="text-center px-4">
+              <MessageCircle className="w-12 h-12 mx-auto mb-3 opacity-30" />
+              <p>No messages match your search.</p>
+              <button
+                type="button"
+                className="mt-2 text-sm text-indigo-300 hover:text-indigo-200 underline underline-offset-2"
+                onClick={() => setMessageSearch('')}
+              >
+                Clear search
+              </button>
+            </div>
+          </div>
         ) : (
-          messages.map((msg) => (
+          filteredMessages.map((msg) => (
             <div
               key={msg.id}
               className="group flex items-start gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/[0.07] transition-colors"

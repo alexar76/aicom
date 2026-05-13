@@ -69,10 +69,16 @@ import os, hashlib
 key = hashlib.sha256(os.urandom(64)).hexdigest()
 with open('$JWT_SECRET_FILE', 'w') as f:
     f.write(key)
+os.chmod('$JWT_SECRET_FILE', 0o600)
 print('JWT secret key created')
 "
 fi
+chmod 600 "$JWT_SECRET_FILE" 2>/dev/null || true
 export JWT_SECRET_KEY=$(cat "$JWT_SECRET_FILE")
+if [ "${#JWT_SECRET_KEY}" -lt 32 ]; then
+    echo "ERROR: JWT secret from $JWT_SECRET_FILE is shorter than 32 characters. Regenerate the file."
+    exit 1
+fi
 echo "JWT secret key loaded (persistent across restarts)"
 
 # ── Customer storefront JWT (persistent; invalidates logins if rotated) ───

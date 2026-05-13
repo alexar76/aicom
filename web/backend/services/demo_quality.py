@@ -4,16 +4,14 @@ Used to flag placeholder CTAs, broken previews, and weak spec alignment.
 
 Pipeline integration:
   - ``quality_gates_pass()`` decides whether QA lets the product advance to security.
-  - Env: ``AIFACTORY_DEMO_QUALITY_MIN_SCORE`` (default 55), ``AIFACTORY_STRICT_DEMO_GATES`` (default 1).
-  - Visual heuristics (tokens, skeleton/empty/error patterns, a11y baseline, responsive nav): see
-    ``visual_quality_heuristics.py``. Env: ``AIFACTORY_VISUAL_QUALITY_GATE`` (default 1),
-    ``AIFACTORY_VISUAL_QUALITY_STRICT`` (default 0 — when 1, failing codes in ``VISUAL_STRICT_GATE_CODES``
-    block the gate), ``AIFACTORY_VISUAL_QUALITY_APP_CHECKS`` (default 1).
+  - Primary: ``quality.*`` in platform YAML (Admin → Settings). Env overrides:
+    ``AIFACTORY_DEMO_QUALITY_MIN_SCORE``, ``AIFACTORY_STRICT_DEMO_GATES``.
+  - Visual heuristics: ``visual_quality_heuristics.py`` — ``quality.visual_quality_*`` or env
+    ``AIFACTORY_VISUAL_QUALITY_GATE``, ``AIFACTORY_VISUAL_QUALITY_STRICT``, ``AIFACTORY_VISUAL_QUALITY_APP_CHECKS``.
 """
 
 from __future__ import annotations
 
-import os
 import re
 from pathlib import Path
 from typing import Any, Optional
@@ -25,6 +23,8 @@ from web.backend.services.visual_quality_heuristics import (
     visual_issues_penalty,
     visual_quality_gate_enabled,
 )
+
+from core.quality_settings import demo_quality_min_score, strict_demo_gates, visual_quality_strict
 
 # Shipped with the default code template; also match legacy generated files.
 BANNED_PLACEHOLDER_MARKERS = (
@@ -709,18 +709,9 @@ CRITICAL_ISSUE_CODES = frozenset(
 
 def quality_gates_pass(report: dict[str, Any]) -> bool:
     """Return True if demo/TZ gates allow advancing past QA (to security)."""
-    strict = os.environ.get("AIFACTORY_STRICT_DEMO_GATES", "1").strip().lower() in (
-        "1",
-        "true",
-        "yes",
-    )
-    visual_strict = os.environ.get("AIFACTORY_VISUAL_QUALITY_STRICT", "0").strip().lower() in (
-        "1",
-        "true",
-        "yes",
-        "on",
-    )
-    min_score = int(os.environ.get("AIFACTORY_DEMO_QUALITY_MIN_SCORE", "55"))
+    strict = strict_demo_gates()
+    visual_strict = visual_quality_strict()
+    min_score = demo_quality_min_score()
 
     if report.get("score", 0) < min_score:
         return False

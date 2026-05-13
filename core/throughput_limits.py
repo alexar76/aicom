@@ -1,22 +1,22 @@
 """
 Runtime throughput presets for pipeline workers.
 
-``general.local_high_throughput_enabled`` in ``config.yaml`` (Admin → Settings) selects
+``general.local_high_throughput_enabled`` in layered platform config (Admin → Settings) selects
 aggressive defaults suited to a powerful local machine (many cores / RAM, local Ollama).
 
 Explicit ``AIFACTORY_*`` environment variables always win when set (non-empty).
-Values are re-read when ``config.yaml`` mtime changes so toggling Settings applies without restart.
+Values are re-read when the primary config file mtime changes so toggling Settings applies without restart.
 """
 
 from __future__ import annotations
 
 import os
-from pathlib import Path
 from typing import Any
 
-import yaml
+from core.paths import config_path
+from core.config_merge import load_merged_config
 
-_CONFIG_PATH = Path(os.environ.get("AIFACTORY_CONFIG_YAML", "/app/config.yaml"))
+_CONFIG_PATH = config_path()
 _cache_mtime: float | None = None
 _cache_turbo: bool | None = None
 
@@ -25,7 +25,7 @@ def _turbo_enabled_uncached() -> bool:
     try:
         if not _CONFIG_PATH.is_file():
             return False
-        raw = yaml.safe_load(_CONFIG_PATH.read_text(encoding="utf-8"))
+        raw = load_merged_config(_CONFIG_PATH)
         if not isinstance(raw, dict):
             return False
         g = raw.get("general")

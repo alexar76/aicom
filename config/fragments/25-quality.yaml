@@ -1,0 +1,25 @@
+# Pipeline & product quality (Admin → Settings → «Pipeline & product quality»)
+# Env vars still override when set (see docs/configuration.md).
+quality:
+  max_pipeline_repair_rounds: 25
+  demo_quality_min_score: 55
+  strict_demo_gates: true
+  visual_quality_gate: true
+  visual_quality_strict: false
+  visual_quality_app_checks: true
+  browser_e2e_enabled: true
+  browser_max_pages: 100
+  browser_max_depth: 10
+  marketplace_quality_gate: true
+  marketplace_require_full_qa: false
+  marketplace_min_spec_coverage: 15
+  marketplace_require_design_novelty: true
+  marketplace_min_design_novelty: 0.18
+  marketplace_require_qa_realism: true
+  marketplace_require_release_score: true
+  marketplace_min_release_score: 70
+  marketplace_require_non_placeholder_name: true
+  marketplace_require_methodology: true
+  marketplace_require_quality_constitution: false
+  marketplace_require_release_cockpit: false
+  quality_constitution_pipeline_enabled: true

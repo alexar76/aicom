@@ -268,13 +268,19 @@ body {
 }
 
 /* ── Scrollbar ─────────────────────────────────────────────────────────── */
+/* Firefox: no ::-webkit-* — use track = transparent to avoid default white gutter */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--neon-primary-rgb), 0.35) transparent;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {

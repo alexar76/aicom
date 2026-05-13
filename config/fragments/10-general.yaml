@@ -1,0 +1,35 @@
+general:
+  platform_name: AI-Factory
+  platform_tagline: 'One pipeline: autonomous market research & ideas, or your brief
+    — same agents to a share-ready page.'
+  admin_email: admin@ai-factory.local
+  default_language: en
+  timezone: UTC
+  auto_pipeline: false
+  auto_pipeline_interval_minutes: 60
+  git_remote_url: ''
+  git_default_branch: main
+  docker_registry: ''
+  docker_username: ''
+  docker_password: ''
+  telegram_notify_enabled: false
+  telegram_notify_pipeline_stages: true
+  telegram_notify_new_products: true
+  railway_deploy_enabled: false
+  railway_project_id: ''
+  railway_environment: ''
+  railway_environment_id: ''
+  railway_service_id: ''
+  auto_publish_enabled: false
+  auto_publish_provider: none
+  auto_publish_netlify_site_id: ''
+  auto_publish_cf_project_name: ''
+  site_badge_enabled: false
+  site_badge_link_url: ''
+  published_site_head_html: ''
+  local_high_throughput_enabled: false
+  reference_templates_enabled: false
+  reference_templates_dir: ''
+  reference_template_mode: random
+  reference_template_id: ''
+  reference_prompt_max_chars: 14000

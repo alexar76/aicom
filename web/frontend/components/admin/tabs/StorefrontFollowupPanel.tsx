@@ -123,6 +123,8 @@ export function StorefrontFollowupPanel({
   const [saving, setSaving] = useState(false);
   const [savingAdmin, setSavingAdmin] = useState(false);
   const [savingMarketing, setSavingMarketing] = useState(false);
+  const [savingPrice, setSavingPrice] = useState(false);
+  const [priceDraft, setPriceDraft] = useState('');
   const [reworkLoading, setReworkLoading] = useState(false);
 
   useEffect(() => {
@@ -146,6 +148,19 @@ export function StorefrontFollowupPanel({
     setMktSelling(String(m.selling_description || ''));
     setMktLong(String(m.long_description || ''));
   }, [product.id, product.storefront_marketing_copy]);
+
+  useEffect(() => {
+    const adm =
+      typeof product.storefront_admin_price_usdt === 'number' && !Number.isNaN(product.storefront_admin_price_usdt)
+        ? product.storefront_admin_price_usdt
+        : null;
+    const eff =
+      typeof product.storefront_effective_price_usdt === 'number' &&
+      !Number.isNaN(product.storefront_effective_price_usdt)
+        ? product.storefront_effective_price_usdt
+        : null;
+    setPriceDraft(adm != null ? String(adm) : eff != null ? String(eff) : '');
+  }, [product.id, product.storefront_admin_price_usdt, product.storefront_effective_price_usdt]);
 
   const saveFollowup = async () => {
     setSaving(true);
@@ -270,6 +285,66 @@ export function StorefrontFollowupPanel({
       toast.error(e instanceof Error ? e.message : 'Save failed');
     } finally {
       setSavingMarketing(false);
+    }
+  };
+
+  const saveStorefrontPrice = async () => {
+    const raw = priceDraft.replace(',', '.').trim();
+    const v = parseFloat(raw);
+    if (!Number.isFinite(v) || v <= 0) {
+      toast.error('Enter a positive USDT amount');
+      return;
+    }
+    setSavingPrice(true);
+    try {
+      const res = await api.patchPipelineStorefrontPricing(String(product.id), {
+        admin_storefront_usdt: v,
+      });
+      const sp = res.storefront_pricing as {
+        admin_storefront_usdt?: number | null;
+        storefront_checkout_usdt: number;
+      };
+      onPatch(String(product.id), {
+        storefront_effective_price_usdt: sp.storefront_checkout_usdt,
+        storefront_admin_price_usdt: sp.admin_storefront_usdt ?? null,
+        storefront_price_tier: 'admin',
+        ...(typeof res.storefront_visible === 'boolean' ? { storefront_visible: res.storefront_visible } : {}),
+        ...(Array.isArray(res.storefront_gate_reasons)
+          ? { storefront_gate_reasons: res.storefront_gate_reasons }
+          : {}),
+      });
+      toast.success('Storefront / checkout price saved');
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Save failed');
+    } finally {
+      setSavingPrice(false);
+    }
+  };
+
+  const clearStorefrontPriceOverride = async () => {
+    setSavingPrice(true);
+    try {
+      const res = await api.patchPipelineStorefrontPricing(String(product.id), {
+        clear_admin_storefront_usdt: true,
+      });
+      const sp = res.storefront_pricing as {
+        admin_storefront_usdt?: number | null;
+        storefront_checkout_usdt: number;
+      };
+      onPatch(String(product.id), {
+        storefront_effective_price_usdt: sp.storefront_checkout_usdt,
+        storefront_admin_price_usdt: sp.admin_storefront_usdt ?? null,
+        ...(typeof res.storefront_visible === 'boolean' ? { storefront_visible: res.storefront_visible } : {}),
+        ...(Array.isArray(res.storefront_gate_reasons)
+          ? { storefront_gate_reasons: res.storefront_gate_reasons }
+          : {}),
+      });
+      setPriceDraft(String(sp.storefront_checkout_usdt));
+      toast.success('Manual price cleared — automatic pricing applies again');
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Clear failed');
+    } finally {
+      setSavingPrice(false);
     }
   };
 
@@ -592,6 +667,58 @@ export function StorefrontFollowupPanel({
         >
           {savingMarketing ? 'Saving…' : 'Save marketplace copy'}
         </Button>
+      </div>
+
+      <div className="border-t border-white/10 pt-3 space-y-2">
+        <p className="text-xs uppercase tracking-wide text-gray-500">Storefront &amp; checkout price (USDT)</p>
+        <p className="text-[11px] text-gray-500">
+          Overrides automatic sales/marketing pricing for public cards and crypto checkout. Stored in{' '}
+          <code className="text-[10px] text-cyan-300/90">sales_config.json</code> →{' '}
+          <code className="text-[10px] text-cyan-300/90">admin_storefront_usdt</code>.
+        </p>
+        {typeof product.storefront_effective_price_usdt === 'number' && (
+          <p className="text-[11px] text-gray-400">
+            Current effective:{' '}
+            <span className="text-white font-medium">{product.storefront_effective_price_usdt}</span> USDT
+            {typeof product.storefront_price_tier === 'string' && product.storefront_price_tier ? (
+              <span className="text-gray-500"> · tier: {product.storefront_price_tier}</span>
+            ) : null}
+            {product.storefront_admin_price_usdt != null ? (
+              <span className="text-amber-200/90"> · admin override active</span>
+            ) : null}
+          </p>
+        )}
+        <div className="flex flex-wrap gap-2 items-end">
+          <div className="min-w-[8rem] flex-1">
+            <label className="text-[10px] text-gray-500 block mb-1">USDT amount</label>
+            <Input
+              type="text"
+              inputMode="decimal"
+              value={priceDraft}
+              onChange={(e) => setPriceDraft(e.target.value)}
+              placeholder="e.g. 9.99"
+              className="bg-white/5 border-white/10"
+            />
+          </div>
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            disabled={savingPrice}
+            onClick={() => void saveStorefrontPrice()}
+          >
+            {savingPrice ? 'Saving…' : 'Save price'}
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            disabled={savingPrice || product.storefront_admin_price_usdt == null}
+            onClick={() => void clearStorefrontPriceOverride()}
+          >
+            Clear override
+          </Button>
+        </div>
       </div>
 
       <div className="border-t border-white/10 pt-3 space-y-2">

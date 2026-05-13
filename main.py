@@ -15,9 +15,8 @@ import signal
 import sys
 from pathlib import Path
 
-import yaml
-
 from core.paths import config_path, data_root, logs_dir, pipeline_db_path, pipeline_json_path
+from core.config_merge import load_merged_config
 from web.backend.api.metrics import PrometheusMetrics
 
 # Configure logging
@@ -52,10 +51,9 @@ class AIFactory:
         self._load_config()
 
     def _load_config(self):
-        """Load configuration."""
+        """Load configuration (fragments + primary overlay)."""
         try:
-            with open(self.config_path, "r") as f:
-                self.config = yaml.safe_load(f)
+            self.config = load_merged_config(self.config_path)
             logger.info("Configuration loaded successfully")
         except Exception as e:
             logger.error(f"Failed to load config: {e}")

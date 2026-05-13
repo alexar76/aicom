@@ -2,7 +2,11 @@
 App Configuration
 =================
 Manages application configuration with hot-reload support.
-Loads from config.yaml and data/config/*.yaml files.
+
+Loads **layered** YAML: bundled defaults from ``config/fragments/*.yaml`` under the
+same directory as the primary file, then merges the primary overlay on top
+(``AIFACTORY_CONFIG_PATH``, ``AIFACTORY_CONFIG_YAML``, or legacy ``AIFACTORY_CONFIG``;
+see ``core.paths.config_path`` / ``docs/configuration.md``).
 """
 
 from __future__ import annotations
@@ -15,6 +19,9 @@ from pathlib import Path
 from typing import Optional
 
 import yaml
+
+from core.paths import config_path as default_config_file_path
+from core.config_merge import load_merged_config
 
 logger = logging.getLogger(__name__)
 
@@ -30,19 +37,18 @@ class AppConfig:
     - Provider configuration
     """
 
-    def __init__(self, config_path: str = "/app/config.yaml"):
-        self.config_path = config_path
+    def __init__(self, config_path: str | None = None):
+        self.config_path = str(config_path or default_config_file_path())
         self._config: dict = {}
         self._last_load: float = 0
         self._load_config()
 
     def _load_config(self):
-        """Load configuration from file."""
+        """Load configuration from layered YAML (fragments + primary overlay)."""
         try:
-            with open(self.config_path, "r") as f:
-                self._config = yaml.safe_load(f)
+            self._config = load_merged_config(self.config_path)
             self._last_load = time.time()
-            logger.info("Configuration loaded successfully")
+            logger.info("Configuration loaded successfully (merged layers)")
         except FileNotFoundError:
             logger.warning(f"Config file not found: {self.config_path}")
             self._config = {}

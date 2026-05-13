@@ -19,6 +19,9 @@ from typing import Optional
 import click
 import yaml
 from rich.console import Console
+
+from core.paths import config_path as primary_config_path
+from core.config_merge import load_merged_config
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.panel import Panel
@@ -647,16 +650,11 @@ def storefront():
 @storefront.command("list")
 def theme_list():
     """List available themes."""
-    config_file = Path("/app/config.yaml")
-    if not config_file.exists():
-        console.print("[yellow]No configuration found[/yellow]")
-        return
-
-    with open(config_file, "r") as f:
-        config = yaml.safe_load(f)
-
-    themes = config.get("storefront", {}).get("themes", {})
-    active = config.get("storefront", {}).get("active_theme", "cyberpunk")
+    p = primary_config_path()
+    config = load_merged_config(p)
+    sf = config.get("storefront") if isinstance(config.get("storefront"), dict) else {}
+    themes = sf.get("themes") if isinstance(sf.get("themes"), dict) else {}
+    active = sf.get("active_theme", "cyberpunk")
 
     table = Table(title="🎨 Available Themes")
     table.add_column("Theme", style="cyan")
@@ -676,17 +674,22 @@ def theme_list():
 @click.argument("name")
 def apply(name: str):
     """Apply a theme."""
-    config_file = Path("/app/config.yaml")
-    with open(config_file, "r") as f:
-        config = yaml.safe_load(f)
-
-    themes = config.get("storefront", {}).get("themes", {})
+    p = primary_config_path()
+    config = load_merged_config(p)
+    sf = config.get("storefront")
+    if not isinstance(sf, dict):
+        sf = {}
+        config["storefront"] = sf
+    themes = sf.get("themes", {})
+    if not isinstance(themes, dict):
+        themes = {}
+        sf["themes"] = themes
     if name not in themes:
         console.print(f"[red]Theme '{name}' not found[/red]")
         return
 
-    config["storefront"]["active_theme"] = name
-    with open(config_file, "w") as f:
+    sf["active_theme"] = name
+    with open(p, "w") as f:
         yaml.dump(config, f, default_flow_style=False)
 
     console.print(f"[green]✅ Theme '{name}' applied![/green]")

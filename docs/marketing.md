@@ -17,6 +17,8 @@ See **[Product concept](./product-concept.md)** (“Same pipeline — two ways t
 | `INTERNAL_API_URL` | HTTP API base for **SSR** (`generateMetadata`, Explore pages): backend requests from the container/CI. Example: `http://api:8081` or `http://127.0.0.1:8081` |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Optional: Google Analytics 4 (gtag), only if you want external analytics |
 
+**Generated pipeline landings (static `*.html` under `data/code/<product_id>/`):** analytics and SEO snippets for **those** pages are **not** controlled by `NEXT_PUBLIC_GA_MEASUREMENT_ID`. Use **Admin → Settings → Head snippet on generated sites** (`general.published_site_head_html`): arbitrary HTML/scripts are injected **before `</head>`** when the **Developer** stage completes (GA4, Yandex Metrica, verification tags). See **[admin-guide.md](./admin-guide.md)** → Settings.
+
 The browser still reaches the API via the Next.js proxy (`/api/*` → backend); see `web/frontend/next.config.js`.
 
 ## Backend API

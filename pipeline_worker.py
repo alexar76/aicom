@@ -17,17 +17,14 @@ import json
 import logging
 import os
 import signal
-import shutil
-import subprocess
 import sys
-import tempfile
 import time
 import uuid
-import py_compile
 from pathlib import Path
 from typing import Optional
 
 from core.paths import data_root, pipeline_db_path, pipeline_json_path
+from core.quality_settings import max_pipeline_repair_rounds, max_pipeline_repair_rounds_for_delivery_profile
 from core.throughput_limits import (
     effective_batch_pipeline_active_limit,
     effective_batch_pipeline_max_start_per_cycle,
@@ -35,8 +32,10 @@ from core.throughput_limits import (
 )
 from agents.product_profile import post_devops_human_gate_required
 from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW
+from orchestrator.pipeline_worker_sidecars import PipelineWorkerSidecarMixin
 from orchestrator.worker_components import PeerReviewEngine, QualityManager, TaskOrchestrator
 from orchestrator.runtime_guards import RuntimeGuards
+from orchestrator.worker_utils import env_truthy
 from web.backend.services.learning_memory import append_lesson, load_recent_lessons
 from web.backend.services.marketplace_quality import evaluate_marketplace_quality
 from web.backend.services.requirements_clarifier import build_clarification_pack_llm
@@ -50,10 +49,6 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 logger = logging.getLogger("pipeline-worker")
-
-
-def _env_truthy(name: str, default: str = "1") -> bool:
-    return os.environ.get(name, default).strip().lower() in ("1", "true", "yes")
 
 
 def _monitoring_refresh_decision(output_data: dict) -> tuple[bool, dict]:
@@ -74,7 +69,21 @@ def _monitoring_refresh_decision(output_data: dict) -> tuple[bool, dict]:
     }
 
 
-class PipelineWorker:
+def _delivery_profile_from_product_dict(product: dict) -> str:
+    """Resolved pipeline delivery profile (explicit metadata wins, else infer from copy)."""
+    from agents.product_profile import infer_delivery_profile
+    from core.delivery_profile import normalize_delivery_profile
+
+    dp_raw = product.get("delivery_profile")
+    if dp_raw:
+        return normalize_delivery_profile(str(dp_raw))
+    md = product.get("metadata")
+    if isinstance(md, dict) and md.get("delivery_profile"):
+        return normalize_delivery_profile(str(md.get("delivery_profile")))
+    return infer_delivery_profile(product.get("admin_instructions"), product.get("idea"))
+
+
+class PipelineWorker(PipelineWorkerSidecarMixin):
     """
     Background worker that:
     1. Monitors the pipeline state file for new products
@@ -583,80 +592,6 @@ class PipelineWorker:
             state["task_queue"] = task_queue
             await self._save_state_async(state)
 
-    def _recover_stranded_pm_quality_failures(
-        self, products: dict, task_queue: list, now: float
-    ) -> bool:
-        """
-        Auto-requeue PM when last PM task failed on spec quality gate and no PM task is active.
-
-        This makes recovery resilient across restarts/state rebuilds, so operators don't need
-        manual DB updates for already-failed products.
-        """
-        changed = False
-        latest_failed_pm: dict[str, dict] = {}
-
-        for task in task_queue:
-            if task.get("agent_type") != "pm":
-                continue
-            if task.get("status") != "failed":
-                continue
-            err = (task.get("error") or "").lower()
-            if "specification failed quality gate" not in err:
-                continue
-            pid = task.get("product_id")
-            if not pid:
-                continue
-            prev = latest_failed_pm.get(pid)
-            if prev is None or float(task.get("created_at", 0) or 0) > float(prev.get("created_at", 0) or 0):
-                latest_failed_pm[pid] = task
-
-        for pid, failed_task in latest_failed_pm.items():
-            has_active_pm = any(
-                t.get("product_id") == pid
-                and t.get("agent_type") == "pm"
-                and t.get("status") in ("pending", "running")
-                for t in task_queue
-            )
-            if has_active_pm:
-                continue
-            if pid not in products:
-                continue
-            if failed_task.get("auto_recovered_after_restart"):
-                continue
-
-            new_task = {
-                "id": f"task-{uuid.uuid4().hex[:12]}",
-                "product_id": pid,
-                "agent_type": "pm",
-                "state": "SPEC_WRITTEN",
-                "status": "pending",
-                "retry_count": 0,
-                "max_retries": 3,
-                "input_data": {
-                    "product_id": pid,
-                    "idea": products[pid].get("idea", ""),
-                    "admin_instructions": (
-                        "Auto-recovery after PM quality-gate failure. "
-                        "Return full valid JSON and ensure acceptance_criteria fields are detailed and testable."
-                    ),
-                },
-                "created_at": now,
-                "priority": self._get_priority("pm"),
-                "auto_requeue_reason": "pm_spec_quality_gate_restart_recovery",
-            }
-            task_queue.append(new_task)
-            failed_task["auto_recovered_after_restart"] = True
-            products[pid]["state"] = "MARKET_RESEARCHED"
-            products[pid]["updated_at"] = now
-            changed = True
-            logger.warning(
-                "Recovered stranded PM quality-gate failure for %s -> queued %s",
-                pid,
-                new_task["id"],
-            )
-
-        return changed
-
     async def _process_task(self, task: dict, products: dict, task_queue: list):
         """Process a running task using the appropriate agent."""
         agent_type = task.get("agent_type", "")
@@ -809,7 +744,9 @@ class PipelineWorker:
                             products[pid]["updated_at"] = time.time()
 
                     if agent_type == "architect" and pid in products:
-                        arch_ok, arch_issues = self._architecture_gate(pid)
+                        arch_ok, arch_issues = self._architecture_gate(
+                            pid, delivery_profile=_delivery_profile_from_product_dict(products[pid])
+                        )
                         if not arch_ok:
                             task["status"] = "failed"
                             task["error"] = "architecture gate failed: " + "; ".join(arch_issues)
@@ -913,13 +850,17 @@ class PipelineWorker:
 
                     quality_gates_exhausted = False
                     security_budget_exhausted = False
-                    max_quality_loops = int(os.environ.get("AIFACTORY_MAX_QUALITY_LOOPS", "10"))
-                    max_security_loops = int(
-                        os.environ.get(
-                            "AIFACTORY_MAX_SECURITY_LOOPS",
-                            os.environ.get("AIFACTORY_MAX_QUALITY_LOOPS", "10"),
-                        )
+                    max_quality_loops = max_pipeline_repair_rounds_for_delivery_profile(
+                        _delivery_profile_from_product_dict(products[pid]) if pid in products else None
                     )
+                    sec_raw = os.environ.get("AIFACTORY_MAX_SECURITY_LOOPS")
+                    if sec_raw is not None and str(sec_raw).strip() != "":
+                        try:
+                            max_security_loops = max(1, int(sec_raw))
+                        except ValueError:
+                            max_security_loops = max_quality_loops
+                    else:
+                        max_security_loops = max_quality_loops
 
                     # Successful QA (all gates pass): reset repair counter
                     if (
@@ -1003,7 +944,7 @@ class PipelineWorker:
                         and target_state == "EVOLUTION_ANALYZING"
                         and pid in products
                         and products[pid].get("state") == "COMPLETED"
-                        and _env_truthy("AIFACTORY_MONITORING_DEV_REFRESH_ENABLED", "1")
+                        and env_truthy("AIFACTORY_MONITORING_DEV_REFRESH_ENABLED", "1")
                     ):
                         from web.backend.services.policy_audit import _dev_fixing_pending
 
@@ -1112,7 +1053,10 @@ class PipelineWorker:
                         logger.info(f"Product {pid} pipeline completed!")
                         try:
                             spec_done = self._load_spec(pid)
-                            mq_done = evaluate_marketplace_quality(pid, specification=spec_done)
+                            dp_done = _delivery_profile_from_product_dict(products[pid]) if pid in products else None
+                            mq_done = evaluate_marketplace_quality(
+                                pid, specification=spec_done, delivery_profile=dp_done
+                            )
                             if mq_done.get("eligible"):
                                 from web.backend.services.product_followup import (
                                     merge_mark_storefront_established_listing,
@@ -1335,7 +1279,10 @@ class PipelineWorker:
                 logger.info(f"Product {pid} pipeline completed! (fallback)")
                 try:
                     spec_done = self._load_spec(pid)
-                    mq_done = evaluate_marketplace_quality(pid, specification=spec_done)
+                    dp_done = _delivery_profile_from_product_dict(products[pid]) if pid in products else None
+                    mq_done = evaluate_marketplace_quality(
+                        pid, specification=spec_done, delivery_profile=dp_done
+                    )
                     if mq_done.get("eligible"):
                         from web.backend.services.product_followup import (
                             merge_mark_storefront_established_listing,
@@ -1425,9 +1372,11 @@ class PipelineWorker:
         """Final production-only critic pass before COMPLETED."""
         return self._guards.release_critic(product_id, product)
 
-    def _architecture_gate(self, product_id: str) -> tuple[bool, list[str]]:
+    def _architecture_gate(
+        self, product_id: str, *, delivery_profile: str | None = None
+    ) -> tuple[bool, list[str]]:
         """Gatekeeper check that must pass before developer/hardening starts."""
-        return self._guards.architecture_gate(product_id)
+        return self._guards.architecture_gate(product_id, delivery_profile=delivery_profile)
 
     def _save_artifact(self, product_id: str, agent_type: str, data: dict):
         """Save agent output artifact to disk."""
@@ -1612,7 +1561,27 @@ class PipelineWorker:
 
     def _create_next_task(self, product: dict) -> Optional[dict]:
         """Create the next task based on current product state."""
+        from core.delivery_profile import MARKETING_LANDING
+
         current_state = product.get("state", "")
+        if current_state == "TELEMETRY_COLLECTING" and _delivery_profile_from_product_dict(product) == MARKETING_LANDING:
+            return {
+                "id": f"task-{uuid.uuid4().hex[:12]}",
+                "product_id": product["id"],
+                "agent_type": "__complete__",
+                "state": "COMPLETED",
+                "status": "pending",
+                "retry_count": 0,
+                "max_retries": 3,
+                "input_data": {
+                    "product_id": product["id"],
+                    "idea": product.get("idea", ""),
+                    "landing_fast_path": True,
+                },
+                "created_at": time.time(),
+                "priority": self._get_priority("__complete__"),
+            }
+
         next_info = PIPELINE_AGENT_FLOW.get(current_state)
         if not next_info:
             return None
@@ -1651,321 +1620,6 @@ class PipelineWorker:
         if agent_type == "methodologist":
             task["input_data"]["stage"] = "post_spec"
         return task
-
-    def _marketplace_readiness(self, product_id: str) -> tuple[bool, list[str]]:
-        reasons: list[str] = []
-        code_dir = self.data_root / "code" / product_id
-        manifest_path = code_dir / "code_manifest.json"
-        has_code = False
-        if manifest_path.exists():
-            try:
-                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-                files = manifest.get("files") if isinstance(manifest, dict) else []
-                if isinstance(files, list):
-                    for entry in files:
-                        rel = ""
-                        if isinstance(entry, dict):
-                            rel = str(entry.get("path") or entry.get("file_path") or "").strip()
-                        if rel and (code_dir / rel).exists():
-                            has_code = True
-                            break
-            except Exception:
-                has_code = False
-        if not has_code:
-            reasons.append("missing generated code artifacts (code_manifest/files)")
-        spec = self._load_spec(product_id)
-        mq = evaluate_marketplace_quality(product_id, specification=spec)
-        if not bool(mq.get("eligible")):
-            mq_reasons = mq.get("reasons")
-            if isinstance(mq_reasons, list) and mq_reasons:
-                reasons.extend(str(x) for x in mq_reasons[:6])
-            else:
-                reasons.append("marketplace quality gate failed")
-        return len(reasons) == 0, reasons
-
-    def _enforce_marketplace_readiness(self, products: dict, task_queue: list, now: float) -> bool:
-        """
-        Bulk refinement toward a purchasable artifact: terminal products that fail storefront gates
-        are reopened (BUG_FOUND → developer DEV_FIXING) until AIFACTORY_MAX_QUALITY_LOOPS.
-
-        Respects operator intent: follow-up «not pursuing» and admin_force_list skip remediation.
-        Bounded per cycle via AIFACTORY_STOREFRONT_REMEDIATION_MAX_PER_CYCLE.
-
-        Disable entirely: AIFACTORY_STOREFRONT_REMEDIATION_ENABLED=0
-
-        Mode (when enabled): AIFACTORY_STOREFRONT_REMEDIATION_MODE
-          - full (default): annotate follow-up JSON + BUG_FOUND + developer DEV_FIXING
-          - annotate_only: only write planned / backlog notes to product_followup — no pipeline reopen
-        """
-        if not _env_truthy("AIFACTORY_STOREFRONT_REMEDIATION_ENABLED", "1"):
-            return False
-
-        mode_raw = os.environ.get("AIFACTORY_STOREFRONT_REMEDIATION_MODE", "full").strip().lower().replace("-", "_")
-        if mode_raw == "annotate_only":
-            remediation_mode = "annotate_only"
-        elif mode_raw in ("full", "remediate", "repair", ""):
-            remediation_mode = "full"
-        else:
-            logger.warning(
-                "Unknown AIFACTORY_STOREFRONT_REMEDIATION_MODE=%r — using full",
-                os.environ.get("AIFACTORY_STOREFRONT_REMEDIATION_MODE"),
-            )
-            remediation_mode = "full"
-
-        try:
-            max_quality_loops = int(os.environ.get("AIFACTORY_MAX_QUALITY_LOOPS", "10"))
-        except ValueError:
-            max_quality_loops = 10
-        max_quality_loops = max(1, max_quality_loops)
-
-        try:
-            max_per_cycle = int(os.environ.get("AIFACTORY_STOREFRONT_REMEDIATION_MAX_PER_CYCLE", "8"))
-        except ValueError:
-            max_per_cycle = 8
-        max_per_cycle = max(1, max_per_cycle)
-
-        from web.backend.services.product_followup import (
-            admin_force_list_enabled,
-            annotate_automated_storefront_backlog,
-            storefront_followup_not_pursuing,
-        )
-
-        candidates: list[tuple[str, dict, list[str]]] = []
-        for pid, product in products.items():
-            state_upper = str(product.get("state") or "").upper()
-            if state_upper not in ("COMPLETED", "DEPLOYED_PRODUCTION"):
-                continue
-            if storefront_followup_not_pursuing(pid):
-                continue
-            if admin_force_list_enabled(pid):
-                continue
-            ready, reasons = self._marketplace_readiness(pid)
-            if ready:
-                try:
-                    from web.backend.services.product_followup import (
-                        merge_mark_storefront_established_listing,
-                    )
-
-                    if merge_mark_storefront_established_listing(pid):
-                        product["updated_at"] = now
-                        changed = True
-                except Exception:
-                    logger.debug("merge_mark_storefront_established_listing failed for %s", pid, exc_info=True)
-                continue
-            candidates.append((pid, product, reasons))
-
-        candidates.sort(key=lambda row: float(row[1].get("updated_at") or row[1].get("created_at") or 0))
-
-        changed = False
-        scheduled = 0
-        for pid, product, reasons in candidates:
-            if scheduled >= max_per_cycle:
-                break
-
-            has_dev_fix = any(
-                t.get("product_id") == pid
-                and t.get("agent_type") == "developer"
-                and t.get("state") == "DEV_FIXING"
-                and t.get("status") in ("pending", "running")
-                for t in task_queue
-            )
-            if has_dev_fix:
-                continue
-
-            if remediation_mode == "annotate_only":
-                try:
-                    annotate_automated_storefront_backlog(pid, reasons)
-                except Exception:
-                    logger.exception("annotate_automated_storefront_backlog failed for %s", pid)
-                scheduled += 1
-                logger.info(
-                    "storefront remediation annotate_only for %s (no DEV_FIXING): %s",
-                    pid,
-                    reasons[:3],
-                )
-                continue
-
-            next_round = int(product.get("quality_repair_round") or 0) + 1
-            if next_round > max_quality_loops:
-                product["state"] = "FAILED"
-                product["failure_reason"] = (
-                    "Product could not satisfy storefront readiness gates after "
-                    f"{max_quality_loops} remediation cycles."
-                )
-                product["updated_at"] = now
-                changed = True
-                logger.error(
-                    "Marketplace readiness failed for %s and repair budget exhausted (%s/%s): %s",
-                    pid,
-                    next_round,
-                    max_quality_loops,
-                    reasons[:3],
-                )
-                scheduled += 1
-                continue
-
-            try:
-                annotate_automated_storefront_backlog(pid, reasons)
-            except Exception:
-                logger.exception("annotate_automated_storefront_backlog failed for %s", pid)
-
-            product["state"] = "BUG_FOUND"
-            product["quality_repair_round"] = next_round
-            product["updated_at"] = now
-            product["last_bug_context"] = {
-                "source": "marketplace_readiness",
-                "issues": reasons,
-            }
-            task_queue.append(
-                {
-                    "id": f"task-{uuid.uuid4().hex[:12]}",
-                    "product_id": pid,
-                    "agent_type": "developer",
-                    "state": "DEV_FIXING",
-                    "status": "pending",
-                    "retry_count": 0,
-                    "max_retries": 3,
-                    "input_data": {
-                        "product_id": pid,
-                        "idea": product.get("idea", ""),
-                        "marketplace_readiness_feedback": {
-                            "passed": False,
-                            "reasons": reasons,
-                        },
-                        "quality_repair_round": next_round,
-                        "quality_repair_max": max_quality_loops,
-                        "admin_instructions": (
-                            "Storefront readiness remediation. Fix demo/code quality so the product appears "
-                            "in marketplace listing (code artifacts present + marketplace quality eligible)."
-                        ),
-                    },
-                    "created_at": now,
-                    "priority": self._get_priority("developer"),
-                }
-            )
-            changed = True
-            scheduled += 1
-            logger.warning(
-                "Reopened COMPLETED product %s for storefront remediation (%s/%s): %s",
-                pid,
-                next_round,
-                max_quality_loops,
-                reasons[:3],
-            )
-        return changed
-
-    def _latest_bug_context(self, product_id: str) -> dict:
-        product_path = self.data_root / "bugs" / product_id
-        if not product_path.exists():
-            return {}
-        latest = None
-        latest_ts = -1.0
-        for fp in product_path.glob("*.json"):
-            try:
-                ts = fp.stat().st_mtime
-            except Exception:
-                continue
-            if ts >= latest_ts:
-                latest = fp
-                latest_ts = ts
-        if not latest:
-            return {}
-        try:
-            return json.loads(latest.read_text(encoding="utf-8"))
-        except Exception:
-            return {}
-
-    def _run_runtime_tests(self, product_id: str, task_queue: list) -> dict:
-        code_dir = self.data_root / "code" / product_id
-        if not code_dir.exists():
-            return {"passed": False, "error": "code directory missing", "results": []}
-        manifest = {}
-        manifest_path = code_dir / "code_manifest.json"
-        if manifest_path.exists():
-            try:
-                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            except Exception:
-                manifest = {}
-        test_commands = manifest.get("test_commands") or []
-        if not isinstance(test_commands, list):
-            test_commands = []
-        results: list[dict] = []
-        passed = True
-        with tempfile.TemporaryDirectory(prefix=f"aifactory-{product_id}-") as td:
-            workdir = Path(td) / "workspace"
-            shutil.copytree(code_dir, workdir, dirs_exist_ok=True)
-            if not test_commands:
-                test_commands = self._infer_default_test_commands(workdir)
-            if not test_commands:
-                return {"passed": True, "results": [{"command": "default_sanity", "exit_code": 0}], "commands": []}
-            for cmd in test_commands:
-                if not isinstance(cmd, str) or not cmd.strip():
-                    continue
-                try:
-                    proc = subprocess.run(
-                        cmd,
-                        shell=True,
-                        cwd=str(workdir),
-                        capture_output=True,
-                        text=True,
-                        timeout=120,
-                    )
-                    item = {
-                        "command": cmd,
-                        "exit_code": proc.returncode,
-                        "stdout": (proc.stdout or "")[:4000],
-                        "stderr": (proc.stderr or "")[:4000],
-                    }
-                    if proc.returncode != 0:
-                        passed = False
-                except Exception as e:
-                    item = {"command": cmd, "exit_code": -1, "stdout": "", "stderr": str(e)}
-                    passed = False
-                results.append(item)
-        return {"passed": passed, "results": results, "commands": test_commands}
-
-    def _infer_default_test_commands(self, workdir: Path) -> list[str]:
-        """
-        Infer runtime tests when developer output does not provide explicit commands.
-
-        Priority:
-        1) Python: syntax + pytest if tests exist.
-        2) Node/JS: package test script if meaningful; otherwise node syntax check.
-        """
-        commands: list[str] = []
-        py_files = [p for p in workdir.rglob("*.py") if p.is_file()]
-        js_files = [p for p in workdir.rglob("*.js") if p.is_file()]
-
-        if py_files:
-            # Keep lightweight syntax checks for all Python files.
-            for pyf in py_files:
-                rel = pyf.relative_to(workdir)
-                commands.append(
-                    f"{sys.executable} -c \"import py_compile; py_compile.compile(r'{rel}', doraise=True)\""
-                )
-            # If tests directory exists, run a real pytest pass.
-            if (workdir / "tests").exists() or any("test_" in p.name for p in py_files):
-                commands.append(f"{sys.executable} -m pytest -q --maxfail=1")
-
-        pkg_json = workdir / "package.json"
-        if pkg_json.exists():
-            try:
-                pkg = json.loads(pkg_json.read_text(encoding="utf-8"))
-            except Exception:
-                pkg = {}
-            scripts = pkg.get("scripts") if isinstance(pkg, dict) else {}
-            test_script = scripts.get("test") if isinstance(scripts, dict) else None
-            # Skip npm default placeholder test script.
-            placeholder = isinstance(test_script, str) and "no test specified" in test_script.lower()
-            if isinstance(test_script, str) and test_script.strip() and not placeholder:
-                commands.append("npm run -s test -- --watch=false")
-            elif js_files:
-                # Minimal JS syntax checks when no test runner is configured.
-                for jsf in js_files[:25]:
-                    rel = jsf.relative_to(workdir)
-                    commands.append(f"node --check \"{rel}\"")
-
-        return commands
 
     def _get_priority(self, agent_type: str) -> int:
         priorities = {

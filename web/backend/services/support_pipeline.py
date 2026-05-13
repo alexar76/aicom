@@ -13,6 +13,8 @@ import uuid
 from pathlib import Path
 from typing import Any, Optional
 
+from core.quality_settings import max_pipeline_repair_rounds
+
 logger = logging.getLogger(__name__)
 
 _TERMINAL_STATES = frozenset({"COMPLETED", "DEPLOYED_PRODUCTION"})
@@ -70,10 +72,7 @@ def inject_user_support_bug(
     if not pid.startswith("prod-"):
         return {"ok": False, "reason": "invalid_product_id"}
 
-    try:
-        max_loops = int(os.environ.get("AIFACTORY_MAX_QUALITY_LOOPS", "10"))
-    except ValueError:
-        max_loops = 10
+    max_loops = max_pipeline_repair_rounds()
 
     pj = pipeline_json_path()
     if not pj.is_file():

@@ -11,7 +11,7 @@ blank pages, JS exceptions, console errors, then either:
 - **Legacy probe** (``AIFACTORY_BROWSER_DEEP_CRAWL=0``): a handful of hash-only anchors + buttons.
 
 Env:
-  ``AIFACTORY_BROWSER_E2E=0`` — disable entire browser pass.
+  ``AIFACTORY_BROWSER_E2E=0`` — disable entire browser pass (or ``quality.browser_e2e_enabled`` in YAML).
   ``AIFACTORY_BROWSER_DEEP_CRAWL=1`` (default) — full link crawl; ``0`` restores shallow clicks only.
   ``AIFACTORY_BROWSER_MAX_PAGES`` — max distinct URLs to visit in BFS (default **100**). Raise for large sites.
   ``AIFACTORY_BROWSER_MAX_DEPTH`` — max BFS depth from start URL (default 10).
@@ -84,6 +84,8 @@ from web.backend.services.sandbox_preview_api import (
     terminate_preview_process,
     wait_port_open,
 )
+
+from core.quality_settings import browser_e2e_enabled, browser_max_depth, browser_max_pages
 
 logger = logging.getLogger(__name__)
 
@@ -376,11 +378,11 @@ def run_browser_preview_e2e(
 
     Returns a dict with at least ``passed: bool`` and diagnostic fields.
     """
-    if os.environ.get("AIFACTORY_BROWSER_E2E", "1").strip().lower() in ("0", "false", "no"):
+    if not browser_e2e_enabled():
         return {
             "passed": True,
             "skipped": True,
-            "reason": "AIFACTORY_BROWSER_E2E disabled",
+            "reason": "Browser E2E disabled (quality.browser_e2e_enabled / AIFACTORY_BROWSER_E2E)",
         }
 
     root = Path(data_root)
@@ -614,8 +616,8 @@ def _playwright_check(
                     base_origin=base_origin,
                     start_url=crawl_start,
                     screenshot_dir=screenshot_dir,
-                    max_pages=deep_env_int("AIFACTORY_BROWSER_MAX_PAGES", DEFAULT_BROWSER_MAX_PAGES),
-                    max_depth=deep_env_int("AIFACTORY_BROWSER_MAX_DEPTH", 10),
+                    max_pages=deep_env_int("AIFACTORY_BROWSER_MAX_PAGES", browser_max_pages()),
+                    max_depth=deep_env_int("AIFACTORY_BROWSER_MAX_DEPTH", browser_max_depth()),
                     per_nav_timeout_ms=deep_env_int("AIFACTORY_BROWSER_PER_NAV_TIMEOUT_MS", 18_000),
                     max_forms_per_page=deep_env_int("AIFACTORY_BROWSER_FORMS_PER_PAGE", 4),
                     max_button_clicks_per_page=deep_env_int("AIFACTORY_BROWSER_BUTTONS_PER_PAGE", 14),

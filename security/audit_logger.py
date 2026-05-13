@@ -9,12 +9,46 @@ import json
 import time
 import hashlib
 import logging
+import re
 from typing import Dict, List, Optional, Any
 from pathlib import Path
 from dataclasses import dataclass, field, asdict
 
 logger = logging.getLogger("ai_factory.security.audit")
 GENESIS_HASH = hashlib.sha256(b"AI_FACTORY_AUDIT_GENESIS").hexdigest()
+_AUDIT_FNAME = re.compile(r"^audit-(\d{8})-(\d{6})(?:-(\d+))?\.jsonl$")
+
+
+def _audit_log_files_chrono(log_dir: Path, *, reverse: bool = False) -> List[Path]:
+    """
+    Chronological order for ``audit-*.jsonl``.
+
+    Lexical sort breaks when a same-second collision file ``audit-T-NNN.jsonl`` sorts
+    before ``audit-T.jsonl``. ``st_mtime`` alone can tie on coarse filesystem timestamps.
+    """
+
+    def sort_key(p: Path) -> tuple:
+        m = _AUDIT_FNAME.match(p.name)
+        if not m:
+            try:
+                return (0, 0, 0, p.stat().st_mtime_ns, p.name)
+            except OSError:
+                return (0, 0, 0, 0, p.name)
+        day, hms, suf = m.group(1), m.group(2), m.group(3)
+        core = int(day) * 1_000_000 + int(hms)
+        suf_i = -1 if suf is None else int(suf)
+        try:
+            ns = p.stat().st_mtime_ns
+        except OSError:
+            ns = 0
+        return (core, suf_i, ns, p.name)
+
+    files = list(log_dir.glob("audit-*.jsonl"))
+    files.sort(key=sort_key)
+    if reverse:
+        files.reverse()
+    return files
+
 
 # ---------------------------------------------------------------------------
 # Data Models
@@ -84,7 +118,7 @@ class AuditLogger:
         self._lock_file = self.log_dir / ".integrity.lock"
         
         # Find the latest log file
-        log_files = sorted(self.log_dir.glob("audit-*.jsonl"))
+        log_files = _audit_log_files_chrono(self.log_dir)
         if log_files:
             self._current_file = log_files[-1]
             # Get last hash from the last entry
@@ -121,7 +155,7 @@ class AuditLogger:
         self._current_file.touch(exist_ok=True)
         
         # Clean up old files
-        log_files = sorted(self.log_dir.glob("audit-*.jsonl"))
+        log_files = _audit_log_files_chrono(self.log_dir)
         while len(log_files) > self.max_log_files:
             oldest = log_files.pop(0)
             oldest.unlink()
@@ -221,7 +255,7 @@ class AuditLogger:
         """
         results = []
         
-        for log_file in sorted(self.log_dir.glob("audit-*.jsonl"), reverse=True):
+        for log_file in _audit_log_files_chrono(self.log_dir, reverse=True):
             try:
                 lines = log_file.read_text().strip().split("\n")
                 for line in reversed(lines):
@@ -274,9 +308,9 @@ class AuditLogger:
             "errors": [],
         }
         
-        previous_hash = ""
-        
-        for log_file in sorted(self.log_dir.glob("audit-*.jsonl")):
+        previous_hash = GENESIS_HASH
+
+        for log_file in _audit_log_files_chrono(self.log_dir):
             result["files_checked"] += 1
             try:
                 lines = log_file.read_text().strip().split("\n")
@@ -290,10 +324,10 @@ class AuditLogger:
                         result["errors"].append(f"{log_file.name}:{i+1} - Parse error: {e}")
                         result["verified"] = False
                         continue
-                    
+
                     result["entries_checked"] += 1
-                    
-                    # Verify hash
+
+                    # Verify entry hash matches canonical payload
                     expected_hash = entry.compute_hash()
                     if entry.hash != expected_hash:
                         result["tampered_entries"].append({
@@ -303,9 +337,9 @@ class AuditLogger:
                             "timestamp": entry.timestamp,
                         })
                         result["verified"] = False
-                    
-                    # Verify chain
-                    if previous_hash and entry.previous_hash != previous_hash:
+
+                    # Verify chain (continues across rotated log files)
+                    if entry.previous_hash != previous_hash:
                         result["tampered_entries"].append({
                             "file": log_file.name,
                             "line": i + 1,
@@ -313,7 +347,7 @@ class AuditLogger:
                             "reason": "hash_chain_break",
                         })
                         result["verified"] = False
-                    
+
                     previous_hash = entry.hash
             except Exception as e:
                 result["errors"].append(f"{log_file.name}: {e}")

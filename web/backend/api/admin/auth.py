@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Optional
 
@@ -16,6 +17,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from pydantic import BaseModel, Field
 
 from web.backend.core.admin_roles import normalize_role, require_admin_with_rbac
+from web.backend.services.demo_credentials import sandbox_demo_password_uses_default
 from web.backend.core.security import SecurityManager
 from web.backend.services import admin_users_store as aus
 
@@ -24,6 +26,23 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/admin/auth", tags=["admin-auth"])
 
 ADMIN_JSON = Path("/app/data/config/admin.json")
+
+
+def _request_is_https(request: Request) -> bool:
+    xf = (request.headers.get("x-forwarded-proto") or "").strip().lower()
+    if xf.startswith("https"):
+        return True
+    return request.url.scheme == "https"
+
+
+def _access_token_cookie_secure(request: Request) -> bool:
+    """Secure cookies on HTTPS unless overridden (e.g. local HTTP dev)."""
+    v = (os.environ.get("AIFACTORY_COOKIE_SECURE") or "").strip().lower()
+    if v in ("1", "true", "yes"):
+        return True
+    if v in ("0", "false", "no"):
+        return False
+    return _request_is_https(request)
 
 
 class LoginRequest(BaseModel):
@@ -146,13 +165,15 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
     )
     security.record_login_attempt(client_ip, True, login_data.username)
 
+    cookie_secure = _access_token_cookie_secure(request)
     response.set_cookie(
         key="access_token",
         value=token,
         httponly=True,
-        secure=False,
+        secure=cookie_secure,
         samesite="lax",
         max_age=1800,
+        path="/",
     )
 
     return {
@@ -164,9 +185,15 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
 
 
 @router.post("/logout")
-async def admin_logout(response: Response):
+async def admin_logout(request: Request, response: Response):
     """Logout admin user."""
-    response.delete_cookie("access_token")
+    response.delete_cookie(
+        "access_token",
+        path="/",
+        httponly=True,
+        secure=_access_token_cookie_secure(request),
+        samesite="lax",
+    )
     return {"message": "Logged out successfully"}
 
 
@@ -183,6 +210,7 @@ async def get_current_admin_info(
         "role": normalize_role(r).value if r else normalize_role(None).value,
         "totp_enabled": totp_enabled,
         "totp_pending": totp_pending,
+        "sandbox_demo_password_uses_default": sandbox_demo_password_uses_default(),
     }
 
 

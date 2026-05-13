@@ -6,24 +6,7 @@ from __future__ import annotations
 import os
 import re
 
-MARKETING_LANDING = "marketing_landing"
-FULL_SOFTWARE = "full_software"
-
-def normalize_delivery_profile(raw: str | None) -> str:
-    if raw is None:
-        return FULL_SOFTWARE
-    key = str(raw).strip().lower().replace(" ", "_").replace("-", "_")
-    if not key:
-        return FULL_SOFTWARE
-    if key in (
-        "marketing_landing",
-        "marketing",
-        "landing_only",
-        "promo_only",
-        "brochure",
-    ):
-        return MARKETING_LANDING
-    return FULL_SOFTWARE
+from core.delivery_profile import FULL_SOFTWARE, MARKETING_LANDING, normalize_delivery_profile
 
 
 def infer_delivery_profile(admin_instructions: str | None, idea: str | None) -> str:

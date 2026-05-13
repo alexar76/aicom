@@ -40,6 +40,12 @@ from web.backend.services.product_followup import (
     validate_and_save,
 )
 from web.backend.services.pipeline_demo_replay import metrics_demo_replay_slice
+from web.backend.services.storefront_counts_cache import invalidate_storefront_categories_cache
+from web.backend.services.storefront_pricing import (
+    patch_admin_storefront_usdt,
+    read_sales_inner_and_pricing,
+    resolve_storefront_price_usdt,
+)
 from web.backend.api.products import count_showcase_listable_products, is_shipped_pipeline_product_state
 
 logger = logging.getLogger(__name__)
@@ -72,6 +78,13 @@ class MarketplaceCopyPatch(BaseModel):
     short_description: Optional[str] = Field(None, max_length=12000)
     selling_description: Optional[str] = Field(None, max_length=24000)
     long_description: Optional[str] = Field(None, max_length=32000)
+
+
+class StorefrontPricingPatch(BaseModel):
+    """Manual storefront / checkout USDT price (``sales_data.pricing.admin_storefront_usdt``)."""
+
+    admin_storefront_usdt: Optional[float] = Field(None, gt=0, lt=1_000_000)
+    clear_admin_storefront_usdt: bool = False
 
 
 class HumanReworkBody(BaseModel):
@@ -1276,14 +1289,49 @@ async def get_agents():
     agents["designer"]["last_active"] = agents["designer"].get("last_active") or arch.get("last_active")
     agents["designer"]["status"] = arch.get("status") or agents["designer"].get("status") or "active"
 
+    # Live-ish log metrics (same source as Live Monitor ``agent_metrics``)
+    try:
+        am = _collect_agent_metrics()
+        for at, row in agents.items():
+            if at not in am:
+                continue
+            m = am[at]
+            row["log_metrics"] = {
+                "total_entries": int(m.get("total_entries") or 0),
+                "recent_entries": int(m.get("recent_entries") or 0),
+                "recent_errors": int(m.get("recent_errors") or 0),
+                "last_active": float(m.get("last_active") or 0),
+                "status": str(m.get("status") or "idle"),
+            }
+            row["status"] = str(m.get("status") or row.get("status") or "active")
+    except Exception:
+        logger.warning("get_agents: log_metrics merge failed", exc_info=True)
+
+    arch_after = agents.get("architect") or {}
+    if agents.get("designer") and not agents["designer"].get("log_metrics") and arch_after.get("log_metrics"):
+        agents["designer"]["log_metrics"] = dict(arch_after["log_metrics"])
+
     return {"agents": agents}
 
 
+def _audit_entry_ts_seconds(entry: dict[str, Any]) -> float:
+    raw = entry.get("timestamp", 0)
+    try:
+        v = float(raw)
+    except (TypeError, ValueError):
+        return 0.0
+    return v / 1000.0 if v > 1e12 else v
+
+
 @router.get("/security/logs")
-async def get_security_logs(limit: int = 100):
+async def get_security_logs(
+    limit: int = Query(500, ge=1, le=5000),
+    since: Optional[float] = Query(None, description="Unix seconds, inclusive lower bound"),
+    until: Optional[float] = Query(None, description="Unix seconds, inclusive upper bound"),
+):
     """Get security audit logs from all audit log locations."""
-    entries = []
-    
+    entries: list[dict[str, Any]] = []
+
     # Check both locations:
     # 1. Legacy flat file
     legacy_file = Path("/app/data/logs/audit.jsonl")
@@ -1298,7 +1346,7 @@ async def get_security_logs(limit: int = 100):
                             pass
         except Exception:
             pass
-    
+
     # 2. AuditLogger directory (hash-chained format)
     audit_dir = Path("/app/data/logs/audit")
     if audit_dir.exists():
@@ -1315,11 +1363,22 @@ async def get_security_logs(limit: int = 100):
                             pass
             except Exception:
                 pass
-    
+
+    if since is not None or until is not None:
+        filtered: list[dict[str, Any]] = []
+        for e in entries:
+            ts = _audit_entry_ts_seconds(e)
+            if since is not None and ts < since:
+                continue
+            if until is not None and ts > until:
+                continue
+            filtered.append(e)
+        entries = filtered
+
     # Sort by timestamp descending (newest first)
-    entries.sort(key=lambda e: e.get("timestamp", 0), reverse=True)
-    
-    return {"logs": entries[:limit], "count": min(len(entries), limit)}
+    entries.sort(key=_audit_entry_ts_seconds, reverse=True)
+    sliced = entries[:limit]
+    return {"logs": sliced, "count": len(sliced), "total": len(entries)}
 
 
 # ── LLM Call Logs ─────────────────────────────────────────────────────────
@@ -1348,14 +1407,107 @@ def _llm_log_sort_ts(entry: dict) -> float:
     return 0.0
 
 
+def _aggregate_llm_logs_for_summary(entries: list[dict]) -> dict[str, Any]:
+    """Roll up costs/tokens and breakdowns for admin LLM log summary (same semantics as LLMLogsTab)."""
+    sum_cost = 0.0
+    with_cost = 0
+    sum_prompt = 0
+    sum_completion = 0
+    sum_tokens = 0
+    calls_in_out = 0
+    by_provider: dict[str, float] = {}
+    by_role: dict[str, float] = {}
+    by_agent: dict[str, float] = {}
+
+    for log in entries:
+        c = log.get("estimated_cost_usd")
+        if isinstance(c, (int, float)) and not isinstance(c, bool) and math.isfinite(float(c)):
+            sum_cost += float(c)
+            with_cost += 1
+        p = log.get("prompt_tokens")
+        co = log.get("completion_tokens")
+        if isinstance(p, (int, float)) and not isinstance(p, bool) and math.isfinite(float(p)):
+            sum_prompt += int(p)
+        if isinstance(co, (int, float)) and not isinstance(co, bool) and math.isfinite(float(co)):
+            sum_completion += int(co)
+        tu = log.get("tokens_used")
+        if isinstance(tu, (int, float)) and not isinstance(tu, bool) and math.isfinite(float(tu)):
+            sum_tokens += int(tu)
+        if (
+            isinstance(p, (int, float))
+            and not isinstance(p, bool)
+            and isinstance(co, (int, float))
+            and not isinstance(co, bool)
+        ):
+            calls_in_out += 1
+
+        cc = float(c) if isinstance(c, (int, float)) and not isinstance(c, bool) and math.isfinite(float(c)) else 0.0
+        prov = str(log.get("provider") or "unknown")
+        by_provider[prov] = by_provider.get(prov, 0.0) + cc
+
+        role = str(log.get("model_role") or "unknown")
+        by_role[role] = by_role.get(role, 0.0) + cc
+
+        ag = str(log.get("agent_type") or "—")
+        by_agent[ag] = by_agent.get(ag, 0.0) + cc
+
+    provider_pie = [
+        {"name": k, "value": v}
+        for k, v in sorted(by_provider.items(), key=lambda kv: -kv[1])
+        if v > 0
+    ]
+    role_bar = [
+        {"name": k, "cost": v}
+        for k, v in sorted(by_role.items(), key=lambda kv: -kv[1])
+        if v > 0
+    ]
+    agent_bar = [
+        {"name": k, "cost": v}
+        for k, v in sorted(((k, v) for k, v in by_agent.items() if k != "—"), key=lambda kv: -kv[1])
+        if v > 0
+    ][:14]
+
+    return {
+        "estimated_cost_usd": round(sum_cost, 6),
+        "calls_with_cost_estimate": with_cost,
+        "prompt_tokens": sum_prompt,
+        "completion_tokens": sum_completion,
+        "tokens_used_sum": sum_tokens,
+        "calls_with_prompt_completion_tokens": calls_in_out,
+        "matching_in_range": len(entries),
+        "by_provider": provider_pie,
+        "by_role": role_bar,
+        "by_agent": agent_bar,
+    }
+
+
 @router.get("/llm/logs")
-async def get_llm_logs(limit: int = 100, provider: str = None):
-    """Get LLM API call logs for admin visibility (newest entries first)."""
+async def get_llm_logs(
+    limit: int = Query(100, ge=1, le=2000, description="Page size (newest-first window)."),
+    offset: int = Query(0, ge=0, le=2_000_000, description="Skip this many newest-matching rows before returning a page."),
+    provider: Optional[str] = Query(None),
+    since: Optional[float] = Query(
+        None,
+        description="Inclusive range start as Unix time in seconds (e.g. from Date.now()/1000).",
+    ),
+    until: Optional[float] = Query(
+        None,
+        description="Inclusive range end as Unix time in seconds.",
+    ),
+):
+    """Get LLM API call logs for admin visibility (newest entries first).
+
+    Use ``offset`` + ``limit`` to page through results without loading the whole file in the browser.
+    When ``since`` and/or ``until`` are set, ``summary`` aggregates **all** matching rows; ``logs`` is only
+    the requested page.
+    """
     from llm.pricing_estimate import enrich_llm_log_entry
 
-    limit = max(1, min(int(limit or 100), 5000))
+    limit = max(1, min(int(limit or 100), 2000))
+    offset = max(0, min(int(offset or 0), 2_000_000))
     log_file = Path("/app/data/logs/llm_calls.jsonl")
     indexed: list[tuple[int, dict]] = []
+    use_time_range = since is not None or until is not None
 
     if log_file.exists():
         with open(log_file, "r") as f:
@@ -1366,6 +1518,12 @@ async def get_llm_logs(limit: int = 100, provider: str = None):
                         entry = json.loads(line)
                         if provider and entry.get("provider") != provider:
                             continue
+                        if use_time_range:
+                            ts = _llm_log_sort_ts(entry)
+                            if since is not None and ts < float(since):
+                                continue
+                            if until is not None and ts > float(until):
+                                continue
                         indexed.append((line_no, entry))
                     except json.JSONDecodeError:
                         pass
@@ -1373,10 +1531,26 @@ async def get_llm_logs(limit: int = 100, provider: str = None):
     # Newest first; larger line_no wins on timestamp ties (later JSONL line = newer).
     indexed.sort(key=lambda x: (_llm_log_sort_ts(x[1]), x[0]), reverse=True)
     logs = [e for _, e in indexed]
-    trimmed = logs[:limit]
-    for entry in trimmed:
-        enrich_llm_log_entry(entry)
-    return {"logs": trimmed, "count": len(trimmed), "total": len(logs)}
+    summary: dict[str, Any] | None = None
+    if use_time_range:
+        for entry in logs:
+            enrich_llm_log_entry(entry)
+        summary = _aggregate_llm_logs_for_summary(logs)
+        trimmed = logs[offset : offset + limit]
+    else:
+        window = logs[offset : offset + limit]
+        for entry in window:
+            enrich_llm_log_entry(entry)
+        trimmed = window
+
+    return {
+        "logs": trimmed,
+        "count": len(trimmed),
+        "total": len(logs),
+        "summary": summary,
+        "offset": offset,
+        "limit": limit,
+    }
 
 
 @router.get("/director/reports")
@@ -1652,10 +1826,9 @@ async def get_pipeline_products(
     light: bool = Query(
         False,
         description=(
-            "When true, skip per-row disk reads for spec/arch/marketing/followup and omit the global "
-            "storefront listable scan — faster Pipeline Monitor pagination. Storefront eligibility still "
-            "uses the in-memory product row (SQLite metadata / pipeline.json) plus existing disk checks "
-            "inside eligibility for shipped rows."
+            "When true, skip per-row disk reads for spec/arch/marketing/followup (faster Pipeline Monitor "
+            "pagination). Catalog summary still includes the public storefront listable count (same scan "
+            "as the marketplace grid)."
         ),
     ),
 ):
@@ -1755,15 +1928,12 @@ async def get_pipeline_products(
         failed_catalog = sum(
             1 for _, p in all_items if str(p.get("state", "")).strip().lower() == "failed"
         )
-        storefront_listable: int | None
-        if light:
-            storefront_listable = None
-        else:
-            try:
-                storefront_listable = count_showcase_listable_products()
-            except Exception as ex:
-                logger.warning("pipeline products: storefront listable count failed (%s)", ex)
-                storefront_listable = 0
+        storefront_listable = 0
+        try:
+            storefront_listable = count_showcase_listable_products()
+        except Exception as ex:
+            logger.warning("pipeline products: storefront listable count failed (%s)", ex)
+            storefront_listable = 0
 
         window = all_items[safe_offset:safe_offset + safe_limit]
 
@@ -1833,7 +2003,7 @@ async def get_pipeline_products(
                     except Exception:
                         pass
 
-            result.append({
+            row: dict[str, Any] = {
                 "id": pid,
                 "idea": product.get("idea", ""),
                 "category": category,
@@ -1860,7 +2030,23 @@ async def get_pipeline_products(
                 "storefront_gate_reasons": storefront_gate_reasons,
                 "storefront_followup": storefront_followup,
                 "storefront_marketing_copy": storefront_marketing_copy,
-            })
+            }
+            if not light and is_shipped_pipeline_product_state(product.get("state")):
+                s_inner, s_pricing = read_sales_inner_and_pricing(pid)
+                m_for_price = storefront_marketing_copy if isinstance(storefront_marketing_copy, dict) else {}
+                eff, tier = resolve_storefront_price_usdt(
+                    marketing=m_for_price,
+                    sales_config_inner=s_inner,
+                )
+                row["storefront_effective_price_usdt"] = eff
+                row["storefront_price_tier"] = tier
+                raw_adm = s_pricing.get("admin_storefront_usdt")
+                if isinstance(raw_adm, (int, float)) and float(raw_adm) > 0:
+                    row["storefront_admin_price_usdt"] = float(raw_adm)
+                else:
+                    row["storefront_admin_price_usdt"] = None
+
+            result.append(row)
         
         return {
             "products": result,
@@ -1898,6 +2084,7 @@ async def patch_pipeline_product_followup(product_id: str, body: StorefrontFollo
             not_pursuing_reason=body.not_pursuing_reason,
         )
         vis, reasons = _admin_pipeline_storefront_hints(product_id)
+        invalidate_storefront_categories_cache()
         return {
             "product_id": product_id,
             "storefront_followup": record,
@@ -1936,6 +2123,7 @@ async def patch_pipeline_product_storefront_admin(product_id: str, body: Storefr
             clear_hide_from_storefront=body.clear_hide_from_storefront,
         )
         vis, reasons = _admin_pipeline_storefront_hints(product_id)
+        invalidate_storefront_categories_cache()
         return {
             "product_id": product_id,
             "storefront_followup": record,
@@ -1980,9 +2168,38 @@ async def patch_pipeline_product_marketplace_copy(product_id: str, body: Marketp
     _merge_marketing_copy(product_id, body)
     inner = _read_marketing_inner(product_id) or {}
     vis, reasons = _admin_pipeline_storefront_hints(product_id)
+    invalidate_storefront_categories_cache()
     return {
         "product_id": product_id,
         "storefront_marketing_copy": inner,
+        "storefront_visible": vis,
+        "storefront_gate_reasons": reasons,
+    }
+
+
+@router.patch("/pipeline/products/{product_id}/storefront-pricing")
+async def patch_pipeline_product_storefront_pricing(product_id: str, body: StorefrontPricingPatch):
+    """Set or clear manual storefront / crypto checkout USDT price (``sales_config.json``)."""
+    if not body.clear_admin_storefront_usdt and body.admin_storefront_usdt is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Provide admin_storefront_usdt or set clear_admin_storefront_usdt to true",
+        )
+    try:
+        out = patch_admin_storefront_usdt(
+            product_id,
+            admin_storefront_usdt=body.admin_storefront_usdt,
+            clear_admin_storefront_usdt=body.clear_admin_storefront_usdt,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    products, _tasks = _load_pipeline_snapshot_for_metrics()
+    row = products.get(product_id)
+    vis, reasons = _admin_pipeline_storefront_hints(product_id, row if isinstance(row, dict) else None)
+    invalidate_storefront_categories_cache()
+    return {
+        "product_id": product_id,
+        "storefront_pricing": out,
         "storefront_visible": vis,
         "storefront_gate_reasons": reasons,
     }
@@ -2154,11 +2371,24 @@ async def get_product_spec(product_id: str):
         raise HTTPException(status_code=500, detail="Invalid specification file")
 
 
+def _agent_log_time(entry: dict[str, Any]) -> float:
+    t = entry.get("time", 0)
+    try:
+        return float(t)
+    except (TypeError, ValueError):
+        return 0.0
+
+
 @router.get("/agent/logs")
-async def get_agent_logs(agent: str = None, limit: int = 200):
+async def get_agent_logs(
+    agent: Optional[str] = None,
+    limit: int = Query(200, ge=1, le=5000),
+    since: Optional[float] = Query(None, description="Unix seconds, inclusive lower bound on entry `time`"),
+    until: Optional[float] = Query(None, description="Unix seconds, inclusive upper bound on entry `time`"),
+):
     """Get agent execution logs from all agent log files."""
     logs_dir = Path("/app/data/logs")
-    all_logs = []
+    all_logs: list[dict[str, Any]] = []
 
     if not logs_dir.exists():
         return {"logs": [], "count": 0, "total": 0}
@@ -2168,7 +2398,6 @@ async def get_agent_logs(agent: str = None, limit: int = 200):
         agent_files = [f for f in agent_files if f.stem == agent]
 
     for log_file in agent_files:
-        agent_name = log_file.stem
         try:
             with open(log_file, "r") as f:
                 for line in f:
@@ -2184,10 +2413,16 @@ async def get_agent_logs(agent: str = None, limit: int = 200):
         except Exception as e:
             logger.warning(f"Failed to read agent log {log_file}: {e}")
 
-    # Sort by time ascending
-    all_logs.sort(key=lambda x: x.get("time", 0))
+    if since is not None:
+        all_logs = [x for x in all_logs if _agent_log_time(x) >= since]
+    if until is not None:
+        all_logs = [x for x in all_logs if _agent_log_time(x) <= until]
 
-    return {"logs": all_logs[-limit:], "count": min(len(all_logs), limit), "total": len(all_logs)}
+    # Sort by time ascending, return the last `limit` rows (most recent within the window)
+    all_logs.sort(key=_agent_log_time)
+    window_total = len(all_logs)
+    tail = all_logs[-limit:] if all_logs else []
+    return {"logs": tail, "count": len(tail), "total": window_total}
 
 
 @router.get("/products/{product_id}/security-report")

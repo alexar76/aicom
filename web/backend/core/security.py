@@ -14,7 +14,7 @@ import os
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -22,6 +22,41 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 logger = logging.getLogger(__name__)
+
+# Minimum length for JWT HMAC keys loaded from env or jwt_secret.key file.
+_JWT_MIN_KEY_CHARS = 32
+
+
+def resolve_jwt_secret_for_runtime(explicit: Optional[str]) -> str:
+    """
+    Resolve HS256 secret for JWT. Callers may pass ``explicit`` (unit tests).
+    Production: set ``JWT_SECRET_KEY`` (>=32 chars) or rely on Docker entrypoint
+    ``jwt_secret.key`` mounted at ``JWT_SECRET_FILE``.
+    """
+    if explicit is not None:
+        s = explicit.strip()
+        if len(s) >= 8:
+            return s
+    env = (os.environ.get("JWT_SECRET_KEY") or "").strip()
+    if len(env) >= _JWT_MIN_KEY_CHARS:
+        return env
+    key_path = Path((os.environ.get("JWT_SECRET_FILE") or "/app/data/secrets/jwt_secret.key").strip())
+    if key_path.is_file():
+        from_file = key_path.read_text(encoding="utf-8").strip()
+        if len(from_file) >= _JWT_MIN_KEY_CHARS:
+            return from_file
+    if os.environ.get("AIFACTORY_INSECURE_JWT_ALLOW_EPHEMERAL", "").lower() in ("1", "true", "yes"):
+        logger.warning(
+            "JWT: AIFACTORY_INSECURE_JWT_ALLOW_EPHEMERAL=1 — using ephemeral secret; "
+            "all sessions invalidated on restart. Do not use in production."
+        )
+        return hashlib.sha256(os.urandom(48)).hexdigest()
+    raise RuntimeError(
+        "JWT signing key missing or too short. Set JWT_SECRET_KEY (>=32 characters), "
+        "or mount /app/data/secrets/jwt_secret.key (see entrypoint.sh). "
+        "For disposable local runs only: AIFACTORY_INSECURE_JWT_ALLOW_EPHEMERAL=1"
+    )
+
 
 # Password hashing context.
 # Prefer pbkdf2_sha256 for reliable cross-environment behavior in CI/containers.
@@ -52,19 +87,25 @@ class SecurityManager:
         ban_minutes: int = 15,
         audit_log_path: str = "/app/data/logs/audit.jsonl",
     ):
-        self.secret_key = secret_key or os.environ.get(
-            "JWT_SECRET_KEY",
-            hashlib.sha256(os.urandom(32)).hexdigest(),
-        )
+        self.secret_key = resolve_jwt_secret_for_runtime(secret_key)
         self.jwt_algorithm = jwt_algorithm
         self.jwt_expiry_minutes = jwt_expiry_minutes
         self.max_login_attempts = max_login_attempts
         self.ban_minutes = ban_minutes
         self.audit_log_path = audit_log_path
-        
+
+        self._audit_chain: Any = None
+        chain_dir = Path(audit_log_path).parent / "audit"
+        try:
+            from security.audit_logger import AuditLogger
+
+            self._audit_chain = AuditLogger(log_dir=str(chain_dir))
+        except Exception as e:
+            logger.warning("SecurityManager: hash-chain AuditLogger unavailable (%s)", e)
+
         # In-memory rate limiting
         self._login_attempts: dict[str, list[float]] = {}
-        
+
         # Ensure audit log directory exists
         Path(audit_log_path).parent.mkdir(parents=True, exist_ok=True)
 
@@ -187,12 +228,25 @@ class SecurityManager:
         return totp.verify(code)
 
     def _audit_log(self, entry: dict):
-        """Write an audit log entry."""
+        """Write an audit log entry (legacy JSONL + tamper-evident hash-chain when available)."""
         try:
-            with open(self.audit_log_path, "a") as f:
+            with open(self.audit_log_path, "a", encoding="utf-8") as f:
                 f.write(json.dumps(entry) + "\n")
         except Exception as e:
-            logger.error(f"Failed to write audit log: {e}")
+            logger.error("Failed to write audit log: %s", e)
+        if self._audit_chain is not None:
+            try:
+                sev = "error" if entry.get("success") is False else "info"
+                self._audit_chain.log(
+                    action=str(entry.get("action", "event")),
+                    actor=str(entry.get("username") or entry.get("sub") or "unknown"),
+                    resource=str(entry.get("resource") or "admin/auth"),
+                    details=entry,
+                    severity=sev,
+                    ip_address=str(entry.get("ip_address", "")),
+                )
+            except Exception as e:
+                logger.error("Failed to write hash-chain audit: %s", e)
 
     def get_audit_logs(
         self,

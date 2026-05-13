@@ -14,6 +14,9 @@ from typing import Generator, Dict, Any
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+# Stable JWT for tests that instantiate ``SecurityManager()`` without a secret (e.g. TestClient(app)).
+os.environ.setdefault("JWT_SECRET_KEY", "0" * 48)
+
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------

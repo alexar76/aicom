@@ -1235,26 +1235,31 @@ function Footer({ copy }: { copy: MarketingStrings }) {
   ];
 
   return (
-    <footer className="border-t border-white/5 py-8 px-4">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <Cpu className="w-5 h-5 text-indigo-400" />
-          <span className="text-sm text-gray-400">{copy.footerTagline}</span>
+    <footer className="border-t border-white/5 px-4 pt-8 pb-[max(6rem,calc(4.5rem+env(safe-area-inset-bottom)))] md:pb-8">
+      <div className="mx-auto flex max-w-6xl min-w-0 flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-8">
+        <div className="flex shrink-0 items-center justify-center gap-2 md:justify-start">
+          <Cpu className="h-5 w-5 shrink-0 text-indigo-400" aria-hidden />
+          <span className="text-center text-sm text-gray-400 md:text-left">{copy.footerTagline}</span>
         </div>
-        <div className="flex items-center gap-6 text-sm text-gray-500">
-          {footerLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="flex items-center gap-1.5 hover:text-gray-300 transition-colors"
-              target={link.href.startsWith('http') ? '_blank' : undefined}
-              rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-            >
-              <link.icon className="w-3.5 h-3.5" />
-              {link.label}
-            </a>
-          ))}
-          <span>© 2026 AI-Factory</span>
+        <div className="flex min-w-0 w-full max-w-full flex-col gap-3 md:min-w-0 md:flex-1 md:items-end">
+          <nav
+            className="flex w-full min-w-0 flex-wrap justify-center gap-2 sm:gap-2.5 md:justify-end"
+            aria-label="Site footer"
+          >
+            {footerLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="inline-flex min-h-[44px] min-w-0 max-w-full flex-[1_1_9.5rem] items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-center text-sm font-medium leading-snug text-gray-200 transition hover:border-white/20 hover:bg-white/[0.08] hover:text-white active:bg-white/[0.12] sm:flex-[1_1_10.5rem] md:min-h-0 md:max-w-[13rem] md:flex-[0_1_auto] md:justify-start md:rounded-lg md:border-transparent md:bg-transparent md:px-2.5 md:py-1.5 md:font-normal md:text-gray-500 md:hover:text-gray-300"
+                target={link.href.startsWith('http') ? '_blank' : undefined}
+                rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              >
+                <link.icon className="h-4 w-4 shrink-0 md:h-3.5 md:w-3.5" aria-hidden />
+                <span className="min-w-0 text-pretty">{link.label}</span>
+              </a>
+            ))}
+          </nav>
+          <p className="text-center text-xs text-gray-600 md:text-right">© 2026 AI-Factory</p>
         </div>
       </div>
     </footer>

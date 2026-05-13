@@ -259,11 +259,12 @@ Director generates reports on an interval (shown in UI); extra analysis can be t
 |---------|----------|
 | **Demo replay** | Same embedded-video controls as **Live Monitor** → Demo replay (enable, title, URL or upload). Persisted with admin settings; secrets/adjacent config elsewhere unchanged. |
 | **Theme** | Theme selection for storefront and admin; CSS variables |
-| **AI Director & pipeline mode** | **Autonomous development** (timer-driven pipeline), interval in minutes, manual **Trigger Director** |
+| **AI Director & pipeline mode** | **Autonomous development** (timer-driven pipeline), interval in minutes, manual **Trigger Director**. **Local high-throughput mode** (powerful local host): raises pipeline parallelism; see **[pipeline-operations.md](pipeline-operations.md)** (“Local high-throughput preset”). The UI shows an **effective throughput** readout (config + env on this host) and **Refresh** without saving other fields. |
 | **Git / Docker / registry** | Remote Git, Docker Registry (deploy artifacts) |
 | **Auto-publish** | Static deploy after DevOps (Vercel / Netlify / Cloudflare Pages); CLI + env tokens — **[auto-publish.md](./auto-publish.md)** |
 | **Railway (full_software)** | `general.railway_*` including optional **environment** and **service** UUIDs; **`RAILWAY_TOKEN`** in factory env; after DevOps, **`full_software`** specs write **`data/state/<product_id>/railway_deploy.json`** — pair with **[deploy-full-software-cloud.md](./deploy-full-software-cloud.md)** and **`scripts/railway_deploy_trigger.py`** / **`.github/workflows/railway-deploy.yml`** |
 | **Site badge** | Optional “Built with AI-Factory” link injected into generated HTML |
+| **Head snippet (generated sites)** | **`general.published_site_head_html`**: raw HTML/scripts inserted before `</head>` in each generated `*.html` when **Developer** completes (GA4 gtag, Yandex Metrica, site-verification `meta`, etc.). Empty = disabled. Does not rewrite already-built pages until the next Developer run (or manual file edit). |
 | **Corporate Chat / standup** | Director standup schedule (time, timezone, on/off) — mirrors chat settings |
 | **Telegram** | Bot token and chat ID can be set here or via **`TELEGRAM_BOT_TOKEN`** / **`TELEGRAM_CHAT_ID`** in env; values saved from admin are stored under **`data/secrets/telegram.yaml`** (not in committed `config.yaml`). |
 

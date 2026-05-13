@@ -13,10 +13,12 @@ export async function fetchPipelineCatalogPageSingleMode(
   offset: number,
   sort: 'newest' | 'shipped_first',
   light: boolean,
+  onAttempt?: (info: { attempt: number; maxAttempts: number }) => void,
 ): Promise<Awaited<ReturnType<typeof api.getPipelineProducts>>> {
   const max = light ? PIPELINE_CATALOG_ATTEMPTS_LIGHT : PIPELINE_CATALOG_ATTEMPTS_FULL;
   let last: unknown;
   for (let i = 0; i < max; i++) {
+    onAttempt?.({ attempt: i, maxAttempts: max });
     try {
       return await api.getPipelineProducts(limit, offset, sort, light);
     } catch (e) {

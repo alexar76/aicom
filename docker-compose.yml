@@ -27,6 +27,17 @@ services:
       # Same container: Next.js SSR & explore pages call the API on loopback
       INTERNAL_API_URL: http://127.0.0.1:8081
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
+      # Comma-separated browser origins for API CORS; unset = dev defaults + NEXT_PUBLIC_SITE_URL
+      AIFACTORY_CORS_ORIGINS: ${AIFACTORY_CORS_ORIGINS:-}
+      # Fernet key (urlsafe base64) encrypts ``data/config/firewall_rules.json`` at rest; unset = plain JSON (dev)
+      AIFACTORY_FIREWALL_RULES_FERNET_KEY: ${AIFACTORY_FIREWALL_RULES_FERNET_KEY:-}
+      # Compose sandbox previews: internal Docker bridge (no internet egress); 0 if stacks need outbound calls
+      AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION: ${AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION:-1}
+      # Optional full CSP string; or set AIFACTORY_ENABLE_DEFAULT_CSP=1 for a minimal API default (see main.py).
+      AIFACTORY_CSP: ${AIFACTORY_CSP:-}
+      AIFACTORY_ENABLE_DEFAULT_CSP: ${AIFACTORY_ENABLE_DEFAULT_CSP:-}
+      AIFACTORY_ENABLE_HSTS: ${AIFACTORY_ENABLE_HSTS:-}
+      AIFACTORY_HSTS_PRELOAD: ${AIFACTORY_HSTS_PRELOAD:-}
       PROMETHEUS_MULTIPROC_DIR: /tmp/prometheus_multiproc
       # First-run only: 1 = autonomous pipeline, 0 = ideas only (default; see entrypoint wizard)
       AIFACTORY_AUTONOMOUS_PIPELINE: ${AIFACTORY_AUTONOMOUS_PIPELINE:-}
@@ -50,7 +61,8 @@ services:
       # Run product docker-compose.yml in sandbox (DB + API + web); set 0 to disable
       AIFACTORY_SANDBOX_COMPOSE_PREVIEW: ${AIFACTORY_SANDBOX_COMPOSE_PREVIEW:-1}
       AIFACTORY_SANDBOX_DEMO_EMAIL: ${AIFACTORY_SANDBOX_DEMO_EMAIL:-sandbox.demo@aicom.local}
-      AIFACTORY_SANDBOX_DEMO_PASSWORD: ${AIFACTORY_SANDBOX_DEMO_PASSWORD:-SandboxDemo!2026}
+      # Override in `.env` for production (openssl rand -base64 32). Legacy public demo was SandboxDemo!2026.
+      AIFACTORY_SANDBOX_DEMO_PASSWORD: ${AIFACTORY_SANDBOX_DEMO_PASSWORD:-AfSc7xK9mR2nL4vP8qW1jH0fT5dB3cZyEu}
       # Playwright deep crawl budget (see docs/pipeline-operations.md)
       AIFACTORY_BROWSER_MAX_PAGES: ${AIFACTORY_BROWSER_MAX_PAGES:-100}
       AIFACTORY_BROWSER_E2E_SERVE_MODE: ${AIFACTORY_BROWSER_E2E_SERVE_MODE:-auto}

@@ -65,7 +65,11 @@ def test_policy_audit_failing_product_gets_dev_task(tmp_path, monkeypatch):
 def test_policy_audit_passing_product_no_task(tmp_path, monkeypatch):
     monkeypatch.setenv("AIFACTORY_MARKETPLACE_QUALITY_GATE", "1")
     monkeypatch.setenv("AIFACTORY_MARKETPLACE_MIN_SPEC_COVERAGE", "0")
-
+    # Isolate from repo ``quality:`` YAML (defaults can require methodology / novelty, etc.).
+    monkeypatch.setenv("AIFACTORY_MARKETPLACE_REQUIRE_METHODOLOGY", "0")
+    monkeypatch.setenv("AIFACTORY_MARKETPLACE_REQUIRE_DESIGN_NOVELTY", "0")
+    monkeypatch.setenv("AIFACTORY_MARKETPLACE_REQUIRE_QA_REALISM", "0")
+    monkeypatch.setenv("AIFACTORY_MARKETPLACE_REQUIRE_RELEASE_SCORE", "0")
     root = tmp_path
     pid = "prod-audit-good"
     code_dir = root / "data" / "code" / pid

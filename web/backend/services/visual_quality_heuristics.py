@@ -1,10 +1,8 @@
 """
 Static visual-quality heuristics for generated web demos (HTML/CSS/JS on disk).
 
-Used by ``demo_quality.assess_product_demo``. Env:
-- ``AIFACTORY_VISUAL_QUALITY_GATE`` — run checks (default 1).
-- ``AIFACTORY_VISUAL_QUALITY_STRICT`` — fail ``quality_gates_pass`` on strict codes (default 0).
-- ``AIFACTORY_VISUAL_QUALITY_APP_CHECKS`` — apply skeleton/empty/error checks only for app-like specs (default 1).
+Used by ``demo_quality.assess_product_demo``. Primary: ``quality.visual_quality_*`` in platform YAML;
+env overrides: ``AIFACTORY_VISUAL_QUALITY_GATE``, ``AIFACTORY_VISUAL_QUALITY_STRICT``, ``AIFACTORY_VISUAL_QUALITY_APP_CHECKS``.
 
 Strict failure codes when STRICT=1 are listed in ``VISUAL_STRICT_GATE_CODES``.
 """
@@ -12,9 +10,10 @@ Strict failure codes when STRICT=1 are listed in ``VISUAL_STRICT_GATE_CODES``.
 from __future__ import annotations
 
 import json
-import os
 import re
 from typing import Any, Optional
+
+from core.quality_settings import visual_quality_app_checks, visual_quality_gate
 
 # Issues that fail pipeline when AIFACTORY_VISUAL_QUALITY_STRICT=1
 VISUAL_STRICT_GATE_CODES = frozenset(
@@ -33,21 +32,11 @@ VISUAL_STRICT_GATE_CODES = frozenset(
 
 
 def visual_quality_gate_enabled() -> bool:
-    return os.environ.get("AIFACTORY_VISUAL_QUALITY_GATE", "1").strip().lower() in (
-        "1",
-        "true",
-        "yes",
-        "on",
-    )
+    return visual_quality_gate()
 
 
 def visual_app_checks_enabled() -> bool:
-    return os.environ.get("AIFACTORY_VISUAL_QUALITY_APP_CHECKS", "1").strip().lower() in (
-        "1",
-        "true",
-        "yes",
-        "on",
-    )
+    return visual_quality_app_checks()
 
 
 def is_app_like_surface(spec: Optional[dict]) -> bool:

@@ -4,8 +4,12 @@ Run generated ``docker-compose.yml`` stacks for marketplace sandbox previews.
 The factory container must have access to the Docker socket (same trust model as DinD static sandbox).
 
 Env **AIFACTORY_SANDBOX_COMPOSE_PREVIEW** — ``1``/``true`` (default), ``0`` to disable.
-Generated repos should publish ports via ``API_HOST_PORT``, ``WEB_HOST_PORT``, etc.; we inject free ports before ``docker compose up``.
-Also passes **SANDBOX_DEMO_EMAIL** / **SANDBOX_DEMO_PASSWORD** (and Vite mirrors) so login forms can prefill — matches Architect ``sandbox_demo_credentials`` defaults unless overridden by ``AIFACTORY_SANDBOX_DEMO_*`` on the factory host.
+Generated repos should publish ports via ``API_HOST_PORT``, ``WEB_HOST_PORT``, etc.; we inject free host ports before ``docker compose up``.
+Also passes **SANDBOX_DEMO_EMAIL** / **SANDBOX_DEMO_PASSWORD** (and Vite mirrors) for prefilled auth in the iframe unless overridden by ``AIFACTORY_SANDBOX_DEMO_*`` on the factory host.
+
+Env **AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION** — ``1`` (default): create a Docker **internal**
+bridge network per preview so stack containers cannot egress to the public internet (intra-stack traffic only).
+Set ``0`` to disable if a generated stack must reach external hosts at runtime.
 """
 
 from __future__ import annotations
@@ -19,7 +23,12 @@ import time
 from pathlib import Path
 from typing import Any, Optional
 
+from web.backend.services.demo_credentials import effective_sandbox_demo_password_for_compose
 from web.backend.services.sandbox_preview_api import pick_loopback_port
+from web.backend.services.sandbox_preview_network import (
+    prepare_isolation_for_compose,
+    remove_internal_network,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +67,12 @@ def _parse_host_port(line: str) -> Optional[int]:
     return None
 
 
-def _discover_compose_http_port(project: str, code_dir: Path, compose_fname: str) -> Optional[int]:
+def _discover_compose_http_port(
+    project: str,
+    code_dir: Path,
+    compose_fname: str,
+    override_path: Optional[str] = None,
+) -> Optional[int]:
     tries = [
         ("web", 5173),
         ("frontend", 5173),
@@ -70,6 +84,8 @@ def _discover_compose_http_port(project: str, code_dir: Path, compose_fname: str
         ("server", 8000),
     ]
     base_cmd = ["docker", "compose", "-p", project, "-f", compose_fname]
+    if override_path:
+        base_cmd.extend(["-f", override_path])
     for svc, internal in tries:
         r = subprocess.run(
             [*base_cmd, "port", svc, str(internal)],
@@ -145,6 +161,8 @@ def start_compose_preview(code_dir: Path, sandbox_id: str) -> tuple[Optional[int
     web_port = pick_loopback_port()
     pg_port = pick_loopback_port()
 
+    override_path_str, isolation_network = prepare_isolation_for_compose(project)
+
     env = os.environ.copy()
     env["API_HOST_PORT"] = str(api_port)
     env["WEB_HOST_PORT"] = str(web_port)
@@ -157,14 +175,17 @@ def start_compose_preview(code_dir: Path, sandbox_id: str) -> tuple[Optional[int
     env["REDIS_HOST_PORT"] = str(pick_loopback_port())
 
     demo_email = os.environ.get("AIFACTORY_SANDBOX_DEMO_EMAIL", "sandbox.demo@aicom.local")
-    demo_pw = os.environ.get("AIFACTORY_SANDBOX_DEMO_PASSWORD", "SandboxDemo!2026")
+    demo_pw = effective_sandbox_demo_password_for_compose()
     env["SANDBOX_DEMO_EMAIL"] = demo_email
     env["SANDBOX_DEMO_PASSWORD"] = demo_pw
     env["VITE_SANDBOX_DEMO_EMAIL"] = demo_email
     env["VITE_SANDBOX_DEMO_PASSWORD"] = demo_pw
 
     compose_fname = cf.name
-    cmd = ["docker", "compose", "-p", project, "-f", compose_fname, "up", "-d", "--build"]
+    cmd = ["docker", "compose", "-p", project, "-f", compose_fname]
+    if override_path_str:
+        cmd.extend(["-f", override_path_str])
+    cmd.extend(["up", "-d", "--build"])
     try:
         proc = subprocess.run(
             cmd,
@@ -176,24 +197,49 @@ def start_compose_preview(code_dir: Path, sandbox_id: str) -> tuple[Optional[int
         )
     except subprocess.TimeoutExpired:
         logger.warning("sandbox compose: up timed out sandbox=%s", sandbox_id[:16])
-        _compose_down(project, code_dir, compose_fname)
+        _compose_down(
+            project,
+            code_dir,
+            compose_fname,
+            override_path=override_path_str,
+            isolation_network=isolation_network,
+        )
         return None, "compose_up_timeout", project
     except FileNotFoundError:
+        if isolation_network:
+            remove_internal_network(isolation_network)
+        if override_path_str:
+            try:
+                Path(override_path_str).unlink(missing_ok=True)
+            except OSError:
+                pass
         return None, "docker_cli_missing", None
 
     if proc.returncode != 0:
         err = ((proc.stderr or "") + (proc.stdout or ""))[:1200]
         logger.warning("sandbox compose: up failed sandbox=%s err=%s", sandbox_id[:16], err)
-        _compose_down(project, code_dir, compose_fname)
+        _compose_down(
+            project,
+            code_dir,
+            compose_fname,
+            override_path=override_path_str,
+            isolation_network=isolation_network,
+        )
         return None, "compose_up_failed", project
 
-    meta = {"project": project, "code_dir": str(code_dir), "compose_file": compose_fname}
+    meta = {
+        "project": project,
+        "code_dir": str(code_dir),
+        "compose_file": compose_fname,
+        "network_override_path": override_path_str,
+        "isolation_network": isolation_network,
+    }
     _compose_meta[sandbox_id] = meta
 
     deadline = time.time() + 45.0
     host_port: Optional[int] = None
     while time.time() < deadline:
-        host_port = _discover_compose_http_port(project, code_dir, compose_fname)
+        host_port = _discover_compose_http_port(project, code_dir, compose_fname, override_path_str)
         if host_port is not None:
             break
         time.sleep(0.7)
@@ -212,24 +258,32 @@ def start_compose_preview(code_dir: Path, sandbox_id: str) -> tuple[Optional[int
     return host_port, "ok", project
 
 
-def _compose_down(project: str, code_dir: Path, compose_fname: str) -> None:
+def _compose_down(
+    project: str,
+    code_dir: Path,
+    compose_fname: str,
+    *,
+    override_path: Optional[str] = None,
+    isolation_network: Optional[str] = None,
+) -> None:
+    cmd = ["docker", "compose", "-p", project, "-f", compose_fname]
+    if override_path:
+        cmd.extend(["-f", override_path])
+    cmd.extend(["down", "--volumes", "--remove-orphans"])
     subprocess.run(
-        [
-            "docker",
-            "compose",
-            "-p",
-            project,
-            "-f",
-            compose_fname,
-            "down",
-            "--volumes",
-            "--remove-orphans",
-        ],
+        cmd,
         cwd=str(code_dir),
         capture_output=True,
         text=True,
         timeout=180,
     )
+    if isolation_network:
+        remove_internal_network(isolation_network)
+    if override_path:
+        try:
+            Path(override_path).unlink(missing_ok=True)
+        except OSError:
+            pass
 
 
 def stop_compose_for_sandbox(sandbox_id: str) -> None:
@@ -239,5 +293,11 @@ def stop_compose_for_sandbox(sandbox_id: str) -> None:
     code_dir = Path(meta["code_dir"])
     project = meta["project"]
     compose_fname = meta.get("compose_file") or "docker-compose.yml"
-    _compose_down(project, code_dir, compose_fname)
+    _compose_down(
+        project,
+        code_dir,
+        compose_fname,
+        override_path=meta.get("network_override_path"),
+        isolation_network=meta.get("isolation_network"),
+    )
     logger.info("sandbox compose: stopped project=%s sandbox=%s", project, sandbox_id[:16])

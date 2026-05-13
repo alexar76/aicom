@@ -16,6 +16,8 @@ from typing import Any
 
 from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW
 
+from core.quality_settings import max_pipeline_repair_rounds
+
 logger = logging.getLogger(__name__)
 
 _TERMINAL_STATES = frozenset({"COMPLETED", "DEPLOYED_PRODUCTION"})
@@ -69,11 +71,7 @@ def _dev_fixing_pending_sqlite(pid: str) -> bool:
 def _inject_via_sqlite(product_id: str, notes: str) -> dict[str, Any]:
     from orchestrator.sqlite_manager import SQLiteManager
 
-    try:
-        max_loops = int(os.environ.get("AIFACTORY_MAX_QUALITY_LOOPS", "10"))
-    except ValueError:
-        max_loops = 10
-
+    max_loops = max_pipeline_repair_rounds()
     pid = product_id.strip()
     sm = SQLiteManager(str(sqlite_db_path()))
     sm.connect()
@@ -144,10 +142,7 @@ def _inject_via_sqlite(product_id: str, notes: str) -> dict[str, Any]:
 
 def _inject_via_pipeline_json(product_id: str, notes: str) -> dict[str, Any]:
     """Same shape as support_pipeline.inject_user_support_bug (pipeline.json + migrate)."""
-    try:
-        max_loops = int(os.environ.get("AIFACTORY_MAX_QUALITY_LOOPS", "10"))
-    except ValueError:
-        max_loops = 10
+    max_loops = max_pipeline_repair_rounds()
 
     pj = pipeline_json_path()
     if not pj.is_file():
@@ -448,11 +443,7 @@ def approve_post_devops_human_review(product_id: str, note: str = "") -> dict[st
 def _reject_via_sqlite(product_id: str, notes: str) -> dict[str, Any]:
     from orchestrator.sqlite_manager import SQLiteManager
 
-    try:
-        max_loops = int(os.environ.get("AIFACTORY_MAX_QUALITY_LOOPS", "10"))
-    except ValueError:
-        max_loops = 10
-
+    max_loops = max_pipeline_repair_rounds()
     pid = product_id.strip()
     sm = SQLiteManager(str(sqlite_db_path()))
     sm.connect()
@@ -523,10 +514,7 @@ def _reject_via_sqlite(product_id: str, notes: str) -> dict[str, Any]:
 
 
 def _reject_via_pipeline_json(product_id: str, notes: str) -> dict[str, Any]:
-    try:
-        max_loops = int(os.environ.get("AIFACTORY_MAX_QUALITY_LOOPS", "10"))
-    except ValueError:
-        max_loops = 10
+    max_loops = max_pipeline_repair_rounds()
 
     pj = pipeline_json_path()
     if not pj.is_file():

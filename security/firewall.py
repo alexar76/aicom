@@ -5,14 +5,24 @@
 # for the platform's web interface and API endpoints.
 # ============================================================================
 
+import json
+import os
 import time
 import ipaddress
 import logging
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field
 from pathlib import Path
 
+try:
+    from cryptography.fernet import Fernet, InvalidToken
+except ImportError:  # pragma: no cover
+    Fernet = None  # type: ignore[misc, assignment]
+    InvalidToken = ValueError  # type: ignore[misc, assignment]
+
 logger = logging.getLogger("ai_factory.security.firewall")
+
+_ENCRYPTED_V1 = "aicom_encrypted"
 
 # ---------------------------------------------------------------------------
 # Data Models
@@ -72,8 +82,14 @@ class FirewallManager:
     - Persistent rule storage
     """
 
-    def __init__(self, rules_file: str = "/app/data/config/firewall_rules.json"):
+    def __init__(
+        self,
+        rules_file: str = "/app/data/config/firewall_rules.json",
+        *,
+        fernet_key: Optional[str] = None,
+    ):
         self.rules_file = Path(rules_file)
+        self._fernet_key_override = fernet_key
         self.rules: List[FirewallRule] = []
         self.rate_limits: Dict[str, RateLimitEntry] = {}
         
@@ -88,6 +104,46 @@ class FirewallManager:
         
         self._load_rules()
         self._ensure_default_rules()
+
+    def _resolved_fernet_key(self) -> Optional[str]:
+        if self._fernet_key_override is not None:
+            k = (self._fernet_key_override or "").strip()
+            return k or None
+        return (os.environ.get("AIFACTORY_FIREWALL_RULES_FERNET_KEY") or "").strip() or None
+
+    def _fernet_cipher(self) -> Optional[Any]:
+        if Fernet is None:
+            return None
+        key = self._resolved_fernet_key()
+        if not key:
+            return None
+        try:
+            return Fernet(key.encode("ascii"))
+        except Exception as e:
+            logger.warning("AIFACTORY_FIREWALL_RULES_FERNET_KEY is invalid: %s", e)
+            return None
+
+    def _payload_dict(self) -> Dict[str, Any]:
+        return {
+            "rules": [
+                {
+                    "id": r.id,
+                    "action": r.action,
+                    "source": r.source,
+                    "protocol": r.protocol,
+                    "port": r.port,
+                    "description": r.description,
+                    "enabled": r.enabled,
+                    "created_at": r.created_at,
+                }
+                for r in self.rules
+            ],
+            "allowed_ports": sorted(self.allowed_ports),
+        }
+
+    def _apply_payload_dict(self, data: Dict[str, Any]) -> None:
+        self.rules = [FirewallRule(**r) for r in data.get("rules", [])]
+        self.allowed_ports = set(data.get("allowed_ports", [80, 443, 8080, 3000, 8000]))
 
     # -----------------------------------------------------------------------
     # Rule Management
@@ -304,41 +360,57 @@ class FirewallManager:
     # -----------------------------------------------------------------------
 
     def _load_rules(self) -> None:
-        """Load rules from file."""
+        """Load rules from file (plain JSON or Fernet envelope when key is configured)."""
         try:
-            if self.rules_file.exists():
-                import json
-                data = json.loads(self.rules_file.read_text())
-                self.rules = [FirewallRule(**r) for r in data.get("rules", [])]
-                self.allowed_ports = set(data.get("allowed_ports", [80, 443, 8080, 3000, 8000]))
-                logger.info(f"Loaded {len(self.rules)} firewall rules")
+            if not self.rules_file.exists():
+                return
+            raw_text = self.rules_file.read_text(encoding="utf-8")
+            data = json.loads(raw_text)
+            if not isinstance(data, dict):
+                return
+
+            if data.get(_ENCRYPTED_V1) is True:
+                f = self._fernet_cipher()
+                if not f:
+                    logger.warning(
+                        "Firewall rules file is encrypted but AIFACTORY_FIREWALL_RULES_FERNET_KEY is unset or invalid",
+                    )
+                    return
+                token = data.get("payload")
+                if not isinstance(token, str):
+                    logger.warning("Encrypted firewall rules envelope missing payload")
+                    return
+                try:
+                    plain = f.decrypt(token.encode("ascii"))
+                    inner = json.loads(plain.decode("utf-8"))
+                except InvalidToken:
+                    logger.warning("Firewall rules decryption failed (wrong Fernet key?)")
+                    return
+                if not isinstance(inner, dict):
+                    return
+                self._apply_payload_dict(inner)
+                logger.info("Loaded %d firewall rules (encrypted at rest)", len(self.rules))
+                return
+
+            self._apply_payload_dict(data)
+            logger.info("Loaded %d firewall rules", len(self.rules))
         except Exception as e:
-            logger.warning(f"Failed to load firewall rules: {e}")
+            logger.warning("Failed to load firewall rules: %s", e)
 
     def _save_rules(self) -> None:
-        """Save rules to file."""
+        """Save rules to file (encrypt when ``AIFACTORY_FIREWALL_RULES_FERNET_KEY`` is set)."""
         try:
             self.rules_file.parent.mkdir(parents=True, exist_ok=True)
-            import json
-            data = {
-                "rules": [
-                    {
-                        "id": r.id,
-                        "action": r.action,
-                        "source": r.source,
-                        "protocol": r.protocol,
-                        "port": r.port,
-                        "description": r.description,
-                        "enabled": r.enabled,
-                        "created_at": r.created_at,
-                    }
-                    for r in self.rules
-                ],
-                "allowed_ports": sorted(self.allowed_ports),
-            }
-            self.rules_file.write_text(json.dumps(data, indent=2))
+            payload = self._payload_dict()
+            f = self._fernet_cipher()
+            if f:
+                token = f.encrypt(json.dumps(payload, separators=(",", ":")).encode("utf-8")).decode("ascii")
+                envelope = {_ENCRYPTED_V1: True, "v": 1, "payload": token}
+                self.rules_file.write_text(json.dumps(envelope, indent=2), encoding="utf-8")
+            else:
+                self.rules_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
         except Exception as e:
-            logger.error(f"Failed to save firewall rules: {e}")
+            logger.error("Failed to save firewall rules: %s", e)
 
     def _ensure_default_rules(self) -> None:
         """Ensure default rules exist."""

@@ -5,6 +5,7 @@ import os
 import time
 from pathlib import Path
 
+from core.quality_settings import quality_constitution_pipeline_enabled
 from web.backend.services.benchmark_gate import evaluate_benchmark_gate
 
 class RuntimeGuards:
@@ -41,11 +42,19 @@ class RuntimeGuards:
                 pass
         return {}
 
-    def architecture_gate(self, product_id: str) -> tuple[bool, list[str]]:
+    def architecture_gate(self, product_id: str, *, delivery_profile: str | None = None) -> tuple[bool, list[str]]:
         issues: list[str] = []
         arch = self.load_arch(product_id)
         if not isinstance(arch, dict) or not arch:
             return False, ["architecture artifact missing"]
+
+        try:
+            from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
+
+            if normalize_delivery_profile(delivery_profile) == MARKETING_LANDING:
+                return True, []
+        except ImportError:
+            pass
 
         modules = arch.get("modules") or arch.get("components") or []
         if not isinstance(modules, list) or len(modules) < 3:
@@ -104,7 +113,7 @@ class RuntimeGuards:
             if count < min_feedback:
                 issues.append(f"real_user_validation_failed (feedback<{min_feedback})")
 
-        if os.environ.get("AIFACTORY_QUALITY_CONSTITUTION_ENABLED", "1").strip().lower() in ("1", "true", "yes"):
+        if quality_constitution_pipeline_enabled():
             try:
                 from web.backend.services.quality_constitution import evaluate_quality_constitution
 

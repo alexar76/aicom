@@ -184,6 +184,17 @@ These parameters control whether the system keeps creating new products or spend
 
 `PAUSE`/`RESUME` thresholds intentionally use hysteresis (`resume < pause`) to prevent rapid on/off flapping.
 
+### Local high-throughput preset (Admin → Settings)
+
+For a **beefy local machine** (many cores/RAM, local Ollama), enable **`general.local_high_throughput_enabled`** in **`config.yaml`** via **Admin → Settings → Local high-throughput mode** (same as other `general.*` keys).
+
+- **Implementation:** `core/throughput_limits.py` — re-reads when `config.yaml` changes (mtime), so task-queue limits update **without restarting** the pipeline worker.
+- **Defaults when enabled** (each value is still overridden if the matching **`AIFACTORY_*`** env var is set to a non-empty value): higher caps for max running tasks, task executor concurrency, batch drain per cycle, batch active ceiling, LLM max parallel requests, and **zero** LLM min interval.
+- **LLM router semaphore** is sized at **worker process start** from the same effective values; after toggling turbo, **restart the pipeline worker** if you need the in-process LLM gate to match the new numbers immediately.
+- **Diagnostics:** `GET /api/admin/settings` includes **`throughput_effective`**, a snapshot of the effective numbers on the **backend process** that served the request (useful to compare with the worker host).
+
+See also the **batch** table below (`AIFACTORY_BATCH_PIPELINE_*`).
+
 ### Current docker-compose overrides
 
 `docker-compose.yml` currently overrides some defaults for aggressive recovery:

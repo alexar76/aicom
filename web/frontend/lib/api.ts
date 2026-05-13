@@ -2,7 +2,7 @@
 // AUTONOMOUS AI-FACTORY v2.1 — API Client Library
 // ============================================================================
 
-import { buildAgentsTabRows } from './pipelineStages';
+import { buildAgentsTabRows, type AgentLogMetricsSlice } from './pipelineStages';
 
 const API_BASE = '/api';
 
@@ -256,7 +256,12 @@ export interface AgentStatus {
   current_task: string | null;
   uptime: number;
   tasks_completed: number;
+  timeout?: number;
+  last_active?: number | null;
+  log_metrics?: AgentLogMetricsSlice | null;
 }
+
+export type { AgentLogMetricsSlice } from './pipelineStages';
 
 export interface PaymentRequest {
   product_id: string;
@@ -380,6 +385,8 @@ export interface AdminMeResponse {
   role: string;
   totp_enabled: boolean;
   totp_pending: boolean;
+  /** True when unset/blank or still set to the legacy public demo password SandboxDemo!2026 (unsafe on reachable hosts). */
+  sandbox_demo_password_uses_default?: boolean;
 }
 
 export interface ChatMessage {
@@ -399,6 +406,20 @@ export interface ChatCorporateSettings {
   director_standup_enabled: boolean;
   director_standup_time: string;
   director_standup_timezone: string;
+}
+
+/** Present when ``GET /admin/llm/logs`` is called with ``since`` and/or ``until`` (Unix seconds). */
+export interface LLMLogsSummary {
+  estimated_cost_usd: number;
+  calls_with_cost_estimate: number;
+  prompt_tokens: number;
+  completion_tokens: number;
+  tokens_used_sum: number;
+  calls_with_prompt_completion_tokens: number;
+  matching_in_range: number;
+  by_provider: { name: string; value: number }[];
+  by_role: { name: string; cost: number }[];
+  by_agent: { name: string; cost: number }[];
 }
 
 // ---------------------------------------------------------------------------
@@ -885,20 +906,41 @@ class ApiClient {
     // Backend returns { agents: {...} } (object), convert to array
     const result = await this.request<{ agents: Record<string, any> }>('/admin/agents');
     const agents = result.agents || {};
-    const rows = Object.entries(agents).map(([type, info]) => ({
-      type,
-      status: info.status || 'idle',
-      current_task: info.current_task ?? null,
-      uptime: info.uptime || 0,
-      tasks_completed: info.tasks_completed || 0,
-    }));
+    const rows = Object.entries(agents).map(([type, info]) => {
+      const lm = info?.log_metrics as Record<string, unknown> | undefined;
+      const log_metrics =
+        lm && typeof lm === 'object'
+          ? {
+              total_entries: Number(lm.total_entries) || 0,
+              recent_entries: Number(lm.recent_entries) || 0,
+              recent_errors: Number(lm.recent_errors) || 0,
+              last_active: Number(lm.last_active) || 0,
+              status: String(lm.status || 'idle'),
+            }
+          : null;
+      return {
+        type,
+        status: info.status || 'idle',
+        current_task: info.current_task ?? null,
+        uptime: info.uptime || 0,
+        tasks_completed: info.tasks_completed || 0,
+        timeout: typeof info.timeout === 'number' ? info.timeout : undefined,
+        last_active: info.last_active != null ? Number(info.last_active) : null,
+        log_metrics,
+      };
+    });
     return buildAgentsTabRows(rows) as AgentStatus[];
   }
 
-  async getSecurityLogs(limit: number = 100): Promise<any[]> {
-    // Backend returns { logs: [...], count: N }, unwrap to array
-    const result = await this.request<{ logs: any[] }>(`/admin/security/logs?limit=${limit}`);
-    return result.logs || [];
+  async getSecurityLogs(
+    limit: number = 500,
+    since?: number,
+    until?: number
+  ): Promise<{ logs: any[]; count: number; total: number }> {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (since != null) params.set('since', String(since));
+    if (until != null) params.set('until', String(until));
+    return this.request(`/admin/security/logs?${params}`);
   }
 
   async getDirectorReports(): Promise<DirectorReport[]> {
@@ -1005,6 +1047,22 @@ class ApiClient {
     });
   }
 
+  /** Manual storefront / checkout USDT (sales_config.json → sales_data.pricing.admin_storefront_usdt). */
+  async patchPipelineStorefrontPricing(
+    productId: string,
+    body: { admin_storefront_usdt?: number; clear_admin_storefront_usdt?: boolean }
+  ): Promise<{
+    product_id: string;
+    storefront_pricing: { admin_storefront_usdt?: number | null; storefront_checkout_usdt: number };
+    storefront_visible?: boolean;
+    storefront_gate_reasons?: string[];
+  }> {
+    return this.request(`/admin/pipeline/products/${encodeURIComponent(productId)}/storefront-pricing`, {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+    });
+  }
+
   async postPipelineHumanRework(
     productId: string,
     notes: string
@@ -1094,9 +1152,24 @@ class ApiClient {
 
   // ── LLM Call Logs ───────────────────────────────────────────────────────
 
-  async getLLMLogs(limit: number = 500, provider?: string): Promise<{ logs: any[]; count: number; total: number }> {
-    const params = new URLSearchParams({ limit: String(limit) });
+  async getLLMLogs(
+    limit: number = 200,
+    provider?: string,
+    since?: number,
+    until?: number,
+    offset: number = 0,
+  ): Promise<{
+    logs: any[];
+    count: number;
+    total: number;
+    summary?: LLMLogsSummary | null;
+    offset?: number;
+    limit?: number;
+  }> {
+    const params = new URLSearchParams({ limit: String(limit), offset: String(offset) });
     if (provider) params.set('provider', provider);
+    if (since != null && Number.isFinite(since)) params.set('since', String(since));
+    if (until != null && Number.isFinite(until)) params.set('until', String(until));
     return this.request(`/admin/llm/logs?${params}`);
   }
 
@@ -1144,9 +1217,16 @@ class ApiClient {
 
   // ── Agent Logs ──────────────────────────────────────────────────────────
 
-  async getAgentLogs(agent?: string, limit: number = 200): Promise<{ logs: any[]; count: number; total: number }> {
+  async getAgentLogs(
+    agent?: string,
+    limit: number = 200,
+    since?: number,
+    until?: number
+  ): Promise<{ logs: any[]; count: number; total: number }> {
     const params = new URLSearchParams({ limit: String(limit) });
     if (agent) params.set('agent', agent);
+    if (since != null) params.set('since', String(since));
+    if (until != null) params.set('until', String(until));
     return this.request(`/admin/agent/logs?${params}`);
   }
 
@@ -1279,6 +1359,7 @@ class ApiClient {
       effective_llm_max_parallel_requests: number;
       effective_llm_min_interval_sec: number;
     } | null;
+    quality?: Record<string, boolean | number>;
   }> {
     return this.request('/admin/settings');
   }

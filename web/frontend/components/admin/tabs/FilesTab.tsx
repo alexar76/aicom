@@ -18,6 +18,7 @@ import {
   PIPELINE_CATALOG_MAX_PAGE,
 } from '@/lib/pipelineCatalogFetch';
 import toast from 'react-hot-toast';
+import { formatDate, localDateInputStartSeconds, localDateInputEndSeconds } from '@/lib/utils';
 
 const FILE_CATEGORY_COLORS: Record<string, string> = {
   specs: 'from-blue-500 to-blue-600',
@@ -318,6 +319,8 @@ export function FilesTab() {
   const [sandboxModalOpen, setSandboxModalOpen] = useState(false);
   const [productSearch, setProductSearch] = useState('');
   const [productStateFilter, setProductStateFilter] = useState('all');
+  const [createdFrom, setCreatedFrom] = useState('');
+  const [createdTo, setCreatedTo] = useState('');
   const [fileSearch, setFileSearch] = useState('');
   const [fileCategoryFilter, setFileCategoryFilter] = useState('all');
   const productsRef = useRef<any[]>([]);
@@ -504,15 +507,26 @@ export function FilesTab() {
 
   const filteredProducts = useMemo(() => {
     const q = productSearch.trim().toLowerCase();
+    const start = localDateInputStartSeconds(createdFrom);
+    const end = localDateInputEndSeconds(createdTo);
     return products.filter((p: any) => {
       const st = String(p?.state || '').toUpperCase();
       if (productStateFilter !== 'all' && st !== productStateFilter) return false;
+
+      if (start != null || end != null) {
+        const raw = Number(p?.created_at) || 0;
+        const createdSec = raw > 1e12 ? raw / 1000 : raw;
+        if (!createdSec) return false;
+        if (start != null && createdSec < start) return false;
+        if (end != null && createdSec > end) return false;
+      }
+
       if (!q) return true;
       const idea = String(p?.idea || '').toLowerCase();
       const id = String(p?.id || '').toLowerCase();
       return idea.includes(q) || id.includes(q);
     });
-  }, [products, productSearch, productStateFilter]);
+  }, [products, productSearch, productStateFilter, createdFrom, createdTo]);
 
   useEffect(() => {
     const root = productListScrollRef.current;
@@ -648,6 +662,24 @@ export function FilesTab() {
                 </option>
               ))}
             </select>
+            <label className="flex flex-col gap-0.5 text-[10px] text-gray-500">
+              <span>Created from (local day)</span>
+              <input
+                type="date"
+                value={createdFrom}
+                onChange={(e) => setCreatedFrom(e.target.value)}
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none"
+              />
+            </label>
+            <label className="flex flex-col gap-0.5 text-[10px] text-gray-500">
+              <span>Created to (local day)</span>
+              <input
+                type="date"
+                value={createdTo}
+                onChange={(e) => setCreatedTo(e.target.value)}
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none"
+              />
+            </label>
             <p className="text-[11px] text-gray-500">
               Showing {filteredProducts.length} of {products.length} loaded
             </p>
@@ -656,6 +688,8 @@ export function FilesTab() {
               onClick={() => {
                 setProductSearch('');
                 setProductStateFilter('all');
+                setCreatedFrom('');
+                setCreatedTo('');
               }}
               className="text-[11px] text-indigo-300 underline underline-offset-2 hover:text-indigo-200"
             >
@@ -695,6 +729,17 @@ export function FilesTab() {
                           </div>
                           <div className="mt-1 text-xs opacity-60">
                             {p.state} · {p.id?.slice(0, 12)}
+                            {(() => {
+                              const raw = Number(p?.created_at) || 0;
+                              const sec = raw > 1e12 ? raw / 1000 : raw;
+                              if (!sec) return null;
+                              return (
+                                <>
+                                  {' '}
+                                  · created {formatDate(sec)}
+                                </>
+                              );
+                            })()}
                           </div>
                         </div>
                       </button>

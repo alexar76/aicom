@@ -22,6 +22,8 @@ from pathlib import Path
 # Ensure we can import from the project root
 sys.path.insert(0, "/app")
 
+from core.paths import config_path
+from core.config_merge import load_merged_config
 from director.metrics_collector import MetricsCollector
 from director.analyzer import DirectorAnalyzer
 from director.decision_engine import DecisionEngine
@@ -89,12 +91,12 @@ class DirectorWorker:
         self._autopipeline_backlog_resume_idea_received = 120
 
     def _load_config(self):
-        """Load settings from config.yaml."""
+        """Load settings from merged platform config (fragments + overlay)."""
         try:
-            import yaml
-            with open("/app/config.yaml", "r") as f:
-                config = yaml.safe_load(f)
+            config = load_merged_config(config_path())
             general = config.get("general", {})
+            if not isinstance(general, dict):
+                general = {}
             self._auto_pipeline_enabled = general.get("auto_pipeline", False)
             try:
                 raw_iv = int(general.get("auto_pipeline_interval_minutes", 60))
@@ -102,6 +104,8 @@ class DirectorWorker:
                 raw_iv = 60
             self._auto_pipeline_interval_minutes = max(15, min(10080, raw_iv))
             director_cfg = config.get("director", {})
+            if not isinstance(director_cfg, dict):
+                director_cfg = {}
             self._analysis_interval_hours = int(director_cfg.get("analysis_interval_hours", 4))
             self._benchmark_enabled = str(os.environ.get("AIFACTORY_BENCHMARK_AUTORUN_ENABLED", "0")).strip().lower() in ("1", "true", "yes")
             self._benchmark_interval_hours = int(os.environ.get("AIFACTORY_BENCHMARK_INTERVAL_HOURS", "24"))

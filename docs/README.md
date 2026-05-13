@@ -8,12 +8,15 @@
 
 ## Deployment
 
+- **`configuration.md`** — layered YAML (`config/fragments/` + overlay), env vars, Admin Settings save semantics, and what *not* to merge.
+- **[`scripts/deploy.sh`](../scripts/deploy.sh)** — Docker Compose: optional `.env` auto-fill for **missing** keys (`scripts/fill_production_env.py`, `--public-url`, `--dry-run`) + `build` / `up -d app`.
 - `auto-publish.md` — static deploy after DevOps (Vercel / Netlify / Cloudflare Pages); env tokens and `data/state/.../auto_publish.json`.
 - `deploy-full-software-cloud.md` — **full_software** backends (DB, long-lived API): Railway/Fly/Run-style layout, **Admin → Settings** Railway hook, `railway_deploy.json` for external CI.
 - [`packaging/templates/README.md`](../packaging/templates/README.md) — inventory of **nixpacks.toml**, **Procfile**, **railway.json**, Dockerfiles in reference templates.
 
 ## Product and Operations
 
+- **`architecture-orchestrator.md`** — pipeline worker SRP split, sync/async state machine, Director JSON vs SQLite decisions store.
 - `pipeline-operations.md` — discovery, scheduler, batch pipeline, benchmark gate, monitoring loops.
 - `agents.md` — pipeline agent roster, including `methodologist`.
 - `methodology-agent.md` — domain methodology gate, domain packs, artifacts, and rework behavior.

@@ -16,37 +16,41 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
+from core.paths import config_path
+from core.config_merge import load_merged_config
+
 from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
 from web3 import Web3
 from web3.exceptions import TransactionNotFound
 from web.backend.services.commerce import CommerceService
+from web.backend.services.storefront_pricing import checkout_usdt_from_sales_file
 
 logger = logging.getLogger(__name__)
 
-# Fallback when product has no sales_config.usdt_price (align with products API default landing SKU).
+# Fallback when product has no usable price in sales_config (align with storefront default landing SKU).
 DEFAULT_CHECKOUT_AMOUNT_USDT = 4.99
 
 router = APIRouter(prefix="/api/payment", tags=["payment"])
 
-# ── Wallet addresses (loaded from config.yaml, with safe placeholder defaults) ──
+# ── Wallet addresses (merged platform config; see docs/configuration.md) ──
 _CONFIG_CACHE: dict | None = None
-_CONFIG_PATH = "/app/config.yaml"
+_CONFIG_PATH = config_path()
 
 RECIPIENT_ADDRESS_EVM = "0x0000000000000000000000000000000000000000"
 RECIPIENT_ADDRESS_SOLANA = "11111111111111111111111111111111"
 
 
 def _load_crypto_config() -> dict:
-    """Load crypto payment settings from config.yaml (with fallback to defaults)."""
+    """Load crypto payment settings from merged YAML (with fallback to defaults)."""
     global _CONFIG_CACHE
     try:
-        with open(_CONFIG_PATH) as f:
-            import yaml
-            cfg = yaml.safe_load(f)
+        cfg = load_merged_config(_CONFIG_PATH)
         crypto = cfg.get("crypto", {})
-        _CONFIG_CACHE = crypto
-        return crypto
+        if isinstance(crypto, dict):
+            _CONFIG_CACHE = crypto
+            return crypto
+        return _CONFIG_CACHE or {}
     except Exception:
         return _CONFIG_CACHE or {}
 
@@ -464,17 +468,10 @@ async def create_payment(body: CreatePaymentRequest, authorization: Optional[str
     if not customer_id or not customer_email:
         raise HTTPException(status_code=401, detail="Customer authentication required")
 
-    # Load product pricing from sales config
-    price = body.amount or DEFAULT_CHECKOUT_AMOUNT_USDT
-    sales_file = f"/app/data/state/{body.product_id}/sales_config.json"
-    try:
-        with open(sales_file, "r") as f:
-            sales_data = json.load(f)
-            pricing = sales_data.get("sales_data", {}).get("pricing", {})
-            if pricing.get("usdt_price"):
-                price = pricing["usdt_price"]
-    except Exception:
-        pass
+    # Load product pricing from sales config (admin override wins; see storefront_pricing).
+    price = body.amount or checkout_usdt_from_sales_file(
+        body.product_id, default_usdt=DEFAULT_CHECKOUT_AMOUNT_USDT
+    )
 
     wallet_address = _get_address_for_chain(body.chain)
 

@@ -21,6 +21,7 @@ from core.paths import pipeline_db_path, pipeline_json_path
 from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW
 from web.backend.api.metrics import PrometheusMetrics
 from agents.product_profile import post_devops_human_gate_required
+from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
 
 logger = logging.getLogger(__name__)
 
@@ -298,62 +299,67 @@ class PipelineStateMachine:
             await asyncio.to_thread(self._save_state_to_json)
         return task
 
-    def complete_task(self, task_id: str, output: dict) -> bool:
-        """Mark a task as completed and advance the pipeline."""
+    def _apply_task_completion(
+        self, task_id: str, output: dict
+    ) -> tuple[bool, Optional[Product], Optional[str]]:
+        """
+        Mark task completed in memory, record metrics, advance product state / queue next task.
+
+        Returns (ok, product, product_id) for logging; persistence is caller responsibility.
+        """
         task = self._find_task(task_id)
         if not task:
-            logger.error(f"Task {task_id} not found")
-            return False
+            return False, None, None
 
         task.status = TaskStatus.COMPLETED
         task.completed_at = time.time()
         task.output_data = output
 
-        # Record duration metric
         if task.started_at:
             duration = task.completed_at - task.started_at
             PrometheusMetrics.observe_task_duration(task.agent_type, duration)
         PrometheusMetrics.inc_task("completed")
 
-        # Advance product state
         product = self.products.get(task.product_id)
         if product:
             next_states = STATE_TRANSITIONS.get(product.state, [])
             if task.state in next_states:
                 product.state = task.state
                 product.updated_at = time.time()
-                
-                # Create next task if not completed
                 if product.state != PipelineState.COMPLETED:
                     self._create_next_task(product)
 
+        return True, product, task.product_id
+
+    def complete_task(self, task_id: str, output: dict) -> bool:
+        """Mark a task as completed and advance the pipeline."""
+        ok, product, product_id = self._apply_task_completion(task_id, output)
+        if not ok:
+            logger.error(f"Task {task_id} not found")
+            return False
+
         self._save_state()
-        logger.info(f"Task {task_id} completed, product {task.product_id} -> {product.state.value if product else 'unknown'}")
+        logger.info(
+            f"Task {task_id} completed, product {product_id} -> {product.state.value if product else 'unknown'}"
+        )
         return True
 
     async def acomplete_task(self, task_id: str, output: dict) -> bool:
-        task = self._find_task(task_id)
-        if not task:
+        ok, product, product_id = self._apply_task_completion(task_id, output)
+        if not ok:
             return False
-        task.status = TaskStatus.COMPLETED
-        task.completed_at = time.time()
-        task.output_data = output
-        product = self.products.get(task.product_id)
-        if product:
-            next_states = STATE_TRANSITIONS.get(product.state, [])
-            if task.state in next_states:
-                product.state = task.state
-                product.updated_at = time.time()
-                if product.state != PipelineState.COMPLETED:
-                    self._create_next_task(product)
+
         if self.use_sqlite:
             await self._asave_state_to_sqlite()
         else:
             await asyncio.to_thread(self._save_state_to_json)
+        logger.info(
+            f"Task {task_id} completed, product {product_id} -> {product.state.value if product else 'unknown'}"
+        )
         return True
 
-    def fail_task(self, task_id: str, error: str) -> bool:
-        """Mark a task as failed, with retry logic."""
+    def _apply_task_failure(self, task_id: str, error: str) -> bool:
+        """Update task retry state in memory; returns False if task missing."""
         task = self._find_task(task_id)
         if not task:
             return False
@@ -373,23 +379,18 @@ class PipelineStateMachine:
                 product.updated_at = time.time()
             logger.error(f"Task {task_id} failed permanently: {error}")
 
+        return True
+
+    def fail_task(self, task_id: str, error: str) -> bool:
+        """Mark a task as failed, with retry logic."""
+        if not self._apply_task_failure(task_id, error):
+            return False
         self._save_state()
         return True
 
     async def afail_task(self, task_id: str, error: str) -> bool:
-        task = self._find_task(task_id)
-        if not task:
+        if not self._apply_task_failure(task_id, error):
             return False
-        task.retry_count += 1
-        task.error = error
-        if task.retry_count < task.max_retries:
-            task.status = TaskStatus.PENDING
-        else:
-            task.status = TaskStatus.FAILED
-            product = self.products.get(task.product_id)
-            if product:
-                product.state = PipelineState.FAILED
-                product.updated_at = time.time()
         if self.use_sqlite:
             await self._asave_state_to_sqlite()
         else:
@@ -497,9 +498,12 @@ class PipelineStateMachine:
                 agent_type_raw, next_state_raw = "qa", "QA_TESTING"
             elif agent_type_raw == "hardening":
                 agent_type_raw, next_state_raw = "qa", "QA_TESTING"
-        next_info = (agent_type_raw, PipelineState[next_state_raw])
+        agent_type, next_state = agent_type_raw, PipelineState[next_state_raw]
 
-        agent_type, next_state = next_info
+        dp = normalize_delivery_profile((product.metadata or {}).get("delivery_profile"))
+        if dp == MARKETING_LANDING and product.state == PipelineState.TELEMETRY_COLLECTING:
+            agent_type, next_state = "__complete__", PipelineState.COMPLETED
+
         if product.state == PipelineState.SECURITY_SCANNED and agent_type == "devops":
             gate_prod = {
                 "delivery_profile": (product.metadata or {}).get("delivery_profile"),

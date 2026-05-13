@@ -694,7 +694,8 @@ def _ensure_testing_contract_fields(
             demo = {}
         demo["required"] = True
         demo.setdefault("seed_email", "sandbox.demo@aicom.local")
-        demo.setdefault("seed_password", "SandboxDemo!2026")
+        # Match factory `AIFACTORY_SANDBOX_DEMO_PASSWORD` docker-compose default (see demo_credentials.py).
+        demo.setdefault("seed_password", "AfSc7xK9mR2nL4vP8qW1jH0fT5dB3cZyEu")
         demo.setdefault(
             "env_var_names",
             "SANDBOX_DEMO_EMAIL, SANDBOX_DEMO_PASSWORD; frontend mirrors VITE_SANDBOX_DEMO_EMAIL, VITE_SANDBOX_DEMO_PASSWORD when using Vite.",

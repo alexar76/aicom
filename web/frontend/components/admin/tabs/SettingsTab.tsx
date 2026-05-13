@@ -87,6 +87,11 @@ import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib
 import toast from 'react-hot-toast';
 
 import { DemoReplayMonitorSection } from './DemoReplayMonitorSection';
+import {
+  DEFAULT_QUALITY_SETTINGS,
+  QualitySettingsCollapsible,
+  type QualitySettingsState,
+} from './QualitySettingsCollapsible';
 
 type AdminThroughputSnapshot = NonNullable<
   Awaited<ReturnType<typeof api.getAdminSettings>>['throughput_effective']
@@ -173,6 +178,11 @@ export function SettingsTab() {
   const [autoGenIntervalDraft, setAutoGenIntervalDraft] = useState(60);
   const [autoGenSaving, setAutoGenSaving] = useState(false);
 
+  const [qualityOpen, setQualityOpen] = useState(false);
+  const [qualitySettings, setQualitySettings] = useState<QualitySettingsState>(() => ({
+    ...DEFAULT_QUALITY_SETTINGS,
+  }));
+
   const clampAutoPipelineMinutes = (n: number) => Math.min(10080, Math.max(15, Math.round(n)));
 
   const ingestAdminSettingsResponse = (data: Awaited<ReturnType<typeof api.getAdminSettings>>) => {
@@ -181,6 +191,7 @@ export function SettingsTab() {
       telegram_bot_token_configured: tokOk,
       railway_token_configured: rwTok,
       reference_templates_catalog: refCatalog,
+      quality: qualityPayload,
       ...rest
     } = data;
     if (te && typeof te === 'object') {
@@ -192,6 +203,9 @@ export function SettingsTab() {
     setSettings((prev) => ({ ...prev, ...rest }));
     setTelegramBotTokenConfigured(Boolean(tokOk));
     setRailwayTokenConfigured(Boolean(rwTok));
+    if (qualityPayload && typeof qualityPayload === 'object') {
+      setQualitySettings((prev) => ({ ...prev, ...DEFAULT_QUALITY_SETTINGS, ...qualityPayload }));
+    }
   };
 
   const refreshThroughputSnapshotOnly = async () => {
@@ -316,6 +330,7 @@ export function SettingsTab() {
       if (telegramBotTokenInput.trim()) {
         payload.telegram_bot_token = telegramBotTokenInput.trim();
       }
+      payload.quality = qualitySettings;
       const result = await api.updateAdminSettings(payload as typeof settings & { telegram_bot_token?: string });
       setTelegramBotTokenInput('');
       const fresh = await api.getAdminSettings();
@@ -707,6 +722,14 @@ export function SettingsTab() {
           </div>
         )}
       </GlassCard>
+
+      <QualitySettingsCollapsible
+        open={qualityOpen}
+        onToggle={() => setQualityOpen((v) => !v)}
+        quality={qualitySettings}
+        onChange={(key, value) => setQualitySettings((prev) => ({ ...prev, [key]: value }))}
+        disabled={settingsLoading || settingsSaving}
+      />
 
       {/* ── Director standup (Corporate Chat) ── */}
       <GlassCard>

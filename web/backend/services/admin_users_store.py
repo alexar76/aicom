@@ -51,6 +51,10 @@ def _save_raw(data: dict[str, Any]) -> None:
     tmp = USERS_PATH.with_suffix(".tmp")
     tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
     tmp.replace(USERS_PATH)
+    try:
+        os.chmod(USERS_PATH, 0o600)
+    except OSError:
+        pass
 
 
 def ensure_legacy_admin_users_file() -> None:

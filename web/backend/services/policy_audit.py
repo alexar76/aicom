@@ -17,6 +17,8 @@ from typing import Any
 
 from web.backend.services.marketplace_quality import evaluate_marketplace_quality
 
+from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile
+
 logger = logging.getLogger(__name__)
 
 _TERMINAL_STATES = frozenset({"COMPLETED", "DEPLOYED_PRODUCTION"})
@@ -84,14 +86,12 @@ def apply_policy_audit(
     if not _truthy("AIFACTORY_POLICY_AUDIT_ENABLED", "1"):
         return False
 
-    try:
-        max_loops = int(os.environ.get("AIFACTORY_MAX_QUALITY_LOOPS", "10"))
-    except ValueError:
-        max_loops = 10
-
     changed = False
 
     for pid, product in list(products.items()):
+        max_loops = max_pipeline_repair_rounds_for_delivery_profile(
+            str(product.get("delivery_profile") or "") or None
+        )
         state = (product.get("state") or "").upper()
         if state not in _TERMINAL_STATES:
             continue
@@ -101,7 +101,12 @@ def apply_policy_audit(
             continue
 
         spec_inner = _load_spec_inner(pid, data_root)
-        ev = evaluate_marketplace_quality(pid, specification=spec_inner, data_root=data_root)
+        ev = evaluate_marketplace_quality(
+            pid,
+            specification=spec_inner,
+            data_root=data_root,
+            delivery_profile=str(product.get("delivery_profile") or "") or None,
+        )
 
         if ev.get("eligible"):
             had_fail_flag = product.get("policy_audit_eligible") is False

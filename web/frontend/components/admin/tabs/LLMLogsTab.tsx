@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useCallback, useEffect, useState, useMemo, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -78,9 +79,10 @@ import api, {
   RoutingRule,
   ChatMessage,
   DemoReplayAdminConfig,
+  LLMLogsSummary,
 } from '@/lib/api';
 import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
-import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
+import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme, parseDatetimeLocalToUnixSeconds } from '@/lib/utils';
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import {
   ResponsiveContainer,
@@ -98,6 +100,9 @@ import {
 // ── LLM Call Logs Tab ────────────────────────────────────────────────────
 
 const REPORT_CHART_COLORS = ['#818cf8', '#34d399', '#fbbf24', '#f472b6', '#22d3ee', '#a78bfa', '#fb923c', '#4ade80'];
+
+/** Rows per request; use ``offset`` on the server to load older pages without pulling the whole JSONL into the browser. */
+const LLM_LOG_PAGE_SIZE = 200;
 
 /** Parse log entry time for sorting (newest first). Naive ISO datetimes match backend: UTC. */
 function llmLogTimeMs(log: Record<string, unknown>): number {
@@ -117,12 +122,24 @@ function llmLogTimeMs(log: Record<string, unknown>): number {
 }
 
 export function LLMLogsTab() {
+  const searchParams = useSearchParams();
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterProvider, setFilterProvider] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+  const [serverSummary, setServerSummary] = useState<LLMLogsSummary | null>(null);
+  const [totalRows, setTotalRows] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const loadingMoreGuard = useRef(false);
   const [query, setQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'ok' | 'error'>('all');
   const [agentTypeFilter, setAgentTypeFilter] = useState('all');
+
+  useEffect(() => {
+    const a = searchParams.get('llmAgent')?.trim();
+    if (a) setAgentTypeFilter(a);
+  }, [searchParams]);
 
   const sortedLogs = useMemo(
     () => [...logs].sort((a, b) => llmLogTimeMs(b) - llmLogTimeMs(a)),
@@ -218,28 +235,95 @@ export function LLMLogsTab() {
     };
   }, [filteredLogs]);
 
+  const displayReport = useMemo(() => {
+    if (serverSummary != null) {
+      const s = serverSummary;
+      return {
+        sumCost: s.estimated_cost_usd ?? 0,
+        withCost: s.calls_with_cost_estimate ?? 0,
+        sumPrompt: s.prompt_tokens ?? 0,
+        sumCompletion: s.completion_tokens ?? 0,
+        sumTokens: s.tokens_used_sum ?? 0,
+        callsWithInOut: s.calls_with_prompt_completion_tokens ?? 0,
+        providerPie: s.by_provider ?? [],
+        roleBar: s.by_role ?? [],
+        agentBar: s.by_agent ?? [],
+        rangeTotal: s.matching_in_range ?? 0,
+      };
+    }
+    return { ...filteredReport, rangeTotal: filteredLogs.length };
+  }, [serverSummary, filteredReport, filteredLogs.length]);
+
+  const showSummaryCard =
+    !loading && (serverSummary != null || filteredLogs.length > 0);
+
   const usdTooltipFmt = (v: number) =>
     `$${v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}`;
 
-  const loadLogs = async (provider?: string) => {
+  const refreshLogs = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await api.getLLMLogs(500, provider || undefined);
+      const since = parseDatetimeLocalToUnixSeconds(dateFrom);
+      const until = parseDatetimeLocalToUnixSeconds(dateTo);
+      const data = await api.getLLMLogs(
+        LLM_LOG_PAGE_SIZE,
+        filterProvider || undefined,
+        since,
+        until,
+        0,
+      );
       setLogs(data.logs || []);
+      setTotalRows(typeof data.total === 'number' ? data.total : (data.logs || []).length);
+      setServerSummary(data.summary ?? null);
     } catch {
       setLogs([]);
+      setTotalRows(0);
+      setServerSummary(null);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterProvider, dateFrom, dateTo]);
+
+  const loadMoreLogs = useCallback(async () => {
+    if (loadingMoreGuard.current) return;
+    const offset = logs.length;
+    if (totalRows > 0 && offset >= totalRows) return;
+    loadingMoreGuard.current = true;
+    setLoadingMore(true);
+    try {
+      const since = parseDatetimeLocalToUnixSeconds(dateFrom);
+      const until = parseDatetimeLocalToUnixSeconds(dateTo);
+      const data = await api.getLLMLogs(
+        LLM_LOG_PAGE_SIZE,
+        filterProvider || undefined,
+        since,
+        until,
+        offset,
+      );
+      const chunk = data.logs || [];
+      if (chunk.length === 0) return;
+      setLogs((prev) => [...prev, ...chunk]);
+    } catch {
+      /* keep existing rows */
+    } finally {
+      loadingMoreGuard.current = false;
+      setLoadingMore(false);
+    }
+  }, [filterProvider, dateFrom, dateTo, logs.length, totalRows]);
 
   useEffect(() => {
-    loadLogs(filterProvider || undefined);
-  }, [filterProvider]);
+    void refreshLogs();
+  }, [refreshLogs]);
+
+  const hasMoreFromServer = totalRows > 0 && logs.length < totalRows;
 
   // Extract unique provider names for filter
   const providers = [...new Set(logs.map((l) => l.provider))].sort();
-  const agentTypes = [...new Set(logs.map((l) => String(l.agent_type || '')).filter(Boolean))].sort();
+  const agentTypesInSelect = useMemo(() => {
+    const s = new Set(logs.map((l) => String(l.agent_type || '')).filter(Boolean));
+    if (agentTypeFilter !== 'all') s.add(agentTypeFilter);
+    return [...s].sort();
+  }, [logs, agentTypeFilter]);
 
   return (
     <div className="space-y-4">
@@ -247,44 +331,53 @@ export function LLMLogsTab() {
       <p className="text-xs text-gray-500 mb-4">
         Estimates use input/output rates when the API reports prompt and completion tokens; otherwise blended $/Mtok and
         heavy/light provider rates from routing (
-        <code className="text-gray-400">llm_pricing.example.yaml</code>) — not a vendor invoice.
+        <code className="text-gray-400">llm_pricing.example.yaml</code>) — not a vendor invoice. The table loads{' '}
+        <strong className="text-gray-400">{LLM_LOG_PAGE_SIZE}</strong> rows at a time (newest first); use{' '}
+        <strong className="text-gray-400">Load more</strong> for older pages. With a time range, totals and charts on the
+        server cover <strong className="text-gray-400">every</strong> matching call, not only the loaded rows.
       </p>
 
       {/* Filtered summary + charts */}
-      {!loading && filteredLogs.length > 0 && (
+      {showSummaryCard && (
         <GlassCard className="p-4 overflow-hidden">
           <div className="flex flex-col gap-6">
+            {serverSummary != null && (
+              <p className="text-[11px] text-amber-200/90 -mt-1">
+                Totals below are for the selected time range on the server ({serverSummary.matching_in_range} calls). Search
+                / status / agent filters only narrow the list, not these figures.
+              </p>
+            )}
             <div className="flex flex-col xl:flex-row gap-6 xl:items-stretch">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 flex-1 min-w-0">
                 <div className="rounded-xl border border-white/10 bg-gradient-to-br from-emerald-950/40 to-slate-900/40 p-3">
                   <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-1">Est. total</p>
                   <p className="text-lg font-semibold text-emerald-300 tabular-nums">
-                    ${filteredReport.sumCost.toFixed(4)}
+                    ${displayReport.sumCost.toFixed(4)}
                   </p>
-                  <p className="text-[10px] text-gray-600 mt-1">{filteredReport.withCost} calls with cost</p>
+                  <p className="text-[10px] text-gray-600 mt-1">{displayReport.withCost} calls with cost</p>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
                   <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-1">Prompt tokens</p>
                   <p className="text-lg font-medium text-gray-200 tabular-nums">
-                    {filteredReport.sumPrompt.toLocaleString()}
+                    {displayReport.sumPrompt.toLocaleString()}
                   </p>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
                   <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-1">Completion tokens</p>
                   <p className="text-lg font-medium text-gray-200 tabular-nums">
-                    {filteredReport.sumCompletion.toLocaleString()}
+                    {displayReport.sumCompletion.toLocaleString()}
                   </p>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
                   <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-1">Total tokens (logged)</p>
                   <p className="text-lg font-medium text-gray-200 tabular-nums">
-                    {filteredReport.sumTokens.toLocaleString()}
+                    {displayReport.sumTokens.toLocaleString()}
                   </p>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3 col-span-2 sm:col-span-1 lg:col-span-2">
                   <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-1">In/out split in logs</p>
                   <p className="text-sm text-gray-300">
-                    {filteredReport.callsWithInOut} / {filteredLogs.length} calls
+                    {displayReport.callsWithInOut} / {displayReport.rangeTotal} calls
                   </p>
                   <p className="text-[10px] text-gray-600 mt-1">Older rows may lack prompt/completion counts.</p>
                 </div>
@@ -292,11 +385,11 @@ export function LLMLogsTab() {
 
               <div className="w-full xl:w-[min(100%,380px)] shrink-0 h-[220px]">
                 <p className="text-xs font-medium text-gray-400 mb-2">Est. cost by provider</p>
-                {filteredReport.providerPie.length > 0 ? (
+                {displayReport.providerPie.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
-                        data={filteredReport.providerPie}
+                        data={displayReport.providerPie}
                         dataKey="value"
                         nameKey="name"
                         cx="50%"
@@ -305,7 +398,7 @@ export function LLMLogsTab() {
                         outerRadius={78}
                         paddingAngle={2}
                       >
-                        {filteredReport.providerPie.map((_, i) => (
+                        {displayReport.providerPie.map((_, i) => (
                           <Cell key={i} fill={REPORT_CHART_COLORS[i % REPORT_CHART_COLORS.length]} />
                         ))}
                       </Pie>
@@ -322,9 +415,9 @@ export function LLMLogsTab() {
 
               <div className="w-full xl:w-[min(100%,380px)] shrink-0 h-[220px]">
                 <p className="text-xs font-medium text-gray-400 mb-2">Est. cost by model role</p>
-                {filteredReport.roleBar.length > 0 ? (
+                {displayReport.roleBar.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={filteredReport.roleBar} layout="vertical" margin={{ left: 8, right: 8, top: 4, bottom: 4 }}>
+                    <BarChart data={displayReport.roleBar} layout="vertical" margin={{ left: 8, right: 8, top: 4, bottom: 4 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
                       <XAxis type="number" tick={{ fill: '#94a3b8', fontSize: 10 }} tickFormatter={(v) => `$${v}`} />
                       <YAxis type="category" dataKey="name" width={56} tick={{ fill: '#94a3b8', fontSize: 10 }} />
@@ -333,7 +426,7 @@ export function LLMLogsTab() {
                         contentStyle={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8 }}
                       />
                       <Bar dataKey="cost" radius={[0, 4, 4, 0]}>
-                        {filteredReport.roleBar.map((_, i) => (
+                        {displayReport.roleBar.map((_, i) => (
                           <Cell key={i} fill={REPORT_CHART_COLORS[(i + 2) % REPORT_CHART_COLORS.length]} />
                         ))}
                       </Bar>
@@ -345,11 +438,11 @@ export function LLMLogsTab() {
               </div>
             </div>
 
-            {filteredReport.agentBar.length > 0 && (
+            {displayReport.agentBar.length > 0 && (
               <div className="w-full h-[240px]">
                 <p className="text-xs font-medium text-gray-400 mb-2">Est. cost by agent (top)</p>
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={filteredReport.agentBar} margin={{ left: 8, right: 8, top: 8, bottom: 48 }}>
+                  <BarChart data={displayReport.agentBar} margin={{ left: 8, right: 8, top: 8, bottom: 48 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
                     <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 10 }} angle={-35} textAnchor="end" height={60} interval={0} />
                     <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} tickFormatter={(v) => `$${v}`} />
@@ -368,6 +461,26 @@ export function LLMLogsTab() {
 
       {/* Filters */}
       <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2 lg:flex-row lg:flex-wrap lg:items-end">
+          <div className="flex flex-col gap-1 min-w-0">
+            <label className="text-[10px] uppercase tracking-wide text-gray-500">From (local)</label>
+            <Input
+              type="datetime-local"
+              value={dateFrom}
+              onChange={(e) => setDateFrom(e.target.value)}
+              className="w-full min-w-0 lg:w-[11.5rem]"
+            />
+          </div>
+          <div className="flex flex-col gap-1 min-w-0">
+            <label className="text-[10px] uppercase tracking-wide text-gray-500">To (local)</label>
+            <Input
+              type="datetime-local"
+              value={dateTo}
+              onChange={(e) => setDateTo(e.target.value)}
+              className="w-full min-w-0 lg:w-[11.5rem]"
+            />
+          </div>
+        </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <Input
             value={query}
@@ -400,7 +513,7 @@ export function LLMLogsTab() {
             className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none sm:w-auto sm:py-1.5"
           >
             <option value="all">All agents</option>
-            {agentTypes.map((a) => (
+            {agentTypesInSelect.map((a) => (
               <option key={a} value={a}>{a}</option>
             ))}
           </select>
@@ -412,14 +525,16 @@ export function LLMLogsTab() {
               setStatusFilter('all');
               setAgentTypeFilter('all');
               setFilterProvider('');
+              setDateFrom('');
+              setDateTo('');
             }}
-            summary={`${filteredLogs.length} / ${logs.length} entries · est. $${filteredReport.sumCost.toFixed(4)} (${filteredReport.withCost} calls w/ cost)`}
+            summary={`${filteredLogs.length} visible · ${logs.length} loaded / ${totalRows || logs.length} on server · est. $${displayReport.sumCost.toFixed(4)} (${displayReport.withCost} calls w/ cost)`}
             className="text-xs text-gray-500 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4 min-w-0 pr-1"
           />
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => loadLogs(filterProvider || undefined)}
+            onClick={() => void refreshLogs()}
             className="w-full shrink-0 sm:w-auto"
           >
             <RefreshCw className="w-3.5 h-3.5 mr-1" />
@@ -434,13 +549,39 @@ export function LLMLogsTab() {
             <div className="animate-spin w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full mx-auto mb-3" />
             <p className="text-gray-500 text-sm">Loading logs...</p>
           </div>
-        ) : filteredLogs.length === 0 ? (
+        ) : logs.length === 0 ? (
           <div className="text-center py-12">
             <ScrollText className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-500">No LLM logs match current filters.</p>
+            <p className="text-gray-500">No LLM calls in the current server filter.</p>
             <p className="text-xs text-gray-600 mt-1">
-              Try clearing provider/status/query filters.
+              Try another provider or time range, or refresh after new traffic.
             </p>
+          </div>
+        ) : filteredLogs.length === 0 ? (
+          <div className="space-y-4 py-8 text-center">
+            <ScrollText className="mx-auto mb-2 h-10 w-10 text-gray-600" />
+            <p className="text-gray-500">No rows match your search / status / agent filters.</p>
+            <p className="text-xs text-gray-600">{logs.length} calls loaded from server — clear text filters to see them.</p>
+            {hasMoreFromServer && (
+              <div className="flex justify-center pt-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  disabled={loadingMore}
+                  onClick={() => void loadMoreLogs()}
+                >
+                  {loadingMore ? (
+                    <>
+                      <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" aria-hidden />
+                      Loading…
+                    </>
+                  ) : (
+                    <>Load more ({logs.length} / {totalRows})</>
+                  )}
+                </Button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="space-y-1">
@@ -561,6 +702,30 @@ export function LLMLogsTab() {
                 </div>
               </div>
             ))}
+            {hasMoreFromServer && (
+              <div className="flex flex-col items-center gap-2 border-t border-white/10 py-4">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  disabled={loadingMore}
+                  onClick={() => void loadMoreLogs()}
+                  className="min-w-[12rem]"
+                >
+                  {loadingMore ? (
+                    <>
+                      <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" aria-hidden />
+                      Loading…
+                    </>
+                  ) : (
+                    <>Load more ({logs.length} / {totalRows})</>
+                  )}
+                </Button>
+                <p className="text-[10px] text-gray-600 text-center max-w-md">
+                  Older calls are fetched in chunks of {LLM_LOG_PAGE_SIZE}. Narrow provider or time range if the list is huge.
+                </p>
+              </div>
+            )}
           </div>
         )}
       </GlassCard>

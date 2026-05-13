@@ -23,6 +23,10 @@ from web.backend.services.product_followup import public_storefront_blocked
 from web.backend.services.product_naming import resolve_product_name
 from web.backend.services.storefront_visibility import is_mid_repair_storefront_visible
 from web.backend.services.product_brief import build_stakeholder_brief
+from web.backend.services.storefront_pricing import (
+    DEFAULT_STOREFRONT_PRICE_USDT,
+    resolve_storefront_price_usdt,
+)
 from marketplace_taxonomy import MARKETPLACE_CATEGORY_IDS, canonical_marketplace_category
 
 logger = logging.getLogger(__name__)
@@ -30,9 +34,6 @@ logger = logging.getLogger(__name__)
 # Storefront-only: marketing landings tab (not a Director / LLM vertical topic).
 LANDINGS_LISTING_SLUG = "landings"
 LISTING_CATEGORY_IDS = tuple(MARKETPLACE_CATEGORY_IDS) + (LANDINGS_LISTING_SLUG,)
-
-# Default storefront / checkout amount when marketing & sales artifacts omit price (one-shot landing SKU).
-DEFAULT_STOREFRONT_PRICE_USDT = 4.99
 
 
 def _use_sqlite_pipeline() -> bool:
@@ -260,18 +261,10 @@ def _load_sales(pid: str) -> dict:
     return {}
 
 
-@router.get("/categories")
-async def list_categories():
-    """List all product categories with counts — only counting products that are
-    actually visible on the storefront (shipped, or mid-repair with prior listing; see ``_public_storefront_grid_accepts``).
-
-    This must stay in sync with the filters in list_products().
-    """
+def build_storefront_categories_response() -> dict[str, Any]:
+    """Build ``GET /api/products/categories`` JSON — single pass used by storefront + admin counts cache."""
     products = _get_products_map()
 
-    # Count only products that would appear in the marketplace listing
-    # (same filters as list_products()). Landings are counted only under ``landings``;
-    # vertical tabs (SaaS, IoT, …) count runnable/full builds only — not marketing landings.
     category_counts: dict[str, int] = {}
     landings_count = 0
     for pid, product in products.items():
@@ -287,7 +280,6 @@ async def list_categories():
         category = _canonical_marketplace_category(marketing, product)
         category_counts[category] = category_counts.get(category, 0) + 1
 
-    # Build response with category info
     result = []
     for cat in CATEGORIES:
         cat_id = cat["id"]
@@ -317,12 +309,25 @@ async def list_categories():
     return {"categories": result, "total_count": total_visible}
 
 
+@router.get("/categories")
+async def list_categories():
+    """List all product categories with counts — only counting products that are
+    actually visible on the storefront (shipped, or mid-repair with prior listing; see ``_public_storefront_grid_accepts``).
+
+    This must stay in sync with the filters in list_products().
+    """
+    from web.backend.services.storefront_counts_cache import get_storefront_categories_cached
+
+    return get_storefront_categories_cached()
+
+
 def _marketplace_quality_allowed(pid: str, product: Optional[dict[str, Any]] = None) -> tuple[bool, dict[str, Any]]:
     """Whether this build meets storefront quality rules (demo + optional QA telemetry)."""
     if product is None:
         product = _get_product_entry(pid) or {}
     spec_inner = _spec_inner_for_storefront(pid, product)
-    ev = evaluate_marketplace_quality(pid, specification=spec_inner)
+    dpr = _resolved_delivery_profile(product, spec_inner)
+    ev = evaluate_marketplace_quality(pid, specification=spec_inner, delivery_profile=dpr)
     return bool(ev.get("eligible")), ev
 
 
@@ -436,15 +441,21 @@ def _public_storefront_grid_accepts(pid: str, product: dict[str, Any]) -> bool:
 
 
 def count_showcase_listable_products() -> int:
-    """Products listed on the public storefront if ``category`` is unset — same gates as ``list_products``.
+    """How many products appear on the public storefront grid (same as ``total_count`` in ``/categories``).
 
-    Counts rows that pass ``_public_storefront_grid_accepts`` (shipped, repair-keep-visible, or force-list).
+    Uses the shared bounded-latency cache so admin metrics and pipeline catalog stay responsive.
     """
-    n = 0
-    for pid, product in _get_products_map().items():
-        if _public_storefront_grid_accepts(pid, product):
-            n += 1
-    return n
+    try:
+        from web.backend.services.storefront_counts_cache import get_storefront_categories_cached
+
+        d = get_storefront_categories_cached()
+        return int(d.get("total_count", 0))
+    except Exception as e:
+        logger.warning("count_showcase_listable_products: cache failed (%s)", e)
+        try:
+            return int(build_storefront_categories_response().get("total_count", 0))
+        except Exception:
+            return 0
 
 
 @router.get("")
@@ -531,39 +542,13 @@ async def list_products(category: Optional[str] = Query(None, description="Filte
                 # Tags
                 tags = marketing.get("tags", []) or product.get("tags", [])
 
-                # Price from monetization scheme (marketing) first — primary source
-                price_usdt = DEFAULT_STOREFRONT_PRICE_USDT
-                price_tier = "professional"
-                monetization_scheme = marketing.get("monetization_scheme", {})
-
-                if monetization_scheme:
-                    paid_tiers = monetization_scheme.get("paid_tiers", [])
-                    if paid_tiers:
-                        price_usdt = paid_tiers[0].get("price_usd_monthly", DEFAULT_STOREFRONT_PRICE_USDT)
-                        price_tier = paid_tiers[0].get("name", "professional").lower()
-
-                # Sales config may override with crypto one-time price
-                if sales_config:
-                    pricing = sales_config.get("pricing", {})
-                    # Also check pricing_tiers (some agents use this key instead)
-                    if not pricing:
-                        pricing = {"tiers": sales_config.get("pricing_tiers", [])}
-                    if pricing.get("tiers"):
-                        # Find first paid tier (skip free tier with price=0)
-                        paid_tier = None
-                        for t in pricing["tiers"]:
-                            tp = t.get("price_usdt") or t.get("price", 0)
-                            if tp and tp > 0:
-                                paid_tier = t
-                                break
-                        if paid_tier:
-                            tier_price = paid_tier.get("price_usdt") or paid_tier.get("price", 0)
-                            price_usdt = tier_price
-                            price_tier = paid_tier.get("name", price_tier).lower()
-                    elif pricing.get("usdt_price"):
-                        p = pricing["usdt_price"]
-                        if p and p > 0:
-                            price_usdt = p
+                # Price: admin override in sales_config → sales agent → marketing → default
+                price_usdt, price_tier = resolve_storefront_price_usdt(
+                    marketing=marketing or {},
+                    sales_config_inner=sales_config or {},
+                    default_usdt=DEFAULT_STOREFRONT_PRICE_USDT,
+                )
+                monetization_scheme = marketing.get("monetization_scheme", {}) or {}
 
                 # Tech stack summary for storefront cards (from architect file)
                 implementation_summary: dict[str, Any] = {}
@@ -590,7 +575,7 @@ async def list_products(category: Optional[str] = Query(None, description="Filte
                     "price_usdt": price_usdt,
                     "price_tier": price_tier,
                     "monetization_scheme": monetization_scheme,
-                    "supported_chains": sales_config.get("pricing", {}).get("supported_chains", ["base", "ethereum"]),
+                    "supported_chains": (sales_config.get("pricing") or {}).get("supported_chains", ["base", "ethereum"]),
                     "state": product.get("state"),
                     "created_at": product.get("created_at", 0),
                     "features": features,
@@ -631,39 +616,14 @@ async def get_product(product_id: str):
         category = _canonical_marketplace_category(marketing, product)
         tags = marketing.get("tags", []) or product.get("tags", [])
         selling_description = marketing.get("selling_description", "")
-        monetization_scheme = marketing.get("monetization_scheme", {})
+        monetization_scheme = marketing.get("monetization_scheme", {}) or {}
 
-        # Price from monetization scheme (marketing) first — primary source
-        price_usdt = DEFAULT_STOREFRONT_PRICE_USDT
-        price_tier = "professional"
-        if monetization_scheme:
-            paid_tiers = monetization_scheme.get("paid_tiers", [])
-            if paid_tiers:
-                price_usdt = paid_tiers[0].get("price_usd_monthly", DEFAULT_STOREFRONT_PRICE_USDT)
-                price_tier = paid_tiers[0].get("name", "professional").lower()
-
-        # Sales config may override with crypto one-time price
-        if sales_config:
-            pricing = sales_config.get("pricing", {})
-            # Also check pricing_tiers (some agents use this key instead)
-            if not pricing:
-                pricing = {"tiers": sales_config.get("pricing_tiers", [])}
-            if pricing.get("tiers"):
-                # Find first paid tier (skip free tier with price=0)
-                paid_tier = None
-                for t in pricing["tiers"]:
-                    tp = t.get("price_usdt") or t.get("price", 0)
-                    if tp and tp > 0:
-                        paid_tier = t
-                        break
-                if paid_tier:
-                    tier_price = paid_tier.get("price_usdt") or paid_tier.get("price", 0)
-                    price_usdt = tier_price
-                    price_tier = paid_tier.get("name", price_tier).lower()
-            elif pricing.get("usdt_price"):
-                p = pricing["usdt_price"]
-                if p and p > 0:
-                    price_usdt = p
+        # Price: admin override → sales → marketing → default
+        price_usdt, price_tier = resolve_storefront_price_usdt(
+            marketing=marketing or {},
+            sales_config_inner=sales_config or {},
+            default_usdt=DEFAULT_STOREFRONT_PRICE_USDT,
+        )
 
         # Load evolution history
         evolution_history = []
@@ -682,8 +642,10 @@ async def get_product(product_id: str):
             impl_summary = architecture_data["tech_stack"]
 
         demo_quality = assess_product_demo(product_id, spec_inner)
-        mq_eval = evaluate_marketplace_quality(product_id, specification=spec_inner)
         dprof = _resolved_delivery_profile(product, spec_inner)
+        mq_eval = evaluate_marketplace_quality(
+            product_id, specification=spec_inner, delivery_profile=dprof
+        )
         stack_lbl = ""
         if isinstance(architecture_data, dict) and isinstance(architecture_data.get("tech_stack"), dict):
             stack_lbl = _storefront_stack_label(architecture_data["tech_stack"])

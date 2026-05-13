@@ -9,7 +9,13 @@ def data_root() -> Path:
 
 
 def config_path() -> Path:
-    return Path(os.environ.get("AIFACTORY_CONFIG_PATH", "/app/config.yaml"))
+    """Primary platform YAML path (same resolution as :func:`core.config_merge.config_yaml_path` unless overridden)."""
+    p = os.environ.get("AIFACTORY_CONFIG_PATH")
+    if p:
+        return Path(p)
+    from core.config_merge import config_yaml_path
+
+    return config_yaml_path()
 
 
 def state_dir() -> Path:

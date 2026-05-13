@@ -23,6 +23,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from prometheus_client import make_asgi_app
 
+from web.backend.cors_settings import get_cors_allow_origins
+
 from core.paths import data_root as factory_data_root
 
 from .core.config import AppConfig
@@ -169,21 +171,35 @@ app = FastAPI(
     openapi_url="/api/openapi.json",
 )
 
-# CORS middleware
+# CORS middleware — production: set AIFACTORY_CORS_ORIGINS (comma-separated)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:8080",
-        "http://localhost:8081",
-        "http://localhost:9080",
-        "http://127.0.0.1:9080",
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=get_cors_allow_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    """Baseline security headers for all responses (API + any HTML)."""
+    response = await call_next(request)
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    csp = (os.environ.get("AIFACTORY_CSP") or "").strip()
+    if not csp and os.environ.get("AIFACTORY_ENABLE_DEFAULT_CSP", "").lower() in ("1", "true", "yes"):
+        # API-first default: no asset loads from HTML responses; tighten framing. Override with AIFACTORY_CSP.
+        csp = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'"
+    if csp:
+        response.headers.setdefault("Content-Security-Policy", csp)
+    if os.environ.get("AIFACTORY_ENABLE_HSTS", "").lower() in ("1", "true", "yes"):
+        hsts = "max-age=31536000; includeSubDomains"
+        if os.environ.get("AIFACTORY_HSTS_PRELOAD", "").lower() in ("1", "true", "yes"):
+            hsts += "; preload"
+        response.headers.setdefault("Strict-Transport-Security", hsts)
+    return response
 
 
 # Global exception handler
@@ -354,6 +370,8 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
     from web.backend.services.reference_templates import list_reference_templates_catalog
     from web.backend.services.telegram_credentials import resolve_telegram_token_chat_id, telegram_token_configured
 
+    from core.quality_settings import admin_quality_panel_dict
+
     _ = _admin
     config = app.state.config
     _, chat_resolved = resolve_telegram_token_chat_id()
@@ -398,6 +416,7 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
         "reference_prompt_max_chars": int(config.get("general.reference_prompt_max_chars") or 14000),
         "reference_templates_catalog": list_reference_templates_catalog(factory_data_root()),
         "throughput_effective": throughput_effective,
+        "quality": admin_quality_panel_dict(),
     }
 
 
@@ -465,6 +484,15 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
         revoke_telegram_credentials,
         write_telegram_credentials,
     )
+
+    from core.quality_settings import bump_quality_cache_after_config_write, normalize_quality_settings_payload
+
+    if isinstance(body.get("quality"), dict):
+        qnorm = normalize_quality_settings_payload(body["quality"])
+        if qnorm is not None:
+            config.set("quality", qnorm)
+            updated.append("quality")
+            bump_quality_cache_after_config_write()
 
     if body.get("telegram_bot_token_revoke") is True:
         revoke_telegram_credentials()
