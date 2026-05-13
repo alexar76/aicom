@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import {
   RefreshCw,
   Loader2,
@@ -143,8 +143,22 @@ function ProductArtifactsPanel({
             ) : null}
           </div>
         ) : (
-          <div className="flex aspect-video min-h-[200px] items-center justify-center text-sm text-gray-500">
-            Sandbox preview will appear after files load.
+          <div className="flex aspect-video min-h-[200px] flex-col items-center justify-center gap-3 px-4 text-center text-sm text-gray-500">
+            {fileLoading ? (
+              <span>Preview is available after the file list loads.</span>
+            ) : files.length === 0 ? (
+              <span>No files to preview for this product.</span>
+            ) : (
+              <>
+                <p className="max-w-md text-gray-400">
+                  Live sandbox is not started automatically so the file list opens quickly. Load it when you need the
+                  iframe.
+                </p>
+                <Button type="button" variant="secondary" size="sm" onClick={() => void refreshSandbox()}>
+                  Load sandbox preview
+                </Button>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -288,8 +302,10 @@ export function FilesTab() {
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
   const [truncatedByCategory, setTruncatedByCategory] = useState<Record<string, boolean> | null>(null);
-  const [loadingCatalog, setLoadingCatalog] = useState(true);
-  const [loadingMoreCatalog, setLoadingMoreCatalog] = useState(false);
+  const [catalogInitialLoading, setCatalogInitialLoading] = useState(true);
+  const [catalogLoadingMore, setCatalogLoadingMore] = useState(false);
+  const [catalogTotal, setCatalogTotal] = useState<number | null>(null);
+  const [lastCatalogBatchSize, setLastCatalogBatchSize] = useState(0);
   const [catalogProgress, setCatalogProgress] = useState<{ loaded: number; total: number | null } | null>(null);
   const [productsLoadError, setProductsLoadError] = useState<string | null>(null);
   const [productsReloadKey, setProductsReloadKey] = useState(0);
@@ -304,13 +320,28 @@ export function FilesTab() {
   const [productStateFilter, setProductStateFilter] = useState('all');
   const [fileSearch, setFileSearch] = useState('');
   const [fileCategoryFilter, setFileCategoryFilter] = useState('all');
+  const productsRef = useRef<any[]>([]);
+  const productListScrollRef = useRef<HTMLDivElement>(null);
+  const catalogSentinelRef = useRef<HTMLDivElement>(null);
+  const catalogEpochRef = useRef(0);
+
+  productsRef.current = products;
+
+  const catalogHasMore = useMemo(() => {
+    if (catalogTotal != null) return products.length < catalogTotal;
+    return lastCatalogBatchSize >= PIPELINE_CATALOG_MAX_PAGE;
+  }, [catalogTotal, products.length, lastCatalogBatchSize]);
 
   useEffect(() => {
     const ac = new AbortController();
-    setLoadingCatalog(true);
-    setLoadingMoreCatalog(false);
+    catalogEpochRef.current += 1;
+    const epoch = catalogEpochRef.current;
+
+    setCatalogInitialLoading(true);
+    setCatalogLoadingMore(false);
     setProducts([]);
-    setCatalogProgress(null);
+    setCatalogTotal(null);
+    setLastCatalogBatchSize(0);
     setProductsLoadError(null);
     setSelectedProduct(null);
     setFiles([]);
@@ -319,36 +350,63 @@ export function FilesTab() {
     setSandboxError(null);
     setSandboxModalOpen(false);
     setSandboxReloadKey(0);
+    setCatalogProgress(null);
 
     void (async () => {
       try {
-        let first = true;
         await fetchPipelineCatalogAllPages('shipped_first', {
           signal: ac.signal,
+          startOffset: 0,
+          maxPages: 1,
           onPage: ({ batch, loaded, total }) => {
-            if (ac.signal.aborted) return;
-            setProducts((prev) => [...prev, ...batch]);
+            if (ac.signal.aborted || catalogEpochRef.current !== epoch) return;
+            setProducts(batch);
             setCatalogProgress({ loaded, total });
-            if (first && batch.length > 0) {
-              first = false;
-              setLoadingCatalog(false);
-              setLoadingMoreCatalog(true);
-            }
+            if (typeof total === 'number') setCatalogTotal(total);
+            setLastCatalogBatchSize(batch.length);
           },
         });
-        if (ac.signal.aborted) return;
-        setLoadingMoreCatalog(false);
-        setLoadingCatalog(false);
       } catch (e: unknown) {
-        if (ac.signal.aborted) return;
+        if (ac.signal.aborted || catalogEpochRef.current !== epoch) return;
         setProductsLoadError(e instanceof Error ? e.message : String(e));
-        setLoadingCatalog(false);
-        setLoadingMoreCatalog(false);
+      } finally {
+        if (!ac.signal.aborted && catalogEpochRef.current === epoch) {
+          setCatalogInitialLoading(false);
+          setCatalogLoadingMore(false);
+        }
       }
     })();
 
     return () => ac.abort();
   }, [productsReloadKey]);
+
+  const loadMoreCatalog = useCallback(async () => {
+    if (!catalogHasMore || catalogInitialLoading || catalogLoadingMore) return;
+    const epoch = catalogEpochRef.current;
+    const startOffset = productsRef.current.length;
+    setCatalogLoadingMore(true);
+    try {
+      await fetchPipelineCatalogAllPages('shipped_first', {
+        startOffset,
+        maxPages: 1,
+        onPage: ({ batch, loaded, total }) => {
+          if (catalogEpochRef.current !== epoch) return;
+          setProducts((prev) => [...prev, ...batch]);
+          setCatalogProgress({ loaded, total });
+          if (typeof total === 'number') setCatalogTotal(total);
+          setLastCatalogBatchSize(batch.length);
+        },
+      });
+    } catch (e: unknown) {
+      if (catalogEpochRef.current === epoch) {
+        toast.error(e instanceof Error ? e.message : String(e));
+      }
+    } finally {
+      if (catalogEpochRef.current === epoch) {
+        setCatalogLoadingMore(false);
+      }
+    }
+  }, [catalogHasMore, catalogInitialLoading, catalogLoadingMore]);
 
   const FILES_FETCH_MS = 120_000;
   const FILES_ATTEMPTS = 5;
@@ -381,19 +439,6 @@ export function FilesTab() {
             : null,
         );
         setFileLoading(false);
-        setSandboxLoading(true);
-
-        try {
-          const result = await api.startSandbox(productId);
-          const raw = result.url || `/api/sandbox/view/${result.sandbox_id}`;
-          const abs = raw.startsWith('http') ? raw : new URL(raw, window.location.origin).href;
-          setSandboxIframeSrc(abs);
-        } catch (se: unknown) {
-          setSandboxIframeSrc(null);
-          setSandboxError(se instanceof Error ? se.message : 'Failed to start sandbox');
-        } finally {
-          setSandboxLoading(false);
-        }
         return;
       } catch (e) {
         lastErr = e;
@@ -469,6 +514,23 @@ export function FilesTab() {
     });
   }, [products, productSearch, productStateFilter]);
 
+  useEffect(() => {
+    const root = productListScrollRef.current;
+    const target = catalogSentinelRef.current;
+    if (!root || !target || !catalogHasMore || filteredProducts.length === 0) return;
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const hit = entries.some((en) => en.isIntersecting);
+        if (!hit) return;
+        void loadMoreCatalog();
+      },
+      { root, rootMargin: '240px', threshold: 0 },
+    );
+    obs.observe(target);
+    return () => obs.disconnect();
+  }, [catalogHasMore, loadMoreCatalog, products.length, filteredProducts.length]);
+
   const availableProductStates = useMemo(() => {
     const s = new Set<string>();
     for (const p of products) {
@@ -529,8 +591,11 @@ export function FilesTab() {
       <h2 className="text-xl font-semibold text-white">Generated Files Browser</h2>
       <p className="text-sm text-gray-400">Browse all artifacts generated by the AI pipeline for each product.</p>
 
-      {loadingCatalog && products.length === 0 ? (
-        <div className="text-gray-400">Loading products…</div>
+      {catalogInitialLoading && products.length === 0 ? (
+        <div className="flex items-center gap-2 text-gray-400">
+          <Loader2 className="h-5 w-5 shrink-0 animate-spin text-indigo-400" aria-hidden />
+          <span>Loading products…</span>
+        </div>
       ) : productsLoadError && products.length === 0 ? (
         <div className="space-y-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
           <p className="text-sm text-amber-100/90">
@@ -552,14 +617,17 @@ export function FilesTab() {
         <div className="text-gray-500">No products found. Create a product first.</div>
       ) : (
         <div className="space-y-4">
-          {(loadingCatalog || loadingMoreCatalog) &&
-            catalogProgress &&
-            (catalogProgress.total == null || catalogProgress.loaded < catalogProgress.total) && (
-            <p className="text-xs text-gray-500">
-              Loading catalog… {catalogProgress.loaded}
-              {catalogProgress.total != null ? ` / ${catalogProgress.total}` : ''} (up to {PIPELINE_CATALOG_MAX_PAGE} per request)
+          {catalogLoadingMore && catalogProgress ? (
+            <p className="flex items-center gap-2 text-xs text-gray-500">
+              <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-indigo-400" aria-hidden />
+              Loading more products… {catalogProgress.loaded}
+              {catalogProgress.total != null ? ` / ${catalogProgress.total}` : ''}
             </p>
-          )}
+          ) : catalogHasMore && products.length > 0 ? (
+            <p className="text-xs text-gray-600">
+              Not all products are loaded yet — scroll the list or use &quot;Load more&quot; below.
+            </p>
+          ) : null}
 
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-gray-400">Products</h3>
@@ -597,7 +665,10 @@ export function FilesTab() {
 
           <div className="items-start gap-6 md:grid md:grid-cols-3">
             <div className="flex min-h-0 flex-col gap-2 md:col-span-1">
-              <div className="max-h-[min(50vh,420px)] space-y-2 overflow-y-auto pr-1 md:max-h-[min(72vh,640px)]">
+              <div
+                ref={productListScrollRef}
+                className="max-h-[min(50vh,420px)] space-y-2 overflow-y-auto pr-1 md:max-h-[min(72vh,640px)]"
+              >
                 {filteredProducts.map((p: any) => {
                   const open = selectedProduct === p.id;
                   return (
@@ -633,6 +704,28 @@ export function FilesTab() {
                     </div>
                   );
                 })}
+                {catalogHasMore ? (
+                  <div className="flex flex-col items-stretch gap-2 border-t border-white/5 pt-2">
+                    <div ref={catalogSentinelRef} className="h-2 w-full shrink-0" aria-hidden />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      disabled={catalogLoadingMore || catalogInitialLoading}
+                      onClick={() => void loadMoreCatalog()}
+                      className="inline-flex items-center justify-center gap-2 text-indigo-200 hover:text-white"
+                    >
+                      {catalogLoadingMore ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Loading more…
+                        </>
+                      ) : (
+                        <>Load more products ({products.length} loaded)</>
+                      )}
+                    </Button>
+                  </div>
+                ) : null}
               </div>
             </div>
 

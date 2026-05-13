@@ -357,9 +357,17 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
     _ = _admin
     config = app.state.config
     _, chat_resolved = resolve_telegram_token_chat_id()
+    try:
+        from core.throughput_limits import throughput_snapshot
+
+        throughput_effective = throughput_snapshot()
+    except Exception as exc:
+        logger.warning("throughput_snapshot for admin settings failed: %s", exc)
+        throughput_effective = None
     return {
         "auto_pipeline": config.get("general.auto_pipeline", False),
         "auto_pipeline_interval_minutes": config.get("general.auto_pipeline_interval_minutes", 60),
+        "local_high_throughput_enabled": bool(config.get("general.local_high_throughput_enabled", False)),
         "git_remote_url": config.get("general.git_remote_url", ""),
         "git_default_branch": config.get("general.git_default_branch", "main"),
         "docker_registry": config.get("general.docker_registry", ""),
@@ -376,6 +384,7 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
         "auto_publish_cf_project_name": config.get("general.auto_publish_cf_project_name") or "",
         "site_badge_enabled": bool(config.get("general.site_badge_enabled", False)),
         "site_badge_link_url": config.get("general.site_badge_link_url") or "",
+        "published_site_head_html": str(config.get("general.published_site_head_html") or ""),
         "railway_deploy_enabled": bool(config.get("general.railway_deploy_enabled", False)),
         "railway_project_id": config.get("general.railway_project_id") or "",
         "railway_environment": config.get("general.railway_environment") or "",
@@ -388,6 +397,7 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
         "reference_template_id": config.get("general.reference_template_id") or "",
         "reference_prompt_max_chars": int(config.get("general.reference_prompt_max_chars") or 14000),
         "reference_templates_catalog": list_reference_templates_catalog(factory_data_root()),
+        "throughput_effective": throughput_effective,
     }
 
 
@@ -401,6 +411,7 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
     allowed_keys = [
         "auto_pipeline",
         "auto_pipeline_interval_minutes",
+        "local_high_throughput_enabled",
         "git_remote_url",
         "git_default_branch",
         "docker_registry",
@@ -415,6 +426,7 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
         "auto_publish_cf_project_name",
         "site_badge_enabled",
         "site_badge_link_url",
+        "published_site_head_html",
         "railway_deploy_enabled",
         "railway_project_id",
         "railway_environment",
@@ -436,6 +448,8 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
                     val = int(val)
                 except (TypeError, ValueError):
                     val = 14000
+            if key == "published_site_head_html" and val is not None:
+                val = str(val)[:100000]
             if key == "auto_pipeline_interval_minutes" and val is not None:
                 try:
                     n = int(val)

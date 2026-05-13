@@ -1,6 +1,6 @@
 # AI-Factory: I Built an Open-Source Pipeline That Turns Ideas Into Products Using 18 AI Agents
 
-**TL;DR** — MIT-licensed, self-hosted pipeline that takes a plain-language idea and runs it through 18 specialized AI agents (PM, Architect, Developer, QA, Security, etc.) with quality gates, auto-failover between LLM providers, and a full admin panel. [GitHub repo](#).
+**TL;DR** — MIT-licensed, self-hosted pipeline that takes a plain-language idea and runs it through 18 specialized AI agents (PM, Architect, Developer, QA, Security, etc.) with quality gates, auto-failover between LLM providers, and a full admin panel.
 
 ---
 
@@ -126,7 +126,7 @@ That's it. Open `http://localhost:9080` and you have a full admin panel.
 
 ## Links
 
-- **GitHub**: [github.com/yourname/aicom](https://github.com/yourname/aicom) (MIT)
+- **GitHub**: [github.com/alexandr/aicom](https://github.com/alexandr/aicom) (MIT)  <!-- вставь свою ссылку -->
 - **Docs**: See the `docs/` folder in the repo
 - **Demo**: `./demo.sh "SaaS for managing remote teams"` — one command
 

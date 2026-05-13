@@ -28,6 +28,11 @@ from pathlib import Path
 from typing import Optional
 
 from core.paths import data_root, pipeline_db_path, pipeline_json_path
+from core.throughput_limits import (
+    effective_batch_pipeline_active_limit,
+    effective_batch_pipeline_max_start_per_cycle,
+    effective_task_executor_concurrency,
+)
 from agents.product_profile import post_devops_human_gate_required
 from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW
 from orchestrator.worker_components import PeerReviewEngine, QualityManager, TaskOrchestrator
@@ -517,8 +522,8 @@ class PipelineWorker:
         try:
             from orchestrator.batch_pipeline import drain_batch_queue_into_state
 
-            max_to_start = int(os.environ.get("AIFACTORY_BATCH_PIPELINE_MAX_START_PER_CYCLE", "2"))
-            active_limit = int(os.environ.get("AIFACTORY_BATCH_PIPELINE_ACTIVE_LIMIT", "30"))
+            max_to_start = effective_batch_pipeline_max_start_per_cycle()
+            active_limit = effective_batch_pipeline_active_limit()
             batch_res = drain_batch_queue_into_state(
                 state={"products": products, "task_queue": task_queue},
                 max_to_start=max(1, max_to_start),
@@ -546,11 +551,7 @@ class PipelineWorker:
 
         # Phase 3: Process running tasks via real agents (bounded concurrency)
         running_tasks = [task for task in task_queue if task.get("status") == "running"]
-        try:
-            exec_concurrency = int(os.environ.get("AIFACTORY_TASK_EXECUTOR_CONCURRENCY", "6"))
-        except ValueError:
-            exec_concurrency = 6
-        exec_concurrency = max(1, exec_concurrency)
+        exec_concurrency = effective_task_executor_concurrency()
         if running_tasks:
             sem = asyncio.Semaphore(exec_concurrency)
 
@@ -852,6 +853,14 @@ class PipelineWorker:
                             self._apply_watermark_policy(pid, products[pid])
                         except Exception as wm_exc:
                             logger.warning("Watermark policy apply failed for %s: %s", pid, wm_exc)
+                        try:
+                            from web.backend.services.site_head_snippet import (
+                                inject_published_site_head_if_configured,
+                            )
+
+                            inject_published_site_head_if_configured(self.data_root, pid)
+                        except Exception as head_exc:
+                            logger.warning("Published site <head> inject failed for %s: %s", pid, head_exc)
                         try:
                             from web.backend.services.site_badge import inject_site_badge_if_enabled
 

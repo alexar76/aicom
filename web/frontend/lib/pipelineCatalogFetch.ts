@@ -51,16 +51,22 @@ export const PIPELINE_CATALOG_MAX_PAGE = 2000;
 /**
  * Streams the full pipeline catalog in pages (no artificial client cap).
  * Calls `onPage` after each successful page so the UI can render incrementally.
+ *
+ * @param opts.startOffset — skip earlier products (for "load more" after initial slice).
+ * @param opts.maxPages — stop after N API pages (e.g. `1` for lazy first paint, then append).
  */
 export async function fetchPipelineCatalogAllPages(
   sort: 'newest' | 'shipped_first' = 'shipped_first',
   opts?: {
     onPage?: (info: { batch: any[]; loaded: number; total: number | null }) => void;
     signal?: AbortSignal;
+    startOffset?: number;
+    maxPages?: number;
   },
 ): Promise<void> {
-  let offset = 0;
+  let offset = Math.max(0, opts?.startOffset ?? 0);
   let total: number | null = null;
+  let pagesDone = 0;
 
   for (;;) {
     if (opts?.signal?.aborted) return;
@@ -71,7 +77,10 @@ export async function fetchPipelineCatalogAllPages(
       total = data.total;
     }
     offset += batch.length;
+    pagesDone += 1;
     opts?.onPage?.({ batch, loaded: offset, total });
+
+    if (opts?.maxPages != null && pagesDone >= opts.maxPages) return;
 
     if (batch.length === 0) return;
     if (total != null && offset >= total) return;

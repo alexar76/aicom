@@ -1346,7 +1346,7 @@ export default function DocsPage() {
 
       {/* Content */}
       <section className="pb-24 px-4">
-        <div className="max-w-7xl mx-auto flex gap-8">
+        <div className="mx-auto flex max-w-7xl min-w-0 flex-col gap-8 lg:flex-row">
           {/* Sidebar */}
           <DocSidebar
             sections={docSections}
@@ -1355,7 +1355,7 @@ export default function DocsPage() {
           />
 
           {/* Mobile Section Selector */}
-          <div className="lg:hidden w-full mb-6">
+          <div className="w-full shrink-0 lg:hidden">
             <select
               value={activeSection}
               onChange={(e) => setActiveSection(e.target.value)}
@@ -1375,7 +1375,7 @@ export default function DocsPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex-1 min-w-0"
+            className="min-w-0 w-full flex-1"
           >
             <div className="max-w-4xl">
               {currentDoc.content}

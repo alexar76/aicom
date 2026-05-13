@@ -18,7 +18,7 @@ import {
 
 const STORAGE_KEY = 'aif_support_v1';
 const MAX_LEN = 4000;
-type WidgetLocale = 'en';
+type WidgetLocale = 'en' | 'ru';
 
 const UI_TEXT: Record<
   WidgetLocale,
@@ -28,6 +28,11 @@ const UI_TEXT: Record<
     voiceUnavailable: string;
     micStartError: string;
     micRecognitionDenied: string;
+    micNeedsHttps: string;
+    micNoMediaDevices: string;
+    micPermBlocked: string;
+    micDeniedShort: string;
+    micDeviceBusy: string;
     sendError: string;
     openAria: (name: string) => string;
     subtitle: string;
@@ -50,10 +55,20 @@ const UI_TEXT: Record<
     botDefault: 'Support',
     connectError: 'Connection error',
     voiceUnavailable:
-      'Voice input is not available in this browser. Use Chrome or Edge on desktop or Android.',
+      'Voice typing isn’t available in this browser. Use the keyboard, or try Chrome, Edge, or Samsung Internet on an up-to-date device.',
     micStartError: 'Could not start speech recognition',
     micRecognitionDenied:
-      'Speech recognition requires microphone access. Click the lock icon near the address bar, allow microphone access, refresh the page, and try again.',
+      'Speech recognition needs microphone access. Tap the lock or “site settings” icon in the address bar, allow the microphone, reload the page, and try again.',
+    micNeedsHttps:
+      'Microphone only works on a secure page (https:// or localhost). Open this site with HTTPS and try again.',
+    micNoMediaDevices:
+      'This browser doesn’t expose microphone access the way this chat needs. Try Chrome, Edge, or Samsung Internet, reload the page, and try again.',
+    micPermBlocked:
+      'The microphone is already blocked for this site, so the browser may not show a prompt again. Open site settings for this page, allow the microphone, reload, then try dictation.',
+    micDeniedShort:
+      'Microphone access was denied. Open site settings for this page, allow the microphone, and try again.',
+    micDeviceBusy:
+      'Could not use the microphone (no device or it’s busy in another app).',
     sendError: 'Send error',
     openAria: (name) => `Open chat: ${name}`,
     subtitle: 'AI-Factory marketplace support',
@@ -70,9 +85,49 @@ const UI_TEXT: Record<
     stopDictation: 'Stop',
     dictation: 'Dictation',
     unavailable: 'Unavailable',
-    secureSession: 'Secure session',
+    secureSession: 'Signed-in chat',
     devMode: 'Development mode',
     send: 'Send',
+  },
+  ru: {
+    botDefault: 'Поддержка',
+    connectError: 'Ошибка соединения',
+    voiceUnavailable:
+      'Голосовой ввод в этом браузере недоступен. Наберите текст с клавиатуры или откройте страницу в Chrome, Edge или Samsung Internet с обновлениями системы.',
+    micStartError: 'Не удалось запустить распознавание речи',
+    micRecognitionDenied:
+      'Для диктовки нужен доступ к микрофону. Нажмите на замок или настройки сайта в адресной строке, разрешите микрофон, обновите страницу и повторите.',
+    micNeedsHttps:
+      'Микрофон доступен только по защищённому соединению (https:// или localhost). Откройте сайт по HTTPS и попробуйте снова.',
+    micNoMediaDevices:
+      'В этом браузере нет нужного доступа к микрофону. Попробуйте Chrome, Edge или Samsung Internet, обновите страницу и повторите.',
+    micPermBlocked:
+      'Микрофон для этого сайта уже заблокирован, поэтому запрос может не появиться. Откройте настройки сайта, разрешите микрофон, обновите страницу и снова нажмите диктовку.',
+    micDeniedShort:
+      'Доступ к микрофону отклонён. В настройках сайта разрешите микрофон и попробуйте снова.',
+    micDeviceBusy:
+      'Не удалось использовать микрофон (нет устройства или оно занято в другом приложении).',
+    sendError: 'Ошибка отправки',
+    openAria: (name) => `Открыть чат: ${name}`,
+    subtitle: 'Поддержка маркетплейса AI-Factory',
+    checkingConnection: 'Проверяем соединение…',
+    serverAwayFriendly:
+      'Помощник временно недоступен — в фоне идут повторные попытки. Сообщения остаются в очереди и уйдут автоматически, когда связь восстановится.',
+    queueBadge: (n: number) =>
+      n === 1
+        ? '1 сообщение в очереди — отправим при появлении сети…'
+        : `${n} сообщ. в очереди — отправим при появлении сети…`,
+    queueWillRetry: 'Сеть всё ещё недоступна — попробуем снова. Оставьте вкладку открытой или зайдите позже.',
+    closeAria: 'Закрыть',
+    emptyHint:
+      'Напишите сообщение или воспользуйтесь кнопкой у поля ввода. На странице продукта бот лучше понимает контекст.',
+    messagePlaceholder: 'Сообщение…',
+    stopDictation: 'Стоп',
+    dictation: 'Диктовка',
+    unavailable: 'Недоступно',
+    secureSession: 'Чат с авторизацией',
+    devMode: 'Режим разработки',
+    send: 'Отправить',
   },
 };
 
@@ -184,7 +239,7 @@ function saveStored(s: StoredSession) {
   sessionStorage.setItem(STORAGE_KEY, JSON.stringify(s));
 }
 
-/** Chrome / Edge — Web Speech API; Safari limited. */
+/** Web Speech API — Chromium-based browsers; availability varies on iOS / WebView. */
 function getSpeechRecognitionCtor(): SpeechRecognitionConstructor | null {
   if (typeof window === 'undefined') return null;
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
@@ -201,6 +256,9 @@ function pickRecognitionLang(): string {
 type MicGate = { proceed: true } | { proceed: false; userMessage: string };
 
 function detectWidgetLocale(): WidgetLocale {
+  if (typeof navigator === 'undefined') return 'en';
+  const lang = (navigator.language || '').toLowerCase();
+  if (lang.startsWith('ru')) return 'ru';
   return 'en';
 }
 
@@ -215,16 +273,14 @@ async function gateMicrophoneForDictation(locale: WidgetLocale): Promise<MicGate
   if (!window.isSecureContext) {
     return {
       proceed: false,
-      userMessage:
-        'Microphone access requires HTTPS or localhost. Open the site via https://… and try again.',
+      userMessage: tr.micNeedsHttps,
     };
   }
 
   if (!navigator.mediaDevices?.getUserMedia) {
     return {
       proceed: false,
-      userMessage:
-        'This browser does not support microphone access required by chat. Open this page in Chrome or Edge (latest version).',
+      userMessage: tr.micNoMediaDevices,
     };
   }
 
@@ -233,8 +289,7 @@ async function gateMicrophoneForDictation(locale: WidgetLocale): Promise<MicGate
     if (perm?.state === 'denied') {
       return {
         proceed: false,
-        userMessage:
-          'Microphone is already blocked for this site, so the browser will not prompt again. Click the lock/info icon near the address bar -> site permissions -> microphone -> allow, refresh the page, then try dictation again.',
+        userMessage: tr.micPermBlocked,
       };
     }
   } catch {
@@ -252,14 +307,12 @@ async function gateMicrophoneForDictation(locale: WidgetLocale): Promise<MicGate
     if (denied) {
       return {
         proceed: false,
-        userMessage:
-          'Microphone access was denied. If no browser prompt appeared, click the lock icon near the site address and enable microphone for this site, then try again.',
+        userMessage: tr.micDeniedShort,
       };
     }
     return {
       proceed: false,
-      userMessage:
-        'Could not enable microphone (device missing or busy in another app).',
+      userMessage: tr.micDeviceBusy,
     };
   }
 }
@@ -336,7 +389,7 @@ export function SupportWidget() {
     return () => {
       cancelled = true;
     };
-  }, [publicWidgetOff]);
+  }, [publicWidgetOff, locale, tr.botDefault]);
 
   const bootstrapSession = useCallback(async () => {
     const stored = loadStored();

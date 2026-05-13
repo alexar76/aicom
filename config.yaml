@@ -48,6 +48,10 @@ general:
   # Viral badge on generated static HTML (Developer stage — injects before </body>)
   site_badge_enabled: false
   site_badge_link_url: ""   # https://github.com/you/aicom — required when enabled
+  # Optional raw HTML (scripts, meta, verification tags) injected before </head> on each generated *.html (GA, Metrica, etc.)
+  published_site_head_html: ""
+  # Local workstation: raise pipeline parallelism (see Admin → Settings). Env AIFACTORY_* still overrides each limit.
+  local_high_throughput_enabled: false
   # Neural UI reference pool (Developer/Hardening prompt). Generate templates: scripts/generate_reference_templates.py
   # Env AIFACTORY_REFERENCE_* overrides these values when set on the worker/container.
   reference_templates_enabled: false

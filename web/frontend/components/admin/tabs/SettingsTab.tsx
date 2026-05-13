@@ -88,6 +88,10 @@ import toast from 'react-hot-toast';
 
 import { DemoReplayMonitorSection } from './DemoReplayMonitorSection';
 
+type AdminThroughputSnapshot = NonNullable<
+  Awaited<ReturnType<typeof api.getAdminSettings>>['throughput_effective']
+>;
+
 export function SettingsTab() {
   const [currentTheme, setCurrentTheme] = useState<string>('cyberpunk');
   const [themeSaving, setThemeSaving] = useState<string | null>(null);
@@ -96,6 +100,7 @@ export function SettingsTab() {
   const [settings, setSettings] = useState({
     auto_pipeline: false,
     auto_pipeline_interval_minutes: 60,
+    local_high_throughput_enabled: false,
     git_remote_url: '',
     git_default_branch: 'main',
     docker_registry: '',
@@ -111,6 +116,7 @@ export function SettingsTab() {
     auto_publish_cf_project_name: '',
     site_badge_enabled: false,
     site_badge_link_url: '',
+    published_site_head_html: '',
     railway_deploy_enabled: false,
     railway_project_id: '',
     railway_environment: '',
@@ -122,6 +128,8 @@ export function SettingsTab() {
     reference_template_id: '',
     reference_prompt_max_chars: 14000,
   });
+  const [throughputEffective, setThroughputEffective] = useState<AdminThroughputSnapshot | null>(null);
+  const [throughputSnapshotBusy, setThroughputSnapshotBusy] = useState(false);
   const [telegramBotTokenConfigured, setTelegramBotTokenConfigured] = useState(false);
   const [railwayTokenConfigured, setRailwayTokenConfigured] = useState(false);
   const [telegramBotTokenInput, setTelegramBotTokenInput] = useState('');
@@ -167,6 +175,42 @@ export function SettingsTab() {
 
   const clampAutoPipelineMinutes = (n: number) => Math.min(10080, Math.max(15, Math.round(n)));
 
+  const ingestAdminSettingsResponse = (data: Awaited<ReturnType<typeof api.getAdminSettings>>) => {
+    const {
+      throughput_effective: te,
+      telegram_bot_token_configured: tokOk,
+      railway_token_configured: rwTok,
+      reference_templates_catalog: refCatalog,
+      ...rest
+    } = data;
+    if (te && typeof te === 'object') {
+      setThroughputEffective(te as AdminThroughputSnapshot);
+    } else {
+      setThroughputEffective(null);
+    }
+    setReferenceTemplatesCatalog(Array.isArray(refCatalog) ? refCatalog : []);
+    setSettings((prev) => ({ ...prev, ...rest }));
+    setTelegramBotTokenConfigured(Boolean(tokOk));
+    setRailwayTokenConfigured(Boolean(rwTok));
+  };
+
+  const refreshThroughputSnapshotOnly = async () => {
+    setThroughputSnapshotBusy(true);
+    try {
+      const data = await api.getAdminSettings();
+      const te = data.throughput_effective;
+      if (te && typeof te === 'object') {
+        setThroughputEffective(te as AdminThroughputSnapshot);
+      } else {
+        setThroughputEffective(null);
+      }
+    } catch {
+      /* ignore */
+    } finally {
+      setThroughputSnapshotBusy(false);
+    }
+  };
+
   const refreshTwofaStatus = async () => {
     try {
       const me = await api.getMe();
@@ -184,16 +228,7 @@ export function SettingsTab() {
       if (data?.theme) applyTheme(data.theme);
     }).catch(() => {});
     api.getAdminSettings().then((data) => {
-      const {
-        telegram_bot_token_configured: tokOk,
-        railway_token_configured: rwTok,
-        reference_templates_catalog: refCatalog,
-        ...rest
-      } = data;
-      setReferenceTemplatesCatalog(Array.isArray(refCatalog) ? refCatalog : []);
-      setSettings((prev) => ({ ...prev, ...rest }));
-      setTelegramBotTokenConfigured(Boolean(tokOk));
-      setRailwayTokenConfigured(Boolean(rwTok));
+      ingestAdminSettingsResponse(data);
       setSettingsLoading(false);
     }).catch(() => {
       setSettingsLoading(false);
@@ -237,16 +272,7 @@ export function SettingsTab() {
       try {
         await api.updateAdminSettings({ auto_pipeline: false, auto_pipeline_interval_minutes: settings.auto_pipeline_interval_minutes });
         const fresh = await api.getAdminSettings();
-        const {
-          telegram_bot_token_configured: tokOk,
-          railway_token_configured: rwTok,
-          reference_templates_catalog: refCatalogFresh,
-          ...freshRest
-        } = fresh;
-        setReferenceTemplatesCatalog(Array.isArray(refCatalogFresh) ? refCatalogFresh : []);
-        setSettings((prev) => ({ ...prev, ...freshRest }));
-        setTelegramBotTokenConfigured(Boolean(tokOk));
-        setRailwayTokenConfigured(Boolean(rwTok));
+        ingestAdminSettingsResponse(fresh);
         toast.success('Auto-generation turned off');
       } catch (e: unknown) {
         toast.error(e instanceof Error ? e.message : 'Failed to save');
@@ -268,16 +294,7 @@ export function SettingsTab() {
         auto_pipeline_interval_minutes: minutes,
       });
       const fresh = await api.getAdminSettings();
-      const {
-        telegram_bot_token_configured: tokOk,
-        railway_token_configured: rwTok,
-        reference_templates_catalog: refCatalogFresh,
-        ...freshRest
-      } = fresh;
-      setReferenceTemplatesCatalog(Array.isArray(refCatalogFresh) ? refCatalogFresh : []);
-      setSettings((prev) => ({ ...prev, ...freshRest }));
-      setTelegramBotTokenConfigured(Boolean(tokOk));
-      setRailwayTokenConfigured(Boolean(rwTok));
+      ingestAdminSettingsResponse(fresh);
       setAutoGenModalOpen(false);
       toast.success(`Auto-generation on: at most once every ${minutes} minutes.`);
     } catch (e: unknown) {
@@ -295,22 +312,14 @@ export function SettingsTab() {
       delete payload.telegram_bot_token_configured;
       delete payload.railway_token_configured;
       delete payload.reference_templates_catalog;
+      delete payload.throughput_effective;
       if (telegramBotTokenInput.trim()) {
         payload.telegram_bot_token = telegramBotTokenInput.trim();
       }
       const result = await api.updateAdminSettings(payload as typeof settings & { telegram_bot_token?: string });
       setTelegramBotTokenInput('');
       const fresh = await api.getAdminSettings();
-      const {
-        telegram_bot_token_configured: tokOk,
-        railway_token_configured: rwTok,
-        reference_templates_catalog: refCatalogFresh,
-        ...freshRest
-      } = fresh;
-      setReferenceTemplatesCatalog(Array.isArray(refCatalogFresh) ? refCatalogFresh : []);
-      setSettings((prev) => ({ ...prev, ...freshRest }));
-      setTelegramBotTokenConfigured(Boolean(tokOk));
-      setRailwayTokenConfigured(Boolean(rwTok));
+      ingestAdminSettingsResponse(fresh);
       setSettingsMessage(`✅ ${result.message}`);
     } catch (e: any) {
       setSettingsMessage(`❌ Failed to save: ${e.message || 'Unknown error'}`);
@@ -328,16 +337,7 @@ export function SettingsTab() {
       } as Record<string, unknown>);
       setTelegramBotTokenInput('');
       const fresh = await api.getAdminSettings();
-      const {
-        telegram_bot_token_configured: tokOk,
-        railway_token_configured: rwTok,
-        reference_templates_catalog: refCatalogFresh,
-        ...freshRest
-      } = fresh;
-      setReferenceTemplatesCatalog(Array.isArray(refCatalogFresh) ? refCatalogFresh : []);
-      setSettings((prev) => ({ ...prev, ...freshRest }));
-      setTelegramBotTokenConfigured(Boolean(tokOk));
-      setRailwayTokenConfigured(Boolean(rwTok));
+      ingestAdminSettingsResponse(fresh);
       toast.success('Telegram bot token removed');
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : 'Failed to revoke token');
@@ -531,6 +531,103 @@ export function SettingsTab() {
                 className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500/50"
               />
               <p className="text-xs text-gray-500">Range 15 minutes … 7 days (10080 min). Save settings below to apply.</p>
+            </div>
+
+            <div className="border-t border-white/5 pt-4">
+              <label className="flex cursor-pointer flex-col gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0 flex-1">
+                  <div className="text-sm font-medium text-white">Local high-throughput mode</div>
+                  <div className="text-xs text-gray-400 mt-0.5">
+                    For a powerful local machine (many cores / RAM, local Ollama): raises how many pipeline tasks can run at
+                    once, batch intake per cycle, and parallel agent execution. Turn off on small VMs or shared cloud — you can
+                    overload GPUs or hit API rate limits. Non-empty <code className="text-[10px] text-gray-500">AIFACTORY_*</code>{' '}
+                    env vars still override each knob. Task limits pick up from saved config automatically; the LLM router reads
+                    its limits at worker start — restart the pipeline worker after toggling this if you rely on changed LLM
+                    parallelism.
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleSettingChange('local_high_throughput_enabled', !settings.local_high_throughput_enabled)
+                  }
+                  className={`relative h-6 w-12 shrink-0 rounded-full transition-colors ${
+                    settings.local_high_throughput_enabled ? 'bg-emerald-600' : 'bg-white/20'
+                  }`}
+                >
+                  <span
+                    className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-md transition-transform ${
+                      settings.local_high_throughput_enabled ? 'translate-x-6' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </label>
+
+              <div className="mt-3 rounded-lg border border-white/10 bg-black/25 px-3 py-3">
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs font-medium text-gray-300">Effective throughput (this host)</span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    disabled={throughputSnapshotBusy || settingsLoading}
+                    onClick={() => void refreshThroughputSnapshotOnly()}
+                    className="inline-flex h-8 items-center gap-1.5 px-2 text-xs text-gray-300 hover:text-white"
+                  >
+                    {throughputSnapshotBusy ? (
+                      <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" aria-hidden />
+                    ) : (
+                      <RefreshCw className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                    )}
+                    Refresh
+                  </Button>
+                </div>
+                <p className="mb-2 text-[11px] leading-snug text-gray-500">
+                  Same rules as the pipeline worker: non-empty <code className="text-[10px] text-gray-600">AIFACTORY_*</code> env
+                  overrides each value. LLM router still uses its semaphore from worker start — this table shows what would apply
+                  to a new process now.
+                </p>
+                {throughputEffective ? (
+                  <dl className="grid grid-cols-1 gap-x-6 gap-y-1.5 text-xs sm:grid-cols-2">
+                    <div className="flex justify-between gap-3 border-b border-white/5 pb-1 sm:block sm:border-0 sm:pb-0">
+                      <dt className="text-gray-500">Turbo preset in config</dt>
+                      <dd className="font-mono text-gray-200">
+                        {throughputEffective.local_high_throughput_enabled ? 'on' : 'off'}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-3 border-b border-white/5 pb-1 sm:block sm:border-0 sm:pb-0">
+                      <dt className="text-gray-500">Max running tasks</dt>
+                      <dd className="font-mono text-gray-200">{throughputEffective.effective_max_running_tasks}</dd>
+                    </div>
+                    <div className="flex justify-between gap-3 border-b border-white/5 pb-1 sm:block sm:border-0 sm:pb-0">
+                      <dt className="text-gray-500">Task executor concurrency</dt>
+                      <dd className="font-mono text-gray-200">{throughputEffective.effective_task_executor_concurrency}</dd>
+                    </div>
+                    <div className="flex justify-between gap-3 border-b border-white/5 pb-1 sm:block sm:border-0 sm:pb-0">
+                      <dt className="text-gray-500">Batch starts / cycle</dt>
+                      <dd className="font-mono text-gray-200">
+                        {throughputEffective.effective_batch_pipeline_max_start_per_cycle}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-3 border-b border-white/5 pb-1 sm:block sm:border-0 sm:pb-0">
+                      <dt className="text-gray-500">Batch active ceiling</dt>
+                      <dd className="font-mono text-gray-200">{throughputEffective.effective_batch_pipeline_active_limit}</dd>
+                    </div>
+                    <div className="flex justify-between gap-3 border-b border-white/5 pb-1 sm:block sm:border-0 sm:pb-0">
+                      <dt className="text-gray-500">LLM max parallel</dt>
+                      <dd className="font-mono text-gray-200">{throughputEffective.effective_llm_max_parallel_requests}</dd>
+                    </div>
+                    <div className="flex justify-between gap-3 sm:col-span-2">
+                      <dt className="text-gray-500">LLM min interval (sec)</dt>
+                      <dd className="font-mono text-gray-200">
+                        {Number(throughputEffective.effective_llm_min_interval_sec).toFixed(3)}
+                      </dd>
+                    </div>
+                  </dl>
+                ) : !settingsLoading ? (
+                  <p className="text-xs text-gray-500">Snapshot not available.</p>
+                ) : null}
+              </div>
             </div>
 
             <Modal
@@ -1151,6 +1248,45 @@ export function SettingsTab() {
               value={settings.site_badge_link_url}
               onChange={(e) => handleSettingChange('site_badge_link_url', e.target.value)}
             />
+          </div>
+        )}
+      </GlassCard>
+
+      {/* ── Generated-site head snippet (analytics / SEO) ── */}
+      <GlassCard>
+        <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
+          <BarChart3 className="w-5 h-5 text-emerald-400" />
+          Head snippet on generated sites
+        </h3>
+        <p className="text-sm text-gray-400 mb-4">
+          Raw HTML inserted before <code className="text-xs text-gray-500">&lt;/head&gt;</code> on every{' '}
+          <code className="text-xs text-gray-500">*.html</code> when Developer finishes (Google Analytics gtag, Yandex
+          Metrica, <code className="text-xs text-gray-500">meta</code> verification tags, etc.). Leave empty to disable.
+          Trusted admin content only.
+        </p>
+        {settingsLoading ? (
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            Loading settings...
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-gray-400" htmlFor="published_site_head_html">
+              HTML / scripts for <span className="text-gray-300">&lt;head&gt;</span>
+            </label>
+            <textarea
+              id="published_site_head_html"
+              rows={10}
+              spellCheck={false}
+              placeholder={`<!-- Example: GA4 -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-XXXX');\n</script>`}
+              value={settings.published_site_head_html}
+              onChange={(e) => handleSettingChange('published_site_head_html', e.target.value)}
+              className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 font-mono text-xs text-white placeholder:text-gray-600 focus:border-emerald-500/40 focus:outline-none"
+            />
+            <p className="text-xs text-gray-500">
+              Max ~100k characters. Already-built pages are not rewritten; run Developer again or edit HTML on disk to
+              apply changes retroactively.
+            </p>
           </div>
         )}
       </GlassCard>

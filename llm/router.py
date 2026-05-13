@@ -19,6 +19,7 @@ from typing import Optional
 
 import yaml
 
+from core.throughput_limits import effective_llm_max_parallel_requests, effective_llm_min_interval_sec
 from .bootstrap_providers import ensure_model_providers_file
 from .provider import LLMProvider, GenerationConfig, ProviderStatus
 from .local_ollama import LocalOllamaProvider
@@ -48,8 +49,8 @@ class LLMRouter:
         self._provider_configs: dict[str, dict] = {}
         self._health_check_task: Optional[asyncio.Task] = None
         self._running = False
-        self._parallel_limit = max(1, int(os.environ.get("AIFACTORY_LLM_MAX_PARALLEL_REQUESTS", "8")))
-        self._min_interval_sec = max(0.0, float(os.environ.get("AIFACTORY_LLM_MIN_INTERVAL_SEC", "0.05")))
+        self._parallel_limit = max(1, effective_llm_max_parallel_requests())
+        self._min_interval_sec = max(0.0, effective_llm_min_interval_sec())
         self._request_sem = asyncio.Semaphore(self._parallel_limit)
         self._last_request_mono = 0.0
         self._request_lock = asyncio.Lock()

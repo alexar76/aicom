@@ -5,6 +5,8 @@ import time
 import uuid
 from typing import Callable
 
+from core.throughput_limits import effective_max_running_tasks
+
 
 def _task_status_norm(task: dict) -> str:
     return str((task or {}).get("status") or "").lower()
@@ -134,10 +136,7 @@ class TaskOrchestrator:
 
     def start_pending_tasks(self, task_queue: list, now: float) -> bool:
         changed = False
-        try:
-            max_running_total = int(os.environ.get("AIFACTORY_MAX_RUNNING_TASKS", "16"))
-        except ValueError:
-            max_running_total = 16
+        max_running_total = effective_max_running_tasks()
         max_running_total = max(1, max_running_total)
         running_total = sum(1 for t in task_queue if _task_status_norm(t) == "running")
         for task in task_queue:

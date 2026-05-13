@@ -1,8 +1,9 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Cpu, Menu } from 'lucide-react';
+import { Cpu, Loader2, Menu } from 'lucide-react';
 import BrainstormingTab from '@/components/BrainstormingTab';
 import SupportQueueTab from '@/components/SupportQueueTab';
 import OutreachTab from '@/components/OutreachTab';
@@ -14,7 +15,6 @@ import {
   DashboardTab,
   DirectorTab,
   DiscoveryTab,
-  FilesTab,
   LLMLogsTab,
   MonitorTab,
   NewProductTab,
@@ -25,6 +25,19 @@ import {
   SettingsTab,
   UsersTab,
 } from '@/components/admin/AdminTabs';
+
+const FilesTabLazy = dynamic(
+  () => import('@/components/admin/tabs/FilesTab').then((m) => ({ default: m.FilesTab })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 text-gray-400">
+        <Loader2 className="h-8 w-8 animate-spin text-indigo-400" aria-hidden />
+        <p className="text-sm">Loading Files…</p>
+      </div>
+    ),
+  },
+);
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t } from '@/lib/adminI18n';
 import api from '@/lib/api';
 
@@ -110,7 +123,7 @@ export default function AdminPage() {
       case 'security':
         return <SecurityTab />;
       case 'files':
-        return <FilesTab />;
+        return <FilesTabLazy />;
       case 'sandbox':
         return <SandboxTab />;
       case 'director':

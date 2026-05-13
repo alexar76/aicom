@@ -1235,6 +1235,7 @@ class ApiClient {
   async getAdminSettings(): Promise<{
     auto_pipeline: boolean;
     auto_pipeline_interval_minutes: number;
+    local_high_throughput_enabled: boolean;
     git_remote_url: string;
     git_default_branch: string;
     docker_registry: string;
@@ -1251,6 +1252,7 @@ class ApiClient {
     auto_publish_cf_project_name: string;
     site_badge_enabled: boolean;
     site_badge_link_url: string;
+    published_site_head_html: string;
     railway_deploy_enabled: boolean;
     railway_project_id: string;
     railway_environment: string;
@@ -1268,6 +1270,15 @@ class ApiClient {
       path: string;
       files?: string[];
     }>;
+    throughput_effective?: {
+      local_high_throughput_enabled: boolean;
+      effective_max_running_tasks: number;
+      effective_task_executor_concurrency: number;
+      effective_batch_pipeline_max_start_per_cycle: number;
+      effective_batch_pipeline_active_limit: number;
+      effective_llm_max_parallel_requests: number;
+      effective_llm_min_interval_sec: number;
+    } | null;
   }> {
     return this.request('/admin/settings');
   }

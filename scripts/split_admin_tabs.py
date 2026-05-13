@@ -89,7 +89,6 @@ export { HumanReviewGatePanel } from './tabs/HumanReviewGatePanel';
 export { StorefrontFollowupPanel } from './tabs/StorefrontFollowupPanel';
 export { PipelineTab } from './tabs/PipelineTab';
 export { AgentsTab } from './tabs/AgentsTab';
-export { FilesTab } from './tabs/FilesTab';
 export { ProviderFormModal } from './tabs/ProviderFormModal';
 export { RoutingRulesEditor } from './tabs/RoutingRulesEditor';
 export { ProvidersTab } from './tabs/ProvidersTab';

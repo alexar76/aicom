@@ -1,11 +1,7 @@
 import type { MetadataRoute } from 'next';
 
-const site =
-  (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:9080').replace(/\/$/, '');
-
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    id: `${site}/`,
     lang: 'en',
     name: 'AI-Factory',
     short_name: 'AI-Factory',
@@ -14,7 +10,6 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: '/',
     scope: '/',
     display: 'standalone',
-    display_override: ['standalone', 'minimal-ui'],
     orientation: 'any',
     background_color: '#0a0a1a',
     theme_color: '#0f172a',
