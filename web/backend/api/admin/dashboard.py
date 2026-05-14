@@ -12,16 +12,19 @@ import json
 import logging
 import math
 import os
+import tempfile
 import time
+import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal, Optional
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, Request
 from pydantic import BaseModel, Field
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 
-from web.backend.core.admin_roles import require_admin_with_rbac
+from core.paths import data_root as factory_data_root
+from web.backend.core.admin_roles import AdminRole, normalize_role, rank, require_admin_with_rbac
 from finance_stats import compute_dashboard_revenue
 from llm.bootstrap_providers import ensure_model_providers_file
 from llm.factory_defaults import FACTORY_CONTEXT_WINDOW_DEFAULT, FACTORY_MAX_OUTPUT_TOKENS_HEAVY
@@ -41,6 +44,8 @@ from web.backend.services.product_followup import (
 )
 from web.backend.services.pipeline_demo_replay import metrics_demo_replay_slice
 from web.backend.services.storefront_counts_cache import invalidate_storefront_categories_cache
+from web.backend.services.product_economics import compute_roi_band, get_product_llm_costs
+from web.backend.services.product_pulse import build_product_pulse, build_product_pulses_for_metrics
 from web.backend.services.storefront_pricing import (
     patch_admin_storefront_usdt,
     read_sales_inner_and_pricing,
@@ -424,6 +429,16 @@ def _build_full_metrics() -> dict:
 
     esc_summary = _collect_escalation_summary()
 
+    try:
+        product_pulses = build_product_pulses_for_metrics(
+            products,
+            task_queue,
+            data_root=factory_data_root(),
+        )
+    except Exception as e:
+        logger.warning("Dashboard metrics: product_pulses failed (%s)", e)
+        product_pulses = {}
+
     return {
         "pipeline": {
             "total_products": total,
@@ -453,6 +468,7 @@ def _build_full_metrics() -> dict:
         "escalation_summary": esc_summary,
         "collected_at": time.time(),
         "demo_replay": metrics_demo_replay_slice(),
+        "product_pulses": product_pulses,
     }
 
 
@@ -2048,6 +2064,52 @@ async def get_pipeline_products(
 
             result.append(row)
         
+        # ── Per-product economics enrichment ─────────────────────────────────
+        # Single pass over llm_calls.jsonl for all visible products.
+        try:
+            visible_ids = {r["id"] for r in result}
+            eco_map = get_product_llm_costs(visible_ids)
+            for r in result:
+                pid = r["id"]
+                eco = eco_map.get(pid)
+                if eco is not None:
+                    r["economics"] = eco
+                    # Quality score from storefront followup (human, 1‑5) or fallback
+                    sf_q = r.get("storefront_followup", {}) or {}
+                    qs = sf_q.get("quality_score")
+                    try:
+                        qs_f = float(qs) if qs is not None else None
+                    except (TypeError, ValueError):
+                        qs_f = None
+                    r["economics"]["roi_band"] = compute_roi_band(
+                        eco.get("llm_cost_usd"), qs_f,
+                    )
+                    r["economics"]["quality_score"] = qs_f
+                else:
+                    r["economics"] = {
+                        "llm_cost_usd": 0.0,
+                        "llm_call_count": 0,
+                        "llm_total_tokens": 0,
+                        "llm_agent_breakdown": {},
+                        "quality_score": None,
+                        "roi_band": compute_roi_band(0.0, None),
+                    }
+        except Exception as eco_err:
+            logger.warning("Product economics enrichment failed: %s", eco_err)
+
+        try:
+            dr = factory_data_root()
+            for r in result:
+                try:
+                    r["pulse"] = build_product_pulse(r, light=light, data_root=dr)
+                except Exception as ex:
+                    logger.debug("product pulse for %s: %s", r.get("id"), ex)
+                    r["pulse"] = None
+        except Exception as pulse_err:
+            logger.warning("Product pulse enrichment failed: %s", pulse_err)
+            for r in result:
+                r["pulse"] = None
+
         return {
             "products": result,
             "count": len(result),
@@ -2259,8 +2321,36 @@ _FILES_PREVIEW_MAX_CHARS = 5000
 _FILES_PREVIEW_READ_BYTES = 262_144
 _FILES_PREVIEW_SKIP_BYTES = 8 * 1024 * 1024
 
+# Owner ZIP: same skip rules as file browser; higher per-category cap; skip individual huge blobs.
+_PRODUCT_OWNER_EXPORT_MAX_FILES_PER_CATEGORY = 15_000
+_PRODUCT_OWNER_EXPORT_MAX_FILE_BYTES = 512 * 1024 * 1024
 
-def _walk_artifact_files(category_root: Path) -> tuple[list[Path], bool]:
+
+def _sanitize_admin_product_id(product_id: str) -> str:
+    pid = (product_id or "").strip()
+    if not pid or len(pid) > 220:
+        raise HTTPException(status_code=400, detail="Invalid product id")
+    if "/" in pid or "\\" in pid or pid.startswith(".") or ".." in pid:
+        raise HTTPException(status_code=400, detail="Invalid product id")
+    return pid
+
+
+def _admin_product_artifact_category_dirs(product_id: str) -> dict[str, Path]:
+    dr = factory_data_root()
+    return {
+        "specs": dr / "specs" / product_id,
+        "architecture": dr / "arch" / product_id,
+        "code": dr / "code" / product_id,
+        "bugs": dr / "bugs" / product_id,
+        "security": dr / "security" / product_id,
+        "marketing": dr / "state" / product_id,
+        "telemetry": dr / "telemetry" / product_id,
+    }
+
+
+def _walk_artifact_files(
+    category_root: Path, *, max_files: int = _FILES_MAX_PER_CATEGORY
+) -> tuple[list[Path], bool]:
     """List files under category_root, skipping heavy vendor/tool dirs. Returns (paths, truncated)."""
     if not category_root.exists() or not category_root.is_dir():
         return [], False
@@ -2271,10 +2361,97 @@ def _walk_artifact_files(category_root: Path) -> tuple[list[Path], bool]:
     ):
         dirnames[:] = sorted(d for d in dirnames if d not in _FILES_SKIP_DIR_NAMES)
         for name in sorted(filenames):
-            if len(out) >= _FILES_MAX_PER_CATEGORY:
+            if len(out) >= max_files:
                 return out, True
             out.append(Path(dirpath) / name)
     return out, truncated
+
+
+def _unlink_path_quiet(p: str) -> None:
+    try:
+        Path(p).unlink(missing_ok=True)
+    except OSError:
+        pass
+
+
+def _build_product_owner_export_zip(
+    product_id: str,
+) -> tuple[Path, str]:
+    """Write a temporary ZIP and return (path, suggested_download_filename)."""
+    dirs = _admin_product_artifact_category_dirs(product_id)
+    merged = _admin_merged_pipeline_product(product_id)
+    skipped_large: list[dict[str, Any]] = []
+    truncated_by_category: dict[str, bool] = {}
+
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%SZ")
+    safe_slug = product_id.replace("/", "_")[:180]
+    filename = f"aicom-product-{safe_slug}-{ts}.zip"
+
+    fd, tmp_path = tempfile.mkstemp(prefix="aicom-owner-export-", suffix=".zip")
+    os.close(fd)
+    try:
+        with zipfile.ZipFile(tmp_path, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as zf:
+            for category, dir_path in dirs.items():
+                paths, truncated = _walk_artifact_files(
+                    dir_path, max_files=_PRODUCT_OWNER_EXPORT_MAX_FILES_PER_CATEGORY
+                )
+                if truncated:
+                    truncated_by_category[category] = True
+                for fpath in paths:
+                    if not fpath.is_file():
+                        continue
+                    try:
+                        size_bytes = fpath.stat().st_size
+                    except OSError:
+                        continue
+                    if size_bytes > _PRODUCT_OWNER_EXPORT_MAX_FILE_BYTES:
+                        skipped_large.append(
+                            {
+                                "category": category,
+                                "path": str(fpath),
+                                "size_bytes": size_bytes,
+                                "reason": f"file larger than {_PRODUCT_OWNER_EXPORT_MAX_FILE_BYTES} bytes",
+                            }
+                        )
+                        continue
+                    try:
+                        arc = f"{category}/{fpath.relative_to(dir_path).as_posix()}"
+                    except ValueError:
+                        arc = f"{category}/{fpath.name}"
+                    zf.write(fpath, arcname=arc)
+
+            manifest: dict[str, Any] = {
+                "product_id": product_id,
+                "exported_at_utc": datetime.now(timezone.utc).isoformat(),
+                "pipeline_product": merged,
+                "truncated_by_category": truncated_by_category or None,
+                "skipped_large_files": skipped_large or None,
+                "layout": {
+                    "specs": "specs/… (specification and PM artifacts)",
+                    "architecture": "architecture/… (from data/arch)",
+                    "code": "code/… (generated site / app tree)",
+                    "bugs": "bugs/… (QA reports)",
+                    "security": "security/…",
+                    "marketing": "marketing/… (from data/state — storefront copy, marketing JSON)",
+                    "telemetry": "telemetry/…",
+                },
+            }
+            zf.writestr(
+                "EXPORT_MANIFEST.json",
+                (json.dumps(manifest, indent=2, ensure_ascii=False) + "\n").encode("utf-8"),
+            )
+            readme = (
+                "AI Factory — owner product export (single product, on-disk artifacts).\n"
+                "This is not a full factory backup. Folders mirror Admin → Files categories.\n"
+                "Open EXPORT_MANIFEST.json for pipeline row snapshot and any skip/truncation notes.\n\n"
+                "Экспорт одного продукта для владельца фабрики (артефакты на диске), не бэкап всего инстанса.\n"
+            )
+            zf.writestr("README_OWNER_EXPORT.txt", readme.encode("utf-8"))
+    except Exception:
+        _unlink_path_quiet(tmp_path)
+        raise
+
+    return Path(tmp_path), filename
 
 
 def _preview_artifact_file(fpath: Path, *, size_bytes: int | None = None) -> tuple[str | None, str | None]:
@@ -2304,15 +2481,8 @@ def _preview_artifact_file(fpath: Path, *, size_bytes: int | None = None) -> tup
 @router.get("/products/{product_id}/files")
 async def get_product_files(product_id: str):
     """Browse all generated files/artifacts for a product (recursive per category)."""
-    base_dirs = {
-        "specs": Path(f"/app/data/specs/{product_id}"),
-        "architecture": Path(f"/app/data/arch/{product_id}"),
-        "code": Path(f"/app/data/code/{product_id}"),
-        "bugs": Path(f"/app/data/bugs/{product_id}"),
-        "security": Path(f"/app/data/security/{product_id}"),
-        "marketing": Path(f"/app/data/state/{product_id}"),
-        "telemetry": Path(f"/app/data/telemetry/{product_id}"),
-    }
+    pid = _sanitize_admin_product_id(product_id)
+    base_dirs = _admin_product_artifact_category_dirs(pid)
 
     files: list[dict[str, Any]] = []
     truncated_by_category: dict[str, bool] = {}
@@ -2345,13 +2515,58 @@ async def get_product_files(product_id: str):
             files.append(entry)
 
     payload: dict[str, Any] = {
-        "product_id": product_id,
+        "product_id": pid,
         "files": files,
         "count": len(files),
     }
     if truncated_by_category:
         payload["truncated_by_category"] = truncated_by_category
     return payload
+
+
+@router.get("/products/{product_id}/owner-export.zip")
+async def download_product_owner_export_zip(
+    product_id: str,
+    background_tasks: BackgroundTasks,
+    admin: dict = Depends(require_admin_with_rbac),
+):
+    """ZIP of on-disk artifacts for one product (factory owner), same tree as Admin → Files.
+
+    Requires **operator** role or higher — viewers can browse file previews but must not bulk-export IP.
+    """
+    pid = _sanitize_admin_product_id(product_id)
+    role = normalize_role(admin.get("role"))
+    if rank(role) < rank(AdminRole.OPERATOR):
+        raise HTTPException(
+            status_code=403,
+            detail="Product owner archive requires operator, admin, or super_admin role (viewer cannot download).",
+        )
+
+    merged = _admin_merged_pipeline_product(pid)
+    dirs = _admin_product_artifact_category_dirs(pid)
+    has_file = False
+    for root in dirs.values():
+        if root.is_dir():
+            for _, _, fnames in os.walk(root, topdown=True, followlinks=False):
+                # prune heavy dirs same as export walk
+                if fnames:
+                    has_file = True
+                    break
+        if has_file:
+            break
+    if merged is None and not has_file:
+        raise HTTPException(
+            status_code=404,
+            detail="Product not found, or no pipeline record and no on-disk artifacts yet.",
+        )
+
+    zip_path, filename = _build_product_owner_export_zip(pid)
+    background_tasks.add_task(_unlink_path_quiet, str(zip_path))
+    return FileResponse(
+        path=str(zip_path),
+        filename=filename,
+        media_type="application/zip",
+    )
 
 
 @router.get("/products/{product_id}/spec")

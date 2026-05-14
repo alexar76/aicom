@@ -84,6 +84,7 @@ import { PIPELINE_PRODUCT_STATES_FOR_FILTER } from '@/lib/pipelineStages';
 import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme, formatDate, localDateInputStartSeconds, localDateInputEndSeconds } from '@/lib/utils';
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import { CATEGORY_LABELS, CATEGORY_COLORS, STAGE_AGENT_TITLE } from './pipelineConstants';
+import { ProductPulse, type ProductPulsePayload } from './ProductPulse';
 import { HumanReviewGatePanel } from './HumanReviewGatePanel';
 import { StorefrontFollowupPanel } from './StorefrontFollowupPanel';
 import {
@@ -145,6 +146,34 @@ export function PipelineTab() {
     const q = searchParams.get('pipelineSearch')?.trim();
     if (q) setProductSearch(q);
   }, [searchParams]);
+
+  /** Merge ``product_pulses`` from admin metrics SSE so visible rows update between catalog refetches. */
+  useEffect(() => {
+    let es: EventSource | null = null;
+    try {
+      es = new EventSource('/api/admin/metrics/stream');
+      es.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          const pulses = data?.product_pulses;
+          if (!pulses || typeof pulses !== 'object') return;
+          setProducts((prev) =>
+            prev.map((p) => {
+              const pulse = pulses[p.id];
+              return pulse ? { ...p, pulse } : p;
+            }),
+          );
+        } catch {
+          /* ignore */
+        }
+      };
+    } catch {
+      /* ignore */
+    }
+    return () => {
+      es?.close();
+    };
+  }, []);
 
   useEffect(() => {
     const myGen = ++pipelineFetchGenerationRef.current;
@@ -896,6 +925,85 @@ export function PipelineTab() {
                     )}
                   </div>
                 </div>
+
+                {/* ── Per-Product Economics Badges ─────────────────── */}
+                {product.economics && (
+                  <div className="flex flex-wrap items-center gap-2 mb-3 text-[11px]">
+                    {/* LLM Cost */}
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-medium ${
+                        (product.economics.llm_cost_usd || 0) > 5
+                          ? 'bg-red-500/15 text-red-300 border border-red-500/20'
+                          : (product.economics.llm_cost_usd || 0) > 1
+                            ? 'bg-amber-500/15 text-amber-300 border border-amber-500/20'
+                            : 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/20'
+                      }`}
+                      title={`LLM API cost: $${(product.economics.llm_cost_usd || 0).toFixed(4)} · ${product.economics.llm_call_count || 0} calls · ${(product.economics.llm_total_tokens || 0).toLocaleString()} tokens`}
+                    >
+                      <span className="text-[10px]">💰</span>
+                      ${(product.economics.llm_cost_usd || 0).toFixed(2)}
+                    </span>
+
+                    {/* Quality Score */}
+                    {product.economics.quality_score != null && (
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-medium ${
+                          product.economics.quality_score >= 4
+                            ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/20'
+                            : product.economics.quality_score >= 3
+                              ? 'bg-amber-500/15 text-amber-300 border border-amber-500/20'
+                              : 'bg-red-500/15 text-red-300 border border-red-500/20'
+                        }`}
+                        title="Human quality score (1–5)"
+                      >
+                        <span className="text-[10px]">📊</span>
+                        {product.economics.quality_score}/5
+                      </span>
+                    )}
+
+                    {/* ROI Band */}
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-medium ${
+                        product.economics.roi_band === 'green'
+                          ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/20'
+                          : product.economics.roi_band === 'amber'
+                            ? 'bg-amber-500/15 text-amber-300 border border-amber-500/20'
+                            : 'bg-red-500/15 text-red-300 border border-red-500/20'
+                      }`}
+                      title={
+                        product.economics.roi_band === 'green'
+                          ? 'Low cost or high quality — good economics'
+                          : product.economics.roi_band === 'amber'
+                            ? 'Moderate cost-to-quality ratio'
+                            : 'High cost with low quality — needs attention'
+                      }
+                    >
+                      {product.economics.roi_band === 'green' ? '🟢' : product.economics.roi_band === 'amber' ? '🟡' : '🔴'}
+                      {' ROI'}
+                    </span>
+
+                    {/* Agent breakdown tooltip */}
+                    {product.economics.llm_agent_breakdown &&
+                      Object.keys(product.economics.llm_agent_breakdown).length > 0 && (
+                        <span
+                          className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-medium bg-white/5 text-gray-400 border border-white/10 cursor-help"
+                          title={Object.entries(product.economics.llm_agent_breakdown)
+                            .map(
+                              ([agent, s]: [string, any]) =>
+                                `${agent}: $${(s.cost_usd || 0).toFixed(4)} (${s.calls} calls, ${(s.tokens || 0).toLocaleString()} tok)`,
+                            )
+                            .join(' · ')}
+                        >
+                          <span className="text-[10px]">🔍</span>
+                          {Object.keys(product.economics.llm_agent_breakdown).length} agents
+                        </span>
+                      )}
+                  </div>
+                )}
+
+                {product.pulse && (
+                  <ProductPulse pulse={product.pulse as ProductPulsePayload} />
+                )}
 
                 {String(product.state || '').toUpperCase() === 'FAILED' &&
                   expandedFailureProduct === product.id && (

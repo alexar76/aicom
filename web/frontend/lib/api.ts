@@ -1145,6 +1145,66 @@ class ApiClient {
     return this.request(`/admin/products/${productId}/security-report`);
   }
 
+  /** Factory owner: ZIP of on-disk artifacts for one product (Admin → Files tree + EXPORT_MANIFEST.json). Operator+. */
+  async downloadAdminProductOwnerZip(productId: string): Promise<void> {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const res = await fetch(
+      `${this.baseUrl}/admin/products/${encodeURIComponent(productId)}/owner-export.zip`,
+      {
+        method: 'GET',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        credentials: 'include',
+      },
+    );
+    if (!res.ok) {
+      let msg = `HTTP ${res.status}`;
+      try {
+        const body = (await res.json()) as { detail?: unknown };
+        const d = body?.detail;
+        if (typeof d === 'string' && d.trim()) msg = d.trim();
+        else if (d != null && typeof d !== 'string') msg = JSON.stringify(d);
+      } catch {
+        /* ignore */
+      }
+      if (res.status === 401 && typeof window !== 'undefined' && token) {
+        localStorage.removeItem('admin_token');
+        const onAdminUi =
+          window.location.pathname.startsWith('/admin') &&
+          !window.location.pathname.startsWith('/admin/login');
+        if (onAdminUi) window.location.href = '/admin/login';
+      }
+      throw new Error(msg);
+    }
+    const blob = await res.blob();
+    const cd = res.headers.get('Content-Disposition');
+    let filename = `aicom-product-${productId.replace(/[^\w.-]+/g, '_')}.zip`;
+    if (cd) {
+      const star = /filename\*=UTF-8''([^;]+)/i.exec(cd);
+      const quoted = /filename="([^"]+)"/i.exec(cd);
+      const plain = /filename=([^;\s]+)/i.exec(cd);
+      const raw = star?.[1] ?? quoted?.[1] ?? plain?.[1];
+      if (raw) {
+        try {
+          filename = decodeURIComponent(raw.replace(/^"+|"+$/g, ''));
+        } catch {
+          filename = raw.replace(/^"+|"+$/g, '');
+        }
+      }
+    }
+    const url = URL.createObjectURL(blob);
+    try {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
   /** Public security report — no auth required, for product detail page */
   async getPublicSecurityReport(productId: string): Promise<{ product_id: string; report: any }> {
     return this.request(`/products/${productId}/security-report`);

@@ -98,8 +98,11 @@ type AdminThroughputSnapshot = NonNullable<
 
 /** Deterministic JSON for autosave dedupe (key order must not cause false mismatches). */
 function stableStringify(value: unknown): string {
+  if (value === undefined) {
+    return 'null';
+  }
   if (value === null || typeof value !== 'object') {
-    return JSON.stringify(value);
+    return JSON.stringify(value) ?? 'null';
   }
   if (Array.isArray(value)) {
     return `[${value.map((v) => stableStringify(v)).join(',')}]`;
@@ -223,7 +226,13 @@ export function SettingsTab() {
       setThroughputEffective(null);
     }
     setReferenceTemplatesCatalog(Array.isArray(refCatalog) ? refCatalog : []);
-    setSettings((prev) => ({ ...prev, ...rest }));
+    const head =
+      typeof rest.published_site_head_html === 'string'
+        ? rest.published_site_head_html
+        : rest.published_site_head_html == null
+          ? ''
+          : String(rest.published_site_head_html);
+    setSettings((prev) => ({ ...prev, ...rest, published_site_head_html: head }));
     setTelegramBotTokenConfigured(Boolean(tokOk));
     setRailwayTokenConfigured(Boolean(rwTok));
     if (qualityPayload && typeof qualityPayload === 'object') {
@@ -245,7 +254,13 @@ export function SettingsTab() {
       quality && typeof quality === 'object'
         ? { ...DEFAULT_QUALITY_SETTINGS, ...quality }
         : { ...DEFAULT_QUALITY_SETTINGS };
-    return stableStringify({ ...rest, quality: q });
+    const head =
+      typeof rest.published_site_head_html === 'string'
+        ? rest.published_site_head_html
+        : rest.published_site_head_html == null
+          ? ''
+          : String(rest.published_site_head_html);
+    return stableStringify({ ...rest, published_site_head_html: head, quality: q });
   };
 
   const refreshThroughputSnapshotOnly = async () => {
@@ -369,6 +384,12 @@ export function SettingsTab() {
     delete payload.railway_token_configured;
     delete payload.reference_templates_catalog;
     delete payload.throughput_effective;
+    payload.published_site_head_html =
+      typeof settings.published_site_head_html === 'string'
+        ? settings.published_site_head_html
+        : settings.published_site_head_html == null
+          ? ''
+          : String(settings.published_site_head_html);
     const tok = telegramBotTokenInput.trim();
     if (tok.length >= 35) {
       payload.telegram_bot_token = tok;
@@ -473,10 +494,9 @@ export function SettingsTab() {
   const handleRevokeTelegramToken = async () => {
     if (!window.confirm('Remove the stored Telegram bot token? Alerts will stop until you save a new token.')) return;
     try {
-      await api.updateAdminSettings({
-        ...settings,
-        telegram_bot_token_revoke: true,
-      } as Record<string, unknown>);
+      // Do not spread `settings` here: that would POST every general.* field and can wipe e.g.
+      // `published_site_head_html` if local React state is stale or empty while the server had a value.
+      await api.updateAdminSettings({ telegram_bot_token_revoke: true } as Record<string, unknown>);
       setTelegramBotTokenInput('');
       const fresh = await api.getAdminSettings();
       ingestAdminSettingsResponse(fresh);
@@ -1400,7 +1420,8 @@ export function SettingsTab() {
           Raw HTML inserted before <code className="text-xs text-gray-500">&lt;/head&gt;</code> on every{' '}
           <code className="text-xs text-gray-500">*.html</code> when Developer finishes (Google Analytics gtag, Yandex
           Metrica, <code className="text-xs text-gray-500">meta</code> verification tags, etc.). Leave empty to disable.
-          Trusted admin content only.
+          Trusted admin content only. If the snippet includes a GA4 measurement id (<code className="text-xs text-gray-500">G-…</code>
+          ), the same id is loaded on this Next.js storefront (Explore, product pages) after save — no separate env needed.
         </p>
         {settingsLoading ? (
           <div className="flex items-center gap-2 text-sm text-gray-400">
@@ -1417,7 +1438,7 @@ export function SettingsTab() {
               rows={10}
               spellCheck={false}
               placeholder={`<!-- Example: GA4 -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-XXXX');\n</script>`}
-              value={settings.published_site_head_html}
+              value={settings.published_site_head_html ?? ''}
               onChange={(e) => handleSettingChange('published_site_head_html', e.target.value)}
               onBlur={() => {
                 if (adminAutosaveTimerRef.current) {
@@ -1436,11 +1457,11 @@ export function SettingsTab() {
               </p>
               <p
                 className={`shrink-0 text-xs tabular-nums sm:text-right ${
-                  settings.published_site_head_html.length > 100_000 ? 'text-amber-400' : 'text-gray-400'
+                  (settings.published_site_head_html ?? '').length > 100_000 ? 'text-amber-400' : 'text-gray-400'
                 }`}
                 aria-live="polite"
               >
-                {settings.published_site_head_html.length.toLocaleString()} / 100,000
+                {(settings.published_site_head_html ?? '').length.toLocaleString()} / 100,000
               </p>
             </div>
           </div>

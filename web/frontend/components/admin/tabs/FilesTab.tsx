@@ -7,6 +7,7 @@ import {
   ChevronDown,
   Maximize2,
   X,
+  Download,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
@@ -50,6 +51,8 @@ type ArtifactsPanelProps = {
   sandboxModalOpen: boolean;
   setSandboxModalOpen: (open: boolean) => void;
   refreshSandbox: () => void;
+  ownerZipBusy: boolean;
+  onDownloadOwnerArchive: () => void;
 };
 
 function ProductArtifactsPanel({
@@ -72,6 +75,8 @@ function ProductArtifactsPanel({
   sandboxModalOpen,
   setSandboxModalOpen,
   refreshSandbox,
+  ownerZipBusy,
+  onDownloadOwnerArchive,
 }: ArtifactsPanelProps) {
   const truncatedCats =
     truncatedByCategory && Object.keys(truncatedByCategory).length > 0
@@ -100,6 +105,18 @@ function ProductArtifactsPanel({
           </Button>
           <Button
             type="button"
+            variant="secondary"
+            size="sm"
+            disabled={ownerZipBusy}
+            onClick={() => onDownloadOwnerArchive()}
+            className="inline-flex items-center justify-center gap-2"
+            title="ZIP: specs, code, QA, marketing/state, telemetry — factory owner export (operator+)"
+          >
+            {ownerZipBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+            Download product ZIP
+          </Button>
+          <Button
+            type="button"
             variant="ghost"
             size="sm"
             disabled={sandboxLoading}
@@ -111,7 +128,11 @@ function ProductArtifactsPanel({
           </Button>
         </div>
         <p className="max-w-xl text-xs text-gray-500">
-          Preview loads below. Full screen opens in this page (no popup) so the browser does not block it.
+          Preview loads below. Full screen opens in this page (no popup) so the browser does not block it.{' '}
+          <span className="text-gray-400">
+            «Download product ZIP» packs the same on-disk tree as this tab (plus a pipeline snapshot in EXPORT_MANIFEST.json)
+            — before or after storefront listing; requires operator / admin / super_admin.
+          </span>
         </p>
       </div>
 
@@ -323,6 +344,7 @@ export function FilesTab() {
   const [createdTo, setCreatedTo] = useState('');
   const [fileSearch, setFileSearch] = useState('');
   const [fileCategoryFilter, setFileCategoryFilter] = useState('all');
+  const [ownerZipBusy, setOwnerZipBusy] = useState(false);
   const productsRef = useRef<any[]>([]);
   const productListScrollRef = useRef<HTMLDivElement>(null);
   const catalogSentinelRef = useRef<HTMLDivElement>(null);
@@ -496,6 +518,19 @@ export function FilesTab() {
     }
   }, [selectedProduct]);
 
+  const downloadOwnerArchive = useCallback(async () => {
+    if (!selectedProduct) return;
+    setOwnerZipBusy(true);
+    try {
+      await api.downloadAdminProductOwnerZip(selectedProduct);
+      toast.success('Product archive downloaded');
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : String(e));
+    } finally {
+      setOwnerZipBusy(false);
+    }
+  }, [selectedProduct]);
+
   useEffect(() => {
     if (!sandboxModalOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -597,6 +632,8 @@ export function FilesTab() {
         sandboxModalOpen={sandboxModalOpen}
         setSandboxModalOpen={setSandboxModalOpen}
         refreshSandbox={refreshSandbox}
+        ownerZipBusy={ownerZipBusy}
+        onDownloadOwnerArchive={() => void downloadOwnerArchive()}
       />
     ) : null;
 
