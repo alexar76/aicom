@@ -773,6 +773,24 @@ export function SettingsTab() {
                         {Number(throughputEffective.effective_llm_min_interval_sec).toFixed(3)}
                       </dd>
                     </div>
+                    <div className="flex justify-between gap-3 border-b border-white/5 pb-1 sm:block sm:border-0 sm:pb-0">
+                      <dt className="text-gray-500">LLM max RPM</dt>
+                      <dd className="font-mono text-gray-200">
+                        {throughputEffective.effective_llm_max_requests_per_minute ?? 0}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-3 border-b border-white/5 pb-1 sm:block sm:border-0 sm:pb-0">
+                      <dt className="text-gray-500">LLM daily cap (USD)</dt>
+                      <dd className="font-mono text-gray-200">
+                        {throughputEffective.effective_llm_daily_cost_cap_usd ?? 0}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-3 border-b border-white/5 pb-1 sm:block sm:border-0 sm:pb-0">
+                      <dt className="text-gray-500">LLM monthly cap (USD)</dt>
+                      <dd className="font-mono text-gray-200">
+                        {throughputEffective.effective_llm_monthly_cost_cap_usd ?? 0}
+                      </dd>
+                    </div>
                   </dl>
                 ) : !settingsLoading ? (
                   <p className="text-xs text-gray-500">Snapshot not available.</p>

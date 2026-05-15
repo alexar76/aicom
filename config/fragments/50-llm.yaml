@@ -36,3 +36,9 @@ llm:
     preferred_provider: local_ollama
     model_role: heavy
     timeout_sec: 90
+  limits:
+    # 0 = disabled. Env AIFACTORY_LLM_* overrides these values.
+    max_requests_per_minute: 0
+    daily_cost_cap_usd: 0
+    monthly_cost_cap_usd: 0
+    pre_call_reserve_usd: 0.05

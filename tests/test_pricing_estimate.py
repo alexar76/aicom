@@ -19,19 +19,23 @@ enrich_llm_log_entry = _mod.enrich_llm_log_entry
 
 def test_estimate_deepseek_chat():
     # 1M tokens at 0.27/M blended (no in/out split)
-    assert estimate_llm_call_cost_usd("deep-seek", "deepseek-chat", 1_000_000) == 0.27
+    assert estimate_llm_call_cost_usd("deepseek_api", "deepseek-chat", 1_000_000) == 0.27
 
 
 def test_estimate_deepseek_prompt_completion_split():
     # Builtin in/out: 0.14 in + 0.28 out per MTok
     cost = estimate_llm_call_cost_usd(
-        "deep-seek",
+        "deepseek_api",
         "deepseek-chat",
         0,
         prompt_tokens=500_000,
         completion_tokens=500_000,
     )
     assert cost == round(0.5 * 0.14 + 0.5 * 0.28, 6)
+
+
+def test_estimate_deepseek_legacy_provider_id():
+    assert estimate_llm_call_cost_usd("deep-seek", "deepseek-chat", 1_000_000) == 0.27
 
 
 def test_estimate_groq_light_role_fallback():

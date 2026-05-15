@@ -1,5 +1,8 @@
 # Copy to data/config/llm_pricing.yaml (same dir as model_providers.yaml).
 #
+# Keys under providers: must match provider ids in model_providers.yaml
+# (e.g. deepseek_api, not deep-seek).
+#
 # Rates are USD per 1 million tokens (admin estimate — adjust from vendor invoices).
 #
 # models:
@@ -21,12 +24,24 @@ models:
   deepseek-reasoner: 0.95
 
 providers:
-  deep-seek:
+  deepseek_api:
     blended_per_mtok: 0.35
     heavy_per_mtok: 0.40
     light_per_mtok: 0.22
+  anthropic_cloud:
+    blended_per_mtok: 2.5
+    heavy_per_mtok: 3.0
+    light_per_mtok: 0.9
   groq_api:
     heavy_per_mtok: 0.08
     light_per_mtok: 0.05
+  together_ai:
+    blended_per_mtok: 0.55
+    heavy_per_mtok: 0.65
+    light_per_mtok: 0.35
+  local_ollama:
+    blended_per_mtok: 0.0
+  lm_studio:
+    blended_per_mtok: 0.0
 
 default_per_mtok: 0.5

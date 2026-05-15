@@ -3,8 +3,8 @@ from pipeline_worker import PipelineWorker
 
 def test_worker_priorities_include_design_and_hardening():
     worker = PipelineWorker()
-    assert worker._get_priority("design_critic") == 5
-    assert worker._get_priority("hardening") == 5
+    assert worker._get_priority("design_critic") == 6
+    assert worker._get_priority("hardening") == 6
 
 
 def test_worker_health_and_readiness_snapshots():

@@ -87,6 +87,7 @@ import toast from 'react-hot-toast';
 
 import { ProviderFormModal } from './ProviderFormModal';
 import { RoutingRulesEditor } from './RoutingRulesEditor';
+import { LlmLimitsPanel } from './LlmLimitsPanel';
 
 export function ProvidersTab() {
   const [providers, setProviders] = useState<ProviderStatus[]>([]);
@@ -256,6 +257,8 @@ export function ProvidersTab() {
 
   return (
     <div className="space-y-6">
+      <LlmLimitsPanel />
+
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl font-semibold text-white">LLM Providers</h2>

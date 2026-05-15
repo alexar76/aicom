@@ -246,6 +246,34 @@ export interface LlmPricingProviderRow {
   builtin_usd_per_mtok: number | null;
 }
 
+export interface LlmLimitsPanelData {
+  limits_saved: {
+    max_requests_per_minute: number;
+    daily_cost_cap_usd: number;
+    monthly_cost_cap_usd: number;
+    pre_call_reserve_usd: number;
+  };
+  limits_effective: {
+    max_requests_per_minute: number;
+    daily_cost_cap_usd: number;
+    monthly_cost_cap_usd: number;
+    pre_call_reserve_usd: number;
+  };
+  usage: {
+    day: string;
+    day_spend_usd: number;
+    month: string;
+    month_spend_usd: number;
+    requests_last_minute: number;
+  };
+  env_overrides: {
+    max_requests_per_minute?: boolean;
+    daily_cost_cap_usd?: boolean;
+    monthly_cost_cap_usd?: boolean;
+    pre_call_reserve_usd?: boolean;
+  };
+}
+
 export interface CreateProviderPayload {
   name: string;
   provider_type?: string;
@@ -919,6 +947,17 @@ class ApiClient {
     });
   }
 
+  async getLlmLimits(): Promise<LlmLimitsPanelData> {
+    return this.request('/admin/llm-limits');
+  }
+
+  async updateLlmLimits(payload: LlmLimitsPanelData['limits_saved']): Promise<LlmLimitsPanelData> {
+    return this.request('/admin/llm-limits', {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  }
+
   async getAgents(): Promise<AgentStatus[]> {
     // Backend returns { agents: {...} } (object), convert to array
     const result = await this.request<{ agents: Record<string, any> }>('/admin/agents');
@@ -1554,6 +1593,10 @@ class ApiClient {
       effective_batch_pipeline_active_limit: number;
       effective_llm_max_parallel_requests: number;
       effective_llm_min_interval_sec: number;
+      effective_llm_max_requests_per_minute?: number;
+      effective_llm_daily_cost_cap_usd?: number;
+      effective_llm_monthly_cost_cap_usd?: number;
+      effective_llm_pre_call_reserve_usd?: number;
     } | null;
     quality?: Record<string, boolean | number>;
   }> {

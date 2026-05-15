@@ -22,6 +22,7 @@ import yaml
 from core.throughput_limits import effective_llm_max_parallel_requests, effective_llm_min_interval_sec
 from .bootstrap_providers import ensure_model_providers_file
 from .provider import LLMProvider, GenerationConfig, ProviderStatus
+from .usage_guard import get_usage_guard
 from .local_ollama import LocalOllamaProvider
 from .openai_compatible import OpenAICompatibleProvider
 from .anthropic_provider import AnthropicProvider
@@ -39,6 +40,7 @@ class LLMRouter:
     - Automatic health checks every 60 seconds
     - Failover when the default provider is unavailable
     - Provider metrics tracking
+    - Parallel + min-interval throttling, RPM cap, and USD cost caps (see ``llm.usage_guard``)
     """
 
     def __init__(self, config_path: str = "/app/data/config/model_providers.yaml"):
@@ -58,6 +60,7 @@ class LLMRouter:
         self._cache_ttl_sec = max(1, int(os.environ.get("AIFACTORY_LLM_CACHE_TTL_SEC", "300")))
         self._cache_max_entries = max(1, int(os.environ.get("AIFACTORY_LLM_CACHE_MAX_ENTRIES", "500")))
         self._response_cache: dict[str, tuple[float, str]] = {}
+        self._usage_guard = get_usage_guard()
         self._load_config()
 
     def _load_config(self):
@@ -213,6 +216,7 @@ class LLMRouter:
                 f"Routing to provider '{provider_name}' for task '{task_type}'"
                 f" (model: {config.model_override or 'default'})"
             )
+            await self._usage_guard.acquire()
             async with self._request_sem:
                 await self._rate_limit_wait()
                 result = await provider.generate(prompt, config)
@@ -234,6 +238,7 @@ class LLMRouter:
                     logger.warning(f"Failing over to '{fallback}' for task '{task_type}'")
                     fallback_start = time.time()
                     try:
+                        await self._usage_guard.acquire()
                         async with self._request_sem:
                             await self._rate_limit_wait()
                             result = await fallback_provider.generate(prompt, config)
@@ -353,8 +358,11 @@ class LLMRouter:
                 config.model_override = model_name
         config.model_role = self._resolve_model_role_for_config(provider_name, config, rule)
 
-        async for token in provider.stream(prompt, config):
-            yield token
+        await self._usage_guard.acquire()
+        async with self._request_sem:
+            await self._rate_limit_wait()
+            async for token in provider.stream(prompt, config):
+                yield token
 
     async def _rate_limit_wait(self) -> None:
         if self._min_interval_sec <= 0:

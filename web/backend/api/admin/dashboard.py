@@ -1169,6 +1169,48 @@ class PutProviderLlmPricingBody(BaseModel):
     usd_per_mtok: float = Field(..., ge=0.0, le=1_000_000.0)
 
 
+class PutLlmLimitsBody(BaseModel):
+    """Router RPM + USD spend caps (persisted under ``llm.limits`` in platform YAML)."""
+
+    max_requests_per_minute: int = Field(0, ge=0, le=10_000)
+    daily_cost_cap_usd: float = Field(0.0, ge=0.0, le=1_000_000.0)
+    monthly_cost_cap_usd: float = Field(0.0, ge=0.0, le=1_000_000.0)
+    pre_call_reserve_usd: float = Field(0.05, ge=0.0, le=100.0)
+
+
+@router.get("/llm-limits")
+async def get_llm_limits():
+    """Saved vs effective LLM router limits and current spend snapshot."""
+    from core.llm_limits import admin_llm_limits_panel_dict
+
+    return admin_llm_limits_panel_dict()
+
+
+@router.put("/llm-limits")
+async def put_llm_limits(body: PutLlmLimitsBody, request: Request):
+    """Persist ``llm.limits`` to platform config (env ``AIFACTORY_LLM_*`` still wins at runtime)."""
+    from core.llm_limits import admin_llm_limits_panel_dict, bump_llm_limits_cache_after_config_write
+
+    cfg = getattr(request.app.state, "config", None)
+    if cfg is None:
+        raise HTTPException(status_code=503, detail="App config not available")
+
+    limits = {
+        "max_requests_per_minute": body.max_requests_per_minute,
+        "daily_cost_cap_usd": body.daily_cost_cap_usd,
+        "monthly_cost_cap_usd": body.monthly_cost_cap_usd,
+        "pre_call_reserve_usd": body.pre_call_reserve_usd,
+    }
+    llm_block = cfg.get("llm")
+    if not isinstance(llm_block, dict):
+        llm_block = {}
+    llm_block = dict(llm_block)
+    llm_block["limits"] = limits
+    cfg.set("llm", llm_block)
+    bump_llm_limits_cache_after_config_write()
+    return {"ok": True, **admin_llm_limits_panel_dict()}
+
+
 @router.get("/llm-pricing")
 async def get_llm_pricing():
     """Per-provider blended $/Mtok for LLM log estimates (YAML override > builtin > global default)."""

@@ -274,8 +274,8 @@ app.include_router(admin_feedback.router)
 app.include_router(admin_release_cockpit.router)
 app.include_router(admin_reference_templates.router)
 app.include_router(admin_methodology.router)
-    app.include_router(admin_users_api.router)
-    app.include_router(admin_iteration_hub.router)
+app.include_router(admin_users_api.router)
+app.include_router(admin_iteration_hub.router)
 
 # Mount Prometheus metrics endpoint
 metrics_app = make_asgi_app(registry=get_registry())
@@ -384,6 +384,13 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
     except Exception as exc:
         logger.warning("throughput_snapshot for admin settings failed: %s", exc)
         throughput_effective = None
+    try:
+        from core.llm_limits import admin_llm_limits_panel_dict
+
+        llm_limits = admin_llm_limits_panel_dict()
+    except Exception as exc:
+        logger.warning("llm_limits panel for admin settings failed: %s", exc)
+        llm_limits = None
     return {
         "auto_pipeline": config.get("general.auto_pipeline", False),
         "auto_pipeline_interval_minutes": config.get("general.auto_pipeline_interval_minutes", 60),
@@ -418,6 +425,7 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
         "reference_prompt_max_chars": int(config.get("general.reference_prompt_max_chars") or 14000),
         "reference_templates_catalog": list_reference_templates_catalog(factory_data_root()),
         "throughput_effective": throughput_effective,
+        "llm_limits": llm_limits,
         "quality": admin_quality_panel_dict(),
     }
 

@@ -22,6 +22,7 @@ from typing import AsyncGenerator, Optional
 import httpx
 
 from .pricing_estimate import estimate_llm_call_cost_usd
+from .usage_guard import record_llm_call_spend
 from .provider import (
     LLMProvider,
     GenerationConfig,
@@ -340,6 +341,7 @@ class OpenAICompatibleProvider(LLMProvider):
 
             with open(log_file, "a") as f:
                 f.write(json.dumps(entry) + "\n")
+            record_llm_call_spend(entry)
         except Exception as e:
             logger.debug(f"Failed to log LLM call: {e}")
 

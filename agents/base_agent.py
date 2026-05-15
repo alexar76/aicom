@@ -128,6 +128,7 @@ class BaseAgent(ABC):
         task_type: Optional[str] = None,
         config: Optional[GenerationConfig] = None,
         agent_input: Optional[AgentInput] = None,
+        system_prompt: Optional[str] = None,
     ) -> str:
         """Generate text using the LLM router.
         
@@ -140,7 +141,11 @@ class BaseAgent(ABC):
                 lessons = load_recent_lessons(str(self.data_root), limit=8)
             except Exception:
                 lessons = []
-            final_prompt = self._augment_prompt_with_context(prompt, agent_input, lessons)
+            user_part = self._augment_prompt_with_context(prompt, agent_input, lessons)
+            if system_prompt and system_prompt.strip():
+                final_prompt = f"{system_prompt.strip()}\n\n{user_part}"
+            else:
+                final_prompt = user_part
             base_cfg = config if config is not None else GenerationConfig()
             cfg = replace(base_cfg, agent_type=self.agent_type)
             return await self.llm_router.generate(

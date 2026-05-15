@@ -20,6 +20,11 @@ from typing import Any
 
 from .base_agent import BaseAgent, AgentInput, AgentOutput
 from llm import LLMRouter, GenerationConfig
+from llm.agent_prompt_split import (
+    build_architect_system_prompt,
+    build_architect_user_data,
+    format_user_data_message,
+)
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ARCHITECTURE_SEC
 
 logger = logging.getLogger(__name__)
@@ -81,20 +86,10 @@ For each specification, you must:
 - **motion**: `{ "page": "...", "micro_interactions": "...", "scroll": "...", "respect_reduced_motion": true }` —
   specific easing/duration/stagger (e.g. 180–280ms ease-out; one IntersectionObserver reveal for sections).
 - **signature_moment**: string — one memorable visual hook (gradient mesh, fine border glow, noise overlay, etc.).
-- **svg_creative_brief**: string (required for browser UIs) — **full freedom of hand-authored SVG**: describe concrete
-  vector work the Developer should ship (inline and/or `.svg` files): hero/backdrop scenes, ornamental frames,
-  abstract patterns in `<defs>`, `<pattern>`, `<filter>` / `<mask>`, device/world **illustrations** built from paths
-  (vector can stand in for “hero photography” when no stock URL), icon systems, chart primitives, textured dividers.
-  Push creativity — SVG is not limited to tiny icons; use it for backgrounds, mascots, maps, faux-3D, layered parallax
-  layers, subtle animated strokes (SVG/CSS, respect `prefers-reduced-motion`). Optional tiny inline raster (base64) only
-  if the brief truly needs bitmap texture and file size stays reasonable; default to **SVG-first**.
-- **anti_patterns**: list of strings — things to avoid for this brand (e.g. “purple AI slop gradient”, “default blue links”).
+- **svg_creative_brief**: string (required for browser UIs) — concrete vector plan for the Developer (see VISUAL_QUALITY_SYSTEM for quality bar).
+- **anti_patterns**: list of strings — product-specific avoids (e.g. wrong palette for this brand).
 
-**VISUAL DIVERSITY (mandatory for browser UIs):** this factory ships many products — they must **not** all look like twins.
-- **Ban homogeneity:** do not default every product to the same “dark canvas + electric cyan/violet + glass cards + Syne/DM Sans” recipe unless the Product Idea explicitly fits that subculture.
-- **Each** `ui_experience` should pick a **bold, ownable** direction: warm editorial paper, brutalist grid + monospace, soft organic pastels, high-contrast Swiss (strict_system_ui true), luxe serif + restrained gold, retro phosphor/amber terminal vibes, oceanic deep blues, sunset D2C gradients, Y2K chrome + blur, tropical punch (still tasteful), monochrome red accent only, etc.
-- Make `mood`, `css_variables`, `typography`, `signature_moment`, and **`svg_creative_brief`** **specific** to this product’s audience — not interchangeable filler.
-- Use `anti_patterns` to explicitly reject “clone of our last generic SaaS landing” when the brand is different.
+**Visual direction:** pick a **bold, ownable** look per product (not interchangeable factory clones). Vary mood, tokens, type, and SVG plan to match the idea — details in VISUAL_QUALITY_SYSTEM.
 
 Output format: JSON with fields:
 - architecture_name: string
@@ -1027,13 +1022,6 @@ class ArchitectAgent(BaseAgent):
                     "same dark+cyan+glass formula as every other build; the Developer binds to these tokens.\n"
                 )
 
-            research_block = ""
-            if research_context.strip():
-                research_block = (
-                    "\n=== MARKET RESEARCH (binding context for boundaries & differentiation) ===\n"
-                    f"{research_context}\n"
-                )
-
             methodology_block = ""
             meth_path = self.data_root / "state" / product_id / "methodology_spec_review.json"
             if meth_path.is_file():
@@ -1053,24 +1041,21 @@ class ArchitectAgent(BaseAgent):
                 except (json.JSONDecodeError, OSError) as e:
                     self._log("WARNING", f"Architect could not read methodology review: {e}")
 
-            prompt = f"""{ARCHITECT_SYSTEM_PROMPT}
-
-Product Idea (original charter — architecture must support messaging for this):
-{idea}
-
-Admin instructions (may be empty):
-{admin_raw or "(none)"}
-{landing_note}{full_note}{ux_note}
-Product Specification:
-{spec_str}
-{research_block}{methodology_block}
-Peer review feedback from prior stage (if any):
-{json.dumps(peer_feedback, ensure_ascii=False, indent=2) if isinstance(peer_feedback, dict) else "(none)"}
-
-Please design a complete system architecture for this product.
-Consider scalability, maintainability, and best practices.
-IMPORTANT: Output ONLY valid JSON. No markdown, no code fences, no extra text.
-"""
+            prompt = format_user_data_message(
+                build_architect_user_data(
+                    idea=idea,
+                    spec=spec if isinstance(spec, dict) else {},
+                    admin_instructions=admin_raw,
+                    landing_charter=landing_charter,
+                    peer_feedback=peer_feedback,
+                    research_context=research_context,
+                    methodology_block=methodology_block,
+                    landing_note=landing_note,
+                    full_note=full_note,
+                    ux_note=ux_note,
+                )
+            )
+            system_prompt = build_architect_system_prompt(ARCHITECT_SYSTEM_PROMPT)
 
             config = GenerationConfig(
                 temperature=0.7,
@@ -1079,7 +1064,12 @@ IMPORTANT: Output ONLY valid JSON. No markdown, no code fences, no extra text.
                 json_mode=True,  # openai_compatible skips response_format for reasoning models
             )
 
-            response = await self._generate(prompt, config=config, agent_input=agent_input)
+            response = await self._generate(
+                prompt,
+                config=config,
+                agent_input=agent_input,
+                system_prompt=system_prompt,
+            )
 
             arch = self._extract_json(response)
             if arch is None:

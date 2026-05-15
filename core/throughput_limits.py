@@ -112,6 +112,70 @@ def effective_llm_min_interval_sec() -> float:
     return 0.0 if local_high_throughput_enabled() else 0.05
 
 
+def _llm_limits_from_config() -> dict[str, Any]:
+    try:
+        raw = load_merged_config(_CONFIG_PATH)
+        if not isinstance(raw, dict):
+            return {}
+        llm = raw.get("llm")
+        if not isinstance(llm, dict):
+            return {}
+        limits = llm.get("limits")
+        return limits if isinstance(limits, dict) else {}
+    except Exception:
+        return {}
+
+
+def _limit_float_from_config(key: str) -> float | None:
+    lim = _llm_limits_from_config()
+    val = lim.get(key)
+    if isinstance(val, (int, float)):
+        return float(val)
+    return None
+
+
+def effective_llm_max_requests_per_minute() -> int:
+    v = _env_int("AIFACTORY_LLM_MAX_REQUESTS_PER_MINUTE")
+    if v is not None:
+        return max(0, v)
+    cfg = _limit_float_from_config("max_requests_per_minute")
+    if cfg is not None:
+        return max(0, int(cfg))
+    return 0
+
+
+def effective_llm_daily_cost_cap_usd() -> float:
+    v = _env_float("AIFACTORY_LLM_DAILY_COST_CAP_USD")
+    if v is not None:
+        return max(0.0, v)
+    cfg = _limit_float_from_config("daily_cost_cap_usd")
+    if cfg is not None:
+        return max(0.0, cfg)
+    return 0.0
+
+
+def effective_llm_monthly_cost_cap_usd() -> float:
+    v = _env_float("AIFACTORY_LLM_MONTHLY_COST_CAP_USD")
+    if v is not None:
+        return max(0.0, v)
+    cfg = _limit_float_from_config("monthly_cost_cap_usd")
+    if cfg is not None:
+        return max(0.0, cfg)
+    return 0.0
+
+
+def effective_llm_pre_call_reserve_usd() -> float:
+    v = _env_float("AIFACTORY_LLM_PRE_CALL_RESERVE_USD")
+    if v is not None:
+        return max(0.0, v)
+    cfg = _limit_float_from_config("pre_call_reserve_usd")
+    if cfg is not None:
+        return max(0.0, cfg)
+    if effective_llm_daily_cost_cap_usd() > 0 or effective_llm_monthly_cost_cap_usd() > 0:
+        return 0.05
+    return 0.0
+
+
 def throughput_snapshot() -> dict[str, Any]:
     """For debugging / admin diagnostics."""
     turbo = local_high_throughput_enabled()
@@ -123,4 +187,8 @@ def throughput_snapshot() -> dict[str, Any]:
         "effective_batch_pipeline_active_limit": effective_batch_pipeline_active_limit(),
         "effective_llm_max_parallel_requests": effective_llm_max_parallel_requests(),
         "effective_llm_min_interval_sec": effective_llm_min_interval_sec(),
+        "effective_llm_max_requests_per_minute": effective_llm_max_requests_per_minute(),
+        "effective_llm_daily_cost_cap_usd": effective_llm_daily_cost_cap_usd(),
+        "effective_llm_monthly_cost_cap_usd": effective_llm_monthly_cost_cap_usd(),
+        "effective_llm_pre_call_reserve_usd": effective_llm_pre_call_reserve_usd(),
     }

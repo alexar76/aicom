@@ -47,4 +47,6 @@ Not every YAML file participates in this merge:
 - `data/config/director_rules.yaml` — Director decision rules.
 - `llm_pricing.yaml` (path from code) — pricing overrides.
 
+Provider ids in `model_providers.yaml` (`default_provider`, `providers` keys, routing `preferred_provider` / `fallback_provider`) should match `providers` keys in `llm_pricing.yaml` (canonical DeepSeek cloud id: **`deepseek_api`**, aligned with `config/fragments/50-llm.yaml`).
+
 Treat those as separate documents unless explicitly wired to `load_merged_config`.

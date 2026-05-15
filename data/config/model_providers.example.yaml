@@ -1,7 +1,12 @@
 # Copy to model_providers.yaml and set keys (never commit model_providers.yaml).
-default_provider: deep-seek
+#
+# Provider keys are the single source of truth: they must match default_provider,
+# routing_rules preferred_provider / fallback_provider (when not "auto"), and
+# providers.* in llm_pricing.yaml. Use deepseek_api for the DeepSeek cloud API
+# (same id as config/fragments/50-llm.yaml llm.default_provider).
+default_provider: deepseek_api
 providers:
-  deep-seek:
+  deepseek_api:
     api_key: null
     api_key_env: DEEPSEEK_API_KEY
     base_url: https://api.deepseek.com/v1
@@ -94,21 +99,23 @@ providers:
       vision: null
     priority: 3
     provider_type: openai_compatible
+# Per-task routing: preferred_provider / fallback_provider are provider ids from
+# providers: above (or "auto" to let the router pick). null fallback = no explicit chain.
 routing_rules:
-  - fallback_provider: null
+  - task_type: architecture_design
     model_role: heavy
-    preferred_provider: auto
-    task_type: architecture_design
+    preferred_provider: deepseek_api
+    fallback_provider: anthropic_cloud
     timeout_sec: 120
   - fallback_provider: null
     model_role: light
     preferred_provider: auto
     task_type: marketing_copy
     timeout_sec: 30
-  - fallback_provider: null
-    model_role: light
-    preferred_provider: auto
-    task_type: code_generation
+  - task_type: code_generation
+    model_role: heavy
+    preferred_provider: deepseek_api
+    fallback_provider: groq_api
     timeout_sec: 120
   - fallback_provider: null
     model_role: light

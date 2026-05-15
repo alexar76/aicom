@@ -49,7 +49,8 @@ _BUILTIN_MODEL_IN_OUT_PER_MTOK: dict[str, tuple[float, float]] = {
 }
 
 _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK: dict[str, float] = {
-    "deep-seek": 0.35,
+    "deepseek_api": 0.35,
+    "deep-seek": 0.35,  # legacy id in old configs / llm_calls.jsonl
     "dee-seek": 0.35,  # legacy id in old llm_calls.jsonl
     "deepseek": 0.35,
     "groq_api": 0.08,
@@ -60,6 +61,8 @@ _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK: dict[str, float] = {
 
 # Optional per-role fallback when only total tokens are known (heavy vs light model ids).
 _BUILTIN_PROVIDER_ROLE_USD_PER_MTOK: dict[str, dict[str, float]] = {
+    "deepseek_api": {"heavy": 0.40, "light": 0.22},
+    "deep-seek": {"heavy": 0.40, "light": 0.22},
     "groq_api": {"heavy": 0.08, "light": 0.05},
 }
 
