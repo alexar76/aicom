@@ -100,10 +100,13 @@ type PipelineCatalogSummary = NonNullable<
 >;
 
 export function PipelineTab() {
-  /** First API page: enough rows for a dense first paint on cold start (backend allows up to 2000). */
-  const CATALOG_FIRST_FETCH = 32;
-  /** Background refresh: smaller than first to keep requests light while still fewer round-trips than size 2. */
-  const CATALOG_BACKGROUND_CHUNK = 10;
+  /**
+   * First catalog request must stay tiny: the API builds each row (tasks, summary) before responding.
+   * A large first page (e.g. 32) often blocks for tens of seconds or times out → empty UI during all retries.
+   */
+  const CATALOG_FIRST_FETCH = 2;
+  /** After the first rows paint, load the rest in moderate chunks (fewer round-trips than size 2). */
+  const CATALOG_BACKGROUND_CHUNK = 12;
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -768,7 +771,7 @@ export function PipelineTab() {
               <p className="text-xs text-gray-400 mt-1 max-w-3xl">
                 The UI restores the <strong className="text-gray-300">last catalog snapshot from this browser</strong>{' '}
                 instantly, then revalidates in <strong className="text-gray-300">light mode</strong>: first{' '}
-                <strong className="text-gray-300">{CATALOG_FIRST_FETCH}</strong> rows, then batches of{' '}
+                <strong className="text-gray-300">{CATALOG_FIRST_FETCH}</strong> row(s) for a fast first paint, then batches of{' '}
                 <strong className="text-gray-300">{CATALOG_BACKGROUND_CHUNK}</strong> (no eager per-row spec/marketing disk
                 scan). Rows not yet refreshed this session look <strong className="text-gray-300">slightly muted</strong>{' '}
                 until live data arrives. Default sort is{' '}
