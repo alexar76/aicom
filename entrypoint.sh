@@ -94,29 +94,10 @@ else
     echo "CUSTOMER_JWT_SECRET provided via environment (not using file)"
 fi
 
-# ── Default Admin Credentials ──────────────────────────────────────────────
-mkdir -p /app/data/config
-ADMIN_CONFIG="/app/data/config/admin.json"
-if [ ! -f "$ADMIN_CONFIG" ]; then
-    echo "Creating default admin credentials..."
-    python3 -c "
-import json, hashlib, os
-# Use SHA256-based hash as a fallback (bcrypt has compatibility issues)
-salt = os.urandom(16).hex()
-password_hash = hashlib.sha256(('admin123' + salt).encode()).hexdigest()
-admin_config = {
-    \"username\": \"admin\",
-    \"password_hash\": password_hash,
-    \"hash_salt\": salt,
-    \"hash_type\": \"sha256_salted\",
-    \"totp_enabled\": False,
-    \"created_at\": __import__('time').time()
-}
-with open('$ADMIN_CONFIG', 'w') as f:
-    json.dump(admin_config, f, indent=2)
-print('Default admin created: username=admin, password=admin123')
-"
-fi
+# ── Admin bootstrap (interactive TTY password, random file, or AIFACTORY_DEV_BOOTSTRAP_PASSWORD) ─
+# For first install with a prompt: docker compose run --rm -it app  (or ./run.sh with a TTY)
+cd /app
+python3 -m security.bootstrap_admin || exit 1
 
 # ── Prometheus Multiproc Directory ─────────────────────────────────────────
 # The prometheus_client library requires this directory to exist when

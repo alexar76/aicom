@@ -39,14 +39,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Docker-in-Docker
     docker.io \
     docker-compose-v2 \
-    # Utilities
+    # Utilities (minimal runtime; use docker exec for interactive debugging)
     git \
-    nano \
-    htop \
-    net-tools \
-    iproute2 \
     procps \
-    lsof \
     # Monitoring
     prometheus-node-exporter \
     # Cleanup

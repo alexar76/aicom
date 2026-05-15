@@ -15,9 +15,8 @@ services:
     volumes:
       - ./data:/app/data
     environment:
-      # Shared across Uvicorn workers; required for JWT/session consistency when workers > 1.
-      # Override in production: openssl rand -hex 32
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-aicom_local_dev_jwt_not_for_production}
+      # Entrypoint loads persistent key from data/secrets/jwt_secret.key (do not use a weak default here).
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-}
       USE_SQLITE: "true"
       SQLITE_PATH: /app/data/state/pipeline.db
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
@@ -33,9 +32,13 @@ services:
       AIFACTORY_FIREWALL_RULES_FERNET_KEY: ${AIFACTORY_FIREWALL_RULES_FERNET_KEY:-}
       # Compose sandbox previews: internal Docker bridge (no internet egress); 0 if stacks need outbound calls
       AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION: ${AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION:-1}
-      # Optional full CSP string; or set AIFACTORY_ENABLE_DEFAULT_CSP=1 for a minimal API default (see main.py).
+      # Pipeline SandboxIsolation: fail instead of subprocess fallback when docker is unavailable.
+      AIFACTORY_SANDBOX_REQUIRE_CONTAINER: ${AIFACTORY_SANDBOX_REQUIRE_CONTAINER:-1}
+      # API CSP (strict JSON default in main.py when ENABLE_DEFAULT_CSP=1). Override with AIFACTORY_CSP.
       AIFACTORY_CSP: ${AIFACTORY_CSP:-}
-      AIFACTORY_ENABLE_DEFAULT_CSP: ${AIFACTORY_ENABLE_DEFAULT_CSP:-}
+      # Next.js storefront/admin CSP (see web/frontend/middleware.ts). Override with AIFACTORY_FRONTEND_CSP.
+      AIFACTORY_FRONTEND_CSP: ${AIFACTORY_FRONTEND_CSP:-}
+      AIFACTORY_ENABLE_DEFAULT_CSP: ${AIFACTORY_ENABLE_DEFAULT_CSP:-1}
       AIFACTORY_ENABLE_HSTS: ${AIFACTORY_ENABLE_HSTS:-}
       AIFACTORY_HSTS_PRELOAD: ${AIFACTORY_HSTS_PRELOAD:-}
       PROMETHEUS_MULTIPROC_DIR: /tmp/prometheus_multiproc
@@ -71,8 +74,8 @@ services:
     restart: unless-stopped
     networks:
       - aicom_net
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    # host-gateway removed by default (sandbox escape risk). For host Ollama/LLM use:
+    #   docker compose -f docker-compose.yml -f docker-compose.host-gateway.yml up -d
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8081/api/health"]
       interval: 15s
@@ -113,7 +116,8 @@ services:
       - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
-      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      # Set in .env — ./scripts/deploy.sh / fill_production_env.py auto-generate when missing.
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
       GF_INSTALL_PLUGINS: ""
     restart: unless-stopped
     networks:

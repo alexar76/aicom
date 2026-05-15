@@ -4,7 +4,7 @@
 
 This document covers **every** left-menu section of the AI-Factory v2.1 admin UI: purpose, main actions, and how they relate to APIs/data. Header icons match the sidebar ([Lucide](https://lucide.dev/), same assets in [`assets/icons/`](./assets/icons/)).
 
-> **Login:** see [docs/README.md](./README.md). After authentication all sections are available in one SPA (`/admin`).
+> **Login:** `/admin/login` — user **`admin`**. There is **no** default password `admin123`. On first install see **[security.md](./security.md)** (console prompt, `data/secrets/bootstrap_admin.txt`, or `AIFACTORY_DEV_BOOTSTRAP_PASSWORD` for dev). After authentication all sections are available in one SPA (`/admin`).
 
 ![Admin login page](./assets/screenshots/admin-login.png)
 
@@ -125,7 +125,9 @@ Operator-focused narrative + diagrams: **[owner-guide.md](./owner-guide.md)**.
 |----------------|-------------|
 | Idea text | Short product description |
 | Instructions | Extra guidance for the orchestrator |
-| Submit | Calls product-create API; on success prompts you to watch **Pipeline**
+| **Landing & UI copy language** | `Auto` (match brief + admin UI language) or force a locale (`ru`, `en`, `es`, `de`, …). See [security.md § Landing language](./security.md#landing--ui-copy-language). |
+| Sidebar language | **en / ru / es** (bottom of sidebar) — sent as `interface_locale` when creating a product. |
+| Submit | Calls product-create API; on success prompts you to watch **Pipeline** |
 | Deep link | Open **`/admin?tab=new-product`** to land on this tab. Optional **`?idea=…`** (URL-encoded phrase) pre-fills **Idea**. The public homepage can also stash text in **`sessionStorage`** key `aicom_prefill_idea` before navigating here (same tab survives login). |
 
 Use when autonomous Director mode is off or you need a one-off task off-schedule.

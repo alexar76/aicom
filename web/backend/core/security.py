@@ -11,6 +11,7 @@ import hashlib
 import json
 import logging
 import os
+import secrets
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -134,9 +135,8 @@ class SecurityManager:
                 salt = cfg.get("hash_salt", "")
                 hash_type = cfg.get("hash_type", "")
                 if hash_type == "sha256_salted" and salt:
-                    import hashlib
                     expected = hashlib.sha256((plain_password + salt).encode()).hexdigest()
-                    return expected == hashed_password
+                    return secrets.compare_digest(expected, hashed_password)
         except Exception:
             pass
 
@@ -228,12 +228,7 @@ class SecurityManager:
         return totp.verify(code)
 
     def _audit_log(self, entry: dict):
-        """Write an audit log entry (legacy JSONL + tamper-evident hash-chain when available)."""
-        try:
-            with open(self.audit_log_path, "a", encoding="utf-8") as f:
-                f.write(json.dumps(entry) + "\n")
-        except Exception as e:
-            logger.error("Failed to write audit log: %s", e)
+        """Write audit events — prefer tamper-evident hash-chain; legacy JSONL is fallback only."""
         if self._audit_chain is not None:
             try:
                 sev = "error" if entry.get("success") is False else "info"
@@ -245,8 +240,14 @@ class SecurityManager:
                     severity=sev,
                     ip_address=str(entry.get("ip_address", "")),
                 )
+                return
             except Exception as e:
                 logger.error("Failed to write hash-chain audit: %s", e)
+        try:
+            with open(self.audit_log_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(entry) + "\n")
+        except Exception as e:
+            logger.error("Failed to write audit log: %s", e)
 
     def get_audit_logs(
         self,
@@ -254,10 +255,32 @@ class SecurityManager:
         action_filter: Optional[str] = None,
         since: Optional[float] = None,
     ) -> list[dict]:
-        """Get audit log entries with optional filtering."""
-        entries = []
+        """Get audit log entries with optional filtering (hash-chain preferred)."""
+        if self._audit_chain is not None:
+            from dataclasses import asdict
+
+            rows = self._audit_chain.query(
+                limit=limit,
+                action_filter=action_filter,
+                since=since,
+            )
+            out: list[dict] = []
+            for row in reversed(rows):
+                d = asdict(row)
+                details = d.get("details") if isinstance(d.get("details"), dict) else {}
+                legacy = dict(details)
+                legacy.setdefault("action", d.get("action"))
+                legacy.setdefault("timestamp", d.get("timestamp"))
+                legacy.setdefault("username", d.get("actor"))
+                legacy.setdefault("ip_address", d.get("ip_address"))
+                if action_filter and legacy.get("action") != action_filter:
+                    continue
+                out.append(legacy)
+            return out[-limit:]
+
+        entries: list[dict] = []
         try:
-            with open(self.audit_log_path, "r") as f:
+            with open(self.audit_log_path, "r", encoding="utf-8") as f:
                 for line in f:
                     if line.strip():
                         try:

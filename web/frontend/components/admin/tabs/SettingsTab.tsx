@@ -190,6 +190,11 @@ export function SettingsTab() {
   const [disable2faModalOpen, setDisable2faModalOpen] = useState(false);
   const [disable2faPassword, setDisable2faPassword] = useState('');
   const [disable2faBusy, setDisable2faBusy] = useState(false);
+  const [webauthnEnabled, setWebauthnEnabled] = useState(false);
+  const [mfaMethod, setMfaMethod] = useState<string | null>(null);
+  const [passkeyBusy, setPasskeyBusy] = useState(false);
+  const [disablePasskeyModalOpen, setDisablePasskeyModalOpen] = useState(false);
+  const [disablePasskeyPassword, setDisablePasskeyPassword] = useState('');
 
   const [autoGenModalOpen, setAutoGenModalOpen] = useState(false);
   const [autoGenIntervalDraft, setAutoGenIntervalDraft] = useState(60);
@@ -285,6 +290,8 @@ export function SettingsTab() {
       const me = await api.getMe();
       setTwofaEnabled(Boolean(me.totp_enabled));
       setTwofaPending(Boolean(me.totp_pending));
+      setWebauthnEnabled(Boolean(me.webauthn_enabled));
+      setMfaMethod(me.mfa_method ?? null);
     } catch {
       /* ignore */
     }
@@ -1643,12 +1650,66 @@ export function SettingsTab() {
         </div>
       </GlassCard>
 
-      {/* ── Two-Factor Authentication ── */}
+      {/* ── Passkey + TOTP ── */}
+      <GlassCard>
+        <h3 className="text-lg font-medium text-white mb-4">Passkey (WebAuthn)</h3>
+        <p className="text-sm text-gray-400 mb-4">
+          Platform passkeys (Touch ID, Windows Hello, security key) instead of TOTP codes.
+        </p>
+        {mfaMethod === 'totp' && twofaEnabled && (
+          <p className="text-xs text-amber-200/80 mb-3">Disable TOTP first to register a passkey.</p>
+        )}
+        <motion.div className="flex flex-wrap items-center gap-2 mb-2">
+          {webauthnEnabled ? (
+            <>
+              <Badge variant="success">Passkey enabled</Badge>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setDisablePasskeyModalOpen(true);
+                  setDisablePasskeyPassword('');
+                }}
+              >
+                Remove passkeys
+              </Button>
+            </>
+          ) : (
+            <Button
+              variant="secondary"
+              disabled={passkeyBusy || (twofaEnabled && mfaMethod === 'totp')}
+              onClick={() => {
+                void (async () => {
+                  setPasskeyBusy(true);
+                  try {
+                    const { publicKey } = await api.webauthnRegisterOptions();
+                    const { createPasskey } = await import('@/lib/webauthnClient');
+                    const credential = await createPasskey(publicKey);
+                    await api.webauthnRegisterVerify(credential, 'Admin passkey');
+                    toast.success('Passkey registered');
+                    await refreshTwofaStatus();
+                  } catch (e: unknown) {
+                    toast.error(e instanceof Error ? e.message : 'Passkey setup failed');
+                  } finally {
+                    setPasskeyBusy(false);
+                  }
+                })();
+              }}
+            >
+              {passkeyBusy ? 'Waiting for device…' : 'Register passkey'}
+            </Button>
+          )}
+        </motion.div>
+      </GlassCard>
+
       <GlassCard>
         <h3 className="text-lg font-medium text-white mb-4">Two-Factor Authentication</h3>
         <p className="text-sm text-gray-400 mb-4">
           TOTP-based 2FA (Google Authenticator, 1Password, etc.). After enabling, login requires a 6-digit code.
         </p>
+        {webauthnEnabled && (
+          <p className="text-xs text-amber-200/80 mb-3">Remove passkeys first to use TOTP.</p>
+        )}
         {twofaPending && !twofaEnabled && (
           <div className="mb-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/25 text-sm text-amber-100">
             A secret is pending verification — open <strong>Complete 2FA setup</strong> or cancel to start over.
@@ -1820,6 +1881,45 @@ export function SettingsTab() {
             </>
           )}
         </div>
+      </Modal>
+
+      <Modal
+        isOpen={disablePasskeyModalOpen}
+        onClose={() => setDisablePasskeyModalOpen(false)}
+        title="Remove passkeys"
+        size="md"
+      >
+        <motion.div className="space-y-4">
+          <p className="text-sm text-gray-400">Confirm your password to remove all registered passkeys.</p>
+          <Input
+            label="Current password"
+            type="password"
+            value={disablePasskeyPassword}
+            onChange={(e) => setDisablePasskeyPassword(e.target.value)}
+          />
+          <Button
+            variant="secondary"
+            disabled={passkeyBusy || disablePasskeyPassword.length < 1}
+            onClick={() => {
+              void (async () => {
+                setPasskeyBusy(true);
+                try {
+                  await api.disableWebAuthn(disablePasskeyPassword);
+                  toast.success('Passkeys removed');
+                  setDisablePasskeyModalOpen(false);
+                  setDisablePasskeyPassword('');
+                  await refreshTwofaStatus();
+                } catch (e: unknown) {
+                  toast.error(e instanceof Error ? e.message : 'Failed');
+                } finally {
+                  setPasskeyBusy(false);
+                }
+              })();
+            }}
+          >
+            {passkeyBusy ? 'Working…' : 'Remove passkeys'}
+          </Button>
+        </motion.div>
       </Modal>
 
       <Modal

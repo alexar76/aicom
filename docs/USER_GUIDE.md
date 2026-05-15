@@ -90,10 +90,11 @@ Next.js route **`/docs`** is the in-app documentation hub (icons, quick start, a
 
 ## Admin login and safety
 
-1. Use **`/admin/login`**.
-2. Prefer **HTTPS** in production; JWT is stored in browser storage — treat workstations as sensitive.
-3. Enable **2FA** from auth settings when available.
-4. After login, rotate default passwords and remove demo banners if shown.
+1. Use **`/admin/login`** — username **`admin`**.
+2. **First install:** password is **not** `admin123`. With a terminal attached (`./run.sh` or `docker compose run -it app`), the entrypoint **asks for a password** in the console. Headless `docker compose up -d` writes a one-time password to **`data/secrets/bootstrap_admin.txt`**. Details: **[security.md](./security.md)**.
+3. Prefer **HTTPS** in production; JWT is stored in browser storage — treat workstations as sensitive.
+4. Enable **2FA** from auth settings when available.
+5. After login, rotate passwords and remove demo banners if shown.
 
 **Screenshot:**
 
@@ -142,7 +143,7 @@ What changed (UX):
    `A waitlisted B2B tool for freelancers to send scoped proposals with e-sign.`  
    Click **Next**.
 2. **Step 2 — Options:**  
-   Choose **Full product**, **prototype**, add instructions `TypeScript + Postgres; no PCI scope.`  
+   Choose **Full product**, **prototype**, set **Landing & UI copy language** (e.g. **Auto** or **Russian** for a Russian brief), add instructions `TypeScript + Postgres; no PCI scope.`  
    Click **Save current to cloud** if you want this preset on another browser.
 3. **Step 3 — Review:** confirm counts, click **Start building**.  
 4. **Pipeline:** open from the success links; search for the new `prod-…`.

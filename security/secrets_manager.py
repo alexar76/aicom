@@ -37,12 +37,17 @@ class SecretsManager:
 
     def __init__(
         self,
-        secrets_file: str = "/app/data/secrets/encrypted_vault.json",
-        master_key_file: str = "/app/data/secrets/master.key",
+        secrets_file: str | None = None,
+        master_key_file: str | None = None,
         cache_ttl_seconds: int = 300,  # 5 minutes
     ):
-        self.secrets_file = Path(secrets_file)
-        self.master_key_file = Path(master_key_file)
+        self.secrets_file = Path(
+            secrets_file or os.environ.get("AIFACTORY_SECRETS_VAULT_FILE", "/app/data/secrets/encrypted_vault.json")
+        )
+        self.master_key_file = Path(
+            master_key_file
+            or os.environ.get("AIFACTORY_SECRETS_MASTER_KEY_FILE", "/app/data/secrets/master.key")
+        )
         self.cache_ttl = cache_ttl_seconds
         
         # In-memory cache

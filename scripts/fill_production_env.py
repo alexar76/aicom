@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import secrets
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -87,6 +88,12 @@ def main() -> int:
 
     if "AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION" not in keys:
         additions.append(("AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION", "1"))
+
+    if "AIFACTORY_SANDBOX_REQUIRE_CONTAINER" not in keys:
+        additions.append(("AIFACTORY_SANDBOX_REQUIRE_CONTAINER", "1"))
+
+    if "GRAFANA_ADMIN_PASSWORD" not in keys:
+        additions.append(("GRAFANA_ADMIN_PASSWORD", secrets.token_urlsafe(24)))
 
     if not additions:
         print("fill_production_env: nothing to add (all keys already present).")

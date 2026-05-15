@@ -17,12 +17,12 @@ The script [`../../../web/frontend/scripts/capture-docs-screenshots.mjs`](../../
 - writes files to **`docs/assets/screenshots/`** (AI-Factory repo root);
 - **also copies** every PNG to **`web/frontend/public/docs-screenshots/`** so the `/docs` Next.js page can embed them;
 - opens `DOCS_SCREENSHOT_BASE_URL` (default `http://127.0.0.1:9080`);
-- logs in with `ADMIN_PASSWORD` (default `admin123`).
+- logs in with `ADMIN_PASSWORD` (must match your instance bootstrap password — not a shipped default).
 
 Example with another host:
 
 ```bash
-DOCS_SCREENSHOT_BASE_URL=http://localhost:9080 ADMIN_PASSWORD=admin123 npm run capture-docs-screenshots
+DOCS_SCREENSHOT_BASE_URL=http://localhost:9080 ADMIN_PASSWORD='your-admin-password' npm run capture-docs-screenshots
 ```
 
 > Sidebar tab indices follow `AdminSidebar.tsx` (see comments in the script). Re-check indices if new admin tabs are inserted.

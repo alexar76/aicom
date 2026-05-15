@@ -19,7 +19,17 @@ from pathlib import Path
 from dataclasses import dataclass, field
 from enum import Enum
 
+from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
+
 logger = logging.getLogger("ai_factory.security.sandbox")
+
+
+def _env_truthy(name: str, default: bool = False) -> bool:
+    raw = (os.environ.get(name) or "").strip().lower()
+    if not raw:
+        return default
+    return raw in ("1", "true", "yes", "on")
+
 
 # ---------------------------------------------------------------------------
 # Data Models
@@ -79,6 +89,7 @@ class SandboxIsolation:
         enable_network: bool = False,
         execution_mode: str = "process",
         container_image: str = "python:3.12-slim",
+        require_container: Optional[bool] = None,
     ):
         self.sandbox_base_dir = Path(sandbox_base_dir)
         self.sandbox_base_dir.mkdir(parents=True, exist_ok=True)
@@ -89,6 +100,11 @@ class SandboxIsolation:
         self.enable_network = enable_network
         self.execution_mode = execution_mode if execution_mode in {"process", "container"} else "process"
         self.container_image = container_image
+        self.require_container = (
+            _env_truthy("AIFACTORY_SANDBOX_REQUIRE_CONTAINER", False)
+            if require_container is None
+            else bool(require_container)
+        )
         
         self.sandboxes: Dict[str, Sandbox] = {}
         self._allocated_ports: set = set()
@@ -184,10 +200,19 @@ class SandboxIsolation:
                 self._save_state()
                 return sandbox
 
-            if self.execution_mode == "container" and self._start_container_sandbox(sandbox, command):
-                self._save_state()
-                return sandbox
-            
+            if self.execution_mode == "container":
+                if self._start_container_sandbox(sandbox, command):
+                    self._save_state()
+                    return sandbox
+                if self.require_container:
+                    sandbox.status = SandboxStatus.FAILED
+                    sandbox.error = (
+                        "Container sandbox required (AIFACTORY_SANDBOX_REQUIRE_CONTAINER) "
+                        "but docker start failed"
+                    )
+                    self._save_state()
+                    return sandbox
+
             # Build environment
             env = os.environ.copy()
             env["SANDBOX_ID"] = sandbox_id
@@ -226,18 +251,17 @@ class SandboxIsolation:
         container_name = sandbox.id
         network_mode = "bridge" if self.enable_network else "none"
         command_text = " ".join(command)
-        docker_cmd = [
-            "docker", "run", "-d",
-            "--name", container_name,
-            "--network", network_mode,
-            "--memory", "512m",
-            "--cpus", "0.5",
-            "-w", "/workspace",
-            "-v", f"{sandbox.work_dir}:/workspace",
-            "-p", f"{sandbox.port}:{sandbox.port}",
-            self.container_image,
-            "sh", "-lc", command_text,
-        ]
+        base = hardened_docker_run_args(
+            name=container_name,
+            network=network_mode,
+            memory="512m",
+            cpus="0.5",
+            workdir="/workspace",
+            volume_mount=f"{sandbox.work_dir}:/workspace",
+            publish_port=int(sandbox.port) if sandbox.port else None,
+            read_only_root=not self.enable_network,
+        )
+        docker_cmd = append_image_and_command(base, self.container_image, command_text)
         try:
             proc = subprocess.run(docker_cmd, capture_output=True, text=True, timeout=30)
             if proc.returncode != 0:
@@ -250,7 +274,10 @@ class SandboxIsolation:
             logger.info("Sandbox %s started in container mode (%s)", sandbox.id, sandbox.metadata["container_id"])
             return True
         except (FileNotFoundError, subprocess.TimeoutExpired) as e:
-            logger.warning("Container sandbox start unavailable (%s), falling back to process mode", e)
+            if self.require_container:
+                logger.error("Container sandbox required but unavailable: %s", e)
+            else:
+                logger.warning("Container sandbox start unavailable (%s), falling back to process mode", e)
             return False
 
     def stop_sandbox(self, sandbox_id: str, force: bool = False) -> Sandbox:

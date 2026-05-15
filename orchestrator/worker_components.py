@@ -409,28 +409,42 @@ class PeerReviewEngine:
             for t in task_queue
         )
         if not exists:
-            task_queue.append(
-                {
-                    "id": f"task-{uuid.uuid4().hex[:12]}",
+            handoff_task = {
+                "id": f"task-{uuid.uuid4().hex[:12]}",
+                "product_id": pid,
+                "agent_type": tgt_agent,
+                "state": tgt_state,
+                "status": "pending",
+                "retry_count": 0,
+                "max_retries": 3,
+                "input_data": {
                     "product_id": pid,
-                    "agent_type": tgt_agent,
-                    "state": tgt_state,
-                    "status": "pending",
-                    "retry_count": 0,
-                    "max_retries": 3,
-                    "input_data": {
-                        "product_id": pid,
-                        "idea": product_row.get("idea", ""),
-                        "peer_review_feedback": {
-                            "source_agent": agent_type,
-                            "blockers": blockers,
-                            "notes": current.get("notes", ""),
-                        },
+                    "idea": product_row.get("idea", ""),
+                    "peer_review_feedback": {
+                        "source_agent": agent_type,
+                        "blockers": blockers,
+                        "notes": current.get("notes", ""),
                     },
-                    "created_at": time.time(),
-                    "priority": self.get_priority(tgt_agent),
-                }
-            )
+                },
+                "created_at": time.time(),
+                "priority": self.get_priority(tgt_agent),
+            }
+            task_queue.append(handoff_task)
+            try:
+                from security.agent_handoff_audit import log_handoff_from_task
+
+                log_handoff_from_task(
+                    product_id=str(pid or ""),
+                    from_agent=str(agent_type or ""),
+                    from_state=str(task.get("state") or ""),
+                    next_task=handoff_task,
+                    task_id=str(task.get("id") or ""),
+                    reason="peer_review_block",
+                    blocked=True,
+                    extra={"blockers": blockers[:8] if isinstance(blockers, list) else []},
+                )
+            except Exception:
+                pass
         product_state["state"] = "BUG_FOUND" if tgt_agent in ("developer", "hardening") else product_state.get("state", "")
         product_state["updated_at"] = time.time()
         return True

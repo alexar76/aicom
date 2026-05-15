@@ -182,6 +182,24 @@ class FirewallManager:
     # Access Control
     # -----------------------------------------------------------------------
 
+    def http_request_allowed(self, ip: str, port: int = 8081) -> Tuple[bool, str]:
+        """
+        HTTP middleware policy: always enforce rate limits and explicit deny rules.
+        Full default-deny ACL applies only when ``AIFACTORY_FIREWALL_ENFORCE=1``.
+        """
+        if self._is_rate_limited(ip):
+            return False, "rate_limited"
+        if self.is_blacklisted(ip):
+            return False, "blacklisted"
+        enforce = (os.environ.get("AIFACTORY_FIREWALL_ENFORCE") or "").strip().lower() in (
+            "1",
+            "true",
+            "yes",
+        )
+        if enforce:
+            return self.is_allowed(ip, port)
+        return True, "ok"
+
     def is_allowed(self, ip: str, port: int = 8080) -> Tuple[bool, str]:
         """
         Check if an IP:port combination is allowed.

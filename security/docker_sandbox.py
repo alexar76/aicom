@@ -1,0 +1,87 @@
+"""
+Shared hardened ``docker run`` argument builder for preview / isolation sandboxes.
+"""
+
+from __future__ import annotations
+
+from typing import Iterable, Sequence
+
+
+def hardened_docker_run_args(
+    *,
+    name: str,
+    network: str = "none",
+    memory: str = "512m",
+    cpus: str = "0.5",
+    workdir: str = "/workspace",
+    volume_mount: str | None = None,
+    publish_port: int | None = None,
+    read_only_root: bool = False,
+    pids_limit: int = 64,
+    user: str = "65534:65534",
+) -> list[str]:
+    """
+    Build ``docker run`` flags shared by API sandbox and SandboxIsolation container mode.
+
+    Defaults: no network, dropped capabilities, no-new-privileges, non-root, bounded PIDs.
+    """
+    cmd: list[str] = [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        name,
+        "--network",
+        network,
+        "--memory",
+        memory,
+        "--cpus",
+        cpus,
+        "--pids-limit",
+        str(pids_limit),
+        "--security-opt",
+        "no-new-privileges",
+        "--cap-drop",
+        "ALL",
+        "--user",
+        user,
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+    ]
+    if read_only_root:
+        cmd.append("--read-only")
+    if volume_mount:
+        cmd.extend(["-v", volume_mount])
+    if publish_port is not None:
+        cmd.extend(["-p", f"{publish_port}:{publish_port}"])
+    if workdir:
+        cmd.extend(["-w", workdir])
+    return cmd
+
+
+def append_image_and_command(cmd: list[str], image: str, command: Sequence[str] | str) -> list[str]:
+    """Append image reference and container command argv."""
+    out = list(cmd)
+    out.append(image)
+    if isinstance(command, str):
+        out.extend(["sh", "-lc", command])
+    else:
+        out.extend(command)
+    return out
+
+
+def assert_hardened_flags_present(cmd: Iterable[str]) -> None:
+    """Test helper: verify expected isolation flags are present."""
+    flat = list(cmd)
+    joined = " ".join(flat)
+    for needle in (
+        "--network",
+        "none",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--user",
+        "65534:65534",
+    ):
+        assert needle in joined or needle in flat, f"missing hardened flag: {needle}"

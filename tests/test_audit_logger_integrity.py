@@ -12,7 +12,7 @@ from security.audit_logger import AuditLogger, GENESIS_HASH
 
 def test_verify_integrity_true_after_log_rotation(tmp_path) -> None:
     log_dir = tmp_path / "audit_chain"
-    audit = AuditLogger(str(log_dir), max_file_size_mb=100, max_log_files=10)
+    audit = AuditLogger(str(log_dir), max_file_size_mb=100, max_log_files=64)
     audit.max_file_size = 400
     for i in range(30):
         audit.log(f"evt_{i}", "actor", "res", {"i": i})

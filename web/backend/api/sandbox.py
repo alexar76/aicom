@@ -36,6 +36,7 @@ from web.backend.services.sandbox_compose_preview import (
     start_compose_preview,
     stop_compose_for_sandbox,
 )
+from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 from web.backend.services.sandbox_static_rewrite import (
     SANDBOX_HTML_CSP,
     _inject_iframe_base_href,
@@ -180,17 +181,31 @@ def _try_docker_run(sandbox_id: str, product_id: str, port: int) -> bool:
     
     try:
         # Use python:3.12-slim as base for sandbox, mount code
-        cmd = [
-            "docker", "run", "-d",
-            "--name", sandbox_id,
-            "--network", "none",  # no network access from sandbox
-            "--memory", "256m",
-            "--cpus", "0.5",
-            "--read-only",
-            "-v", f"{code_dir}:/app/product:ro",
+        base = hardened_docker_run_args(
+            name=sandbox_id,
+            network="none",
+            memory="256m",
+            cpus="0.5",
+            workdir="/app/product",
+            volume_mount=f"{code_dir}:/app/product:ro",
+            publish_port=port,
+            read_only_root=True,
+            pids_limit=64,
+        )
+        cmd = append_image_and_command(
+            base,
             "python:3.12-slim",
-            "python3", "-m", "http.server", str(port), "--directory", "/app/product"
-        ]
+            [
+                "python3",
+                "-m",
+                "http.server",
+                str(port),
+                "--bind",
+                "0.0.0.0",
+                "--directory",
+                "/app/product",
+            ],
+        )
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
         if result.returncode == 0:
             logger.info(f"Docker sandbox {sandbox_id} started on port {port}")

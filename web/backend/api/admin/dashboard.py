@@ -1439,6 +1439,29 @@ async def get_security_logs(
     return {"logs": sliced, "count": len(sliced), "total": len(entries)}
 
 
+@router.get("/agent/handoffs")
+async def get_agent_handoffs(
+    limit: int = Query(200, ge=1, le=2000),
+    since: Optional[float] = Query(None, description="Unix seconds, inclusive lower bound"),
+    until: Optional[float] = Query(None, description="Unix seconds, inclusive upper bound"),
+    product_id: Optional[str] = Query(None, description="Filter by pipeline product id"),
+):
+    """Pipeline agent-to-agent handoffs (hash-chained ``agent_handoff`` audit events)."""
+    res = await get_security_logs(limit=5000, since=since, until=until)
+    logs = res.get("logs") or []
+    handoffs = [e for e in logs if str(e.get("action") or "") == "agent_handoff"]
+    if product_id:
+        pid = product_id.strip()
+        filtered: list[dict[str, Any]] = []
+        for e in handoffs:
+            details = e.get("details") if isinstance(e.get("details"), dict) else {}
+            resource = str(e.get("resource") or "")
+            if details.get("product_id") == pid or resource.endswith(f"/{pid}"):
+                filtered.append(e)
+        handoffs = filtered
+    return {"handoffs": handoffs[:limit], "count": min(len(handoffs), limit), "total": len(handoffs)}
+
+
 # ── LLM Call Logs ─────────────────────────────────────────────────────────
 
 

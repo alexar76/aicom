@@ -6,6 +6,7 @@
 # ============================================================================
 
 import json
+import os
 import time
 import hashlib
 import logging
@@ -162,17 +163,31 @@ class AuditLogger:
             logger.info(f"Removed old audit log: {oldest}")
 
     def _get_last_hash(self) -> str:
-        """Get the hash of the last entry in the current log file."""
-        if not self._current_file or not self._current_file.exists():
+        """Get the hash of the last entry in the newest audit log file."""
+        log_files = _audit_log_files_chrono(self.log_dir)
+        if not log_files:
             return ""
-        try:
-            lines = self._current_file.read_text().strip().split("\n")
-            if lines and lines[-1]:
-                last_entry = json.loads(lines[-1])
-                return last_entry.get("hash", "")
-        except Exception:
-            pass
+        for log_file in reversed(log_files):
+            if not log_file.exists():
+                continue
+            try:
+                lines = log_file.read_text(encoding="utf-8").strip().split("\n")
+                if lines and lines[-1]:
+                    last_entry = json.loads(lines[-1])
+                    h = last_entry.get("hash", "")
+                    if h:
+                        return str(h)
+            except Exception:
+                continue
         return ""
+
+    def _sync_last_hash_from_disk(self) -> None:
+        """Align in-memory chain tip with the last persisted entry (crash-safe)."""
+        disk_hash = self._get_last_hash()
+        if disk_hash:
+            self._last_hash = disk_hash
+        elif not self._last_hash:
+            self._last_hash = GENESIS_HASH
 
     # -----------------------------------------------------------------------
     # Logging
@@ -192,6 +207,8 @@ class AuditLogger:
         Log an audit event.
         Returns the created AuditEntry.
         """
+        self._sync_last_hash_from_disk()
+
         entry = AuditEntry(
             timestamp=time.time(),
             action=action,
@@ -204,16 +221,20 @@ class AuditLogger:
             previous_hash=self._last_hash,
         )
         entry.hash = entry.compute_hash()
-        
-        # Write to file
+        prior_hash = self._last_hash
+        # Advance chain in memory before durable write so a crash after append cannot desync.
+        self._last_hash = entry.hash
+
         log_file = self._get_current_file()
         try:
-            with open(log_file, "a") as f:
-                f.write(json.dumps(asdict(entry)) + "\n")
+            with open(log_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(asdict(entry), ensure_ascii=False) + "\n")
+                f.flush()
+                os.fsync(f.fileno())
         except Exception as e:
+            self._last_hash = prior_hash
             logger.error(f"Failed to write audit log: {e}")
-        
-        self._last_hash = entry.hash
+            raise
         
         # Also log to system logger for critical events
         if severity in ("warning", "error", "critical"):

@@ -7,12 +7,14 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import api from '@/lib/api';
+import { getPasskeyAssertion } from '@/lib/webauthnClient';
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('');
   const [totpCode, setTotpCode] = useState('');
   const [requires2FA, setRequires2FA] = useState(false);
+  const [requiresWebAuthn, setRequiresWebAuthn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -24,19 +26,35 @@ export default function AdminLoginPage() {
     setError(null);
 
     try {
-      const response = await api.login(username.trim() || 'admin', password, totpCode || undefined);
-      
-      // Store token and redirect
+      let webauthnCredential: Record<string, unknown> | undefined;
+      if (requiresWebAuthn) {
+        const { publicKey } = await api.webauthnLoginOptions(username.trim() || 'admin');
+        webauthnCredential = await getPasskeyAssertion(publicKey);
+      }
+      const response = await api.login(
+        username.trim() || 'admin',
+        password,
+        totpCode || undefined,
+        webauthnCredential
+      );
+
       localStorage.setItem('admin_token', response.access_token);
       window.location.href = '/admin';
     } catch (err: any) {
-      // If backend says 2FA is required, show 2FA input
-      if (err.message === '2FA code required' && !totpCode) {
+      const msg = err.message || 'Invalid credentials';
+      if (msg === '2FA code required' && !totpCode) {
         setRequires2FA(true);
+        setRequiresWebAuthn(false);
         setLoading(false);
         return;
       }
-      setError(err.message || 'Invalid credentials');
+      if (msg === 'WebAuthn required' && !requiresWebAuthn) {
+        setRequiresWebAuthn(true);
+        setRequires2FA(false);
+        setLoading(false);
+        return;
+      }
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -118,6 +136,12 @@ export default function AdminLoginPage() {
             </div>
 
             {/* 2FA Code (shown after password verification) */}
+            {requiresWebAuthn && (
+              <p className="text-sm text-indigo-200/90 text-center">
+                Use your passkey (Touch ID, Windows Hello, security key) on the next step.
+              </p>
+            )}
+
             {requires2FA && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
@@ -143,7 +167,7 @@ export default function AdminLoginPage() {
               loading={loading}
               disabled={!password || !username.trim()}
             >
-              {requires2FA ? 'Verify 2FA' : 'Login'}
+              {requiresWebAuthn ? 'Sign in with passkey' : requires2FA ? 'Verify 2FA' : 'Login'}
             </Button>
           </div>
 

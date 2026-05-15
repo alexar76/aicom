@@ -469,18 +469,18 @@ class TestSecurityManager:
     # ------------------------------------------------------------------
 
     def test_audit_log_created(self, sm, tmp_path):
-        """Login attempts create audit log entries."""
+        """Login attempts create hash-chain audit log entries."""
         sm.record_login_attempt("10.0.0.100", True, "test_user")
-        audit_path = tmp_path / "logs" / "audit.jsonl"
-        assert audit_path.exists()
-        lines = audit_path.read_text().strip().split("\n")
-        assert len(lines) == 1
+        chain_dir = tmp_path / "logs" / "audit"
+        assert chain_dir.is_dir()
+        assert list(chain_dir.glob("audit-*.jsonl"))
 
-    def test_audit_log_format(self, sm, tmp_path):
-        """Audit entry has correct fields."""
+    def test_audit_log_format(self, sm):
+        """Audit entry has correct fields (via get_audit_logs)."""
         sm.record_login_attempt("10.0.0.101", False, "bad_user")
-        audit_path = tmp_path / "logs" / "audit.jsonl"
-        entry = json.loads(audit_path.read_text().strip())
+        logs = sm.get_audit_logs(limit=1)
+        assert logs
+        entry = logs[-1]
         assert entry["action"] == "login_attempt"
         assert entry["username"] == "bad_user"
         assert entry["success"] is False

@@ -115,6 +115,39 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         self.quality_manager = QualityManager(self._get_priority)
         self.peer_review_engine = PeerReviewEngine(self._get_priority)
 
+    def _audit_agent_handoff(
+        self,
+        *,
+        product_id: str,
+        from_agent: str,
+        from_state: str,
+        next_task: dict,
+        task_id: str = "",
+        reason: str = "sequential",
+        success: bool = True,
+        blocked: bool = False,
+        output_data: dict | None = None,
+        extra: dict | None = None,
+    ) -> None:
+        """Tamper-evident audit when the pipeline queues the next agent."""
+        try:
+            from security.agent_handoff_audit import log_handoff_from_task
+
+            log_handoff_from_task(
+                product_id=product_id,
+                from_agent=from_agent,
+                from_state=from_state,
+                next_task=next_task,
+                task_id=task_id,
+                reason=reason,
+                success=success,
+                blocked=blocked,
+                output_data=output_data,
+                extra=extra,
+            )
+        except Exception:
+            logger.debug("Agent handoff audit skipped", exc_info=False)
+
     def _request_shutdown(self, reason: str = "signal") -> None:
         if not self._shutdown_reason:
             self._shutdown_reason = reason
@@ -636,6 +669,14 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                     for t in task_queue
                 ):
                     task_queue.append(next_task)
+                    self._audit_agent_handoff(
+                        product_id=pid,
+                        from_agent="__runtime_test__",
+                        from_state="CODE_COMMITTED",
+                        next_task=next_task,
+                        task_id=task_id,
+                        reason="runtime_test_passed",
+                    )
                 logger.info("Runtime tests passed for %s", pid)
             else:
                 products[pid]["state"] = "BUG_FOUND"
@@ -652,26 +693,34 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                     for t in task_queue
                 )
                 if not exists:
-                    task_queue.append(
-                        {
-                            "id": f"task-{uuid.uuid4().hex[:12]}",
+                    runtime_dev_task = {
+                        "id": f"task-{uuid.uuid4().hex[:12]}",
+                        "product_id": pid,
+                        "agent_type": "developer",
+                        "state": "DEV_FIXING",
+                        "status": "pending",
+                        "retry_count": 0,
+                        "max_retries": 3,
+                        "input_data": {
                             "product_id": pid,
-                            "agent_type": "developer",
-                            "state": "DEV_FIXING",
-                            "status": "pending",
-                            "retry_count": 0,
-                            "max_retries": 3,
-                            "input_data": {
-                                "product_id": pid,
-                                "idea": product.get("idea", ""),
-                                "runtime_test_results": runtime_result.get("results", []),
-                                "admin_instructions": (
-                                    "Runtime tests failed. Fix import/runtime issues and make tests pass before hardening."
-                                ),
-                            },
-                            "created_at": time.time(),
-                            "priority": self._get_priority("developer"),
-                        }
+                            "idea": product.get("idea", ""),
+                            "runtime_test_results": runtime_result.get("results", []),
+                            "admin_instructions": (
+                                "Runtime tests failed. Fix import/runtime issues and make tests pass before hardening."
+                            ),
+                        },
+                        "created_at": time.time(),
+                        "priority": self._get_priority("developer"),
+                    }
+                    task_queue.append(runtime_dev_task)
+                    self._audit_agent_handoff(
+                        product_id=pid,
+                        from_agent="__runtime_test__",
+                        from_state="CODE_COMMITTED",
+                        next_task=runtime_dev_task,
+                        task_id=task_id,
+                        reason="runtime_test_failed",
+                        success=False,
                     )
                 logger.warning("Runtime tests failed for %s; queued developer fix", pid)
             return
@@ -762,27 +811,37 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                                 for t in task_queue
                             )
                             if not existing:
-                                task_queue.append(
-                                    {
-                                        "id": f"task-{uuid.uuid4().hex[:12]}",
+                                arch_retry_task = {
+                                    "id": f"task-{uuid.uuid4().hex[:12]}",
+                                    "product_id": pid,
+                                    "agent_type": "architect",
+                                    "state": "ARCH_DESIGNED",
+                                    "status": "pending",
+                                    "retry_count": 0,
+                                    "max_retries": 3,
+                                    "input_data": {
                                         "product_id": pid,
-                                        "agent_type": "architect",
-                                        "state": "ARCH_DESIGNED",
-                                        "status": "pending",
-                                        "retry_count": 0,
-                                        "max_retries": 3,
-                                        "input_data": {
-                                            "product_id": pid,
-                                            "idea": product.get("idea", ""),
-                                            "architecture_gate_feedback": arch_issues,
-                                            "admin_instructions": (
-                                                "Architecture gatekeeper failed. Fix layering, module boundaries, "
-                                                "and migration discipline before developer stage."
-                                            ),
-                                        },
-                                        "created_at": time.time(),
-                                        "priority": self._get_priority("architect"),
-                                    }
+                                        "idea": product.get("idea", ""),
+                                        "architecture_gate_feedback": arch_issues,
+                                        "admin_instructions": (
+                                            "Architecture gatekeeper failed. Fix layering, module boundaries, "
+                                            "and migration discipline before developer stage."
+                                        ),
+                                    },
+                                    "created_at": time.time(),
+                                    "priority": self._get_priority("architect"),
+                                }
+                                task_queue.append(arch_retry_task)
+                                self._audit_agent_handoff(
+                                    product_id=pid,
+                                    from_agent=agent_type,
+                                    from_state=str(task.get("state") or ""),
+                                    next_task=arch_retry_task,
+                                    task_id=task_id,
+                                    reason="architecture_gate",
+                                    success=False,
+                                    output_data=output.data if isinstance(output.data, dict) else None,
+                                    extra={"issues": arch_issues[:8]},
                                 )
                             logger.warning("Architecture gate blocked developer stage for %s: %s", pid, arch_issues)
                             return
@@ -991,6 +1050,15 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                                         "priority": self._get_priority("developer"),
                                     }
                                     task_queue.append(dev_task)
+                                    self._audit_agent_handoff(
+                                        product_id=pid,
+                                        from_agent=agent_type,
+                                        from_state=prev_state,
+                                        next_task=dev_task,
+                                        task_id=task_id,
+                                        reason="monitoring_refresh",
+                                        output_data=output.data if isinstance(output.data, dict) else None,
+                                    )
                                     logger.warning(
                                         "Monitoring → developer refresh for %s (repair %s/%s)",
                                         pid,
@@ -1046,6 +1114,16 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                                 "priority": self._get_priority("developer"),
                             }
                             task_queue.append(dev_task)
+                            self._audit_agent_handoff(
+                                product_id=pid,
+                                from_agent=agent_type,
+                                from_state=prev_state,
+                                next_task=dev_task,
+                                task_id=task_id,
+                                reason="release_critic",
+                                blocked=True,
+                                output_data=output.data if isinstance(output.data, dict) else None,
+                            )
                             logger.warning(
                                 "Release critic blocked completion for %s; queued DEV_FIXING (%s)",
                                 pid,
@@ -1114,6 +1192,16 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                         )
                         if not exists:
                             task_queue.append(dev_task)
+                            self._audit_agent_handoff(
+                                product_id=pid,
+                                from_agent=agent_type,
+                                from_state=prev_state,
+                                next_task=dev_task,
+                                task_id=task_id,
+                                reason="qa_gate",
+                                blocked=True,
+                                output_data=output.data if isinstance(output.data, dict) else None,
+                            )
                             logger.warning(
                                 f"QA gates failed for {pid} (repair {new_repair_round}/{max_quality_loops}); "
                                 "BUG_FOUND → developer DEV_FIXING (mandatory regen/fix until gates pass or limit)"
@@ -1155,6 +1243,16 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                         )
                         if not exists:
                             task_queue.append(dev_task)
+                            self._audit_agent_handoff(
+                                product_id=pid,
+                                from_agent=agent_type,
+                                from_state=prev_state,
+                                next_task=dev_task,
+                                task_id=task_id,
+                                reason="security_gate",
+                                blocked=True,
+                                output_data=output.data if isinstance(output.data, dict) else None,
+                            )
                             logger.warning(
                                 "Security gate failed for %s (repair %s/%s); "
                                 "BUG_FOUND → developer DEV_FIXING",
@@ -1194,6 +1292,15 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                             )
                             if not exists:
                                 task_queue.append(next_task)
+                                self._audit_agent_handoff(
+                                    product_id=pid,
+                                    from_agent=agent_type,
+                                    from_state=prev_state,
+                                    next_task=next_task,
+                                    task_id=task_id,
+                                    reason="sequential",
+                                    output_data=output.data if isinstance(output.data, dict) else None,
+                                )
                                 logger.info(f"Next task created for {pid}: {next_task['agent_type']} -> {next_task['state']}")
                 else:
                     task["status"] = "failed"
@@ -1328,6 +1435,15 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                     )
                     if not exists:
                         task_queue.append(next_task)
+                        self._audit_agent_handoff(
+                            product_id=pid,
+                            from_agent=agent_type,
+                            from_state=prev_state,
+                            next_task=next_task,
+                            task_id=task_id,
+                            reason="sequential_fallback",
+                            output_data=task.get("output_data") if isinstance(task.get("output_data"), dict) else None,
+                        )
                         logger.info(f"Next task created for {pid}: {next_task['agent_type']} -> {next_task['state']}")
 
     def _build_context(self, task_queue: list, product_id: str) -> dict:

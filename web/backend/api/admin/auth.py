@@ -19,6 +19,7 @@ from pydantic import BaseModel, Field
 from web.backend.core.admin_roles import normalize_role, require_admin_with_rbac
 from web.backend.services.demo_credentials import sandbox_demo_password_uses_default
 from web.backend.core.security import SecurityManager
+from web.backend.middleware.csrf import CSRF_COOKIE, CSRF_HEADER, new_csrf_token
 from web.backend.services import admin_users_store as aus
 
 logger = logging.getLogger(__name__)
@@ -49,6 +50,7 @@ class LoginRequest(BaseModel):
     username: str = Field(default="admin", min_length=1, max_length=64)
     password: str = Field(..., min_length=1)
     totp_code: Optional[str] = None
+    webauthn_credential: Optional[dict] = None
 
 
 class Setup2FARequest(BaseModel):
@@ -105,12 +107,30 @@ def _resolve_role_for_login(username: str) -> str:
     return "super_admin"
 
 
-def _admin_twofa_flags() -> tuple[bool, bool]:
-    """(totp_enabled, totp_pending_setup)."""
+def _admin_twofa_flags() -> tuple[bool, bool, bool, str]:
+    """(totp_enabled, totp_pending_setup, webauthn_enabled, mfa_method)."""
+    from security import webauthn_admin as wa
+
     cfg = _load_legacy_admin()
-    enabled = bool(cfg.get("totp_enabled") and cfg.get("totp_secret"))
+    totp_on = bool(cfg.get("totp_enabled") and cfg.get("totp_secret"))
     pending = bool(cfg.get("pending_totp_secret"))
-    return enabled, pending
+    webauthn_on = wa.webauthn_is_enabled(cfg)
+    method = str(cfg.get("mfa_method") or ("webauthn" if webauthn_on else ("totp" if totp_on else "")))
+    return totp_on, pending, webauthn_on, method
+
+
+def _active_mfa_method(login_username: str) -> str:
+    """Return ``webauthn``, ``totp``, or empty string."""
+    from security import webauthn_admin as wa
+
+    cfg = _load_legacy_admin()
+    if wa.webauthn_is_enabled(cfg):
+        legacy_user = str(cfg.get("username") or "admin").strip().lower()
+        if legacy_user == aus.normalize_username(login_username):
+            return "webauthn"
+    if _legacy_totp_applies(login_username):
+        return "totp"
+    return ""
 
 
 @router.post("/login")
@@ -142,7 +162,28 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
         )
 
     cfg = _load_legacy_admin()
-    if _legacy_totp_applies(login_data.username):
+    mfa = _active_mfa_method(login_data.username)
+    if mfa == "webauthn":
+        from security import webauthn_admin as wa
+
+        if not login_data.webauthn_credential:
+            security.record_login_attempt(client_ip, False, login_data.username)
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="WebAuthn required",
+            )
+        try:
+            wa.verify_authentication(
+                aus.normalize_username(login_data.username),
+                login_data.webauthn_credential,
+            )
+        except ValueError as e:
+            security.record_login_attempt(client_ip, False, login_data.username)
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=str(e) or "Invalid passkey",
+            ) from e
+    elif mfa == "totp":
         secret = cfg.get("totp_secret")
         if not login_data.totp_code:
             security.record_login_attempt(client_ip, False, login_data.username)
@@ -166,6 +207,7 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
     security.record_login_attempt(client_ip, True, login_data.username)
 
     cookie_secure = _access_token_cookie_secure(request)
+    csrf = new_csrf_token()
     response.set_cookie(
         key="access_token",
         value=token,
@@ -175,24 +217,41 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
         max_age=1800,
         path="/",
     )
+    response.set_cookie(
+        key=CSRF_COOKIE,
+        value=csrf,
+        httponly=False,
+        secure=cookie_secure,
+        samesite="strict",
+        max_age=1800,
+        path="/",
+    )
 
     return {
         "access_token": token,
         "token_type": "bearer",
         "expires_in": 1800,
         "role": normalize_role(role_str).value,
+        "csrf_token": csrf,
     }
 
 
 @router.post("/logout")
 async def admin_logout(request: Request, response: Response):
     """Logout admin user."""
+    cookie_secure = _access_token_cookie_secure(request)
     response.delete_cookie(
         "access_token",
         path="/",
         httponly=True,
-        secure=_access_token_cookie_secure(request),
+        secure=cookie_secure,
         samesite="lax",
+    )
+    response.delete_cookie(
+        CSRF_COOKIE,
+        path="/",
+        secure=cookie_secure,
+        samesite="strict",
     )
     return {"message": "Logged out successfully"}
 
@@ -202,7 +261,7 @@ async def get_current_admin_info(
     current_admin: dict = Depends(require_admin_with_rbac),
 ):
     """Get current admin info."""
-    totp_enabled, totp_pending = _admin_twofa_flags()
+    totp_enabled, totp_pending, webauthn_enabled, mfa_method = _admin_twofa_flags()
     r = current_admin.get("role")
     return {
         "username": current_admin.get("sub"),
@@ -210,6 +269,8 @@ async def get_current_admin_info(
         "role": normalize_role(r).value if r else normalize_role(None).value,
         "totp_enabled": totp_enabled,
         "totp_pending": totp_pending,
+        "webauthn_enabled": webauthn_enabled,
+        "mfa_method": mfa_method or None,
         "sandbox_demo_password_uses_default": sandbox_demo_password_uses_default(),
     }
 
@@ -221,9 +282,14 @@ async def setup_2fa(
     current_admin: dict = Depends(require_admin_with_rbac),
 ):
     """Setup 2FA — metadata stored in legacy admin.json."""
+    from security import webauthn_admin as wa
+
     security: SecurityManager = request.app.state.security_manager
     if not ADMIN_JSON.exists():
         raise HTTPException(status_code=500, detail="admin.json missing")
+
+    if wa.webauthn_is_enabled(wa.load_admin_config()):
+        raise HTTPException(status_code=400, detail="Remove passkeys before enabling TOTP")
 
     with open(ADMIN_JSON, "r", encoding="utf-8") as f:
         admin_config = json.load(f)
@@ -268,7 +334,11 @@ async def verify_2fa(
 
     admin_config["totp_secret"] = pending_secret
     admin_config["totp_enabled"] = True
+    admin_config["mfa_method"] = "totp"
     admin_config.pop("pending_totp_secret", None)
+    admin_config.pop("webauthn_credentials", None)
+    admin_config["webauthn_enabled"] = False
+    admin_config.pop("webauthn_pending", None)
 
     with open(ADMIN_JSON, "w", encoding="utf-8") as f:
         json.dump(admin_config, f, indent=2)
@@ -311,6 +381,8 @@ async def disable_2fa(
     admin_config.pop("totp_secret", None)
     admin_config["totp_enabled"] = False
     admin_config.pop("pending_totp_secret", None)
+    if str(admin_config.get("mfa_method") or "").lower() == "totp":
+        admin_config.pop("mfa_method", None)
 
     with open(ADMIN_JSON, "w", encoding="utf-8") as f:
         json.dump(admin_config, f, indent=2)
@@ -347,3 +419,80 @@ async def change_password(
             json.dump(cfg, f, indent=2)
 
     return {"message": "Password changed successfully"}
+
+
+class WebAuthnLoginOptionsRequest(BaseModel):
+    username: str = Field(min_length=1, max_length=64)
+
+
+class WebAuthnRegisterVerifyRequest(BaseModel):
+    credential: dict
+    label: str = Field(default="Passkey", max_length=64)
+
+
+class WebAuthnDisableRequest(BaseModel):
+    password: str
+
+
+@router.post("/webauthn/login/options")
+async def webauthn_login_options(body: WebAuthnLoginOptionsRequest):
+    """Begin WebAuthn authentication (after password verified; second login step)."""
+    from security import webauthn_admin as wa
+
+    cfg = wa.load_admin_config()
+    if not wa.webauthn_is_enabled(cfg):
+        raise HTTPException(status_code=400, detail="WebAuthn 2FA is not enabled")
+    try:
+        options = wa.authentication_options(aus.normalize_username(body.username))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    return {"publicKey": options}
+
+
+@router.post("/webauthn/register/options")
+async def webauthn_register_options(
+    current_admin: dict = Depends(require_admin_with_rbac),
+):
+    """Begin passkey registration for the logged-in admin."""
+    from security import webauthn_admin as wa
+
+    if not wa.webauthn_enabled_globally():
+        raise HTTPException(status_code=400, detail="WebAuthn is disabled on this server")
+    try:
+        options = wa.registration_options(current_admin["sub"])
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    return {"publicKey": options}
+
+
+@router.post("/webauthn/register/verify")
+async def webauthn_register_verify(
+    body: WebAuthnRegisterVerifyRequest,
+    current_admin: dict = Depends(require_admin_with_rbac),
+):
+    """Complete passkey registration (disables TOTP when enabled)."""
+    from security import webauthn_admin as wa
+
+    try:
+        return wa.verify_registration(current_admin["sub"], body.credential, label=body.label)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+
+@router.post("/webauthn/disable")
+async def webauthn_disable(
+    body: WebAuthnDisableRequest,
+    request: Request,
+    current_admin: dict = Depends(require_admin_with_rbac),
+):
+    """Remove all passkeys after password confirmation."""
+    from security import webauthn_admin as wa
+
+    security: SecurityManager = request.app.state.security_manager
+    if not _verify_password_for_login(security, current_admin["sub"], body.password):
+        raise HTTPException(status_code=400, detail="Invalid password")
+    try:
+        wa.disable_webauthn(password_ok=True)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    return {"message": "WebAuthn disabled"}

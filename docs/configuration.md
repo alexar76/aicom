@@ -50,3 +50,26 @@ Not every YAML file participates in this merge:
 Provider ids in `model_providers.yaml` (`default_provider`, `providers` keys, routing `preferred_provider` / `fallback_provider`) should match `providers` keys in `llm_pricing.yaml` (canonical DeepSeek cloud id: **`deepseek_api`**, aligned with `config/fragments/50-llm.yaml`).
 
 Treat those as separate documents unless explicitly wired to `load_merged_config`.
+
+## Security-related environment variables
+
+See **[security.md](./security.md)** for narrative and production checklist. Quick reference:
+
+| Variable | Role |
+|----------|------|
+| `AIFACTORY_DEV_BOOTSTRAP_PASSWORD` | Dev only: known password on first empty install (skips console prompt). |
+| `AIFACTORY_CSRF_PROTECT` | `1` (default): CSRF double-submit for admin cookie sessions. |
+| `AIFACTORY_FIREWALL_ENFORCE` | `1`: enforce full firewall ACL on HTTP; unset = rate limit + deny list only. |
+| `AIFACTORY_FIREWALL_RULES_FERNET_KEY` | Fernet key for encrypted `data/config/firewall_rules.json`. |
+| `AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION` | `1` (default): internal Docker network for compose previews (no egress). |
+| `AIFACTORY_ENABLE_DEFAULT_CSP` / `AIFACTORY_CSP` | API/HTML Content-Security-Policy headers. |
+| `AIFACTORY_ENABLE_HSTS` | Emit Strict-Transport-Security behind HTTPS. |
+| `JWT_SECRET_KEY` | HS256 signing key (≥32 chars) or use `data/secrets/jwt_secret.key` from entrypoint. |
+| `AIFACTORY_SECRETS_VAULT_FILE` | Encrypted secrets vault path (default `data/secrets/encrypted_vault.json`). |
+| `AIFACTORY_SECRETS_MASTER_KEY_FILE` | Fernet master key path (default `data/secrets/master.key`) — keep separate from vault file. |
+| `GRAFANA_ADMIN_PASSWORD` | Grafana UI password — `fill_production_env.py` generates when missing. |
+| `AIFACTORY_SANDBOX_REQUIRE_CONTAINER` | `1` = pipeline sandbox fails if Docker container cannot start (no subprocess fallback). |
+
+**Host LLM on bare metal:** use compose overlay `docker-compose.host-gateway.yml` (not enabled in base `docker-compose.yml`).
+
+**Product content language** at create time: request fields `interface_locale` and `content_locale` (`auto` or `en`/`ru`/…); stored on pipeline products for Architect/Developer agents.

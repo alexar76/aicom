@@ -580,12 +580,15 @@ async rewrites() {
 
         <SubHeading>4. Login to Admin</SubHeading>
         <Paragraph>
-          Default credentials are generated on first startup and stored in <code>/app/data/config/admin.json</code>.
+          There is no default <code>admin123</code> password. On first startup with an empty data volume, the entrypoint
+          asks for a password in the console when stdin is a TTY; otherwise it writes a one-time password to{' '}
+          <code>data/secrets/bootstrap_admin.txt</code>. See <code>docs/security.md</code> in the repository.
         </Paragraph>
         <List items={[
           'Username: <code>admin</code>',
-          'Password: <code>admin123</code> (default, change immediately)',
+          'Password: set at first bootstrap (console prompt or bootstrap file)',
           'Navigate to <code>/admin/login</code> and sign in',
+          'Dev only: <code>AIFACTORY_DEV_BOOTSTRAP_PASSWORD</code> in <code>.env</code>',
         ]} />
 
         <SubHeading>5. Create Your First Product</SubHeading>
@@ -595,9 +598,9 @@ docker exec -it ai-factory python cli/ai_company_cli.py create-idea "Your produc
 # Or via Admin Panel
 # Go to /admin → New Product tab → Submit idea`} />
 
-        <InfoBox title="Docker-in-Docker" variant="info">
-          The container includes Docker-in-Docker for sandbox isolation. If you need sandbox features,
-          add <code>--privileged</code> or mount the Docker socket.
+        <InfoBox title="Docker sandbox" variant="info">
+          The factory image can run isolated preview containers (network none, dropped capabilities).
+          Host-gateway to reach Ollama on the host is opt-in via <code>docker-compose.host-gateway.yml</code> — not enabled by default.
         </InfoBox>
       </div>
     ),
@@ -1180,9 +1183,10 @@ docker compose exec app python /app/cli/ai_company_cli.py audit export --from=20
           'Automatic alerts on suspicious activity',
         ]} />
 
-        <InfoBox title="Default Credentials" variant="warning">
-          Default password is <code>admin123</code>. Change it immediately after first login via the
-          Settings tab in the admin panel.
+        <InfoBox title="First admin password" variant="warning">
+          No fixed default password. Use the console prompt on first TTY start, read{' '}
+          <code>data/secrets/bootstrap_admin.txt</code> for detached Compose, or rotate via Admin → Users.
+          CSRF protection applies to cookie-based admin sessions (<code>X-CSRF-Token</code> header).
         </InfoBox>
       </div>
     ),

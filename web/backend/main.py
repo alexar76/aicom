@@ -122,9 +122,23 @@ async def lifespan(app: FastAPI):
     # Initialize security
     app.state.security_manager = SecurityManager()
 
+    from security.firewall import FirewallManager
+
+    rules_path = factory_data_root() / "config" / "firewall_rules.json"
+    app.state.firewall = FirewallManager(str(rules_path))
+
     from web.backend.services.admin_users_store import ensure_legacy_admin_users_file
 
     ensure_legacy_admin_users_file()
+
+    try:
+        from llm.bootstrap_providers import auto_migrate_provider_ids
+
+        mig = auto_migrate_provider_ids()
+        if mig.get("yaml", {}).get("keys_renamed") or mig.get("jsonl", {}).get("migrated"):
+            logger.info("Provider id auto-migration: %s", mig)
+    except Exception as e:
+        logger.warning("Provider id auto-migration skipped: %s", e)
     
     # Initialize telemetry
     app.state.telemetry = TelemetryCollector()
@@ -180,6 +194,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+from web.backend.middleware.csrf import csrf_protect_middleware
+from web.backend.middleware.firewall_http import firewall_http_middleware
+
+app.middleware("http")(csrf_protect_middleware)
+app.middleware("http")(firewall_http_middleware)
 
 
 @app.middleware("http")

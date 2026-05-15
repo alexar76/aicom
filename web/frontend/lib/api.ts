@@ -6,6 +6,14 @@ import { buildAgentsTabRows, type AgentLogMetricsSlice } from './pipelineStages'
 
 const API_BASE = '/api';
 
+const UNSAFE_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
+function readCsrfCookie(): string | null {
+  if (typeof document === 'undefined') return null;
+  const m = document.cookie.match(/(?:^|;\s*)csrf_token=([^;]*)/);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
 /** Thrown by {@link ApiClient.request} so UI can map status + message to recovery steps. */
 export class ApiRequestError extends Error {
   readonly status: number;
@@ -427,6 +435,8 @@ export interface AdminMeResponse {
   role: string;
   totp_enabled: boolean;
   totp_pending: boolean;
+  webauthn_enabled?: boolean;
+  mfa_method?: string | null;
   /** True when unset/blank or still set to the legacy public demo password SandboxDemo!2026 (unsafe on reachable hosts). */
   sandbox_demo_password_uses_default?: boolean;
 }
@@ -492,6 +502,14 @@ class ApiClient {
       headers['Authorization'] = `Bearer ${adminToken}`;
     } else if (customerToken) {
       headers['Authorization'] = `Bearer ${customerToken}`;
+    }
+
+    const method = (fetchInit.method || 'GET').toUpperCase();
+    if (UNSAFE_METHODS.has(method) && endpoint.startsWith('/admin')) {
+      const csrf = readCsrfCookie();
+      if (csrf) {
+        headers['X-CSRF-Token'] = csrf;
+      }
     }
 
     const signal =
@@ -716,15 +734,49 @@ class ApiClient {
 
   // ── Admin Auth ──────────────────────────────────────────────────────────
 
-  async login(username: string, password: string, totpCode?: string): Promise<LoginResponse> {
+  async login(
+    username: string,
+    password: string,
+    totpCode?: string,
+    webauthnCredential?: Record<string, unknown>
+  ): Promise<LoginResponse> {
     const body: Record<string, unknown> = {
       username: (username || 'admin').trim(),
       password,
     };
     if (totpCode) body.totp_code = totpCode;
+    if (webauthnCredential) body.webauthn_credential = webauthnCredential;
     return this.request('/admin/auth/login', {
       method: 'POST',
       body: JSON.stringify(body),
+    });
+  }
+
+  async webauthnLoginOptions(username: string): Promise<{ publicKey: Record<string, unknown> }> {
+    return this.request('/admin/auth/webauthn/login/options', {
+      method: 'POST',
+      body: JSON.stringify({ username: (username || 'admin').trim() }),
+    });
+  }
+
+  async webauthnRegisterOptions(): Promise<{ publicKey: Record<string, unknown> }> {
+    return this.request('/admin/auth/webauthn/register/options', { method: 'POST' });
+  }
+
+  async webauthnRegisterVerify(
+    credential: Record<string, unknown>,
+    label = 'Passkey'
+  ): Promise<{ message: string; credential_id?: string }> {
+    return this.request('/admin/auth/webauthn/register/verify', {
+      method: 'POST',
+      body: JSON.stringify({ credential, label }),
+    });
+  }
+
+  async disableWebAuthn(password: string): Promise<{ message: string }> {
+    return this.request('/admin/auth/webauthn/disable', {
+      method: 'POST',
+      body: JSON.stringify({ password }),
     });
   }
 
@@ -997,6 +1049,19 @@ class ApiClient {
     if (since != null) params.set('since', String(since));
     if (until != null) params.set('until', String(until));
     return this.request(`/admin/security/logs?${params}`);
+  }
+
+  async getAgentHandoffs(
+    limit: number = 200,
+    since?: number,
+    until?: number,
+    productId?: string
+  ): Promise<{ handoffs: any[]; count: number; total: number }> {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (since != null) params.set('since', String(since));
+    if (until != null) params.set('until', String(until));
+    if (productId) params.set('product_id', productId);
+    return this.request(`/admin/agent/handoffs?${params}`);
   }
 
   async getDirectorReports(): Promise<DirectorReport[]> {

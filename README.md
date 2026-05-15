@@ -270,9 +270,12 @@ If you must run without the script, use the **identical bind mount path**:
 docker run -d --name ai-factory --restart unless-stopped \
   -p 8080:8080 -p 8081:8081 \
   -v ~/aicom-data:/app/data \
-  --add-host host.docker.internal:host-gateway \
   ai-factory:latest
 ```
+
+> **Host LLM (Ollama on the host):** use Compose overlay  
+> `docker compose -f docker-compose.yml -f docker-compose.host-gateway.yml up -d`  
+> instead of `--add-host host.docker.internal:host-gateway` on manual `docker run`.
 
 > **🚨 CRITICAL: Use `-v ~/aicom-data:/app/data` (bind mount), NOT a Docker named volume!**
 >
@@ -354,7 +357,7 @@ Ports default to **9080** (UI), **9081** (API), **9090** (Prometheus), **9082** 
 
 | Service     | URL (defaults)                       | Credentials              |
 |-------------|--------------------------------------|--------------------------|
-| App         | http://localhost:9080                | admin / admin123 (Admin UI) |
+| App         | http://localhost:9080                | `admin` + password from [first-run bootstrap](docs/security.md) |
 | API Health  | http://localhost:9081/api/health     | —                        |
 | Metrics     | http://localhost:9081/metrics        | —                        |
 | Prometheus  | http://localhost:9090               | —                        |
@@ -362,7 +365,8 @@ Ports default to **9080** (UI), **9081** (API), **9090** (Prometheus), **9082** 
 
 ### Production checklist (honest)
 
-- Set **`GRAFANA_ADMIN_PASSWORD`**, rotate **admin** password after first login; store **LLM/API keys** only in `.env` or secrets manager, not in git.
+- Set **`GRAFANA_ADMIN_PASSWORD`**; on first install set **admin** password via console prompt or `data/secrets/bootstrap_admin.txt` — see **[docs/security.md](docs/security.md)** (no default `admin123`).
+- Store **LLM/API keys** only in `.env` or secrets manager, not in git.
 - Configure Git credentials via credential helper (not embedded remote URLs), for example: `git config --global credential.helper store` or your OS keychain helper.
 - **Customer JWT** is persisted under `data/secrets/customer_jwt.key` by the container entrypoint so purchases survive restarts.
 - **Stripe self-serve plans**: set `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET`, then use `POST /api/customer/billing/stripe/checkout` and point Stripe webhook to `POST /api/customer/billing/stripe/webhook` for automatic `free -> maker/studio/enterprise` entitlement updates.
@@ -429,7 +433,7 @@ To disable SQLite and use the JSON backend only, override in `docker-compose.yml
 
 - **URL**: http://localhost:8080/admin/login
 - **Login**: `admin`
-- **Password**: `admin123`
+- **Password**: set on first empty data volume — interactive console (TTY) or `data/secrets/bootstrap_admin.txt` when running detached; see **[docs/security.md](docs/security.md)**
 
 ## API Endpoints
 

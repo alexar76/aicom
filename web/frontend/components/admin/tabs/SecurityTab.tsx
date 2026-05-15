@@ -353,7 +353,9 @@ export function SecurityTab() {
       <GlassCard>
         <h3 className="text-lg font-medium text-white mb-4">Security Audit Logs</h3>
         <p className="text-xs text-gray-500 mb-4">
-          Admin authentication and sensitive-action audit trail (not the pipeline Security agent). Appears after logins and admin API actions are recorded.
+          Tamper-evident hash chain: admin logins, sensitive admin APIs, and pipeline agent handoffs (
+          <code className="text-gray-400">agent_handoff</code>). Search <code className="text-gray-400">agent_handoff</code>{' '}
+          or filter by actor <code className="text-gray-400">agent:pm</code> to trace who queued the next agent.
         </p>
         {auditLoading && logs.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 py-12 text-gray-400">

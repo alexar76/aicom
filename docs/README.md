@@ -10,6 +10,7 @@
 ## Deployment
 
 - **`configuration.md`** — layered YAML (`config/fragments/` + overlay), env vars, Admin Settings save semantics, and what *not* to merge.
+- **`security.md`** — first-run admin password (console prompt / bootstrap file), CSRF, firewall, audit chain, sandbox/host-gateway, landing language rules.
 - **[`scripts/deploy.sh`](../scripts/deploy.sh)** — Docker Compose: optional `.env` auto-fill for **missing** keys (`scripts/fill_production_env.py`, `--public-url`, `--dry-run`) + `build` / `up -d app`.
 - `auto-publish.md` — static deploy after DevOps (Vercel / Netlify / Cloudflare Pages); env tokens and `data/state/.../auto_publish.json`.
 - `deploy-full-software-cloud.md` — **full_software** backends (DB, long-lived API): Railway/Fly/Run-style layout, **Admin → Settings** Railway hook, `railway_deploy.json` for external CI.
