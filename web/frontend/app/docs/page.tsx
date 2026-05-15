@@ -33,6 +33,7 @@ import {
   Palette,
   Crown,
   Workflow,
+  GraduationCap,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
@@ -297,6 +298,60 @@ const docSections: DocSection[] = [
           For printable diagrams (Mermaid), full scenario tables, and pitfalls see{' '}
           <code className="text-cyan-300">docs/owner-guide.md</code> in the repository — kept in sync with this tab.
         </InfoBox>
+
+        <InfoBox title="Illustrated User Guide" variant="info">
+          Step-by-step “for dummies” usage with screenshots:{' '}
+          <code className="text-cyan-300">docs/USER_GUIDE.md</code> — also surfaced as the <span className="font-medium text-gray-200">User guide</span> tab here
+          on <code className="text-cyan-300">/docs</code>.
+        </InfoBox>
+      </div>
+    ),
+  },
+  {
+    id: 'user-guide',
+    title: 'User guide',
+    icon: GraduationCap,
+    content: (
+      <div>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 flex items-center gap-3">
+          <GraduationCap className="w-9 h-9 text-emerald-400" />
+          <span>
+            Illustrated <span className="text-gradient-primary">User Guide</span>
+          </span>
+        </h2>
+        <Badge variant="info" className="mb-6">
+          For dummies · Storefront + Admin · Screenshots refreshed from your running stack
+        </Badge>
+
+        <Paragraph>
+          The canonical Markdown lives in <code className="text-cyan-400">docs/USER_GUIDE.md</code> inside the repository.
+          It is written for operators who need a **gentle path** before diving into <code className="text-cyan-400">docs/admin-guide.md</code>{' '}
+          (every tab, every API touchpoint).
+        </Paragraph>
+
+        <SubHeading>What you will learn</SubHeading>
+        <List
+          items={[
+            'How the storefront, `/docs`, and `/admin` relate.',
+            'First-day checklist: login → New product wizard → Pipeline.',
+            'New Product: progress bar, quick-start templates, local vs cloud templates, AI prefill consent, actionable errors.',
+            'Workshop: board, spec/architecture diff, iteration canvas, multi-device lab, pattern library, Web Push.',
+            'Where to click when LLM or network errors appear (links are embedded in red panels in the live UI).',
+          ]}
+        />
+
+        <SubHeading>Screenshots (latest capture)</SubHeading>
+        <Paragraph>Regenerate anytime: <code className="text-cyan-400">cd web/frontend && npm run capture-docs-screenshots</code></Paragraph>
+        <DocScreenshot src="/docs-screenshots/public-home.png" caption="Storefront home — public entry." />
+        <DocScreenshot src="/docs-screenshots/public-docs.png" caption="In-app documentation — this site." />
+        <DocScreenshot src="/docs-screenshots/admin-new-product.png" caption="New product — guided wizard + templates." />
+        <DocScreenshot src="/docs-screenshots/admin-workshop.png" caption="Workshop — board, diffs, canvas, patterns, push." />
+        <DocScreenshot src="/docs-screenshots/admin-pipeline.png" caption="Pipeline — operational truth for every prod-… id." />
+
+        <InfoBox title="Offline / PDF" variant="warning">
+          Open <code className="text-cyan-300">docs/USER_GUIDE.md</code> in your editor or GitHub and print to PDF if leadership wants a paper packet.
+          Mermaid-heavy owner content stays in <code className="text-cyan-300">docs/owner-guide.md</code>.
+        </InfoBox>
       </div>
     ),
   },
@@ -407,7 +462,10 @@ const docSections: DocSection[] = [
         <DocScreenshot src="/docs-screenshots/admin-login.png" caption="Admin login — rotate credentials on day one." />
         <DocScreenshot src="/docs-screenshots/admin-dashboard.png" caption="Dashboard snapshot — differs from storefront-visible counts." />
         <DocScreenshot src="/docs-screenshots/admin-pipeline.png" caption="Pipeline monitor — storefront controls live inside expanded completed cards." />
+        <DocScreenshot src="/docs-screenshots/admin-new-product.png" caption="New product — guided wizard, quick-start chips, cloud templates." />
+        <DocScreenshot src="/docs-screenshots/admin-workshop.png" caption="Workshop — material diff, iteration canvas, pattern library, Web Push." />
         <DocScreenshot src="/docs-screenshots/admin-providers.png" caption="LLM Providers — keys, routing, health probes." />
+        <DocScreenshot src="/docs-screenshots/admin-settings.png" caption="Settings — factory-wide configuration surface." />
 
         <InfoBox title="Mermaid diagrams & printable PDF" variant="info">
           GitHub renders the flowcharts in <code className="text-cyan-300">docs/owner-guide.md</code>. Copy that file into Notion,

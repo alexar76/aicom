@@ -56,6 +56,7 @@ export const PIPELINE_CATALOG_MAX_PAGE = 2000;
  *
  * @param opts.startOffset — skip earlier products (for "load more" after initial slice).
  * @param opts.maxPages — stop after N API pages (e.g. `1` for lazy first paint, then append).
+ * @param opts.pageSize — rows per request (default max page size 2000; use e.g. 2 for tiny batches).
  */
 export async function fetchPipelineCatalogAllPages(
   sort: 'newest' | 'shipped_first' = 'shipped_first',
@@ -64,15 +65,20 @@ export async function fetchPipelineCatalogAllPages(
     signal?: AbortSignal;
     startOffset?: number;
     maxPages?: number;
+    pageSize?: number;
   },
 ): Promise<void> {
+  const pageSize = Math.min(
+    PIPELINE_CATALOG_MAX_PAGE,
+    Math.max(1, Math.floor(opts?.pageSize ?? PIPELINE_CATALOG_MAX_PAGE)),
+  );
   let offset = Math.max(0, opts?.startOffset ?? 0);
   let total: number | null = null;
   let pagesDone = 0;
 
   for (;;) {
     if (opts?.signal?.aborted) return;
-    const data = await fetchPipelineCatalogResilient(PIPELINE_CATALOG_MAX_PAGE, offset, sort);
+    const data = await fetchPipelineCatalogResilient(pageSize, offset, sort);
     if (opts?.signal?.aborted) return;
     const batch = data.products || [];
     if (typeof data.total === 'number') {

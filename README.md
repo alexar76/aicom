@@ -219,6 +219,7 @@ Repository licensing and contribution policy:
 
 End-user and admin documentation (icons match the UI, step-by-step sections, screenshots in the repo):
 
+- **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)** — **illustrated user guide** (step-by-step, screenshots): storefront, `/docs`, New product wizard, Workshop, error recovery
 - **[docs/owner-guide.md](docs/owner-guide.md)** — **platform owner handbook** (English): scenarios, Mermaid diagrams, storefront controls, pitfalls
 - **[docs/api-integration-guide.md](docs/api-integration-guide.md)** — REST auth, router map, curl examples (use with Swagger `/api/docs`)
 - **[docs/cli-reference.md](docs/cli-reference.md)** — container CLI commands vs stubs

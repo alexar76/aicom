@@ -8,6 +8,7 @@ legacy keys in config). Notify toggles still live under ``general.*`` in ``confi
 from __future__ import annotations
 
 import logging
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -34,6 +35,24 @@ AGENT_LABELS: dict[str, str] = {
     "hardening": "Hardening",
     "methodologist": "Methodologist",
 }
+
+
+def _maybe_broadcast_web_push_after_telegram(text: str) -> None:
+    """Best-effort Web Push to subscribed admins (does not block Telegram)."""
+    body = (text or "").strip()
+    if not body:
+        return
+    first_line = body.split("\n", 1)[0].strip()[:220]
+
+    def run() -> None:
+        try:
+            from web.backend.services.web_push_service import broadcast_payload
+
+            broadcast_payload(title="AI Factory · Telegram", body=first_line, url="/admin")
+        except Exception as e:
+            logger.debug("web push after telegram: %s", e)
+
+    threading.Thread(target=run, daemon=True).start()
 
 
 def _read_general() -> dict[str, Any]:
@@ -122,6 +141,8 @@ def notify_telegram_pipeline_stage(
     ok, detail = send_telegram_message_sync("\n".join(lines))
     if not ok:
         logger.debug("telegram pipeline notify skipped: %s", detail)
+        return
+    _maybe_broadcast_web_push_after_telegram("\n".join(lines))
 
 
 def notify_telegram_new_product(
@@ -151,3 +172,5 @@ def notify_telegram_new_product(
     ok, detail = send_telegram_message_sync("\n".join(lines))
     if not ok:
         logger.debug("telegram new-product notify skipped: %s", detail)
+        return
+    _maybe_broadcast_web_push_after_telegram("\n".join(lines))

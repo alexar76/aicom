@@ -1,5 +1,7 @@
 # Admin Panel — complete guide
 
+> **New to the UI?** Read **[docs/USER_GUIDE.md](./USER_GUIDE.md)** first — illustrated “for dummies” flow (storefront, New product wizard, Workshop, actionable errors). This file is the **full tab-by-tab reference**.
+
 This document covers **every** left-menu section of the AI-Factory v2.1 admin UI: purpose, main actions, and how they relate to APIs/data. Header icons match the sidebar ([Lucide](https://lucide.dev/), same assets in [`assets/icons/`](./assets/icons/)).
 
 > **Login:** see [docs/README.md](./README.md). After authentication all sections are available in one SPA (`/admin`).

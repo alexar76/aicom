@@ -45,6 +45,7 @@ from .api.admin import release_cockpit as admin_release_cockpit
 from .api.admin import reference_templates_admin as admin_reference_templates
 from .api.admin import methodology as admin_methodology
 from .api.admin import users_admin as admin_users_api
+from .api.admin import iteration_hub as admin_iteration_hub
 from .api.metrics import get_registry
 from llm.router import LLMRouter
 from .services.corporate_standup import append_chat_message, standup_scheduler_loop
@@ -273,7 +274,8 @@ app.include_router(admin_feedback.router)
 app.include_router(admin_release_cockpit.router)
 app.include_router(admin_reference_templates.router)
 app.include_router(admin_methodology.router)
-app.include_router(admin_users_api.router)
+    app.include_router(admin_users_api.router)
+    app.include_router(admin_iteration_hub.router)
 
 # Mount Prometheus metrics endpoint
 metrics_app = make_asgi_app(registry=get_registry())

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Captures Admin UI screenshots into ../../docs/assets/screenshots/
+ * Captures Admin + public UI screenshots into ../../docs/assets/screenshots/
  * Requires: running app (e.g. http://127.0.0.1:9080), default admin password.
  *
  * Usage (from web/frontend):
@@ -10,6 +10,12 @@
  * Env:
  *   DOCS_SCREENSHOT_BASE_URL — default http://127.0.0.1:9080
  *   ADMIN_PASSWORD — default admin123
+ *
+ * Sidebar tab order (see AdminSidebar.tsx, no `users` unless super_admin):
+ *   0 Dashboard, 1 Monitor, 2 Pipeline, 3 New product, 4 Workshop, 5 Files,
+ *   6 Agents, 7 Providers, 8 LLM logs, 9 Agent logs, 10 Security, 11 Sandbox,
+ *   12 Director, 13 Discovery, 14 Settings, 15 Chat, 16 Brainstorming,
+ *   17 Support queue, 18 Outreach
  */
 
 import { chromium } from 'playwright';
@@ -38,6 +44,14 @@ async function main() {
   });
   const page = await context.newPage();
 
+  await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await delay(600);
+  await page.screenshot({ path: path.join(OUT, 'public-home.png'), fullPage: false });
+
+  await page.goto(`${BASE}/docs`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await delay(800);
+  await page.screenshot({ path: path.join(OUT, 'public-docs.png'), fullPage: false });
+
   await page.goto(`${BASE}/admin/login`, { waitUntil: 'domcontentloaded', timeout: 60000 });
   await delay(500);
   await page.screenshot({ path: path.join(OUT, 'admin-login.png') });
@@ -47,12 +61,11 @@ async function main() {
   await passInput.fill(PASSWORD);
   await page.getByRole('button', { name: /^Login$/i }).click();
   await page.waitForURL(/\/admin(\?|$)/, { timeout: 45000 });
-  await delay(600);
+  await delay(800);
 
   await page.screenshot({ path: path.join(OUT, 'admin-dashboard.png') });
   await page.screenshot({ path: path.join(OUT, 'admin-sidebar.png'), fullPage: true });
 
-  /** Sidebar starts collapsed on desktop (icons only); buttons have no text labels — use tab order. */
   const navTab = (idx) => page.locator('aside nav').first().locator('button').nth(idx);
 
   const clickTab = async (idx) => {
@@ -60,20 +73,31 @@ async function main() {
     await delay(900);
   };
 
-  // 0 Dashboard … 2 Pipeline, 6 LLM Providers, 7 LLM Logs, 13 Corporate Chat, 14 Brainstorming
   await clickTab(2);
   await page.screenshot({ path: path.join(OUT, 'admin-pipeline.png') });
 
-  await clickTab(6);
-  await page.screenshot({ path: path.join(OUT, 'admin-providers.png') });
+  await clickTab(3);
+  await page.screenshot({ path: path.join(OUT, 'admin-new-product.png') });
+
+  await clickTab(4);
+  await page.screenshot({ path: path.join(OUT, 'admin-workshop.png') });
 
   await clickTab(7);
+  await page.screenshot({ path: path.join(OUT, 'admin-providers.png') });
+
+  await clickTab(8);
   await page.screenshot({ path: path.join(OUT, 'admin-llm-logs.png') });
 
   await clickTab(13);
-  await page.screenshot({ path: path.join(OUT, 'admin-corporate-chat.png') });
+  await page.screenshot({ path: path.join(OUT, 'admin-discovery.png') });
 
   await clickTab(14);
+  await page.screenshot({ path: path.join(OUT, 'admin-settings.png') });
+
+  await clickTab(15);
+  await page.screenshot({ path: path.join(OUT, 'admin-corporate-chat.png') });
+
+  await clickTab(16);
   await page.screenshot({ path: path.join(OUT, 'admin-brainstorming.png') });
 
   await browser.close();

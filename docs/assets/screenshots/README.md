@@ -1,6 +1,6 @@
 # UI screenshots
 
-This folder holds **real PNG** screenshots of the Admin Panel used in [`../../README.md`](../../README.md) and [`../../admin-guide.md`](../../admin-guide.md).
+This folder holds **real PNG** screenshots of the Admin Panel and public pages used in [`../../README.md`](../../README.md), [`../../admin-guide.md`](../../admin-guide.md), and [`../../USER_GUIDE.md`](../../USER_GUIDE.md).
 
 ## Automatic refresh (recommended)
 
@@ -25,29 +25,30 @@ Example with another host:
 DOCS_SCREENSHOT_BASE_URL=http://localhost:9080 ADMIN_PASSWORD=admin123 npm run capture-docs-screenshots
 ```
 
-> By default the sidebar is **collapsed** (icons only): the script switches tabs in order via `aside nav` buttons, not by label text.
+> Sidebar tab indices follow `AdminSidebar.tsx` (see comments in the script). Re-check indices if new admin tabs are inserted.
 
 ## File names
 
 | File | Content |
 |------|---------|
+| `public-home.png` | Storefront `/` |
+| `public-docs.png` | Public documentation `/docs` |
 | `admin-login.png` | `/admin/login` |
 | `admin-dashboard.png` | Dashboard after login |
-| `admin-sidebar.png` | Same page, `fullPage` (nav column visible) |
-| `admin-pipeline.png` | Pipeline Monitor |
+| `admin-sidebar.png` | Same session, `fullPage` (nav column visible) |
+| `admin-pipeline.png` | Pipeline tab |
+| `admin-new-product.png` | New product wizard |
+| `admin-workshop.png` | Workshop tab |
 | `admin-providers.png` | LLM Providers |
 | `admin-llm-logs.png` | LLM Logs |
+| `admin-discovery.png` | Discovery tab |
+| `admin-settings.png` | Settings tab |
 | `admin-corporate-chat.png` | Corporate Chat |
 | `admin-brainstorming.png` | Brainstorming |
-| `admin-discovery.png` | Discovery Queue tab |
-| `public-blog.png` | Public blog page |
+| `public-blog.png` | Public blog page (legacy capture) |
 | `public-launch-kit.png` | Public launch-kit page |
 | `public-badge.png` | Public embeddable badge page |
 | `account-referral-dashboard.png` | Account referral dashboard |
-
-## Coverage note for new UI
-
-New growth and discovery surfaces are now captured. Re-run capture after major UI changes.
 
 ## Manual capture
 
@@ -66,12 +67,9 @@ npx playwright screenshot http://127.0.0.1:9080/admin/login ../../docs/assets/sc
 
 Paths are relative to the Markdown file under `docs/`.
 
-If you need to refresh screenshots, re-run the capture script above.
-
 ## Last refresh
 
-- Date: 2026-05-09
-- Environment: `docker compose` stack, `app` healthy on `http://127.0.0.1:9080`
-- Command:
-  - `npm run capture-docs-screenshots`
-- Browser engine: Playwright Chromium (`npx playwright install chromium`)
+- Date: 2026-05-15
+- Command: `cd web/frontend && npm run capture-docs-screenshots`
+- Browser engine: Playwright Chromium
+- Notes: script indices aligned with `AdminSidebar.tsx`; added storefront `/`, `/docs`, New product, Workshop, Discovery, Settings captures.

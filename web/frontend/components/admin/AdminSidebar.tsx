@@ -23,6 +23,7 @@ import {
   UserCog,
   LogOut,
   X,
+  LayoutGrid,
 } from 'lucide-react';
 import { AdminLocale, t } from '@/lib/adminI18n';
 
@@ -51,6 +52,7 @@ export function Sidebar({
     { id: 'monitor', label: t(locale, 'tab.monitor'), icon: Radio },
     { id: 'pipeline', label: t(locale, 'tab.pipeline'), icon: Activity },
     { id: 'new-product', label: t(locale, 'tab.newProduct'), icon: Plus },
+    { id: 'workshop', label: t(locale, 'tab.workshop'), icon: LayoutGrid },
     { id: 'files', label: t(locale, 'tab.files'), icon: FileText },
     { id: 'agents', label: t(locale, 'tab.agents'), icon: Bot },
     { id: 'providers', label: t(locale, 'tab.providers'), icon: Cpu },

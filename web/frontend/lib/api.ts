@@ -6,6 +6,20 @@ import { buildAgentsTabRows, type AgentLogMetricsSlice } from './pipelineStages'
 
 const API_BASE = '/api';
 
+/** Thrown by {@link ApiClient.request} so UI can map status + message to recovery steps. */
+export class ApiRequestError extends Error {
+  readonly status: number;
+  readonly endpoint: string;
+
+  constructor(message: string, opts: { status: number; endpoint: string }) {
+    super(message);
+    this.name = 'ApiRequestError';
+    this.status = opts.status;
+    this.endpoint = opts.endpoint;
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -469,7 +483,10 @@ class ApiClient {
       });
     } catch (e: unknown) {
       const m = e instanceof Error ? e.message : String(e);
-      throw new Error(m || 'Network error: could not reach the API');
+      throw new ApiRequestError(m || 'Network error: could not reach the API', {
+        status: 0,
+        endpoint,
+      });
     }
 
     if (!response.ok) {
@@ -506,7 +523,7 @@ class ApiClient {
         typeof detail === 'string' && detail.trim()
           ? detail.trim()
           : `HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}`.trim();
-      throw new Error(msg);
+      throw new ApiRequestError(msg, { status: response.status, endpoint });
     }
 
     return response.json();
@@ -1118,6 +1135,113 @@ class ApiClient {
     return this.request(`/admin/products/${productId}/spec`);
   }
 
+  async getProductArchitecture(productId: string): Promise<{ product_id: string; architecture: any }> {
+    return this.request(`/admin/products/${encodeURIComponent(productId)}/architecture`);
+  }
+
+  // ── Iteration hub (templates, canvas, patterns, prefill, Web Push) ─────
+
+  async listIterationUserTemplates(): Promise<{ templates: any[] }> {
+    return this.request('/admin/iteration-hub/user-templates');
+  }
+
+  async upsertIterationUserTemplate(body: {
+    id?: string;
+    name: string;
+    delivery_profile: string;
+    production_mode: boolean;
+    instructions: string;
+  }): Promise<{ template: any }> {
+    return this.request('/admin/iteration-hub/user-templates', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+  }
+
+  async deleteIterationUserTemplate(templateId: string): Promise<{ ok: boolean }> {
+    return this.request(`/admin/iteration-hub/user-templates/${encodeURIComponent(templateId)}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async listIterationPatterns(): Promise<{ patterns: any[] }> {
+    return this.request('/admin/iteration-hub/patterns');
+  }
+
+  async upsertIterationPattern(body: {
+    id?: string;
+    name: string;
+    tags: string[];
+    document: Record<string, unknown>;
+  }): Promise<{ pattern: any }> {
+    return this.request('/admin/iteration-hub/patterns', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+  }
+
+  async deleteIterationPattern(patternId: string): Promise<{ ok: boolean }> {
+    return this.request(`/admin/iteration-hub/patterns/${encodeURIComponent(patternId)}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getIterationCanvas(productId: string): Promise<{ version: number; nodes: any[]; edges: any[] }> {
+    return this.request(`/admin/iteration-hub/products/${encodeURIComponent(productId)}/iteration-canvas`);
+  }
+
+  async putIterationCanvas(
+    productId: string,
+    body: { version: number; nodes: any[]; edges: any[] },
+  ): Promise<{ version: number; nodes: any[]; edges: any[] }> {
+    return this.request(`/admin/iteration-hub/products/${encodeURIComponent(productId)}/iteration-canvas`, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+    });
+  }
+
+  async prefillProductFromIdea(body: { idea: string; consent: boolean }): Promise<{
+    delivery_profile: string;
+    production_mode: boolean;
+    instructions: string;
+    source: string;
+    rationale?: string;
+  }> {
+    return this.request('/admin/iteration-hub/prefill-from-idea', {
+      method: 'POST',
+      body: JSON.stringify(body),
+      clientTimeoutMs: 45000,
+    });
+  }
+
+  async getWebPushVapidPublic(): Promise<{ publicKey: string }> {
+    return this.request('/admin/iteration-hub/web-push/vapid-public');
+  }
+
+  async subscribeWebPush(body: {
+    endpoint: string;
+    keys: { p256dh: string; auth: string };
+    userAgent?: string;
+  }): Promise<{ ok: boolean; subscription: any }> {
+    return this.request('/admin/iteration-hub/web-push/subscribe', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+  }
+
+  async sendWebPushTest(body?: { title?: string; body?: string; url?: string }): Promise<{
+    ok: boolean;
+    sent?: number;
+    failed?: number;
+    removed?: number;
+    error?: string;
+  }> {
+    return this.request('/admin/iteration-hub/web-push/test', {
+      method: 'POST',
+      body: JSON.stringify(body || {}),
+    });
+  }
+
   /** Inputs visible to the Developer agent (spec, arch, admin, analyst brief) + material quality summary. */
   async getDeveloperHandoff(productId: string): Promise<{
     product_id: string;
@@ -1343,6 +1467,18 @@ class ApiClient {
     products: Array<Record<string, unknown>>;
   }> {
     return this.request('/admin/compliance/remediate-now', { method: 'POST' });
+  }
+
+  async createAdminProduct(payload: {
+    idea: string;
+    admin_instructions?: string;
+    production_mode?: boolean;
+    delivery_profile?: string;
+  }): Promise<{ product_id: string; state: string; message: string }> {
+    return this.request('/admin/products/create', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   }
 
   async createProductsBatch(payload: {

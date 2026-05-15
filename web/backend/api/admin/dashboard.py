@@ -2586,6 +2586,21 @@ async def get_product_spec(product_id: str):
         raise HTTPException(status_code=500, detail="Invalid specification file")
 
 
+@router.get("/products/{product_id}/architecture")
+async def get_product_architecture(product_id: str):
+    """Get persisted ``architecture.json`` for a product (Workshop / diff tooling)."""
+    arch_file = Path(f"/app/data/arch/{product_id}/architecture.json")
+    if not arch_file.exists():
+        raise HTTPException(status_code=404, detail="Architecture file not found for this product")
+
+    try:
+        with open(arch_file, "r") as f:
+            arch = json.load(f)
+        return {"product_id": product_id, "architecture": arch}
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Invalid architecture file")
+
+
 def _agent_log_time(entry: dict[str, Any]) -> float:
     t = entry.get("time", 0)
     try:

@@ -2,6 +2,7 @@
 
 ## Operator / owner playbook
 
+- **`USER_GUIDE.md`** — **beginner-friendly illustrated walkthrough** (“for dummies”): storefront, `/docs`, admin login, New product wizard, Workshop, actionable errors, screenshot index. Start here for **hands-on usage** without reading the whole admin reference first.
 - **`owner-guide.md`** — English handbook for the platform owner: step-by-step flows, **Mermaid** diagrams, storefront policy, support vs pipeline, pitfalls. Start here if you run an instance.
 - **`api-integration-guide.md`** — REST integration: auth patterns, router map, curl examples (companion to Swagger `/api/docs`).
 - **`cli-reference.md`** — commands implemented in `cli/ai_company_cli.py`, plus notes on stubs vs real behavior.

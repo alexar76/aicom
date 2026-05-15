@@ -2,6 +2,7 @@
 
 export { DashboardTab } from './tabs/DashboardTab';
 export { NewProductTab } from './tabs/NewProductTab';
+export { WorkshopTab } from './tabs/WorkshopTab';
 export { HumanReviewGatePanel } from './tabs/HumanReviewGatePanel';
 export { StorefrontFollowupPanel } from './tabs/StorefrontFollowupPanel';
 export { PipelineTab } from './tabs/PipelineTab';

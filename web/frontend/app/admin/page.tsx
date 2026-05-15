@@ -10,6 +10,7 @@ import BrainstormingTab from '@/components/BrainstormingTab';
 import SupportQueueTab from '@/components/SupportQueueTab';
 import OutreachTab from '@/components/OutreachTab';
 import { Sidebar } from '@/components/admin/AdminSidebar';
+import { AdminShellOnboarding } from '@/components/admin/AdminShellOnboarding';
 import {
   AgentsTab,
   AgentLogsTab,
@@ -26,6 +27,7 @@ import {
   SecurityTab,
   SettingsTab,
   UsersTab,
+  WorkshopTab,
 } from '@/components/admin/AdminTabs';
 
 const FilesTabLazy = dynamic(
@@ -48,6 +50,7 @@ const ADMIN_TAB_IDS = new Set([
   'monitor',
   'pipeline',
   'new-product',
+  'workshop',
   'files',
   'agents',
   'providers',
@@ -147,6 +150,8 @@ function AdminPageInner() {
         return <PipelineTab />;
       case 'new-product':
         return <NewProductTab />;
+      case 'workshop':
+        return <WorkshopTab />;
       case 'pipeline':
         return <PipelineTab />;
       case 'agents':
@@ -260,6 +265,8 @@ function AdminPageInner() {
               </div>
             </GlassCard>
           )}
+
+        {authChecked ? <AdminShellOnboarding activeTab={activeTab} /> : null}
 
         {renderTab()}
       </main>

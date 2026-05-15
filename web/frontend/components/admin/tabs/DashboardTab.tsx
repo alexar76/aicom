@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -83,24 +83,49 @@ import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineSta
 import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
+import { readAdminMetricsCache, writeAdminMetricsCache } from '@/lib/adminMetricsCache';
 
 export function DashboardTab() {
-  const [data, setData] = useState<DashboardData | null>(null);
+  /** Stale-while-revalidate: show last full snapshot immediately, then quick → full refresh. */
+  const [data, setData] = useState<DashboardData | null>(() => readAdminMetricsCache());
 
   useEffect(() => {
     let cancelled = false;
-    api
-      .getDashboard(true)
-      .then((d) => {
-        if (!cancelled) setData(d);
-      })
-      .catch(() => {});
-    api
-      .getDashboard(false)
-      .then((d) => {
-        if (!cancelled) setData(d);
-      })
-      .catch(() => {});
+    const run = async () => {
+      try {
+        const quick = await api.getDashboard(true);
+        if (!cancelled) {
+          setData((prev) => {
+            if (!prev) return quick;
+            const qSf = quick.pipeline.storefront_visible_products;
+            const pSf = prev.pipeline.storefront_visible_products;
+            if ((qSf === null || qSf === undefined) && typeof pSf === 'number') {
+              return {
+                ...quick,
+                pipeline: {
+                  ...quick.pipeline,
+                  storefront_visible_products: pSf,
+                },
+                dashboard_partial: false,
+              };
+            }
+            return quick;
+          });
+        }
+      } catch {
+        /* keep cache / skeleton */
+      }
+      try {
+        const full = await api.getDashboard(false);
+        if (!cancelled) {
+          setData(full);
+          writeAdminMetricsCache(full);
+        }
+      } catch {
+        /* quick or cache remains */
+      }
+    };
+    void run();
     return () => {
       cancelled = true;
     };
@@ -132,6 +157,27 @@ export function DashboardTab() {
   /** Share of shipped pipeline rows (COMPLETED / DEPLOYED_PRODUCTION) that list on the public grid. */
   const storefrontYieldPct =
     !sfPending && completed > 0 ? Math.round((storefront / completed) * 100) : null;
+
+  const factoryHealthScore = (() => {
+    const p = data.pipeline;
+    const t = p.total_products || 0;
+    if (t <= 0) return 100;
+    const failedN = p.failed_products || 0;
+    const timeouts = p.timed_out_tasks || 0;
+    const pending = p.pending_tasks || 0;
+    const running = p.running_tasks || 0;
+    const failPen = Math.min(48, (failedN / t) * 60);
+    const toPen = Math.min(22, timeouts * 4);
+    const queuePen = Math.min(18, (pending + running) * 0.35);
+    let score = 100 - failPen - toPen - queuePen;
+    if (!sfPending && storefrontYieldPct != null) {
+      score += Math.min(12, storefrontYieldPct / 10);
+    }
+    return Math.round(Math.max(0, Math.min(100, score)));
+  })();
+
+  const healthBand =
+    factoryHealthScore >= 75 ? 'strong' : factoryHealthScore >= 50 ? 'fair' : 'needs attention';
 
   const stats = [
     {
@@ -200,6 +246,32 @@ export function DashboardTab() {
           </motion.div>
         ))}
       </div>
+
+      <GlassCard className="border border-violet-500/25 bg-violet-500/[0.04]">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-white">
+              <Gauge className="h-5 w-5 text-violet-400" />
+              Factory health score
+            </h3>
+            <p className="mt-1 max-w-2xl text-sm text-gray-400">
+              Single 0–100 signal from existing dashboard metrics (failure load, timeouts, queue pressure, storefront
+              yield). Not a replacement for per-product QA — a fast pulse for operators.
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-4xl font-bold text-violet-200">{factoryHealthScore}</p>
+            <p className="text-xs capitalize text-gray-500">{healthBand}</p>
+          </div>
+        </div>
+        <div className="mt-4">
+          <ProgressBar
+            value={factoryHealthScore}
+            label="Composite health"
+            variant={factoryHealthScore >= 70 ? 'success' : factoryHealthScore >= 45 ? 'warning' : 'warning'}
+          />
+        </div>
+      </GlassCard>
 
       {/* Primary ops KPI: pipeline completion alone is not “shipping”; storefront listing is. */}
       <GlassCard className="border border-cyan-500/25 bg-cyan-500/[0.04]">

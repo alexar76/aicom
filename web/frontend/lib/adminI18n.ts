@@ -16,6 +16,7 @@ const DICT: Dict = {
   'tab.monitor': { en: 'Live Monitor', ru: 'Мониторинг', es: 'Monitor en vivo' },
   'tab.pipeline': { en: 'Pipeline', ru: 'Пайплайн', es: 'Pipeline' },
   'tab.newProduct': { en: 'New Product', ru: 'Новый продукт', es: 'Nuevo producto' },
+  'tab.workshop': { en: 'Workshop', ru: 'Мастерская', es: 'Taller' },
   'tab.files': { en: 'Files', ru: 'Файлы', es: 'Archivos' },
   'tab.agents': { en: 'Agents', ru: 'Агенты', es: 'Agentes' },
   'tab.providers': { en: 'LLM Providers', ru: 'Провайдеры LLM', es: 'Proveedores LLM' },

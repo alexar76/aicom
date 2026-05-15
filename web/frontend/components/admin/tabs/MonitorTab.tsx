@@ -79,23 +79,40 @@ import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib
 import toast from 'react-hot-toast';
 
 import { DemoReplayMonitorSection } from './DemoReplayMonitorSection';
+import {
+  readAdminMetricsCache,
+  writeAdminMetricsCache,
+  writeAdminMetricsCacheIfValid,
+} from '@/lib/adminMetricsCache';
 
 export function MonitorTab() {
-  const [metrics, setMetrics] = useState<any>(null);
+  const bootSnapshotRef = useRef(readAdminMetricsCache());
+  const [metrics, setMetrics] = useState<any>(() => bootSnapshotRef.current ?? null);
   const [activityFeed, setActivityFeed] = useState<any[]>([]);
   const [paused, setPaused] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'error'>('connecting');
-  const [initialLoading, setInitialLoading] = useState(true);
+  /** True only until first successful GET when there was no cache (avoids full-page spinner if cache exists). */
+  const [initialLoading, setInitialLoading] = useState(() => bootSnapshotRef.current == null);
+  /** True after cache paint until GET /dashboard replaces snapshot. */
+  const [bootRefreshing, setBootRefreshing] = useState(() => bootSnapshotRef.current != null);
   const [escEventFilter, setEscEventFilter] = useState<string>('all');
   /** Agent Fleet card: click green-dot tile to expand raw metrics JSON */
   const [expandedFleetAgent, setExpandedFleetAgent] = useState<string | null>(null);
 
-  // Initial load from GET /dashboard (populates all fields including new ones)
+  // Initial load from GET /dashboard (same snapshot as Dashboard tab; also seeds localStorage)
   useEffect(() => {
-    api.getDashboard().then((data) => {
-      setMetrics(data);
-      setInitialLoading(false);
-    }).catch(() => setInitialLoading(false));
+    api
+      .getDashboard()
+      .then((data) => {
+        setMetrics(data);
+        writeAdminMetricsCache(data);
+        setInitialLoading(false);
+        setBootRefreshing(false);
+      })
+      .catch(() => {
+        setInitialLoading(false);
+        setBootRefreshing(false);
+      });
     // Load recent escalations as initial activity
     api.getEscalations(10).then((res) => {
       if (res.escalations?.length) {
@@ -144,6 +161,7 @@ export function MonitorTab() {
           try {
             const data = JSON.parse(event.data);
             setMetrics(data);
+            writeAdminMetricsCacheIfValid(data);
           } catch {
             // ignore parse errors
           }
@@ -268,12 +286,12 @@ export function MonitorTab() {
     return `${Math.floor(secs / 3600)}h ago`;
   };
 
-  if (initialLoading) {
+  if (initialLoading && metrics == null) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 text-indigo-400 animate-spin mx-auto mb-3" />
-          <p className="text-gray-500 text-sm">Connecting to metrics stream...</p>
+          <p className="text-gray-500 text-sm">Loading metrics…</p>
         </div>
       </div>
     );
@@ -282,16 +300,27 @@ export function MonitorTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex min-w-0 flex-wrap items-center gap-3">
-          <h2 className="text-xl font-semibold text-white">Live Monitor</h2>
-          <div className="flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${
-              connectionStatus === 'connected' ? 'bg-emerald-400 animate-pulse' :
-              connectionStatus === 'connecting' ? 'bg-yellow-400 animate-pulse' : 'bg-red-400'
-            }`} />
-            <span className="text-xs text-gray-500 capitalize">{connectionStatus}</span>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
+          <div className="flex min-w-0 flex-wrap items-center gap-3">
+            <h2 className="text-xl font-semibold text-white">Live Monitor</h2>
+            <div className="flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full ${
+                connectionStatus === 'connected' ? 'bg-emerald-400 animate-pulse' :
+                connectionStatus === 'connecting' ? 'bg-yellow-400 animate-pulse' : 'bg-red-400'
+              }`} />
+              <span className="text-xs text-gray-500 capitalize">{connectionStatus}</span>
+              {connectionStatus === 'connecting' && metrics ? (
+                <span className="text-[10px] text-gray-600">· SSE (cached snapshot on screen)</span>
+              ) : null}
+            </div>
           </div>
+          {bootRefreshing ? (
+            <div className="flex w-full max-w-md items-center gap-2 rounded-lg border border-indigo-500/20 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-100/90">
+              <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" aria-hidden />
+              Refreshing snapshot from server…
+            </div>
+          ) : null}
         </div>
         <Button
           variant={paused ? 'primary' : 'secondary'}

@@ -2,7 +2,7 @@
 
 **Audience:** the person operating a deployed AI-Factory instance — provisioning, LLMs, pipeline health, storefront policy, and buyer-facing support.
 
-**Companion docs:** [admin-guide.md](./admin-guide.md) (every admin tab), [api-integration-guide.md](./api-integration-guide.md), [cli-reference.md](./cli-reference.md), [pipeline-operations.md](./pipeline-operations.md), [production-domain.md](./production-domain.md) (public hostname **magic-ai-factory.com**, nginx, `NEXT_PUBLIC_SITE_URL`).
+**Companion docs:** [USER_GUIDE.md](./USER_GUIDE.md) (illustrated “for dummies” usage), [admin-guide.md](./admin-guide.md) (every admin tab), [api-integration-guide.md](./api-integration-guide.md), [cli-reference.md](./cli-reference.md), [pipeline-operations.md](./pipeline-operations.md), [production-domain.md](./production-domain.md) (public hostname **magic-ai-factory.com**, nginx, `NEXT_PUBLIC_SITE_URL`).
 
 Visual assets live under [`assets/screenshots/`](./assets/screenshots/). Refresh them anytime:
 
