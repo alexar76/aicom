@@ -3,9 +3,18 @@ import api from '@/lib/api';
 /** Per-mode retries (transient 502 / proxy / worker busy / cold backend). */
 export const PIPELINE_CATALOG_ATTEMPTS_LIGHT = 10;
 export const PIPELINE_CATALOG_ATTEMPTS_FULL = 8;
+/** First catalog page (Pipeline Monitor): fail faster so the UI is not stuck ~30s on backoff. */
+export const PIPELINE_CATALOG_FIRST_PAGE_ATTEMPTS_LIGHT = 8;
+export const PIPELINE_CATALOG_FIRST_PAGE_BACKOFF_CAP_MS = 2000;
 
-export function pipelineCatalogBackoffMs(attempt: number): number {
-  return Math.min(20_000, 500 * 2 ** attempt);
+export type PipelineCatalogFetchOpts = {
+  maxAttempts?: number;
+  /** Upper bound for exponential backoff (ms). */
+  backoffCapMs?: number;
+};
+
+export function pipelineCatalogBackoffMs(attempt: number, capMs: number = 20_000): number {
+  return Math.min(capMs, 500 * 2 ** attempt);
 }
 
 export async function fetchPipelineCatalogPageSingleMode(
@@ -14,8 +23,11 @@ export async function fetchPipelineCatalogPageSingleMode(
   sort: 'newest' | 'shipped_first',
   light: boolean,
   onAttempt?: (info: { attempt: number; maxAttempts: number }) => void,
+  fetchOpts?: PipelineCatalogFetchOpts,
 ): Promise<Awaited<ReturnType<typeof api.getPipelineProducts>>> {
-  const max = light ? PIPELINE_CATALOG_ATTEMPTS_LIGHT : PIPELINE_CATALOG_ATTEMPTS_FULL;
+  const defaultMax = light ? PIPELINE_CATALOG_ATTEMPTS_LIGHT : PIPELINE_CATALOG_ATTEMPTS_FULL;
+  const max = Math.max(1, Math.min(30, fetchOpts?.maxAttempts ?? defaultMax));
+  const capMs = fetchOpts?.backoffCapMs ?? 20_000;
   let last: unknown;
   for (let i = 0; i < max; i++) {
     onAttempt?.({ attempt: i, maxAttempts: max });
@@ -24,7 +36,7 @@ export async function fetchPipelineCatalogPageSingleMode(
     } catch (e) {
       last = e;
       if (i < max - 1) {
-        await new Promise((r) => setTimeout(r, pipelineCatalogBackoffMs(i)));
+        await new Promise((r) => setTimeout(r, pipelineCatalogBackoffMs(i, capMs)));
       }
     }
   }
@@ -41,9 +53,9 @@ export async function fetchPipelineCatalogResilient(
   sort: 'newest' | 'shipped_first',
 ): Promise<Awaited<ReturnType<typeof api.getPipelineProducts>>> {
   try {
-    return await fetchPipelineCatalogPageSingleMode(limit, offset, sort, true);
+    return await fetchPipelineCatalogPageSingleMode(limit, offset, sort, true, undefined, undefined);
   } catch {
-    return await fetchPipelineCatalogPageSingleMode(limit, offset, sort, false);
+    return await fetchPipelineCatalogPageSingleMode(limit, offset, sort, false, undefined, undefined);
   }
 }
 

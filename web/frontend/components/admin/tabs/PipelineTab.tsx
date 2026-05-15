@@ -92,8 +92,18 @@ import {
   bucketPipelineProductForCategoryFilter,
   countPipelineProductsByCategory,
 } from '@/lib/pipelineCategoryBucket';
-import { fetchPipelineCatalogPageSingleMode, PIPELINE_CATALOG_ATTEMPTS_LIGHT } from '@/lib/pipelineCatalogFetch';
-import { readPipelineCatalogCache, writePipelineCatalogCache } from '@/lib/pipelineCatalogCache';
+import {
+  fetchPipelineCatalogPageSingleMode,
+  PIPELINE_CATALOG_FIRST_PAGE_ATTEMPTS_LIGHT,
+  PIPELINE_CATALOG_FIRST_PAGE_BACKOFF_CAP_MS,
+} from '@/lib/pipelineCatalogFetch';
+import {
+  readPipelineCatalogCache,
+  readPipelineCatalogPeek,
+  persistPipelineCatalogPeekFromProducts,
+  writePipelineCatalogCache,
+  type PipelineCatalogSummaryCached,
+} from '@/lib/pipelineCatalogCache';
 
 type PipelineCatalogSummary = NonNullable<
   Awaited<ReturnType<typeof api.getPipelineProducts>>['catalog_summary']
@@ -182,27 +192,46 @@ export function PipelineTab() {
     };
   }, []);
 
-  /** Paint cached catalog before first browser frame so the tab never flashes empty when a snapshot exists. */
+  /** Paint from full cache, else tiny peek (2 rows), else cold — before first paint. */
   useLayoutEffect(() => {
-    const snap = readPipelineCatalogCache(pipelineSort);
-    const tail = snap?.products ?? [];
-    if (!snap || tail.length === 0) {
-      setProducts([]);
-      setTotalProducts(0);
-      setCatalogSummary(null);
+    const sort = pipelineSort;
+    const full = readPipelineCatalogCache(sort);
+    const peek = readPipelineCatalogPeek(sort);
+    const fullRows = full?.products ?? [];
+    const peekRows = peek?.products ?? [];
+
+    if (full && fullRows.length > 0) {
+      setProducts(fullRows);
+      setTotalProducts(full.total);
+      if (full.catalog_summary) setCatalogSummary(full.catalog_summary as PipelineCatalogSummary);
+      setLoading(false);
+      setLoadingMore(true);
+      setCatalogFirstPageFetch(null);
       setCatalogLiveRowCount(0);
-      setLoading(true);
-      setLoadingMore(false);
-      setCatalogFirstPageFetch({ attempt: 0, maxAttempts: PIPELINE_CATALOG_ATTEMPTS_LIGHT });
       return;
     }
-    setProducts(tail);
-    setTotalProducts(snap.total);
-    if (snap.catalog_summary) setCatalogSummary(snap.catalog_summary as PipelineCatalogSummary);
-    setLoading(false);
-    setLoadingMore(true);
-    setCatalogFirstPageFetch(null);
+
+    if (peek && peekRows.length > 0) {
+      setProducts(peekRows);
+      setTotalProducts(peek.total);
+      if (peek.catalog_summary) setCatalogSummary(peek.catalog_summary as PipelineCatalogSummary);
+      setLoading(false);
+      setLoadingMore(true);
+      setCatalogFirstPageFetch(null);
+      setCatalogLiveRowCount(0);
+      return;
+    }
+
+    setProducts([]);
+    setTotalProducts(0);
+    setCatalogSummary(null);
     setCatalogLiveRowCount(0);
+    setLoading(true);
+    setLoadingMore(false);
+    setCatalogFirstPageFetch({
+      attempt: 0,
+      maxAttempts: PIPELINE_CATALOG_FIRST_PAGE_ATTEMPTS_LIGHT,
+    });
   }, [pipelineSort, catalogReloadKey]);
 
   useEffect(() => {
@@ -214,10 +243,14 @@ export function PipelineTab() {
     setCatalogNotice(null);
 
     const bootstrap = readPipelineCatalogCache(pipelineSort);
+    const peekBoot = readPipelineCatalogPeek(pipelineSort);
     /** Tail rows while the chunked network rebuild refreshes positions from the API in-order. */
     const cacheTail = bootstrap?.products ?? [];
-    /** True when restoring a non-empty cached list (instant paint). */
-    const hadWarmCache = !!(bootstrap && cacheTail.length > 0);
+    /** Peek alone still means we can show cards while the API catches up. */
+    const hadWarmCache = !!(
+      (bootstrap && cacheTail.length > 0) ||
+      (peekBoot && (peekBoot.products?.length ?? 0) > 0)
+    );
     /** First request shows retry spinner only without warm cache — otherwise we reuse the last snapshot immediately. */
     const trackRetriesOnFirstFetch = !hadWarmCache;
 
@@ -277,6 +310,13 @@ export function PipelineTab() {
         off: number,
         trackFirstPageRetries: boolean,
       ) => {
+        const pageFetchOpts =
+          off === 0
+            ? {
+                maxAttempts: PIPELINE_CATALOG_FIRST_PAGE_ATTEMPTS_LIGHT,
+                backoffCapMs: PIPELINE_CATALOG_FIRST_PAGE_BACKOFF_CAP_MS,
+              }
+            : undefined;
         const reporter = trackFirstPageRetries
           ? (info: { attempt: number; maxAttempts: number }) => {
               if (cancelled || isStale()) return;
@@ -294,6 +334,7 @@ export function PipelineTab() {
               pipelineSort,
               true,
               reporter,
+              pageFetchOpts,
             );
           } catch {
             preferLight = false;
@@ -304,6 +345,7 @@ export function PipelineTab() {
               pipelineSort,
               false,
               reporter,
+              pageFetchOpts,
             );
           }
         }
@@ -313,6 +355,7 @@ export function PipelineTab() {
           pipelineSort,
           false,
           reporter,
+          pageFetchOpts,
         );
       };
 
@@ -342,6 +385,12 @@ export function PipelineTab() {
         if (lastSummaryState) setCatalogSummary(lastSummaryState);
         setLoading(false);
         setCatalogFirstPageFetch(null);
+        persistPipelineCatalogPeekFromProducts(
+          pipelineSort,
+          merged0,
+          knownTotal || merged0.length,
+          (lastSummaryState ?? peekBoot?.catalog_summary ?? null) as PipelineCatalogSummaryCached | null,
+        );
 
         bumpCacheWriteLater(merged0, knownTotal || merged0.length, lastSummaryState);
 
@@ -621,11 +670,11 @@ export function PipelineTab() {
 
   const firstCatalogPageProgress = useMemo(() => {
     if (!catalogFirstPageFetch || catalogFirstPageFetch.maxAttempts <= 0) return 0;
+    /** Never hit 100% while still waiting on the HTTP response (attempt index is pre-flight). */
+    const { attempt, maxAttempts } = catalogFirstPageFetch;
     return Math.min(
-      100,
-      Math.round(
-        ((catalogFirstPageFetch.attempt + 1) / catalogFirstPageFetch.maxAttempts) * 100,
-      ),
+      94,
+      Math.round(((attempt + 0.5) / Math.max(1, maxAttempts)) * 100),
     );
   }, [catalogFirstPageFetch]);
 
@@ -862,7 +911,11 @@ export function PipelineTab() {
           setCreatedFrom('');
           setCreatedTo('');
         }}
-        summary={`Showing ${filteredProducts.length} of ${products.length} loaded (${totalProducts || products.length} in catalog)`}
+        summary={
+          loading && products.length === 0
+            ? 'Waiting for the first catalog response…'
+            : `Showing ${filteredProducts.length} of ${products.length} loaded (${totalProducts || products.length} in catalog)`
+        }
         gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2"
       >
         <Input
@@ -919,8 +972,8 @@ export function PipelineTab() {
             </div>
             {catalogFirstPageFetch && (
               <p className="text-[11px] text-gray-500">
-                Request attempt {catalogFirstPageFetch.attempt + 1} of {catalogFirstPageFetch.maxAttempts} (retries
-                with backoff if the API is busy)
+                Starting request try {catalogFirstPageFetch.attempt + 1} of {catalogFirstPageFetch.maxAttempts}{' '}
+                (retries with short backoff if the API is busy — progress below stays under 100% until data arrives)
               </p>
             )}
             <p className="text-[11px] text-gray-500 text-center max-w-md px-2">

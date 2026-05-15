@@ -30,6 +30,90 @@ export function pipelineCatalogCacheKey(sort: 'newest' | 'shipped_first'): strin
   return `aicom_pipeline_catalog_v${CACHE_VERSION}_${sort}`;
 }
 
+/** Tiny JSON (first 2 rows + totals) for instant paint when the full cache blob is slow or missing. */
+const PEEK_VERSION = 1 as const;
+
+export function pipelineCatalogPeekKey(sort: 'newest' | 'shipped_first'): string {
+  return `aicom_pipeline_monitor_peek_v${PEEK_VERSION}_${sort}`;
+}
+
+type PeekEnvelope = {
+  v: typeof PEEK_VERSION;
+  ts: number;
+  sort: 'newest' | 'shipped_first';
+  total: number;
+  products: unknown[];
+  catalog_summary: PipelineCatalogSummaryCached | null;
+};
+
+export function readPipelineCatalogPeek(sort: 'newest' | 'shipped_first'): {
+  products: any[];
+  total: number;
+  catalog_summary: PipelineCatalogSummaryCached | null;
+  savedAt: number;
+} | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(pipelineCatalogPeekKey(sort));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<PeekEnvelope>;
+    if (!parsed || parsed.v !== PEEK_VERSION || !isSort(parsed.sort) || parsed.sort !== sort) return null;
+    const total = typeof parsed.total === 'number' && Number.isFinite(parsed.total) ? parsed.total : NaN;
+    if (!(total >= 0)) return null;
+    if (!Array.isArray(parsed.products) || parsed.products.length === 0) return null;
+    const cs = parsed.catalog_summary;
+    const catalog_summary: PipelineCatalogSummaryCached | null =
+      cs &&
+      typeof cs === 'object' &&
+      typeof (cs as PipelineCatalogSummaryCached).total_products === 'number' &&
+      typeof (cs as PipelineCatalogSummaryCached).shipped_products === 'number' &&
+      typeof (cs as PipelineCatalogSummaryCached).failed_products === 'number'
+        ? (cs as PipelineCatalogSummaryCached)
+        : null;
+    const savedAt = typeof parsed.ts === 'number' ? parsed.ts : 0;
+    return {
+      products: parsed.products as any[],
+      total,
+      catalog_summary,
+      savedAt,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function writePipelineCatalogPeek(
+  sort: 'newest' | 'shipped_first',
+  slimProducts: Record<string, unknown>[],
+  total: number,
+  catalog_summary: PipelineCatalogSummaryCached | null,
+): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const payload: PeekEnvelope = {
+      v: PEEK_VERSION,
+      ts: Date.now(),
+      sort,
+      total,
+      catalog_summary,
+      products: slimProducts.slice(0, 2),
+    };
+    localStorage.setItem(pipelineCatalogPeekKey(sort), JSON.stringify(payload));
+  } catch {
+    /* quota */
+  }
+}
+
+/** Persist only the tiny peek slice immediately after the first live API batch (not debounced). */
+export function persistPipelineCatalogPeekFromProducts(
+  sort: 'newest' | 'shipped_first',
+  products: any[],
+  total: number,
+  catalog_summary: PipelineCatalogSummaryCached | null,
+): void {
+  writePipelineCatalogPeek(sort, products.map(slimPipelineCatalogProduct), total, catalog_summary);
+}
+
 /** v1 keys still used by older clients — overwritten on next successful save. */
 function legacyPipelineCatalogCacheKey(sort: 'newest' | 'shipped_first'): string {
   return `aicom_pipeline_catalog_v${LEGACY_CACHE_VERSION}_${sort}`;
@@ -246,6 +330,7 @@ export function writePipelineCatalogCache(args: {
   if (typeof window === 'undefined') return;
 
   let products = args.products.map(slimPipelineCatalogProduct);
+  writePipelineCatalogPeek(args.sort, products, args.total, args.catalog_summary);
   const cap = MAX_PRODUCTS_TO_PERSIST;
   if (products.length > cap) {
     products = products.slice(0, cap);
