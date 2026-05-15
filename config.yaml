@@ -1,9 +1,8 @@
 # =============================================================================
 # AI-Factory — deployment overlay (optional)
 # =============================================================================
-# Defaults are loaded from ``config/fragments/*.yaml`` (bundled), then this file
-# is merged on top. Admin → Settings persists keys here via the FastAPI AppConfig.
+# Platform defaults are loaded from config/fragments/*.yaml (bundled in the image).
+# This file is merged on top when non-empty (Admin → Settings persists here).
+# Leave empty in git — use .env and data/ for secrets and runtime state.
 # See docs/configuration.md
 # =============================================================================
-
-{}

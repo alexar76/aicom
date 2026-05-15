@@ -297,6 +297,10 @@ app.include_router(admin_methodology.router)
 app.include_router(admin_users_api.router)
 app.include_router(admin_iteration_hub.router)
 
+from web.backend.openapi_meta import apply_openapi_metadata
+
+apply_openapi_metadata(app)
+
 # Mount Prometheus metrics endpoint
 metrics_app = make_asgi_app(registry=get_registry())
 app.mount("/metrics", metrics_app)

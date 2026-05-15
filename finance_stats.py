@@ -11,6 +11,8 @@ import time
 from pathlib import Path
 from typing import Any
 
+from finance_schemas import parse_orders_blob, parse_pending_payments_blob
+
 logger = logging.getLogger(__name__)
 
 DEFAULT_ETH_USD = float(os.environ.get("AIFACTORY_ETH_USD", "3500"))
@@ -40,7 +42,10 @@ def load_orders_dict(orders_path: Path) -> dict[str, Any]:
     try:
         with open(orders_path, encoding="utf-8") as f:
             data = json.load(f)
-        return data if isinstance(data, dict) else {}
+        return parse_orders_blob(data)
+    except json.JSONDecodeError as e:
+        logger.warning("Invalid JSON in orders %s: %s", orders_path, e)
+        return {}
     except Exception as e:
         logger.warning("Failed to read orders %s: %s", orders_path, e)
         return {}
@@ -52,7 +57,10 @@ def load_pending_payments(pending_path: Path) -> dict[str, Any]:
     try:
         with open(pending_path, encoding="utf-8") as f:
             data = json.load(f)
-        return data if isinstance(data, dict) else {}
+        return parse_pending_payments_blob(data)
+    except json.JSONDecodeError as e:
+        logger.warning("Invalid JSON in pending payments %s: %s", pending_path, e)
+        return {}
     except Exception as e:
         logger.warning("Failed to read pending payments %s: %s", pending_path, e)
         return {}

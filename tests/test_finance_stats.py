@@ -58,6 +58,21 @@ def test_pending_count(tmp_path: Path):
     assert m["transactions_pending"] == 1
 
 
+def test_invalid_order_skipped(tmp_path: Path):
+    root = tmp_path / "data"
+    (root / "store").mkdir(parents=True)
+    (root / "state").mkdir(parents=True)
+    orders = {
+        "good": {"amount": 5.0, "currency": "USDT", "status": "paid", "created_at": time.time()},
+        "bad": "not-a-dict",
+        "ugly": {"amount": -1, "currency": "USDT", "status": "paid"},
+    }
+    (root / "store" / "orders.json").write_text(json.dumps(orders), encoding="utf-8")
+    m = compute_financial_metrics(root)
+    assert m["transactions_completed"] == 1
+    assert m["total_revenue_usdt"] == 5.0
+
+
 def test_dashboard_revenue_keys(tmp_path: Path):
     root = tmp_path / "data"
     (root / "store").mkdir(parents=True)

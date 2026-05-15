@@ -93,15 +93,15 @@ import {
   countPipelineProductsByCategory,
 } from '@/lib/pipelineCategoryBucket';
 import { fetchPipelineCatalogPageSingleMode, PIPELINE_CATALOG_ATTEMPTS_LIGHT } from '@/lib/pipelineCatalogFetch';
+import { readPipelineCatalogCache, writePipelineCatalogCache } from '@/lib/pipelineCatalogCache';
 
 type PipelineCatalogSummary = NonNullable<
   Awaited<ReturnType<typeof api.getPipelineProducts>>['catalog_summary']
 >;
 
 export function PipelineTab() {
-  /** Tiny first chunk = fastest first paint / TTFB; larger follow-up pages avoid many round-trips. */
-  const FIRST_PAGE_SIZE = 2;
-  const BACKGROUND_PAGE_SIZE = 500;
+  /** Tiny chunks reduce per-request work on the backend; Pipeline Monitor merges network head + cached tail between round-trips. */
+  const CATALOG_PAGE_CHUNK = 2;
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -180,18 +180,81 @@ export function PipelineTab() {
     const isStale = () => pipelineFetchGenerationRef.current !== myGen;
     let cancelled = false;
 
-    setLoading(true);
-    setLoadingMore(false);
     setCatalogLoadError(null);
     setCatalogNotice(null);
-    setProducts([]);
-    setCatalogFirstPageFetch({ attempt: 0, maxAttempts: PIPELINE_CATALOG_ATTEMPTS_LIGHT });
+
+    const bootstrap = readPipelineCatalogCache(pipelineSort);
+    /** Tail rows while the chunked network rebuild refreshes positions from the API in-order. */
+    const cacheTail = bootstrap?.products ?? [];
+    /** True when restoring a non-empty cached list (instant paint). */
+    const hadWarmCache = !!(bootstrap && cacheTail.length > 0);
+    /** First request shows retry spinner only without warm cache — otherwise we reuse the last snapshot immediately. */
+    const trackRetriesOnFirstFetch = !hadWarmCache;
+
+    if (!hadWarmCache) {
+      setLoading(true);
+      setLoadingMore(false);
+      setProducts([]);
+      setTotalProducts(0);
+      setCatalogSummary(null);
+      setCatalogFirstPageFetch({ attempt: 0, maxAttempts: PIPELINE_CATALOG_ATTEMPTS_LIGHT });
+    } else if (hadWarmCache && bootstrap) {
+      setProducts(cacheTail);
+      setTotalProducts(bootstrap.total);
+      if (bootstrap.catalog_summary) setCatalogSummary(bootstrap.catalog_summary);
+      setLoading(false);
+      setCatalogFirstPageFetch(null);
+      setLoadingMore(true);
+    }
+
+    /** Merge authoritative network rows with stale tail → full list scroll without waiting for tens of sequential pages. */
+    const mergePreview = (head: typeof cacheTail): any[] => [
+      ...head,
+      ...cacheTail.slice(head.length),
+    ];
+
+    let cacheWriteTimer: ReturnType<typeof setTimeout> | null = null;
+    const bumpCacheWriteLater = (
+      merged: typeof cacheTail,
+      total: number,
+      summary: PipelineCatalogSummary | null,
+    ) => {
+      if (cacheWriteTimer) clearTimeout(cacheWriteTimer);
+      cacheWriteTimer = setTimeout(() => {
+        cacheWriteTimer = null;
+        if (cancelled || isStale()) return;
+        writePipelineCatalogCache({
+          sort: pipelineSort,
+          total,
+          products: merged,
+          catalog_summary: summary,
+        });
+      }, 520);
+    };
+    const flushCacheWrite = (
+      merged: typeof cacheTail,
+      total: number,
+      summary: PipelineCatalogSummary | null,
+    ) => {
+      if (cacheWriteTimer) clearTimeout(cacheWriteTimer);
+      cacheWriteTimer = null;
+      writePipelineCatalogCache({
+        sort: pipelineSort,
+        total,
+        products: merged,
+        catalog_summary: summary,
+      });
+    };
 
     (async () => {
       let rowsLoaded = 0;
       let expectedTotal = 0;
       let preferLight = true;
       let fellBackToFullThisSession = false;
+      /** Grows strictly from chunked API slices (light/full), in server order starting at offset 0. */
+      let networkHead: typeof cacheTail = [];
+      /** Latest aggregates from whichever page touched them last. */
+      let lastSummaryState: PipelineCatalogSummary | null = null;
 
       const loadCatalogPage = async (
         lim: number,
@@ -238,42 +301,76 @@ export function PipelineTab() {
       };
 
       try {
-        const first = await loadCatalogPage(FIRST_PAGE_SIZE, 0, true);
+        const first = await loadCatalogPage(CATALOG_PAGE_CHUNK, 0, trackRetriesOnFirstFetch);
         if (cancelled || isStale()) return;
 
         const firstBatch = first.products || [];
+        networkHead = firstBatch;
         rowsLoaded = firstBatch.length;
-        expectedTotal = typeof first.total === 'number' ? first.total : firstBatch.length;
+        expectedTotal =
+          typeof first.total === 'number' ? first.total : networkHead.length;
+        lastSummaryState =
+          first.catalog_summary != null
+            ? (first.catalog_summary as PipelineCatalogSummary)
+            : bootstrap?.catalog_summary ?? null;
 
-        setProducts(firstBatch);
-        setTotalProducts(first.total || firstBatch.length);
-        if (first.catalog_summary) {
-          setCatalogSummary(first.catalog_summary);
-        }
+        let knownTotal = first.total ?? firstBatch.length ?? 0;
+        const cap0 =
+          typeof knownTotal === 'number' && Number.isFinite(knownTotal) && knownTotal >= 0
+            ? knownTotal
+            : mergePreview(networkHead).length;
+        const merged0 = mergePreview(networkHead).slice(0, cap0);
+        setProducts(merged0);
+        setTotalProducts(knownTotal || merged0.length);
+        if (lastSummaryState) setCatalogSummary(lastSummaryState);
         setLoading(false);
         setCatalogFirstPageFetch(null);
 
+        bumpCacheWriteLater(merged0, knownTotal || merged0.length, lastSummaryState);
+
         let offset = firstBatch.length;
-        let knownTotal = first.total || firstBatch.length;
         if (offset < knownTotal) {
           setLoadingMore(true);
+        } else {
+          setLoadingMore(false);
         }
+
         while (!cancelled && !isStale() && offset < knownTotal) {
-          const next = await loadCatalogPage(BACKGROUND_PAGE_SIZE, offset, false);
+          const next = await loadCatalogPage(CATALOG_PAGE_CHUNK, offset, false);
           if (cancelled || isStale()) return;
           const batch = next.products || [];
-          knownTotal = next.total || knownTotal;
+          knownTotal = next.total ?? knownTotal;
           expectedTotal = knownTotal;
           if (batch.length === 0) break;
+          networkHead = [...networkHead, ...batch];
           rowsLoaded += batch.length;
-          const batchCopy = batch;
+          if (next.catalog_summary != null) {
+            lastSummaryState = next.catalog_summary as PipelineCatalogSummary;
+          }
+          const cap =
+            typeof knownTotal === 'number' && Number.isFinite(knownTotal) && knownTotal >= 0
+              ? knownTotal
+              : mergePreview(networkHead).length;
+          const merged = mergePreview(networkHead).slice(0, cap);
           const totalCopy = knownTotal;
+
+          bumpCacheWriteLater(merged, totalCopy, lastSummaryState);
           startTransition(() => {
-            setProducts((prev) => [...prev, ...batchCopy]);
+            setProducts(merged);
             setTotalProducts(totalCopy);
+            if (lastSummaryState != null) {
+              setCatalogSummary(lastSummaryState);
+            }
           });
           offset += batch.length;
         }
+
+        const finalCap =
+          typeof knownTotal === 'number' && Number.isFinite(knownTotal) && knownTotal >= 0
+            ? knownTotal
+            : mergePreview(networkHead).length;
+        const fullyMerged = mergePreview(networkHead).slice(0, finalCap);
+        flushCacheWrite(fullyMerged, knownTotal, lastSummaryState);
 
         if (fellBackToFullThisSession && !cancelled && !isStale()) {
           setCatalogNotice(
@@ -283,9 +380,12 @@ export function PipelineTab() {
       } catch (e: unknown) {
         if (cancelled || isStale()) return;
         const msg = e instanceof Error ? e.message : String(e);
-        if (rowsLoaded > 0) {
+        if (rowsLoaded > 0 || hadWarmCache) {
+          const den = expectedTotal || rowsLoaded || '(unknown)';
           setCatalogLoadError(
-            `Some catalog pages did not load (${rowsLoaded} of ${expectedTotal || rowsLoaded} rows). ${msg}`,
+            rowsLoaded > 0
+              ? `Some catalog pages did not load (${rowsLoaded} of ${den} rows). ${msg}`
+              : `Fresh catalog did not reload — still showing cached list. ${msg}`,
           );
         } else {
           setCatalogLoadError(
@@ -293,16 +393,19 @@ export function PipelineTab() {
           );
         }
       } finally {
-        if (!cancelled && !isStale()) {
-          setLoading(false);
-          setLoadingMore(false);
-          setCatalogFirstPageFetch(null);
+        if (cancelled || isStale()) {
+          if (cacheWriteTimer) clearTimeout(cacheWriteTimer);
+          return;
         }
+        setLoading(false);
+        setLoadingMore(false);
+        setCatalogFirstPageFetch(null);
       }
     })();
 
     return () => {
       cancelled = true;
+      if (cacheWriteTimer) clearTimeout(cacheWriteTimer);
     };
   }, [pipelineSort, catalogReloadKey]);
 
@@ -638,12 +741,12 @@ export function PipelineTab() {
                 Catalog vs first rows
               </h3>
               <p className="text-xs text-gray-400 mt-1 max-w-3xl">
-                The monitor shows a <strong className="text-gray-300">small first batch</strong> immediately, then loads
-                the <strong className="text-gray-300">entire catalog</strong> in larger chunks (see counter above), using a{' '}
-                <strong className="text-gray-300">light API mode</strong> (no per-row spec/marketing disk
-                scan) so large factories stay responsive. Default sort is <strong className="text-gray-300">shipped first</strong>{' '}
-                so finished builds are not buried under new ideas. Switch to <strong className="text-gray-300">newest first</strong>{' '}
-                for a strict time line, or use filters (
+                The UI restores the <strong className="text-gray-300">last catalog snapshot from this browser</strong>{' '}
+                instantly, then revalidates row-by-row in <strong className="text-gray-300">light mode</strong> batches of{' '}
+                <strong className="text-gray-300">{CATALOG_PAGE_CHUNK}</strong> against the API (no eager per-row spec/marketing
+                disk scan). Older tail rows briefly carry the snapshot until refreshed. Default sort is{' '}
+                <strong className="text-gray-300">shipped first</strong> so finished builds are not buried under new ideas. Switch
+                to <strong className="text-gray-300">newest first</strong> for a strict time line, or use filters (
                 <strong className="text-gray-300">State</strong>, <strong className="text-gray-300">Storefront</strong>
                 ). Public storefront totals use the <strong className="text-gray-300">Dashboard</strong> tab.
               </p>

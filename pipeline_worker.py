@@ -107,6 +107,7 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         self._last_successful_cycle_at = 0.0
         self._started_at = time.time()
         self._shutdown_reason = ""
+        self._has_active_pipeline_work = False
         self.data_root = data_root()
         self._guards = RuntimeGuards(str(self.data_root))
         self._async_sqlite = None
@@ -477,20 +478,10 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                 except Exception as e:
                     logger.error(f"Processing cycle error: {e}")
 
-                # Wait for sleep timeout OR external wake signal (whichever comes first)
-                # Python 3.12+ requires Task objects, not raw coroutines
-                sleep_task = asyncio.create_task(asyncio.sleep(0.5))
-                wake_task = asyncio.create_task(self._wake_event.wait())
-                done, pending = await asyncio.wait(
-                    [sleep_task, wake_task],
-                    return_when=asyncio.FIRST_COMPLETED,
+                # Event-driven idle wait: wake immediately on signal_new_work(), else adaptive poll.
+                await self._wait_next_cycle(
+                    self._poll_interval_sec(self._has_active_pipeline_work)
                 )
-                for task in pending:
-                    task.cancel()
-                for task in done:
-                    with contextlib.suppress(Exception):
-                        task.result()
-                self._wake_event.clear()
 
                 current_mtime = 0
                 try:
@@ -540,14 +531,38 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         logger.info("Policy audit (%s): pipeline state updated", reason)
         self.signal_new_work()
 
+    def _poll_interval_sec(self, has_active_work: bool) -> float:
+        env_key = (
+            "AIFACTORY_PIPELINE_ACTIVE_POLL_SEC"
+            if has_active_work
+            else "AIFACTORY_PIPELINE_IDLE_POLL_SEC"
+        )
+        default = "0.25" if has_active_work else "2.0"
+        try:
+            return max(0.05, float(os.environ.get(env_key, default)))
+        except ValueError:
+            return 0.25 if has_active_work else 2.0
+
+    async def _wait_next_cycle(self, poll_sec: float) -> None:
+        """Block until ``signal_new_work()`` or idle poll timeout."""
+        try:
+            await asyncio.wait_for(self._wake_event.wait(), timeout=poll_sec)
+        except asyncio.TimeoutError:
+            pass
+        self._wake_event.clear()
+
     async def _process_cycle(self):
         """One processing cycle: check for new products and pending tasks."""
         state = await self._load_state_async()
         if not state:
+            self._has_active_pipeline_work = False
             return
 
         products = state.get("products", {})
         task_queue = state.get("task_queue", [])
+        self._has_active_pipeline_work = any(
+            t.get("status") in ("pending", "running") for t in task_queue
+        )
         changed = False
         now = time.time()
 
@@ -590,6 +605,9 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             state["products"] = products
             state["task_queue"] = task_queue
             await self._save_state_async(state)
+            self._has_active_pipeline_work = any(
+                t.get("status") in ("pending", "running") for t in task_queue
+            )
 
         # Phase 3: Process running tasks via real agents (bounded concurrency)
         running_tasks = [task for task in task_queue if task.get("status") == "running"]
@@ -624,6 +642,10 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             state["products"] = products
             state["task_queue"] = task_queue
             await self._save_state_async(state)
+
+        self._has_active_pipeline_work = any(
+            t.get("status") in ("pending", "running") for t in task_queue
+        )
 
     async def _process_task(self, task: dict, products: dict, task_queue: list):
         """Process a running task using the appropriate agent."""

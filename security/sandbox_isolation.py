@@ -87,7 +87,7 @@ class SandboxIsolation:
         max_sandboxes: int = 10,
         default_timeout: int = 300,
         enable_network: bool = False,
-        execution_mode: str = "process",
+        execution_mode: Optional[str] = None,
         container_image: str = "python:3.12-slim",
         require_container: Optional[bool] = None,
     ):
@@ -98,7 +98,7 @@ class SandboxIsolation:
         self.max_sandboxes = max_sandboxes
         self.default_timeout = default_timeout
         self.enable_network = enable_network
-        self.execution_mode = execution_mode if execution_mode in {"process", "container"} else "process"
+        self.execution_mode = self._resolve_execution_mode(execution_mode)
         self.container_image = container_image
         self.require_container = (
             _env_truthy("AIFACTORY_SANDBOX_REQUIRE_CONTAINER", False)
@@ -111,6 +111,17 @@ class SandboxIsolation:
         self._state_file = self.sandbox_base_dir / ".sandbox_state.json"
         
         self._load_state()
+
+    @staticmethod
+    def _resolve_execution_mode(explicit: Optional[str]) -> str:
+        if explicit in ("process", "container"):
+            return explicit
+        env_mode = (os.environ.get("AIFACTORY_SANDBOX_EXECUTION_MODE") or "").strip().lower()
+        if env_mode in ("process", "container"):
+            return env_mode
+        if _env_truthy("AIFACTORY_SANDBOX_REQUIRE_CONTAINER", False):
+            return "container"
+        return "process"
 
     # -----------------------------------------------------------------------
     # Sandbox Lifecycle

@@ -57,6 +57,12 @@ def test_process_fallback_when_container_fails_and_not_required(isolation: Sandb
     assert out.status in (SandboxStatus.RUNNING, SandboxStatus.FAILED)
 
 
+def test_default_execution_mode_container_when_required(monkeypatch, tmp_path: Path):
+    monkeypatch.setenv("AIFACTORY_SANDBOX_REQUIRE_CONTAINER", "1")
+    sb = SandboxIsolation(sandbox_base_dir=str(tmp_path / "sandboxes"))
+    assert sb.execution_mode == "container"
+
+
 def test_require_container_blocks_process_fallback(isolation: SandboxIsolation, tmp_path: Path, monkeypatch):
     code_dir = tmp_path / "product-code"
     sb = isolation.create_sandbox("prod-3", str(code_dir))

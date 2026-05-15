@@ -6,7 +6,8 @@
 
 > **Product disclaimer**  
 > Not everyone will fully connect with the intent and scope of this project — that is expected.  
-> **This is not a quick landing-page generator.** It is an attempt to build an **autonomously operating AI company**: from discovering an idea through shipping a **real product**, with ongoing support, evolution, and monetization.
+> **This is not a quick landing-page generator.** It is an attempt to build an **autonomously operating AI company**: from discovering an idea through shipping a **real product**, with ongoing support, evolution, and monetization.  
+> **If you need to spin up a landing fast**, there is a separate tool for that: **[aicom-landing](https://github.com/alexar76/aicom-landing)** (AI landing generator).
 
 Turn one sentence into a presentable site or MVP-shaped codebase — with demo gates, browser crawl, and an operator-grade admin UI.
 
