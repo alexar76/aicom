@@ -100,8 +100,10 @@ type PipelineCatalogSummary = NonNullable<
 >;
 
 export function PipelineTab() {
-  /** Tiny chunks reduce per-request work on the backend; Pipeline Monitor merges network head + cached tail between round-trips. */
-  const CATALOG_PAGE_CHUNK = 2;
+  /** First API page: enough rows for a dense first paint on cold start (backend allows up to 2000). */
+  const CATALOG_FIRST_FETCH = 32;
+  /** Background refresh: smaller than first to keep requests light while still fewer round-trips than size 2. */
+  const CATALOG_BACKGROUND_CHUNK = 10;
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -312,7 +314,7 @@ export function PipelineTab() {
       };
 
       try {
-        const first = await loadCatalogPage(CATALOG_PAGE_CHUNK, 0, trackRetriesOnFirstFetch);
+        const first = await loadCatalogPage(CATALOG_FIRST_FETCH, 0, trackRetriesOnFirstFetch);
         if (cancelled || isStale()) return;
 
         const firstBatch = first.products || [];
@@ -348,7 +350,7 @@ export function PipelineTab() {
         }
 
         while (!cancelled && !isStale() && offset < knownTotal) {
-          const next = await loadCatalogPage(CATALOG_PAGE_CHUNK, offset, false);
+          const next = await loadCatalogPage(CATALOG_BACKGROUND_CHUNK, offset, false);
           if (cancelled || isStale()) return;
           const batch = next.products || [];
           knownTotal = next.total ?? knownTotal;
@@ -765,9 +767,10 @@ export function PipelineTab() {
               </h3>
               <p className="text-xs text-gray-400 mt-1 max-w-3xl">
                 The UI restores the <strong className="text-gray-300">last catalog snapshot from this browser</strong>{' '}
-                instantly, then revalidates row-by-row in <strong className="text-gray-300">light mode</strong> batches of{' '}
-                <strong className="text-gray-300">{CATALOG_PAGE_CHUNK}</strong> against the API (no eager per-row spec/marketing
-                disk scan). Rows not yet refreshed this session look <strong className="text-gray-300">slightly muted</strong>{' '}
+                instantly, then revalidates in <strong className="text-gray-300">light mode</strong>: first{' '}
+                <strong className="text-gray-300">{CATALOG_FIRST_FETCH}</strong> rows, then batches of{' '}
+                <strong className="text-gray-300">{CATALOG_BACKGROUND_CHUNK}</strong> (no eager per-row spec/marketing disk
+                scan). Rows not yet refreshed this session look <strong className="text-gray-300">slightly muted</strong>{' '}
                 until live data arrives. Default sort is{' '}
                 <strong className="text-gray-300">shipped first</strong> so finished builds are not buried under new ideas. Switch
                 to <strong className="text-gray-300">newest first</strong> for a strict time line, or use filters (
