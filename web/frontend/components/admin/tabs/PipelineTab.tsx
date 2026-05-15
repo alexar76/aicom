@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useMemo, startTransition } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useRef, useMemo, startTransition } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
@@ -105,6 +105,8 @@ export function PipelineTab() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  /** Rows at the start of the merged list already replaced by live API data this session (tail may still be snapshot). */
+  const [catalogLiveRowCount, setCatalogLiveRowCount] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [catalogSummary, setCatalogSummary] = useState<PipelineCatalogSummary | null>(null);
   /** Default shipped_first so COMPLETED / DEPLOYED rows are not buried under thousands of new drafts. */
@@ -175,6 +177,29 @@ export function PipelineTab() {
     };
   }, []);
 
+  /** Paint cached catalog before first browser frame so the tab never flashes empty when a snapshot exists. */
+  useLayoutEffect(() => {
+    const snap = readPipelineCatalogCache(pipelineSort);
+    const tail = snap?.products ?? [];
+    if (!snap || tail.length === 0) {
+      setProducts([]);
+      setTotalProducts(0);
+      setCatalogSummary(null);
+      setCatalogLiveRowCount(0);
+      setLoading(true);
+      setLoadingMore(false);
+      setCatalogFirstPageFetch({ attempt: 0, maxAttempts: PIPELINE_CATALOG_ATTEMPTS_LIGHT });
+      return;
+    }
+    setProducts(tail);
+    setTotalProducts(snap.total);
+    if (snap.catalog_summary) setCatalogSummary(snap.catalog_summary as PipelineCatalogSummary);
+    setLoading(false);
+    setLoadingMore(true);
+    setCatalogFirstPageFetch(null);
+    setCatalogLiveRowCount(0);
+  }, [pipelineSort, catalogReloadKey]);
+
   useEffect(() => {
     const myGen = ++pipelineFetchGenerationRef.current;
     const isStale = () => pipelineFetchGenerationRef.current !== myGen;
@@ -191,21 +216,7 @@ export function PipelineTab() {
     /** First request shows retry spinner only without warm cache — otherwise we reuse the last snapshot immediately. */
     const trackRetriesOnFirstFetch = !hadWarmCache;
 
-    if (!hadWarmCache) {
-      setLoading(true);
-      setLoadingMore(false);
-      setProducts([]);
-      setTotalProducts(0);
-      setCatalogSummary(null);
-      setCatalogFirstPageFetch({ attempt: 0, maxAttempts: PIPELINE_CATALOG_ATTEMPTS_LIGHT });
-    } else if (hadWarmCache && bootstrap) {
-      setProducts(cacheTail);
-      setTotalProducts(bootstrap.total);
-      if (bootstrap.catalog_summary) setCatalogSummary(bootstrap.catalog_summary);
-      setLoading(false);
-      setCatalogFirstPageFetch(null);
-      setLoadingMore(true);
-    }
+    /** Sync loading / empty state vs snapshot: `useLayoutEffect` above (cold vs warm) runs before paint. */
 
     /** Merge authoritative network rows with stale tail → full list scroll without waiting for tens of sequential pages. */
     const mergePreview = (head: typeof cacheTail): any[] => [
@@ -322,6 +333,7 @@ export function PipelineTab() {
         const merged0 = mergePreview(networkHead).slice(0, cap0);
         setProducts(merged0);
         setTotalProducts(knownTotal || merged0.length);
+        setCatalogLiveRowCount(networkHead.length);
         if (lastSummaryState) setCatalogSummary(lastSummaryState);
         setLoading(false);
         setCatalogFirstPageFetch(null);
@@ -358,6 +370,7 @@ export function PipelineTab() {
           startTransition(() => {
             setProducts(merged);
             setTotalProducts(totalCopy);
+            setCatalogLiveRowCount(networkHead.length);
             if (lastSummaryState != null) {
               setCatalogSummary(lastSummaryState);
             }
@@ -645,6 +658,16 @@ export function PipelineTab() {
     return bits.join(' ');
   }, [pipelineLoadedTaskStats]);
 
+  /** Row order in the full loaded list (for snapshot tail hint vs live API prefix). */
+  const productRowIndex = useMemo(() => {
+    const m = new Map<string, number>();
+    for (let i = 0; i < products.length; i++) {
+      const id = products[i]?.id;
+      if (id != null) m.set(String(id), i);
+    }
+    return m;
+  }, [products]);
+
   // Filter products by selected controls
   const filteredProducts = products.filter((p) => {
     const bucket = bucketPipelineProductForCategoryFilter(p as Record<string, unknown>);
@@ -686,19 +709,19 @@ export function PipelineTab() {
         <div>
           <h2 className="text-xl font-semibold text-white">Pipeline Monitor</h2>
           {loadingMore && totalProducts > 0 && (
-            <div className="mt-2 max-w-lg space-y-2">
-              <p className="text-xs text-amber-200/90">
-                Loading full catalog… {products.length} / {totalProducts} products ({catalogHydrationPercent}%) ·{' '}
-                {pipelineLoadedTasksLabel}
-                <span className="text-amber-200/70"> (keep this tab open)</span>
-              </p>
-              <ProgressBar
-                value={catalogHydrationPercent}
-                max={100}
-                label="Rows loaded"
-                size="sm"
-                variant="warning"
+            <div
+              className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-400/95"
+              aria-live="polite"
+              aria-busy="true"
+            >
+              <span
+                className="inline-flex h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400/80 animate-pulse"
+                aria-hidden
               />
+              <span>
+                Updating from server… {products.length} / {totalProducts} rows ({catalogHydrationPercent}% verified)
+              </span>
+              <span className="text-slate-500 hidden sm:inline">· {pipelineLoadedTasksLabel}</span>
             </div>
           )}
           {!loadingMore && totalProducts > 0 && products.length >= totalProducts && (
@@ -744,7 +767,8 @@ export function PipelineTab() {
                 The UI restores the <strong className="text-gray-300">last catalog snapshot from this browser</strong>{' '}
                 instantly, then revalidates row-by-row in <strong className="text-gray-300">light mode</strong> batches of{' '}
                 <strong className="text-gray-300">{CATALOG_PAGE_CHUNK}</strong> against the API (no eager per-row spec/marketing
-                disk scan). Older tail rows briefly carry the snapshot until refreshed. Default sort is{' '}
+                disk scan). Rows not yet refreshed this session look <strong className="text-gray-300">slightly muted</strong>{' '}
+                until live data arrives. Default sort is{' '}
                 <strong className="text-gray-300">shipped first</strong> so finished builds are not buried under new ideas. Switch
                 to <strong className="text-gray-300">newest first</strong> for a strict time line, or use filters (
                 <strong className="text-gray-300">State</strong>, <strong className="text-gray-300">Storefront</strong>
@@ -941,14 +965,18 @@ export function PipelineTab() {
           const tasks = product.tasks || [];
           const productTitle = product.spec?.product_name || product.idea || product.id;
           const catId = bucketPipelineProductForCategoryFilter(product as Record<string, unknown>);
+          const rowOrder = productRowIndex.get(String(product.id)) ?? 0;
+          const isSnapshotTail =
+            loadingMore && catalogLiveRowCount > 0 && rowOrder >= catalogLiveRowCount;
           
           return (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={{ opacity: isSnapshotTail ? 0.92 : 1, y: 0 }}
               transition={{
                 delay: filteredProducts.length > 40 ? 0 : Math.min(i, 10) * 0.018,
+                opacity: { duration: 0.35 },
               }}
             >
               <GlassCard>
@@ -1410,23 +1438,14 @@ export function PipelineTab() {
             </motion.div>
           );
         })}
-        {loadingMore && (
-          <div className="py-6 flex flex-col items-center justify-center gap-2 text-center px-2 max-w-md mx-auto">
-            <div className="flex items-center gap-2 text-xs text-gray-400">
-              <RefreshCw className="w-3.5 h-3.5 shrink-0 animate-spin" aria-hidden />
-              <span>Loading more products…</span>
-            </div>
-            <p className="text-[11px] text-gray-500 max-w-lg">
-              {products.length} / {totalProducts} products in memory ({catalogHydrationPercent}%) ·{' '}
-              {pipelineLoadedTasksLabel}
+        {loadingMore && filteredProducts.length > 0 && (
+          <div className="py-4 flex justify-center px-2">
+            <p className="text-[11px] text-slate-500 text-center max-w-md flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+              <RefreshCw className="w-3 h-3 shrink-0 animate-spin text-slate-500" aria-hidden />
+              <span>
+                Syncing catalog… {products.length} / {totalProducts} ({catalogHydrationPercent}%)
+              </span>
             </p>
-            <ProgressBar
-              value={catalogHydrationPercent}
-              max={100}
-              label="Catalog pages"
-              size="sm"
-              variant="primary"
-            />
           </div>
         )}
         {!loadingMore && products.length > 0 && products.length >= totalProducts && (
