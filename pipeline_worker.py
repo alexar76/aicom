@@ -710,6 +710,8 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                         "admin_instructions": product.get("admin_instructions", ""),
                         "delivery_profile": delivery_profile,
                         "production_mode": bool(product.get("production_mode")),
+                        "interface_locale": product.get("interface_locale") or "en",
+                        "content_locale": product.get("content_locale") or "auto",
                         **task.get("input_data", {}),
                     },
                     context=context,

@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from llm.content_languages import LANGUAGE_SYSTEM, content_language_meta, normalize_content_language
 from llm.visual_quality_system import USER_DATA_JSON_MARKER, VISUAL_QUALITY_SYSTEM
 
 
@@ -37,8 +38,16 @@ def build_architect_user_data(
     landing_note: str,
     full_note: str,
     ux_note: str,
+    interface_locale: str | None = None,
+    content_locale: str | None = None,
 ) -> dict[str, Any]:
+    iface = normalize_content_language(interface_locale)
+    explicit = normalize_content_language(content_locale)
+    content_locale_payload = explicit if explicit else "auto"
     return {
+        "content_locale": content_locale_payload,
+        "interface_locale": iface or "en",
+        "content_language_meta": content_language_meta(explicit or iface or "en"),
         "user_brief": {
             "idea": idea,
             "admin_instructions": admin_instructions or None,
@@ -58,7 +67,7 @@ def build_architect_user_data(
 
 def build_architect_system_prompt(role_prompt: str) -> str:
     return (
-        f"{role_prompt.strip()}\n\n{VISUAL_QUALITY_SYSTEM}\n\n"
+        f"{role_prompt.strip()}\n\n{VISUAL_QUALITY_SYSTEM}\n\n{LANGUAGE_SYSTEM}\n\n"
         "Respond with a single JSON object matching the role schema. "
         "No markdown fences or commentary outside JSON."
     )
@@ -81,6 +90,8 @@ def build_developer_user_data(
     implementation_plan: dict,
     analyst_brief: str | None,
     remediation: dict[str, Any] | None = None,
+    interface_locale: str | None = None,
+    content_locale: str | None = None,
 ) -> dict[str, Any]:
     brief: dict[str, Any] = {
         "idea": idea or None,
@@ -97,9 +108,20 @@ def build_developer_user_data(
     if remediation:
         brief["remediation"] = remediation
 
+    arch = architecture if isinstance(architecture, dict) else {}
+    code = normalize_content_language(arch.get("content_language"))
+    if not code:
+        code = normalize_content_language(content_locale) or normalize_content_language(interface_locale) or "en"
+    meta = arch.get("content_language_meta")
+    if not isinstance(meta, dict):
+        meta = content_language_meta(code)
+
     return {
+        "content_locale": normalize_content_language(content_locale) or "auto",
+        "interface_locale": normalize_content_language(interface_locale) or "en",
+        "content_language_meta": meta,
         "user_brief": brief,
-        "architecture": architecture if isinstance(architecture, dict) else {},
+        "architecture": arch,
     }
 
 
@@ -116,6 +138,7 @@ def build_developer_system_prompt(
     parts = [
         core_prompt.strip(),
         VISUAL_QUALITY_SYSTEM,
+        LANGUAGE_SYSTEM,
         stack_rules.strip(),
         reference_shell_block.strip(),
         fs_appendix.strip(),

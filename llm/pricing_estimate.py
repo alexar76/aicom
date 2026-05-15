@@ -12,11 +12,14 @@ Env:
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 from typing import Any, Optional
 
 import yaml
+
+from llm.provider_ids import is_legacy_provider_id, normalize_llm_provider_id
 
 _yaml_cache: tuple[float, dict[str, Any]] = (0.0, {})
 
@@ -157,18 +160,21 @@ def _rate_for_model(model: str) -> Optional[float]:
 
 
 def _provider_yaml_entry(provider: str) -> Any:
-    n = (provider or "").strip().lower()
-    if not n:
+    canon = normalize_llm_provider_id(provider).lower()
+    if not canon:
         return None
     ov = _load_pricing_overrides().get("providers")
-    if isinstance(ov, dict) and n in ov:
-        return ov[n]
+    if not isinstance(ov, dict):
+        return None
+    for key in (canon, (provider or "").strip().lower()):
+        if key and key in ov:
+            return ov[key]
     return None
 
 
 def _rate_for_provider(provider: str) -> Optional[float]:
-    n = (provider or "").strip().lower()
-    if not n:
+    canon = normalize_llm_provider_id(provider).lower()
+    if not canon:
         return None
     raw = _provider_yaml_entry(provider)
     if isinstance(raw, (int, float)):
@@ -177,12 +183,12 @@ def _rate_for_provider(provider: str) -> Optional[float]:
         b = raw.get("blended_per_mtok")
         if isinstance(b, (int, float)):
             return float(b)
-    return _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK.get(n)
+    return _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK.get(canon)
 
 
 def _rate_for_provider_role(provider: str, model_role: Optional[str]) -> Optional[float]:
     """$/Mtok when only total tokens are known; uses heavy/light if configured."""
-    n = (provider or "").strip().lower()
+    canon = normalize_llm_provider_id(provider).lower()
     role = _norm_role(model_role)
     raw = _provider_yaml_entry(provider)
     if isinstance(raw, dict):
@@ -199,7 +205,7 @@ def _rate_for_provider_role(provider: str, model_role: Optional[str]) -> Optiona
         if isinstance(b, (int, float)):
             return float(b)
     # Prefer per-role built-ins before a single blended default for the provider.
-    role_map = _BUILTIN_PROVIDER_ROLE_USD_PER_MTOK.get(n)
+    role_map = _BUILTIN_PROVIDER_ROLE_USD_PER_MTOK.get(canon)
     if isinstance(role_map, dict):
         rv = role_map.get(role)
         if isinstance(rv, (int, float)):
@@ -232,6 +238,7 @@ def estimate_llm_call_cost_usd(
     If only totals are available, uses model blended rate, then provider role (heavy/light),
     then provider default, then global default.
     """
+    provider = normalize_llm_provider_id(provider)
     pt: Optional[float] = None
     ct: Optional[float] = None
     try:
@@ -295,9 +302,14 @@ def enrich_llm_log_entry(entry: dict[str, Any]) -> None:
     """Mutates JSONL dict in-place: sets ``estimated_cost_usd`` when missing."""
     if not isinstance(entry, dict):
         return
+    raw_provider = str(entry.get("provider") or "")
+    provider = normalize_llm_provider_id(raw_provider)
+    if provider and provider != raw_provider:
+        entry["provider"] = provider
+        if raw_provider and entry.get("provider_legacy") is None:
+            entry["provider_legacy"] = raw_provider
     if entry.get("estimated_cost_usd") is not None:
         return
-    provider = str(entry.get("provider") or "")
     model = str(entry.get("model") or "")
     tokens = entry.get("tokens_used")
 
@@ -337,8 +349,8 @@ def effective_provider_fallback_usd_per_mtok(
 
     Returns (rate, source) where source is override | builtin | default_yaml | default_builtin.
     """
-    n = (provider or "").strip().lower()
-    if not n:
+    canon = normalize_llm_provider_id(provider).lower()
+    if not canon:
         return _DEFAULT_FALLBACK_PER_MTOK, "default_builtin"
     raw = _provider_yaml_entry(provider)
     if isinstance(raw, (int, float)):
@@ -347,8 +359,8 @@ def effective_provider_fallback_usd_per_mtok(
         b = raw.get("blended_per_mtok")
         if isinstance(b, (int, float)):
             return float(b), "override"
-    if n in _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK:
-        return _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK[n], "builtin"
+    if canon in _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK:
+        return _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK[canon], "builtin"
     d = _load_pricing_overrides().get("default_per_mtok")
     if isinstance(d, (int, float)):
         return float(d), "default_yaml"
@@ -369,10 +381,65 @@ def yaml_override_usd_per_mtok_for_provider(provider: str) -> Optional[float]:
 
 def builtin_provider_fallback_usd_per_mtok(provider: str) -> Optional[float]:
     """Built-in default $/1M for provider id (no YAML)."""
-    n = (provider or "").strip().lower()
-    if not n:
+    canon = normalize_llm_provider_id(provider).lower()
+    if not canon:
         return None
-    return _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK.get(n)
+    return _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK.get(canon)
+
+
+def migrate_llm_calls_provider_ids(
+    path: Path,
+    *,
+    dry_run: bool = False,
+    re_enrich_cost: bool = True,
+) -> dict[str, int]:
+    """
+    Rewrite legacy ``provider`` ids in ``llm_calls.jsonl`` to canonical names (in-place).
+
+    Sets ``provider_legacy`` when the id changes. Optionally recomputes ``estimated_cost_usd``.
+    """
+    stats = {"lines": 0, "migrated": 0, "re_enriched": 0, "skipped": 0, "errors": 0}
+    if not path.is_file():
+        return stats
+
+    out_lines: list[str] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        stats["lines"] += 1
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            stats["errors"] += 1
+            out_lines.append(line)
+            continue
+        if not isinstance(entry, dict):
+            stats["skipped"] += 1
+            out_lines.append(line)
+            continue
+
+        raw = str(entry.get("provider") or "")
+        if is_legacy_provider_id(raw):
+            canon = normalize_llm_provider_id(raw)
+            entry["provider"] = canon
+            if entry.get("provider_legacy") is None:
+                entry["provider_legacy"] = raw
+            stats["migrated"] += 1
+            if re_enrich_cost:
+                entry.pop("estimated_cost_usd", None)
+                enrich_llm_log_entry(entry)
+                if entry.get("estimated_cost_usd") is not None:
+                    stats["re_enriched"] += 1
+
+        out_lines.append(json.dumps(entry, ensure_ascii=False))
+
+    if not dry_run and stats["migrated"] > 0:
+        backup = path.with_suffix(path.suffix + ".bak")
+        if not backup.exists():
+            backup.write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
+        path.write_text("\n".join(out_lines) + ("\n" if out_lines else ""), encoding="utf-8")
+
+    return stats
 
 
 def write_llm_pricing_provider_rate(provider: str, usd_per_mtok: Optional[float]) -> None:

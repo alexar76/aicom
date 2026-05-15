@@ -1513,6 +1513,8 @@ class ApiClient {
     admin_instructions?: string;
     production_mode?: boolean;
     delivery_profile?: string;
+    interface_locale?: string;
+    content_locale?: string;
   }): Promise<{ product_id: string; state: string; message: string }> {
     return this.request('/admin/products/create', {
       method: 'POST',
@@ -1528,6 +1530,8 @@ class ApiClient {
     admin_instructions?: string;
     delivery_profile?: string;
     production_mode?: boolean;
+    interface_locale?: string;
+    content_locale?: string;
   }): Promise<any> {
     return this.request('/admin/products/create-batch', {
       method: 'POST',

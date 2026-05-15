@@ -149,7 +149,7 @@ function AdminPageInner() {
       case 'products':
         return <PipelineTab />;
       case 'new-product':
-        return <NewProductTab />;
+        return <NewProductTab locale={locale} />;
       case 'workshop':
         return <WorkshopTab />;
       case 'pipeline':

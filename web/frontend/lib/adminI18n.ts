@@ -12,6 +12,16 @@ const DICT: Dict = {
   },
   'app.logout': { en: 'Logout', ru: 'Выйти', es: 'Cerrar sesión' },
   'app.language': { en: 'Language', ru: 'Язык', es: 'Idioma' },
+  'newProduct.contentLanguage': {
+    en: 'Landing & UI copy language',
+    ru: 'Язык лендинга и UI-копирайта',
+    es: 'Idioma del landing y textos UI',
+  },
+  'newProduct.contentLanguageHint': {
+    en: 'Auto: match a clear brief (RU→RU, EN→EN); mixed/unclear brief → English; silent brief → current admin UI language. Override to force a locale.',
+    ru: 'Авто: явный язык брифа (RU→RU, EN→EN); смешанный/неясный бриф → английский; пустой бриф → язык интерфейса админки. Выбор языка — принудительная локаль.',
+    es: 'Auto: idioma claro del brief (RU→RU, EN→EN); brief mixto/ambiguo → inglés; brief vacío → idioma UI del admin. Elegir idioma fuerza la locale.',
+  },
   'tab.dashboard': { en: 'Dashboard', ru: 'Дашборд', es: 'Panel' },
   'tab.monitor': { en: 'Live Monitor', ru: 'Мониторинг', es: 'Monitor en vivo' },
   'tab.pipeline': { en: 'Pipeline', ru: 'Пайплайн', es: 'Pipeline' },

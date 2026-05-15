@@ -703,6 +703,10 @@ class CreateProductRequest(BaseModel):
 
     delivery_profile: Optional[str] = None
     production_mode: bool = False
+    """UI locale at create time (en, ru, es, …). Default content language when brief is silent."""
+    interface_locale: Optional[str] = None
+    """auto | en | ru | … — explicit landing copy language; auto follows brief then interface_locale."""
+    content_locale: Optional[str] = None
 
 
 class BatchCreateIdeasRequest(BaseModel):
@@ -713,6 +717,8 @@ class BatchCreateIdeasRequest(BaseModel):
     admin_instructions: Optional[str] = None
     delivery_profile: Optional[str] = None
     production_mode: bool = False
+    interface_locale: Optional[str] = None
+    content_locale: Optional[str] = None
 
 
 class RunDiscoveryRequest(BaseModel):
@@ -818,8 +824,14 @@ async def admin_create_product(
     else:
         dprof = infer_delivery_profile(request.admin_instructions, idea_stripped)
 
+    from llm.content_languages import product_locale_fields
+
     product_id = f"prod-{uuid.uuid4().hex[:12]}"
     timestamp = time.time()
+    locale_fields = product_locale_fields(
+        interface_locale=request.interface_locale,
+        content_locale=request.content_locale,
+    )
 
     product = {
         "id": product_id,
@@ -827,6 +839,7 @@ async def admin_create_product(
         "admin_instructions": request.admin_instructions,
         "delivery_profile": dprof,
         "production_mode": bool(request.production_mode),
+        **locale_fields,
         "category": "saas",
         "tags": [],
         "state": "IDEA_RECEIVED",
@@ -873,6 +886,7 @@ async def admin_create_products_batch(
 ):
     _ = _admin
     from agents.product_profile import infer_delivery_profile, normalize_delivery_profile
+    from llm.content_languages import product_locale_fields
     from orchestrator.batch_pipeline import (
         enqueue_batch_items,
         summarize_batch,
@@ -880,6 +894,10 @@ async def admin_create_products_batch(
     )
 
     ideas = [str(x).strip() for x in (request.ideas or []) if str(x).strip()]
+    batch_locale_fields = product_locale_fields(
+        interface_locale=request.interface_locale,
+        content_locale=request.content_locale,
+    )
     if not ideas:
         raise HTTPException(status_code=400, detail="ideas list is empty")
     if len(ideas) > 10:
@@ -911,6 +929,7 @@ async def admin_create_products_batch(
                 "admin_instructions": request.admin_instructions,
                 "delivery_profile": dprof,
                 "production_mode": bool(request.production_mode),
+                **batch_locale_fields,
                 "status": "queued",
                 "created_at": now,
                 "updated_at": now,

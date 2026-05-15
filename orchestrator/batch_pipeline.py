@@ -89,14 +89,21 @@ def _active_products_count(products: dict[str, Any]) -> int:
 
 
 def _build_product_from_queue_item(item: dict[str, Any]) -> dict[str, Any]:
+    from llm.content_languages import product_locale_fields
+
     product_id = f"prod-{uuid.uuid4().hex[:12]}"
     ts = time.time()
+    locale_fields = product_locale_fields(
+        interface_locale=item.get("interface_locale"),
+        content_locale=item.get("content_locale"),
+    )
     return {
         "id": product_id,
         "idea": str(item.get("idea") or "").strip(),
         "admin_instructions": item.get("admin_instructions"),
         "delivery_profile": str(item.get("delivery_profile") or "full_software"),
         "production_mode": bool(item.get("production_mode", False)),
+        **locale_fields,
         "category": "saas",
         "tags": [],
         "state": "IDEA_RECEIVED",

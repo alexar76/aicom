@@ -25,6 +25,7 @@ from llm.agent_prompt_split import (
     build_architect_user_data,
     format_user_data_message,
 )
+from llm.content_languages import ensure_architecture_content_language
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ARCHITECTURE_SEC
 
 logger = logging.getLogger(__name__)
@@ -92,6 +93,7 @@ For each specification, you must:
 **Visual direction:** pick a **bold, ownable** look per product (not interchangeable factory clones). Vary mood, tokens, type, and SVG plan to match the idea — details in VISUAL_QUALITY_SYSTEM.
 
 Output format: JSON with fields:
+- content_language: string — BCP-style short code (`ru`, `en`, `es`, …) for **all user-visible copy**; see LANGUAGE_SYSTEM
 - architecture_name: string
 - overview: string
 - components: list of {name, description, technology, responsibilities}
@@ -1041,6 +1043,9 @@ class ArchitectAgent(BaseAgent):
                 except (json.JSONDecodeError, OSError) as e:
                     self._log("WARNING", f"Architect could not read methodology review: {e}")
 
+            interface_locale = agent_input.data.get("interface_locale")
+            product_content_locale = agent_input.data.get("content_locale")
+
             prompt = format_user_data_message(
                 build_architect_user_data(
                     idea=idea,
@@ -1053,6 +1058,8 @@ class ArchitectAgent(BaseAgent):
                     landing_note=landing_note,
                     full_note=full_note,
                     ux_note=ux_note,
+                    interface_locale=str(interface_locale) if interface_locale else None,
+                    content_locale=str(product_content_locale) if product_content_locale else None,
                 )
             )
             system_prompt = build_architect_system_prompt(ARCHITECT_SYSTEM_PROMPT)
@@ -1091,6 +1098,23 @@ class ArchitectAgent(BaseAgent):
                 idea,
                 landing_charter=landing_charter,
             )
+
+            brief_for_lang = "\n".join(
+                p
+                for p in (
+                    str(idea or ""),
+                    admin_raw,
+                    json.dumps(spec, ensure_ascii=False) if isinstance(spec, dict) else "",
+                )
+                if p
+            )
+            lang_code = ensure_architecture_content_language(
+                arch,
+                product_content_locale=product_content_locale,
+                interface_locale=interface_locale,
+                user_text=brief_for_lang,
+            )
+            self._log("INFO", f"content_language={lang_code} for {product_id}")
 
             if _ensure_ui_experience(arch, spec if isinstance(spec, dict) else {}, landing_charter, idea):
                 self._log("INFO", "ui_experience was missing or shallow — applied factory default for browser UI")

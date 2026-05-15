@@ -33,6 +33,12 @@ import {
 } from '@/lib/productCreationTemplates';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
+import {
+  CONTENT_LOCALE_OPTIONS,
+  contentLocaleLabel,
+  type ContentLocaleChoice,
+} from '@/lib/contentLanguages';
+import { type AdminLocale, t } from '@/lib/adminI18n';
 
 const STEPS = ['Idea', 'Options', 'Review'] as const;
 
@@ -101,7 +107,7 @@ const QUICK_PRESETS = [
 
 const INTRO_STORAGE = 'aicom_new_product_intro_dismissed_v1';
 
-export function NewProductTab() {
+export function NewProductTab({ locale }: { locale: AdminLocale }) {
   const [step, setStep] = useState(1);
   const [idea, setIdea] = useState('');
   const [instructions, setInstructions] = useState('');
@@ -109,6 +115,7 @@ export function NewProductTab() {
     'full_software',
   );
   const [mode, setMode] = useState<'prototype' | 'production'>('prototype');
+  const [contentLocale, setContentLocale] = useState<ContentLocaleChoice>('auto');
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [createdId, setCreatedId] = useState<string | null>(null);
@@ -298,6 +305,8 @@ export function NewProductTab() {
         idea: idea.trim(),
         admin_instructions: instructions.trim() || undefined,
         production_mode: mode === 'production',
+        interface_locale: locale,
+        content_locale: contentLocale,
         ...(deliveryChoice !== 'infer' ? { delivery_profile: deliveryChoice } : {}),
       });
       const pid = typeof data.product_id === 'string' ? data.product_id : null;
@@ -569,6 +578,25 @@ export function NewProductTab() {
                     </select>
                   </div>
 
+                  <div className="rounded-xl border border-violet-500/25 bg-violet-500/5 p-3 space-y-2">
+                    <label className="block text-sm font-medium text-gray-300">
+                      {t(locale, 'newProduct.contentLanguage')}
+                    </label>
+                    <p className="text-xs text-gray-500 leading-relaxed">{t(locale, 'newProduct.contentLanguageHint')}</p>
+                    <select
+                      value={contentLocale}
+                      onChange={(e) => setContentLocale(e.target.value as ContentLocaleChoice)}
+                      className="input-glass"
+                    >
+                      {CONTENT_LOCALE_OPTIONS.map((opt) => (
+                        <option key={opt.code} value={opt.code}>
+                          {contentLocaleLabel(opt.code, locale)}
+                          {opt.reach ? ` · ${opt.reach}` : ''}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
                     <div className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-300">
                       <LayoutList className="h-4 w-4 text-cyan-400" />
@@ -698,6 +726,10 @@ export function NewProductTab() {
                       <li>Idea length: {idea.trim().length} chars</li>
                       <li>Delivery: {deliveryChoice}</li>
                       <li>Mode: {mode}</li>
+                      <li>
+                        {t(locale, 'newProduct.contentLanguage')}: {contentLocaleLabel(contentLocale, locale)}
+                      </li>
+                      <li>UI locale: {locale}</li>
                       <li>Instructions: {instructions.trim() ? `${instructions.trim().length} chars` : 'none'}</li>
                     </ul>
                   </div>

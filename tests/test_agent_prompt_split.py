@@ -8,6 +8,7 @@ from llm.agent_prompt_split import (
     build_developer_user_data,
     format_user_data_message,
 )
+from llm.content_languages import LANGUAGE_SYSTEM
 from llm.visual_quality_system import VISUAL_QUALITY_SYSTEM
 
 
@@ -36,6 +37,7 @@ def test_architect_system_includes_visual_quality():
     sys = build_architect_system_prompt("ROLE: architect")
     assert "ROLE: architect" in sys
     assert VISUAL_QUALITY_SYSTEM in sys
+    assert LANGUAGE_SYSTEM in sys
 
 
 def test_developer_user_payload_shape():
@@ -69,3 +71,4 @@ def test_developer_system_includes_visual_and_stack():
     assert "DEV CORE" in sys
     assert "STACK" in sys
     assert VISUAL_QUALITY_SYSTEM in sys
+    assert LANGUAGE_SYSTEM in sys

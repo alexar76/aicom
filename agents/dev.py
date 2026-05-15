@@ -46,6 +46,9 @@ Non-negotiable principles:
 Browser UI visuals (SVG, typography, motion): follow **VISUAL_QUALITY_SYSTEM** in the system prompt and bind to
 `architecture.ui_experience` when present.
 
+Content language: follow **LANGUAGE_SYSTEM** — use `architecture.content_language` and ship `<html lang="…">` plus
+all visible copy in that language (RTL when `content_language_meta.dir` is `rtl`).
+
 === BACKEND / APP QUALITY BAR (apply when any server, auth, or API is implied) ===
 - Do NOT hardcode credentials or tokens (e.g. `if email == "admin@example.com" and password == "password"`).
   Instead, introduce a minimal persistence layer (in-memory store, JSON/SQLite, or repository abstraction)
@@ -234,6 +237,8 @@ class DeveloperAgent(BaseAgent):
             implementation_plan=implementation_plan,
             analyst_brief=analyst_brief or None,
             remediation=remediation or None,
+            interface_locale=str(agent_input.data.get("interface_locale") or "") or None,
+            content_locale=str(agent_input.data.get("content_locale") or "") or None,
         )
         user_message = format_user_data_message(developer_user_data)
 
