@@ -20,6 +20,7 @@
 
 ## Product and Operations
 
+- **`architecture-diagrams.md`** — **Mermaid hub**: full runtime architecture, pipeline LR + extended gates, state machine, discovery, storefront flow, comparison table, Grafana panel map (moved from root README).
 - **`architecture-orchestrator.md`** — pipeline worker SRP split, sync/async state machine, Director JSON vs SQLite decisions store.
 - `pipeline-operations.md` — discovery, scheduler, batch pipeline, benchmark gate, monitoring loops.
 - `agents.md` — pipeline agent roster, including `methodologist`.

@@ -10,13 +10,9 @@
 
 **Typical LLM API cost (estimated from `llm_calls.jsonl`):** **~$0.30–$2** for a short landing first pass; **~$3–$15+** for `full_software` with QA/fix cycles (fleet average with retries is higher). Bring your own keys; host ~**$7/mo** is separate.
 
-| ![Gallery 1](docs/gallery/landing-01.webp) | ![Gallery 2](docs/gallery/landing-02.webp) | ![Gallery 3](docs/gallery/landing-03.webp) |
-|:---:|:---:|:---:|
-| ![Gallery 4](docs/gallery/landing-04.webp) | ![Gallery 5](docs/gallery/landing-05.webp) | ![Gallery 6](docs/gallery/landing-06.webp) |
-
 **11 AI agents** (analyst → PM → architect → designer → developer → QA → security → DevOps → marketing → sales → evolution) build your product with **Playwright E2E gates**, security scans, and storefront deployment.
 
-Sample walkthrough: [`docs/gallery/recordings/pipeline-demo-latest.webm`](docs/gallery/recordings/pipeline-demo-latest.webm) *(regenerate: `scripts/record_pipeline_demo_video.py`)*
+Sample walkthrough: [`docs/gallery/recordings/pipeline-demo-latest.webm`](docs/gallery/recordings/pipeline-demo-latest.webm) *(regenerate: `scripts/record_pipeline_demo_video.py`)* · Generated landings: [Gallery](#gallery) below.
 
 ## Quick start
 
@@ -60,6 +56,8 @@ flowchart LR
   J --> K[💰 Sales]
   K --> L[🔄 Evolution]
 ```
+
+Full diagrams (runtime architecture, state machine, discovery, storefront gates, comparison tables): **[docs/architecture-diagrams.md](docs/architecture-diagrams.md)**.
 
 ## Gallery
 
@@ -343,45 +341,7 @@ Worker also loads **Design critic** and **Hardening** (`AIFACTORY_EXTENDED_PIPEL
 <details>
 <summary><strong>Architecture</strong></summary>
 
-```mermaid
-flowchart TB
-  subgraph clients["Clients"]
-    U["Public storefront"]
-    AD["Admin console"]
-  end
-
-  subgraph web["Web tier"]
-    FE["Next.js :8080"]
-    BE["FastAPI :8081"]
-  end
-
-  subgraph workers["Background workers"]
-    PW["Pipeline worker"]
-    DW["Director AI worker"]
-  end
-
-  subgraph agents["Specialized agents"]
-    AG["11 Admin roster rows + optional Design critic / Hardening"]
-  end
-
-  subgraph llm["Model routing"]
-    RT["LLM router"]
-    PR["Providers OpenAI-compatible · local"]
-  end
-
-  subgraph data["Persistent workspace: ./data → /app/data"]
-    DB["SQLite pipeline state"]
-    ART["Specs · arch · code · telemetry"]
-  end
-
-  U --> FE
-  AD --> FE
-  FE --> BE
-  BE --> DB
-  PW --> AG
-  AG --> RT
-  RT --> PR
-```
+Runtime layout, extended pipeline gates, state machine, discovery, and comparison tables live in **[docs/architecture-diagrams.md](docs/architecture-diagrams.md)** (includes the full Mermaid diagram with Prometheus/Grafana, CLI, and `./data` bind mount).
 
 Compose maps container **8080/8081** → host **9080/9081**.
 
