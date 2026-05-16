@@ -131,6 +131,8 @@ export function DashboardTab() {
     },
   ];
 
+  const failedAlerts = data.pipeline.failed_alerts ?? [];
+
   return (
     <motion.div className="space-y-8">
       {refreshing ? (
@@ -139,6 +141,56 @@ export function DashboardTab() {
           {hadCacheOnMount ? 'Refreshing metrics…' : 'Loading live metrics…'}
         </p>
       ) : null}
+
+      {(failed > 0 || failedAlerts.length > 0) && (
+        <motion.div
+          role="alert"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-2xl border-2 border-red-500/50 bg-gradient-to-br from-red-950/90 via-red-900/40 to-amber-950/30 p-5 shadow-lg shadow-red-900/25"
+        >
+          <motion.div className="flex items-start gap-3 mb-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-red-500/30 border border-red-400/50">
+              <AlertTriangle className="h-7 w-7 text-red-200" aria-hidden />
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-red-50">
+                {failed} product{failed === 1 ? '' : 's'} need rework (FAILED)
+              </h2>
+              <p className="text-sm text-red-100/90 mt-1 max-w-3xl">
+                Pipeline paused — not deleted. Open Pipeline and use Send to rework. A Telegram
+                alert is sent when a product fails (if enabled in Settings).
+              </p>
+            </div>
+          </motion.div>
+          <ul className="space-y-3">
+            {(failedAlerts.length > 0
+              ? failedAlerts
+              : [{ product_id: '—', title: 'Failed products', cause_plain: 'Open Pipeline tab for details.' }]
+            ).map((item) => (
+              <li
+                key={item.product_id}
+                className="rounded-xl border border-red-500/25 bg-black/25 px-4 py-3"
+              >
+                <p className="text-sm font-medium text-red-50 font-mono">{item.product_id}</p>
+                {item.title && item.title !== item.product_id ? (
+                  <p className="text-xs text-red-200/80 mt-0.5 truncate">{item.title}</p>
+                ) : null}
+                {item.headline ? (
+                  <p className="text-xs uppercase tracking-wide text-red-300/90 mt-2">{item.headline}</p>
+                ) : null}
+                <p className="text-sm text-red-100/95 mt-1 leading-relaxed">
+                  {item.cause_plain || item.failure_reason || 'No failure reason stored.'}
+                </p>
+                {item.failed_agent ? (
+                  <p className="text-[11px] text-red-200/60 mt-1">Agent: {item.failed_agent}</p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      )}
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {stats.map((stat, i) => (

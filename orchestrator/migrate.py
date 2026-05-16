@@ -81,7 +81,7 @@ def migrate(
 
         # Do not wipe DB snapshot here — repeated migrations are used as sync points
         # and may run while workers add fresher SQLite-only records.
-        product_count = manager.bulk_insert_products(product_dicts)
+        product_count = manager.bulk_insert_products(product_dicts, merge_from_json=True)
         task_count = manager.bulk_insert_tasks(task_dicts, merge_from_json=True)
 
         result = {

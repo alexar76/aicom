@@ -1,190 +1,46 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  LayoutDashboard,
-  Cpu,
-  Bot,
-  Shield,
-  FileText,
-  BarChart3,
-  Settings,
-  LogOut,
-  Plus,
-  Send,
   Activity,
-  Users,
-  DollarSign,
   AlertTriangle,
+  BarChart3,
+  Bot,
   CheckCircle2,
-  Clock,
-  Sparkles,
-  MessageCircle,
-  Menu,
-  X,
-  Trash2,
-  Edit3,
-  RefreshCw,
-  Globe,
-  ToggleLeft,
-  ToggleRight,
-  Save,
-  List,
-  ScrollText,
   ChevronRight,
-  Terminal,
-  Radio,
+  Circle,
+  Clock,
+  Cpu,
+  Loader2,
   Pause,
   Play,
-  Gauge,
-  Circle,
-  Star,
-  ExternalLink,
-  Zap,
-  GitBranch,
-  Container,
-  Layers,
-  FlaskConical,
-  BrainCircuit,
-  ClipboardList,
-  Inbox,
-  Megaphone,
-  Store,
-  Loader2,
-  Upload,
+  RefreshCw,
+  Terminal,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { Input } from '@/components/ui/Input';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { Modal } from '@/components/ui/Modal';
-import BrainstormingTab from '@/components/BrainstormingTab';
-import SupportQueueTab from '@/components/SupportQueueTab';
-import OutreachTab from '@/components/OutreachTab';
-import { QRCodeSVG } from 'qrcode.react';
-import api, {
-  DashboardData,
-  ProviderStatus,
-  AgentStatus,
-  CreateProviderPayload,
-  RoutingRule,
-  ChatMessage,
-  DemoReplayAdminConfig,
-} from '@/lib/api';
-import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
-import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
-import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
-import toast from 'react-hot-toast';
-
 import { DemoReplayMonitorSection } from './DemoReplayMonitorSection';
+import { useMonitorMetrics } from '@/hooks/admin/useMonitorMetrics';
+import { useMonitorActivityFeed } from '@/hooks/admin/useMonitorActivityFeed';
 import {
-  readAdminMetricsCache,
-  writeAdminMetricsCache,
-  writeAdminMetricsCacheIfValid,
-} from '@/lib/adminMetricsCache';
+  formatMonitorRelativeTime,
+  getMonitorAgentDisplay,
+} from '@/hooks/admin/monitorDisplayConfig';
 
 export function MonitorTab() {
-  const bootSnapshotRef = useRef(readAdminMetricsCache());
-  const [metrics, setMetrics] = useState<any>(() => bootSnapshotRef.current ?? null);
-  const [activityFeed, setActivityFeed] = useState<any[]>([]);
-  const [paused, setPaused] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'error'>('connecting');
-  /** True only until first successful GET when there was no cache (avoids full-page spinner if cache exists). */
-  const [initialLoading, setInitialLoading] = useState(() => bootSnapshotRef.current == null);
-  /** True after cache paint until GET /dashboard replaces snapshot. */
-  const [bootRefreshing, setBootRefreshing] = useState(() => bootSnapshotRef.current != null);
-  const [escEventFilter, setEscEventFilter] = useState<string>('all');
-  /** Agent Fleet card: click green-dot tile to expand raw metrics JSON */
+  const {
+    metrics,
+    paused,
+    setPaused,
+    connectionStatus,
+    initialLoading,
+    bootRefreshing,
+  } = useMonitorMetrics();
+  const { activityFeed, escEventFilter, setEscEventFilter } = useMonitorActivityFeed();
   const [expandedFleetAgent, setExpandedFleetAgent] = useState<string | null>(null);
-
-  // Initial load from GET /dashboard (same snapshot as Dashboard tab; also seeds localStorage)
-  useEffect(() => {
-    api
-      .getDashboard()
-      .then((data) => {
-        setMetrics(data);
-        writeAdminMetricsCache(data);
-        setInitialLoading(false);
-        setBootRefreshing(false);
-      })
-      .catch(() => {
-        setInitialLoading(false);
-        setBootRefreshing(false);
-      });
-    // Load recent escalations as initial activity
-    api.getEscalations(10).then((res) => {
-      if (res.escalations?.length) {
-        setActivityFeed(res.escalations.map((e: any) => ({
-          type: 'escalation',
-          agent: e.agent_type || 'system',
-          message: e.error || e.action_taken || 'Escalation triggered',
-          time: e.timestamp || Date.now(),
-          severity: 'error',
-        })));
-      }
-    }).catch(() => {});
-    // Load latest agent logs for feed
-    api.getAgentLogs(undefined, 20).then((res) => {
-      if (res.logs?.length) {
-        setActivityFeed((prev) => {
-          const logEntries = res.logs.map((l: any) => ({
-            type: 'agent_log',
-            agent: l.agent || l.agent_type || 'unknown',
-            message: l.message || l.content || '—',
-            time: l.timestamp || l.time || Date.now(),
-            severity: l.level || 'info',
-          }));
-          return [...logEntries, ...prev].slice(0, 100);
-        });
-      }
-    }).catch(() => {});
-  }, []);
-
-  // SSE connection for real-time updates
-  useEffect(() => {
-    let eventSource: EventSource | null = null;
-    let reconnectTimer: ReturnType<typeof setTimeout>;
-
-    const connect = () => {
-      setConnectionStatus('connecting');
-      try {
-        eventSource = new EventSource('/api/admin/metrics/stream');
-
-        eventSource.onopen = () => {
-          setConnectionStatus('connected');
-        };
-
-        eventSource.onmessage = (event) => {
-          if (paused) return;
-          try {
-            const data = JSON.parse(event.data);
-            setMetrics(data);
-            writeAdminMetricsCacheIfValid(data);
-          } catch {
-            // ignore parse errors
-          }
-        };
-
-        eventSource.addEventListener('error', () => {
-          setConnectionStatus('error');
-          eventSource?.close();
-          reconnectTimer = setTimeout(connect, 5000);
-        });
-      } catch {
-        setConnectionStatus('error');
-        reconnectTimer = setTimeout(connect, 5000);
-      }
-    };
-
-    connect();
-
-    return () => {
-      eventSource?.close();
-      clearTimeout(reconnectTimer);
-    };
-  }, [paused]);
 
   // ── Derived values ───────────────────────────────────────────────────
   const pipeline = metrics?.pipeline || {};
@@ -244,7 +100,7 @@ export function MonitorTab() {
   }, [agentMetrics]);
 
   const agentTypes = fleetAgentTypes;
-  const recentEscalations = (escalationSummary.recent_events || []).filter((e: any) => {
+  const filteredEscalationEvents = (escalationSummary.recent_events || []).filter((e: any) => {
     if (escEventFilter === 'all') return true;
     return e.agent_type === escEventFilter;
   });
@@ -257,34 +113,6 @@ export function MonitorTab() {
   const ringRadius = 64;
   const ringCircumference = 2 * Math.PI * ringRadius;
   const ringOffset = ringCircumference - (completionPct / 100) * ringCircumference;
-
-  // ── Agent type display config ────────────────────────────────────────
-  const agentDisplayConfig: Record<string, { label: string; color: string }> = {
-    analyst: { label: 'Analyst', color: '#38bdf8' },
-    pm: { label: 'PM', color: '#60a5fa' },
-    architect: { label: 'Architect', color: '#a78bfa' },
-    designer: { label: 'Designer', color: '#d946ef' },
-    developer: { label: 'Developer', color: '#34d399' },
-    devops: { label: 'DevOps', color: '#f472b6' },
-    qa: { label: 'QA', color: '#fbbf24' },
-    security: { label: 'Security', color: '#ef4444' },
-    marketing: { label: 'Marketing', color: '#2dd4bf' },
-    sales: { label: 'Sales', color: '#fb923c' },
-    evolution_analyst: { label: 'Evolution', color: '#818cf8' },
-    methodologist: { label: 'Methodologist', color: '#0ea5e9' },
-  };
-
-  const getAgentDisplay = (type: string) => agentDisplayConfig[type] || { label: type, color: '#9ca3af' };
-
-  // ── Format helpers ───────────────────────────────────────────────────
-  const fmtTime = (ts: number | null | undefined) => {
-    if (!ts) return '—';
-    // ts is Unix seconds, Date.now() is milliseconds
-    const secs = Math.floor((Date.now() - ts * 1000) / 1000);
-    if (secs < 60) return `${secs}s ago`;
-    if (secs < 3600) return `${Math.floor(secs / 60)}m ago`;
-    return `${Math.floor(secs / 3600)}h ago`;
-  };
 
   if (initialLoading && metrics == null) {
     return (
@@ -518,7 +346,7 @@ export function MonitorTab() {
             </div>
             {directorStatus.last_report_time && (
               <p className="text-xs text-gray-500">
-                Last report: {fmtTime(directorStatus.last_report_time)}
+                Last report: {formatMonitorRelativeTime(directorStatus.last_report_time)}
               </p>
             )}
           </div>
@@ -549,7 +377,7 @@ export function MonitorTab() {
                 last_active: 0,
                 status: 'idle',
               };
-              const display = getAgentDisplay(type);
+              const display = getMonitorAgentDisplay(type);
               const statusColor = info.status === 'active' ? 'bg-emerald-400' :
                                   info.status === 'busy' ? 'bg-yellow-400' :
                                   info.status === 'error' ? 'bg-red-400' : 'bg-gray-500';
@@ -587,7 +415,7 @@ export function MonitorTab() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-500">Active</span>
-                        <span className="text-gray-300">{fmtTime(info.last_active)}</span>
+                        <span className="text-gray-300">{formatMonitorRelativeTime(info.last_active)}</span>
                       </div>
                     </div>
                   </button>
@@ -636,7 +464,7 @@ export function MonitorTab() {
                     <div className="flex shrink-0 items-center gap-2 sm:w-28">
                       <Circle className={`h-1.5 w-1.5 shrink-0 ${severityColor}`} fill="currentColor" />
                       <span className="font-mono text-[10px] text-gray-500 sm:text-xs">
-                        {entry.time ? fmtTime(entry.time) : ''}
+                        {entry.time ? formatMonitorRelativeTime(entry.time) : ''}
                       </span>
                     </div>
                     <div className="min-w-0 flex-1 sm:flex sm:min-w-0 sm:gap-2">
@@ -665,20 +493,20 @@ export function MonitorTab() {
               >
                 <option value="all">All</option>
                 {agentTypes.map((t) => (
-                  <option key={t} value={t}>{getAgentDisplay(t).label}</option>
+                  <option key={t} value={t}>{getMonitorAgentDisplay(t).label}</option>
                 ))}
               </select>
             </div>
           </div>
           <div className="space-y-1 max-h-80 overflow-y-auto">
-            {recentEscalations.length === 0 ? (
+            {filteredEscalationEvents.length === 0 ? (
               <div className="text-center py-8">
                 <CheckCircle2 className="w-8 h-8 text-emerald-500/50 mx-auto mb-2" />
                 <p className="text-gray-500 text-sm">No escalations</p>
                 <p className="text-xs text-gray-600 mt-1">All agents operating normally.</p>
               </div>
             ) : (
-              recentEscalations.map((esc: any, i: number) => (
+              filteredEscalationEvents.map((esc: any, i: number) => (
                 <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors">
                   <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
                   <div className="min-w-0 flex-1">
@@ -694,7 +522,7 @@ export function MonitorTab() {
                       <p className="text-xs text-gray-400 mt-0.5 truncate">{esc.error}</p>
                     )}
                     {esc.timestamp && (
-                      <p className="text-[10px] text-gray-600 mt-0.5">{fmtTime(esc.timestamp)}</p>
+                      <p className="text-[10px] text-gray-600 mt-0.5">{formatMonitorRelativeTime(esc.timestamp)}</p>
                     )}
                   </div>
                 </div>

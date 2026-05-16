@@ -6,6 +6,13 @@ import uuid
 from typing import Callable
 
 from core.throughput_limits import effective_max_running_tasks
+from orchestrator.task_queue_hygiene import (
+    append_product_task,
+    enforce_task_queue_hygiene,
+    pm_spec_requeue_allowed,
+    try_pm_spec_requeue,
+    unstick_blocked_tasks,
+)
 
 
 def _task_status_norm(task: dict) -> str:
@@ -78,7 +85,10 @@ class TaskOrchestrator:
             )
             if has_active_pm or pid not in products or failed_task.get("auto_recovered_after_restart"):
                 continue
-            if str(products[pid].get("state") or "").upper() == "FAILED":
+            product_state = str(products[pid].get("state") or "").upper()
+            if product_state == "FAILED":
+                continue
+            if not pm_spec_requeue_allowed(product_state):
                 continue
             recovery_count = int(products[pid].get("pm_stranded_recovery_count") or 0)
             if recovery_count >= max_recoveries:
@@ -113,7 +123,7 @@ class TaskOrchestrator:
                 "priority": self.get_priority("pm"),
                 "auto_requeue_reason": "pm_spec_quality_gate_restart_recovery",
             }
-            task_queue.append(new_task)
+            append_product_task(task_queue, new_task, products, get_priority=self.get_priority)
             failed_task["auto_recovered_after_restart"] = True
             products[pid]["state"] = "MARKET_RESEARCHED"
             products[pid]["pm_stranded_recovery_count"] = recovery_count + 1
@@ -179,11 +189,14 @@ class TaskOrchestrator:
         return changed
 
     def retry_failed_tasks(self, products: dict, task_queue: list, now: float) -> bool:
+        from core.pipeline_retry_limits import task_max_retries
+
         changed = False
+        default_max = task_max_retries()
         for task in task_queue:
             if task.get("status") == "failed":
                 retry_count = task.get("retry_count", 0)
-                max_retries = task.get("max_retries", 3)
+                max_retries = int(task.get("max_retries") or default_max)
                 if retry_count < max_retries:
                     backoff = 30 * (2 ** retry_count)
                     failed_at = task.get("completed_at", task.get("started_at", 0))
@@ -196,8 +209,27 @@ class TaskOrchestrator:
                 else:
                     pid = task.get("product_id", "")
                     if pid in products and products[pid].get("state") != "FAILED":
+                        if try_pm_spec_requeue(task, products, task_queue, self.get_priority):
+                            changed = True
+                            continue
                         products[pid]["state"] = "FAILED"
+                        err = (task.get("error") or "").strip()
+                        if err:
+                            products[pid]["failure_reason"] = err[:4000]
                         products[pid]["updated_at"] = now
+                        try:
+                            from web.backend.services.pipeline_failed_notify import (
+                                notify_pipeline_product_failed,
+                            )
+
+                            notify_pipeline_product_failed(
+                                pid,
+                                product=products[pid],
+                                task=task,
+                                failure_reason=err or None,
+                            )
+                        except Exception:
+                            pass
                         changed = True
         return changed
 
@@ -307,6 +339,12 @@ class TaskOrchestrator:
             changed = True
         return changed
 
+    def enforce_queue_hygiene(self, products: dict, task_queue: list, now: float) -> bool:
+        return enforce_task_queue_hygiene(products, task_queue, now)
+
+    def unstick_blocked_tasks(self, products: dict, task_queue: list, now: float) -> bool:
+        return unstick_blocked_tasks(products, task_queue, now)
+
 
 class QualityManager:
     def __init__(self, get_priority: Callable[[str], int]):
@@ -324,48 +362,9 @@ class QualityManager:
             return "infra", "devops_runtime_probe"
         return "unknown", "manual_triage"
 
-    def auto_requeue_pm_spec_gate(self, task: dict, products: dict, task_queue: list) -> None:
-        if task.get("agent_type") != "pm":
-            return
-        error_text = (task.get("error") or "").lower()
-        if "specification failed quality gate" not in error_text or task.get("auto_requeued_pm_spec_gate"):
-            return
-        pid = task.get("product_id")
-        if not pid or pid not in products:
-            return
-        exists = any(
-            t.get("product_id") == pid
-            and t.get("agent_type") == "pm"
-            and t.get("status") in ("pending", "running")
-            for t in task_queue
-        )
-        task["auto_requeued_pm_spec_gate"] = True
-        if exists:
-            return
-        new_task = {
-            "id": f"task-{uuid.uuid4().hex[:12]}",
-            "product_id": pid,
-            "agent_type": "pm",
-            "state": "SPEC_WRITTEN",
-            "status": "pending",
-            "retry_count": 0,
-            "max_retries": 3,
-            "input_data": {
-                "product_id": pid,
-                "idea": products[pid].get("idea", ""),
-                "admin_instructions": (
-                    "Auto-recovery: previous PM attempt failed the specification quality gate. "
-                    "Return complete JSON with testable acceptance_criteria for every user story; "
-                    "for full_software include detailed functional_requirements acceptance criteria."
-                ),
-            },
-            "created_at": time.time(),
-            "priority": self.get_priority("pm"),
-            "auto_requeue_reason": "pm_spec_quality_gate",
-        }
-        task_queue.append(new_task)
-        products[pid]["state"] = "MARKET_RESEARCHED"
-        products[pid]["updated_at"] = time.time()
+    def auto_requeue_pm_spec_gate(self, task: dict, products: dict, task_queue: list) -> bool:
+        """Re-open PM after spec gate failure instead of terminal FAILED (product-level budget)."""
+        return try_pm_spec_requeue(task, products, task_queue, self.get_priority)
 
 
 class PeerReviewEngine:

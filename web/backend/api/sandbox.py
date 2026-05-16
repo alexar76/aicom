@@ -27,6 +27,7 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
 
 from web.backend.services.sandbox_preview_api import (
+    detect_fastapi_backend,
     preview_api_enabled,
     register_preview_proc,
     start_fastapi_preview,
@@ -108,6 +109,33 @@ def _get_product_code_dir(product_id: str) -> Optional[Path]:
     """Get the code directory for a product, if it exists."""
     code_dir = Path(f"/app/data/code/{product_id}")
     return code_dir if code_dir.exists() else None
+
+
+def _should_try_fastapi_preview(code_dir: Path, compose_ok: bool) -> bool:
+    """Use uvicorn preview for FastAPI repos when compose is unavailable or failed."""
+    if compose_ok:
+        return False
+    if not detect_fastapi_backend(code_dir):
+        return False
+    if preview_api_enabled():
+        return True
+    # Compose/Docker preview failed or is off — still serve SSR FastAPI apps without index.html.
+    return True
+
+
+def _ensure_fastapi_preview(sandbox_id: str, entry: dict, code_dir: Path) -> bool:
+    """Start loopback uvicorn if missing; mutates registry entry. Returns True when listening."""
+    if entry.get("backend_preview_port"):
+        return True
+    bp, uv_proc, pst = start_fastapi_preview(sandbox_id=sandbox_id, code_dir=code_dir)
+    entry["backend_preview_port"] = bp
+    entry["preview_api_status"] = pst
+    if uv_proc:
+        register_preview_proc(sandbox_id, uv_proc)
+    if bp:
+        _active_sandboxes[sandbox_id] = entry
+        _save_registry()
+    return bp is not None
 
 
 _HOP_BY_HOP_PROXY_RESP = frozenset(
@@ -265,17 +293,12 @@ async def start_sandbox(product_id: str):
     _save_registry()
 
     preview_payload: dict = {"enabled": False, "proxy_prefix": None, "status": None}
-    if preview_api_enabled() and code_dir and not compose_ok:
-        bp, uv_proc, pst = start_fastapi_preview(sandbox_id=sandbox_id, code_dir=code_dir)
-        entry["backend_preview_port"] = bp
-        entry["preview_api_status"] = pst
-        register_preview_proc(sandbox_id, uv_proc)
-        _save_registry()
-        if bp:
+    if code_dir and _should_try_fastapi_preview(code_dir, compose_ok):
+        if _ensure_fastapi_preview(sandbox_id, entry, code_dir):
             preview_payload = {
                 "enabled": True,
                 "proxy_prefix": f"/api/sandbox/backend/{sandbox_id}/",
-                "status": pst,
+                "status": entry.get("preview_api_status"),
             }
         else:
             preview_payload = {"enabled": False, "proxy_prefix": None, "status": pst}
@@ -312,6 +335,19 @@ async def view_sandbox(request: Request, sandbox_id: str):
         raise HTTPException(status_code=404, detail="Sandbox not found or not running")
 
     product_id = sandbox.get("product_id", "unknown")
+    code_dir = _get_product_code_dir(product_id)
+    sb_state = _active_sandboxes.get(sandbox_id) or sandbox
+    compose_ok = sb_state.get("compose_proxy_port") is not None
+    if code_dir and _should_try_fastapi_preview(code_dir, compose_ok):
+        _ensure_fastapi_preview(sandbox_id, sb_state, code_dir)
+        if sandbox_id in _active_sandboxes:
+            _active_sandboxes[sandbox_id].update(
+                {
+                    k: sb_state[k]
+                    for k in ("backend_preview_port", "preview_api_status")
+                    if k in sb_state
+                }
+            )
 
     # Inner DinD container listens on an unpublished port — browsers cannot reach it.
     # Always serve files through this API (iframe + /file/...) so marketplace links work.
@@ -322,7 +358,6 @@ async def view_sandbox(request: Request, sandbox_id: str):
         )
 
     # Serve generated HTML via iframe demo (same path as mock mode)
-    code_dir = _get_product_code_dir(product_id)
     if code_dir:
         files = []
         has_index_html = False
@@ -344,9 +379,10 @@ async def view_sandbox(request: Request, sandbox_id: str):
             for rel_path in files[:100]
         )
 
-        sb_state = _active_sandboxes.get(sandbox_id) or {}
+        sb_state = _active_sandboxes.get(sandbox_id) or sandbox
         compose_proxy_port = sb_state.get("compose_proxy_port")
         compose_ok = compose_proxy_port is not None
+        backend_preview_port = sb_state.get("backend_preview_port")
         compose_hint = ""
         if compose_ok:
             compose_hint = (
@@ -374,17 +410,17 @@ async def view_sandbox(request: Request, sandbox_id: str):
                 + "</span>"
             )
 
-        iframe_src = sandbox_public_url(
-            request,
-            (
-                f"/api/sandbox/compose/{sandbox_id}/"
-                if compose_ok
-                else f"/api/sandbox/file/{sandbox_id}/index.html"
-            ),
-        )
-        preview_label = "docker compose stack" if compose_ok else "index.html"
+        if compose_ok:
+            iframe_src = sandbox_public_url(request, f"/api/sandbox/compose/{sandbox_id}/")
+            preview_label = "docker compose stack"
+        elif backend_preview_port:
+            iframe_src = sandbox_public_url(request, f"/api/sandbox/backend/{sandbox_id}/")
+            preview_label = "FastAPI live app"
+        else:
+            iframe_src = sandbox_public_url(request, f"/api/sandbox/file/{sandbox_id}/index.html")
+            preview_label = "index.html"
 
-        if has_index_html or compose_ok:
+        if has_index_html or compose_ok or backend_preview_port:
             # Show the demo in an iframe with a file browser panel
             html = f"""<!DOCTYPE html>
 <html>

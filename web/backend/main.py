@@ -459,6 +459,12 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
         "telegram_notify_enabled": bool(config.get("general.telegram_notify_enabled", False)),
         "telegram_chat_id": chat_resolved or "",
         "telegram_notify_pipeline_stages": bool(config.get("general.telegram_notify_pipeline_stages", True)),
+        "telegram_notify_pipeline_failed": bool(
+            config.get(
+                "general.telegram_notify_pipeline_failed",
+                config.get("general.telegram_notify_pipeline_stages", True),
+            )
+        ),
         "telegram_notify_new_products": bool(config.get("general.telegram_notify_new_products", True)),
         "telegram_bot_token_configured": telegram_token_configured(),
         "auto_publish_enabled": bool(config.get("general.auto_publish_enabled", False)),
@@ -510,6 +516,7 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
         "docker_password",
         "telegram_notify_enabled",
         "telegram_notify_pipeline_stages",
+        "telegram_notify_pipeline_failed",
         "telegram_notify_new_products",
         "auto_publish_enabled",
         "auto_publish_provider",

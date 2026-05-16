@@ -36,6 +36,9 @@ from web.backend.services.human_pipeline import (
     inject_human_admin_rework,
     reject_post_devops_human_review,
 )
+from web.backend.services.pipeline_failure_report import build_failure_report
+from web.backend.services.pipeline_reopen import reopen_failed_product
+from web.backend.services.pipeline_failed_notify import failure_reason_from_product
 from web.backend.services.product_followup import (
     normalize_pipeline_followup,
     patch_admin_decisions,
@@ -95,6 +98,12 @@ class StorefrontPricingPatch(BaseModel):
 
 class HumanReworkBody(BaseModel):
     notes: str = Field(..., min_length=8, max_length=8000)
+
+
+class ReopenFailedBody(BaseModel):
+    notes: str = Field(..., min_length=8, max_length=8000)
+    agent_type: Optional[str] = Field(None, max_length=64)
+    target_state: Optional[str] = Field(None, max_length=64)
 
 
 class HumanReviewApproveBody(BaseModel):
@@ -187,6 +196,75 @@ def _slim_spec_arch_for_light_catalog(spec: Any, arch: Any) -> tuple[Any, Any]:
         if not a_out:
             a_out = None
     return s_out, a_out
+
+
+def _pipeline_failed_alerts(*, limit: int = 12) -> list[dict[str, Any]]:
+    """Recent FAILED products with human-readable cause for dashboard banner."""
+    lim = max(1, min(int(limit), 50))
+    alerts: list[dict[str, Any]] = []
+
+    def _row_to_alert(pid: str, product: dict[str, Any], tasks: list[dict[str, Any]]) -> dict[str, Any]:
+        report = build_failure_report(product, tasks)
+        idea = str(product.get("idea") or "")
+        title = idea.strip()[:80] or pid
+        if len(idea.strip()) > 80:
+            title += "…"
+        return {
+            "product_id": pid,
+            "title": title,
+            "idea": idea[:500],
+            "updated_at": float(product.get("updated_at") or 0),
+            "headline": report.get("headline"),
+            "cause_plain": report.get("cause_plain"),
+            "failure_reason": failure_reason_from_product(product) or report.get("failure_reason"),
+            "failed_agent": report.get("failed_agent"),
+        }
+
+    if _admin_use_sqlite_pipeline() and _admin_sql_store_available():
+        try:
+            from orchestrator.sqlite_manager import SQLiteManager
+
+            sm = SQLiteManager(str(_admin_sqlite_db_path()))
+            sm.connect()
+            try:
+                ws = sm.workspace_id
+                rows = sm.conn.execute(
+                    """
+                    SELECT id FROM products
+                    WHERE workspace_id = ? AND upper(trim(state)) = 'FAILED'
+                    ORDER BY updated_at DESC
+                    LIMIT ?
+                    """,
+                    (ws, lim),
+                ).fetchall()
+                for row in rows:
+                    pid = str(row["id"])
+                    product = sm.get_product(pid)
+                    if not product:
+                        continue
+                    tasks = sm.get_tasks_by_product(pid)
+                    alerts.append(_row_to_alert(pid, product, tasks))
+            finally:
+                sm.close()
+            return alerts
+        except Exception as e:
+            logger.debug("dashboard failed_alerts sqlite: %s", e)
+
+    products, task_queue = _load_pipeline_snapshot_for_metrics()
+    failed_ids = [
+        pid
+        for pid, p in products.items()
+        if str(p.get("state") or "").strip().upper() == "FAILED"
+    ]
+    failed_ids.sort(
+        key=lambda pid: float(products[pid].get("updated_at") or 0),
+        reverse=True,
+    )
+    for pid in failed_ids[:lim]:
+        product = products[pid]
+        tasks = [t for t in task_queue if t.get("product_id") == pid]
+        alerts.append(_row_to_alert(pid, product, tasks))
+    return alerts
 
 
 def _fast_pipeline_metrics() -> tuple[dict[str, int], dict[str, int]]:
@@ -519,11 +597,19 @@ def _build_full_metrics(*, include_product_pulses: bool = False) -> dict:
         except Exception as e:
             logger.warning("Dashboard metrics: product_pulses failed (%s)", e)
 
+    failed_alerts: list[dict[str, Any]] = []
+    try:
+        if int(pipeline_counts.get("failed_products") or 0) > 0:
+            failed_alerts = _pipeline_failed_alerts(limit=12)
+    except Exception as e:
+        logger.debug("dashboard failed_alerts: %s", e)
+
     return {
         "pipeline": {
             **pipeline_counts,
             "storefront_visible_products": storefront_visible,
             "state_distribution": state_distribution,
+            "failed_alerts": failed_alerts,
         },
         "resources": {
             "cpu_percent": cpu,
@@ -566,11 +652,19 @@ def _build_quick_dashboard_metrics() -> dict:
         "recent_events": [],
     }
 
+    failed_alerts: list[dict[str, Any]] = []
+    try:
+        if int(pipeline_counts.get("failed_products") or 0) > 0:
+            failed_alerts = _pipeline_failed_alerts(limit=12)
+    except Exception as e:
+        logger.debug("dashboard quick failed_alerts: %s", e)
+
     return {
         "pipeline": {
             **pipeline_counts,
             "storefront_visible_products": None,
             "state_distribution": state_distribution,
+            "failed_alerts": failed_alerts,
         },
         "resources": {
             "cpu_percent": cpu,
@@ -2250,11 +2344,22 @@ async def get_pipeline_products(
                 "last_error": product.get("error") or meta.get("error"),
                 "failed_task_errors": failed_task_errors,
                 "quality_repair_round": product.get("quality_repair_round"),
+                "pm_spec_requeue_count": product.get("pm_spec_requeue_count")
+                or meta.get("pm_spec_requeue_count"),
                 "storefront_visible": storefront_visible,
                 "storefront_gate_reasons": storefront_gate_reasons,
                 "storefront_followup": storefront_followup,
                 "storefront_marketing_copy": storefront_marketing_copy,
             }
+            if str(product.get("state") or "").upper() == "FAILED":
+                try:
+                    row["failure_report"] = build_failure_report(
+                        product,
+                        product_tasks_all if not light else product_tasks_all,
+                    )
+                except Exception as ex:
+                    logger.debug("failure_report for %s: %s", pid, ex)
+
             if not light and is_shipped_pipeline_product_state(product.get("state")):
                 s_inner, s_pricing = read_sales_inner_and_pricing(pid)
                 m_for_price = storefront_marketing_copy if isinstance(storefront_marketing_copy, dict) else {}
@@ -2498,6 +2603,46 @@ async def post_pipeline_product_human_rework(product_id: str, body: HumanReworkB
     res = inject_human_admin_rework(product_id, body.notes)
     if not res.get("ok"):
         raise HTTPException(status_code=400, detail=res.get("reason") or "rework_failed")
+    return {"product_id": product_id, **res}
+
+
+@router.get("/pipeline/products/{product_id}/failure-report")
+async def get_pipeline_product_failure_report(product_id: str):
+    """Structured failure report for a FAILED (or recently failed) product."""
+    pid = _sanitize_admin_product_id(product_id)
+    product: dict[str, Any] | None = None
+    tasks: list[dict[str, Any]] = []
+    if _admin_use_sqlite_pipeline() and _admin_sql_store_available():
+        try:
+            from orchestrator.sqlite_manager import SQLiteManager
+
+            sm = SQLiteManager(str(_admin_sqlite_db_path()))
+            sm.connect()
+            product = sm.get_product(pid)
+            if product:
+                tasks = sm.get_tasks_by_product(pid)
+            sm.close()
+        except Exception as e:
+            logger.debug("failure-report sqlite: %s", e)
+    if not product:
+        merged = _admin_merged_pipeline_product(pid)
+        if not merged:
+            raise HTTPException(status_code=404, detail="product_not_found")
+        product = merged
+    return {"product_id": pid, "failure_report": build_failure_report(product, tasks)}
+
+
+@router.post("/pipeline/products/{product_id}/reopen-failed")
+async def post_pipeline_product_reopen_failed(product_id: str, body: ReopenFailedBody):
+    """FAILED product → recovery state + new agent task (operator rework, not terminal)."""
+    res = reopen_failed_product(
+        product_id,
+        body.notes,
+        agent_type=body.agent_type,
+        target_state=body.target_state,
+    )
+    if not res.get("ok"):
+        raise HTTPException(status_code=400, detail=res.get("reason") or "reopen_failed")
     return {"product_id": product_id, **res}
 
 

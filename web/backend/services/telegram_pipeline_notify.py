@@ -73,9 +73,14 @@ def telegram_pipeline_config() -> dict[str, Any]:
 
     g = _read_general()
     token, chat_id = resolve_telegram_token_chat_id()
+    notify_pipeline = bool(g.get("telegram_notify_pipeline_stages", True))
+    notify_failed = g.get("telegram_notify_pipeline_failed")
+    if notify_failed is None:
+        notify_failed = notify_pipeline
     return {
         "enabled": bool(g.get("telegram_notify_enabled")),
-        "notify_pipeline": bool(g.get("telegram_notify_pipeline_stages", True)),
+        "notify_pipeline": notify_pipeline,
+        "notify_pipeline_failed": bool(notify_failed),
         "notify_new_product": bool(g.get("telegram_notify_new_products", True)),
         "token": token,
         "chat_id": chat_id,
@@ -172,5 +177,55 @@ def notify_telegram_new_product(
     ok, detail = send_telegram_message_sync("\n".join(lines))
     if not ok:
         logger.debug("telegram new-product notify skipped: %s", detail)
+        return
+    _maybe_broadcast_web_push_after_telegram("\n".join(lines))
+
+
+def notify_telegram_pipeline_failed(
+    *,
+    product_id: str,
+    headline: str,
+    cause_plain: str,
+    failure_reason: str = "",
+    failed_agent: str | None = None,
+    idea_snippet: str = "",
+) -> None:
+    """Alert when a product hits FAILED (includes human-readable cause)."""
+    cfg = telegram_pipeline_config()
+    if not cfg["enabled"] or not cfg.get("notify_pipeline_failed", True):
+        return
+    if not cfg["token"] or not cfg["chat_id"]:
+        return
+
+    short_id = f"{product_id[:12]}…" if len(product_id) > 12 else product_id
+    lines = [
+        "AI-Factory · Pipeline FAILED",
+        f"Product `{short_id}`",
+        headline.strip() or "Pipeline stopped",
+        "",
+        "Cause:",
+        (cause_plain or failure_reason or "No reason stored.")[:1200],
+    ]
+    if failed_agent:
+        lines.append(f"Agent: {failed_agent}")
+    tech = (failure_reason or "").strip()
+    if tech and tech not in (cause_plain or ""):
+        clip = tech[:600]
+        if len(tech) > 600:
+            clip += "…"
+        lines.extend(["", "Technical:", clip])
+
+    if idea_snippet.strip():
+        clip = idea_snippet.strip()[:220]
+        if len(idea_snippet.strip()) > 220:
+            clip += "…"
+        lines.extend(["", f"Idea: {clip}"])
+
+    lines.append("")
+    lines.append("Admin: Pipeline Monitor → Send to rework")
+
+    ok, detail = send_telegram_message_sync("\n".join(lines))
+    if not ok:
+        logger.debug("telegram pipeline FAILED notify skipped: %s", detail)
         return
     _maybe_broadcast_web_push_after_telegram("\n".join(lines))

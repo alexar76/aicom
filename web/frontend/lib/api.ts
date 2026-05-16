@@ -126,6 +126,17 @@ export interface DirectorReport {
   summary: string;
 }
 
+export interface PipelineFailedAlert {
+  product_id: string;
+  title: string;
+  idea?: string;
+  updated_at?: number;
+  headline?: string;
+  cause_plain?: string;
+  failure_reason?: string | null;
+  failed_agent?: string | null;
+}
+
 export interface DashboardData {
   /** True when payload is the fast `?quick=1` path; full fetch clears this. */
   dashboard_partial?: boolean;
@@ -140,6 +151,8 @@ export interface DashboardData {
     running_tasks: number;
     timed_out_tasks: number;
     state_distribution?: Record<string, number>;
+    /** Recent FAILED products with human-readable cause (dashboard alert banner). */
+    failed_alerts?: PipelineFailedAlert[];
   };
   resources: {
     cpu_percent: number;
@@ -1194,6 +1207,33 @@ class ApiClient {
       method: 'POST',
       body: JSON.stringify({ notes }),
     });
+  }
+
+  async postPipelineReopenFailed(
+    productId: string,
+    notes: string,
+    opts?: { agent_type?: string; target_state?: string }
+  ): Promise<{
+    product_id: string;
+    ok: boolean;
+    task_id?: string;
+    product_state?: string;
+    agent_type?: string;
+    target_state?: string;
+    cancelled_tasks?: number;
+    failed_reopen_count?: number;
+  }> {
+    return this.request(
+      `/admin/pipeline/products/${encodeURIComponent(productId)}/reopen-failed`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          notes,
+          agent_type: opts?.agent_type,
+          target_state: opts?.target_state,
+        }),
+      },
+    );
   }
 
   async postPipelineHumanReviewApprove(

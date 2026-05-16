@@ -93,12 +93,11 @@ import { usePipelineFilters } from '@/hooks/admin/usePipelineFilters';
 import { usePipelineModals } from '@/hooks/admin/usePipelineModals';
 import { usePipelineProductPulses } from '@/hooks/admin/usePipelineProductPulses';
 import { PipelineOnboardingCoach } from '@/components/admin/pipeline/PipelineOnboardingCoach';
+import { PipelineProductFailedPanel } from '@/components/admin/pipeline/PipelineProductFailedPanel';
 import {
   findTaskForStage,
   formatTaskDuration,
   formatTaskWhen,
-  getFailureSummary,
-  getLatestFailedTask,
   pipelineAgentEmoji,
   safeJson,
   toUnixSeconds,
@@ -611,18 +610,9 @@ export function PipelineTab() {
                       Dev handoff
                     </Button>
                     {String(product.state || '').toUpperCase() === 'FAILED' ? (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setExpandedFailureProduct(
-                            expandedFailureProduct === product.id ? null : product.id,
-                          )
-                        }
-                        className="rounded focus:outline-none focus:ring-2 focus:ring-red-400/40"
-                        title="Show failure reason"
-                      >
+                      <span title="Pipeline paused — use Send to rework below">
                         <Badge variant="error">{getStateLabel(product.state)}</Badge>
-                      </button>
+                      </span>
                     ) : (
                       <Badge
                         variant={
@@ -718,46 +708,14 @@ export function PipelineTab() {
                   <ProductPulse pulse={product.pulse as ProductPulsePayload} />
                 )}
 
-                {String(product.state || '').toUpperCase() === 'FAILED' &&
-                  expandedFailureProduct === product.id && (
-                    <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 p-3">
-                      <p className="text-xs uppercase tracking-wide text-red-300 mb-2">
-                        Failure reason
-                      </p>
-                      {getFailureSummary(product).map((line, idx) => (
-                        <p key={`${product.id}-fail-${idx}`} className="text-sm text-red-100 mb-1 last:mb-0">
-                          - {line}
-                        </p>
-                      ))}
-                      {typeof product.quality_repair_round === 'number' && (
-                        <p className="text-xs text-red-200/80 mt-2">
-                          repair round: {product.quality_repair_round}
-                        </p>
-                      )}
-                      {(() => {
-                        const latestFailedTask = getLatestFailedTask(tasks);
-                        if (!latestFailedTask) return null;
-                        return (
-                          <div className="mt-3">
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              onClick={() =>
-                                openTaskDetailModal(
-                                  product.id,
-                                  productTitle,
-                                  String(latestFailedTask.agent_type || 'unknown'),
-                                  latestFailedTask,
-                                )
-                              }
-                            >
-                              Details
-                            </Button>
-                          </div>
-                        );
-                      })()}
-                    </div>
-                  )}
+                {String(product.state || '').toUpperCase() === 'FAILED' && (
+                  <PipelineProductFailedPanel
+                    productId={product.id}
+                    productTitle={productTitle}
+                    product={product as Record<string, unknown>}
+                    onReopened={(patch) => mergeProductPatch(product.id, patch)}
+                  />
+                )}
 
                 {String(product.state || '').toUpperCase() === 'HUMAN_REVIEW_PENDING' && (
                   <HumanReviewGatePanel product={product} onPatch={mergeProductPatch} />

@@ -35,6 +35,7 @@ export function createEmptyDashboardData(): DashboardData {
       running_tasks: 0,
       timed_out_tasks: 0,
       state_distribution: {},
+      failed_alerts: [],
     },
     resources: { cpu_percent: 0, memory_percent: 0, disk_percent: 0 },
     revenue: { last_24h: 0, last_7d: 0, last_30d: 0 },

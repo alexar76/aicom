@@ -61,18 +61,21 @@ def _file_mentions_fastapi(path: Path) -> bool:
 def detect_fastapi_backend(code_dir: Path) -> Optional[dict[str, Any]]:
     """
     Return { cwd, module } for uvicorn if a plausible FastAPI entry exists.
-    ``module`` is e.g. ``main:app`` (expects ``app = FastAPI()`` in main.py).
+    ``module`` is e.g. ``main:app`` or ``app.main:app`` when the package lives under ``backend/``.
     """
+    nested_app_main = code_dir / "backend" / "app" / "main.py"
+    if nested_app_main.is_file() and _file_mentions_fastapi(nested_app_main):
+        return {"cwd": code_dir / "backend", "module": "app.main:app"}
+
     candidates = [
-        code_dir / "backend" / "main.py",
-        code_dir / "backend" / "app" / "main.py",
-        code_dir / "app" / "main.py",
-        code_dir / "api" / "main.py",
-        code_dir / "server" / "main.py",
+        (code_dir / "backend" / "main.py", code_dir / "backend", "main:app"),
+        (code_dir / "app" / "main.py", code_dir, "app.main:app"),
+        (code_dir / "api" / "main.py", code_dir / "api", "main:app"),
+        (code_dir / "server" / "main.py", code_dir / "server", "main:app"),
     ]
-    for main_py in candidates:
+    for main_py, cwd, module in candidates:
         if main_py.is_file() and _file_mentions_fastapi(main_py):
-            return {"cwd": main_py.parent, "module": "main:app"}
+            return {"cwd": cwd, "module": module}
     root_main = code_dir / "main.py"
     if root_main.is_file() and _file_mentions_fastapi(root_main):
         return {"cwd": code_dir, "module": "main:app"}
@@ -106,6 +109,31 @@ def start_fastapi_preview(
     port = pick_loopback_port()
     cwd: Path = info["cwd"]
     module: str = info["module"]
+
+    for req_path in (cwd / "requirements.txt", cwd.parent / "requirements.txt"):
+        if req_path.is_file():
+            try:
+                subprocess.run(
+                    [sys.executable, "-m", "pip", "install", "-q", "-r", str(req_path)],
+                    capture_output=True,
+                    text=True,
+                    timeout=180,
+                    check=False,
+                )
+            except (subprocess.TimeoutExpired, OSError) as e:
+                logger.warning("sandbox_preview_api: pip install skipped (%s)", e)
+            break
+
+    # Generated FastAPI+Jinja stacks often omit jinja2 in requirements.txt.
+    try:
+        import jinja2  # noqa: F401
+    except ImportError:
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-q", "jinja2"],
+            capture_output=True,
+            timeout=60,
+            check=False,
+        )
 
     cmd = [
         sys.executable,

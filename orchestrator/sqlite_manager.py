@@ -147,7 +147,12 @@ class SQLiteManager:
         # retry_count is now read from the SQL column (defaults to 0)
         if "retry_count" not in d or d["retry_count"] is None:
             d["retry_count"] = 0
-        d["max_retries"] = 3
+        try:
+            from core.pipeline_retry_limits import task_max_retries
+
+            d["max_retries"] = task_max_retries()
+        except Exception:
+            d["max_retries"] = 7
         # state may be None if column didn't exist before migration
         if d.get("state") is None:
             # Infer state from agent_type as fallback
@@ -614,18 +619,51 @@ class SQLiteManager:
         self.conn.execute("DELETE FROM products WHERE workspace_id = ?", (self.workspace_id,))
         self.conn.commit()
 
-    def bulk_insert_products(self, products: list[dict]) -> int:
+    def _products_existing_snapshot(
+        self, cursor: sqlite3.Cursor, product_ids: list[str]
+    ) -> dict[str, sqlite3.Row]:
+        out: dict[str, sqlite3.Row] = {}
+        if not product_ids:
+            return out
+        chunk_size = 400
+        wid = self.workspace_id
+        for i in range(0, len(product_ids), chunk_size):
+            chunk = product_ids[i : i + chunk_size]
+            placeholders = ",".join("?" * len(chunk))
+            rows = cursor.execute(
+                f"SELECT id, state, updated_at FROM products "
+                f"WHERE workspace_id = ? AND id IN ({placeholders})",
+                (wid, *chunk),
+            ).fetchall()
+            for r in rows:
+                out[str(r["id"])] = r
+        return out
+
+    def bulk_insert_products(self, products: list[dict], merge_from_json: bool = False) -> int:
         """Insert multiple products in a transaction.
 
         Args:
             products: List of product dicts (from Product.to_dict()).
+            merge_from_json: When True, do not let stale pipeline.json downgrade SQLite.
 
         Returns:
-            Number of products inserted.
+            Number of rows written.
         """
+        from orchestrator.pipeline_state_sync import sqlite_product_should_keep_over_json
+
         cursor = self.conn.cursor()
+        existing_map: dict[str, sqlite3.Row] = {}
+        if merge_from_json and products:
+            ids = [str(p["id"]) for p in products if p.get("id")]
+            existing_map = self._products_existing_snapshot(cursor, ids)
+
+        applied = 0
         for product in products:
             values = self._product_dict_to_sql_values(product)
+            pid = str(values["id"])
+            row = existing_map.get(pid)
+            if row is not None and sqlite_product_should_keep_over_json(row, values):
+                continue
             cursor.execute(
                 """INSERT OR REPLACE INTO products
                    (id, workspace_id, idea, state, created_at, updated_at,
@@ -639,8 +677,9 @@ class SQLiteManager:
                     :error, :current_task_id)""",
                 values,
             )
+            applied += 1
         self.conn.commit()
-        return len(products)
+        return applied
 
     _TASK_TERMINAL_STATUSES = frozenset(
         {"completed", "failed", "timeout", "cancelled", "blocked"}

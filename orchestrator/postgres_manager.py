@@ -228,15 +228,34 @@ class PostgresManager:
             ).fetchone()
         return int(row["c"]) if row else 0
 
-    def bulk_insert_products(self, products: list[dict]) -> int:
+    def bulk_insert_products(self, products: list[dict], merge_from_json: bool = False) -> int:
         if not products:
             return 0
+        from orchestrator.pipeline_state_sync import sqlite_product_should_keep_over_json
+
+        applied = 0
         with self.pool.connection() as conn:
+            existing_map: dict[str, dict] = {}
+            if merge_from_json:
+                ids = [str(p["id"]) for p in products if p.get("id")]
+                if ids:
+                    rows = conn.execute(
+                        "SELECT id, state, updated_at FROM products "
+                        "WHERE workspace_id = %s AND id = ANY(%s)",
+                        (self.workspace_id, ids),
+                    ).fetchall()
+                    existing_map = {str(r["id"]): r for r in rows}
+
             for product in products:
                 values = SQLiteManager._product_dict_to_sql_values(product)
+                pid = str(values["id"])
+                row = existing_map.get(pid)
+                if row is not None and sqlite_product_should_keep_over_json(row, values):
+                    continue
                 conn.execute(_PRODUCT_UPSERT, values)
+                applied += 1
             conn.commit()
-        return len(products)
+        return applied
 
     def bulk_insert_tasks(self, tasks: list[dict], merge_from_json: bool = False) -> int:
         if not tasks:

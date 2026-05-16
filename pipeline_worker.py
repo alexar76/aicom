@@ -633,6 +633,37 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         if self.task_orchestrator.retry_failed_tasks(products, task_queue, now):
             changed = True
 
+        # Phase 4b: Dedupe active tasks; cancel regressive re-queues (PM on DEV_FIXING, etc.)
+        if self.task_orchestrator.enforce_queue_hygiene(products, task_queue, now):
+            changed = True
+
+        # Phase 4c: Idle mid-pipeline products with no active task → enqueue next sequential step
+        for pid, product in list(products.items()):
+            st = str(product.get("state") or "").upper()
+            if st in ("COMPLETED", "FAILED", "CANCELLED", "IDEA_RECEIVED"):
+                continue
+            has_active = any(
+                t.get("product_id") == pid
+                and str(t.get("status") or "").lower() in ("pending", "running")
+                for t in task_queue
+            )
+            if has_active:
+                continue
+            next_task = self._create_next_task(product)
+            if not next_task:
+                continue
+            from orchestrator.task_queue_hygiene import append_product_task
+
+            if append_product_task(task_queue, next_task, products, get_priority=self._get_priority):
+                changed = True
+                logger.info(
+                    "Healed idle product %s at %s: queued %s -> %s",
+                    pid,
+                    st,
+                    next_task.get("agent_type"),
+                    next_task.get("state"),
+                )
+
         # Phase 5: Periodic market monitoring for COMPLETED products (interval from env; 0 = off)
         if self.task_orchestrator.enqueue_market_monitoring(products, task_queue, now):
             changed = True
@@ -643,6 +674,15 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         # Reopen hidden/non-eligible products for developer remediation.
         if self._enforce_marketplace_readiness(products, task_queue, now):
             changed = True
+
+        # Phase 6b: Heal product.state when JSON sync or partial writes left IDEA_RECEIVED.
+        try:
+            from orchestrator.pipeline_state_sync import reconcile_all_products_from_tasks
+
+            if reconcile_all_products_from_tasks(products, task_queue):
+                changed = True
+        except Exception as exc:
+            logger.debug("product state reconcile skipped: %s", exc)
 
         # Save if changed
         if changed:
@@ -983,6 +1023,18 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                                 f"{max_quality_loops} repair cycles. Regeneration/fix did not reach "
                                 "show-ready state; manual review or template update required."
                             )
+                            try:
+                                from web.backend.services.pipeline_failed_notify import (
+                                    notify_pipeline_product_failed,
+                                )
+
+                                notify_pipeline_product_failed(
+                                    pid,
+                                    product=products[pid],
+                                    failure_reason=products[pid]["failure_reason"],
+                                )
+                            except Exception:
+                                pass
                             logger.error(
                                 f"Product {pid}: QA gate repair limit exceeded "
                                 f"({new_repair_round} > {max_quality_loops}); state=FAILED"
@@ -1007,6 +1059,18 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                                 f"{max_security_loops} repair cycles. Manual review or adjusting "
                                 "AIFACTORY_SECURITY_* settings may be required."
                             )
+                            try:
+                                from web.backend.services.pipeline_failed_notify import (
+                                    notify_pipeline_product_failed,
+                                )
+
+                                notify_pipeline_product_failed(
+                                    pid,
+                                    product=products[pid],
+                                    failure_reason=products[pid]["failure_reason"],
+                                )
+                            except Exception:
+                                pass
                             logger.error(
                                 "Product %s: security gate repair limit exceeded (%s > %s); state=FAILED",
                                 pid,
@@ -1339,7 +1403,9 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                     task["auto_remediation_playbook"] = playbook
                     task["completed_at"] = time.time()
                     task.setdefault("retry_count", 0)
-                    task.setdefault("max_retries", 3)
+                    from core.pipeline_retry_limits import task_max_retries
+
+                    task.setdefault("max_retries", task_max_retries())
                     logger.warning(
                         f"Agent '{agent_type}' failed task {task_id}: {output.error} "
                         f"(retry {task['retry_count']}/{task['max_retries']})"
@@ -1381,7 +1447,9 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                 task["auto_remediation_playbook"] = playbook
                 task["completed_at"] = time.time()
                 task.setdefault("retry_count", 0)
-                task.setdefault("max_retries", 3)
+                from core.pipeline_retry_limits import task_max_retries
+
+                task.setdefault("max_retries", task_max_retries())
                 self.quality_manager.auto_requeue_pm_spec_gate(task, products, task_queue)
         else:
             # Agent not initialized - use structured fallback

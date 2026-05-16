@@ -171,6 +171,18 @@ class PipelineWorkerSidecarMixin:
                     f"{max_quality_loops} remediation cycles."
                 )
                 product["updated_at"] = now
+                try:
+                    from web.backend.services.pipeline_failed_notify import (
+                        notify_pipeline_product_failed,
+                    )
+
+                    notify_pipeline_product_failed(
+                        pid,
+                        product=product,
+                        failure_reason=product["failure_reason"],
+                    )
+                except Exception:
+                    pass
                 changed = True
                 logger.error(
                     "Marketplace readiness failed for %s and repair budget exhausted (%s/%s): %s",
