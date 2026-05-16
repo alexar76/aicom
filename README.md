@@ -428,7 +428,7 @@ docker exec ai-factory python -m pytest tests/test_pipeline.py tests/test_pipeli
 
 | Profile | Milestone | Observed (this fleet) |
 |---------|-----------|------------------------|
-| `marketing_landing` | `CODE_COMMITTED` (previewable HTML) | **~21 min** (e.g. `prod-39fa6ca11222`, `prod-836c79f44246`) |
+| `marketing_landing` | `CODE_COMMITTED` (previewable HTML) | **~21 min** (e.g. `prod-39fa6ca11222`) |
 | `marketing_landing` | Through QA / fix loops | **~40–90+ min** when gates fail |
 | `full_software` (simple brief) | `CODE_COMMITTED` | **~22 min** (e.g. `prod-9c6296662041`) |
 | `full_software` (complex SaaS) | `CODE_COMMITTED` after QA blocks | **~10 h+** (e.g. FleetMind `prod-46e66fe613f7`, still in `DEV_FIXING`) |

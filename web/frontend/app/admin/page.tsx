@@ -106,6 +106,16 @@ function AdminPageInner() {
     [pathname, router, searchParams],
   );
 
+  const handleLogout = useCallback(async () => {
+    try {
+      await api.logout();
+    } catch {
+      /* clear local session even if revoke fails */
+    }
+    localStorage.removeItem('admin_token');
+    window.location.href = '/';
+  }, []);
+
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [authChecked, setAuthChecked] = useState(false);
   const [locale, setLocale] = useState<AdminLocale>(() =>
@@ -210,6 +220,7 @@ function AdminPageInner() {
           setLocale(next);
           saveAdminLocale(next);
         }}
+        onLogout={handleLogout}
         showUsersTab={adminRole === 'super_admin'}
       />
 

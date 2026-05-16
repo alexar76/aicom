@@ -37,6 +37,7 @@ export function Sidebar({
   onToggle,
   locale,
   onLocaleChange,
+  onLogout,
   showUsersTab,
 }: {
   activeTab: string;
@@ -45,6 +46,7 @@ export function Sidebar({
   onToggle: () => void;
   locale: AdminLocale;
   onLocaleChange: (locale: AdminLocale) => void;
+  onLogout: () => void;
   /** Super-admin only: manage admin accounts */
   showUsersTab?: boolean;
 }) {
@@ -145,6 +147,7 @@ export function Sidebar({
           )}
           <button
             type="button"
+            onClick={onLogout}
             className="w-full flex items-center justify-center md:justify-start gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
             aria-label={t(locale, 'app.logout')}
           >
