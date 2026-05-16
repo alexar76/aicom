@@ -1,6 +1,7 @@
 'use client';
 
 export { DashboardTab } from './tabs/DashboardTab';
+export { SetupWizardTab, isSetupWizardMarkedDone } from './tabs/SetupWizardTab';
 export { NewProductTab } from './tabs/NewProductTab';
 export { WorkshopTab } from './tabs/WorkshopTab';
 export { HumanReviewGatePanel } from './tabs/HumanReviewGatePanel';

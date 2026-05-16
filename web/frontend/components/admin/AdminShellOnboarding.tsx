@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { BookOpen, Sparkles, Wrench, X } from 'lucide-react';
+import { BookOpen, Rocket, Sparkles, Wrench, X } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { isSetupWizardMarkedDone, SETUP_WIZARD_DONE_EVENT } from '@/components/admin/tabs/SetupWizardTab';
 
 const STORAGE_KEY = 'aicom_admin_shell_onboarding_dismissed_v1';
 
@@ -13,6 +14,7 @@ type Props = {
 
 export function AdminShellOnboarding({ activeTab }: Props) {
   const [dismissed, setDismissed] = useState(true);
+  const [setupDone, setSetupDone] = useState(false);
 
   useEffect(() => {
     try {
@@ -20,6 +22,16 @@ export function AdminShellOnboarding({ activeTab }: Props) {
     } catch {
       setDismissed(false);
     }
+  }, []);
+
+  useEffect(() => {
+    setSetupDone(isSetupWizardMarkedDone());
+  }, [activeTab]);
+
+  useEffect(() => {
+    const sync = () => setSetupDone(isSetupWizardMarkedDone());
+    window.addEventListener(SETUP_WIZARD_DONE_EVENT, sync);
+    return () => window.removeEventListener(SETUP_WIZARD_DONE_EVENT, sync);
   }, []);
 
   const dismiss = useCallback(() => {
@@ -40,6 +52,16 @@ export function AdminShellOnboarding({ activeTab }: Props) {
           <BookOpen className="mt-0.5 h-5 w-5 shrink-0 text-indigo-300" aria-hidden />
           <div className="min-w-0 space-y-2">
             <h3 className="text-sm font-semibold text-indigo-50">Get oriented in three moves</h3>
+            {!setupDone ? (
+              <p className="text-[11px] leading-relaxed text-indigo-200/90 rounded-lg border border-indigo-400/25 bg-indigo-500/10 px-3 py-2">
+                <Rocket className="inline h-3.5 w-3.5 -mt-0.5 mr-1 text-indigo-300" aria-hidden />
+                First install? Run the{' '}
+                <Link href="/admin?tab=setup" className="font-medium text-white underline-offset-2 hover:underline">
+                  Setup wizard
+                </Link>{' '}
+                (URLs + one LLM key) — then continue below.
+              </p>
+            ) : null}
             <ol className="list-decimal space-y-1.5 pl-4 text-xs leading-relaxed text-indigo-100/90">
               <li>
                 <span className="font-medium text-white">See health first</span> — open{' '}
@@ -73,12 +95,21 @@ export function AdminShellOnboarding({ activeTab }: Props) {
           </div>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2 lg:flex-col lg:items-end">
+          {!setupDone ? (
+            <Link
+              href="/admin?tab=setup"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-400/40 bg-emerald-500/15 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-500/25"
+            >
+              <Rocket className="h-3.5 w-3.5" aria-hidden />
+              Setup wizard
+            </Link>
+          ) : null}
           <Link
             href="/admin?tab=new-product"
             className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-400/40 bg-indigo-500/20 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500/30"
           >
             <Sparkles className="h-3.5 w-3.5" aria-hidden />
-            Start wizard
+            New product
           </Link>
           <Link
             href="/admin?tab=workshop"

@@ -10,11 +10,26 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import time
 from pathlib import Path
 from typing import Any
 
 import requests
+
+# Repo root (…/scripts → parent is repo)
+_ROOT = Path(__file__).resolve().parent.parent
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+from core.benchmark_admin_token import read_benchmark_admin_token
+
+
+def _admin_headers() -> dict[str, str]:
+    tok = read_benchmark_admin_token()
+    if not tok:
+        return {}
+    return {"Authorization": f"Bearer {tok}"}
 
 
 def _load_ideas(path: Path) -> list[str]:
@@ -27,18 +42,25 @@ def _load_ideas(path: Path) -> list[str]:
     return lines
 
 
-def _create_product(base_url: str, idea: str, production_mode: bool) -> str:
+def _create_product(base_url: str, idea: str, production_mode: bool, headers: dict[str, str]) -> str:
     r = requests.post(
         f"{base_url.rstrip('/')}/api/admin/products/create",
         json={"idea": idea, "production_mode": production_mode},
         timeout=15,
+        headers=headers,
     )
+    if r.status_code in (401, 403):
+        raise PermissionError("admin_create_unauthorized")
     r.raise_for_status()
     return r.json()["product_id"]
 
 
-def _fetch_products(base_url: str) -> dict[str, Any]:
-    r = requests.get(f"{base_url.rstrip('/')}/api/admin/pipeline/products?limit=1000&offset=0", timeout=20)
+def _fetch_products(base_url: str, headers: dict[str, str]) -> dict[str, Any]:
+    r = requests.get(
+        f"{base_url.rstrip('/')}/api/admin/pipeline/products?limit=1000&offset=0",
+        timeout=20,
+        headers=headers,
+    )
     if r.status_code in (401, 403):
         raise PermissionError("admin_endpoint_unauthorized")
     r.raise_for_status()
@@ -80,9 +102,25 @@ def main() -> int:
     if not ideas:
         raise SystemExit("No ideas provided.")
 
+    headers = _admin_headers()
+    if not headers.get("Authorization"):
+        print(
+            "benchmark_pass_rate: missing admin JWT — set AIFACTORY_BENCHMARK_ADMIN_TOKEN "
+            "or AIFACTORY_BENCHMARK_ADMIN_TOKEN_FILE (see docs/configuration.md).",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
+
     product_ids: list[str] = []
     for idea in ideas:
-        pid = _create_product(args.base_url, idea, args.production_mode)
+        try:
+            pid = _create_product(args.base_url, idea, args.production_mode, headers)
+        except PermissionError:
+            print(
+                "benchmark_pass_rate: admin API returned 401/403 — check token role (admin+) and expiry.",
+                file=sys.stderr,
+            )
+            raise SystemExit(3)
         product_ids.append(pid)
 
     deadline = time.time() + (args.timeout_min * 60)
@@ -90,7 +128,7 @@ def main() -> int:
     states: dict[str, str] = {}
     while time.time() < deadline:
         try:
-            products = _fetch_products(args.base_url)
+            products = _fetch_products(args.base_url, headers)
         except PermissionError:
             products = _fetch_products_local_state()
         for pid in product_ids:

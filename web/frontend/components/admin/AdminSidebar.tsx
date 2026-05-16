@@ -24,6 +24,7 @@ import {
   LogOut,
   X,
   LayoutGrid,
+  Rocket,
 } from 'lucide-react';
 import { AdminLocale, t } from '@/lib/adminI18n';
 
@@ -49,6 +50,7 @@ export function Sidebar({
 }) {
   const tabs = [
     { id: 'dashboard', label: t(locale, 'tab.dashboard'), icon: LayoutDashboard },
+    { id: 'setup', label: t(locale, 'tab.setup'), icon: Rocket },
     { id: 'monitor', label: t(locale, 'tab.monitor'), icon: Radio },
     { id: 'pipeline', label: t(locale, 'tab.pipeline'), icon: Activity },
     { id: 'new-product', label: t(locale, 'tab.newProduct'), icon: Plus },

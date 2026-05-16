@@ -26,6 +26,7 @@ import {
   SandboxTab,
   SecurityTab,
   SettingsTab,
+  SetupWizardTab,
   UsersTab,
   WorkshopTab,
 } from '@/components/admin/AdminTabs';
@@ -47,6 +48,7 @@ import api from '@/lib/api';
 
 const ADMIN_TAB_IDS = new Set([
   'dashboard',
+  'setup',
   'monitor',
   'pipeline',
   'new-product',
@@ -144,6 +146,8 @@ function AdminPageInner() {
     switch (activeTab) {
       case 'dashboard':
         return <DashboardTab />;
+      case 'setup':
+        return <SetupWizardTab adminRole={adminRole} />;
       case 'monitor':
         return <MonitorTab />;
       case 'products':

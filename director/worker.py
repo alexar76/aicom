@@ -24,6 +24,7 @@ sys.path.insert(0, "/app")
 
 from core.paths import config_path
 from core.config_merge import load_merged_config
+from core.benchmark_admin_token import read_benchmark_admin_token
 from director.metrics_collector import MetricsCollector
 from director.analyzer import DirectorAnalyzer
 from director.decision_engine import DecisionEngine
@@ -89,6 +90,7 @@ class DirectorWorker:
         self._last_discovery_enqueue_time = 0.0
         self._autopipeline_backlog_pause_idea_received = 250
         self._autopipeline_backlog_resume_idea_received = 120
+        self._last_benchmark_scorecard_refresh = 0.0
 
     def _load_config(self):
         """Load settings from merged platform config (fragments + overlay)."""
@@ -185,8 +187,43 @@ class DirectorWorker:
 
     async def _run_benchmark_league_once(self) -> None:
         """Optional autonomous benchmark run + scorecard regeneration."""
+        token = read_benchmark_admin_token()
+        if not token:
+            logger.warning(
+                "Benchmark league skipped: set AIFACTORY_BENCHMARK_ADMIN_TOKEN or "
+                "AIFACTORY_BENCHMARK_ADMIN_TOKEN_FILE so admin API calls are authenticated"
+            )
+            status_path = Path(BENCHMARK_STATUS_FILE)
+            status_path.parent.mkdir(parents=True, exist_ok=True)
+            status_path.write_text(
+                json.dumps(
+                    {
+                        "status": "skipped_no_token",
+                        "ended_at": time.time(),
+                        "hint": "Set AIFACTORY_BENCHMARK_ADMIN_TOKEN or AIFACTORY_BENCHMARK_ADMIN_TOKEN_FILE",
+                    },
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+            return
+
         status_path = Path(BENCHMARK_STATUS_FILE)
         status_path.parent.mkdir(parents=True, exist_ok=True)
+        # Avoid stacking runs if a previous benchmark left "running" (crash/kill) or one is in flight.
+        try:
+            if status_path.exists():
+                prev = json.loads(status_path.read_text(encoding="utf-8"))
+                if prev.get("status") == "running":
+                    started = float(prev.get("started_at") or 0)
+                    stale_sec = (max(10, int(self._benchmark_timeout_min)) + 20) * 60
+                    if started and (time.time() - started) < stale_sec:
+                        logger.info("Benchmark league skipped: a run is already in progress")
+                        return
+                    logger.warning("Benchmark league: clearing stale running status before start")
+        except Exception as exc:
+            logger.debug("Benchmark status precheck: %s", exc)
+
         status_path.write_text(
             json.dumps(
                 {
@@ -226,7 +263,15 @@ class DirectorWorker:
             str(out),
         ]
         logger.info("Starting benchmark league run: count=%s timeout_min=%s", self._benchmark_count, self._benchmark_timeout_min)
-        proc = await asyncio.to_thread(subprocess.run, cmd, capture_output=True, text=True, check=False)
+        child_env = {**os.environ, "AIFACTORY_BENCHMARK_ADMIN_TOKEN": token}
+        proc = await asyncio.to_thread(
+            subprocess.run,
+            cmd,
+            capture_output=True,
+            text=True,
+            check=False,
+            env=child_env,
+        )
         if proc.returncode != 0:
             logger.warning("Benchmark league run failed: %s", proc.stderr[-400:])
             status_path.write_text(
@@ -263,8 +308,10 @@ class DirectorWorker:
         while self._running:
             try:
                 self._load_config()
-                # Refresh scorecard opportunistically even when autorun is disabled.
-                await self._refresh_benchmark_scorecard()
+                now = time.time()
+                if now - self._last_benchmark_scorecard_refresh >= 900:
+                    await self._refresh_benchmark_scorecard()
+                    self._last_benchmark_scorecard_refresh = now
                 if self._benchmark_enabled:
                     now = time.time()
                     interval = max(1, self._benchmark_interval_hours) * 3600
@@ -334,10 +381,16 @@ class DirectorWorker:
         """Apply mandatory auto-governance actions immediately."""
         actions = {str(d.get("action") or "") for d in decisions if not d.get("requires_approval", True)}
         if "trigger_benchmark_and_rework_cycle" in actions:
-            trigger_path = Path(TRIGGER_SIGNAL_FILE)
-            trigger_path.parent.mkdir(parents=True, exist_ok=True)
-            trigger_path.write_text(json.dumps({"timestamp": time.time(), "benchmark_now": True}), encoding="utf-8")
-            logger.warning("Auto-action: benchmark_now signal emitted due to pipeline SLO breach")
+            if not read_benchmark_admin_token():
+                logger.warning(
+                    "Auto-action: benchmark_now skipped (no AIFACTORY_BENCHMARK_ADMIN_TOKEN / _FILE); "
+                    "SLO breach will not spawn unauthenticated benchmark traffic"
+                )
+            else:
+                trigger_path = Path(TRIGGER_SIGNAL_FILE)
+                trigger_path.parent.mkdir(parents=True, exist_ok=True)
+                trigger_path.write_text(json.dumps({"timestamp": time.time(), "benchmark_now": True}), encoding="utf-8")
+                logger.warning("Auto-action: benchmark_now signal emitted due to pipeline SLO breach")
         if "run_catalog_compliance_remediation" in actions:
             try:
                 from web.backend.services.catalog_hardening import harden_catalog_products

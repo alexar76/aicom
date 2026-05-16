@@ -42,6 +42,42 @@ Anything that needs “what the factory would see in production” should use **
 
 Secrets that must never live in the main overlay (Telegram tokens) use `data/secrets/telegram.yaml` and env vars; stripping legacy keys from the overlay still edits **only** the primary file (`telegram_credentials._strip_legacy_telegram_keys_in_config_yaml`).
 
+## Director / benchmark league (optional)
+
+Autonomous benchmark runs (`scripts/benchmark_pass_rate.py`, triggered by Director on SLO breach or periodic autorun) call **admin** HTTP endpoints. Without credentials they would return **401** and overload the API.
+
+| Variable | Role |
+|----------|------|
+| `AIFACTORY_BENCHMARK_ADMIN_TOKEN` | Admin JWT (same as browser `admin_token`) passed only to the benchmark subprocess via environment — **never** logged. |
+| `AIFACTORY_BENCHMARK_ADMIN_TOKEN_FILE` | Alternative: path to a one-line file with the JWT (e.g. under `data/secrets/`, `chmod 600`). |
+
+If **neither** is set, Director **skips** emitting `benchmark_now` on SLO auto-action and **skips** league runs (writes `data/state/benchmark_status.json` with `skipped_no_token`). Set one of the variables if you want autonomous benchmarks in production.
+
+**Production (Docker Compose) — file on the bind-mounted data volume**
+
+1. Sign in to **Admin** (`/admin/login`) with an account whose role is **admin** or **super_admin** (the JWT in browser devtools → Application → Local Storage → `admin_token` is the same string the API expects).
+2. On the **host** next to your compose project (where `./data` is mounted to `/app/data`):
+
+   ```bash
+   install -d -m 700 ./data/secrets
+   printf '%s' 'PASTE_JWT_HERE' > ./data/secrets/benchmark_admin_jwt.txt
+   chmod 600 ./data/secrets/benchmark_admin_jwt.txt
+   ```
+
+3. In **`docker-compose.yml`** (or an override) under the `app` service `environment`, add:
+
+   ```yaml
+   AIFACTORY_BENCHMARK_ADMIN_TOKEN_FILE: /app/data/secrets/benchmark_admin_jwt.txt
+   ```
+
+   Prefer the **file** form in production so the token is not duplicated in shell history; avoid committing the file (it lives under `data/secrets/`, typically gitignored).
+
+4. **Rebuild / restart** the `app` container so `director.worker` and benchmark subprocesses see the variable.
+
+5. **Rotate** the file when the JWT expires (admin sessions are finite) or after password rotation — otherwise benchmarks stop until you refresh the token.
+
+Optional: set `AIFACTORY_BENCHMARK_ADMIN_TOKEN` instead of `_FILE` if your orchestrator injects secrets only as env vars (same semantics).
+
 ## Other YAML files
 
 Not every YAML file participates in this merge:

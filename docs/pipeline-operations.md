@@ -313,7 +313,7 @@ Director cycle evaluates pipeline SLO and emits mandatory auto-actions when brea
 - max benchmark regression,
 - mean time to remediation.
 
-If violated, Director triggers benchmark rerun and remediation cycle automatically (no manual bypass path).
+If violated, Director triggers benchmark rerun and remediation cycle automatically (no manual bypass path). **Those benchmark calls require an admin JWT:** configure `AIFACTORY_BENCHMARK_ADMIN_TOKEN` or `AIFACTORY_BENCHMARK_ADMIN_TOKEN_FILE` as described in **[configuration.md](./configuration.md)** (section **Director / benchmark league**); without it, Director skips benchmark traffic so the API is not hammered with 401s.
 
 ## Visual diversity (anti “clone” UIs)
 

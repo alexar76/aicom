@@ -23,6 +23,7 @@ const DICT: Dict = {
     es: 'Auto: idioma claro del brief (RU→RU, EN→EN); brief mixto/ambiguo → inglés; brief vacío → idioma UI del admin. Elegir idioma fuerza la locale.',
   },
   'tab.dashboard': { en: 'Dashboard', ru: 'Дашборд', es: 'Panel' },
+  'tab.setup': { en: 'Setup', ru: 'Настройка', es: 'Configuración' },
   'tab.monitor': { en: 'Live Monitor', ru: 'Мониторинг', es: 'Monitor en vivo' },
   'tab.pipeline': { en: 'Pipeline', ru: 'Пайплайн', es: 'Pipeline' },
   'tab.newProduct': { en: 'New Product', ru: 'Новый продукт', es: 'Nuevo producto' },
