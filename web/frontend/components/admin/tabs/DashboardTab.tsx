@@ -227,8 +227,13 @@ export function DashboardTab() {
       <GlassCard className="border border-violet-500/25 bg-violet-500/[0.04]">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h3 className="flex items-center gap-2 text-lg font-semibold text-white">
-              <Gauge className="h-5 w-5 text-violet-400" />
+            <h3 className="flex items-center gap-2 text-lg font-semibold leading-normal text-white">
+              <span
+                className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-violet-400"
+                aria-hidden
+              >
+                <Gauge className="h-5 w-5" strokeWidth={2} />
+              </span>
               Factory health score
             </h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-400">
@@ -253,8 +258,13 @@ export function DashboardTab() {
       <GlassCard className="border border-cyan-500/25 bg-cyan-500/[0.04]">
         <motion.div className="flex flex-wrap items-start justify-between gap-4 mb-3">
           <div>
-            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-              <Store className="w-5 h-5 text-cyan-400" />
+            <h3 className="flex items-center gap-2 text-lg font-semibold leading-normal text-white">
+              <span
+                className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-cyan-400"
+                aria-hidden
+              >
+                <Store className="h-5 w-5" strokeWidth={2} />
+              </span>
               North star — public storefront
             </h3>
             <p className="text-sm text-gray-400 mt-1 max-w-3xl">

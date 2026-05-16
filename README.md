@@ -20,13 +20,29 @@ Sample walkthrough: [`docs/gallery/recordings/pipeline-demo-latest.webm`](docs/g
 git clone https://github.com/alexar76/aicom.git
 cd aicom && cp -n .env.example .env
 docker compose up -d --build
-# → http://localhost:9080/admin/login  —  admin / demo123
+# → http://localhost:9080/admin/login  (user: admin)
 # → New product: type an idea, watch Admin → Pipeline
 ```
 
-Faster after the stack is up: `./demo.sh "SaaS for managing remote teams"` (uses `admin` / `demo123`, opens Pipeline).
+### Admin access
 
-> **Admin password on this demo fleet:** `demo123` (user `admin`). Fresh installs without an existing `data/` volume use bootstrap — see [docs/security.md](docs/security.md). API login: `POST http://localhost:9081/api/admin/auth/login`.
+#### 🌐 Live Demo
+
+Try it out: [https://magic-ai-factory.com](https://magic-ai-factory.com)
+
+**Demo Admin Access:**
+- URL: [https://magic-ai-factory.com/admin/login](https://magic-ai-factory.com/admin/login)
+- Username: `admin`
+- Password: `demo123`
+
+> ⚠️ These credentials work **only on the public demo instance**.  
+> When self-hosting, you must set your own `ADMIN_PASSWORD` in `.env`.
+
+#### Self-hosted (first install)
+
+There is **no** default password in the repo. On an empty `data/` volume, the entrypoint runs bootstrap — password from the **interactive console** (TTY) or **`data/secrets/bootstrap_admin.txt`** on headless `up -d`. See **[docs/security.md](docs/security.md)**.
+
+Faster after the stack is up: `./demo.sh "SaaS for managing remote teams"` (set `DEMO_ADMIN_PASSWORD` to your bootstrap password; opens Pipeline).
 
 ## Why self-hosted?
 
@@ -276,7 +292,7 @@ chmod +x run-compose.sh scripts/init-compose-volumes.sh
 
 | Service | URL | Credentials |
 |---------|-----|-------------|
-| App | http://localhost:9080 | `admin` / `demo123` (this fleet; [security.md](docs/security.md) for first boot) |
+| App | http://localhost:9080 | `admin` — password from [first-run bootstrap](docs/security.md) |
 | Grafana | http://localhost:9082 | `GRAFANA_ADMIN_USER` / `GRAFANA_ADMIN_PASSWORD` |
 
 **Production checklist:** set Grafana password, LLM keys in `.env` only, HTTPS reverse proxy, Stripe/webhook vars if billing — see [docs/security.md](docs/security.md).
@@ -306,7 +322,7 @@ SQLite is **on by default** in Compose (`USE_SQLITE=true`); entrypoint migrates 
 ## Admin Panel
 
 - **URL:** http://localhost:9080/admin/login
-- **Login:** `admin` / `demo123` on this fleet ([docs/security.md](docs/security.md) if you bootstrap a new `data/` volume)
+- **Login:** `admin` — password from [first-run bootstrap](docs/security.md) (console or `data/secrets/bootstrap_admin.txt`)
 
 ## API Endpoints
 
