@@ -70,6 +70,7 @@ import {
 import BrainstormingTab from '@/components/BrainstormingTab';
 import SupportQueueTab from '@/components/SupportQueueTab';
 import OutreachTab from '@/components/OutreachTab';
+import { PipelineDatabaseSettings } from '@/components/admin/settings/PipelineDatabaseSettings';
 import { QRCodeSVG } from 'qrcode.react';
 import api, {
   DashboardData,
@@ -149,7 +150,10 @@ export function SettingsTab() {
     reference_template_mode: 'random',
     reference_template_id: '',
     reference_prompt_max_chars: 14000,
+    pipeline_db_backend: 'sqlite' as 'sqlite' | 'postgres' | 'json',
+    pipeline_database_url: '',
   });
+  const [pipelineDbStatus, setPipelineDbStatus] = useState<Record<string, unknown> | null>(null);
   const [throughputEffective, setThroughputEffective] = useState<AdminThroughputSnapshot | null>(null);
   const [throughputSnapshotBusy, setThroughputSnapshotBusy] = useState(false);
   const [telegramBotTokenConfigured, setTelegramBotTokenConfigured] = useState(false);
@@ -223,8 +227,11 @@ export function SettingsTab() {
       railway_token_configured: rwTok,
       reference_templates_catalog: refCatalog,
       quality: qualityPayload,
+      pipeline_db_status: pipeStatus,
+      pipeline_database_url_masked: _urlMasked,
       ...rest
     } = data;
+    setPipelineDbStatus(pipeStatus && typeof pipeStatus === 'object' ? pipeStatus : null);
     if (te && typeof te === 'object') {
       setThroughputEffective(te as AdminThroughputSnapshot);
     } else {
@@ -237,7 +244,16 @@ export function SettingsTab() {
         : rest.published_site_head_html == null
           ? ''
           : String(rest.published_site_head_html);
-    setSettings((prev) => ({ ...prev, ...rest, published_site_head_html: head }));
+    const backend =
+      rest.pipeline_db_backend === 'postgres' || rest.pipeline_db_backend === 'json'
+        ? rest.pipeline_db_backend
+        : 'sqlite';
+    setSettings((prev) => ({
+      ...prev,
+      ...rest,
+      pipeline_db_backend: backend,
+      published_site_head_html: head,
+    }));
     setTelegramBotTokenConfigured(Boolean(tokOk));
     setRailwayTokenConfigured(Boolean(rwTok));
     if (qualityPayload && typeof qualityPayload === 'object') {
@@ -391,6 +407,8 @@ export function SettingsTab() {
     delete payload.railway_token_configured;
     delete payload.reference_templates_catalog;
     delete payload.throughput_effective;
+    delete payload.pipeline_db_status;
+    delete payload.pipeline_database_url_masked;
     payload.published_site_head_html =
       typeof settings.published_site_head_html === 'string'
         ? settings.published_site_head_html
@@ -936,6 +954,15 @@ export function SettingsTab() {
           </p>
         </div>
       </GlassCard>
+
+      <PipelineDatabaseSettings
+        backend={settings.pipeline_db_backend}
+        databaseUrl={settings.pipeline_database_url}
+        status={pipelineDbStatus as Parameters<typeof PipelineDatabaseSettings>[0]['status']}
+        disabled={settingsLoading || settingsSaving}
+        onBackendChange={(v) => handleSettingChange('pipeline_db_backend', v)}
+        onDatabaseUrlChange={(v) => handleSettingChange('pipeline_database_url', v)}
+      />
 
       {/* ── Git Remote Settings ── */}
       <GlassCard>

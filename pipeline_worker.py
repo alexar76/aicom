@@ -95,7 +95,10 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
 
     def __init__(self):
         self.state_file = pipeline_json_path()
-        self.use_sqlite = os.environ.get("USE_SQLITE", "true").strip().lower() == "true"
+        from core.pipeline_database import pipeline_uses_sql_store
+
+        self.use_sql_store = pipeline_uses_sql_store()
+        self.use_sqlite = self.use_sql_store  # legacy flag name in logs/health
         self._running = False
         self._agents = {}  # agent_type -> agent instance
         self._llm_router = None
@@ -110,7 +113,7 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         self._has_active_pipeline_work = False
         self.data_root = data_root()
         self._guards = RuntimeGuards(str(self.data_root))
-        self._async_sqlite = None
+        self._async_store = None
         self._health_server = None
         self.task_orchestrator = TaskOrchestrator(self._get_priority)
         self.quality_manager = QualityManager(self._get_priority)
@@ -172,15 +175,19 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         }
 
     def readiness_snapshot(self) -> dict:
-        sqlite_ready = (not self.use_sqlite) or (self._async_sqlite is not None)
+        sql_ready = (not self.use_sql_store) or (self._async_store is not None)
         agents_ready = len(self._agents) > 0
-        ready = sqlite_ready and (agents_ready or not self._running)
+        ready = sql_ready and (agents_ready or not self._running)
+        from core.pipeline_database import pipeline_db_backend
+
         return {
             "ready": ready,
             "running": self._running,
-            "sqlite_ready": sqlite_ready,
+            "sqlite_ready": sql_ready,
+            "sql_store_ready": sql_ready,
             "agents_ready": agents_ready,
-            "use_sqlite": self.use_sqlite,
+            "use_sqlite": self.use_sql_store,
+            "pipeline_db_backend": pipeline_db_backend(),
         }
 
     async def _start_health_server(self) -> None:
@@ -231,10 +238,10 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             self._health_server.close()
             await self._health_server.wait_closed()
             self._health_server = None
-        if self._async_sqlite is not None:
+        if self._async_store is not None:
             with contextlib.suppress(Exception):
-                await self._async_sqlite.close()
-            self._async_sqlite = None
+                await self._async_store.close()
+            self._async_store = None
 
     def _state_from_sqlite_snapshot(self) -> dict | None:
         """
@@ -318,17 +325,17 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             return None
 
     async def _load_state_async(self) -> dict | None:
-        if not self.use_sqlite:
+        if not self.use_sql_store:
             return self._load_state_with_recovery()
         try:
-            from orchestrator.async_sqlite_manager import AsyncSQLiteManager
+            from core.pipeline_database import create_async_pipeline_store
 
-            if self._async_sqlite is None:
-                self._async_sqlite = AsyncSQLiteManager(str(pipeline_db_path()))
-                await self._async_sqlite.initialize()
+            if self._async_store is None:
+                self._async_store = create_async_pipeline_store()
+                await self._async_store.initialize()
 
-            products = await self._async_sqlite.get_all_products()
-            tasks = await self._async_sqlite.get_all_tasks()
+            products = await self._async_store.get_all_products()
+            tasks = await self._async_store.get_all_tasks()
             products_map = {p["id"]: p for p in products if isinstance(p.get("id"), str)}
             current_task_id = None
             for t in tasks:
@@ -340,11 +347,11 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                     current_task_id = t.get("id")
             return {"products": products_map, "task_queue": tasks, "current_task_id": current_task_id}
         except Exception as e:
-            logger.error("Failed to load state from SQLite async path: %s", e)
+            logger.error("Failed to load state from SQL async path: %s", e)
             return None
 
     async def _save_state_async(self, state: dict) -> bool:
-        if not self.use_sqlite:
+        if not self.use_sql_store:
             try:
                 with open(self.state_file, "w") as f:
                     json.dump(state, f, indent=2)
@@ -353,19 +360,19 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                 logger.error("Cannot save pipeline state file: %s", e)
                 return False
         try:
-            from orchestrator.async_sqlite_manager import AsyncSQLiteManager
+            from core.pipeline_database import create_async_pipeline_store
 
-            if self._async_sqlite is None:
-                self._async_sqlite = AsyncSQLiteManager(str(pipeline_db_path()))
-                await self._async_sqlite.initialize()
+            if self._async_store is None:
+                self._async_store = create_async_pipeline_store()
+                await self._async_store.initialize()
 
             for p in state.get("products", {}).values():
-                await self._async_sqlite.upsert_product(p)
+                await self._async_store.upsert_product(p)
             for t in state.get("task_queue", []):
-                await self._async_sqlite.upsert_task(t)
+                await self._async_store.upsert_task(t)
             return True
         except Exception as e:
-            logger.error("Cannot save pipeline state to SQLite: %s", e)
+            logger.error("Cannot save pipeline state to SQL store: %s", e)
             return False
 
     async def _init_agents(self):

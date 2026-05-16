@@ -340,6 +340,18 @@ def inject_sandbox_in_page_nav_helpers(html: str) -> str:
 
 
 # CSP: keep navigations and form posts on our origin or HTTPS; block http://localhost etc.
+# Shell page at ``/api/sandbox/view/{id}`` (sidebar + iframe). Must allow frame-src 'self'.
+SANDBOX_VIEWER_CSP = (
+    "default-src 'self'; "
+    "style-src 'self' 'unsafe-inline'; "
+    "frame-src 'self'; "
+    "img-src 'self' data:; "
+    "font-src 'self' data:; "
+    "base-uri 'self'; "
+    "form-action 'none'; "
+    "frame-ancestors 'self'; "
+)
+
 SANDBOX_HTML_CSP = (
     "default-src 'self'; "
     "script-src 'self' 'unsafe-inline' https:; "
@@ -352,6 +364,7 @@ SANDBOX_HTML_CSP = (
     "frame-src 'self' https: http: data: blob:; "
     "form-action 'self' https:; "
     "base-uri 'self'; "
+    "frame-ancestors 'self'; "
     # Allow HTTPS outbound links in marketing demos; block http://localhost (http not listed).
     "navigate-to 'self' https:"
 )

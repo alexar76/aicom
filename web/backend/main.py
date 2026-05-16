@@ -26,6 +26,8 @@ from prometheus_client import make_asgi_app
 from web.backend.cors_settings import get_cors_allow_origins
 
 from core.paths import data_root as factory_data_root
+from core.pipeline_database import apply_pipeline_db_config_from_app_config, mask_database_url
+from web.backend.services.pipeline_database_admin import pipeline_db_status
 
 from .core.config import AppConfig
 from .core.admin_roles import require_admin_with_rbac
@@ -46,6 +48,7 @@ from .api.admin import reference_templates_admin as admin_reference_templates
 from .api.admin import methodology as admin_methodology
 from .api.admin import users_admin as admin_users_api
 from .api.admin import iteration_hub as admin_iteration_hub
+from .api.admin import pipeline_database as admin_pipeline_database
 from .api.metrics import get_registry
 from llm.router import LLMRouter
 from .services.corporate_standup import append_chat_message, standup_scheduler_loop
@@ -118,6 +121,10 @@ async def lifespan(app: FastAPI):
     
     # Initialize config
     app.state.config = AppConfig()
+    try:
+        apply_pipeline_db_config_from_app_config(app.state.config)
+    except Exception as exc:
+        logger.warning("Pipeline DB config apply skipped: %s", exc)
     
     # Initialize security
     app.state.security_manager = SecurityManager()
@@ -201,16 +208,40 @@ from web.backend.middleware.firewall_http import firewall_http_middleware
 app.middleware("http")(csrf_protect_middleware)
 app.middleware("http")(firewall_http_middleware)
 
+# Sandbox routes use route-specific CSP; global API default-src 'none' breaks viewer + iframe.
+_SANDBOX_RELAXED_SECURITY_PREFIXES = (
+    "/api/sandbox/file/",
+    "/api/sandbox/compose/",
+    "/api/sandbox/backend/",
+    "/api/sandbox/view/",
+)
+
+
+def _sandbox_relaxed_security_path(path: str) -> bool:
+    return any(path.startswith(p) for p in _SANDBOX_RELAXED_SECURITY_PREFIXES)
+
+
+def _sandbox_preview_embed_path(path: str) -> bool:
+    return _sandbox_relaxed_security_path(path) and not path.startswith("/api/sandbox/view/")
+
 
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
     """Baseline security headers for all responses (API + any HTML)."""
     response = await call_next(request)
+    path = request.url.path
     response.headers.setdefault("X-Content-Type-Options", "nosniff")
-    response.headers.setdefault("X-Frame-Options", "DENY")
+    if _sandbox_preview_embed_path(path):
+        response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    else:
+        response.headers.setdefault("X-Frame-Options", "DENY")
     response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
     csp = (os.environ.get("AIFACTORY_CSP") or "").strip()
-    if not csp and os.environ.get("AIFACTORY_ENABLE_DEFAULT_CSP", "").lower() in ("1", "true", "yes"):
+    if (
+        not csp
+        and not _sandbox_relaxed_security_path(path)
+        and os.environ.get("AIFACTORY_ENABLE_DEFAULT_CSP", "").lower() in ("1", "true", "yes")
+    ):
         # API-first default: no asset loads from HTML responses; tighten framing. Override with AIFACTORY_CSP.
         csp = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'"
     if csp:
@@ -296,6 +327,7 @@ app.include_router(admin_reference_templates.router)
 app.include_router(admin_methodology.router)
 app.include_router(admin_users_api.router)
 app.include_router(admin_iteration_hub.router)
+app.include_router(admin_pipeline_database.router)
 
 from web.backend.openapi_meta import apply_openapi_metadata
 
@@ -451,6 +483,12 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
         "throughput_effective": throughput_effective,
         "llm_limits": llm_limits,
         "quality": admin_quality_panel_dict(),
+        "pipeline_db_backend": str(config.get("general.pipeline_db_backend", "sqlite") or "sqlite"),
+        "pipeline_database_url": str(config.get("general.pipeline_database_url", "") or ""),
+        "pipeline_database_url_masked": mask_database_url(
+            str(config.get("general.pipeline_database_url", "") or "")
+        ),
+        "pipeline_db_status": pipeline_db_status(config),
     }
 
 
@@ -490,6 +528,8 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
         "reference_template_mode",
         "reference_template_id",
         "reference_prompt_max_chars",
+        "pipeline_db_backend",
+        "pipeline_database_url",
     ]
 
     updated = []
@@ -503,6 +543,12 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
                     val = 14000
             if key == "published_site_head_html" and val is not None:
                 val = str(val)[:100000]
+            if key == "pipeline_db_backend" and val is not None:
+                val = str(val).strip().lower()
+                if val not in ("sqlite", "postgres", "json"):
+                    val = "sqlite"
+            if key == "pipeline_database_url" and val is not None:
+                val = str(val).strip()
             if key == "auto_pipeline_interval_minutes" and val is not None:
                 try:
                     n = int(val)
@@ -544,9 +590,18 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
             write_telegram_credentials(cur_t, new_chat)
             updated.append("telegram_chat_id")
 
+    if any(k in updated for k in ("pipeline_db_backend", "pipeline_database_url")):
+        try:
+            apply_pipeline_db_config_from_app_config(config)
+        except Exception as exc:
+            logger.warning("Pipeline DB env apply after settings save failed: %s", exc)
+
     return {
         "message": f"Settings updated: {', '.join(updated)}",
         "updated": updated,
+        "pipeline_restart_required": any(
+            k in updated for k in ("pipeline_db_backend", "pipeline_database_url")
+        ),
     }
 
 

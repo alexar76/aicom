@@ -39,6 +39,7 @@ from web.backend.services.sandbox_compose_preview import (
 from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 from web.backend.services.sandbox_static_rewrite import (
     SANDBOX_HTML_CSP,
+    SANDBOX_VIEWER_CSP,
     _inject_iframe_base_href,
     _inject_loopback_navigation_guard,
     _neutralize_iframe_breakouts,
@@ -488,7 +489,13 @@ h1{{color:#6366f1}} .note{{color:#666;margin-top:2em}}
 <p class="note">Run the pipeline first to generate code, then start a sandbox.</p>
 </body></html>"""
 
-    return HTMLResponse(content=html)
+    return HTMLResponse(
+        content=html,
+        headers={
+            "Content-Security-Policy": SANDBOX_VIEWER_CSP,
+            "X-Content-Type-Options": "nosniff",
+        },
+    )
 
 
 @router.get("/file/{sandbox_id}/{file_path:path}")

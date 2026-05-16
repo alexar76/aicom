@@ -105,11 +105,21 @@ python3 -m security.bootstrap_admin || exit 1
 # backend crashes on startup with FileNotFoundError.
 mkdir -p "${PROMETHEUS_MULTIPROC_DIR:-/tmp/prometheus_multiproc}"
 
+# ── Pipeline DB backend (SQLite default, optional PostgreSQL from Admin Settings) ─
+python3 /app/scripts/apply_pipeline_db_config.py || true
+PIPELINE_DB_BACKEND="${PIPELINE_DB_BACKEND:-sqlite}"
+echo "Pipeline DB backend: ${PIPELINE_DB_BACKEND}"
+
 # ── SQLite Auto-Migration ─────────────────────────────────────────────────
 # When USE_SQLITE=true, automatically migrate existing JSON data to SQLite.
 # The migration is idempotent — safe to run on every container start.
 SQLITE_PATH="${SQLITE_PATH:-/app/data/state/pipeline.db}"
-if [[ "${USE_SQLITE,,}" == "true" ]]; then
+if [[ "${PIPELINE_DB_BACKEND,,}" == "postgres" ]]; then
+    echo "PIPELINE_DB_BACKEND=postgres — worker/API use PostgreSQL (set PIPELINE_DATABASE_URL in .env or Admin Settings)"
+    if [[ -z "${PIPELINE_DATABASE_URL:-}" ]]; then
+        echo "⚠ PIPELINE_DATABASE_URL is empty — configure Admin → Settings → Pipeline database before relying on Postgres"
+    fi
+elif [[ "${USE_SQLITE,,}" == "true" ]]; then
     echo "USE_SQLITE=true — checking SQLite backend..."
     mkdir -p "$(dirname "$SQLITE_PATH")"
 

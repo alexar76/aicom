@@ -1670,8 +1670,34 @@ class ApiClient {
       effective_llm_pre_call_reserve_usd?: number;
     } | null;
     quality?: Record<string, boolean | number>;
+    pipeline_db_backend?: 'sqlite' | 'postgres' | 'json';
+    pipeline_database_url?: string;
+    pipeline_database_url_masked?: string;
+    pipeline_db_status?: Record<string, unknown>;
   }> {
     return this.request('/admin/settings');
+  }
+
+  async testPipelineDatabaseConnection(database_url?: string): Promise<{ ok: boolean; detail: string }> {
+    return this.request('/admin/pipeline-database/test-connection', {
+      method: 'POST',
+      body: JSON.stringify({ database_url: database_url || '' }),
+    });
+  }
+
+  async migratePipelineSqliteToPostgres(body: {
+    database_url?: string;
+    clear_target?: boolean;
+  }): Promise<{
+    ok: boolean;
+    products_migrated: number;
+    tasks_migrated: number;
+    destination: string;
+  }> {
+    return this.request('/admin/pipeline-database/migrate-sqlite-to-postgres', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
   }
 
   async updateAdminSettings(settings: Record<string, any>): Promise<{ message: string; updated: string[] }> {

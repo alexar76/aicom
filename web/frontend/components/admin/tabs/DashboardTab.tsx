@@ -1,119 +1,50 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  LayoutDashboard,
-  Cpu,
-  Bot,
-  Shield,
-  FileText,
-  BarChart3,
-  Settings,
-  LogOut,
-  Plus,
-  Send,
   Activity,
-  Users,
-  DollarSign,
   AlertTriangle,
   CheckCircle2,
-  Clock,
-  Sparkles,
-  MessageCircle,
-  Menu,
-  X,
-  Trash2,
-  Edit3,
-  RefreshCw,
-  Globe,
-  ToggleLeft,
-  ToggleRight,
-  Save,
-  List,
-  ScrollText,
-  ChevronRight,
-  Terminal,
-  Radio,
-  Pause,
-  Play,
+  DollarSign,
+  FileText,
   Gauge,
-  Circle,
-  Star,
-  ExternalLink,
-  Zap,
-  GitBranch,
-  Container,
-  Layers,
-  FlaskConical,
-  BrainCircuit,
-  ClipboardList,
-  Inbox,
-  Megaphone,
-  Store,
   Loader2,
-  Upload,
+  Shield,
+  Store,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
-import { Input } from '@/components/ui/Input';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { Modal } from '@/components/ui/Modal';
+import api, { type DashboardData } from '@/lib/api';
 import {
-  FilterControlsPanel,
-  FilterNumberInput,
-  FilterResetSummary,
-  FilterSelect,
-} from '@/components/admin/FilterControls';
-import BrainstormingTab from '@/components/BrainstormingTab';
-import SupportQueueTab from '@/components/SupportQueueTab';
-import OutreachTab from '@/components/OutreachTab';
-import { QRCodeSVG } from 'qrcode.react';
-import api, {
-  DashboardData,
-  ProviderStatus,
-  AgentStatus,
-  CreateProviderPayload,
-  RoutingRule,
-  ChatMessage,
-  DemoReplayAdminConfig,
-} from '@/lib/api';
-import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
-import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
-import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
-import toast from 'react-hot-toast';
-import { readAdminMetricsCache, writeAdminMetricsCache } from '@/lib/adminMetricsCache';
+  createEmptyDashboardData,
+  mergeDashboardQuick,
+  readAdminMetricsCache,
+  writeAdminMetricsCache,
+} from '@/lib/adminMetricsCache';
+import { prefetchAdminDashboard } from '@/lib/prefetchAdminDashboard';
+
+function bootDashboardData(): DashboardData {
+  return readAdminMetricsCache() ?? createEmptyDashboardData();
+}
 
 export function DashboardTab() {
-  /** Stale-while-revalidate: show last full snapshot immediately, then quick → full refresh. */
-  const [data, setData] = useState<DashboardData | null>(() => readAdminMetricsCache());
+  const [data, setData] = useState<DashboardData>(bootDashboardData);
+  const [refreshing, setRefreshing] = useState(true);
+  const hadCacheOnMount = useState(() => readAdminMetricsCache() != null)[0];
 
   useEffect(() => {
     let cancelled = false;
+    prefetchAdminDashboard();
+
     const run = async () => {
       try {
         const quick = await api.getDashboard(true);
         if (!cancelled) {
-          setData((prev) => {
-            if (!prev) return quick;
-            const qSf = quick.pipeline.storefront_visible_products;
-            const pSf = prev.pipeline.storefront_visible_products;
-            if ((qSf === null || qSf === undefined) && typeof pSf === 'number') {
-              return {
-                ...quick,
-                pipeline: {
-                  ...quick.pipeline,
-                  storefront_visible_products: pSf,
-                },
-                dashboard_partial: false,
-              };
-            }
-            return quick;
-          });
+          setData((prev) => mergeDashboardQuick(prev, quick));
         }
       } catch {
-        /* keep cache / skeleton */
+        /* keep cache / zeros */
       }
       try {
         const full = await api.getDashboard(false);
@@ -123,27 +54,16 @@ export function DashboardTab() {
         }
       } catch {
         /* quick or cache remains */
+      } finally {
+        if (!cancelled) setRefreshing(false);
       }
     };
+
     void run();
     return () => {
       cancelled = true;
     };
   }, []);
-
-  if (!data) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-        {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="glass-card p-6">
-            <div className="skeleton h-4 w-20 mb-3" />
-            <div className="skeleton h-8 w-16 mb-2" />
-            <div className="skeleton h-3 w-24" />
-          </div>
-        ))}
-      </div>
-    );
-  }
 
   const total = data.pipeline.total_products;
   const completed = data.pipeline.completed_products;
@@ -153,8 +73,7 @@ export function DashboardTab() {
   const storefront = sfRaw ?? 0;
   const failed = data.pipeline.failed_products;
   const active = data.pipeline.active_products;
-  const completionRate = total > 0 ? ((completed / total) * 100) : 0;
-  /** Share of shipped pipeline rows (COMPLETED / DEPLOYED_PRODUCTION) that list on the public grid. */
+  const completionRate = total > 0 ? (completed / total) * 100 : 0;
   const storefrontYieldPct =
     !sfPending && completed > 0 ? Math.round((storefront / completed) * 100) : null;
 
@@ -213,24 +132,30 @@ export function DashboardTab() {
   ];
 
   return (
-    <div className="space-y-8">
-      {/* Stats Grid */}
+    <motion.div className="space-y-8">
+      {refreshing ? (
+        <p className="flex items-center gap-2 text-xs text-gray-500" aria-live="polite">
+          <Loader2 className="h-3.5 w-3.5 animate-spin shrink-0" aria-hidden />
+          {hadCacheOnMount ? 'Refreshing metrics…' : 'Loading live metrics…'}
+        </p>
+      ) : null}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {stats.map((stat, i) => (
           <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
+            key={stat.label}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
+            transition={{ delay: i * 0.04 }}
           >
             <GlassCard>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="text-sm text-gray-400 mb-1">{stat.label}</p>
-                  <p className="text-3xl font-bold text-white">
+                  <p className="text-3xl font-bold text-white tabular-nums">
                     {stat.value === null ? (
                       <span className="inline-flex items-center gap-2 text-gray-400 text-xl font-normal">
-                        <Loader2 className="w-6 h-6 animate-spin shrink-0" aria-hidden />
+                        <Loader2 className="w-5 h-5 animate-spin shrink-0" aria-hidden />
                         …
                       </span>
                     ) : (
@@ -238,9 +163,9 @@ export function DashboardTab() {
                     )}
                   </p>
                 </div>
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} p-2`}>
+                <motion.div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} p-2`}>
                   <stat.icon className="w-full h-full text-white" />
-                </div>
+                </motion.div>
               </div>
             </GlassCard>
           </motion.div>
@@ -255,12 +180,12 @@ export function DashboardTab() {
               Factory health score
             </h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-400">
-              Single 0–100 signal from existing dashboard metrics (failure load, timeouts, queue pressure, storefront
-              yield). Not a replacement for per-product QA — a fast pulse for operators.
+              Single 0–100 signal from existing dashboard metrics (failure load, timeouts, queue pressure,
+              storefront yield).
             </p>
           </div>
           <div className="text-right">
-            <p className="text-4xl font-bold text-violet-200">{factoryHealthScore}</p>
+            <p className="text-4xl font-bold text-violet-200 tabular-nums">{factoryHealthScore}</p>
             <p className="text-xs capitalize text-gray-500">{healthBand}</p>
           </div>
         </div>
@@ -268,23 +193,21 @@ export function DashboardTab() {
           <ProgressBar
             value={factoryHealthScore}
             label="Composite health"
-            variant={factoryHealthScore >= 70 ? 'success' : factoryHealthScore >= 45 ? 'warning' : 'warning'}
+            variant={factoryHealthScore >= 70 ? 'success' : 'warning'}
           />
         </div>
       </GlassCard>
 
-      {/* Primary ops KPI: pipeline completion alone is not “shipping”; storefront listing is. */}
       <GlassCard className="border border-cyan-500/25 bg-cyan-500/[0.04]">
-        <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
+        <motion.div className="flex flex-wrap items-start justify-between gap-4 mb-3">
           <div>
             <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               <Store className="w-5 h-5 text-cyan-400" />
               North star — public storefront
             </h3>
             <p className="text-sm text-gray-400 mt-1 max-w-3xl">
-              The factory’s operational goal is <strong className="text-gray-300">listed, buyer-visible products</strong>, not a counter of
-              pipeline «completed». Completed builds that fail marketplace gates stay internal until rework or explicit admin override —
-              use Pipeline → storefront controls to track intent (planned rework / abandon / force-list).
+              The factory’s operational goal is listed, buyer-visible products, not pipeline «completed»
+              alone.
             </p>
           </div>
           {sfPending ? (
@@ -292,53 +215,46 @@ export function DashboardTab() {
               <Loader2 className="w-5 h-5 animate-spin shrink-0" aria-hidden />
               <span>Storefront count…</span>
             </div>
-          ) : (
-            storefrontYieldPct !== null && (
-              <div className="text-right shrink-0">
-                <p className="text-3xl font-bold text-cyan-300">{storefrontYieldPct}%</p>
-                <p className="text-xs text-gray-500">listed ÷ shipped builds</p>
-              </div>
-            )
-          )}
-        </div>
+          ) : storefrontYieldPct !== null ? (
+            <div className="text-right shrink-0">
+              <p className="text-3xl font-bold text-cyan-300 tabular-nums">{storefrontYieldPct}%</p>
+              <p className="text-xs text-gray-500">listed ÷ shipped builds</p>
+            </div>
+          ) : null}
+        </motion.div>
         {sfPending ? (
           <p className="text-sm text-gray-500 flex items-center gap-2">
             <Loader2 className="w-4 h-4 animate-spin shrink-0" aria-hidden />
-            Loading public storefront totals (cached scan, short wait)…
+            Loading public storefront totals…
           </p>
         ) : storefrontYieldPct !== null ? (
           <>
             <ProgressBar value={storefrontYieldPct} label="Shipped builds → storefront conversion" variant="success" />
-            <p className="text-xs text-gray-500 mt-2">
-              {storefront} listed on the public grid · {completed} products in completed pipeline state (approximation; excludes deployed-only SKUs from denominator).
+            <p className="text-xs text-gray-500 mt-2 tabular-nums">
+              {storefront} listed · {completed} completed pipeline rows
             </p>
           </>
         ) : (
-          <p className="text-sm text-gray-500">No completed products yet — this KPI activates once builds reach completed.</p>
+          <p className="text-sm text-gray-500">No completed products yet.</p>
         )}
       </GlassCard>
 
-      {/* Pipeline Metrics */}
       <div className="grid md:grid-cols-2 gap-6">
         <GlassCard>
           <h3 className="text-lg font-semibold text-white mb-4">Pipeline Metrics</h3>
           <div className="space-y-4">
-            <ProgressBar
-              value={Math.round(completionRate)}
-              label="Completion Rate"
-              variant="success"
-            />
+            <ProgressBar value={Math.round(completionRate)} label="Completion Rate" variant="success" />
             <div className="flex justify-between text-sm text-gray-400">
               <span>Pending Tasks</span>
-              <span className="text-white font-medium">{data.pipeline.pending_tasks}</span>
+              <span className="text-white font-medium tabular-nums">{data.pipeline.pending_tasks}</span>
             </div>
             <div className="flex justify-between text-sm text-gray-400">
               <span>Running Tasks</span>
-              <span className="text-white font-medium">{data.pipeline.running_tasks}</span>
+              <span className="text-white font-medium tabular-nums">{data.pipeline.running_tasks}</span>
             </div>
             <div className="flex justify-between text-sm text-gray-400">
               <span>Timed Out Tasks</span>
-              <span className="text-white font-medium">{data.pipeline.timed_out_tasks}</span>
+              <span className="text-white font-medium tabular-nums">{data.pipeline.timed_out_tasks}</span>
             </div>
           </div>
         </GlassCard>
@@ -365,7 +281,6 @@ export function DashboardTab() {
         </GlassCard>
       </div>
 
-      {/* Revenue & Security */}
       <div className="grid md:grid-cols-2 gap-6">
         <GlassCard>
           <div className="flex items-center gap-3 mb-4">
@@ -375,34 +290,16 @@ export function DashboardTab() {
           <div className="space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-gray-400">Last 24h</span>
-              <span className="text-white font-medium">${data.revenue.last_24h.toFixed(2)}</span>
+              <span className="text-white font-medium tabular-nums">${data.revenue.last_24h.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-400">Last 7 Days</span>
-              <span className="text-white font-medium">${data.revenue.last_7d.toFixed(2)}</span>
+              <span className="text-white font-medium tabular-nums">${data.revenue.last_7d.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-400">Last 30 Days</span>
-              <span className="text-white font-medium">${data.revenue.last_30d.toFixed(2)}</span>
+              <span className="text-white font-medium tabular-nums">${data.revenue.last_30d.toFixed(2)}</span>
             </div>
-            {data.revenue.total_approx_usd != null && (
-              <div className="flex justify-between text-sm border-t border-white/10 pt-2">
-                <span className="text-gray-400">All-time (approx. USD, incl. ETH/SOL est.)</span>
-                <span className="text-white font-medium">${data.revenue.total_approx_usd.toFixed(2)}</span>
-              </div>
-            )}
-            {data.revenue.orders_completed != null && (
-              <div className="flex justify-between text-xs text-gray-500 pt-1">
-                <span>Paid orders</span>
-                <span>{data.revenue.orders_completed}</span>
-              </div>
-            )}
-            {data.revenue.payments_pending != null && data.revenue.payments_pending > 0 && (
-              <div className="flex justify-between text-xs text-amber-400/90 pt-1">
-                <span>Pending checkout</span>
-                <span>{data.revenue.payments_pending}</span>
-              </div>
-            )}
           </div>
         </GlassCard>
 
@@ -418,11 +315,11 @@ export function DashboardTab() {
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-400">Failed Logins (15m)</span>
-              <span className="text-white font-medium">{data.security.failed_logins_15min}</span>
+              <span className="text-white font-medium tabular-nums">{data.security.failed_logins_15min}</span>
             </div>
           </div>
         </GlassCard>
       </div>
-    </div>
+    </motion.div>
   );
 }

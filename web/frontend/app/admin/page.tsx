@@ -45,6 +45,7 @@ const FilesTabLazy = dynamic(
 );
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t } from '@/lib/adminI18n';
 import api from '@/lib/api';
+import { prefetchAdminDashboard } from '@/lib/prefetchAdminDashboard';
 
 const ADMIN_TAB_IDS = new Set([
   'dashboard',
@@ -123,6 +124,7 @@ function AdminPageInner() {
       window.location.href = '/admin/login';
     } else {
       setAuthChecked(true);
+      prefetchAdminDashboard();
     }
     setLocale(detectAdminLocale());
   }, []);

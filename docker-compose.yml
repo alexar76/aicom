@@ -22,6 +22,9 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:-}
       USE_SQLITE: "true"
       SQLITE_PATH: /app/data/state/pipeline.db
+      # Optional: switch pipeline store to PostgreSQL (Admin → Settings → Pipeline database)
+      PIPELINE_DB_BACKEND: ${PIPELINE_DB_BACKEND:-sqlite}
+      PIPELINE_DATABASE_URL: ${PIPELINE_DATABASE_URL:-}
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       GROQ_API_KEY: ${GROQ_API_KEY:-}

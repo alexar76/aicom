@@ -37,7 +37,17 @@ LISTING_CATEGORY_IDS = tuple(MARKETPLACE_CATEGORY_IDS) + (LANDINGS_LISTING_SLUG,
 
 
 def _use_sqlite_pipeline() -> bool:
-    return os.environ.get("USE_SQLITE", "").strip().lower() in ("1", "true", "yes")
+    from core.pipeline_database import pipeline_uses_sql_store
+
+    return pipeline_uses_sql_store()
+
+
+def _sql_store_available() -> bool:
+    from core.pipeline_database import pipeline_database_url, pipeline_db_backend
+
+    if pipeline_db_backend() == "postgres":
+        return bool(pipeline_database_url())
+    return _sqlite_db_path().exists()
 
 
 def _sqlite_db_path() -> Path:
@@ -64,12 +74,11 @@ def _sqlite_product_to_json_shape(raw: dict[str, Any]) -> dict[str, Any]:
 
 def _get_products_map() -> dict[str, dict[str, Any]]:
     """Storefront product map: SQLite when USE_SQLITE=true, else pipeline.json."""
-    if _use_sqlite_pipeline() and _sqlite_db_path().exists():
+    if _use_sqlite_pipeline() and _sql_store_available():
         try:
-            from orchestrator.sqlite_manager import SQLiteManager
+            from core.pipeline_database import create_sync_pipeline_manager
 
-            sm = SQLiteManager(str(_sqlite_db_path()))
-            sm.connect()
+            sm = create_sync_pipeline_manager()
             out: dict[str, dict[str, Any]] = {}
             for row in sm.get_all_products():
                 shaped = _sqlite_product_to_json_shape(row)
@@ -84,12 +93,11 @@ def _get_products_map() -> dict[str, dict[str, Any]]:
 
 
 def _get_product_entry(product_id: str) -> Optional[dict[str, Any]]:
-    if _use_sqlite_pipeline() and _sqlite_db_path().exists():
+    if _use_sqlite_pipeline() and _sql_store_available():
         try:
-            from orchestrator.sqlite_manager import SQLiteManager
+            from core.pipeline_database import create_sync_pipeline_manager
 
-            sm = SQLiteManager(str(_sqlite_db_path()))
-            sm.connect()
+            sm = create_sync_pipeline_manager()
             row = sm.get_product(product_id)
             sm.close()
             if row:

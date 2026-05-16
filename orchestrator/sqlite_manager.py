@@ -511,6 +511,23 @@ class SQLiteManager:
     # Metrics
     # ------------------------------------------------------------------
 
+    def get_state_distribution(self) -> dict[str, int]:
+        """Product counts by state (single GROUP BY — no full table load)."""
+        rows = self.conn.execute(
+            """
+            SELECT state, COUNT(*) AS cnt
+            FROM products
+            WHERE workspace_id = ?
+            GROUP BY state
+            """,
+            (self.workspace_id,),
+        ).fetchall()
+        out: dict[str, int] = {}
+        for row in rows:
+            key = str(row["state"] or "UNKNOWN")
+            out[key] = int(row["cnt"] or 0)
+        return out
+
     def get_metrics(self) -> dict[str, Any]:
         """Return pipeline metrics computed from SQLite data."""
         total_products = self.conn.execute(

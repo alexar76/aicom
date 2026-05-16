@@ -43,6 +43,7 @@ from web.backend.services.product_followup import (
     validate_and_save,
 )
 from web.backend.services.pipeline_demo_replay import metrics_demo_replay_slice
+from web.backend.services.dashboard_metrics_cache import get_or_build_dashboard
 from web.backend.services.storefront_counts_cache import invalidate_storefront_categories_cache
 from web.backend.services.product_economics import compute_roi_band, get_product_llm_costs
 from web.backend.services.product_pulse import build_product_pulse, build_product_pulses_for_metrics
@@ -132,7 +133,17 @@ def _admin_pipeline_storefront_hints(
 
 
 def _admin_use_sqlite_pipeline() -> bool:
-    return os.environ.get("USE_SQLITE", "").strip().lower() in ("1", "true", "yes")
+    from core.pipeline_database import pipeline_uses_sql_store
+
+    return pipeline_uses_sql_store()
+
+
+def _admin_sql_store_available() -> bool:
+    from core.pipeline_database import pipeline_database_url, pipeline_db_backend
+
+    if pipeline_db_backend() == "postgres":
+        return bool(pipeline_database_url())
+    return _admin_sqlite_db_path().exists()
 
 
 def _admin_sqlite_db_path() -> Path:
@@ -178,6 +189,60 @@ def _slim_spec_arch_for_light_catalog(spec: Any, arch: Any) -> tuple[Any, Any]:
     return s_out, a_out
 
 
+def _fast_pipeline_metrics() -> tuple[dict[str, int], dict[str, int]]:
+    """
+    Aggregate pipeline counts without loading full products/tasks tables.
+    Returns (pipeline_counts, state_distribution).
+    """
+    if _admin_use_sqlite_pipeline() and _admin_sql_store_available():
+        try:
+            from core.pipeline_database import create_sync_pipeline_manager
+
+            sm = create_sync_pipeline_manager()
+            try:
+                m = sm.get_metrics()
+                state_distribution = sm.get_state_distribution()
+            finally:
+                sm.close()
+            pipeline = {
+                "total_products": int(m["total_products"]),
+                "active_products": int(m["active_products"]),
+                "completed_products": int(m["completed_products"]),
+                "failed_products": int(m["failed_products"]),
+                "pending_tasks": int(m["pending_tasks"]),
+                "running_tasks": int(m["running_tasks"]),
+                "timed_out_tasks": int(m.get("timeout_tasks") or 0),
+            }
+            return pipeline, state_distribution
+        except Exception as e:
+            logger.warning("Dashboard metrics: fast SQL aggregates failed (%s), falling back to snapshot", e)
+
+    products, task_queue = _load_pipeline_snapshot_for_metrics()
+    total = len(products)
+    completed = sum(1 for p in products.values() if is_shipped_pipeline_product_state(p.get("state")))
+    failed = sum(1 for p in products.values() if str(p.get("state", "")).strip().lower() == "failed")
+    active = max(0, total - completed - failed)
+    pending = sum(1 for t in task_queue if _task_status_lower(t) == "pending")
+    running = sum(1 for t in task_queue if _task_status_lower(t) == "running")
+    timed_out = sum(1 for t in task_queue if _task_status_lower(t) in ("timeout", "timed_out"))
+    state_distribution: dict[str, int] = {}
+    for p in products.values():
+        s = str(p.get("state") or "UNKNOWN")
+        state_distribution[s] = state_distribution.get(s, 0) + 1
+    return (
+        {
+            "total_products": total,
+            "active_products": active,
+            "completed_products": completed,
+            "failed_products": failed,
+            "pending_tasks": pending,
+            "running_tasks": running,
+            "timed_out_tasks": timed_out,
+        },
+        state_distribution,
+    )
+
+
 def _load_pipeline_snapshot_for_metrics() -> tuple[dict[str, Any], list[dict]]:
     """
     Products keyed by id and global task list for dashboard counts.
@@ -186,12 +251,11 @@ def _load_pipeline_snapshot_for_metrics() -> tuple[dict[str, Any], list[dict]]:
     source of truth (``pipeline.json`` is often empty or stale). Otherwise
     read ``pipeline.json``.
     """
-    if _admin_use_sqlite_pipeline() and _admin_sqlite_db_path().exists():
+    if _admin_use_sqlite_pipeline() and _admin_sql_store_available():
         try:
-            from orchestrator.sqlite_manager import SQLiteManager
+            from core.pipeline_database import create_sync_pipeline_manager
 
-            sm = SQLiteManager(str(_admin_sqlite_db_path()))
-            sm.connect()
+            sm = create_sync_pipeline_manager()
             try:
                 plist = sm.get_all_products()
                 tlist = sm.get_all_tasks()
@@ -422,25 +486,15 @@ def _collect_escalation_summary(*, tail_only: bool = False) -> dict:
     }
 
 
-def _build_full_metrics() -> dict:
+def _build_full_metrics(*, include_product_pulses: bool = False) -> dict:
     """Build the complete metrics payload (used by both /dashboard and SSE)."""
-    products, task_queue = _load_pipeline_snapshot_for_metrics()
-
-    total = len(products)
-    # Align with storefront / Director: shipped = COMPLETED or DEPLOYED_PRODUCTION (any case).
-    completed = sum(1 for p in products.values() if is_shipped_pipeline_product_state(p.get("state")))
-    failed = sum(1 for p in products.values() if str(p.get("state", "")).strip().lower() == "failed")
-    active = max(0, total - completed - failed)
+    pipeline_counts, state_distribution = _fast_pipeline_metrics()
 
     try:
         storefront_visible = count_showcase_listable_products()
     except Exception as e:
         logger.warning("Dashboard metrics: storefront visible count failed (%s)", e)
         storefront_visible = 0
-
-    pending = sum(1 for t in task_queue if _task_status_lower(t) == "pending")
-    running = sum(1 for t in task_queue if _task_status_lower(t) == "running")
-    timed_out = sum(1 for t in task_queue if _task_status_lower(t) in ("timeout", "timed_out"))
 
     # Resource metrics
     try:
@@ -451,34 +505,24 @@ def _build_full_metrics() -> dict:
     except ImportError:
         cpu = memory = disk = 0
 
-    # Build the state distribution for stage flow
-    state_distribution: dict[str, int] = {}
-    for p in products.values():
-        s = p.get("state", "UNKNOWN")
-        state_distribution[s] = state_distribution.get(s, 0) + 1
-
     esc_summary = _collect_escalation_summary()
 
-    try:
-        product_pulses = build_product_pulses_for_metrics(
-            products,
-            task_queue,
-            data_root=factory_data_root(),
-        )
-    except Exception as e:
-        logger.warning("Dashboard metrics: product_pulses failed (%s)", e)
-        product_pulses = {}
+    product_pulses: dict[str, Any] = {}
+    if include_product_pulses:
+        try:
+            products, task_queue = _load_pipeline_snapshot_for_metrics()
+            product_pulses = build_product_pulses_for_metrics(
+                products,
+                task_queue,
+                data_root=factory_data_root(),
+            )
+        except Exception as e:
+            logger.warning("Dashboard metrics: product_pulses failed (%s)", e)
 
     return {
         "pipeline": {
-            "total_products": total,
-            "active_products": active,
-            "completed_products": completed,
+            **pipeline_counts,
             "storefront_visible_products": storefront_visible,
-            "failed_products": failed,
-            "pending_tasks": pending,
-            "running_tasks": running,
-            "timed_out_tasks": timed_out,
             "state_distribution": state_distribution,
         },
         "resources": {
@@ -503,17 +547,8 @@ def _build_full_metrics() -> dict:
 
 
 def _build_quick_dashboard_metrics() -> dict:
-    """Lightweight dashboard payload for first paint (skips expensive storefront scan and log aggregation)."""
-    products, task_queue = _load_pipeline_snapshot_for_metrics()
-
-    total = len(products)
-    completed = sum(1 for p in products.values() if is_shipped_pipeline_product_state(p.get("state")))
-    failed = sum(1 for p in products.values() if str(p.get("state", "")).strip().lower() == "failed")
-    active = max(0, total - completed - failed)
-
-    pending = sum(1 for t in task_queue if _task_status_lower(t) == "pending")
-    running = sum(1 for t in task_queue if _task_status_lower(t) == "running")
-    timed_out = sum(1 for t in task_queue if _task_status_lower(t) in ("timeout", "timed_out"))
+    """Lightweight dashboard payload for first paint (SQL aggregates only)."""
+    pipeline_counts, state_distribution = _fast_pipeline_metrics()
 
     try:
         import psutil
@@ -524,11 +559,6 @@ def _build_quick_dashboard_metrics() -> dict:
     except ImportError:
         cpu = memory = disk = 0
 
-    state_distribution: dict[str, int] = {}
-    for p in products.values():
-        s = p.get("state", "UNKNOWN")
-        state_distribution[s] = state_distribution.get(s, 0) + 1
-
     empty_esc = {
         "total_all_time": 0,
         "recent_1h": 0,
@@ -538,14 +568,8 @@ def _build_quick_dashboard_metrics() -> dict:
 
     return {
         "pipeline": {
-            "total_products": total,
-            "active_products": active,
-            "completed_products": completed,
+            **pipeline_counts,
             "storefront_visible_products": None,
-            "failed_products": failed,
-            "pending_tasks": pending,
-            "running_tasks": running,
-            "timed_out_tasks": timed_out,
             "state_distribution": state_distribution,
         },
         "resources": {
@@ -605,8 +629,11 @@ async def get_dashboard(
 ):
     """Get enhanced dashboard metrics including agent_metrics, director_status, escalations."""
     if quick:
-        return _build_quick_dashboard_metrics()
-    metrics = _build_full_metrics()
+        return get_or_build_dashboard(_build_quick_dashboard_metrics, quick=True)
+    metrics = get_or_build_dashboard(
+        lambda: _build_full_metrics(include_product_pulses=False),
+        quick=False,
+    )
     background_tasks.add_task(_append_metrics_history, metrics)
     out = dict(metrics)
     out["dashboard_partial"] = False
@@ -625,7 +652,7 @@ async def metrics_stream(request: Request):
             if await request.is_disconnected():
                 break
             try:
-                metrics = _build_full_metrics()
+                metrics = _build_full_metrics(include_product_pulses=True)
                 _append_metrics_history(metrics)
                 yield f"data: {json.dumps(metrics)}\n\n"
             except Exception as e:
@@ -1325,7 +1352,7 @@ async def get_agents():
             agents["designer"]["tasks_completed"] += 1
 
     loaded_from_sqlite = False
-    if _admin_use_sqlite_pipeline() and _admin_sqlite_db_path().exists():
+    if _admin_use_sqlite_pipeline() and _admin_sql_store_available():
         try:
             from orchestrator.sqlite_manager import SQLiteManager
 
@@ -1733,7 +1760,7 @@ def _admin_merged_pipeline_product(product_id: str) -> Optional[dict]:
             pj = {}
 
     row: Optional[dict] = None
-    if _admin_use_sqlite_pipeline() and _admin_sqlite_db_path().exists():
+    if _admin_use_sqlite_pipeline() and _admin_sql_store_available():
         try:
             from orchestrator.sqlite_manager import SQLiteManager
 
@@ -1967,7 +1994,13 @@ async def get_pipeline_products(
     loaded_sqlite_snapshot = False
     sqlite_fast: tuple[list[tuple[str, dict]], dict[str, int], list[dict], dict[str, dict[str, int]] | None] | None = None
 
-    if _admin_use_sqlite_pipeline() and _admin_sqlite_db_path().exists():
+    from core.pipeline_database import pipeline_db_backend
+
+    if (
+        _admin_use_sqlite_pipeline()
+        and pipeline_db_backend() == "sqlite"
+        and _admin_sqlite_db_path().exists()
+    ):
         try:
             from orchestrator.sqlite_manager import SQLiteManager
 
@@ -2004,12 +2037,11 @@ async def get_pipeline_products(
             )
             sqlite_fast = None
 
-    if sqlite_fast is None and _admin_use_sqlite_pipeline() and _admin_sqlite_db_path().exists():
+    if sqlite_fast is None and _admin_use_sqlite_pipeline() and _admin_sql_store_available():
         try:
-            from orchestrator.sqlite_manager import SQLiteManager
+            from core.pipeline_database import create_sync_pipeline_manager
 
-            sm = SQLiteManager(str(_admin_sqlite_db_path()))
-            sm.connect()
+            sm = create_sync_pipeline_manager()
             for row in sm.get_all_products():
                 pid = row.get("id")
                 if pid:
