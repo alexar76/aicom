@@ -95,6 +95,7 @@ import {
   fetchPipelineCatalogPageSingleMode,
   PIPELINE_CATALOG_FIRST_PAGE_ATTEMPTS_LIGHT,
   PIPELINE_CATALOG_FIRST_PAGE_BACKOFF_CAP_MS,
+  type PipelineCatalogAttemptInfo,
 } from '@/lib/pipelineCatalogFetch';
 import {
   readPipelineCatalogCache,
@@ -149,10 +150,7 @@ export function PipelineTab() {
   const [catalogReloadKey, setCatalogReloadKey] = useState(0);
   const [catalogLoadError, setCatalogLoadError] = useState<string | null>(null);
   /** First-page catalog API retries (light then full) — drives progress while `loading`. */
-  const [catalogFirstPageFetch, setCatalogFirstPageFetch] = useState<{
-    attempt: number;
-    maxAttempts: number;
-  } | null>(null);
+  const [catalogFirstPageFetch, setCatalogFirstPageFetch] = useState<PipelineCatalogAttemptInfo | null>(null);
   /** Shown when fast light catalog failed once and full hydration was used instead (non-blocking). */
   const [catalogNotice, setCatalogNotice] = useState<string | null>(null);
   const pipelineFetchGenerationRef = useRef(0);
@@ -317,12 +315,9 @@ export function PipelineTab() {
               }
             : undefined;
         const reporter = trackFirstPageRetries
-          ? (info: { attempt: number; maxAttempts: number }) => {
+          ? (info: PipelineCatalogAttemptInfo) => {
               if (cancelled || isStale()) return;
-              setCatalogFirstPageFetch({
-                attempt: info.attempt,
-                maxAttempts: info.maxAttempts,
-              });
+              setCatalogFirstPageFetch(info);
             }
           : undefined;
         if (preferLight) {
@@ -668,6 +663,17 @@ export function PipelineTab() {
     return Math.min(100, Math.round((products.length / totalProducts) * 100));
   }, [products.length, totalProducts]);
 
+  /** First HTTP page: bar reflects which retry we are on (API busy / timeout), not row hydration. */
+  const firstCatalogPageProgressPct = useMemo(() => {
+    if (!catalogFirstPageFetch) return 0;
+    const { attempt, maxAttempts, lastError, backoffMs } = catalogFirstPageFetch;
+    if (!maxAttempts || maxAttempts <= 0) return 0;
+    const base = (attempt / maxAttempts) * 100;
+    const inBackoff = Boolean(lastError && backoffMs != null && backoffMs > 0);
+    const bump = inBackoff ? Math.min(10, 100 / maxAttempts) : 0;
+    return Math.min(95, Math.round(base + bump));
+  }, [catalogFirstPageFetch]);
+
   /** Task queue rows summed across already-loaded catalog products (Pipeline API embeds tasks per row). */
   const pipelineLoadedTaskStats = useMemo(() => {
     let total = 0;
@@ -753,19 +759,31 @@ export function PipelineTab() {
         <div>
           <h2 className="text-xl font-semibold text-white">Pipeline Monitor</h2>
           {loadingMore && totalProducts > 0 && (
-            <div
-              className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-400/95"
-              aria-live="polite"
-              aria-busy="true"
-            >
-              <span
-                className="inline-flex h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400/80 animate-pulse"
-                aria-hidden
-              />
-              <span>
-                Updating from server… {products.length} / {totalProducts} rows ({catalogHydrationPercent}% verified)
-              </span>
-              <span className="text-slate-500 hidden sm:inline">· {pipelineLoadedTasksLabel}</span>
+            <div className="mt-2 space-y-1.5" aria-live="polite" aria-busy="true">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-400/95">
+                <span
+                  className="inline-flex h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400/80 animate-pulse"
+                  aria-hidden
+                />
+                <span>
+                  Updating from server… {products.length} / {totalProducts} rows (
+                  <span className="tabular-nums">{catalogHydrationPercent}%</span> of catalog loaded)
+                </span>
+                <span className="text-slate-500 hidden sm:inline">· {pipelineLoadedTasksLabel}</span>
+              </div>
+              <div
+                className="max-w-md h-1.5 overflow-hidden rounded-full bg-white/10"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={catalogHydrationPercent}
+                aria-label="Catalog rows loaded"
+              >
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-500/90 to-teal-500/80 transition-[width] duration-300 ease-out"
+                  style={{ width: `${catalogHydrationPercent}%` }}
+                />
+              </div>
             </div>
           )}
           {!loadingMore && totalProducts > 0 && products.length >= totalProducts && (
@@ -903,7 +921,7 @@ export function PipelineTab() {
         }}
         summary={
           loading && products.length === 0
-            ? 'Waiting for the first catalog response…'
+            ? 'Waiting for the first catalog response (no local snapshot for this sort — see note above the progress bar).'
             : `Showing ${filteredProducts.length} of ${products.length} loaded (${totalProducts || products.length} in catalog)`
         }
         gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2"
@@ -955,33 +973,58 @@ export function PipelineTab() {
       </FilterControlsPanel>
       {loading ? (
         <div className="space-y-3 py-6">
-          <div className="flex flex-col items-center justify-center gap-1 text-sm text-gray-400">
+          <div className="flex flex-col items-center justify-center gap-2 text-sm text-gray-400">
             <div className="flex items-center gap-2">
               <div className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-indigo-500/30 border-t-indigo-500" />
-              Loading first catalog page…
+              Fetching first catalog page…
             </div>
             {catalogFirstPageFetch && (
-              <p className="text-[11px] text-gray-500 text-center max-w-md px-2">
-                First catalog request — try {catalogFirstPageFetch.attempt + 1} of{' '}
-                {catalogFirstPageFetch.maxAttempts} (back off if the API is busy). The strip below is a connection
-                pulse only; product load % appears after rows arrive (see header: N / total).
-              </p>
+              <div className="text-[11px] text-gray-500 text-center max-w-lg px-2 space-y-1">
+                <p>
+                  <span className="text-gray-400">Server request</span>{' '}
+                  <span className="tabular-nums text-indigo-200/90">
+                    {catalogFirstPageFetch.attempt + 1} / {catalogFirstPageFetch.maxAttempts}
+                  </span>
+                  {' — '}
+                  each number is a real HTTP call; if the API is slow or returns an error, the client retries with
+                  backoff (this is not a broken connection).
+                </p>
+                {catalogFirstPageFetch.lastError ? (
+                  <p className="text-amber-200/85 break-words">
+                    Last error:{' '}
+                    {catalogFirstPageFetch.lastError.length > 160
+                      ? `${catalogFirstPageFetch.lastError.slice(0, 160)}…`
+                      : catalogFirstPageFetch.lastError}
+                  </p>
+                ) : null}
+                {catalogFirstPageFetch.backoffMs != null && catalogFirstPageFetch.backoffMs > 0 ? (
+                  <p className="text-slate-500">
+                    Next attempt in ~{(catalogFirstPageFetch.backoffMs / 1000).toFixed(1)}s
+                  </p>
+                ) : null}
+                <p className="text-slate-500">
+                  <span className="text-gray-400">Browser snapshot:</span> none for this sort yet — after the first
+                  successful load the Pipeline Monitor saves a slim copy in <code className="text-[10px]">localStorage</code>{' '}
+                  so the next visit can paint cached rows immediately while refreshing in the background.
+                </p>
+              </div>
             )}
             <p className="text-[11px] text-gray-500 text-center max-w-md px-2">
-              Task rows for each product arrive with the catalog — you will see live counts below as soon as the first
-              batch loads.
+              Row-level task counts appear once the first batch returns; the header then shows{' '}
+              <span className="tabular-nums">N / total</span> and the bar below tracks catalog hydration (not this
+              connection phase).
             </p>
           </div>
           {catalogFirstPageFetch && (
-            <div className="max-w-md mx-auto px-2 space-y-1">
-              <p className="text-[10px] text-gray-500 text-center">Connecting…</p>
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/5">
-                <motion.div
-                  className="h-full w-1/3 rounded-full bg-gradient-to-r from-indigo-500/50 to-purple-500/50"
-                  initial={false}
-                  animate={{ x: ['-100%', '350%'] }}
-                  transition={{ duration: 1.35, repeat: Infinity, ease: 'linear' }}
-                  style={{ willChange: 'transform' }}
+            <div className="max-w-md mx-auto px-2 space-y-1.5">
+              <div className="flex justify-between text-[10px] text-gray-500">
+                <span>Connection phase</span>
+                <span className="tabular-nums">{firstCatalogPageProgressPct}%</span>
+              </div>
+              <div className="h-2 w-full overflow-hidden rounded-full bg-white/10" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={firstCatalogPageProgressPct}>
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-[width] duration-300 ease-out"
+                  style={{ width: `${firstCatalogPageProgressPct}%` }}
                 />
               </div>
             </div>
@@ -1493,13 +1536,26 @@ export function PipelineTab() {
           );
         })}
         {loadingMore && filteredProducts.length > 0 && (
-          <div className="py-4 flex justify-center px-2">
+          <div className="py-4 flex flex-col items-center justify-center px-2 gap-2">
             <p className="text-[11px] text-slate-500 text-center max-w-md flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
               <RefreshCw className="w-3 h-3 shrink-0 animate-spin text-slate-500" aria-hidden />
               <span>
-                Syncing catalog… {products.length} / {totalProducts} ({catalogHydrationPercent}%)
+                Syncing catalog… {products.length} / {totalProducts} (
+                <span className="tabular-nums">{catalogHydrationPercent}%</span>)
               </span>
             </p>
+            <div
+              className="w-full max-w-md h-1.5 overflow-hidden rounded-full bg-white/10"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={catalogHydrationPercent}
+            >
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-emerald-500/90 to-teal-500/80 transition-[width] duration-300 ease-out"
+                style={{ width: `${catalogHydrationPercent}%` }}
+              />
+            </div>
           </div>
         )}
         {!loadingMore && products.length > 0 && products.length >= totalProducts && (

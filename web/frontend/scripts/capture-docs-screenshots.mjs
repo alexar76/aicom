@@ -12,10 +12,10 @@
  *   ADMIN_PASSWORD — default admin123
  *
  * Sidebar tab order (see AdminSidebar.tsx, no `users` unless super_admin):
- *   0 Dashboard, 1 Monitor, 2 Pipeline, 3 New product, 4 Workshop, 5 Files,
- *   6 Agents, 7 Providers, 8 LLM logs, 9 Agent logs, 10 Security, 11 Sandbox,
- *   12 Director, 13 Discovery, 14 Settings, 15 Chat, 16 Brainstorming,
- *   17 Support queue, 18 Outreach
+ *   0 Dashboard, 1 Setup wizard, 2 Live Monitor, 3 Pipeline, 4 New product,
+ *   5 Workshop, 6 Files, 7 Agents, 8 Providers, 9 LLM logs, 10 Agent logs,
+ *   11 Security, 12 Sandbox, 13 Director, 14 Discovery, 15 Settings,
+ *   16 Chat, 17 Brainstorming, 18 Support queue, 19 Outreach
  */
 
 import { chromium } from 'playwright';
@@ -73,31 +73,37 @@ async function main() {
     await delay(900);
   };
 
+  await clickTab(1);
+  await page.screenshot({ path: path.join(OUT, 'admin-setup.png') });
+
   await clickTab(2);
-  await page.screenshot({ path: path.join(OUT, 'admin-pipeline.png') });
+  await page.screenshot({ path: path.join(OUT, 'admin-live-monitor.png') });
 
   await clickTab(3);
-  await page.screenshot({ path: path.join(OUT, 'admin-new-product.png') });
+  await page.screenshot({ path: path.join(OUT, 'admin-pipeline.png') });
 
   await clickTab(4);
+  await page.screenshot({ path: path.join(OUT, 'admin-new-product.png') });
+
+  await clickTab(5);
   await page.screenshot({ path: path.join(OUT, 'admin-workshop.png') });
 
-  await clickTab(7);
+  await clickTab(8);
   await page.screenshot({ path: path.join(OUT, 'admin-providers.png') });
 
-  await clickTab(8);
+  await clickTab(9);
   await page.screenshot({ path: path.join(OUT, 'admin-llm-logs.png') });
 
-  await clickTab(13);
+  await clickTab(14);
   await page.screenshot({ path: path.join(OUT, 'admin-discovery.png') });
 
-  await clickTab(14);
+  await clickTab(15);
   await page.screenshot({ path: path.join(OUT, 'admin-settings.png') });
 
-  await clickTab(15);
+  await clickTab(16);
   await page.screenshot({ path: path.join(OUT, 'admin-corporate-chat.png') });
 
-  await clickTab(16);
+  await clickTab(17);
   await page.screenshot({ path: path.join(OUT, 'admin-brainstorming.png') });
 
   await browser.close();

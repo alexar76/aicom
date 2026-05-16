@@ -258,6 +258,190 @@ class SQLiteManager:
         rows = self.conn.execute("SELECT * FROM products WHERE workspace_id = ?", (self.workspace_id,)).fetchall()
         return [self._row_to_product_dict(r) for r in rows]
 
+    def get_catalog_summary_counts(self) -> dict[str, int]:
+        """Single-query totals for admin pipeline catalog (full workspace, not a page)."""
+        row = self.conn.execute(
+            """
+            SELECT
+              COUNT(*) AS total,
+              COALESCE(SUM(CASE
+                WHEN upper(trim(state)) IN ('COMPLETED', 'DEPLOYED_PRODUCTION') THEN 1 ELSE 0
+              END), 0) AS shipped,
+              COALESCE(SUM(CASE
+                WHEN upper(trim(state)) = 'FAILED' THEN 1 ELSE 0
+              END), 0) AS failed
+            FROM products
+            WHERE workspace_id = ?
+            """,
+            (self.workspace_id,),
+        ).fetchone()
+        if row is None:
+            return {"total": 0, "shipped": 0, "failed": 0}
+        return {
+            "total": int(row["total"] or 0),
+            "shipped": int(row["shipped"] or 0),
+            "failed": int(row["failed"] or 0),
+        }
+
+    def list_products_catalog_page(self, sort: str, offset: int, limit: int) -> list[dict]:
+        """List one catalog page with server-side sort (matches admin pipeline monitor)."""
+        off = max(0, int(offset))
+        lim = max(1, min(int(limit), 5000))
+        ws = self.workspace_id
+        if sort == "shipped_first":
+            rows = self.conn.execute(
+                """
+                SELECT * FROM products
+                WHERE workspace_id = ?
+                ORDER BY
+                  CASE WHEN upper(trim(state)) IN ('COMPLETED', 'DEPLOYED_PRODUCTION') THEN 0 ELSE 1 END ASC,
+                  created_at DESC
+                LIMIT ? OFFSET ?
+                """,
+                (ws, lim, off),
+            ).fetchall()
+        else:
+            rows = self.conn.execute(
+                """
+                SELECT * FROM products
+                WHERE workspace_id = ?
+                ORDER BY created_at DESC
+                LIMIT ? OFFSET ?
+                """,
+                (ws, lim, off),
+            ).fetchall()
+        return [self._row_to_product_dict(r) for r in rows]
+
+    def get_tasks_for_product_ids(
+        self,
+        product_ids: list[str],
+        *,
+        omit_blob_columns: bool = False,
+    ) -> list[dict]:
+        """Tasks for the given products only (avoids loading the full task table for catalog pages).
+
+        When ``omit_blob_columns`` is true, ``input`` / ``output`` JSON blobs are not read from SQLite
+        (Pipeline Monitor ``light=true`` — large agent payloads are not needed for status columns).
+        """
+        if not product_ids:
+            return []
+        placeholders = ",".join("?" * len(product_ids))
+        cols = (
+            "id, workspace_id, product_id, agent_type, status, state, assigned_to, "
+            "created_at, started_at, completed_at, error, priority, retry_count"
+            if omit_blob_columns
+            else "*"
+        )
+        q = f"""
+            SELECT {cols} FROM tasks
+            WHERE workspace_id = ? AND product_id IN ({placeholders})
+            ORDER BY product_id ASC, created_at ASC
+        """
+        rows = self.conn.execute(q, (self.workspace_id, *product_ids)).fetchall()
+        if omit_blob_columns:
+            return [self._row_to_task_dict_catalog_light(r) for r in rows]
+        return [self._row_to_task_dict(r) for r in rows]
+
+    @staticmethod
+    def _row_to_task_dict_catalog_light(row: sqlite3.Row) -> dict[str, Any]:
+        """Task row without ``input``/``output`` blobs (matches keys expected by admin pipeline UI)."""
+        d: dict[str, Any] = {
+            "id": row["id"],
+            "workspace_id": row["workspace_id"],
+            "product_id": row["product_id"],
+            "agent_type": row["agent_type"],
+            "status": row["status"],
+            "state": row["state"],
+            "created_at": row["created_at"],
+            "started_at": row["started_at"],
+            "completed_at": row["completed_at"],
+            "error": row["error"],
+            "priority": row["priority"] if row["priority"] is not None else 0,
+            "retry_count": row["retry_count"] if row["retry_count"] is not None else 0,
+            "input_data": {},
+            "output_data": {},
+            "timeout_sec": 30,
+            "max_retries": 3,
+        }
+        if d.get("state") is None:
+            agent_map = {
+                "analyst": "market_researched",
+                "pm": "spec_written",
+                "marketing": "market_content_ready",
+                "methodologist": "methodology_reviewed",
+                "architect": "arch_designed",
+                "developer": "code_committed",
+                "qa": "qa_testing",
+                "security": "security_scanned",
+                "devops": "sales_active",
+                "sales": "sandbox_running",
+            }
+            d["state"] = agent_map.get(str(d.get("agent_type") or ""), "idea_received")
+        return d
+
+    def get_task_counts_for_product_ids(self, product_ids: list[str]) -> dict[str, dict[str, int]]:
+        """Aggregate task status counts per product (no task row payloads)."""
+        if not product_ids:
+            return {}
+        placeholders = ",".join("?" * len(product_ids))
+        q = f"""
+            SELECT
+              product_id,
+              COUNT(*) AS total,
+              SUM(CASE WHEN lower(trim(status)) = 'completed' THEN 1 ELSE 0 END) AS completed,
+              SUM(CASE WHEN lower(trim(status)) = 'failed' THEN 1 ELSE 0 END) AS failed,
+              SUM(CASE WHEN lower(trim(status)) = 'running' THEN 1 ELSE 0 END) AS running,
+              SUM(CASE WHEN lower(trim(status)) = 'pending' THEN 1 ELSE 0 END) AS pending
+            FROM tasks
+            WHERE workspace_id = ? AND product_id IN ({placeholders})
+            GROUP BY product_id
+        """
+        rows = self.conn.execute(q, (self.workspace_id, *product_ids)).fetchall()
+        out: dict[str, dict[str, int]] = {}
+        for r in rows:
+            pid = str(r["product_id"])
+            out[pid] = {
+                "total": int(r["total"] or 0),
+                "completed": int(r["completed"] or 0),
+                "failed": int(r["failed"] or 0),
+                "running": int(r["running"] or 0),
+                "pending": int(r["pending"] or 0),
+            }
+        return out
+
+    def get_latest_stage_tasks_for_product_ids(
+        self,
+        product_ids: list[str],
+        *,
+        agent_types: tuple[str, ...],
+    ) -> list[dict]:
+        """Latest task per (product_id, agent_type) for pipeline stage UI — no input/output blobs."""
+        if not product_ids or not agent_types:
+            return []
+        pid_ph = ",".join("?" * len(product_ids))
+        at_ph = ",".join("?" * len(agent_types))
+        q = f"""
+            SELECT
+              t.id, t.workspace_id, t.product_id, t.agent_type, t.status, t.state, t.assigned_to,
+              t.created_at, t.started_at, t.completed_at, t.error, t.priority, t.retry_count
+            FROM tasks t
+            INNER JOIN (
+              SELECT product_id, agent_type, MAX(created_at) AS max_created
+              FROM tasks
+              WHERE workspace_id = ? AND product_id IN ({pid_ph})
+                AND agent_type IN ({at_ph})
+              GROUP BY product_id, agent_type
+            ) latest
+              ON t.workspace_id = ?
+              AND t.product_id = latest.product_id
+              AND t.agent_type = latest.agent_type
+              AND t.created_at = latest.max_created
+            ORDER BY t.product_id ASC, t.created_at ASC
+        """
+        params: tuple[Any, ...] = (self.workspace_id, *product_ids, *agent_types, self.workspace_id)
+        rows = self.conn.execute(q, params).fetchall()
+        return [self._row_to_task_dict_catalog_light(r) for r in rows]
+
     def delete_product(self, product_id: str) -> None:
         """Delete a product and its associated tasks."""
         self.conn.execute("DELETE FROM tasks WHERE product_id = ? AND workspace_id = ?", (product_id, self.workspace_id))

@@ -1075,7 +1075,9 @@ class ApiClient {
     offset: number = 0,
     sort: 'newest' | 'shipped_first' = 'newest',
     /** Fast path: skip heavy per-row disk hydration (Pipeline Monitor). */
-    light: boolean = false
+    light: boolean = false,
+    /** Per-request abort timeout (ms). Pipeline catalog uses 300s — see pipelineCatalogFetch.ts. */
+    clientTimeoutMs: number = 300_000,
   ): Promise<{
     products: any[];
     count: number;
@@ -1101,7 +1103,7 @@ class ApiClient {
       q.set('light', '1');
     }
     // Large catalog hydration can exceed default proxy/browser patience; allow long waits.
-    return this.request(`/admin/pipeline/products?${q.toString()}`, { clientTimeoutMs: 180_000 });
+    return this.request(`/admin/pipeline/products?${q.toString()}`, { clientTimeoutMs });
   }
 
   /** Manual storefront follow-up label (files under state/product_followup/). */

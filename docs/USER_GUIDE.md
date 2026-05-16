@@ -1,264 +1,314 @@
-# AI-Factory User Guide (“for dummies”)
+# AI-Factory User Guide (detailed)
 
-> **Audience:** operators, product owners, and support staff who use the **storefront** and **admin panel** day to day.  
-> **Not covered here:** low-level Python agent code — see `docs/agents.md` and `docs/architecture-orchestrator.md`.
+> **Audience:** operators, product owners, and support using the **storefront** and **admin panel**.  
+> **Русская версия (подробнее, те же скриншоты):** [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) · **FAQ:** [FAQ.md](./FAQ.md) · [FAQ.ru.md](./FAQ.ru.md)
 
-> **Русскоязычным читателям:** этот гид написан по-английски, чтобы совпадать с подписями в UI и с остальной документацией репозитория. Структура ниже — оглавление; технические имена вкладок и URL оставлены как в продукте.
+> **Screenshots** live in [`docs/assets/screenshots/`](./assets/screenshots/). If PNGs are missing in your clone, start the stack and run:
+>
+> ```bash
+> cd web/frontend
+> DOCS_SCREENSHOT_BASE_URL=http://127.0.0.1:9080 ADMIN_PASSWORD='your-admin-password' npm run capture-docs-screenshots
+> ```
 
 ---
 
 ## Table of contents
 
 1. [What you are looking at](#what-you-are-looking-at)
-2. [Five ideas before you click anything](#five-ideas-before-you-click-anything)
-3. [Your first 10 minutes](#your-first-10-minutes)
-4. [Public storefront (no login)](#public-storefront-no-login)
-5. [Public documentation site `/docs`](#public-documentation-site-docs)
-6. [Admin login and safety](#admin-login-and-safety)
-7. [After login: onboarding strip](#after-login-onboarding-strip)
-8. [New Product — guided wizard & templates](#new-product--guided-wizard--templates)
-9. [Workshop — board, diffs, canvas, patterns, Web Push](#workshop--board-diffs-canvas-patterns-web-push)
-10. [Pipeline — where truth lives](#pipeline--where-truth-lives)
-11. [LLM Providers & LLM Logs](#llm-providers--llm-logs)
-12. [Settings](#settings)
-13. [When something breaks (actionable errors)](#when-something-breaks-actionable-errors)
-14. [Iteration Hub API (for power users)](#iteration-hub-api-for-power-users)
-15. [Screenshots reference](#screenshots-reference)
-16. [Related handbooks](#related-handbooks)
+2. [Where to look — situation cheat sheet](#where-to-look--situation-cheat-sheet)
+3. [Five ideas before you click anything](#five-ideas-before-you-click-anything)
+4. [Your first 15 minutes](#your-first-15-minutes)
+5. [Public storefront (no login)](#public-storefront-no-login)
+6. [Public documentation `/docs`](#public-documentation-docs)
+7. [Admin login and safety](#admin-login-and-safety)
+8. [Admin navigation map](#admin-navigation-map)
+9. [Dashboard](#dashboard)
+10. [Live Monitor](#live-monitor)
+11. [New Product — wizard & templates](#new-product--wizard--templates)
+12. [Pipeline Monitor — source of truth](#pipeline-monitor--source-of-truth)
+13. [Workshop](#workshop)
+14. [Discovery](#discovery)
+15. [LLM Providers & LLM Logs](#llm-providers--llm-logs)
+16. [Settings](#settings)
+17. [Scenario playbooks](#scenario-playbooks)
+18. [Actionable errors in the UI](#actionable-errors-in-the-ui)
+19. [Screenshots index](#screenshots-index)
+20. [Related handbooks](#related-handbooks)
 
 ---
 
 ## What you are looking at
 
-**AI-Factory** is a single packaged “factory” that:
+**AI-Factory** accepts a **plain-language idea** and runs a **fixed multi-agent pipeline** with quality gates, saving artifacts under `/app/data` (spec, architecture, code, marketing).
 
-- Accepts a **plain-language idea** (from a guest on the storefront, from you in **Admin → New product**, or from automation).
-- Runs a **fixed multi-agent pipeline** (analyst → PM → architect → developer → QA → …) with quality gates.
-- Produces **artifacts on disk** (spec, architecture, code, marketing copy) and optional **sandbox previews**.
+| Surface | URL | Role |
+|---------|-----|------|
+| Storefront | `/` | Buyers, demos |
+| Product page | `/product/{id}` | One run’s public status |
+| Admin | `/admin` | Operators |
+| In-app docs | `/docs` | Same guides, embedded images |
 
-You interact through:
+---
 
-| Surface | URL | Typical role |
-|--------|-----|----------------|
-| Storefront | `/` | Buyers, demos, marketing |
-| Product detail | `/product/{id}` | Status + links for one run |
-| Admin | `/admin` | Factory operators |
-| In-app docs | `/docs` | Same content as this guide, lighter |
+## Where to look — situation cheat sheet
+
+| Situation | Go here first | What to inspect | Screenshot |
+|-----------|---------------|-----------------|------------|
+| Site won’t load | Host health, `docker compose ps`, `:9081/api/health` | Container `app` healthy | — |
+| Can’t log in | `/admin/login`, [security.md](./security.md) | Bootstrap password, not `admin123` | ![Login](./assets/screenshots/admin-login.png) |
+| Created a product — where is it? | **Pipeline** | Search `prod-…`, sort *shipped first* | ![Pipeline](./assets/screenshots/admin-pipeline.png) |
+| Pipeline shows “try N of 8” | **Pipeline** (wait; up to 5 min per attempt) | *Connection phase* = HTTP retries; then *X / total* | ![Pipeline](./assets/screenshots/admin-pipeline.png) |
+| Product stuck on a stage | **Pipeline** → click stage tile | Task `running` / `failed`, errors | ![Pipeline](./assets/screenshots/admin-pipeline.png) |
+| LLM / model errors | **LLM Providers** → **LLM Logs** | Keys, routing, timeouts | ![Providers](./assets/screenshots/admin-providers.png) |
+| COMPLETED but not on storefront | **Pipeline** card | `storefront_gate_reasons` | ![Pipeline](./assets/screenshots/admin-pipeline.png) |
+| Fast landing only | **New product** → landing-only | `marketing_landing` | ![New product](./assets/screenshots/admin-new-product.png) |
+| Compare two specs | **Workshop** diff | Two product ids | ![Workshop](./assets/screenshots/admin-workshop.png) |
+| Autonomous ideas | **Discovery** | Ranked queue, auto-enqueue in Settings | ![Discovery](./assets/screenshots/admin-discovery.png) |
+| Quick health snapshot | **Dashboard** | KPI, task counts | ![Dashboard](./assets/screenshots/admin-dashboard.png) |
+| First-time setup / public URL | **Setup wizard** | Instance checklist | ![Setup](./assets/screenshots/admin-setup.png) |
+| Live metrics / demo video | **Live Monitor** | SSE, demo replay | ![Live Monitor](./assets/screenshots/admin-live-monitor.png) |
+| Session expired | **/admin/login** | 401 | ![Login](./assets/screenshots/admin-login.png) |
+| Permission denied | [admin-panel-rbac.md](./admin-panel-rbac.md) | Your role | — |
+
+More Q&A: **[FAQ.md](./FAQ.md)** · **[FAQ.ru.md](./FAQ.ru.md)**
 
 ---
 
 ## Five ideas before you click anything
 
-1. **Product** = one pipeline row with an `id` like `prod-xxxxxxxx`. Everything hangs off that id.
-2. **State** = where the pipeline is (e.g. idea received → shipped). Not the same as “visible on storefront”.
-3. **Delivery profile** = `full_software` (full build) vs `marketing_landing` (landing-only fast path) vs `infer` (legacy auto pick).
-4. **Sandbox** = optional live preview of generated static or API-backed demo under `/api/sandbox/...`.
-5. **LLM Providers** must be configured or agents will fail — the UI now surfaces **actionable error cards** with links to Providers / Settings.
+1. **Product** = one pipeline row (`prod-xxxxxxxx`).
+2. **State** = pipeline stage — not the same as storefront visibility.
+3. **Delivery profile** = `full_software` | `marketing_landing` | `infer`.
+4. **Sandbox** = preview under `/api/sandbox/…`.
+5. **LLM Providers** must work or agents fail — UI links you there from error cards.
 
 ---
 
-## Your first 10 minutes
+## Your first 15 minutes
 
-1. Open the **storefront** `/` and read the hero — that is the default public story.
-2. Open **`/docs`** in the same deployment — it mirrors marketing + deep links.
-3. Sign in to **`/admin/login`** with your admin password (rotate on day one).
-4. If you see the **blue onboarding card** at the top of Admin, read it once, then dismiss — you can always read this file.
-5. Open **New product**, use a **Quick-start template** chip or type your own idea, walk **Idea → Options → Review**, submit.
-6. Open **Pipeline**, find your `prod-…`, expand the card, watch states change when the worker runs.
+1. Open `/` and `/docs`.
+2. Sign in at `/admin/login` (see [security.md](./security.md) for password).
+3. Dismiss the blue **Get oriented** card after reading it.
+4. **New product** → template or custom idea → submit.
+5. **Pipeline** → find your id → watch the stage strip.
 
 ---
 
 ## Public storefront (no login)
 
-**Try this:** describe a short product in the guest flow (if enabled on your skin). You receive a product id and a public URL.
+**Case — guest submits an idea**
 
-**Screenshot (homepage):**
+1. Hero form on `/` (if enabled).
+2. Receive `prod-…` and `/product/{id}`.
+3. Operator finds the same id in **Pipeline**.
 
 ![Storefront home](./assets/screenshots/public-home.png)
 
+**Case — buyer browses catalog**
+
+Only products passing **marketplace gates** appear (may be fewer than Dashboard **Completed**).
+
 ---
 
-## Public documentation site `/docs`
+## Public documentation `/docs`
 
-Next.js route **`/docs`** is the in-app documentation hub (icons, quick start, admin screenshots). It is safe to share with stakeholders who do not have git access.
+Share `/docs` with stakeholders — includes quick start and the same screenshot set as this file.
 
-**Screenshot:**
-
-![Public documentation](./assets/screenshots/public-docs.png)
+![Public docs](./assets/screenshots/public-docs.png)
 
 ---
 
 ## Admin login and safety
 
-1. Use **`/admin/login`** — username **`admin`**.
-2. **First install:** password is **not** `admin123`. With a terminal attached (`./run.sh` or `docker compose run -it app`), the entrypoint **asks for a password** in the console. Headless `docker compose up -d` writes a one-time password to **`data/secrets/bootstrap_admin.txt`**. Details: **[security.md](./security.md)**.
-3. Prefer **HTTPS** in production; JWT is stored in browser storage — treat workstations as sensitive.
-4. Enable **2FA** from auth settings when available.
-5. After login, rotate passwords and remove demo banners if shown.
-
-**Screenshot:**
+1. `/admin/login` — user **`admin`**.
+2. **No default `admin123`.** First install: console password or `data/secrets/bootstrap_admin.txt`.
+3. Use **HTTPS** in production; rotate password day one.
+4. Enable **2FA** when available.
 
 ![Admin login](./assets/screenshots/admin-login.png)
 
 ---
 
-## After login: onboarding strip
+## Admin navigation map
 
-A dismissible card may appear at the top of Admin summarizing:
+![Sidebar](./assets/screenshots/admin-sidebar.png)
 
-- Dashboard for health
-- New product for queueing work
-- Providers + Settings for model routing
+| Tab | Operator use |
+|-----|----------------|
+| Dashboard | Snapshot KPIs |
+| Live Monitor | Streaming metrics, demo replay |
+| Pipeline | All products, tasks, storefront hints |
+| New product | Enqueue work |
+| Workshop | Diffs, canvas, patterns |
+| LLM Providers / LLM Logs | Models and debugging |
+| Discovery | External signals → ideas |
+| Settings | Factory-wide flags |
+| Corporate Chat / Brainstorming | Discussions (not pipeline agents) |
 
-**Screenshot (dashboard context):**
-
-![Admin dashboard](./assets/screenshots/admin-dashboard.png)
-
-**Full navigation column:**
-
-![Admin sidebar full height](./assets/screenshots/admin-sidebar.png)
-
----
-
-## New Product — guided wizard & templates
-
-**Path:** Admin → **New product** (`/admin?tab=new-product`).
-
-What changed (UX):
-
-- **Progress bar** + step chips (Idea → Options → Review).
-- **Left column (desktop):** per-step checklist + **Quick-start templates** (three curated presets that fill idea + options).
-- **First-visit intro** (dismissible) explains templates and error recovery.
-- **Cloud templates** — saved on the server under the factory data directory (same storage as the deployment), listed separately from **local browser** templates.
-- **AI prefill** — optional; requires explicit **consent checkbox** before any LLM call.
-- **Create product** uses authenticated API (Bearer token) — failures show a red **Actionable failure** panel with **Retry** and deep links (Providers, Pipeline, Settings).
-
-**Screenshot:**
-
-![New product wizard](./assets/screenshots/admin-new-product.png)
-
-### Example walkthrough (copy/paste style)
-
-1. **Step 1 — Idea:**  
-   `A waitlisted B2B tool for freelancers to send scoped proposals with e-sign.`  
-   Click **Next**.
-2. **Step 2 — Options:**  
-   Choose **Full product**, **prototype**, set **Landing & UI copy language** (e.g. **Auto** or **Russian** for a Russian brief), add instructions `TypeScript + Postgres; no PCI scope.`  
-   Click **Save current to cloud** if you want this preset on another browser.
-3. **Step 3 — Review:** confirm counts, click **Start building**.  
-4. **Pipeline:** open from the success links; search for the new `prod-…`.
+Full tab reference: [admin-guide.md](./admin-guide.md).
 
 ---
 
-## Workshop — board, diffs, canvas, patterns, Web Push
+## Dashboard
 
-**Path:** Admin → **Workshop** (`/admin?tab=workshop`).
+**When:** quick morning check, after deploy.
 
-Capabilities:
+| Block | Meaning |
+|-------|---------|
+| Product KPIs | Scale of pipeline |
+| Task pending/running | Worker backlog |
+| Resources | Host CPU/RAM/disk |
 
-- **Board** — recent products by pipeline state; **Use ID** copies id into canvas / lab fields.
-- **Material diff** — side-by-side JSON for **specification** or **architecture** files for two product ids.
-- **Iteration canvas** — lightweight graph (nodes/edges) stored per product via **Iteration Hub** API; branch color + merge edges.
-- **Multi-device lab** — three iframes refresh the same sandbox viewer URL on a timer (simulated co-viewing; not WebRTC).
-- **Cloud pattern library** — JSON documents stored server-side for reusable workshop snippets.
-- **Web Push** — subscribe in-browser; test push; optional broadcast after Telegram notify (if configured).
+**Note:** Dashboard **Completed** ≠ storefront listing count.
 
-Dismissible **Workshop tips** card explains the flow.
-
-**Screenshot:**
-
-![Workshop tab](./assets/screenshots/admin-workshop.png)
+![Dashboard](./assets/screenshots/admin-dashboard.png)
 
 ---
 
-## Pipeline — where truth lives
+## Live Monitor
 
-**Path:** Admin → **Pipeline**.
+**When:** demos, autonomous Director, live escalations.
 
-Use this tab to:
+![Live Monitor](./assets/screenshots/admin-live-monitor.png)
 
-- Filter and search `prod-…` ids.
-- Inspect **state**, **errors**, and **stage** details.
-- Control storefront visibility where policy allows (see `docs/admin-guide.md` and `docs/owner-guide.md`).
+- SSE connection indicator.
+- **Demo replay** video (configure in Settings) — see [pipeline-operations.md](./pipeline-operations.md).
 
-**Screenshot:**
+**Setup wizard** (first install): ![Setup](./assets/screenshots/admin-setup.png) — public URL, LLM key, checks before autonomous mode.
+
+---
+
+## New Product — wizard & templates
+
+Path: `/admin?tab=new-product`
+
+![New product](./assets/screenshots/admin-new-product.png)
+
+| Step | Tips |
+|------|------|
+| Idea | One clear sentence |
+| Options | **Full product** vs **Marketing landing page only**; set copy language |
+| Review | **Start building** — copy `prod-…` |
+
+- **Cloud templates** — saved on server.
+- **AI prefill** — requires **consent** checkbox.
+- Failures show **Actionable failure** with **Retry** and links to Providers / Pipeline.
+
+---
+
+## Pipeline Monitor — source of truth
+
+Path: `/admin?tab=pipeline`
 
 ![Pipeline](./assets/screenshots/admin-pipeline.png)
+
+### Catalog loading (important)
+
+1. **Cold start** (no `localStorage` snapshot for this sort): you may see *Fetching first catalog page…* and *Server request N / M*.
+2. Each **N** is a real **HTTP attempt** (up to 8 on first page). Previous attempts failed or timed out — client retries with backoff.
+3. **Per-attempt timeout:** up to **5 minutes** (`300_000` ms).
+4. **Connection phase** progress bar ≈ retry index; **catalog %** appears in the header as **X / total** after rows return.
+5. **Cache:** after success, a slim catalog is stored in **localStorage** (`aicom_pipeline_catalog_v2_*`) — next visit paints immediately, then refreshes in background.
+
+### Card anatomy
+
+| UI | Purpose |
+|----|---------|
+| Stage strip (Anl, Pm, Dev, Qa…) | Per-agent task status; **click** for task modal |
+| Spec / Dev handoff | PM spec and developer handoff JSON |
+| Filters | Sort, category, state, storefront, dates |
+| Storefront / follow-up | Listing gates and manual labels |
+
+### Filters worth knowing
+
+- **Sort: shipped first** — completed work at the top.
+- **Search** — id, title, description, follow-up text.
+
+---
+
+## Workshop
+
+![Workshop](./assets/screenshots/admin-workshop.png)
+
+Board, material diff (spec/arch), iteration canvas, pattern library, Web Push lab — see [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) for scenario detail.
+
+---
+
+## Discovery
+
+![Discovery](./assets/screenshots/admin-discovery.png)
+
+Ranked external ideas; auto-enqueue only when explicitly enabled ([configuration.md](./configuration.md)).
 
 ---
 
 ## LLM Providers & LLM Logs
 
-**Providers** — API keys, routing rules, health.
-
-**Screenshot:**
-
-![LLM Providers](./assets/screenshots/admin-providers.png)
-
-**LLM Logs** — recent model calls for debugging “why did the agent stop?”.
-
-**Screenshot:**
+![Providers](./assets/screenshots/admin-providers.png)
 
 ![LLM Logs](./assets/screenshots/admin-llm-logs.png)
+
+First stop for any agent failure mentioning models, tokens, or timeouts.
 
 ---
 
 ## Settings
 
-**Path:** Admin → **Settings**.
-
-Factory-wide options: theme, integrations, Director, demo replay, etc. Exact flags evolve — see `docs/configuration.md`.
-
-**Screenshot:**
-
 ![Settings](./assets/screenshots/admin-settings.png)
 
----
-
-## When something breaks (actionable errors)
-
-Symptoms map to **what you should do** (the UI encodes this in red panels + buttons):
-
-| Symptom | Typical cause | UI action |
-|--------|----------------|-----------|
-| “Could not reach the server”, timeout | Network / container down | Retry; open **Settings**; check reverse proxy |
-| HTTP 401 | Session expired | **Sign in again** link |
-| HTTP 403 | RBAC | Ask `super_admin` for role change (`docs/admin-panel-rbac.md`) |
-| HTTP 404 on spec/architecture | Artifact not generated yet | Pick another product or wait for pipeline stage |
-| LLM / provider / model errors | Keys or routing | **Open LLM Providers** + **LLM Logs** |
-| Web Push / VAPID | Missing dependency or keys | Check server logs; `pywebpush` in requirements; env `AIFACTORY_VAPID_CONTACT` |
-| AI prefill “consent” | Checkbox | Enable consent before running LLM |
+Autonomous mode, demo replay, auto-publish, Railway, CORS — see [configuration.md](./configuration.md).
 
 ---
 
-## Iteration Hub API (for power users)
+## Scenario playbooks
 
-Authenticated admin routes under **`/api/admin/iteration-hub`**:
+### 1 — First product end-to-end
 
-| Method | Path | Purpose |
-|--------|------|---------|
-| GET/POST/DELETE | `/user-templates` | Cloud product-creation templates |
-| GET/PUT | `/products/{id}/iteration-canvas` | Persisted workshop canvas JSON |
-| GET/POST/DELETE | `/patterns` | Cloud pattern library |
-| POST | `/prefill-from-idea` | LLM assist (`consent: true` required) |
-| GET/POST | `/web-push/*` | VAPID public key, subscribe, test send |
+Providers (keys) → New product → Pipeline watch stages → sandbox URL → check storefront gates if listing matters.
 
-Full technical narrative: `docs/admin-guide.md` (update if you add tabs).
+### 2 — Pipeline catalog slow or retrying
+
+Check `/api/health` → wait for current attempt (up to 5 min) → DevTools Network on `pipeline/products?light=1` → increase proxy timeout if 502 → see [FAQ.md](./FAQ.md).
+
+### 3 — Investor demo in five minutes
+
+Pre-bake one green **Pipeline** card + sandbox; enable **demo replay** on Live Monitor; Dashboard KPIs.
+
+### 4 — Product failed QA
+
+Pipeline → failed **Qa** tile → task error → QA report under `data/bugs/{id}/` on server.
+
+### 5 — Policy audit reopened old products
+
+Products may show repair states while staying listed — [pipeline-operations.md](./pipeline-operations.md).
 
 ---
 
-## Screenshots reference
+## Actionable errors in the UI
 
-All files live in **`docs/assets/screenshots/`** and are copied to **`web/frontend/public/docs-screenshots/`** for `/docs`.
+| Symptom | UI actions | Also check |
+|---------|------------|------------|
+| Network / timeout | Retry, Settings | Compose, proxy |
+| 401 | Sign in again | JWT expiry |
+| 403 | — | RBAC |
+| LLM errors | Providers, LLM Logs | Keys |
+| Partial catalog | Retry catalog | FAQ “try N of 8” |
+| Prefill blocked | Consent checkbox | New product |
 
-| File | Description |
-|------|-------------|
+---
+
+## Screenshots index
+
+| File | Content |
+|------|---------|
 | `public-home.png` | Storefront `/` |
-| `public-docs.png` | Documentation `/docs` |
-| `admin-login.png` | Login form |
+| `public-docs.png` | `/docs` |
+| `admin-login.png` | Login |
 | `admin-dashboard.png` | Dashboard |
-| `admin-sidebar.png` | Full-height sidebar |
-| `admin-pipeline.png` | Pipeline |
+| `admin-sidebar.png` | Full sidebar |
+| `admin-setup.png` | Setup wizard |
+| `admin-live-monitor.png` | Live Monitor |
+| `admin-pipeline.png` | Pipeline Monitor |
 | `admin-new-product.png` | New product wizard |
 | `admin-workshop.png` | Workshop |
 | `admin-providers.png` | LLM Providers |
@@ -268,27 +318,22 @@ All files live in **`docs/assets/screenshots/`** and are copied to **`web/fronte
 | `admin-corporate-chat.png` | Corporate Chat |
 | `admin-brainstorming.png` | Brainstorming |
 
-**Refresh command** (app must be reachable):
-
-```bash
-cd web/frontend
-npm run capture-docs-screenshots
-```
-
-Environment variables: `DOCS_SCREENSHOT_BASE_URL`, `ADMIN_PASSWORD` (see `docs/assets/screenshots/README.md`).
+Refresh: `cd web/frontend && npm run capture-docs-screenshots` — details in [assets/screenshots/README.md](./assets/screenshots/README.md).
 
 ---
 
 ## Related handbooks
 
-| Document | When to read |
-|----------|----------------|
-| [owner-guide.md](./owner-guide.md) | You operate a live deployment (Mermaid, pitfalls) |
-| [admin-guide.md](./admin-guide.md) | Every admin tab, API touchpoints |
-| [api-integration-guide.md](./api-integration-guide.md) | REST integration |
-| [admin-panel-rbac.md](./admin-panel-rbac.md) | Roles: viewer / operator / admin / super_admin |
-| [README.md](./README.md) | Doc index |
+| Document | When |
+|----------|------|
+| [FAQ.md](./FAQ.md) / [FAQ.ru.md](./FAQ.ru.md) | Frequent questions |
+| [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) | Full Russian walkthrough |
+| [owner-guide.md](./owner-guide.md) | Production owner |
+| [admin-guide.md](./admin-guide.md) | Every admin tab |
+| [admin-panel-rbac.md](./admin-panel-rbac.md) | Roles |
+| [pipeline-operations.md](./pipeline-operations.md) | Worker behavior |
+| [configuration.md](./configuration.md) | Environment variables |
 
 ---
 
-*Document version: aligned with AI-Factory v2.1 admin UX (onboarding, actionable errors, New product wizard, Workshop, Iteration Hub). Regenerate screenshots after major UI changes.*
+*AI-Factory v2.1 — detailed user guide with situational index and FAQ links. Regenerate screenshots after major UI changes.*

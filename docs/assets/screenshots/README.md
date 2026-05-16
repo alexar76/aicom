@@ -36,6 +36,8 @@ DOCS_SCREENSHOT_BASE_URL=http://localhost:9080 ADMIN_PASSWORD='your-admin-passwo
 | `admin-login.png` | `/admin/login` |
 | `admin-dashboard.png` | Dashboard after login |
 | `admin-sidebar.png` | Same session, `fullPage` (nav column visible) |
+| `admin-setup.png` | Setup wizard tab |
+| `admin-live-monitor.png` | Live Monitor tab |
 | `admin-pipeline.png` | Pipeline tab |
 | `admin-new-product.png` | New product wizard |
 | `admin-workshop.png` | Workshop tab |

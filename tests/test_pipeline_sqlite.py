@@ -836,3 +836,87 @@ class TestSQLiteEdgeCases:
         assert product.state == PipelineState.IDEA_RECEIVED
         # No SQLite file should exist
         assert not os.path.exists(str(tmp_path / "state" / "pipeline.db"))
+
+
+class TestSQLiteCatalogPagination:
+    """Admin catalog SQL helpers: counts + page slice + scoped tasks."""
+
+    def test_catalog_counts_and_pagination(self, sqlite_manager):
+        sqlite_manager.upsert_product(
+            {
+                "id": "p_old_ship",
+                "idea": "old shipped",
+                "state": "COMPLETED",
+                "created_at": 10.0,
+                "updated_at": 10.0,
+                "metadata": {},
+            }
+        )
+        sqlite_manager.upsert_product(
+            {
+                "id": "p_new_draft",
+                "idea": "new draft",
+                "state": "IDEA_RECEIVED",
+                "created_at": 99.0,
+                "updated_at": 99.0,
+                "metadata": {},
+            }
+        )
+        sqlite_manager.upsert_product(
+            {
+                "id": "p_fail",
+                "idea": "failed",
+                "state": "FAILED",
+                "created_at": 50.0,
+                "updated_at": 50.0,
+                "metadata": {},
+            }
+        )
+        c = sqlite_manager.get_catalog_summary_counts()
+        assert c["total"] == 3
+        assert c["shipped"] == 1
+        assert c["failed"] == 1
+
+        shipped_first = sqlite_manager.list_products_catalog_page("shipped_first", 0, 10)
+        assert [p["id"] for p in shipped_first][:2] == ["p_old_ship", "p_new_draft"]
+
+        newest = sqlite_manager.list_products_catalog_page("newest", 0, 10)
+        assert newest[0]["id"] == "p_new_draft"
+
+        sqlite_manager.upsert_task(
+            {
+                "id": "t1",
+                "product_id": "p_old_ship",
+                "agent_type": "qa",
+                "status": "completed",
+                "state": "qa_testing",
+                "created_at": 1.0,
+                "output_data": {},
+                "input_data": {},
+            }
+        )
+        sqlite_manager.upsert_task(
+            {
+                "id": "t2",
+                "product_id": "p_fail",
+                "agent_type": "dev",
+                "status": "failed",
+                "state": "code_committed",
+                "created_at": 2.0,
+                "output_data": {},
+                "input_data": {},
+            }
+        )
+        only_ship = sqlite_manager.get_tasks_for_product_ids(["p_old_ship"])
+        assert len(only_ship) == 1
+        assert only_ship[0]["id"] == "t1"
+
+        only_ship_light = sqlite_manager.get_tasks_for_product_ids(["p_old_ship"], omit_blob_columns=True)
+        assert len(only_ship_light) == 1
+        assert only_ship_light[0]["output_data"] == {}
+        assert only_ship_light[0]["input_data"] == {}
+
+        both = sqlite_manager.get_tasks_for_product_ids(["p_old_ship", "p_fail"])
+        assert len(both) == 2
+
+        assert sqlite_manager.get_tasks_for_product_ids([]) == []

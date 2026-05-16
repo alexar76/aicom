@@ -5,12 +5,26 @@ export const PIPELINE_CATALOG_ATTEMPTS_LIGHT = 10;
 export const PIPELINE_CATALOG_ATTEMPTS_FULL = 8;
 /** First catalog page (Pipeline Monitor): fail faster so the UI is not stuck ~30s on backoff. */
 export const PIPELINE_CATALOG_FIRST_PAGE_ATTEMPTS_LIGHT = 8;
-export const PIPELINE_CATALOG_FIRST_PAGE_BACKOFF_CAP_MS = 2000;
+export const PIPELINE_CATALOG_FIRST_PAGE_BACKOFF_CAP_MS = 8000;
+
+/** Per-attempt HTTP timeout (heavy catalog / slow proxy). Was 180s; raised for large DB + cold start. */
+export const PIPELINE_CATALOG_CLIENT_TIMEOUT_MS = 300_000;
 
 export type PipelineCatalogFetchOpts = {
   maxAttempts?: number;
   /** Upper bound for exponential backoff (ms). */
   backoffCapMs?: number;
+  /** AbortSignal.timeout for each HTTP attempt (defaults to {@link PIPELINE_CATALOG_CLIENT_TIMEOUT_MS}). */
+  clientTimeoutMs?: number;
+};
+
+/** Fired before each HTTP attempt; after a failure (before sleeping), includes `lastError` + `backoffMs`. */
+export type PipelineCatalogAttemptInfo = {
+  attempt: number;
+  maxAttempts: number;
+  lastError?: string;
+  /** Present when waiting before the next attempt. */
+  backoffMs?: number;
 };
 
 export function pipelineCatalogBackoffMs(attempt: number, capMs: number = 20_000): number {
@@ -22,21 +36,25 @@ export async function fetchPipelineCatalogPageSingleMode(
   offset: number,
   sort: 'newest' | 'shipped_first',
   light: boolean,
-  onAttempt?: (info: { attempt: number; maxAttempts: number }) => void,
+  onAttempt?: (info: PipelineCatalogAttemptInfo) => void,
   fetchOpts?: PipelineCatalogFetchOpts,
 ): Promise<Awaited<ReturnType<typeof api.getPipelineProducts>>> {
   const defaultMax = light ? PIPELINE_CATALOG_ATTEMPTS_LIGHT : PIPELINE_CATALOG_ATTEMPTS_FULL;
   const max = Math.max(1, Math.min(30, fetchOpts?.maxAttempts ?? defaultMax));
   const capMs = fetchOpts?.backoffCapMs ?? 20_000;
+  const clientTimeoutMs = fetchOpts?.clientTimeoutMs ?? PIPELINE_CATALOG_CLIENT_TIMEOUT_MS;
   let last: unknown;
   for (let i = 0; i < max; i++) {
     onAttempt?.({ attempt: i, maxAttempts: max });
     try {
-      return await api.getPipelineProducts(limit, offset, sort, light);
+      return await api.getPipelineProducts(limit, offset, sort, light, clientTimeoutMs);
     } catch (e) {
       last = e;
       if (i < max - 1) {
-        await new Promise((r) => setTimeout(r, pipelineCatalogBackoffMs(i, capMs)));
+        const backoffMs = pipelineCatalogBackoffMs(i, capMs);
+        const lastError = e instanceof Error ? e.message : String(e);
+        onAttempt?.({ attempt: i, maxAttempts: max, lastError, backoffMs });
+        await new Promise((r) => setTimeout(r, backoffMs));
       }
     }
   }

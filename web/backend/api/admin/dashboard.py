@@ -148,6 +148,36 @@ def _normalize_pipeline_task(task: dict) -> dict:
     return t
 
 
+def _slim_pipeline_task_payloads_for_light_catalog(tasks: list[dict]) -> list[dict]:
+    """Strip heavy agent I/O blobs from embedded tasks (``light=true`` catalog / Pipeline Monitor)."""
+    out: list[dict] = []
+    for t in tasks:
+        d = dict(t)
+        d["input_data"] = {}
+        d["output_data"] = {}
+        out.append(d)
+    return out
+
+
+def _slim_spec_arch_for_light_catalog(spec: Any, arch: Any) -> tuple[Any, Any]:
+    """Keep only card-sized fields so SQLite-embedded specs do not megabyte-scale JSON responses."""
+    s_out: Any = spec
+    if isinstance(spec, dict):
+        s_out = {k: spec[k] for k in ("product_name", "description", "delivery_profile") if k in spec}
+    a_out: Any = arch
+    if isinstance(arch, dict):
+        ts = arch.get("tech_stack")
+        summ = arch.get("summary")
+        a_out = {}
+        if isinstance(ts, (dict, list)):
+            a_out["tech_stack"] = ts
+        if isinstance(summ, str) and summ.strip():
+            a_out["summary"] = summ.strip()[:2000]
+        if not a_out:
+            a_out = None
+    return s_out, a_out
+
+
 def _load_pipeline_snapshot_for_metrics() -> tuple[dict[str, Any], list[dict]]:
     """
     Products keyed by id and global task list for dashboard counts.
@@ -1894,7 +1924,22 @@ async def get_developer_handoff(product_id: str):
     }
 
 
-# ── Pipeline Products (Admin) ──────────────────────────────────────────────
+# Agent types needed for Pipeline Monitor stage columns (includes dev alias).
+_PIPELINE_CATALOG_STAGE_AGENT_TYPES: tuple[str, ...] = (
+    "analyst",
+    "pm",
+    "marketing",
+    "methodologist",
+    "architect",
+    "designer",
+    "developer",
+    "dev",
+    "qa",
+    "security",
+    "devops",
+    "sales",
+)
+
 
 @router.get("/pipeline/products")
 async def get_pipeline_products(
@@ -1914,12 +1959,52 @@ async def get_pipeline_products(
     ),
 ):
     """Get pipeline products with pagination (same catalog as dashboard / storefront hints)."""
+    safe_offset = max(offset, 0)
+    safe_limit = max(limit, 1)
     pipeline_file = Path("/app/data/state/pipeline.json")
     products: dict = {}
     task_queue: list = []
+    loaded_sqlite_snapshot = False
+    sqlite_fast: tuple[list[tuple[str, dict]], dict[str, int], list[dict], dict[str, dict[str, int]] | None] | None = None
 
-    loaded_sqlite = False
     if _admin_use_sqlite_pipeline() and _admin_sqlite_db_path().exists():
+        try:
+            from orchestrator.sqlite_manager import SQLiteManager
+
+            sm = SQLiteManager(str(_admin_sqlite_db_path()))
+            sm.connect()
+            counts = sm.get_catalog_summary_counts()
+            page_rows = sm.list_products_catalog_page(sort, safe_offset, safe_limit)
+            pids = [str(p["id"]) for p in page_rows if p.get("id")]
+            per_pid_task_counts: dict[str, dict[str, int]] | None = None
+            if light:
+                per_pid_task_counts = sm.get_task_counts_for_product_ids(pids)
+                page_tasks_raw = sm.get_latest_stage_tasks_for_product_ids(
+                    pids,
+                    agent_types=_PIPELINE_CATALOG_STAGE_AGENT_TYPES,
+                )
+            else:
+                page_tasks_raw = sm.get_tasks_for_product_ids(pids, omit_blob_columns=False)
+            sm.close()
+            window_list = [(str(p["id"]), p) for p in page_rows if p.get("id")]
+            page_tasks = [_normalize_pipeline_task(dict(t)) for t in page_tasks_raw]
+            sqlite_fast = (window_list, counts, page_tasks, per_pid_task_counts)
+            logger.debug(
+                "Admin pipeline products: SQLite paginated catalog sort=%s offset=%s limit=%s rows=%s tasks=%s",
+                sort,
+                safe_offset,
+                safe_limit,
+                len(window_list),
+                len(page_tasks),
+            )
+        except Exception as e:
+            logger.warning(
+                "Admin pipeline products: SQLite paginated load failed (%s), trying full snapshot",
+                e,
+            )
+            sqlite_fast = None
+
+    if sqlite_fast is None and _admin_use_sqlite_pipeline() and _admin_sqlite_db_path().exists():
         try:
             from orchestrator.sqlite_manager import SQLiteManager
 
@@ -1932,16 +2017,16 @@ async def get_pipeline_products(
             for t in sm.get_all_tasks():
                 task_queue.append(_normalize_pipeline_task(t))
             sm.close()
-            loaded_sqlite = True
+            loaded_sqlite_snapshot = True
             logger.debug(
-                "Admin pipeline products: loaded %s products, %s tasks from SQLite",
+                "Admin pipeline products: loaded %s products, %s tasks from SQLite (full snapshot)",
                 len(products),
                 len(task_queue),
             )
         except Exception as e:
             logger.warning("Admin pipeline products: SQLite load failed (%s), falling back to JSON", e)
 
-    if not loaded_sqlite:
+    if sqlite_fast is None and not loaded_sqlite_snapshot:
         if not pipeline_file.exists():
             return {
                 "products": [],
@@ -1982,41 +2067,53 @@ async def get_pipeline_products(
             }
 
     try:
-        
+
         # Build task lookup per product
         tasks_by_product: dict[str, list] = {}
-        for t in task_queue:
-            pid = t.get("product_id", "")
-            if pid not in tasks_by_product:
-                tasks_by_product[pid] = []
-            tasks_by_product[pid].append(t)
-        
-        # Sort products first and only hydrate the requested window (faster first paint).
-        safe_offset = max(offset, 0)
-        safe_limit = max(limit, 1)
-        all_items = list(products.items())
-        if sort == "shipped_first":
-            all_items.sort(
-                key=lambda item: (
-                    0 if is_shipped_pipeline_product_state(item[1].get("state")) else 1,
-                    -float(item[1].get("created_at") or 0),
-                )
-            )
+        per_pid_task_counts: dict[str, dict[str, int]] | None = None
+        if sqlite_fast is not None:
+            _window_pairs, catalog_counts, _page_tasks, per_pid_task_counts = sqlite_fast
+            task_queue = _page_tasks
+            for t in task_queue:
+                pid = t.get("product_id", "")
+                if pid not in tasks_by_product:
+                    tasks_by_product[pid] = []
+                tasks_by_product[pid].append(t)
+            total_count = int(catalog_counts.get("total", 0))
+            shipped_catalog = int(catalog_counts.get("shipped", 0))
+            failed_catalog = int(catalog_counts.get("failed", 0))
+            window = _window_pairs
         else:
-            all_items.sort(key=lambda item: float(item[1].get("created_at") or 0), reverse=True)
-        total_count = len(all_items)
-        shipped_catalog = sum(1 for _, p in all_items if is_shipped_pipeline_product_state(p.get("state")))
-        failed_catalog = sum(
-            1 for _, p in all_items if str(p.get("state", "")).strip().lower() == "failed"
-        )
+            for t in task_queue:
+                pid = t.get("product_id", "")
+                if pid not in tasks_by_product:
+                    tasks_by_product[pid] = []
+                tasks_by_product[pid].append(t)
+
+            # Sort products first and only hydrate the requested window (faster first paint).
+            all_items = list(products.items())
+            if sort == "shipped_first":
+                all_items.sort(
+                    key=lambda item: (
+                        0 if is_shipped_pipeline_product_state(item[1].get("state")) else 1,
+                        -float(item[1].get("created_at") or 0),
+                    )
+                )
+            else:
+                all_items.sort(key=lambda item: float(item[1].get("created_at") or 0), reverse=True)
+            total_count = len(all_items)
+            shipped_catalog = sum(1 for _, p in all_items if is_shipped_pipeline_product_state(p.get("state")))
+            failed_catalog = sum(
+                1 for _, p in all_items if str(p.get("state", "")).strip().lower() == "failed"
+            )
+            window = all_items[safe_offset : safe_offset + safe_limit]
+
         storefront_listable = 0
         try:
             storefront_listable = count_showcase_listable_products()
         except Exception as ex:
             logger.warning("pipeline products: storefront listable count failed (%s)", ex)
             storefront_listable = 0
-
-        window = all_items[safe_offset:safe_offset + safe_limit]
 
         result = []
         for pid, product in window:
@@ -2027,6 +2124,7 @@ async def get_pipeline_products(
             if light:
                 spec = product.get("spec") or meta.get("spec")
                 arch = product.get("architecture") or meta.get("architecture")
+                spec, arch = _slim_spec_arch_for_light_catalog(spec, arch)
             else:
                 spec_file = Path(f"/app/data/specs/{pid}/specification.json")
                 if spec_file.exists():
@@ -2046,14 +2144,23 @@ async def get_pipeline_products(
                 if arch is None:
                     arch = product.get("architecture") or meta.get("architecture")
 
-            product_tasks = tasks_by_product.get(pid, [])
-            completed_tasks = sum(1 for t in product_tasks if t.get("status") == "completed")
-            failed_tasks = sum(1 for t in product_tasks if t.get("status") == "failed")
-            running_tasks = sum(1 for t in product_tasks if t.get("status") == "running")
-            pending_tasks = sum(1 for t in product_tasks if t.get("status") == "pending")
+            product_tasks_all = tasks_by_product.get(pid, [])
+            pre_tc = (per_pid_task_counts or {}).get(pid) if per_pid_task_counts is not None else None
+            if pre_tc is not None:
+                completed_tasks = int(pre_tc.get("completed", 0))
+                failed_tasks = int(pre_tc.get("failed", 0))
+                running_tasks = int(pre_tc.get("running", 0))
+                pending_tasks = int(pre_tc.get("pending", 0))
+                total_tasks_n = int(pre_tc.get("total", len(product_tasks_all)))
+            else:
+                completed_tasks = sum(1 for t in product_tasks_all if t.get("status") == "completed")
+                failed_tasks = sum(1 for t in product_tasks_all if t.get("status") == "failed")
+                running_tasks = sum(1 for t in product_tasks_all if t.get("status") == "running")
+                pending_tasks = sum(1 for t in product_tasks_all if t.get("status") == "pending")
+                total_tasks_n = len(product_tasks_all)
             failed_task_errors = [
                 str(t.get("error") or "").strip()
-                for t in product_tasks
+                for t in product_tasks_all
                 if t.get("status") == "failed" and str(t.get("error") or "").strip()
             ]
             failed_task_errors = failed_task_errors[:3]
@@ -2095,9 +2202,13 @@ async def get_pipeline_products(
                 "updated_at": product.get("updated_at", 0),
                 "spec": spec,
                 "architecture": arch,
-                "tasks": product_tasks,
+                "tasks": (
+                    _slim_pipeline_task_payloads_for_light_catalog(product_tasks_all)
+                    if light
+                    else product_tasks_all
+                ),
                 "task_counts": {
-                    "total": len(product_tasks),
+                    "total": total_tasks_n,
                     "completed": completed_tasks,
                     "failed": failed_tasks,
                     "running": running_tasks,
@@ -2130,37 +2241,54 @@ async def get_pipeline_products(
             result.append(row)
         
         # ── Per-product economics enrichment ─────────────────────────────────
-        # Single pass over llm_calls.jsonl for all visible products.
-        try:
-            visible_ids = {r["id"] for r in result}
-            eco_map = get_product_llm_costs(visible_ids)
+        # Single pass over llm_calls.jsonl for all visible products (skipped in light catalog).
+        if not light:
+            try:
+                visible_ids = {r["id"] for r in result}
+                eco_map = get_product_llm_costs(visible_ids)
+                for r in result:
+                    pid = r["id"]
+                    eco = eco_map.get(pid)
+                    if eco is not None:
+                        r["economics"] = eco
+                        # Quality score from storefront followup (human, 1‑5) or fallback
+                        sf_q = r.get("storefront_followup", {}) or {}
+                        qs = sf_q.get("quality_score")
+                        try:
+                            qs_f = float(qs) if qs is not None else None
+                        except (TypeError, ValueError):
+                            qs_f = None
+                        r["economics"]["roi_band"] = compute_roi_band(
+                            eco.get("llm_cost_usd"), qs_f,
+                        )
+                        r["economics"]["quality_score"] = qs_f
+                    else:
+                        r["economics"] = {
+                            "llm_cost_usd": 0.0,
+                            "llm_call_count": 0,
+                            "llm_total_tokens": 0,
+                            "llm_agent_breakdown": {},
+                            "quality_score": None,
+                            "roi_band": compute_roi_band(0.0, None),
+                        }
+            except Exception as eco_err:
+                logger.warning("Product economics enrichment failed: %s", eco_err)
+        else:
             for r in result:
-                pid = r["id"]
-                eco = eco_map.get(pid)
-                if eco is not None:
-                    r["economics"] = eco
-                    # Quality score from storefront followup (human, 1‑5) or fallback
-                    sf_q = r.get("storefront_followup", {}) or {}
-                    qs = sf_q.get("quality_score")
-                    try:
-                        qs_f = float(qs) if qs is not None else None
-                    except (TypeError, ValueError):
-                        qs_f = None
-                    r["economics"]["roi_band"] = compute_roi_band(
-                        eco.get("llm_cost_usd"), qs_f,
-                    )
-                    r["economics"]["quality_score"] = qs_f
-                else:
-                    r["economics"] = {
-                        "llm_cost_usd": 0.0,
-                        "llm_call_count": 0,
-                        "llm_total_tokens": 0,
-                        "llm_agent_breakdown": {},
-                        "quality_score": None,
-                        "roi_band": compute_roi_band(0.0, None),
-                    }
-        except Exception as eco_err:
-            logger.warning("Product economics enrichment failed: %s", eco_err)
+                sf_q = r.get("storefront_followup", {}) or {}
+                qs = sf_q.get("quality_score")
+                try:
+                    qs_f = float(qs) if qs is not None else None
+                except (TypeError, ValueError):
+                    qs_f = None
+                r["economics"] = {
+                    "llm_cost_usd": 0.0,
+                    "llm_call_count": 0,
+                    "llm_total_tokens": 0,
+                    "llm_agent_breakdown": {},
+                    "quality_score": qs_f,
+                    "roi_band": compute_roi_band(0.0, qs_f),
+                }
 
         try:
             dr = factory_data_root()
