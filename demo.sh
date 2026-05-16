@@ -13,7 +13,7 @@
 #
 # Environment:
 #   DEMO_BASE_URL       e.g. http://localhost:8080 (default: auto 8080 then 9080)
-#   DEMO_ADMIN_PASSWORD admin password (default: admin123)
+#   DEMO_ADMIN_PASSWORD admin password (default: demo123)
 #   DEMO_CONTAINER_NAME container name to wait on (default: ai-factory)
 # ============================================================================
 set -euo pipefail
@@ -92,7 +92,7 @@ if [[ -z "${BASE:-}" ]]; then
 fi
 echo "[demo] Using API base: ${BASE}"
 
-PASS="${DEMO_ADMIN_PASSWORD:-admin123}"
+PASS="${DEMO_ADMIN_PASSWORD:-demo123}"
 
 login_json="$(curl -sS -X POST "${BASE}/api/admin/auth/login" \
   -H 'Content-Type: application/json' \

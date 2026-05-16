@@ -7,7 +7,7 @@
 # Requires: Docker stack up (same as demo.sh), curl, python3; jq optional.
 # Env:
 #   DEMO_BASE_URL              default picks healthy :9080 / :8080
-#   DEMO_ADMIN_PASSWORD        default admin123
+#   DEMO_ADMIN_PASSWORD        default demo123
 #   DEMO_SEED_IDEA             product brief (default: remote teams SaaS)
 #   DEMO_CONTAINER_NAME        default ai-factory (see demo.sh)
 #
@@ -53,7 +53,7 @@ done
 [[ -n "${BASE:-}" ]] || { echo "[demo-seed] No healthy API — set DEMO_BASE_URL"; exit 1; }
 echo "[demo-seed] Using ${BASE}"
 
-PASS="${DEMO_ADMIN_PASSWORD:-admin123}"
+PASS="${DEMO_ADMIN_PASSWORD:-demo123}"
 login_json="$(curl -sS -X POST "${BASE}/api/admin/auth/login" \
   -H 'Content-Type: application/json' \
   -d "{\"username\":\"admin\",\"password\":\"${PASS}\"}")"
