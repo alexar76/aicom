@@ -7,7 +7,7 @@ For each product: `POST /api/sandbox/start/{id}`, then screenshot
 
 Env:
   GALLERY_BASE_URL       default http://127.0.0.1:9080
-  GALLERY_PRODUCT_IDS    comma-separated override (must be 5 ids)
+  GALLERY_PRODUCT_IDS    comma-separated override (5 or 6 ids)
   GALLERY_INDEX_RELPATH  path under product code dir (default index.html)
 """
 
@@ -53,8 +53,8 @@ def main() -> None:
         ids = tuple(x.strip() for x in raw.split(",") if x.strip())
     else:
         ids = DEFAULT_IDS
-    if len(ids) != 5:
-        raise SystemExit(f"Need exactly 5 product ids, got {len(ids)}: {ids}")
+    if len(ids) not in (5, 6):
+        raise SystemExit(f"Need 5 or 6 product ids, got {len(ids)}: {ids}")
 
     from playwright.sync_api import sync_playwright
 

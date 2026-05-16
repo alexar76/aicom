@@ -10,13 +10,13 @@ This folder backs the **three-to-five hero screenshots** in the root [README.md]
    .venv/bin/python scripts/capture_gallery_landings.py
    ```
 
-   Writes **`landing-01.webp` … `landing-05.webp`** by opening **`/api/sandbox/file/{sandbox_id}/index.html`** (generated page only — not the sandbox viewer shell). Override paths with **`GALLERY_PRODUCT_IDS`** and optional **`GALLERY_INDEX_RELPATH`** (default `index.html`).
+   Writes **`landing-01.webp` … `landing-06.webp`** by opening **`/api/sandbox/file/{sandbox_id}/index.html`** (generated page only — not the sandbox viewer shell). Override paths with **`GALLERY_PRODUCT_IDS`** and optional **`GALLERY_INDEX_RELPATH`** (default `index.html`).
 
 2. Or manually: run products through the pipeline, then capture desktop **1440×900** WebP/PNG into this folder and update the root README table if filenames differ.
 
 3. Optional: from `web/frontend` with the UI running, see `npm run capture-docs-screenshots` ([screenshots README](../assets/screenshots/README.md)) for **admin UI** shots under `docs/assets/screenshots/`.
 
-The README hero table references **`landing-01.webp` … `landing-05.webp`** in this folder.
+The README hero table references **`landing-01.webp` … `landing-06.webp`** in this folder (3×2 grid).
 
 ## Full_software gallery (dashboard · login · CRUD · settings)
 

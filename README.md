@@ -12,7 +12,7 @@
 
 | ![Gallery 1](docs/gallery/landing-01.webp) | ![Gallery 2](docs/gallery/landing-02.webp) | ![Gallery 3](docs/gallery/landing-03.webp) |
 |:---:|:---:|:---:|
-| ![Gallery 4](docs/gallery/landing-04.webp) | ![Gallery 5](docs/gallery/landing-05.webp) | *regenerate: `python scripts/capture_gallery_landings.py`* |
+| ![Gallery 4](docs/gallery/landing-04.webp) | ![Gallery 5](docs/gallery/landing-05.webp) | ![Gallery 6](docs/gallery/landing-06.webp) |
 
 **11 AI agents** (analyst → PM → architect → designer → developer → QA → security → DevOps → marketing → sales → evolution) build your product with **Playwright E2E gates**, security scans, and storefront deployment.
 
@@ -67,7 +67,7 @@ Built pages only (1440×900 WebP): screenshots are **`/api/sandbox/file/…/inde
 
 | ![Gallery 1](docs/gallery/landing-01.webp) | ![Gallery 2](docs/gallery/landing-02.webp) | ![Gallery 3](docs/gallery/landing-03.webp) |
 |:---:|:---:|:---:|
-| ![Gallery 4](docs/gallery/landing-04.webp) | ![Gallery 5](docs/gallery/landing-05.webp) | |
+| ![Gallery 4](docs/gallery/landing-04.webp) | ![Gallery 5](docs/gallery/landing-05.webp) | ![Gallery 6](docs/gallery/landing-06.webp) |
 
 **Full-stack demo tiles** (`fullstack-01.webp` … `04`): `python scripts/capture_gallery_fullstack_packaging_demo.py` — see **[docs/gallery/README.md](docs/gallery/README.md)**.
 
