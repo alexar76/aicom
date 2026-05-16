@@ -58,7 +58,6 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Input';
-import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Modal } from '@/components/ui/Modal';
 import {
   FilterControlsPanel,
@@ -663,20 +662,11 @@ export function PipelineTab() {
   const pipelineCategoryCountsReady = totalProducts === 0 || products.length > 0;
   const pipelineCategoryCountsPartial = loadingMore && products.length > 0 && products.length < totalProducts;
 
+  /** Loaded catalog rows vs server total — use this for any “% of catalog” display (not HTTP retry index). */
   const catalogHydrationPercent = useMemo(() => {
     if (!totalProducts || totalProducts <= 0) return 0;
     return Math.min(100, Math.round((products.length / totalProducts) * 100));
   }, [products.length, totalProducts]);
-
-  const firstCatalogPageProgress = useMemo(() => {
-    if (!catalogFirstPageFetch || catalogFirstPageFetch.maxAttempts <= 0) return 0;
-    /** Never hit 100% while still waiting on the HTTP response (attempt index is pre-flight). */
-    const { attempt, maxAttempts } = catalogFirstPageFetch;
-    return Math.min(
-      94,
-      Math.round(((attempt + 0.5) / Math.max(1, maxAttempts)) * 100),
-    );
-  }, [catalogFirstPageFetch]);
 
   /** Task queue rows summed across already-loaded catalog products (Pipeline API embeds tasks per row). */
   const pipelineLoadedTaskStats = useMemo(() => {
@@ -971,9 +961,10 @@ export function PipelineTab() {
               Loading first catalog page…
             </div>
             {catalogFirstPageFetch && (
-              <p className="text-[11px] text-gray-500">
-                Starting request try {catalogFirstPageFetch.attempt + 1} of {catalogFirstPageFetch.maxAttempts}{' '}
-                (retries with short backoff if the API is busy — progress below stays under 100% until data arrives)
+              <p className="text-[11px] text-gray-500 text-center max-w-md px-2">
+                First catalog request — try {catalogFirstPageFetch.attempt + 1} of{' '}
+                {catalogFirstPageFetch.maxAttempts} (back off if the API is busy). The strip below is a connection
+                pulse only; product load % appears after rows arrive (see header: N / total).
               </p>
             )}
             <p className="text-[11px] text-gray-500 text-center max-w-md px-2">
@@ -982,13 +973,17 @@ export function PipelineTab() {
             </p>
           </div>
           {catalogFirstPageFetch && (
-            <div className="max-w-md mx-auto px-2">
-              <ProgressBar
-                value={firstCatalogPageProgress}
-                max={100}
-                label="First request progress"
-                size="sm"
-              />
+            <div className="max-w-md mx-auto px-2 space-y-1">
+              <p className="text-[10px] text-gray-500 text-center">Connecting…</p>
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/5">
+                <motion.div
+                  className="h-full w-1/3 rounded-full bg-gradient-to-r from-indigo-500/50 to-purple-500/50"
+                  initial={false}
+                  animate={{ x: ['-100%', '350%'] }}
+                  transition={{ duration: 1.35, repeat: Infinity, ease: 'linear' }}
+                  style={{ willChange: 'transform' }}
+                />
+              </div>
             </div>
           )}
           <div className="grid gap-2 sm:grid-cols-2">

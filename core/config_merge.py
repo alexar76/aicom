@@ -19,6 +19,7 @@ import yaml
 
 __all__ = [
     "config_yaml_path",
+    "config_fragments_dir",
     "deep_merge",
     "load_merged_config",
 ]
@@ -31,6 +32,20 @@ def config_yaml_path() -> Path:
     """
     p = os.environ.get("AIFACTORY_CONFIG_YAML") or os.environ.get("AIFACTORY_CONFIG") or "/app/config.yaml"
     return Path(p)
+
+
+def config_fragments_dir(primary_path: Path) -> Path:
+    """Directory of bundled ``*.yaml`` defaults (merged before the primary overlay).
+
+    When the primary overlay lives on a persistent volume (e.g. ``/app/data/config/…``),
+    set ``AIFACTORY_CONFIG_FRAGMENTS_DIR`` to the image path of fragments (typically
+    ``/app/config/fragments``) so defaults still load. If unset, fragments are resolved as
+    ``<parent of primary>/config/fragments`` (Docker: ``/app/config/fragments`` when primary is ``/app/config.yaml``).
+    """
+    raw = (os.environ.get("AIFACTORY_CONFIG_FRAGMENTS_DIR") or "").strip()
+    if raw:
+        return Path(raw)
+    return primary_path.parent / "config" / "fragments"
 
 
 def deep_merge(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
@@ -46,13 +61,14 @@ def deep_merge(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
 
 def load_merged_config(primary: str | Path | None = None) -> dict[str, Any]:
     """
-    Load fragments from ``<parent>/config/fragments/*.yaml`` then overlay ``primary``.
+    Load fragments from the resolved fragments directory (see :func:`config_fragments_dir`)
+    as ``*.yaml`` in sorted order, then overlay ``primary``.
 
     If the fragments directory is missing (e.g. minimal test fixtures), only ``primary`` is used.
     """
     primary_path = Path(primary) if primary is not None else config_yaml_path()
     merged: dict[str, Any] = {}
-    frag_dir = primary_path.parent / "config" / "fragments"
+    frag_dir = config_fragments_dir(primary_path)
     if frag_dir.is_dir():
         for fp in sorted(frag_dir.glob("*.yaml")):
             try:

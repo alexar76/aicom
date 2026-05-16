@@ -15,6 +15,9 @@ services:
     volumes:
       - ./data:/app/data
     environment:
+      # Admin → Settings (YAML overlay) must live under the ./data volume or it is lost on container recreate.
+      AIFACTORY_CONFIG_YAML: /app/data/config/admin_config_overlay.yaml
+      AIFACTORY_CONFIG_FRAGMENTS_DIR: /app/config/fragments
       # Entrypoint loads persistent key from data/secrets/jwt_secret.key (do not use a weak default here).
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:-}
       USE_SQLITE: "true"

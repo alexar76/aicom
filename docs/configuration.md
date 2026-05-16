@@ -2,12 +2,12 @@
 
 ## Layers
 
-1. **Fragments** — sorted `*.yaml` under `config/fragments/` next to the primary file’s parent (typically `/app/config/fragments/` in Docker). They ship with the repo and define safe defaults (agents, storefront themes, feature toggles, and so on).
+1. **Fragments** — sorted `*.yaml` under the **fragments directory** (default: `config/fragments/` next to the primary file’s parent, e.g. `/app/config/fragments/` in Docker). When the primary overlay is stored on a volume (e.g. `AIFACTORY_CONFIG_YAML=/app/data/config/…`), set **`AIFACTORY_CONFIG_FRAGMENTS_DIR=/app/config/fragments`** so bundled defaults still load. Fragments ship with the image/repo and define safe defaults (agents, storefront themes, feature toggles, and so on).
 2. **Primary overlay** — resolved path to the editable YAML file (see **Environment**). Application code should use **`core.paths.config_path()`** so `AIFACTORY_CONFIG_PATH` is honored; `load_merged_config` and `config_yaml_path()` implement the YAML-specific precedence (`AIFACTORY_CONFIG_YAML` → `AIFACTORY_CONFIG` → default). Values in the overlay **win** over fragments via deep merge.
 
 Merge order: fragments in lexicographic filename order, then the primary file. Nested dicts are merged recursively; scalars and lists from the overlay replace the fragment value.
 
-Implementation: `core/config_merge.py` (`load_merged_config`, `config_yaml_path`, `deep_merge`) and `core/paths.py` (`config_path`).
+Implementation: `core/config_merge.py` (`load_merged_config`, `config_yaml_path`, `config_fragments_dir`, `deep_merge`) and `core/paths.py` (`config_path`).
 
 ## Environment
 
@@ -16,10 +16,13 @@ Implementation: `core/config_merge.py` (`load_merged_config`, `config_yaml_path`
 | Variable | Role |
 |----------|------|
 | `AIFACTORY_CONFIG_PATH` | Optional explicit path (highest precedence). Used by `config_path()`; not read inside `config_yaml_path()`. |
-| `AIFACTORY_CONFIG_YAML` | Preferred path to the primary overlay when `AIFACTORY_CONFIG_PATH` is unset (optional; default `/app/config.yaml`). |
+| `AIFACTORY_CONFIG_YAML` | Preferred path to the primary overlay when `AIFACTORY_CONFIG_PATH` is unset (optional; default `/app/config.yaml`). **Docker Compose / `./run.sh`** set this to `/app/data/config/admin_config_overlay.yaml` so Admin → Settings survive container rebuilds (bind-mounted `./data`). |
+| `AIFACTORY_CONFIG_FRAGMENTS_DIR` | Optional absolute path to bundled `config/fragments` (e.g. `/app/config/fragments`). Required when `AIFACTORY_CONFIG_YAML` lives under `/app/data/…` so defaults are not resolved as `/app/data/config/fragments` (which does not exist). |
 | `AIFACTORY_CONFIG` | Legacy alias; used only if `AIFACTORY_CONFIG_YAML` is unset. |
 
 Precedence for the on-disk primary file: **`AIFACTORY_CONFIG_PATH`** → **`AIFACTORY_CONFIG_YAML`** → **`AIFACTORY_CONFIG`** → **`/app/config.yaml`**.
+
+**Docker / Compose:** the writable overlay should live under the **`./data` → `/app/data`** bind mount (see `docker-compose.yml` / `run.sh`). Otherwise edits are written to `/app/config.yaml` inside the container filesystem and **disappear** when the container is recreated.
 
 `load_merged_config(primary)` merges `primary` as the overlay; pass `config_path()` (or `None` to use `config_yaml_path()` defaults inside `load_merged_config`).
 

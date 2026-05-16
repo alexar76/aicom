@@ -100,6 +100,8 @@ docker run -d \
     -v "${DATA_DIR}:/app/data" \
     --add-host host.docker.internal:host-gateway \
     -e "AIFACTORY_AUTONOMOUS_PIPELINE=${AIFACTORY_AUTONOMOUS_PIPELINE:-}" \
+    -e "AIFACTORY_CONFIG_YAML=/app/data/config/admin_config_overlay.yaml" \
+    -e "AIFACTORY_CONFIG_FRAGMENTS_DIR=/app/config/fragments" \
     ${JWT_SECRET_KEY+-e "JWT_SECRET_KEY=${JWT_SECRET_KEY}"} \
     ${DEEPSEEK_API_KEY+-e "DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}"} \
     ${TOGETHER_API_KEY+-e "TOGETHER_API_KEY=${TOGETHER_API_KEY}"} \
