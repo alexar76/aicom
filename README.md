@@ -341,9 +341,64 @@ Worker also loads **Design critic** and **Hardening** (`AIFACTORY_EXTENDED_PIPEL
 <details>
 <summary><strong>Architecture</strong></summary>
 
-Runtime layout, extended pipeline gates, state machine, discovery, and comparison tables live in **[docs/architecture-diagrams.md](docs/architecture-diagrams.md)** (includes the full Mermaid diagram with Prometheus/Grafana, CLI, and `./data` bind mount).
+High-level runtime layout:
+
+```mermaid
+flowchart TB
+  subgraph clients["Clients"]
+    U["Public storefront"]
+    AD["Admin console"]
+  end
+
+  subgraph web["Web tier"]
+    FE["Next.js :8080"]
+    BE["FastAPI :8081"]
+  end
+
+  subgraph workers["Background workers"]
+    PW["Pipeline worker"]
+    DW["Director AI worker"]
+  end
+
+  subgraph agents["Specialized agents"]
+    AG["11 Admin roster rows + optional Design critic / Hardening (worker)"]
+  end
+
+  subgraph llm["Model routing"]
+    RT["LLM router"]
+    PR["Providers OpenAI-compatible · local"]
+  end
+
+  subgraph data["Persistent workspace: host `./data` mounted at `/app/data`"]
+    DB["SQLite pipeline state (JSON fallback in tests)"]
+    ART["Specs · arch · code · telemetry · logs"]
+  end
+
+  subgraph ops["Observability optional"]
+    PRM["Prometheus"]
+    GRA["Grafana"]
+  end
+
+  U --> FE
+  AD --> FE
+  FE -->|"HTTP `/api/*`"| BE
+  BE --> DB
+  BE --> ART
+  PW --> DB
+  PW --> ART
+  PW --> AG
+  DW --> DB
+  DW --> RT
+  AG --> RT
+  RT --> PR
+  CLI["CLI · ai-company"] -.->|"orchestration"| PW
+  BE --> PRM
+  PRM --> GRA
+```
 
 Compose maps container **8080/8081** → host **9080/9081**.
+
+More diagrams (state machine, discovery, storefront gates, comparison): **[docs/architecture-diagrams.md](docs/architecture-diagrams.md)**.
 
 </details>
 
