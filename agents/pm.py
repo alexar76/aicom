@@ -23,6 +23,7 @@ from .product_profile import (
     FULL_SOFTWARE,
     MARKETING_LANDING,
     admin_charter_forces_landing_only,
+    idea_charter_forces_landing_only,
     infer_delivery_profile,
     normalize_delivery_profile,
     research_artifact_implies_full_product,
@@ -363,6 +364,7 @@ class PMAgent(BaseAgent):
             pipeline_profile == MARKETING_LANDING
             and research_context.strip()
             and not admin_charter_forces_landing_only(admin)
+            and not idea_charter_forces_landing_only(idea)
             and research_artifact_implies_full_product(research_context)
         ):
             profile = FULL_SOFTWARE
@@ -577,6 +579,8 @@ class PMAgent(BaseAgent):
         product_id: str,
     ) -> list[str]:
         """Return a list of human-readable hints (PM retry prompt) when methodology gate fails."""
+        if normalize_delivery_profile(profile) == MARKETING_LANDING:
+            return []
         pack = self._select_methodology_pack(idea=idea, admin=admin, category=category, spec=spec)
         if pack is None:
             return []

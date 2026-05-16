@@ -4,6 +4,7 @@
 
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { pipelineStateColor, pipelineStateLabel } from './pipelineFlow';
 
 /**
  * Merge Tailwind CSS classes with conflict resolution.
@@ -103,73 +104,19 @@ export function formatBytes(bytes: number): string {
 }
 
 /**
- * Get a color for a pipeline state.
+ * Get a color for a pipeline state (SSOT: config/pipeline_flow.json).
  */
 export function getStateColor(state: string): string {
-  const colors: Record<string, string> = {
-    IDEA_RECEIVED: '#6366f1',
-    MARKET_RESEARCHED: '#8b5cf6',
-    SPEC_WRITING: '#818cf8',
-    SPEC_WRITTEN: '#a78bfa',
-    ARCH_DESIGNING: '#8b5cf6',
-    ARCH_DESIGNED: '#7c3aed',
-    DESIGN_CRITIQUED: '#9333ea',
-    CODE_GENERATING: '#f59e0b',
-    CODE_COMMITTED: '#10b981',
-    CODE_TESTING: '#f59e0b',
-    QA_TESTING: '#06b6d4',
-    BUG_FOUND: '#ef4444',
-    DEV_FIXING: '#f97316',
-    SECURITY_SCANNED: '#22d3ee',
-    HUMAN_REVIEW_PENDING: '#eab308',
-    MARKET_CONTENT_READY: '#ec4899',
-    METHODOLOGY_REVIEWED: '#06b6d4',
-    SALES_ACTIVE: '#f43f5e',
-    SANDBOX_RUNNING: '#14b8a6',
-    TELEMETRY_COLLECTING: '#a855f7',
-    EVOLUTION_ANALYZING: '#8b5cf6',
-    COMPLETED: '#22c55e',
-    DEPLOYED_PRODUCTION: '#16a34a',
-    FAILED: '#ef4444',
-    CANCELLED: '#6b7280',
-  };
-  const key = String(state || '').toUpperCase();
-  return colors[key] || '#6b7280';
+  return pipelineStateColor(state);
 }
 
 /**
- * Get a human-readable label for a pipeline state.
+ * Get a human-readable label for a pipeline state (SSOT: config/pipeline_flow.json).
  */
 export function getStateLabel(state: string): string {
-  const labels: Record<string, string> = {
-    IDEA_RECEIVED: 'Idea Received',
-    MARKET_RESEARCHED: 'Market Researched',
-    SPEC_WRITING: 'Writing Spec',
-    SPEC_WRITTEN: 'Spec Complete',
-    ARCH_DESIGNING: 'Designing Architecture',
-    ARCH_DESIGNED: 'Architecture Done',
-    DESIGN_CRITIQUED: 'Design Reviewed',
-    CODE_GENERATING: 'Generating Code',
-    CODE_COMMITTED: 'Code Complete',
-    CODE_TESTING: 'Code Testing',
-    QA_TESTING: 'QA Testing',
-    BUG_FOUND: 'Bug Found',
-    DEV_FIXING: 'Dev Fixing',
-    SECURITY_SCANNED: 'Security Scanned',
-    HUMAN_REVIEW_PENDING: 'Human Review',
-    MARKET_CONTENT_READY: 'Marketing Ready',
-    METHODOLOGY_REVIEWED: 'Methodology Reviewed',
-    SALES_ACTIVE: 'Sales Active',
-    SANDBOX_RUNNING: 'Sandbox Running',
-    TELEMETRY_COLLECTING: 'Telemetry Collecting',
-    EVOLUTION_ANALYZING: 'Evolution Analysis',
-    COMPLETED: 'Completed',
-    DEPLOYED_PRODUCTION: 'Deployed (production)',
-    FAILED: 'Failed',
-    CANCELLED: 'Cancelled',
-  };
   const key = String(state || '').toUpperCase();
-  return labels[key] || String(state || '');
+  const label = pipelineStateLabel(state);
+  return label === key ? String(state || '') : label;
 }
 
 /**

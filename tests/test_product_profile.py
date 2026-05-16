@@ -5,6 +5,7 @@ from agents.product_profile import (
     FULL_SOFTWARE,
     MARKETING_LANDING,
     admin_charter_forces_landing_only,
+    idea_charter_forces_landing_only,
     infer_delivery_profile,
     research_artifact_implies_full_product,
 )
@@ -70,3 +71,8 @@ def test_admin_charter_blocks_escalation_detection():
     guest = "PRIMARY DELIVERABLE (guest): exactly one **business marketing landing page**"
     assert admin_charter_forces_landing_only(guest) is True
     assert admin_charter_forces_landing_only("Ship an internal CRUD tool") is False
+
+
+def test_idea_charter_forces_landing_only():
+    assert idea_charter_forces_landing_only("Marketing landing — waitlist promo") is True
+    assert idea_charter_forces_landing_only("Multi-tenant SaaS CRM") is False

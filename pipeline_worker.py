@@ -596,7 +596,7 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             changed = True
 
         # Phase 2: Process pending tasks (start them)
-        if self.task_orchestrator.start_pending_tasks(task_queue, now):
+        if self.task_orchestrator.start_pending_tasks(products, task_queue, now):
             changed = True
 
         # Checkpoint: Phase 3 may await many agents for a long time; without an early save,
@@ -1763,6 +1763,7 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
 
     def _get_priority(self, agent_type: str) -> int:
         priorities = {
+            "__complete__": 0,
             "analyst": 1,
             "pm": 2,
             "marketing": 3,

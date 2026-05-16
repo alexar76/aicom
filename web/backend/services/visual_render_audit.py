@@ -13,11 +13,14 @@ Env:
 
   ``AIFACTORY_VISUAL_DOM_AUDIT`` — ``1`` (default) run DOM audit inside browser E2E; ``0`` skip.
   ``AIFACTORY_VISUAL_SCREENSHOT_PROBE`` — ``1`` to enable dark-mass heuristic on viewport PNG (needs Pillow); default ``0``.
+  ``AIFACTORY_VISUAL_HOG_ALLOW_DECORATIVE`` — ``1`` (default): ``svg_painted_viewport_hog`` on
+  ``aria-hidden`` SVG is warning-only (hero backgrounds); ``0`` restores strict fail for all hog hits.
 """
 
 from __future__ import annotations
 
 import io
+import os
 import re
 from typing import Any
 
@@ -43,6 +46,9 @@ VISUAL_DOM_AUDIT_JS = """() => {
   const findings = [];
 
   document.querySelectorAll('svg').forEach((svg, svgIdx) => {
+    const svgDecorative =
+      svg.getAttribute('aria-hidden') === 'true' ||
+      !!svg.closest('[aria-hidden="true"]');
     const shapes = svg.querySelectorAll(
       'path, polygon, polyline, line, circle, ellipse, rect'
     );
@@ -83,6 +89,7 @@ VISUAL_DOM_AUDIT_JS = """() => {
             svgIndex: svgIdx,
             cw: Math.round(cr.width),
             ch: Math.round(cr.height),
+            decorative: svgDecorative,
           });
         }
       } catch (e2) { /* ignore */ }
@@ -141,18 +148,32 @@ def svg_coordinate_spike_in_html(html: str, *, threshold: float = SVG_COORD_LITE
     return False
 
 
+def _viewport_hog_allow_decorative() -> bool:
+    return os.environ.get("AIFACTORY_VISUAL_HOG_ALLOW_DECORATIVE", "1").strip().lower() not in (
+        "0",
+        "false",
+        "no",
+        "off",
+    )
+
+
 def classify_visual_findings(
     findings: list[dict[str, Any]],
+    *,
+    delivery_profile: str | None = None,
 ) -> tuple[list[str], list[str], bool]:
     """
     Map structured findings to human-readable lines.
 
     Returns ``(fatal_issues, warnings, gate_should_fail)``.
     ``svg_excessive_path_count`` is warning-only (does not fail the gate).
+    ``svg_painted_viewport_hog`` on ``aria-hidden`` decorative SVG is warning-only when
+    ``AIFACTORY_VISUAL_HOG_ALLOW_DECORATIVE=1`` (default) so full-bleed hero backgrounds pass.
     """
     fatal_issues: list[str] = []
     warnings: list[str] = []
     fatal = False
+    allow_decorative_hog = _viewport_hog_allow_decorative()
     for f in findings:
         code = f.get("code")
         if code == "svg_geometry_spike":
@@ -163,12 +184,16 @@ def classify_visual_findings(
                 f" phase={f.get('phase', '?')}"
             )
         elif code == "svg_painted_viewport_hog":
-            fatal = True
-            fatal_issues.append(
+            hog_line = (
                 "visual_svg_viewport_hog:"
                 f" tag={f.get('tag')} svg#{f.get('svgIndex')} clientPx={f.get('cw')}x{f.get('ch')}"
                 f" phase={f.get('phase', '?')}"
             )
+            if allow_decorative_hog and bool(f.get("decorative")):
+                warnings.append(f"{hog_line} (decorative aria-hidden SVG; review only)")
+            else:
+                fatal = True
+                fatal_issues.append(hog_line)
         elif code == "svg_excessive_path_count":
             warnings.append(
                 f"visual_svg_many_paths: svg#{f.get('svgIndex')} n={f.get('n')} (review diagram complexity)"

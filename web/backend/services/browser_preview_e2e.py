@@ -669,7 +669,11 @@ def _playwright_check(
                     audit_after = {"viewport": {}, "findings": [], "audit_error_after": str(ve)[:240]}
 
             merged = merge_visual_phases(audit_initial, audit_after) if visual_dom_on else {"findings": []}
-            fatal_vis, warn_vis, vis_gate_fail = classify_visual_findings(merged.get("findings") or [])
+            dp_e2e = _read_spec_delivery_profile(data_root, product_id)
+            fatal_vis, warn_vis, vis_gate_fail = classify_visual_findings(
+                merged.get("findings") or [],
+                delivery_profile=dp_e2e,
+            )
             if screenshot_fail and screenshot_ratio is not None:
                 fatal_vis.append(f"visual_viewport_dark_mass_ratio:{screenshot_ratio:.4f}")
 

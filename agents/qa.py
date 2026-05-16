@@ -31,12 +31,39 @@ from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOU
 
 from web.backend.services.browser_preview_e2e import run_browser_preview_e2e
 from web.backend.services.backend_runtime_e2e import run_backend_runtime_e2e
+from agents.product_profile import infer_delivery_profile
+from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
 from web.backend.services.demo_quality import assess_product_demo, quality_gates_pass
 from web.backend.services.domain_acceptance_pack import build_domain_acceptance_pack
 from web.backend.services.domain_methodology import get_domain_pack, select_domain_pack
 from web.backend.services.methodology_review import review_implementation as _methodology_review_implementation
 from web.backend.services.traceability_matrix import build_traceability_matrix
 from web.backend.services.perf_slo import evaluate_perf_slo
+
+
+def _landing_skip_methodology_gate() -> bool:
+    """Brochure landings skip post-implementation domain methodology (not browser E2E)."""
+    return os.environ.get("AIFACTORY_LANDING_SKIP_METHODOLOGY_QA", "1").strip().lower() not in (
+        "0",
+        "false",
+        "no",
+        "off",
+    )
+
+
+def _resolve_delivery_profile_for_qa(agent_input: AgentInput) -> str:
+    data = agent_input.data or {}
+    spec_payload = data.get("specification") or {}
+    inner = (
+        spec_payload.get("specification")
+        if isinstance(spec_payload, dict) and "specification" in spec_payload
+        else spec_payload
+    )
+    if isinstance(inner, dict) and inner.get("delivery_profile"):
+        return normalize_delivery_profile(str(inner["delivery_profile"]))
+    if data.get("delivery_profile"):
+        return normalize_delivery_profile(str(data["delivery_profile"]))
+    return infer_delivery_profile(data.get("admin_instructions"), data.get("idea"))
 
 
 def _qa_extract_json_object(text: str) -> dict | None:
@@ -201,6 +228,11 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
 
         self._log("INFO", f"Testing product {product_id}")
 
+        delivery_profile = _resolve_delivery_profile_for_qa(agent_input)
+        landing_methodology_skip = (
+            delivery_profile == MARKETING_LANDING and _landing_skip_methodology_gate()
+        )
+
         try:
             # Step 1: Discover code files
             code_files = self._discover_code_files(product_id)
@@ -309,12 +341,23 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                     }
                 )
 
-            methodology_review = self._assess_methodology(
-                product_id=product_id,
-                idea=str(agent_input.data.get("idea") or ""),
-                category=agent_input.data.get("category"),
-                spec_payload=agent_input.data.get("specification") or {},
-            )
+            if landing_methodology_skip:
+                methodology_review = {
+                    "product_id": product_id,
+                    "stage": "post_implementation",
+                    "domain": None,
+                    "domain_label": "marketing_landing",
+                    "passed": True,
+                    "skipped": True,
+                    "reason": "methodology gate skipped for marketing_landing delivery profile",
+                }
+            else:
+                methodology_review = self._assess_methodology(
+                    product_id=product_id,
+                    idea=str(agent_input.data.get("idea") or ""),
+                    category=agent_input.data.get("category"),
+                    spec_payload=agent_input.data.get("specification") or {},
+                )
             if not methodology_review.get("passed", True):
                 for f in methodology_review.get("findings") or []:
                     if not isinstance(f, dict):
@@ -453,7 +496,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                             }
                         )
 
-            demo_gates_ok = quality_gates_pass(demo_report)
+            demo_gates_ok = quality_gates_pass(demo_report, delivery_profile=delivery_profile)
             browser_ok = browser_e2e.get("skipped") or browser_e2e.get("passed", False)
             backend_ok = backend_e2e.get("skipped") or backend_e2e.get("passed", False)
             perf_slo = evaluate_perf_slo(browser_e2e, backend_e2e)
@@ -580,8 +623,8 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                 "INFO",
                 f"QA complete: {len(all_bugs)} bugs, {len(all_security)} security, "
                 f"{test_results.get('total', 0)} tests, browser_e2e={browser_e2e.get('passed')} "
-                    f"backend_e2e={backend_e2e.get('passed')} skipped={backend_e2e.get('skipped')} "
-                    f"({elapsed:.1f}s)",
+                f"backend_e2e={backend_e2e.get('passed')} skipped={backend_e2e.get('skipped')} "
+                f"gates_ok={gates_ok} profile={delivery_profile} ({elapsed:.1f}s)",
             )
 
             return AgentOutput(

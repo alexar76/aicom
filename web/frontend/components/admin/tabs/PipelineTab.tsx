@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo, startTransition } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -79,8 +78,7 @@ import api, {
   DemoReplayAdminConfig,
 } from '@/lib/api';
 import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
-import { PIPELINE_PRODUCT_STATES_FOR_FILTER } from '@/lib/pipelineStages';
-import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme, formatDate, localDateInputStartSeconds, localDateInputEndSeconds } from '@/lib/utils';
+import { formatRelativeTime, getStateColor, getStateLabel, applyTheme, formatDate } from '@/lib/utils';
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import { CATEGORY_LABELS, CATEGORY_COLORS, STAGE_AGENT_TITLE } from './pipelineConstants';
 import { ProductPulse, type ProductPulsePayload } from './ProductPulse';
@@ -89,573 +87,94 @@ import { StorefrontFollowupPanel } from './StorefrontFollowupPanel';
 import {
   PIPELINE_CATEGORY_FILTER_ORDER,
   bucketPipelineProductForCategoryFilter,
-  countPipelineProductsByCategory,
 } from '@/lib/pipelineCategoryBucket';
+import { usePipelineCatalog } from '@/hooks/admin/usePipelineCatalog';
+import { usePipelineFilters } from '@/hooks/admin/usePipelineFilters';
+import { usePipelineModals } from '@/hooks/admin/usePipelineModals';
+import { usePipelineProductPulses } from '@/hooks/admin/usePipelineProductPulses';
+import { PipelineOnboardingCoach } from '@/components/admin/pipeline/PipelineOnboardingCoach';
 import {
-  fetchPipelineCatalogPageSingleMode,
-  PIPELINE_CATALOG_FIRST_PAGE_ATTEMPTS_LIGHT,
-  PIPELINE_CATALOG_FIRST_PAGE_BACKOFF_CAP_MS,
-  type PipelineCatalogAttemptInfo,
-} from '@/lib/pipelineCatalogFetch';
-import {
-  readPipelineCatalogCache,
-  readPipelineCatalogPeek,
-  persistPipelineCatalogPeekFromProducts,
-  writePipelineCatalogCache,
-  type PipelineCatalogSummaryCached,
-} from '@/lib/pipelineCatalogCache';
-
-type PipelineCatalogSummary = NonNullable<
-  Awaited<ReturnType<typeof api.getPipelineProducts>>['catalog_summary']
->;
+  findTaskForStage,
+  formatTaskDuration,
+  formatTaskWhen,
+  getFailureSummary,
+  getLatestFailedTask,
+  pipelineAgentEmoji,
+  safeJson,
+  toUnixSeconds,
+} from '@/lib/pipelineProductHelpers';
 
 export function PipelineTab() {
-  /**
-   * First catalog request must stay tiny: the API builds each row (tasks, summary) before responding.
-   * A large first page (e.g. 32) often blocks for tens of seconds or times out → empty UI during all retries.
-   */
-  const CATALOG_FIRST_FETCH = 2;
-  /** After the first rows paint, load the rest in moderate chunks (fewer round-trips than size 2). */
-  const CATALOG_BACKGROUND_CHUNK = 12;
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  /** Rows at the start of the merged list already replaced by live API data this session (tail may still be snapshot). */
-  const [catalogLiveRowCount, setCatalogLiveRowCount] = useState(0);
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [catalogSummary, setCatalogSummary] = useState<PipelineCatalogSummary | null>(null);
-  /** Default shipped_first so COMPLETED / DEPLOYED rows are not buried under thousands of new drafts. */
   const [pipelineSort, setPipelineSort] = useState<'newest' | 'shipped_first'>('shipped_first');
-  const [expandedProduct, setExpandedProduct] = useState<string | null>(null);
-  const [expandedFailureProduct, setExpandedFailureProduct] = useState<string | null>(null);
-  const [specModalProduct, setSpecModalProduct] = useState<string | null>(null);
-  const [specData, setSpecData] = useState<any>(null);
-  const [specLoading, setSpecLoading] = useState(false);
-  const [handoffModalProduct, setHandoffModalProduct] = useState<string | null>(null);
-  const [handoffData, setHandoffData] = useState<Awaited<ReturnType<typeof api.getDeveloperHandoff>> | null>(null);
-  const [handoffLoading, setHandoffLoading] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [productSearch, setProductSearch] = useState('');
-  const [stateFilter, setStateFilter] = useState('all');
-  const [storefrontFilter, setStorefrontFilter] = useState<'all' | 'listed' | 'not_listed'>('all');
-  const [createdFrom, setCreatedFrom] = useState('');
-  const [createdTo, setCreatedTo] = useState('');
-  const [taskStageModal, setTaskStageModal] = useState<{
-    productId: string;
-    productName: string;
-    agentType: string;
-    task: Record<string, unknown> | null;
-  } | null>(null);
-  /** Bump to re-run catalog fetch (Retry) without changing sort. */
-  const [catalogReloadKey, setCatalogReloadKey] = useState(0);
-  const [catalogLoadError, setCatalogLoadError] = useState<string | null>(null);
-  /** First-page catalog API retries (light then full) — drives progress while `loading`. */
-  const [catalogFirstPageFetch, setCatalogFirstPageFetch] = useState<PipelineCatalogAttemptInfo | null>(null);
-  /** Shown when fast light catalog failed once and full hydration was used instead (non-blocking). */
-  const [catalogNotice, setCatalogNotice] = useState<string | null>(null);
-  const pipelineFetchGenerationRef = useRef(0);
-  const searchParams = useSearchParams();
 
-  useEffect(() => {
-    const q = searchParams.get('pipelineSearch')?.trim();
-    if (q) setProductSearch(q);
-  }, [searchParams]);
+  const catalog = usePipelineCatalog(pipelineSort);
+  const {
+    products,
+    setProducts,
+    loading,
+    loadingMore,
+    totalProducts,
+    catalogSummary,
+    catalogLoadError,
+    catalogFirstPageFetch,
+    catalogNotice,
+    setCatalogNotice,
+    reloadCatalog,
+    catalogFirstFetch: CATALOG_FIRST_FETCH,
+    catalogBackgroundChunk: CATALOG_BACKGROUND_CHUNK,
+    catalogLiveRowCount,
+  } = catalog;
 
-  /** Merge ``product_pulses`` from admin metrics SSE so visible rows update between catalog refetches. */
-  useEffect(() => {
-    let es: EventSource | null = null;
-    try {
-      es = new EventSource('/api/admin/metrics/stream');
-      es.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          const pulses = data?.product_pulses;
-          if (!pulses || typeof pulses !== 'object') return;
-          setProducts((prev) =>
-            prev.map((p) => {
-              const pulse = pulses[p.id];
-              return pulse ? { ...p, pulse } : p;
-            }),
-          );
-        } catch {
-          /* ignore */
-        }
-      };
-    } catch {
-      /* ignore */
-    }
-    return () => {
-      es?.close();
-    };
-  }, []);
+  const filters = usePipelineFilters(products, totalProducts, loadingMore);
+  const {
+    activeCategory,
+    setActiveCategory,
+    productSearch,
+    setProductSearch,
+    stateFilter,
+    setStateFilter,
+    storefrontFilter,
+    setStorefrontFilter,
+    createdFrom,
+    setCreatedFrom,
+    createdTo,
+    setCreatedTo,
+    stateFilterOptions,
+    pipelineCategoryCounts,
+    pipelineCategoryCountsReady,
+    pipelineCategoryCountsPartial,
+    filteredProducts,
+    resetFilters,
+  } = filters;
 
-  /** Paint from full cache, else tiny peek (2 rows), else cold — before first paint. */
-  useLayoutEffect(() => {
-    const sort = pipelineSort;
-    const full = readPipelineCatalogCache(sort);
-    const peek = readPipelineCatalogPeek(sort);
-    const fullRows = full?.products ?? [];
-    const peekRows = peek?.products ?? [];
+  const modals = usePipelineModals();
+  const {
+    expandedProduct,
+    setExpandedProduct,
+    expandedFailureProduct,
+    setExpandedFailureProduct,
+    specModalProduct,
+    setSpecModalProduct,
+    specData,
+    specLoading,
+    loadSpec,
+    closeSpecModal,
+    handoffModalProduct,
+    setHandoffModalProduct,
+    handoffData,
+    handoffLoading,
+    loadDeveloperHandoff,
+    closeHandoffModal,
+    taskStageModal,
+    setTaskStageModal,
+    openTaskDetailModal,
+  } = modals;
 
-    if (full && fullRows.length > 0) {
-      setProducts(fullRows);
-      setTotalProducts(full.total);
-      if (full.catalog_summary) setCatalogSummary(full.catalog_summary as PipelineCatalogSummary);
-      setLoading(false);
-      setLoadingMore(true);
-      setCatalogFirstPageFetch(null);
-      setCatalogLiveRowCount(0);
-      return;
-    }
-
-    if (peek && peekRows.length > 0) {
-      setProducts(peekRows);
-      setTotalProducts(peek.total);
-      if (peek.catalog_summary) setCatalogSummary(peek.catalog_summary as PipelineCatalogSummary);
-      setLoading(false);
-      setLoadingMore(true);
-      setCatalogFirstPageFetch(null);
-      setCatalogLiveRowCount(0);
-      return;
-    }
-
-    setProducts([]);
-    setTotalProducts(0);
-    setCatalogSummary(null);
-    setCatalogLiveRowCount(0);
-    setLoading(true);
-    setLoadingMore(false);
-    setCatalogFirstPageFetch({
-      attempt: 0,
-      maxAttempts: PIPELINE_CATALOG_FIRST_PAGE_ATTEMPTS_LIGHT,
-    });
-  }, [pipelineSort, catalogReloadKey]);
-
-  useEffect(() => {
-    const myGen = ++pipelineFetchGenerationRef.current;
-    const isStale = () => pipelineFetchGenerationRef.current !== myGen;
-    let cancelled = false;
-
-    setCatalogLoadError(null);
-    setCatalogNotice(null);
-
-    const bootstrap = readPipelineCatalogCache(pipelineSort);
-    const peekBoot = readPipelineCatalogPeek(pipelineSort);
-    /** Tail rows while the chunked network rebuild refreshes positions from the API in-order. */
-    const cacheTail = bootstrap?.products ?? [];
-    /** Peek alone still means we can show cards while the API catches up. */
-    const hadWarmCache = !!(
-      (bootstrap && cacheTail.length > 0) ||
-      (peekBoot && (peekBoot.products?.length ?? 0) > 0)
-    );
-    /** First request shows retry spinner only without warm cache — otherwise we reuse the last snapshot immediately. */
-    const trackRetriesOnFirstFetch = !hadWarmCache;
-
-    /** Sync loading / empty state vs snapshot: `useLayoutEffect` above (cold vs warm) runs before paint. */
-
-    /** Merge authoritative network rows with stale tail → full list scroll without waiting for tens of sequential pages. */
-    const mergePreview = (head: typeof cacheTail): any[] => [
-      ...head,
-      ...cacheTail.slice(head.length),
-    ];
-
-    let cacheWriteTimer: ReturnType<typeof setTimeout> | null = null;
-    const bumpCacheWriteLater = (
-      merged: typeof cacheTail,
-      total: number,
-      summary: PipelineCatalogSummary | null,
-    ) => {
-      if (cacheWriteTimer) clearTimeout(cacheWriteTimer);
-      cacheWriteTimer = setTimeout(() => {
-        cacheWriteTimer = null;
-        if (cancelled || isStale()) return;
-        writePipelineCatalogCache({
-          sort: pipelineSort,
-          total,
-          products: merged,
-          catalog_summary: summary,
-        });
-      }, 520);
-    };
-    const flushCacheWrite = (
-      merged: typeof cacheTail,
-      total: number,
-      summary: PipelineCatalogSummary | null,
-    ) => {
-      if (cacheWriteTimer) clearTimeout(cacheWriteTimer);
-      cacheWriteTimer = null;
-      writePipelineCatalogCache({
-        sort: pipelineSort,
-        total,
-        products: merged,
-        catalog_summary: summary,
-      });
-    };
-
-    (async () => {
-      let rowsLoaded = 0;
-      let expectedTotal = 0;
-      let preferLight = true;
-      let fellBackToFullThisSession = false;
-      /** Grows strictly from chunked API slices (light/full), in server order starting at offset 0. */
-      let networkHead: typeof cacheTail = [];
-      /** Latest aggregates from whichever page touched them last. */
-      let lastSummaryState: PipelineCatalogSummary | null = null;
-
-      const loadCatalogPage = async (
-        lim: number,
-        off: number,
-        trackFirstPageRetries: boolean,
-      ) => {
-        const pageFetchOpts =
-          off === 0
-            ? {
-                maxAttempts: PIPELINE_CATALOG_FIRST_PAGE_ATTEMPTS_LIGHT,
-                backoffCapMs: PIPELINE_CATALOG_FIRST_PAGE_BACKOFF_CAP_MS,
-              }
-            : undefined;
-        const reporter = trackFirstPageRetries
-          ? (info: PipelineCatalogAttemptInfo) => {
-              if (cancelled || isStale()) return;
-              setCatalogFirstPageFetch(info);
-            }
-          : undefined;
-        if (preferLight) {
-          try {
-            return await fetchPipelineCatalogPageSingleMode(
-              lim,
-              off,
-              pipelineSort,
-              true,
-              reporter,
-              pageFetchOpts,
-            );
-          } catch {
-            preferLight = false;
-            fellBackToFullThisSession = true;
-            return await fetchPipelineCatalogPageSingleMode(
-              lim,
-              off,
-              pipelineSort,
-              false,
-              reporter,
-              pageFetchOpts,
-            );
-          }
-        }
-        return await fetchPipelineCatalogPageSingleMode(
-          lim,
-          off,
-          pipelineSort,
-          false,
-          reporter,
-          pageFetchOpts,
-        );
-      };
-
-      try {
-        const first = await loadCatalogPage(CATALOG_FIRST_FETCH, 0, trackRetriesOnFirstFetch);
-        if (cancelled || isStale()) return;
-
-        const firstBatch = first.products || [];
-        networkHead = firstBatch;
-        rowsLoaded = firstBatch.length;
-        expectedTotal =
-          typeof first.total === 'number' ? first.total : networkHead.length;
-        lastSummaryState =
-          first.catalog_summary != null
-            ? (first.catalog_summary as PipelineCatalogSummary)
-            : bootstrap?.catalog_summary ?? null;
-
-        let knownTotal = first.total ?? firstBatch.length ?? 0;
-        const cap0 =
-          typeof knownTotal === 'number' && Number.isFinite(knownTotal) && knownTotal >= 0
-            ? knownTotal
-            : mergePreview(networkHead).length;
-        const merged0 = mergePreview(networkHead).slice(0, cap0);
-        setProducts(merged0);
-        setTotalProducts(knownTotal || merged0.length);
-        setCatalogLiveRowCount(networkHead.length);
-        if (lastSummaryState) setCatalogSummary(lastSummaryState);
-        setLoading(false);
-        setCatalogFirstPageFetch(null);
-        persistPipelineCatalogPeekFromProducts(
-          pipelineSort,
-          merged0,
-          knownTotal || merged0.length,
-          (lastSummaryState ?? peekBoot?.catalog_summary ?? null) as PipelineCatalogSummaryCached | null,
-        );
-
-        bumpCacheWriteLater(merged0, knownTotal || merged0.length, lastSummaryState);
-
-        let offset = firstBatch.length;
-        if (offset < knownTotal) {
-          setLoadingMore(true);
-        } else {
-          setLoadingMore(false);
-        }
-
-        while (!cancelled && !isStale() && offset < knownTotal) {
-          const next = await loadCatalogPage(CATALOG_BACKGROUND_CHUNK, offset, false);
-          if (cancelled || isStale()) return;
-          const batch = next.products || [];
-          knownTotal = next.total ?? knownTotal;
-          expectedTotal = knownTotal;
-          if (batch.length === 0) break;
-          networkHead = [...networkHead, ...batch];
-          rowsLoaded += batch.length;
-          if (next.catalog_summary != null) {
-            lastSummaryState = next.catalog_summary as PipelineCatalogSummary;
-          }
-          const cap =
-            typeof knownTotal === 'number' && Number.isFinite(knownTotal) && knownTotal >= 0
-              ? knownTotal
-              : mergePreview(networkHead).length;
-          const merged = mergePreview(networkHead).slice(0, cap);
-          const totalCopy = knownTotal;
-
-          bumpCacheWriteLater(merged, totalCopy, lastSummaryState);
-          startTransition(() => {
-            setProducts(merged);
-            setTotalProducts(totalCopy);
-            setCatalogLiveRowCount(networkHead.length);
-            if (lastSummaryState != null) {
-              setCatalogSummary(lastSummaryState);
-            }
-          });
-          offset += batch.length;
-        }
-
-        const finalCap =
-          typeof knownTotal === 'number' && Number.isFinite(knownTotal) && knownTotal >= 0
-            ? knownTotal
-            : mergePreview(networkHead).length;
-        const fullyMerged = mergePreview(networkHead).slice(0, finalCap);
-        flushCacheWrite(fullyMerged, knownTotal, lastSummaryState);
-
-        if (fellBackToFullThisSession && !cancelled && !isStale()) {
-          setCatalogNotice(
-            'Using full catalog mode for this load (the fast path was unavailable). Storefront counts and row details match the slower admin path.',
-          );
-        }
-      } catch (e: unknown) {
-        if (cancelled || isStale()) return;
-        const msg = e instanceof Error ? e.message : String(e);
-        if (rowsLoaded > 0 || hadWarmCache) {
-          const den = expectedTotal || rowsLoaded || '(unknown)';
-          setCatalogLoadError(
-            rowsLoaded > 0
-              ? `Some catalog pages did not load (${rowsLoaded} of ${den} rows). ${msg}`
-              : `Fresh catalog did not reload — still showing cached list. ${msg}`,
-          );
-        } else {
-          setCatalogLoadError(
-            `${msg} — both the fast catalog path and the full path failed after automatic retries.`,
-          );
-        }
-      } finally {
-        if (cancelled || isStale()) {
-          if (cacheWriteTimer) clearTimeout(cacheWriteTimer);
-          return;
-        }
-        setLoading(false);
-        setLoadingMore(false);
-        setCatalogFirstPageFetch(null);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-      if (cacheWriteTimer) clearTimeout(cacheWriteTimer);
-    };
-  }, [pipelineSort, catalogReloadKey]);
-
-  const loadSpec = async (productId: string) => {
-    setSpecModalProduct(productId);
-    setSpecLoading(true);
-    setSpecData(null);
-    try {
-      const result = await api.getProductSpec(productId);
-      setSpecData(result.spec);
-    } catch {
-      setSpecData(null);
-    } finally {
-      setSpecLoading(false);
-    }
-  };
-
-  const loadDeveloperHandoff = async (productId: string) => {
-    setHandoffModalProduct(productId);
-    setHandoffLoading(true);
-    setHandoffData(null);
-    try {
-      const result = await api.getDeveloperHandoff(productId);
-      setHandoffData(result);
-    } catch {
-      setHandoffData(null);
-    } finally {
-      setHandoffLoading(false);
-    }
-  };
-
-  const getFailureSummary = (product: any): string[] => {
-    const lines: string[] = [];
-    const primary = String(product?.failure_reason || '').trim();
-    const lastError = String(product?.last_error || '').trim();
-    const taskErrors = Array.isArray(product?.failed_task_errors)
-      ? product.failed_task_errors.map((x: unknown) => String(x || '').trim()).filter(Boolean)
-      : [];
-
-    if (primary) lines.push(primary);
-    if (lastError && !lines.includes(lastError)) lines.push(lastError);
-    for (const err of taskErrors) {
-      if (!lines.includes(err)) lines.push(err);
-      if (lines.length >= 3) break;
-    }
-    if (lines.length === 0) {
-      lines.push('Failure reason is not stored. Open failed task details.');
-    }
-    return lines.slice(0, 3);
-  };
-
-  const getLatestFailedTask = (taskList: any[]): any | null => {
-    const failed = taskList.filter((t) => String(t?.status || '').toLowerCase() === 'failed');
-    if (failed.length === 0) return null;
-    const score = (t: any) => {
-      const endAt = toUnixSeconds(t?.ended_at) || 0;
-      const updatedAt = toUnixSeconds(t?.updated_at) || 0;
-      const startAt = toUnixSeconds(t?.started_at) || 0;
-      return endAt || updatedAt || startAt;
-    };
-    return failed.sort((a, b) => score(b) - score(a))[0] || null;
-  };
-
-  const getAgentIcon = (agentType: string) => {
-    const icons: Record<string, string> = {
-      analyst: '🔍',
-      pm: '📋',
-      architect: '🏗️',
-      developer: '💻',
-      dev: '💻',
-      qa: '🧪',
-      devops: '🚀',
-      marketing: '📢',
-      sales: '💰',
-      security: '🛡️',
-      evolution_analyst: '📈',
-      designer: '🎨',
-      methodologist: '🧭',
-    };
-    return icons[agentType] || '⚙️';
-  };
-
-  const formatDuration = (start?: number, end?: number) => {
-    if (!start || !end) return '';
-    const secs = Math.round(end - start);
-    if (secs < 1) return '<1s';
-    if (secs < 60) return `${secs}s`;
-    return `${Math.floor(secs / 60)}m ${secs % 60}s`;
-  };
-
-  /** Task timestamps in pipeline state are Unix seconds; tolerate ms. */
-  const toUnixSeconds = (v: unknown): number | undefined => {
-    if (typeof v !== 'number' || !Number.isFinite(v)) return undefined;
-    return v > 1e12 ? v / 1000 : v;
-  };
-
-  const formatTaskWhen = (v: unknown) => {
-    const s = toUnixSeconds(v);
-    if (s === undefined) return '—';
-    try {
-      return new Date(s * 1000).toLocaleString();
-    } catch {
-      return String(v);
-    }
-  };
-
-  const safeJson = (val: unknown, max = 48_000) => {
-    try {
-      const s = JSON.stringify(val, null, 2);
-      if (s.length <= max) return s;
-      return `${s.slice(0, max)}\n… (${s.length} chars total)`;
-    } catch {
-      return String(val);
-    }
-  };
-
-  const openTaskDetailModal = (
-    productId: string,
-    productTitle: string,
-    agentType: string,
-    task: Record<string, unknown> | null | undefined
-  ) => {
-    setTaskStageModal({
-      productId,
-      productName: productTitle,
-      agentType,
-      task: task ? { ...task } : null,
-    });
-  };
-
-  /** Match API task row to a pipeline stage (handles dev vs developer, etc.) */
-  const findTaskForStage = (taskList: any[], stage: string) => {
-    if (stage === 'designer') {
-      return taskList.find((x: any) => x.agent_type === 'architect');
-    }
-    if (stage === 'methodologist') {
-      const direct = taskList.find((x: any) => x.agent_type === 'methodologist');
-      if (direct) return direct;
-      // Legacy: methodology was only visible via PM/QA embedded reviews.
-      const pm = taskList.find((x: any) => x.agent_type === 'pm');
-      const qa = taskList.find((x: any) => x.agent_type === 'qa');
-      const pmReview = pm?.result?.methodology_spec_review || pm?.data?.methodology_spec_review;
-      const qaReview = qa?.result?.methodology_review || qa?.data?.methodology_review;
-      const pmPassed = pmReview ? !!pmReview.passed : null;
-      const qaPassed = qaReview ? !!qaReview.passed : null;
-      let status: string = 'pending';
-      if (pmPassed === false || qaPassed === false) status = 'failed';
-      else if (pm?.status === 'running' || qa?.status === 'running') status = 'running';
-      else if (pmPassed === true || qaPassed === true) status = 'completed';
-      else if (pm?.status === 'completed') status = 'completed';
-      return {
-        agent_type: 'methodologist',
-        status,
-        data: { methodology_spec_review: pmReview, methodology_review: qaReview },
-      };
-    }
-    const t = taskList.find((x: any) => x.agent_type === stage);
-    if (t) return t;
-    if (stage === 'developer') {
-      return taskList.find((x: any) => x.agent_type === 'dev');
-    }
-    if (stage === 'dev') {
-      return taskList.find((x: any) => x.agent_type === 'developer');
-    }
-    return undefined;
-  };
+  usePipelineProductPulses(setProducts);
 
   const mergeProductPatch = (productId: string, patch: Record<string, unknown>) => {
     setProducts((prev) => prev.map((p) => (p.id === productId ? { ...p, ...patch } : p)));
   };
-
-  /** Full pipeline state list for filter (not only states present in the current page — avoids “2 options” UX). */
-  const stateFilterOptions = useMemo(() => {
-    const s = new Set<string>([...PIPELINE_PRODUCT_STATES_FOR_FILTER]);
-    for (const p of products) {
-      const st = String(p?.state || '').toUpperCase();
-      if (st) s.add(st);
-    }
-    return Array.from(s).sort();
-  }, [products]);
-
-  /** Pipeline-local category counts (aligned with filter), not storefront /api/products/categories. */
-  const pipelineCategoryCounts = useMemo(
-    () => countPipelineProductsByCategory(products as Record<string, unknown>[]),
-    [products]
-  );
-  /** Counts reflect loaded rows; suffix hints while more pages stream in. */
-  const pipelineCategoryCountsReady = totalProducts === 0 || products.length > 0;
-  const pipelineCategoryCountsPartial = loadingMore && products.length > 0 && products.length < totalProducts;
 
   /** Loaded catalog rows vs server total — use this for any “% of catalog” display (not HTTP retry index). */
   const catalogHydrationPercent = useMemo(() => {
@@ -718,43 +237,9 @@ export function PipelineTab() {
     return m;
   }, [products]);
 
-  // Filter products by selected controls
-  const filteredProducts = products.filter((p) => {
-    const bucket = bucketPipelineProductForCategoryFilter(p as Record<string, unknown>);
-    const catOk = activeCategory === 'all' || bucket === activeCategory;
-    if (!catOk) return false;
-
-    const st = String(p?.state || '').toUpperCase();
-    const stateOk = stateFilter === 'all' || st === stateFilter;
-    if (!stateOk) return false;
-
-    const listed = Boolean(p?.storefront_visible);
-    const storefrontOk =
-      storefrontFilter === 'all' ||
-      (storefrontFilter === 'listed' ? listed : !listed);
-    if (!storefrontOk) return false;
-
-    const start = localDateInputStartSeconds(createdFrom);
-    const end = localDateInputEndSeconds(createdTo);
-    if (start != null || end != null) {
-      const raw = Number(p?.created_at) || 0;
-      const createdSec = raw > 1e12 ? raw / 1000 : raw;
-      if (!createdSec) return false;
-      if (start != null && createdSec < start) return false;
-      if (end != null && createdSec > end) return false;
-    }
-
-    const q = productSearch.trim().toLowerCase();
-    if (!q) return true;
-    const title = String(p?.spec?.product_name || p?.idea || '').toLowerCase();
-    const id = String(p?.id || '').toLowerCase();
-    const desc = String(p?.spec?.description || '').toLowerCase();
-    const followup = String(p?.storefront_followup?.followup || '').toLowerCase();
-    return title.includes(q) || id.includes(q) || desc.includes(q) || followup.includes(q);
-  });
-
   return (
-    <div className="space-y-4">
+    <motion.div className="space-y-4">
+      <PipelineOnboardingCoach />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
         <div>
           <h2 className="text-xl font-semibold text-white">Pipeline Monitor</h2>
@@ -901,7 +386,7 @@ export function PipelineTab() {
               variant="secondary"
               size="sm"
               className="shrink-0 self-start"
-              onClick={() => setCatalogReloadKey((k) => k + 1)}
+              onClick={() => reloadCatalog()}
             >
               <RefreshCw className="w-4 h-4 mr-1.5 inline" aria-hidden />
               Retry catalog
@@ -1291,7 +776,7 @@ export function PipelineTab() {
                   <div className="flex items-center min-w-max gap-0">
                     {(PIPELINE_STAGE_ORDER as readonly string[]).map((agentType, ai, arr) => {
                         const task = findTaskForStage(tasks, agentType);
-                        const status = task?.status || 'pending';
+                        const status = String(task?.status ?? 'pending');
                         /** Designer (UX) mirrors Architect — use fuchsia, not emerald, so it is not mistaken for a generic “green done” pipeline cell. */
                         const stageColors: Record<string, string> =
                           agentType === 'designer'
@@ -1474,7 +959,7 @@ export function PipelineTab() {
                                 }
                                 className={`w-[30px] h-[30px] rounded-full flex items-center justify-center border transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${statusColors[taskStatus] || 'border-gray-600 bg-gray-600/20'}`}
                               >
-                                <span className="text-xs">{getAgentIcon(task.agent_type)}</span>
+                                <span className="text-xs">{pipelineAgentEmoji(task.agent_type)}</span>
                               </button>
                             </div>
 
@@ -1504,7 +989,7 @@ export function PipelineTab() {
                                   <span>Completed: {new Date(task.completed_at * 1000).toLocaleTimeString()}</span>
                                 )}
                                 {task.started_at && task.completed_at && (
-                                  <span>Duration: {formatDuration(task.started_at, task.completed_at)}</span>
+                                  <span>Duration: {formatTaskDuration(task.started_at, task.completed_at)}</span>
                                 )}
                                 {task.metrics?.llm_time_ms && (
                                   <span>LLM: {(task.metrics.llm_time_ms / 1000).toFixed(1)}s</span>
@@ -1569,7 +1054,7 @@ export function PipelineTab() {
       {/* Spec Viewer Modal */}
       <Modal
         isOpen={specModalProduct !== null}
-        onClose={() => { setSpecModalProduct(null); setSpecData(null); }}
+        onClose={closeSpecModal}
         title="Product Specification"
         size="xl"
       >
@@ -1647,10 +1132,7 @@ export function PipelineTab() {
 
       <Modal
         isOpen={handoffModalProduct !== null}
-        onClose={() => {
-          setHandoffModalProduct(null);
-          setHandoffData(null);
-        }}
+        onClose={closeHandoffModal}
         title="Developer handoff (inputs to code agent)"
         size="xl"
       >
@@ -1775,9 +1257,9 @@ export function PipelineTab() {
               const ec = toUnixSeconds(t.completed_at);
               const cc = toUnixSeconds(t.created_at);
               const durMain =
-                sc !== undefined && ec !== undefined ? formatDuration(sc, ec) : '';
+                sc !== undefined && ec !== undefined ? formatTaskDuration(sc, ec) : '';
               const durQueue =
-                cc !== undefined && sc !== undefined ? formatDuration(cc, sc) : '';
+                cc !== undefined && sc !== undefined ? formatTaskDuration(cc, sc) : '';
               const out = t.output_data as Record<string, unknown> | undefined;
               const inp = t.input_data as Record<string, unknown> | undefined;
               const criticFeedback =
@@ -1928,6 +1410,6 @@ export function PipelineTab() {
           </div>
         )}
       </Modal>
-    </div>
+    </motion.div>
   );
 }

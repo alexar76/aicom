@@ -28,12 +28,52 @@ def test_classify_viewport_hog_fails_gate():
                 "cw": 900,
                 "ch": 700,
                 "phase": "after_ui_clicks",
+                "decorative": False,
             }
         ]
     )
     assert gate_fail is True
     assert fatal and "visual_svg_viewport_hog" in fatal[0]
     assert not warnings
+
+
+def test_classify_viewport_hog_decorative_is_warning_only(monkeypatch):
+    monkeypatch.setenv("AIFACTORY_VISUAL_HOG_ALLOW_DECORATIVE", "1")
+    fatal, warnings, gate_fail = classify_visual_findings(
+        [
+            {
+                "code": "svg_painted_viewport_hog",
+                "tag": "rect",
+                "svgIndex": 0,
+                "cw": 1280,
+                "ch": 576,
+                "phase": "initial",
+                "decorative": True,
+            }
+        ]
+    )
+    assert gate_fail is False
+    assert not fatal
+    assert warnings and "visual_svg_viewport_hog" in warnings[0]
+    assert "decorative" in warnings[0].lower()
+
+
+def test_classify_viewport_hog_decorative_strict_env(monkeypatch):
+    monkeypatch.setenv("AIFACTORY_VISUAL_HOG_ALLOW_DECORATIVE", "0")
+    fatal, warnings, gate_fail = classify_visual_findings(
+        [
+            {
+                "code": "svg_painted_viewport_hog",
+                "tag": "rect",
+                "svgIndex": 0,
+                "cw": 1280,
+                "ch": 576,
+                "decorative": True,
+            }
+        ]
+    )
+    assert gate_fail is True
+    assert fatal
 
 
 def test_classify_path_count_warning_only():

@@ -51,6 +51,11 @@ class TaskOrchestrator:
 
     def recover_stranded_pm_quality_failures(self, products: dict, task_queue: list, now: float) -> bool:
         changed = False
+        try:
+            max_recoveries = int(os.environ.get("AIFACTORY_PM_STRANDED_RECOVERY_MAX", "2"))
+        except ValueError:
+            max_recoveries = 2
+        max_recoveries = max(0, max_recoveries)
         latest_failed_pm: dict[str, dict] = {}
         for task in task_queue:
             if task.get("agent_type") != "pm" or task.get("status") != "failed":
@@ -73,6 +78,21 @@ class TaskOrchestrator:
             )
             if has_active_pm or pid not in products or failed_task.get("auto_recovered_after_restart"):
                 continue
+            if str(products[pid].get("state") or "").upper() == "FAILED":
+                continue
+            recovery_count = int(products[pid].get("pm_stranded_recovery_count") or 0)
+            if recovery_count >= max_recoveries:
+                continue
+            err_low = (failed_task.get("error") or "").lower()
+            try:
+                from agents.product_profile import idea_charter_forces_landing_only
+
+                if "[methodology|" in err_low and idea_charter_forces_landing_only(
+                    products[pid].get("idea")
+                ):
+                    continue
+            except ImportError:
+                pass
             new_task = {
                 "id": f"task-{uuid.uuid4().hex[:12]}",
                 "product_id": pid,
@@ -96,6 +116,7 @@ class TaskOrchestrator:
             task_queue.append(new_task)
             failed_task["auto_recovered_after_restart"] = True
             products[pid]["state"] = "MARKET_RESEARCHED"
+            products[pid]["pm_stranded_recovery_count"] = recovery_count + 1
             products[pid]["updated_at"] = now
             changed = True
         return changed
@@ -134,7 +155,7 @@ class TaskOrchestrator:
                     changed = True
         return changed
 
-    def start_pending_tasks(self, task_queue: list, now: float) -> bool:
+    def start_pending_tasks(self, products: dict, task_queue: list, now: float) -> bool:
         changed = False
         max_running_total = effective_max_running_tasks()
         max_running_total = max(1, max_running_total)
@@ -144,6 +165,8 @@ class TaskOrchestrator:
                 if running_total >= max_running_total:
                     break
                 pid = task["product_id"]
+                if str((products.get(pid) or {}).get("state") or "").upper() == "FAILED":
+                    continue
                 other_running = any(
                     t.get("product_id") == pid and _task_status_norm(t) == "running"
                     for t in task_queue
@@ -238,6 +261,13 @@ class TaskOrchestrator:
         changed = False
         for pid, product in products.items():
             if product.get("state") != "COMPLETED":
+                continue
+            if any(
+                t.get("product_id") == pid
+                and t.get("agent_type") == "__complete__"
+                and t.get("status") in ("pending", "running")
+                for t in task_queue
+            ):
                 continue
             last_refactor = float(product.get("last_refactor_sprint_at") or 0)
             if now - last_refactor < interval:

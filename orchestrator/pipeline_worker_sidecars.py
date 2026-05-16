@@ -94,11 +94,21 @@ class PipelineWorkerSidecarMixin:
             storefront_followup_not_pursuing,
         )
 
+        def _pending_completion_task(product_id: str) -> bool:
+            return any(
+                t.get("product_id") == product_id
+                and t.get("agent_type") == "__complete__"
+                and t.get("status") in ("pending", "running")
+                for t in task_queue
+            )
+
         candidates: list[tuple[str, dict, list[str]]] = []
         changed = False
         for pid, product in products.items():
             state_upper = str(product.get("state") or "").upper()
             if state_upper not in ("COMPLETED", "DEPLOYED_PRODUCTION"):
+                continue
+            if _pending_completion_task(pid):
                 continue
             if storefront_followup_not_pursuing(pid):
                 continue

@@ -12,6 +12,7 @@ Pipeline integration:
 
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
 from typing import Any, Optional
@@ -706,18 +707,35 @@ CRITICAL_ISSUE_CODES = frozenset(
     }
 )
 
+# Brochure / marketing_landing: hash CTAs and soft alignment hints are common; do not block ship.
+LANDING_NON_BLOCKING_ISSUE_CODES = frozenset(
+    {
+        "cta_dead_hash_link",
+        "low_spec_alignment",
+        "visual_weak_focus_styles",
+    }
+)
 
-def quality_gates_pass(report: dict[str, Any]) -> bool:
+
+def quality_gates_pass(report: dict[str, Any], *, delivery_profile: str | None = None) -> bool:
     """Return True if demo/TZ gates allow advancing past QA (to security)."""
+    from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
+
     strict = strict_demo_gates()
     visual_strict = visual_quality_strict()
     min_score = demo_quality_min_score()
+    landing = normalize_delivery_profile(delivery_profile) == MARKETING_LANDING
+    if landing:
+        min_score = min(min_score, max(0, int(os.environ.get("AIFACTORY_LANDING_DEMO_MIN_SCORE", "45") or 45)))
 
     if report.get("score", 0) < min_score:
         return False
 
     codes = {i.get("code") for i in report.get("issues", []) if isinstance(i, dict)}
-    if codes & CRITICAL_ISSUE_CODES:
+    critical = CRITICAL_ISSUE_CODES
+    if landing:
+        critical = critical - LANDING_NON_BLOCKING_ISSUE_CODES
+    if codes & critical:
         return False
 
     if visual_strict and codes & VISUAL_STRICT_GATE_CODES:

@@ -203,3 +203,30 @@ def admin_charter_forces_landing_only(admin_instructions: str | None) -> bool:
         "do not ship a python cli",
     )
     return any(n in low for n in needles)
+
+
+def idea_charter_forces_landing_only(idea: str | None) -> bool:
+    """
+    True when the product idea is an explicit marketing-landing charter.
+
+    Prevents PM from escalating ``marketing_landing`` → ``full_software`` after analyst
+  research mentions competitors/pricing (common on demo + guest landing briefs).
+    """
+    low = (idea or "").strip().lower()
+    if not low:
+        return False
+    if low.startswith(("marketing landing", "marketing-landing")):
+        return True
+    needles = (
+        "marketing landing —",
+        "marketing landing -",
+        "marketing landing:",
+        "single-scroll landing",
+        "scroll landing",
+        "one-pager",
+        "one pager",
+        "brochure page",
+        "promo page only",
+        "promotional page only",
+    )
+    return any(n in low for n in needles)
