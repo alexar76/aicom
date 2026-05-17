@@ -1,9 +1,4 @@
 """
-import logging
-from agents.prompts.load_prompt import load_prompt
-
-logger = logging.getLogger(__name__)
-from core.logging_utils import log_suppressed
 Developer Agent
 ===============
 Responsible for:
@@ -18,9 +13,15 @@ Delivery mode (web vs Python CLI) is inferred from admin_instructions and valida
 from __future__ import annotations
 
 import json
+import logging
 import shutil
 import time
 from pathlib import Path
+
+from agents.prompts.load_prompt import load_prompt
+from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 
 from .base_agent import BaseAgent, AgentInput, AgentOutput
 from .dev_delivery import (

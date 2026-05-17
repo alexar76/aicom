@@ -1,8 +1,4 @@
 """
-import logging
-
-logger = logging.getLogger(__name__)
-from core.logging_utils import log_suppressed
 DevOps Agent
 ============
 Responsible for:
@@ -16,14 +12,17 @@ Responsible for:
 from __future__ import annotations
 
 import json
+import logging
 import time
 from pathlib import Path
 
+from agents.prompts.load_prompt import load_prompt
+from core.logging_utils import log_suppressed
 from .base_agent import BaseAgent, AgentInput, AgentOutput
 from llm import LLMRouter, GenerationConfig
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
 
-from agents.prompts.load_prompt import load_prompt
+logger = logging.getLogger(__name__)
 
 DEVOPS_SYSTEM_PROMPT = load_prompt("devops_system_prompt.md")
 

@@ -1,5 +1,4 @@
 """
-from core.logging_utils import log_suppressed
 Security Agent
 ==============
 Performs comprehensive security assessment of codebases.
@@ -25,9 +24,10 @@ from agents.base_agent import (
 from llm import LLMRouter, GenerationConfig
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_QA_SEC
 
-logger = logging.getLogger(__name__)
-
 from agents.prompts.load_prompt import load_prompt
+from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 
 SECURITY_SYSTEM_PROMPT = load_prompt("security_system_prompt.md")
 

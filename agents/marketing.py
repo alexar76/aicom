@@ -1,5 +1,4 @@
 """
-from agents.prompts.load_prompt import load_prompt
 Marketing Agent
 ===============
 Responsible for:
@@ -22,6 +21,7 @@ from .base_agent import BaseAgent, AgentInput, AgentOutput
 from llm import LLMRouter, GenerationConfig
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
 from marketplace_taxonomy import slug_to_marketplace_category
+from agents.prompts.load_prompt import load_prompt
 
 MARKETING_SYSTEM_PROMPT = load_prompt("marketing_system_prompt.md")
 

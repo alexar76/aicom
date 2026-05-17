@@ -1,5 +1,4 @@
 """
-from agents.prompts.load_prompt import load_prompt
 Evolution Analyst Agent (KILLER FEATURE)
 =========================================
 Responsible for:
@@ -21,6 +20,7 @@ from core.telemetry_signals import extract_evolution_signals_from_jsonl_dir
 from .base_agent import BaseAgent, AgentInput, AgentOutput
 from llm import LLMRouter, GenerationConfig
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
+from agents.prompts.load_prompt import load_prompt
 
 EVOLUTION_SYSTEM_PROMPT = load_prompt("evolution_analyst_system_prompt.md")
 

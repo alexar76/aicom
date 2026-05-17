@@ -13,6 +13,7 @@ Delivery profile (marketing_landing vs full_software) drives depth and spec gate
 from __future__ import annotations
 
 import json
+import logging
 import re
 import time
 from pathlib import Path

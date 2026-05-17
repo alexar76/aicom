@@ -1,9 +1,4 @@
 """
-import logging
-from agents.prompts.load_prompt import load_prompt
-
-logger = logging.getLogger(__name__)
-from core.logging_utils import log_suppressed
 QA Agent (Quality Assurance)
 =============================
 Responsible for:
@@ -20,6 +15,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import os
 import re
 import subprocess
@@ -44,6 +40,10 @@ from web.backend.services.domain_methodology import get_domain_pack, select_doma
 from web.backend.services.methodology_review import review_implementation as _methodology_review_implementation
 from web.backend.services.traceability_matrix import build_traceability_matrix
 from web.backend.services.perf_slo import evaluate_perf_slo
+from agents.prompts.load_prompt import load_prompt
+from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 
 
 def _landing_skip_methodology_gate() -> bool:

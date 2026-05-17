@@ -1,9 +1,4 @@
 """
-import logging
-from agents.prompts.load_prompt import load_prompt
-
-logger = logging.getLogger(__name__)
-from core.logging_utils import log_suppressed
 Market Research Analyst Agent
 =============================
 Responsible for TWO stages in the pipeline:
@@ -27,11 +22,16 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import time
 from pathlib import Path
 from typing import Optional
 
+from agents.prompts.load_prompt import load_prompt
+from core.logging_utils import log_suppressed
 from core.telemetry_signals import extract_evolution_signals_from_jsonl_dir
+
+logger = logging.getLogger(__name__)
 
 from .base_agent import BaseAgent, AgentInput, AgentOutput
 from llm import LLMRouter, GenerationConfig

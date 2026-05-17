@@ -1,5 +1,4 @@
 """
-from agents.prompts.load_prompt import load_prompt
 Sales Agent
 ===========
 Responsible for:
@@ -21,6 +20,7 @@ import time
 from .base_agent import BaseAgent, AgentInput, AgentOutput
 from llm import LLMRouter, GenerationConfig
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
+from agents.prompts.load_prompt import load_prompt
 
 SALES_SYSTEM_PROMPT = load_prompt("sales_system_prompt.md")
 
