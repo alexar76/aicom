@@ -1,5 +1,14 @@
 # AI-Factory Documentation
 
+## Documentation languages
+
+| Language | Files |
+|----------|--------|
+| **English (primary)** | All guides under `docs/` except the two RU companions below — technical reference, ops, API, architecture. |
+| **Russian (optional)** | [`USER_GUIDE.ru.md`](./USER_GUIDE.ru.md), [`FAQ.ru.md`](./FAQ.ru.md) — same topics as the English user guide / FAQ, maintained in parallel. |
+
+Operator-facing UI strings may be **en / ru / es** in Admin; that is product i18n, not documentation locale.
+
 ## Operator / owner playbook
 
 - **`USER_GUIDE.md`** — **detailed illustrated walkthrough** (EN): situation cheat sheet, scenario playbooks, Pipeline catalog loading, screenshot index. Start here for **hands-on usage**.

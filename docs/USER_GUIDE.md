@@ -108,6 +108,15 @@ More Q&A: **[FAQ.md](./FAQ.md)** · **[FAQ.ru.md](./FAQ.ru.md)**
 
 Only products passing **marketplace gates** appear (may be fewer than Dashboard **Completed**).
 
+The home page **Products** block has two grids:
+
+| Section | What appears |
+|---------|----------------|
+| **Marketing landing pages** | `delivery_profile = marketing_landing` |
+| **Full products** | `full_software` and other non-landing profiles |
+
+**Catalog loading:** the browser first paints from **`localStorage`** (`aicom_storefront_catalog_v1_all` or `_<category>`), then refreshes from the API in the background (*“Showing cached catalog — updating…”*). This is **not** the same cache as Admin Pipeline Monitor (`aicom_pipeline_catalog_v2_*`).
+
 ---
 
 ## Public documentation `/docs`

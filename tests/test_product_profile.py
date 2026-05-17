@@ -7,8 +7,14 @@ from agents.product_profile import (
     admin_charter_forces_landing_only,
     idea_charter_forces_landing_only,
     infer_delivery_profile,
+    normalize_delivery_profile,
     research_artifact_implies_full_product,
 )
+
+
+def test_normalize_delivery_profile_landing_alias():
+    assert normalize_delivery_profile("landing") == MARKETING_LANDING
+    assert normalize_delivery_profile("marketing_landing") == MARKETING_LANDING
 
 
 def test_infer_force_full_software_env(monkeypatch):

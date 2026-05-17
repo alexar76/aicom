@@ -20,6 +20,7 @@ def normalize_delivery_profile(raw: str | None) -> str:
     if key in (
         "marketing_landing",
         "marketing",
+        "landing",
         "landing_only",
         "promo_only",
         "brochure",

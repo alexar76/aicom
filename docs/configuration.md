@@ -115,6 +115,17 @@ See **[security.md](./security.md)** for narrative and production checklist. Qui
 | `AIFACTORY_WORKER_HEALTH_PORT` | Worker health + wake HTTP port (default `8091`; `0` disables). |
 | *(dependency)* `watchfiles` | Installed with the app image (`requirements.txt`). Watches `pipeline.json` and `pipeline.db` parent dirs; wakes worker without waiting for idle poll. |
 | `AIFACTORY_LLM_CIRCUIT_STATE_FILE` | Optional override for shared circuit-breaker JSON (default `data/state/llm_circuit_breakers.json`). |
+| `AIFACTORY_POST_DEVOPS_HUMAN_GATE` | `1`/`0` explicit override for post-DevOps operator approve before Sales (full software). |
+| `AIFACTORY_HUMAN_REVIEW_REQUIRED` | Default `1`: apply human gate when `delivery_profile` is `full_software`; set `0` to disable unless gate forced on. |
+| `AIFACTORY_HUMAN_REVIEW_MODE` | `optional` (default) / `required` / `off` — release-cockpit integration with human review decisions in feedback stream. |
+
+### Pipeline and storefront policy
+
+**Delivery profile** (product create / spec): `marketing_landing` | `full_software` | `infer`. Normalized aliases include `landing`, `marketing`, `brochure` → `marketing_landing` (`core/delivery_profile.py`).
+
+**Post-DevOps human gate:** after Security → DevOps, **`full_software`** products enter **`HUMAN_REVIEW_PENDING`** until Admin **Approve** (→ `SALES_ACTIVE` + sales task) or **Reject** (→ developer rework). **`marketing_landing`** skips the gate. APIs: `POST /api/admin/pipeline/products/{id}/human-review/approve|reject`.
+
+**Authoritative pipeline state:** with `USE_SQLITE=true`, **`data/state/pipeline.db`** is source of truth; `pipeline.json` may be stale or partial — use Admin Pipeline or SQLite for ops.
 
 **Host LLM on bare metal:** use compose overlay `docker-compose.host-gateway.yml` (not enabled in base `docker-compose.yml`).
 

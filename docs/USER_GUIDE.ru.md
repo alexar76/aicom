@@ -106,6 +106,8 @@
 
 - Сетка продуктов на `/` или в категории `/explore/...`.
 - На витрине только продукты, прошедшие **marketplace gates** (см. FAQ).
+- Две секции на главной: **Marketing landing pages** (`marketing_landing`) и **Full products** (остальные профили).
+- **Кеш каталога:** сначала отрисовка из `localStorage` (`aicom_storefront_catalog_v1_all` или `_<категория>`), затем фоновое обновление с API (*Showing cached catalog — updating…*). Это **не** кеш Pipeline Monitor (`aicom_pipeline_catalog_v2_*`).
 
 ---
 

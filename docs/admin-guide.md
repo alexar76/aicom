@@ -94,6 +94,24 @@ See **[docs/pipeline-operations.md](pipeline-operations.md)** (Live Monitor demo
 
 Use this view to find stuck stages and read specs without SSH.
 
+<a id="post-devops-human-review"></a>
+### Post-DevOps human review gate (`HUMAN_REVIEW_PENDING`)
+
+For products with **`delivery_profile: full_software`**, the pipeline **pauses after DevOps** until an operator decides:
+
+| Action | Effect |
+|--------|--------|
+| **Approve** | State → `SALES_ACTIVE`; queues **sales** task; pipeline continues toward sandbox/telemetry/completed. |
+| **Reject** | Returns to **developer** rework with your notes (min. 8 characters). |
+
+**UI:** expand the product card → **`HumanReviewGatePanel`** (shown when state is `HUMAN_REVIEW_PENDING`).
+
+**API:** `POST /api/admin/pipeline/products/{product_id}/human-review/approve` · `.../reject`
+
+**Landings** (`marketing_landing`) **do not** enter this gate — they proceed DevOps → Sales automatically.
+
+**Env:** `AIFACTORY_POST_DEVOPS_HUMAN_GATE`, `AIFACTORY_HUMAN_REVIEW_REQUIRED` — [configuration.md](./configuration.md#pipeline-and-storefront-policy).
+
 ---
 
 <a id="storefront-operator"></a>
@@ -142,6 +160,8 @@ Use when autonomous Director mode is off or you need a one-off task off-schedule
 **Purpose:** browse artifact files (git-like tree via API): navigate paths, view selected product/repo files.
 
 Use for quick checks of generated code and configs without cloning to your machine.
+
+**Sandbox preview** (`/api/sandbox/view/{sandbox_id}`): the sidebar lists **all files recursively** under `data/code/<product_id>/` (up to 100 links). The default iframe opens **`/api/sandbox/file/.../index.html` at the repo root** — if the landing lives only under `frontend/landing/index.html`, click that path in the sidebar (or add a root `index.html`).
 
 ---
 

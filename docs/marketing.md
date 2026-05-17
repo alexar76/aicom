@@ -5,7 +5,7 @@ Summary: SEO metadata, blog content hub, launch-kit and embeddable badge pages, 
 ## Pipeline: autonomous vs on-demand (same engine)
 
 - **Autonomous:** market **research** and **idea generation** run on a schedule (Director / autonomous pipeline). New products are fed from that loop.
-- **On-demand (customer phrase):** the **same agent sequence** runs; the **stakeholder brief** is the customer’s text from Admin, API, or lead form — not a reduced or “landing-only” stack. The typical **artifact** is still often a one-page site.
+- **On-demand (customer phrase):** the **same agent sequence** runs; the brief comes from Admin, API, or the home-page form. **`delivery_profile`** chooses depth: `marketing_landing` (brochure HTML) vs `full_software` (API/DB/compose-friendly repos). Guest flows often default to landings; Director/autonomous ideas often use full software.
 
 See **[Product concept](./product-concept.md)** (“Same pipeline — two ways to start it”).
 
@@ -49,6 +49,27 @@ Operators can still open **Admin only** without prefill. After **login redirect*
 If neither marketing `monetization_scheme` nor `state/<product_id>/sales_config.json` sets a positive price, product cards and checkout fall back to **~$4.99 USDT** (see `DEFAULT_STOREFRONT_PRICE_USDT` / payment default in the API). Tune per product with Sales agent output or manual `sales_config.json`.
 
 **Paid download:** after on-chain payment is confirmed, the customer downloads the **ZIP** from their **Account** page (orders API); see `web/backend/api/customer.py` and `CommerceService.build_download_archive`.
+
+## Homepage catalog (`#products`)
+
+The public grid on `/` splits listings by **`delivery_profile`** (from the API, resolved via spec / product metadata):
+
+| Section | Filter | Badge |
+|---------|--------|--------|
+| **Marketing landing pages** | `delivery_profile === marketing_landing` | Landing |
+| **Full products** | everything else (typically `full_software`) | Full product / Full stack |
+
+Seeded demos (`AIFACTORY_SEED_MARKETPLACE_DEMO=1`): PulseDeck, Harborline, Lensline, Caldera → landings; RelayMesh → full software — see `scripts/seed_marketplace_demo.py`.
+
+### Catalog cache (stale-while-revalidate)
+
+The home **Products** section uses **cache-first** loading (`web/frontend/lib/storefrontCatalogCache.ts`, hook `useStorefrontCatalog`):
+
+1. Paint from **browser `localStorage`** key `aicom_storefront_catalog_v1_{category}` (`all` or taxonomy slug).
+2. Background fetch **`GET /api/products`** + **`GET /api/products/categories`**; update UI and refresh the cache.
+3. While revalidating, show *“Showing cached catalog — updating…”* when stale data is visible.
+
+This is **separate** from Admin **Pipeline Monitor** cache (`aicom_pipeline_catalog_v2_{sort}`) — do not confuse the two.
 
 ## Storefront behavior
 
@@ -99,7 +120,7 @@ Demo product for marketplace and sandbox checks (optional; **off by default** �
 docker compose exec -T app env AIFACTORY_SEED_MARKETPLACE_DEMO=1 python3 /app/scripts/seed_marketplace_demo.py
 ```
 
-This creates `prod-demo-market-01`, marketing files, `code_manifest.json`, and `index.html` for the sandbox.
+This creates five demo SKUs (`prod-demo-market-01`, `prod-demo-full-saas-01`, two landing promos, `prod-demo-full-iot-01`), marketing files, `code_manifest.json`, and `index.html` per product. Demo PulseDeck/Harborline use **`marketing_landing`** so they appear under **Marketing landing pages** on `/`.
 
 Full smoke test (bring up stack, seed, API and sandbox page):
 

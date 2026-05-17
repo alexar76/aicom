@@ -41,6 +41,8 @@ Agent **system role prompts** live under **`agents/prompts/*.md`** and are loade
 
 Regenerate from Python constants (if needed): `python3 scripts/export_agent_prompts.py`.
 
+**Import rule:** `load_prompt` and `logging` must live in **executable Python** (after the module docstring), not inside the docstring text — otherwise the pipeline worker fails agent init and runs **fallback-only** tasks.
+
 See also:
 
 - `pipeline-operations.md`

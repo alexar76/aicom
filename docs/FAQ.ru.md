@@ -54,6 +54,10 @@
 
 От **нескольких минут** до **часов** — зависит от `full_software`, нагрузки LLM, QA с Playwright и числа repair-циклов. Лендинг обычно быстрее.
 
+### Продукт в HUMAN_REVIEW_PENDING, задач нет?
+
+Для **`full_software`** после DevOps включён **ручной gate**: нужно **Approve** или **Reject** на карточке Pipeline (`HumanReviewGatePanel`). Лендинги (`marketing_landing`) этот шаг не проходят. См. [admin-guide.md](./admin-guide.md#post-devops-human-review) (EN).
+
 ### Чем отличается full_software от marketing_landing?
 
 | | full_software | marketing_landing |
@@ -89,7 +93,9 @@
 
 ### Где кеш каталога?
 
-В **localStorage** браузера: полный снимок `aicom_pipeline_catalog_v2_{sort}` и маленький peek на 2 строки. Первый визит / другая сортировка / очистка хранилища — снова «холодный» старт с ретраями.
+**Pipeline Monitor:** в **localStorage** — `aicom_pipeline_catalog_v2_{sort}` и peek на 2 строки. Первый визит / другая сортировка / очистка — «холодный» старт с ретраями.
+
+**Публичная витрина (`/`):** `aicom_storefront_catalog_v1_{category}` — сначала кеш, потом фоновый `GET /api/products`. См. [marketing.md](./marketing.md).
 
 ### Почему «All Categories (0)», а потом появляются цифры?
 

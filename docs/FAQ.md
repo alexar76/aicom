@@ -54,8 +54,14 @@ Up to **5 minutes** per request (`clientTimeoutMs` = 300_000). Backoff between a
 **Progress bar not moving?**  
 During **Connection phase**, the bar reflects **retry index**, not catalog rows. After rows arrive, use header **X / total** and the green hydration bar.
 
-**Where is the cache?**  
+**Where is the Pipeline Monitor cache?**  
 Browser **localStorage**: `aicom_pipeline_catalog_v2_{sort}` plus a 2-row peek. Cold start (new sort, cleared storage) shows retries again.
+
+**Where is the public storefront catalog cache?**  
+Home **`#products`**: `aicom_storefront_catalog_v1_{category}` (`all` or taxonomy slug). Cache-first paint, then background `GET /api/products` + categories. See [marketing.md](./marketing.md#homepage-catalog-products).
+
+**Why is my product in “Full products” on `/` but I wanted a landing?**  
+Storefront sections use API `delivery_profile`. Only exact **`marketing_landing`** goes to the landing grid; aliases like `landing` are normalized server-side — set profile explicitly in **New product** or spec. Seeded demos PulseDeck/Harborline are landings by design.
 
 **COMPLETED but not on storefront?**  
 Read `storefront_gate_reasons` on the Pipeline card — quality gates, missing code, manual hide, etc.
@@ -76,6 +82,9 @@ Pipeline stage strip → click failed/running tile → task modal; **LLM Logs**;
 
 **Fewer products on `/` than Dashboard Completed?**  
 Storefront applies **extra eligibility filters**.
+
+**Product stuck at `HUMAN_REVIEW_PENDING` with no new tasks?**  
+Expected for **`full_software`** after DevOps: **post-DevOps human gate** blocks Sales until an operator **Approves** or **Rejects** on the Pipeline card (`HumanReviewGatePanel`). Landings skip this gate. Env: `AIFACTORY_POST_DEVOPS_HUMAN_GATE`, `AIFACTORY_HUMAN_REVIEW_REQUIRED` — see [configuration.md](./configuration.md#pipeline-and-storefront-policy).
 
 **Discovery auto-ideas?**  
 Only if autonomous mode and `AIFACTORY_DISCOVERY_AUTO_ENQUEUE` (or equivalent Settings) are enabled.

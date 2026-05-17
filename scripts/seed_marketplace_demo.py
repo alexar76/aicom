@@ -204,10 +204,10 @@ def _seed_one(sm: Any, cfg: dict[str, Any]) -> None:
         sm.create_product(cfg["idea"], pid)
     p = sm.products[pid]
     p.state = PipelineState.COMPLETED
-    p.metadata.setdefault("category", cfg["taxonomy_category"])
-    p.updated_at = time.time()
-
     dp = cfg["delivery_profile"]
+    p.metadata.setdefault("category", cfg["taxonomy_category"])
+    p.metadata["delivery_profile"] = dp
+    p.updated_at = time.time()
     spec_inner = {
         "product_name": cfg["product_name"],
         "delivery_profile": dp,

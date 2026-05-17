@@ -22,7 +22,7 @@
 | **Augment Code** | Augment | AI agent for IDE | Teams/Enterprise only | ❌ | ❌ | ❌ |
 | **Claude Code** (CLI) | Anthropic | CLI agent | Pay-per-token | ❌ | ❌ | ❌ |
 | **GitHub Copilot** | Microsoft/GitHub | AI assistant | Free / $10/mo | ❌ | ❌ | ❌ |
-| **🤖 AI-Factory** | **(this project)** | **11 agents, strict state machine** | **Free (BYO keys)** | **✅ MIT** | **✅ Deep Playwright crawl** | **✅ 11 agents** |
+| **🤖 AI-Factory** | **(this project)** | **13 agents, strict state machine** | **Free (BYO keys)** | **✅ MIT** | **✅ Deep Playwright crawl** | **✅ 13 agents** |
 
 ### New Competitors (appeared 2025–2026)
 
@@ -54,7 +54,7 @@ Almost no comparable open-source projects exist:
 | Landing page generation | ✅ | ✅ | ✅ | ❌ | ✅ | **✅** |
 | Full-stack generation (CRUD/auth/API) | ✅ | ✅ | ❌ | ✅ | ✅ | **✅** |
 | Self-hosted (MIT) | ❌ | ❌ | ❌ | ❌ | ❌ | **✅** |
-| Multi-agent pipeline | ❌ | ❌ | ❌ | ❌ | ❌ | **✅ 11 agents** |
+| Multi-agent pipeline | ❌ | ❌ | ❌ | ❌ | ❌ | **✅ 13 agents** |
 | Strict state machine (fault tolerance) | ❌ | ❌ | ❌ | ❌ | ❌ | **✅** |
 | LLM Router (DeepSeek/Anthropic/OpenAI) | ❌ (1 provider) | ❌ | ❌ | ❌ | ❌ | **✅ 3+ providers** |
 | E2E browser tests | ❌ | ❌ | ❌ | ❌ | ❌ | **✅ Deep Playwright crawl** |
@@ -127,7 +127,7 @@ AI-Factory:
 **AI-Factory holds 10+ unique features that NO competitor offers:**
 
 1. **Open-source (MIT) + self-hosted** — only project you can run on your own hardware with your own API keys
-2. **Multi-agent pipeline** (11 agents with strict state machine) — Bolt/Lovable/v0/Devin all use 1 agent
+2. **Multi-agent pipeline** (13 agents with strict state machine) — Bolt/Lovable/v0/Devin all use 1 agent
 3. **Deep Playwright E2E tests** with mobile viewport gate (390×844) — no competitor does this
 4. **Visual QA heuristics gate** with 9 strict check codes — no competitor
 5. **Static code analysis + security gate + hardening pass** — only Devin (but not self-hosted)

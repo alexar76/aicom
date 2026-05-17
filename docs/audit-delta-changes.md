@@ -26,6 +26,8 @@ Tracking table for the architecture / quality audit. Updated after remediation p
 | **Resilience** | LLM circuit breaker | ✅ Done | `llm/circuit_breaker.py` — CLOSED→OPEN→HALF_OPEN; shared state `data/state/llm_circuit_breakers.json`; Admin panel + Prometheus |
 | **API** | Versioning | ✅ Done | `/api/v1/*` rewrites to `/api/*` (`ApiVersionMiddleware`); legacy `/api` unchanged |
 | **Agents** | Prompts in markdown | ✅ Done | `agents/prompts/*.md` for all pipeline agents (PM sections, QA, Dev, Security, …); `load_prompt()` |
+| | Prompt imports trapped in docstrings | ✅ Fixed | May 2026: `import logging` / `load_prompt` must be outside `"""` docstrings or worker init fails |
+| **Storefront** | Public catalog cache-first | ✅ Done | `storefrontCatalogCache.ts` + `useStorefrontCatalog` — `localStorage` `aicom_storefront_catalog_v1_{category}` |
 | | Full state serialization | 🟡 Partial | `AIFACTORY_PIPELINE_SQL_DIRTY_SAVE=1` (default): worker upserts only dirty products/tasks; `_sql_full_save` for hygiene/bootstrap |
 | | LLM cache 500/300s | ✅ Configurable | `AIFACTORY_LLM_CACHE_*` in `env_settings` + `llm/router.py` |
 

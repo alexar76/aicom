@@ -21,7 +21,7 @@ Details: [product-concept.md](./product-concept.md) · [marketing.md](./marketin
 
 ---
 
-## Pipeline at a glance (11 agents)
+## Pipeline at a glance (13 worker agents)
 
 ```mermaid
 flowchart LR
@@ -231,7 +231,7 @@ Rough positioning — **verify vendor pricing/features** before debates. Extende
 | **Your data & LLM keys** | ❌ | ❌ | ❌ | ❌ | ✅ |
 | **E2E / QA gates** | ❌ | ❌ | ❌ | partial | ✅ Deep Playwright crawl |
 | **Human gate** | ❌ | ❌ | ❌ | ✅ | ✅ Human pipeline |
-| **Multi-agent pipeline** | ❌ | ❌ | ❌ | ❌ | ✅ 11 agents + worker gates |
+| **Multi-agent pipeline** | ❌ | ❌ | ❌ | ❌ | ✅ 13 agents + worker gates |
 | **Typical price** | ~$20/mo | ~$50/mo | ~$20/mo | ~$500/mo | **Host ~$7/mo + API** |
 
 ---

@@ -73,7 +73,7 @@ QA runs `web/backend/services/browser_preview_e2e.py`: Chromium loads the genera
 
 | Mode | When | Behavior |
 |------|------|----------|
-| **static** | Only `index.html` tree (no FastAPI entry) | Local `ThreadingHTTPServer` from `data/code/<product_id>/`. |
+| **static** | Only `index.html` tree (no FastAPI entry) | Local `ThreadingHTTPServer` from `data/code/<product_id>/`. Nested paths (e.g. `frontend/landing/index.html`) are listed in the sandbox sidebar but are **not** auto-opened unless `index.html` exists at the product root — see [admin-guide § Files](./admin-guide.md#files). |
 | **fastapi** | `AIFACTORY_BROWSER_E2E_SERVE_MODE=auto` (default) and a FastAPI `main.py` is detected | **Uvicorn** on `127.0.0.1` — sessions/cookies and server-rendered routes behave like a real app; same pattern as sandbox live preview. |
 | **docker** | `AIFACTORY_BROWSER_E2E_SERVE_MODE=docker`, or `AIFACTORY_BROWSER_E2E_AUTO_DOCKER=1` in **auto** when a `Dockerfile` exists | `docker build` + `docker run -p` for the product image (slower; needs Docker socket). |
 
@@ -106,6 +106,12 @@ Agent workflow guidance lives in **`.cursor/skills/pipeline-demo-video/SKILL.md`
 For **live API behind the marketplace iframe**, enable **`AIFACTORY_SANDBOX_PREVIEW_API=1`** on the factory backend so `/api/sandbox/backend/{sandbox_id}/…` proxies to uvicorn (generated FastAPI). That is independent of QA’s E2E serve modes but uses the same preview starter (`sandbox_preview_api`).
 
 When the product repo includes **`docker-compose.yml`** (recommended for full-stack builds), **`AIFACTORY_SANDBOX_COMPOSE_PREVIEW=1`** (default in Compose) runs **`docker compose up -d --build`** for that product’s code dir and exposes the stack at **`/api/sandbox/compose/{sandbox_id}/…`** (reverse-proxy to the published web/API port). Built images must publish ports via env vars such as **`API_HOST_PORT`** / **`WEB_HOST_PORT`** so the host can bind free ports. Set **`AIFACTORY_SANDBOX_COMPOSE_PREVIEW=0`** to skip compose and fall back to uvicorn preview + static file serving.
+
+## Post-DevOps human review gate
+
+After **Security → DevOps**, products with **`delivery_profile: full_software`** transition to **`HUMAN_REVIEW_PENDING`** instead of immediately queueing Sales. The worker logs *paused at post-DevOps human gate* and creates **no** sales task until an operator **approves** via Admin (→ `SALES_ACTIVE`) or **rejects** (→ developer `DEV_FIXING`). **`marketing_landing`** profiles skip this step.
+
+See [admin-guide.md § Post-DevOps human review](./admin-guide.md#post-devops-human-review) and [configuration.md](./configuration.md#pipeline-and-storefront-policy).
 
 ## Storefront readiness remediation loop
 

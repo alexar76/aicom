@@ -10,7 +10,7 @@
 
 **Typical LLM API cost (estimated from `llm_calls.jsonl`):** **~$0.30–$2** for a short landing first pass; **~$3–$15+** for `full_software` with QA/fix cycles (fleet average with retries is higher). Bring your own keys; host ~**$7/mo** is separate.
 
-**11 AI agents** (analyst → PM → architect → designer → developer → QA → security → DevOps → marketing → sales → evolution) build your product with **Playwright E2E gates**, security scans, and storefront deployment.
+**13 pipeline agents** (analyst, PM, methodologist, architect, design critic, developer, hardening, QA, security, DevOps, marketing, sales, evolution) build your product with **Playwright E2E gates**, security scans, and storefront deployment. Admin UI also shows a **Designer** stage backed by architect artifacts.
 
 Sample walkthrough: [`docs/gallery/recordings/pipeline-demo-latest.webm`](docs/gallery/recordings/pipeline-demo-latest.webm) *(regenerate: `scripts/record_pipeline_demo_video.py`)* · Generated landings: [Gallery](#gallery) below.
 
