@@ -117,6 +117,16 @@ class PostgresManager:
             ).fetchall()
         return [self._row_to_product_dict(r) for r in rows]
 
+    def get_worker_tasks(self) -> list[dict[str, Any]]:
+        with self.pool.connection() as conn:
+            rows = conn.execute(
+                "SELECT * FROM tasks WHERE workspace_id = %s "
+                "AND LOWER(status) IN ('pending', 'running', 'failed') "
+                "ORDER BY created_at ASC",
+                (self.workspace_id,),
+            ).fetchall()
+        return [self._row_to_task_dict(r) for r in rows]
+
     def get_all_tasks(self) -> list[dict[str, Any]]:
         with self.pool.connection() as conn:
             rows = conn.execute(

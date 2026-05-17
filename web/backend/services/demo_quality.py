@@ -39,9 +39,27 @@ BANNED_SNIPPETS = (
 )
 
 
+_INDEX_CANDIDATES = (
+    "index.html",
+    "frontend/index.html",
+    "public/index.html",
+    "static/index.html",
+    "dist/index.html",
+)
+
+
+def resolve_main_html_path(code_dir: Path) -> Optional[Path]:
+    """Find the primary HTML entrypoint (root first, then common subfolders)."""
+    for rel in _INDEX_CANDIDATES:
+        p = code_dir / rel
+        if p.is_file():
+            return p
+    return None
+
+
 def _read_index_html(code_dir: Path) -> Optional[str]:
-    p = code_dir / "index.html"
-    if not p.is_file():
+    p = resolve_main_html_path(code_dir)
+    if p is None:
         return None
     try:
         return p.read_text(encoding="utf-8", errors="replace")

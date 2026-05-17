@@ -335,7 +335,8 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                 await self._async_store.initialize()
 
             products = await self._async_store.get_all_products()
-            tasks = await self._async_store.get_all_tasks()
+            get_tasks = getattr(self._async_store, "get_worker_tasks", None) or self._async_store.get_all_tasks
+            tasks = await get_tasks()
             products_map = {p["id"]: p for p in products if isinstance(p.get("id"), str)}
             current_task_id = None
             for t in tasks:
@@ -575,6 +576,12 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
 
         # Phase 0: Recover stranded PM quality-gate failures from previous runs.
         # This handles cases where products are left in FAILED with no active PM task.
+        if self.task_orchestrator.archive_superseded_failed_tasks(products, task_queue, now):
+            changed = True
+
+        if self.task_orchestrator.recover_false_failed_products(products, task_queue, now):
+            changed = True
+
         if self.task_orchestrator.recover_stranded_pm_quality_failures(products, task_queue, now):
             changed = True
 
@@ -1774,6 +1781,16 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             "product_id": pid,
         })
 
+    def _latest_bug_context(self, product: dict) -> str:
+        """Compact bug summary for developer/QA fix tasks (from product.last_bug_context)."""
+        lb = product.get("last_bug_context")
+        if not isinstance(lb, dict) or not lb:
+            return ""
+        try:
+            return json.dumps(lb, ensure_ascii=False, default=str)[:8000]
+        except (TypeError, ValueError):
+            return str(lb)[:8000]
+
     def _create_next_task(self, product: dict) -> Optional[dict]:
         """Create the next task based on current product state."""
         from core.delivery_profile import MARKETING_LANDING
@@ -1823,7 +1840,7 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             "priority": self._get_priority(agent_type),
         }
         if current_state == "BUG_FOUND" and agent_type == "developer":
-            bug_context = self._latest_bug_context(product["id"])
+            bug_context = self._latest_bug_context(product)
             if bug_context:
                 task["input_data"]["bug_context"] = bug_context
             lb = product.get("last_bug_context")

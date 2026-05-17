@@ -364,6 +364,14 @@ class DeveloperAgent(BaseAgent):
                 "agent": "developer",
             }, "code_manifest.json")
 
+            if mode.value == "web_app":
+                try:
+                    from web.backend.services.code_entrypoint import ensure_web_entrypoint_at_product_root
+
+                    ensure_web_entrypoint_at_product_root(product_id)
+                except Exception:
+                    pass
+
             elapsed = time.time() - start_time
             self._log("INFO", f"Code generation complete: {len(saved_files)} files ({elapsed:.1f}s), mode={mode.value}")
 

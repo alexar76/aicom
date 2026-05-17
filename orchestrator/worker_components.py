@@ -8,8 +8,12 @@ from typing import Callable
 from core.throughput_limits import effective_max_running_tasks
 from orchestrator.task_queue_hygiene import (
     append_product_task,
+    archive_superseded_failed_tasks,
     enforce_task_queue_hygiene,
+    failed_task_may_terminalize_product,
+    is_superseded_failed_task,
     pm_spec_requeue_allowed,
+    recover_false_failed_products,
     try_pm_spec_requeue,
     unstick_blocked_tasks,
 )
@@ -55,6 +59,12 @@ class TaskOrchestrator:
         for t in reversed(to_front):
             task_queue.insert(0, t)
         return changed
+
+    def archive_superseded_failed_tasks(self, products: dict, task_queue: list, now: float) -> bool:
+        return archive_superseded_failed_tasks(products, task_queue, now)
+
+    def recover_false_failed_products(self, products: dict, task_queue: list, now: float) -> bool:
+        return recover_false_failed_products(products, task_queue, now)
 
     def recover_stranded_pm_quality_failures(self, products: dict, task_queue: list, now: float) -> bool:
         changed = False
@@ -193,44 +203,82 @@ class TaskOrchestrator:
 
         changed = False
         default_max = task_max_retries()
+        terminalized_pids: set[str] = set()
         for task in task_queue:
-            if task.get("status") == "failed":
-                retry_count = task.get("retry_count", 0)
-                max_retries = int(task.get("max_retries") or default_max)
-                if retry_count < max_retries:
-                    backoff = 30 * (2 ** retry_count)
-                    failed_at = task.get("completed_at", task.get("started_at", 0))
-                    if now - failed_at >= backoff:
-                        task["retry_count"] = retry_count + 1
-                        task["status"] = "pending"
-                        task["error"] = None
-                        task["completed_at"] = None
-                        changed = True
-                else:
-                    pid = task.get("product_id", "")
-                    if pid in products and products[pid].get("state") != "FAILED":
-                        if try_pm_spec_requeue(task, products, task_queue, self.get_priority):
-                            changed = True
-                            continue
-                        products[pid]["state"] = "FAILED"
-                        err = (task.get("error") or "").strip()
-                        if err:
-                            products[pid]["failure_reason"] = err[:4000]
-                        products[pid]["updated_at"] = now
-                        try:
-                            from web.backend.services.pipeline_failed_notify import (
-                                notify_pipeline_product_failed,
-                            )
+            if _task_status_norm(task) != "failed":
+                continue
+            pid = str(task.get("product_id") or "")
+            product = products.get(pid) or {}
+            if is_superseded_failed_task(task, product):
+                task["status"] = "cancelled"
+                prev_err = (task.get("error") or "").strip()
+                task["error"] = (
+                    f"{prev_err}; archive_superseded_failed"
+                    if prev_err
+                    else "archive_superseded_failed"
+                )[:8000]
+                task["completed_at"] = task.get("completed_at") or now
+                changed = True
+                continue
+            retry_count = task.get("retry_count", 0)
+            max_retries = int(task.get("max_retries") or default_max)
+            if retry_count < max_retries:
+                backoff = 30 * (2 ** retry_count)
+                failed_at = task.get("completed_at", task.get("started_at", 0))
+                if now - failed_at >= backoff:
+                    task["retry_count"] = retry_count + 1
+                    task["status"] = "pending"
+                    task["error"] = None
+                    task["completed_at"] = None
+                    changed = True
+                continue
+            if pid not in products or products[pid].get("state") == "FAILED":
+                continue
+            if try_pm_spec_requeue(task, products, task_queue, self.get_priority):
+                changed = True
+                continue
+            if not failed_task_may_terminalize_product(task, product):
+                task["status"] = "cancelled"
+                prev_err = (task.get("error") or "").strip()
+                task["error"] = (
+                    f"{prev_err}; archive_stale_failed_no_terminalize"
+                    if prev_err
+                    else "archive_stale_failed_no_terminalize"
+                )[:8000]
+                task["completed_at"] = task.get("completed_at") or now
+                changed = True
+                continue
+            if pid in terminalized_pids:
+                task["status"] = "cancelled"
+                prev_err = (task.get("error") or "").strip()
+                task["error"] = (
+                    f"{prev_err}; duplicate_failed_terminalize_skipped"
+                    if prev_err
+                    else "duplicate_failed_terminalize_skipped"
+                )[:8000]
+                task["completed_at"] = task.get("completed_at") or now
+                changed = True
+                continue
+            products[pid]["state"] = "FAILED"
+            terminalized_pids.add(pid)
+            err = (task.get("error") or "").strip()
+            if err:
+                products[pid]["failure_reason"] = err[:4000]
+            products[pid]["updated_at"] = now
+            try:
+                from web.backend.services.pipeline_failed_notify import (
+                    notify_pipeline_product_failed,
+                )
 
-                            notify_pipeline_product_failed(
-                                pid,
-                                product=products[pid],
-                                task=task,
-                                failure_reason=err or None,
-                            )
-                        except Exception:
-                            pass
-                        changed = True
+                notify_pipeline_product_failed(
+                    pid,
+                    product=products[pid],
+                    task=task,
+                    failure_reason=err or None,
+                )
+            except Exception:
+                pass
+            changed = True
         return changed
 
     def enqueue_market_monitoring(self, products: dict, task_queue: list, now: float) -> bool:

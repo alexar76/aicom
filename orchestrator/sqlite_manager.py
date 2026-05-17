@@ -494,6 +494,15 @@ class SQLiteManager:
         ).fetchall()
         return [self._row_to_task_dict(r) for r in rows]
 
+    def get_worker_tasks(self) -> list[dict]:
+        """Active queue rows only (pending/running/failed) for the pipeline worker hot path."""
+        rows = self.conn.execute(
+            "SELECT * FROM tasks WHERE workspace_id = ? AND LOWER(status) IN ('pending', 'running', 'failed') "
+            "ORDER BY created_at ASC",
+            (self.workspace_id,),
+        ).fetchall()
+        return [self._row_to_task_dict(r) for r in rows]
+
     def get_all_tasks(self) -> list[dict]:
         """Retrieve all tasks."""
         rows = self.conn.execute("SELECT * FROM tasks WHERE workspace_id = ? ORDER BY created_at ASC", (self.workspace_id,)).fetchall()

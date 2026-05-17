@@ -34,6 +34,166 @@ def state_rank(state: str | None) -> int:
     return _STATE_RANK.get(str(state or "").upper(), -1)
 
 
+def is_superseded_failed_task(task: dict, product: dict) -> bool:
+    """
+    True when a failed task row is historical noise for the product's current stage.
+
+    Prevents retry_failed_tasks from marking advanced products FAILED because of
+    ancient PM spec-gate failures still present in the SQLite task history.
+    """
+    if str(task.get("status") or "").lower() != "failed":
+        return False
+    ps = str(product.get("state") or "").upper()
+    if ps in ("COMPLETED", "DEPLOYED_PRODUCTION", "CANCELLED"):
+        return True
+    agent = str(task.get("agent_type") or "").lower()
+    tgt = str(task.get("state") or "").upper()
+    pr = product_state_rank(ps)
+    tr = _task_rank(task)
+    if tr < 0 or pr < 0:
+        return False
+    if (agent, tgt) in _REPAIR_AGENT_STATES and ps in (
+        "BUG_FOUND",
+        "DEV_FIXING",
+        "QA_TESTING",
+        "CODE_TESTING",
+        "CODE_COMMITTED",
+    ):
+        return False
+    if pr > tr:
+        return True
+    err = (task.get("error") or "").lower()
+    if agent == "pm" and "specification failed quality gate" in err and not pm_spec_requeue_allowed(ps):
+        return True
+    return False
+
+
+def failed_task_may_terminalize_product(task: dict, product: dict) -> bool:
+    """Only failures at/near the product's current stage may set state=FAILED."""
+    if is_superseded_failed_task(task, product):
+        return False
+    ps = str(product.get("state") or "").upper()
+    if ps in ("COMPLETED", "DEPLOYED_PRODUCTION", "CANCELLED", "IDEA_RECEIVED"):
+        return False
+    tr = _task_rank(task)
+    pr = product_state_rank(ps)
+    if tr < 0 or pr < 0:
+        return True
+    return tr >= pr - 1
+
+
+_FALSE_FAILED_ERROR_MARKERS = (
+    "archive_superseded_failed",
+    "archive_stale_failed_no_terminalize",
+)
+
+
+def is_likely_false_failed_product(product: dict, task_queue: list) -> bool:
+    """
+    Detect products marked FAILED only because stale queue rows were retried on worker restart.
+    """
+    ps = str(product.get("state") or "").upper()
+    if ps != "FAILED":
+        return False
+    pid = str(product.get("id") or "")
+    if not pid:
+        return False
+
+    product_tasks = [t for t in task_queue if str(t.get("product_id") or "") == pid]
+    failed_rows = [t for t in product_tasks if str(t.get("status") or "").lower() == "failed"]
+    if failed_rows and all(is_superseded_failed_task(t, product) for t in failed_rows):
+        return True
+
+    fr = str(product.get("failure_reason") or product.get("error") or "").lower()
+    if any(marker in fr for marker in _FALSE_FAILED_ERROR_MARKERS):
+        return True
+    # Empty failure_reason + code on disk matches the restart false-FAILED bug path.
+    if not fr.strip():
+        try:
+            from web.backend.api.products import _product_has_code
+
+            return _product_has_code(pid)
+        except Exception:
+            return False
+    if "specification failed quality gate" in fr:
+        try:
+            from web.backend.api.products import _product_has_code
+
+            return _product_has_code(pid)
+        except Exception:
+            return False
+    return False
+
+
+def recovery_state_after_false_failed(product: dict) -> str:
+    """Pick a safe non-terminal state when undoing a false FAILED."""
+    ps = str(product.get("state") or "").upper()
+    if ps != "FAILED":
+        return ps
+    pid = str(product.get("id") or "")
+    try:
+        from web.backend.api.products import _product_has_code
+
+        if pid and _product_has_code(pid):
+            return "BUG_FOUND"
+    except Exception:
+        pass
+    return "MARKET_RESEARCHED"
+
+
+def recover_false_failed_products(
+    products: dict,
+    task_queue: list,
+    now: float,
+) -> bool:
+    """Re-open products wrongly terminalized from superseded failed task rows."""
+    changed = False
+    for pid, product in list(products.items()):
+        if not is_likely_false_failed_product(product, task_queue):
+            continue
+        reopen = recovery_state_after_false_failed(product)
+        product["state"] = reopen
+        for key in ("failure_reason", "error", "last_error"):
+            product.pop(key, None)
+        meta = product.get("metadata")
+        if isinstance(meta, dict):
+            meta.pop("failure_reason", None)
+            meta.pop("error", None)
+        product["updated_at"] = now
+        logger.warning(
+            "Recovered false FAILED product %s → %s (stale queue row, not a real terminal failure)",
+            pid,
+            reopen,
+        )
+        changed = True
+    return changed
+
+
+def archive_superseded_failed_tasks(
+    products: dict,
+    task_queue: list,
+    now: float,
+) -> bool:
+    """Cancel failed tasks that no longer apply to the product's pipeline stage."""
+    changed = False
+    for task in task_queue:
+        pid = task.get("product_id")
+        if not pid or pid not in products:
+            continue
+        if not is_superseded_failed_task(task, products[pid]):
+            continue
+        task["status"] = "cancelled"
+        prev_err = (task.get("error") or "").strip()
+        suffix = "archive_superseded_failed"
+        task["error"] = f"{prev_err}; {suffix}" if prev_err else suffix
+        task["error"] = str(task["error"])[:8000]
+        task["completed_at"] = task.get("completed_at") or now
+        changed = True
+    if changed:
+        logger.info("Archived superseded failed tasks in worker queue snapshot")
+    return changed
+
+
 def product_state_rank(state: str | None) -> int:
     return state_rank(state)
 

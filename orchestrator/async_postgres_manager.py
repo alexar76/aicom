@@ -73,11 +73,16 @@ class AsyncPostgresManager:
             out.append(d)
         return out
 
-    async def get_all_tasks(self) -> list[dict]:
+    async def get_worker_tasks(self) -> list[dict]:
         rows = await self.fetchall(
-            "SELECT * FROM tasks WHERE workspace_id = %s ORDER BY created_at ASC",
+            "SELECT * FROM tasks WHERE workspace_id = %s "
+            "AND LOWER(status) IN ('pending', 'running', 'failed') "
+            "ORDER BY created_at ASC",
             (self.workspace_id,),
         )
+        return self._rows_to_task_dicts(rows)
+
+    def _rows_to_task_dicts(self, rows: list[dict]) -> list[dict]:
         out = []
         for d in rows:
             input_raw = d.pop("input", None)
@@ -97,6 +102,13 @@ class AsyncPostgresManager:
             d.pop("assigned_to", None)
             out.append(d)
         return out
+
+    async def get_all_tasks(self) -> list[dict]:
+        rows = await self.fetchall(
+            "SELECT * FROM tasks WHERE workspace_id = %s ORDER BY created_at ASC",
+            (self.workspace_id,),
+        )
+        return self._rows_to_task_dicts(rows)
 
     async def upsert_product(self, product: dict) -> None:
         from .sqlite_manager import SQLiteManager
