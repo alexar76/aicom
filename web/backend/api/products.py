@@ -12,8 +12,22 @@ import os
 from pathlib import Path
 from typing import Any, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import Field
 
+from core.logging_utils import log_suppressed
+from core.paths import (
+    arch_dir,
+    code_dir,
+    data_root,
+    pipeline_db_path,
+    pipeline_json_path,
+    product_state_dir,
+    specs_dir,
+    state_dir,
+    telemetry_dir,
+)
+from web.backend.schemas.products import ProductListQuery
 from web.backend.services.demo_quality import assess_product_demo
 from web.backend.services.marketplace_quality import (
     evaluate_marketplace_quality,
@@ -51,7 +65,7 @@ def _sql_store_available() -> bool:
 
 
 def _sqlite_db_path() -> Path:
-    return Path(os.environ.get("SQLITE_PATH", "/app/data/state/pipeline.db"))
+    return pipeline_db_path()
 
 
 def _sqlite_product_to_json_shape(raw: dict[str, Any]) -> dict[str, Any]:
@@ -146,7 +160,7 @@ def _canonical_marketplace_category(marketing: dict, product: dict) -> str:
 
 def _load_pipeline_data() -> dict:
     """Load pipeline.json data."""
-    pipeline_file = Path("/app/data/state/pipeline.json")
+    pipeline_file = pipeline_json_path()
     if pipeline_file.exists():
         try:
             with open(pipeline_file, "r") as f:
@@ -159,7 +173,7 @@ def _load_pipeline_data() -> dict:
 def _get_product_name(pid: str) -> str:
     """Get product name from spec file."""
     name = ""
-    spec_path = Path(f"/app/data/specs/{pid}/specification.json")
+    spec_path = specs_dir(pid) / "specification.json"
     if spec_path.exists():
         try:
             with open(spec_path, "r") as f:
@@ -167,13 +181,13 @@ def _get_product_name(pid: str) -> str:
             spec = spec_data.get("specification", {})
             name = str(spec.get("product_name", "")).strip()
         except Exception:
-            pass
+            log_suppressed(logger, "resolve_product_name marketing read failed for %s", pid)
     return name or f"Product {pid[:8]}"
 
 
 def _load_specification_from_disk(pid: str) -> Optional[dict]:
     """Return inner `specification` object from specs file (PM output)."""
-    spec_path = Path(f"/app/data/specs/{pid}/specification.json")
+    spec_path = specs_dir(pid) / "specification.json"
     if not spec_path.exists():
         return None
     try:
@@ -234,7 +248,7 @@ def _storefront_stack_label(tech_stack: dict[str, Any]) -> str:
 
 def _load_architecture_from_disk(pid: str) -> Optional[dict]:
     """Return inner `architecture` object from architect output file."""
-    arch_path = Path(f"/app/data/arch/{pid}/architecture.json")
+    arch_path = arch_dir(pid) / "architecture.json"
     if not arch_path.exists():
         return None
     try:
@@ -247,25 +261,25 @@ def _load_architecture_from_disk(pid: str) -> Optional[dict]:
 
 def _load_marketing(pid: str) -> dict:
     """Load marketing content for a product."""
-    mkt_file = Path(f"/app/data/state/{pid}/marketing_content.json")
+    mkt_file = product_state_dir(pid) / "marketing_content.json"
     if mkt_file.exists():
         try:
             with open(mkt_file, "r") as f:
                 return json.load(f).get("marketing", {})
         except Exception:
-            pass
+            log_suppressed(logger, "load marketing failed for %s", pid)
     return {}
 
 
 def _load_sales(pid: str) -> dict:
     """Load sales config for a product."""
-    sales_file = Path(f"/app/data/state/{pid}/sales_config.json")
+    sales_file = product_state_dir(pid) / "sales_config.json"
     if sales_file.exists():
         try:
             with open(sales_file, "r") as f:
                 return json.load(f).get("sales_data", {})
         except Exception:
-            pass
+            log_suppressed(logger, "load marketing failed for %s", pid)
     return {}
 
 
@@ -403,7 +417,7 @@ def public_storefront_listing_eligible(pid: str, product: dict[str, Any]) -> tup
 
 def _product_has_code(pid: str) -> bool:
     """Check if a product has actual generated code files on disk."""
-    manifest_path = Path(f"/app/data/code/{pid}/code_manifest.json")
+    manifest_path = code_dir(pid) / "code_manifest.json"
     if not manifest_path.exists():
         return False
     try:
@@ -412,10 +426,10 @@ def _product_has_code(pid: str) -> bool:
         files = manifest.get("files", [])
         if not files:
             return False
-        code_dir = Path(f"/app/data/code/{pid}")
+        code_dir_path = code_dir(pid)
         for f_entry in files:
             fpath = f_entry.get("path") or f_entry.get("file_path", "")
-            if fpath and (code_dir / fpath).exists():
+            if fpath and (code_dir_path / fpath).exists():
                 return True
         return False
     except Exception:
@@ -467,7 +481,9 @@ def count_showcase_listable_products() -> int:
 
 
 @router.get("")
-async def list_products(category: Optional[str] = Query(None, description="Filter by category")):
+async def list_products(
+    query: ProductListQuery = Depends(),
+):
     """List all products available on the storefront, optionally filtered by category.
 
     Products without actual generated code files on disk are excluded
@@ -477,7 +493,12 @@ async def list_products(category: Optional[str] = Query(None, description="Filte
     met storefront rules keep their card visible while the pipeline re-opens them for fixes
     (see ``product_followup.storefront_established_listing``).
     """
-    products_dir = Path("/app/data/state")
+    try:
+        category = query.normalized_category()
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e)) from e
+
+    products_dir = state_dir()
     products = []
 
     if category and category not in LISTING_CATEGORY_IDS and category != "uncategorized":
@@ -534,7 +555,7 @@ async def list_products(category: Optional[str] = Query(None, description="Filte
 
                 # Features
                 features = []
-                spec_path = Path(f"/app/data/specs/{pid}/specification.json")
+                spec_path = specs_dir(pid) / "specification.json"
                 if spec_path.exists():
                     try:
                         with open(spec_path, "r") as f:
@@ -635,9 +656,9 @@ async def get_product(product_id: str):
 
         # Load evolution history
         evolution_history = []
-        telemetry_dir = Path(f"/app/data/telemetry/{product_id}")
-        if telemetry_dir.exists():
-            for evo_file in sorted(telemetry_dir.glob("evolution_*.json")):
+        telemetry_dir_path = telemetry_dir(product_id)
+        if telemetry_dir_path.exists():
+            for evo_file in sorted(telemetry_dir_path.glob("evolution_*.json")):
                 with open(evo_file, "r") as f:
                     evolution_history.append(json.load(f))
 
@@ -666,7 +687,7 @@ async def get_product(product_id: str):
 
         browser_preview_e2e = None
         qa_gates_all_passed = None
-        gate_file = Path(f"/app/data/telemetry/{product_id}/demo_quality_gate.json")
+        gate_file = telemetry_dir(product_id) / "demo_quality_gate.json"
         if gate_file.exists():
             try:
                 with open(gate_file) as gf:

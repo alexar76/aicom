@@ -15,6 +15,12 @@ echo "=== AI-Factory v2.1 Starting ==="
 # Activate Python virtual environment
 source /app/venv/bin/activate
 
+# LLM keys + sandbox demo password from Docker secrets or data/secrets/* (not compose `environment:`).
+# shellcheck source=/dev/null
+. /app/scripts/load_docker_secret_env.sh
+load_llm_provider_secrets
+load_sandbox_demo_password
+
 # ── Ensure All Data Directories Exist (bind mount compatibility) ──────────
 mkdir -p /app/data/config /app/data/logs /app/data/secrets /app/data/state
 mkdir -p /app/data/arch /app/data/bugs /app/data/code /app/data/specs
@@ -74,7 +80,8 @@ print('JWT secret key created')
 "
 fi
 chmod 600 "$JWT_SECRET_FILE" 2>/dev/null || true
-export JWT_SECRET_KEY=$(cat "$JWT_SECRET_FILE")
+# Never trust an empty JWT_SECRET_KEY from compose/env — file is authoritative in Docker.
+export JWT_SECRET_KEY="$(tr -d '\n\r' < "$JWT_SECRET_FILE")"
 if [ "${#JWT_SECRET_KEY}" -lt 32 ]; then
     echo "ERROR: JWT secret from $JWT_SECRET_FILE is shorter than 32 characters. Regenerate the file."
     exit 1

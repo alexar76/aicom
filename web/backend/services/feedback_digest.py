@@ -15,7 +15,9 @@ from typing import Any
 
 
 def _load_recent_feedback(window_hours: int = 168, limit: int = 2000) -> list[dict[str, Any]]:
-    fb_dir = Path("/app/data/feedback")
+    from core.paths import feedback_dir
+
+    fb_dir = feedback_dir()
     if not fb_dir.exists():
         return []
     now = time.time()

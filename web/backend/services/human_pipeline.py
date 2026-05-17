@@ -28,11 +28,15 @@ def _truthy(name: str, default: str = "0") -> bool:
 
 
 def pipeline_json_path() -> Path:
-    return Path(os.environ.get("AICOM_PIPELINE_JSON", "/app/data/state/pipeline.json"))
+    from core.paths import pipeline_json_path
+
+    return pipeline_json_path()
 
 
 def sqlite_db_path() -> Path:
-    return Path(os.environ.get("SQLITE_PATH", "/app/data/state/pipeline.db"))
+    from core.paths import pipeline_db_path
+
+    return pipeline_db_path()
 
 
 def _sync_sqlite_from_json() -> None:

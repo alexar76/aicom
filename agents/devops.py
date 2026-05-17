@@ -71,7 +71,9 @@ class DevOpsAgent(BaseAgent):
             code_str = json.dumps({"file_count": len(code_files), "files": code_files[:20]}, indent=2)
 
             spec_hint = ""
-            sp = Path("/app/data/specs") / product_id / "specification.json"
+            from core.paths import specification_path
+
+            sp = specification_path(product_id)
             if sp.is_file():
                 try:
                     raw_sp = json.loads(sp.read_text(encoding="utf-8"))

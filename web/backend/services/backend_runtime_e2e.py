@@ -137,7 +137,9 @@ def _append_perf_history(product_id: str, data_root: str | Path, sample: dict[st
     """
     Append one runtime performance sample to per-product history.
     """
-    root = Path(data_root)
+    from core.paths import resolve_data_root
+
+    root = resolve_data_root(data_root)
     tdir = root / "telemetry" / product_id
     tdir.mkdir(parents=True, exist_ok=True)
     row = {
@@ -223,7 +225,7 @@ def _probe_full_software_endpoints(base: str, routes: list[dict[str, str]]) -> l
     return issues
 
 
-def run_backend_runtime_e2e(product_id: str, data_root: str | Path = "/app/data") -> dict[str, Any]:
+def run_backend_runtime_e2e(product_id: str, data_root: str | Path | None = None) -> dict[str, Any]:
     """
     Attempt to boot generated backend and probe live HTTP routes.
 
@@ -238,7 +240,9 @@ def run_backend_runtime_e2e(product_id: str, data_root: str | Path = "/app/data"
     if not _truthy("AIFACTORY_BACKEND_RUNTIME_E2E", "1"):
         return {"passed": True, "skipped": True, "reason": "AIFACTORY_BACKEND_RUNTIME_E2E disabled"}
 
-    root = Path(data_root)
+    from core.paths import resolve_data_root
+
+    root = resolve_data_root(data_root)
     code_dir = root / "code" / product_id
     if not code_dir.is_dir():
         return {"passed": False, "skipped": False, "error": "no_code_dir", "issues": ["no_code_dir"]}

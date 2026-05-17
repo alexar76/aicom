@@ -1,3 +1,6 @@
+# Static defaults for documentation and non-Python tooling.
+# Runtime code resolves paths via core.paths (data_root(), git_repos_dir(), …).
+# Override install layout with AIFACTORY_DATA_ROOT / AIFACTORY_APP_ROOT / AIFACTORY_GIT_REPOS_DIR.
 paths:
   data_root: /app/data
   specs: /app/data/specs

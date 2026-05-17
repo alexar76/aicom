@@ -11,6 +11,8 @@ import json
 from pathlib import Path
 from typing import Any, Optional
 
+from core.paths import resolve_data_root
+
 DEFAULT_STOREFRONT_PRICE_USDT = 4.99
 
 
@@ -101,7 +103,7 @@ def checkout_usdt_from_sales_file(
     default_usdt: float = DEFAULT_STOREFRONT_PRICE_USDT,
 ) -> float:
     """Checkout amount from ``sales_config.json`` only (no marketing file read)."""
-    root = Path(data_root or "/app/data")
+    root = resolve_data_root(data_root)
     path = root / "state" / product_id / "sales_config.json"
     if not path.is_file():
         return float(default_usdt)
@@ -127,7 +129,7 @@ def checkout_usdt_from_sales_file(
 
 def read_sales_inner_and_pricing(product_id: str, *, data_root: Path | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
     """Return ``(sales_data dict, pricing dict)`` from disk; empty dicts if missing."""
-    root = Path(data_root or "/app/data")
+    root = resolve_data_root(data_root)
     path = root / "state" / product_id / "sales_config.json"
     if not path.is_file():
         return {}, {}
@@ -155,7 +157,7 @@ def patch_admin_storefront_usdt(
     Raises:
         ValueError: invalid amount
     """
-    root = Path(data_root or "/app/data")
+    root = resolve_data_root(data_root)
     path = root / "state" / product_id / "sales_config.json"
     raw: dict[str, Any] = {}
     if path.is_file():

@@ -23,7 +23,30 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, R
 from pydantic import BaseModel, Field
 from fastapi.responses import FileResponse, StreamingResponse
 
-from core.paths import data_root as factory_data_root
+from core.logging_utils import log_suppressed
+from core.paths import (
+    architecture_json_path,
+    audit_log_dir,
+    benchmark_alerts_path,
+    benchmark_scorecard_path,
+    benchmark_status_path,
+    data_root as factory_data_root,
+    director_decisions_path,
+    director_reports_dir,
+    discovery_dir,
+    escalations_log_path,
+    legacy_audit_log_path,
+    llm_calls_log_path,
+    logs_dir,
+    market_research_path,
+    marketing_content_path,
+    metrics_history_path,
+    model_providers_path,
+    pipeline_db_path,
+    pipeline_json_path,
+    reports_dir,
+    specification_path,
+)
 from web.backend.core.admin_roles import AdminRole, normalize_role, rank, require_admin_with_rbac
 from finance_stats import compute_dashboard_revenue
 from llm.bootstrap_providers import ensure_model_providers_file
@@ -118,7 +141,7 @@ router = APIRouter(prefix="/api/admin", tags=["admin-dashboard"], dependencies=[
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
-METRICS_HISTORY_FILE = "/app/data/logs/metrics_history.jsonl"
+METRICS_HISTORY_FILE = str(metrics_history_path())
 
 
 def _admin_pipeline_storefront_hints(
@@ -156,7 +179,7 @@ def _admin_sql_store_available() -> bool:
 
 
 def _admin_sqlite_db_path() -> Path:
-    return Path(os.environ.get("SQLITE_PATH", "/app/data/state/pipeline.db"))
+    return pipeline_db_path()
 
 
 def _normalize_pipeline_task(task: dict) -> dict:
@@ -352,14 +375,14 @@ def _load_pipeline_snapshot_for_metrics() -> tuple[dict[str, Any], list[dict]]:
                 e,
             )
 
-    pipeline_file = Path("/app/data/state/pipeline.json")
+    pipeline_file = pipeline_json_path()
     pipeline_data: dict[str, Any] = {"products": {}, "task_queue": []}
     if pipeline_file.exists():
         try:
             with open(pipeline_file, "r") as f:
                 pipeline_data = json.load(f)
         except Exception:
-            pass
+            log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
     products = pipeline_data.get("products") or {}
     raw_tasks = pipeline_data.get("task_queue") or []
     task_queue = [_normalize_pipeline_task(dict(t)) for t in raw_tasks]
@@ -439,7 +462,7 @@ def _read_jsonl_entries_for_agent_log(path: Path) -> list[dict[str, Any]]:
 
 def _collect_agent_metrics() -> dict:
     """Collect per-agent status from JSONL logs (tail-bounded for large files)."""
-    log_dir = Path("/app/data/logs")
+    log_dir = logs_dir()
     agents: dict[str, Any] = {}
     if log_dir.exists():
         for log_file in sorted(log_dir.glob("*.jsonl")):
@@ -463,7 +486,7 @@ def _collect_agent_metrics() -> dict:
 
 def _collect_director_status(*, include_benchmark_payload: bool = True) -> dict:
     """Collect Director AI status (optionally omit large benchmark JSON for fast dashboard)."""
-    reports_dir = Path("/app/data/reports/director")
+    reports_dir = director_reports_dir()
     report_count = 0
     last_report = None
     if reports_dir.exists():
@@ -474,10 +497,10 @@ def _collect_director_status(*, include_benchmark_payload: bool = True) -> dict:
                 stat = report_files[0].stat()
                 last_report = stat.st_mtime
             except Exception:
-                pass
+                log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
     # Check pending decisions
-    decisions_file = Path("/app/data/state/director_decisions.json")
+    decisions_file = director_decisions_path()
     pending_count = 0
     if decisions_file.exists():
         try:
@@ -485,22 +508,22 @@ def _collect_director_status(*, include_benchmark_payload: bool = True) -> dict:
                 data = json.load(f)
             pending_count = len(data.get("pending", []))
         except Exception:
-            pass
+            log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
-    benchmark_scorecard_path = Path("/app/data/reports/benchmark_scorecard.json")
-    benchmark_alerts_path = Path("/app/data/reports/benchmark_alerts.json")
     benchmark_scorecard = None
     benchmark_alert_count = 0
     if include_benchmark_payload and benchmark_scorecard_path.exists():
         try:
             benchmark_scorecard = json.loads(benchmark_scorecard_path.read_text(encoding="utf-8"))
         except Exception:
+            log_suppressed(logger, "dashboard: benchmark scorecard read failed", exc_info=True)
             benchmark_scorecard = None
     if benchmark_alerts_path.exists():
         try:
             alerts_doc = json.loads(benchmark_alerts_path.read_text(encoding="utf-8"))
             benchmark_alert_count = len(alerts_doc.get("alerts") or [])
         except Exception:
+            log_suppressed(logger, "dashboard: benchmark alerts read failed", exc_info=True)
             benchmark_alert_count = 0
 
     return {
@@ -515,7 +538,7 @@ def _collect_director_status(*, include_benchmark_payload: bool = True) -> dict:
 
 def _collect_escalation_summary(*, tail_only: bool = False) -> dict:
     """Collect escalation summary from escalation log file."""
-    log_file = Path("/app/data/logs/escalations.jsonl")
+    log_file = escalations_log_path()
     entries: list[dict] = []
     if log_file.exists():
         try:
@@ -537,7 +560,7 @@ def _collect_escalation_summary(*, tail_only: bool = False) -> dict:
                             except json.JSONDecodeError:
                                 pass
         except Exception:
-            pass
+            log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
     now = time.time()
     recent = [e for e in entries if e.get("timestamp", 0) > now - 3600]
@@ -616,7 +639,7 @@ def _build_full_metrics(*, include_product_pulses: bool = False) -> dict:
             "memory_percent": memory,
             "disk_percent": disk,
         },
-        "revenue": compute_dashboard_revenue("/app/data", time.time()),
+        "revenue": compute_dashboard_revenue(str(factory_data_root()), time.time()),
         "security": {
             "status": "healthy",
             "failed_logins_15min": 0,
@@ -671,7 +694,7 @@ def _build_quick_dashboard_metrics() -> dict:
             "memory_percent": memory,
             "disk_percent": disk,
         },
-        "revenue": compute_dashboard_revenue("/app/data", time.time()),
+        "revenue": compute_dashboard_revenue(str(factory_data_root()), time.time()),
         "security": {
             "status": "healthy",
             "failed_logins_15min": 0,
@@ -771,7 +794,7 @@ async def metrics_stream(request: Request):
 @router.get("/escalations")
 async def get_escalations(limit: int = 50):
     """Get recent escalation events (failures, timeouts, bypasses)."""
-    log_file = Path("/app/data/logs/escalations.jsonl")
+    log_file = escalations_log_path()
     entries = []
     if log_file.exists():
         try:
@@ -816,7 +839,7 @@ async def get_metrics_history(limit: int = 100):
 # ── Director Decisions ──────────────────────────────────────────────────────
 
 
-DECISIONS_FILE = "/app/data/state/director_decisions.json"
+DECISIONS_FILE = str(director_decisions_path())
 
 
 def _load_decisions() -> dict:
@@ -827,7 +850,7 @@ def _load_decisions() -> dict:
             with open(path, "r") as f:
                 return json.load(f)
         except Exception:
-            pass
+            log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
     return {"pending": [], "applied": []}
 
 
@@ -887,7 +910,7 @@ async def reject_decision(decision_id: str):
 @router.get("/providers")
 async def get_providers():
     """Get LLM provider status with available models."""
-    providers_file = Path("/app/data/config/model_providers.yaml")
+    providers_file = model_providers_path()
     ensure_model_providers_file(providers_file)
     providers = {}
     default_provider = None
@@ -921,8 +944,8 @@ async def get_providers():
                         elif "models" in data:
                             available_models = [m["name"] for m in data["models"]]
                 except Exception:
-                    pass
-            
+                    log_suppressed(logger, "dashboard: provider models probe failed", exc_info=True)
+
             # If no available models fetched, use configured ones
             if not available_models:
                 available_models = list(set(filter(None, [active_heavy, active_light])))
@@ -947,7 +970,7 @@ async def get_providers():
 async def update_provider_models(provider_name: str, request: Request):
     """Update model selection for a provider."""
     body = await request.json()
-    providers_file = Path("/app/data/config/model_providers.yaml")
+    providers_file = model_providers_path()
     
     if not providers_file.exists():
         raise HTTPException(status_code=404, detail="Providers config not found")
@@ -976,7 +999,7 @@ async def update_provider_models(provider_name: str, request: Request):
         if hasattr(request.app.state, 'llm_router'):
             request.app.state.llm_router.reload_config()
     except Exception:
-        pass
+        log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
     
     return {"message": f"Provider '{provider_name}' updated", "models": models}
 
@@ -984,7 +1007,7 @@ async def update_provider_models(provider_name: str, request: Request):
 @router.post("/providers/{provider_name}/test")
 async def test_provider(provider_name: str, request: Request):
     """Test a provider by sending a simple prompt to calibrate response quality."""
-    providers_file = Path("/app/data/config/model_providers.yaml")
+    providers_file = model_providers_path()
     
     if not providers_file.exists():
         raise HTTPException(status_code=404, detail="Providers config not found")
@@ -1071,7 +1094,7 @@ async def test_provider(provider_name: str, request: Request):
 
 def _load_providers_config() -> dict:
     """Load providers config from YAML file."""
-    providers_file = Path("/app/data/config/model_providers.yaml")
+    providers_file = model_providers_path()
     ensure_model_providers_file(providers_file)
     if not providers_file.exists():
         return {"providers": {}, "routing_rules": []}
@@ -1083,7 +1106,7 @@ def _load_providers_config() -> dict:
 def _save_providers_config(config: dict):
     """Save providers config to YAML file."""
     import yaml
-    providers_file = Path("/app/data/config/model_providers.yaml")
+    providers_file = model_providers_path()
     providers_file.parent.mkdir(parents=True, exist_ok=True)
     with open(providers_file, "w") as f:
         yaml.dump(config, f, default_flow_style=False)
@@ -1095,7 +1118,7 @@ async def _reload_llm_router(request: Request):
         if hasattr(request.app.state, 'llm_router'):
             await request.app.state.llm_router.reload_config()
     except Exception:
-        pass
+        log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
 
 DEFAULT_PROVIDER_TEMPLATE = {
@@ -1207,7 +1230,7 @@ async def update_provider(provider_name: str, request: Request):
 @router.post("/providers/{provider_name}/set-default")
 async def set_default_provider(provider_name: str, request: Request):
     """Set a provider as the default (primary) provider."""
-    providers_file = Path("/app/data/config/model_providers.yaml")
+    providers_file = model_providers_path()
     
     try:
         import yaml
@@ -1462,7 +1485,7 @@ async def get_agents():
             logger.warning("get_agents: SQLite task counts failed, trying pipeline.json")
 
     if not loaded_from_sqlite:
-        pipeline_path = Path("/app/data/state/pipeline.json")
+        pipeline_path = pipeline_json_path()
         if pipeline_path.exists():
             try:
                 import json as j
@@ -1475,10 +1498,10 @@ async def get_agents():
                     for task in product.get("tasks", []) or []:
                         _bump_completed(_normalize_pipeline_task(dict(task)))
             except Exception:
-                pass
+                log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
     # Load agent logs for last_active
-    log_dir = Path("/app/data/logs")
+    log_dir = logs_dir()
     if log_dir.exists():
         for log_file in log_dir.glob("*.jsonl"):
             agent_type = log_file.stem
@@ -1491,7 +1514,7 @@ async def get_agents():
                         last_entry = j.loads(lines[-1])
                         agents[agent_type]["last_active"] = last_entry.get("time")
                 except Exception:
-                    pass
+                    log_suppressed(logger, "dashboard: agent log tail read failed", exc_info=True)
 
     # Designer mirrors Architect telemetry (no designer.jsonl worker log)
     arch = agents.get("architect") or {}
@@ -1543,7 +1566,7 @@ async def get_security_logs(
 
     # Check both locations:
     # 1. Legacy flat file
-    legacy_file = Path("/app/data/logs/audit.jsonl")
+    legacy_file = legacy_audit_log_path()
     if legacy_file.exists():
         try:
             with open(legacy_file, "r") as f:
@@ -1554,10 +1577,10 @@ async def get_security_logs(
                         except json.JSONDecodeError:
                             pass
         except Exception:
-            pass
+            log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
     # 2. AuditLogger directory (hash-chained format)
-    audit_dir = Path("/app/data/logs/audit")
+    audit_dir = audit_log_dir()
     if audit_dir.exists():
         for log_file in sorted(audit_dir.glob("audit-*.jsonl"), reverse=True):
             try:
@@ -1571,7 +1594,7 @@ async def get_security_logs(
                         except json.JSONDecodeError:
                             pass
             except Exception:
-                pass
+                log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
     if since is not None or until is not None:
         filtered: list[dict[str, Any]] = []
@@ -1737,7 +1760,7 @@ async def get_llm_logs(
 
     limit = max(1, min(int(limit or 100), 2000))
     offset = max(0, min(int(offset or 0), 2_000_000))
-    log_file = Path("/app/data/logs/llm_calls.jsonl")
+    log_file = llm_calls_log_path()
     indexed: list[tuple[int, dict]] = []
     use_time_range = since is not None or until is not None
 
@@ -1788,7 +1811,7 @@ async def get_llm_logs(
 @router.get("/director/reports")
 async def get_director_reports():
     """Get Director AI reports list."""
-    reports_dir = Path("/app/data/reports/director")
+    reports_dir = director_reports_dir()
     reports = []
     
     if reports_dir.exists():
@@ -1806,7 +1829,7 @@ async def get_director_reports():
 @router.get("/director/report/{filename}")
 async def get_director_report(filename: str):
     """Get a specific Director AI report."""
-    report_file = Path(f"/app/data/reports/director/{filename}")
+    report_file = director_reports_dir() / filename
     if not report_file.exists():
         from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Report not found")
@@ -1822,7 +1845,7 @@ async def get_director_report(filename: str):
 
 def _load_analyst_brief_for_developer(product_id: str) -> str:
     """Analyst-authored handoff in state/{id}/market_research.json (same as DeveloperAgent)."""
-    path = Path(f"/app/data/state/{product_id}/market_research.json")
+    path = market_research_path(product_id)
     if not path.is_file():
         return ""
     try:
@@ -1841,7 +1864,7 @@ def _load_analyst_brief_for_developer(product_id: str) -> str:
 
 def _admin_merged_pipeline_product(product_id: str) -> Optional[dict]:
     """Merge pipeline.json shell with SQLite row when USE_SQLITE is on."""
-    pipeline_file = Path("/app/data/state/pipeline.json")
+    pipeline_file = pipeline_json_path()
     pj: dict = {}
     if pipeline_file.exists():
         try:
@@ -1885,13 +1908,13 @@ def _admin_merged_pipeline_product(product_id: str) -> Optional[dict]:
 def _load_spec_arch_from_disk(product_id: str) -> tuple[Optional[dict], Optional[dict]]:
     spec: Optional[dict] = None
     arch: Optional[dict] = None
-    spec_file = Path(f"/app/data/specs/{product_id}/specification.json")
+    spec_file = specification_path(product_id)
     if spec_file.exists():
         try:
             spec = json.loads(spec_file.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
             spec = None
-    arch_file = Path(f"/app/data/arch/{product_id}/architecture.json")
+    arch_file = architecture_json_path(product_id)
     if arch_file.exists():
         try:
             arch = json.loads(arch_file.read_text(encoding="utf-8"))
@@ -2002,14 +2025,14 @@ async def get_developer_handoff(product_id: str):
     if not isinstance(tags, list):
         tags = []
 
-    marketing_file = Path(f"/app/data/state/{product_id}/marketing_content.json")
+    marketing_file = marketing_content_path(product_id)
     if marketing_file.exists():
         try:
             marketing = json.loads(marketing_file.read_text(encoding="utf-8"))
             category = marketing.get("category", category)
             tags = marketing.get("tags", tags)
         except (json.JSONDecodeError, OSError):
-            pass
+            log_suppressed(logger, "dashboard: marketing_content read failed", exc_info=True)
 
     idea = str(merged.get("idea") or "")
     admin_instructions = str(merged.get("admin_instructions") or "")
@@ -2082,7 +2105,7 @@ async def get_pipeline_products(
     """Get pipeline products with pagination (same catalog as dashboard / storefront hints)."""
     safe_offset = max(offset, 0)
     safe_limit = max(limit, 1)
-    pipeline_file = Path("/app/data/state/pipeline.json")
+    pipeline_file = pipeline_json_path()
     products: dict = {}
     task_queue: list = []
     loaded_sqlite_snapshot = False
@@ -2252,21 +2275,21 @@ async def get_pipeline_products(
                 arch = product.get("architecture") or meta.get("architecture")
                 spec, arch = _slim_spec_arch_for_light_catalog(spec, arch)
             else:
-                spec_file = Path(f"/app/data/specs/{pid}/specification.json")
+                spec_file = specification_path(pid)
                 if spec_file.exists():
                     try:
                         spec = json.loads(spec_file.read_text())
                     except Exception:
-                        pass
+                        log_suppressed(logger, "dashboard: spec read failed for %s", pid, exc_info=True)
                 if spec is None:
                     spec = product.get("spec") or meta.get("spec")
 
-                arch_file = Path(f"/app/data/arch/{pid}/architecture.json")
+                arch_file = architecture_json_path(pid)
                 if arch_file.exists():
                     try:
                         arch = json.loads(arch_file.read_text())
                     except Exception:
-                        pass
+                        log_suppressed(logger, "dashboard: architecture read failed for %s", pid, exc_info=True)
                 if arch is None:
                     arch = product.get("architecture") or meta.get("architecture")
 
@@ -2305,7 +2328,7 @@ async def get_pipeline_products(
             tags = meta.get("tags") if meta.get("tags") is not None else product.get("tags", [])
             storefront_marketing_copy: dict[str, Any] = {}
             if not light:
-                marketing_file = Path(f"/app/data/state/{pid}/marketing_content.json")
+                marketing_file = marketing_content_path(pid)
                 if marketing_file.exists():
                     try:
                         marketing = json.loads(marketing_file.read_text())
@@ -2315,7 +2338,7 @@ async def get_pipeline_products(
                         if isinstance(inner, dict):
                             storefront_marketing_copy = inner
                     except Exception:
-                        pass
+                        log_suppressed(logger, "dashboard: marketing_content read failed for %s", pid, exc_info=True)
 
             row: dict[str, Any] = {
                 "id": pid,
@@ -2527,7 +2550,7 @@ async def patch_pipeline_product_storefront_admin(product_id: str, body: Storefr
 
 
 def _merge_marketing_copy(product_id: str, body: MarketplaceCopyPatch) -> None:
-    mkt_path = Path(f"/app/data/state/{product_id}/marketing_content.json")
+    mkt_path = marketing_content_path(product_id)
     raw: dict[str, Any]
     if mkt_path.exists():
         try:
@@ -2741,7 +2764,7 @@ def _unlink_path_quiet(p: str) -> None:
     try:
         Path(p).unlink(missing_ok=True)
     except OSError:
-        pass
+        log_suppressed(logger, "dashboard: temp file cleanup failed", exc_info=True)
 
 
 def _build_product_owner_export_zip(
@@ -2942,7 +2965,7 @@ async def download_product_owner_export_zip(
 @router.get("/products/{product_id}/spec")
 async def get_product_spec(product_id: str):
     """Get the specification for a product."""
-    spec_file = Path(f"/app/data/specs/{product_id}/specification.json")
+    spec_file = specification_path(product_id)
     if not spec_file.exists():
         from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Specification not found for this product")
@@ -2959,7 +2982,7 @@ async def get_product_spec(product_id: str):
 @router.get("/products/{product_id}/architecture")
 async def get_product_architecture(product_id: str):
     """Get persisted ``architecture.json`` for a product (Workshop / diff tooling)."""
-    arch_file = Path(f"/app/data/arch/{product_id}/architecture.json")
+    arch_file = architecture_json_path(product_id)
     if not arch_file.exists():
         raise HTTPException(status_code=404, detail="Architecture file not found for this product")
 
@@ -2987,13 +3010,13 @@ async def get_agent_logs(
     until: Optional[float] = Query(None, description="Unix seconds, inclusive upper bound on entry `time`"),
 ):
     """Get agent execution logs from all agent log files."""
-    logs_dir = Path("/app/data/logs")
+    logs_dir_path = logs_dir()
     all_logs: list[dict[str, Any]] = []
 
-    if not logs_dir.exists():
+    if not logs_dir_path.exists():
         return {"logs": [], "count": 0, "total": 0}
 
-    agent_files = list(logs_dir.glob("*.jsonl"))
+    agent_files = list(logs_dir_path.glob("*.jsonl"))
     if agent:
         agent_files = [f for f in agent_files if f.stem == agent]
 
@@ -3043,7 +3066,7 @@ async def get_director_analysis():
     from director.scheduler import DirectorScheduler
     from director.report_generator import ReportGenerator
 
-    reports_dir = Path("/app/data/reports/director")
+    reports_dir = director_reports_dir()
 
     # Count ALL reports in the directory (not just the ones we return)
     total_report_count = 0
@@ -3071,7 +3094,7 @@ async def get_director_analysis():
 @router.get("/discovery/ideas")
 async def get_discovery_ideas(limit: int = 20):
     """Read latest ranked discovery opportunities for admin Idea Queue UI."""
-    ranked_file = Path("/app/data/discovery/ranked_ideas.json")
+    ranked_file = discovery_dir() / "ranked_ideas.json"
     if not ranked_file.exists():
         return {"generated_at": None, "ranked_ideas": [], "count": 0, "signals_total": 0}
     try:
@@ -3081,7 +3104,7 @@ async def get_discovery_ideas(limit: int = 20):
     ideas = payload.get("ranked_ideas") if isinstance(payload.get("ranked_ideas"), list) else []
     n = max(1, min(int(limit), 100))
     source_health = {}
-    source_health_file = Path("/app/data/discovery/source_health.json")
+    source_health_file = discovery_dir() / "source_health.json"
     if source_health_file.exists():
         try:
             source_health = json.loads(source_health_file.read_text(encoding="utf-8"))
@@ -3102,8 +3125,8 @@ async def get_discovery_ideas(limit: int = 20):
 @router.get("/benchmark/scorecard")
 async def get_benchmark_scorecard():
     """Get latest benchmark scorecard + alerts produced by regression league."""
-    scorecard_path = Path("/app/data/reports/benchmark_scorecard.json")
-    alerts_path = Path("/app/data/reports/benchmark_alerts.json")
+    scorecard_path = benchmark_scorecard_path()
+    alerts_path = benchmark_alerts_path()
     scorecard = {}
     alerts = []
     if scorecard_path.exists():
@@ -3118,7 +3141,7 @@ async def get_benchmark_scorecard():
         except Exception:
             alerts = []
     status = {}
-    status_path = Path("/app/data/state/benchmark_status.json")
+    status_path = benchmark_status_path()
     if status_path.exists():
         try:
             status = json.loads(status_path.read_text(encoding="utf-8"))
@@ -3163,7 +3186,7 @@ def _build_investor_passrate_metrics(scorecard: dict) -> dict[str, Any]:
 
 
 def _read_spec_inner(product_id: str) -> dict[str, Any] | None:
-    spec_path = Path(f"/app/data/specs/{product_id}/specification.json")
+    spec_path = specification_path(product_id)
     if not spec_path.exists():
         return None
     try:
@@ -3175,7 +3198,7 @@ def _read_spec_inner(product_id: str) -> dict[str, Any] | None:
 
 
 def _write_spec_name(product_id: str, new_name: str) -> bool:
-    spec_path = Path(f"/app/data/specs/{product_id}/specification.json")
+    spec_path = specification_path(product_id)
     if not spec_path.exists():
         return False
     try:
@@ -3194,7 +3217,7 @@ def _write_spec_name(product_id: str, new_name: str) -> bool:
 
 
 def _read_marketing_inner(product_id: str) -> dict[str, Any] | None:
-    mkt_path = Path(f"/app/data/state/{product_id}/marketing_content.json")
+    mkt_path = marketing_content_path(product_id)
     if not mkt_path.exists():
         return None
     try:
@@ -3206,7 +3229,7 @@ def _read_marketing_inner(product_id: str) -> dict[str, Any] | None:
 
 
 def _write_marketing_name(product_id: str, new_name: str) -> bool:
-    mkt_path = Path(f"/app/data/state/{product_id}/marketing_content.json")
+    mkt_path = marketing_content_path(product_id)
     if not mkt_path.exists():
         return False
     try:
@@ -3270,23 +3293,15 @@ async def rename_existing_catalog_products():
 
 
 def _read_pipeline_state() -> dict[str, Any]:
-    p = Path("/app/data/state/pipeline.json")
-    if not p.exists():
-        return {"products": {}, "task_queue": [], "current_task_id": None}
-    try:
-        return json.loads(p.read_text(encoding="utf-8"))
-    except Exception:
-        return {"products": {}, "task_queue": [], "current_task_id": None}
+    from core.pipeline_state_writer import read_pipeline_state
+
+    return read_pipeline_state()
 
 
 def _write_pipeline_state(state: dict[str, Any]) -> bool:
-    p = Path("/app/data/state/pipeline.json")
-    try:
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
-        return True
-    except Exception:
-        return False
+    from core.pipeline_state_writer import write_pipeline_state
+
+    return write_pipeline_state(state)
 
 
 @router.post("/compliance/remediate-now")
@@ -3308,14 +3323,12 @@ async def run_catalog_compliance_remediation():
     report = harden_catalog_products(
         products=products,
         task_queue=task_queue,
-        data_root="/app/data",
+        data_root=str(factory_data_root()),
         now=time.time(),
     )
     state["products"] = products
     state["task_queue"] = task_queue
     saved = _write_pipeline_state(state)
-    if saved:
-        sync_sqlite_from_pipeline_json()
     return {
         **report,
         "state_persisted": saved,

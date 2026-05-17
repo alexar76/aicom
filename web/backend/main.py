@@ -25,7 +25,19 @@ from prometheus_client import make_asgi_app
 
 from web.backend.cors_settings import get_cors_allow_origins
 
-from core.paths import data_root as factory_data_root
+from core.logging_utils import log_suppressed
+from core.paths import (
+    benchmark_alerts_path,
+    benchmark_scorecard_path,
+    chat_messages_path,
+    data_root as factory_data_root,
+    discussions_seed_marker_path,
+    director_trigger_signal_path,
+    firewall_rules_path,
+    legacy_admin_path,
+    pipeline_db_path,
+    pipeline_json_path,
+)
 from core.pipeline_database import apply_pipeline_db_config_from_app_config, mask_database_url
 from web.backend.services.pipeline_database_admin import pipeline_db_status
 
@@ -58,7 +70,7 @@ logger = logging.getLogger(__name__)
 
 def _ensure_corporate_chat_welcome() -> None:
     """One-time welcome when chat file is missing or empty — explains how chat gets content."""
-    chat_path = Path("/app/data/state/chat_messages.json")
+    chat_path = chat_messages_path()
     msgs: list = []
     if chat_path.exists():
         try:
@@ -86,7 +98,7 @@ def _ensure_corporate_chat_welcome() -> None:
 
 def _ensure_discussion_seed_session() -> None:
     """Create a default discussion session when none exist (empty Brainstorming list)."""
-    marker = Path("/app/data/discussions/.seed_default_session")
+    marker = discussions_seed_marker_path()
     if marker.exists():
         return
     try:
@@ -131,8 +143,7 @@ async def lifespan(app: FastAPI):
 
     from security.firewall import FirewallManager
 
-    rules_path = factory_data_root() / "config" / "firewall_rules.json"
-    app.state.firewall = FirewallManager(str(rules_path))
+    app.state.firewall = FirewallManager(str(firewall_rules_path()))
 
     from web.backend.services.admin_users_store import ensure_legacy_admin_users_file
 
@@ -158,7 +169,7 @@ async def lifespan(app: FastAPI):
         app.state.llm_router = None
     
     # Load admin config
-    admin_file = Path("/app/data/config/admin.json")
+    admin_file = legacy_admin_path()
     if admin_file.exists():
         with open(admin_file, "r") as f:
             app.state.admin_config = json.load(f)
@@ -370,7 +381,7 @@ async def set_theme(request: Request, _admin: dict = Depends(require_admin_with_
 
 # ── Director AI Trigger ────────────────────────────────────────────────────
 # Signal the Director AI worker to run an analysis cycle
-DIRECTOR_TRIGGER_FILE = "/app/data/state/director_trigger.signal"
+DIRECTOR_TRIGGER_FILE = str(director_trigger_signal_path())
 
 
 @app.post("/api/admin/director/trigger")
@@ -629,9 +640,14 @@ async def test_telegram_notification(_admin: dict = Depends(require_admin_with_r
 # ── Admin Product Creation ────────────────────────────────────────────────
 # Allows admin to create products with specific instructions for the AI agents
 
-from pydantic import BaseModel, Field
+from web.backend.schemas.api_requests import (
+    BatchCreateIdeasRequest,
+    CreateProductRequest,
+    GuestLandingRequest,
+    RunDiscoveryRequest,
+)
 
-_PIPELINE_JSON = Path(os.environ.get("AICOM_PIPELINE_JSON", "/app/data/state/pipeline.json"))
+_PIPELINE_JSON = pipeline_json_path()
 
 _GUEST_LANDING_RATE: dict[str, list[float]] = {}
 
@@ -663,29 +679,16 @@ def _client_ip(request: Request) -> str:
 
 
 def _sync_sqlite_from_pipeline_json() -> None:
-    if os.environ.get("USE_SQLITE", "").lower() not in ("1", "true", "yes"):
-        return
-    db_path = os.environ.get("SQLITE_PATH", "/app/data/state/pipeline.db")
-    try:
-        from orchestrator.migrate import migrate
+    from core.pipeline_state_writer import sync_sqlite_from_pipeline_json
 
-        migrate(json_path=str(_PIPELINE_JSON), db_path=str(db_path))
-    except Exception as e:
-        logger.warning("SQLite sync after pipeline write skipped: %s", e)
+    sync_sqlite_from_pipeline_json(json_path=_PIPELINE_JSON, db_path=str(pipeline_db_path()))
 
 
 def _append_product_to_pipeline(product: dict) -> None:
-    state_file = _PIPELINE_JSON
-    if state_file.exists():
-        state = json.loads(state_file.read_text())
-    else:
-        state = {"products": {}, "task_queue": [], "current_task_id": None}
-    state.setdefault("task_queue", [])
-    state.setdefault("products", {})
-    state["products"][product["id"]] = product
-    state_file.parent.mkdir(parents=True, exist_ok=True)
-    state_file.write_text(json.dumps(state, indent=2))
-    _sync_sqlite_from_pipeline_json()
+    from core.pipeline_state_writer import append_product_to_pipeline_state
+
+    if not append_product_to_pipeline_state(product, pipeline_path=_PIPELINE_JSON):
+        raise RuntimeError(f"Failed to append product {product.get('id')} to pipeline store")
 
     try:
         from web.backend.services.telegram_pipeline_notify import notify_telegram_new_product
@@ -696,7 +699,7 @@ def _append_product_to_pipeline(product: dict) -> None:
             source="api",
         )
     except Exception:
-        pass
+        log_suppressed(logger, "telegram_pipeline_notify skipped after product append")
 
 
 def _investor_metrics_from_scorecard(scorecard: dict) -> dict:
@@ -780,36 +783,6 @@ def _investor_metrics_pipeline_storefront_proxy() -> dict | None:
         }
     except Exception:
         return None
-
-
-class CreateProductRequest(BaseModel):
-    idea: str
-    admin_instructions: Optional[str] = None
-    """marketing_landing | full_software — when omitted, inferred from idea + admin text."""
-
-    delivery_profile: Optional[str] = None
-    production_mode: bool = False
-    """UI locale at create time (en, ru, es, …). Default content language when brief is silent."""
-    interface_locale: Optional[str] = None
-    """auto | en | ru | … — explicit landing copy language; auto follows brief then interface_locale."""
-    content_locale: Optional[str] = None
-
-
-class BatchCreateIdeasRequest(BaseModel):
-    ideas: list[str]
-    mode: str = "continue_on_error"  # continue_on_error | fail_fast
-    max_immediate_start: int = 2
-    active_limit: int = 30
-    admin_instructions: Optional[str] = None
-    delivery_profile: Optional[str] = None
-    production_mode: bool = False
-    interface_locale: Optional[str] = None
-    content_locale: Optional[str] = None
-
-
-class RunDiscoveryRequest(BaseModel):
-    create_product: bool = True
-    top_k: int = 5
 
 
 @app.post("/api/admin/discovery/run")
@@ -1025,18 +998,15 @@ async def admin_create_products_batch(
     if queued:
         enqueue_batch_items(queued)
         # Best-effort immediate drain so user sees quick progress.
-        if _PIPELINE_JSON.exists():
-            state = json.loads(_PIPELINE_JSON.read_text(encoding="utf-8"))
-        else:
-            state = {"products": {}, "task_queue": [], "current_task_id": None}
+        from core.pipeline_state_writer import read_pipeline_state, write_pipeline_state
+
+        state = read_pipeline_state(json_path=_PIPELINE_JSON)
         drain_batch_queue_into_state(
             state=state,
             max_to_start=max(1, min(int(request.max_immediate_start), 10)),
             active_limit=max(1, int(request.active_limit)),
         )
-        _PIPELINE_JSON.parent.mkdir(parents=True, exist_ok=True)
-        _PIPELINE_JSON.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
-        _sync_sqlite_from_pipeline_json()
+        write_pipeline_state(state, json_path=_PIPELINE_JSON)
 
     return {
         "ok": True,
@@ -1064,10 +1034,6 @@ async def admin_retry_batch_failed(batch_id: str, _admin: dict = Depends(require
 
     retry = retry_failed_items(batch_id)
     return {"ok": True, **retry, "summary": summarize_batch(batch_id)}
-
-
-class GuestLandingRequest(BaseModel):
-    phrase: str = Field(..., min_length=8, max_length=2000)
 
 
 @app.post("/api/public/generate-landing")
@@ -1146,7 +1112,7 @@ async def public_generate_landing(request: Request, body: GuestLandingRequest):
                 details={"phrase_preview": phrase_clean[:160], "client_ip": ip},
             )
         except Exception:
-            pass
+            log_suppressed(logger, "security audit log skipped for guest landing %s", product_id)
         logger.info(
             "Guest pipeline started %s profile=%s phrase_len=%s ip=%s",
             product_id,
@@ -1172,8 +1138,8 @@ async def public_generate_landing(request: Request, body: GuestLandingRequest):
 
 @app.get("/api/benchmark")
 async def public_benchmark_metrics():
-    scorecard_path = Path("/app/data/reports/benchmark_scorecard.json")
-    alerts_path = Path("/app/data/reports/benchmark_alerts.json")
+    scorecard_path = benchmark_scorecard_path()
+    alerts_path = benchmark_alerts_path()
     scorecard = {}
     alerts = []
     if scorecard_path.exists():

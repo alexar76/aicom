@@ -30,7 +30,9 @@ from webauthn.helpers.structs import (
 
 logger = logging.getLogger(__name__)
 
-ADMIN_JSON = Path("/app/data/config/admin.json")
+from core.paths import legacy_admin_path
+
+ADMIN_JSON = legacy_admin_path()
 CHALLENGE_TTL_SEC = 300
 
 

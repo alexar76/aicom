@@ -14,21 +14,23 @@ services:
       - "${AICOM_PORT_API:-9081}:8081"
     volumes:
       - ./data:/app/data
+      # Required for sandbox compose previews and ephemeral Postgres (generated full-stack QA).
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Optional: LLM keys and other secrets in `.env` (chmod 600). Prefer file secrets:
+    #   data/secrets/llm/<provider>_api_key  or  docker-compose.secrets.yml overlay.
+    env_file:
+      - path: .env
+        required: false
     environment:
       # Admin → Settings (YAML overlay) must live under the ./data volume or it is lost on container recreate.
       AIFACTORY_CONFIG_YAML: /app/data/config/admin_config_overlay.yaml
       AIFACTORY_CONFIG_FRAGMENTS_DIR: /app/config/fragments
-      # Entrypoint loads persistent key from data/secrets/jwt_secret.key (do not use a weak default here).
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-}
+      # JWT: entrypoint sets JWT_SECRET_KEY from data/secrets/jwt_secret.key (never use an empty default here).
       USE_SQLITE: "true"
       SQLITE_PATH: /app/data/state/pipeline.db
       # Optional: switch pipeline store to PostgreSQL (Admin → Settings → Pipeline database)
       PIPELINE_DB_BACKEND: ${PIPELINE_DB_BACKEND:-sqlite}
       PIPELINE_DATABASE_URL: ${PIPELINE_DATABASE_URL:-}
-      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
-      GROQ_API_KEY: ${GROQ_API_KEY:-}
-      TOGETHER_API_KEY: ${TOGETHER_API_KEY:-}
       # Same container: Next.js SSR & explore pages call the API on loopback
       INTERNAL_API_URL: http://127.0.0.1:8081
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
@@ -70,8 +72,8 @@ services:
       # Run product docker-compose.yml in sandbox (DB + API + web); set 0 to disable
       AIFACTORY_SANDBOX_COMPOSE_PREVIEW: ${AIFACTORY_SANDBOX_COMPOSE_PREVIEW:-1}
       AIFACTORY_SANDBOX_DEMO_EMAIL: ${AIFACTORY_SANDBOX_DEMO_EMAIL:-sandbox.demo@aicom.local}
-      # Override in `.env` for production (openssl rand -base64 32). Legacy public demo was SandboxDemo!2026.
-      AIFACTORY_SANDBOX_DEMO_PASSWORD: ${AIFACTORY_SANDBOX_DEMO_PASSWORD:-AfSc7xK9mR2nL4vP8qW1jH0fT5dB3cZyEu}
+      # Set in `.env` or let entrypoint generate data/secrets/sandbox_demo_password on first start.
+      AIFACTORY_SANDBOX_DEMO_PASSWORD: ${AIFACTORY_SANDBOX_DEMO_PASSWORD:-}
       # Playwright deep crawl budget (see docs/pipeline-operations.md)
       AIFACTORY_BROWSER_MAX_PAGES: ${AIFACTORY_BROWSER_MAX_PAGES:-100}
       AIFACTORY_BROWSER_E2E_SERVE_MODE: ${AIFACTORY_BROWSER_E2E_SERVE_MODE:-auto}
@@ -120,10 +122,13 @@ services:
       - ./data/grafana:/var/lib/grafana
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
       - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    env_file:
+      - path: .env
+        required: false
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
-      # Set in .env — ./scripts/deploy.sh / fill_production_env.py auto-generate when missing.
-      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      # Required — no default. ./scripts/fill_production_env.py appends GRAFANA_ADMIN_PASSWORD when missing.
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?Set GRAFANA_ADMIN_PASSWORD in .env (see .env.example)}
       GF_INSTALL_PLUGINS: ""
     restart: unless-stopped
     networks:

@@ -60,7 +60,9 @@ class DirectorScheduler:
             "time": time.time(),
             **kwargs,
         }
-        log_path = Path("/app/data/logs/director.jsonl")
+        from core.paths import logs_dir
+
+        log_path = logs_dir() / "director.jsonl"
         try:
             log_path.parent.mkdir(parents=True, exist_ok=True)
             with open(log_path, "a") as f:

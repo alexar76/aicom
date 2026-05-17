@@ -15,4 +15,6 @@ export type PipelineFailureReport = {
     target_state: string;
   };
   operator_hint: string;
+  /** Queue/restart false FAILED — not a real agent failure at failed_stage. */
+  false_failed?: boolean;
 };

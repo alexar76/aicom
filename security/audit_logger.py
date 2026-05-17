@@ -94,11 +94,13 @@ class AuditLogger:
 
     def __init__(
         self,
-        log_dir: str = "/app/data/logs/audit",
+        log_dir: str | None = None,
         max_file_size_mb: int = 100,
         max_log_files: int = 10,
     ):
-        self.log_dir = Path(log_dir)
+        from core.paths import audit_log_dir
+
+        self.log_dir = Path(log_dir) if log_dir else audit_log_dir()
         self.log_dir.mkdir(parents=True, exist_ok=True)
         self.max_file_size = max_file_size_mb * 1024 * 1024
         self.max_log_files = max_log_files

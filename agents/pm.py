@@ -303,10 +303,12 @@ def _slug(s: str) -> str:
 
 
 def _load_existing_product_name_slugs(
-    data_root: str = "/app/data",
+    data_root: str | Path | None = None,
     exclude_product_id: str | None = None,
 ) -> set[str]:
-    specs_root = Path(data_root) / "specs"
+    from core.paths import resolve_data_root
+
+    specs_root = resolve_data_root(data_root) / "specs"
     out: set[str] = set()
     if not specs_root.exists():
         return out

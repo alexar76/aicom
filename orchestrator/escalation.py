@@ -17,7 +17,9 @@ from .state_machine import PipelineStateMachine, TaskStatus
 
 logger = logging.getLogger(__name__)
 
-ESCALATION_LOG_FILE = "/app/data/logs/escalations.jsonl"
+from core.paths import escalations_log_path
+
+ESCALATION_LOG_FILE = str(escalations_log_path())
 
 
 class EscalationHandler:

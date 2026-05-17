@@ -25,6 +25,7 @@ from web.backend.services.visual_quality_heuristics import (
     visual_quality_gate_enabled,
 )
 
+from core.paths import resolve_data_root
 from core.quality_settings import demo_quality_min_score, strict_demo_gates, visual_quality_strict
 
 # Shipped with the default code template; also match legacy generated files.
@@ -503,12 +504,12 @@ def _coverage_score(index_lower: str, keywords: list[str]) -> int:
 def assess_product_demo(
     product_id: str,
     spec: Optional[dict] = None,
-    data_root: str = "/app/data",
+    data_root: str | Path | None = None,
 ) -> dict[str, Any]:
     """
     Return a small report: score 0–100, human-readable issues, spec coverage heuristic.
     """
-    code_dir = Path(data_root) / "code" / product_id
+    code_dir = resolve_data_root(data_root) / "code" / product_id
     issues: list[dict[str, str]] = []
     index_html = _read_index_html(code_dir)
     css_text = _read_stylesheet(code_dir)

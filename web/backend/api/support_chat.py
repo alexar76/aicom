@@ -15,8 +15,9 @@ from pathlib import Path
 from typing import Any, Optional
 
 from fastapi import APIRouter, Header, HTTPException, Request
-from pydantic import BaseModel, Field
 
+from core.paths import support_sessions_dir
+from web.backend.schemas.api_requests import SupportCreateSessionRequest, SupportPostMessageRequest
 from web.backend.services import prompt_safety, support_agent
 from web.backend.services.support_agent import SupportTurnResult
 from web.backend.services.support_pipeline import (
@@ -28,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/support", tags=["support"])
 
-_SESSIONS_DIR = Path(os.environ.get("AIFACTORY_SUPPORT_SESSIONS_DIR", "/app/data/support/sessions"))
+_SESSIONS_DIR = support_sessions_dir()
 
 _RATE: dict[str, list[float]] = {}
 _RATE_WINDOW_SEC = 3600.0
@@ -108,30 +109,24 @@ def _save_session(data: dict[str, Any]) -> None:
     p.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
-def _sanitize_ui_context(raw: Optional[dict[str, Any]]) -> dict[str, str]:
-    if not isinstance(raw, dict):
+def _ui_context_dict(ctx: Optional[Any]) -> dict[str, str]:
+    if ctx is None:
         return {}
-    allowed = ("current_page", "active_tab", "selected_product_id")
+    if hasattr(ctx, "model_dump"):
+        raw = ctx.model_dump(exclude_none=True)
+    elif isinstance(ctx, dict):
+        raw = ctx
+    else:
+        return {}
     out: dict[str, str] = {}
-    for k in allowed:
+    for k in ("current_page", "active_tab", "selected_product_id"):
         v = raw.get(k)
         if v is None:
             continue
         s = str(v).strip()
-        if not s:
-            continue
-        out[k] = s[:200]
+        if s:
+            out[k] = s[:200]
     return out
-
-
-class CreateSessionBody(BaseModel):
-    product_id: Optional[str] = None
-    ui_context: Optional[dict[str, Any]] = None
-
-
-class PostMessageBody(BaseModel):
-    message: str = Field(..., min_length=1, max_length=4000)
-    ui_context: Optional[dict[str, Any]] = None
 
 
 @router.get("/status")
@@ -146,15 +141,13 @@ async def support_status():
 
 
 @router.post("/sessions")
-async def create_session(request: Request, body: CreateSessionBody):
+async def create_session(request: Request, body: SupportCreateSessionRequest):
     if not _truthy("AIFACTORY_SUPPORT_CHAT_ENABLED", "1"):
         raise HTTPException(status_code=503, detail="Support chat disabled")
     ip = _client_ip(request)
     _rate_check(ip, "sessions", _RATE_MAX_SESSIONS)
 
-    pid = (body.product_id or "").strip() or None
-    if pid and not pid.startswith("prod-"):
-        pid = None
+    pid = body.product_id
 
     sid = f"spt-{uuid.uuid4().hex[:16]}"
     now = time.time()
@@ -170,7 +163,7 @@ async def create_session(request: Request, body: CreateSessionBody):
         "meta": {
             "bot": support_agent.SUPPORT_BOT_NAME,
             "bot_slug": support_agent.SUPPORT_BOT_SLUG,
-            "ui_context": _sanitize_ui_context(body.ui_context),
+            "ui_context": _ui_context_dict(body.ui_context),
         },
     }
     _save_session(sess)
@@ -203,7 +196,7 @@ async def get_session(
 async def post_message(
     request: Request,
     session_id: str,
-    body: PostMessageBody,
+    body: SupportPostMessageRequest,
     x_aif_support_token: Optional[str] = Header(None, alias="X-AIF-Support-Token"),
 ):
     if not _truthy("AIFACTORY_SUPPORT_CHAT_ENABLED", "1"):
@@ -214,7 +207,7 @@ async def post_message(
     sess = _load_session(session_id)
     _verify_session_token(sess, x_aif_support_token)
     now = time.time()
-    ui_context = _sanitize_ui_context(body.ui_context)
+    ui_context = _ui_context_dict(body.ui_context)
     if ui_context:
         meta = sess.get("meta")
         if not isinstance(meta, dict):

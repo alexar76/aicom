@@ -182,7 +182,11 @@ class PipelineWorkerSidecarMixin:
                         failure_reason=product["failure_reason"],
                     )
                 except Exception:
-                    pass
+                    logger.debug(
+                        "pipeline_failed_notify failed for %s (marketplace readiness exhausted)",
+                        pid,
+                        exc_info=True,
+                    )
                 changed = True
                 logger.error(
                     "Marketplace readiness failed for %s and repair budget exhausted (%s/%s): %s",

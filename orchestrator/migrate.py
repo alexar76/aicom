@@ -20,15 +20,21 @@ import time
 from pathlib import Path
 from typing import Optional
 
+from core.paths import pipeline_db_path, pipeline_json_path
+
 from .sqlite_manager import SQLiteManager
 
 logger = logging.getLogger(__name__)
 
 
 def migrate(
-    json_path: str = "/app/data/state/pipeline.json",
-    db_path: str = "/app/data/state/pipeline.db",
+    json_path: str | None = None,
+    db_path: str | None = None,
 ) -> dict:
+    if json_path is None:
+        json_path = str(pipeline_json_path())
+    if db_path is None:
+        db_path = str(pipeline_db_path())
     """Read JSON state file and bulk-insert into SQLite.
 
     Args:
@@ -114,13 +120,13 @@ def main():
     )
     parser.add_argument(
         "--json",
-        default="/app/data/state/pipeline.json",
-        help="Path to the JSON state file (default: /app/data/state/pipeline.json)",
+        default=str(pipeline_json_path()),
+        help="Path to the JSON state file",
     )
     parser.add_argument(
         "--db",
-        default="/app/data/state/pipeline.db",
-        help="Path to the target SQLite database (default: /app/data/state/pipeline.db)",
+        default=str(pipeline_db_path()),
+        help="Path to the target SQLite database",
     )
     args = parser.parse_args()
 

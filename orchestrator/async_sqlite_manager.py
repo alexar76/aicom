@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import aiosqlite
 import sqlite3
 
 from .schema import SQLITE_SCHEMA
+
+logger = logging.getLogger(__name__)
 
 
 class AsyncSQLiteManager:
@@ -38,24 +41,24 @@ class AsyncSQLiteManager:
             try:
                 await self._conn.execute("ALTER TABLE products ADD COLUMN workspace_id TEXT NOT NULL DEFAULT 'default'")
             except Exception:
-                pass
+                logger.debug("products.workspace_id migration skipped (may exist)", exc_info=True)
             try:
                 await self._conn.execute("ALTER TABLE tasks ADD COLUMN workspace_id TEXT NOT NULL DEFAULT 'default'")
             except Exception:
-                pass
+                logger.debug("tasks.workspace_id migration skipped (may exist)", exc_info=True)
             await self._conn.executescript(SQLITE_SCHEMA)
         try:
             await self._conn.execute("ALTER TABLE products ADD COLUMN workspace_id TEXT NOT NULL DEFAULT 'default'")
         except Exception:
-            pass
+            logger.debug("products.workspace_id alter skipped", exc_info=True)
         try:
             await self._conn.execute("ALTER TABLE tasks ADD COLUMN workspace_id TEXT NOT NULL DEFAULT 'default'")
         except Exception:
-            pass
+            logger.debug("tasks.workspace_id alter skipped", exc_info=True)
         try:
             await self._conn.execute("ALTER TABLE tasks ADD COLUMN input TEXT")
         except Exception:
-            pass
+            logger.debug("tasks.input alter skipped", exc_info=True)
         await self._conn.commit()
 
     async def fetchall(self, query: str, params: tuple = ()) -> list[dict]:

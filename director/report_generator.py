@@ -13,6 +13,8 @@ import time
 from pathlib import Path
 from typing import Optional
 
+from core.paths import director_reports_dir, logs_dir
+
 logger = logging.getLogger(__name__)
 
 
@@ -27,8 +29,8 @@ class ReportGenerator:
     - Predictions and forecasts
     """
 
-    def __init__(self, reports_dir: str = "/app/data/reports/director"):
-        self.reports_dir = Path(reports_dir)
+    def __init__(self, reports_dir: str | Path | None = None):
+        self.reports_dir = Path(reports_dir) if reports_dir else director_reports_dir()
         self.reports_dir.mkdir(parents=True, exist_ok=True)
 
     @staticmethod
@@ -42,7 +44,7 @@ class ReportGenerator:
             "time": time.time(),
             **kwargs,
         }
-        log_path = Path("/app/data/logs/director.jsonl")
+        log_path = logs_dir() / "director.jsonl"
         try:
             log_path.parent.mkdir(parents=True, exist_ok=True)
             with open(log_path, "a") as f:

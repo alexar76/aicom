@@ -24,7 +24,9 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/marketing", tags=["marketing"])
 
-LOG_DIR = Path("/app/data/logs/marketing")
+from core.paths import marketing_logs_dir
+
+LOG_DIR = marketing_logs_dir()
 ANALYTICS_FILE = LOG_DIR / "events.jsonl"
 LEADS_FILE = LOG_DIR / "leads.jsonl"
 

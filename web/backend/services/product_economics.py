@@ -20,7 +20,9 @@ from llm.pricing_estimate import enrich_llm_log_entry
 
 logger = logging.getLogger(__name__)
 
-_LLM_LOG_PATH = Path("/app/data/logs/llm_calls.jsonl")
+from core.paths import llm_calls_log_path
+
+_LLM_LOG_PATH = llm_calls_log_path()
 
 
 # ── Public API ────────────────────────────────────────────────────────────────

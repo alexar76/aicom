@@ -18,6 +18,23 @@ def test_task_max_retries_default_is_seven():
     assert task_max_retries() >= 7
 
 
+def test_build_failure_report_false_failed_no_code():
+    product = {"id": "p1", "state": "FAILED", "idea": "landing"}
+    tasks = [
+        {
+            "status": "pending",
+            "agent_type": "developer",
+            "state": "DEV_FIXING",
+            "product_id": "p1",
+        }
+    ]
+    report = build_failure_report(product, tasks)
+    assert report.get("false_failed") is True
+    assert "queue" in report["cause_plain"].lower() or "restart" in report["cause_plain"].lower()
+    assert report["suggested_recovery"]["agent_type"] == "developer"
+    assert report.get("failed_stage") is None
+
+
 def test_build_failure_report_spec_gate_human_text():
     product = {
         "state": "FAILED",

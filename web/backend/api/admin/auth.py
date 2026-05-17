@@ -26,7 +26,9 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/admin/auth", tags=["admin-auth"])
 
-ADMIN_JSON = Path("/app/data/config/admin.json")
+from core.paths import legacy_admin_path
+
+ADMIN_JSON = legacy_admin_path()
 
 
 def _request_is_https(request: Request) -> bool:

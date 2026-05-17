@@ -43,6 +43,7 @@ from web.backend.services.product_naming import is_placeholder_product_name
 from web.backend.services.quality_constitution import evaluate_quality_constitution
 from web.backend.services.release_cockpit import evaluate_release_cockpit
 
+from core.paths import resolve_data_root
 from core.quality_settings import (
     marketplace_min_design_novelty,
     marketplace_min_release_score,
@@ -218,7 +219,7 @@ def evaluate_marketplace_quality(
     product_id: str,
     *,
     specification: Optional[dict] = None,
-    data_root: str = "/app/data",
+    data_root: str | Path | None = None,
     delivery_profile: Optional[str] = None,
 ) -> dict[str, Any]:
     """
@@ -229,7 +230,7 @@ def evaluate_marketplace_quality(
     """
     from core.delivery_profile import MARKETING_LANDING
 
-    root = Path(data_root)
+    root = resolve_data_root(data_root)
     reasons: list[str] = []
 
     gate_enabled = marketplace_quality_gate()

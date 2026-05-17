@@ -12,6 +12,8 @@ const DICT: Dict = {
   },
   'app.logout': { en: 'Logout', ru: 'Выйти', es: 'Cerrar sesión' },
   'app.language': { en: 'Language', ru: 'Язык', es: 'Idioma' },
+  'sidebar.expandMenu': { en: 'Expand menu', ru: 'Развернуть меню', es: 'Expandir menú' },
+  'sidebar.collapseMenu': { en: 'Collapse menu', ru: 'Свернуть меню', es: 'Contraer menú' },
   'newProduct.contentLanguage': {
     en: 'Landing & UI copy language',
     ru: 'Язык лендинга и UI-копирайта',

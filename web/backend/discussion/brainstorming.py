@@ -258,23 +258,28 @@ class BrainstormingSessionManager:
             "state": "new",
         }
 
-        # Write to pipeline state
-        pipeline_dir = "/app/data/state"
-        os.makedirs(pipeline_dir, exist_ok=True)
+        from core.pipeline_state_writer import append_product_to_pipeline_state
 
-        pipeline_path = f"{pipeline_dir}/pipeline.json"
+        pipeline_product = {
+            "id": product_id,
+            "idea": idea.title or idea.description or "",
+            "category": "saas",
+            "tags": list(idea.tags or []),
+            "delivery_profile": "full_software",
+            "state": "IDEA_RECEIVED",
+            "created_at": time.time(),
+            "updated_at": time.time(),
+            "tasks": [],
+            "metadata": {
+                "source": "brainstorming",
+                "source_session_id": session.session_id,
+                "source_idea_id": idea.idea_id,
+                "brainstorm_payload": product_data,
+            },
+        }
         try:
-            if os.path.exists(pipeline_path):
-                with open(pipeline_path, "r") as f:
-                    pipeline = json.load(f)
-            else:
-                pipeline = {"products": []}
-
-            pipeline["products"].append(product_data)
-            pipeline["total"] = len(pipeline["products"])
-
-            with open(pipeline_path, "w") as f:
-                json.dump(pipeline, f, indent=2, ensure_ascii=False)
+            if not append_product_to_pipeline_state(pipeline_product):
+                return None
 
             # Update the idea
             idea.converted_to_product = True

@@ -9,7 +9,7 @@
  *
  * Env:
  *   DOCS_SCREENSHOT_BASE_URL — default http://127.0.0.1:9080
- *   ADMIN_PASSWORD — default admin123
+ *   ADMIN_PASSWORD — required (bootstrap_admin.txt or your admin password)
  *
  * Sidebar tab order (see AdminSidebar.tsx, no `users` unless super_admin):
  *   0 Dashboard, 1 Setup wizard, 2 Live Monitor, 3 Pipeline, 4 New product,
@@ -30,7 +30,11 @@ const REPO_ROOT = path.resolve(FRONTEND_ROOT, '../..');
 const OUT = path.join(REPO_ROOT, 'docs/assets/screenshots');
 
 const BASE = process.env.DOCS_SCREENSHOT_BASE_URL || 'http://127.0.0.1:9080';
-const PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+const PASSWORD = process.env.ADMIN_PASSWORD;
+if (!PASSWORD) {
+  console.error('Set ADMIN_PASSWORD (e.g. from data/secrets/bootstrap_admin.txt)');
+  process.exit(1);
+}
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 

@@ -95,6 +95,9 @@ def main() -> int:
     if "GRAFANA_ADMIN_PASSWORD" not in keys:
         additions.append(("GRAFANA_ADMIN_PASSWORD", secrets.token_urlsafe(24)))
 
+    if "AIFACTORY_SANDBOX_DEMO_PASSWORD" not in keys:
+        additions.append(("AIFACTORY_SANDBOX_DEMO_PASSWORD", secrets.token_urlsafe(24)))
+
     if not additions:
         print("fill_production_env: nothing to add (all keys already present).")
         return 0

@@ -19,6 +19,7 @@ from typing import Any, Optional
 
 import yaml
 
+from core.paths import llm_pricing_config_path
 from llm.provider_ids import is_legacy_provider_id, normalize_llm_provider_id
 
 _yaml_cache: tuple[float, dict[str, Any]] = (0.0, {})
@@ -73,10 +74,7 @@ _DEFAULT_FALLBACK_PER_MTOK = 0.5
 
 
 def _pricing_yaml_path() -> Path:
-    raw = os.environ.get("AIFACTORY_LLM_PRICING_YAML", "").strip()
-    if raw:
-        return Path(raw)
-    return Path(os.environ.get("AIFACTORY_DATA_ROOT", "/app/data")) / "config" / "llm_pricing.yaml"
+    return llm_pricing_config_path()
 
 
 def _load_pricing_overrides() -> dict[str, Any]:

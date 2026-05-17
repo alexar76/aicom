@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from web.backend.services.demo_credentials import effective_sandbox_demo_password_for_compose
-from web.backend.services.sandbox_preview_api import pick_loopback_port
+from web.backend.services.sandbox_docker import pick_loopback_port
 from web.backend.services.sandbox_preview_network import (
     prepare_isolation_for_compose,
     remove_internal_network,

@@ -16,12 +16,12 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
-from core.paths import config_path
+from core.paths import config_path, pending_payments_path
 from core.config_merge import load_merged_config
 
 from fastapi import APIRouter, Header, HTTPException
-from pydantic import BaseModel
 from web3 import Web3
+from web.backend.schemas.api_requests import ConfirmPaymentRequest, CreatePaymentRequest
 from web3.exceptions import TransactionNotFound
 from web.backend.services.commerce import CommerceService
 from web.backend.services.storefront_pricing import checkout_usdt_from_sales_file
@@ -74,7 +74,7 @@ def _reload_addresses_from_config():
 _reload_addresses_from_config()
 
 # ── Payment tracking (memory + disk so metrics / restarts see pending state) ─
-PENDING_PAYMENTS_FILE = Path("/app/data/state/pending_payments.json")
+PENDING_PAYMENTS_FILE = pending_payments_path()
 _pending_payments: dict[str, dict] = {}
 commerce = CommerceService()
 
@@ -426,23 +426,6 @@ def _verify_solana_transaction(
 
     except Exception as exc:
         return {"verified": False, "error": f"Solana verification failed: {exc}"}
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# Pydantic models
-# ═════════════════════════════════════════════════════════════════════════════
-
-class CreatePaymentRequest(BaseModel):
-    product_id: str
-    chain: str = "base"
-    token: str = "USDT"
-    amount: Optional[float] = None
-    # Optional UTM / referral from storefront (e.g. ?ref=partner1)
-    referral_source: Optional[str] = None
-
-
-class ConfirmPaymentRequest(BaseModel):
-    tx_hash: str
 
 
 # ═════════════════════════════════════════════════════════════════════════════

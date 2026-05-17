@@ -84,11 +84,13 @@ class FirewallManager:
 
     def __init__(
         self,
-        rules_file: str = "/app/data/config/firewall_rules.json",
+        rules_file: str | None = None,
         *,
         fernet_key: Optional[str] = None,
     ):
-        self.rules_file = Path(rules_file)
+        from core.paths import firewall_rules_path
+
+        self.rules_file = Path(rules_file) if rules_file else firewall_rules_path()
         self._fernet_key_override = fernet_key
         self.rules: List[FirewallRule] = []
         self.rate_limits: Dict[str, RateLimitEntry] = {}

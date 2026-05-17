@@ -35,8 +35,8 @@ Try it out: [https://magic-ai-factory.com](https://magic-ai-factory.com)
 - Username: `admin`
 - Password: `demo123`
 
-> ⚠️ These credentials work **only on the public demo instance**.  
-> When self-hosting, you must set your own `ADMIN_PASSWORD` in `.env`.
+> ⚠️ `demo123` applies **only** to the public demo at magic-ai-factory.com — not to self-hosted installs.  
+> Self-hosted: bootstrap password (`data/secrets/bootstrap_admin.txt` or TTY prompt). See [docs/security.md](docs/security.md).
 
 #### Self-hosted (first install)
 

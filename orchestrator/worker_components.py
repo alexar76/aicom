@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import logging
 import os
 import time
 import uuid
 from typing import Callable
+
+logger = logging.getLogger(__name__)
 
 from core.throughput_limits import effective_max_running_tasks
 from orchestrator.task_queue_hygiene import (
@@ -277,7 +280,11 @@ class TaskOrchestrator:
                     failure_reason=err or None,
                 )
             except Exception:
-                pass
+                logger.debug(
+                    "pipeline_failed_notify failed for %s (task failure)",
+                    pid,
+                    exc_info=True,
+                )
             changed = True
         return changed
 
@@ -521,7 +528,7 @@ class PeerReviewEngine:
                     extra={"blockers": blockers[:8] if isinstance(blockers, list) else []},
                 )
             except Exception:
-                pass
+                logger.debug("agent_handoff_audit skipped (peer_review_block)", exc_info=True)
         product_state["state"] = "BUG_FOUND" if tgt_agent in ("developer", "hardening") else product_state.get("state", "")
         product_state["updated_at"] = time.time()
         return True

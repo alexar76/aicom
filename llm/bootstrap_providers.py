@@ -19,7 +19,7 @@ from typing import Any
 
 import yaml
 
-from core.paths import data_root, logs_dir
+from core.paths import data_root, logs_dir, model_providers_path
 from llm.pricing_estimate import migrate_llm_calls_provider_ids
 from llm.provider_ids import is_legacy_provider_id, normalize_llm_provider_id
 
@@ -39,13 +39,13 @@ def _example_candidates(config_path: Path) -> list[Path]:
     ]
 
 
-def ensure_model_providers_file(config_path: str | Path = "/app/data/config/model_providers.yaml") -> bool:
+def ensure_model_providers_file(config_path: str | Path | None = None) -> bool:
     """
     If model_providers.yaml is missing, copy the bundled example next to it.
 
     Returns True if the target file exists after the call (already there or created).
     """
-    p = Path(config_path)
+    p = Path(config_path) if config_path is not None else model_providers_path()
     if p.exists():
         return True
     for ex in _example_candidates(p):

@@ -10,10 +10,10 @@ router = APIRouter(prefix="/api/admin/release", tags=["admin-release"], dependen
 
 @router.get("/cockpit/{product_id}")
 async def release_cockpit(product_id: str):
-    return evaluate_release_cockpit(product_id, "/app/data")
+    return evaluate_release_cockpit(product_id)
 
 
 @router.post("/protocol/{product_id}/execute")
 async def release_protocol_execute(product_id: str):
-    return execute_release_protocol(product_id, "/app/data")
+    return execute_release_protocol(product_id)
 

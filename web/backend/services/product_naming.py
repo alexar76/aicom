@@ -107,8 +107,10 @@ def is_template_product(product: dict[str, Any], spec: dict[str, Any] | None, ma
     return any(k in blob for k in ("template", "starter", "boilerplate", "landing template"))
 
 
-def _existing_names_from_specs(data_root: str = "/app/data") -> set[str]:
-    root = Path(data_root) / "specs"
+def _existing_names_from_specs(data_root: str | Path | None = None) -> set[str]:
+    from core.paths import resolve_data_root
+
+    root = resolve_data_root(data_root) / "specs"
     out: set[str] = set()
     if not root.exists():
         return out
@@ -148,7 +150,7 @@ def resolve_product_name(
     spec: dict[str, Any] | None,
     marketing: dict[str, Any] | None,
     used_names: set[str] | None = None,
-    data_root: str = "/app/data",
+    data_root: str | Path | None = None,
 ) -> tuple[str, bool]:
     """Return (resolved_name, is_template)."""
     used = set(used_names or set())

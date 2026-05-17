@@ -5,7 +5,8 @@ Security / ops:
   - Off by default (`AIFACTORY_SANDBOX_PREVIEW_API=1` to enable).
   - Binds **127.0.0.1** only — reachable only via same-host reverse proxy.
   - Subprocess runs generated code (same trust model as pipeline QA running dev servers).
-  - Does **not** auto `pip install`; missing deps surface in stderr logs.
+  - Auto-installs ``requirements.txt`` + common drivers (aiosqlite/asyncpg) before uvicorn.
+  - Ephemeral Postgres via ``docker run`` when generated code requires PostgreSQL (needs Docker socket).
 
 Future: Node/Nest adapter behind the same proxy prefix.
 """
@@ -21,6 +22,9 @@ import time
 from pathlib import Path
 from typing import Any, Optional
 
+from web.backend.services.sandbox_docker import pick_loopback_port, stop_ephemeral_services
+from web.backend.services.sandbox_preview_env import build_fastapi_preview_env
+
 logger = logging.getLogger(__name__)
 
 # sandbox_id → uvicorn Popen (not JSON-serializable — keep out of API responses)
@@ -35,18 +39,11 @@ def register_preview_proc(sandbox_id: str, proc: Optional[subprocess.Popen]) -> 
 def stop_preview_for_sandbox(sandbox_id: str) -> None:
     proc = _preview_procs.pop(sandbox_id, None)
     terminate_preview_process(proc)
+    stop_ephemeral_services(sandbox_id)
 
 
 def preview_api_enabled() -> bool:
     return os.environ.get("AIFACTORY_SANDBOX_PREVIEW_API", "").strip().lower() in ("1", "true", "yes")
-
-
-def pick_loopback_port() -> int:
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(("127.0.0.1", 0))
-    _, port = s.getsockname()
-    s.close()
-    return int(port)
 
 
 def _file_mentions_fastapi(path: Path) -> bool:
@@ -110,30 +107,21 @@ def start_fastapi_preview(
     cwd: Path = info["cwd"]
     module: str = info["module"]
 
-    for req_path in (cwd / "requirements.txt", cwd.parent / "requirements.txt"):
-        if req_path.is_file():
-            try:
-                subprocess.run(
-                    [sys.executable, "-m", "pip", "install", "-q", "-r", str(req_path)],
-                    capture_output=True,
-                    text=True,
-                    timeout=180,
-                    check=False,
-                )
-            except (subprocess.TimeoutExpired, OSError) as e:
-                logger.warning("sandbox_preview_api: pip install skipped (%s)", e)
-            break
+    env, prep_meta = build_fastapi_preview_env(
+        sandbox_id=sandbox_id,
+        code_dir=code_dir,
+        cwd=cwd,
+    )
+    if prep_meta.get("postgres_status") == "docker_unavailable" and prep_meta.get("postgres_ephemeral") is not True:
+        from web.backend.services.sandbox_preview_env import code_requires_postgres
 
-    # Generated FastAPI+Jinja stacks often omit jinja2 in requirements.txt.
+        if code_requires_postgres(code_dir):
+            return None, None, "postgres_required_no_docker"
+
     try:
-        import jinja2  # noqa: F401
-    except ImportError:
-        subprocess.run(
-            [sys.executable, "-m", "pip", "install", "-q", "jinja2"],
-            capture_output=True,
-            timeout=60,
-            check=False,
-        )
+        timeout_sec = float(os.environ.get("AIFACTORY_SANDBOX_PREVIEW_STARTUP_TIMEOUT", "45"))
+    except ValueError:
+        timeout_sec = 45.0
 
     cmd = [
         sys.executable,
@@ -145,11 +133,6 @@ def start_fastapi_preview(
         "--port",
         str(port),
     ]
-    env = os.environ.copy()
-    env.setdefault("PYTHONPATH", str(cwd))
-    if str(cwd) not in env.get("PYTHONPATH", ""):
-        env["PYTHONPATH"] = str(cwd) + os.pathsep + env.get("PYTHONPATH", "")
-
     try:
         proc = subprocess.Popen(
             cmd,

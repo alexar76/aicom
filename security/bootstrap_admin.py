@@ -18,11 +18,13 @@ import sys
 import time
 from pathlib import Path
 
+from core.paths import admin_users_path, bootstrap_admin_secret_path, legacy_admin_path
+
 logger = logging.getLogger(__name__)
 
-ADMIN_JSON = Path("/app/data/config/admin.json")
-USERS_JSON = Path(os.environ.get("ADMIN_USERS_PATH", "/app/data/config/admin_users.json"))
-BOOTSTRAP_SECRET = Path("/app/data/secrets/bootstrap_admin.txt")
+ADMIN_JSON = legacy_admin_path()
+USERS_JSON = admin_users_path()
+BOOTSTRAP_SECRET = bootstrap_admin_secret_path()
 
 
 def _users_json_path() -> Path:

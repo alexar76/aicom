@@ -15,9 +15,9 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from web.backend.services.marketplace_quality import evaluate_marketplace_quality
-
+from core.paths import resolve_data_root
 from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile
+from web.backend.services.marketplace_quality import evaluate_marketplace_quality
 
 logger = logging.getLogger(__name__)
 
@@ -28,9 +28,10 @@ def _truthy(name: str, default: str = "1") -> bool:
     return os.environ.get(name, default).strip().lower() in ("1", "true", "yes")
 
 
-def _product_has_code(pid: str, data_root: str = "/app/data") -> bool:
+def _product_has_code(pid: str, data_root: str | Path | None = None) -> bool:
     """Same rules as storefront: manifest lists files that exist on disk."""
-    manifest_path = Path(data_root) / "code" / pid / "code_manifest.json"
+    product_code = resolve_data_root(data_root) / "code" / pid
+    manifest_path = product_code / "code_manifest.json"
     if not manifest_path.exists():
         return False
     try:
@@ -38,18 +39,17 @@ def _product_has_code(pid: str, data_root: str = "/app/data") -> bool:
         files = manifest.get("files", [])
         if not files:
             return False
-        code_dir = Path(data_root) / "code" / pid
         for f_entry in files:
             fpath = f_entry.get("path") or f_entry.get("file_path", "")
-            if fpath and (code_dir / fpath).exists():
+            if fpath and (product_code / fpath).exists():
                 return True
         return False
     except (OSError, json.JSONDecodeError):
         return False
 
 
-def _load_spec_inner(pid: str, data_root: str = "/app/data") -> dict | None:
-    spec_path = Path(data_root) / "specs" / pid / "specification.json"
+def _load_spec_inner(pid: str, data_root: str | Path | None = None) -> dict | None:
+    spec_path = resolve_data_root(data_root) / "specs" / pid / "specification.json"
     if not spec_path.is_file():
         return None
     try:
@@ -75,7 +75,7 @@ def apply_policy_audit(
     task_queue: list,
     now: float,
     *,
-    data_root: str = "/app/data",
+    data_root: str | Path | None = None,
 ) -> bool:
     """
     Audit COMPLETED / DEPLOYED products against current marketplace quality rules.
@@ -196,14 +196,7 @@ def apply_policy_audit(
 
 
 def sync_sqlite_from_pipeline_json() -> None:
-    """After updating pipeline.json, refresh SQLite so API/storefront see changes."""
-    if not _truthy("USE_SQLITE", "0"):
-        return
-    try:
-        from orchestrator.migrate import migrate
+    """Legacy hook — worker persists via SQL; JSON→SQL import only when explicitly allowed."""
+    from core.pipeline_state_writer import sync_sqlite_from_pipeline_json as _sync
 
-        db_path = os.environ.get("SQLITE_PATH", "/app/data/state/pipeline.db")
-        migrate(json_path="/app/data/state/pipeline.json", db_path=db_path)
-        logger.info("SQLite synced from pipeline.json after policy audit")
-    except Exception:
-        logger.exception("SQLite sync after policy audit failed")
+    _sync()

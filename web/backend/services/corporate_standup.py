@@ -20,9 +20,11 @@ from web.backend.services.owner_chat_routing import format_standup_owner_context
 
 logger = logging.getLogger(__name__)
 
-ADMIN_CONFIG_FILE = Path("/app/data/config/admin.json")
-CHAT_FILE = Path("/app/data/state/chat_messages.json")
-PIPELINE_FILE = Path("/app/data/state/pipeline.json")
+from core.paths import chat_messages_path, legacy_admin_path, pipeline_json_path
+
+ADMIN_CONFIG_FILE = legacy_admin_path()
+CHAT_FILE = chat_messages_path()
+PIPELINE_FILE = pipeline_json_path()
 
 AGENT_ROLES = ("pm", "developer", "qa", "marketing", "devops")
 

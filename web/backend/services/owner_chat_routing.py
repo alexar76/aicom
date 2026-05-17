@@ -16,10 +16,17 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-CHAT_FILE = Path("/app/data/state/chat_messages.json")
-PIPELINE_FILE = Path("/app/data/state/pipeline.json")
-FEEDBACK_BASE = Path("/app/data/state/feedback")
-DIRECTIVES_FILE = Path("/app/data/state/owner_general_directives.json")
+from core.paths import (
+    chat_messages_path,
+    feedback_state_dir,
+    owner_general_directives_path,
+    pipeline_json_path,
+)
+
+CHAT_FILE = chat_messages_path()
+PIPELINE_FILE = pipeline_json_path()
+FEEDBACK_BASE = feedback_state_dir()
+DIRECTIVES_FILE = owner_general_directives_path()
 
 MAX_PRODUCTS_IN_PROMPT = 80
 

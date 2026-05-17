@@ -5,14 +5,17 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.paths import benchmark_scorecard_path, resolve_data_root
+
 # Built-in hard gate thresholds (not configurable via env).
 BUILTIN_MIN_PASS_RATE = 0.80
 BUILTIN_MAX_SCORECARD_AGE_SEC = 36 * 3600
 BUILTIN_MIN_RUNS_7D = 3
 
 
-def evaluate_benchmark_gate(data_root: str = "/app/data") -> dict[str, Any]:
-    scorecard_path = Path(data_root) / "reports" / "benchmark_scorecard.json"
+def evaluate_benchmark_gate(data_root: str | Path | None = None) -> dict[str, Any]:
+    root = resolve_data_root(data_root)
+    scorecard_path = benchmark_scorecard_path() if data_root is None else root / "reports" / "benchmark_scorecard.json"
     if not scorecard_path.is_file():
         return {
             "passed": False,

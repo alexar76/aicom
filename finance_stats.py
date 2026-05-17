@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.paths import resolve_data_root
 from finance_schemas import parse_orders_blob, parse_pending_payments_blob
 
 logger = logging.getLogger(__name__)
@@ -67,14 +68,14 @@ def load_pending_payments(pending_path: Path) -> dict[str, Any]:
 
 
 def compute_financial_metrics(
-    data_root: str | Path = "/app/data",
+    data_root: str | Path | None = None,
     now: float | None = None,
 ) -> dict[str, Any]:
     """
     Full financial snapshot from orders.json + pending_payments.json.
     All monetary aggregates include approximate USD for SOL/ETH via env rates.
     """
-    root = Path(data_root)
+    root = resolve_data_root(data_root)
     now = now or time.time()
     orders_path = root / "store" / "orders.json"
     pending_path = root / "state" / "pending_payments.json"
@@ -165,7 +166,7 @@ def compute_financial_metrics(
 
 
 def compute_dashboard_revenue(
-    data_root: str | Path = "/app/data",
+    data_root: str | Path | None = None,
     now: float | None = None,
 ) -> dict[str, Any]:
     """Subset for admin dashboard (backward-compatible keys + detail)."""

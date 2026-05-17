@@ -14,6 +14,7 @@ import time
 from pathlib import Path
 from typing import Optional
 
+from core.paths import director_decisions_path
 from .state_machine import PipelineStateMachine
 from .timeout_manager import TimeoutManager
 
@@ -35,11 +36,11 @@ class DirectorIntegration:
         self,
         state_machine: PipelineStateMachine,
         timeout_manager: TimeoutManager,
-        decisions_path: str = "/app/data/state/director_decisions.json",
+        decisions_path: str | Path | None = None,
     ):
         self.state_machine = state_machine
         self.timeout_manager = timeout_manager
-        self.decisions_path = decisions_path
+        self.decisions_path = str(decisions_path or director_decisions_path())
         self.db_path = self._resolve_db_path(decisions_path)
         self._conn: sqlite3.Connection | None = None
         self._pending_decisions: list[dict] = []

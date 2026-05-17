@@ -58,7 +58,6 @@ async def test_full_pipeline_smoke_sqlite(monkeypatch, tmp_path: Path):
     tasks = state["task_queue"]
     assert "prod-smoke" in products
     assert products["prod-smoke"]["state"] in ("MARKET_RESEARCHED", "SPEC_WRITTEN")
-    assert any(t.get("agent_type") == "analyst" and t.get("status") == "completed" for t in tasks)
     assert any(t.get("agent_type") == "pm" and t.get("status") in ("pending", "running", "completed") for t in tasks)
 
     # Persistence verification: restart-style read from SQLite.
@@ -66,5 +65,8 @@ async def test_full_pipeline_smoke_sqlite(monkeypatch, tmp_path: Path):
     await sm2.initialize()
     persisted_products = await sm2.get_all_products()
     persisted_tasks = await sm2.get_all_tasks()
+    assert any(
+        t.get("agent_type") == "analyst" and t.get("status") == "completed" for t in persisted_tasks
+    )
     assert any(p.get("id") == "prod-smoke" for p in persisted_products)
     assert any(t.get("product_id") == "prod-smoke" for t in persisted_tasks)

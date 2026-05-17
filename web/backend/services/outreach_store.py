@@ -21,7 +21,9 @@ MAX_ANNOUNCEMENTS = 500
 
 
 def outreach_dir() -> Path:
-    return Path(os.environ.get("AIFACTORY_OUTREACH_DIR", "/app/data/outreach"))
+    from core.paths import data_root
+
+    return Path(os.environ.get("AIFACTORY_OUTREACH_DIR", str(data_root() / "outreach")))
 
 
 def channels_path() -> Path:

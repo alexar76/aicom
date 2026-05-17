@@ -87,19 +87,14 @@ def test_archive_superseded_failed_tasks_cancels_row():
     assert task_queue[0]["status"] == "cancelled"
 
 
-def test_false_failed_detected_when_already_terminal(monkeypatch):
-    monkeypatch.setattr(
-        "web.backend.api.products._product_has_code",
-        lambda _pid: True,
-    )
+def test_false_failed_detected_when_already_terminal():
     product = {"id": "p1", "state": "FAILED", "idea": "x", "failure_reason": ""}
     task = {
         "id": "t1",
         "product_id": "p1",
-        "agent_type": "pm",
-        "state": "SPEC_WRITTEN",
-        "status": "failed",
-        "error": "Specification failed quality gate",
+        "agent_type": "developer",
+        "state": "DEV_FIXING",
+        "status": "pending",
     }
     assert is_likely_false_failed_product(product, [task]) is True
     products = {"p1": product}

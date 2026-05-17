@@ -37,6 +37,7 @@ from web.backend.services.sandbox_compose_preview import (
     start_compose_preview,
     stop_compose_for_sandbox,
 )
+from core.paths import code_dir, pipeline_json_path, sandbox_registry_path, specs_dir, product_state_dir
 from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 from web.backend.services.sandbox_static_rewrite import (
     SANDBOX_HTML_CSP,
@@ -63,7 +64,7 @@ router = APIRouter(prefix="/api/sandbox", tags=["sandbox"])
 # product_id + sandbox_id; uvicorn / compose backends are best-effort: ports
 # that survived the restart (e.g. an external compose stack) keep working, the
 # rest fail at proxy time with 502/503 rather than hiding the sandbox entirely.
-_SANDBOX_REGISTRY_PATH = Path("/app/data/state/sandboxes.json")
+_SANDBOX_REGISTRY_PATH = sandbox_registry_path()
 _active_sandboxes: dict[str, dict] = {}
 
 
@@ -107,8 +108,8 @@ def _lookup_sandbox(sandbox_id: str) -> Optional[dict]:
 
 def _get_product_code_dir(product_id: str) -> Optional[Path]:
     """Get the code directory for a product, if it exists."""
-    code_dir = Path(f"/app/data/code/{product_id}")
-    return code_dir if code_dir.exists() else None
+    root = code_dir(product_id)
+    return root if root.exists() else None
 
 
 def _should_try_fastapi_preview(code_dir: Path, compose_ok: bool) -> bool:
@@ -774,7 +775,7 @@ async def list_active_sandboxes():
 @router.post("/git/init/{product_id}")
 async def git_init(product_id: str, remote_url: str = ""):
     """Initialize a git repository for the product's generated code."""
-    code_dir = Path(f"/app/data/code/{product_id}")
+    code_dir = code_dir(product_id)
     if not code_dir.exists():
         raise HTTPException(status_code=404, detail="No code directory found for this product")
 
@@ -835,7 +836,7 @@ async def git_init(product_id: str, remote_url: str = ""):
 @router.post("/git/push/{product_id}")
 async def git_push(product_id: str, remote: str = "origin", branch: str = "main"):
     """Commit any pending changes and push to the configured remote."""
-    code_dir = Path(f"/app/data/code/{product_id}")
+    code_dir = code_dir(product_id)
     repo_dir = code_dir / ".git"
     if not repo_dir.exists():
         raise HTTPException(status_code=400, detail="Git repository not initialized. Call git/init first.")
@@ -888,7 +889,7 @@ async def git_push(product_id: str, remote: str = "origin", branch: str = "main"
 @router.get("/git/status/{product_id}")
 async def git_status(product_id: str):
     """Get git status for a product's codebase."""
-    code_dir = Path(f"/app/data/code/{product_id}")
+    code_dir = code_dir(product_id)
     repo_dir = code_dir / ".git"
     if not repo_dir.exists():
         return {"status": "not_initialized", "product_id": product_id}
@@ -942,7 +943,7 @@ async def git_status(product_id: str):
 
 def _product_has_code(product_id: str) -> bool:
     """Check if a product has actual generated code files on disk."""
-    manifest_path = Path(f"/app/data/code/{product_id}/code_manifest.json")
+    manifest_path = code_dir(product_id) / "code_manifest.json"
     if not manifest_path.exists():
         return False
     try:
@@ -951,7 +952,7 @@ def _product_has_code(product_id: str) -> bool:
         files = manifest.get("files", [])
         if not files:
             return False
-        code_dir = Path(f"/app/data/code/{product_id}")
+        code_dir = code_dir(product_id)
         for f_entry in files:
             fpath = f_entry.get("path") or f_entry.get("file_path", "")
             if fpath and (code_dir / fpath).exists():
@@ -963,7 +964,7 @@ def _product_has_code(product_id: str) -> bool:
 
 def _product_has_html_files(product_id: str) -> bool:
     """Check if a product has at least one .html file in its code directory."""
-    code_dir = Path(f"/app/data/code/{product_id}")
+    code_dir = code_dir(product_id)
     if not code_dir.exists():
         return False
     try:
@@ -981,11 +982,13 @@ def _product_has_html_files(product_id: str) -> bool:
 async def list_sandboxable_products():
     """List products that have code directories available for sandbox/git.
     Includes readiness indicators so the UI can warn about incomplete sandboxes."""
-    code_base = Path("/app/data/code")
+    from core.paths import data_root
+
+    code_base = data_root() / "code"
     products = []
 
     # Load pipeline state to get product names (from idea field or metadata)
-    pipeline_state_file = Path("/app/data/state/pipeline.json")
+    pipeline_state_file = pipeline_json_path()
     pipeline_products = {}
     if pipeline_state_file.exists():
         try:
@@ -1019,7 +1022,7 @@ async def list_sandboxable_products():
 
                 # Fallback: try to load from spec file
                 if not product_name:
-                    spec_file = Path(f"/app/data/specs/{pid}/specification.json")
+                    spec_file = specs_dir(pid) / "specification.json"
                     if spec_file.exists():
                         try:
                             with open(spec_file) as f:
@@ -1030,7 +1033,7 @@ async def list_sandboxable_products():
 
                 # Fallback: try marketing content
                 if not product_name:
-                    mkt_file = Path(f"/app/data/state/{pid}/marketing_content.json")
+                    mkt_file = product_state_dir(pid) / "marketing_content.json"
                     if mkt_file.exists():
                         try:
                             with open(mkt_file) as f:

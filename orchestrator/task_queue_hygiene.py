@@ -88,14 +88,29 @@ _FALSE_FAILED_ERROR_MARKERS = (
 )
 
 
+def _active_repair_tasks(product_id: str, task_queue: list) -> list[dict]:
+    out: list[dict] = []
+    for t in task_queue:
+        if str(t.get("product_id") or "") != product_id:
+            continue
+        if str(t.get("status") or "").lower() not in ("pending", "running"):
+            continue
+        agent = str(t.get("agent_type") or "").lower()
+        state = str(t.get("state") or "").upper()
+        if (agent, state) in _REPAIR_AGENT_STATES:
+            out.append(t)
+    return out
+
+
 def is_likely_false_failed_product(product: dict, task_queue: list) -> bool:
     """
-    Detect products marked FAILED only because stale queue rows were retried on worker restart.
+    Detect products marked FAILED only because stale queue rows were retried on worker restart,
+    or terminal FAILED stuck while a repair task is already queued.
     """
     ps = str(product.get("state") or "").upper()
     if ps != "FAILED":
         return False
-    pid = str(product.get("id") or "")
+    pid = str(product.get("id") or product.get("product_id") or "")
     if not pid:
         return False
 
@@ -107,37 +122,42 @@ def is_likely_false_failed_product(product: dict, task_queue: list) -> bool:
     fr = str(product.get("failure_reason") or product.get("error") or "").lower()
     if any(marker in fr for marker in _FALSE_FAILED_ERROR_MARKERS):
         return True
-    # Empty failure_reason + code on disk matches the restart false-FAILED bug path.
+
+    # FAILED with repair already queued but no failed task — state/desync after restart.
+    if not failed_rows and _active_repair_tasks(pid, task_queue):
+        return True
+
+    # Empty failure_reason — typical false-FAILED from retry_failed_tasks on stale PM rows.
     if not fr.strip():
-        try:
-            from web.backend.api.products import _product_has_code
+        return True
 
-            return _product_has_code(pid)
-        except Exception:
-            return False
-    if "specification failed quality gate" in fr:
-        try:
-            from web.backend.api.products import _product_has_code
-
-            return _product_has_code(pid)
-        except Exception:
-            return False
+    if "specification failed quality gate" in fr and not failed_rows:
+        return True
     return False
 
 
-def recovery_state_after_false_failed(product: dict) -> str:
+def recovery_state_after_false_failed(product: dict, task_queue: list | None = None) -> str:
     """Pick a safe non-terminal state when undoing a false FAILED."""
     ps = str(product.get("state") or "").upper()
     if ps != "FAILED":
         return ps
-    pid = str(product.get("id") or "")
+    pid = str(product.get("id") or product.get("product_id") or "")
+    tasks = task_queue or []
+    repair = _active_repair_tasks(pid, tasks) if pid else []
+    if repair:
+        # Match the queued repair task (usually DEV_FIXING).
+        st = str(repair[0].get("state") or "").upper()
+        if st == "DEV_FIXING":
+            return "BUG_FOUND"
+        if st:
+            return st
     try:
         from web.backend.api.products import _product_has_code
 
         if pid and _product_has_code(pid):
             return "BUG_FOUND"
     except Exception:
-        pass
+        logger.debug("_infer_reopen_state: _product_has_code check failed for %s", pid, exc_info=True)
     return "MARKET_RESEARCHED"
 
 
@@ -151,7 +171,7 @@ def recover_false_failed_products(
     for pid, product in list(products.items()):
         if not is_likely_false_failed_product(product, task_queue):
             continue
-        reopen = recovery_state_after_false_failed(product)
+        reopen = recovery_state_after_false_failed(product, task_queue)
         product["state"] = reopen
         for key in ("failure_reason", "error", "last_error"):
             product.pop(key, None)

@@ -19,6 +19,7 @@ from typing import Optional
 
 import yaml
 
+from core.paths import model_providers_path
 from core.throughput_limits import effective_llm_max_parallel_requests, effective_llm_min_interval_sec
 from .bootstrap_providers import ensure_model_providers_file
 from .provider import LLMProvider, GenerationConfig, ProviderStatus
@@ -43,8 +44,8 @@ class LLMRouter:
     - Parallel + min-interval throttling, RPM cap, and USD cost caps (see ``llm.usage_guard``)
     """
 
-    def __init__(self, config_path: str = "/app/data/config/model_providers.yaml"):
-        self.config_path = config_path
+    def __init__(self, config_path: str | Path | None = None):
+        self.config_path = str(config_path or model_providers_path())
         self.providers: dict[str, LLMProvider] = {}
         self.routing_rules: list[dict] = []
         self.default_provider: Optional[str] = None

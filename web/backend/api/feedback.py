@@ -17,7 +17,10 @@ from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter
-from pydantic import BaseModel, Field
+
+from core.logging_utils import log_suppressed
+from core.paths import bugs_dir, data_root, feedback_dir, product_state_dir, support_root_dir
+from web.backend.schemas.api_requests import FeedbackSubmitRequest
 
 logger = logging.getLogger(__name__)
 
@@ -65,24 +68,6 @@ FEEDBACK_CLASSES = {
     },
 }
 
-# ── Models ──────────────────────────────────────────────────────────────────
-
-
-class FeedbackSubmitRequest(BaseModel):
-    product_id: str = Field(..., min_length=5, max_length=80)
-    rating: int = Field(..., ge=1, le=5)
-    comment: str = Field(..., min_length=1, max_length=4000)
-    # Optional structured context (no PII)
-    source: str = Field("product_page", max_length=40)  # product_page | widget | sandbox | other
-    page_url: Optional[str] = Field(None, max_length=500)
-    journey_step: Optional[str] = Field(None, max_length=80)  # onboarding | core_action | checkout | etc
-    tags: list[str] = Field(default_factory=list, max_length=32)
-    locale: Optional[str] = Field(None, max_length=16)
-    session_id: Optional[str] = Field(None, max_length=80)
-    # Optional contact (stored as hash only)
-    contact_email: Optional[str] = Field(None, max_length=254)
-
-
 # ── Endpoints ────────────────────────────────────────────────────────────────
 
 
@@ -116,10 +101,10 @@ async def submit_feedback(body: FeedbackSubmitRequest):
         feedback["contact_email_hash"] = hashlib.sha256(norm.encode("utf-8")).hexdigest()
 
     # Save raw feedback first
-    feedback_dir = Path("/app/data/feedback")
-    feedback_dir.mkdir(parents=True, exist_ok=True)
+    fb_root = feedback_dir()
+    fb_root.mkdir(parents=True, exist_ok=True)
 
-    with open(feedback_dir / f"{feedback_id}.json", "w", encoding="utf-8") as f:
+    with open(fb_root / f"{feedback_id}.json", "w", encoding="utf-8") as f:
         json.dump(feedback, f, indent=2, ensure_ascii=False)
 
     # Classify and evaluate
@@ -129,7 +114,7 @@ async def submit_feedback(body: FeedbackSubmitRequest):
     feedback["usefulness_score"] = round(usefulness_score, 2)
 
     # Update saved file with classification
-    with open(feedback_dir / f"{feedback_id}.json", "w", encoding="utf-8") as f:
+    with open(fb_root / f"{feedback_id}.json", "w", encoding="utf-8") as f:
         json.dump(feedback, f, indent=2, ensure_ascii=False)
 
     # Route based on classification
@@ -159,19 +144,19 @@ async def submit_feedback(body: FeedbackSubmitRequest):
 @router.get("/product/{product_id}")
 async def get_product_feedback(product_id: str):
     """Get all feedback for a product, classified and scored."""
-    feedback_dir = Path("/app/data/feedback")
-    if not feedback_dir.exists():
+    fb_root = feedback_dir()
+    if not fb_root.exists():
         return {"feedback": [], "count": 0}
 
     feedback_list = []
-    for fb_file in sorted(feedback_dir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True):
+    for fb_file in sorted(fb_root.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True):
         try:
             with open(fb_file, "r") as f:
                 fb = json.load(f)
             if fb.get("product_id") == product_id:
                 feedback_list.append(fb)
         except Exception:
-            pass
+            log_suppressed(logger, "feedback: skip corrupt file %s", fb_file.name, exc_info=True)
 
     ratings = [fb.get("rating", 0) for fb in feedback_list]
     avg_rating = sum(ratings) / max(len(ratings), 1) if ratings else 0
@@ -430,16 +415,16 @@ def _create_bug_task(product_id: str, feedback_id: str, description: str, route_
         "created_at": time.time(),
     }
 
-    bugs_dir = Path(f"/app/data/bugs/{product_id}")
-    bugs_dir.mkdir(parents=True, exist_ok=True)
+    bug_root = bugs_dir(product_id)
+    bug_root.mkdir(parents=True, exist_ok=True)
 
-    with open(bugs_dir / f"feedback_bug_{feedback_id}.json", "w") as f:
+    with open(bug_root / f"feedback_bug_{feedback_id}.json", "w") as f:
         json.dump(bug_data, f, indent=2)
 
 
 def _create_feature_suggestion(product_id: str, feedback_id: str, description: str, is_improvement: bool = False):
     """Create a feature suggestion document for PM review."""
-    suggestion_dir = Path(f"/app/data/state/{product_id}")
+    suggestion_dir = product_state_dir(product_id)
     suggestion_dir.mkdir(parents=True, exist_ok=True)
 
     suggestion_file = suggestion_dir / "feedback_suggestions.json"
@@ -469,7 +454,7 @@ def _create_feature_suggestion(product_id: str, feedback_id: str, description: s
 
 def _log_praise(product_id: str, feedback_id: str, comment: str):
     """Log positive feedback for marketing use."""
-    praise_dir = Path("/app/data/marketing")
+    praise_dir = data_root() / "marketing"
     praise_dir.mkdir(parents=True, exist_ok=True)
 
     praise_file = praise_dir / "testimonials.json"
@@ -496,7 +481,7 @@ def _log_praise(product_id: str, feedback_id: str, comment: str):
 
 def _log_question(product_id: str, feedback_id: str, comment: str):
     """Log a support question for follow-up."""
-    support_dir = Path("/app/data/support")
+    support_dir = support_root_dir()
     support_dir.mkdir(parents=True, exist_ok=True)
 
     question_file = support_dir / "questions.jsonl"

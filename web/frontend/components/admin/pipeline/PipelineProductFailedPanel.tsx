@@ -90,7 +90,7 @@ export function PipelineProductFailedPanel({
             </p>
             <h3 className="text-lg font-semibold text-red-50 mt-0.5">{headline}</h3>
             <p className="text-sm text-red-100/95 mt-2 leading-relaxed">{cause}</p>
-            {(report?.failed_agent || report?.failed_stage) && (
+            {(report?.failed_agent || report?.failed_stage) && !report?.false_failed && (
               <p className="text-xs text-red-200/70 mt-2">
                 Stage: <span className="text-red-100">{report?.failed_stage ?? '—'}</span>
                 {report?.failed_agent ? (

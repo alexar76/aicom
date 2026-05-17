@@ -83,7 +83,9 @@ class MarketingAgent(BaseAgent):
 
         # Load market research data if available (from analyst stage)
         research_context = ""
-        research_file = Path(f"/app/data/state/{product_id}/market_research.json")
+        from core.paths import market_research_path
+
+        research_file = market_research_path(product_id)
         if research_file.exists():
             try:
                 with open(research_file) as f:

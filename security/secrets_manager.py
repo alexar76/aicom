@@ -41,13 +41,10 @@ class SecretsManager:
         master_key_file: str | None = None,
         cache_ttl_seconds: int = 300,  # 5 minutes
     ):
-        self.secrets_file = Path(
-            secrets_file or os.environ.get("AIFACTORY_SECRETS_VAULT_FILE", "/app/data/secrets/encrypted_vault.json")
-        )
-        self.master_key_file = Path(
-            master_key_file
-            or os.environ.get("AIFACTORY_SECRETS_MASTER_KEY_FILE", "/app/data/secrets/master.key")
-        )
+        from core.paths import encrypted_vault_path, secrets_master_key_path
+
+        self.secrets_file = Path(secrets_file) if secrets_file else encrypted_vault_path()
+        self.master_key_file = Path(master_key_file) if master_key_file else secrets_master_key_path()
         self.cache_ttl = cache_ttl_seconds
         
         # In-memory cache
@@ -215,7 +212,9 @@ class SecretsManager:
         if not self.secrets_file.exists():
             raise FileNotFoundError("No vault to backup")
         
-        backup_path = backup_path or f"/app/data/secrets/backup_{int(time.time())}.enc"
+        from core.paths import secrets_dir
+
+        backup_path = backup_path or str(secrets_dir() / f"backup_{int(time.time())}.enc")
         backup_file = Path(backup_path)
         backup_file.parent.mkdir(parents=True, exist_ok=True)
         

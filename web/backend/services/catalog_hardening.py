@@ -13,6 +13,8 @@ import json
 import time
 import uuid
 from pathlib import Path
+
+from core.paths import resolve_data_root
 from typing import Any
 
 from web.backend.services.product_naming import resolve_product_name
@@ -37,21 +39,22 @@ def _write_json(path: Path, payload: dict[str, Any]) -> bool:
         return False
 
 
-def _read_spec_inner(data_root: str, product_id: str) -> dict[str, Any] | None:
-    raw = _read_json(Path(data_root) / "specs" / product_id / "specification.json")
+def _read_spec_inner(data_root: str | Path | None, product_id: str) -> dict[str, Any] | None:
+    raw = _read_json(resolve_data_root(data_root) / "specs" / product_id / "specification.json")
     spec = raw.get("specification")
     return spec if isinstance(spec, dict) else None
 
 
-def _read_marketing_inner(data_root: str, product_id: str) -> dict[str, Any] | None:
-    raw = _read_json(Path(data_root) / "state" / product_id / "marketing_content.json")
+def _read_marketing_inner(data_root: str | Path | None, product_id: str) -> dict[str, Any] | None:
+    raw = _read_json(resolve_data_root(data_root) / "state" / product_id / "marketing_content.json")
     m = raw.get("marketing")
     return m if isinstance(m, dict) else None
 
 
-def _persist_name(data_root: str, product_id: str, name: str) -> tuple[bool, bool]:
-    spec_path = Path(data_root) / "specs" / product_id / "specification.json"
-    mkt_path = Path(data_root) / "state" / product_id / "marketing_content.json"
+def _persist_name(data_root: str | Path | None, product_id: str, name: str) -> tuple[bool, bool]:
+    root = resolve_data_root(data_root)
+    spec_path = root / "specs" / product_id / "specification.json"
+    mkt_path = root / "state" / product_id / "marketing_content.json"
 
     spec_written = False
     mkt_written = False
@@ -90,7 +93,7 @@ def harden_catalog_products(
     *,
     products: dict[str, Any],
     task_queue: list[dict[str, Any]],
-    data_root: str = "/app/data",
+    data_root: str | Path | None = None,
     now: float | None = None,
 ) -> dict[str, Any]:
     now_ts = now or time.time()

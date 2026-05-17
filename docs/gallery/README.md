@@ -53,7 +53,7 @@ From repo root (stack running, default **http://127.0.0.1:9080**):
 
 ```bash
 .venv/bin/python -m playwright install chromium   # once
-DEMO_VIDEO_BASE_URL=http://127.0.0.1:9080 ADMIN_PASSWORD=admin123 \
+DEMO_VIDEO_BASE_URL=http://127.0.0.1:9080 ADMIN_PASSWORD="$(cat ../data/secrets/bootstrap_admin.txt)" \
   .venv/bin/python scripts/record_pipeline_demo_video.py
 ```
 

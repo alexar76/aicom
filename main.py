@@ -15,7 +15,7 @@ import signal
 import sys
 from pathlib import Path
 
-from core.paths import config_path, data_root, logs_dir, pipeline_db_path, pipeline_json_path
+from core.paths import config_path, data_root, git_repos_dir, logs_dir, pipeline_db_path, pipeline_json_path
 from core.config_merge import load_merged_config
 from web.backend.api.metrics import PrometheusMetrics
 
@@ -90,7 +90,8 @@ class AIFactory:
         )
 
         backend_name = "SQLite" if use_sqlite else "JSON"
-        logger.info(f"✓ Pipeline State Machine initialized (backend: {backend_name}, path: {db_path if use_sqlite else '/app/data/state/pipeline.json'})")
+        sm_path = db_path if use_sqlite else str(pipeline_json_path())
+        logger.info(f"✓ Pipeline State Machine initialized (backend: {backend_name}, path: {sm_path})")
 
         # Initialize Timeout Manager
         from orchestrator import TimeoutManager
@@ -132,7 +133,7 @@ class AIFactory:
             str(root / "specs"), str(root / "arch"), str(root / "code"),
             str(root / "bugs"), str(root / "state"), str(root / "logs"),
             str(root / "telemetry"), str(root / "config"), str(root / "reports" / "director"),
-            str(root / "secrets"), str(root / "feedback"), str(Path(os.environ.get("AIFACTORY_GIT_REPOS_DIR", "/app/git-repos"))),
+            str(root / "secrets"), str(root / "feedback"), str(git_repos_dir()),
         ]
         for d in dirs:
             Path(d).mkdir(parents=True, exist_ok=True)

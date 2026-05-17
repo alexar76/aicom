@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
-from typing import Any
-
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from web.backend.schemas.api_requests import DemoReplayPatchRequest
 from fastapi.responses import FileResponse
 
 from web.backend.core.admin_roles import require_admin_with_rbac
@@ -32,29 +31,29 @@ async def get_demo_replay(_admin: dict = Depends(require_admin_with_rbac)):
 
 
 @router.patch("/demo-replay")
-async def patch_demo_replay(body: dict[str, Any], _admin: dict = Depends(require_admin_with_rbac)):
+async def patch_demo_replay(body: DemoReplayPatchRequest, _admin: dict = Depends(require_admin_with_rbac)):
     _ = _admin
-    if not isinstance(body, dict):
-        raise HTTPException(status_code=400, detail="Expected JSON object")
     cfg = load_raw_config()
 
-    if "enabled" in body:
-        cfg["enabled"] = bool(body["enabled"])
+    if body.enabled is not None:
+        cfg["enabled"] = body.enabled
 
-    if "title" in body and body["title"] is not None:
-        cfg["title"] = str(body["title"])[:200]
+    if body.title is not None:
+        cfg["title"] = body.title
 
-    if "video_url" in body:
-        vu = body["video_url"]
-        if vu is None or vu == "":
+    if "video_url" in body.model_fields_set:
+        vu = body.video_url
+        if vu is None:
             if cfg.get("source") == "external_url":
                 cfg["source"] = "none"
                 cfg["video_url"] = None
         else:
-            vu_s = str(vu).strip()
-            if not validate_external_url(vu_s):
-                raise HTTPException(status_code=400, detail="Invalid video_url (use https://, http://, or same-origin path)")
-            cfg["video_url"] = vu_s
+            if not validate_external_url(vu):
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid video_url (use https://, http://, or same-origin path)",
+                )
+            cfg["video_url"] = vu
             cfg["source"] = "external_url"
             old_fn = cfg.get("media_filename")
             cfg["media_filename"] = None

@@ -2,10 +2,11 @@
 
 ## Pipeline worker and SRP
 
-`pipeline_worker.py` hosts the main dequeue / dispatch loop. Cross-cutting concerns that are not “run the next agent task” live in:
+`pipeline_worker.py` hosts the main dequeue loop (phases 0–6). Per-task agent dispatch, gates, and remediation live in:
 
+- `orchestrator/task_executor.py` — `PipelineTaskExecutor.process_task()` (extracted from the former monolithic `_process_task`).
 - `orchestrator/pipeline_worker_sidecars.py` — `PipelineWorkerSidecarMixin`: marketplace readiness, optional `__runtime_test__` command inference, storefront-related gates.
-- `orchestrator/worker_utils.py` — small shared helpers (for example `env_truthy`).
+- `orchestrator/worker_utils.py` — shared helpers (`env_truthy`, delivery profile resolution, monitoring refresh payload).
 
 The concrete worker class composes the mixin so the core file stays readable without duplicating long helper blocks.
 

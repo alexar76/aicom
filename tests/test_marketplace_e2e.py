@@ -340,10 +340,10 @@ class TestAdminPipelineCategoryFilter:
         login_form = page.locator("form, [class*='login'], input[type='password']")
         
         if await login_form.count() > 0:
-            # Try default admin credentials if login form is visible
+            admin_pw = os.environ.get("ADMIN_PASSWORD", "").strip()
             password_input = page.locator("input[type='password']")
-            if await password_input.count() > 0:
-                await password_input.fill("admin123")
+            if admin_pw and await password_input.count() > 0:
+                await password_input.fill(admin_pw)
                 submit_btn = page.locator("button[type='submit'], button:has-text('Login')")
                 if await submit_btn.count() > 0:
                     await submit_btn.click()

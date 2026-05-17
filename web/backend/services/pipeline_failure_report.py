@@ -5,10 +5,21 @@ from __future__ import annotations
 from typing import Any
 
 
-def _latest_failed_task(tasks: list[dict[str, Any]]) -> dict[str, Any] | None:
+def _latest_failed_task(
+    product: dict[str, Any],
+    tasks: list[dict[str, Any]],
+) -> dict[str, Any] | None:
     failed = [t for t in tasks if str(t.get("status") or "").lower() == "failed"]
     if not failed:
         return None
+
+    try:
+        from orchestrator.task_queue_hygiene import is_superseded_failed_task
+
+        relevant = [t for t in failed if not is_superseded_failed_task(t, product)]
+    except Exception:
+        relevant = failed
+    pool = relevant or failed
 
     def _score(t: dict[str, Any]) -> float:
         for key in ("completed_at", "updated_at", "started_at", "created_at"):
@@ -17,7 +28,7 @@ def _latest_failed_task(tasks: list[dict[str, Any]]) -> dict[str, Any] | None:
                 return float(v)
         return 0.0
 
-    return sorted(failed, key=_score, reverse=True)[0]
+    return sorted(pool, key=_score, reverse=True)[0]
 
 
 def _humanize_error(error: str, *, agent: str, state: str) -> str:
@@ -79,14 +90,95 @@ def _humanize_error(error: str, *, agent: str, state: str) -> str:
     return f"Agent «{agent_label}» failed at stage «{state_label}» with no stored error text."
 
 
+def _false_failed_report(product: dict[str, Any], tasks: list[dict[str, Any]]) -> dict[str, Any] | None:
+    try:
+        from orchestrator.task_queue_hygiene import (
+            _active_repair_tasks,
+            is_likely_false_failed_product,
+            recovery_state_after_false_failed,
+        )
+        from web.backend.api.products import _product_has_code
+    except Exception:
+        return None
+
+    if not is_likely_false_failed_product(product, tasks):
+        return None
+
+    pid = str(product.get("id") or product.get("product_id") or "")
+    repair = _active_repair_tasks(pid, tasks) if pid else []
+    has_code = bool(pid and _product_has_code(pid))
+    rec = recovery_state_after_false_failed(product, tasks)
+
+    if repair and has_code:
+        agent = str(repair[0].get("agent_type") or "developer")
+        target = str(repair[0].get("state") or "DEV_FIXING")
+        cause = (
+            "This product was marked FAILED after a pipeline queue/restart glitch, not because "
+            f"the current «{agent}» step actually failed. A repair task is already queued "
+            f"({agent} → {target}). The worker will resume automatically; use «Send to rework» "
+            "only if you want to change operator instructions."
+        )
+        suggested_agent, suggested_state = agent, target
+    elif repair and not has_code:
+        cause = (
+            "FAILED was set by a queue/restart error while a developer repair task was still queued, "
+            "but generated code is missing on disk — that repair cannot run. "
+            "Use «Send to rework» to rebuild from PM/spec (full landing regeneration)."
+        )
+        suggested_agent, suggested_state = "pm", "MARKET_RESEARCHED"
+    elif not has_code:
+        cause = (
+            "This product is in FAILED but has no generated code on disk (artifacts missing or removed). "
+            "It was likely stopped by a queue/restart error, not a real QA failure. "
+            "Use «Send to rework» to regenerate from PM/spec — choose instructions for a full landing rebuild."
+        )
+        suggested_agent, suggested_state = "pm", "MARKET_RESEARCHED"
+    else:
+        cause = (
+            "This product was marked FAILED without a stored failure reason — usually a stale failed "
+            "task from an earlier pipeline stage (often PM spec gate) after worker restart. "
+            "Code is still on disk. Use «Send to rework» to continue developer/QA repair."
+        )
+        suggested_agent, suggested_state = "developer", "BUG_FOUND"
+
+    if rec == "MARKET_RESEARCHED":
+        suggested_agent, suggested_state = "pm", "MARKET_RESEARCHED"
+
+    return {
+        "headline": "False stop — queue/restart artifact (not a real agent failure)",
+        "product_state": str(product.get("state") or "FAILED").upper(),
+        "cause_plain": cause,
+        "failed_agent": None,
+        "failed_stage": None,
+        "failure_reason": None,
+        "technical_errors": [],
+        "repair_round": product.get("quality_repair_round"),
+        "pm_spec_requeue_count": product.get("pm_spec_requeue_count"),
+        "suggested_recovery": {
+            "agent_type": suggested_agent,
+            "target_state": suggested_state,
+        },
+        "operator_hint": (
+            "FAILED here is a pause label, not deletion. After the queue fix, the worker should "
+            "auto-recover; rework overrides recovery with your instructions (min. 8 characters)."
+        ),
+        "false_failed": True,
+    }
+
+
 def build_failure_report(product: dict[str, Any], tasks: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     """Structured failure payload for Admin Pipeline UI."""
     tasks = tasks or []
     state = str(product.get("state") or "UNKNOWN").upper()
+
+    false_report = _false_failed_report(product, tasks)
+    if false_report is not None:
+        return false_report
+
     primary = str(product.get("failure_reason") or "").strip()
     last_error = str(product.get("last_error") or product.get("error") or "").strip()
 
-    latest = _latest_failed_task(tasks)
+    latest = _latest_failed_task(product, tasks)
     agent = str(latest.get("agent_type") or "") if latest else ""
     task_state = str(latest.get("state") or "") if latest else ""
     task_error = str(latest.get("error") or "").strip() if latest else ""
@@ -130,7 +222,7 @@ def build_failure_report(product: dict[str, Any], tasks: list[dict[str, Any]] | 
         "product_state": state,
         "cause_plain": cause,
         "failed_agent": agent or None,
-        "failed_stage": task_state or state,
+        "failed_stage": task_state if task_state and task_state != "FAILED" else None,
         "failure_reason": primary or None,
         "technical_errors": raw_errors,
         "repair_round": repair_round,

@@ -195,7 +195,9 @@ class MarketResearchAgent(BaseAgent):
         idea = agent_input.data.get("idea", "")
 
         # Determine stage: research (no research file yet) or monitoring (research exists)
-        research_file = Path(f"/app/data/state/{product_id}/market_research.json")
+        from core.paths import market_research_path
+
+        research_file = market_research_path(product_id)
         is_monitoring = research_file.exists()
 
         if is_monitoring:

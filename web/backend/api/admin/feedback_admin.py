@@ -20,7 +20,9 @@ router = APIRouter(prefix="/api/admin", tags=["admin-feedback"], dependencies=[D
 
 
 def _load_feedback_items(limit: int = 5000) -> list[dict[str, Any]]:
-    fb_dir = Path("/app/data/feedback")
+    from core.paths import feedback_dir
+
+    fb_dir = feedback_dir()
     if not fb_dir.exists():
         return []
     items: list[dict[str, Any]] = []
@@ -97,7 +99,9 @@ async def telemetry_replay_sessions(product_id: str, limit: int = Query(100, ge=
     """
     List session_ids available for replay timeline in this product.
     """
-    tdir = Path("/app/data/telemetry") / product_id
+    from core.paths import telemetry_dir
+
+    tdir = telemetry_dir(product_id)
     if not tdir.exists():
         return {"product_id": product_id, "count": 0, "sessions": []}
     sessions: dict[str, dict[str, Any]] = {}
@@ -131,7 +135,9 @@ async def telemetry_replay_timeline(
     """
     Return a timeline of telemetry events for a session (session replay without video).
     """
-    tdir = Path("/app/data/telemetry") / product_id
+    from core.paths import telemetry_dir
+
+    tdir = telemetry_dir(product_id)
     if not tdir.exists():
         return {"product_id": product_id, "session_id": session_id, "count": 0, "events": []}
     events: list[dict[str, Any]] = []

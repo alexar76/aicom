@@ -9,9 +9,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from core.paths import resolve_data_root
 
-def evaluate_quality_constitution(product_id: str, data_root: str = "/app/data") -> dict:
-    root = Path(data_root)
+
+def evaluate_quality_constitution(product_id: str, data_root: str | Path | None = None) -> dict:
+    root = resolve_data_root(data_root)
     issues: list[str] = []
     checks: dict[str, bool] = {}
 

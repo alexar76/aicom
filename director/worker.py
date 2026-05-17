@@ -19,10 +19,25 @@ import sys
 import time
 from pathlib import Path
 
-# Ensure we can import from the project root
-sys.path.insert(0, "/app")
+from core.paths import (
+    app_root,
+    benchmark_status_path,
+    benchmarks_reports_dir,
+    config_path,
+    data_root,
+    director_decisions_path,
+    director_trigger_signal_path,
+    pipeline_db_path,
+    pipeline_json_path,
+    reports_dir,
+    scripts_dir,
+    venv_python,
+)
 
-from core.paths import config_path
+# Ensure we can import from the project root
+_app = str(app_root())
+if _app not in sys.path:
+    sys.path.insert(0, _app)
 from core.config_merge import load_merged_config
 from core.benchmark_admin_token import read_benchmark_admin_token
 from director.metrics_collector import MetricsCollector
@@ -40,9 +55,9 @@ logger = logging.getLogger("director-worker")
 
 
 # ── Signal file for on-demand analysis trigger ──────────────────────────────
-TRIGGER_SIGNAL_FILE = "/app/data/state/director_trigger.signal"
-DECISIONS_FILE = "/app/data/state/director_decisions.json"
-BENCHMARK_STATUS_FILE = "/app/data/state/benchmark_status.json"
+TRIGGER_SIGNAL_FILE = str(director_trigger_signal_path())
+DECISIONS_FILE = str(director_decisions_path())
+BENCHMARK_STATUS_FILE = str(benchmark_status_path())
 
 
 class DirectorWorker:
@@ -167,16 +182,16 @@ class DirectorWorker:
     async def _refresh_benchmark_scorecard(self) -> None:
         """Always refresh scorecard from existing benchmark reports."""
         cmd = [
-            "/app/venv/bin/python",
-            "/app/scripts/benchmark_daily_scorecard.py",
+            str(venv_python()),
+            str(scripts_dir() / "benchmark_daily_scorecard.py"),
             "--reports-dir",
-            "/app/data/reports/benchmarks",
+            str(benchmarks_reports_dir()),
             "--output-json",
-            "/app/data/reports/benchmark_scorecard.json",
+            str(reports_dir() / "benchmark_scorecard.json"),
             "--output-md",
-            "/app/data/reports/benchmark_scorecard.md",
+            str(reports_dir() / "benchmark_scorecard.md"),
             "--alerts-json",
-            "/app/data/reports/benchmark_alerts.json",
+            str(reports_dir() / "benchmark_alerts.json"),
         ]
         try:
             proc = await asyncio.to_thread(subprocess.run, cmd, capture_output=True, text=True, check=False)
@@ -236,7 +251,7 @@ class DirectorWorker:
             ),
             encoding="utf-8",
         )
-        ideas_file = Path("/app/scripts/benchmark_ideas.example.txt")
+        ideas_file = scripts_dir() / "benchmark_ideas.example.txt"
         if not ideas_file.exists():
             logger.warning("Benchmark autorun skipped: ideas file missing")
             status_path.write_text(
@@ -245,11 +260,11 @@ class DirectorWorker:
             )
             return
         ts = int(time.time())
-        out = Path(f"/app/data/reports/benchmarks/run-{ts}.json")
+        out = benchmarks_reports_dir() / f"run-{ts}.json"
         out.parent.mkdir(parents=True, exist_ok=True)
         cmd = [
-            "/app/venv/bin/python",
-            "/app/scripts/benchmark_pass_rate.py",
+            str(venv_python()),
+            str(scripts_dir() / "benchmark_pass_rate.py"),
             "--ideas-file",
             str(ideas_file),
             "--base-url",
@@ -396,11 +411,11 @@ class DirectorWorker:
                 from web.backend.services.catalog_hardening import harden_catalog_products
                 from web.backend.services.policy_audit import sync_sqlite_from_pipeline_json
 
-                p = Path("/app/data/state/pipeline.json")
+                p = pipeline_json_path()
                 state = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {"products": {}, "task_queue": []}
                 products = state.get("products") if isinstance(state.get("products"), dict) else {}
                 task_queue = state.get("task_queue") if isinstance(state.get("task_queue"), list) else []
-                harden_catalog_products(products=products, task_queue=task_queue, data_root="/app/data", now=time.time())
+                harden_catalog_products(products=products, task_queue=task_queue, data_root=str(data_root()), now=time.time())
                 state["products"] = products
                 state["task_queue"] = task_queue
                 p.parent.mkdir(parents=True, exist_ok=True)
@@ -489,7 +504,7 @@ class DirectorWorker:
         try:
             from director.discovery_pipeline import DiscoveryPipeline
 
-            pipeline_file = Path("/app/data/state/pipeline.json")
+            pipeline_file = pipeline_json_path()
             state: dict = {"products": {}, "task_queue": []}
             if pipeline_file.exists():
                 with open(pipeline_file, "r", encoding="utf-8") as f:
@@ -580,7 +595,7 @@ class DirectorWorker:
         try:
             from director.discovery_pipeline import DiscoveryPipeline
 
-            pipeline_file = Path("/app/data/state/pipeline.json")
+            pipeline_file = pipeline_json_path()
             state: dict = {"products": {}, "task_queue": []}
             if pipeline_file.exists():
                 with open(pipeline_file) as f:
@@ -675,7 +690,7 @@ class DirectorWorker:
 
                     migrate(
                         json_path=str(pipeline_file),
-                        db_path=os.environ.get("SQLITE_PATH", "/app/data/state/pipeline.db"),
+                        db_path=str(pipeline_db_path()),
                     )
             except Exception as sync_exc:
                 logger.warning("SQLite migrate after auto product failed: %s", sync_exc)

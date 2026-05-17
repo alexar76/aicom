@@ -6,7 +6,9 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-QUEUE_PATH = Path("/app/data/state/batch_pipeline_queue.json")
+from core.paths import batch_pipeline_queue_path
+
+QUEUE_PATH = batch_pipeline_queue_path()
 
 
 def _default_queue_doc() -> dict[str, Any]:

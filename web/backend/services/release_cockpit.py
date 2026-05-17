@@ -12,6 +12,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.paths import resolve_data_root
 from web.backend.services.benchmark_gate import evaluate_benchmark_gate
 from web.backend.services.quality_constitution import evaluate_quality_constitution
 
@@ -44,8 +45,8 @@ def _read_jsonl(path: Path, limit: int = 200) -> list[dict[str, Any]]:
     return rows
 
 
-def evaluate_release_cockpit(product_id: str, data_root: str = "/app/data") -> dict[str, Any]:
-    root = Path(data_root)
+def evaluate_release_cockpit(product_id: str, data_root: str | Path | None = None) -> dict[str, Any]:
+    root = resolve_data_root(data_root)
     issues: list[str] = []
     checks: dict[str, bool] = {}
 
@@ -114,13 +115,13 @@ def evaluate_release_cockpit(product_id: str, data_root: str = "/app/data") -> d
     }
 
 
-def execute_release_protocol(product_id: str, data_root: str = "/app/data") -> dict[str, Any]:
+def execute_release_protocol(product_id: str, data_root: str | Path | None = None) -> dict[str, Any]:
     """
     Executable release protocol:
     - verifies lifecycle release artifact has required sections
     - writes execution document for cockpit gating
     """
-    root = Path(data_root)
+    root = resolve_data_root(data_root)
     lifecycle = _read_json(root / "state" / product_id / "lifecycle_release.json")
     obj = lifecycle.get("lifecycle_release") if isinstance(lifecycle, dict) else {}
     required = ("versioning_strategy", "migration_plan", "canary_plan", "rollback_plan", "release_checks")

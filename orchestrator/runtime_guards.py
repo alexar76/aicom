@@ -5,14 +5,15 @@ import os
 import time
 from pathlib import Path
 
+from core.paths import resolve_data_root
 from core.quality_settings import quality_constitution_pipeline_enabled
 from web.backend.services.benchmark_gate import evaluate_benchmark_gate
 
 class RuntimeGuards:
     """Isolated runtime gate checks used by PipelineWorker."""
 
-    def __init__(self, data_root: str = "/app/data"):
-        self.data_root = Path(data_root)
+    def __init__(self, data_root: str | Path | None = None):
+        self.data_root = resolve_data_root(data_root)
 
     def load_spec(self, product_id: str) -> dict:
         spec_file = self.data_root / "specs" / product_id / "specification.json"

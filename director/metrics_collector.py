@@ -11,12 +11,14 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.paths import resolve_data_root
+
 
 class MetricsCollector:
     """Collects raw metrics consumed by DirectorAnalyzer/InspectorAgent."""
 
-    def __init__(self, data_root: str = "/app/data"):
-        self.data_root = Path(data_root)
+    def __init__(self, data_root: str | Path | None = None):
+        self.data_root = resolve_data_root(data_root)
 
     def _read_json(self, path: Path) -> dict[str, Any]:
         if not path.exists():

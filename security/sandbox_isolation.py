@@ -81,7 +81,7 @@ class SandboxIsolation:
 
     def __init__(
         self,
-        sandbox_base_dir: str = "/app/data/sandboxes",
+        sandbox_base_dir: str | Path | None = None,
         port_range_start: int = 9000,
         port_range_end: int = 9999,
         max_sandboxes: int = 10,
@@ -91,7 +91,9 @@ class SandboxIsolation:
         container_image: str = "python:3.12-slim",
         require_container: Optional[bool] = None,
     ):
-        self.sandbox_base_dir = Path(sandbox_base_dir)
+        from core.paths import sandboxes_dir
+
+        self.sandbox_base_dir = Path(sandbox_base_dir) if sandbox_base_dir else sandboxes_dir()
         self.sandbox_base_dir.mkdir(parents=True, exist_ok=True)
         
         self.port_range = range(port_range_start, port_range_end + 1)

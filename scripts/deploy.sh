@@ -75,13 +75,18 @@ if [[ "$NO_ENV_FILL" -eq 0 ]]; then
   python3 "$ROOT/scripts/fill_production_env.py" "${FILL_ARGS[@]}"
 fi
 
+COMPOSE_FILES=(-f docker-compose.yml)
+if [[ -d "$ROOT/data/secrets/llm" ]] && compgen -G "$ROOT/data/secrets/llm/*_api_key" >/dev/null 2>&1; then
+  COMPOSE_FILES+=(-f docker-compose.secrets.yml)
+fi
+
 if [[ "$NO_BUILD" -eq 0 ]]; then
-  docker compose "${PASS_THROUGH[@]}" build "${COMPOSE_SERVICES[@]}"
+  docker compose "${PASS_THROUGH[@]}" "${COMPOSE_FILES[@]}" build "${COMPOSE_SERVICES[@]}"
 else
   echo "deploy.sh: skipping docker compose build (--no-build)"
 fi
 
-docker compose "${PASS_THROUGH[@]}" up -d "${COMPOSE_SERVICES[@]}"
+docker compose "${PASS_THROUGH[@]}" "${COMPOSE_FILES[@]}" up -d "${COMPOSE_SERVICES[@]}"
 
 echo ""
 echo "deploy.sh: done. Default URLs (see AICOM_PORT_* in .env):"

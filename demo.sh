@@ -13,7 +13,7 @@
 #
 # Environment:
 #   DEMO_BASE_URL       e.g. http://localhost:8080 (default: auto 8080 then 9080)
-#   DEMO_ADMIN_PASSWORD admin password (default: demo123)
+#   DEMO_ADMIN_PASSWORD admin password (required; or read bootstrap_admin.txt)
 #   DEMO_CONTAINER_NAME container name to wait on (default: ai-factory)
 # ============================================================================
 set -euo pipefail
@@ -92,7 +92,14 @@ if [[ -z "${BASE:-}" ]]; then
 fi
 echo "[demo] Using API base: ${BASE}"
 
-PASS="${DEMO_ADMIN_PASSWORD:-demo123}"
+PASS="${DEMO_ADMIN_PASSWORD:-}"
+if [[ -z "$PASS" && -f data/secrets/bootstrap_admin.txt ]]; then
+  PASS="$(tr -d '\n\r' < data/secrets/bootstrap_admin.txt)"
+fi
+if [[ -z "$PASS" ]]; then
+  echo "Set DEMO_ADMIN_PASSWORD or run docker compose up once to create data/secrets/bootstrap_admin.txt" >&2
+  exit 2
+fi
 
 login_json="$(curl -sS -X POST "${BASE}/api/admin/auth/login" \
   -H 'Content-Type: application/json' \

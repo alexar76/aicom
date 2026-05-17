@@ -42,7 +42,9 @@ def _truthy(name: str, default: str = "1") -> bool:
 
 
 def _kb_dir() -> Path:
-    return Path(os.environ.get("AIFACTORY_SUPPORT_KB_DIR", "/app/data/support/knowledge"))
+    from core.paths import support_root_dir
+
+    return Path(os.environ.get("AIFACTORY_SUPPORT_KB_DIR", str(support_root_dir() / "knowledge")))
 
 
 def _tokenize(text: str) -> set[str]:

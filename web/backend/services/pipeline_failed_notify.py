@@ -94,7 +94,9 @@ def notify_pipeline_product_failed(
                     from orchestrator.sqlite_manager import SQLiteManager
                     import os
 
-                    db = Path(os.environ.get("SQLITE_PATH", "/app/data/state/pipeline.db"))
+                    from core.paths import pipeline_db_path
+
+                    db = pipeline_db_path()
                     if db.is_file():
                         sm = SQLiteManager(str(db))
                         sm.connect()

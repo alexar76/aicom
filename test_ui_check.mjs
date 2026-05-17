@@ -31,7 +31,7 @@ async function main() {
       const resp = await fetch('/api/admin/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: 'admin', password: 'admin123' })
+        body: JSON.stringify({ username: 'admin', password: process.env.ADMIN_PASSWORD || '' })
       });
       const data = await resp.json();
       return data.access_token || data.token || null;

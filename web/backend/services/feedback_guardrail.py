@@ -26,7 +26,9 @@ def _env_int(name: str, default: int) -> int:
 
 
 def _load_recent_feedback(window_hours: int) -> list[dict[str, Any]]:
-    fb_dir = Path("/app/data/feedback")
+    from core.paths import feedback_dir
+
+    fb_dir = feedback_dir()
     if not fb_dir.exists():
         return []
     cutoff = time.time() - (window_hours * 3600)

@@ -12,42 +12,20 @@ from typing import Optional
 import httpx
 from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from fastapi.responses import FileResponse
-from pydantic import BaseModel, Field
 
+from core.paths import pipeline_json_path
+from web.backend.schemas.api_requests import (
+    CustomerCreateRunRequest,
+    CustomerLoginRequest,
+    CustomerRegisterRequest,
+    DemoNoteCreateRequest,
+    DemoNotePatchRequest,
+    StripeCheckoutRequest,
+)
 from web.backend.services.commerce import CommerceService
 
 router = APIRouter(prefix="/api/customer", tags=["customer"])
 commerce = CommerceService()
-
-
-class RegisterRequest(BaseModel):
-    email: str
-    password: str = Field(min_length=8)
-
-
-class LoginRequest(BaseModel):
-    email: str
-    password: str = Field(min_length=8)
-
-
-class CreateRunRequest(BaseModel):
-    idea: str = Field(min_length=8, max_length=2000)
-
-
-class DemoNoteCreate(BaseModel):
-    title: str = Field(..., min_length=1, max_length=500)
-    body: str = Field("", max_length=8000)
-
-
-class DemoNotePatch(BaseModel):
-    title: Optional[str] = Field(None, max_length=500)
-    body: Optional[str] = Field(None, max_length=8000)
-
-
-class StripeCheckoutRequest(BaseModel):
-    target_plan: str = Field(default="maker")
-    success_url: str
-    cancel_url: str
 
 
 def _get_token_payload(authorization: Optional[str] = Header(default=None)) -> dict:
@@ -87,9 +65,7 @@ def _verify_stripe_signature(payload: bytes, sig_header: str, secret: str) -> bo
 
 
 @router.post("/register")
-async def register(body: RegisterRequest):
-    if "@" not in body.email:
-        raise HTTPException(status_code=400, detail="Invalid email address")
+async def register(body: CustomerRegisterRequest):
     try:
         customer = commerce.register_customer(body.email, body.password)
     except ValueError as exc:
@@ -99,9 +75,7 @@ async def register(body: RegisterRequest):
 
 
 @router.post("/login")
-async def login(body: LoginRequest):
-    if "@" not in body.email:
-        raise HTTPException(status_code=400, detail="Invalid email address")
+async def login(body: CustomerLoginRequest):
     customer = commerce.authenticate_customer(body.email, body.password)
     if not customer:
         raise HTTPException(status_code=401, detail="Invalid email or password")
@@ -128,7 +102,7 @@ async def customer_logout():
 
 
 @router.post("/demo-notes")
-async def demo_notes_create(body: DemoNoteCreate, payload: dict = Depends(_get_token_payload)):
+async def demo_notes_create(body: DemoNoteCreateRequest, payload: dict = Depends(_get_token_payload)):
     try:
         note = commerce.create_demo_note(payload["sub"], body.title, body.body)
     except ValueError as exc:
@@ -145,11 +119,9 @@ async def demo_notes_list(payload: dict = Depends(_get_token_payload)):
 @router.patch("/demo-notes/{note_id}")
 async def demo_notes_patch(
     note_id: str,
-    body: DemoNotePatch,
+    body: DemoNotePatchRequest,
     payload: dict = Depends(_get_token_payload),
 ):
-    if body.title is None and body.body is None:
-        raise HTTPException(status_code=400, detail="Provide title and/or body")
     try:
         updated = commerce.update_demo_note(
             payload["sub"],
@@ -178,9 +150,7 @@ async def create_stripe_checkout_session(body: StripeCheckoutRequest, payload: d
     if not secret_key:
         raise HTTPException(status_code=503, detail="Stripe is not configured")
 
-    target_plan = (body.target_plan or "maker").strip().lower()
-    if target_plan not in {"maker", "studio", "enterprise"}:
-        raise HTTPException(status_code=400, detail="target_plan must be maker|studio|enterprise")
+    target_plan = body.target_plan
     prices = _stripe_price_catalog()
     amount = prices.get(target_plan, prices["maker"])
     if amount <= 0:
@@ -301,7 +271,7 @@ async def my_referral_dashboard(payload: dict = Depends(_get_token_payload)):
 
 
 @router.post("/pipeline/run")
-async def customer_pipeline_run(body: CreateRunRequest, payload: dict = Depends(_get_token_payload)):
+async def customer_pipeline_run(body: CustomerCreateRunRequest, payload: dict = Depends(_get_token_payload)):
     customer_id = payload["sub"]
     profile = commerce.get_customer(customer_id)
     if not profile:
@@ -315,7 +285,7 @@ async def customer_pipeline_run(body: CreateRunRequest, payload: dict = Depends(
                 status_code=402,
                 detail="Free tier limit reached (3 pipeline runs/month). Upgrade required.",
             )
-    pipeline_file = Path("/app/data/state/pipeline.json")
+    pipeline_file = pipeline_json_path()
     if pipeline_file.exists():
         state = json.loads(pipeline_file.read_text(encoding="utf-8"))
     else:

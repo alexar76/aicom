@@ -136,7 +136,9 @@ def load_product_context(product_id: Optional[str]) -> str:
     parts: list[str] = []
 
     # Try to load specification
-    spec_path = f"/app/data/specs/{product_id}/specification.json"
+    from core.paths import specification_path
+
+    spec_path = str(specification_path(product_id))
     if os.path.exists(spec_path):
         try:
             with open(spec_path, "r") as f:
@@ -155,7 +157,9 @@ def load_product_context(product_id: Optional[str]) -> str:
             logger.warning(f"Failed to load spec for {product_id}: {e}")
 
     # Try to load evolution report
-    evo_path = f"/app/data/state/{product_id}/evolution_report.json"
+    from core.paths import product_state_dir
+
+    evo_path = str(product_state_dir(product_id) / "evolution_report.json")
     if os.path.exists(evo_path):
         try:
             with open(evo_path, "r") as f:

@@ -14,10 +14,12 @@ import uuid
 from pathlib import Path
 from typing import Any, Optional
 
+from core.paths import admin_users_path, legacy_admin_path
+
 logger = logging.getLogger(__name__)
 
-USERS_PATH = Path(os.environ.get("ADMIN_USERS_PATH", "/app/data/config/admin_users.json"))
-LEGACY_ADMIN_PATH = Path("/app/data/config/admin.json")
+USERS_PATH = admin_users_path()
+LEGACY_ADMIN_PATH = legacy_admin_path()
 
 USERNAME_RE = re.compile(r"^[a-zA-Z0-9_.-]{3,64}$")
 

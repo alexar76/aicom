@@ -699,9 +699,11 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
     def _discover_code_files(self, product_id: str) -> list[dict]:
         """Discover Python code files for this product."""
         files = []
+        from core.paths import agent_artifact_dir, code_dir
+
         search_dirs = [
-            Path(f"/app/data/code/{product_id}"),
-            Path(f"/app/data/dev/{product_id}"),
+            code_dir(product_id),
+            agent_artifact_dir("dev", product_id),
         ]
         for search_dir in search_dirs:
             if search_dir.exists():

@@ -32,13 +32,15 @@ def unwrap_security_artifact(raw: dict[str, Any]) -> dict[str, Any]:
     return raw
 
 
-def load_security_report(product_id: str, *, data_root: str = "/app/data") -> Optional[dict[str, Any]]:
+def load_security_report(product_id: str, *, data_root: str | Path | None = None) -> Optional[dict[str, Any]]:
     """
     Load normalized security report dict for UI, or None.
 
     Tries canonical SecurityAgent path first, then legacy locations, then devops_result.
     """
-    root = Path(data_root)
+    from core.paths import resolve_data_root
+
+    root = resolve_data_root(data_root)
 
     candidates = [
         root / "security" / product_id / "security_report.json",

@@ -17,6 +17,8 @@ import sqlite3
 import time
 from typing import Any, Optional
 
+from core.paths import pipeline_db_path
+
 from .schema import SQLITE_SCHEMA
 
 logger = logging.getLogger(__name__)
@@ -37,7 +39,9 @@ METADATA_SQL_COLUMNS = {
 class SQLiteManager:
     """Manages SQLite connection and CRUD for pipeline state."""
 
-    def __init__(self, db_path: str = "/app/data/state/pipeline.db"):
+    def __init__(self, db_path: str | None = None):
+        if db_path is None:
+            db_path = str(pipeline_db_path())
         self.db_path = db_path
         self.workspace_id = os.environ.get("AIFACTORY_WORKSPACE_ID", "default").strip() or "default"
         self._conn: Optional[sqlite3.Connection] = None

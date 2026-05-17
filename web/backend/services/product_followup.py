@@ -20,7 +20,9 @@ STOREFRONT_ESTABLISHED_LISTING_KEY = "storefront_established_listing"
 
 
 def _data_root() -> Path:
-    return Path(os.environ.get("AIFACTORY_DATA_ROOT", "/app/data"))
+    from core.paths import data_root
+
+    return data_root()
 
 
 def followup_dir() -> Path:

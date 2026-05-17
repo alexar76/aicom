@@ -25,6 +25,9 @@ import {
   X,
   LayoutGrid,
   Rocket,
+  Languages,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { AdminLocale, t } from '@/lib/adminI18n';
 
@@ -91,10 +94,16 @@ export function Sidebar({
           collapsed ? '-translate-x-full md:translate-x-0 md:w-20' : 'w-64'
         }`}
       >
-        <div className="shrink-0 p-4 flex items-center justify-between border-b border-white/10">
+        <div
+          className={`shrink-0 border-b border-white/10 ${
+            collapsed ? 'p-3 flex flex-col items-center gap-2' : 'p-4 flex items-center justify-between gap-2'
+          }`}
+        >
           <Link
             href="/"
-            className="flex min-w-0 items-center gap-3 rounded-lg p-1 -m-1 transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40"
+            className={`flex min-w-0 items-center rounded-lg p-1 -m-1 transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 ${
+              collapsed ? 'justify-center' : 'gap-3'
+            }`}
             title={t(locale, 'app.backToSite')}
           >
             <Cpu className="h-6 w-6 shrink-0 text-indigo-400" aria-hidden />
@@ -103,8 +112,23 @@ export function Sidebar({
             )}
           </Link>
           <button
+            type="button"
+            onClick={onToggle}
+            className="hidden md:flex p-1.5 rounded-lg hover:bg-white/10 transition-colors text-gray-400 hover:text-white"
+            aria-label={collapsed ? t(locale, 'sidebar.expandMenu') : t(locale, 'sidebar.collapseMenu')}
+            title={collapsed ? t(locale, 'sidebar.expandMenu') : t(locale, 'sidebar.collapseMenu')}
+          >
+            {collapsed ? (
+              <ChevronRight className="w-5 h-5 shrink-0" aria-hidden />
+            ) : (
+              <ChevronLeft className="w-5 h-5 shrink-0" aria-hidden />
+            )}
+          </button>
+          <button
+            type="button"
             onClick={onToggle}
             className="p-1 rounded-lg hover:bg-white/10 transition-colors md:hidden"
+            aria-label={t(locale, 'sidebar.collapseMenu')}
           >
             <X className="w-5 h-5 text-gray-400" />
           </button>
@@ -131,20 +155,39 @@ export function Sidebar({
         </nav>
 
         <div className="shrink-0 mt-auto border-t border-white/10 left-0 right-0 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] space-y-2 bg-[rgb(15_23_42/0.85)] backdrop-blur-sm">
-          {!collapsed && (
-            <div className="px-3">
-              <label className="text-[11px] text-gray-500 uppercase tracking-wide">{t(locale, 'app.language')}</label>
-              <select
-                value={locale}
-                onChange={(e) => onLocaleChange(e.target.value as AdminLocale)}
-                className="mt-1 w-full bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-sm text-white"
-              >
-                <option value="en">English</option>
-                <option value="ru">Russian</option>
-                <option value="es">Español</option>
-              </select>
-            </div>
-          )}
+          <div className={collapsed ? 'flex flex-col items-center gap-1.5' : 'px-3'}>
+            {!collapsed && (
+              <span className="text-[11px] text-gray-500 uppercase tracking-wide block mb-1">
+                {t(locale, 'app.language')}
+              </span>
+            )}
+            {collapsed && <Languages className="w-4 h-4 text-gray-500 shrink-0" aria-hidden />}
+            <select
+              value={locale}
+              onChange={(e) => onLocaleChange(e.target.value as AdminLocale)}
+              aria-label={t(locale, 'app.language')}
+              title={t(locale, 'app.language')}
+              className={
+                collapsed
+                  ? 'w-14 bg-white/5 border border-white/10 rounded-lg px-1 py-1.5 text-[11px] text-white text-center'
+                  : 'w-full bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-sm text-white'
+              }
+            >
+              {collapsed ? (
+                <>
+                  <option value="en">EN</option>
+                  <option value="ru">RU</option>
+                  <option value="es">ES</option>
+                </>
+              ) : (
+                <>
+                  <option value="en">English</option>
+                  <option value="ru">Russian</option>
+                  <option value="es">Español</option>
+                </>
+              )}
+            </select>
+          </div>
           <button
             type="button"
             onClick={onLogout}

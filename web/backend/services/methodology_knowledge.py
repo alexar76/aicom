@@ -30,21 +30,7 @@ from pathlib import Path
 from typing import Any, Iterable, Iterator, Optional
 
 
-_DEFAULT_DATA_ROOT = "/app/data"
-
-
-def _resolve_data_root(override: Optional[str | Path] = None) -> Path:
-    """Pick the storage root for the knowledge store.
-
-    Precedence: explicit ``override`` > ``AIFACTORY_DATA_ROOT`` env var >
-    the in-container default (``/app/data``). Tests pass ``tmp_path``.
-    """
-    if override is not None:
-        return Path(override)
-    env = os.environ.get("AIFACTORY_DATA_ROOT")
-    if env:
-        return Path(env)
-    return Path(_DEFAULT_DATA_ROOT)
+from core.paths import resolve_data_root
 
 
 # ---------------------------------------------------------------------------
@@ -238,7 +224,7 @@ class MethodologyKnowledgeStore:
 
     def __init__(self, data_root: Optional[str | Path] = None) -> None:
         """Create the on-disk layout under :func:`_resolve_data_root` (idempotent)."""
-        self.data_root = _resolve_data_root(data_root)
+        self.data_root = resolve_data_root(data_root)
         self.base = self.data_root / "methodology"
         self.cases_dir = self.base / "cases"
         self.lessons_path = self.base / "lessons.jsonl"

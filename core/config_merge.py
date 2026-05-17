@@ -84,4 +84,30 @@ def load_merged_config(primary: str | Path | None = None) -> dict[str, Any]:
             overlay = None
         if isinstance(overlay, dict) and overlay:
             merged = deep_merge(merged, overlay)
-    return merged
+    return _apply_runtime_path_resolution(merged)
+
+
+def _apply_runtime_path_resolution(config: dict[str, Any]) -> dict[str, Any]:
+    """Replace ``paths.*`` defaults with ``core.paths`` resolution (env-aware)."""
+    paths = config.get("paths")
+    if not isinstance(paths, dict):
+        return config
+    try:
+        from core.paths import data_root, git_repos_dir
+
+        root = data_root()
+        paths["data_root"] = str(root)
+        paths["specs"] = str(root / "specs")
+        paths["arch"] = str(root / "arch")
+        paths["code"] = str(root / "code")
+        paths["bugs"] = str(root / "bugs")
+        paths["state"] = str(root / "state")
+        paths["logs"] = str(root / "logs")
+        paths["telemetry"] = str(root / "telemetry")
+        paths["config"] = str(root / "config")
+        paths["reports"] = str(root / "reports")
+        paths["secrets"] = str(root / "secrets")
+        paths["git_repos"] = str(git_repos_dir())
+    except Exception:
+        pass
+    return config

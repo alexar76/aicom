@@ -16,9 +16,11 @@ from typing import Any
 class InspectorAgent:
     """Independent inspector that does not mutate pipeline state."""
 
-    def __init__(self, data_root: str = "/app/data", report_dir: str = "/app/data/reports/inspector"):
-        self.data_root = Path(data_root)
-        self.report_dir = Path(report_dir)
+    def __init__(self, data_root: str | Path | None = None, report_dir: str | Path | None = None):
+        from core.paths import inspector_reports_dir, resolve_data_root
+
+        self.data_root = resolve_data_root(data_root)
+        self.report_dir = Path(report_dir) if report_dir else inspector_reports_dir()
         self.report_dir.mkdir(parents=True, exist_ok=True)
 
     def _read_json(self, path: Path) -> dict[str, Any]:

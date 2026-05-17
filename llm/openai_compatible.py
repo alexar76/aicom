@@ -303,7 +303,9 @@ class OpenAICompatibleProvider(LLMProvider):
     ):
         """Log LLM API call to JSONL file for admin visibility."""
         try:
-            log_dir = Path("/app/data/logs")
+            from core.paths import logs_dir
+
+            log_dir = logs_dir()
             log_dir.mkdir(parents=True, exist_ok=True)
             log_file = log_dir / "llm_calls.jsonl"
 

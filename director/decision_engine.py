@@ -15,6 +15,7 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
+from core.paths import director_rules_path, logs_dir
 from web.backend.api.metrics import PrometheusMetrics
 
 logger = logging.getLogger(__name__)
@@ -34,11 +35,11 @@ class DecisionEngine:
         self,
         auto_actions_enabled: bool = False,
         allowed_actions: Optional[list[str]] = None,
-        config_path: str = "/app/data/config/director_rules.yaml",
+        config_path: str | Path | None = None,
     ):
         self.auto_actions_enabled = auto_actions_enabled
         self.allowed_actions = set(allowed_actions or [])
-        self.config_path = config_path
+        self.config_path = str(config_path or director_rules_path())
         self._load_rules()
 
     @staticmethod
@@ -52,7 +53,7 @@ class DecisionEngine:
             "time": time.time(),
             **kwargs,
         }
-        log_path = Path("/app/data/logs/director.jsonl")
+        log_path = logs_dir() / "director.jsonl"
         try:
             log_path.parent.mkdir(parents=True, exist_ok=True)
             with open(log_path, "a") as f:

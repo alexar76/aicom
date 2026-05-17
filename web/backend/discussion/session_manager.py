@@ -40,7 +40,9 @@ logger = logging.getLogger(__name__)
 
 # ── Constants ────────────────────────────────────────────────────────────────
 
-BASE_DIR = "/app/data/discussions"
+from core.paths import discussions_dir
+
+BASE_DIR = str(discussions_dir())
 SESSIONS_DIR = f"{BASE_DIR}/sessions"
 MESSAGES_DIR = f"{BASE_DIR}/messages"
 IDEAS_DIR = f"{BASE_DIR}/ideas"

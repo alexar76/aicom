@@ -213,7 +213,9 @@ class SecurityAgent(BaseAgent):
 
     def _discover_code_files(self, product_id: str) -> list[dict]:
         """Discover all code files for the product."""
-        code_dir = Path(f"/app/data/code/{product_id}")
+        from core.paths import code_dir as product_code_dir
+
+        code_dir = product_code_dir(product_id)
         files = []
 
         if not code_dir.exists():

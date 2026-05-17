@@ -24,7 +24,9 @@ import shutil
 from pathlib import Path
 
 BASE = os.environ.get("DEMO_VIDEO_BASE_URL", "http://127.0.0.1:9080").rstrip("/")
-PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
+PASSWORD = os.environ.get("ADMIN_PASSWORD", "").strip()
+if not PASSWORD:
+    raise SystemExit("Set ADMIN_PASSWORD (bootstrap admin password)")
 _PROFILE = os.environ.get("DEMO_VIDEO_PROFILE", "").strip().lower()
 _DEFAULT_FS = (
     "[VIDEO DEMO] SaaS for remote teams — JWT auth, dashboard with charts, tasks CRUD, "

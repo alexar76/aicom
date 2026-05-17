@@ -17,9 +17,11 @@ from llm import GenerationConfig, LLMRouter
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY
 from marketplace_taxonomy import MARKETPLACE_CATEGORY_IDS, slug_to_marketplace_category
 
+from core.paths import discovery_dir
+
 logger = logging.getLogger(__name__)
 
-DISCOVERY_DIR = Path("/app/data/discovery")
+DISCOVERY_DIR = discovery_dir()
 
 
 class SourceRuntime:

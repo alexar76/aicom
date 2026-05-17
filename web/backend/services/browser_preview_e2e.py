@@ -61,6 +61,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
+from core.paths import resolve_data_root
 from web.backend.services.browser_e2e_deep import (
     deep_crawl_gate_issues,
     env_bool as deep_env_bool,
@@ -78,6 +79,7 @@ from web.backend.services.browser_e2e_scenarios import (
     run_declarative_scenarios,
     scenarios_enabled,
 )
+from web.backend.services.sandbox_compose_preview import start_compose_preview, stop_compose_for_sandbox
 from web.backend.services.sandbox_preview_api import (
     detect_fastapi_backend,
     start_fastapi_preview,
@@ -283,11 +285,17 @@ def _pick_port() -> int:
 
 def _resolve_e2e_serve_mode(code_dir: Path) -> str:
     raw = os.environ.get("AIFACTORY_BROWSER_E2E_SERVE_MODE", "auto").strip().lower()
-    if raw in ("static", "fastapi", "docker"):
+    if raw in ("static", "fastapi", "docker", "compose"):
         return raw
     if os.environ.get("AIFACTORY_BROWSER_E2E_AUTO_DOCKER", "").strip().lower() in ("1", "true", "yes"):
         if (code_dir / "Dockerfile").is_file():
             return "docker"
+    if raw == "auto":
+        from web.backend.services.sandbox_compose_preview import compose_preview_enabled, find_compose_file
+        from web.backend.services.sandbox_docker import docker_available
+
+        if compose_preview_enabled() and docker_available() and find_compose_file(code_dir):
+            return "compose"
     if detect_fastapi_backend(code_dir):
         return "fastapi"
     return "static"
@@ -368,7 +376,7 @@ def _e2e_start_docker_preview(code_dir: Path, product_id: str) -> tuple[str | No
 
 def run_browser_preview_e2e(
     product_id: str,
-    data_root: str | Path = "/app/data",
+    data_root: str | Path | None = None,
 ) -> dict[str, Any]:
     """
     Run Playwright Chromium against the product code tree.
@@ -385,7 +393,7 @@ def run_browser_preview_e2e(
             "reason": "Browser E2E disabled (quality.browser_e2e_enabled / AIFACTORY_BROWSER_E2E)",
         }
 
-    root = Path(data_root)
+    root = resolve_data_root(data_root)
     code_dir = root / "code" / product_id
     index_html = code_dir / "index.html"
 
@@ -400,10 +408,22 @@ def run_browser_preview_e2e(
     serve_mode = _resolve_e2e_serve_mode(code_dir)
     docker_cid: str | None = None
     uvicorn_proc: Any | None = None
+    compose_sandbox_id: str | None = None
     httpd: ThreadingHTTPServer | None = None
     url: str | None = None
 
     try:
+        if serve_mode == "compose":
+            compose_sandbox_id = f"e2e-{product_id}".replace(" ", "")[:40]
+            cp, cst, _proj = start_compose_preview(code_dir, compose_sandbox_id)
+            if cp and cst == "ok":
+                entry = _e2e_entry_path()
+                url = f"http://127.0.0.1:{cp}{entry}"
+                logger.info("browser E2E compose preview port=%s", cp)
+            else:
+                logger.warning("browser E2E compose preview failed (%s), falling back", cst)
+                serve_mode = _fallback_preview_mode(code_dir)
+
         if serve_mode == "docker":
             d_url, d_cid, d_st = _e2e_start_docker_preview(code_dir, product_id)
             if d_url and d_cid:
@@ -465,6 +485,8 @@ def run_browser_preview_e2e(
         }
     finally:
         terminate_preview_process(uvicorn_proc)
+        if compose_sandbox_id:
+            stop_compose_for_sandbox(compose_sandbox_id)
         if docker_cid:
             subprocess.run(
                 ["docker", "stop", docker_cid],

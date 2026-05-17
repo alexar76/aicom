@@ -16,8 +16,18 @@ from typing import Any
 import httpx
 from fastapi import APIRouter, Header, HTTPException
 
-from web.backend.services.commerce import CommerceService
+from core.paths import (
+    ai_market_integrations_log_path,
+    pipeline_json_path,
+    store_licenses_path,
+)
 from web.backend.api import payment as payment_api
+from web.backend.schemas.api_requests import (
+    AiMarketCapabilityInvokeRequest,
+    AiMarketSearchRequest,
+    AiMarketSettlementConfirmRequest,
+)
+from web.backend.services.commerce import CommerceService
 
 router = APIRouter(prefix="/ai-market", tags=["ai-market"])
 commerce = CommerceService()
@@ -33,10 +43,6 @@ def _pilot_config() -> dict[str, str]:
         "contract": contract,
         "entitlement_ttl_days": str(int(os.environ.get("AIFACTORY_AI_MARKET_ENTITLEMENT_DAYS", "30"))),
     }
-
-
-def _license_path() -> Path:
-    return Path("/app/data/store/licenses.json")
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -68,12 +74,15 @@ async def _fanout_external_integrations(event: dict[str, Any]) -> list[dict[str,
             results.append({"url": url, "status_code": resp.status_code, "ok": resp.status_code < 300})
         except Exception as exc:
             results.append({"url": url, "ok": False, "error": str(exc)})
-    _append_jsonl(Path("/app/data/logs/ai_market_integrations.jsonl"), {"time": time.time(), "event": event, "results": results})
+    _append_jsonl(
+        ai_market_integrations_log_path(),
+        {"time": time.time(), "event": event, "results": results},
+    )
     return results
 
 
 def _read_pipeline_products() -> dict[str, Any]:
-    p = Path("/app/data/state/pipeline.json")
+    p = pipeline_json_path()
     if not p.exists():
         return {}
     try:
@@ -131,9 +140,9 @@ async def get_product(product_id: str):
 
 
 @router.post("/products/search")
-async def search_products(payload: dict[str, Any]):
+async def search_products(body: AiMarketSearchRequest):
     products = _read_pipeline_products()
-    query = str(payload.get("task_description") or "").lower().strip()
+    query = body.task_description.lower()
     out: list[dict[str, Any]] = []
     for pid, p in products.items():
         state = str((p or {}).get("state") or "").upper()
@@ -160,23 +169,21 @@ async def get_pilot_config():
 
 
 @router.post("/pilot/settlement/confirm")
-async def confirm_pilot_settlement(payload: dict[str, Any]):
+async def confirm_pilot_settlement(body: AiMarketSettlementConfirmRequest):
     """
     Production pilot: single chain/token/contract settlement confirmation.
     On success creates order + license entitlement.
     """
     cfg = _pilot_config()
-    chain = str(payload.get("chain") or "").strip().lower()
-    token = str(payload.get("token") or "").strip().upper()
-    contract = str(payload.get("contract_address") or "").strip()
-    product_id = str(payload.get("product_id") or "").strip()
-    tx_hash = str(payload.get("tx_hash") or "").strip()
-    customer_id = str(payload.get("customer_id") or f"aimkt-{uuid.uuid4().hex[:8]}")
-    customer_email = str(payload.get("customer_email") or f"{customer_id}@ai-market.local")
-    wallet = str(payload.get("wallet_address") or "").strip()
-    amount = float(payload.get("amount") or 0.0)
-    if not product_id or not tx_hash:
-        raise HTTPException(status_code=400, detail="product_id and tx_hash are required")
+    chain = (body.chain or cfg["chain"]).strip().lower()
+    token = (body.token or cfg["token"]).strip().upper()
+    contract = (body.contract_address or "").strip()
+    product_id = body.product_id
+    tx_hash = body.tx_hash
+    customer_id = body.customer_id or f"aimkt-{uuid.uuid4().hex[:8]}"
+    customer_email = body.customer_email or f"{customer_id}@ai-market.local"
+    wallet = body.wallet_address or ""
+    amount = body.amount
     if chain != cfg["chain"] or token != cfg["token"]:
         raise HTTPException(status_code=400, detail=f"pilot supports only {cfg['chain']} + {cfg['token']}")
     if cfg["contract"] and contract.lower() != cfg["contract"].lower():
@@ -230,7 +237,7 @@ async def confirm_pilot_settlement(payload: dict[str, Any]):
 
 @router.get("/entitlements/{customer_id}")
 async def list_entitlements(customer_id: str):
-    licenses = _read_json(_license_path())
+    licenses = _read_json(store_licenses_path())
     out = []
     for lic in licenses.values():
         if str(lic.get("customer_id") or "") != customer_id:
@@ -250,12 +257,12 @@ async def list_entitlements(customer_id: str):
 async def invoke_capability(
     product_id: str,
     capability_id: str,
-    payload: dict[str, Any],
+    body: AiMarketCapabilityInvokeRequest,
     x_ai_market_license: str | None = Header(default=None),
 ):
     if not x_ai_market_license:
         raise HTTPException(status_code=401, detail="x-ai-market-license header required")
-    licenses = _read_json(_license_path())
+    licenses = _read_json(store_licenses_path())
     lic = licenses.get(x_ai_market_license) or {}
     if not lic or str(lic.get("status") or "").lower() != "active":
         raise HTTPException(status_code=403, detail="license not active")
@@ -267,6 +274,6 @@ async def invoke_capability(
         "status": "ok",
         "result": {
             "message": "Capability invocation accepted in pilot mode",
-            "echo": payload,
+            "echo": body.input,
         },
     }

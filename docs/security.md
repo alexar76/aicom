@@ -28,11 +28,12 @@ After first login, change the password via **Admin → Users** (super_admin) or 
 | **CSRF** (cookie sessions) | Default **on** (`AIFACTORY_CSRF_PROTECT=1`). Login sets `csrf_token` cookie; mutating `/api/admin/*` requests with `access_token` cookie must send header **`X-CSRF-Token`**. Bearer-only API clients (no session cookie) are unaffected. Admin UI sends the header automatically. |
 | **FirewallManager** | Wired on every request: rate limits + explicit IP deny rules. Full default-deny ACL only when **`AIFACTORY_FIREWALL_ENFORCE=1`** (otherwise localhost + whitelist rules from `data/config/firewall_rules.json`). Optional encryption: `AIFACTORY_FIREWALL_RULES_FERNET_KEY`. |
 | **Security headers** | `X-Content-Type-Options`, `X-Frame-Options`, **`Referrer-Policy`**, CSP, optional HSTS. With **`AIFACTORY_ENABLE_DEFAULT_CSP=1`** (compose default): API gets a strict CSP (`default-src 'none'`) via `main.py`; Next.js UI gets a UI-safe CSP via `web/frontend/middleware.ts`. Override API with **`AIFACTORY_CSP`**, UI with **`AIFACTORY_FRONTEND_CSP`**. |
-| **Grafana** | Set **`GRAFANA_ADMIN_PASSWORD`** in `.env` (`fill_production_env.py` / `deploy.sh` generate a random value when missing). No well-known default in compose. |
+| **Grafana** | **`GRAFANA_ADMIN_PASSWORD`** required in `.env` (compose fails without it). `fill_production_env.py` / `run-compose.sh` generate a random value when missing. |
+| **LLM keys** | Not in `docker-compose.yml` `environment:` — use `.env`, `data/secrets/llm/*`, or `docker-compose.secrets.yml`. See [security-secrets.md](./security-secrets.md). |
 | **LLM caps (multi-worker)** | **`LLMUsageGuard`** uses a file lock + shared `llm_usage_guard.json` so RPM and USD caps apply across all Uvicorn workers. |
 | **Sandbox require container** | **`AIFACTORY_SANDBOX_REQUIRE_CONTAINER=1`** (compose default) — `SandboxIsolation` fails instead of subprocess fallback when Docker is unavailable. |
 | **Secrets vault** | `AIFACTORY_SECRETS_VAULT_FILE` and `AIFACTORY_SECRETS_MASTER_KEY_FILE` can point to separate paths. |
-| **JWT** | Persistent `data/secrets/jwt_secret.key` or `JWT_SECRET_KEY` (≥32 chars). |
+| **JWT** | Persistent `data/secrets/jwt_secret.key` (Docker entrypoint; never empty `JWT_SECRET_KEY=` in compose). Optional `JWT_SECRET_KEY` env (≥32 chars) for non-Docker runs. |
 | **LLM provider ids** | On startup, `auto_migrate_provider_ids()` renames legacy keys in `model_providers.yaml` and `llm_calls.jsonl` (`AIFACTORY_AUTO_MIGRATE_PROVIDER_IDS=1`, default). |
 | **WebAuthn 2FA** | Passkeys as alternative to TOTP (`mfa_method`: `webauthn` \| `totp`). Env: `AIFACTORY_WEBAUTHN_RP_ID`, `AIFACTORY_WEBAUTHN_ORIGIN`, `AIFACTORY_WEBAUTHN_RP_NAME`. |
 | **CI security benchmark** | `scripts/run_security_benchmark.sh` — pytest subset for CSRF, firewall, audit, sandbox, usage guard, WebAuthn helpers. |

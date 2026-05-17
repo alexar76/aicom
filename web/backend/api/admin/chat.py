@@ -34,8 +34,10 @@ router = APIRouter(
 
 # ── Constants ────────────────────────────────────────────────────────────────
 
-CHAT_FILE = "/app/data/state/chat_messages.json"
-ADMIN_CONFIG_FILE = "/app/data/config/admin.json"
+from core.paths import chat_messages_path, legacy_admin_path
+
+CHAT_FILE = str(chat_messages_path())
+ADMIN_CONFIG_FILE = str(legacy_admin_path())
 
 
 # ── Pydantic Models ──────────────────────────────────────────────────────────

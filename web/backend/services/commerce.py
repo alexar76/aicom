@@ -22,7 +22,9 @@ def _resolve_customer_jwt_secret() -> str:
     env = os.environ.get("CUSTOMER_JWT_SECRET", "").strip()
     if env:
         return env
-    path = os.environ.get("CUSTOMER_JWT_SECRET_FILE", "/app/data/secrets/customer_jwt.key")
+    from core.paths import customer_jwt_secret_path
+
+    path = str(customer_jwt_secret_path())
     p = Path(path)
     if p.is_file():
         return p.read_text().strip()
@@ -32,8 +34,10 @@ def _resolve_customer_jwt_secret() -> str:
 class CommerceService:
     """Persistent commerce primitives: customers, licenses, and downloads."""
 
-    def __init__(self, base_dir: str = "/app/data/store"):
-        preferred_base = Path(base_dir)
+    def __init__(self, base_dir: str | Path | None = None):
+        from core.paths import store_dir
+
+        preferred_base = Path(base_dir) if base_dir else store_dir()
         fallback_base = Path(os.environ.get("AIFACTORY_DATA_DIR", "./data")) / "store"
         try:
             preferred_base.mkdir(parents=True, exist_ok=True)

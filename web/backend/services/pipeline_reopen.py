@@ -10,6 +10,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
+from core.paths import pipeline_db_path, pipeline_json_path
 from core.pipeline_retry_limits import task_max_retries
 from web.backend.services.pipeline_failure_report import build_failure_report
 
@@ -20,24 +21,14 @@ def _truthy(name: str, default: str = "0") -> bool:
     return os.environ.get(name, default).strip().lower() in ("1", "true", "yes")
 
 
-def pipeline_json_path() -> Path:
-    return Path(os.environ.get("AICOM_PIPELINE_JSON", "/app/data/state/pipeline.json"))
-
-
 def sqlite_db_path() -> Path:
-    return Path(os.environ.get("SQLITE_PATH", "/app/data/state/pipeline.db"))
+    return pipeline_db_path()
 
 
 def _sync_sqlite_from_json() -> None:
-    if not _truthy("USE_SQLITE", "0"):
-        return
-    try:
-        from orchestrator.migrate import migrate
+    from core.pipeline_state_writer import sync_sqlite_from_pipeline_json
 
-        migrate(json_path=str(pipeline_json_path()), db_path=str(sqlite_db_path()))
-        logger.info("SQLite synced after reopen_failed_product")
-    except Exception:
-        logger.exception("SQLite sync after reopen_failed_product failed")
+    sync_sqlite_from_pipeline_json()
 
 
 def _priority(agent_type: str) -> int:
@@ -68,6 +59,15 @@ def _recovery_plan(
         str(sug.get("agent_type") or "pm").lower(),
         str(sug.get("target_state") or "MARKET_RESEARCHED").upper(),
     )
+
+
+def _clear_failure_fields(product: dict[str, Any]) -> None:
+    for key in ("failure_reason", "last_error", "error"):
+        product.pop(key, None)
+    meta = product.get("metadata")
+    if isinstance(meta, dict):
+        for key in ("failure_reason", "error", "last_error"):
+            meta.pop(key, None)
 
 
 def _cancel_active_tasks(tasks: list[dict[str, Any]], now: float) -> int:
@@ -148,8 +148,34 @@ def _reopen_sqlite(
             return {"ok": False, "reason": "product_not_failed", "state": st}
 
         tasks = sm.get_tasks_by_product(pid)
-        report = build_failure_report(product, tasks)
         rec_agent, rec_state = _recovery_plan(product, tasks, agent_type=agent_type, target_state=target_state)
+
+        now = time.time()
+        try:
+            from orchestrator.task_queue_hygiene import is_likely_false_failed_product, recovery_state_after_false_failed
+
+            if is_likely_false_failed_product(product, tasks):
+                product["state"] = recovery_state_after_false_failed(product, tasks)
+                _clear_failure_fields(product)
+                product["updated_at"] = now
+                sm.upsert_product(product)
+                active = [
+                    t
+                    for t in tasks
+                    if str(t.get("status") or "").lower() in ("pending", "running")
+                ]
+                if active:
+                    return {
+                        "ok": True,
+                        "product_state": product["state"],
+                        "agent_type": str(active[0].get("agent_type") or rec_agent),
+                        "target_state": str(active[0].get("state") or rec_state),
+                        "cancelled_tasks": 0,
+                        "recovered_in_place": True,
+                        "message": "False FAILED cleared; existing repair task will continue.",
+                    }
+        except Exception:
+            logger.debug("reopen_failed_product: false-FAILED in-place recovery check failed", exc_info=True)
 
         if any(
             str(t.get("agent_type") or "") == rec_agent
@@ -157,9 +183,22 @@ def _reopen_sqlite(
             and str(t.get("status") or "").lower() in ("pending", "running")
             for t in tasks
         ):
-            return {"ok": False, "reason": "recovery_already_pending", "agent_type": rec_agent, "target_state": rec_state}
+            _clear_failure_fields(product)
+            if rec_agent == "pm":
+                product["state"] = "MARKET_RESEARCHED"
+            elif rec_agent == "developer":
+                product["state"] = "BUG_FOUND"
+            product["updated_at"] = now
+            sm.upsert_product(product)
+            return {
+                "ok": True,
+                "product_state": product["state"],
+                "agent_type": rec_agent,
+                "target_state": rec_state,
+                "cancelled_tasks": 0,
+                "recovery_already_pending": True,
+            }
 
-        now = time.time()
         cancelled = _cancel_active_tasks(tasks, now)
         for t in tasks:
             if str(t.get("status") or "").lower() == "cancelled":
@@ -170,11 +209,7 @@ def _reopen_sqlite(
         meta["failed_reopen_count"] = reopen_count
         meta["last_operator_reopen"] = {"at": now, "notes": notes[:8000], "agent": rec_agent, "state": rec_state}
 
-        product.pop("failure_reason", None)
-        product.pop("last_error", None)
-        product.pop("error", None)
-        meta.pop("failure_reason", None)
-        meta.pop("error", None)
+        _clear_failure_fields(product)
         product["metadata"] = meta
 
         if rec_agent == "pm":
@@ -215,7 +250,6 @@ def _reopen_sqlite(
             "target_state": rec_state,
             "cancelled_tasks": cancelled,
             "failed_reopen_count": reopen_count,
-            "failure_report": report,
         }
     finally:
         sm.close()
@@ -228,15 +262,17 @@ def _reopen_json(
     agent_type: str | None,
     target_state: str | None,
 ) -> dict[str, Any]:
-    pj = pipeline_json_path()
-    if not pj.is_file():
-        return {"ok": False, "reason": "pipeline_state_missing"}
+    from core.pipeline_database import pipeline_uses_sql_store
+    from core.pipeline_state_writer import read_pipeline_state, write_pipeline_state
 
-    try:
-        data = json.loads(pj.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as e:
-        logger.warning("reopen_failed: cannot read pipeline.json: %s", e)
-        return {"ok": False, "reason": "pipeline_read_error"}
+    if pipeline_uses_sql_store():
+        return _reopen_sqlite(product_id, notes, agent_type=agent_type, target_state=target_state)
+
+    data = read_pipeline_state()
+    if not data.get("products"):
+        pj = pipeline_json_path()
+        if not pj.is_file():
+            return {"ok": False, "reason": "pipeline_state_missing"}
 
     products: dict[str, Any] = data.get("products") or {}
     task_queue: list = data.get("task_queue") or []
@@ -293,9 +329,8 @@ def _reopen_json(
     task_queue.append(new_task)
     data["products"][pid] = product
     data["task_queue"] = task_queue
-    pj.parent.mkdir(parents=True, exist_ok=True)
-    pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-    _sync_sqlite_from_json()
+    if not write_pipeline_state(data):
+        return {"ok": False, "reason": "pipeline_write_error"}
 
     return {
         "ok": True,

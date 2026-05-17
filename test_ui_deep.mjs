@@ -29,7 +29,9 @@ async function main() {
   // Fill password field and submit
   const passwordInput = await page.$('input[type="password"]');
   if (passwordInput) {
-    await passwordInput.fill('admin123');
+    const adminPw = process.env.ADMIN_PASSWORD;
+    if (!adminPw) throw new Error('Set ADMIN_PASSWORD');
+    await passwordInput.fill(adminPw);
     await delay(200);
     
     // Click submit button

@@ -18,21 +18,21 @@ import web.backend.services.feedback_guardrail as feedback_guardrail
 import web.backend.services.policy_audit as policy_audit
 from core.delivery_profile import FULL_SOFTWARE, MARKETING_LANDING
 from orchestrator.sqlite_manager import SQLiteManager
-from pipeline_worker import (
-    PipelineWorker,
-    _delivery_profile_from_product_dict,
-    _monitoring_refresh_decision,
+from orchestrator.worker_utils import (
+    delivery_profile_from_product_dict,
+    monitoring_refresh_decision,
 )
+from pipeline_worker import PipelineWorker
 
 
 def test_monitoring_refresh_decision_false_when_not_requested():
-    ok, payload = _monitoring_refresh_decision({})
+    ok, payload = monitoring_refresh_decision({})
     assert ok is False
     assert payload == {}
 
 
 def test_monitoring_refresh_decision_true_with_brief():
-    ok, payload = _monitoring_refresh_decision(
+    ok, payload = monitoring_refresh_decision(
         {
             "request_implementation_refresh": True,
             "implementation_refresh_brief": "Fix checkout",
@@ -46,18 +46,18 @@ def test_monitoring_refresh_decision_true_with_brief():
 
 
 def test_monitoring_refresh_decision_default_issue_when_no_brief():
-    ok, payload = _monitoring_refresh_decision({"request_implementation_refresh": True})
+    ok, payload = monitoring_refresh_decision({"request_implementation_refresh": True})
     assert ok is True
     assert any("analyst monitoring" in s for s in payload["demo_quality"]["issues"])
 
 
 def test_delivery_profile_explicit_top_level():
-    assert _delivery_profile_from_product_dict({"delivery_profile": "marketing_landing"}) == MARKETING_LANDING
+    assert delivery_profile_from_product_dict({"delivery_profile": "marketing_landing"}) == MARKETING_LANDING
 
 
 def test_delivery_profile_from_metadata():
     assert (
-        _delivery_profile_from_product_dict({"metadata": {"delivery_profile": "full_software"}})
+        delivery_profile_from_product_dict({"metadata": {"delivery_profile": "full_software"}})
         == FULL_SOFTWARE
     )
 
@@ -105,7 +105,7 @@ def test_state_from_sqlite_snapshot_maps_products(monkeypatch, tmp_path):
     mgr.close()
 
     w = PipelineWorker()
-    snap = w._state_from_sqlite_snapshot()
+    snap = w._persistence.state_from_sqlite_snapshot()
     assert snap is not None
     assert snap["products"]["snap-prod"]["id"] == "snap-prod"
     assert snap["task_queue"] == []
@@ -140,7 +140,7 @@ def test_load_state_with_recovery_rebuilds_from_sqlite(monkeypatch, tmp_path):
     pj.write_text("{ not valid json", encoding="utf-8")
 
     w = PipelineWorker()
-    state = w._load_state_with_recovery()
+    state = w._persistence.load_json_with_recovery()
     assert state is not None
     assert "rec-prod" in state.get("products", {})
     repaired = json.loads(pj.read_text(encoding="utf-8"))

@@ -21,11 +21,15 @@ _TERMINAL_STATES = frozenset({"COMPLETED", "DEPLOYED_PRODUCTION"})
 
 
 def pipeline_json_path() -> Path:
-    return Path(os.environ.get("AICOM_PIPELINE_JSON", "/app/data/state/pipeline.json"))
+    from core.paths import pipeline_json_path
+
+    return pipeline_json_path()
 
 
 def director_queue_path() -> Path:
-    return Path(os.environ.get("AIFACTORY_SUPPORT_DIRECTOR_QUEUE", "/app/data/support/director_queue.jsonl"))
+    from core.paths import support_director_queue_path
+
+    return support_director_queue_path()
 
 
 def _truthy(name: str, default: str = "0") -> bool:
@@ -45,7 +49,9 @@ def _dev_fixing_pending(task_queue: list, pid: str) -> bool:
 def _sync_sqlite() -> None:
     if not _truthy("USE_SQLITE", "0"):
         return
-    db_path = os.environ.get("SQLITE_PATH", "/app/data/state/pipeline.db")
+    from core.paths import pipeline_db_path
+
+    db_path = str(pipeline_db_path())
     pj = pipeline_json_path()
     try:
         from orchestrator.migrate import migrate

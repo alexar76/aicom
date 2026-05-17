@@ -12,32 +12,13 @@ import logging
 from typing import Any, Optional
 
 from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel, Field
 
 from core.telemetry_signals import EVOLUTION_SIGNAL_EVENT_TYPE
+from web.backend.schemas.api_requests import EvolutionSignalRequest, TelemetryEventRequest
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/telemetry", tags=["telemetry"])
-
-
-class TelemetryEventRequest(BaseModel):
-    product_id: str = Field(..., min_length=5, max_length=80)
-    event_type: str = Field(..., min_length=2, max_length=64)
-    data: dict[str, Any] = Field(default_factory=dict)
-    session_id: Optional[str] = Field(None, max_length=80)
-    page_url: Optional[str] = Field(None, max_length=500)
-    locale: Optional[str] = Field(None, max_length=16)
-
-
-class EvolutionSignalRequest(BaseModel):
-    """Structured signal for evolution / analyst agents (stored as telemetry event_type=evolution_signal)."""
-
-    product_id: str = Field(..., min_length=5, max_length=80)
-    signal: str = Field(..., min_length=2, max_length=64)
-    weight: float = Field(0.5, ge=0.0, le=1.0)
-    context: dict[str, Any] = Field(default_factory=dict)
-    session_id: Optional[str] = Field(None, max_length=80)
 
 
 @router.post("/event")
@@ -46,9 +27,7 @@ async def record_event(request: Request, body: TelemetryEventRequest):
     Public. Records one telemetry event.
     We intentionally keep it minimal and avoid PII. Client should not send emails, names, etc.
     """
-    pid = (body.product_id or "").strip()
-    if not pid.startswith("prod-"):
-        raise HTTPException(status_code=400, detail="Invalid product_id")
+    pid = body.product_id
 
     telemetry = getattr(request.app.state, "telemetry", None)
     if telemetry is None:
@@ -80,9 +59,7 @@ async def record_evolution_signal(request: Request, body: EvolutionSignalRequest
     Public. Aggregates product-level evolution hints (NPS-style, churn risk, feature demand).
     Stored alongside sandbox telemetry; pipelines can aggregate ``event_type == evolution_signal``.
     """
-    pid = (body.product_id or "").strip()
-    if not pid.startswith("prod-"):
-        raise HTTPException(status_code=400, detail="Invalid product_id")
+    pid = body.product_id
 
     telemetry = getattr(request.app.state, "telemetry", None)
     if telemetry is None:

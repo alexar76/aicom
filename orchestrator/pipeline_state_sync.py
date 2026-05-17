@@ -95,6 +95,32 @@ def reconcile_product_state(
     if not product:
         return False
     cur = normalize_product_state(product.get("state"))
+
+    if cur == "FAILED":
+        try:
+            from orchestrator.task_queue_hygiene import (
+                is_likely_false_failed_product,
+                recovery_state_after_false_failed,
+            )
+
+            if is_likely_false_failed_product(product, tasks):
+                product["state"] = recovery_state_after_false_failed(product, tasks)
+                product["updated_at"] = time.time()
+                product.pop("failure_reason", None)
+                product.pop("error", None)
+                meta = product.get("metadata")
+                if isinstance(meta, dict):
+                    meta.pop("failure_reason", None)
+                    meta.pop("error", None)
+                logger.info(
+                    "Reconciled false FAILED product %s → %s",
+                    product.get("id"),
+                    product.get("state"),
+                )
+                return True
+        except Exception as exc:
+            logger.debug("false FAILED reconcile skipped: %s", exc)
+
     if cur in _TERMINAL and cur != "FAILED":
         return False
 

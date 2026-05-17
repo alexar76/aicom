@@ -99,7 +99,9 @@ def templates_dir_from_env(data_root: str | Path | None = None) -> Path:
     )
     if raw:
         return Path(raw)
-    dr = data_root or os.environ.get("AIFACTORY_DATA_ROOT") or "/app/data"
+    from core.paths import resolve_data_root
+
+    dr = resolve_data_root(data_root)
     return Path(dr) / "reference_templates"
 
 

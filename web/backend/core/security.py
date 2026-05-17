@@ -22,6 +22,8 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
+from core.paths import jwt_secret_file_path, legacy_admin_path, legacy_audit_log_path
+
 logger = logging.getLogger(__name__)
 
 # Minimum length for JWT HMAC keys loaded from env or jwt_secret.key file.
@@ -39,9 +41,10 @@ def resolve_jwt_secret_for_runtime(explicit: Optional[str]) -> str:
         if len(s) >= 8:
             return s
     env = (os.environ.get("JWT_SECRET_KEY") or "").strip()
+    # Ignore empty compose placeholders; prefer jwt_secret.key when env is blank.
     if len(env) >= _JWT_MIN_KEY_CHARS:
         return env
-    key_path = Path((os.environ.get("JWT_SECRET_FILE") or "/app/data/secrets/jwt_secret.key").strip())
+    key_path = jwt_secret_file_path()
     if key_path.is_file():
         from_file = key_path.read_text(encoding="utf-8").strip()
         if len(from_file) >= _JWT_MIN_KEY_CHARS:
@@ -86,17 +89,17 @@ class SecurityManager:
         jwt_expiry_minutes: int = 30,
         max_login_attempts: int = 5,
         ban_minutes: int = 15,
-        audit_log_path: str = "/app/data/logs/audit.jsonl",
+        audit_log_path: str | None = None,
     ):
         self.secret_key = resolve_jwt_secret_for_runtime(secret_key)
         self.jwt_algorithm = jwt_algorithm
         self.jwt_expiry_minutes = jwt_expiry_minutes
         self.max_login_attempts = max_login_attempts
         self.ban_minutes = ban_minutes
-        self.audit_log_path = audit_log_path
+        self.audit_log_path = audit_log_path or str(legacy_audit_log_path())
 
         self._audit_chain: Any = None
-        chain_dir = Path(audit_log_path).parent / "audit"
+        chain_dir = Path(self.audit_log_path).parent / "audit"
         try:
             from security.audit_logger import AuditLogger
 
@@ -108,7 +111,7 @@ class SecurityManager:
         self._login_attempts: dict[str, list[float]] = {}
 
         # Ensure audit log directory exists
-        Path(audit_log_path).parent.mkdir(parents=True, exist_ok=True)
+        Path(self.audit_log_path).parent.mkdir(parents=True, exist_ok=True)
 
     def hash_password(self, password: str) -> str:
         """Hash a password using bcrypt."""
@@ -127,7 +130,7 @@ class SecurityManager:
 
         # Try SHA256+salt fallback
         try:
-            admin_file = Path("/app/data/config/admin.json")
+            admin_file = legacy_admin_path()
             if admin_file.exists():
                 import json
                 with open(admin_file) as f:
