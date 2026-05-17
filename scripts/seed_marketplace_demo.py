@@ -122,9 +122,9 @@ DEMO_PRODUCTS: list[dict[str, Any]] = [
         "id": "prod-demo-market-01",
         "idea": "E2E demo — marketplace listing + sandbox preview (Docker)",
         "taxonomy_category": "devtools",
-        "delivery_profile": "full_software",
+        "delivery_profile": "marketing_landing",
         "product_name": "PulseDeck Dev Sandbox",
-        "selling_description": "Reference full-stack listing for storefront smoke tests — sandbox HTML plus configurable checkout metadata.",
+        "selling_description": "Reference marketing landing for storefront smoke tests — hero, features, pricing strip, and sandbox HTML preview.",
         "tags": ["demo", "devtools", "sandbox"],
         "usdt_price": 9,
         "html": lambda: _full_product_html(
@@ -156,11 +156,11 @@ DEMO_PRODUCTS: list[dict[str, Any]] = [
     },
     {
         "id": "prod-demo-full-saas-01",
-        "idea": "Full software — squad CRM with kanban deals and shared inbox (demo UI)",
+        "idea": "Marketing landing — squad CRM promo with kanban story and team invite CTA (demo UI)",
         "taxonomy_category": "saas",
-        "delivery_profile": "full_software",
+        "delivery_profile": "marketing_landing",
         "product_name": "Harborline Squad CRM",
-        "selling_description": "Pipeline-shaped CRM demo: deals board, contacts, team invites — representative multi-screen SaaS artifact from the factory.",
+        "selling_description": "CRM promo one-pager: deals story, contacts teaser, team invites — brochure HTML for storefront demos.",
         "tags": ["saas", "crm", "kanban"],
         "usdt_price": 12,
         "html": lambda: _full_product_html(

@@ -44,6 +44,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Input';
 import api, { Product } from '@/lib/api';
+import { useStorefrontCatalog } from '@/hooks/useStorefrontCatalog';
 import { labelTechStackKey } from '@/lib/product-spec';
 import { formatRelativeTime, getStateLabel } from '@/lib/utils';
 import {
@@ -816,48 +817,26 @@ function CatalogProductCard({
 // ── Products Section ─────────────────────────────────────────────────────
 
 function ProductsSection({ copy }: { copy: MarketingStrings }) {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<{ id: string; name: string; icon: string; description: string; product_count: number }[]>([]);
-  /** Sum of listed products (matches /api/products when showing All) */
-  const [catalogTotalCount, setCatalogTotalCount] = useState(0);
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const {
+    products,
+    categories,
+    catalogTotalCount,
+    loading,
+    refreshing,
+    fromCache,
+    error,
+    revalidate,
+  } = useStorefrontCatalog(activeCategory);
 
-  const fetchData = async (catId?: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const [prods, catPayload] = await Promise.all([
-        catId && catId !== 'all' ? api.getProducts(catId) : api.getProducts(),
-        api.getCategories(),
-      ]);
-      setProducts(prods);
-      setCategories(catPayload.categories);
-      setCatalogTotalCount(catPayload.totalCount);
-    } catch (err: any) {
-      setError(err.message || 'Failed to load products');
-      setProducts([]);
-      setCategories([]);
-      setCatalogTotalCount(0);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleCategoryChange = async (catId: string) => {
+  const handleCategoryChange = (catId: string) => {
     setActiveCategory(catId);
     setSearchQuery('');
-    await fetchData(catId);
   };
 
   const handleRetry = () => {
-    fetchData(activeCategory === 'all' ? undefined : activeCategory);
+    revalidate();
   };
 
   // Client-side search filter
@@ -904,6 +883,12 @@ function ProductsSection({ copy }: { copy: MarketingStrings }) {
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             {copy.productsSubtitle}
           </p>
+          {refreshing && products.length > 0 && (
+            <p className="mt-3 inline-flex items-center gap-2 text-xs text-gray-500">
+              <RefreshCw className="h-3.5 w-3.5 animate-spin text-indigo-400/80" aria-hidden />
+              {fromCache ? 'Showing cached catalog — updating…' : 'Updating catalog…'}
+            </p>
+          )}
         </motion.div>
 
         {/* Search Bar */}
@@ -962,8 +947,8 @@ function ProductsSection({ copy }: { copy: MarketingStrings }) {
           ))}
         </motion.div>
 
-        {/* Error State */}
-        {error && !loading && (
+        {/* Error State — only when there is nothing to show from cache */}
+        {error && !loading && products.length === 0 && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
