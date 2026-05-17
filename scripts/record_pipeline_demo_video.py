@@ -19,8 +19,9 @@ from __future__ import annotations
 import json
 import os
 import re
-import time
 import shutil
+import sys
+import time
 from pathlib import Path
 
 BASE = os.environ.get("DEMO_VIDEO_BASE_URL", "http://127.0.0.1:9080").rstrip("/")
@@ -306,6 +307,12 @@ def main() -> Path | None:
     shutil.copy2(latest, dest)
     print(f"OK — {latest}", flush=True)
     print(f"    → {dest}", flush=True)
+    gen = REPO_ROOT / "scripts" / "generate_readme_hero_assets.py"
+    if gen.is_file():
+        import subprocess
+
+        print("Generating README GIF + MP4 + public/demo copies…", flush=True)
+        subprocess.run([sys.executable, str(gen)], check=False)
     return dest
 
 

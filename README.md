@@ -1,18 +1,50 @@
 # AI-Factory
 
-**MIT · self-hosted · full agent pipeline · Deep Playwright QA · optional human gates**
+<p align="center">
+  <strong>MIT · self-hosted · idea → shippable web product</strong><br/>
+  <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> · <a href="#demo-video">Demo video</a> · <a href="#gallery">Gallery</a> · <a href="#quick-start">Quick start</a>
+</p>
 
-**Website:** [magic-ai-factory.com](https://magic-ai-factory.com)
+<p align="center">
+  <img src="docs/gallery/landing-01.webp" alt="AI-Factory generated marketing landing (1440×900)" width="920" />
+</p>
+
+<p align="center">
+  <a href="#demo-video">
+    <img src="docs/gallery/hero-demo-preview.gif" alt="Pipeline walkthrough: Admin login → agents → sandbox preview" width="920" />
+  </a>
+</p>
+<p align="center"><em>↑ 12s autoplay — full walkthrough below</em></p>
+
+---
+
+<h2 id="demo-video">▶ Demo video</h2>
+
+GitHub’s README viewer **does not inline-play `.webm` file links** (only download). Use the **MP4** below, the **GIF** above, or watch on the live site.
+
+<p align="center">
+  <video src="docs/gallery/recordings/pipeline-demo-latest.mp4" controls playsinline width="920">
+    <a href="docs/gallery/recordings/pipeline-demo-latest.mp4">Download pipeline demo (.mp4)</a>
+  </video>
+</p>
+
+| Where | How |
+|-------|-----|
+| **Live site** | [magic-ai-factory.com](https://magic-ai-factory.com) — hero video + guest landing try-out |
+| **Admin replay** | Login → **Live Monitor** or **Settings** → Demo replay (when published) |
+| **Public API** | `GET /api/public/pipeline-demo-replay` (uploaded clip, no auth) |
+| **Download** | [.mp4](docs/gallery/recordings/pipeline-demo-latest.mp4) · [.webm](docs/gallery/recordings/pipeline-demo-latest.webm) |
+| **Regenerate** | `python scripts/record_pipeline_demo_video.py` → `python scripts/generate_readme_hero_assets.py` |
+
+---
 
 **One sentence → a shippable web product (landing or full stack). Self-hosted.**
 
-**Typical wall-clock on this fleet (DeepSeek, no QA rework loops):** `marketing_landing` **~20–25 min** to first previewable code (`CODE_COMMITTED`); `full_software` **~25–45 min** for a simple brief, **hours** when QA/security gates iterate (complex specs: **10+ h** observed). **Not** a 15-second generator — see [FAQ & scope](#faq--scope).
+**Typical wall-clock (DeepSeek, no QA rework loops):** `marketing_landing` **~20–25 min** to first previewable code; `full_software` **~25–45 min** for a simple brief, **hours** when gates iterate — [FAQ & scope](#faq--scope). **Not** a 15-second generator.
 
-**Typical LLM API cost (estimated from `llm_calls.jsonl`):** **~$0.30–$2** for a short landing first pass; **~$3–$15+** for `full_software` with QA/fix cycles (fleet average with retries is higher). Bring your own keys; host ~**$7/mo** is separate.
+**Typical LLM API cost:** **~$0.30–$2** landing first pass; **~$3–$15+** `full_software` with QA cycles. Bring your own keys; host ~**$7/mo** separate.
 
-**13 pipeline agents** (analyst, PM, methodologist, architect, design critic, developer, hardening, QA, security, DevOps, marketing, sales, evolution) build your product with **Playwright E2E gates**, security scans, and storefront deployment. Admin UI also shows a **Designer** stage backed by architect artifacts.
-
-Sample walkthrough: [`docs/gallery/recordings/pipeline-demo-latest.webm`](docs/gallery/recordings/pipeline-demo-latest.webm) *(regenerate: `scripts/record_pipeline_demo_video.py`)* · Generated landings: [Gallery](#gallery) below.
+**13 pipeline agents** + Playwright E2E gates, security scans, storefront deployment.
 
 ## Quick start
 

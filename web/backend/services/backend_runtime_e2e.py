@@ -1,7 +1,4 @@
 """
-import logging
-
-logger = logging.getLogger(__name__)
 Runtime backend E2E checks for generated products.
 
 Purpose:
@@ -12,6 +9,7 @@ Purpose:
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
 import socket
@@ -23,6 +21,8 @@ from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 
 
 def _truthy(name: str, default: str = "1") -> bool:

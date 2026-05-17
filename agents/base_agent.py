@@ -1,5 +1,4 @@
 """
-from core.logging_utils import log_suppressed
 Base Agent
 ==========
 Abstract base class for all AI-Factory agents.
@@ -10,6 +9,7 @@ from __future__ import annotations
 
 import json
 import logging
+from core.logging_utils import log_suppressed
 import os
 import re
 import time

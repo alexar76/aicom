@@ -1,7 +1,4 @@
 """
-import logging
-
-logger = logging.getLogger(__name__)
 Requirements clarifier
 ======================
 Builds an iterative clarification pack from a raw idea.
@@ -11,9 +8,12 @@ This helps PM/spec stages emulate human requirement discovery.
 from __future__ import annotations
 
 import json
+import logging
 import re
 from typing import Any
 from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 
 
 def build_clarification_pack(idea: str) -> dict:

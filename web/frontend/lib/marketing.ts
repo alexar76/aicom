@@ -26,6 +26,11 @@ export type MarketingStrings = {
   navIdea: string;
   navBenchmark: string;
   heroBadge: string;
+  /** Above-the-fold visual hook (video + landing shots) — must render before text wall */
+  heroVisualEyebrow: string;
+  heroVisualTitle: string;
+  heroVisualCaption: string;
+  heroWatchDemo: string;
   heroTitleLead: string;
   heroTitleRest: string;
   heroSubtitle: string;
@@ -117,6 +122,11 @@ const EN: MarketingStrings = {
   navIdea: 'Idea',
   navBenchmark: 'Benchmark',
   heroBadge: 'One factory — crisp landings in a phrase, full applications from Admin',
+  heroVisualEyebrow: 'See it in 12 seconds',
+  heroVisualTitle: 'Idea → agents → sandbox preview — real pipeline, not a mockup',
+  heroVisualCaption:
+    'Recorded on a live factory: Admin login, pipeline stages, generated landing in sandbox. Your brief follows the same path.',
+  heroWatchDemo: 'Play walkthrough',
   heroTitleLead: 'Launch-ready pages',
   heroTitleRest: 'and real apps — from the same brief',
   heroSubtitle:

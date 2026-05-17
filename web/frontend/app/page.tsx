@@ -54,6 +54,7 @@ import {
   type MarketingLocale,
   type MarketingStrings,
 } from '@/lib/marketing';
+import { HeroVisualShowcase } from '@/components/marketing/HeroVisualShowcase';
 import { getGuestPhraseBlockReason } from '@/lib/promptSafety';
 import { ArchitectureOrbit } from '@/components/landing/ArchitectureOrbit';
 import { formatBenchmarkRate, formatBenchmarkTrend } from '@/lib/formatBenchmark';
@@ -306,6 +307,13 @@ function HeroSection({ copy }: { copy: MarketingStrings }) {
 
       <div className="relative max-w-4xl mx-auto w-full">
         {/* ── 1. Landing generator FIRST (most visible) ───────────────────── */}
+        <HeroVisualShowcase
+          eyebrow={copy.heroVisualEyebrow}
+          title={copy.heroVisualTitle}
+          caption={copy.heroVisualCaption}
+          watchLabel={copy.heroWatchDemo}
+        />
+
         <motion.div
           id="hero-generate"
           initial={{ opacity: 0, y: 16 }}

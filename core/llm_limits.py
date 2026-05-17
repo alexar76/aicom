@@ -1,7 +1,4 @@
 """
-import logging
-
-logger = logging.getLogger(__name__)
 LLM router limits — YAML slice under ``llm.limits`` + effective values (env wins).
 
 Admin → LLM Providers panel reads/writes these; enforcement lives in ``llm.usage_guard``.
@@ -9,6 +6,7 @@ Admin → LLM Providers panel reads/writes these; enforcement lives in ``llm.usa
 
 from __future__ import annotations
 
+import logging
 import os
 from typing import Any
 
@@ -21,6 +19,8 @@ from core.throughput_limits import (
     effective_llm_monthly_cost_cap_usd,
     effective_llm_pre_call_reserve_usd,
 )
+
+logger = logging.getLogger(__name__)
 
 _CONFIG_PATH = config_path()
 

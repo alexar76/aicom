@@ -1,5 +1,4 @@
 """
-from core.logging_utils import log_suppressed
 LLM Router
 ===========
 Routes generation requests to the appropriate provider based on:
@@ -13,6 +12,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import logging
+from core.logging_utils import log_suppressed
 import os
 import time
 from pathlib import Path

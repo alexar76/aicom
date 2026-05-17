@@ -1,7 +1,4 @@
 """
-import logging
-
-logger = logging.getLogger(__name__)
 Extract GA4 measurement id (``G-…``) from arbitrary HTML / admin head snippets.
 
 Used by the public marketing API so the Next.js storefront can load gtag without a separate env var.
@@ -10,9 +7,12 @@ Used by the public marketing API so the Next.js storefront can load gtag without
 from __future__ import annotations
 
 import html as html_lib
+import logging
 import re
 from typing import Final
 from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 
 # GA4 property / data stream ids: G- + alphanumeric (length varies; allow generous upper bound).
 _GA4_TAIL: Final[str] = r"[A-Za-z0-9]{4,32}"

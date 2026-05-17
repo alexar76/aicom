@@ -1,5 +1,4 @@
 """
-from core.logging_utils import log_suppressed
 Director AI Worker
 ==================
 Background process that runs Director AI analysis cycles.
@@ -13,6 +12,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+from core.logging_utils import log_suppressed
 import os
 import subprocess
 import signal

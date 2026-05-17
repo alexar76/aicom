@@ -1,7 +1,4 @@
 """
-import logging
-
-logger = logging.getLogger(__name__)
 Deep browser crawl for static demo QA: same-origin link closure, anchors, forms, buttons.
 
 Used by ``browser_preview_e2e``. Keeps Playwright types as ``Any`` so tests can import URL helpers
@@ -12,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import os
 import re
 from collections import deque
@@ -19,6 +17,9 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin, urlparse, urlunparse
 from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
+
 
 def env_int(name: str, default: int) -> int:
     try:

@@ -1,7 +1,4 @@
 """
-import logging
-
-logger = logging.getLogger(__name__)
 Methodology knowledge store — persistent memory for the Methodology Agent.
 
 Stores three kinds of records under ``data_root/methodology/``:
@@ -24,6 +21,7 @@ migrate and back up. There is no DB requirement.
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
 import time
@@ -35,6 +33,8 @@ from typing import Any, Iterable, Iterator, Optional
 
 from core.paths import resolve_data_root
 from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------

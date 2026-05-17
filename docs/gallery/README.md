@@ -59,7 +59,17 @@ DEMO_VIDEO_BASE_URL=http://127.0.0.1:9080 ADMIN_PASSWORD="$(cat ../data/secrets/
 
 **Full_software narrative:** set **`DEMO_VIDEO_PROFILE=full_software`** and optionally **`DEMO_VIDEO_IDEA="…dashboard, auth, API…"`** so the scripted enqueue matches the Habr/LinkedIn story (idea → pipeline → working dashboard). See `scripts/record_pipeline_demo_video.py` header.
 
-Writes under **`docs/gallery/recordings/`** and copies the newest take to **`pipeline-demo-latest.webm`**. Upload that file in Admin → **Live Monitor** or **Settings** → **Demo replay** if you want it inside the operator UI (or run **`scripts/sync_demo_replay_from_recording.py`** — see root README).
+Writes under **`docs/gallery/recordings/`** and copies the newest take to **`pipeline-demo-latest.webm`**.
+
+Then build README / homepage hero assets (GIF + MP4 — GitHub does not inline-play `.webm` links):
+
+```bash
+.venv/bin/python scripts/generate_readme_hero_assets.py
+```
+
+Produces **`hero-demo-preview.gif`**, **`recordings/pipeline-demo-latest.mp4`**, and copies into **`web/frontend/public/demo/`** for the marketing site hero.
+
+Upload the `.webm` in Admin → **Live Monitor** or **Settings** → **Demo replay** (or **`scripts/sync_demo_replay_from_recording.py`**).
 
 ### Prune old pipeline rows (keep storefront-listed only)
 

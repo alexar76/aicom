@@ -1,7 +1,4 @@
 """
-import logging
-
-logger = logging.getLogger(__name__)
 Marketplace listing quality — generated programs must offer real user value before
 they appear on the public storefront (aligned with pipeline QA demo gates).
 
@@ -33,6 +30,7 @@ Env vars override YAML when set (non-empty). Legacy env names:
 from __future__ import annotations
 
 import json
+import logging
 import os
 from pathlib import Path
 from typing import Any, Optional
@@ -48,6 +46,8 @@ from web.backend.services.quality_constitution import evaluate_quality_constitut
 from web.backend.services.release_cockpit import evaluate_release_cockpit
 
 from core.paths import resolve_data_root
+
+logger = logging.getLogger(__name__)
 from core.quality_settings import (
     marketplace_min_design_novelty,
     marketplace_min_release_score,

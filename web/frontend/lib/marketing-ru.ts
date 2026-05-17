@@ -18,6 +18,11 @@ export const MARKETING_RU: MarketingStrings = {
   navIdea: 'Идея',
   navBenchmark: 'Бенчмарк',
   heroBadge: 'Одна фабрика — чёткие лендинги по фразе, полноценные приложения из админки',
+  heroVisualEyebrow: 'За 12 секунд — как это выглядит',
+  heroVisualTitle: 'Идея → агенты → превью в песочнице — живой пайплайн, не макет',
+  heroVisualCaption:
+    'Запись с работающей фабрики: вход в админку, стадии пайплайна, готовый лендинг в sandbox. Ваш бриф проходит тот же путь.',
+  heroWatchDemo: 'Смотреть проход',
   heroTitleLead: 'Готовые страницы',
   heroTitleRest: 'и реальные продукты — из одного брифа',
   heroSubtitle:

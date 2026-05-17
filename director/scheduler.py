@@ -1,5 +1,4 @@
 """
-from core.logging_utils import log_suppressed
 Director Scheduler
 =================
 Schedules periodic Director AI analysis runs.
@@ -11,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+from core.logging_utils import log_suppressed
 import time
 from pathlib import Path
 from typing import Callable, Optional
