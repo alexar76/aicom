@@ -9,6 +9,7 @@ import time
 import uuid
 
 from core.pipeline_state_writer import append_product_to_pipeline_state as _append_product
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -29,8 +30,8 @@ def append_product_to_pipeline_state(
             idea_snippet=str(product.get("idea") or ""),
             source="owner_chat",
         )
-    except Exception:
-        pass
+    except Exception as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/services/pipeline_enqueue.py)", exc_info=_suppressed_exc)
 
 
 def build_minimal_product_from_idea(idea: str, admin_instructions: str) -> dict:

@@ -1,4 +1,5 @@
 """
+from agents.prompts.load_prompt import load_prompt
 Design Critic Agent
 ===================
 Blocking art-direction loop after architecture and before development.
@@ -18,22 +19,7 @@ from llm import LLMRouter, GenerationConfig
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ARCHITECTURE_SEC
 
 
-DESIGN_CRITIC_SYSTEM = """You are the Design Critic Agent for an AI software factory.
-Your job is to ensure the product's UI direction feels like a senior art director:
-distinct, tasteful, brand-coherent, and implementable.
-
-You must:
-- score the design direction (0-100) across: originality, clarity, brand-coherence, feasibility, accessibility.
-- validate that `ui_experience` + `selected_variant` are concrete (tokens/typography/motion/svg brief).
-- provide actionable improvement notes for the Architect if the direction is generic or risky.
-
-Output ONLY valid JSON with fields:
-- passed: boolean (true if can proceed to developer)
-- design_score: number (0-100)
-- scores: { originality, clarity, brand_coherence, feasibility, accessibility } (0-100 each)
-- issues: list of strings (blockers if failed)
-- recommendations: list of strings (non-blocking)
-"""
+DESIGN_CRITIC_SYSTEM = load_prompt("design_critic_system_prompt.md")
 
 
 def _load_json(path: Path) -> dict:

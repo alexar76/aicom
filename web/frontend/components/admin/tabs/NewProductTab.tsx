@@ -38,42 +38,69 @@ import {
   contentLocaleLabel,
   type ContentLocaleChoice,
 } from '@/lib/contentLanguages';
-import { type AdminLocale, t } from '@/lib/adminI18n';
+import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 
-const STEPS = ['Idea', 'Options', 'Review'] as const;
+function getStepLabels(locale: AdminLocale): readonly [string, string, string] {
+  return [
+    t(locale, 'newProduct.step.idea'),
+    t(locale, 'newProduct.step.options'),
+    t(locale, 'newProduct.step.review'),
+  ];
+}
 
-const STEP_GUIDE = [
-  {
-    step: 1,
-    name: 'Idea',
-    headline: 'Describe the outcome',
-    body: 'Focus on who it helps and what changes for them. Technical stack comes later.',
-    checklist: ['Plain language', 'Optional AI assist (with consent)', 'Heuristic hints when patterns match'],
-    eta: 'about 1 minute',
-  },
-  {
-    step: 2,
-    name: 'Options',
-    headline: 'Shape how the factory runs',
-    body: 'Delivery profile, prototype vs production, and instructions every agent reads.',
-    checklist: ['Templates: this browser or cloud', 'Quick-start chips on the left', 'Save presets for repeat work'],
-    eta: 'about 2 minutes',
-  },
-  {
-    step: 3,
-    name: 'Review',
-    headline: 'Confirm and enqueue',
-    body: 'We create a pipeline product and hand it to agents. You can still stop or rework from Pipeline.',
-    checklist: ['Check lengths and modes', 'Retry with clearer instructions if create fails', 'Follow links to Providers if LLM errors appear'],
-    eta: 'under a minute',
-  },
-] as const;
+function getStepGuide(locale: AdminLocale) {
+  return [
+    {
+      step: 1,
+      name: t(locale, 'newProduct.step.idea'),
+      headline: t(locale, 'newProduct.guide1.headline'),
+      body: t(locale, 'newProduct.guide1.body'),
+      checklist: [
+        t(locale, 'newProduct.guide1.c1'),
+        t(locale, 'newProduct.guide1.c2'),
+        t(locale, 'newProduct.guide1.c3'),
+      ],
+      eta: t(locale, 'newProduct.guide1.eta'),
+    },
+    {
+      step: 2,
+      name: t(locale, 'newProduct.step.options'),
+      headline: t(locale, 'newProduct.guide2.headline'),
+      body: t(locale, 'newProduct.guide2.body'),
+      checklist: [
+        t(locale, 'newProduct.guide2.c1'),
+        t(locale, 'newProduct.guide2.c2'),
+        t(locale, 'newProduct.guide2.c3'),
+      ],
+      eta: t(locale, 'newProduct.guide2.eta'),
+    },
+    {
+      step: 3,
+      name: t(locale, 'newProduct.step.review'),
+      headline: t(locale, 'newProduct.guide3.headline'),
+      body: t(locale, 'newProduct.guide3.body'),
+      checklist: [
+        t(locale, 'newProduct.guide3.c1'),
+        t(locale, 'newProduct.guide3.c2'),
+        t(locale, 'newProduct.guide3.c3'),
+      ],
+      eta: t(locale, 'newProduct.guide3.eta'),
+    },
+  ] as const;
+}
+
+const QUICK_PRESET_I18N: Record<
+  string,
+  { labelKey: string; shortKey: string }
+> = {
+  saas: { labelKey: 'newProduct.preset.b2b.label', shortKey: 'newProduct.preset.b2b.short' },
+  landing: { labelKey: 'newProduct.preset.landing.label', shortKey: 'newProduct.preset.landing.short' },
+  internal: { labelKey: 'newProduct.preset.internal.label', shortKey: 'newProduct.preset.internal.short' },
+};
 
 const QUICK_PRESETS = [
   {
     id: 'saas',
-    label: 'B2B SaaS MVP',
-    short: 'Full pipeline · prototype',
     idea:
       'B2B SaaS for small logistics brokers to quote spot freight in under five minutes: multi-tenant orgs, role-based access, quote builder with PDF export, email notifications, and a minimal Stripe-ready billing stub (no live keys).',
     deliveryChoice: 'full_software' as const,
@@ -83,8 +110,6 @@ const QUICK_PRESETS = [
   },
   {
     id: 'landing',
-    label: 'Marketing / waitlist landing',
-    short: 'Landing profile · fast path',
     idea:
       'Single marketing landing page for a privacy-first analytics product: hero, social proof, feature grid, pricing teaser, FAQ, waitlist form with double opt-in copy, and strong CTA.',
     deliveryChoice: 'marketing_landing' as const,
@@ -94,8 +119,6 @@ const QUICK_PRESETS = [
   },
   {
     id: 'internal',
-    label: 'Internal admin tool',
-    short: 'Full product · production-minded',
     idea:
       'Internal web console for support staff to search customers, view recent pipeline runs, and attach internal notes (not customer-visible).',
     deliveryChoice: 'full_software' as const,
@@ -108,6 +131,7 @@ const QUICK_PRESETS = [
 const INTRO_STORAGE = 'aicom_new_product_intro_dismissed_v1';
 
 export function NewProductTab({ locale }: { locale: AdminLocale }) {
+  const stepLabels = useMemo(() => getStepLabels(locale), [locale]);
   const [step, setStep] = useState(1);
   const [idea, setIdea] = useState('');
   const [instructions, setInstructions] = useState('');
@@ -207,7 +231,9 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
     setMode(p.mode);
     setInstructions(p.instructions);
     setStep(2);
-    toast.success(`Loaded preset: ${p.label} — review Options, then continue.`);
+    toast.success(
+      `${t(locale, QUICK_PRESET_I18N[p.id].labelKey)} — ${t(locale, 'newProduct.step.options')}`,
+    );
   };
 
   const applyTemplate = (t: ProductCreationTemplate) => {
@@ -311,7 +337,11 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
       });
       const pid = typeof data.product_id === 'string' ? data.product_id : null;
       setCreatedId(pid);
-      setResult(pid ? `Product created successfully! ID: ${pid}` : 'Product created successfully!');
+      setResult(
+        pid
+          ? tVars(locale, 'newProduct.createdWithId', { id: pid })
+          : t(locale, 'newProduct.created'),
+      );
       setIdea('');
       setInstructions('');
       setStep(1);
@@ -329,9 +359,9 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
   const copyText = async (label: string, text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      toast.success(`${label} copied`);
+      toast.success(tVars(locale, 'common.copied', { label }));
     } catch {
-      toast.error('Clipboard unavailable');
+      toast.error(t(locale, 'common.clipboardUnavailable'));
     }
   };
 
@@ -341,7 +371,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
     deliveryChoice !== 'infer' &&
     hint.suggestedDelivery !== deliveryChoice;
 
-  const guide = STEP_GUIDE[step - 1];
+  const guide = getStepGuide(locale)[step - 1];
 
   return (
     <div className="mx-auto w-full max-w-5xl">
@@ -351,11 +381,8 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
             <div className="flex items-center gap-3">
               <Sparkles className="h-6 w-6 shrink-0 text-indigo-400" />
               <div>
-                <h2 className="text-xl font-semibold text-white">Create New Product</h2>
-                <p className="text-sm text-gray-400">
-                  Guided wizard: idea → factory options → review. Templates are first-class — local, cloud, and
-                  quick-start chips.
-                </p>
+                <h2 className="text-xl font-semibold text-white">{t(locale, 'newProduct.title')}</h2>
+                <p className="text-sm text-gray-400">{t(locale, 'newProduct.subtitle')}</p>
               </div>
             </div>
           </div>
@@ -363,18 +390,22 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
           <div className="mb-6 space-y-2">
             <div className="flex justify-between text-xs text-gray-500">
               <span>
-                Step {step} of {STEPS.length} — {guide.name}
+                {tVars(locale, 'newProduct.stepOf', {
+                  step,
+                  total: stepLabels.length,
+                  name: guide.name,
+                })}
               </span>
               <span className="text-gray-600">{guide.eta}</span>
             </div>
             <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
               <div
                 className="h-full bg-indigo-500 transition-[width] duration-300"
-                style={{ width: `${(step / STEPS.length) * 100}%` }}
+                style={{ width: `${(step / stepLabels.length) * 100}%` }}
               />
             </div>
             <div className="flex flex-wrap gap-1.5 pt-1">
-              {STEPS.map((label, i) => {
+              {stepLabels.map((label, i) => {
                 const n = i + 1;
                 const active = step === n;
                 return (
@@ -398,17 +429,17 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
               <div className="flex gap-3">
                 <BookOpen className="mt-0.5 h-5 w-5 shrink-0 text-indigo-300" aria-hidden />
                 <div className="min-w-0 flex-1 space-y-2 text-sm text-indigo-100/90">
-                  <p className="font-medium text-white">First time here?</p>
+                  <p className="font-medium text-white">{t(locale, 'newProduct.intro.title')}</p>
                   <ul className="list-inside list-disc space-y-1 text-xs leading-relaxed">
-                    <li>Use a quick-start chip (left on desktop, below on mobile) or write your own idea.</li>
-                    <li>Cloud templates sync with your factory data directory — save once, reuse from any browser.</li>
-                    <li>If creation fails, use the suggested links on the error card (Providers, Pipeline, retry).</li>
+                    <li>{t(locale, 'newProduct.intro.li1')}</li>
+                    <li>{t(locale, 'newProduct.intro.li2')}</li>
+                    <li>{t(locale, 'newProduct.intro.li3')}</li>
                   </ul>
                 </div>
                 <button
                   type="button"
                   className="shrink-0 rounded-lg p-1 text-indigo-200 hover:bg-white/10"
-                  aria-label="Dismiss intro"
+                  aria-label={t(locale, 'newProduct.intro.dismiss')}
                   onClick={dismissIntro}
                 >
                   <X className="h-4 w-4" />
@@ -420,7 +451,9 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
           <div className="grid gap-6 lg:grid-cols-[minmax(240px,280px)_1fr]">
             <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
               <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">This step</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+                  {t(locale, 'newProduct.thisStep')}
+                </p>
                 <p className="mt-2 text-sm font-medium text-white">{guide.headline}</p>
                 <p className="mt-1 text-xs leading-relaxed text-gray-400">{guide.body}</p>
                 <div className="mt-3 flex items-start gap-2 text-xs text-gray-400">
@@ -436,23 +469,26 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
               <div className="rounded-xl border border-emerald-500/25 bg-emerald-950/25 p-4">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-emerald-200/90">
                   <Zap className="h-3.5 w-3.5" aria-hidden />
-                  Quick-start templates
+                  {t(locale, 'newProduct.quickStart')}
                 </div>
                 <p className="mt-1 text-[11px] leading-relaxed text-emerald-100/80">
-                  Fills idea + options so you edit instead of starting from a blank page. Sends you to Options when done.
+                  {t(locale, 'newProduct.quickStartHint')}
                 </p>
                 <div className="mt-3 flex flex-col gap-2">
-                  {QUICK_PRESETS.map((p) => (
+                  {QUICK_PRESETS.map((p) => {
+                    const i18n = QUICK_PRESET_I18N[p.id];
+                    return (
                     <button
                       key={p.id}
                       type="button"
                       onClick={() => applyQuickPreset(p)}
                       className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-left text-xs text-emerald-50 transition hover:bg-emerald-500/20"
                     >
-                      <span className="block font-medium">{p.label}</span>
-                      <span className="mt-0.5 block text-[10px] text-emerald-100/75">{p.short}</span>
+                      <span className="block font-medium">{t(locale, i18n.labelKey)}</span>
+                      <span className="mt-0.5 block text-[10px] text-emerald-100/75">{t(locale, i18n.shortKey)}</span>
                     </button>
-                  ))}
+                  );
+                  })}
                 </div>
               </div>
 
@@ -467,11 +503,11 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                   <div>
                     <label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-300">
                       <Lightbulb className="h-4 w-4 text-amber-400" />
-                      Product idea <span className="text-red-400">*</span>
+                      {t(locale, 'newProduct.ideaLabel')} <span className="text-red-400">*</span>
                     </label>
                     <textarea
                       className="input-glass min-h-[140px] resize-y"
-                      placeholder="Describe the product you want to build..."
+                      placeholder={t(locale, 'newProduct.ideaPlaceholder')}
                       value={idea}
                       onChange={(e) => setIdea(e.target.value)}
                     />
@@ -487,13 +523,18 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                           onClick={() => {
                             setDeliveryChoice(hint.suggestedDelivery!);
                             setDismissedHint(true);
-                            toast.success('Delivery profile updated from suggestion');
+                            toast.success(t(locale, 'newProduct.suggestionApplied'));
                           }}
                         >
-                          Apply: {hint.suggestedDelivery === 'marketing_landing' ? 'Marketing landing' : 'Full product'}
+                          {tVars(locale, 'newProduct.applySuggestion', {
+                            label:
+                              hint.suggestedDelivery === 'marketing_landing'
+                                ? t(locale, 'newProduct.applyLanding')
+                                : t(locale, 'newProduct.applyFull'),
+                          })}
                         </Button>
                         <Button type="button" size="sm" variant="ghost" onClick={() => setDismissedHint(true)}>
-                          Dismiss
+                          {t(locale, 'common.dismiss')}
                         </Button>
                       </div>
                     </div>
@@ -506,10 +547,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                         checked={consentAiPrefill}
                         onChange={(e) => setConsentAiPrefill(e.target.checked)}
                       />
-                      <span>
-                        Allow one lightweight LLM round-trip to suggest delivery profile, mode, and admin instructions.
-                        Your idea is only sent when you press the button below.
-                      </span>
+                      <span>{t(locale, 'newProduct.aiConsent')}</span>
                     </label>
                     <Button
                       type="button"
@@ -518,7 +556,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                       disabled={!idea.trim() || !consentAiPrefill || aiBusy}
                       onClick={() => void runAiPrefill()}
                     >
-                      {aiBusy ? 'Calling model…' : 'Suggest with AI (opens Options step)'}
+                      {aiBusy ? t(locale, 'newProduct.aiBusy') : t(locale, 'newProduct.aiSuggest')}
                     </Button>
                   </div>
                   {prefillFailure ? (
@@ -535,7 +573,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                       disabled={!idea.trim()}
                       icon={<ChevronRight className="h-4 w-4" />}
                     >
-                      Next
+                      {t(locale, 'common.next')}
                     </Button>
                   </div>
                 </div>
@@ -544,16 +582,20 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
               {step === 2 && (
                 <div className="space-y-5">
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-300">Admin Instructions (optional)</label>
+                    <label className="mb-2 block text-sm font-medium text-gray-300">
+                      {t(locale, 'newProduct.instructionsLabel')}
+                    </label>
                     <textarea
                       className="input-glass min-h-[140px] resize-y"
-                      placeholder="Stack, tone, compliance — passed to every agent."
+                      placeholder={t(locale, 'newProduct.instructionsPlaceholder')}
                       value={instructions}
                       onChange={(e) => setInstructions(e.target.value)}
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-300">What to ship</label>
+                    <label className="mb-2 block text-sm font-medium text-gray-300">
+                      {t(locale, 'newProduct.whatToShip')}
+                    </label>
                     <select
                       value={deliveryChoice}
                       onChange={(e) =>
@@ -561,20 +603,22 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                       }
                       className="input-glass"
                     >
-                      <option value="full_software">Full product (app / service scope)</option>
-                      <option value="marketing_landing">Marketing landing only</option>
-                      <option value="infer">Auto-detect from idea (legacy)</option>
+                      <option value="full_software">{t(locale, 'newProduct.delivery.full')}</option>
+                      <option value="marketing_landing">{t(locale, 'newProduct.delivery.landing')}</option>
+                      <option value="infer">{t(locale, 'newProduct.delivery.infer')}</option>
                     </select>
                   </div>
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-300">Delivery mode</label>
+                    <label className="mb-2 block text-sm font-medium text-gray-300">
+                      {t(locale, 'newProduct.deliveryMode')}
+                    </label>
                     <select
                       value={mode}
                       onChange={(e) => setMode(e.target.value as 'prototype' | 'production')}
                       className="input-glass"
                     >
-                      <option value="prototype">prototype</option>
-                      <option value="production">production</option>
+                      <option value="prototype">{t(locale, 'newProduct.mode.prototype')}</option>
+                      <option value="production">{t(locale, 'newProduct.mode.production')}</option>
                     </select>
                   </div>
 
@@ -600,11 +644,9 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                   <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
                     <div className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-300">
                       <LayoutList className="h-4 w-4 text-cyan-400" />
-                      Product templates (this browser)
+                      {t(locale, 'newProduct.templatesLocal')}
                     </div>
-                    <p className="mb-3 text-xs text-gray-500">
-                      Save the current options row as a reusable recipe — stored only in localStorage on this device.
-                    </p>
+                    <p className="mb-3 text-xs text-gray-500">{t(locale, 'newProduct.templatesLocalHint')}</p>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                       <Input
                         value={templateName}
@@ -709,10 +751,10 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
 
                   <div className="flex justify-between">
                     <Button type="button" variant="ghost" onClick={() => setStep(1)} icon={<ChevronLeft className="h-4 w-4" />}>
-                      Back
+                      {t(locale, 'common.back')}
                     </Button>
                     <Button type="button" onClick={() => setStep(3)} icon={<ChevronRight className="h-4 w-4" />}>
-                      Next
+                      {t(locale, 'common.next')}
                     </Button>
                   </div>
                 </div>
@@ -735,7 +777,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                   </div>
                   <div className="flex justify-between gap-2">
                     <Button type="button" variant="ghost" onClick={() => setStep(2)} icon={<ChevronLeft className="h-4 w-4" />}>
-                      Back
+                      {t(locale, 'common.back')}
                     </Button>
                     <Button
                       onClick={() => void handleSubmit()}

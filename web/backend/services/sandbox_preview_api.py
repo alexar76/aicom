@@ -24,6 +24,7 @@ from typing import Any, Optional
 
 from web.backend.services.sandbox_docker import pick_loopback_port, stop_ephemeral_services
 from web.backend.services.sandbox_preview_env import build_fastapi_preview_env
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -152,8 +153,8 @@ def start_fastapi_preview(
         try:
             proc.terminate()
             err = (proc.stderr.read() or b"")[:4000] if proc.stderr else b""
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/sandbox_preview_api.py)", exc_info=_suppressed_exc)
         logger.warning(
             "sandbox_preview_api: uvicorn did not open port %s for %s stderr=%s",
             port,

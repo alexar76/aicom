@@ -19,6 +19,7 @@ import time
 from pathlib import Path
 
 from core.paths import admin_users_path, bootstrap_admin_secret_path, legacy_admin_path
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -39,15 +40,15 @@ def _admin_already_configured() -> bool:
             users = data.get("users") if isinstance(data, dict) else []
             if isinstance(users, list) and users:
                 return True
-        except (OSError, json.JSONDecodeError, TypeError):
-            pass
+        except (OSError, json.JSONDecodeError, TypeError) as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (security/bootstrap_admin.py)", exc_info=_suppressed_exc)
     if ADMIN_JSON.is_file():
         try:
             cfg = json.loads(ADMIN_JSON.read_text(encoding="utf-8"))
             if isinstance(cfg, dict) and cfg.get("password_hash"):
                 return True
-        except (OSError, json.JSONDecodeError, TypeError):
-            pass
+        except (OSError, json.JSONDecodeError, TypeError) as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (security/bootstrap_admin.py)", exc_info=_suppressed_exc)
     return False
 
 
@@ -123,8 +124,8 @@ def _write_bootstrap_secret(username: str, password: str) -> None:
     )
     try:
         os.chmod(BOOTSTRAP_SECRET, 0o600)
-    except OSError:
-        pass
+    except OSError as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (security/bootstrap_admin.py)", exc_info=_suppressed_exc)
 
 
 def bootstrap_admin_if_needed() -> int:
@@ -181,8 +182,8 @@ def bootstrap_admin_if_needed() -> int:
         ADMIN_JSON.write_text(json.dumps(legacy, indent=2), encoding="utf-8")
         try:
             os.chmod(ADMIN_JSON, 0o600)
-        except OSError:
-            pass
+        except OSError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (security/bootstrap_admin.py)", exc_info=_suppressed_exc)
 
         if source == "generated":
             _write_bootstrap_secret(username, password)

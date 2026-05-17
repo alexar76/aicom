@@ -92,7 +92,9 @@ This document reflects the current factory feature set as an operator/engineerin
 - Agent logs, LLM logs, pipeline monitor, settings.
 - Realtime metrics transport:
   - SSE stream (`/api/admin/metrics/stream`)
-  - WebSocket stream (`/api/admin/ws/metrics`) for integration clients.
+  - WebSocket stream (`/api/admin/ws/metrics`) for integration clients (includes LLM **circuit breaker** snapshots).
+- **LLM circuit breaker** per provider (CLOSED / OPEN / HALF_OPEN), automatic failover, Admin controls, Prometheus gauges — see **[admin-guide.md](./admin-guide.md#llm-providers)**.
+- **API versioning**: clients may call `/api/v1/*` (alias of `/api/*`) — **[api-integration-guide.md](./api-integration-guide.md)**.
 
 ## 8) Key API additions (operational layer)
 

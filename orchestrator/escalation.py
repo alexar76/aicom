@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Optional
 
 from .state_machine import PipelineStateMachine, TaskStatus
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -49,8 +50,8 @@ class EscalationHandler:
                         if line:
                             try:
                                 self._escalation_log.append(json.loads(line))
-                            except json.JSONDecodeError:
-                                pass
+                            except json.JSONDecodeError as _suppressed_exc:
+                                log_suppressed(logger, "non-fatal (orchestrator/escalation.py)", exc_info=_suppressed_exc)
                 # Keep only last 1000 entries
                 if len(self._escalation_log) > 1000:
                     self._escalation_log = self._escalation_log[-1000:]

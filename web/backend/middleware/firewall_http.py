@@ -7,6 +7,7 @@ import os
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +25,8 @@ def _request_port(request: Request) -> int:
     try:
         if request.url.port:
             return int(request.url.port)
-    except (TypeError, ValueError):
-        pass
+    except (TypeError, ValueError) as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/middleware/firewall_http.py)", exc_info=_suppressed_exc)
     if request.url.scheme == "https":
         return 443
     return int(os.environ.get("AICOM_PORT_API", "9081") or 9081)

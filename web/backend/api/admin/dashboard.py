@@ -69,7 +69,11 @@ from web.backend.services.product_followup import (
     validate_and_save,
 )
 from web.backend.services.pipeline_demo_replay import metrics_demo_replay_slice
-from web.backend.services.dashboard_metrics_cache import get_or_build_dashboard
+from web.backend.services.dashboard_metrics_cache import (
+    get_cached_dashboard,
+    get_or_build_dashboard,
+    set_cached_dashboard,
+)
 from web.backend.services.storefront_counts_cache import invalidate_storefront_categories_cache
 from web.backend.services.product_economics import compute_roi_band, get_product_llm_costs
 from web.backend.services.product_pulse import build_product_pulse, build_product_pulses_for_metrics
@@ -290,21 +294,22 @@ def _pipeline_failed_alerts(*, limit: int = 12) -> list[dict[str, Any]]:
     return alerts
 
 
-def _fast_pipeline_metrics() -> tuple[dict[str, int], dict[str, int]]:
+async def _fast_pipeline_metrics_async() -> tuple[dict[str, int], dict[str, int]]:
     """
-    Aggregate pipeline counts without loading full products/tasks tables.
+    Aggregate pipeline counts without loading full products/tasks tables (non-blocking SQLite).
     Returns (pipeline_counts, state_distribution).
     """
     if _admin_use_sqlite_pipeline() and _admin_sql_store_available():
         try:
-            from core.pipeline_database import create_sync_pipeline_manager
+            from core.pipeline_database import create_async_pipeline_store
 
-            sm = create_sync_pipeline_manager()
+            store = create_async_pipeline_store()
+            await store.initialize()
             try:
-                m = sm.get_metrics()
-                state_distribution = sm.get_state_distribution()
+                m = await store.get_metrics()
+                state_distribution = await store.get_state_distribution()
             finally:
-                sm.close()
+                await store.close()
             pipeline = {
                 "total_products": int(m["total_products"]),
                 "active_products": int(m["active_products"]),
@@ -316,8 +321,22 @@ def _fast_pipeline_metrics() -> tuple[dict[str, int], dict[str, int]]:
             }
             return pipeline, state_distribution
         except Exception as e:
-            logger.warning("Dashboard metrics: fast SQL aggregates failed (%s), falling back to snapshot", e)
+            logger.warning("Dashboard metrics: async SQL aggregates failed (%s), falling back to snapshot", e)
 
+    return _fast_pipeline_metrics_json()
+
+
+def _fast_pipeline_metrics() -> tuple[dict[str, int], dict[str, int]]:
+    """Sync entry: uses asyncio when no loop is running; JSON fallback inside a running loop."""
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(_fast_pipeline_metrics_async())
+    return _fast_pipeline_metrics_json()
+
+
+def _fast_pipeline_metrics_json() -> tuple[dict[str, int], dict[str, int]]:
+    """JSON snapshot fallback when SQL store is disabled or async read fails."""
     products, task_queue = _load_pipeline_snapshot_for_metrics()
     total = len(products)
     completed = sum(1 for p in products.values() if is_shipped_pipeline_product_state(p.get("state")))
@@ -557,8 +576,8 @@ def _collect_escalation_summary(*, tail_only: bool = False) -> dict:
                                 obj = json.loads(line)
                                 if isinstance(obj, dict):
                                     entries.append(obj)
-                            except json.JSONDecodeError:
-                                pass
+                            except json.JSONDecodeError as _suppressed_exc:
+                                log_suppressed(logger, "non-fatal (web/backend/api/admin/dashboard.py)", exc_info=_suppressed_exc)
         except Exception:
             log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
@@ -587,9 +606,39 @@ def _collect_escalation_summary(*, tail_only: bool = False) -> dict:
     }
 
 
-def _build_full_metrics(*, include_product_pulses: bool = False) -> dict:
-    """Build the complete metrics payload (used by both /dashboard and SSE)."""
-    pipeline_counts, state_distribution = _fast_pipeline_metrics()
+def _circuit_breaker_provider_names() -> list[str]:
+    names: list[str] = []
+    try:
+        path = model_providers_path()
+        ensure_model_providers_file(path)
+        if path.is_file():
+            import yaml
+
+            with open(path, "r", encoding="utf-8") as f:
+                cfg = yaml.safe_load(f) or {}
+            names = sorted((cfg.get("providers") or {}).keys())
+    except Exception:
+        log_suppressed(logger, "circuit_breaker: load provider names", exc_info=True)
+    return names
+
+
+def _circuit_breakers_metrics(provider_names: list[str] | None = None) -> dict[str, Any]:
+    """Shared circuit breaker snapshot for SSE / WebSocket / dashboard."""
+    try:
+        from llm.circuit_breaker import get_circuit_store, sync_prometheus_from_snapshot
+
+        names = provider_names if provider_names is not None else _circuit_breaker_provider_names()
+        snap = get_circuit_store().snapshot(names or None)
+        sync_prometheus_from_snapshot(snap)
+        return snap
+    except Exception as e:
+        logger.warning("circuit_breakers metrics failed: %s", e)
+        return {"providers": {}, "config": {}, "updated_at": time.time()}
+
+
+async def _build_full_metrics_async(*, include_product_pulses: bool = False) -> dict:
+    """Build the complete metrics payload (async-safe SQLite aggregates)."""
+    pipeline_counts, state_distribution = await _fast_pipeline_metrics_async()
 
     try:
         storefront_visible = count_showcase_listable_products()
@@ -652,7 +701,13 @@ def _build_full_metrics(*, include_product_pulses: bool = False) -> dict:
         "collected_at": time.time(),
         "demo_replay": metrics_demo_replay_slice(),
         "product_pulses": product_pulses,
+        "circuit_breakers": _circuit_breakers_metrics(),
     }
+
+
+def _build_full_metrics(*, include_product_pulses: bool = False) -> dict:
+    """Sync entry (tests/CLI). Prefer ``_build_full_metrics_async`` inside the web app."""
+    return asyncio.run(_build_full_metrics_async(include_product_pulses=include_product_pulses))
 
 
 def _build_quick_dashboard_metrics() -> dict:
@@ -747,10 +802,12 @@ async def get_dashboard(
     """Get enhanced dashboard metrics including agent_metrics, director_status, escalations."""
     if quick:
         return get_or_build_dashboard(_build_quick_dashboard_metrics, quick=True)
-    metrics = get_or_build_dashboard(
-        lambda: _build_full_metrics(include_product_pulses=False),
-        quick=False,
-    )
+    cached = get_cached_dashboard(quick=False)
+    if cached is not None:
+        metrics = cached
+    else:
+        metrics = await _build_full_metrics_async(include_product_pulses=False)
+        set_cached_dashboard(metrics, quick=False)
     background_tasks.add_task(_append_metrics_history, metrics)
     out = dict(metrics)
     out["dashboard_partial"] = False
@@ -769,7 +826,7 @@ async def metrics_stream(request: Request):
             if await request.is_disconnected():
                 break
             try:
-                metrics = _build_full_metrics(include_product_pulses=True)
+                metrics = await _build_full_metrics_async(include_product_pulses=True)
                 _append_metrics_history(metrics)
                 yield f"data: {json.dumps(metrics)}\n\n"
             except Exception as e:
@@ -804,8 +861,8 @@ async def get_escalations(limit: int = 50):
                     if line:
                         try:
                             entries.append(json.loads(line))
-                        except json.JSONDecodeError:
-                            pass
+                        except json.JSONDecodeError as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (web/backend/api/admin/dashboard.py)", exc_info=_suppressed_exc)
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Failed to read escalation log: {e}")
 
@@ -828,8 +885,8 @@ async def get_metrics_history(limit: int = 100):
                     if line:
                         try:
                             entries.append(json.loads(line))
-                        except json.JSONDecodeError:
-                            pass
+                        except json.JSONDecodeError as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (web/backend/api/admin/dashboard.py)", exc_info=_suppressed_exc)
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Failed to read metrics history: {e}")
 
@@ -963,7 +1020,66 @@ async def get_providers():
                 "is_default": name == default_provider,
             }
 
-    return {"providers": providers, "default_provider": default_provider}
+    circuit_snap = _circuit_breakers_metrics(list(providers.keys()))
+    for name, row in (circuit_snap.get("providers") or {}).items():
+        if name in providers:
+            providers[name]["circuit"] = row
+        else:
+            providers[name] = {
+                "enabled": False,
+                "type": "unknown",
+                "base_url": "",
+                "models": {"heavy": "", "light": ""},
+                "available_models": [],
+                "status": "disabled",
+                "is_default": False,
+                "circuit": row,
+            }
+
+    return {
+        "providers": providers,
+        "default_provider": default_provider,
+        "circuit_breakers": circuit_snap,
+    }
+
+
+@router.get("/providers/circuits")
+async def get_provider_circuits():
+    """Circuit breaker snapshot for all known providers."""
+    return _circuit_breakers_metrics()
+
+
+@router.post("/providers/{provider_name}/circuit/open")
+async def circuit_force_open(provider_name: str):
+    from llm.circuit_breaker import get_circuit_store, sync_prometheus_from_snapshot
+
+    store = get_circuit_store()
+    row = store.force_open(provider_name, reason="admin_manual_open")
+    snap = store.snapshot([provider_name])
+    sync_prometheus_from_snapshot(snap)
+    return {"status": "ok", "circuit": row}
+
+
+@router.post("/providers/{provider_name}/circuit/close")
+async def circuit_force_close(provider_name: str):
+    from llm.circuit_breaker import get_circuit_store, sync_prometheus_from_snapshot
+
+    store = get_circuit_store()
+    row = store.force_closed(provider_name, reason="admin_manual_close")
+    snap = store.snapshot([provider_name])
+    sync_prometheus_from_snapshot(snap)
+    return {"status": "ok", "circuit": row}
+
+
+@router.post("/providers/{provider_name}/circuit/reset")
+async def circuit_reset(provider_name: str):
+    from llm.circuit_breaker import get_circuit_store, sync_prometheus_from_snapshot
+
+    store = get_circuit_store()
+    row = store.reset(provider_name, reason="admin_reset")
+    snap = store.snapshot([provider_name])
+    sync_prometheus_from_snapshot(snap)
+    return {"status": "ok", "circuit": row}
 
 
 @router.patch("/providers/{provider_name}")
@@ -1574,8 +1690,8 @@ async def get_security_logs(
                     if line.strip():
                         try:
                             entries.append(json.loads(line))
-                        except json.JSONDecodeError:
-                            pass
+                        except json.JSONDecodeError as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (web/backend/api/admin/dashboard.py)", exc_info=_suppressed_exc)
         except Exception:
             log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
@@ -1591,8 +1707,8 @@ async def get_security_logs(
                             entry = json.loads(line)
                             # AuditLogger entries have an 'action' field
                             entries.append(entry)
-                        except json.JSONDecodeError:
-                            pass
+                        except json.JSONDecodeError as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (web/backend/api/admin/dashboard.py)", exc_info=_suppressed_exc)
             except Exception:
                 log_suppressed(logger, "dashboard: non-fatal error", exc_info=True)
 
@@ -1780,8 +1896,8 @@ async def get_llm_logs(
                             if until is not None and ts > float(until):
                                 continue
                         indexed.append((line_no, entry))
-                    except json.JSONDecodeError:
-                        pass
+                    except json.JSONDecodeError as _suppressed_exc:
+                        log_suppressed(logger, "non-fatal (web/backend/api/admin/dashboard.py)", exc_info=_suppressed_exc)
 
     # Newest first; larger line_no wins on timestamp ties (later JSONL line = newer).
     indexed.sort(key=lambda x: (_llm_log_sort_ts(x[1]), x[0]), reverse=True)
@@ -3031,8 +3147,8 @@ async def get_agent_logs(
                             if agent and entry.get("agent") != agent:
                                 continue
                             all_logs.append(entry)
-                        except json.JSONDecodeError:
-                            pass
+                        except json.JSONDecodeError as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (web/backend/api/admin/dashboard.py)", exc_info=_suppressed_exc)
         except Exception as e:
             logger.warning(f"Failed to read agent log {log_file}: {e}")
 

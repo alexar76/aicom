@@ -26,6 +26,7 @@ import httpx
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
 
+from core.logging_utils import log_suppressed
 from web.backend.services.sandbox_preview_api import (
     detect_fastapi_backend,
     preview_api_enabled,
@@ -369,8 +370,8 @@ async def view_sandbox(request: Request, sandbox_id: str):
                     files.append(str(rel))
                     if f.name == "index.html":
                         has_index_html = True
-                except ValueError:
-                    pass
+                except ValueError as _suppressed_exc:
+                    log_suppressed(logger, "non-fatal (web/backend/api/sandbox.py)", exc_info=_suppressed_exc)
 
         file_list_html = "\n".join(
             (
@@ -970,8 +971,8 @@ def _product_has_html_files(product_id: str) -> bool:
     try:
         for _ in code_dir.rglob("*.html"):
             return True
-    except Exception:
-        pass
+    except Exception as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/api/sandbox.py)", exc_info=_suppressed_exc)
     return False
 
 
@@ -996,8 +997,8 @@ async def list_sandboxable_products():
                 state = json.load(f)
             for pid, pdata in state.get("products", {}).items():
                 pipeline_products[pid] = pdata
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/api/sandbox.py)", exc_info=_suppressed_exc)
 
     if code_base.exists():
         for d in sorted(code_base.iterdir()):
@@ -1028,8 +1029,8 @@ async def list_sandboxable_products():
                             with open(spec_file) as f:
                                 spec = json.load(f)
                             product_name = spec.get("product_name", spec.get("name", ""))
-                        except Exception:
-                            pass
+                        except Exception as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (web/backend/api/sandbox.py)", exc_info=_suppressed_exc)
 
                 # Fallback: try marketing content
                 if not product_name:
@@ -1039,8 +1040,8 @@ async def list_sandboxable_products():
                             with open(mkt_file) as f:
                                 mkt = json.load(f)
                             product_name = mkt.get("product_name", "")
-                        except Exception:
-                            pass
+                        except Exception as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (web/backend/api/sandbox.py)", exc_info=_suppressed_exc)
 
                 products.append({
                     "product_id": pid,

@@ -8,7 +8,7 @@ Tracking table for the architecture / quality audit. Updated after remediation p
 | | Dual persistence split-brain | 🟡 Partial | `pipeline_state_sync.reconcile_*`; worker reconciles on load; admin JSON fallback remains |
 | | Sidecar mixin misuse | ✅ OK | `PipelineWorkerSidecarMixin` is intentional SRP split, not duplicate god object |
 | | `ArchitectAgent` 133-line prompt | ✅ Done | `agents/prompts/architect_role_prompt.md` + `architect_role.py` |
-| **Code quality** | Silent `except: pass` | 🟡 Partial | `log_suppressed` in `dashboard.py` (bare `Exception`); JSON decode skips remain `continue` |
+| **Code quality** | Silent `except: pass` | ✅ Done (runtime paths) | `log_suppressed` across orchestrator/, security/, core/, web/backend/, worker, **agents/**, **llm/**, **director/**; rescans via `scripts/fix_silent_except_pass.py`; only optional `scripts/` + `cli/` left |
 | | Hardcoded `/app/data` | ✅ Done (dashboard) | `web/backend/api/admin/dashboard.py` → `core.paths` helpers |
 | | Magic numbers / type hints | ⏳ | LLM cache + worker limits via `core/env_settings.py`; broad type hints deferred |
 | **Security** | API validation | 🟡 Partial | Centralized `schemas/api_requests.py`: products, customer, feedback, payment, ai_market, telemetry, support, demo-replay |
@@ -18,10 +18,14 @@ Tracking table for the architecture / quality audit. Updated after remediation p
 | **Testing** | Pipeline worker tests | 🟡 Partial | `test_pipeline_worker_core.py`, `test_pipeline_worker_persistence.py`, hygiene tests |
 | | Integration tests | 🟡 Partial | `test_pipeline_full_cycle_smoke.py`, `test_pipeline_integration.py` (SQLite cycle, dirty save, restart) |
 | | Property-based | 🟡 Partial | `test_api_request_schemas_property.py` (Hypothesis on API bodies) |
-| **Deploy** | Docker image / `.dockerignore` | 🟡 Partial | `.dockerignore` excludes heavy `data/*`; `data/users.json` added |
+| **Deploy** | Docker image / `.dockerignore` | ✅ Done | Excludes `data/*` (keep `data/config` bootstrap), tests, docs, `.cursor`, secrets; see `.dockerignore` |
 | | 60+ env vars | 🟡 Partial | `core/env_settings.py` validates core subset |
 | | Postgres pipeline migration | ✅ Done | Inline `POSTGRES_SCHEMA` + admin migrate API (no Alembic for factory DB) |
-| **Performance** | Sync SQLite in async | 🟡 Partial | `AsyncSQLiteManager` for async paths; sync still in CLI/migrate |
+| **Performance** | Event-driven worker wake | ✅ Done | `watchfiles` on `pipeline.json` / `pipeline.db` dirs (`core/pipeline_state_watch.py`) + `POST /wake` + adaptive poll fallback |
+| **Performance** | Sync SQLite in async | 🟡 Partial | `AsyncSQLiteManager.get_metrics()` / dashboard SSE+WS use async aggregates; sync `SQLiteManager` remains in CLI/migrate/commerce |
+| **Resilience** | LLM circuit breaker | ✅ Done | `llm/circuit_breaker.py` — CLOSED→OPEN→HALF_OPEN; shared state `data/state/llm_circuit_breakers.json`; Admin panel + Prometheus |
+| **API** | Versioning | ✅ Done | `/api/v1/*` rewrites to `/api/*` (`ApiVersionMiddleware`); legacy `/api` unchanged |
+| **Agents** | Prompts in markdown | ✅ Done | `agents/prompts/*.md` for all pipeline agents (PM sections, QA, Dev, Security, …); `load_prompt()` |
 | | Full state serialization | 🟡 Partial | `AIFACTORY_PIPELINE_SQL_DIRTY_SAVE=1` (default): worker upserts only dirty products/tasks; `_sql_full_save` for hygiene/bootstrap |
 | | LLM cache 500/300s | ✅ Configurable | `AIFACTORY_LLM_CACHE_*` in `env_settings` + `llm/router.py` |
 
@@ -35,7 +39,8 @@ pytest tests/test_core_paths.py tests/test_api_request_schemas.py \
   tests/test_env_settings.py tests/test_retry_failed_queue_guard.py -q
 
 wc -l pipeline_worker.py agents/architect.py
-rg 'except Exception:\s*\n\s*pass' --glob '*.py' -U | wc -l
+python3 scripts/fix_silent_except_pass.py  # dry-run: prints per-file counts
+rg 'except Exception:\s*\n\s*pass' --glob '*.py' -U orchestrator security core web/backend pipeline_worker.py main.py | wc -l
 rg '"/app/data' --glob '*.py' | wc -l
 ```
 

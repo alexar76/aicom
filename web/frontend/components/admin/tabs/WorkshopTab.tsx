@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { ActionableFailurePanel } from '@/components/ui/ActionableFailurePanel';
 import api from '@/lib/api';
+import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 import { resolveActionableFailure } from '@/lib/actionableErrors';
 import { fetchPipelineCatalogPageSingleMode } from '@/lib/pipelineCatalogFetch';
 import toast from 'react-hot-toast';
@@ -48,7 +49,7 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
-export function WorkshopTab() {
+export function WorkshopTab({ locale }: { locale: AdminLocale }) {
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [boardFailure, setBoardFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
@@ -148,7 +149,7 @@ export function WorkshopTab() {
 
   const runMaterialDiff = async () => {
     if (!aId || !bId || aId === bId) {
-      toast.error('Pick two different product IDs');
+      toast.error(t(locale, 'workshop.toast.pickTwoProducts'));
       return;
     }
     setDiffBusy(true);
@@ -178,8 +179,8 @@ export function WorkshopTab() {
 
   const copy = (text: string) => {
     void navigator.clipboard.writeText(text).then(
-      () => toast.success('Copied'),
-      () => toast.error('Copy failed'),
+      () => toast.success(t(locale, 'workshop.toast.copied')),
+      () => toast.error(t(locale, 'workshop.toast.copyFailed')),
     );
   };
 
@@ -207,8 +208,8 @@ export function WorkshopTab() {
       doc = JSON.parse(patDoc || '{}') as Record<string, unknown>;
     } catch {
       setPatternFailure({
-        title: 'Invalid JSON',
-        detail: 'Fix the pattern document before saving.',
+        title: t(locale, 'workshop.invalidJson.title'),
+        detail: t(locale, 'workshop.invalidJson.detail'),
         actions: [],
       });
       return;
@@ -216,7 +217,7 @@ export function WorkshopTab() {
     setPatternFailure(null);
     try {
       await api.upsertIterationPattern({
-        name: patName.trim() || 'Untitled pattern',
+        name: patName.trim() || t(locale, 'workshop.pattern.untitled'),
         tags: patTags
           .split(',')
           .map((s) => s.trim())
@@ -224,7 +225,7 @@ export function WorkshopTab() {
         document: doc,
       });
       setPatName('');
-      toast.success('Pattern saved');
+      toast.success(t(locale, 'workshop.pattern.saved'));
       void refreshPatterns();
     } catch (e: unknown) {
       setPatternFailure(resolveActionableFailure(e, { operation: 'workshop_patterns_save' }));
@@ -236,7 +237,7 @@ export function WorkshopTab() {
     try {
       await api.deleteIterationPattern(id);
       void refreshPatterns();
-      toast.success('Deleted');
+      toast.success(t(locale, 'workshop.pattern.deleted'));
     } catch (e: unknown) {
       setPatternFailure(resolveActionableFailure(e, { operation: 'workshop_patterns_delete' }));
     }
@@ -256,7 +257,7 @@ export function WorkshopTab() {
 
   const subscribePush = async () => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-      toast.error('Push not supported in this browser');
+      toast.error(t(locale, 'workshop.push.notSupported'));
       return;
     }
     setPushBusy(true);
@@ -278,7 +279,7 @@ export function WorkshopTab() {
         keys: { p256dh: j.keys.p256dh, auth: j.keys.auth },
         userAgent: navigator.userAgent,
       });
-      toast.success('Subscribed to Web Push on this browser');
+      toast.success(t(locale, 'workshop.push.subscribed'));
     } catch (e: unknown) {
       setPushFailure(resolveActionableFailure(e, { operation: 'workshop_webpush_subscribe' }));
     } finally {
@@ -292,11 +293,18 @@ export function WorkshopTab() {
     setPushTestFailure(null);
     try {
       const r = await api.sendWebPushTest({
-        title: 'AI Factory test',
-        body: 'If you see this, Web Push delivery works.',
+        title: t(locale, 'workshop.push.testTitle'),
+        body: t(locale, 'workshop.push.testBody'),
         url: '/admin',
       });
-      toast.success(`Sent: ${r.sent ?? 0}, failed: ${r.failed ?? 0}${r.error ? ` (${r.error})` : ''}`);
+      const errorPart = r.error ? ` (${r.error})` : '';
+      toast.success(
+        tVars(locale, 'workshop.push.testToast', {
+          sent: r.sent ?? 0,
+          failed: r.failed ?? 0,
+          errorPart,
+        }),
+      );
     } catch (e: unknown) {
       setPushTestFailure(resolveActionableFailure(e, { operation: 'workshop_webpush_test' }));
     } finally {
@@ -309,12 +317,10 @@ export function WorkshopTab() {
       <div>
         <h2 className="flex items-center gap-2 text-xl font-semibold text-white">
           <LayoutGrid className="h-6 w-6 text-indigo-400" aria-hidden />
-          Product Workshop
+          {t(locale, 'workshop.title')}
         </h2>
         <p className="mt-1 max-w-3xl text-sm text-gray-400">
-          Board of recent products, specification and architecture JSON diffs, a lightweight iteration canvas (branches
-          + merge edges), synchronized iframe previews for a multi-device lab, cloud pattern library, and admin Web
-          Push.
+          {t(locale, 'workshop.subtitle')}
         </p>
       </div>
 
@@ -323,17 +329,17 @@ export function WorkshopTab() {
           <div className="flex gap-3">
             <BookOpen className="mt-0.5 h-5 w-5 shrink-0 text-indigo-300" aria-hidden />
             <div className="min-w-0 flex-1 space-y-2 text-xs leading-relaxed text-indigo-100/90">
-              <p className="text-sm font-medium text-white">How to use this tab</p>
+              <p className="text-sm font-medium text-white">{t(locale, 'workshop.intro.title')}</p>
               <ol className="list-decimal space-y-1 pl-4">
-                <li>Pick product IDs from the board (or paste from Pipeline), then load spec or architecture JSON.</li>
-                <li>Iteration canvas persists per product — load after pressing &quot;Use ID&quot; on a card.</li>
-                <li>When something fails, use the red action card: retry plus deep links (Providers, Settings, Pipeline).</li>
+                <li>{t(locale, 'workshop.intro.li1')}</li>
+                <li>{t(locale, 'workshop.intro.li2')}</li>
+                <li>{t(locale, 'workshop.intro.li3')}</li>
               </ol>
             </div>
             <button
               type="button"
               className="shrink-0 rounded-lg p-1 text-indigo-200 hover:bg-white/10"
-              aria-label="Dismiss workshop tips"
+              aria-label={t(locale, 'workshop.intro.dismissAria')}
               onClick={dismissWorkshopIntro}
             >
               <X className="h-4 w-4" />
@@ -344,35 +350,39 @@ export function WorkshopTab() {
 
       <GlassCard>
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-          <h3 className="text-sm font-medium text-gray-300">Board</h3>
+          <h3 className="text-sm font-medium text-gray-300">{t(locale, 'workshop.board.title')}</h3>
           <Button type="button" variant="secondary" size="sm" onClick={() => void load()} disabled={loading}>
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            Refresh
+            {t(locale, 'workshop.board.refresh')}
           </Button>
         </div>
-        {loading && rows.length === 0 ? (
+            {loading && rows.length === 0 ? (
           <div className="flex items-center gap-2 py-8 text-gray-400">
             <Loader2 className="h-5 w-5 animate-spin text-indigo-400" />
-            Loading recent products…
+            {t(locale, 'workshop.board.loading')}
           </div>
         ) : (
           <div className="space-y-3">
             {boardFailure ? (
-              <ActionableFailurePanel failure={boardFailure} onRetry={() => void load()} retryLabel="Reload board" />
+              <ActionableFailurePanel
+                failure={boardFailure}
+                onRetry={() => void load()}
+                retryLabel={t(locale, 'workshop.board.retryLabel')}
+              />
             ) : null}
             {rows.length === 0 && !loading ? (
               <div className="rounded-lg border border-dashed border-white/15 bg-white/[0.02] px-4 py-6 text-center text-sm text-gray-500">
-                <p className="text-gray-300">No products in this catalog slice yet.</p>
+                <p className="text-gray-300">{t(locale, 'workshop.board.empty.title')}</p>
                 <p className="mt-2 text-xs">
-                  Create one under{' '}
+                  {t(locale, 'workshop.board.empty.body')}
                   <a className="text-indigo-300 hover:underline" href="/admin?tab=new-product">
-                    New product
+                    {t(locale, 'workshop.board.empty.newProduct')}
                   </a>
-                  , or open{' '}
+                  {t(locale, 'workshop.board.empty.orOpen')}
                   <a className="text-indigo-300 hover:underline" href="/admin?tab=pipeline">
-                    Pipeline
-                  </a>{' '}
-                  if the list should already contain items (check filters / worker).
+                    {t(locale, 'workshop.board.empty.pipeline')}
+                  </a>
+                  {t(locale, 'workshop.board.empty.tail')}
                 </p>
               </div>
             ) : null}
@@ -408,7 +418,7 @@ export function WorkshopTab() {
                             onClick={() => copy(storefront)}
                           >
                             <Copy className="mr-1 h-3 w-3" />
-                            Store URL
+                            {t(locale, 'workshop.board.storeUrl')}
                           </Button>
                           <a
                             href={storefront}
@@ -417,7 +427,7 @@ export function WorkshopTab() {
                             className="inline-flex h-7 items-center rounded-md border border-white/15 px-2 text-[10px] text-indigo-200 hover:bg-white/5"
                           >
                             <ExternalLink className="mr-1 h-3 w-3" />
-                            Open
+                            {t(locale, 'workshop.board.open')}
                           </a>
                           <Button
                             type="button"
@@ -429,7 +439,7 @@ export function WorkshopTab() {
                               setLabPid(id);
                             }}
                           >
-                            Use ID
+                            {t(locale, 'workshop.board.useId')}
                           </Button>
                         </div>
                       </div>
@@ -447,12 +457,9 @@ export function WorkshopTab() {
       <GlassCard>
         <h3 className="mb-1 flex items-center gap-2 text-sm font-medium text-gray-300">
           <GitCompare className="h-4 w-4 text-fuchsia-400" />
-          Side-by-side material diff
+          {t(locale, 'workshop.diff.title')}
         </h3>
-        <p className="mb-4 text-xs text-gray-500">
-          Choose <span className="text-gray-300">specification.json</span> or on-disk{' '}
-          <span className="text-gray-300">architecture.json</span> for both products.
-        </p>
+        <p className="mb-4 text-xs text-gray-500">{t(locale, 'workshop.diff.hint')}</p>
         <div className="mb-3 flex flex-wrap gap-2">
           <Button
             type="button"
@@ -460,7 +467,7 @@ export function WorkshopTab() {
             variant={materialKind === 'spec' ? 'secondary' : 'ghost'}
             onClick={() => setMaterialKind('spec')}
           >
-            Specification
+            {t(locale, 'workshop.diff.spec')}
           </Button>
           <Button
             type="button"
@@ -468,18 +475,18 @@ export function WorkshopTab() {
             variant={materialKind === 'architecture' ? 'secondary' : 'ghost'}
             onClick={() => setMaterialKind('architecture')}
           >
-            Architecture
+            {t(locale, 'workshop.diff.architecture')}
           </Button>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
           <div>
-            <label className="mb-1 block text-[11px] text-gray-500">Product A</label>
+            <label className="mb-1 block text-[11px] text-gray-500">{t(locale, 'workshop.diff.productA')}</label>
             <select
               value={aId}
               onChange={(e) => setAId(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-200"
             >
-              <option value="">Select…</option>
+              <option value="">{t(locale, 'workshop.diff.select')}</option>
               {options.map((o) => (
                 <option key={o.id} value={o.id}>
                   {o.label}
@@ -488,13 +495,13 @@ export function WorkshopTab() {
             </select>
           </div>
           <div>
-            <label className="mb-1 block text-[11px] text-gray-500">Product B</label>
+            <label className="mb-1 block text-[11px] text-gray-500">{t(locale, 'workshop.diff.productB')}</label>
             <select
               value={bId}
               onChange={(e) => setBId(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-200"
             >
-              <option value="">Select…</option>
+              <option value="">{t(locale, 'workshop.diff.select')}</option>
               {options.map((o) => (
                 <option key={`b-${o.id}`} value={o.id}>
                   {o.label}
@@ -506,7 +513,7 @@ export function WorkshopTab() {
         <div className="mt-3">
           <Button type="button" variant="secondary" size="sm" onClick={() => void runMaterialDiff()} disabled={diffBusy}>
             {diffBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            Load JSON
+            {t(locale, 'workshop.diff.loadJson')}
           </Button>
         </div>
         {diffFailure ? (
@@ -514,7 +521,7 @@ export function WorkshopTab() {
             <ActionableFailurePanel
               failure={diffFailure}
               onRetry={() => void runMaterialDiff()}
-              retryLabel="Retry JSON load"
+              retryLabel={t(locale, 'workshop.diff.retryLoad')}
             />
           </div>
         ) : null}
@@ -522,18 +529,26 @@ export function WorkshopTab() {
           <div className="mt-4 grid max-h-[480px] gap-3 overflow-hidden md:grid-cols-2">
             <div className="flex min-h-0 flex-col gap-1">
               <span className="text-[10px] uppercase text-gray-500">
-                A · {aId} · {materialKind}
+                {tVars(locale, 'workshop.diff.panelCaption', {
+                  side: 'A',
+                  id: aId,
+                  kind: materialKind,
+                })}
               </span>
               <pre className="min-h-0 flex-1 overflow-auto rounded-lg border border-white/10 bg-black/50 p-3 font-mono text-[11px] leading-relaxed text-gray-300">
-                {leftJson || '—'}
+                {leftJson || t(locale, 'workshop.diff.emptyPlaceholder')}
               </pre>
             </div>
             <div className="flex min-h-0 flex-col gap-1">
               <span className="text-[10px] uppercase text-gray-500">
-                B · {bId} · {materialKind}
+                {tVars(locale, 'workshop.diff.panelCaption', {
+                  side: 'B',
+                  id: bId,
+                  kind: materialKind,
+                })}
               </span>
               <pre className="min-h-0 flex-1 overflow-auto rounded-lg border border-white/10 bg-black/50 p-3 font-mono text-[11px] leading-relaxed text-gray-300">
-                {rightJson || '—'}
+                {rightJson || t(locale, 'workshop.diff.emptyPlaceholder')}
               </pre>
             </div>
           </div>
@@ -543,27 +558,28 @@ export function WorkshopTab() {
       <GlassCard>
         <h3 className="mb-1 flex items-center gap-2 text-sm font-medium text-gray-300">
           <Layers className="h-4 w-4 text-sky-400" />
-          Iteration canvas (branches / merge)
+          {t(locale, 'workshop.canvas.title')}
         </h3>
-        <p className="mb-3 text-xs text-gray-500">
-          Persisted per product. Drag nodes, fork a node onto a new branch id, and record merge edges. Full Miro-style
-          CRDT sync is not included — this board is for workshop notes tied to pipeline IDs.
-        </p>
+        <p className="mb-3 text-xs text-gray-500">{t(locale, 'workshop.canvas.hint')}</p>
         <div className="mb-3 flex flex-wrap items-end gap-2">
           <div className="min-w-[200px] flex-1">
-            <label className="mb-1 block text-[11px] text-gray-500">Product ID</label>
-            <Input value={canvasPid} onChange={(e) => setCanvasPid(e.target.value)} placeholder="prod-…" />
+            <label className="mb-1 block text-[11px] text-gray-500">{t(locale, 'workshop.canvas.productIdLabel')}</label>
+            <Input
+              value={canvasPid}
+              onChange={(e) => setCanvasPid(e.target.value)}
+              placeholder={t(locale, 'workshop.placeholder.productId')}
+            />
           </div>
           <Button type="button" variant="secondary" size="sm" onClick={() => void loadCanvas()} disabled={canvasLoadBusy}>
             {canvasLoadBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            Load
+            {t(locale, 'workshop.canvas.load')}
           </Button>
           <Button type="button" size="sm" onClick={() => void saveCanvas()} disabled={canvasSaveBusy || !canvasPid.trim()}>
             {canvasSaveBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-            Save
+            {t(locale, 'workshop.canvas.save')}
           </Button>
           <Button type="button" variant="ghost" size="sm" onClick={addStageNode} icon={<Plus className="h-4 w-4" />}>
-            Add stage
+            {t(locale, 'workshop.canvas.addStage')}
           </Button>
         </div>
         {canvasFailure ? (
@@ -571,7 +587,7 @@ export function WorkshopTab() {
             <ActionableFailurePanel
               failure={canvasFailure}
               onRetry={() => void loadCanvas()}
-              retryLabel="Retry load canvas"
+              retryLabel={t(locale, 'workshop.canvas.retryLoadCanvas')}
             />
           </div>
         ) : null}
@@ -580,7 +596,7 @@ export function WorkshopTab() {
             <ActionableFailurePanel
               failure={canvasSaveFailure}
               onRetry={() => void saveCanvas()}
-              retryLabel="Retry save canvas"
+              retryLabel={t(locale, 'workshop.canvas.retrySaveCanvas')}
             />
           </div>
         ) : null}
@@ -636,13 +652,13 @@ export function WorkshopTab() {
           </svg>
         </div>
         <div className="mb-2 flex flex-wrap gap-2 border-t border-white/10 pt-3 text-xs text-gray-500">
-          <span className="self-center">Fork / merge helpers:</span>
+          <span className="self-center">{t(locale, 'workshop.edgeHelpers.label')}</span>
           <select
             value={edgeFrom}
             onChange={(e) => setEdgeFrom(e.target.value)}
             className="rounded border border-white/10 bg-black/40 px-2 py-1 text-gray-200"
           >
-            <option value="">From node…</option>
+            <option value="">{t(locale, 'workshop.edge.fromNode')}</option>
             {nodes.map((n) => (
               <option key={`ef-${n.id}`} value={n.id}>
                 {n.label}
@@ -654,7 +670,7 @@ export function WorkshopTab() {
             onChange={(e) => setEdgeTo(e.target.value)}
             className="rounded border border-white/10 bg-black/40 px-2 py-1 text-gray-200"
           >
-            <option value="">To node…</option>
+            <option value="">{t(locale, 'workshop.edge.toNode')}</option>
             {nodes.map((n) => (
               <option key={`et-${n.id}`} value={n.id}>
                 {n.label}
@@ -662,14 +678,14 @@ export function WorkshopTab() {
             ))}
           </select>
           <Button type="button" variant="secondary" size="sm" onClick={addEdge} icon={<Link2 className="h-3.5 w-3.5" />}>
-            Link
+            {t(locale, 'workshop.edge.link')}
           </Button>
           <Button type="button" variant="ghost" size="sm" onClick={mergeEdge}>
-            Merge edge
+            {t(locale, 'workshop.edge.merge')}
           </Button>
           {edgeFrom ? (
             <Button type="button" variant="ghost" size="sm" onClick={() => forkSelectedBranch(edgeFrom)}>
-              Fork “from”
+              {t(locale, 'workshop.edge.forkFrom')}
             </Button>
           ) : null}
         </div>
@@ -678,23 +694,28 @@ export function WorkshopTab() {
       <GlassCard>
         <h3 className="mb-1 flex items-center gap-2 text-sm font-medium text-gray-300">
           <MonitorSmartphone className="h-4 w-4 text-emerald-400" />
-          Multi-device lab · live-ish preview
+          {t(locale, 'workshop.lab.title')}
         </h3>
-        <p className="mb-3 text-xs text-gray-500">
-          Three iframes load the same sandbox viewer URL and refresh on an interval (simulates multiple clients). True
-          WebRTC or screen streaming needs a dedicated signaling service — not bundled here.
-        </p>
+        <p className="mb-3 text-xs text-gray-500">{t(locale, 'workshop.lab.hint')}</p>
         <div className="mb-3 grid gap-2 md:grid-cols-3">
           <div>
-            <label className="mb-1 block text-[11px] text-gray-500">Product ID (annotation only)</label>
-            <Input value={labPid} onChange={(e) => setLabPid(e.target.value)} placeholder="prod-…" />
+            <label className="mb-1 block text-[11px] text-gray-500">{t(locale, 'workshop.lab.productIdAnnot')}</label>
+            <Input
+              value={labPid}
+              onChange={(e) => setLabPid(e.target.value)}
+              placeholder={t(locale, 'workshop.placeholder.productId')}
+            />
           </div>
           <div>
-            <label className="mb-1 block text-[11px] text-gray-500">Sandbox ID</label>
-            <Input value={labSandboxId} onChange={(e) => setLabSandboxId(e.target.value)} placeholder="sandbox-…" />
+            <label className="mb-1 block text-[11px] text-gray-500">{t(locale, 'workshop.lab.sandboxId')}</label>
+            <Input
+              value={labSandboxId}
+              onChange={(e) => setLabSandboxId(e.target.value)}
+              placeholder={t(locale, 'workshop.placeholder.sandboxId')}
+            />
           </div>
           <div>
-            <label className="mb-1 block text-[11px] text-gray-500">Refresh interval (ms)</label>
+            <label className="mb-1 block text-[11px] text-gray-500">{t(locale, 'workshop.lab.refreshMs')}</label>
             <Input
               type="number"
               min={2000}
@@ -708,28 +729,35 @@ export function WorkshopTab() {
           <div className="grid gap-2 md:grid-cols-3">
             {[0, 1, 2].map((i) => (
               <div key={i} className="space-y-1">
-                <p className="text-[10px] uppercase text-gray-500">Device {i + 1}</p>
+                <p className="text-[10px] uppercase text-gray-500">
+                  {tVars(locale, 'workshop.lab.deviceN', { n: i + 1 })}
+                </p>
                 <iframe title={`lab-${i}`} src={labPreviewSrc} className="h-56 w-full rounded-lg border border-white/10 bg-black" />
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-xs text-gray-600">Enter a sandbox id from Pipeline / sandbox start to render previews.</p>
+          <p className="text-xs text-gray-600">{t(locale, 'workshop.lab.enterSandboxHint')}</p>
         )}
       </GlassCard>
 
       <GlassCard>
         <h3 className="mb-1 flex items-center gap-2 text-sm font-medium text-gray-300">
           <Radio className="h-4 w-4 text-amber-400" />
-          Cloud pattern library
+          {t(locale, 'workshop.patterns.title')}
         </h3>
-        <p className="mb-3 text-xs text-gray-500">
-          JSON documents stored on the server (same factory data directory as templates). Use for reusable workshop
-          shapes, checklists, or iteration recipes beyond reference templates.
-        </p>
+        <p className="mb-3 text-xs text-gray-500">{t(locale, 'workshop.patterns.hint')}</p>
         <div className="mb-3 grid gap-2 md:grid-cols-2">
-          <Input value={patName} onChange={(e) => setPatName(e.target.value)} placeholder="Pattern name" />
-          <Input value={patTags} onChange={(e) => setPatTags(e.target.value)} placeholder="tags, comma-separated" />
+          <Input
+            value={patName}
+            onChange={(e) => setPatName(e.target.value)}
+            placeholder={t(locale, 'workshop.patterns.namePlaceholder')}
+          />
+          <Input
+            value={patTags}
+            onChange={(e) => setPatTags(e.target.value)}
+            placeholder={t(locale, 'workshop.patterns.tagsPlaceholder')}
+          />
         </div>
         <textarea
           className="input-glass mb-3 min-h-[120px] font-mono text-xs"
@@ -738,11 +766,11 @@ export function WorkshopTab() {
         />
         <div className="mb-4 flex flex-wrap gap-2">
           <Button type="button" size="sm" onClick={() => void savePattern()}>
-            Save pattern
+            {t(locale, 'workshop.patterns.save')}
           </Button>
           <Button type="button" variant="secondary" size="sm" onClick={() => void refreshPatterns()} disabled={patternsBusy}>
             {patternsBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            Reload list
+            {t(locale, 'workshop.patterns.reloadList')}
           </Button>
         </div>
         {patternFailure ? (
@@ -750,7 +778,7 @@ export function WorkshopTab() {
             <ActionableFailurePanel
               failure={patternFailure}
               onRetry={() => void refreshPatterns()}
-              retryLabel="Reload patterns"
+              retryLabel={t(locale, 'workshop.patterns.reloadRetry')}
             />
           </div>
         ) : null}
@@ -762,7 +790,7 @@ export function WorkshopTab() {
             >
               <span className="truncate text-gray-200">{String(p.name)}</span>
               <Button type="button" variant="ghost" size="sm" className="text-red-300" onClick={() => void deletePattern(String(p.id))}>
-                Delete
+                {t(locale, 'workshop.patterns.delete')}
               </Button>
             </li>
           ))}
@@ -772,18 +800,15 @@ export function WorkshopTab() {
       <GlassCard>
         <h3 className="mb-1 flex items-center gap-2 text-sm font-medium text-gray-300">
           <Bell className="h-4 w-4 text-rose-400" />
-          Web Push (this browser)
+          {t(locale, 'workshop.push.title')}
         </h3>
-        <p className="mb-3 text-xs text-gray-500">
-          Uses the existing <code className="text-gray-400">/sw.js</code> worker (push handler). After subscribing, use
-          “Send test” — payloads also fire after successful Telegram pipeline notifications when subscriptions exist.
-        </p>
+        <p className="mb-3 text-xs text-gray-500">{t(locale, 'workshop.push.hint')}</p>
         <div className="flex flex-wrap gap-2">
           <Button type="button" variant="secondary" size="sm" disabled={pushBusy} onClick={() => void subscribePush()}>
-            Subscribe
+            {t(locale, 'workshop.push.subscribe')}
           </Button>
           <Button type="button" size="sm" disabled={pushBusy} onClick={() => void sendTestPush()}>
-            Send test push
+            {t(locale, 'workshop.push.sendTest')}
           </Button>
         </div>
         {pushFailure ? (
@@ -791,7 +816,7 @@ export function WorkshopTab() {
             <ActionableFailurePanel
               failure={pushFailure}
               onRetry={() => void subscribePush()}
-              retryLabel="Retry subscribe"
+              retryLabel={t(locale, 'workshop.push.retrySubscribe')}
             />
           </div>
         ) : null}
@@ -800,7 +825,7 @@ export function WorkshopTab() {
             <ActionableFailurePanel
               failure={pushTestFailure}
               onRetry={() => void sendTestPush()}
-              retryLabel="Retry test push"
+              retryLabel={t(locale, 'workshop.push.retryTest')}
             />
           </div>
         ) : null}

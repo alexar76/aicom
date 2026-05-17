@@ -21,6 +21,7 @@ import yaml
 from core.paths import config_path
 from core.config_merge import load_merged_config
 from core.paths import data_root
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -91,8 +92,8 @@ def write_telegram_credentials(token: str, chat_id: str) -> None:
     elif path.is_file():
         try:
             path.unlink()
-        except OSError:
-            pass
+        except OSError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/telegram_credentials.py)", exc_info=_suppressed_exc)
     _strip_legacy_telegram_keys_in_config_yaml()
 
 
@@ -102,8 +103,8 @@ def revoke_telegram_credentials() -> None:
     if path.is_file():
         try:
             path.unlink()
-        except OSError:
-            pass
+        except OSError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/telegram_credentials.py)", exc_info=_suppressed_exc)
     _strip_legacy_telegram_keys_in_config_yaml()
 
 

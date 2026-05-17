@@ -23,6 +23,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from core.paths import jwt_secret_file_path, legacy_admin_path, legacy_audit_log_path
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -125,8 +126,8 @@ class SecurityManager:
         try:
             if pwd_context.verify(plain_password, hashed_password):
                 return True
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("bcrypt verify failed, trying legacy hash", exc_info=exc)
 
         # Try SHA256+salt fallback
         try:
@@ -140,8 +141,8 @@ class SecurityManager:
                 if hash_type == "sha256_salted" and salt:
                     expected = hashlib.sha256((plain_password + salt).encode()).hexdigest()
                     return secrets.compare_digest(expected, hashed_password)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("legacy sha256 password verify failed", exc_info=exc)
 
         return False
 
@@ -293,10 +294,10 @@ class SecurityManager:
                             if since and entry.get("timestamp", 0) < since:
                                 continue
                             entries.append(entry)
-                        except json.JSONDecodeError:
-                            pass
-        except FileNotFoundError:
-            pass
+                        except json.JSONDecodeError as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (web/backend/core/security.py)", exc_info=_suppressed_exc)
+        except FileNotFoundError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/core/security.py)", exc_info=_suppressed_exc)
 
         return entries[-limit:]
 

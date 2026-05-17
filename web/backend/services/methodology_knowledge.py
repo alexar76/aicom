@@ -1,4 +1,7 @@
 """
+import logging
+
+logger = logging.getLogger(__name__)
 Methodology knowledge store — persistent memory for the Methodology Agent.
 
 Stores three kinds of records under ``data_root/methodology/``:
@@ -31,6 +34,7 @@ from typing import Any, Iterable, Iterator, Optional
 
 
 from core.paths import resolve_data_root
+from core.logging_utils import log_suppressed
 
 
 # ---------------------------------------------------------------------------
@@ -477,8 +481,8 @@ class MethodologyKnowledgeStore:
                         }
                         break
                 case_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-            except (OSError, json.JSONDecodeError):
-                pass
+            except (OSError, json.JSONDecodeError) as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/services/methodology_knowledge.py)", exc_info=_suppressed_exc)
 
         promoted_lesson: Optional[MethodologyLesson] = None
         if was_correct and entry["promote_finding_code"]:

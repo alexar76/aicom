@@ -5,6 +5,7 @@ import os
 import time
 import uuid
 from typing import Callable
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -114,8 +115,8 @@ class TaskOrchestrator:
                     products[pid].get("idea")
                 ):
                     continue
-            except ImportError:
-                pass
+            except ImportError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (orchestrator/worker_components.py)", exc_info=_suppressed_exc)
             new_task = {
                 "id": f"task-{uuid.uuid4().hex[:12]}",
                 "product_id": pid,

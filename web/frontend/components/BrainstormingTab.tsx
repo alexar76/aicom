@@ -28,6 +28,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import toast from 'react-hot-toast';
+import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 import api from '@/lib/api';
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -148,12 +149,22 @@ const AGENT_ICONS: Record<string, string> = {
   system: '⚙️',
 };
 
-const SESSION_TYPE_CONFIG = [
-  { value: 'brainstorming', label: 'Brainstorming', icon: '💡', color: '#8b5cf6' },
-  { value: 'feature_discussion', label: 'Feature Discussion', icon: '🔧', color: '#06b6d4' },
-  { value: 'strategy_session', label: 'Strategy Session', icon: '🎯', color: '#f59e0b' },
-  { value: 'product_idea', label: 'Product Idea', icon: '🚀', color: '#10b981' },
+const SESSION_TYPE_ITEMS = [
+  { value: 'brainstorming', icon: '💡', color: '#8b5cf6' },
+  { value: 'feature_discussion', icon: '🔧', color: '#06b6d4' },
+  { value: 'strategy_session', icon: '🎯', color: '#f59e0b' },
+  { value: 'product_idea', icon: '🚀', color: '#10b981' },
 ];
+
+function brainstormSessionTypeLabel(locale: AdminLocale, value: string) {
+  const key: Record<string, string> = {
+    brainstorming: 'brainstorm.type.brainstorming',
+    feature_discussion: 'brainstorm.type.featureDiscussion',
+    strategy_session: 'brainstorm.type.strategySession',
+    product_idea: 'brainstorm.type.productIdea',
+  };
+  return t(locale, key[value] || 'brainstorm.type.brainstorming');
+}
 
 const STATUS_COLORS: Record<string, string> = {
   pending: '#64748b',
@@ -165,7 +176,8 @@ const STATUS_COLORS: Record<string, string> = {
 
 // ── BrainstormingTab ───────────────────────────────────────────────────────
 
-export default function BrainstormingTab() {
+export default function BrainstormingTab({ locale }: { locale: AdminLocale }) {
+  const dateLocale = locale === 'ru' ? 'ru-RU' : locale === 'es' ? 'es-ES' : 'en-US';
   const [view, setView] = useState<'list' | 'detail'>('list');
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [selectedSession, setSelectedSession] = useState<DiscussionSession | null>(null);
@@ -236,7 +248,7 @@ export default function BrainstormingTab() {
       api.getDiscussionIdeas(sessionId),
     ]);
     if (!sessionRes?.session) {
-      toast.error('Invalid session response from server');
+      toast.error(t(locale, 'brainstorm.toast.invalidSessionResponse'));
       throw new Error('Missing session in response');
     }
     setSelectedSession(sessionRes.session);
@@ -268,7 +280,7 @@ export default function BrainstormingTab() {
 
   const handleCreateSession = async () => {
     if (!newTopic.trim() || selectedAgents.length === 0) {
-      toast.error('Topic and at least one agent are required');
+      toast.error(t(locale, 'brainstorm.toast.topicAgentsRequired'));
       return;
     }
 
@@ -280,7 +292,7 @@ export default function BrainstormingTab() {
         participants: selectedAgents,
       });
 
-      toast.success('Session created');
+      toast.success(t(locale, 'brainstorm.toast.sessionCreated'));
       setShowCreate(false);
       setNewTopic('');
       setNewType('brainstorming');
@@ -301,7 +313,7 @@ export default function BrainstormingTab() {
       setSelectedSession(res.session);
       await loadSessionDetail(sessionId);
       await loadSessions();
-      toast.success('Session started');
+      toast.success(t(locale, 'brainstorm.toast.sessionStarted'));
     } catch (err: any) {
       toast.error(err.message || 'Failed to start session');
     } finally {
@@ -316,7 +328,7 @@ export default function BrainstormingTab() {
       setSelectedSession(res.session);
       await loadSessionDetail(sessionId);
       await loadSessions();
-      toast.success('Round completed');
+      toast.success(t(locale, 'brainstorm.toast.roundCompleted'));
     } catch (err: any) {
       toast.error(err.message || 'Failed to run round');
     } finally {
@@ -330,7 +342,7 @@ export default function BrainstormingTab() {
       const res = await api.pauseDiscussionSession(sessionId);
       setSelectedSession(res.session);
       await loadSessions();
-      toast.success('Session paused');
+      toast.success(t(locale, 'brainstorm.toast.sessionPaused'));
     } catch (err: any) {
       toast.error(err.message || 'Failed to pause session');
     } finally {
@@ -345,7 +357,7 @@ export default function BrainstormingTab() {
       setSelectedSession(res.session);
       await loadSessionDetail(sessionId);
       await loadSessions();
-      toast.success('Session resumed');
+      toast.success(t(locale, 'brainstorm.toast.sessionResumed'));
     } catch (err: any) {
       toast.error(err.message || 'Failed to resume session');
     } finally {
@@ -361,7 +373,7 @@ export default function BrainstormingTab() {
       await loadSessionDetail(sessionId);
       await loadSessions();
       await loadStats();
-      toast.success('Session concluded');
+      toast.success(t(locale, 'brainstorm.toast.sessionConcluded'));
     } catch (err: any) {
       toast.error(err.message || 'Failed to conclude session');
     } finally {
@@ -370,7 +382,7 @@ export default function BrainstormingTab() {
   };
 
   const handleDeleteSession = async (sessionId: string) => {
-    if (!confirm('Delete this session and all its data? This is irreversible.')) return;
+    if (!confirm(t(locale, 'brainstorm.confirm.deleteSession'))) return;
 
     setActionLoading(`delete-${sessionId}`);
     try {
@@ -381,7 +393,7 @@ export default function BrainstormingTab() {
       }
       await loadSessions();
       await loadStats();
-      toast.success('Session deleted');
+      toast.success(t(locale, 'brainstorm.toast.sessionDeleted'));
     } catch (err: any) {
       toast.error(err.message || 'Failed to delete session');
     } finally {
@@ -409,7 +421,7 @@ export default function BrainstormingTab() {
     try {
       const res = await api.extractDiscussionIdeas(sessionId);
       setIdeas(res.map((i: any) => i.idea) || []);
-      toast.success('Ideas extracted');
+      toast.success(t(locale, 'brainstorm.toast.ideasExtracted'));
     } catch (err: any) {
       toast.error(err.message || 'Failed to extract ideas');
     } finally {
@@ -421,7 +433,7 @@ export default function BrainstormingTab() {
     setActionLoading(`promote-${ideaId}`);
     try {
       await api.promoteIdeaToProduct(sessionId, ideaId);
-      toast.success('Idea promoted to product!');
+      toast.success(t(locale, 'brainstorm.toast.ideaPromoted'));
       await loadSessionDetail(sessionId);
     } catch (err: any) {
       toast.error(err.message || 'Failed to promote idea');
@@ -434,12 +446,12 @@ export default function BrainstormingTab() {
 
   const formatTime = (ts: number) => {
     const d = new Date(ts * 1000);
-    return d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleTimeString(dateLocale, { hour: '2-digit', minute: '2-digit' });
   };
 
   const formatDate = (ts: number) => {
     const d = new Date(ts * 1000);
-    return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleDateString(dateLocale, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
   };
 
   const getStatusBadge = (status: string) => {
@@ -450,9 +462,18 @@ export default function BrainstormingTab() {
       completed: 'bg-green-500/20 text-green-300',
       cancelled: 'bg-red-500/20 text-red-300',
     };
+    const labelKey = (
+      {
+        pending: 'brainstorm.status.pending',
+        active: 'brainstorm.status.active',
+        paused: 'brainstorm.status.paused',
+        completed: 'brainstorm.status.completed',
+        cancelled: 'brainstorm.status.cancelled',
+      } as Record<string, string>
+    )[status];
     return (
       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${colors[status] || 'bg-gray-500/20 text-gray-300'}`}>
-        {status}
+        {labelKey ? t(locale, labelKey) : status}
       </span>
     );
   };
@@ -467,37 +488,37 @@ export default function BrainstormingTab() {
           <div>
             <h2 className="text-xl font-semibold text-white flex items-center gap-2">
               <BrainCircuit className="w-6 h-6 text-purple-400" />
-              Brainstorming & Discussions
+              {t(locale, 'brainstorm.title')}
             </h2>
-            <p className="text-sm text-gray-400 mt-1">
-              Multi-agent discussion sessions for ideas, features, and strategy
-            </p>
+            <p className="text-sm text-gray-400 mt-1">{t(locale, 'brainstorm.subtitle')}</p>
           </div>
           <Button onClick={() => setShowCreate(true)} variant="primary">
             <Plus className="w-4 h-4 mr-1.5" />
-            New Session
+            {t(locale, 'brainstorm.btn.newSession')}
           </Button>
         </div>
 
         <div className="rounded-xl border border-purple-500/25 bg-purple-500/5 px-4 py-3 text-sm text-gray-300">
-          <span className="font-semibold text-purple-300">Brainstorming &amp; Discussions</span> — themed sessions with rounds,
-          agent selection, and outputs (ideas, decisions). This is{' '}
-          <span className="text-amber-200/90">not</span> the corporate chat: daily standup, Owner, and Director live under{' '}
-          <span className="text-cyan-300">Admin → Corporate Chat</span>. Details:{' '}
-          <code className="text-xs bg-black/30 px-1 rounded">docs/corporate-chat-vs-discussions.md</code>.
+          <span className="font-semibold text-purple-300">{t(locale, 'brainstorm.bannerTitle')}</span>{' '}
+          {t(locale, 'brainstorm.bannerBody')}
+          <a className="text-cyan-300 hover:underline" href="/admin?tab=corporate-chat">
+            {t(locale, 'brainstorm.bannerAdminChat')}
+          </a>
+          {t(locale, 'brainstorm.bannerAfterLink')}{' '}
+          <code className="text-xs bg-black/30 px-1 rounded">{t(locale, 'brainstorm.banner.docRef')}</code>.
         </div>
 
         {/* Stats */}
         {stats && (
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
-              { label: 'Total', value: stats.total_sessions, color: 'text-purple-400', icon: BrainCircuit },
-              { label: 'Active', value: stats.active_sessions, color: 'text-cyan-400', icon: Play },
-              { label: 'Completed', value: stats.completed_sessions, color: 'text-green-400', icon: CheckCircle2 },
-              { label: 'Messages', value: stats.total_messages, color: 'text-blue-400', icon: MessageCircle },
-              { label: 'Ideas', value: stats.total_ideas, color: 'text-yellow-400', icon: Lightbulb },
+              { key: 'total', label: t(locale, 'brainstorm.stat.total'), value: stats.total_sessions, color: 'text-purple-400', icon: BrainCircuit },
+              { key: 'active', label: t(locale, 'brainstorm.stat.active'), value: stats.active_sessions, color: 'text-cyan-400', icon: Play },
+              { key: 'completed', label: t(locale, 'brainstorm.stat.completed'), value: stats.completed_sessions, color: 'text-green-400', icon: CheckCircle2 },
+              { key: 'messages', label: t(locale, 'brainstorm.stat.messages'), value: stats.total_messages, color: 'text-blue-400', icon: MessageCircle },
+              { key: 'ideas', label: t(locale, 'brainstorm.stat.ideas'), value: stats.total_ideas, color: 'text-yellow-400', icon: Lightbulb },
             ].map((stat) => (
-              <GlassCard key={stat.label} className="p-3 flex items-center gap-3">
+              <GlassCard key={stat.key} className="p-3 flex items-center gap-3">
                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
                 <div>
                   <div className="text-lg font-semibold text-white">{stat.value}</div>
@@ -515,21 +536,23 @@ export default function BrainstormingTab() {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-cyan-500/50"
           >
-            <option value="">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="active">Active</option>
-            <option value="paused">Paused</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="">{t(locale, 'brainstorm.filter.statusAll')}</option>
+            <option value="pending">{t(locale, 'brainstorm.status.pending')}</option>
+            <option value="active">{t(locale, 'brainstorm.status.active')}</option>
+            <option value="paused">{t(locale, 'brainstorm.status.paused')}</option>
+            <option value="completed">{t(locale, 'brainstorm.status.completed')}</option>
+            <option value="cancelled">{t(locale, 'brainstorm.status.cancelled')}</option>
           </select>
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
             className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-cyan-500/50"
           >
-            <option value="">All Types</option>
-            {SESSION_TYPE_CONFIG.map((t) => (
-              <option key={t.value} value={t.value}>{t.label}</option>
+            <option value="">{t(locale, 'brainstorm.filter.typeAll')}</option>
+            {SESSION_TYPE_ITEMS.map((item) => (
+              <option key={item.value} value={item.value}>
+                {brainstormSessionTypeLabel(locale, item.value)}
+              </option>
             ))}
           </select>
         </div>
@@ -542,10 +565,10 @@ export default function BrainstormingTab() {
         ) : sessions.length === 0 ? (
           <GlassCard className="p-12 text-center">
             <BrainCircuit className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-            <p className="text-gray-400 mb-4">No discussion sessions yet</p>
+            <p className="text-gray-400 mb-4">{t(locale, 'brainstorm.empty.title')}</p>
             <Button onClick={() => setShowCreate(true)} variant="primary">
               <Plus className="w-4 h-4 mr-1.5" />
-              Create First Session
+              {t(locale, 'brainstorm.btn.createFirst')}
             </Button>
           </GlassCard>
         ) : (
@@ -563,7 +586,7 @@ export default function BrainstormingTab() {
                       await loadSessionDetail(s.session_id);
                       setView('detail');
                     } catch {
-                      toast.error('Failed to load session details');
+                      toast.error(t(locale, 'brainstorm.toast.loadSessionDetailsFailed'));
                     }
                   }}
                 >
@@ -571,7 +594,7 @@ export default function BrainstormingTab() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-lg">
-                          {SESSION_TYPE_CONFIG.find((t) => t.value === s.session_type)?.icon || '💬'}
+                          {SESSION_TYPE_ITEMS.find((item) => item.value === s.session_type)?.icon || '💬'}
                         </span>
                         <h3 className="font-medium text-white truncate">{s.topic}</h3>
                         {getStatusBadge(s.status)}
@@ -579,11 +602,15 @@ export default function BrainstormingTab() {
                       <div className="flex items-center gap-3 text-xs text-gray-500 mt-2">
                         <span>{formatDate(s.created_at)}</span>
                         <span>•</span>
-                        <span>{s.message_count} messages</span>
+                        <span>
+                          {tVars(locale, 'brainstorm.list.meta.messages', { n: s.message_count })}
+                        </span>
                         {s.idea_count > 0 && (
                           <>
                             <span>•</span>
-                            <span>{s.idea_count} ideas</span>
+                            <span>
+                              {tVars(locale, 'brainstorm.list.meta.ideas', { n: s.idea_count })}
+                            </span>
                           </>
                         )}
                       </div>
@@ -608,32 +635,39 @@ export default function BrainstormingTab() {
         )}
 
         {/* Create Session Modal */}
-        <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="New Discussion Session" size="lg">
+        <Modal
+          isOpen={showCreate}
+          onClose={() => setShowCreate(false)}
+          title={t(locale, 'brainstorm.modal.newTitle')}
+          size="lg"
+        >
           <div className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Topic</label>
+              <label className="block text-sm text-gray-400 mb-1">{t(locale, 'brainstorm.modal.topicLabel')}</label>
               <Input
                 value={newTopic}
                 onChange={(e) => setNewTopic(e.target.value)}
-                placeholder="What do you want to discuss?"
+                placeholder={t(locale, 'brainstorm.modal.topicPlaceholder')}
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Session Type</label>
+              <label className="block text-sm text-gray-400 mb-1">{t(locale, 'brainstorm.modal.typeLabel')}</label>
               <div className="grid grid-cols-2 gap-2">
-                {SESSION_TYPE_CONFIG.map((t) => (
+                {SESSION_TYPE_ITEMS.map((item) => (
                   <button
-                    key={t.value}
-                    onClick={() => setNewType(t.value)}
+                    key={item.value}
+                    onClick={() => setNewType(item.value)}
                     className={`p-3 rounded-xl text-left transition-all ${
-                      newType === t.value
+                      newType === item.value
                         ? 'bg-white/10 border border-cyan-500/50'
                         : 'bg-white/5 border border-white/10 hover:bg-white/10'
                     }`}
                   >
-                    <span className="text-lg">{t.icon}</span>
-                    <div className="text-sm text-white mt-1">{t.label}</div>
+                    <span className="text-lg">{item.icon}</span>
+                    <div className="text-sm text-white mt-1">
+                      {brainstormSessionTypeLabel(locale, item.value)}
+                    </div>
                   </button>
                 ))}
               </div>
@@ -641,7 +675,7 @@ export default function BrainstormingTab() {
 
             <div>
               <label className="block text-sm text-gray-400 mb-2">
-                Participants ({selectedAgents.length} selected)
+                {tVars(locale, 'brainstorm.modal.participantsLabel', { n: selectedAgents.length })}
               </label>
               <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto">
                 {availableAgents.map((agent) => (
@@ -673,14 +707,16 @@ export default function BrainstormingTab() {
             </div>
 
             <div className="flex justify-end gap-3 pt-2">
-              <Button variant="ghost" onClick={() => setShowCreate(false)}>Cancel</Button>
+              <Button variant="ghost" onClick={() => setShowCreate(false)}>
+                {t(locale, 'brainstorm.btn.cancel')}
+              </Button>
               <Button
                 variant="primary"
                 onClick={handleCreateSession}
                 loading={actionLoading === 'create'}
                 disabled={!newTopic.trim() || selectedAgents.length === 0}
               >
-                Create Session
+                {t(locale, 'brainstorm.modal.create')}
               </Button>
             </div>
           </div>
@@ -723,7 +759,11 @@ export default function BrainstormingTab() {
               {getStatusBadge(selectedSession.status)}
             </div>
             <p className="text-xs text-gray-500">
-              {selectedSession.session_type} • Round {selectedSession.round_count}/{selectedSession.config.max_rounds}
+              {brainstormSessionTypeLabel(locale, selectedSession.session_type)} ·{' '}
+              {tVars(locale, 'brainstorm.detail.roundFraction', {
+                current: selectedSession.round_count,
+                max: selectedSession.config.max_rounds,
+              })}
             </p>
           </div>
         </div>
@@ -737,7 +777,7 @@ export default function BrainstormingTab() {
               loading={actionLoading === `start-${selectedSession.session_id}`}
             >
               <Play className="w-4 h-4 mr-1" />
-              Start
+              {t(locale, 'brainstorm.btn.start')}
             </Button>
           )}
           {canRunRound && (
@@ -748,7 +788,7 @@ export default function BrainstormingTab() {
               loading={actionLoading === `round-${selectedSession.session_id}`}
             >
               <RotateCcw className="w-4 h-4 mr-1" />
-              Run Round
+              {t(locale, 'brainstorm.btn.runRound')}
             </Button>
           )}
           {canPause && (
@@ -759,7 +799,7 @@ export default function BrainstormingTab() {
               loading={actionLoading === `pause-${selectedSession.session_id}`}
             >
               <Pause className="w-4 h-4 mr-1" />
-              Pause
+              {t(locale, 'brainstorm.btn.pause')}
             </Button>
           )}
           {canResume && (
@@ -770,7 +810,7 @@ export default function BrainstormingTab() {
               loading={actionLoading === `resume-${selectedSession.session_id}`}
             >
               <Play className="w-4 h-4 mr-1" />
-              Resume
+              {t(locale, 'brainstorm.btn.resume')}
             </Button>
           )}
           {canConclude && (
@@ -781,14 +821,14 @@ export default function BrainstormingTab() {
               loading={actionLoading === `conclude-${selectedSession.session_id}`}
             >
               <CheckCircle2 className="w-4 h-4 mr-1" />
-              Conclude
+              {t(locale, 'brainstorm.btn.conclude')}
             </Button>
           )}
           <button
             onClick={() => handleDeleteSession(selectedSession.session_id)}
             disabled={actionLoading === `delete-${selectedSession.session_id}`}
             className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors disabled:opacity-50"
-            title="Delete session"
+            title={t(locale, 'brainstorm.detail.deleteSessionAria')}
           >
             {actionLoading === `delete-${selectedSession.session_id}` ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -821,7 +861,7 @@ export default function BrainstormingTab() {
               {messages.length === 0 ? (
                 <div className="flex items-center justify-center h-full">
                   <p className="text-gray-500 text-sm">
-                    {canStart ? 'Start the session to begin discussion' : 'No messages yet'}
+                    {canStart ? t(locale, 'brainstorm.messages.emptyAwaitStart') : t(locale, 'brainstorm.messages.empty')}
                   </p>
                 </div>
               ) : (
@@ -868,7 +908,7 @@ export default function BrainstormingTab() {
                 <Input
                   value={humanInput}
                   onChange={(e) => setHumanInput(e.target.value)}
-                  placeholder="Type your message..."
+                  placeholder={t(locale, 'brainstorm.input.placeholder')}
                   onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }}
                 />
                 <Button
@@ -890,28 +930,30 @@ export default function BrainstormingTab() {
           <GlassCard className="p-3">
             <h3 className="text-sm font-medium text-white mb-2 flex items-center gap-1.5">
               <Target className="w-4 h-4 text-cyan-400" />
-              Session Info
+              {t(locale, 'brainstorm.section.sessionInfo')}
             </h3>
             <div className="space-y-1.5 text-xs text-gray-400">
               <div className="flex justify-between">
-                <span>Type</span>
-                <span className="text-white">{selectedSession.session_type}</span>
+                <span>{t(locale, 'brainstorm.section.type')}</span>
+                <span className="text-white">{brainstormSessionTypeLabel(locale, selectedSession.session_type)}</span>
               </div>
               <div className="flex justify-between">
-                <span>Round</span>
-                <span className="text-white">{selectedSession.round_count}/{selectedSession.config.max_rounds}</span>
+                <span>{t(locale, 'brainstorm.section.round')}</span>
+                <span className="text-white">
+                  {selectedSession.round_count}/{selectedSession.config.max_rounds}
+                </span>
               </div>
               <div className="flex justify-between">
-                <span>Messages</span>
+                <span>{t(locale, 'brainstorm.section.messagesShort')}</span>
                 <span className="text-white">{messages.length}</span>
               </div>
               <div className="flex justify-between">
-                <span>Created</span>
+                <span>{t(locale, 'brainstorm.section.created')}</span>
                 <span className="text-white">{formatDate(selectedSession.created_at)}</span>
               </div>
               {selectedSession.results?.aggregated_rating && (
                 <div className="flex justify-between">
-                  <span>Rating</span>
+                  <span>{t(locale, 'brainstorm.section.rating')}</span>
                   <span className="text-yellow-400">
                     {(selectedSession.results.aggregated_rating * 100).toFixed(0)}%
                   </span>
@@ -925,7 +967,7 @@ export default function BrainstormingTab() {
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-medium text-white flex items-center gap-1.5">
                 <Lightbulb className="w-4 h-4 text-yellow-400" />
-                Ideas ({ideas.length})
+                {tVars(locale, 'brainstorm.ideas.title', { n: ideas.length })}
               </h3>
               {isOver && (
                 <Button
@@ -935,13 +977,13 @@ export default function BrainstormingTab() {
                   loading={actionLoading === `extract-${selectedSession.session_id}`}
                 >
                   <Sparkles className="w-3 h-3 mr-1" />
-                  Extract
+                  {t(locale, 'brainstorm.btn.extract')}
                 </Button>
               )}
             </div>
             {ideas.length === 0 ? (
               <p className="text-xs text-gray-500">
-                {isOver ? 'Click Extract to generate ideas' : 'Ideas will appear after conclusion'}
+                {isOver ? t(locale, 'brainstorm.ideas.extractHintDone') : t(locale, 'brainstorm.ideas.placeholders')}
               </p>
             ) : (
               <div className="space-y-2 max-h-80 overflow-y-auto">
@@ -951,7 +993,8 @@ export default function BrainstormingTab() {
                       <div className="min-w-0 flex-1">
                         <p className="text-xs text-white font-medium truncate">{idea.title}</p>
                         <p className="text-xs text-gray-500 mt-0.5">
-                          by {AGENT_ICONS[idea.author_agent] || '🤖'} {idea.author_agent}
+                          {t(locale, 'brainstorm.idea.byAuthor')}{' '}
+                          {AGENT_ICONS[idea.author_agent] || '🤖'} {idea.author_agent}
                         </p>
                         {idea.score && (
                           <div className="flex items-center gap-2 mt-1">
@@ -961,7 +1004,7 @@ export default function BrainstormingTab() {
                             </span>
                             {idea.score.effort_estimate && (
                               <span className="text-xs text-gray-500">
-                                Effort: {idea.score.effort_estimate}
+                                {t(locale, 'brainstorm.idea.effort')} {idea.score.effort_estimate}
                               </span>
                             )}
                           </div>
@@ -982,13 +1025,13 @@ export default function BrainstormingTab() {
                           variant="ghost"
                           onClick={() => handlePromoteIdea(selectedSession.session_id, idea.idea_id)}
                           loading={actionLoading === `promote-${idea.idea_id}`}
-                          title="Promote to product"
+                          title={t(locale, 'brainstorm.promote.tooltip')}
                         >
                           <Zap className="w-3 h-3 text-yellow-400" />
                         </Button>
                       )}
                       {idea.converted_to_product && (
-                        <Badge variant="success">Product</Badge>
+                        <Badge variant="success">{t(locale, 'brainstorm.idea.productBadge')}</Badge>
                       )}
                     </div>
                   </div>
@@ -1002,7 +1045,7 @@ export default function BrainstormingTab() {
             <GlassCard className="p-3">
               <h3 className="text-sm font-medium text-white mb-2 flex items-center gap-1.5">
                 <MessageCircle className="w-4 h-4 text-green-400" />
-                Summary
+                {t(locale, 'brainstorm.summary.title')}
               </h3>
               <p className="text-xs text-gray-400 whitespace-pre-wrap leading-relaxed">
                 {selectedSession.results.summary}
@@ -1015,7 +1058,7 @@ export default function BrainstormingTab() {
             <GlassCard className="p-3">
               <h3 className="text-sm font-medium text-white mb-2 flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-green-400" />
-                Consensus
+                {t(locale, 'brainstorm.consensus.title')}
               </h3>
               <div className="space-y-1">
                 {selectedSession.results.consensus_topics.slice(0, 5).map((topic: string, i: number) => (
@@ -1032,7 +1075,7 @@ export default function BrainstormingTab() {
             <GlassCard className="p-3">
               <h3 className="text-sm font-medium text-white mb-2 flex items-center gap-1.5">
                 <AlertCircle className="w-4 h-4 text-yellow-400" />
-                Divergence
+                {t(locale, 'brainstorm.divergence.title')}
               </h3>
               <div className="space-y-1">
                 {selectedSession.results.divergence_points.slice(0, 3).map((point: string, i: number) => (

@@ -228,6 +228,40 @@ export interface BenchmarkScorecardPayload {
   };
 }
 
+export type CircuitBreakerState = 'closed' | 'open' | 'half_open';
+
+export interface CircuitBreakerRow {
+  provider: string;
+  state: CircuitBreakerState | string;
+  failure_count_window: number;
+  failure_threshold: number;
+  failure_window_sec: number;
+  open_duration_sec: number;
+  seconds_until_half_open?: number | null;
+  opened_at?: number | null;
+  half_open_since?: number | null;
+  last_failure_at?: number | null;
+  last_success_at?: number | null;
+  last_state_change_at?: number | null;
+  last_error?: string;
+  last_recovery_duration_sec?: number | null;
+  total_failures: number;
+  total_opens: number;
+  total_recoveries: number;
+  manual_override?: string | null;
+  recent_events?: Array<{ ts: number; event: string; detail?: string }>;
+}
+
+export interface CircuitBreakerSnapshot {
+  providers: Record<string, CircuitBreakerRow>;
+  config?: {
+    failure_threshold: number;
+    failure_window_sec: number;
+    open_duration_sec: number;
+  };
+  updated_at?: number;
+}
+
 export interface ProviderStatus {
   name: string;
   status: string;
@@ -249,6 +283,7 @@ export interface ProviderStatus {
   };
   priority?: number;
   is_default?: boolean;
+  circuit?: CircuitBreakerRow;
 }
 
 export interface RoutingRule {
@@ -921,7 +956,30 @@ class ApiClient {
       type: config.type,
       base_url: config.base_url,
       priority: config.priority,
+      circuit: config.circuit,
     }));
+  }
+
+  async getProviderCircuits(): Promise<CircuitBreakerSnapshot> {
+    return this.request<CircuitBreakerSnapshot>('/admin/providers/circuits');
+  }
+
+  async circuitForceOpen(providerName: string): Promise<{ status: string; circuit: CircuitBreakerRow }> {
+    return this.request(`/admin/providers/${encodeURIComponent(providerName)}/circuit/open`, {
+      method: 'POST',
+    });
+  }
+
+  async circuitForceClose(providerName: string): Promise<{ status: string; circuit: CircuitBreakerRow }> {
+    return this.request(`/admin/providers/${encodeURIComponent(providerName)}/circuit/close`, {
+      method: 'POST',
+    });
+  }
+
+  async circuitReset(providerName: string): Promise<{ status: string; circuit: CircuitBreakerRow }> {
+    return this.request(`/admin/providers/${encodeURIComponent(providerName)}/circuit/reset`, {
+      method: 'POST',
+    });
   }
 
   async updateProviderModels(providerName: string, models: { heavy?: string; light?: string }): Promise<any> {

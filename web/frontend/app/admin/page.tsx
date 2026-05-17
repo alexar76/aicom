@@ -157,54 +157,54 @@ function AdminPageInner() {
     if (!authChecked) return null;
     switch (activeTab) {
       case 'dashboard':
-        return <DashboardTab />;
+        return <DashboardTab locale={locale} />;
       case 'setup':
-        return <SetupWizardTab adminRole={adminRole} />;
+        return <SetupWizardTab adminRole={adminRole} locale={locale} />;
       case 'monitor':
-        return <MonitorTab />;
+        return <MonitorTab locale={locale} />;
       case 'products':
-        return <PipelineTab />;
+        return <PipelineTab locale={locale} />;
       case 'new-product':
         return <NewProductTab locale={locale} />;
       case 'workshop':
-        return <WorkshopTab />;
+        return <WorkshopTab locale={locale} />;
       case 'pipeline':
-        return <PipelineTab />;
+        return <PipelineTab locale={locale} />;
       case 'agents':
-        return <AgentsTab />;
+        return <AgentsTab locale={locale} />;
       case 'providers':
-        return <ProvidersTab />;
+        return <ProvidersTab locale={locale} />;
       case 'llm-logs':
-        return <LLMLogsTab />;
+        return <LLMLogsTab locale={locale} />;
       case 'agent-logs':
-        return <AgentLogsTab />;
+        return <AgentLogsTab locale={locale} />;
       case 'security':
-        return <SecurityTab />;
+        return <SecurityTab locale={locale} />;
       case 'files':
-        return <FilesTabLazy />;
+        return <FilesTabLazy locale={locale} />;
       case 'sandbox':
-        return <SandboxTab />;
+        return <SandboxTab locale={locale} />;
       case 'director':
         return <DirectorTab locale={locale} />;
       case 'discovery':
         return <DiscoveryTab locale={locale} />;
       case 'settings':
-        return <SettingsTab />;
+        return <SettingsTab locale={locale} />;
       case 'users':
         if (adminRole !== 'super_admin') {
-          return <DashboardTab />;
+          return <DashboardTab locale={locale} />;
         }
         return <UsersTab locale={locale} />;
       case 'chat':
-        return <CorporateChatTab />;
+        return <CorporateChatTab locale={locale} />;
       case 'brainstorming':
-        return <BrainstormingTab />;
+        return <BrainstormingTab locale={locale} />;
       case 'support-queue':
         return <SupportQueueTab locale={locale} />;
       case 'outreach':
         return <OutreachTab locale={locale} />;
       default:
-        return <DashboardTab />;
+        return <DashboardTab locale={locale} />;
     }
   };
 
@@ -283,7 +283,7 @@ function AdminPageInner() {
             </GlassCard>
           )}
 
-        {authChecked ? <AdminShellOnboarding activeTab={activeTab} /> : null}
+        {authChecked ? <AdminShellOnboarding activeTab={activeTab} locale={locale} /> : null}
 
         {renderTab()}
       </main>

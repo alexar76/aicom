@@ -20,6 +20,7 @@ from typing import Any, Optional
 
 from core.paths import config_path
 from core.config_merge import load_merged_config
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -166,8 +167,8 @@ def folder_display_title(folder: Path, folder_name: str, preset_by_id: dict[str,
             t = str(j.get("title") or "").strip()
             if t:
                 return t
-        except (OSError, json.JSONDecodeError, TypeError):
-            pass
+        except (OSError, json.JSONDecodeError, TypeError) as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/reference_templates.py)", exc_info=_suppressed_exc)
     pr = preset_by_id.get(folder_name) or {}
     return str(pr.get("title") or folder_name)
 
@@ -338,8 +339,8 @@ def list_reference_templates_catalog(data_root: str | Path | None = None) -> lis
                     "files": fnames,
                 }
             )
-    except OSError:
-        pass
+    except OSError as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/services/reference_templates.py)", exc_info=_suppressed_exc)
 
     return sorted(out, key=lambda x: (str(x.get("title") or ""), str(x.get("path") or "")))
 
@@ -364,8 +365,8 @@ def discover_template_paths(templates_root: Path, manifest: dict[str, Any]) -> l
             if (sub / "index.html").is_file():
                 seen.add(sub.name)
                 valid_paths.append(sub.name)
-    except OSError:
-        pass
+    except OSError as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/services/reference_templates.py)", exc_info=_suppressed_exc)
     return valid_paths
 
 
@@ -443,8 +444,8 @@ def pick_template_folder_name(
                 json.dumps({"round_robin_index": idx + 1}, indent=0),
                 encoding="utf-8",
             )
-        except OSError:
-            pass
+        except OSError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/reference_templates.py)", exc_info=_suppressed_exc)
         return chosen
 
     # random (default): stable per product_id
@@ -510,24 +511,24 @@ def build_reference_template_prompt_block(
                 "=== FILE: index.html ===\n"
                 + _truncate(index_p.read_text(encoding="utf-8", errors="replace"), chunk_budget[0])
             )
-        except OSError:
-            pass
+        except OSError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/reference_templates.py)", exc_info=_suppressed_exc)
     if css_p.is_file():
         try:
             parts.append(
                 "=== FILE: style.css ===\n"
                 + _truncate(css_p.read_text(encoding="utf-8", errors="replace"), chunk_budget[1])
             )
-        except OSError:
-            pass
+        except OSError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/reference_templates.py)", exc_info=_suppressed_exc)
     if js_p.is_file():
         try:
             parts.append(
                 "=== FILE: app.js ===\n"
                 + _truncate(js_p.read_text(encoding="utf-8", errors="replace"), chunk_budget[2])
             )
-        except OSError:
-            pass
+        except OSError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/reference_templates.py)", exc_info=_suppressed_exc)
 
     if not parts:
         return ""

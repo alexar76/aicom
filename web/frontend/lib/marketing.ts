@@ -2,12 +2,29 @@
  * Public-site marketing copy — global launch is English-first.
  */
 
-export type MarketingLocale = 'en';
+import { MARKETING_ES } from './marketing-es';
+import { MARKETING_RU } from './marketing-ru';
+
+export type MarketingLocale = 'en' | 'ru' | 'es';
 
 export type MarketingStrings = {
   brandName: string;
   /** Navbar anchor to #hero-generate */
   navGenerateLanding: string;
+  navExplore: string;
+  navProducts: string;
+  navDocs: string;
+  navAdmin: string;
+  navMore: string;
+  navHome: string;
+  navFeatures: string;
+  navAbout: string;
+  navUpdates: string;
+  navBlog: string;
+  navLaunchKit: string;
+  navBadge: string;
+  navIdea: string;
+  navBenchmark: string;
   heroBadge: string;
   heroTitleLead: string;
   heroTitleRest: string;
@@ -66,6 +83,13 @@ export type MarketingStrings = {
   ctaBannerPrimary: string;
   ctaBannerSecondary: string;
   footerTagline: string;
+  footerDocumentation: string;
+  footerBlog: string;
+  footerLaunchKit: string;
+  footerBadge: string;
+  footerApiReference: string;
+  footerGithub: string;
+  footerAdminPanel: string;
   /** Mid-page pipeline strip (home) */
   pipelineSectionTitle: string;
   pipelineSectionSubtitle: string;
@@ -78,6 +102,20 @@ export type MarketingStrings = {
 const EN: MarketingStrings = {
   brandName: 'AI-Factory',
   navGenerateLanding: 'Generate landing',
+  navExplore: 'Explore',
+  navProducts: 'Products',
+  navDocs: 'Docs',
+  navAdmin: 'Admin',
+  navMore: 'More',
+  navHome: 'Home',
+  navFeatures: 'Features',
+  navAbout: 'About',
+  navUpdates: 'Updates',
+  navBlog: 'Blog',
+  navLaunchKit: 'Launch Kit',
+  navBadge: 'Badge',
+  navIdea: 'Idea',
+  navBenchmark: 'Benchmark',
   heroBadge: 'One factory — crisp landings in a phrase, full applications from Admin',
   heroTitleLead: 'Launch-ready pages',
   heroTitleRest: 'and real apps — from the same brief',
@@ -176,6 +214,13 @@ const EN: MarketingStrings = {
   ctaBannerPrimary: 'Open admin',
   ctaBannerSecondary: 'Documentation',
   footerTagline: 'AI-Factory v2.1',
+  footerDocumentation: 'Documentation',
+  footerBlog: 'Blog',
+  footerLaunchKit: 'Launch Kit',
+  footerBadge: 'Embeddable Badge',
+  footerApiReference: 'API Reference',
+  footerGithub: 'GitHub',
+  footerAdminPanel: 'Admin Panel',
   pipelineSectionTitle: 'One pipeline, two front doors',
   pipelineSectionSubtitle:
     'Autonomous mode feeds market research and generated ideas; on-demand uses your phrase as the brief. Same agent path — spec, build, QA, and beyond.',
@@ -185,7 +230,32 @@ const EN: MarketingStrings = {
     'Before code ships, the Architect emits a structured `ui_experience` brief: tokens, typography, motion, and a signature visual moment. The Developer treats it as binding for browser deliverables — so landings read as intentional product design, not generic AI gray boxes.',
 };
 
+export function detectMarketingLocale(): MarketingLocale {
+  if (typeof window === 'undefined') {
+    const env = (process.env.NEXT_PUBLIC_MARKETING_LOCALE || '').toLowerCase();
+    if (env.startsWith('ru')) return 'ru';
+    if (env.startsWith('es')) return 'es';
+    return 'en';
+  }
+  const stored = window.localStorage.getItem('marketing_locale');
+  if (stored === 'ru' || stored === 'es' || stored === 'en') return stored;
+  const nav = navigator.language.toLowerCase();
+  if (nav.startsWith('ru')) return 'ru';
+  if (nav.startsWith('es')) return 'es';
+  const env = (process.env.NEXT_PUBLIC_MARKETING_LOCALE || '').toLowerCase();
+  if (env.startsWith('ru')) return 'ru';
+  if (env.startsWith('es')) return 'es';
+  return 'en';
+}
+
+export function saveMarketingLocale(locale: MarketingLocale): void {
+  if (typeof window === 'undefined') return;
+  window.localStorage.setItem('marketing_locale', locale);
+}
+
 export function getMarketingStrings(locale?: string | null): MarketingStrings {
-  void locale;
+  const raw = (locale || '').toLowerCase();
+  if (raw.startsWith('ru')) return MARKETING_RU;
+  if (raw.startsWith('es')) return MARKETING_ES;
   return EN;
 }

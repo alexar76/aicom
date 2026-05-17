@@ -13,6 +13,7 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -61,8 +62,8 @@ def _extract_json_object(text: str) -> dict[str, Any] | None:
         obj = json.loads(t)
         if isinstance(obj, dict):
             return obj
-    except Exception:
-        pass
+    except Exception as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/services/owner_chat_routing.py)", exc_info=_suppressed_exc)
     i = t.find("{")
     j = t.rfind("}")
     if i >= 0 and j > i:
@@ -70,8 +71,8 @@ def _extract_json_object(text: str) -> dict[str, Any] | None:
             obj = json.loads(t[i : j + 1])
             if isinstance(obj, dict):
                 return obj
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/owner_chat_routing.py)", exc_info=_suppressed_exc)
     return None
 
 

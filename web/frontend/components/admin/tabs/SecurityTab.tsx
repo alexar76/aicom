@@ -92,7 +92,7 @@ function auditEntryTimestampSeconds(log: Record<string, unknown>): number {
   return n > 1e12 ? n / 1000 : n;
 }
 
-export function SecurityTab() {
+export function SecurityTab({ locale }: { locale: AdminLocale }) {
   const [logs, setLogs] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [catalogLoading, setCatalogLoading] = useState(true);
@@ -205,7 +205,7 @@ export function SecurityTab() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold text-white mb-4">Security</h2>
+      <h2 className="text-xl font-semibold text-white mb-4">{t(locale, 'security.tabTitle')}</h2>
 
       {/* Security Reports from Pipeline */}
       <GlassCard>

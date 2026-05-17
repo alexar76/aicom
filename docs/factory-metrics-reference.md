@@ -29,6 +29,12 @@ This document is the canonical metric inventory for AI-Factory operations.
 - `llm_requests_total{provider,status}`: request volume and error mix.
 - `llm_request_duration_seconds{provider}`: latency distribution.
 - `llm_provider_health{provider}`: provider health gauge (1/0).
+- `llm_circuit_state{provider}`: circuit breaker state (**0** = closed, **1** = half_open, **2** = open).
+- `llm_circuit_failures_total{provider}`: failures recorded by the breaker.
+- `llm_circuit_opens_total{provider}`: times the circuit opened.
+- `llm_circuit_recovery_duration_seconds{provider}`: histogram from OPEN to successful recovery.
+
+Admin UI and SSE/WebSocket metrics include a **`circuit_breakers`** object (per-provider state, failure window, recovery time). See **[admin-guide.md](./admin-guide.md#llm-providers)**.
 
 ## 4) Quality & Release Metrics
 

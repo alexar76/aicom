@@ -46,12 +46,16 @@ import { Input } from '@/components/ui/Input';
 import api, { Product } from '@/lib/api';
 import { labelTechStackKey } from '@/lib/product-spec';
 import { formatRelativeTime, getStateLabel } from '@/lib/utils';
-import { getMarketingStrings, type MarketingStrings } from '@/lib/marketing';
+import {
+  detectMarketingLocale,
+  getMarketingStrings,
+  saveMarketingLocale,
+  type MarketingLocale,
+  type MarketingStrings,
+} from '@/lib/marketing';
 import { getGuestPhraseBlockReason } from '@/lib/promptSafety';
 import { ArchitectureOrbit } from '@/components/landing/ArchitectureOrbit';
 import { formatBenchmarkRate, formatBenchmarkTrend } from '@/lib/formatBenchmark';
-
-const siteCopy = getMarketingStrings(process.env.NEXT_PUBLIC_MARKETING_LOCALE);
 
 const FEATURE_ICONS = {
   sparkles: Sparkles,
@@ -64,29 +68,37 @@ const FEATURE_ICONS = {
 
 // ── Navigation Bar ────────────────────────────────────────────────────────
 
-function Navbar({ copy }: { copy: MarketingStrings }) {
+function Navbar({
+  copy,
+  locale,
+  onLocaleChange,
+}: {
+  copy: MarketingStrings;
+  locale: MarketingLocale;
+  onLocaleChange: (l: MarketingLocale) => void;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreWrapRef = useRef<HTMLDivElement>(null);
 
   const navLinksPrimary = [
     { label: copy.navGenerateLanding, href: '#hero-generate', icon: Sparkles },
-    { label: 'Explore', href: '/explore', icon: Layers },
-    { label: 'Products', href: '#products', icon: Bot },
-    { label: 'Docs', href: '/docs', icon: BookOpen },
-    { label: 'Admin', href: '/admin', icon: Settings },
+    { label: copy.navExplore, href: '/explore', icon: Layers },
+    { label: copy.navProducts, href: '#products', icon: Bot },
+    { label: copy.navDocs, href: '/docs', icon: BookOpen },
+    { label: copy.navAdmin, href: '/admin', icon: Settings },
   ];
 
   const navLinksMore = [
-    { label: 'Home', href: '#', icon: Home },
-    { label: 'Features', href: '#features', icon: Star },
-    { label: 'About', href: '/about', icon: Info },
-    { label: 'Updates', href: '/updates', icon: ScrollText },
-    { label: 'Blog', href: '/blog', icon: BookOpen },
-    { label: 'Launch Kit', href: '/launch-kit', icon: Rocket },
-    { label: 'Badge', href: '/badge', icon: Tag },
-    { label: 'Idea', href: '/lead', icon: Package },
-    { label: 'Benchmark', href: '/benchmark', icon: BarChart3 },
+    { label: copy.navHome, href: '#', icon: Home },
+    { label: copy.navFeatures, href: '#features', icon: Star },
+    { label: copy.navAbout, href: '/about', icon: Info },
+    { label: copy.navUpdates, href: '/updates', icon: ScrollText },
+    { label: copy.navBlog, href: '/blog', icon: BookOpen },
+    { label: copy.navLaunchKit, href: '/launch-kit', icon: Rocket },
+    { label: copy.navBadge, href: '/badge', icon: Tag },
+    { label: copy.navIdea, href: '/lead', icon: Package },
+    { label: copy.navBenchmark, href: '/benchmark', icon: BarChart3 },
   ];
 
   const navLinksMobile = [...navLinksPrimary, ...navLinksMore];
@@ -138,7 +150,7 @@ function Navbar({ copy }: { copy: MarketingStrings }) {
               aria-haspopup="menu"
               className="flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors py-1 whitespace-nowrap"
             >
-              <span>More</span>
+              <span>{copy.navMore}</span>
               <ChevronDown className={`w-4 h-4 transition-transform ${moreOpen ? 'rotate-180' : ''}`} />
             </button>
             {moreOpen && (
@@ -161,6 +173,21 @@ function Navbar({ copy }: { copy: MarketingStrings }) {
               </div>
             )}
           </div>
+        </div>
+
+        <div className="flex items-center gap-1 shrink-0" aria-label="Language">
+          {(['en', 'ru', 'es'] as const).map((code) => (
+            <button
+              key={code}
+              type="button"
+              onClick={() => onLocaleChange(code)}
+              className={`rounded-md px-2 py-1 text-xs font-medium uppercase transition-colors ${
+                locale === code ? 'bg-indigo-600 text-white' : 'text-gray-400 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              {code}
+            </button>
+          ))}
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -1225,13 +1252,13 @@ function Metric({
 
 function Footer({ copy }: { copy: MarketingStrings }) {
   const footerLinks = [
-    { label: 'Documentation', href: '/docs', icon: FileText },
-    { label: 'Blog', href: '/blog', icon: BookOpen },
-    { label: 'Launch Kit', href: '/launch-kit', icon: Rocket },
-    { label: 'Embeddable Badge', href: '/badge', icon: Tag },
-    { label: 'API Reference', href: '/api/docs', icon: Code2 },
-    { label: 'GitHub', href: 'https://github.com/alexar76/aicom', icon: Github },
-    { label: 'Admin Panel', href: '/admin', icon: Settings },
+    { label: copy.footerDocumentation, href: '/docs', icon: FileText },
+    { label: copy.footerBlog, href: '/blog', icon: BookOpen },
+    { label: copy.footerLaunchKit, href: '/launch-kit', icon: Rocket },
+    { label: copy.footerBadge, href: '/badge', icon: Tag },
+    { label: copy.footerApiReference, href: '/api/docs', icon: Code2 },
+    { label: copy.footerGithub, href: 'https://github.com/alexar76/aicom', icon: Github },
+    { label: copy.footerAdminPanel, href: '/admin', icon: Settings },
   ];
 
   return (
@@ -1269,9 +1296,17 @@ function Footer({ copy }: { copy: MarketingStrings }) {
 // ── Main Page ────────────────────────────────────────────────────────────
 
 export default function HomePage() {
+  const [mktLocale, setMktLocale] = useState<MarketingLocale>(() => detectMarketingLocale());
+  const siteCopy = getMarketingStrings(mktLocale);
+
+  const handleLocaleChange = (code: MarketingLocale) => {
+    setMktLocale(code);
+    saveMarketingLocale(code);
+  };
+
   return (
     <main className="min-w-0 overflow-x-clip">
-      <Navbar copy={siteCopy} />
+      <Navbar copy={siteCopy} locale={mktLocale} onLocaleChange={handleLocaleChange} />
       <HeroSection copy={siteCopy} />
       <FeaturesSection copy={siteCopy} />
       <PipelineSection copy={siteCopy} />

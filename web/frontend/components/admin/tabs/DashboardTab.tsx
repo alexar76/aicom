@@ -23,12 +23,13 @@ import {
   writeAdminMetricsCache,
 } from '@/lib/adminMetricsCache';
 import { prefetchAdminDashboard } from '@/lib/prefetchAdminDashboard';
+import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 
 function bootDashboardData(): DashboardData {
   return readAdminMetricsCache() ?? createEmptyDashboardData();
 }
 
-export function DashboardTab() {
+export function DashboardTab({ locale }: { locale: AdminLocale }) {
   const [data, setData] = useState<DashboardData>(bootDashboardData);
   const [refreshing, setRefreshing] = useState(true);
   const hadCacheOnMount = useState(() => readAdminMetricsCache() != null)[0];
@@ -95,36 +96,40 @@ export function DashboardTab() {
     return Math.round(Math.max(0, Math.min(100, score)));
   })();
 
-  const healthBand =
-    factoryHealthScore >= 75 ? 'strong' : factoryHealthScore >= 50 ? 'fair' : 'needs attention';
+  const healthBandKey =
+    factoryHealthScore >= 75
+      ? 'dashboard.health.strong'
+      : factoryHealthScore >= 50
+        ? 'dashboard.health.fair'
+        : 'dashboard.health.attention';
 
   const stats = [
     {
-      label: 'Total Products',
+      label: t(locale, 'dashboard.stat.total'),
       value: total,
       icon: FileText,
       color: 'from-indigo-500 to-purple-500',
     },
     {
-      label: 'Active Pipeline',
+      label: t(locale, 'dashboard.stat.active'),
       value: active,
       icon: Activity,
       color: 'from-emerald-500 to-teal-500',
     },
     {
-      label: 'Shipped builds',
+      label: t(locale, 'dashboard.stat.shipped'),
       value: completed,
       icon: CheckCircle2,
       color: 'from-green-500 to-emerald-500',
     },
     {
-      label: 'On storefront',
+      label: t(locale, 'dashboard.stat.storefront'),
       value: sfPending ? null : storefront,
       icon: Store,
       color: 'from-cyan-500 to-sky-500',
     },
     {
-      label: 'Needs rework',
+      label: t(locale, 'dashboard.stat.rework'),
       value: failed,
       icon: AlertTriangle,
       color: 'from-amber-500 to-orange-500',
@@ -138,7 +143,9 @@ export function DashboardTab() {
       {refreshing ? (
         <p className="flex items-center gap-2 text-xs text-gray-500" aria-live="polite">
           <Loader2 className="h-3.5 w-3.5 animate-spin shrink-0" aria-hidden />
-          {hadCacheOnMount ? 'Refreshing metrics…' : 'Loading live metrics…'}
+          {hadCacheOnMount
+            ? t(locale, 'dashboard.refreshingCached')
+            : t(locale, 'dashboard.loadingLive')}
         </p>
       ) : null}
 
@@ -155,18 +162,23 @@ export function DashboardTab() {
             </div>
             <div>
               <h2 className="text-lg font-semibold text-red-50">
-                {failed} product{failed === 1 ? '' : 's'} need rework (FAILED)
+                {failed === 1
+                  ? tVars(locale, 'dashboard.failed.title', { n: failed })
+                  : tVars(locale, 'dashboard.failed.titlePlural', { n: failed })}
               </h2>
-              <p className="text-sm text-red-100/90 mt-1 max-w-3xl">
-                Pipeline paused — not deleted. Open Pipeline and use Send to rework. A Telegram
-                alert is sent when a product fails (if enabled in Settings).
-              </p>
+              <p className="text-sm text-red-100/90 mt-1 max-w-3xl">{t(locale, 'dashboard.failed.body')}</p>
             </div>
           </motion.div>
           <ul className="space-y-3">
             {(failedAlerts.length > 0
               ? failedAlerts
-              : [{ product_id: '—', title: 'Failed products', cause_plain: 'Open Pipeline tab for details.' }]
+              : [
+                  {
+                    product_id: '—',
+                    title: t(locale, 'dashboard.failed.placeholderTitle'),
+                    cause_plain: t(locale, 'dashboard.failed.placeholderCause'),
+                  },
+                ]
             ).map((item) => (
               <li
                 key={item.product_id}
@@ -180,10 +192,14 @@ export function DashboardTab() {
                   <p className="text-xs uppercase tracking-wide text-red-300/90 mt-2">{item.headline}</p>
                 ) : null}
                 <p className="text-sm text-red-100/95 mt-1 leading-relaxed">
-                  {item.cause_plain || item.failure_reason || 'No failure reason stored.'}
+                  {item.cause_plain ||
+                    item.failure_reason ||
+                    t(locale, 'dashboard.failed.noReason')}
                 </p>
                 {item.failed_agent ? (
-                  <p className="text-[11px] text-red-200/60 mt-1">Agent: {item.failed_agent}</p>
+                  <p className="text-[11px] text-red-200/60 mt-1">
+                    {tVars(locale, 'dashboard.failed.agent', { name: item.failed_agent })}
+                  </p>
                 ) : null}
               </li>
             ))}
@@ -234,22 +250,19 @@ export function DashboardTab() {
               >
                 <Gauge className="h-5 w-5" strokeWidth={2} />
               </span>
-              Factory health score
+              {t(locale, 'dashboard.health.title')}
             </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-400">
-              Single 0–100 signal from existing dashboard metrics (failure load, timeouts, queue pressure,
-              storefront yield).
-            </p>
+            <p className="mt-1 max-w-2xl text-sm text-gray-400">{t(locale, 'dashboard.health.subtitle')}</p>
           </div>
           <div className="text-right">
             <p className="text-4xl font-bold text-violet-200 tabular-nums">{factoryHealthScore}</p>
-            <p className="text-xs capitalize text-gray-500">{healthBand}</p>
+            <p className="text-xs capitalize text-gray-500">{t(locale, healthBandKey)}</p>
           </div>
         </div>
         <div className="mt-4">
           <ProgressBar
             value={factoryHealthScore}
-            label="Composite health"
+            label={t(locale, 'dashboard.health.label')}
             variant={factoryHealthScore >= 70 ? 'success' : 'warning'}
           />
         </div>
@@ -265,39 +278,43 @@ export function DashboardTab() {
               >
                 <Store className="h-5 w-5" strokeWidth={2} />
               </span>
-              North star — public storefront
+              {t(locale, 'dashboard.storefront.title')}
             </h3>
-            <p className="text-sm text-gray-400 mt-1 max-w-3xl">
-              The factory’s operational goal is listed, buyer-visible products, not pipeline «completed»
-              alone.
-            </p>
+            <p className="text-sm text-gray-400 mt-1 max-w-3xl">{t(locale, 'dashboard.storefront.subtitle')}</p>
           </div>
           {sfPending ? (
             <div className="text-right shrink-0 flex items-center justify-end gap-2 text-gray-400 text-sm">
               <Loader2 className="w-5 h-5 animate-spin shrink-0" aria-hidden />
-              <span>Storefront count…</span>
+              <span>{t(locale, 'dashboard.storefront.loading')}</span>
             </div>
           ) : storefrontYieldPct !== null ? (
             <div className="text-right shrink-0">
               <p className="text-3xl font-bold text-cyan-300 tabular-nums">{storefrontYieldPct}%</p>
-              <p className="text-xs text-gray-500">listed ÷ shipped builds</p>
+              <p className="text-xs text-gray-500">{t(locale, 'dashboard.storefront.yield')}</p>
             </div>
           ) : null}
         </motion.div>
         {sfPending ? (
           <p className="text-sm text-gray-500 flex items-center gap-2">
             <Loader2 className="w-4 h-4 animate-spin shrink-0" aria-hidden />
-            Loading public storefront totals…
+            {t(locale, 'dashboard.storefront.loadingTotals')}
           </p>
         ) : storefrontYieldPct !== null ? (
           <>
-            <ProgressBar value={storefrontYieldPct} label="Shipped builds → storefront conversion" variant="success" />
+            <ProgressBar
+              value={storefrontYieldPct}
+              label={t(locale, 'dashboard.storefront.conversion')}
+              variant="success"
+            />
             <p className="text-xs text-gray-500 mt-2 tabular-nums">
-              {storefront} listed · {completed} completed pipeline rows
+              {tVars(locale, 'dashboard.storefront.listed', {
+                listed: storefront,
+                completed,
+              })}
             </p>
           </>
         ) : (
-          <p className="text-sm text-gray-500">No completed products yet.</p>
+          <p className="text-sm text-gray-500">{t(locale, 'dashboard.storefront.noCompleted')}</p>
         )}
       </GlassCard>
 
@@ -368,7 +385,7 @@ export function DashboardTab() {
         <GlassCard>
           <div className="flex items-center gap-3 mb-4">
             <Shield className="w-5 h-5 text-indigo-400" />
-            <h3 className="text-lg font-semibold text-white">Security</h3>
+            <h3 className="text-lg font-semibold text-white">{t(locale, 'dashboard.security.title')}</h3>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between text-sm">

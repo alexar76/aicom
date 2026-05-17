@@ -18,6 +18,7 @@ from typing import Any
 
 from core.paths import pipeline_db_path, pipeline_json_path
 from core.pipeline_database import create_sync_pipeline_manager, pipeline_uses_sql_store
+from core.pipeline_worker_notify import notify_pipeline_worker_wake
 
 logger = logging.getLogger(__name__)
 
@@ -206,9 +207,14 @@ def write_pipeline_state(
         if ok and do_mirror:
             if not _write_json_file(state, json_path):
                 logger.warning("SQL save OK but pipeline.json mirror failed")
+        if ok:
+            notify_pipeline_worker_wake()
         return ok
 
-    return _write_json_file(state, json_path)
+    ok = _write_json_file(state, json_path)
+    if ok:
+        notify_pipeline_worker_wake()
+    return ok
 
 
 def append_product_to_pipeline_state(
@@ -241,6 +247,7 @@ def append_product_to_pipeline_state(
             state.setdefault("task_queue", [])
             state["products"][pid] = product
             _write_json_file(state, path)
+        notify_pipeline_worker_wake()
         return True
 
     path = _json_path(pipeline_path)
@@ -248,7 +255,10 @@ def append_product_to_pipeline_state(
     state.setdefault("task_queue", [])
     state.setdefault("products", {})
     state["products"][pid] = product
-    return _write_json_file(state, path)
+    ok = _write_json_file(state, path)
+    if ok:
+        notify_pipeline_worker_wake()
+    return ok
 
 
 def sync_sqlite_from_pipeline_json(

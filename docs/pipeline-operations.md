@@ -2,6 +2,16 @@
 
 Operational behavior of the **pipeline worker** and related services after deploy. All tunables below are also listed (commented) in **`.env.example`**.
 
+## Pipeline worker wake (event-driven)
+
+The worker does **not** rely on a fixed sleep-only loop. It combines:
+
+1. **`watchfiles`** — watches the directory containing `pipeline.json` and `pipeline.db`; file changes set an internal wake event (`core/pipeline_state_watch.py`).
+2. **`POST /wake`** on the worker health server (default port **8091**) — triggered after API/CLI writes via `core/pipeline_state_writer.notify_pipeline_worker_wake()` when `AIFACTORY_PIPELINE_WORKER_WAKE=1`.
+3. **Adaptive poll** — short interval when tasks are pending/running (`AIFACTORY_PIPELINE_ACTIVE_POLL_SEC`, default `0.25`), longer when idle (`AIFACTORY_PIPELINE_IDLE_POLL_SEC`, default `2.0`) as a safety net.
+
+Health + wake: `GET http://127.0.0.1:8091/health` inside the app container. See **[configuration.md](./configuration.md)** for env vars.
+
 ## Discovery (pre-pipeline opportunity phase)
 
 Before `IDEA_RECEIVED`, autonomous mode now runs a dedicated Discovery stage in `director/discovery_pipeline.py`:

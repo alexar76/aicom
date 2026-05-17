@@ -14,6 +14,7 @@ import re
 from typing import Dict, List, Optional, Any
 from pathlib import Path
 from dataclasses import dataclass, field, asdict
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger("ai_factory.security.audit")
 GENESIS_HASH = hashlib.sha256(b"AI_FACTORY_AUDIT_GENESIS").hexdigest()
@@ -142,8 +143,8 @@ class AuditLogger:
                     self._current_file.touch(exist_ok=True)
                 if self._current_file.stat().st_size < self.max_file_size:
                     return self._current_file
-            except FileNotFoundError:
-                pass
+            except FileNotFoundError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (security/audit_logger.py)", exc_info=_suppressed_exc)
         self._rotate()
         return self._current_file
 

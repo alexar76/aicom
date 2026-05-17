@@ -109,8 +109,12 @@ See **[security.md](./security.md)** for narrative and production checklist. Qui
 | `GRAFANA_ADMIN_PASSWORD` | Grafana UI password — `fill_production_env.py` generates when missing. |
 | `AIFACTORY_SANDBOX_REQUIRE_CONTAINER` | `1` = pipeline sandbox fails if Docker cannot start; also defaults execution mode to **container**. |
 | `AIFACTORY_SANDBOX_EXECUTION_MODE` | `container` or `process` (overrides default). |
-| `AIFACTORY_PIPELINE_IDLE_POLL_SEC` | Worker sleep when queue idle (default `2.0`; wake is immediate via `signal_new_work()`). |
+| `AIFACTORY_PIPELINE_IDLE_POLL_SEC` | Worker sleep when queue idle (default `2.0`; overridden immediately on wake). |
 | `AIFACTORY_PIPELINE_ACTIVE_POLL_SEC` | Worker poll when tasks pending/running (default `0.25`). |
+| `AIFACTORY_PIPELINE_WORKER_WAKE` | `1` (default): after API/CLI pipeline writes, POST `http://127.0.0.1:8091/wake` so the worker skips idle poll. |
+| `AIFACTORY_WORKER_HEALTH_PORT` | Worker health + wake HTTP port (default `8091`; `0` disables). |
+| *(dependency)* `watchfiles` | Installed with the app image (`requirements.txt`). Watches `pipeline.json` and `pipeline.db` parent dirs; wakes worker without waiting for idle poll. |
+| `AIFACTORY_LLM_CIRCUIT_STATE_FILE` | Optional override for shared circuit-breaker JSON (default `data/state/llm_circuit_breakers.json`). |
 
 **Host LLM on bare metal:** use compose overlay `docker-compose.host-gateway.yml` (not enabled in base `docker-compose.yml`).
 

@@ -91,6 +91,36 @@ llm_provider_health = Gauge(
     registry=REGISTRY,
 )
 
+# Circuit breaker: 0=closed, 1=half_open, 2=open
+llm_circuit_state = Gauge(
+    "llm_circuit_state",
+    "LLM provider circuit breaker state (0=closed, 1=half_open, 2=open)",
+    ["provider"],
+    registry=REGISTRY,
+)
+
+llm_circuit_failures_total = Counter(
+    "llm_circuit_failures_total",
+    "Total failures recorded by the LLM circuit breaker",
+    ["provider"],
+    registry=REGISTRY,
+)
+
+llm_circuit_opens_total = Counter(
+    "llm_circuit_opens_total",
+    "Total times an LLM provider circuit opened",
+    ["provider"],
+    registry=REGISTRY,
+)
+
+llm_circuit_recovery_duration_seconds = Histogram(
+    "llm_circuit_recovery_duration_seconds",
+    "Time from circuit OPEN to successful recovery (seconds)",
+    ["provider"],
+    buckets=(1, 5, 10, 30, 60, 120, 300, 600, 1800),
+    registry=REGISTRY,
+)
+
 
 # ── Active Products Gauge (helper, no label) ────────────────────────────────
 
@@ -188,6 +218,35 @@ class PrometheusMetrics:
     def set_provider_health(provider: str, healthy: bool):
         """Set the health gauge for a provider (1=healthy, 0=unhealthy)."""
         llm_provider_health.labels(provider=provider).set(1 if healthy else 0)
+
+    @staticmethod
+    def _circuit_state_value(state: str) -> float:
+        s = (state or "closed").strip().lower()
+        if s == "open":
+            return 2.0
+        if s == "half_open":
+            return 1.0
+        return 0.0
+
+    @staticmethod
+    def set_circuit_state(provider: str, state: str):
+        """Set circuit breaker gauge (0=closed, 1=half_open, 2=open)."""
+        llm_circuit_state.labels(provider=provider).set(
+            PrometheusMetrics._circuit_state_value(state)
+        )
+
+    @staticmethod
+    def inc_circuit_failure(provider: str):
+        llm_circuit_failures_total.labels(provider=provider).inc()
+
+    @staticmethod
+    def inc_circuit_open(provider: str):
+        llm_circuit_opens_total.labels(provider=provider).inc()
+
+    @staticmethod
+    def observe_circuit_recovery(provider: str, duration_sec: float):
+        if duration_sec > 0:
+            llm_circuit_recovery_duration_seconds.labels(provider=provider).observe(duration_sec)
 
 
 def get_registry() -> CollectorRegistry:

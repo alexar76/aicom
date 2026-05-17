@@ -85,7 +85,7 @@ import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTh
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
 
-export function CorporateChatTab() {
+export function CorporateChatTab({ locale }: { locale: AdminLocale }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [chatUsername, setChatUsername] = useState('Owner');
@@ -232,7 +232,7 @@ export function CorporateChatTab() {
       <div className="mb-2 flex shrink-0 flex-col gap-3 border-b border-white/10 pb-2 max-md:gap-2 md:mb-4 md:gap-4 md:pb-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex min-w-0 flex-wrap items-center gap-3">
           <MessageCircle className="h-6 w-6 shrink-0 text-cyan-400" />
-          <h2 className="text-xl font-bold text-white">Corporate Chat</h2>
+          <h2 className="text-xl font-bold text-white">{t(locale, 'corpChat.title')}</h2>
           <span className="text-sm text-gray-400">
             You are <span className="text-cyan-300 font-medium">Owner</span>:{' '}
             <span className="text-white">{chatUsername}</span>

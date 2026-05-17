@@ -1,4 +1,5 @@
 """
+from core.logging_utils import log_suppressed
 Base Agent
 ==========
 Abstract base class for all AI-Factory agents.
@@ -597,8 +598,8 @@ export { fetchData };""",
         # Step 2: Try direct parse on cleaned text
         try:
             return json.loads(cleaned)
-        except json.JSONDecodeError:
-            pass
+        except json.JSONDecodeError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (agents/base_agent.py)", exc_info=_suppressed_exc)
 
         # Step 3: Find JSON object boundaries — extract the first { … }
         start_idx = cleaned.find('{')
@@ -623,8 +624,8 @@ export { fetchData };""",
         # Step 4: Try direct parse of extracted JSON
         try:
             return json.loads(raw)
-        except json.JSONDecodeError:
-            pass
+        except json.JSONDecodeError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (agents/base_agent.py)", exc_info=_suppressed_exc)
 
         # Step 5: Build a list of cleanup strategies and try each
         fixes = []
@@ -706,8 +707,8 @@ export { fetchData };""",
             obj, _ = decoder.raw_decode(raw)
             if isinstance(obj, dict):
                 return obj
-        except (json.JSONDecodeError, ValueError):
-            pass
+        except (json.JSONDecodeError, ValueError) as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (agents/base_agent.py)", exc_info=_suppressed_exc)
 
         return None
 

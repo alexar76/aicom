@@ -25,6 +25,7 @@ from typing import Any, Optional
 
 from web.backend.services.demo_credentials import effective_sandbox_demo_password_for_compose
 from web.backend.services.sandbox_docker import pick_loopback_port
+from core.logging_utils import log_suppressed
 from web.backend.services.sandbox_preview_network import (
     prepare_isolation_for_compose,
     remove_internal_network,
@@ -211,8 +212,8 @@ def start_compose_preview(code_dir: Path, sandbox_id: str) -> tuple[Optional[int
         if override_path_str:
             try:
                 Path(override_path_str).unlink(missing_ok=True)
-            except OSError:
-                pass
+            except OSError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/services/sandbox_compose_preview.py)", exc_info=_suppressed_exc)
         return None, "docker_cli_missing", None
 
     if proc.returncode != 0:
@@ -282,8 +283,8 @@ def _compose_down(
     if override_path:
         try:
             Path(override_path).unlink(missing_ok=True)
-        except OSError:
-            pass
+        except OSError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/sandbox_compose_preview.py)", exc_info=_suppressed_exc)
 
 
 def stop_compose_for_sandbox(sandbox_id: str) -> None:

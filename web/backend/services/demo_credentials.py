@@ -7,6 +7,10 @@ from pathlib import Path
 
 from core.paths import secrets_dir
 
+import logging
+from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 # Historically documented; anyone who still sets this on the factory host gets the admin warning.
 LEGACY_PUBLIC_SANDBOX_DEMO_PASSWORD = "SandboxDemo!2026"
 
@@ -27,8 +31,8 @@ def _password_from_file() -> str:
     try:
         if _SANDBOX_PW_FILE.is_file():
             return _SANDBOX_PW_FILE.read_text(encoding="utf-8").strip()
-    except OSError:
-        pass
+    except OSError as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/services/demo_credentials.py)", exc_info=_suppressed_exc)
     return ""
 
 

@@ -8,6 +8,7 @@ import socket
 import subprocess
 import time
 from typing import Optional
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -107,8 +108,8 @@ def _wait_pg_ready(cname: str, user: str, database: str, timeout_sec: float) -> 
             )
             if r.returncode == 0:
                 return True
-        except (subprocess.TimeoutExpired, OSError):
-            pass
+        except (subprocess.TimeoutExpired, OSError) as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/sandbox_docker.py)", exc_info=_suppressed_exc)
         time.sleep(0.5)
     return False
 

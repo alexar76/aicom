@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   ArrowRight,
@@ -17,6 +16,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import api, { type CreateProviderPayload } from '@/lib/api';
+import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
 
 const STORAGE_DONE = 'aicom_admin_setup_wizard_done_v1';
@@ -25,13 +25,18 @@ export const SETUP_WIZARD_DONE_EVENT = 'aicom-setup-wizard-done';
 
 type PresetId = 'deepseek_api' | 'anthropic_cloud' | 'groq_api';
 
+const PRESET_DESC_KEY: Record<PresetId, string> = {
+  deepseek_api: 'setup.preset.deepseek.desc',
+  anthropic_cloud: 'setup.preset.anthropic.desc',
+  groq_api: 'setup.preset.groq.desc',
+};
+
 const PRESETS: Record<
   PresetId,
-  Omit<CreateProviderPayload, 'api_key'> & { description: string; label: string }
+  Omit<CreateProviderPayload, 'api_key'> & { label: string }
 > = {
   deepseek_api: {
     label: 'DeepSeek',
-    description: 'OpenAI-compatible API — common default for this factory.',
     name: 'deepseek_api',
     provider_type: 'openai_compatible',
     base_url: 'https://api.deepseek.com/v1',
@@ -49,7 +54,6 @@ const PRESETS: Record<
   },
   anthropic_cloud: {
     label: 'Anthropic',
-    description: 'Claude API (native Anthropic provider type in the factory).',
     name: 'anthropic_cloud',
     provider_type: 'anthropic',
     base_url: 'https://api.anthropic.com/v1',
@@ -70,7 +74,6 @@ const PRESETS: Record<
   },
   groq_api: {
     label: 'Groq',
-    description: 'Fast OpenAI-compatible inference (Llama, Mixtral, …).',
     name: 'groq_api',
     provider_type: 'openai_compatible',
     base_url: 'https://api.groq.com/openai/v1',
@@ -97,7 +100,13 @@ function canSaveProviders(role: string | null | undefined): boolean {
   return r === 'admin' || r === 'super_admin';
 }
 
-export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
+export function SetupWizardTab({
+  adminRole,
+  locale,
+}: {
+  adminRole: string | null;
+  locale: AdminLocale;
+}) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [origin, setOrigin] = useState('');
@@ -140,18 +149,18 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
       window.dispatchEvent(new Event(SETUP_WIZARD_DONE_EVENT));
     }
     setMarkedDone(true);
-    toast.success('Setup checklist marked complete');
+    toast.success(t(locale, 'setup.toast.marked'));
   };
 
   const saveProviderStep = async () => {
     if (!allowSave) {
-      toast.error('Your role cannot change LLM providers — ask an admin.');
+      toast.error(t(locale, 'setup.toast.noRole'));
       return;
     }
     const base = PRESETS[preset];
     const key = apiKey.trim();
     if (!key) {
-      toast.error('Paste an API key, or skip this step and configure providers later.');
+      toast.error(t(locale, 'setup.toast.needKey'));
       return;
     }
     setSaving(true);
@@ -171,14 +180,14 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
       if (providerNames.has(base.name)) {
         const { name: _n, ...updateBody } = payload;
         await api.updateProvider(base.name, updateBody);
-        toast.success(`Updated ${base.label} and stored the key in model_providers.yaml`);
+        toast.success(tVars(locale, 'setup.toast.updated', { label: base.label }));
       } else {
         await api.createProvider(payload);
-        toast.success(`Added ${base.label} and stored the key in model_providers.yaml`);
+        toast.success(tVars(locale, 'setup.toast.added', { label: base.label }));
       }
       if (makeDefault) {
         await api.setDefaultProvider(base.name);
-        toast.success(`Default provider set to ${base.name}`);
+        toast.success(tVars(locale, 'setup.toast.defaultSet', { name: base.name }));
       }
       await loadProviderNames();
       setStep(4);
@@ -196,9 +205,14 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
     try {
       const r = await api.testProvider(name, 'light');
       if (r.success) {
-        toast.success(`Test OK (${r.latency_ms} ms, model ${r.model || '—'})`);
+        toast.success(
+          tVars(locale, 'setup.toast.testOk', {
+            ms: r.latency_ms,
+            model: r.model || '—',
+          }),
+        );
       } else {
-        toast.error(r.error || 'Test failed');
+        toast.error(r.error || t(locale, 'setup.toast.testFail'));
       }
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : String(e));
@@ -208,10 +222,10 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
   };
 
   const steps = [
-    { n: 1, title: 'Welcome' },
-    { n: 2, title: 'URLs & deploy' },
-    { n: 3, title: 'LLM key' },
-    { n: 4, title: 'Done' },
+    { n: 1, title: t(locale, 'setup.step.welcome') },
+    { n: 2, title: t(locale, 'setup.step.urls') },
+    { n: 3, title: t(locale, 'setup.step.llm') },
+    { n: 4, title: t(locale, 'setup.step.done') },
   ];
 
   return (
@@ -219,14 +233,8 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
       <div className="flex flex-wrap items-center gap-3">
         <Rocket className="h-7 w-7 text-indigo-400" aria-hidden />
         <div>
-          <h2 className="text-xl font-semibold text-white">Setup wizard</h2>
-          <p className="text-sm text-gray-500">
- Guided first-time wiring — advanced operators still use <code className="text-gray-400">.env</code> and{' '}
-            <Link href="/docs" className="text-indigo-300 hover:underline">
-              /docs
-            </Link>
-            .
-          </p>
+          <h2 className="text-xl font-semibold text-white">{t(locale, 'setup.title')}</h2>
+          <p className="text-sm text-gray-500">{t(locale, 'setup.subtitle')}</p>
         </div>
       </div>
 
@@ -251,36 +259,21 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
         <GlassCard className="p-6 space-y-4 border border-indigo-500/20">
           <h3 className="text-lg font-medium text-white flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-amber-400" aria-hidden />
-            What this wizard does
+            {t(locale, 'setup.whatTitle')}
           </h3>
           <ul className="list-disc space-y-2 pl-5 text-sm text-gray-300 leading-relaxed">
-            <li>
-              <strong className="text-white">URLs</strong> — confirm how the browser reaches the app (and when you
-              must set build-time <code className="text-gray-400">NEXT_PUBLIC_SITE_URL</code>).
-            </li>
-            <li>
-              <strong className="text-white">LLM</strong> — paste one API key; we save it to{' '}
-              <code className="text-gray-400">data/config/model_providers.yaml</code> on the server (same as{' '}
-              <strong className="text-white">Providers</strong> tab). Optional: set as default router target.
-            </li>
-            <li>
-              <strong className="text-white">.env</strong> — still supported for CI/CD, Compose secrets, and keys you
-              do not want in YAML. This wizard does not replace it — it just avoids mandatory manual editing for the
-              common path.
-            </li>
-            <li>
-              <strong className="text-white">Director SLO benchmark</strong> (optional ops): autonomous benchmark runs
-              need an admin JWT in the environment — see step 2. Without it, the factory skips them so the API is not
-              hit with unauthenticated calls.
-            </li>
+            <li>{t(locale, 'setup.bullet.urls')}</li>
+            <li>{t(locale, 'setup.bullet.llm')}</li>
+            <li>{t(locale, 'setup.bullet.env')}</li>
+            <li>{t(locale, 'setup.bullet.benchmark')}</li>
           </ul>
           <div className="flex flex-wrap gap-2 pt-2">
             <Button onClick={() => setStep(2)}>
-              Next
+              {t(locale, 'setup.next')}
               <ArrowRight className="ml-1 h-4 w-4" aria-hidden />
             </Button>
             <Button variant="secondary" onClick={() => router.replace('/admin?tab=dashboard')}>
-              Skip to dashboard
+              {t(locale, 'setup.skipDashboard')}
             </Button>
           </div>
         </GlassCard>
@@ -290,50 +283,33 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
         <GlassCard className="p-6 space-y-4 border border-white/10">
           <h3 className="text-lg font-medium text-white flex items-center gap-2">
             <Link2 className="h-5 w-5 text-cyan-400" aria-hidden />
-            Public URL &amp; build-time site URL
+            {t(locale, 'setup.urlsTitle')}
           </h3>
           <p className="text-sm text-gray-300">
-            You opened Admin from:{' '}
+            {t(locale, 'setup.openedFrom')}{' '}
             <code className="rounded bg-black/40 px-2 py-0.5 text-indigo-200">{origin || '—'}</code>
           </p>
           <ul className="list-disc space-y-2 pl-5 text-sm text-gray-400 leading-relaxed">
-            <li>
-              Storefront and admin links baked at <strong className="text-gray-200">Next.js build</strong> use{' '}
-              <code className="text-gray-500">NEXT_PUBLIC_SITE_URL</code>. For Docker, set it in{' '}
-              <code className="text-gray-500">.env</code> / Compose <strong className="text-gray-200">before</strong>{' '}
-              <code className="text-gray-500">docker compose build</code> if the public URL is not localhost.
-            </li>
-            <li>
-              The API tab in Compose maps host ports to <code className="text-gray-500">8080/8081</code> inside the
-              container; the bundled UI talks to the API via loopback — no extra step for the default layout.
-            </li>
-            <li>
-              Custom domains: set <code className="text-gray-500">AIFACTORY_CORS_ORIGINS</code> (see configuration docs).
-            </li>
+            <li>{t(locale, 'setup.urls.li1')}</li>
+            <li>{t(locale, 'setup.urls.li2')}</li>
+            <li>{t(locale, 'setup.urls.li3')}</li>
           </ul>
           <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-3 text-xs leading-relaxed text-gray-400">
-            <strong className="text-gray-200">Director / SLO benchmark (optional, production)</strong> — when pipeline SLO
-            is breached, the Director can spawn <code className="text-gray-500">benchmark_pass_rate.py</code>, which
-            calls <strong className="text-gray-300">admin</strong> HTTP APIs. The script exits early unless a JWT is
-            configured: set <code className="text-gray-500">AIFACTORY_BENCHMARK_ADMIN_TOKEN</code> or{' '}
-            <code className="text-gray-500">AIFACTORY_BENCHMARK_ADMIN_TOKEN_FILE</code> (e.g. a one-line file under{' '}
-            <code className="text-gray-500">data/secrets/</code> on the host volume, <code className="text-gray-500">chmod 600</code>
-            ). Full steps live in the repo file <code className="text-gray-500">docs/configuration.md</code> (section{' '}
-            <span className="text-gray-300">Director / benchmark league</span>). Without these variables, benchmarks are
-            skipped by design — not an error.
+            <strong className="text-gray-200">{t(locale, 'setup.urls.benchmarkTitle')}</strong> —{' '}
+            {t(locale, 'setup.urls.benchmarkBody')}
           </div>
           <div className="flex flex-wrap gap-2">
             <Button variant="secondary" onClick={() => setStep(1)}>
-              Back
+              {t(locale, 'setup.back')}
             </Button>
-            <Button onClick={() => setStep(3)}>Next: LLM key</Button>
+            <Button onClick={() => setStep(3)}>{t(locale, 'setup.nextLlm')}</Button>
             <a
               href="/docs"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-1 text-sm text-indigo-300 hover:underline px-3 py-2"
             >
-              Open /docs
+              {t(locale, 'setup.openDocs')}
               <ExternalLink className="h-3.5 w-3.5" aria-hidden />
             </a>
           </div>
@@ -344,22 +320,14 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
         <GlassCard className="p-6 space-y-5 border border-emerald-500/15">
           <h3 className="text-lg font-medium text-white flex items-center gap-2">
             <KeyRound className="h-5 w-5 text-emerald-400" aria-hidden />
-            Add one LLM provider
+            {t(locale, 'setup.llmTitle')}
           </h3>
           {!allowSave && (
             <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-100">
-              Your account role cannot modify providers. Open the read-only{' '}
-              <Link href="/admin?tab=providers" className="underline">
-                Providers
-              </Link>{' '}
-              tab or ask an <strong>admin</strong> to run this step.
+              {t(locale, 'setup.roleCannotModify')}
             </div>
           )}
-          <p className="text-sm text-gray-400">
-            Keys are written to the server&apos;s <code className="text-gray-500">model_providers.yaml</code> (under
-            the persisted <code className="text-gray-500">data/</code> directory in Docker). For production, prefer
-            env-based keys if your policy requires it — configure that in the full Providers UI.
-          </p>
+          <p className="text-sm text-gray-400">{t(locale, 'setup.llmKeysPath')}</p>
           <div className="grid gap-3 sm:grid-cols-3">
             {(Object.keys(PRESETS) as PresetId[]).map((id) => {
               const p = PRESETS[id];
@@ -376,24 +344,28 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
                   }`}
                 >
                   <div className="font-medium text-white">{p.label}</div>
-                  <div className="mt-1 text-xs text-gray-500 leading-snug">{p.description}</div>
+                  <div className="mt-1 text-xs text-gray-500 leading-snug">{t(locale, PRESET_DESC_KEY[id])}</div>
                   {providerNames.has(p.name) ? (
-                    <div className="mt-2 text-[10px] uppercase tracking-wide text-amber-400/90">Already exists — will update</div>
+                    <div className="mt-2 text-[10px] uppercase tracking-wide text-amber-400/90">
+                      {t(locale, 'setup.preset.exists')}
+                    </div>
                   ) : (
-                    <div className="mt-2 text-[10px] uppercase tracking-wide text-gray-600">Will create</div>
+                    <div className="mt-2 text-[10px] uppercase tracking-wide text-gray-600">
+                      {t(locale, 'setup.preset.create')}
+                    </div>
                   )}
                 </button>
               );
             })}
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium text-gray-400">API key</label>
+            <label className="mb-1 block text-xs font-medium text-gray-400">{t(locale, 'setup.apiKey')}</label>
             <Input
               type="password"
               autoComplete="off"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              placeholder="Paste key — stored on server when you save"
+              placeholder={t(locale, 'setup.apiKeyPlaceholder')}
               className="font-mono text-sm"
             />
           </div>
@@ -404,26 +376,20 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
               onChange={(e) => setMakeDefault(e.target.checked)}
               className="rounded border-white/20 bg-white/5"
             />
-            Set this provider as the default (<code className="text-gray-500">default_provider</code>)
+            {t(locale, 'setup.makeDefault')}
           </label>
           <div className="flex flex-wrap gap-2">
             <Button variant="secondary" onClick={() => setStep(2)}>
-              Back
+              {t(locale, 'setup.back')}
             </Button>
             <Button onClick={() => void saveProviderStep()} disabled={saving || !allowSave}>
-              {saving ? 'Saving…' : 'Save provider'}
+              {saving ? t(locale, 'setup.saving') : t(locale, 'setup.saveProvider')}
             </Button>
             <Button variant="secondary" onClick={() => setStep(4)} disabled={saving}>
-              Skip (configure later)
+              {t(locale, 'setup.skipLater')}
             </Button>
           </div>
-          <p className="text-xs text-gray-600">
-            Need Ollama, Together, or custom endpoints? Use{' '}
-            <Link href="/admin?tab=providers" className="text-indigo-400 hover:underline">
-              Providers → Add
-            </Link>
-            .
-          </p>
+          <p className="text-xs text-gray-600">{t(locale, 'setup.providersOllama')}</p>
         </GlassCard>
       )}
 
@@ -431,31 +397,33 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
         <GlassCard className="p-6 space-y-5 border border-indigo-500/20">
           <h3 className="text-lg font-medium text-white flex items-center gap-2">
             <PartyPopper className="h-5 w-5 text-amber-400" aria-hidden />
-            You&apos;re ready to run the factory
+            {t(locale, 'setup.doneTitle')}
           </h3>
           <ul className="space-y-2 text-sm text-gray-300">
             <li className="flex gap-2">
               <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" aria-hidden />
-              Queue a product from <strong className="text-white">New product</strong> (guided wizard there too).
+              {t(locale, 'setup.done.newProduct')}
             </li>
             <li className="flex gap-2">
               <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" aria-hidden />
-              Tune automation under <strong className="text-white">Settings</strong> and <strong className="text-white">Director</strong>.
+              {t(locale, 'setup.done.settings')}
             </li>
           </ul>
           <div className="flex flex-wrap gap-2">
             <Button variant="secondary" onClick={() => setStep(3)}>
-              Back
+              {t(locale, 'setup.back')}
             </Button>
             <Button onClick={() => void runQuickTest()} disabled={testing || !allowSave}>
-              {testing ? 'Testing…' : `Test ${PRESETS[preset].label} (light model)`}
+              {testing
+                ? t(locale, 'setup.testing')
+                : tVars(locale, 'setup.testModel', { label: PRESETS[preset].label })}
             </Button>
             <Button onClick={() => router.replace('/admin?tab=new-product')}>
-              Open New product
+              {t(locale, 'setup.openNewProduct')}
               <ArrowRight className="ml-1 h-4 w-4" aria-hidden />
             </Button>
             <Button variant="secondary" onClick={() => router.replace('/admin?tab=settings')}>
-              Platform settings
+              {t(locale, 'setup.platformSettings')}
             </Button>
           </div>
           <div className="border-t border-white/10 pt-4 flex flex-wrap items-center gap-3">
@@ -464,11 +432,9 @@ export function SetupWizardTab({ adminRole }: { adminRole: string | null }) {
               onClick={markComplete}
               className={markedDone ? 'border-emerald-500/40 text-emerald-200' : ''}
             >
-              {markedDone ? 'Marked complete ✓' : 'Mark setup checklist complete'}
+              {markedDone ? t(locale, 'setup.markedComplete') : t(locale, 'setup.markComplete')}
             </Button>
-            <span className="text-xs text-gray-500">
-              Hides the gentle reminder in the onboarding strip (local browser only).
-            </span>
+            <span className="text-xs text-gray-500">{t(locale, 'setup.markHint')}</span>
           </div>
         </GlassCard>
       )}

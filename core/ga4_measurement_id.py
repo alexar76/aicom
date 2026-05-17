@@ -1,4 +1,7 @@
 """
+import logging
+
+logger = logging.getLogger(__name__)
 Extract GA4 measurement id (``G-…``) from arbitrary HTML / admin head snippets.
 
 Used by the public marketing API so the Next.js storefront can load gtag without a separate env var.
@@ -9,6 +12,7 @@ from __future__ import annotations
 import html as html_lib
 import re
 from typing import Final
+from core.logging_utils import log_suppressed
 
 # GA4 property / data stream ids: G- + alphanumeric (length varies; allow generous upper bound).
 _GA4_TAIL: Final[str] = r"[A-Za-z0-9]{4,32}"
@@ -47,8 +51,8 @@ def extract_ga4_measurement_id_from_html(blob: str) -> str | None:
     text = re.sub(r"[\ufeff\u200b\u200c\u200d]", "", blob)
     try:
         text = html_lib.unescape(text)
-    except Exception:
-        pass
+    except Exception as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (core/ga4_measurement_id.py)", exc_info=_suppressed_exc)
 
     for pat in _PATTERNS:
         for m in pat.finditer(text):

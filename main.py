@@ -18,6 +18,7 @@ from pathlib import Path
 from core.paths import config_path, data_root, git_repos_dir, logs_dir, pipeline_db_path, pipeline_json_path
 from core.config_merge import load_merged_config
 from web.backend.api.metrics import PrometheusMetrics
+from core.logging_utils import log_suppressed
 
 # Configure logging
 logging.basicConfig(
@@ -288,8 +289,8 @@ class AIFactory:
         try:
             while self._running:
                 await asyncio.sleep(1)
-        except asyncio.CancelledError:
-            pass
+        except asyncio.CancelledError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (main.py)", exc_info=_suppressed_exc)
         finally:
             await self.shutdown()
 
@@ -337,9 +338,9 @@ async def main():
                 sig,
                 lambda: asyncio.create_task(factory.shutdown()),
             )
-        except NotImplementedError:
+        except NotImplementedError as _suppressed_exc:
             # Windows doesn't support add_signal_handler
-            pass
+            log_suppressed(logger, "non-fatal (main.py)", exc_info=_suppressed_exc)
 
     try:
         await factory.start()

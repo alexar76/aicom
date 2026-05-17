@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from agents.prompts.load_prompt import load_prompt
 
-_PROMPT_FILE = Path(__file__).with_name("architect_role_prompt.md")
-
-ARCHITECT_SYSTEM_PROMPT = _PROMPT_FILE.read_text(encoding="utf-8")
+ARCHITECT_SYSTEM_PROMPT = load_prompt("architect_role_prompt.md")

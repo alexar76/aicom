@@ -131,6 +131,16 @@ def state_dir() -> Path:
     return Path(os.environ.get("AIFACTORY_STATE_DIR", str(data_root() / "state")))
 
 
+def llm_circuit_state_path() -> Path:
+    """Shared circuit-breaker state for all LLM router processes (web + pipeline worker)."""
+    return Path(
+        os.environ.get(
+            "AIFACTORY_LLM_CIRCUIT_STATE_FILE",
+            str(state_dir() / "llm_circuit_breakers.json"),
+        )
+    )
+
+
 def logs_dir() -> Path:
     return Path(os.environ.get("AIFACTORY_LOGS_DIR", str(data_root() / "logs")))
 

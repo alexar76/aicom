@@ -23,7 +23,8 @@
 - **`architecture-diagrams.md`** — **Mermaid hub**: full runtime architecture, pipeline LR + extended gates, state machine, discovery, storefront flow, comparison table, Grafana panel map (moved from root README).
 - **`architecture-orchestrator.md`** — pipeline worker SRP split, sync/async state machine, Director JSON vs SQLite decisions store.
 - `pipeline-operations.md` — discovery, scheduler, batch pipeline, benchmark gate, monitoring loops.
-- `agents.md` — pipeline agent roster, including `methodologist`.
+- `agents.md` — pipeline agent roster, **markdown system prompts** under `agents/prompts/`, including `methodologist`.
+- `audit-delta-changes.md` — Staff audit remediation tracker (circuit breaker, watchfiles, API v1, logging).
 - `methodology-agent.md` — domain methodology gate, domain packs, artifacts, and rework behavior.
 - `factory-capabilities.md` — full feature map (agents, quality, ops, monetization surfaces).
 - `factory-metrics-reference.md` — complete metric registry and action mapping.

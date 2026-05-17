@@ -121,7 +121,7 @@ function llmLogTimeMs(log: Record<string, unknown>): number {
   return Number.isFinite(ms) ? ms : 0;
 }
 
-export function LLMLogsTab() {
+export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
   const searchParams = useSearchParams();
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -327,7 +327,7 @@ export function LLMLogsTab() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold text-white mb-1">LLM Call Logs</h2>
+      <h2 className="text-xl font-semibold text-white mb-1">{t(locale, 'llmLogs.title')}</h2>
       <p className="text-xs text-gray-500 mb-4">
         Estimates use input/output rates when the API reports prompt and completion tokens; otherwise blended $/Mtok and
         heavy/light provider rates from routing (

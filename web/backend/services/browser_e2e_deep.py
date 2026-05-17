@@ -1,4 +1,7 @@
 """
+import logging
+
+logger = logging.getLogger(__name__)
 Deep browser crawl for static demo QA: same-origin link closure, anchors, forms, buttons.
 
 Used by ``browser_preview_e2e``. Keeps Playwright types as ``Any`` so tests can import URL helpers
@@ -15,6 +18,7 @@ from collections import deque
 from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin, urlparse, urlunparse
+from core.logging_utils import log_suppressed
 
 def env_int(name: str, default: int) -> int:
     try:
@@ -142,15 +146,15 @@ def _fill_and_submit_forms(
                             try:
                                 el.select_option(index=0, timeout=3_000)
                                 filled += 1
-                            except Exception:
-                                pass
+                            except Exception as _suppressed_exc:
+                                log_suppressed(logger, "non-fatal (web/backend/services/browser_e2e_deep.py)", exc_info=_suppressed_exc)
                             continue
                         if typ in ("checkbox", "radio"):
                             try:
                                 el.check(timeout=2_000)
                                 filled += 1
-                            except Exception:
-                                pass
+                            except Exception as _suppressed_exc:
+                                log_suppressed(logger, "non-fatal (web/backend/services/browser_e2e_deep.py)", exc_info=_suppressed_exc)
                             continue
                         if typ == "file":
                             continue
@@ -185,13 +189,13 @@ def _fill_and_submit_forms(
                     try:
                         form.evaluate("f => { try { f.requestSubmit(); } catch(e) { try { f.submit(); } catch(_){} } }")
                         clicked = True
-                    except Exception:
-                        pass
+                    except Exception as _suppressed_exc:
+                        log_suppressed(logger, "non-fatal (web/backend/services/browser_e2e_deep.py)", exc_info=_suppressed_exc)
                 page.wait_for_timeout(min(1200, nav_timeout_ms // 5))
                 try:
                     page.wait_for_load_state("domcontentloaded", timeout=min(nav_timeout_ms, 12_000))
-                except Exception:
-                    pass
+                except Exception as _suppressed_exc:
+                    log_suppressed(logger, "non-fatal (web/backend/services/browser_e2e_deep.py)", exc_info=_suppressed_exc)
                 out.append(
                     {
                         "form_index": fi,
@@ -293,8 +297,8 @@ def run_deep_crawl(
                 sp = _screenshot_path(screenshot_dir, page.url)
                 page.screenshot(path=str(sp), full_page=False)
                 shot_path_str = str(sp)
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/services/browser_e2e_deep.py)", exc_info=_suppressed_exc)
 
         body_snippet = _visible_text_snippet(page)
 

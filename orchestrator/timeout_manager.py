@@ -11,6 +11,7 @@ import asyncio
 import logging
 import time
 from typing import Callable, Optional
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -81,8 +82,8 @@ class TimeoutManager:
             self._monitor_task.cancel()
             try:
                 await self._monitor_task
-            except asyncio.CancelledError:
-                pass
+            except asyncio.CancelledError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (orchestrator/timeout_manager.py)", exc_info=_suppressed_exc)
         logger.info("Timeout monitoring stopped")
 
     async def _monitor_loop(self, check_interval: float):

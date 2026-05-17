@@ -1,0 +1,58 @@
+import type { I18nDict } from '../types';
+
+export const DASHBOARD_DICT: I18nDict = {
+  'dashboard.refreshingCached': { en: 'Refreshing metrics…', ru: 'Обновление метрик…', es: 'Actualizando métricas…' },
+  'dashboard.loadingLive': { en: 'Loading live metrics…', ru: 'Загрузка метрик…', es: 'Cargando métricas…' },
+  'dashboard.stat.total': { en: 'Total Products', ru: 'Всего продуктов', es: 'Productos totales' },
+  'dashboard.stat.active': { en: 'Active Pipeline', ru: 'Активный пайплайн', es: 'Pipeline activo' },
+  'dashboard.stat.shipped': { en: 'Shipped builds', ru: 'Собранные билды', es: 'Builds enviados' },
+  'dashboard.stat.storefront': { en: 'On storefront', ru: 'На витрине', es: 'En vitrina' },
+  'dashboard.stat.rework': { en: 'Needs rework', ru: 'Нужна доработка', es: 'Requiere rework' },
+  'dashboard.failed.title': {
+    en: '{n} product needs rework (FAILED)',
+    ru: '{n} продукт требует доработки (FAILED)',
+    es: '{n} producto requiere rework (FAILED)',
+  },
+  'dashboard.failed.titlePlural': {
+    en: '{n} products need rework (FAILED)',
+    ru: '{n} продуктов требуют доработки (FAILED)',
+    es: '{n} productos requieren rework (FAILED)',
+  },
+  'dashboard.failed.body': {
+    en: 'Pipeline paused — not deleted. Open Pipeline and use Send to rework. A Telegram alert is sent when a product fails (if enabled in Settings).',
+    ru: 'Пайплайн на паузе — не удалён. Откройте «Пайплайн» и «На доработку». Telegram-алерт при сбое (если включён в настройках).',
+    es: 'Pipeline en pausa — no borrado. Abra Pipeline y reenvíe a rework. Alerta Telegram si está habilitada.',
+  },
+  'dashboard.failed.placeholderTitle': { en: 'Failed products', ru: 'Сбойные продукты', es: 'Productos fallidos' },
+  'dashboard.failed.placeholderCause': { en: 'Open Pipeline tab for details.', ru: 'Подробности во вкладке «Пайплайн».', es: 'Detalles en la pestaña Pipeline.' },
+  'dashboard.failed.noReason': { en: 'No failure reason stored.', ru: 'Причина сбоя не сохранена.', es: 'Sin motivo de fallo guardado.' },
+  'dashboard.failed.agent': { en: 'Agent: {name}', ru: 'Агент: {name}', es: 'Agente: {name}' },
+  'dashboard.health.title': { en: 'Factory health score', ru: 'Индекс здоровья фабрики', es: 'Puntuación de salud' },
+  'dashboard.health.subtitle': {
+    en: 'Single 0–100 signal from existing dashboard metrics (failure load, timeouts, queue pressure, storefront yield).',
+    ru: 'Один показатель 0–100 из метрик дашборда (сбои, таймауты, очередь, витрина).',
+    es: 'Señal 0–100 de métricas (fallos, timeouts, cola, vitrina).',
+  },
+  'dashboard.health.label': { en: 'Composite health', ru: 'Сводное здоровье', es: 'Salud compuesta' },
+  'dashboard.health.strong': { en: 'strong', ru: 'хорошо', es: 'fuerte' },
+  'dashboard.health.fair': { en: 'fair', ru: 'средне', es: 'regular' },
+  'dashboard.health.attention': { en: 'needs attention', ru: 'нужно внимание', es: 'requiere atención' },
+  'dashboard.storefront.title': { en: 'North star — public storefront', ru: 'Главная цель — публичная витрина', es: 'Objetivo — vitrina pública' },
+  'dashboard.storefront.subtitle': {
+    en: 'The factory’s operational goal is listed, buyer-visible products, not pipeline «completed» alone.',
+    ru: 'Операционная цель — продукты на витрине для покупателей, а не только «completed» в пайплайне.',
+    es: 'El objetivo operativo son productos visibles para compradores, no solo «completed».',
+  },
+  'dashboard.storefront.loading': { en: 'Storefront count…', ru: 'Счёт витрины…', es: 'Conteo vitrina…' },
+  'dashboard.storefront.yield': { en: 'listed ÷ shipped builds', ru: 'на витрине ÷ собранные', es: 'listados ÷ builds' },
+  'dashboard.storefront.loadingTotals': { en: 'Loading public storefront totals…', ru: 'Загрузка витрины…', es: 'Cargando vitrina…' },
+  'dashboard.storefront.conversion': { en: 'Shipped builds → storefront conversion', ru: 'Собранные → витрина', es: 'Builds → conversión vitrina' },
+  'dashboard.storefront.listed': { en: '{listed} listed · {completed} completed pipeline rows', ru: '{listed} на витрине · {completed} completed в пайплайне', es: '{listed} listados · {completed} completed' },
+  'dashboard.storefront.noCompleted': {
+    en: 'No completed builds yet — storefront yield appears after products finish the pipeline.',
+    ru: 'Пока нет completed — конверсия витрины появится после завершения пайплайна.',
+    es: 'Sin builds completed — el rendimiento aparece al terminar el pipeline.',
+  },
+  'dashboard.llm.title': { en: 'LLM usage (recent)', ru: 'Использование LLM (недавно)', es: 'Uso LLM (reciente)' },
+  'dashboard.security.title': { en: 'Security snapshot', ru: 'Сводка безопасности', es: 'Resumen de seguridad' },
+};

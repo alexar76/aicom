@@ -1,4 +1,5 @@
 """
+from core.logging_utils import log_suppressed
 Director AI Worker
 ==================
 Background process that runs Director AI analysis cycles.
@@ -549,8 +550,8 @@ class DirectorWorker:
                     trigger_data = {}
                     try:
                         trigger_data = json.loads(signal_path.read_text())
-                    except (json.JSONDecodeError, IOError):
-                        pass
+                    except (json.JSONDecodeError, IOError) as _suppressed_exc:
+                        log_suppressed(logger, "non-fatal (director/worker.py)", exc_info=_suppressed_exc)
 
                     signal_path.unlink(missing_ok=True)
                     logger.info("On-demand Director analysis triggered via signal file")
@@ -760,8 +761,8 @@ class DirectorWorker:
         try:
             while self._running:
                 await asyncio.sleep(10)
-        except asyncio.CancelledError:
-            pass
+        except asyncio.CancelledError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (director/worker.py)", exc_info=_suppressed_exc)
 
         logger.info("Director AI Worker shutting down")
 
@@ -774,20 +775,20 @@ class DirectorWorker:
             self._signal_check_task.cancel()
             try:
                 await self._signal_check_task
-            except asyncio.CancelledError:
-                pass
+            except asyncio.CancelledError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (director/worker.py)", exc_info=_suppressed_exc)
         if self._auto_pipeline_task:
             self._auto_pipeline_task.cancel()
             try:
                 await self._auto_pipeline_task
-            except asyncio.CancelledError:
-                pass
+            except asyncio.CancelledError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (director/worker.py)", exc_info=_suppressed_exc)
         if self._benchmark_league_task:
             self._benchmark_league_task.cancel()
             try:
                 await self._benchmark_league_task
-            except asyncio.CancelledError:
-                pass
+            except asyncio.CancelledError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (director/worker.py)", exc_info=_suppressed_exc)
         logger.info("Director AI Worker stopped")
 
 
@@ -796,8 +797,8 @@ async def main():
     worker = DirectorWorker()
     try:
         await worker.run()
-    except asyncio.CancelledError:
-        pass
+    except asyncio.CancelledError as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (director/worker.py)", exc_info=_suppressed_exc)
     except KeyboardInterrupt:
         logger.info("Shutting down Director AI worker...")
         await worker.stop()

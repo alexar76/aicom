@@ -1,10 +1,11 @@
 """
+from core.logging_utils import log_suppressed
 LLM Router
 ===========
 Routes generation requests to the appropriate provider based on:
 - ``default_provider`` when available (per-task heavy/light still from routing rules)
-- Provider availability (health checks)
-- Failover to ``fallback_provider`` / other backends only when the default is down
+- Provider availability (health checks + circuit breaker)
+- Failover to ``fallback_provider`` / other backends when the default is down or circuit OPEN
 """
 
 from __future__ import annotations
@@ -22,14 +23,19 @@ import yaml
 from core.paths import model_providers_path
 from core.throughput_limits import effective_llm_max_parallel_requests, effective_llm_min_interval_sec
 from .bootstrap_providers import ensure_model_providers_file
+from .circuit_breaker import CircuitOpenError, get_circuit_store, sync_prometheus_from_snapshot
 from .provider import LLMProvider, GenerationConfig, ProviderStatus
 from .usage_guard import get_usage_guard
 from .local_ollama import LocalOllamaProvider
 from .openai_compatible import OpenAICompatibleProvider
 from .anthropic_provider import AnthropicProvider
-from web.backend.api.metrics import PrometheusMetrics
-
 logger = logging.getLogger(__name__)
+
+
+def _metrics():
+    from web.backend.api.metrics import PrometheusMetrics
+
+    return PrometheusMetrics
 
 
 class LLMRouter:
@@ -39,7 +45,8 @@ class LLMRouter:
     Features:
     - Task-type routing (timeouts, model roles); primary backend is ``default_provider``
     - Automatic health checks every 60 seconds
-    - Failover when the default provider is unavailable
+    - Per-provider circuit breaker (CLOSED → OPEN → HALF_OPEN → CLOSED)
+    - Failover when the default provider is unavailable or circuit is OPEN
     - Provider metrics tracking
     - Parallel + min-interval throttling, RPM cap, and USD cost caps (see ``llm.usage_guard``)
     """
@@ -62,6 +69,7 @@ class LLMRouter:
         self._cache_max_entries = max(1, int(os.environ.get("AIFACTORY_LLM_CACHE_MAX_ENTRIES", "500")))
         self._response_cache: dict[str, tuple[float, str]] = {}
         self._usage_guard = get_usage_guard()
+        self._circuit = get_circuit_store()
         self._load_config()
 
     def _load_config(self):
@@ -79,7 +87,6 @@ class LLMRouter:
             providers_config = config.get("providers", {})
             self._provider_configs = dict(providers_config)
 
-            # Log enabled providers and their API key presence (helpful for debugging auth issues)
             for name, pconf in providers_config.items():
                 if pconf.get("enabled", False):
                     api_key_val = pconf.get("api_key")
@@ -89,7 +96,6 @@ class LLMRouter:
                         f"Provider '{name}': api_key={key_preview}, api_key_env={has_env!r}"
                     )
 
-            # Initialize providers
             for name, pconf in providers_config.items():
                 if not pconf.get("enabled", False):
                     continue
@@ -131,6 +137,32 @@ class LLMRouter:
         except Exception as e:
             logger.error(f"Failed to load provider config: {e}")
 
+    def _circuit_allows(self, name: str) -> bool:
+        allowed, _reason = self._circuit.allow_request(name)
+        return allowed
+
+    def _record_circuit_success(self, name: str) -> None:
+        prev = self._circuit.snapshot([name])["providers"].get(name, {})
+        row = self._circuit.record_success(name)
+        self._sync_circuit_metrics(name, row, prev)
+
+    def _record_circuit_failure(self, name: str, error: str) -> None:
+        prev = self._circuit.snapshot([name])["providers"].get(name, {})
+        row = self._circuit.record_failure(name, error)
+        m = _metrics()
+        m.inc_circuit_failure(name)
+        if row.get("state") == "open" and prev.get("state") != "open":
+            m.inc_circuit_open(name)
+        self._sync_circuit_metrics(name, row, prev)
+
+    @staticmethod
+    def _sync_circuit_metrics(name: str, row: dict, prev: dict) -> None:
+        m = _metrics()
+        m.set_circuit_state(name, str(row.get("state") or "closed"))
+        recovery = row.get("last_recovery_duration_sec")
+        if recovery is not None and prev.get("state") in ("open", "half_open"):
+            m.observe_circuit_recovery(name, float(recovery))
+
     async def start_health_checks(self, interval_sec: int = 60):
         """Start periodic health checks for all providers."""
         self._running = True
@@ -146,8 +178,8 @@ class LLMRouter:
             self._health_check_task.cancel()
             try:
                 await self._health_check_task
-            except asyncio.CancelledError:
-                pass
+            except asyncio.CancelledError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (llm/router.py)", exc_info=_suppressed_exc)
         logger.info("Health check loop stopped")
 
     async def _health_check_loop(self, interval_sec: int):
@@ -156,14 +188,22 @@ class LLMRouter:
             for name, provider in self.providers.items():
                 try:
                     health = await provider.check_health()
-                    # Update Prometheus health gauge
                     is_healthy = health.status not in (ProviderStatus.UNAVAILABLE, ProviderStatus.UNKNOWN)
-                    PrometheusMetrics.set_provider_health(name, is_healthy)
+                    _metrics().set_provider_health(name, is_healthy)
                     logger.debug(f"Health check {name}: {health.status.value} ({health.latency_ms:.0f}ms)")
                 except Exception as e:
-                    PrometheusMetrics.set_provider_health(name, False)
+                    _metrics().set_provider_health(name, False)
                     logger.error(f"Health check failed for {name}: {e}")
+            try:
+                snap = self.get_circuit_snapshot()
+                sync_prometheus_from_snapshot(snap)
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (llm/router.py)", exc_info=_suppressed_exc)
             await asyncio.sleep(interval_sec)
+
+    def get_circuit_snapshot(self) -> dict:
+        """Public circuit breaker state for admin / metrics."""
+        return self._circuit.snapshot(list(self.providers.keys()))
 
     async def generate(
         self,
@@ -173,20 +213,11 @@ class LLMRouter:
     ) -> str:
         """
         Generate a response using the best provider for the task type.
-        
-        Args:
-            prompt: The input prompt
-            task_type: Type of task (determines routing)
-            config: Generation parameters
-            
-        Returns:
-            Generated text
         """
         provider_name = self._select_provider(task_type)
         if not provider_name:
             raise RuntimeError(f"No available provider for task type: {task_type}")
 
-        provider = self.providers[provider_name]
         rule = self._get_rule(task_type)
         timeout = rule.get("timeout_sec", 30) if rule else 30
 
@@ -194,10 +225,8 @@ class LLMRouter:
             config = GenerationConfig(timeout_sec=timeout)
         config.task_type = task_type
 
-        # Apply model_role from routing rule: set model_override if specified
         if rule and config.model_override is None:
             model_role = rule.get("model_role", "heavy")
-            # Look up provider config to find the model name for this role
             model_name = self._get_model_for_role(provider_name, model_role)
             if model_name:
                 config.model_override = model_name
@@ -211,50 +240,95 @@ class LLMRouter:
                 logger.debug("LLM cache hit for task_type=%s", task_type)
                 return cached
 
-        start_time = time.time()
-        try:
-            logger.info(
-                f"Routing to provider '{provider_name}' for task '{task_type}'"
-                f" (model: {config.model_override or 'default'})"
-            )
-            await self._usage_guard.acquire()
-            async with self._request_sem:
-                await self._rate_limit_wait()
-                result = await provider.generate(prompt, config)
+        tried: set[str] = set()
+        last_error: Optional[Exception] = None
+        current = provider_name
+
+        while current and current not in tried:
+            tried.add(current)
+            if not self._circuit_allows(current):
+                logger.warning("Circuit OPEN for '%s', failing over task '%s'", current, task_type)
+                last_error = CircuitOpenError(current)
+                current = self._next_failover(task_type, current, tried)
+                continue
+
+            start_time = time.time()
+            try:
+                logger.info(
+                    f"Routing to provider '{current}' for task '{task_type}'"
+                    f" (model: {config.model_override or 'default'})"
+                )
+                result = await self._generate_via_provider(current, prompt, config)
                 if self._cache_enabled:
                     self._cache_set(cache_key, result)
-            duration = time.time() - start_time
-            PrometheusMetrics.inc_llm_request(provider_name, "success")
-            PrometheusMetrics.observe_llm_duration(provider_name, duration)
-            return result
-        except Exception as e:
-            duration = time.time() - start_time
-            PrometheusMetrics.inc_llm_request(provider_name, "error")
-            PrometheusMetrics.observe_llm_duration(provider_name, duration)
-            # Try fallback
-            fallback = self._get_fallback(task_type, provider_name)
-            if fallback and fallback in self.providers:
-                fallback_provider = self.providers[fallback]
-                if fallback_provider.health.status != ProviderStatus.UNAVAILABLE:
-                    logger.warning(f"Failing over to '{fallback}' for task '{task_type}'")
-                    fallback_start = time.time()
-                    try:
-                        await self._usage_guard.acquire()
-                        async with self._request_sem:
-                            await self._rate_limit_wait()
-                            result = await fallback_provider.generate(prompt, config)
-                        if self._cache_enabled:
-                            self._cache_set(cache_key, result)
-                        fb_duration = time.time() - fallback_start
-                        PrometheusMetrics.inc_llm_request(fallback, "success")
-                        PrometheusMetrics.observe_llm_duration(fallback, fb_duration)
-                        return result
-                    except Exception as fb_e:
-                        fb_duration = time.time() - fallback_start
-                        PrometheusMetrics.inc_llm_request(fallback, "error")
-                        PrometheusMetrics.observe_llm_duration(fallback, fb_duration)
-                        raise fb_e
-            raise
+                duration = time.time() - start_time
+                _metrics().inc_llm_request(current, "success")
+                _metrics().observe_llm_duration(current, duration)
+                self._record_circuit_success(current)
+                return result
+            except Exception as e:
+                duration = time.time() - start_time
+                _metrics().inc_llm_request(current, "error")
+                _metrics().observe_llm_duration(current, duration)
+                self._record_circuit_failure(current, str(e))
+                last_error = e
+                logger.warning("Provider '%s' failed for task '%s': %s", current, task_type, e)
+                current = self._next_failover(task_type, current, tried)
+
+        if last_error:
+            raise last_error
+        raise RuntimeError(f"No available provider for task type: {task_type}")
+
+    async def _generate_via_provider(
+        self,
+        provider_name: str,
+        prompt: str,
+        config: GenerationConfig,
+    ) -> str:
+        provider = self.providers[provider_name]
+        allowed, reason = self._circuit.allow_request(provider_name)
+        if not allowed:
+            raise CircuitOpenError(provider_name, reason)
+        await self._usage_guard.acquire()
+        async with self._request_sem:
+            await self._rate_limit_wait()
+            return await provider.generate(prompt, config)
+
+    def _next_failover(
+        self,
+        task_type: str,
+        current: str,
+        tried: set[str],
+    ) -> Optional[str]:
+        """Pick next provider in failover chain, skipping tried and circuit-blocked when possible."""
+        candidates: list[str] = []
+        fb = self._get_fallback(task_type, current)
+        if fb:
+            candidates.append(fb)
+        rule = self._get_rule(task_type)
+        preferred = rule.get("preferred_provider", "auto") if rule else "auto"
+        if preferred not in (None, "auto", current):
+            candidates.append(preferred)
+        if self.default_provider and self.default_provider not in candidates:
+            candidates.append(self.default_provider)
+        for name in self.providers:
+            if name not in candidates:
+                candidates.append(name)
+
+        for name in candidates:
+            if name in tried or name == current:
+                continue
+            if not self._provider_is_available(name):
+                continue
+            if not self._circuit_allows(name):
+                continue
+            return name
+        for name in candidates:
+            if name in tried or name == current:
+                continue
+            if self._provider_is_available(name):
+                return name
+        return None
 
     def _build_cache_key(self, prompt: str, task_type: str, config: GenerationConfig) -> str:
         raw = "|".join(
@@ -281,17 +355,11 @@ class LLMRouter:
 
     def _cache_set(self, key: str, value: str) -> None:
         if len(self._response_cache) >= self._cache_max_entries:
-            # Remove oldest entry (small in-memory map, O(n) acceptable).
             oldest_key = min(self._response_cache, key=lambda k: self._response_cache[k][0])
             self._response_cache.pop(oldest_key, None)
         self._response_cache[key] = (time.time(), value)
 
     def _get_model_for_role(self, provider_name: str, role: str) -> Optional[str]:
-        """Get the model name for a given provider and role (heavy/light).
-        
-        Reads from the stored provider YAML config to find the model for the requested role.
-        Falls back to the provider's default model if the role is not specified.
-        """
         pconf = self._provider_configs.get(provider_name)
         if not pconf:
             return None
@@ -301,7 +369,6 @@ class LLMRouter:
         return models.get("heavy") or models.get("light")
 
     def _infer_model_role(self, provider_name: str, active_model: Optional[str]) -> Optional[str]:
-        """If ``active_model`` matches configured heavy/light ids, return that role."""
         if not active_model or not str(active_model).strip():
             return None
         pconf = self._provider_configs.get(provider_name) or {}
@@ -321,7 +388,6 @@ class LLMRouter:
         config: GenerationConfig,
         rule: Optional[dict[str, object]],
     ) -> str:
-        """Resolve heavy/light for LLM log pricing when token totals are used without in/out split."""
         pconf = self._provider_configs.get(provider_name) or {}
         models = pconf.get("models", {}) or {}
         active = (config.model_override or models.get("heavy") or models.get("light") or "").strip()
@@ -339,12 +405,11 @@ class LLMRouter:
         task_type: str = "code_generation",
         config: Optional[GenerationConfig] = None,
     ):
-        """Stream a response from the best provider."""
+        """Stream a response from the best provider (with circuit-aware failover)."""
         provider_name = self._select_provider(task_type)
         if not provider_name:
             raise RuntimeError(f"No available provider for task type: {task_type}")
 
-        provider = self.providers[provider_name]
         rule = self._get_rule(task_type)
         timeout = rule.get("timeout_sec", 30) if rule else 30
 
@@ -359,11 +424,39 @@ class LLMRouter:
                 config.model_override = model_name
         config.model_role = self._resolve_model_role_for_config(provider_name, config, rule)
 
-        await self._usage_guard.acquire()
-        async with self._request_sem:
-            await self._rate_limit_wait()
-            async for token in provider.stream(prompt, config):
-                yield token
+        tried: set[str] = set()
+        current = provider_name
+        last_error: Optional[Exception] = None
+
+        while current and current not in tried:
+            tried.add(current)
+            if not self._circuit_allows(current):
+                last_error = CircuitOpenError(current)
+                current = self._next_failover(task_type, current, tried)
+                continue
+            provider = self.providers[current]
+            allowed, reason = self._circuit.allow_request(current)
+            if not allowed:
+                last_error = CircuitOpenError(current, reason)
+                current = self._next_failover(task_type, current, tried)
+                continue
+            try:
+                await self._usage_guard.acquire()
+                async with self._request_sem:
+                    await self._rate_limit_wait()
+                    async for token in provider.stream(prompt, config):
+                        yield token
+                self._record_circuit_success(current)
+                return
+            except Exception as e:
+                self._record_circuit_failure(current, str(e))
+                _metrics().inc_llm_request(current, "error")
+                last_error = e
+                current = self._next_failover(task_type, current, tried)
+
+        if last_error:
+            raise last_error
+        raise RuntimeError(f"No available provider for task type: {task_type}")
 
     async def _rate_limit_wait(self) -> None:
         if self._min_interval_sec <= 0:
@@ -376,33 +469,26 @@ class LLMRouter:
             self._last_request_mono = time.monotonic()
 
     def _provider_is_available(self, name: Optional[str]) -> bool:
-        """True if provider is loaded and health is not UNAVAILABLE."""
+        """True if provider is loaded, health is not UNAVAILABLE, and circuit allows traffic."""
         if not name or not isinstance(name, str):
             return False
         provider = self.providers.get(name)
         if provider is None:
             return False
-        return provider.health.status != ProviderStatus.UNAVAILABLE
+        if provider.health.status == ProviderStatus.UNAVAILABLE:
+            return False
+        return self._circuit_allows(name)
 
     def _select_provider(self, task_type: str) -> Optional[str]:
-        """Select the best provider for a task type.
-
-        Policy: always prefer ``default_provider`` when it is configured and
-        available (heavy/light still come from that provider's YAML). Other
-        providers are used only for failover — explicit ``fallback_provider``,
-        then a non-auto ``preferred_provider``, then fastest remaining.
-        """
+        """Select the best provider for a task type."""
         rule = self._get_rule(task_type)
 
-        # 1) Global default first (single primary backend; two models there)
         if self._provider_is_available(self.default_provider):
             return self.default_provider
 
-        # 2) No routing rule: any available provider by latency heuristic
         if not rule:
             return self._select_fastest_available()
 
-        # 3) Default down / missing: rule-level failover chain
         fallback = rule.get("fallback_provider")
         if self._provider_is_available(fallback):
             return fallback
@@ -414,35 +500,29 @@ class LLMRouter:
         return self._select_fastest_available()
 
     def _select_fastest_available(self) -> Optional[str]:
-        """Select the provider with lowest latency that is available.
-        Prefers the default provider if it's healthy."""
         available = [
             (name, p.health.latency_ms)
             for name, p in self.providers.items()
-            if p.health.status != ProviderStatus.UNAVAILABLE
+            if self._provider_is_available(name)
         ]
         if not available:
             return None
         
-        # If default provider is available, prefer it
         if self.default_provider:
             for name, _ in available:
                 if name == self.default_provider:
                     return name
         
-        # Sort by latency (lower is better)
         available.sort(key=lambda x: x[1])
         return available[0][0]
 
     def _get_rule(self, task_type: str) -> dict:
-        """Get routing rule for a task type."""
         for rule in self.routing_rules:
             if rule.get("task_type") == task_type:
                 return rule
         return {}
 
     def _get_fallback(self, task_type: str, current_provider: str) -> Optional[str]:
-        """Get fallback provider for a task type."""
         rule = self._get_rule(task_type)
         fallback = rule.get("fallback_provider")
         if fallback and fallback != current_provider:
@@ -450,38 +530,33 @@ class LLMRouter:
         return None
 
     def get_provider_metrics(self) -> dict[str, dict]:
-        """Get metrics for all providers."""
         return {name: p.get_metrics() for name, p in self.providers.items()}
 
     def get_available_providers(self) -> list[str]:
-        """Get list of provider names that are not unavailable."""
         return [
-            name for name, p in self.providers.items()
-            if p.health.status != ProviderStatus.UNAVAILABLE
+            name for name in self.providers
+            if self._provider_is_available(name)
         ]
 
     async def reload_config(self):
-        """Hot-reload provider configuration."""
         old_providers = self.providers
         self.providers = {}
         self._load_config()
         
-        # Close old provider connections
         for provider in old_providers.values():
             try:
                 if hasattr(provider, "close"):
                     await provider.close()
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (llm/router.py)", exc_info=_suppressed_exc)
         
         logger.info("Provider configuration reloaded")
 
     async def close(self):
-        """Clean up all provider connections."""
         await self.stop_health_checks()
         for provider in self.providers.values():
             try:
                 if hasattr(provider, "close"):
                     await provider.close()
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (llm/router.py)", exc_info=_suppressed_exc)

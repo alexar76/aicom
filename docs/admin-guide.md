@@ -55,7 +55,7 @@ Live streaming is concentrated in **Live Monitor** (Dashboard remains snapshot-f
 
 **Purpose:** live monitoring via streaming metrics:
 - **SSE**: `GET /api/admin/metrics/stream` (current UI path)
-- **WebSocket**: `/api/admin/ws/metrics` (available for realtime clients/integrations)
+- **WebSocket**: `/api/admin/ws/metrics` (available for realtime clients/integrations; includes **`circuit_breakers`** for LLM provider resilience)
 
 | Element | Function |
 |---------|----------|
@@ -177,6 +177,26 @@ Helps see which agent is busy or lagging before diving into **Agent Logs**. Ther
 | **Default** | Set default provider (star) |
 
 API keys are not shown in plain text — set via server environment variables.
+
+### Circuit breaker (self-healing)
+
+At the top of the tab, **Circuit breaker — self-healing** shows per-provider resilience state (shared across web backend and pipeline worker):
+
+| Indicator | State | Meaning |
+|-----------|--------|---------|
+| 🟢 | **CLOSED** | Normal traffic |
+| 🔴 | **OPEN** | Blocked after **5 failures / 60 s**; router fails over to routing `fallback_provider` |
+| 🟡 | **HALF_OPEN** | Single probe after **30 s** cooldown; success → CLOSED, failure → OPEN again |
+
+| Control | API |
+|---------|-----|
+| Live updates | WebSocket `/api/admin/ws/metrics` (`circuit_breakers` in payload) or **Refresh** |
+| Force OPEN | `POST /api/admin/providers/{name}/circuit/open` |
+| Force CLOSED | `POST /api/admin/providers/{name}/circuit/close` |
+| Reset counters | `POST /api/admin/providers/{name}/circuit/reset` |
+| Snapshot | `GET /api/admin/providers/circuits` |
+
+Provider cards also show a small colored dot matching circuit state. Prometheus: `llm_circuit_state`, `llm_circuit_failures_total`, `llm_circuit_opens_total`, `llm_circuit_recovery_duration_seconds` — see **[factory-metrics-reference.md](./factory-metrics-reference.md)**.
 
 ---
 

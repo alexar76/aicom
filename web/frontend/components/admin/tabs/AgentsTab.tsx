@@ -11,10 +11,11 @@ import { Modal } from '@/components/ui/Modal';
 import api, { AgentStatus } from '@/lib/api';
 import { INITIAL_AGENTS_TAB_ROWS } from '@/lib/pipelineStages';
 import { formatDate, formatRelativeTime, getAgentIcon } from '@/lib/utils';
+import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 
-function agentTitle(agent: AgentStatus): string {
-  if (agent.type === 'designer') return 'Designer (UX)';
-  if (agent.type === 'methodologist') return 'Methodologist';
+function agentTitle(locale: AdminLocale, agent: AgentStatus): string {
+  if (agent.type === 'designer') return t(locale, 'agents.role.designerUx');
+  if (agent.type === 'methodologist') return t(locale, 'agents.role.methodologist');
   return agent.type.replace(/_/g, ' ');
 }
 
@@ -30,7 +31,7 @@ function formatLogLineTime(ts: number): string {
   });
 }
 
-export function AgentsTab() {
+export function AgentsTab({ locale }: { locale: AdminLocale }) {
   const router = useRouter();
   const [agents, setAgents] = useState<AgentStatus[]>(() => INITIAL_AGENTS_TAB_ROWS as AgentStatus[]);
   const [detail, setDetail] = useState<AgentStatus | null>(null);
@@ -99,20 +100,22 @@ export function AgentsTab() {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold text-white mb-4">AI Agents</h2>
+    <motion.div className="space-y-4">
+      <h2 className="text-xl font-semibold text-white mb-4">{t(locale, 'agents.title')}</h2>
       <p className="text-xs text-gray-500 mb-4 max-w-2xl">
-        <strong className="text-gray-400">Designer</strong> is not a separate worker process: UX direction lives in the
-        Architect output (<code className="text-cyan-400/90">ui_experience</code>) and is implemented by Developer. The
-        card mirrors Architect status and task counts for visibility. Intermediate stages{' '}
-        <strong className="text-gray-400">design critic</strong> and <strong className="text-gray-400">hardening</strong>{' '}
-        run inside the pipeline worker but do not appear as separate cards here. Marketplace chat uses{' '}
-        <strong className="text-gray-400">Lumen</strong> (buyer chat via Support API, not Microsoft Copilot), not this roster.
-        <span className="block mt-2 text-gray-500">
-          Click a card for details, recent execution log lines, and shortcuts to LLM Logs / Agent Logs / Pipeline.
-        </span>
+        <strong className="text-gray-400">{t(locale, 'agents.intro.boldDesigner')}</strong>
+        {t(locale, 'agents.intro.beforeCode')}
+        <code className="text-cyan-400/90">ui_experience</code>
+        {t(locale, 'agents.intro.afterCode')}
+        <strong className="text-gray-400">{t(locale, 'agents.intro.boldDesignCritic')}</strong>
+        {t(locale, 'agents.intro.and')}
+        <strong className="text-gray-400">{t(locale, 'agents.intro.boldHardening')}</strong>
+        {t(locale, 'agents.intro.afterStages')}
+        <strong className="text-gray-400">{t(locale, 'agents.intro.boldLumen')}</strong>
+        {t(locale, 'agents.intro.afterLumen')}
+        <span className="block mt-2 text-gray-500">{t(locale, 'agents.intro.clickHint')}</span>
       </p>
-      <div className="grid md:grid-cols-2 gap-4">
+      <motion.div className="grid md:grid-cols-2 gap-4">
         {agents.map((agent, i) => (
           <motion.div
             key={agent.type}
@@ -130,7 +133,7 @@ export function AgentsTab() {
                   <div className="text-3xl shrink-0">{getAgentIcon(agent.type)}</div>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                      <h3 className="text-white font-medium capitalize">{agentTitle(agent)}</h3>
+                      <h3 className="text-white font-medium capitalize">{agentTitle(locale, agent)}</h3>
                       <Badge
                         variant={
                           agent.status === 'running'
@@ -143,19 +146,21 @@ export function AgentsTab() {
                         {agent.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">{agent.tasks_completed} tasks completed</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {tVars(locale, 'agents.card.tasksCompleted', { count: agent.tasks_completed })}
+                    </p>
                   </div>
                 </div>
               </GlassCard>
             </button>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       <Modal
         isOpen={detail != null}
         onClose={() => setDetail(null)}
-        title={detail ? agentTitle(detail) : ''}
+        title={detail ? agentTitle(locale, detail) : ''}
         size="2xl"
         className="max-h-[min(92dvh,calc(100vh-1rem))]"
       >
@@ -178,17 +183,23 @@ export function AgentsTab() {
 
             <dl className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
               <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
-                <dt className="text-[10px] uppercase tracking-wide text-gray-500">Tasks completed</dt>
+                <dt className="text-[10px] uppercase tracking-wide text-gray-500">
+                  {t(locale, 'agents.modal.tasksCompleted')}
+                </dt>
                 <dd className="text-white font-medium tabular-nums">{detail.tasks_completed}</dd>
               </div>
               <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
-                <dt className="text-[10px] uppercase tracking-wide text-gray-500">Timeout (s)</dt>
+                <dt className="text-[10px] uppercase tracking-wide text-gray-500">
+                  {t(locale, 'agents.modal.timeout')}
+                </dt>
                 <dd className="text-white font-medium tabular-nums">
                   {typeof detail.timeout === 'number' && detail.timeout > 0 ? detail.timeout : '—'}
                 </dd>
               </div>
               <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 sm:col-span-2">
-                <dt className="text-[10px] uppercase tracking-wide text-gray-500">Last activity (log tail / metrics max)</dt>
+                <dt className="text-[10px] uppercase tracking-wide text-gray-500">
+                  {t(locale, 'agents.modal.lastActivity')}
+                </dt>
                 <dd className="text-gray-200">
                   {lastActiveSec(detail) > 0 ? (
                     <>
@@ -196,12 +207,14 @@ export function AgentsTab() {
                       <span className="text-gray-500"> · {formatRelativeTime(lastActiveSec(detail))}</span>
                     </>
                   ) : (
-                    <span className="text-gray-500">No log timestamps yet</span>
+                    <span className="text-gray-500">{t(locale, 'agents.modal.noTimestampsYet')}</span>
                   )}
                 </dd>
               </div>
               <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 sm:col-span-2">
-                <dt className="text-[10px] uppercase tracking-wide text-gray-500">Current task</dt>
+                <dt className="text-[10px] uppercase tracking-wide text-gray-500">
+                  {t(locale, 'agents.modal.currentTask')}
+                </dt>
                 <dd className="text-gray-200 break-words">
                   {detail.current_task ? detail.current_task : <span className="text-gray-500">—</span>}
                 </dd>
@@ -210,22 +223,22 @@ export function AgentsTab() {
 
             {detail.log_metrics && (
               <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/[0.06] px-3 py-3">
-                <p className="text-xs font-medium text-cyan-200/90 mb-2">Log metrics (~1h window, same source as Live Monitor)</p>
+                <p className="text-xs font-medium text-cyan-200/90 mb-2">{t(locale, 'agents.modal.metricsTitle')}</p>
                 <dl className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
                   <div>
-                    <dt className="text-gray-500">Total lines</dt>
+                    <dt className="text-gray-500">{t(locale, 'agents.modal.metricTotalLines')}</dt>
                     <dd className="text-white tabular-nums">{detail.log_metrics.total_entries}</dd>
                   </div>
                   <div>
-                    <dt className="text-gray-500">Recent (1h)</dt>
+                    <dt className="text-gray-500">{t(locale, 'agents.modal.metricRecent1h')}</dt>
                     <dd className="text-white tabular-nums">{detail.log_metrics.recent_entries}</dd>
                   </div>
                   <div>
-                    <dt className="text-gray-500">Errors (1h)</dt>
+                    <dt className="text-gray-500">{t(locale, 'agents.modal.metricErrors1h')}</dt>
                     <dd className="text-amber-300 tabular-nums">{detail.log_metrics.recent_errors}</dd>
                   </div>
                   <div>
-                    <dt className="text-gray-500">Derived status</dt>
+                    <dt className="text-gray-500">{t(locale, 'agents.modal.metricDerivedStatus')}</dt>
                     <dd className="text-gray-200">{detail.log_metrics.status}</dd>
                   </div>
                 </dl>
@@ -235,40 +248,38 @@ export function AgentsTab() {
             <div className="flex flex-wrap gap-2">
               <Button type="button" variant="secondary" size="sm" onClick={() => openLlmLogs(detail.type)}>
                 <ScrollText className="w-4 h-4 mr-1.5" aria-hidden />
-                LLM logs
+                {t(locale, 'agents.btn.llmLogs')}
               </Button>
               <Button type="button" variant="secondary" size="sm" onClick={() => openAgentLogs(detail.type)}>
                 <Terminal className="w-4 h-4 mr-1.5" aria-hidden />
-                Agent logs
+                {t(locale, 'agents.btn.agentLogs')}
               </Button>
               <Button type="button" variant="secondary" size="sm" onClick={() => openPipeline(detail.type)}>
                 <ExternalLink className="w-4 h-4 mr-1.5" aria-hidden />
-                Pipeline
+                {t(locale, 'agents.btn.pipeline')}
               </Button>
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
                 onClick={() => void refreshAgentsAndDetail()}
-                title="Refresh roster from server"
+                title={t(locale, 'agents.btn.refreshDataTitle')}
               >
                 <RefreshCw className="w-4 h-4 mr-1.5" aria-hidden />
-                Refresh data
+                {t(locale, 'agents.btn.refreshData')}
               </Button>
             </div>
-            <p className="text-[10px] text-gray-500">
-              Pipeline opens with this agent id in the product search box (matches id or idea text when present).
-            </p>
+            <p className="text-[10px] text-gray-500">{t(locale, 'agents.pipelineSearchHint')}</p>
 
             <div>
-              <h4 className="text-sm font-medium text-white mb-2">Recent execution log</h4>
+              <h4 className="text-sm font-medium text-white mb-2">{t(locale, 'agents.recentExecutionLog')}</h4>
               {logsLoading ? (
                 <div className="flex items-center gap-2 py-8 text-gray-400 text-sm">
                   <Loader2 className="h-5 w-5 animate-spin text-indigo-400" aria-hidden />
-                  Loading…
+                  {t(locale, 'agents.loadingDots')}
                 </div>
               ) : detailLogs.length === 0 ? (
-                <p className="text-sm text-gray-500 py-4">No log file entries for this agent (or empty file).</p>
+                <p className="text-sm text-gray-500 py-4">{t(locale, 'agents.noLogEntries')}</p>
               ) : (
                 <ul className="max-h-56 space-y-2 overflow-y-auto rounded-lg border border-white/10 bg-black/20 p-2 text-xs">
                   {detailLogs.map((log, idx) => (
@@ -283,6 +294,6 @@ export function AgentsTab() {
           </div>
         )}
       </Modal>
-    </div>
+    </motion.div>
   );
 }

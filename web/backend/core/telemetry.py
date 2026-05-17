@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Optional
 
 from core.paths import data_root as factory_data_root
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -82,8 +83,8 @@ class TelemetryCollector:
                             if event_type and event.get("event_type") != event_type:
                                 continue
                             events.append(event)
-                        except json.JSONDecodeError:
-                            pass
+                        except json.JSONDecodeError as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (web/backend/core/telemetry.py)", exc_info=_suppressed_exc)
             if len(events) >= limit:
                 break
 

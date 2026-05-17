@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ChevronDown, SlidersHorizontal } from 'lucide-react';
+import { type AdminLocale, t } from '@/lib/adminI18n';
 
 export type QualitySettingsState = {
   max_pipeline_repair_rounds: number;
@@ -54,6 +55,7 @@ export const DEFAULT_QUALITY_SETTINGS: QualitySettingsState = {
 };
 
 type Props = {
+  locale: AdminLocale;
   open: boolean;
   onToggle: () => void;
   quality: QualitySettingsState;
@@ -126,7 +128,7 @@ function NumberRow(props: {
   );
 }
 
-export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, disabled }: Props) {
+export function QualitySettingsCollapsible({ locale, open, onToggle, quality, onChange, disabled }: Props) {
   return (
     <div className="rounded-xl border border-white/10 bg-white/[0.03]">
       <button
@@ -138,10 +140,11 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
         <div className="flex min-w-0 flex-1 items-center gap-2">
           <SlidersHorizontal className="h-5 w-5 shrink-0 text-violet-300" aria-hidden />
           <div className="min-w-0">
-            <div className="text-sm font-semibold text-white">Pipeline &amp; product quality</div>
+            <div className="text-sm font-semibold text-white">{t(locale, 'settings.quality.title')}</div>
             <p className="text-xs text-gray-500">
-              Tune how strict QA, browser checks, and storefront listing are. Saved with{' '}
-              <span className="text-gray-400">Save settings</span> below.
+              {t(locale, 'settings.quality.subtitle')}{' '}
+              <span className="text-gray-400">{t(locale, 'settings.quality.subtitleSave')}</span>
+              {locale === 'ru' ? ' ниже.' : locale === 'es' ? ' abajo.' : ' below.'}
             </p>
           </div>
         </div>
@@ -153,17 +156,15 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
       {open && (
         <div className="space-y-5 border-t border-white/10 px-4 pb-4 pt-3">
           <p className="text-xs leading-relaxed text-gray-500">
-            Values are stored in platform config under <code className="text-[10px] text-gray-400">quality:</code>.
-            If your deployment sets matching <code className="text-[10px] text-gray-400">AIFACTORY_*</code> environment
-            variables, those still win for operators who need a hard override in Docker.
+            {t(locale, 'settings.quality.intro')}
           </p>
 
           <div>
-            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Repair budget</h4>
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">{t(locale, 'settings.quality.section.repair')}</h4>
             <div className="space-y-3">
               <NumberRow
-                label="Max quality repair rounds"
-                description="How many times the pipeline can send a product back to Development after QA or marketplace checks fail before the product is marked failed. Higher is more forgiving; lower fails faster."
+                label={t(locale, 'settings.quality.maxRepair.label')}
+                description={t(locale, 'settings.quality.maxRepair.desc')}
                 value={quality.max_pipeline_repair_rounds}
                 min={1}
                 max={100}
@@ -174,11 +175,13 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
           </div>
 
           <div>
-            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Demo &amp; static QA</h4>
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+              {t(locale, 'settings.quality.section.demo')}
+            </h4>
             <div className="space-y-3">
               <NumberRow
-                label="Minimum demo quality score"
-                description="Score (0–100) from the static demo audit. Below this, QA does not let the product advance toward security."
+                label={t(locale, 'settings.quality.demoMin.label')}
+                description={t(locale, 'settings.quality.demoMin.desc')}
                 value={quality.demo_quality_min_score}
                 min={0}
                 max={100}
@@ -186,8 +189,8 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
                 disabled={disabled}
               />
               <ToggleRow
-                label="Strict demo gates"
-                description="When on, additional HTML/link issues (e.g. broken internal links, very thin pages) fail QA even if the headline score is above the minimum."
+                label={t(locale, 'settings.quality.strictDemo.label')}
+                description={t(locale, 'settings.quality.strictDemo.desc')}
                 checked={quality.strict_demo_gates}
                 onChange={(v) => onChange('strict_demo_gates', v)}
                 disabled={disabled}
@@ -196,25 +199,25 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
           </div>
 
           <div>
-            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Visual heuristics</h4>
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">{t(locale, 'settings.quality.section.visual')}</h4>
             <div className="space-y-3">
               <ToggleRow
-                label="Run visual checks"
-                description="Static heuristics on HTML/CSS (tokens, skeleton states, basic a11y hints). Usually leave on."
+                label={t(locale, 'settings.quality.visualRun.label')}
+                description={t(locale, 'settings.quality.visualRun.desc')}
                 checked={quality.visual_quality_gate}
                 onChange={(v) => onChange('visual_quality_gate', v)}
                 disabled={disabled}
               />
               <ToggleRow
-                label="Strict visual mode"
-                description="When on, a defined set of visual issue codes fails the gate outright (stricter than headline score alone). Use when you want zero tolerance for missing viewport/lang, thin design tokens, etc."
+                label={t(locale, 'settings.quality.visualStrict.label')}
+                description={t(locale, 'settings.quality.visualStrict.desc')}
                 checked={quality.visual_quality_strict}
                 onChange={(v) => onChange('visual_quality_strict', v)}
                 disabled={disabled}
               />
               <ToggleRow
-                label="App-like surface checks"
-                description="For dashboard / full-software style specs, require skeleton, empty, and error UI patterns. Turn off only for pure marketing landings if false positives annoy you."
+                label={t(locale, 'settings.quality.visualApp.label')}
+                description={t(locale, 'settings.quality.visualApp.desc')}
                 checked={quality.visual_quality_app_checks}
                 onChange={(v) => onChange('visual_quality_app_checks', v)}
                 disabled={disabled}
@@ -223,18 +226,18 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
           </div>
 
           <div>
-            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Browser QA (Playwright)</h4>
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">{t(locale, 'settings.quality.section.browser')}</h4>
             <div className="space-y-3">
               <ToggleRow
-                label="Run browser E2E during QA"
-                description="Headless Chromium crawl of the generated site. Disabling speeds QA up but skips realistic navigation checks."
+                label={t(locale, 'settings.quality.browserE2e.label')}
+                description={t(locale, 'settings.quality.browserE2e.desc')}
                 checked={quality.browser_e2e_enabled}
                 onChange={(v) => onChange('browser_e2e_enabled', v)}
                 disabled={disabled}
               />
               <NumberRow
-                label="Max pages per crawl"
-                description="Safety cap on how many distinct URLs the deep crawl visits. Raise for large sites; lower for faster CI."
+                label={t(locale, 'settings.quality.browserPages.label')}
+                description={t(locale, 'settings.quality.browserPages.desc')}
                 value={quality.browser_max_pages}
                 min={1}
                 max={500}
@@ -242,8 +245,8 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
                 disabled={disabled}
               />
               <NumberRow
-                label="Max crawl depth"
-                description="Maximum link depth from the start page. Deeper finds more issues but takes longer."
+                label={t(locale, 'settings.quality.browserDepth.label')}
+                description={t(locale, 'settings.quality.browserDepth.desc')}
                 value={quality.browser_max_depth}
                 min={1}
                 max={30}
@@ -254,25 +257,25 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
           </div>
 
           <div>
-            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Public storefront listing</h4>
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">{t(locale, 'settings.quality.section.storefront')}</h4>
             <div className="space-y-3">
               <ToggleRow
-                label="Enable listing quality gate"
-                description="When off, every completed product can appear on the public grid (debug only). When on, products must pass the rules below."
+                label={t(locale, 'settings.quality.marketGate.label')}
+                description={t(locale, 'settings.quality.marketGate.desc')}
                 checked={quality.marketplace_quality_gate}
                 onChange={(v) => onChange('marketplace_quality_gate', v)}
                 disabled={disabled}
               />
               <ToggleRow
-                label="Require full QA telemetry"
-                description="Require saved browser/QA telemetry with all gates passed before a product may be listed."
+                label={t(locale, 'settings.quality.fullQa.label')}
+                description={t(locale, 'settings.quality.fullQa.desc')}
                 checked={quality.marketplace_require_full_qa}
                 onChange={(v) => onChange('marketplace_require_full_qa', v)}
                 disabled={disabled}
               />
               <NumberRow
-                label="Minimum spec keyword coverage (%)"
-                description="When the spec defines measurable keywords, listing requires at least this coverage. Set to 0 to disable this check."
+                label={t(locale, 'settings.quality.specCoverage.label')}
+                description={t(locale, 'settings.quality.specCoverage.desc')}
                 value={quality.marketplace_min_spec_coverage}
                 min={0}
                 max={100}
@@ -280,15 +283,15 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
                 disabled={disabled}
               />
               <ToggleRow
-                label="Require architecture novelty"
-                description="When an architecture novelty score exists, it must meet the minimum below."
+                label={t(locale, 'settings.quality.designNoveltyReq.label')}
+                description={t(locale, 'settings.quality.designNoveltyReq.desc')}
                 checked={quality.marketplace_require_design_novelty}
                 onChange={(v) => onChange('marketplace_require_design_novelty', v)}
                 disabled={disabled}
               />
               <NumberRow
-                label="Minimum design novelty score"
-                description="Threshold for architecture novelty (0–1). Only used when a score is present and the requirement above is on."
+                label={t(locale, 'settings.quality.designNoveltyMin.label')}
+                description={t(locale, 'settings.quality.designNoveltyMin.desc')}
                 value={quality.marketplace_min_design_novelty}
                 min={0}
                 max={1}
@@ -297,22 +300,22 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
                 disabled={disabled}
               />
               <ToggleRow
-                label="Block high-severity QA realism findings"
-                description="When on, backend realism issues reported by QA can block storefront listing."
+                label={t(locale, 'settings.quality.qaRealism.label')}
+                description={t(locale, 'settings.quality.qaRealism.desc')}
                 checked={quality.marketplace_require_qa_realism}
                 onChange={(v) => onChange('marketplace_require_qa_realism', v)}
                 disabled={disabled}
               />
               <ToggleRow
-                label="Require release score from QA"
-                description="When the QA report includes a release score, it must meet the minimum below."
+                label={t(locale, 'settings.quality.releaseScoreReq.label')}
+                description={t(locale, 'settings.quality.releaseScoreReq.desc')}
                 checked={quality.marketplace_require_release_score}
                 onChange={(v) => onChange('marketplace_require_release_score', v)}
                 disabled={disabled}
               />
               <NumberRow
-                label="Minimum release score"
-                description="0–100; used only when a release score exists and the requirement above is enabled."
+                label={t(locale, 'settings.quality.releaseScoreMin.label')}
+                description={t(locale, 'settings.quality.releaseScoreMin.desc')}
                 value={quality.marketplace_min_release_score}
                 min={0}
                 max={100}
@@ -320,29 +323,29 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
                 disabled={disabled}
               />
               <ToggleRow
-                label="Reject placeholder product names"
-                description="Blocks obviously generic or spam titles from being listed."
+                label={t(locale, 'settings.quality.placeholderName.label')}
+                description={t(locale, 'settings.quality.placeholderName.desc')}
                 checked={quality.marketplace_require_non_placeholder_name}
                 onChange={(v) => onChange('marketplace_require_non_placeholder_name', v)}
                 disabled={disabled}
               />
               <ToggleRow
-                label="Require methodology review"
-                description="Listing may require methodology pack / review signals to be satisfied."
+                label={t(locale, 'settings.quality.methodology.label')}
+                description={t(locale, 'settings.quality.methodology.desc')}
                 checked={quality.marketplace_require_methodology}
                 onChange={(v) => onChange('marketplace_require_methodology', v)}
                 disabled={disabled}
               />
               <ToggleRow
-                label="Require quality constitution (listing)"
-                description="Runs the quality constitution gate before allowing listing (stricter orgs)."
+                label={t(locale, 'settings.quality.constitutionListing.label')}
+                description={t(locale, 'settings.quality.constitutionListing.desc')}
                 checked={quality.marketplace_require_quality_constitution}
                 onChange={(v) => onChange('marketplace_require_quality_constitution', v)}
                 disabled={disabled}
               />
               <ToggleRow
-                label="Require release cockpit “go”"
-                description="When on, the release cockpit must report go before listing."
+                label={t(locale, 'settings.quality.releaseCockpit.label')}
+                description={t(locale, 'settings.quality.releaseCockpit.desc')}
                 checked={quality.marketplace_require_release_cockpit}
                 onChange={(v) => onChange('marketplace_require_release_cockpit', v)}
                 disabled={disabled}
@@ -351,10 +354,10 @@ export function QualitySettingsCollapsible({ open, onToggle, quality, onChange, 
           </div>
 
           <div>
-            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Pipeline constitution</h4>
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">{t(locale, 'settings.quality.section.constitution')}</h4>
             <ToggleRow
-              label="Quality constitution during pipeline"
-              description="When on, runtime guards may attach constitution-based issues before certain stages complete. Disable only for debugging."
+              label={t(locale, 'settings.quality.constitutionPipeline.label')}
+              description={t(locale, 'settings.quality.constitutionPipeline.desc')}
               checked={quality.quality_constitution_pipeline_enabled}
               onChange={(v) => onChange('quality_constitution_pipeline_enabled', v)}
               disabled={disabled}

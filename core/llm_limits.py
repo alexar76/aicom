@@ -1,4 +1,7 @@
 """
+import logging
+
+logger = logging.getLogger(__name__)
 LLM router limits — YAML slice under ``llm.limits`` + effective values (env wins).
 
 Admin → LLM Providers panel reads/writes these; enforcement lives in ``llm.usage_guard``.
@@ -11,6 +14,7 @@ from typing import Any
 
 from core.config_merge import load_merged_config
 from core.paths import config_path
+from core.logging_utils import log_suppressed
 from core.throughput_limits import (
     effective_llm_daily_cost_cap_usd,
     effective_llm_max_requests_per_minute,
@@ -79,8 +83,8 @@ def llm_limits_yaml_slice() -> dict[str, Any]:
                 out["pre_call_reserve_usd"] = _coerce_float(
                     limits["pre_call_reserve_usd"], float(out["pre_call_reserve_usd"])
                 )
-    except Exception:
-        pass
+    except Exception as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (core/llm_limits.py)", exc_info=_suppressed_exc)
 
     _CACHE_MTIME = mtime
     _CACHE_SLICE = dict(out)

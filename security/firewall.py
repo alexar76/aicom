@@ -13,6 +13,7 @@ import logging
 from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field
 from pathlib import Path
+from core.logging_utils import log_suppressed
 
 try:
     from cryptography.fernet import Fernet, InvalidToken
@@ -53,8 +54,8 @@ class FirewallRule:
                 return True
             if "/" in self.source and ipaddress.ip_address(ip) in ipaddress.ip_network(self.source, strict=False):
                 return True
-        except ValueError:
-            pass
+        except ValueError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (security/firewall.py)", exc_info=_suppressed_exc)
         return False
 
 

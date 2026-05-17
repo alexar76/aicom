@@ -18,9 +18,9 @@ from typing import Optional
 
 from fastapi import APIRouter
 
-from core.logging_utils import log_suppressed
 from core.paths import bugs_dir, data_root, feedback_dir, product_state_dir, support_root_dir
 from web.backend.schemas.api_requests import FeedbackSubmitRequest
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -433,8 +433,8 @@ def _create_feature_suggestion(product_id: str, feedback_id: str, description: s
         try:
             with open(suggestion_file) as f:
                 suggestions = json.load(f)
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/api/feedback.py)", exc_info=_suppressed_exc)
 
     suggestions.append({
         "id": f"sug-{uuid.uuid4().hex[:8]}",
@@ -463,8 +463,8 @@ def _log_praise(product_id: str, feedback_id: str, comment: str):
         try:
             with open(praise_file) as f:
                 testimonials = json.load(f)
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/api/feedback.py)", exc_info=_suppressed_exc)
 
     testimonials.append({
         "id": f"test-{uuid.uuid4().hex[:8]}",

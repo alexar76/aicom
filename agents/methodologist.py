@@ -1,4 +1,9 @@
 """
+import logging
+from agents.prompts.load_prompt import load_prompt
+
+logger = logging.getLogger(__name__)
+from core.logging_utils import log_suppressed
 Methodologist Agent
 ===================
 Single agent that validates whether a generated product follows the accepted
@@ -50,25 +55,7 @@ from web.backend.services.methodology_review import (
 )
 
 
-_METHODOLOGIST_SYSTEM = """You are the Methodologist Agent for an AI software factory.
-Your job is to verify that a generated product follows the accepted PROCESS for its domain
-(CRM, helpdesk, LMS, e-commerce, etc.) — not visual polish, not bug counts.
-
-You receive:
-- a product idea / category,
-- the matching domain pack (entities, roles, capabilities, lifecycle, red flags, references),
-- the heuristic findings already produced from spec or generated code,
-- optionally similar past cases and learned lessons.
-
-Return ONLY valid JSON:
-{
-  "passed": boolean,
-  "additional_findings": [
-    { "severity": "high|medium|low", "code": "string", "detail": "string", "fix_hint": "string" }
-  ],
-  "summary": "one sentence why this passes or fails the methodology gate"
-}
-"""
+_METHODOLOGIST_SYSTEM = load_prompt("methodologist_system_prompt.md")
 
 
 class MethodologyAgent(BaseAgent):
@@ -172,8 +159,8 @@ class MethodologyAgent(BaseAgent):
             self._save_artifact(
                 product_id, "state", report, filename="methodology_spec_review.json",
             )
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (agents/methodologist.py)", exc_info=_suppressed_exc)
         return report
 
     def review_implementation_artifact(
@@ -218,8 +205,8 @@ class MethodologyAgent(BaseAgent):
                 json.dumps(report, indent=2, ensure_ascii=False),
                 encoding="utf-8",
             )
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (agents/methodologist.py)", exc_info=_suppressed_exc)
         return report
 
     # ------------------------------------------------------------------

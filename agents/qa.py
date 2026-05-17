@@ -1,4 +1,9 @@
 """
+import logging
+from agents.prompts.load_prompt import load_prompt
+
+logger = logging.getLogger(__name__)
+from core.logging_utils import log_suppressed
 QA Agent (Quality Assurance)
 =============================
 Responsible for:
@@ -88,25 +93,7 @@ def _qa_extract_json_object(text: str) -> dict | None:
         return None
 
 
-QA_SYSTEM_PROMPT = """You are the QA Agent for an AI-powered software factory.
-Your role is to test code thoroughly and find bugs.
-
-For each codebase, you must:
-1. Review code for logical errors and bugs
-2. Check for security vulnerabilities
-3. Verify edge cases are handled
-4. Test input validation
-5. Check for performance issues
-6. Provide detailed bug reports with reproduction steps
-
-Output format: JSON with fields:
-- bugs_found: list of {severity, title, description, file, line, reproduction_steps, suggested_fix}
-- security_issues: list of {severity, issue, affected_code, recommendation}
-- performance_concerns: list of {issue, location, impact, suggestion}
-- code_quality_score: number (0-100)
-- test_coverage_estimate: string
-- overall_verdict: "pass" | "needs_fixes" | "fail"
-"""
+QA_SYSTEM_PROMPT = load_prompt("qa_system_prompt.md")
 
 
 def _env_float(name: str, default: float) -> float:
@@ -615,8 +602,8 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                     ),
                     encoding="utf-8",
                 )
-            except OSError:
-                pass
+            except OSError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (agents/qa.py)", exc_info=_suppressed_exc)
 
             elapsed = time.time() - start_time
             self._log(
@@ -717,8 +704,8 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                                 "size": len(content),
                                 "lines": content.count("\n") + 1,
                             })
-                        except Exception:
-                            pass
+                        except Exception as _suppressed_exc:
+                            log_suppressed(logger, "non-fatal (agents/qa.py)", exc_info=_suppressed_exc)
         return files
 
     def _scan_for_insecure_auth(self, code_files: list[dict]) -> list[dict]:
@@ -1011,8 +998,8 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                                 "line": parts[1].strip() if len(parts) > 1 else 0,
                                 "message": ":".join(parts[3:]).strip(),
                             })
-            except (FileNotFoundError, subprocess.TimeoutExpired, Exception):
-                pass
+            except (FileNotFoundError, subprocess.TimeoutExpired, Exception) as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (agents/qa.py)", exc_info=_suppressed_exc)
 
             # 3. Try flake8 if available
             try:
@@ -1031,8 +1018,8 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                                 "line": parts[1],
                                 "message": ":".join(parts[3:]).strip(),
                             })
-            except (FileNotFoundError, subprocess.TimeoutExpired, Exception):
-                pass
+            except (FileNotFoundError, subprocess.TimeoutExpired, Exception) as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (agents/qa.py)", exc_info=_suppressed_exc)
 
         return issues
 
@@ -1133,8 +1120,8 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                     test_file = test_dir / f"test_{Path(fpath).stem}.py"
                     test_file.write_text(test_content)
                     generated_tests.append(str(test_file))
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (agents/qa.py)", exc_info=_suppressed_exc)
 
         return generated_tests
 
@@ -1288,8 +1275,8 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                 json.dumps(report, indent=2, ensure_ascii=False),
                 encoding="utf-8",
             )
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (agents/qa.py)", exc_info=_suppressed_exc)
         return report
 
     def _assess_maintainability(self, product_id: str, code_files: list[dict]) -> dict:
@@ -1375,7 +1362,7 @@ Focus on finding bugs, security issues, and performance problems.
             result = self._extract_json(response)
             if result is not None:
                 return result
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (agents/qa.py)", exc_info=_suppressed_exc)
 
         return None

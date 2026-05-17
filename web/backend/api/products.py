@@ -165,8 +165,8 @@ def _load_pipeline_data() -> dict:
         try:
             with open(pipeline_file, "r") as f:
                 return json.load(f)
-        except (json.JSONDecodeError, IOError):
-            pass
+        except (json.JSONDecodeError, IOError) as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/api/products.py)", exc_info=_suppressed_exc)
     return {"products": {}}
 
 
@@ -563,8 +563,8 @@ async def list_products(
                         spec = spec_data.get("specification", {})
                         if spec.get("core_features"):
                             features = [f.get("name", f.get("description", "")) for f in spec["core_features"]]
-                    except Exception:
-                        pass
+                    except Exception as _suppressed_exc:
+                        log_suppressed(logger, "non-fatal (web/backend/api/products.py)", exc_info=_suppressed_exc)
                 if not features and marketing:
                     features = marketing.get("key_benefits", [])
 
@@ -694,8 +694,8 @@ async def get_product(product_id: str):
                     gate_data = json.load(gf)
                 browser_preview_e2e = gate_data.get("browser_preview_e2e")
                 qa_gates_all_passed = gate_data.get("gates_all_passed")
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/api/products.py)", exc_info=_suppressed_exc)
 
         return {
             "id": product_id,

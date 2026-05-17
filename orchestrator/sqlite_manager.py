@@ -20,6 +20,7 @@ from typing import Any, Optional
 from core.paths import pipeline_db_path
 
 from .schema import SQLITE_SCHEMA
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -67,32 +68,32 @@ class SQLiteManager:
             logger.warning("Schema apply hit workspace_id issue, running compatibility migration: %s", e)
             try:
                 self._conn.execute("ALTER TABLE products ADD COLUMN workspace_id TEXT NOT NULL DEFAULT 'default'")
-            except sqlite3.OperationalError:
-                pass
+            except sqlite3.OperationalError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (orchestrator/sqlite_manager.py)", exc_info=_suppressed_exc)
             try:
                 self._conn.execute("ALTER TABLE tasks ADD COLUMN workspace_id TEXT NOT NULL DEFAULT 'default'")
-            except sqlite3.OperationalError:
-                pass
+            except sqlite3.OperationalError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (orchestrator/sqlite_manager.py)", exc_info=_suppressed_exc)
             self._conn.executescript(SQLITE_SCHEMA)
         # Migrate existing tables: add retry_count column if missing
         try:
             self._conn.execute("ALTER TABLE tasks ADD COLUMN retry_count INTEGER DEFAULT 0")
             logger.info("Added retry_count column to existing tasks table (schema migration)")
-        except sqlite3.OperationalError:
+        except sqlite3.OperationalError as _suppressed_exc:
             # Column already exists — this is fine
-            pass
+            log_suppressed(logger, "non-fatal (orchestrator/sqlite_manager.py)", exc_info=_suppressed_exc)
         try:
             self._conn.execute("ALTER TABLE products ADD COLUMN workspace_id TEXT NOT NULL DEFAULT 'default'")
-        except sqlite3.OperationalError:
-            pass
+        except sqlite3.OperationalError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (orchestrator/sqlite_manager.py)", exc_info=_suppressed_exc)
         try:
             self._conn.execute("ALTER TABLE tasks ADD COLUMN workspace_id TEXT NOT NULL DEFAULT 'default'")
-        except sqlite3.OperationalError:
-            pass
+        except sqlite3.OperationalError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (orchestrator/sqlite_manager.py)", exc_info=_suppressed_exc)
         try:
             self._conn.execute("ALTER TABLE tasks ADD COLUMN input TEXT")
-        except sqlite3.OperationalError:
-            pass
+        except sqlite3.OperationalError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (orchestrator/sqlite_manager.py)", exc_info=_suppressed_exc)
         self._conn.commit()
         logger.debug("Connected to SQLite at %s", self.db_path)
 

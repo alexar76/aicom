@@ -88,8 +88,9 @@ import toast from 'react-hot-toast';
 import { ProviderFormModal } from './ProviderFormModal';
 import { RoutingRulesEditor } from './RoutingRulesEditor';
 import { LlmLimitsPanel } from './LlmLimitsPanel';
+import { CircuitBreakerPanel } from '../providers/CircuitBreakerPanel';
 
-export function ProvidersTab() {
+export function ProvidersTab({ locale }: { locale: AdminLocale }) {
   const [providers, setProviders] = useState<ProviderStatus[]>([]);
   const [llmPricing, setLlmPricing] = useState<Record<string, LlmPricingProviderRow> | null>(null);
   const [pricingDraft, setPricingDraft] = useState<Record<string, string>>({});
@@ -256,12 +257,13 @@ export function ProvidersTab() {
   };
 
   return (
-    <div className="space-y-6">
+    <motion.div className="space-y-6">
+      <CircuitBreakerPanel locale={locale} />
       <LlmLimitsPanel />
 
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-xl font-semibold text-white">LLM Providers</h2>
+        <h2 className="text-xl font-semibold text-white">{t(locale, 'providers.title')}</h2>
         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:justify-end">
           <Button
             variant="secondary"
@@ -294,6 +296,18 @@ export function ProvidersTab() {
                 <div className="flex min-w-0 flex-wrap items-center gap-3">
                   <Cpu className="h-5 w-5 shrink-0 text-indigo-400" />
                   <h3 className="text-white font-medium">{provider.name}</h3>
+                  {provider.circuit && (
+                    <span
+                      className={`h-2.5 w-2.5 rounded-full shrink-0 ${
+                        provider.circuit.state === 'open'
+                          ? 'bg-rose-500'
+                          : provider.circuit.state === 'half_open'
+                            ? 'bg-amber-400 animate-pulse'
+                            : 'bg-emerald-500'
+                      }`}
+                      title={`Circuit: ${provider.circuit.state}`}
+                    />
+                  )}
                   {provider.is_default && (
                     <span className="text-xs text-amber-400 font-medium bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
                       ⭐ Default
@@ -540,6 +554,6 @@ export function ProvidersTab() {
         initial={editingProvider}
         onSaved={loadProviders}
       />
-    </div>
+    </motion.div>
   );
 }

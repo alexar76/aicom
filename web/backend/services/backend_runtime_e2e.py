@@ -1,4 +1,7 @@
 """
+import logging
+
+logger = logging.getLogger(__name__)
 Runtime backend E2E checks for generated products.
 
 Purpose:
@@ -19,6 +22,7 @@ from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+from core.logging_utils import log_suppressed
 
 
 def _truthy(name: str, default: str = "1") -> bool:
@@ -75,8 +79,8 @@ def _wait_for_port(host: str, port: int, timeout_sec: float) -> bool:
         finally:
             try:
                 s.close()
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/services/backend_runtime_e2e.py)", exc_info=_suppressed_exc)
     return False
 
 
@@ -308,8 +312,8 @@ def run_backend_runtime_e2e(product_id: str, data_root: str | Path | None = None
             issues.extend(load_smoke.get("issues") or [])
         try:
             _append_perf_history(product_id, data_root, load_smoke)
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/backend_runtime_e2e.py)", exc_info=_suppressed_exc)
 
         # Probe one non-health business route if present.
         routes = _extract_routes(py_files)
@@ -345,12 +349,12 @@ def run_backend_runtime_e2e(product_id: str, data_root: str | Path | None = None
     finally:
         try:
             proc.terminate()
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/backend_runtime_e2e.py)", exc_info=_suppressed_exc)
         try:
             proc.wait(timeout=3)
         except Exception:
             try:
                 proc.kill()
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/services/backend_runtime_e2e.py)", exc_info=_suppressed_exc)

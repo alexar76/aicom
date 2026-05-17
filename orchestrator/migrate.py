@@ -23,6 +23,7 @@ from typing import Optional
 from core.paths import pipeline_db_path, pipeline_json_path
 
 from .sqlite_manager import SQLiteManager
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -61,18 +62,18 @@ def migrate(
         for p in product_dicts:
             try:
                 latest = max(latest, float(p.get("updated_at") or 0))
-            except (TypeError, ValueError):
-                pass
+            except (TypeError, ValueError) as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (orchestrator/migrate.py)", exc_info=_suppressed_exc)
             try:
                 latest = max(latest, float(p.get("created_at") or 0))
-            except (TypeError, ValueError):
-                pass
+            except (TypeError, ValueError) as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (orchestrator/migrate.py)", exc_info=_suppressed_exc)
         for t in task_dicts:
             for key in ("created_at", "started_at", "completed_at"):
                 try:
                     latest = max(latest, float(t.get(key) or 0))
-                except (TypeError, ValueError):
-                    pass
+                except (TypeError, ValueError) as _suppressed_exc:
+                    log_suppressed(logger, "non-fatal (orchestrator/migrate.py)", exc_info=_suppressed_exc)
         return latest
 
     # Connect to SQLite — bulk upsert products; tasks merge when SQLite has fresher rows

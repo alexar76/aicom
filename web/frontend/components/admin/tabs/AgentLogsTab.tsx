@@ -100,7 +100,7 @@ const AGENT_LOG_FILTER_TYPES = [
   'audit',
 ] as const;
 
-export function AgentLogsTab() {
+export function AgentLogsTab({ locale }: { locale: AdminLocale }) {
   const searchParams = useSearchParams();
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -186,7 +186,7 @@ export function AgentLogsTab() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <h2 className="text-xl font-semibold text-white shrink-0">Agent Execution Logs</h2>
+        <h2 className="text-xl font-semibold text-white shrink-0">{t(locale, 'agentLogs.title')}</h2>
         <div className="flex min-w-0 flex-1 flex-col gap-2 sm:max-w-3xl lg:ml-auto">
           <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
             <Input

@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from core.paths import admin_users_path, legacy_admin_path
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -55,8 +56,8 @@ def _save_raw(data: dict[str, Any]) -> None:
     tmp.replace(USERS_PATH)
     try:
         os.chmod(USERS_PATH, 0o600)
-    except OSError:
-        pass
+    except OSError as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/services/admin_users_store.py)", exc_info=_suppressed_exc)
 
 
 def ensure_legacy_admin_users_file() -> None:

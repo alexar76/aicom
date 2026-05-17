@@ -84,7 +84,7 @@ import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTh
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
 
-export function SandboxTab() {
+export function SandboxTab({ locale }: { locale: AdminLocale }) {
   const [products, setProducts] = useState<any[]>([]);
   const [activeSandboxes, setActiveSandboxes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -194,7 +194,7 @@ export function SandboxTab() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-white mb-4">Sandbox & Git</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">{t(locale, 'sandbox.title')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="glass-card p-6">
@@ -211,7 +211,7 @@ export function SandboxTab() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-xl font-semibold text-white">Sandbox & Git</h2>
+        <h2 className="text-xl font-semibold text-white">{t(locale, 'sandbox.title')}</h2>
         <Button variant="secondary" size="sm" onClick={loadData} className="w-full shrink-0 sm:w-auto">
           <RefreshCw className="w-4 h-4 mr-1" /> Refresh
         </Button>

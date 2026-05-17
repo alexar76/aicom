@@ -1,15 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, Lock, KeyRound, AlertTriangle, Eye, EyeOff, User } from 'lucide-react';
+import { Cpu, Lock, KeyRound, AlertTriangle, Eye, EyeOff, User, Languages } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import api from '@/lib/api';
 import { getPasskeyAssertion } from '@/lib/webauthnClient';
+import {
+  type AdminLocale,
+  detectAdminLocale,
+  saveAdminLocale,
+  t,
+} from '@/lib/adminI18n';
 
 export default function AdminLoginPage() {
+  const [locale, setLocale] = useState<AdminLocale>('en');
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('');
   const [totpCode, setTotpCode] = useState('');
@@ -18,6 +25,15 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    setLocale(detectAdminLocale());
+  }, []);
+
+  const onLocaleChange = (next: AdminLocale) => {
+    setLocale(next);
+    saveAdminLocale(next);
+  };
 
   const handleLogin = async () => {
     if (!password) return;
@@ -35,13 +51,13 @@ export default function AdminLoginPage() {
         username.trim() || 'admin',
         password,
         totpCode || undefined,
-        webauthnCredential
+        webauthnCredential,
       );
 
       localStorage.setItem('admin_token', response.access_token);
       window.location.href = '/admin';
-    } catch (err: any) {
-      const msg = err.message || 'Invalid credentials';
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : t(locale, 'login.invalidCredentials');
       if (msg === '2FA code required' && !totpCode) {
         setRequires2FA(true);
         setRequiresWebAuthn(false);
@@ -54,7 +70,7 @@ export default function AdminLoginPage() {
         setLoading(false);
         return;
       }
-      setError(msg);
+      setError(msg === 'Invalid credentials' ? t(locale, 'login.invalidCredentials') : msg);
     } finally {
       setLoading(false);
     }
@@ -68,8 +84,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      {/* Background effects */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden" aria-hidden>
         <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-indigo-500/10 rounded-full blur-[128px]" />
         <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-pink-500/10 rounded-full blur-[128px]" />
       </div>
@@ -80,18 +95,30 @@ export default function AdminLoginPage() {
         className="w-full max-w-md relative"
       >
         <GlassCard className="p-8">
-          {/* Logo */}
           <div className="text-center mb-8">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 p-3 mx-auto mb-4">
               <Cpu className="w-full h-full text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-white">Admin Login</h1>
-            <p className="text-sm text-gray-400 mt-1">
-              AI-Factory v2.1 Management Panel
-            </p>
+            <h1 className="text-2xl font-bold text-white">{t(locale, 'login.title')}</h1>
+            <p className="text-sm text-gray-400 mt-1">{t(locale, 'login.subtitle')}</p>
           </div>
 
-          {/* Error */}
+          <div className="mb-5">
+            <label className="mb-1.5 flex items-center gap-2 text-xs font-medium text-gray-400">
+              <Languages className="h-3.5 w-3.5" aria-hidden />
+              {t(locale, 'login.language')}
+            </label>
+            <select
+              value={locale}
+              onChange={(e) => onLocaleChange(e.target.value as AdminLocale)}
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+            >
+              <option value="en">English</option>
+              <option value="ru">Русский</option>
+              <option value="es">Español</option>
+            </select>
+          </div>
+
           {error && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -105,51 +132,41 @@ export default function AdminLoginPage() {
 
           <div className="space-y-5">
             <Input
-              label="Username"
-              placeholder="admin"
+              label={t(locale, 'login.username')}
+              placeholder={t(locale, 'login.usernamePlaceholder')}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               onKeyDown={handleKeyDown}
               icon={<User className="w-4 h-4" />}
             />
-            {/* Password */}
             <div className="relative">
               <Input
-                label="Password"
+                label={t(locale, 'login.password')}
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Enter admin password"
+                placeholder={t(locale, 'login.passwordPlaceholder')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={handleKeyDown}
                 icon={<Lock className="w-4 h-4" />}
               />
               <button
+                type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-[38px] text-gray-400 hover:text-gray-300 transition-colors"
               >
-                {showPassword ? (
-                  <EyeOff className="w-4 h-4" />
-                ) : (
-                  <Eye className="w-4 h-4" />
-                )}
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
 
-            {/* 2FA Code (shown after password verification) */}
             {requiresWebAuthn && (
-              <p className="text-sm text-indigo-200/90 text-center">
-                Use your passkey (Touch ID, Windows Hello, security key) on the next step.
-              </p>
+              <p className="text-sm text-indigo-200/90 text-center">{t(locale, 'login.webauthnHint')}</p>
             )}
 
             {requires2FA && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-              >
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
                 <Input
-                  label="2FA Code"
-                  placeholder="Enter 6-digit code"
+                  label={t(locale, 'login.totp')}
+                  placeholder={t(locale, 'login.totpPlaceholder')}
                   value={totpCode}
                   onChange={(e) => setTotpCode(e.target.value.slice(0, 6))}
                   onKeyDown={handleKeyDown}
@@ -159,7 +176,6 @@ export default function AdminLoginPage() {
               </motion.div>
             )}
 
-            {/* Login Button */}
             <Button
               className="w-full"
               size="lg"
@@ -167,14 +183,15 @@ export default function AdminLoginPage() {
               loading={loading}
               disabled={!password || !username.trim()}
             >
-              {requiresWebAuthn ? 'Sign in with passkey' : requires2FA ? 'Verify 2FA' : 'Login'}
+              {requiresWebAuthn
+                ? t(locale, 'login.webauthn')
+                : requires2FA
+                  ? t(locale, 'login.verify2fa')
+                  : t(locale, 'login.submit')}
             </Button>
           </div>
 
-          {/* Footer */}
-          <p className="text-center text-xs text-gray-600 mt-6">
-            Secure admin access with password and optional 2FA
-          </p>
+          <p className="text-center text-xs text-gray-600 mt-6">{t(locale, 'login.footer')}</p>
         </GlassCard>
       </motion.div>
     </div>

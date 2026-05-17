@@ -22,8 +22,8 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
-from core.logging_utils import log_suppressed
 from core.paths import data_root, model_providers_path, pipeline_db_path, pipeline_json_path
+from core.logging_utils import log_suppressed
 from core.throughput_limits import (
     effective_batch_pipeline_active_limit,
     effective_batch_pipeline_max_start_per_cycle,
@@ -64,6 +64,8 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         self._agents = {}  # agent_type -> agent instance
         self._llm_router = None
         self._wake_event = asyncio.Event()
+        self._watch_stop = asyncio.Event()
+        self._watch_task: Optional[asyncio.Task] = None
         self._last_mtime = 0
         self._last_content_hash = ""
         self._last_policy_audit_mono = 0.0
@@ -177,6 +179,10 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                     ready = self.readiness_snapshot()
                     status = "200 OK" if ready.get("ready") else "503 Service Unavailable"
                     body = json.dumps(ready).encode("utf-8")
+                elif path in ("/wake", "/wake/"):
+                    self.signal_new_work()
+                    status = "204 No Content"
+                    body = b""
                 else:
                     status = "404 Not Found"
                     body = b'{"error":"not_found"}'
@@ -233,7 +239,8 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         # Initialize LLM router with provider config path
         from llm import LLMRouter
         self._llm_router = LLMRouter(str(model_providers_path()))
-        logger.info("LLM Router initialized for pipeline worker")
+        await self._llm_router.start_health_checks(interval_sec=60)
+        logger.info("LLM Router initialized for pipeline worker (circuit breaker + health checks)")
 
         # Import all agent classes
         try:
@@ -286,6 +293,11 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             logger.warning("Continuing with task orchestration only")
 
         self._last_policy_audit_mono = time.monotonic()
+        self._watch_stop.clear()
+        self._watch_task = asyncio.create_task(
+            self._run_state_watch(),
+            name="pipeline-state-watch",
+        )
         await asyncio.sleep(2)
         try:
             if os.environ.get("AIFACTORY_POLICY_AUDIT_ON_START", "1").strip().lower() in (
@@ -299,8 +311,10 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         self._last_policy_audit_mono = time.monotonic()
 
         last_mtime = 0
+        last_sqlite_mtime = 0.0
         last_content_hash = ""
         first_run = True
+        woke = False
 
         try:
             while self._running:
@@ -310,17 +324,26 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                     if self.state_file.exists():
                         current_mtime = os.path.getmtime(self.state_file)
 
-                    # JSON-backed mode only advances when pipeline.json changes (mtime/hash).
-                    # SQLite mode must tick continuously: internal task/agent updates do not touch JSON.
+                    current_sqlite_mtime = 0.0
+                    if self.use_sql_store:
+                        from core.pipeline_state_writer import sqlite_store_mtime
+
+                        current_sqlite_mtime = sqlite_store_mtime()
+
+                    # Run a cycle when: first start, worker wake (/wake or signal_new_work),
+                    # pipeline.json changed, or SQLite store touched (API enqueue without JSON mirror).
                     json_tick = first_run or current_mtime != last_mtime
-                    if json_tick or self.use_sqlite:
+                    sqlite_tick = self.use_sql_store and (
+                        first_run or current_sqlite_mtime != last_sqlite_mtime
+                    )
+                    if woke or json_tick or sqlite_tick or self._has_active_pipeline_work:
                         first_run = False
                         last_mtime = current_mtime
+                        last_sqlite_mtime = current_sqlite_mtime
 
                         if self.use_sqlite:
                             content_changed = True
                         else:
-                            # Content hash guard: skip if file was touched but content unchanged
                             content_changed = True
                             if current_mtime > 0:
                                 content_hash = self._compute_content_hash()
@@ -335,8 +358,8 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                 except Exception as e:
                     logger.error(f"Processing cycle error: {e}")
 
-                # Event-driven idle wait: wake immediately on signal_new_work(), else adaptive poll.
-                await self._wait_next_cycle(
+                # Event-driven idle: wake on /wake or signal_new_work(); else adaptive poll timeout.
+                woke = await self._wait_next_cycle(
                     self._poll_interval_sec(self._has_active_pipeline_work)
                 )
 
@@ -354,6 +377,11 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                         except Exception as e:
                             logger.error(f"Periodic policy audit failed: {e}")
         finally:
+            self._watch_stop.set()
+            if self._watch_task is not None:
+                self._watch_task.cancel()
+                with contextlib.suppress(asyncio.CancelledError):
+                    await self._watch_task
             await self._close_resources()
 
     async def _run_policy_audit_once(self, reason: str) -> None:
@@ -400,13 +428,16 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         except ValueError:
             return 0.25 if has_active_work else 2.0
 
-    async def _wait_next_cycle(self, poll_sec: float) -> None:
-        """Block until ``signal_new_work()`` or idle poll timeout."""
+    async def _wait_next_cycle(self, poll_sec: float) -> bool:
+        """Block until ``signal_new_work()`` or idle poll timeout. Returns True when woken."""
+        woke = False
         try:
             await asyncio.wait_for(self._wake_event.wait(), timeout=poll_sec)
-        except asyncio.TimeoutError:
-            pass
+            woke = True
+        except asyncio.TimeoutError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (pipeline_worker.py)", exc_info=_suppressed_exc)
         self._wake_event.clear()
+        return woke
 
     async def _process_cycle(self):
         """One processing cycle: check for new products and pending tasks."""
@@ -749,6 +780,17 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                 return hashlib.sha256(f.read()).hexdigest()
         except (IOError, OSError):
             return ""
+
+    async def _run_state_watch(self) -> None:
+        from core.pipeline_state_watch import run_pipeline_state_watch
+
+        sqlite_path = pipeline_db_path() if self.use_sql_store else None
+        await run_pipeline_state_watch(
+            json_path=self.state_file,
+            sqlite_path=sqlite_path,
+            on_wake=self.signal_new_work,
+            stop_event=self._watch_stop,
+        )
 
     def signal_new_work(self):
         """Signal the worker to wake up and process immediately (instead of waiting for next poll cycle)."""

@@ -9,6 +9,7 @@ import os
 from typing import Any, Literal
 
 from core.paths import pipeline_db_path
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -126,6 +127,6 @@ def mask_database_url(url: str) -> str:
             if "@" not in netloc and p.username:
                 netloc = f"{p.username}:***@{p.hostname or ''}" + (f":{p.port}" if p.port else "")
             return urlunparse((p.scheme, netloc, p.path, p.params, p.query, p.fragment))
-    except Exception:
-        pass
+    except Exception as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (core/pipeline_database.py)", exc_info=_suppressed_exc)
     return url[:8] + "…" if len(url) > 12 else "***"

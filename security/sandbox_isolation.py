@@ -20,6 +20,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger("ai_factory.security.sandbox")
 
@@ -332,8 +333,8 @@ class SandboxIsolation:
                 # Wait for process to die
                 try:
                     os.waitpid(sandbox.pid, 0)
-                except ChildProcessError:
-                    pass  # Already reaped
+                except ChildProcessError as _suppressed_exc:
+                    log_suppressed(logger, "non-fatal (security/sandbox_isolation.py)", exc_info=_suppressed_exc)
                 
                 sandbox.pid = None
             
@@ -516,15 +517,15 @@ class SandboxIsolation:
             memory_bytes = memory_limit_mb * 1024 * 1024
             try:
                 resource.prlimit(sandbox.pid, resource.RLIMIT_AS, (memory_bytes, memory_bytes))
-            except (ImportError, AttributeError):
-                pass  # prlimit not available on macOS
+            except (ImportError, AttributeError) as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (security/sandbox_isolation.py)", exc_info=_suppressed_exc)
             
             # CPU time limit (RLIMIT_CPU)
             cpu_time_sec = int(sandbox.timeout_seconds * cpu_limit)
             try:
                 resource.prlimit(sandbox.pid, resource.RLIMIT_CPU, (cpu_time_sec, cpu_time_sec))
-            except (ImportError, AttributeError):
-                pass
+            except (ImportError, AttributeError) as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (security/sandbox_isolation.py)", exc_info=_suppressed_exc)
             
             logger.info(f"Resource limits set for sandbox {sandbox_id}: CPU={cpu_limit}, MEM={memory_limit_mb}MB")
             return True

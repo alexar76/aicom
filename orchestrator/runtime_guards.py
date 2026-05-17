@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import time
 from pathlib import Path
@@ -8,6 +9,10 @@ from pathlib import Path
 from core.paths import resolve_data_root
 from core.quality_settings import quality_constitution_pipeline_enabled
 from web.backend.services.benchmark_gate import evaluate_benchmark_gate
+from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
+
 
 class RuntimeGuards:
     """Isolated runtime gate checks used by PipelineWorker."""
@@ -25,8 +30,8 @@ class RuntimeGuards:
                 if isinstance(inner, dict):
                     return inner
                 return data if isinstance(data, dict) else {}
-            except (json.JSONDecodeError, IOError):
-                pass
+            except (json.JSONDecodeError, IOError) as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (orchestrator/runtime_guards.py)", exc_info=_suppressed_exc)
         return {}
 
     def load_arch(self, product_id: str) -> dict:
@@ -39,8 +44,8 @@ class RuntimeGuards:
                 if isinstance(inner, dict):
                     return inner
                 return data if isinstance(data, dict) else {}
-            except (json.JSONDecodeError, IOError):
-                pass
+            except (json.JSONDecodeError, IOError) as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (orchestrator/runtime_guards.py)", exc_info=_suppressed_exc)
         return {}
 
     def architecture_gate(self, product_id: str, *, delivery_profile: str | None = None) -> tuple[bool, list[str]]:
@@ -54,8 +59,8 @@ class RuntimeGuards:
 
             if normalize_delivery_profile(delivery_profile) == MARKETING_LANDING:
                 return True, []
-        except ImportError:
-            pass
+        except ImportError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (orchestrator/runtime_guards.py)", exc_info=_suppressed_exc)
 
         modules = arch.get("modules") or arch.get("components") or []
         if not isinstance(modules, list) or len(modules) < 3:

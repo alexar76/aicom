@@ -108,6 +108,11 @@ def _apply_runtime_path_resolution(config: dict[str, Any]) -> dict[str, Any]:
         paths["reports"] = str(root / "reports")
         paths["secrets"] = str(root / "secrets")
         paths["git_repos"] = str(git_repos_dir())
-    except Exception:
-        pass
+    except Exception as exc:
+        import logging
+
+        logging.getLogger(__name__).debug(
+            "runtime path resolution skipped",
+            exc_info=exc,
+        )
     return config

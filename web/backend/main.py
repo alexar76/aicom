@@ -163,9 +163,12 @@ async def lifespan(app: FastAPI):
 
     # Initialize LLM router (for hot-reload from admin panel)
     try:
-        app.state.llm_router = LLMRouter()
+        router = LLMRouter()
+        app.state.llm_router = router
+        await router.start_health_checks(interval_sec=60)
+        logger.info("LLM router health checks started (web backend)")
     except Exception:
-        logger.warning("Failed to initialize LLM router in web backend")
+        logger.warning("Failed to initialize LLM router in web backend", exc_info=True)
         app.state.llm_router = None
     
     # Load admin config
@@ -185,11 +188,17 @@ async def lifespan(app: FastAPI):
     yield
     
     # Shutdown
+    router = getattr(app.state, "llm_router", None)
+    if router is not None:
+        try:
+            await router.close()
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "llm_router close on shutdown", exc_info=_suppressed_exc)
     standup_task.cancel()
     try:
         await standup_task
-    except asyncio.CancelledError:
-        pass
+    except asyncio.CancelledError as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/main.py)", exc_info=_suppressed_exc)
     logger.info("AI-Factory web backend shutting down")
 
 
@@ -215,7 +224,9 @@ app.add_middleware(
 
 from web.backend.middleware.csrf import csrf_protect_middleware
 from web.backend.middleware.firewall_http import firewall_http_middleware
+from web.backend.middleware.api_version import ApiVersionMiddleware
 
+app.add_middleware(ApiVersionMiddleware)
 app.middleware("http")(csrf_protect_middleware)
 app.middleware("http")(firewall_http_middleware)
 
@@ -295,7 +306,7 @@ async def admin_metrics_ws(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            payload = admin_dashboard._build_full_metrics()
+            payload = await admin_dashboard._build_full_metrics_async()
             await websocket.send_json(payload)
             await asyncio.sleep(2.0)
     except WebSocketDisconnect:
@@ -923,8 +934,8 @@ async def admin_create_product(
                 resource=f"pipeline/{product_id}",
                 details={"idea": request.idea[:100], "has_instructions": bool(request.admin_instructions)},
             )
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/main.py)", exc_info=_suppressed_exc)
 
         logger.info(f"Admin created product {product_id}: {request.idea[:50]}...")
 

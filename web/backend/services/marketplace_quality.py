@@ -1,4 +1,7 @@
 """
+import logging
+
+logger = logging.getLogger(__name__)
 Marketplace listing quality — generated programs must offer real user value before
 they appear on the public storefront (aligned with pipeline QA demo gates).
 
@@ -36,6 +39,7 @@ from typing import Any, Optional
 
 from web.backend.services.demo_quality import assess_product_demo, quality_gates_pass
 from web.backend.services.domain_methodology import get_domain_pack, select_domain_pack
+from core.logging_utils import log_suppressed
 from web.backend.services.methodology_review import (
     review_implementation as _methodology_review_implementation,
 )
@@ -92,8 +96,8 @@ def _resolve_delivery_profile_for_marketplace(
                 inner = raw.get("specification")
                 if isinstance(inner, dict) and inner.get("delivery_profile"):
                     return normalize_delivery_profile(str(inner.get("delivery_profile")))
-        except (OSError, json.JSONDecodeError, TypeError):
-            pass
+        except (OSError, json.JSONDecodeError, TypeError) as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/marketplace_quality.py)", exc_info=_suppressed_exc)
     return FULL_SOFTWARE
 
 
@@ -166,8 +170,8 @@ def _evaluate_methodology(
     if snapshot_path.is_file():
         try:
             return json.loads(snapshot_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            pass
+        except (OSError, json.JSONDecodeError) as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/marketplace_quality.py)", exc_info=_suppressed_exc)
 
     if isinstance(qa_report, dict):
         qa_result = qa_report.get("qa_result")

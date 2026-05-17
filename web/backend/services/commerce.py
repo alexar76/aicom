@@ -14,6 +14,10 @@ from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
+import logging
+from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 
@@ -102,14 +106,14 @@ class CommerceService:
             cols = [r["name"] for r in self.conn.execute("PRAGMA table_info(customers)").fetchall()]
             if "plan" not in cols:
                 self.conn.execute("ALTER TABLE customers ADD COLUMN plan TEXT NOT NULL DEFAULT 'free'")
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/commerce.py)", exc_info=_suppressed_exc)
         try:
             order_cols = [r["name"] for r in self.conn.execute("PRAGMA table_info(orders)").fetchall()]
             if "referral_source" not in order_cols:
                 self.conn.execute("ALTER TABLE orders ADD COLUMN referral_source TEXT")
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/commerce.py)", exc_info=_suppressed_exc)
         self.conn.execute(
             """
             CREATE TABLE IF NOT EXISTS orders (

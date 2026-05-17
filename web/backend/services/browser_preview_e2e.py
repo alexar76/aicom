@@ -62,6 +62,7 @@ from typing import Any
 from urllib.parse import urljoin, urlparse
 
 from core.paths import resolve_data_root
+from core.logging_utils import log_suppressed
 from web.backend.services.browser_e2e_deep import (
     deep_crawl_gate_issues,
     env_bool as deep_env_bool,
@@ -190,8 +191,8 @@ def _full_software_mobile_viewport_gate(browser: Any, start_url: str) -> dict[st
     finally:
         try:
             ctx.close()
-        except Exception:
-            pass
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/browser_preview_e2e.py)", exc_info=_suppressed_exc)
 
     fatal = bool(issues)
     return {
@@ -229,8 +230,8 @@ def _probe_ui_interactions(page: Any, max_clicks: int) -> dict[str, Any]:
         except Exception:
             try:
                 dialog.accept()
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/services/browser_preview_e2e.py)", exc_info=_suppressed_exc)
 
     page.on("dialog", _on_dialog)
 
@@ -497,12 +498,12 @@ def run_browser_preview_e2e(
         if httpd is not None:
             try:
                 httpd.shutdown()
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/services/browser_preview_e2e.py)", exc_info=_suppressed_exc)
             try:
                 httpd.server_close()
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/services/browser_preview_e2e.py)", exc_info=_suppressed_exc)
 
 
 def _playwright_check(
@@ -561,8 +562,8 @@ def _playwright_check(
                 except Exception:
                     try:
                         dlg.accept()
-                    except Exception:
-                        pass
+                    except Exception as _suppressed_exc:
+                        log_suppressed(logger, "non-fatal (web/backend/services/browser_preview_e2e.py)", exc_info=_suppressed_exc)
 
             page.on("dialog", _on_dialog)
 
@@ -651,8 +652,8 @@ def _playwright_check(
                         json.dumps(deep_summary, indent=2, ensure_ascii=False)[:480_000],
                         encoding="utf-8",
                     )
-                except OSError:
-                    pass
+                except OSError as _suppressed_exc:
+                    log_suppressed(logger, "non-fatal (web/backend/services/browser_preview_e2e.py)", exc_info=_suppressed_exc)
                 deep_issues = deep_crawl_gate_issues(deep_summary)
                 btn_clicks = sum(
                     int((p.get("button_probe") or {}).get("clicks") or 0)
@@ -712,8 +713,8 @@ def _playwright_check(
         finally:
             try:
                 browser.close()
-            except Exception:
-                pass
+            except Exception as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (web/backend/services/browser_preview_e2e.py)", exc_info=_suppressed_exc)
         if nav_err is not None:
             return {
                 "passed": False,

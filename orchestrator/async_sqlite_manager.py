@@ -180,6 +180,97 @@ class AsyncSQLiteManager:
             ),
         )
 
+    async def _scalar(self, query: str, params: tuple = ()) -> int | float:
+        if self._conn is None:
+            await self.initialize()
+        assert self._conn is not None
+        async with self._conn.execute(query, params) as cur:
+            row = await cur.fetchone()
+        if not row or row[0] is None:
+            return 0
+        return row[0]
+
+    async def get_state_distribution(self) -> dict[str, int]:
+        rows = await self.fetchall(
+            """
+            SELECT state, COUNT(*) AS cnt
+            FROM products
+            WHERE workspace_id = ?
+            GROUP BY state
+            """,
+            (self.workspace_id,),
+        )
+        return {str(r.get("state") or "UNKNOWN"): int(r.get("cnt") or 0) for r in rows}
+
+    async def get_metrics(self) -> dict:
+        ws = (self.workspace_id,)
+        total_products = int(
+            await self._scalar("SELECT COUNT(*) FROM products WHERE workspace_id = ?", ws)
+        )
+        active_products = int(
+            await self._scalar(
+                "SELECT COUNT(*) FROM products WHERE upper(state) NOT IN "
+                "('COMPLETED', 'DEPLOYED_PRODUCTION', 'FAILED', 'CANCELLED') AND workspace_id = ?",
+                ws,
+            )
+        )
+        completed_products = int(
+            await self._scalar(
+                "SELECT COUNT(*) FROM products WHERE upper(state) IN ('COMPLETED', 'DEPLOYED_PRODUCTION')"
+                " AND workspace_id = ?",
+                ws,
+            )
+        )
+        failed_products = int(
+            await self._scalar(
+                "SELECT COUNT(*) FROM products WHERE upper(state) = 'FAILED' AND workspace_id = ?",
+                ws,
+            )
+        )
+        total_tasks = int(await self._scalar("SELECT COUNT(*) FROM tasks WHERE workspace_id = ?", ws))
+        pending_tasks = int(
+            await self._scalar(
+                "SELECT COUNT(*) FROM tasks WHERE status = 'PENDING' AND workspace_id = ?",
+                ws,
+            )
+        )
+        running_tasks = int(
+            await self._scalar(
+                "SELECT COUNT(*) FROM tasks WHERE status = 'RUNNING' AND workspace_id = ?",
+                ws,
+            )
+        )
+        failed_tasks = int(
+            await self._scalar(
+                "SELECT COUNT(*) FROM tasks WHERE status = 'FAILED' AND workspace_id = ?",
+                ws,
+            )
+        )
+        timeout_tasks = int(
+            await self._scalar(
+                "SELECT COUNT(*) FROM tasks WHERE status = 'TIMEOUT' AND workspace_id = ?",
+                ws,
+            )
+        )
+        avg_seconds = await self._scalar(
+            "SELECT AVG(updated_at - created_at) FROM products WHERE upper(state) IN "
+            "('COMPLETED', 'DEPLOYED_PRODUCTION') AND workspace_id = ?",
+            ws,
+        )
+        avg_hours = float(avg_seconds) / 3600 if avg_seconds else 0.0
+        return {
+            "total_products": total_products,
+            "active_products": active_products,
+            "completed_products": completed_products,
+            "failed_products": failed_products,
+            "avg_completion_time_hours": round(avg_hours, 4),
+            "pending_tasks": pending_tasks,
+            "running_tasks": running_tasks,
+            "failed_tasks": failed_tasks,
+            "timeout_tasks": timeout_tasks,
+            "total_tasks": total_tasks,
+        }
+
     async def close(self) -> None:
         if self._conn is not None:
             await self._conn.close()

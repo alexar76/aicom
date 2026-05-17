@@ -1,4 +1,7 @@
 """
+import logging
+
+logger = logging.getLogger(__name__)
 Requirements clarifier
 ======================
 Builds an iterative clarification pack from a raw idea.
@@ -10,6 +13,7 @@ from __future__ import annotations
 import json
 import re
 from typing import Any
+from core.logging_utils import log_suppressed
 
 
 def build_clarification_pack(idea: str) -> dict:
@@ -67,6 +71,6 @@ Product idea:
         data = json.loads(raw)
         if isinstance(data, dict) and isinstance(data.get("questions"), list) and len(data["questions"]) >= 3:
             return data
-    except Exception:
-        pass
+    except Exception as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/services/requirements_clarifier.py)", exc_info=_suppressed_exc)
     return build_clarification_pack(idea)

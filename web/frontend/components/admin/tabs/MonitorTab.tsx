@@ -29,8 +29,9 @@ import {
   formatMonitorRelativeTime,
   getMonitorAgentDisplay,
 } from '@/hooks/admin/monitorDisplayConfig';
+import { type AdminLocale, t } from '@/lib/adminI18n';
 
-export function MonitorTab() {
+export function MonitorTab({ locale }: { locale: AdminLocale }) {
   const {
     metrics,
     paused,
@@ -119,7 +120,7 @@ export function MonitorTab() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 text-indigo-400 animate-spin mx-auto mb-3" />
-          <p className="text-gray-500 text-sm">Loading metrics…</p>
+          <p className="text-gray-500 text-sm">{t(locale, 'common.loading')}</p>
         </div>
       </div>
     );

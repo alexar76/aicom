@@ -10,6 +10,7 @@ from typing import Any
 from llm import GenerationConfig
 
 from web.backend.services.idea_creation_heuristic import suggest_delivery_profile
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -40,8 +41,8 @@ def _extract_json_object(text: str) -> dict[str, Any] | None:
     try:
         obj = json.loads(t)
         return obj if isinstance(obj, dict) else None
-    except json.JSONDecodeError:
-        pass
+    except json.JSONDecodeError as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/services/idea_prefill_llm.py)", exc_info=_suppressed_exc)
     m = re.search(r"\{[\s\S]*\}\s*$", t)
     if m:
         try:

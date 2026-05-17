@@ -10,8 +10,8 @@ import os
 import time
 import uuid
 
-from core.logging_utils import log_suppressed
 from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile
+from core.logging_utils import log_suppressed
 from orchestrator.task_executor_helpers import (
     PipelineTaskExecutorHost,
     build_task_context,

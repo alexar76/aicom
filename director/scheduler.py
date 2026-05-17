@@ -1,4 +1,5 @@
 """
+from core.logging_utils import log_suppressed
 Director Scheduler
 =================
 Schedules periodic Director AI analysis runs.
@@ -84,8 +85,8 @@ class DirectorScheduler:
             self._scheduler_task.cancel()
             try:
                 await self._scheduler_task
-            except asyncio.CancelledError:
-                pass
+            except asyncio.CancelledError as _suppressed_exc:
+                log_suppressed(logger, "non-fatal (director/scheduler.py)", exc_info=_suppressed_exc)
         self._log("INFO", "Director scheduler stopped")
         logger.info("Director scheduler stopped")
 

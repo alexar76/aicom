@@ -11,6 +11,10 @@ from typing import Any
 
 from core.paths import data_root
 
+import logging
+from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
 CONFIG_REL = Path("config/pipeline_demo_replay.json")
 UPLOAD_DIR_REL = Path("public/pipeline_demo_replay")
 
@@ -131,5 +135,5 @@ def safe_remove_media(filename: str) -> None:
     try:
         if p.is_file():
             p.unlink()
-    except OSError:
-        pass
+    except OSError as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (web/backend/services/pipeline_demo_replay.py)", exc_info=_suppressed_exc)

@@ -13,6 +13,12 @@ Use this together with **Swagger UI** at **`/api/docs`** on your deployment (pro
 
 Paths below are **suffixes** after `/api` unless noted.
 
+### API versioning
+
+All existing routes remain at **`/api/...`** (backward compatible). The same handlers are also available under **`/api/v1/...`** — the server rewrites `/api/v1` → `/api` before routing (`web/backend/middleware/api_version.py`).
+
+Example: `GET /api/v1/health` and `GET /api/health` return the same response. New integrations may pin **`/api/v1`**; unversioned `/api` is not deprecated.
+
 ---
 
 ## Authentication
@@ -63,7 +69,7 @@ When `AIFACTORY_SUPPORT_REQUIRE_TOKEN` is enabled (default **on**), mutating sup
 | Pipeline | `GET /api/admin/pipeline/products`, product specs, files browser |
 | Product lifecycle | `POST /api/admin/products/create`, batch create, discovery hooks |
 | Storefront operator | `PATCH /api/admin/pipeline/products/{id}/followup`, `PATCH .../storefront-admin`, `PATCH .../marketplace-copy` |
-| LLM | `GET/PATCH /api/admin/providers`, routing rules |
+| LLM | `GET/PATCH /api/admin/providers`, routing rules, **`GET /api/admin/providers/circuits`**, **`POST .../circuit/{open,close,reset}`** |
 | Security | Audit logs, password rotation |
 | Director | Reports, discovery runs |
 | Collaboration | `GET/POST /api/admin/chat/*`, `GET/POST /api/admin/discussions/*` |
