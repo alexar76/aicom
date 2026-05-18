@@ -53,9 +53,17 @@ From repo root (stack running, default **http://127.0.0.1:9080**):
 
 ```bash
 .venv/bin/python -m playwright install chromium   # once
-DEMO_VIDEO_BASE_URL=http://127.0.0.1:9080 ADMIN_PASSWORD="$(cat ../data/secrets/bootstrap_admin.txt)" \
+DEMO_VIDEO_BASE_URL=http://127.0.0.1:9080 ADMIN_PASSWORD=demo123 \
   .venv/bin/python scripts/record_pipeline_demo_video.py
 ```
+
+**`DEMO_VIDEO_MODE=admin`** (default) — **Live Monitor demo replay:** deep scroll on **Dashboard** (KPI) then **Pipeline** (product cards + stages). Use this for `pipeline-demo-latest.webm`.
+
+**`DEMO_VIDEO_MODE=tour`** — full admin walkthrough (all tabs + sandbox + homepage).
+
+**`DEMO_VIDEO_MODE=pipeline`** — legacy short flow: enqueue one idea and wait for sandbox.
+
+After recording, hero assets are built automatically; or run `python scripts/generate_readme_hero_assets.py` (MP4 ~2 min for README embed, GIF ~14s excerpt).
 
 **Full_software narrative:** set **`DEMO_VIDEO_PROFILE=full_software`** and optionally **`DEMO_VIDEO_IDEA="…dashboard, auth, API…"`** so the scripted enqueue matches the Habr/LinkedIn story (idea → pipeline → working dashboard). See `scripts/record_pipeline_demo_video.py` header.
 

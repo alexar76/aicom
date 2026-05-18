@@ -18,11 +18,10 @@ export const MARKETING_ES: MarketingStrings = {
   navIdea: 'Idea',
   navBenchmark: 'Benchmark',
   heroBadge: 'Una fábrica — landings claros en una frase, apps completas desde Admin',
-  heroVisualEyebrow: 'Véalo en 12 segundos',
-  heroVisualTitle: 'Idea → agentes → preview en sandbox — pipeline real, no mockup',
-  heroVisualCaption:
-    'Grabado en una fábrica en vivo: login admin, etapas del pipeline, landing generado en sandbox. Su brief sigue el mismo camino.',
-  heroWatchDemo: 'Reproducir recorrido',
+  heroVisualEyebrow: 'Vea la fábrica en acción',
+  heroVisualTitle: 'Idea → agentes → producto listo — recorrido completo en YouTube',
+  heroVisualCaption: 'Demo del producto y tour del pipeline:',
+  heroWatchDemo: 'Abrir en YouTube',
   heroTitleLead: 'Páginas listas para lanzar',
   heroTitleRest: 'y apps reales — del mismo brief',
   heroSubtitle:

@@ -15,6 +15,7 @@ Regenerate after: scripts/record_pipeline_demo_video.py
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 import sys
@@ -41,28 +42,21 @@ def main() -> int:
         print("Run: python scripts/record_pipeline_demo_video.py", file=sys.stderr)
         return 1
 
+    gif_sec = os.environ.get("DEMO_VIDEO_GIF_SECONDS", "18")
+    gif_ss = os.environ.get("DEMO_VIDEO_GIF_START_SEC", "25")
+    mp4_sec = os.environ.get("DEMO_VIDEO_MP4_SECONDS", "120")
+    mp4_ss = os.environ.get("DEMO_VIDEO_MP4_START_SEC", "0")
+
     _run(
         [
             "ffmpeg",
             "-y",
+            "-ss",
+            str(mp4_ss),
             "-i",
             str(SRC),
             "-t",
-            "12",
-            "-vf",
-            "fps=8,scale=800:-1:flags=lanczos,split[s0][s1];"
-            "[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer",
-            str(GIF_OUT),
-        ]
-    )
-    _run(
-        [
-            "ffmpeg",
-            "-y",
-            "-i",
-            str(SRC),
-            "-t",
-            "45",
+            str(mp4_sec),
             "-c:v",
             "libx264",
             "-pix_fmt",
@@ -73,6 +67,25 @@ def main() -> int:
             "scale=1280:-2",
             "-an",
             str(MP4_OUT),
+        ]
+    )
+    # Build GIF from the MP4 excerpt (much faster / lower memory than palettegen on full webm).
+    gif_src = MP4_OUT if MP4_OUT.is_file() else SRC
+    gif_input = str(gif_src)
+    _run(
+        [
+            "ffmpeg",
+            "-y",
+            "-ss",
+            str(gif_ss),
+            "-i",
+            gif_input,
+            "-t",
+            str(gif_sec),
+            "-vf",
+            "fps=5,scale=640:-1:flags=lanczos,split[s0][s1];"
+            "[s0]palettegen=stats_mode=single:max_colors=96[p];[s1][p]paletteuse=dither=bayer",
+            str(GIF_OUT),
         ]
     )
 

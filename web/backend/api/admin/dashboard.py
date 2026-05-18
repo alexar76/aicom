@@ -531,15 +531,15 @@ def _collect_director_status(*, include_benchmark_payload: bool = True) -> dict:
 
     benchmark_scorecard = None
     benchmark_alert_count = 0
-    if include_benchmark_payload and benchmark_scorecard_path.exists():
+    if include_benchmark_payload and benchmark_scorecard_path().exists():
         try:
-            benchmark_scorecard = json.loads(benchmark_scorecard_path.read_text(encoding="utf-8"))
+            benchmark_scorecard = json.loads(benchmark_scorecard_path().read_text(encoding="utf-8"))
         except Exception:
             log_suppressed(logger, "dashboard: benchmark scorecard read failed", exc_info=True)
             benchmark_scorecard = None
-    if benchmark_alerts_path.exists():
+    if benchmark_alerts_path().exists():
         try:
-            alerts_doc = json.loads(benchmark_alerts_path.read_text(encoding="utf-8"))
+            alerts_doc = json.loads(benchmark_alerts_path().read_text(encoding="utf-8"))
             benchmark_alert_count = len(alerts_doc.get("alerts") or [])
         except Exception:
             log_suppressed(logger, "dashboard: benchmark alerts read failed", exc_info=True)

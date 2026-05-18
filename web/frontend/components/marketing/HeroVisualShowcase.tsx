@@ -1,15 +1,23 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Play } from 'lucide-react';
+import { ExternalLink, Play } from 'lucide-react';
 
 const LANDING_SHOTS = [
   { src: '/gallery/landing-01.webp', alt: 'Generated landing example 1' },
   { src: '/gallery/landing-02.webp', alt: 'Generated landing example 2' },
   { src: '/gallery/landing-03.webp', alt: 'Generated landing example 3' },
 ];
+
+/** Default marketing hero — https://youtu.be/Gg9a52-ZbNA */
+const YOUTUBE_VIDEO_ID =
+  (process.env.NEXT_PUBLIC_MARKETING_YOUTUBE_VIDEO_ID || 'Gg9a52-ZbNA').trim() || 'Gg9a52-ZbNA';
+
+const YOUTUBE_WATCH_URL = `https://www.youtube.com/watch?v=${YOUTUBE_VIDEO_ID}`;
+const YOUTUBE_EMBED_URL = `https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?rel=0&modestbranding=1`;
+const YOUTUBE_THUMB = `https://img.youtube.com/vi/${YOUTUBE_VIDEO_ID}/hqdefault.jpg`;
 
 type Props = {
   eyebrow: string;
@@ -19,37 +27,7 @@ type Props = {
 };
 
 export function HeroVisualShowcase({ eyebrow, title, caption, watchLabel }: Props) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoSrc, setVideoSrc] = useState('/demo/pipeline-demo.mp4');
-  const [poster, setPoster] = useState('/demo/hero-preview.gif');
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch('/api/public/pipeline-demo-replay', { method: 'HEAD' });
-        if (!cancelled && res.ok) {
-          const ct = res.headers.get('content-type') || '';
-          if (ct.startsWith('video/')) {
-            setVideoSrc('/api/public/pipeline-demo-replay');
-          }
-        }
-      } catch {
-        /* static fallback */
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const playVideo = () => {
-    const el = videoRef.current;
-    if (!el) return;
-    void el.play().catch(() => {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-  };
+  const [embedActive, setEmbedActive] = useState(false);
 
   return (
     <motion.div
@@ -71,35 +49,55 @@ export function HeroVisualShowcase({ eyebrow, title, caption, watchLabel }: Prop
         transition={{ duration: 0.55, delay: 0.05 }}
         className="relative rounded-2xl border border-white/15 bg-black/40 shadow-[0_0_80px_-20px_rgba(99,102,241,0.55)] overflow-hidden ring-1 ring-indigo-500/25"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/10 via-transparent to-fuchsia-600/10 pointer-events-none" />
+        <motion.div className="absolute inset-0 bg-gradient-to-br from-indigo-600/10 via-transparent to-fuchsia-600/10 pointer-events-none" />
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-0">
           <motion.div
             className="relative aspect-video lg:aspect-[16/10] bg-black/60 border-b lg:border-b-0 lg:border-r border-white/10"
             whileHover={{ scale: 1.005 }}
             transition={{ type: 'spring', stiffness: 260, damping: 24 }}
           >
-            <video
-              ref={videoRef}
-              className="absolute inset-0 h-full w-full object-cover"
-              src={videoSrc}
-              poster={poster}
-              controls
-              playsInline
-              muted
-              preload="metadata"
-            />
-            <button
-              type="button"
-              onClick={playVideo}
-              className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full bg-black/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm border border-white/15 hover:bg-black/85 transition"
-              aria-label={watchLabel}
+            {embedActive ? (
+              <iframe
+                className="absolute inset-0 h-full w-full"
+                src={`${YOUTUBE_EMBED_URL}&autoplay=1`}
+                title="AI-Factory on YouTube"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setEmbedActive(true)}
+                className="absolute inset-0 w-full h-full group"
+                aria-label={watchLabel}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={YOUTUBE_THUMB}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover opacity-90 group-hover:opacity-100 transition"
+                />
+                <span className="absolute inset-0 bg-black/35 group-hover:bg-black/25 transition" />
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600/95 shadow-lg shadow-red-900/40 group-hover:scale-105 transition">
+                    <Play className="h-7 w-7 fill-white text-white ml-0.5" />
+                  </span>
+                </span>
+              </button>
+            )}
+            <a
+              href={YOUTUBE_WATCH_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm border border-white/15 hover:bg-black/85 transition"
             >
-              <Play className="h-3.5 w-3.5 fill-current" />
-              {watchLabel}
-            </button>
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+              YouTube
+            </a>
           </motion.div>
 
-          <div className="grid grid-cols-3 lg:grid-cols-1 lg:grid-rows-3 gap-px bg-white/10">
+          <motion.div className="grid grid-cols-3 lg:grid-cols-1 lg:grid-rows-3 gap-px bg-white/10">
             {LANDING_SHOTS.map((shot, i) => (
               <motion.div
                 key={shot.src}
@@ -118,11 +116,21 @@ export function HeroVisualShowcase({ eyebrow, title, caption, watchLabel }: Prop
                 />
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </motion.div>
 
-      <p className="text-center text-xs text-gray-500 mt-3 max-w-xl mx-auto leading-relaxed">{caption}</p>
+      <p className="text-center text-xs text-gray-500 mt-3 max-w-xl mx-auto leading-relaxed">
+        {caption}{' '}
+        <a
+          href={YOUTUBE_WATCH_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-indigo-300/90 hover:text-indigo-200 underline underline-offset-2"
+        >
+          {watchLabel}
+        </a>
+      </p>
     </motion.div>
   );
 }

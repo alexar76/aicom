@@ -10,31 +10,34 @@
 </p>
 
 <p align="center">
-  <a href="#demo-video">
-    <img src="docs/gallery/hero-demo-preview.gif" alt="Pipeline walkthrough: Admin login → agents → sandbox preview" width="920" />
+  <a href="https://youtu.be/Gg9a52-ZbNA">
+    <img src="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" alt="Idea → agents → shippable product — full factory walkthrough on YouTube" width="920" />
   </a>
 </p>
-<p align="center"><em>↑ 12s autoplay — full walkthrough below</em></p>
+<p align="center"><em>↑ <a href="https://youtu.be/Gg9a52-ZbNA">Watch on YouTube</a> — same hero clip as <a href="https://magic-ai-factory.com">magic-ai-factory.com</a></em></p>
 
 ---
 
 <h2 id="demo-video">▶ Demo video</h2>
 
-GitHub’s README viewer **does not inline-play `.webm` file links** (only download). Use the **MP4** below, the **GIF** above, or watch on the live site.
+**Primary:** [YouTube — Idea → agents → shippable product](https://youtu.be/Gg9a52-ZbNA) (embedded on the [live homepage](https://magic-ai-factory.com) hero).
+
+GitHub’s README viewer **does not embed YouTube iframes** — use the thumbnail above or open the link. For an offline / admin UI clip, use the **MP4** below (recorded from production Admin).
 
 <p align="center">
   <video src="docs/gallery/recordings/pipeline-demo-latest.mp4" controls playsinline width="920">
-    <a href="docs/gallery/recordings/pipeline-demo-latest.mp4">Download pipeline demo (.mp4)</a>
+    <a href="docs/gallery/recordings/pipeline-demo-latest.mp4">Download admin pipeline demo (.mp4)</a>
   </video>
 </p>
 
 | Where | How |
 |-------|-----|
-| **Live site** | [magic-ai-factory.com](https://magic-ai-factory.com) — hero video + guest landing try-out |
+| **YouTube** | [youtu.be/Gg9a52-ZbNA](https://youtu.be/Gg9a52-ZbNA) — marketing walkthrough |
+| **Live site** | [magic-ai-factory.com](https://magic-ai-factory.com) — hero embed + guest landing try-out |
 | **Admin replay** | Login → **Live Monitor** or **Settings** → Demo replay (when published) |
 | **Public API** | `GET /api/public/pipeline-demo-replay` (uploaded clip, no auth) |
 | **Download** | [.mp4](docs/gallery/recordings/pipeline-demo-latest.mp4) · [.webm](docs/gallery/recordings/pipeline-demo-latest.webm) |
-| **Regenerate** | `python scripts/record_pipeline_demo_video.py` → `python scripts/generate_readme_hero_assets.py` |
+| **Regenerate admin clip** | `python scripts/record_pipeline_demo_video.py` → `python scripts/sync_demo_replay_from_recording.py` |
 
 ---
 

@@ -122,11 +122,10 @@ const EN: MarketingStrings = {
   navIdea: 'Idea',
   navBenchmark: 'Benchmark',
   heroBadge: 'One factory — crisp landings in a phrase, full applications from Admin',
-  heroVisualEyebrow: 'See it in 12 seconds',
-  heroVisualTitle: 'Idea → agents → sandbox preview — real pipeline, not a mockup',
-  heroVisualCaption:
-    'Recorded on a live factory: Admin login, pipeline stages, generated landing in sandbox. Your brief follows the same path.',
-  heroWatchDemo: 'Play walkthrough',
+  heroVisualEyebrow: 'Watch the factory in action',
+  heroVisualTitle: 'Idea → agents → shippable product — full walkthrough on YouTube',
+  heroVisualCaption: 'Product demo and pipeline tour:',
+  heroWatchDemo: 'Open on YouTube',
   heroTitleLead: 'Launch-ready pages',
   heroTitleRest: 'and real apps — from the same brief',
   heroSubtitle:
