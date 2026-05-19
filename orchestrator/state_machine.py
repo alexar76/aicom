@@ -635,7 +635,14 @@ class PipelineStateMachine:
                 return
 
             for product in self.products.values():
-                sm.upsert_product(product.to_dict())
+                pd = product.to_dict()
+                sm.upsert_product(pd)
+                try:
+                    from web.backend.services.product_showcase import maybe_enqueue_on_deploy
+
+                    maybe_enqueue_on_deploy(str(pd.get("id") or ""), str(pd.get("state") or ""))
+                except Exception:
+                    pass
 
             for task in self.task_queue:
                 sm.upsert_task(task.to_dict())

@@ -34,20 +34,23 @@ class AsyncPostgresManager:
             await conn.execute(POSTGRES_SCHEMA)
             await conn.commit()
 
-    async def fetchall(self, query: str, params: tuple = ()) -> list[dict]:
+    async def _require_pool(self):
         if self._pool is None:
             await self.initialize()
-        assert self._pool is not None
-        async with self._pool.connection() as conn:
+        if self._pool is None:
+            raise RuntimeError("PostgreSQL async pool is not available")
+        return self._pool
+
+    async def fetchall(self, query: str, params: tuple = ()) -> list[dict]:
+        pool = await self._require_pool()
+        async with pool.connection() as conn:
             cur = await conn.execute(query, params)
             rows = await cur.fetchall()
         return [dict(r) for r in rows]
 
     async def execute(self, query: str, params: tuple = ()) -> None:
-        if self._pool is None:
-            await self.initialize()
-        assert self._pool is not None
-        async with self._pool.connection() as conn:
+        pool = await self._require_pool()
+        async with pool.connection() as conn:
             await conn.execute(query, params)
             await conn.commit()
 
@@ -115,10 +118,8 @@ class AsyncPostgresManager:
 
         m = product.get("metadata", {}) or {}
         values = SQLiteManager._product_dict_to_sql_values(product)
-        if self._pool is None:
-            await self.initialize()
-        assert self._pool is not None
-        async with self._pool.connection() as conn:
+        pool = await self._require_pool()
+        async with pool.connection() as conn:
             await conn.execute(_PRODUCT_UPSERT, values)
             await conn.commit()
 
@@ -126,10 +127,8 @@ class AsyncPostgresManager:
         from .sqlite_manager import SQLiteManager
 
         values = SQLiteManager._task_dict_to_sql_values(task)
-        if self._pool is None:
-            await self.initialize()
-        assert self._pool is not None
-        async with self._pool.connection() as conn:
+        pool = await self._require_pool()
+        async with pool.connection() as conn:
             await conn.execute(_TASK_UPSERT, values)
             await conn.commit()
 

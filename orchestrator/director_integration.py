@@ -250,4 +250,16 @@ class DirectorIntegration:
             )
             self.conn.commit()
         except Exception as e:
+            try:
+                self.conn.rollback()
+            except Exception as rollback_err:
+                logger.error("Failed to rollback director decisions save: %s", rollback_err)
             logger.error(f"Failed to save decisions: {e}")
+
+    def close(self) -> None:
+        if self._conn is not None:
+            try:
+                self._conn.close()
+            except Exception as e:
+                logger.warning("Failed to close director decisions DB: %s", e)
+            self._conn = None

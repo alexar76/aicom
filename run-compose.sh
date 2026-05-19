@@ -44,6 +44,12 @@ COMPOSE=$(compose_cmd)
 
 resolve_compose_files() {
   COMPOSE_FILES=(-f docker-compose.yml)
+  if [[ "${AIFACTORY_USE_HOST_DOCKER:-}" == "1" ]]; then
+    echo -e "${YELLOW}Using host Docker socket (AIFACTORY_USE_HOST_DOCKER=1) — not recommended for production.${NC}"
+    COMPOSE_FILES+=(-f docker-compose.host-docker.yml)
+  else
+    COMPOSE_FILES+=(-f docker-compose.dind.yml)
+  fi
   if [[ -d data/secrets/llm ]] && compgen -G "data/secrets/llm/*_api_key" >/dev/null 2>&1; then
     COMPOSE_FILES+=(-f docker-compose.secrets.yml)
   fi

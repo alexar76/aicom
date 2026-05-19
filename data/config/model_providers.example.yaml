@@ -12,7 +12,7 @@ providers:
     base_url: https://api.deepseek.com/v1
     capabilities:
       context_window: 128000
-      max_tokens: 32000
+      max_tokens: 128000
       supports_streaming: true
       supports_vision: false
     enabled: true
@@ -116,7 +116,7 @@ routing_rules:
     model_role: heavy
     preferred_provider: deepseek_api
     fallback_provider: groq_api
-    timeout_sec: 120
+    timeout_sec: 600
   - fallback_provider: null
     model_role: light
     preferred_provider: auto

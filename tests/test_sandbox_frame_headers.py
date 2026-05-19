@@ -28,4 +28,12 @@ def test_sandbox_viewer_csp_allows_iframe_child():
     from web.backend.services.sandbox_static_rewrite import SANDBOX_VIEWER_CSP
 
     assert "frame-src 'self'" in SANDBOX_VIEWER_CSP
+    assert "object-src 'none'" in SANDBOX_VIEWER_CSP
     assert "default-src 'none'" not in SANDBOX_VIEWER_CSP
+
+
+def test_sandbox_html_csp_blocks_object_and_script_attrs():
+    from web.backend.services.sandbox_static_rewrite import SANDBOX_HTML_CSP
+
+    assert "object-src 'none'" in SANDBOX_HTML_CSP
+    assert "script-src-attr 'none'" in SANDBOX_HTML_CSP

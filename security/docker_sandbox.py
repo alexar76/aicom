@@ -84,4 +84,5 @@ def assert_hardened_flags_present(cmd: Iterable[str]) -> None:
         "--user",
         "65534:65534",
     ):
-        assert needle in joined or needle in flat, f"missing hardened flag: {needle}"
+        if needle not in joined and needle not in flat:
+            raise ValueError(f"missing hardened flag: {needle}")

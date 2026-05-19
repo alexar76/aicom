@@ -341,6 +341,12 @@ def inject_sandbox_in_page_nav_helpers(html: str) -> str:
 
 # CSP: keep navigations and form posts on our origin or HTTPS; block http://localhost etc.
 # Shell page at ``/api/sandbox/view/{id}`` (sidebar + iframe). Must allow frame-src 'self'.
+# iframe sandbox attribute for generated demo content (limits top-navigation / modals).
+SANDBOX_IFRAME_SANDBOX_ATTR = (
+    "allow-scripts allow-same-origin allow-forms allow-popups allow-downloads "
+    "allow-modals allow-pointer-lock"
+)
+
 SANDBOX_VIEWER_CSP = (
     "default-src 'self'; "
     "style-src 'self' 'unsafe-inline'; "
@@ -350,21 +356,25 @@ SANDBOX_VIEWER_CSP = (
     "base-uri 'self'; "
     "form-action 'none'; "
     "frame-ancestors 'self'; "
+    "object-src 'none'; "
 )
 
 SANDBOX_HTML_CSP = (
     "default-src 'self'; "
     "script-src 'self' 'unsafe-inline' https:; "
+    "script-src-attr 'none'; "
     "style-src 'self' 'unsafe-inline' https:; "
     "img-src 'self' data: https: blob:; "
     "font-src 'self' https: data:; "
     "connect-src 'self' https: wss:; "
     "media-src 'self' https: data:; "
     "worker-src 'self' blob:; "
-    "frame-src 'self' https: http: data: blob:; "
+    "frame-src 'self' https: data: blob:; "
+    "object-src 'none'; "
     "form-action 'self' https:; "
     "base-uri 'self'; "
     "frame-ancestors 'self'; "
+    "upgrade-insecure-requests; "
     # Allow HTTPS outbound links in marketing demos; block http://localhost (http not listed).
     "navigate-to 'self' https:"
 )

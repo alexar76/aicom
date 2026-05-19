@@ -255,17 +255,14 @@ class DeveloperAgent(BaseAgent):
 
                 code_data = self._extract_json(response)
                 if code_data is None:
-                    elapsed = time.time() - start_time
-                    self._log("WARNING", f"Code generation invalid JSON for {product_id} (attempt {attempt + 1})")
-                    return AgentOutput(
-                        task_id=agent_input.task_id,
-                        product_id=product_id,
-                        agent_type=self.agent_type,
-                        success=False,
-                        error="LLM returned invalid/non-JSON response — code generation failed",
-                        timestamp=time.time(),
-                        metrics={"elapsed_seconds": elapsed},
+                    last_error = (
+                        "LLM returned invalid/non-JSON response (often truncated output — "
+                        "retrying with same token budget)"
                     )
+                    self._log("WARNING", f"Code generation invalid JSON for {product_id} (attempt {attempt + 1})")
+                    if attempt + 1 >= max_attempts:
+                        break
+                    continue
 
                 code_root = self.data_root / "code" / product_id
                 if code_root.exists():
@@ -299,7 +296,9 @@ class DeveloperAgent(BaseAgent):
                 )
             else:
                 elapsed = time.time() - start_time
-                err = last_error or "Unknown validation failure"
+                err = last_error or "LLM returned invalid/non-JSON response — code generation failed"
+                if "invalid/non-JSON" in err or "invalid JSON" in err.lower():
+                    err = "LLM returned invalid/non-JSON response — code generation failed"
                 return AgentOutput(
                     task_id=agent_input.task_id,
                     product_id=product_id,
@@ -310,7 +309,8 @@ class DeveloperAgent(BaseAgent):
                     metrics={"elapsed_seconds": elapsed},
                 )
 
-            assert code_data is not None
+            if code_data is None:
+                raise RuntimeError("Developer agent finished without code_data")
 
             self._save_artifact(
                 product_id,

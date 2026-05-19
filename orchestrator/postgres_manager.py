@@ -106,7 +106,8 @@ class PostgresManager:
     def pool(self) -> ConnectionPool:
         if self._pool is None:
             self.connect()
-        assert self._pool is not None
+        if self._pool is None:
+            raise RuntimeError("PostgreSQL connection pool is not available")
         return self._pool
 
     def get_all_products(self) -> list[dict[str, Any]]:

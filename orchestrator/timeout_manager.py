@@ -34,7 +34,7 @@ class TimeoutManager:
         self._agent_timeouts: dict[str, int] = {
             "pm": 200,
             "architect": 260,
-            "developer": 320,
+            "developer": 720,
             "qa": 200,
             "devops": 130,
             "marketing": 130,

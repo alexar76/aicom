@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 import httpx
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException, Depends
 
 from core.paths import (
     ai_market_integrations_log_path,
@@ -31,6 +31,34 @@ from web.backend.services.commerce import CommerceService
 
 router = APIRouter(prefix="/ai-market", tags=["ai-market"])
 commerce = CommerceService()
+
+
+def _decode_customer(authorization: str | None) -> dict | None:
+    """Decode the customer JWT from an ``Authorization: Bearer`` header.
+
+    Returns the token payload or ``None`` if the header is absent or malformed.
+    Raises 401 only when a token is supplied but invalid/expired, so callers can
+    distinguish "anonymous" from "bad credentials".
+    """
+    if not authorization:
+        return None
+    parts = authorization.split(" ", 1)
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        return None
+    token = parts[1].strip()
+    if not token:
+        return None
+    payload = commerce.decode_token(token)
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid or expired customer token")
+    return payload
+
+
+def _require_customer(authorization: str | None = Header(default=None)) -> dict:
+    payload = _decode_customer(authorization)
+    if not payload:
+        raise HTTPException(status_code=401, detail="Missing customer token")
+    return payload
 
 
 def _pilot_config() -> dict[str, str]:
@@ -168,11 +196,38 @@ async def get_pilot_config():
     return {"pilot": {"enabled": True, **cfg}, "protocol_version": "v0"}
 
 
+@router.get("/embed/{product_id}")
+async def get_embed_config(product_id: str):
+    """Config for aimarket.js embed widgets on external sites."""
+    products = _read_pipeline_products()
+    p = products.get(product_id) or {}
+    state = str((p or {}).get("state") or "").upper()
+    if state not in {"COMPLETED", "DEPLOYED_PRODUCTION"}:
+        raise HTTPException(status_code=404, detail="product not available for embed")
+    return {
+        "product_id": product_id,
+        "name": str(p.get("name") or p.get("idea") or product_id)[:120],
+        "default_price": os.environ.get("AIFACTORY_AI_MARKET_EMBED_PRICE", "9.99"),
+        "script_path": "/aimarket.js",
+        "settlement_path": "/api/ai-market/pilot/settlement/confirm",
+        "protocol_version": "v0",
+    }
+
+
 @router.post("/pilot/settlement/confirm")
-async def confirm_pilot_settlement(body: AiMarketSettlementConfirmRequest):
+async def confirm_pilot_settlement(
+    body: AiMarketSettlementConfirmRequest,
+    authorization: str | None = Header(default=None),
+):
     """
     Production pilot: single chain/token/contract settlement confirmation.
     On success creates order + license entitlement.
+
+    Identity binding rule: if the caller is authenticated, the entitlement is
+    bound to the token's ``sub``/``email`` and any ``customer_id`` /
+    ``customer_email`` in the body that disagrees is rejected. This prevents an
+    attacker from minting a paid-tx entitlement under someone else's identity.
+    Anonymous callers receive a server-generated synthetic identity.
     """
     cfg = _pilot_config()
     chain = (body.chain or cfg["chain"]).strip().lower()
@@ -180,8 +235,23 @@ async def confirm_pilot_settlement(body: AiMarketSettlementConfirmRequest):
     contract = (body.contract_address or "").strip()
     product_id = body.product_id
     tx_hash = body.tx_hash
-    customer_id = body.customer_id or f"aimkt-{uuid.uuid4().hex[:8]}"
-    customer_email = body.customer_email or f"{customer_id}@ai-market.local"
+
+    auth_payload = _decode_customer(authorization)
+    if auth_payload:
+        customer_id = str(auth_payload.get("sub") or "").strip()
+        customer_email = str(auth_payload.get("email") or "").strip()
+        if not customer_id or not customer_email:
+            raise HTTPException(status_code=401, detail="Customer token missing identity claims")
+        # Reject mismatched identity in the body (prevents impersonation attempts).
+        if body.customer_id and body.customer_id.strip() and body.customer_id.strip() != customer_id:
+            raise HTTPException(status_code=403, detail="customer_id does not match authenticated customer")
+        if body.customer_email and body.customer_email.strip().lower() != customer_email.lower():
+            raise HTTPException(status_code=403, detail="customer_email does not match authenticated customer")
+    else:
+        # Anonymous flow: ignore client-supplied identity to prevent binding the
+        # license to an arbitrary email/id chosen by the caller.
+        customer_id = f"aimkt-{uuid.uuid4().hex[:8]}"
+        customer_email = f"{customer_id}@ai-market.local"
     wallet = body.wallet_address or ""
     amount = body.amount
     if chain != cfg["chain"] or token != cfg["token"]:
@@ -236,7 +306,13 @@ async def confirm_pilot_settlement(body: AiMarketSettlementConfirmRequest):
 
 
 @router.get("/entitlements/{customer_id}")
-async def list_entitlements(customer_id: str):
+async def list_entitlements(customer_id: str, payload: dict = Depends(_require_customer)):
+    # Authorization: a customer may only list their own entitlements.
+    # Synthetic anonymous IDs created via ``/pilot/settlement/confirm`` (prefix
+    # ``aimkt-``) cannot be queried because they have no JWT — that is
+    # intentional; the license_key returned at confirm time is the credential.
+    if str(payload.get("sub") or "") != customer_id:
+        raise HTTPException(status_code=403, detail="forbidden")
     licenses = _read_json(store_licenses_path())
     out = []
     for lic in licenses.values():

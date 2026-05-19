@@ -15,7 +15,7 @@ import logging
 import os
 import re
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
@@ -177,7 +177,7 @@ async def send_message(
         "id": str(uuid.uuid4()),
         "username": chat_username,
         "text": body.text,
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "admin_username": admin_username,
         "role": "owner",
         "kind": "owner_message",

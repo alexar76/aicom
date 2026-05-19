@@ -67,6 +67,23 @@ if [[ ! -f "$ENV_FILE" ]]; then
   exit 2
 fi
 
+# Refuse deploy from a truncated workspace (same guard as .gitea/workflows/deploy.yml).
+require_intact_tree() {
+  local f
+  for f in \
+    README.md docker-compose.yml pipeline_worker.py entrypoint.sh Dockerfile \
+    llm/router.py orchestrator/sqlite_manager.py \
+    web/frontend/lib/api.ts web/backend/api/products.py \
+    ; do
+    if [[ ! -f "$ROOT/$f" ]]; then
+      echo "FATAL: deploy aborted — missing $f (workspace looks truncated)" >&2
+      echo "Run: git restore .   # from repo root, then retry deploy" >&2
+      exit 3
+    fi
+  done
+}
+require_intact_tree
+
 if [[ "$NO_ENV_FILL" -eq 0 ]]; then
   FILL_ARGS=(--env-file "$ENV_FILE")
   if [[ -n "$PUBLIC_URL" ]]; then
@@ -76,6 +93,11 @@ if [[ "$NO_ENV_FILL" -eq 0 ]]; then
 fi
 
 COMPOSE_FILES=(-f docker-compose.yml)
+if [[ "${AIFACTORY_USE_HOST_DOCKER:-}" == "1" ]]; then
+  COMPOSE_FILES+=(-f docker-compose.host-docker.yml)
+else
+  COMPOSE_FILES+=(-f docker-compose.dind.yml)
+fi
 if [[ -d "$ROOT/data/secrets/llm" ]] && compgen -G "$ROOT/data/secrets/llm/*_api_key" >/dev/null 2>&1; then
   COMPOSE_FILES+=(-f docker-compose.secrets.yml)
 fi

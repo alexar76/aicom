@@ -57,7 +57,11 @@ export function CircuitBreakerPanel({ locale }: { locale: AdminLocale }) {
   useEffect(() => {
     if (!live || typeof window === 'undefined') return;
     const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const ws = new WebSocket(`${proto}//${window.location.host}/api/admin/ws/metrics`);
+    const token = localStorage.getItem('admin_token');
+    const url = `${proto}//${window.location.host}/api/admin/ws/metrics`;
+    // Token is passed via the WS subprotocol pair ["Bearer", <jwt>] so it never
+    // appears in URL query strings (which leak into reverse-proxy access logs).
+    const ws = token ? new WebSocket(url, ['Bearer', token]) : new WebSocket(url);
     wsRef.current = ws;
     ws.onmessage = (ev) => {
       try {

@@ -1,0 +1,41 @@
+# Docker-in-Docker sidecar — isolates sandbox/compose from the host daemon.
+# Enabled by default via run-compose.sh / deploy.sh (merged with docker-compose.yml).
+#
+# Emergency fallback to host socket (not recommended):
+#   AIFACTORY_USE_HOST_DOCKER=1 ./run-compose.sh
+
+services:
+  docker-dind:
+    image: docker:27.4.0-dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    volumes:
+      - docker-dind-certs-ca:/certs/ca
+      - docker-dind-certs-client:/certs/client
+      - docker-dind-data:/var/lib/docker
+    networks:
+      - aicom_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "docker", "info"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 15s
+
+  app:
+    depends_on:
+      docker-dind:
+        condition: service_healthy
+    environment:
+      DOCKER_HOST: tcp://docker-dind:2376
+      DOCKER_TLS_VERIFY: "1"
+      DOCKER_CERT_PATH: /certs/client
+    volumes:
+      - docker-dind-certs-client:/certs/client:ro
+
+volumes:
+  docker-dind-certs-ca:
+  docker-dind-certs-client:
+  docker-dind-data:

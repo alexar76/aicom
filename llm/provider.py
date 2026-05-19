@@ -14,6 +14,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import AsyncGenerator, Optional
 
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY
+
 logger = logging.getLogger(__name__)
 
 
@@ -29,7 +31,7 @@ class ProviderStatus(enum.Enum):
 class ModelCapabilities:
     """Capabilities and limitations of a model."""
     context_window: int = 128_000
-    max_tokens: int = 32_000
+    max_tokens: int = FACTORY_MAX_OUTPUT_TOKENS_HEAVY
     supports_vision: bool = False
     supports_streaming: bool = True
     supports_functions: bool = False
@@ -40,7 +42,7 @@ class ModelCapabilities:
 class GenerationConfig:
     """Configuration for a single generation request."""
     temperature: float = 0.7
-    max_tokens: int = 32_000
+    max_tokens: int = FACTORY_MAX_OUTPUT_TOKENS_HEAVY
     top_p: float = 0.95
     top_k: int = 40
     repetition_penalty: float = 1.1

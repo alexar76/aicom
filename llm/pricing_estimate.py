@@ -284,7 +284,8 @@ def estimate_llm_call_cost_usd(
         return round(usd, 6)
 
     # ── Total tokens only ────────────────────────────────────────────────
-    assert token_basis is not None and token_basis > 0
+    if token_basis is None or token_basis <= 0:
+        raise ValueError("token_basis must be a positive number")
     rate = _rate_for_model(model)
     if rate is None:
         rate = _rate_for_provider_role(provider, model_role)

@@ -101,12 +101,37 @@ export function HumanReviewGatePanel({
   const submitApprove = async () => {
     setBusy('approve');
     try {
-      await api.postPipelineHumanReviewApprove(String(product.id), { note: approveNote.trim() });
-      onPatch(String(product.id), { state: 'SALES_ACTIVE' });
-      toast.success('Approved — sales stage queued');
+      const res = await api.postPipelineHumanReviewApprove(String(product.id), {
+        note: approveNote.trim(),
+      });
+      onPatch(String(product.id), {
+        state: res.state || 'SALES_ACTIVE',
+        ...(res.storefront_followup
+          ? { storefront_followup: res.storefront_followup as Record<string, unknown> }
+          : {}),
+        ...(typeof res.storefront_force_list === 'boolean'
+          ? { storefront_visible: res.storefront_force_list }
+          : {}),
+      });
+      const msg =
+        res.message === 'sales_already_queued'
+          ? 'Already approved — sales task is running. Storefront force-list saved for when the build ships.'
+          : res.message === 'already_past_human_gate'
+            ? 'Already approved — pipeline is past the human gate. Storefront settings updated.'
+            : res.storefront_force_list
+              ? 'Approved — sales queued + storefront force-list enabled (appears on market after COMPLETED).'
+              : 'Approved — sales stage queued';
+      toast.success(msg);
       setApproveNote('');
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : 'Approve failed');
+      const raw = e instanceof Error ? e.message : 'Approve failed';
+      const friendly =
+        raw.includes('sales_task_already_pending')
+          ? 'Sales is already queued — wait for the sales agent or refresh the page.'
+          : raw.includes('not_at_human_gate')
+            ? 'Product is no longer at the human gate — refresh pipeline.'
+            : raw;
+      toast.error(friendly);
     } finally {
       setBusy(null);
     }
@@ -135,7 +160,8 @@ export function HumanReviewGatePanel({
       <p className="text-xs uppercase tracking-wide text-amber-200/90">Post-DevOps human gate</p>
       <p className="text-[11px] text-gray-400 leading-relaxed">
         Full-software pipeline stops here until you approve going to sales or send back to development with notes.
-        Approval also records human-review feedback for release gates and may trigger{' '}
+        Approve queues the sales agent (not instant marketplace listing) and enables storefront force-list for when the
+        product reaches COMPLETED. Approval also records human-review feedback for release gates and may trigger{' '}
         <span className="font-mono text-amber-100/90">AIFACTORY_PREVIEW_DEPLOY_WEBHOOK_URL</span> if set.
       </p>
       <div className="grid sm:grid-cols-2 gap-3">

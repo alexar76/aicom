@@ -351,6 +351,82 @@ def _sales_task_pending_json(task_queue: list, pid: str) -> bool:
     )
 
 
+def _approve_followup_sidecar(product_id: str, note: str) -> dict[str, Any]:
+    from web.backend.services.product_followup import record_post_devops_human_review_approval
+
+    followup = record_post_devops_human_review_approval(product_id, note)
+    return {
+        "storefront_followup": followup,
+        "storefront_force_list": bool(followup.get("admin_force_list")),
+    }
+
+
+def _approve_apply_product(
+    product: dict[str, Any],
+    *,
+    note: str,
+    sales_pending: bool,
+    queue_sales,
+) -> dict[str, Any]:
+    """Shared approve body: SALES_ACTIVE + optional sales task + durable follow-up."""
+    pid = str(product.get("id") or "").strip()
+    st = str(product.get("state") or "").upper()
+    now = time.time()
+
+    if st != "HUMAN_REVIEW_PENDING":
+        ranks = {
+            "HUMAN_REVIEW_PENDING": 0,
+            "SALES_ACTIVE": 1,
+            "SANDBOX_RUNNING": 2,
+            "TELEMETRY_COLLECTING": 3,
+            "EVOLUTION_ANALYZING": 4,
+            "COMPLETED": 5,
+            "DEPLOYED_PRODUCTION": 5,
+        }
+        if ranks.get(st, -1) > 0:
+            sidecar = _approve_followup_sidecar(pid, note)
+            return {
+                "ok": True,
+                "state": st,
+                "already_approved": True,
+                "message": "already_past_human_gate",
+                **sidecar,
+            }
+        return {"ok": False, "reason": "not_at_human_gate", "state": st}
+
+    sidecar = _approve_followup_sidecar(pid, note)
+    product["state"] = "SALES_ACTIVE"
+    product["updated_at"] = now
+    product["post_devops_human_review"] = {
+        "status": "approved",
+        "at": now,
+        "note": (note or "")[:8000],
+    }
+
+    task_id: str | None = None
+    if sales_pending:
+        return {
+            "ok": True,
+            "state": "SALES_ACTIVE",
+            "already_approved": True,
+            "message": "sales_already_queued",
+            **sidecar,
+        }
+
+    task = queue_sales(product)
+    task_id = str(task.get("id") or "")
+    _append_human_feedback(pid, "approve", note)
+    _fire_preview_deploy_hook(pid, "human_review_approved")
+    logger.warning("post_devops human approve → SALES_ACTIVE + sales task for %s", pid)
+    return {
+        "ok": True,
+        "task_id": task_id,
+        "state": "SALES_ACTIVE",
+        "message": "sales_queued",
+        **sidecar,
+    }
+
+
 def _approve_via_sqlite(product_id: str, note: str) -> dict[str, Any]:
     from orchestrator.sqlite_manager import SQLiteManager
 
@@ -361,30 +437,23 @@ def _approve_via_sqlite(product_id: str, note: str) -> dict[str, Any]:
         product = sm.get_product(pid)
         if not product:
             return {"ok": False, "reason": "product_not_found"}
-        st = str(product.get("state") or "").upper()
-        if st != "HUMAN_REVIEW_PENDING":
-            return {"ok": False, "reason": "not_at_human_gate", "state": st}
-        if _sales_task_pending_sqlite(sm, pid):
-            return {"ok": False, "reason": "sales_task_already_pending"}
 
-        now = time.time()
-        product["state"] = "SALES_ACTIVE"
-        product["updated_at"] = now
-        meta = dict(product.get("metadata") or {})
-        meta["post_devops_human_review"] = {
-            "status": "approved",
-            "at": now,
-            "note": (note or "")[:8000],
-        }
-        product["metadata"] = meta
-        sm.upsert_product(product)
+        def _queue_sales(prod: dict) -> dict:
+            task = _sales_task_dict(prod)
+            sm.upsert_task(task)
+            return task
 
-        task = _sales_task_dict(product)
-        sm.upsert_task(task)
-        _append_human_feedback(pid, "approve", note)
-        _fire_preview_deploy_hook(pid, "human_review_approved")
-        logger.warning("post_devops human approve → SALES_ACTIVE + sales task for %s", pid)
-        return {"ok": True, "task_id": task["id"], "state": "SALES_ACTIVE"}
+        res = _approve_apply_product(
+            product,
+            note=note,
+            sales_pending=_sales_task_pending_sqlite(sm, pid),
+            queue_sales=_queue_sales,
+        )
+        if res.get("ok") and not res.get("already_approved"):
+            sm.upsert_product(product)
+        elif res.get("ok") and res.get("message") == "sales_already_queued":
+            sm.upsert_product(product)
+        return res
     finally:
         sm.close()
 
@@ -405,32 +474,26 @@ def _approve_via_pipeline_json(product_id: str, note: str) -> dict[str, Any]:
     product = products.get(pid)
     if not product:
         return {"ok": False, "reason": "product_not_found"}
-    st = str(product.get("state") or "").upper()
-    if st != "HUMAN_REVIEW_PENDING":
-        return {"ok": False, "reason": "not_at_human_gate", "state": st}
-    if _sales_task_pending_json(task_queue, pid):
-        return {"ok": False, "reason": "sales_task_already_pending"}
 
-    now = time.time()
-    product["state"] = "SALES_ACTIVE"
-    product["updated_at"] = now
-    product["post_devops_human_review"] = {
-        "status": "approved",
-        "at": now,
-        "note": (note or "")[:8000],
-    }
-    task = _sales_task_dict(product)
-    task.pop("workspace_id", None)
-    task_queue.append(task)
-    data["products"][pid] = product
-    data["task_queue"] = task_queue
-    pj.parent.mkdir(parents=True, exist_ok=True)
-    pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-    _sync_sqlite_from_json()
-    _append_human_feedback(pid, "approve", note)
-    _fire_preview_deploy_hook(pid, "human_review_approved")
-    logger.warning("post_devops human approve → SALES_ACTIVE + sales task for %s", pid)
-    return {"ok": True, "task_id": task["id"], "state": "SALES_ACTIVE"}
+    def _queue_sales(prod: dict) -> dict:
+        task = _sales_task_dict(prod)
+        task.pop("workspace_id", None)
+        task_queue.append(task)
+        return task
+
+    res = _approve_apply_product(
+        product,
+        note=note,
+        sales_pending=_sales_task_pending_json(task_queue, pid),
+        queue_sales=_queue_sales,
+    )
+    if res.get("ok"):
+        data["products"][pid] = product
+        data["task_queue"] = task_queue
+        pj.parent.mkdir(parents=True, exist_ok=True)
+        pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        _sync_sqlite_from_json()
+    return res
 
 
 def approve_post_devops_human_review(product_id: str, note: str = "") -> dict[str, Any]:

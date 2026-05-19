@@ -66,6 +66,29 @@ def test_half_open_failure_reopens(store: CircuitBreakerStore):
     assert snap["providers"]["together"]["state"] == CircuitState.OPEN.value
 
 
+def test_stale_half_open_probe_is_cleared(tmp_path):
+    path = tmp_path / "circuits-stale.json"
+    store = CircuitBreakerStore(
+        state_path=path,
+        config=CircuitBreakerConfig(
+            failure_threshold=3,
+            failure_window_sec=60.0,
+            open_duration_sec=0.05,
+            half_open_probe_timeout_sec=0.05,
+        ),
+    )
+    for i in range(3):
+        store.record_failure("deepseek", f"err{i}")
+    time.sleep(0.08)
+    allowed, reason = store.allow_request("deepseek")
+    assert allowed is True
+    assert reason == "half_open_probe"
+    time.sleep(0.08)
+    allowed2, reason2 = store.allow_request("deepseek")
+    assert allowed2 is True
+    assert reason2 == "half_open_probe"
+
+
 def test_manual_reset(store: CircuitBreakerStore):
     store.force_open("ollama")
     store.reset("ollama")

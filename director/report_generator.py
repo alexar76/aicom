@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import logging
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -74,9 +75,8 @@ class ReportGenerator:
         period_start = timestamp - 14400  # 4 hours ago
         period_end = timestamp
 
-        from datetime import datetime
-        start_str = datetime.fromtimestamp(period_start).strftime("%Y-%m-%d %H:%M")
-        end_str = datetime.fromtimestamp(period_end).strftime("%H:%M")
+        start_str = datetime.fromtimestamp(period_start, tz=timezone.utc).strftime("%Y-%m-%d %H:%M")
+        end_str = datetime.fromtimestamp(period_end, tz=timezone.utc).strftime("%H:%M")
 
         report = []
         report.append(f"# 📊 Director AI Report | {start_str}-{end_str}")
@@ -94,14 +94,20 @@ class ReportGenerator:
         report.append(self._generate_inspector_section(inspector_report or analysis.get("inspector_report") or {}))
         report.append("")
         report.append("---")
-        report.append(f"*Report generated automatically at {datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S UTC')}*")
+        report.append(
+            f"*Report generated automatically at "
+            f"{datetime.fromtimestamp(timestamp, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}*"
+        )
         report.append("*For report settings: /admin → Director Settings*")
 
         content = "\n".join(report)
 
         # Save report to file
-        date_str = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
-        period_str = f"{datetime.fromtimestamp(period_start).strftime('%H%M')}-{datetime.fromtimestamp(period_end).strftime('%H%M')}"
+        date_str = datetime.fromtimestamp(timestamp, tz=timezone.utc).strftime("%Y-%m-%d")
+        period_str = (
+            f"{datetime.fromtimestamp(period_start, tz=timezone.utc).strftime('%H%M')}-"
+            f"{datetime.fromtimestamp(period_end, tz=timezone.utc).strftime('%H%M')}"
+        )
         filename = f"{date_str}_{period_str}.md"
         filepath = self.reports_dir / filename
 

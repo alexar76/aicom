@@ -61,20 +61,23 @@ class AsyncSQLiteManager:
             logger.debug("tasks.input alter skipped", exc_info=True)
         await self._conn.commit()
 
-    async def fetchall(self, query: str, params: tuple = ()) -> list[dict]:
+    async def _require_conn(self):
         if self._conn is None:
             await self.initialize()
-        assert self._conn is not None
-        async with self._conn.execute(query, params) as cur:
+        if self._conn is None:
+            raise RuntimeError("SQLite async connection is not available")
+        return self._conn
+
+    async def fetchall(self, query: str, params: tuple = ()) -> list[dict]:
+        conn = await self._require_conn()
+        async with conn.execute(query, params) as cur:
             rows = await cur.fetchall()
         return [dict(r) for r in rows]
 
     async def execute(self, query: str, params: tuple = ()) -> None:
-        if self._conn is None:
-            await self.initialize()
-        assert self._conn is not None
-        await self._conn.execute(query, params)
-        await self._conn.commit()
+        conn = await self._require_conn()
+        await conn.execute(query, params)
+        await conn.commit()
 
     async def get_all_products(self) -> list[dict]:
         rows = await self.fetchall("SELECT * FROM products WHERE workspace_id = ?", (self.workspace_id,))
@@ -181,10 +184,8 @@ class AsyncSQLiteManager:
         )
 
     async def _scalar(self, query: str, params: tuple = ()) -> int | float:
-        if self._conn is None:
-            await self.initialize()
-        assert self._conn is not None
-        async with self._conn.execute(query, params) as cur:
+        conn = await self._require_conn()
+        async with conn.execute(query, params) as cur:
             row = await cur.fetchone()
         if not row or row[0] is None:
             return 0

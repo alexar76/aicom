@@ -338,7 +338,18 @@ async def run_agent_task(
                     products[pid]["state"] = "COMPLETED"
                     products[pid]["last_market_revision"] = time.time()
                 else:
-                    products[pid]["state"] = target_state
+                    effective_state = target_state
+                    if (
+                        agent_type == "devops"
+                        and str(target_state or "").upper() == "HUMAN_REVIEW_PENDING"
+                    ):
+                        from web.backend.services.product_followup import (
+                            post_devops_human_review_approved,
+                        )
+
+                        if post_devops_human_review_approved(pid):
+                            effective_state = "SALES_ACTIVE"
+                    products[pid]["state"] = effective_state
                 products[pid]["updated_at"] = time.time()
 
             # Analyst periodic monitoring may request a shipped-slice refresh (shares QA repair budget)
@@ -615,10 +626,29 @@ async def run_agent_task(
                 and pid in products
                 and str(products[pid].get("state") or "") == "HUMAN_REVIEW_PENDING"
             ):
-                logger.info(
-                    "Product %s paused at post-DevOps human gate — awaiting admin approve before sales",
-                    pid,
-                )
+                from web.backend.services.product_followup import post_devops_human_review_approved
+
+                if post_devops_human_review_approved(pid):
+                    next_task = host._create_next_task(products[pid])
+                    if next_task and next_task.get("agent_type") == "sales":
+                        exists = any(
+                            t.get("product_id") == pid
+                            and t.get("agent_type") == "sales"
+                            and t.get("status") in ("pending", "running")
+                            for t in task_queue
+                        )
+                        if not exists:
+                            task_queue.append(next_task)
+                            logger.info(
+                                "Product %s human gate already approved — queued sales (%s)",
+                                pid,
+                                next_task.get("id"),
+                            )
+                else:
+                    logger.info(
+                        "Product %s paused at post-DevOps human gate — awaiting admin approve before sales",
+                        pid,
+                    )
             else:
                 # Create next sequential task
                 next_task = host._create_next_task(product)

@@ -358,3 +358,21 @@ class DemoReplayPatchRequest(BaseModel):
             return None
         s = str(v).strip()
         return s or None
+
+
+# ── Wow demo features ─────────────────────────────────────────────────────────
+
+
+class PipelineReplayForkRequest(BaseModel):
+    frame_index: int = Field(..., ge=0)
+    operator_notes: Optional[str] = Field(None, max_length=2000)
+    model_override: Optional[str] = Field(None, max_length=120)
+
+
+class ProductShowcaseEnqueueRequest(BaseModel):
+    product_id: str = Field(..., min_length=6, max_length=80)
+    base_url: Optional[str] = Field(None, max_length=500)
+
+
+class PromptImprovementApplyRequest(BaseModel):
+    proposal_id: str = Field(..., min_length=4, max_length=120)

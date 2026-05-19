@@ -23,8 +23,12 @@ from pathlib import Path
 from typing import Optional
 
 import httpx
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
+
+from web.backend.core.admin_roles import require_admin_with_rbac
+from web.backend.services.sandbox_proxy_headers import sandbox_proxy_forward_headers
+from web.backend.services.url_safety import validate_git_remote_url
 
 from core.logging_utils import log_suppressed
 from web.backend.services.sandbox_preview_api import (
@@ -42,6 +46,7 @@ from core.paths import code_dir, pipeline_json_path, sandbox_registry_path, spec
 from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 from web.backend.services.sandbox_static_rewrite import (
     SANDBOX_HTML_CSP,
+    SANDBOX_IFRAME_SANDBOX_ATTR,
     SANDBOX_VIEWER_CSP,
     _inject_iframe_base_href,
     _inject_loopback_navigation_guard,
@@ -250,7 +255,7 @@ def _try_docker_run(sandbox_id: str, product_id: str, port: int) -> bool:
 
 
 @router.post("/start/{product_id}")
-async def start_sandbox(product_id: str):
+async def start_sandbox(product_id: str, _admin: dict = Depends(require_admin_with_rbac)):
     """Start a sandbox for a product."""
     sandbox_id = f"sandbox-{uuid.uuid4().hex[:12]}"
     port = 9000 + len(_active_sandboxes) % 1000  # allocate unique port
@@ -487,7 +492,8 @@ async def view_sandbox(request: Request, sandbox_id: str):
             <div class="toolbar">
                 <span>🌐 Live Preview — <span style="color:#6366f1">{preview_label}</span></span>{compose_hint}{backend_hint}
             </div>
-            <iframe name="demo-frame" src="{iframe_src}" title="Demo Preview"></iframe>
+            <iframe name="demo-frame" src="{iframe_src}" title="Demo Preview"
+                sandbox="{SANDBOX_IFRAME_SANDBOX_ATTR}" referrerpolicy="no-referrer"></iframe>
         </div>
     </div>
 </body>
@@ -633,14 +639,7 @@ async def sandbox_backend_proxy(sandbox_id: str, path: str, request: Request):
         url = f"{url}?{query}"
 
     body = await request.body()
-    fwd_headers: dict[str, str] = {}
-    for k, v in request.headers.items():
-        lk = k.lower()
-        if lk in ("host", "connection"):
-            continue
-        if lk.startswith("x-forwarded-"):
-            continue
-        fwd_headers[k] = v
+    fwd_headers = sandbox_proxy_forward_headers(request)
 
     try:
         async with httpx.AsyncClient(timeout=120.0) as client:
@@ -686,14 +685,7 @@ async def sandbox_compose_proxy(sandbox_id: str, path: str, request: Request):
         url = f"{url}?{query}"
 
     body = await request.body()
-    fwd_headers: dict[str, str] = {}
-    for k, v in request.headers.items():
-        lk = k.lower()
-        if lk in ("host", "connection"):
-            continue
-        if lk.startswith("x-forwarded-"):
-            continue
-        fwd_headers[k] = v
+    fwd_headers = sandbox_proxy_forward_headers(request)
 
     try:
         async with httpx.AsyncClient(timeout=120.0) as client:
@@ -718,7 +710,7 @@ async def sandbox_compose_proxy(sandbox_id: str, path: str, request: Request):
 
 
 @router.post("/stop/{sandbox_id}")
-async def stop_sandbox(sandbox_id: str):
+async def stop_sandbox(sandbox_id: str, _admin: dict = Depends(require_admin_with_rbac)):
     """Stop a running sandbox."""
     if _lookup_sandbox(sandbox_id) is None:
         raise HTTPException(status_code=404, detail="Sandbox not found")
@@ -760,7 +752,7 @@ async def sandbox_status(sandbox_id: str):
 
 
 @router.get("/active")
-async def list_active_sandboxes():
+async def list_active_sandboxes(_admin: dict = Depends(require_admin_with_rbac)):
     """List all active sandboxes."""
     _load_registry()
     active = {
@@ -774,13 +766,24 @@ async def list_active_sandboxes():
 
 
 @router.post("/git/init/{product_id}")
-async def git_init(product_id: str, remote_url: str = ""):
+async def git_init(
+    product_id: str,
+    remote_url: str = "",
+    _admin: dict = Depends(require_admin_with_rbac),
+):
     """Initialize a git repository for the product's generated code."""
-    code_dir = code_dir(product_id)
-    if not code_dir.exists():
+    safe_remote = ""
+    if remote_url.strip():
+        try:
+            safe_remote = validate_git_remote_url(remote_url)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    product_code_dir = code_dir(product_id)
+    if not product_code_dir.exists():
         raise HTTPException(status_code=404, detail="No code directory found for this product")
 
-    repo_dir = code_dir / ".git"
+    repo_dir = product_code_dir / ".git"
     if repo_dir.exists():
         return {"status": "already_initialized", "product_id": product_id}
 
@@ -788,7 +791,7 @@ async def git_init(product_id: str, remote_url: str = ""):
         import subprocess
         result = subprocess.run(
             ["git", "init"],
-            cwd=str(code_dir),
+            cwd=str(product_code_dir),
             capture_output=True, text=True, timeout=10
         )
         if result.returncode != 0:
@@ -797,36 +800,36 @@ async def git_init(product_id: str, remote_url: str = ""):
         # Configure basic git user
         subprocess.run(
             ["git", "config", "user.email", "ai-factory@aicom.local"],
-            cwd=str(code_dir), capture_output=True, timeout=5
+            cwd=str(product_code_dir), capture_output=True, timeout=5
         )
         subprocess.run(
             ["git", "config", "user.name", "AI-Factory"],
-            cwd=str(code_dir), capture_output=True, timeout=5
+            cwd=str(product_code_dir), capture_output=True, timeout=5
         )
 
         # Initial commit of existing code
         subprocess.run(
             ["git", "add", "-A"],
-            cwd=str(code_dir), capture_output=True, timeout=10
+            cwd=str(product_code_dir), capture_output=True, timeout=10
         )
         subprocess.run(
             ["git", "commit", "-m", "Initial commit - AI-Factory generated code"],
-            cwd=str(code_dir), capture_output=True, timeout=10
+            cwd=str(product_code_dir), capture_output=True, timeout=10
         )
 
         # Set remote if provided
-        if remote_url:
+        if safe_remote:
             subprocess.run(
-                ["git", "remote", "add", "origin", remote_url],
-                cwd=str(code_dir), capture_output=True, timeout=5
+                ["git", "remote", "add", "origin", safe_remote],
+                cwd=str(product_code_dir), capture_output=True, timeout=5
             )
 
         logger.info(f"Git repository initialized for product {product_id}")
         return {
             "status": "initialized",
             "product_id": product_id,
-            "code_dir": str(code_dir),
-            "remote": remote_url or None,
+            "code_dir": str(product_code_dir),
+            "remote": safe_remote or None,
         }
     except subprocess.TimeoutExpired:
         raise HTTPException(status_code=500, detail="git init timed out")
@@ -835,10 +838,15 @@ async def git_init(product_id: str, remote_url: str = ""):
 
 
 @router.post("/git/push/{product_id}")
-async def git_push(product_id: str, remote: str = "origin", branch: str = "main"):
+async def git_push(
+    product_id: str,
+    remote: str = "origin",
+    branch: str = "main",
+    _admin: dict = Depends(require_admin_with_rbac),
+):
     """Commit any pending changes and push to the configured remote."""
-    code_dir = code_dir(product_id)
-    repo_dir = code_dir / ".git"
+    product_code_dir = code_dir(product_id)
+    repo_dir = product_code_dir / ".git"
     if not repo_dir.exists():
         raise HTTPException(status_code=400, detail="Git repository not initialized. Call git/init first.")
 
@@ -848,29 +856,34 @@ async def git_push(product_id: str, remote: str = "origin", branch: str = "main"
         # Check if remote is configured
         remote_check = subprocess.run(
             ["git", "remote", "get-url", remote],
-            cwd=str(code_dir), capture_output=True, text=True, timeout=5
+            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
         )
         if remote_check.returncode != 0:
             raise HTTPException(status_code=400, detail=f"Remote '{remote}' not configured. Set a remote URL first.")
+        configured_url = (remote_check.stdout or "").strip()
+        try:
+            validate_git_remote_url(configured_url)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=f"Unsafe git remote: {exc}") from exc
 
         # Add all changes
-        subprocess.run(["git", "add", "-A"], cwd=str(code_dir), capture_output=True, timeout=10)
+        subprocess.run(["git", "add", "-A"], cwd=str(product_code_dir), capture_output=True, timeout=10)
 
         # Commit if there are changes
         status = subprocess.run(
             ["git", "status", "--porcelain"],
-            cwd=str(code_dir), capture_output=True, text=True, timeout=5
+            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
         )
         if status.stdout.strip():
             subprocess.run(
                 ["git", "commit", "-m", f"Auto-commit: AI-Factory update"],
-                cwd=str(code_dir), capture_output=True, timeout=10
+                cwd=str(product_code_dir), capture_output=True, timeout=10
             )
 
         # Push to remote
         push_result = subprocess.run(
             ["git", "push", remote, branch],
-            cwd=str(code_dir), capture_output=True, text=True, timeout=30
+            cwd=str(product_code_dir), capture_output=True, text=True, timeout=30
         )
         if push_result.returncode != 0:
             raise HTTPException(status_code=500, detail=f"git push failed: {push_result.stderr}")

@@ -17,6 +17,8 @@ from typing import Any, Optional
 logger = logging.getLogger(__name__)
 
 STOREFRONT_ESTABLISHED_LISTING_KEY = "storefront_established_listing"
+POST_DEVOPS_HUMAN_APPROVED_AT_KEY = "post_devops_human_review_approved_at"
+POST_DEVOPS_HUMAN_APPROVE_NOTE_KEY = "post_devops_human_review_approve_note"
 
 
 def _data_root() -> Path:
@@ -108,6 +110,34 @@ def normalize_followup_record(raw: Optional[dict[str, Any]]) -> dict[str, Any]:
 def admin_force_list_enabled(product_id: str) -> bool:
     raw = read_followup(product_id)
     return bool(raw and raw.get("admin_force_list"))
+
+
+def post_devops_human_review_approved(product_id: str) -> bool:
+    """Persisted operator approval for the post-DevOps gate (survives SQLite metadata gaps)."""
+    raw = read_followup(product_id)
+    return bool(raw and raw.get(POST_DEVOPS_HUMAN_APPROVED_AT_KEY))
+
+
+def record_post_devops_human_review_approval(product_id: str, note: str = "") -> dict[str, Any]:
+    """
+    Remember approve decision and pre-enable storefront force-list so shipped builds
+    can appear on the public marketplace once code + gates allow.
+    """
+    cur = read_followup(product_id) or {}
+    now = time.time()
+    cur[POST_DEVOPS_HUMAN_APPROVED_AT_KEY] = now
+    trimmed = (note or "").strip()
+    if trimmed:
+        cur[POST_DEVOPS_HUMAN_APPROVE_NOTE_KEY] = trimmed[:8000]
+    if not cur.get("admin_hide_from_storefront"):
+        list_note = trimmed or "Approved via post-DevOps human gate for public storefront listing"
+        if len(list_note) >= 5:
+            cur["admin_force_list"] = True
+            cur["admin_force_list_note"] = list_note[:8000]
+            cur["admin_force_list_at"] = now
+    cur["admin_decisions_updated_at"] = now
+    write_followup(product_id, cur)
+    return normalize_pipeline_followup(cur)
 
 
 def storefront_established_listing_enabled(product_id: str) -> bool:

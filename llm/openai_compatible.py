@@ -15,7 +15,7 @@ import json
 import os
 import time
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import AsyncGenerator, Optional
 
@@ -310,7 +310,7 @@ class OpenAICompatibleProvider(LLMProvider):
             log_file = log_dir / "llm_calls.jsonl"
 
             entry = {
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "provider": self.name,
                 "model": model or self.model,
                 "task_type": task_type,

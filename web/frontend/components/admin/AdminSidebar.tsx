@@ -28,6 +28,10 @@ import {
   Languages,
   ChevronLeft,
   ChevronRight,
+  Zap,
+  Clock,
+  Film,
+  Sparkles,
 } from 'lucide-react';
 import { AdminLocale, t } from '@/lib/adminI18n';
 
@@ -57,6 +61,10 @@ export function Sidebar({
     { id: 'dashboard', label: t(locale, 'tab.dashboard'), icon: LayoutDashboard },
     { id: 'setup', label: t(locale, 'tab.setup'), icon: Rocket },
     { id: 'monitor', label: t(locale, 'tab.monitor'), icon: Radio },
+    { id: 'factory-floor', label: t(locale, 'tab.factoryFloor'), icon: Zap },
+    { id: 'time-travel', label: t(locale, 'tab.timeTravel'), icon: Clock },
+    { id: 'showcase', label: t(locale, 'tab.showcase'), icon: Film },
+    { id: 'prompt-loop', label: t(locale, 'tab.promptLoop'), icon: Sparkles },
     { id: 'pipeline', label: t(locale, 'tab.pipeline'), icon: Activity },
     { id: 'new-product', label: t(locale, 'tab.newProduct'), icon: Plus },
     { id: 'workshop', label: t(locale, 'tab.workshop'), icon: LayoutGrid },

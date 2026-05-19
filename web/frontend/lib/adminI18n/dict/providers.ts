@@ -9,6 +9,13 @@ export const PROVIDERS_DICT: I18nDict = {
   'providers.routingRules': { en: 'Routing Rules', ru: 'Правила маршрутизации', es: 'Reglas de enrutado' },
   'providers.addProvider': { en: 'Add Provider', ru: 'Добавить провайдера', es: 'Añadir proveedor' },
   'providers.defaultBadge': { en: 'Default', ru: 'По умолчанию', es: 'Predeterminado' },
+  'providers.keyConfigured': { en: 'Key saved', ru: 'Ключ сохранён', es: 'Clave guardada' },
+  'providers.keyMissing': { en: 'No API key', ru: 'Нет API-ключа', es: 'Sin clave API' },
+  'providers.apiKeyStoredHint': {
+    en: 'Key is stored on the server. Leave blank to keep the current key.',
+    ru: 'Ключ сохранён на сервере. Оставьте поле пустым, чтобы не менять его.',
+    es: 'La clave está guardada en el servidor. Deje vacío para conservarla.',
+  },
   'providers.btn.refresh': { en: 'Refresh', ru: 'Обновить', es: 'Actualizar' },
   'providers.tooltip.testHeavy': {
     en: 'Test heavy model',

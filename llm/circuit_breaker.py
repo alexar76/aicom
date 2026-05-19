@@ -51,6 +51,8 @@ class CircuitBreakerConfig:
     failure_threshold: int = 5
     failure_window_sec: float = 60.0
     open_duration_sec: float = 30.0
+    # If a HALF_OPEN probe never completes (worker crash, timeout), unblock after this many seconds.
+    half_open_probe_timeout_sec: float = 120.0
 
 
 def _default_provider_row() -> dict[str, Any]:
@@ -61,6 +63,7 @@ def _default_provider_row() -> dict[str, Any]:
         "opened_at": None,
         "half_open_since": None,
         "half_open_probe_in_flight": False,
+        "half_open_probe_started_at": None,
         "last_failure_at": None,
         "last_success_at": None,
         "last_state_change_at": now,
@@ -155,6 +158,7 @@ class CircuitBreakerStore:
         if now - float(opened_at) >= self._config.open_duration_sec:
             row["half_open_since"] = now
             row["half_open_probe_in_flight"] = False
+            row["half_open_probe_started_at"] = None
             self._transition(row, CircuitState.HALF_OPEN, event="half_open_enter", detail="cooldown elapsed")
 
     def allow_request(self, provider: str) -> tuple[bool, str]:
@@ -187,9 +191,25 @@ class CircuitBreakerStore:
 
             if row.get("state") == CircuitState.HALF_OPEN.value:
                 if row.get("half_open_probe_in_flight"):
-                    self._persist_all(data)
-                    return False, "half_open_probe_busy"
+                    started = row.get("half_open_probe_started_at")
+                    stale = (
+                        started is not None
+                        and now - float(started) >= self._config.half_open_probe_timeout_sec
+                    )
+                    if stale:
+                        logger.warning(
+                            "Circuit HALF_OPEN probe for '%s' timed out after %.0fs — clearing stuck probe",
+                            provider,
+                            self._config.half_open_probe_timeout_sec,
+                        )
+                        row["half_open_probe_in_flight"] = False
+                        row["half_open_probe_started_at"] = None
+                        _append_event(row, "half_open_probe_timeout", detail="stale probe cleared")
+                    else:
+                        self._persist_all(data)
+                        return False, "half_open_probe_busy"
                 row["half_open_probe_in_flight"] = True
+                row["half_open_probe_started_at"] = now
                 self._persist_all(data)
                 return True, "half_open_probe"
 
@@ -206,6 +226,7 @@ class CircuitBreakerStore:
             row["last_success_at"] = now
             row["last_error"] = ""
             row["half_open_probe_in_flight"] = False
+            row["half_open_probe_started_at"] = None
             row["failure_times"] = []
 
             if prev_state == CircuitState.HALF_OPEN.value:
@@ -234,6 +255,7 @@ class CircuitBreakerStore:
             row["last_error"] = (error or "")[:500]
             row["total_failures"] = int(row.get("total_failures") or 0) + 1
             row["half_open_probe_in_flight"] = False
+            row["half_open_probe_started_at"] = None
 
             if prev_state == CircuitState.HALF_OPEN.value:
                 row["opened_at"] = now
@@ -274,6 +296,7 @@ class CircuitBreakerStore:
             row["opened_at"] = now
             row["failure_times"] = []
             row["half_open_probe_in_flight"] = False
+            row["half_open_probe_started_at"] = None
             self._transition(row, CircuitState.OPEN, event="manual_open", detail=reason)
             self._persist_all(data)
             return self._public_row(provider, row, now)
@@ -288,6 +311,7 @@ class CircuitBreakerStore:
             row["half_open_since"] = None
             row["failure_times"] = []
             row["half_open_probe_in_flight"] = False
+            row["half_open_probe_started_at"] = None
             self._transition(row, CircuitState.CLOSED, event="manual_close", detail=reason)
             self._persist_all(data)
             return self._public_row(provider, row, now)

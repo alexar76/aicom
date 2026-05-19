@@ -28,6 +28,1057 @@
       },
       "feedback": null,
       "created_at": 1778512060.1911027
+    },
+    {
+      "case_id": "b13026845c23",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 83,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778824568.177116
+    },
+    {
+      "case_id": "91099298fd4e",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 68,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived, archived -> published",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived, archived -> published."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778829260.9735951
+    },
+    {
+      "case_id": "69f3c285fcb9",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 100,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778831015.8942976
+    },
+    {
+      "case_id": "3d75f0998cc3",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 71,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_missing",
+          "detail": "Lifecycle states not covered: proposal, negotiation, won, lost",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for CRM / Sales pipeline: proposal, negotiation, won, lost."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: new -> qualified, new -> lost, qualified -> proposal, proposal -> negotiation, negotiation -> won, negotiation -> lost …",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for CRM / Sales pipeline: new -> qualified, new -> lost, qualified -> proposal, proposal -> negotiation, negotiation -> won, negotiation -> lost, qualified -> lost."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778832503.8925033
+    },
+    {
+      "case_id": "85dd0b8b7202",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 94,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778835827.2197943
+    },
+    {
+      "case_id": "d378180c5918",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 91,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778837483.616968
+    },
+    {
+      "case_id": "f24033eaa7a8",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 72,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived, archived -> published",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived, archived -> published."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778840514.3366208
+    },
+    {
+      "case_id": "594fd0024436",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 94,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778842472.5363808
+    },
+    {
+      "case_id": "ed38dd66dae8",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 100,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778844648.7017617
+    },
+    {
+      "case_id": "5588020b5c69",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 100,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778845863.4427938
+    },
+    {
+      "case_id": "93d31e26f48c",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 76,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778848241.0239606
+    },
+    {
+      "case_id": "f8b72d2986e9",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 97,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778850452.9059062
+    },
+    {
+      "case_id": "e3df9b82d34c",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 94,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778852210.1123857
+    },
+    {
+      "case_id": "495cfcfc81f0",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 71,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778854142.5382988
+    },
+    {
+      "case_id": "3894a2bbbda1",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 63,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_missing",
+          "detail": "Lifecycle states not covered: proposal, negotiation, won, lost",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for CRM / Sales pipeline: proposal, negotiation, won, lost."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: new -> qualified, new -> lost, qualified -> proposal, proposal -> negotiation, negotiation -> won, negotiation -> lost …",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for CRM / Sales pipeline: new -> qualified, new -> lost, qualified -> proposal, proposal -> negotiation, negotiation -> won, negotiation -> lost, qualified -> lost."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778855941.31633
+    },
+    {
+      "case_id": "e94306e3d9e9",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 80,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778857697.8060622
+    },
+    {
+      "case_id": "e6071ff9c7ee",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 92,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778860208.956364
+    },
+    {
+      "case_id": "c3b22cd52ef2",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 80,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778862177.1022613
+    },
+    {
+      "case_id": "71f36938462c",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 80,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778863851.7964966
+    },
+    {
+      "case_id": "92bfec4dfa4d",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 97,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778866082.635131
+    },
+    {
+      "case_id": "213afaf38523",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 97,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778867383.7760496
+    },
+    {
+      "case_id": "1f9cd121de97",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 97,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778869483.1382637
+    },
+    {
+      "case_id": "012d99dda062",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 89,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778877374.0828207
+    },
+    {
+      "case_id": "0e86f0c83234",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 89,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778881908.3752062
+    },
+    {
+      "case_id": "4df87811c2e3",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 89,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778884124.9503753
+    },
+    {
+      "case_id": "91627db96b47",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 92,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778887154.1542876
+    },
+    {
+      "case_id": "b17a4648aca0",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 80,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778888298.6170952
+    },
+    {
+      "case_id": "b73f5e8f26cf",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 80,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778889644.9084313
+    },
+    {
+      "case_id": "062f6a06aa26",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 68,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived, archived -> published",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived, archived -> published."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, export",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, export."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778891473.137132
+    },
+    {
+      "case_id": "033f6bf70a2c",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 84,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778895228.0165687
+    },
+    {
+      "case_id": "5de7adc208e3",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 100,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778897809.1383872
+    },
+    {
+      "case_id": "68b7a8dde5bd",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 100,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778899147.422389
+    },
+    {
+      "case_id": "3aad58d2dcc3",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 77,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_missing",
+          "detail": "Lifecycle states not covered: negotiation, won, lost",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for CRM / Sales pipeline: negotiation, won, lost."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: new -> lost, proposal -> negotiation, negotiation -> won, negotiation -> lost, qualified -> lost",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for CRM / Sales pipeline: new -> lost, proposal -> negotiation, negotiation -> won, negotiation -> lost, qualified -> lost."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778901594.1214654
+    },
+    {
+      "case_id": "1400063b23b7",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 72,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, export",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, export."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778903155.5729547
+    },
+    {
+      "case_id": "d45ee0d2d8b5",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 97,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778904736.6372123
+    },
+    {
+      "case_id": "0959a2992825",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 80,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778906217.0656543
+    },
+    {
+      "case_id": "4977a75caf72",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 71,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778909148.5097861
+    },
+    {
+      "case_id": "cb64c988140a",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 80,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778911102.0516372
+    },
+    {
+      "case_id": "cd0e9d46ff32",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 80,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, export",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, export."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778912589.8759205
+    },
+    {
+      "case_id": "978c24743e77",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 71,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778914206.591915
+    },
+    {
+      "case_id": "4ba024cf4b05",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 71,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778915435.8432472
+    },
+    {
+      "case_id": "fd451d26d608",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 80,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778918301.5992637
+    },
+    {
+      "case_id": "e1fe45384a0a",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 71,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_lifecycle_transition_missing",
+          "detail": "Lifecycle transitions not covered: draft -> published, published -> archived",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: draft -> published, published -> archived."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778920742.5252488
+    },
+    {
+      "case_id": "66fa642d11da",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 97,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778921922.874064
+    },
+    {
+      "case_id": "d83132572e61",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "analytics_bi",
+      "score": 76,
+      "passed": true,
+      "findings": [
+        {
+          "severity": "medium",
+          "code": "domain_acceptance_scenario_missing",
+          "detail": "Acceptance scenarios not covered: define-metric, filter-drill, export",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: define-metric, filter-drill, export."
+        },
+        {
+          "severity": "low",
+          "code": "domain_role_missing",
+          "detail": "User roles not covered: viewer, editor, admin",
+          "fix_hint": "Add explicit spec text (functional_requirements, user_stories, or description) that names and scopes each missing item for Analytics / BI: viewer, editor, admin."
+        }
+      ],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778923414.1679068
+    },
+    {
+      "case_id": "2d5dce0532c3",
+      "product_id": "prod-765a5a26f83c",
+      "stage": "post_spec",
+      "domain": "crm_sales",
+      "score": 92,
+      "passed": true,
+      "findings": [],
+      "metadata": {
+        "category": null,
+        "delivery_profile": "full_software"
+      },
+      "feedback": null,
+      "created_at": 1778937894.230834
     }
   ]
 }

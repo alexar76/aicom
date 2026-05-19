@@ -355,6 +355,8 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                         if content_changed:
                             await self._process_cycle()
                     self._last_successful_cycle_at = time.time()
+                except asyncio.CancelledError:
+                    raise
                 except Exception as e:
                     logger.error(f"Processing cycle error: {e}")
 
@@ -374,6 +376,8 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                         self._last_policy_audit_mono = now_m
                         try:
                             await self._run_policy_audit_once("periodic")
+                        except asyncio.CancelledError:
+                            raise
                         except Exception as e:
                             logger.error(f"Periodic policy audit failed: {e}")
         finally:
@@ -525,7 +529,24 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                         t, products, task_queue, dirty_products=dirty_products, dirty_tasks=dirty_tasks
                     )
 
-            await asyncio.gather(*(_run_one(t) for t in running_tasks))
+            results = await asyncio.gather(
+                *(_run_one(t) for t in running_tasks),
+                return_exceptions=True,
+            )
+            task_errors: list[BaseException] = []
+            for task_row, outcome in zip(running_tasks, results):
+                if isinstance(outcome, BaseException):
+                    task_errors.append(outcome)
+                    logger.error(
+                        "Phase 3 task %s failed: %s",
+                        task_row.get("id"),
+                        outcome,
+                        exc_info=outcome,
+                    )
+            if task_errors:
+                if len(task_errors) == 1:
+                    raise task_errors[0]
+                raise ExceptionGroup("One or more pipeline tasks failed in Phase 3", task_errors)
             changed = True
 
         # Phase 4: Retry failed tasks (up to max_retries with exponential backoff)
@@ -721,7 +742,11 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
 
         agent_type, next_state = next_info
         if current_state == "SECURITY_SCANNED" and agent_type == "devops":
-            if post_devops_human_gate_required(product):
+            from web.backend.services.product_followup import post_devops_human_review_approved
+
+            if post_devops_human_gate_required(product) and not post_devops_human_review_approved(
+                str(product.get("id") or "")
+            ):
                 next_state = "HUMAN_REVIEW_PENDING"
             else:
                 next_state = "SALES_ACTIVE"

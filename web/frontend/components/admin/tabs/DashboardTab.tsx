@@ -23,6 +23,7 @@ import {
   writeAdminMetricsCache,
 } from '@/lib/adminMetricsCache';
 import { prefetchAdminDashboard } from '@/lib/prefetchAdminDashboard';
+import { CostOutcomeHeatmap } from '@/components/admin/tabs/CostOutcomeHeatmap';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 
 function bootDashboardData(): DashboardData {
@@ -359,6 +360,12 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
           </div>
         </GlassCard>
       </div>
+
+      <CostOutcomeHeatmap data={data.cost_outcome_heatmap as any} locale={locale} />
+
+      <GlassCard className="p-4">
+        <p className="text-xs text-gray-500">{t(locale, 'wow.aimarketEmbed')}</p>
+      </GlassCard>
 
       <div className="grid md:grid-cols-2 gap-6">
         <GlassCard>

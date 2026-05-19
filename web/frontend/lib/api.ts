@@ -201,6 +201,12 @@ export interface DashboardData {
     title?: string;
     play_url?: string | null;
   };
+  cost_outcome_heatmap?: {
+    name?: string;
+    value?: number;
+    children?: Array<{ name: string; value?: number; product_id?: string; children?: unknown[] }>;
+  };
+  factory_floor?: Record<string, unknown>;
   collected_at?: number;
 }
 
@@ -284,6 +290,8 @@ export interface ProviderStatus {
   priority?: number;
   is_default?: boolean;
   circuit?: CircuitBreakerRow;
+  api_key_configured?: boolean;
+  api_key_env?: string | null;
 }
 
 export interface RoutingRule {
@@ -346,6 +354,8 @@ export interface CreateProviderPayload {
   };
   priority?: number;
   health_check_endpoint?: string;
+  /** Edit-only hint from GET /providers — key is stored server-side, never returned. */
+  api_key_configured?: boolean;
 }
 
 export interface AgentStatus {
@@ -553,7 +563,12 @@ class ApiClient {
     }
 
     const method = (fetchInit.method || 'GET').toUpperCase();
-    if (UNSAFE_METHODS.has(method) && endpoint.startsWith('/admin')) {
+    if (
+      UNSAFE_METHODS.has(method) &&
+      (endpoint.startsWith('/admin') ||
+        endpoint.startsWith('/customer') ||
+        endpoint.startsWith('/support'))
+    ) {
       const csrf = readCsrfCookie();
       if (csrf) {
         headers['X-CSRF-Token'] = csrf;
@@ -941,6 +956,48 @@ class ApiClient {
     return response.json();
   }
 
+  // ── Wow demo features ───────────────────────────────────────────────────
+
+  async getReplayTimeline(productId: string): Promise<any> {
+    return this.request(`/admin/wow/pipeline/products/${encodeURIComponent(productId)}/replay-timeline`);
+  }
+
+  async forkReplayFrom(
+    productId: string,
+    body: { frame_index: number; operator_notes?: string; model_override?: string },
+  ): Promise<any> {
+    return this.request(`/admin/wow/pipeline/products/${encodeURIComponent(productId)}/replay-fork`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+  }
+
+  async enqueueProductShowcase(productId: string, baseUrl?: string): Promise<any> {
+    return this.request('/admin/wow/showcase/enqueue', {
+      method: 'POST',
+      body: JSON.stringify({ product_id: productId, base_url: baseUrl }),
+    });
+  }
+
+  async getShowcaseGallery(): Promise<{ entries: any[]; count: number }> {
+    return this.request('/admin/wow/showcase/gallery');
+  }
+
+  async analyzePromptFailures(): Promise<{ proposals: any[]; count: number }> {
+    return this.request('/admin/wow/prompts/analyze', { method: 'POST' });
+  }
+
+  async getPromptProposals(): Promise<{ proposals: any[]; count: number }> {
+    return this.request('/admin/wow/prompts/proposals');
+  }
+
+  async applyPromptProposal(proposalId: string): Promise<any> {
+    return this.request('/admin/wow/prompts/apply', {
+      method: 'POST',
+      body: JSON.stringify({ proposal_id: proposalId }),
+    });
+  }
+
   async getProviders(): Promise<ProviderStatus[]> {
     const result = await this.request<{ providers: Record<string, any> }>('/admin/providers');
     const providers = result.providers || {};
@@ -957,6 +1014,8 @@ class ApiClient {
       base_url: config.base_url,
       priority: config.priority,
       circuit: config.circuit,
+      api_key_configured: config.api_key_configured ?? false,
+      api_key_env: config.api_key_env ?? null,
     }));
   }
 
@@ -1297,7 +1356,16 @@ class ApiClient {
   async postPipelineHumanReviewApprove(
     productId: string,
     body?: { note?: string }
-  ): Promise<{ product_id: string; ok: boolean; task_id?: string; state?: string }> {
+  ): Promise<{
+    product_id: string;
+    ok: boolean;
+    task_id?: string;
+    state?: string;
+    message?: string;
+    already_approved?: boolean;
+    storefront_force_list?: boolean;
+    storefront_followup?: Record<string, unknown>;
+  }> {
     return this.request(`/admin/pipeline/products/${encodeURIComponent(productId)}/human-review/approve`, {
       method: 'POST',
       body: JSON.stringify(body ?? {}),

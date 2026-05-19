@@ -1,13 +1,16 @@
-"""Double-submit CSRF protection for admin cookie sessions."""
+"""Double-submit CSRF and Origin checks for cookie-authenticated and public mutation APIs."""
 
 from __future__ import annotations
 
 import logging
 import os
 import secrets
+from urllib.parse import urlparse
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
+
+from web.backend.cors_settings import get_cors_allow_origins
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +40,55 @@ def _path_exempt(path: str) -> bool:
     return False
 
 
+def _allowed_origins() -> set[str]:
+    origins = set(get_cors_allow_origins())
+    site = (os.environ.get("NEXT_PUBLIC_SITE_URL") or "").strip().rstrip("/")
+    if site:
+        origins.add(site)
+    return origins
+
+
+def _origin_allowed(request: Request) -> bool:
+    """Reject cross-site browser mutations when Origin/Referer do not match the site."""
+    allowed = _allowed_origins()
+    origin = (request.headers.get("origin") or "").strip()
+    if origin:
+        return origin.rstrip("/") in allowed
+
+    referer = (request.headers.get("referer") or "").strip()
+    if referer:
+        try:
+            ref_origin = f"{urlparse(referer).scheme}://{urlparse(referer).netloc}"
+        except Exception:
+            return False
+        return ref_origin.rstrip("/") in allowed
+
+    # Non-browser clients (curl, workers) typically omit Origin — allow.
+    return True
+
+
+def _requires_origin_check(path: str) -> bool:
+    return path.startswith("/api/customer/") or path.startswith("/api/support/")
+
+
+def _requires_admin_csrf(path: str, request: Request) -> bool:
+    if not path.startswith("/api/admin"):
+        return False
+    session_cookie = (request.cookies.get("access_token") or "").strip()
+    return bool(session_cookie)
+
+
+def _requires_customer_csrf(path: str, request: Request) -> bool:
+    if not path.startswith("/api/customer"):
+        return False
+    if (request.headers.get("authorization") or "").strip().lower().startswith("bearer "):
+        return False
+    return bool(
+        (request.cookies.get("access_token") or "").strip()
+        or (request.cookies.get("customer_token") or "").strip()
+    )
+
+
 async def csrf_protect_middleware(request: Request, call_next):
     if not csrf_enabled():
         return await call_next(request)
@@ -45,12 +97,12 @@ async def csrf_protect_middleware(request: Request, call_next):
     if request.method not in _UNSAFE or _path_exempt(path):
         return await call_next(request)
 
-    # Only protect admin routes that may use the HTTP-only access_token cookie.
-    if not path.startswith("/api/admin"):
-        return await call_next(request)
+    if _requires_origin_check(path) and not _origin_allowed(request):
+        logger.warning("Origin check failed for %s %s", request.method, path)
+        return JSONResponse(status_code=403, content={"detail": "Origin not allowed"})
 
-    session_cookie = (request.cookies.get("access_token") or "").strip()
-    if not session_cookie:
+    needs_csrf = _requires_admin_csrf(path, request) or _requires_customer_csrf(path, request)
+    if not needs_csrf:
         return await call_next(request)
 
     cookie_token = (request.cookies.get(CSRF_COOKIE) or "").strip()

@@ -44,6 +44,7 @@ from web.backend.services.pipeline_database_admin import pipeline_db_status
 from .core.config import AppConfig
 from .core.admin_roles import require_admin_with_rbac
 from .core.security import SecurityManager
+from .core.websocket_admin import require_admin_websocket, selected_admin_subprotocol
 from .core.telemetry import TelemetryCollector
 from .api import products, sandbox, payment, feedback, customer, marketing, support_chat, telemetry_events, ai_market
 from .api import pipeline_demo_replay_public
@@ -280,10 +281,15 @@ async def add_security_headers(request: Request, call_next):
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     logger.error(f"Unhandled exception: {exc}", exc_info=True)
-    return JSONResponse(
-        status_code=500,
-        content={"detail": "Internal server error", "message": str(exc)},
+    expose = os.environ.get("AIFACTORY_EXPOSE_ERROR_DETAILS", "").lower() in (
+        "1",
+        "true",
+        "yes",
     )
+    body: dict[str, str] = {"detail": "Internal server error"}
+    if expose:
+        body["message"] = str(exc)
+    return JSONResponse(status_code=500, content=body)
 
 
 # Health check
@@ -297,13 +303,22 @@ async def health_check():
     }
 
 
+@app.get("/api/public/showcase-gallery")
+async def public_showcase_gallery():
+    from web.backend.services.product_showcase import list_showcase_gallery
+
+    return list_showcase_gallery()
+
+
 @app.websocket("/api/admin/ws/metrics")
 async def admin_metrics_ws(websocket: WebSocket):
     """
     Lightweight websocket stream for admin metrics.
     Sends the same dashboard payload used by polling endpoints.
     """
-    await websocket.accept()
+    await require_admin_websocket(websocket)
+    subprotocol = selected_admin_subprotocol(websocket)
+    await websocket.accept(subprotocol=subprotocol) if subprotocol else await websocket.accept()
     try:
         while True:
             payload = await admin_dashboard._build_full_metrics_async()
@@ -350,6 +365,9 @@ app.include_router(admin_methodology.router)
 app.include_router(admin_users_api.router)
 app.include_router(admin_iteration_hub.router)
 app.include_router(admin_pipeline_database.router)
+from web.backend.api.admin import wow_features as admin_wow_features
+
+app.include_router(admin_wow_features.router, prefix="/api/admin")
 
 from web.backend.openapi_meta import apply_openapi_metadata
 

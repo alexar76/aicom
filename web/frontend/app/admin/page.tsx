@@ -20,6 +20,10 @@ import {
   DiscoveryTab,
   LLMLogsTab,
   MonitorTab,
+  FactoryFloorTab,
+  TimeTravelReplayTab,
+  ProductShowcaseTab,
+  PromptImprovementTab,
   NewProductTab,
   PipelineTab,
   ProvidersTab,
@@ -51,6 +55,10 @@ const ADMIN_TAB_IDS = new Set([
   'dashboard',
   'setup',
   'monitor',
+  'factory-floor',
+  'time-travel',
+  'showcase',
+  'prompt-loop',
   'pipeline',
   'new-product',
   'workshop',
@@ -162,6 +170,14 @@ function AdminPageInner() {
         return <SetupWizardTab adminRole={adminRole} locale={locale} />;
       case 'monitor':
         return <MonitorTab locale={locale} />;
+      case 'factory-floor':
+        return <FactoryFloorTab locale={locale} />;
+      case 'time-travel':
+        return <TimeTravelReplayTab locale={locale} />;
+      case 'showcase':
+        return <ProductShowcaseTab locale={locale} />;
+      case 'prompt-loop':
+        return <PromptImprovementTab locale={locale} />;
       case 'products':
         return <PipelineTab locale={locale} />;
       case 'new-product':

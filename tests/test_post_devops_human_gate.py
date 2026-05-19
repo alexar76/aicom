@@ -95,6 +95,29 @@ def test_reject_queues_dev_fixing(pipeline_json_only):
     )
 
 
+def test_approve_persists_followup_and_idempotent(pipeline_json_only):
+    pj, fb_root = pipeline_json_only
+    data = {
+        "products": {"p1": {"id": "p1", "idea": "idea", "state": "HUMAN_REVIEW_PENDING"}},
+        "task_queue": [],
+    }
+    pj.write_text(json.dumps(data), encoding="utf-8")
+
+    from web.backend.services.human_pipeline import approve_post_devops_human_review
+    from web.backend.services.product_followup import post_devops_human_review_approved, read_followup
+
+    res = approve_post_devops_human_review("p1", "ship to storefront")
+    assert res.get("ok") is True
+    assert res.get("storefront_force_list") is True
+    assert post_devops_human_review_approved("p1")
+    fu = read_followup("p1")
+    assert fu and fu.get("admin_force_list") is True
+
+    res2 = approve_post_devops_human_review("p1", "again")
+    assert res2.get("ok") is True
+    assert res2.get("message") in ("sales_already_queued", "already_past_human_gate", "sales_queued")
+
+
 def test_approve_wrong_state(pipeline_json_only):
     pj, _ = pipeline_json_only
     data = {"products": {"p1": {"id": "p1", "idea": "i", "state": "QA_TESTING"}}, "task_queue": []}

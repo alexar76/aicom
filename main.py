@@ -260,8 +260,16 @@ class AIFactory:
     async def _periodic_metrics_update(self, interval_sec: int = 30):
         """Periodically update Prometheus gauges."""
         while self._running:
-            self._update_pipeline_metrics()
-            await asyncio.sleep(interval_sec)
+            try:
+                self._update_pipeline_metrics()
+            except asyncio.CancelledError:
+                raise
+            except Exception as e:
+                logger.warning("Periodic pipeline metrics update failed: %s", e)
+            try:
+                await asyncio.sleep(interval_sec)
+            except asyncio.CancelledError:
+                raise
 
     async def start(self):
         """Start all components."""

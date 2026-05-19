@@ -258,6 +258,7 @@ class LLMRouter:
                     f"Routing to provider '{current}' for task '{task_type}'"
                     f" (model: {config.model_override or 'default'})"
                 )
+                self._apply_output_token_budget(current, config)
                 result = await self._generate_via_provider(current, prompt, config)
                 if self._cache_enabled:
                     self._cache_set(cache_key, result)
@@ -278,6 +279,22 @@ class LLMRouter:
         if last_error:
             raise last_error
         raise RuntimeError(f"No available provider for task type: {task_type}")
+
+    def _apply_output_token_budget(self, provider_name: str, config: GenerationConfig) -> None:
+        """Clamp or raise ``max_tokens`` to the active model/provider ceiling."""
+        from llm.token_budget import resolve_max_output_tokens_for_generation
+
+        pconf = self._provider_configs.get(provider_name) or {}
+        model = config.model_override
+        if not model:
+            role = config.model_role or "heavy"
+            model = self._get_model_for_role(provider_name, role)
+        config.max_tokens = resolve_max_output_tokens_for_generation(
+            config.max_tokens,
+            provider_name=provider_name,
+            model=model,
+            provider_config=pconf,
+        )
 
     async def _generate_via_provider(
         self,
@@ -300,35 +317,13 @@ class LLMRouter:
         current: str,
         tried: set[str],
     ) -> Optional[str]:
-        """Pick next provider in failover chain, skipping tried and circuit-blocked when possible."""
-        candidates: list[str] = []
+        """After the current provider fails, only try an explicit routing fallback (if configured)."""
         fb = self._get_fallback(task_type, current)
-        if fb:
-            candidates.append(fb)
-        rule = self._get_rule(task_type)
-        preferred = rule.get("preferred_provider", "auto") if rule else "auto"
-        if preferred not in (None, "auto", current):
-            candidates.append(preferred)
-        if self.default_provider and self.default_provider not in candidates:
-            candidates.append(self.default_provider)
-        for name in self.providers:
-            if name not in candidates:
-                candidates.append(name)
-
-        for name in candidates:
-            if name in tried or name == current:
-                continue
-            if not self._provider_is_available(name):
-                continue
-            if not self._circuit_allows(name):
-                continue
-            return name
-        for name in candidates:
-            if name in tried or name == current:
-                continue
-            if self._provider_is_available(name):
-                return name
-        return None
+        if not fb or fb in tried or fb == current:
+            return None
+        if fb not in self.providers:
+            return None
+        return fb
 
     def _build_cache_key(self, prompt: str, task_type: str, config: GenerationConfig) -> str:
         raw = "|".join(
@@ -480,21 +475,20 @@ class LLMRouter:
         return self._circuit_allows(name)
 
     def _select_provider(self, task_type: str) -> Optional[str]:
-        """Select the best provider for a task type."""
-        rule = self._get_rule(task_type)
-
-        if self._provider_is_available(self.default_provider):
+        """Select provider for a task. Default provider is always tried first when configured."""
+        if self.default_provider and self.default_provider in self.providers:
             return self.default_provider
 
+        rule = self._get_rule(task_type)
         if not rule:
             return self._select_fastest_available()
 
         fallback = rule.get("fallback_provider")
-        if self._provider_is_available(fallback):
+        if fallback and fallback in self.providers:
             return fallback
 
         preferred = rule.get("preferred_provider", "auto")
-        if preferred not in (None, "auto") and self._provider_is_available(preferred):
+        if preferred not in (None, "auto") and preferred in self.providers:
             return preferred
 
         return self._select_fastest_available()

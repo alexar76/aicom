@@ -16,9 +16,18 @@ import requests
 class AIMarketClient:
     base_url: str
     timeout_sec: float = 20.0
+    access_token: str = ""
 
     def _url(self, path: str) -> str:
         return f"{self.base_url.rstrip('/')}{path}"
+
+    def _auth_headers(self, extra: dict[str, str] | None = None) -> dict[str, str]:
+        headers: dict[str, str] = {}
+        if self.access_token:
+            headers["Authorization"] = f"Bearer {self.access_token}"
+        if extra:
+            headers.update(extra)
+        return headers
 
     def list_products(self, **params: Any) -> dict[str, Any]:
         r = requests.get(self._url("/ai-market/products"), params=params, timeout=self.timeout_sec)
@@ -65,12 +74,22 @@ class AIMarketClient:
             "wallet_address": wallet_address,
             "amount": amount,
         }
-        r = requests.post(self._url("/ai-market/pilot/settlement/confirm"), json=payload, timeout=self.timeout_sec)
+        r = requests.post(
+            self._url("/ai-market/pilot/settlement/confirm"),
+            json=payload,
+            headers=self._auth_headers(),
+            timeout=self.timeout_sec,
+        )
         r.raise_for_status()
         return r.json()
 
     def list_entitlements(self, customer_id: str) -> dict[str, Any]:
-        r = requests.get(self._url(f"/ai-market/entitlements/{customer_id}"), timeout=self.timeout_sec)
+        # Endpoint now requires the caller to be the customer (Bearer JWT).
+        r = requests.get(
+            self._url(f"/ai-market/entitlements/{customer_id}"),
+            headers=self._auth_headers(),
+            timeout=self.timeout_sec,
+        )
         r.raise_for_status()
         return r.json()
 

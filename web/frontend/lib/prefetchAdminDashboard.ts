@@ -8,6 +8,7 @@ import {
   readAdminMetricsCache,
   writeAdminMetricsCache,
 } from '@/lib/adminMetricsCache';
+import { writeFactoryFloorCache, type FactoryFloorPayload } from '@/lib/factoryFloorCache';
 
 let inflight: Promise<void> | null = null;
 
@@ -29,6 +30,9 @@ export function prefetchAdminDashboard(): void {
     try {
       const full = await api.getDashboard(false);
       writeAdminMetricsCache(full);
+      if (full.factory_floor) {
+        writeFactoryFloorCache(full.factory_floor as FactoryFloorPayload);
+      }
     } catch {
       /* quick or prior cache remains */
     }

@@ -25,6 +25,7 @@ import {
   Terminal,
   Server,
   Globe,
+  Languages,
   Lock,
   Users,
   DollarSign,
@@ -50,8 +51,42 @@ interface DocSection {
 
 // ── Navigation Bar ────────────────────────────────────────────────────────
 
+type DocLocale = 'en' | 'ru' | 'es';
+const LOCALE_LABELS: Record<DocLocale, string> = { en: 'EN', ru: 'RU', es: 'ES' };
+const LOCALE_NAMES: Record<DocLocale, string> = { en: 'English', ru: 'Русский', es: 'Español' };
+const NAV_LABELS: Record<DocLocale, { home: string; docs: string; admin: string; toggle: string }> = {
+  en: { home: 'Home', docs: 'Docs', admin: 'Admin', toggle: 'Toggle menu' },
+  ru: { home: 'Главная', docs: 'Документация', admin: 'Админ', toggle: 'Меню' },
+  es: { home: 'Inicio', docs: 'Documentación', admin: 'Admin', toggle: 'Menú' },
+};
+
+function detectDocLocale(): DocLocale {
+  if (typeof window === 'undefined') return 'en';
+  try {
+    // Share locale with the main marketing page
+    const shared = localStorage.getItem('marketing_locale');
+    if (shared === 'ru' || shared === 'es') return shared;
+    const s = localStorage.getItem('docs-locale');
+    if (s === 'ru' || s === 'es') return s;
+  } catch {}
+  const nav = navigator.language.split('-')[0];
+  if (nav === 'ru') return 'ru';
+  if (nav === 'es') return 'es';
+  return 'en';
+}
+
 function DocNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const [locale, setLocale] = useState<DocLocale>(detectDocLocale);
+  const labels = NAV_LABELS[locale];
+
+  const switchLocale = (l: DocLocale) => {
+    setLocale(l);
+    setLangOpen(false);
+    try { localStorage.setItem('docs-locale', l); localStorage.setItem('marketing_locale', l); } catch {}
+    if (typeof document !== 'undefined') document.documentElement.lang = l;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5">
@@ -62,42 +97,42 @@ function DocNavbar() {
         </a>
         <div className="hidden md:flex items-center gap-6">
           <a href="/" className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors">
-            <Home className="w-4 h-4" />
-            Home
+            <Home className="w-4 h-4" />{labels.home}
           </a>
           <a href="/docs" className="flex items-center gap-1.5 text-sm text-white transition-colors">
-            <BookOpen className="w-4 h-4" />
-            Docs
+            <BookOpen className="w-4 h-4" />{labels.docs}
           </a>
           <a href="/admin" className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors">
-            <Settings className="w-4 h-4" />
-            Admin
+            <Settings className="w-4 h-4" />{labels.admin}
           </a>
+          <div className="relative">
+            <button onClick={() => setLangOpen(!langOpen)} className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-white/5 hover:bg-white/10 text-gray-300 transition-colors">
+              <Globe className="w-3.5 h-3.5" />{LOCALE_LABELS[locale]}
+            </button>
+            {langOpen && (
+              <div className="absolute right-0 top-full mt-1 py-1 rounded-lg bg-gray-900 border border-white/10 shadow-xl z-50 min-w-[130px]">
+                {(Object.keys(LOCALE_NAMES) as DocLocale[]).map(l => (
+                  <button key={l} onClick={() => switchLocale(l)} className={`w-full text-left px-3 py-1.5 text-xs transition-colors ${l === locale ? 'text-indigo-400 bg-indigo-500/10' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>{LOCALE_NAMES[l]}</button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-gray-400 hover:text-white transition-colors"
-          aria-label="Toggle menu"
-        >
+        <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-gray-400 hover:text-white transition-colors" aria-label={labels.toggle}>
           {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
       {menuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="md:hidden border-t border-white/5 bg-black/90 backdrop-blur-xl"
-        >
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="md:hidden border-t border-white/5 bg-black/90 backdrop-blur-xl">
           <div className="px-4 py-3 space-y-2">
-            <a href="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-sm text-gray-400 hover:text-white py-2 transition-colors">
-              <Home className="w-4 h-4" /> Home
-            </a>
-            <a href="/docs" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-sm text-white py-2 transition-colors">
-              <BookOpen className="w-4 h-4" /> Docs
-            </a>
-            <a href="/admin" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-sm text-gray-400 hover:text-white py-2 transition-colors">
-              <Settings className="w-4 h-4" /> Admin
-            </a>
+            <a href="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-sm text-gray-400 hover:text-white py-2 transition-colors"><Home className="w-4 h-4" />{labels.home}</a>
+            <a href="/docs" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-sm text-white py-2 transition-colors"><BookOpen className="w-4 h-4" />{labels.docs}</a>
+            <a href="/admin" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-sm text-gray-400 hover:text-white py-2 transition-colors"><Settings className="w-4 h-4" />{labels.admin}</a>
+            <div className="flex gap-2 pt-2 border-t border-white/5">
+              {(Object.keys(LOCALE_NAMES) as DocLocale[]).map(l => (
+                <button key={l} onClick={() => switchLocale(l)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${l === locale ? 'bg-indigo-500/20 text-indigo-400' : 'bg-white/5 text-gray-400 hover:text-white'}`}>{LOCALE_NAMES[l]}</button>
+              ))}
+            </div>
           </div>
         </motion.div>
       )}

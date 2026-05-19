@@ -6,6 +6,7 @@ import json
 import os
 import time
 import uuid
+from collections import defaultdict, deque
 from pathlib import Path
 from typing import Optional
 
@@ -26,6 +27,31 @@ from web.backend.services.commerce import CommerceService
 
 router = APIRouter(prefix="/api/customer", tags=["customer"])
 commerce = CommerceService()
+
+_REG_MAX_PER_HOUR = int(os.environ.get("AIFACTORY_CUSTOMER_REGISTER_MAX_PER_HOUR", "5"))
+_REG_WINDOW_SEC = 3600.0
+_register_attempts: dict[str, deque[float]] = defaultdict(deque)
+
+
+def _client_ip(request: Request) -> str:
+    peer = request.client.host if request.client and request.client.host else ""
+    forwarded = (request.headers.get("x-forwarded-for") or "").strip()
+    trusted = frozenset(
+        p.strip() for p in (os.environ.get("AIFACTORY_TRUSTED_PROXY_IPS") or "127.0.0.1,::1").split(",") if p.strip()
+    )
+    if forwarded and peer in trusted:
+        return forwarded.split(",")[0].strip()
+    return peer or "unknown"
+
+
+def _enforce_register_rate_limit(ip: str) -> None:
+    now = time.time()
+    window = _register_attempts[ip]
+    while window and now - window[0] > _REG_WINDOW_SEC:
+        window.popleft()
+    if len(window) >= _REG_MAX_PER_HOUR:
+        raise HTTPException(status_code=429, detail="Too many registration attempts. Try again later.")
+    window.append(now)
 
 
 def _get_token_payload(authorization: Optional[str] = Header(default=None)) -> dict:
@@ -65,7 +91,8 @@ def _verify_stripe_signature(payload: bytes, sig_header: str, secret: str) -> bo
 
 
 @router.post("/register")
-async def register(body: CustomerRegisterRequest):
+async def register(body: CustomerRegisterRequest, request: Request):
+    _enforce_register_rate_limit(_client_ip(request))
     try:
         customer = commerce.register_customer(body.email, body.password)
     except ValueError as exc:

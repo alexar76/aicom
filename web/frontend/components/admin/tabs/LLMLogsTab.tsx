@@ -101,6 +101,17 @@ import {
 
 const REPORT_CHART_COLORS = ['#818cf8', '#34d399', '#fbbf24', '#f472b6', '#22d3ee', '#a78bfa', '#fb923c', '#4ade80'];
 
+const DARK_CHART_TOOLTIP = {
+  contentStyle: {
+    background: '#0f172a',
+    border: '1px solid rgba(255,255,255,0.15)',
+    borderRadius: 8,
+    boxShadow: '0 4px 12px rgba(0,0,0,0.45)',
+  },
+  labelStyle: { color: '#f8fafc', fontWeight: 600 },
+  itemStyle: { color: '#e2e8f0' },
+};
+
 /** Rows per request; use ``offset`` on the server to load older pages without pulling the whole JSONL into the browser. */
 const LLM_LOG_PAGE_SIZE = 200;
 
@@ -404,7 +415,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
                       </Pie>
                       <Tooltip
                         formatter={(value: number) => usdTooltipFmt(value)}
-                        contentStyle={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8 }}
+                        {...DARK_CHART_TOOLTIP}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -423,7 +434,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
                       <YAxis type="category" dataKey="name" width={56} tick={{ fill: '#94a3b8', fontSize: 10 }} />
                       <Tooltip
                         formatter={(value: number) => usdTooltipFmt(value)}
-                        contentStyle={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8 }}
+                        {...DARK_CHART_TOOLTIP}
                       />
                       <Bar dataKey="cost" radius={[0, 4, 4, 0]}>
                         {displayReport.roleBar.map((_, i) => (
@@ -448,7 +459,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
                     <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} tickFormatter={(v) => `$${v}`} />
                     <Tooltip
                       formatter={(value: number) => usdTooltipFmt(value)}
-                      contentStyle={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8 }}
+                      {...DARK_CHART_TOOLTIP}
                     />
                     <Bar dataKey="cost" fill="#818cf8" radius={[4, 4, 0, 0]} />
                   </BarChart>

@@ -118,19 +118,23 @@ export function ProviderFormModal({
   onClose,
   initial,
   onSaved,
+  locale,
 }: {
   isOpen: boolean;
   onClose: () => void;
   initial: CreateProviderPayload | null;
   onSaved: () => void;
+  locale: AdminLocale;
 }) {
   const [form, setForm] = useState<CreateProviderPayload>(emptyProviderForm);
+  const [keyConfigured, setKeyConfigured] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (isOpen) {
       setForm(initial ? { ...emptyProviderForm, ...initial } : { ...emptyProviderForm });
+      setKeyConfigured(Boolean(initial?.api_key_configured));
       setError('');
     }
   }, [isOpen, initial]);
@@ -141,10 +145,22 @@ export function ProviderFormModal({
     setSaving(true);
     setError('');
     try {
-      if (initial?.name && initial.name === form.name) {
-        await api.updateProvider(form.name, form);
+      const payload: CreateProviderPayload = { ...form };
+      delete payload.api_key_configured;
+      if (!payload.api_key?.trim()) {
+        delete payload.api_key;
       } else {
-        await api.createProvider(form);
+        payload.api_key = payload.api_key.trim();
+        payload.api_key_env = null;
+      }
+      if (initial?.name && initial.name === form.name) {
+        await api.updateProvider(form.name, payload);
+      } else {
+        if (!payload.api_key) {
+          setError(t(locale, 'providers.keyMissing'));
+          return;
+        }
+        await api.createProvider(payload);
       }
       onSaved();
       onClose();
@@ -206,6 +222,13 @@ export function ProviderFormModal({
               onChange={(e) => updateField('api_key', e.target.value || null)}
               placeholder={initial ? '•••••••••• (unchanged if empty)' : 'sk-...'}
             />
+            <p className="text-[11px] text-gray-500 mt-1">
+              {keyConfigured ? (
+                <span className="text-emerald-400/90">{t(locale, 'providers.apiKeyStoredHint')}</span>
+              ) : (
+                <span className="text-amber-400/90">{t(locale, 'providers.keyMissing')}</span>
+              )}
+            </p>
           </div>
           <div>
             <label className="block text-gray-400 text-xs mb-1">Health Check Endpoint</label>

@@ -1,0 +1,7 @@
+# Optional overlay: mount host Docker socket (bypasses DinD sidecar).
+# Usage: AIFACTORY_USE_HOST_DOCKER=1 ./run-compose.sh
+
+services:
+  app:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

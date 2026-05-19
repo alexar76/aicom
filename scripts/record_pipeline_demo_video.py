@@ -349,9 +349,13 @@ def _tour_workshop(page) -> None:
 def _api_start_sandbox(page, pid: str) -> str | None:
     """Start sandbox via API; return sandbox_id when present."""
     try:
+        token = page.evaluate("() => localStorage.getItem('admin_token')")
+        headers = {"Content-Type": "application/json"}
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
         res = page.request.post(
             f"{BASE}/api/sandbox/start/{pid}",
-            headers={"Content-Type": "application/json"},
+            headers=headers,
             timeout=120_000,
         )
         if not res.ok:

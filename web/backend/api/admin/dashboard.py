@@ -76,6 +76,8 @@ from web.backend.services.dashboard_metrics_cache import (
 )
 from web.backend.services.storefront_counts_cache import invalidate_storefront_categories_cache
 from web.backend.services.product_economics import compute_roi_band, get_product_llm_costs
+from web.backend.services.factory_floor import build_factory_floor_slice
+from web.backend.services.cost_outcome_heatmap import build_cost_outcome_heatmap
 from web.backend.services.product_pulse import build_product_pulse, build_product_pulses_for_metrics
 from web.backend.services.storefront_pricing import (
     patch_admin_storefront_usdt,
@@ -326,12 +328,43 @@ async def _fast_pipeline_metrics_async() -> tuple[dict[str, int], dict[str, int]
     return _fast_pipeline_metrics_json()
 
 
+def _fast_pipeline_metrics_sqlite_sync() -> tuple[dict[str, int], dict[str, int]] | None:
+    """Sync SQL aggregates for quick dashboard inside an active event loop."""
+    if not (_admin_use_sqlite_pipeline() and _admin_sql_store_available()):
+        return None
+    try:
+        from core.pipeline_database import create_sync_pipeline_manager
+
+        sm = create_sync_pipeline_manager()
+        try:
+            m = sm.get_metrics()
+            state_distribution = sm.get_state_distribution()
+        finally:
+            sm.close()
+        pipeline = {
+            "total_products": int(m["total_products"]),
+            "active_products": int(m["active_products"]),
+            "completed_products": int(m["completed_products"]),
+            "failed_products": int(m["failed_products"]),
+            "pending_tasks": int(m["pending_tasks"]),
+            "running_tasks": int(m["running_tasks"]),
+            "timed_out_tasks": int(m.get("timeout_tasks") or 0),
+        }
+        return pipeline, state_distribution
+    except Exception as e:
+        logger.warning("Dashboard metrics: sync SQL aggregates failed (%s), falling back to snapshot", e)
+        return None
+
+
 def _fast_pipeline_metrics() -> tuple[dict[str, int], dict[str, int]]:
-    """Sync entry: uses asyncio when no loop is running; JSON fallback inside a running loop."""
+    """Sync entry: asyncio when no loop; sync SQLite when inside FastAPI; JSON last resort."""
     try:
         asyncio.get_running_loop()
     except RuntimeError:
         return asyncio.run(_fast_pipeline_metrics_async())
+    synced = _fast_pipeline_metrics_sqlite_sync()
+    if synced is not None:
+        return synced
     return _fast_pipeline_metrics_json()
 
 
@@ -676,6 +709,36 @@ async def _build_full_metrics_async(*, include_product_pulses: bool = False) -> 
     except Exception as e:
         logger.debug("dashboard failed_alerts: %s", e)
 
+    circuit_snap = _circuit_breakers_metrics()
+    factory_floor: dict[str, Any] = {}
+    try:
+        factory_floor = build_factory_floor_slice(
+            sqlite_path=_admin_sqlite_db_path(),
+            circuit_breakers=circuit_snap,
+        )
+    except Exception as e:
+        logger.warning("factory_floor metrics: %s", e)
+
+    cost_heatmap: dict[str, Any] = {"name": "factory", "value": 0, "children": []}
+    try:
+        from orchestrator.sqlite_manager import SQLiteManager
+
+        sm = SQLiteManager(str(_admin_sqlite_db_path()))
+        sm.connect()
+        rows = sm.conn.execute(
+            """
+            SELECT id, state, idea FROM products
+            WHERE workspace_id = ? AND upper(state) IN ('COMPLETED', 'DEPLOYED_PRODUCTION')
+            LIMIT 200
+            """,
+            (sm.workspace_id,),
+        ).fetchall()
+        sm.close()
+        products = [dict(r) for r in rows]
+        cost_heatmap = build_cost_outcome_heatmap(products=products)
+    except Exception as e:
+        logger.debug("cost heatmap metrics: %s", e)
+
     return {
         "pipeline": {
             **pipeline_counts,
@@ -701,7 +764,9 @@ async def _build_full_metrics_async(*, include_product_pulses: bool = False) -> 
         "collected_at": time.time(),
         "demo_replay": metrics_demo_replay_slice(),
         "product_pulses": product_pulses,
-        "circuit_breakers": _circuit_breakers_metrics(),
+        "circuit_breakers": circuit_snap,
+        "factory_floor": factory_floor,
+        "cost_outcome_heatmap": cost_heatmap,
     }
 
 
@@ -983,27 +1048,18 @@ async def get_providers():
             configured_models = pconf.get("models", {})
             active_heavy = configured_models.get("heavy", "")
             active_light = configured_models.get("light", "")
-            
-            # Try to fetch available models from the provider
-            available_models = []
             base_url = pconf.get("base_url", "")
+            api_key = _resolve_provider_api_key(pconf)
+
+            available_models: list[str] = []
             if base_url and pconf.get("enabled", False):
                 health_path = pconf.get("health_check_endpoint", "/v1/models")
-                try:
-                    import httpx
-                    resp = httpx.get(f"{base_url.rstrip('/v1')}{health_path}", timeout=3)
-                    if resp.status_code == 200:
-                        data = resp.json()
-                        # OpenAI-compatible format
-                        if "data" in data:
-                            available_models = [m["id"] for m in data["data"]]
-                        # Ollama format
-                        elif "models" in data:
-                            available_models = [m["name"] for m in data["models"]]
-                except Exception:
-                    log_suppressed(logger, "dashboard: provider models probe failed", exc_info=True)
+                available_models = _provider_models_probe(
+                    base_url=base_url,
+                    health_path=health_path,
+                    api_key=api_key,
+                )
 
-            # If no available models fetched, use configured ones
             if not available_models:
                 available_models = list(set(filter(None, [active_heavy, active_light])))
             
@@ -1011,6 +1067,8 @@ async def get_providers():
                 "enabled": pconf.get("enabled", False),
                 "type": pconf.get("provider_type", "unknown"),
                 "base_url": base_url,
+                "api_key_configured": bool(api_key),
+                "api_key_env": pconf.get("api_key_env"),
                 "models": {
                     "heavy": active_heavy,
                     "light": active_light,
@@ -1024,6 +1082,11 @@ async def get_providers():
     for name, row in (circuit_snap.get("providers") or {}).items():
         if name in providers:
             providers[name]["circuit"] = row
+            cstate = str(row.get("state") or "closed")
+            if cstate in ("open", "half_open"):
+                providers[name]["status"] = "circuit_" + cstate
+            elif row.get("half_open_probe_in_flight"):
+                providers[name]["status"] = "circuit_probe_busy"
         else:
             providers[name] = {
                 "enabled": False,
@@ -1208,6 +1271,49 @@ async def test_provider(provider_name: str, request: Request):
 
 # ── Provider CRUD Management ─────────────────────────────────────────────────
 
+def _resolve_provider_api_key(pconf: dict) -> str:
+    """Direct yaml key or env var value (never returned to clients)."""
+    direct = pconf.get("api_key")
+    if direct:
+        return str(direct).strip()
+    env_name = pconf.get("api_key_env")
+    if env_name:
+        return str(os.environ.get(str(env_name), "") or "").strip()
+    return ""
+
+
+def _provider_models_probe(
+    *,
+    base_url: str,
+    health_path: str,
+    api_key: str,
+) -> list[str]:
+    """Fetch model ids from provider health endpoint (best effort)."""
+    if not base_url:
+        return []
+    root = base_url.rstrip("/")
+    if root.endswith("/v1"):
+        root = root[:-3]
+    url = f"{root}{health_path if health_path.startswith('/') else '/' + health_path}"
+    headers: dict[str, str] = {}
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+    try:
+        import httpx
+
+        resp = httpx.get(url, headers=headers or None, timeout=3)
+        if resp.status_code != 200:
+            return []
+        data = resp.json()
+        if "data" in data:
+            return [m["id"] for m in data["data"] if isinstance(m, dict) and m.get("id")]
+        if "models" in data:
+            return [m["name"] for m in data["models"] if isinstance(m, dict) and m.get("name")]
+    except Exception:
+        log_suppressed(logger, "dashboard: provider models probe failed", exc_info=True)
+    return []
+
+
 def _load_providers_config() -> dict:
     """Load providers config from YAML file."""
     providers_file = model_providers_path()
@@ -1313,10 +1419,13 @@ async def update_provider(provider_name: str, request: Request):
     
     pconf = config["providers"][provider_name]
     
-    # Update scalar fields
-    for key in ("base_url", "provider_type", "api_key", "api_key_env", "health_check_endpoint"):
+    # Update scalar fields — empty api_key means "keep existing" on update
+    for key in ("base_url", "provider_type", "api_key_env", "health_check_endpoint"):
         if key in body:
             pconf[key] = body[key] if body[key] else None
+    if "api_key" in body and body.get("api_key"):
+        pconf["api_key"] = body["api_key"]
+        pconf["api_key_env"] = None
     
     if "enabled" in body:
         pconf["enabled"] = bool(body["enabled"])

@@ -246,7 +246,8 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
       name: p.name,
       provider_type: p.type || 'openai_compatible',
       base_url: p.base_url || '',
-      api_key_env: null,
+      api_key_env: p.api_key_env ?? null,
+      api_key_configured: p.api_key_configured,
       enabled: p.enabled ?? true,
       models: { heavy: p.models?.heavy || '', light: p.models?.light || '' },
       capabilities: p.capabilities || undefined,
@@ -313,6 +314,15 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                       ⭐ Default
                     </span>
                   )}
+                  {provider.api_key_configured ? (
+                    <span className="text-xs text-emerald-400/90 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                      {t(locale, 'providers.keyConfigured')}
+                    </span>
+                  ) : provider.type !== 'local_ollama' && provider.type !== 'ollama' ? (
+                    <span className="text-xs text-amber-400/90 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+                      {t(locale, 'providers.keyMissing')}
+                    </span>
+                  ) : null}
                 </div>
                 <div className="flex flex-wrap items-center justify-end gap-1 sm:gap-2">
                   <button
@@ -553,6 +563,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
         onClose={() => setShowAddModal(false)}
         initial={editingProvider}
         onSaved={loadProviders}
+        locale={locale}
       />
     </motion.div>
   );

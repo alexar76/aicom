@@ -54,7 +54,7 @@ class PipelineStatePersistence:
             logger.warning("Cannot read pipeline state: %s", e)
 
         try:
-            ts = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+            ts = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
             bad_backup = self.state_file.with_suffix(f".json.corrupt-{ts}.bak")
             try:
                 bad_backup.write_text(

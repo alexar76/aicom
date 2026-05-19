@@ -9,7 +9,7 @@ import json
 import logging
 import re
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 from zoneinfo import ZoneInfo
@@ -68,7 +68,7 @@ def append_chat_message(
         "id": str(uuid.uuid4()),
         "username": username,
         "text": text,
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "admin_username": admin_username,
         "role": role,
         "kind": kind,

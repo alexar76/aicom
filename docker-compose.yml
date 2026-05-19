@@ -14,8 +14,8 @@ services:
       - "${AICOM_PORT_API:-9081}:8081"
     volumes:
       - ./data:/app/data
-      # Required for sandbox compose previews and ephemeral Postgres (generated full-stack QA).
-      - /var/run/docker.sock:/var/run/docker.sock
+      # Docker API: default DinD sidecar (docker-compose.dind.yml). Host socket only with
+      # AIFACTORY_USE_HOST_DOCKER=1 + docker-compose.host-docker.yml (escape risk).
     # Optional: LLM keys and other secrets in `.env` (chmod 600). Prefer file secrets:
     #   data/secrets/llm/<provider>_api_key  or  docker-compose.secrets.yml overlay.
     env_file:

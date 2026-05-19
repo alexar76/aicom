@@ -797,8 +797,9 @@ async def main():
     worker = DirectorWorker()
     try:
         await worker.run()
-    except asyncio.CancelledError as _suppressed_exc:
-        log_suppressed(logger, "non-fatal (director/worker.py)", exc_info=_suppressed_exc)
+    except asyncio.CancelledError:
+        logger.info("Director AI worker cancelled — shutting down background tasks")
+        await worker.stop()
     except KeyboardInterrupt:
         logger.info("Shutting down Director AI worker...")
         await worker.stop()

@@ -733,3 +733,11 @@ class CommerceService:
         )
         self.conn.commit()
         return cur.rowcount > 0
+
+    def close(self) -> None:
+        if self._conn is not None:
+            try:
+                self._conn.close()
+            except Exception:
+                pass
+            self._conn = None

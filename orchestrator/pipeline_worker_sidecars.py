@@ -51,6 +51,7 @@ class PipelineWorkerSidecarMixin:
                             has_code = True
                             break
             except Exception:
+                logger.debug("Failed to parse code_manifest.json for %s", product_id, exc_info=True)
                 has_code = False
         if not has_code:
             reasons.append("missing generated code artifacts (code_manifest/files)")
@@ -258,6 +259,7 @@ class PipelineWorkerSidecarMixin:
             try:
                 manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             except Exception:
+                logger.debug("Failed to parse code_manifest.json for %s", product_id, exc_info=True)
                 manifest = {}
         test_commands = manifest.get("test_commands") or []
         if not isinstance(test_commands, list):
@@ -319,6 +321,7 @@ class PipelineWorkerSidecarMixin:
             try:
                 pkg = json.loads(pkg_json.read_text(encoding="utf-8"))
             except Exception:
+                logger.debug("Failed to parse package.json for %s", product_id, exc_info=True)
                 pkg = {}
             scripts = pkg.get("scripts") if isinstance(pkg, dict) else {}
             test_script = scripts.get("test") if isinstance(scripts, dict) else None

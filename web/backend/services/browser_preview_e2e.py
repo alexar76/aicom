@@ -469,7 +469,8 @@ def run_browser_preview_e2e(
             url = f"http://127.0.0.1:{port}/index.html"
             serve_mode = "static"
 
-        assert url is not None
+        if url is None:
+            raise RuntimeError("browser preview URL was not resolved")
         return _playwright_check(
             url,
             product_id=str(product_id),
