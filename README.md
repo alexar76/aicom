@@ -110,6 +110,20 @@ flowchart LR
 
 Full diagrams (runtime architecture, state machine, discovery, storefront gates, comparison tables): **[docs/architecture-diagrams.md](docs/architecture-diagrams.md)**.
 
+### Ship-then-keep-improving
+
+AI-Factory is built around a **ship-then-keep-improving** loop — not “one shot and forget”:
+
+1. **Ship** — agents run the full pipeline (spec → code → QA/E2E → security → DevOps). A product reaches **COMPLETED** / **DEPLOYED** when it passes the gates *at that moment*.
+2. **Gate failures before ship** — demo/TZ, browser crawl, security, or methodologist findings send the product to **`BUG_FOUND` → `DEV_FIXING`**. The developer agent retries with repair hints until gates pass or the repair budget is exhausted.
+3. **Keep improving after ship** — already-shipped products are **re-audited** when marketplace/demo rules tighten (**policy audit**) or when they no longer meet storefront readiness (**storefront remediation**). Eligible products reopen on the same repair path instead of staying stale on the catalog.
+4. **Bounded effort** — `AIFACTORY_MAX_QUALITY_LOOPS` caps how many remediation cycles one product may take before **`FAILED`** (config default **8** in quality settings; override in `.env` / Compose).
+5. **Stronger model on hard repairs** (optional) — `AIFACTORY_GATE_FAILING_MODEL` sets a **provider-specific model id** used only on repair rounds after at least one QA gate failure (`quality_repair_round ≥ 1`). It does **not** switch providers — only overrides the model name on the routed provider (e.g. DeepSeek-only: `deepseek-v4-pro` or `deepseek-reasoner`; leave unset to use normal heavy/light routing).
+
+The public homepage shows live counts via **`GET /api/public/pipeline-status`** (products in pipeline vs shipped) — same operational truth as Admin → Pipeline.
+
+Details: **[docs/pipeline-operations.md](docs/pipeline-operations.md)** (policy audit, storefront remediation, QA E2E).
+
 ## Gallery
 
 Built pages only (1440×900 WebP): screenshots are **`/api/sandbox/file/…/index.html`** — refresh with **`python scripts/capture_gallery_landings.py`** (stack on **http://127.0.0.1:9080**). Details: **[docs/gallery/README.md](docs/gallery/README.md)**.

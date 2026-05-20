@@ -21,7 +21,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile
+from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile, gate_failing_model
 from orchestrator.worker_utils import env_truthy
 from web.backend.services.marketplace_quality import evaluate_marketplace_quality
 
@@ -233,6 +233,7 @@ class PipelineWorkerSidecarMixin:
                             "Storefront readiness remediation. Fix demo/code quality so the product appears "
                             "in marketplace listing (code artifacts present + marketplace quality eligible)."
                         ),
+                        **({"gate_failing_model": gfm} if (gfm := gate_failing_model()) and next_round >= 1 else {}),
                     },
                     "created_at": now,
                     "priority": self._get_priority("developer"),

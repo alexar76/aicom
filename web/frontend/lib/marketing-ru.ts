@@ -44,6 +44,9 @@ export const MARKETING_RU: MarketingStrings = {
   heroPhraseTooShort: 'Минимум 8 символов, чтобы бриф был конкретным.',
   heroCtaPhrase: 'Открыть админку с этим текстом',
   heroCtaAdminOnly: 'Продвинутое — только админка',
+  statusBannerPreLaunch: 'v0.1 — предзапуск',
+  statusBannerInPipeline: '{n} в пайплайне',
+  statusBannerShipped: '{n} опубликовано',
   ctaPrimary: 'Открыть админку и собрать',
   ctaSecondary: 'Смотреть примеры',
   stats: {

@@ -48,6 +48,10 @@ export type MarketingStrings = {
   heroPhraseTooShort: string;
   heroCtaPhrase: string;
   heroCtaAdminOnly: string;
+  /** Pre-launch status banner on homepage */
+  statusBannerPreLaunch: string;
+  statusBannerInPipeline: string;
+  statusBannerShipped: string;
   ctaPrimary: string;
   ctaSecondary: string;
   stats: {
@@ -156,6 +160,9 @@ const EN: MarketingStrings = {
   heroPhraseTooShort: 'Use at least 8 characters so the brief is concrete.',
   heroCtaPhrase: 'Open admin with this text',
   heroCtaAdminOnly: 'Advanced — admin only',
+  statusBannerPreLaunch: 'v0.1 — pre-launch',
+  statusBannerInPipeline: '{n} in pipeline',
+  statusBannerShipped: '{n} shipped',
   ctaPrimary: 'Open admin & build',
   ctaSecondary: 'Browse examples',
   stats: {

@@ -10,7 +10,7 @@ import os
 import time
 import uuid
 
-from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile
+from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile, gate_failing_model
 from core.logging_utils import log_suppressed
 from orchestrator.task_executor_helpers import (
     PipelineTaskExecutorHost,
@@ -59,23 +59,29 @@ async def run_agent_task(
                 product.get("idea"),
             )
 
+        agent_input_data = {
+            "idea": product.get("idea", ""),
+            "category": product.get("category", ""),
+            "tags": product.get("tags", []),
+            "specification": host._load_spec(pid),
+            "architecture": host._load_arch(pid),
+            "admin_instructions": product.get("admin_instructions", ""),
+            "delivery_profile": delivery_profile,
+            "production_mode": bool(product.get("production_mode")),
+            "interface_locale": product.get("interface_locale") or "en",
+            "content_locale": product.get("content_locale") or "auto",
+            **task.get("input_data", {}),
+        }
+        # Gate-failing repair rounds get a stronger model when configured
+        gfm = gate_failing_model()
+        if gfm and isinstance(agent_input_data.get("quality_repair_round"), (int, float)) and int(agent_input_data["quality_repair_round"]) >= 1:
+            agent_input_data["gate_failing_model"] = gfm
+
         agent_input = AgentInput(
             task_id=task_id,
             product_id=pid,
             agent_type=agent_type,
-            data={
-                "idea": product.get("idea", ""),
-                "category": product.get("category", ""),
-                "tags": product.get("tags", []),
-                "specification": host._load_spec(pid),
-                "architecture": host._load_arch(pid),
-                "admin_instructions": product.get("admin_instructions", ""),
-                "delivery_profile": delivery_profile,
-                "production_mode": bool(product.get("production_mode")),
-                "interface_locale": product.get("interface_locale") or "en",
-                "content_locale": product.get("content_locale") or "auto",
-                **task.get("input_data", {}),
-            },
+            data=agent_input_data,
             context=context,
             timestamp=time.time(),
         )

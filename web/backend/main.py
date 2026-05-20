@@ -325,6 +325,30 @@ async def public_showcase_gallery():
     return list_showcase_gallery()
 
 
+@app.get("/api/public/pipeline-status")
+async def public_pipeline_status():
+    """Lightweight public endpoint: pipeline heartbeat for the homepage status banner."""
+    try:
+        from orchestrator.sqlite_manager import SQLiteManager
+        from core.paths import pipeline_db_path
+
+        db = pipeline_db_path()
+        if not db.is_file():
+            return {"products_in_pipeline": 0, "products_shipped": 0}
+        sm = SQLiteManager(str(db))
+        sm.connect()
+        try:
+            counts = sm.get_catalog_summary_counts()
+        finally:
+            sm.close()
+        return {
+            "products_in_pipeline": max(0, counts["total"] - counts["shipped"]),
+            "products_shipped": counts["shipped"],
+        }
+    except Exception:
+        return {"products_in_pipeline": 0, "products_shipped": 0}
+
+
 @app.websocket("/api/admin/ws/metrics")
 async def admin_metrics_ws(websocket: WebSocket):
     """

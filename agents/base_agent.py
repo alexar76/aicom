@@ -149,6 +149,11 @@ class BaseAgent(ABC):
                 final_prompt = user_part
             base_cfg = config if config is not None else GenerationConfig()
             cfg = replace(base_cfg, agent_type=self.agent_type)
+            # Stronger model for gate-failing repair rounds (AIFACTORY_GATE_FAILING_MODEL)
+            if agent_input and isinstance(agent_input.data, dict):
+                gfm = agent_input.data.get("gate_failing_model")
+                if gfm and str(gfm).strip():
+                    cfg = replace(cfg, model_override=str(gfm).strip())
             return await self.llm_router.generate(
                 prompt=final_prompt,
                 task_type=task_type or self.task_type,

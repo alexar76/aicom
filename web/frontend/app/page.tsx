@@ -38,6 +38,8 @@ import {
   AlertCircle,
   Package,
   Palette,
+  TrendingUp,
+  CheckCircle2,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
@@ -225,6 +227,51 @@ function Navbar({
         </motion.div>
       )}
     </nav>
+  );
+}
+
+// ── Status Banner ────────────────────────────────────────────────────────
+
+function StatusBanner({ copy }: { copy: MarketingStrings }) {
+  const [inFlight, setInFlight] = useState<number | null>(null);
+  const [shipped, setShipped] = useState<number | null>(null);
+
+  useEffect(() => {
+    let stale = false;
+    fetch('/api/public/pipeline-status')
+      .then((r) => r.json())
+      .then((d: { products_in_pipeline?: number; products_shipped?: number }) => {
+        if (stale) return;
+        setInFlight(typeof d.products_in_pipeline === 'number' ? d.products_in_pipeline : 0);
+        setShipped(typeof d.products_shipped === 'number' ? d.products_shipped : 0);
+      })
+      .catch(() => {});
+    return () => { stale = true; };
+  }, []);
+
+  const inFlightText =
+    inFlight !== null ? copy.statusBannerInPipeline.replace('{n}', String(inFlight)) : '';
+  const shippedText =
+    shipped !== null ? copy.statusBannerShipped.replace('{n}', String(shipped)) : '';
+
+  if (inFlight === null && shipped === null) return null;
+
+  return (
+    <div className="border-b border-indigo-500/20 bg-gradient-to-r from-indigo-950/70 via-black/80 to-fuchsia-950/70">
+      <div className="max-w-7xl mx-auto px-3 py-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs sm:text-sm">
+        <span className="font-semibold text-amber-400/90 tracking-wide">
+          {copy.statusBannerPreLaunch}
+        </span>
+        <span className="text-gray-400 inline-flex items-center gap-1">
+          <TrendingUp className="w-3.5 h-3.5 text-indigo-400" />
+          {inFlightText || '...'}
+        </span>
+        <span className="text-gray-400 inline-flex items-center gap-1">
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+          {shippedText || '...'}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -688,9 +735,12 @@ function SkeletonCard() {
   return (
     <div className="glass-card p-6 space-y-4">
       {/* Header skeleton */}
-      <div className="flex justify-between items-start">
-        <div className="skeleton h-5 w-2/3 rounded" />
-        <div className="skeleton h-5 w-24 rounded-full" />
+      <div className="space-y-2">
+        <div className="skeleton h-5 w-4/5 rounded" />
+        <div className="flex gap-2">
+          <div className="skeleton h-5 w-16 rounded-full" />
+          <div className="skeleton h-5 w-20 rounded-full" />
+        </div>
       </div>
       {/* Description skeleton */}
       <div className="space-y-2">
@@ -743,11 +793,14 @@ function CatalogProductCard({
               : 'ring-1 ring-emerald-500/15 border-emerald-500/10'
           }`}
         >
-          <div className="flex justify-between items-start mb-3">
-            <h3 className="truncate mr-2 text-lg font-semibold text-[color:var(--text-primary)]">
+          <div className="mb-3 space-y-2">
+            <h3
+              className="text-lg font-semibold leading-snug text-[color:var(--text-primary)] line-clamp-2"
+              title={getProductName(product)}
+            >
               {getProductName(product)}
             </h3>
-            <div className="shrink-0 flex items-center gap-1.5 flex-wrap justify-end">
+            <div className="flex flex-wrap items-center gap-1.5">
               {product.is_template && (
                 <Badge variant="warning" className="text-[10px]">
                   Template
@@ -1303,6 +1356,7 @@ export default function HomePage() {
   return (
     <main className="min-w-0 overflow-x-clip">
       <Navbar copy={siteCopy} locale={mktLocale} onLocaleChange={handleLocaleChange} />
+      <StatusBanner copy={siteCopy} />
       <HeroSection copy={siteCopy} />
       <FeaturesSection copy={siteCopy} />
       <PipelineSection copy={siteCopy} />

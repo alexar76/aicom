@@ -343,6 +343,19 @@ def normalize_quality_settings_payload(raw: Any) -> dict[str, Any] | None:
     return out
 
 
+def gate_failing_model() -> str | None:
+    """Model name to use when a product has failed a QA gate at least once.
+
+    ``AIFACTORY_GATE_FAILING_MODEL`` — set to a stronger model (e.g. ``claude-opus-4-7``)
+    to give repair rounds a higher chance of passing without burning the entire loop budget.
+    Returns None when not configured, meaning the default routing rule model applies.
+    """
+    v = os.environ.get("AIFACTORY_GATE_FAILING_MODEL")
+    if v and str(v).strip():
+        return str(v).strip()
+    return None
+
+
 def bump_quality_cache_after_config_write() -> None:
     """Call after saving config so the next read sees fresh on-disk values."""
     global _CACHE_MTIME, _CACHE_SLICE

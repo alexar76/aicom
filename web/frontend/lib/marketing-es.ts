@@ -44,6 +44,9 @@ export const MARKETING_ES: MarketingStrings = {
   heroPhraseTooShort: 'Use al menos 8 caracteres para un brief concreto.',
   heroCtaPhrase: 'Abrir admin con este texto',
   heroCtaAdminOnly: 'Avanzado — solo admin',
+  statusBannerPreLaunch: 'v0.1 — pre-lanzamiento',
+  statusBannerInPipeline: '{n} en pipeline',
+  statusBannerShipped: '{n} publicados',
   ctaPrimary: 'Abrir admin y construir',
   ctaSecondary: 'Ver ejemplos',
   stats: {
