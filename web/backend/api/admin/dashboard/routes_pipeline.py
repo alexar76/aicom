@@ -86,6 +86,25 @@ from web.backend.api.products import count_showcase_listable_products, is_shippe
 from ._router import router
 from .models import *
 from .helpers import *
+from .helpers import (
+    _admin_pipeline_storefront_hints,
+    _admin_sql_store_available,
+    _admin_sqlite_db_path,
+    _admin_use_sqlite_pipeline,
+    _load_pipeline_snapshot_for_metrics,
+    _normalize_pipeline_task,
+    _slim_pipeline_task_payloads_for_light_catalog,
+    _slim_spec_arch_for_light_catalog,
+)
+from .routes_director_reports import (
+    _admin_merged_pipeline_product,
+    _compute_material_summary,
+    _load_analyst_brief_for_developer,
+    _load_spec_arch_from_disk,
+)
+from .routes_discovery import _read_marketing_inner
+
+logger = logging.getLogger(__name__)
 
 @router.get("/products/{product_id}/developer-handoff")
 async def get_developer_handoff(product_id: str):

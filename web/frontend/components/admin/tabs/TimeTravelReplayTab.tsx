@@ -29,13 +29,30 @@ export function TimeTravelReplayTab({ locale }: { locale: AdminLocale }) {
   const [loading, setLoading] = useState(false);
   const [forkNotes, setForkNotes] = useState('');
   const [forking, setForking] = useState(false);
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [productsError, setProductsError] = useState<string | null>(null);
 
   useEffect(() => {
-    api.getPipelineProducts(40, 0, 'newest', true).then((r) => {
-      const rows = r.products || [];
-      setProducts(rows);
-      if (rows[0]?.id) setProductId(String(rows[0].id));
-    }).catch(() => setProducts([]));
+    setProductsLoading(true);
+    setProductsError(null);
+    api
+      .getPipelineProducts(40, 0, 'newest', true, 60_000)
+      .then((r) => {
+        const rows = r.products || [];
+        setProducts(rows);
+        if (rows[0]?.id) setProductId(String(rows[0].id));
+        if (rows.length === 0) {
+          setProductsError('No products in the pipeline database yet.');
+        }
+      })
+      .catch((e: unknown) => {
+        setProducts([]);
+        setProductId('');
+        const msg = e instanceof Error ? e.message : 'Failed to load pipeline products';
+        setProductsError(msg);
+        toast.error(msg);
+      })
+      .finally(() => setProductsLoading(false));
   }, []);
 
   const loadTimeline = useCallback(async () => {
@@ -95,13 +112,25 @@ export function TimeTravelReplayTab({ locale }: { locale: AdminLocale }) {
             className="rounded-lg bg-black/40 border border-white/10 px-3 py-2 text-sm text-white"
             value={productId}
             onChange={(e) => setProductId(e.target.value)}
+            disabled={productsLoading || products.length === 0}
           >
-            {products.map((p) => (
-              <option key={p.id} value={p.id}>{String(p.idea || p.id).slice(0, 60)}</option>
-            ))}
+            {productsLoading ? (
+              <option value="">Loading products…</option>
+            ) : products.length === 0 ? (
+              <option value="">No products</option>
+            ) : (
+              products.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {String(p.name || p.idea || p.id).slice(0, 60)}
+                </option>
+              ))
+            )}
           </select>
         </label>
-        <Button variant="secondary" onClick={() => void loadTimeline()} disabled={loading}>
+        {productsError ? (
+          <p className="text-xs text-amber-300/90 w-full">{productsError}</p>
+        ) : null}
+        <Button variant="secondary" onClick={() => void loadTimeline()} disabled={loading || !productId}>
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
           Reload
         </Button>
