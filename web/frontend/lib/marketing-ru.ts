@@ -133,4 +133,19 @@ export const MARKETING_RU: MarketingStrings = {
   pipelineDesignerTitle: 'Слой дизайнера — современный UI по умолчанию',
   pipelineDesignerBody:
     'До кода Architect формирует `ui_experience`: токены, типографика, motion и визуальный акцент. Developer обязан следовать этому для браузерных артефактов — лендинги выглядят как продукт, а не серые AI-блоки.',
+  architectureEyebrow: 'Топология рантайма',
+  architectureTitle: 'Архитектура одним взглядом',
+  architectureSubtitle:
+    'Единый контур управления: веб-слой, фоновые воркеры, маршрутизация моделей и durable workspace — живая орбита вокруг флота агентов.',
+  architectureHubLabel: 'Агенты',
+  architectureHubRoles: 'PM · Architect · Dev · QA · Sec · Ops · Mkt · Sales · Evolution',
+  architectureHubFooter: 'Один пайплайн · общие гейты',
+  architectureNodes: [
+    { label: 'Next.js', sub: 'Витрина' },
+    { label: 'FastAPI', sub: 'Публичный и admin API' },
+    { label: 'Pipeline worker', sub: 'Гейты качества' },
+    { label: 'Director AI', sub: 'Сигналы и отчёты' },
+    { label: 'LLM router', sub: 'Несколько провайдеров' },
+    { label: 'Data plane', sub: 'SQLite · артефакты' },
+  ],
 };

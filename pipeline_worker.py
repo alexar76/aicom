@@ -23,6 +23,7 @@ from pathlib import Path
 from typing import Optional
 
 from core.paths import data_root, model_providers_path, pipeline_db_path, pipeline_json_path
+from core.public_site_url import resolve_public_site_url, sync_watermark_in_html
 from core.logging_utils import log_suppressed
 from core.throughput_limits import (
     effective_batch_pipeline_active_limit,
@@ -671,23 +672,13 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         code_dir = self.data_root / "code" / product_id
         if not code_dir.exists():
             return
-        badge_html = (
-            '<div class="aifactory-badge" style="margin-top:24px;padding:8px 12px;font:12px/1.4 system-ui;opacity:.85;">'
-            'Made with <a href="https://aifactory.dev" target="_blank" rel="noopener noreferrer">AI-Factory</a>'
-            "</div>"
-        )
+        link_url = resolve_public_site_url()
         for html_file in code_dir.rglob("*.html"):
             try:
                 content = html_file.read_text(encoding="utf-8")
-                if "aifactory-badge" in content:
-                    continue
-                if "</body>" in content.lower():
-                    lower = content.lower()
-                    idx = lower.rfind("</body>")
-                    content = content[:idx] + badge_html + content[idx:]
-                else:
-                    content = content + badge_html
-                html_file.write_text(content, encoding="utf-8")
+                updated = sync_watermark_in_html(content, link_url)
+                if updated != content:
+                    html_file.write_text(updated, encoding="utf-8")
             except OSError as exc:
                 logger.warning("Watermark inject failed for %s: %s", html_file, exc)
 

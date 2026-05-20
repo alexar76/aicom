@@ -15,121 +15,17 @@ import {
   type QueuedSupportMessage,
   withRetries,
 } from '@/lib/supportDelivery';
+import {
+  detectSupportWidgetLocale,
+  getQuickPrompts,
+  getSupportWidgetText,
+  speechRecognitionLang,
+  type QuickPromptSection,
+  type SupportWidgetLocale,
+} from '@/lib/supportWidgetI18n';
 
 const STORAGE_KEY = 'aif_support_v1';
 const MAX_LEN = 4000;
-type WidgetLocale = 'en' | 'ru';
-
-const UI_TEXT: Record<
-  WidgetLocale,
-  {
-    botDefault: string;
-    connectError: string;
-    voiceUnavailable: string;
-    micStartError: string;
-    micRecognitionDenied: string;
-    micNeedsHttps: string;
-    micNoMediaDevices: string;
-    micPermBlocked: string;
-    micDeniedShort: string;
-    micDeviceBusy: string;
-    sendError: string;
-    openAria: (name: string) => string;
-    subtitle: string;
-    closeAria: string;
-    emptyHint: string;
-    messagePlaceholder: string;
-    stopDictation: string;
-    dictation: string;
-    unavailable: string;
-    secureSession: string;
-    devMode: string;
-    send: string;
-    checkingConnection: string;
-    serverAwayFriendly: string;
-    queueBadge: (n: number) => string;
-    queueWillRetry: string;
-  }
-> = {
-  en: {
-    botDefault: 'Support',
-    connectError: 'Connection error',
-    voiceUnavailable:
-      'Voice typing isn’t available in this browser. Use the keyboard, or try Chrome, Edge, or Samsung Internet on an up-to-date device.',
-    micStartError: 'Could not start speech recognition',
-    micRecognitionDenied:
-      'Speech recognition needs microphone access. Tap the lock or “site settings” icon in the address bar, allow the microphone, reload the page, and try again.',
-    micNeedsHttps:
-      'Microphone only works on a secure page (https:// or localhost). Open this site with HTTPS and try again.',
-    micNoMediaDevices:
-      'This browser doesn’t expose microphone access the way this chat needs. Try Chrome, Edge, or Samsung Internet, reload the page, and try again.',
-    micPermBlocked:
-      'The microphone is already blocked for this site, so the browser may not show a prompt again. Open site settings for this page, allow the microphone, reload, then try dictation.',
-    micDeniedShort:
-      'Microphone access was denied. Open site settings for this page, allow the microphone, and try again.',
-    micDeviceBusy:
-      'Could not use the microphone (no device or it’s busy in another app).',
-    sendError: 'Send error',
-    openAria: (name) => `Open chat: ${name}`,
-    subtitle: 'AI-Factory marketplace support',
-    checkingConnection: 'Checking connection…',
-    serverAwayFriendly:
-      'Our assistant briefly stepped away — we’re retrying in the background. Your messages stay in line here and send automatically when the connection is back.',
-    queueBadge: (n: number) =>
-      n === 1 ? '1 message queued — sending when online…' : `${n} messages queued — sending when online…`,
-    queueWillRetry: 'Still offline — we’ll keep trying. Leave this tab open or come back later.',
-    closeAria: 'Close',
-    emptyHint:
-      'Write a message or use the button at the bottom-right of the input. From a product page the bot understands context better.',
-    messagePlaceholder: 'Message…',
-    stopDictation: 'Stop',
-    dictation: 'Dictation',
-    unavailable: 'Unavailable',
-    secureSession: 'Signed-in chat',
-    devMode: 'Development mode',
-    send: 'Send',
-  },
-  ru: {
-    botDefault: 'Поддержка',
-    connectError: 'Ошибка соединения',
-    voiceUnavailable:
-      'Голосовой ввод в этом браузере недоступен. Наберите текст с клавиатуры или откройте страницу в Chrome, Edge или Samsung Internet с обновлениями системы.',
-    micStartError: 'Не удалось запустить распознавание речи',
-    micRecognitionDenied:
-      'Для диктовки нужен доступ к микрофону. Нажмите на замок или настройки сайта в адресной строке, разрешите микрофон, обновите страницу и повторите.',
-    micNeedsHttps:
-      'Микрофон доступен только по защищённому соединению (https:// или localhost). Откройте сайт по HTTPS и попробуйте снова.',
-    micNoMediaDevices:
-      'В этом браузере нет нужного доступа к микрофону. Попробуйте Chrome, Edge или Samsung Internet, обновите страницу и повторите.',
-    micPermBlocked:
-      'Микрофон для этого сайта уже заблокирован, поэтому запрос может не появиться. Откройте настройки сайта, разрешите микрофон, обновите страницу и снова нажмите диктовку.',
-    micDeniedShort:
-      'Доступ к микрофону отклонён. В настройках сайта разрешите микрофон и попробуйте снова.',
-    micDeviceBusy:
-      'Не удалось использовать микрофон (нет устройства или оно занято в другом приложении).',
-    sendError: 'Ошибка отправки',
-    openAria: (name) => `Открыть чат: ${name}`,
-    subtitle: 'Поддержка маркетплейса AI-Factory',
-    checkingConnection: 'Проверяем соединение…',
-    serverAwayFriendly:
-      'Помощник временно недоступен — в фоне идут повторные попытки. Сообщения остаются в очереди и уйдут автоматически, когда связь восстановится.',
-    queueBadge: (n: number) =>
-      n === 1
-        ? '1 сообщение в очереди — отправим при появлении сети…'
-        : `${n} сообщ. в очереди — отправим при появлении сети…`,
-    queueWillRetry: 'Сеть всё ещё недоступна — попробуем снова. Оставьте вкладку открытой или зайдите позже.',
-    closeAria: 'Закрыть',
-    emptyHint:
-      'Напишите сообщение или воспользуйтесь кнопкой у поля ввода. На странице продукта бот лучше понимает контекст.',
-    messagePlaceholder: 'Сообщение…',
-    stopDictation: 'Стоп',
-    dictation: 'Диктовка',
-    unavailable: 'Недоступно',
-    secureSession: 'Чат с авторизацией',
-    devMode: 'Режим разработки',
-    send: 'Отправить',
-  },
-};
 
 type StoredSession = {
   sessionId: string;
@@ -142,16 +38,8 @@ type UIContext = {
   current_page?: string;
   active_tab?: string;
   selected_product_id?: string;
+  preferred_locale?: string;
 };
-
-type QuickPromptSection =
-  | 'home'
-  | 'product'
-  | 'explore'
-  | 'docs'
-  | 'checkout'
-  | 'account'
-  | 'other';
 
 function parseProductIdFromPath(pathname: string): string | null {
   const m = pathname.match(/\/product\/(prod-[a-zA-Z0-9-]+)/);
@@ -166,56 +54,6 @@ function sectionFromPath(pathname: string): QuickPromptSection {
   if (pathname.startsWith('/checkout')) return 'checkout';
   if (pathname.startsWith('/account')) return 'account';
   return 'other';
-}
-
-function quickPromptsFor(section: QuickPromptSection): string[] {
-  if (section === 'product') {
-    return [
-      'What does this product do in one sentence?',
-      'How do I quickly validate this product in sandbox?',
-      'If something is broken here, what details should I report?',
-    ];
-  }
-  if (section === 'explore') {
-    return [
-      'How do I choose a product category?',
-      'What does product status mean on cards?',
-      'How can I compare two products quickly?',
-    ];
-  }
-  if (section === 'docs') {
-    return [
-      'Give me a quick start checklist for AI-Factory.',
-      'Where are API endpoints for products and sandbox?',
-      'How does the pipeline flow from idea to storefront?',
-    ];
-  }
-  if (section === 'checkout') {
-    return [
-      'How does payment and access delivery work here?',
-      'What should I do if checkout fails?',
-      'How can I verify my order status?',
-    ];
-  }
-  if (section === 'account') {
-    return [
-      'Where can I download purchased products?',
-      'How do referrals work?',
-      'What should I do if I cannot see my order?',
-    ];
-  }
-  if (section === 'home') {
-    return [
-      'What is AI-Factory in plain words?',
-      'How do I go from idea to working product here?',
-      'Where should I start as a new user?',
-    ];
-  }
-  return [
-    'Can you explain what this page is for?',
-    'What should I do next from here?',
-    'If something fails, what details should I share with support?',
-  ];
 }
 
 function loadStored(): StoredSession | null {
@@ -245,30 +83,15 @@ function getSpeechRecognitionCtor(): SpeechRecognitionConstructor | null {
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
 }
 
-function pickRecognitionLang(): string {
-  if (typeof navigator === 'undefined') return 'en-US';
-  const n = (navigator.language || '').toLowerCase();
-  if (n.startsWith('ru')) return 'ru-RU';
-  if (n.startsWith('en')) return 'en-US';
-  return navigator.language || 'en-US';
-}
-
 type MicGate = { proceed: true } | { proceed: false; userMessage: string };
-
-function detectWidgetLocale(): WidgetLocale {
-  if (typeof navigator === 'undefined') return 'en';
-  const lang = (navigator.language || '').toLowerCase();
-  if (lang.startsWith('ru')) return 'ru';
-  return 'en';
-}
 
 /**
  * Ensures mic access: uses Permissions API when possible, then getUserMedia (browser prompt on «ask»).
  * If the user previously chose «Block», many browsers never show the prompt again — we explain how to reset.
  */
-async function gateMicrophoneForDictation(locale: WidgetLocale): Promise<MicGate> {
+async function gateMicrophoneForDictation(locale: SupportWidgetLocale): Promise<MicGate> {
   if (typeof window === 'undefined') return { proceed: true };
-  const tr = UI_TEXT[locale];
+  const tr = getSupportWidgetText(locale);
 
   if (!window.isSecureContext) {
     return {
@@ -319,19 +142,36 @@ async function gateMicrophoneForDictation(locale: WidgetLocale): Promise<MicGate
 
 export function SupportWidget() {
   const pathname = usePathname();
+  const [locale, setLocale] = useState<SupportWidgetLocale>(() => detectSupportWidgetLocale());
   const productId = useMemo(() => parseProductIdFromPath(pathname || ''), [pathname]);
   const quickPromptSection = useMemo(() => sectionFromPath(pathname || ''), [pathname]);
-  const quickPrompts = useMemo(() => quickPromptsFor(quickPromptSection), [quickPromptSection]);
+  const quickPrompts = useMemo(
+    () => getQuickPrompts(quickPromptSection, locale),
+    [quickPromptSection, locale]
+  );
   const uiContext = useMemo<UIContext>(
     () => ({
       current_page: pathname || '/',
       active_tab: quickPromptSection,
       selected_product_id: productId || undefined,
+      preferred_locale: locale,
     }),
-    [pathname, quickPromptSection, productId]
+    [pathname, quickPromptSection, productId, locale]
   );
-  const locale = detectWidgetLocale();
-  const tr = UI_TEXT[locale];
+  const tr = useMemo(() => getSupportWidgetText(locale), [locale]);
+
+  useEffect(() => {
+    const syncLocale = () => setLocale(detectSupportWidgetLocale());
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'marketing_locale' || e.key === null) syncLocale();
+    };
+    window.addEventListener('marketing-locale-changed', syncLocale);
+    window.addEventListener('storage', onStorage);
+    return () => {
+      window.removeEventListener('marketing-locale-changed', syncLocale);
+      window.removeEventListener('storage', onStorage);
+    };
+  }, []);
 
   /** live = API ok; disabled = server turned chat off; unknown = status fetch failed after retries (still show FAB). */
   const [gate, setGate] = useState<'pending' | 'live' | 'disabled' | 'unknown'>('pending');
@@ -572,7 +412,7 @@ export function SupportWidget() {
     voiceInputSnapshotRef.current = inputRef.current;
     voiceFinalAccumRef.current = '';
     const rec = new Ctor();
-    rec.lang = pickRecognitionLang();
+    rec.lang = speechRecognitionLang(locale);
     rec.interimResults = true;
     rec.continuous = false;
     rec.maxAlternatives = 1;
@@ -615,7 +455,7 @@ export function SupportWidget() {
       recognitionRef.current = null;
       setError(e instanceof Error ? e.message : tr.micStartError);
     }
-  }, [voiceListening, session, sending, micBusy, stopVoiceInput]);
+  }, [voiceListening, session, sending, micBusy, stopVoiceInput, locale, tr]);
 
   const handleSend = async () => {
     stopVoiceInput();

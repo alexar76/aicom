@@ -1,4 +1,6 @@
-const embedSnippet = `<script defer src="https://aifactory.dev/ai-factory-badge.js" data-position="bottom-right"></script>`;
+const siteBase = (process.env.NEXT_PUBLIC_SITE_URL || 'https://magic-ai-factory.com').replace(/\/$/, '');
+
+const embedSnippet = `<script defer src="${siteBase}/ai-factory-badge.js" data-position="bottom-right" data-base-url="${siteBase}"></script>`;
 
 export const metadata = {
   title: 'Embeddable Badge',
@@ -10,13 +12,15 @@ export default function BadgePage() {
     <main className="min-h-screen max-w-4xl mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-white mb-3">Embeddable Badge</h1>
       <p className="text-gray-400 mb-8">
-        Add a <strong>Powered by AI-Factory</strong> badge to your product pages.
+        Add a <strong>Powered by AI-Factory</strong> badge to your product pages. Links to your
+        configured public site ({siteBase}).
       </p>
       <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
         <h2 className="text-xl text-white font-semibold mb-3">Copy snippet</h2>
         <pre className="text-xs text-cyan-300 bg-black/30 p-4 rounded-xl overflow-auto">{embedSnippet}</pre>
         <p className="text-sm text-gray-400 mt-3">
-          Optional: set <code>data-position</code> to <code>bottom-right</code> or <code>bottom-left</code>.
+          Optional: set <code>data-position</code> to <code>bottom-right</code> or{' '}
+          <code>bottom-left</code>. Override link with <code>data-base-url</code> (HTTPS).
         </p>
       </div>
     </main>

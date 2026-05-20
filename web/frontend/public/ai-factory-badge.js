@@ -3,9 +3,18 @@
   if (document.getElementById('aifactory-powered-badge')) return;
   var script = document.currentScript;
   var position = (script && script.getAttribute('data-position')) || 'bottom-right';
+  var base =
+    (script && script.getAttribute('data-base-url')) ||
+    (typeof window !== 'undefined' && window.__AIFACTORY_PUBLIC_SITE_URL__) ||
+    '';
+  base = (base || '').replace(/\/$/, '');
+  if (!base && typeof location !== 'undefined' && location.origin) {
+    base = location.origin;
+  }
+  if (!base) base = 'https://magic-ai-factory.com';
   var badge = document.createElement('a');
   badge.id = 'aifactory-powered-badge';
-  badge.href = 'https://aifactory.dev';
+  badge.href = base;
   badge.target = '_blank';
   badge.rel = 'noopener noreferrer';
   badge.textContent = 'Powered by AI-Factory';

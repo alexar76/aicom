@@ -19,9 +19,9 @@ from typing import Any, Optional
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import JWTError, jwt
 from passlib.context import CryptContext
 
+from core.jwt_tokens import decode_hs256_optional, encode_hs256
 from core.paths import jwt_secret_file_path, legacy_admin_path, legacy_audit_log_path
 from core.logging_utils import log_suppressed
 
@@ -167,18 +167,16 @@ class SecurityManager:
             "iat": now,
             "jti": hashlib.sha256(os.urandom(32)).hexdigest()[:16],
         }
-        return jwt.encode(payload, self.secret_key, algorithm=self.jwt_algorithm)
+        return encode_hs256(payload, self.secret_key, algorithm=self.jwt_algorithm)
 
     def decode_token(self, token: str) -> Optional[dict]:
         """Decode and validate a JWT token."""
-        try:
-            payload = jwt.decode(
-                token, self.secret_key, algorithms=[self.jwt_algorithm]
-            )
-            return payload
-        except JWTError as e:
-            logger.warning(f"Token validation failed: {e}")
-            return None
+        payload = decode_hs256_optional(
+            token, self.secret_key, algorithms=[self.jwt_algorithm]
+        )
+        if payload is None:
+            logger.warning("Token validation failed")
+        return payload
 
     def check_login_attempts(self, ip_address: str) -> bool:
         """Check if login attempts are within limits."""

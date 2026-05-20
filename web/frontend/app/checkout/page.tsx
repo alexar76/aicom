@@ -758,7 +758,7 @@ export default function CheckoutPage() {
                     >
                       Stub: finalize ({minConfirmations} conf)
                     </Button>
-                  </motion.div>
+                  </div>
                 )}
               </motion.div>
             </GlassCard>

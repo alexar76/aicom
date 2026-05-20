@@ -36,12 +36,12 @@ export async function launchSandboxWithProgress(
         ready = true;
         break;
       }
-    } catch {
-      /* retry */
-    }
-    try {
+      const previewPath =
+        typeof status.preview_path === 'string' && status.preview_path
+          ? status.preview_path
+          : 'index.html';
       const probe = await fetch(
-        `/api/sandbox/file/${encodeURIComponent(sandboxId)}/index.html`,
+        `/api/sandbox/file/${encodeURIComponent(sandboxId)}/${previewPath.split('/').map(encodeURIComponent).join('/')}`,
         { method: 'GET', cache: 'no-store' },
       );
       if (probe.ok && (await probe.text()).length > 400) {

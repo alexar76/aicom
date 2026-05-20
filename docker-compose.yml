@@ -33,6 +33,7 @@ services:
       PIPELINE_DATABASE_URL: ${PIPELINE_DATABASE_URL:-}
       # Same container: Next.js SSR & explore pages call the API on loopback
       INTERNAL_API_URL: http://127.0.0.1:8081
+      UVICORN_WORKERS: ${UVICORN_WORKERS:-1}
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
       # Comma-separated browser origins for API CORS; unset = dev defaults + NEXT_PUBLIC_SITE_URL
       AIFACTORY_CORS_ORIGINS: ${AIFACTORY_CORS_ORIGINS:-}

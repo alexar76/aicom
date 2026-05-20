@@ -102,6 +102,14 @@ export type MarketingStrings = {
   pipelineDesignerEyebrow: string;
   pipelineDesignerTitle: string;
   pipelineDesignerBody: string;
+  /** Architecture orbit diagram (home) */
+  architectureEyebrow: string;
+  architectureTitle: string;
+  architectureSubtitle: string;
+  architectureHubLabel: string;
+  architectureHubRoles: string;
+  architectureHubFooter: string;
+  architectureNodes: readonly { label: string; sub: string }[];
 };
 
 const EN: MarketingStrings = {
@@ -237,6 +245,21 @@ const EN: MarketingStrings = {
   pipelineDesignerTitle: 'Designer layer — modern UI by default',
   pipelineDesignerBody:
     'Before code ships, the Architect emits a structured `ui_experience` brief: tokens, typography, motion, and a signature visual moment. The Developer treats it as binding for browser deliverables — so landings read as intentional product design, not generic AI gray boxes.',
+  architectureEyebrow: 'Runtime topology',
+  architectureTitle: 'Architecture at a glance',
+  architectureSubtitle:
+    'One control plane: web tier, background workers, routed models, and durable workspace — shown as a live orbit around the agent fleet.',
+  architectureHubLabel: 'Agents',
+  architectureHubRoles: 'PM · Architect · Dev · QA · Sec · Ops · Mkt · Sales · Evolution',
+  architectureHubFooter: 'Single pipeline · shared gates',
+  architectureNodes: [
+    { label: 'Next.js', sub: 'Storefront' },
+    { label: 'FastAPI', sub: 'Public & admin API' },
+    { label: 'Pipeline worker', sub: 'Quality gates' },
+    { label: 'Director AI', sub: 'Signals & reports' },
+    { label: 'LLM router', sub: 'Multi-provider' },
+    { label: 'Data plane', sub: 'SQLite · artifacts' },
+  ],
 };
 
 export function detectMarketingLocale(): MarketingLocale {
@@ -260,6 +283,7 @@ export function detectMarketingLocale(): MarketingLocale {
 export function saveMarketingLocale(locale: MarketingLocale): void {
   if (typeof window === 'undefined') return;
   window.localStorage.setItem('marketing_locale', locale);
+  window.dispatchEvent(new CustomEvent('marketing-locale-changed', { detail: locale }));
 }
 
 export function getMarketingStrings(locale?: string | null): MarketingStrings {

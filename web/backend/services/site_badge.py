@@ -67,6 +67,10 @@ def inject_site_badge_if_enabled(data_root: Path, product_id: str) -> None:
         return
     link = str(general.get("site_badge_link_url") or "").strip()
     if not link or not (link.startswith("http://") or link.startswith("https://")):
+        from core.public_site_url import resolve_public_site_url
+
+        link = resolve_public_site_url()
+    if not link or not (link.startswith("http://") or link.startswith("https://")):
         logger.debug("site_badge: disabled or invalid site_badge_link_url")
         return
 

@@ -1684,7 +1684,7 @@ class ApiClient {
 
   async sandboxReady(
     sandboxId: string,
-  ): Promise<{ ready: boolean; progress: number; stage: string }> {
+  ): Promise<{ ready: boolean; progress: number; stage: string; preview_path?: string }> {
     return this.request(`/sandbox/ready/${sandboxId}`, { publicStorefront: true });
   }
 
@@ -1848,6 +1848,7 @@ class ApiClient {
     auto_publish_provider: string;
     auto_publish_netlify_site_id: string;
     auto_publish_cf_project_name: string;
+    public_site_url: string;
     site_badge_enabled: boolean;
     site_badge_link_url: string;
     published_site_head_html: string;
@@ -2151,6 +2152,7 @@ class ApiClient {
       current_page?: string;
       active_tab?: string;
       selected_product_id?: string;
+      preferred_locale?: string;
     }
   ): Promise<{
     session_id: string;
@@ -2189,6 +2191,7 @@ class ApiClient {
       current_page?: string;
       active_tab?: string;
       selected_product_id?: string;
+      preferred_locale?: string;
     }
   ): Promise<{
     reply: string;

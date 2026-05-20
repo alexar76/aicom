@@ -168,6 +168,26 @@ export const CONTENT_SETTINGS_DICT: I18nDict = {
     ru: 'Макс. символов в промпте:',
     es: 'Máx. caracteres en el prompt:',
   },
+  'settings.section.publicSite': {
+    en: 'Public site URL',
+    ru: 'URL публичной витрины',
+    es: 'URL del sitio público',
+  },
+  'settings.publicSite.intro': {
+    en: 'Canonical HTTPS origin for “Made with AI-Factory” watermarks on free-tier builds, referral share links, and embed badges. Overrides legacy aifactory.dev when the pipeline runs.',
+    ru: 'Канонический HTTPS-адрес для водяного знака «Made with AI-Factory» (free), реферальных ссылок и embed-бейджа. Заменяет старый aifactory.dev при следующей сборке.',
+    es: 'Origen HTTPS canónico para la marca “Made with AI-Factory” (plan free), enlaces de referidos y la insignia embed. Sustituye aifactory.dev en la próxima build.',
+  },
+  'settings.publicSite.urlLabel': {
+    en: 'Public storefront URL (HTTPS)',
+    ru: 'URL витрины (HTTPS)',
+    es: 'URL de la tienda (HTTPS)',
+  },
+  'settings.publicSite.urlPlaceholder': {
+    en: 'https://magic-ai-factory.com',
+    ru: 'https://magic-ai-factory.com',
+    es: 'https://magic-ai-factory.com',
+  },
   'settings.section.siteBadge': {
     en: '“Built with AI-Factory” badge',
     ru: 'Бейдж «Built with AI-Factory»',
@@ -194,9 +214,9 @@ export const CONTENT_SETTINGS_DICT: I18nDict = {
     es: 'URL del enlace de la insignia (HTTPS)',
   },
   'settings.badge.urlPlaceholder': {
-    en: 'https://github.com/your-org/aicom',
-    ru: 'https://github.com/your-org/aicom',
-    es: 'https://github.com/your-org/aicom',
+    en: 'Leave empty to use Public site URL above',
+    ru: 'Пусто — использовать URL витрины выше',
+    es: 'Vacío — usar la URL pública de arriba',
   },
   'settings.section.headSnippet': {
     en: 'Head snippet on generated sites',

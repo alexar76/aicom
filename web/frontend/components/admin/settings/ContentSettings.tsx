@@ -246,6 +246,27 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
 
       <GlassCard>
         <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-cyan-400" />
+          {t(locale, 'settings.section.publicSite')}
+        </h3>
+        <p className="text-sm text-gray-400 mb-4">{t(locale, 'settings.publicSite.intro')}</p>
+        {settingsLoading ? (
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            {t(locale, 'settings.loading.short')}
+          </div>
+        ) : (
+          <Input
+            label={t(locale, 'settings.publicSite.urlLabel')}
+            placeholder={t(locale, 'settings.publicSite.urlPlaceholder')}
+            value={settings.public_site_url}
+            onChange={(e) => handleSettingChange('public_site_url', e.target.value)}
+          />
+        )}
+      </GlassCard>
+
+      <GlassCard>
+        <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-amber-400" />
           {t(locale, 'settings.section.siteBadge')}
         </h3>

@@ -11,11 +11,12 @@ import zipfile
 from pathlib import Path
 from typing import Optional
 
-from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 import logging
+from core.jwt_tokens import decode_hs256_optional, encode_hs256
 from core.logging_utils import log_suppressed
+from core.public_site_url import resolve_public_site_url
 
 logger = logging.getLogger(__name__)
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
@@ -344,7 +345,7 @@ class CommerceService:
             "exp": now + self.jwt_expiry_seconds,
             "jti": uuid.uuid4().hex[:16],
         }
-        return jwt.encode(payload, self.jwt_secret, algorithm=self.jwt_algorithm)
+        return encode_hs256(payload, self.jwt_secret, algorithm=self.jwt_algorithm)
 
     def get_customer(self, customer_id: str) -> Optional[dict]:
         row = self.conn.execute(
@@ -429,7 +430,7 @@ class CommerceService:
             "referral_code": code,
             "conversions": conversions,
             "attributed_revenue": round(revenue, 2),
-            "share_link": f"https://aifactory.dev/?ref={code}",
+            "share_link": f"{resolve_public_site_url()}/?ref={code}",
         }
 
     def save_stripe_checkout_session(
@@ -578,10 +579,9 @@ class CommerceService:
         }
 
     def decode_token(self, token: str) -> Optional[dict]:
-        try:
-            return jwt.decode(token, self.jwt_secret, algorithms=[self.jwt_algorithm])
-        except JWTError:
-            return None
+        return decode_hs256_optional(
+            token, self.jwt_secret, algorithms=[self.jwt_algorithm]
+        )
 
     def get_order_by_tx_hash(self, tx_hash: str) -> Optional[dict]:
         tx = (tx_hash or "").strip()

@@ -266,7 +266,7 @@ def evaluate_marketplace_quality(
             min_release_score = min(min_release_score, 55)
 
     demo = assess_product_demo(product_id, specification, data_root=data_root)
-    static_ok = quality_gates_pass(demo)
+    static_ok = quality_gates_pass(demo, delivery_profile=resolved_profile)
 
     tel = _load_gate_telemetry(product_id, root)
     qa_report = _load_qa_report(product_id, root)
@@ -298,6 +298,23 @@ def evaluate_marketplace_quality(
         "landing_storefront_relaxed": landing_relaxed,
     }
 
+    from web.backend.services.sandbox_static_entry import storefront_front_page_ready
+
+    fp_ok, _fp_rel, fp_reasons = storefront_front_page_ready(
+        product_id,
+        code_root=root / "code" / product_id,
+    )
+    if not fp_ok:
+        reasons.append("storefront_front_page_required")
+        reasons.extend(fp_reasons[:8])
+        return {
+            "eligible": False,
+            "demo_quality": demo,
+            "reasons": reasons,
+            "telemetry_gates_all_passed": telemetry_all_ok,
+            "marketplace_rules": rules,
+        }
+
     if not gate_enabled:
         return {
             "eligible": True,
@@ -322,6 +339,28 @@ def evaluate_marketplace_quality(
             "telemetry_gates_all_passed": telemetry_all_ok,
             "marketplace_rules": rules,
         }
+
+    from core.delivery_profile import FULL_SOFTWARE
+
+    if resolved_profile == FULL_SOFTWARE:
+        from web.backend.services.sandbox_static_entry import (
+            full_software_storefront_preview_capable,
+        )
+
+        fs_ok, fs_reasons = full_software_storefront_preview_capable(
+            product_id,
+            code_root=root / "code" / product_id,
+        )
+        if not fs_ok:
+            reasons.append("full_software_preview_not_ready")
+            reasons.extend(fs_reasons[:8])
+            return {
+                "eligible": False,
+                "demo_quality": demo,
+                "reasons": reasons,
+                "telemetry_gates_all_passed": telemetry_all_ok,
+                "marketplace_rules": rules,
+            }
 
     if require_quality_constitution:
         constitution = evaluate_quality_constitution(product_id, data_root=data_root)

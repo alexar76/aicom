@@ -14,6 +14,7 @@ The optional **Docker DinD** ``python -m http.server`` container serves **static
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import os
@@ -72,6 +73,11 @@ from web.backend.services.sandbox_compose_preview import (
     stop_compose_for_sandbox,
 )
 from web.backend.services.sandbox_spec_landing import resolve_sandbox_index_html
+from web.backend.services.sandbox_static_entry import (
+    ensure_storefront_preview_index,
+    resolve_static_preview_relpath,
+    static_preview_file,
+)
 from core.paths import code_dir as resolve_product_code_dir, pipeline_json_path, sandbox_registry_path, specs_dir, product_state_dir
 from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 from web.backend.services.sandbox_static_rewrite import (
@@ -378,7 +384,11 @@ def _start_sandbox_for_product(product_id: str) -> dict:
                 "status": entry.get("preview_api_status"),
             }
         else:
-            preview_payload = {"enabled": False, "proxy_prefix": None, "status": pst}
+            preview_payload = {
+                "enabled": False,
+                "proxy_prefix": None,
+                "status": entry.get("preview_api_status"),
+            }
     elif compose_ok:
         preview_payload = {
             "enabled": False,
@@ -418,6 +428,12 @@ async def start_sandbox_storefront(product_id: str, request: Request):
     _enforce_storefront_start_rate_limit(_client_ip(request))
     if not _storefront_allows_sandbox_preview(product_id):
         raise HTTPException(status_code=404, detail="Product preview not available")
+    product_code_dir = _get_product_code_dir(product_id)
+    if product_code_dir:
+        from web.backend.services.sandbox_spec_landing import materialize_spec_landing_on_disk
+
+        materialize_spec_landing_on_disk(product_id, code_root=product_code_dir)
+        ensure_storefront_preview_index(product_id, code_root=product_code_dir)
     return _start_sandbox_for_product(product_id)
 
 
@@ -433,18 +449,35 @@ async def sandbox_ready(sandbox_id: str):
     if not product_code_dir:
         return {"ready": False, "progress": 25, "stage": "no_code"}
 
-    idx = product_code_dir / "index.html"
-    if not idx.is_file():
+    sb_state = _active_sandboxes.get(sandbox_id) or sandbox
+    if sb_state.get("compose_proxy_port"):
+        return {"ready": True, "progress": 100, "stage": "compose_ready"}
+    if sb_state.get("backend_preview_port"):
+        return {"ready": True, "progress": 100, "stage": "api_ready"}
+
+    rel = resolve_static_preview_relpath(product_code_dir)
+    if not rel:
         return {"ready": False, "progress": 40, "stage": "index_missing"}
 
+    idx = product_code_dir / rel
     try:
         size = idx.stat().st_size
     except OSError:
         size = 0
     if size < 400:
-        return {"ready": False, "progress": 60, "stage": "index_building"}
+        return {
+            "ready": False,
+            "progress": 60,
+            "stage": "index_building",
+            "preview_path": rel,
+        }
 
-    return {"ready": True, "progress": 100, "stage": "preview_ready"}
+    return {
+        "ready": True,
+        "progress": 100,
+        "stage": "preview_ready",
+        "preview_path": rel,
+    }
 
 
 @router.get("/view/{sandbox_id}")
@@ -461,8 +494,16 @@ async def view_sandbox(request: Request, sandbox_id: str):
     product_code_dir = _get_product_code_dir(product_id)
     sb_state = _active_sandboxes.get(sandbox_id) or sandbox
     compose_ok = sb_state.get("compose_proxy_port") is not None
-    if product_code_dir and _should_try_fastapi_preview(product_code_dir, compose_ok):
-        _ensure_fastapi_preview(sandbox_id, sb_state, product_code_dir)
+    static_ready = (
+        product_code_dir is not None
+        and resolve_static_preview_relpath(product_code_dir) is not None
+    )
+    if (
+        product_code_dir
+        and not static_ready
+        and _should_try_fastapi_preview(product_code_dir, compose_ok)
+    ):
+        await asyncio.to_thread(_ensure_fastapi_preview, sandbox_id, sb_state, product_code_dir)
         if sandbox_id in _active_sandboxes:
             _active_sandboxes[sandbox_id].update(
                 {
@@ -483,14 +524,12 @@ async def view_sandbox(request: Request, sandbox_id: str):
     # Serve generated HTML via iframe demo (same path as mock mode)
     if product_code_dir:
         files = []
-        has_index_html = False
+        static_preview_rel = resolve_static_preview_relpath(product_code_dir)
         for f in sorted(product_code_dir.rglob("*")):
             if f.is_file() and not f.name.startswith("."):
                 try:
                     rel = f.relative_to(product_code_dir)
                     files.append(str(rel))
-                    if f.name == "index.html":
-                        has_index_html = True
                 except ValueError as _suppressed_exc:
                     log_suppressed(logger, "non-fatal (web/backend/api/sandbox.py)", exc_info=_suppressed_exc)
 
@@ -539,11 +578,17 @@ async def view_sandbox(request: Request, sandbox_id: str):
         elif backend_preview_port:
             iframe_src = sandbox_public_url(request, f"/api/sandbox/backend/{sandbox_id}/")
             preview_label = "FastAPI live app"
+        elif static_preview_rel:
+            iframe_src = sandbox_public_url(
+                request,
+                f"/api/sandbox/file/{sandbox_id}/{static_preview_rel}",
+            )
+            preview_label = static_preview_rel
         else:
             iframe_src = sandbox_public_url(request, f"/api/sandbox/file/{sandbox_id}/index.html")
             preview_label = "index.html"
 
-        if has_index_html or compose_ok or backend_preview_port:
+        if static_preview_rel or compose_ok or backend_preview_port:
             # Show the demo in an iframe with a file browser panel
             html = f"""<!DOCTYPE html>
 <html>
@@ -695,8 +740,9 @@ async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
         # Binary file — return as-is
         content = full_path.read_bytes()
         return Response(content=content, media_type="application/octet-stream")
-    if norm_path in ("index.html", "index.htm") and isinstance(content, str):
-        content = resolve_sandbox_index_html(product_id, content)
+    if isinstance(content, str) and norm_path.lower().endswith((".html", ".htm")):
+        if norm_path in ("index.html", "index.htm") or norm_path.endswith("/index.html") or norm_path.endswith("/index.htm"):
+            content = resolve_sandbox_index_html(product_id, content)
 
     # Determine content type
     ext = full_path.suffix.lower()

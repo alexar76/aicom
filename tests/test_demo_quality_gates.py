@@ -30,6 +30,21 @@ def test_quality_gates_fail_placeholder():
     assert quality_gates_pass(r) is False
 
 
+def test_assess_fails_wrong_watermark_url(tmp_path, monkeypatch):
+    monkeypatch.setenv("NEXT_PUBLIC_SITE_URL", "https://magic-ai-factory.com")
+    pid = "prod-watermark-gate"
+    code = tmp_path / "code" / pid
+    code.mkdir(parents=True)
+    (code / "index.html").write_text(
+        """<!doctype html><html><body><h1>Ok</h1><section><button>Go</button></section>
+        <div class="aifactory-badge">Made with
+        <a href="https://aifactory.dev">AI-Factory</a></div></body></html>"""
+    )
+    rep = assess_product_demo(pid, {"description": "saas product"}, data_root=str(tmp_path))
+    assert any(i.get("code") == "watermark_wrong_public_url" for i in rep["issues"])
+    assert quality_gates_pass(rep) is False
+
+
 def test_assess_detects_stub_phrase(tmp_path):
     pid = "prod-gate-test"
     code = tmp_path / "code" / pid

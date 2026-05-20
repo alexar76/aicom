@@ -116,7 +116,7 @@ def _ui_context_dict(ctx: Optional[Any]) -> dict[str, str]:
     else:
         return {}
     out: dict[str, str] = {}
-    for k in ("current_page", "active_tab", "selected_product_id"):
+    for k in ("current_page", "active_tab", "selected_product_id", "preferred_locale"):
         v = raw.get(k)
         if v is None:
             continue
@@ -222,12 +222,17 @@ async def post_message(
     llm_router = getattr(request.app.state, "llm_router", None)
 
     snippets = [{"role": m["role"], "content": m["content"]} for m in hist[-20:]]
+    merged_ctx: dict[str, str] = {}
+    meta = sess.get("meta")
+    if isinstance(meta, dict):
+        base_ctx = meta.get("ui_context")
+        if isinstance(base_ctx, dict):
+            merged_ctx = base_ctx
+    locale = support_agent.normalize_preferred_locale(merged_ctx or None)
+
     if inj:
         turn = SupportTurnResult(
-            reply=(
-                f"Hi — I'm **{support_agent.SUPPORT_BOT_NAME}**. {inj}\n\n"
-                "Please describe in plain language what broke or what you need, without trying to issue model commands."
-            ),
+            reply=support_agent.localized_injection_reply(inj, locale),
             classification="spam",
             confidence=0.99,
             file_pipeline_bug=False,
@@ -240,7 +245,7 @@ async def post_message(
             product_id=sess.get("product_id"),
             history_snippets=snippets,
             llm_router=llm_router,
-            ui_context=((sess.get("meta") or {}).get("ui_context") if isinstance(sess.get("meta"), dict) else None),
+            ui_context=merged_ctx if isinstance(merged_ctx, dict) else None,
         )
 
     hist.append({"role": "user", "content": user_text, "ts": now})
@@ -263,17 +268,36 @@ async def post_message(
         )
         assistant_meta["pipeline"] = pipeline_result
         if pipeline_result.get("ok"):
-            turn.reply += (
-                "\n\n---\nThanks — I've logged this as a **confirmed defect** for the dev team; "
-                "the pipeline queued a fix and a follow-up QA pass."
-            )
+            turn.reply += support_agent.localized_pipeline_ack(locale)
+            if locale == "ru":
+                turn.reply += " Пайплайн поставил исправление и повторную QA."
+            elif locale == "es":
+                turn.reply += " El pipeline encoló corrección y QA."
+            else:
+                turn.reply += " The pipeline queued a fix and a follow-up QA pass."
         elif pipeline_result.get("reason") == "product_not_shipped":
-            turn.reply += (
-                "\n\n---\nThis product is not storefront-final yet, so I'm not opening a bug ticket; "
-                "when the build finishes, please report again from the preview page."
-            )
+            if locale == "ru":
+                turn.reply += (
+                    "\n\n---\nПродукт ещё не на витрине — тикет не открываю; "
+                    "когда сборка завершится, напишите снова со страницы превью."
+                )
+            elif locale == "es":
+                turn.reply += (
+                    "\n\n---\nEl producto aún no está en vitrina; no abro ticket. "
+                    "Cuando termine el build, repórtelo desde la vista previa."
+                )
+            else:
+                turn.reply += (
+                    "\n\n---\nThis product is not storefront-final yet, so I'm not opening a bug ticket; "
+                    "when the build finishes, please report again from the preview page."
+                )
         elif pipeline_result.get("reason") == "dev_fix_already_pending":
-            turn.reply += "\n\n---\nA fix task for this product is already pending — I won't duplicate it."
+            if locale == "ru":
+                turn.reply += "\n\n---\nИсправление для этого продукта уже в очереди — дубликат не создаю."
+            elif locale == "es":
+                turn.reply += "\n\n---\nYa hay una corrección pendiente para este producto; no duplico."
+            else:
+                turn.reply += "\n\n---\nA fix task for this product is already pending — I won't duplicate it."
 
     if turn.escalate_to_director and not inj:
         escalation_id = append_director_escalation(

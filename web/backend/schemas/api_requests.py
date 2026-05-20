@@ -311,6 +311,19 @@ class SupportUiContext(BaseModel):
     current_page: Optional[str] = Field(None, max_length=200)
     active_tab: Optional[str] = Field(None, max_length=200)
     selected_product_id: Optional[str] = Field(None, max_length=80)
+    preferred_locale: Optional[str] = Field(None, max_length=8)
+
+    @field_validator("preferred_locale")
+    @classmethod
+    def validate_preferred_locale(cls, v: Optional[str]) -> Optional[str]:
+        if v is None or not str(v).strip():
+            return None
+        s = str(v).strip().lower()
+        if s.startswith("ru"):
+            return "ru"
+        if s.startswith("es"):
+            return "es"
+        return "en"
 
     @field_validator("selected_product_id")
     @classmethod

@@ -133,4 +133,19 @@ export const MARKETING_ES: MarketingStrings = {
   pipelineDesignerTitle: 'Capa diseñador — UI moderna por defecto',
   pipelineDesignerBody:
     'Antes del código, Architect emite un brief `ui_experience`: tokens, tipografía, motion y un momento visual distintivo. Developer lo trata como vinculante — landings con diseño intencional, no cajas grises genéricas de IA.',
+  architectureEyebrow: 'Topología en tiempo de ejecución',
+  architectureTitle: 'Arquitectura de un vistazo',
+  architectureSubtitle:
+    'Un plano de control: capa web, workers en segundo plano, modelos enrutados y workspace durable — órbita viva alrededor de la flota de agentes.',
+  architectureHubLabel: 'Agentes',
+  architectureHubRoles: 'PM · Arquitecto · Dev · QA · Sec · Ops · Mkt · Ventas · Evolution',
+  architectureHubFooter: 'Un pipeline · gates compartidos',
+  architectureNodes: [
+    { label: 'Next.js', sub: 'Vitrina' },
+    { label: 'FastAPI', sub: 'API pública y admin' },
+    { label: 'Pipeline worker', sub: 'Gates de calidad' },
+    { label: 'Director AI', sub: 'Señales e informes' },
+    { label: 'LLM router', sub: 'Multi-proveedor' },
+    { label: 'Data plane', sub: 'SQLite · artefactos' },
+  ],
 };

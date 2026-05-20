@@ -26,6 +26,7 @@ from prometheus_client import make_asgi_app
 from web.backend.cors_settings import get_cors_allow_origins
 
 from core.logging_utils import log_suppressed
+from core.public_site_url import resolve_public_site_url
 from core.paths import (
     benchmark_alerts_path,
     benchmark_scorecard_path,
@@ -525,6 +526,8 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
         "auto_publish_provider": str(config.get("general.auto_publish_provider") or "none"),
         "auto_publish_netlify_site_id": config.get("general.auto_publish_netlify_site_id") or "",
         "auto_publish_cf_project_name": config.get("general.auto_publish_cf_project_name") or "",
+        "public_site_url": str(config.get("general.public_site_url") or "").strip()
+        or resolve_public_site_url(),
         "site_badge_enabled": bool(config.get("general.site_badge_enabled", False)),
         "site_badge_link_url": config.get("general.site_badge_link_url") or "",
         "published_site_head_html": str(config.get("general.published_site_head_html") or ""),
@@ -576,6 +579,7 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
         "auto_publish_provider",
         "auto_publish_netlify_site_id",
         "auto_publish_cf_project_name",
+        "public_site_url",
         "site_badge_enabled",
         "site_badge_link_url",
         "published_site_head_html",

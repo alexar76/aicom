@@ -40,22 +40,11 @@ BANNED_SNIPPETS = (
 )
 
 
-_INDEX_CANDIDATES = (
-    "index.html",
-    "frontend/index.html",
-    "public/index.html",
-    "static/index.html",
-    "dist/index.html",
-)
-
-
 def resolve_main_html_path(code_dir: Path) -> Optional[Path]:
-    """Find the primary HTML entrypoint (root first, then common subfolders)."""
-    for rel in _INDEX_CANDIDATES:
-        p = code_dir / rel
-        if p.is_file():
-            return p
-    return None
+    """Find the primary HTML entrypoint (aligned with sandbox Live Preview resolution)."""
+    from web.backend.services.sandbox_static_entry import static_preview_file
+
+    return static_preview_file(code_dir)
 
 
 def _read_index_html(code_dir: Path) -> Optional[str]:
@@ -595,6 +584,10 @@ def assess_product_demo(
             }
         )
 
+    from core.public_site_url import audit_watermark_links_in_tree
+
+    issues.extend(audit_watermark_links_in_tree(code_dir))
+
     if svg_coordinate_spike_in_html(index_html):
         issues.append(
             {
@@ -683,6 +676,7 @@ def assess_product_demo(
     score -= 14 if any(i["code"] == "ux_low_contrast_cta" for i in issues) else 0
     score -= 12 if any(i["code"] == "cta_dead_hash_link" for i in issues) else 0
     score -= 18 if any(i["code"] == "broken_internal_link" for i in issues) else 0
+    score -= 20 if any(i["code"] == "watermark_wrong_public_url" for i in issues) else 0
     score -= 8 if any(i["code"] == "ux_auth_flow_thin" for i in issues) else 0
     score = max(0, min(100, score))
     score -= visual_issues_penalty(issues)
@@ -721,6 +715,7 @@ CRITICAL_ISSUE_CODES = frozenset(
         "no_code_dir",
         "sandbox_localhost_urls",
         "broken_internal_link",
+        "watermark_wrong_public_url",
         "ux_low_contrast_cta",
         "cta_dead_hash_link",
     }

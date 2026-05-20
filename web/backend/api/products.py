@@ -6,6 +6,7 @@ Endpoints for the storefront product listing and details.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import os
@@ -47,6 +48,42 @@ from web.backend.services.storefront_pricing import (
 from marketplace_taxonomy import MARKETPLACE_CATEGORY_IDS, canonical_marketplace_category
 
 logger = logging.getLogger(__name__)
+
+
+def _slim_browser_preview_e2e_for_storefront(raw: Any) -> Any:
+    """Drop multi-page crawl payloads from public product detail (keeps summary fields only)."""
+    if not isinstance(raw, dict):
+        return raw
+    slim: dict[str, Any] = {
+        k: raw[k]
+        for k in (
+            "passed",
+            "skipped",
+            "url",
+            "serve_mode",
+            "visible_text_length",
+            "has_visible_structure",
+            "page_errors",
+            "console_errors",
+            "scenario_e2e",
+            "mobile_viewport_gate",
+            "spec_alignment_llm",
+        )
+        if k in raw
+    }
+    ui = raw.get("ui_interaction")
+    if isinstance(ui, dict):
+        slim_ui: dict[str, Any] = {k: ui[k] for k in ("skipped", "mode") if k in ui}
+        dc = ui.get("deep_crawl")
+        if isinstance(dc, dict):
+            slim_ui["deep_crawl"] = {
+                k: dc[k]
+                for k in ("mode", "pages_visited", "visited_unique", "navigation_failures")
+                if k in dc
+            }
+        slim["ui_interaction"] = slim_ui
+    return slim
+
 
 # Storefront-only: marketing landings tab (not a Director / LLM vertical topic).
 LANDINGS_LISTING_SLUG = "landings"
@@ -387,6 +424,16 @@ def is_shipped_pipeline_product_state(state: Any) -> bool:
     return s in ("COMPLETED", "DEPLOYED_PRODUCTION")
 
 
+def _storefront_front_page_gate(pid: str) -> tuple[bool, list[str]]:
+    """Mandatory vitrine «морда»: openable HTML that passes sandbox_ready heuristics."""
+    from web.backend.services.sandbox_static_entry import storefront_front_page_ready
+
+    ok, _rel, reasons = storefront_front_page_ready(pid)
+    if ok:
+        return True, []
+    return False, ["storefront_front_page_required", *reasons[:8]]
+
+
 def public_storefront_listing_eligible(pid: str, product: dict[str, Any]) -> tuple[bool, list[str]]:
     """Same gates as ``list_products`` / admin pipeline hints — shipped, code on disk, not hidden, quality or force."""
     state = (product.get("state") or "").upper()
@@ -394,6 +441,9 @@ def public_storefront_listing_eligible(pid: str, product: dict[str, Any]) -> tup
         return False, ["no_generated_code_on_disk_or_empty_manifest"]
     if public_storefront_blocked(pid):
         return False, ["hidden_from_public_storefront"]
+    fp_ok, fp_reasons = _storefront_front_page_gate(pid)
+    if not fp_ok:
+        return False, fp_reasons
     from web.backend.services.storefront_visibility import (
         maybe_persist_storefront_established_for_repair_hold,
     )
@@ -461,6 +511,9 @@ def _public_storefront_grid_accepts(pid: str, product: dict[str, Any]) -> bool:
     if not _product_has_code(pid):
         return False
     if public_storefront_blocked(pid):
+        return False
+    fp_ok, _ = _storefront_front_page_gate(pid)
+    if not fp_ok:
         return False
     from web.backend.services.storefront_visibility import (
         maybe_persist_storefront_established_for_repair_hold,
@@ -654,121 +707,124 @@ async def list_products(
     return {"products": products, "count": len(products), "category": category or "all"}
 
 
+def _build_product_detail_response(product_id: str) -> dict[str, Any]:
+    """Sync storefront product detail builder (run via asyncio.to_thread)."""
+    product = _get_product_entry(product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    if public_storefront_blocked(product_id):
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    marketing = _load_marketing(product_id)
+    sales_config = _load_sales(product_id)
+
+    spec_inner = _spec_inner_for_storefront(product_id, product)
+    product_name, is_template = resolve_product_name(
+        product_id=product_id,
+        product=product,
+        spec=spec_inner,
+        marketing=marketing,
+    )
+
+    category = _canonical_marketplace_category(marketing, product)
+    tags = marketing.get("tags", []) or product.get("tags", [])
+    selling_description = marketing.get("selling_description", "")
+    monetization_scheme = marketing.get("monetization_scheme", {}) or {}
+
+    price_usdt, price_tier = resolve_storefront_price_usdt(
+        marketing=marketing or {},
+        sales_config_inner=sales_config or {},
+        default_usdt=DEFAULT_STOREFRONT_PRICE_USDT,
+    )
+
+    evolution_history = []
+    telemetry_dir_path = telemetry_dir(product_id)
+    if telemetry_dir_path.exists():
+        for evo_file in sorted(telemetry_dir_path.glob("evolution_*.json")):
+            with open(evo_file, "r") as f:
+                evolution_history.append(json.load(f))
+
+    architecture_data = product.get("architecture")
+    if architecture_data is None:
+        architecture_data = _load_architecture_from_disk(product_id)
+
+    impl_summary: dict[str, Any] = {}
+    if isinstance(architecture_data, dict) and isinstance(architecture_data.get("tech_stack"), dict):
+        impl_summary = architecture_data["tech_stack"]
+
+    demo_quality = assess_product_demo(product_id, spec_inner)
+    dprof = _resolved_delivery_profile(product, spec_inner)
+    mq_eval = evaluate_marketplace_quality(
+        product_id, specification=spec_inner, delivery_profile=dprof
+    )
+    stack_lbl = ""
+    if isinstance(architecture_data, dict) and isinstance(architecture_data.get("tech_stack"), dict):
+        stack_lbl = _storefront_stack_label(architecture_data["tech_stack"])
+    stakeholder_brief = build_stakeholder_brief(
+        product_id,
+        product.get("idea", "") or "",
+        spec_inner,
+        marketing,
+    )
+
+    browser_preview_e2e = None
+    qa_gates_all_passed = None
+    gate_file = telemetry_dir(product_id) / "demo_quality_gate.json"
+    if gate_file.exists():
+        try:
+            with open(gate_file) as gf:
+                gate_data = json.load(gf)
+            browser_preview_e2e = _slim_browser_preview_e2e_for_storefront(
+                gate_data.get("browser_preview_e2e")
+            )
+            qa_gates_all_passed = gate_data.get("gates_all_passed")
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/api/products.py)", exc_info=_suppressed_exc)
+
+    return {
+        "id": product_id,
+        "name": product_name,
+        "is_template": is_template,
+        "delivery_profile": dprof,
+        "storefront_stack_label": stack_lbl,
+        "idea": product.get("idea", ""),
+        "category": category,
+        "tags": tags,
+        "selling_description": selling_description,
+        "price_usdt": price_usdt,
+        "price_tier": price_tier,
+        "monetization_scheme": monetization_scheme,
+        "state": product.get("state"),
+        "created_at": product.get("created_at"),
+        "updated_at": product.get("updated_at"),
+        "spec": spec_inner,
+        "architecture": architecture_data,
+        "implementation_summary": impl_summary,
+        "code": product.get("code"),
+        "marketing": marketing,
+        "pricing": sales_config.get("pricing", {}),
+        "license_terms": sales_config.get("license_terms", {}),
+        "evolution_history": evolution_history[-10:],
+        "tasks": product.get("tasks", []),
+        "demo_quality": demo_quality,
+        "browser_preview_e2e": browser_preview_e2e,
+        "qa_gates_all_passed": qa_gates_all_passed,
+        "marketplace_quality": {
+            "eligible": mq_eval.get("eligible"),
+            "reasons": mq_eval.get("reasons"),
+            "rules": mq_eval.get("marketplace_rules"),
+        },
+        "marketplace_listing_fields": marketplace_listing_card_fields(mq_eval),
+        "stakeholder_brief": stakeholder_brief,
+    }
+
+
 @router.get("/{product_id}")
 async def get_product(product_id: str):
     """Get detailed information about a specific product."""
     try:
-        product = _get_product_entry(product_id)
-        if not product:
-            raise HTTPException(status_code=404, detail="Product not found")
-
-        if public_storefront_blocked(product_id):
-            raise HTTPException(status_code=404, detail="Product not found")
-
-        # Load all related data
-        marketing = _load_marketing(product_id)
-        sales_config = _load_sales(product_id)
-
-        spec_inner = _spec_inner_for_storefront(product_id, product)
-        product_name, is_template = resolve_product_name(
-            product_id=product_id,
-            product=product,
-            spec=spec_inner,
-            marketing=marketing,
-        )
-
-        category = _canonical_marketplace_category(marketing, product)
-        tags = marketing.get("tags", []) or product.get("tags", [])
-        selling_description = marketing.get("selling_description", "")
-        monetization_scheme = marketing.get("monetization_scheme", {}) or {}
-
-        # Price: admin override → sales → marketing → default
-        price_usdt, price_tier = resolve_storefront_price_usdt(
-            marketing=marketing or {},
-            sales_config_inner=sales_config or {},
-            default_usdt=DEFAULT_STOREFRONT_PRICE_USDT,
-        )
-
-        # Load evolution history
-        evolution_history = []
-        telemetry_dir_path = telemetry_dir(product_id)
-        if telemetry_dir_path.exists():
-            for evo_file in sorted(telemetry_dir_path.glob("evolution_*.json")):
-                with open(evo_file, "r") as f:
-                    evolution_history.append(json.load(f))
-
-        architecture_data = product.get("architecture")
-        if architecture_data is None:
-            architecture_data = _load_architecture_from_disk(product_id)
-
-        impl_summary: dict[str, Any] = {}
-        if isinstance(architecture_data, dict) and isinstance(architecture_data.get("tech_stack"), dict):
-            impl_summary = architecture_data["tech_stack"]
-
-        demo_quality = assess_product_demo(product_id, spec_inner)
-        dprof = _resolved_delivery_profile(product, spec_inner)
-        mq_eval = evaluate_marketplace_quality(
-            product_id, specification=spec_inner, delivery_profile=dprof
-        )
-        stack_lbl = ""
-        if isinstance(architecture_data, dict) and isinstance(architecture_data.get("tech_stack"), dict):
-            stack_lbl = _storefront_stack_label(architecture_data["tech_stack"])
-        stakeholder_brief = build_stakeholder_brief(
-            product_id,
-            product.get("idea", "") or "",
-            spec_inner,
-            marketing,
-        )
-
-        browser_preview_e2e = None
-        qa_gates_all_passed = None
-        gate_file = telemetry_dir(product_id) / "demo_quality_gate.json"
-        if gate_file.exists():
-            try:
-                with open(gate_file) as gf:
-                    gate_data = json.load(gf)
-                browser_preview_e2e = gate_data.get("browser_preview_e2e")
-                qa_gates_all_passed = gate_data.get("gates_all_passed")
-            except Exception as _suppressed_exc:
-                log_suppressed(logger, "non-fatal (web/backend/api/products.py)", exc_info=_suppressed_exc)
-
-        return {
-            "id": product_id,
-            "name": product_name,
-            "is_template": is_template,
-            "delivery_profile": dprof,
-            "storefront_stack_label": stack_lbl,
-            "idea": product.get("idea", ""),
-            "category": category,
-            "tags": tags,
-            "selling_description": selling_description,
-            "price_usdt": price_usdt,
-            "price_tier": price_tier,
-            "monetization_scheme": monetization_scheme,
-            "state": product.get("state"),
-            "created_at": product.get("created_at"),
-            "updated_at": product.get("updated_at"),
-            "spec": spec_inner,
-            "architecture": architecture_data,
-            "implementation_summary": impl_summary,
-            "code": product.get("code"),
-            "marketing": marketing,
-            "pricing": sales_config.get("pricing", {}),
-            "license_terms": sales_config.get("license_terms", {}),
-            "evolution_history": evolution_history[-10:],  # Last 10 evolutions
-            "tasks": product.get("tasks", []),
-            "demo_quality": demo_quality,
-            "browser_preview_e2e": browser_preview_e2e,
-            "qa_gates_all_passed": qa_gates_all_passed,
-            "marketplace_quality": {
-                "eligible": mq_eval.get("eligible"),
-                "reasons": mq_eval.get("reasons"),
-                "rules": mq_eval.get("marketplace_rules"),
-            },
-            "marketplace_listing_fields": marketplace_listing_card_fields(mq_eval),
-            "stakeholder_brief": stakeholder_brief,
-        }
-
+        return await asyncio.to_thread(_build_product_detail_response, product_id)
     except HTTPException:
         raise
     except Exception as e:

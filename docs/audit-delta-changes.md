@@ -15,6 +15,9 @@ Tracking table for the architecture / quality audit. Updated after remediation p
 | | API keys in env | ✅ Documented | `docs/security-secrets.md` |
 | | IP-only rate limiting | ✅ Documented | Redis shared limiter noted as production follow-up |
 | | Fernet rotation | ✅ Documented | Procedure in `docs/security-secrets.md` |
+| | Supply chain: python-jose / passlib | ✅ Done | **PyJWT 2.10.1** (`core/jwt_tokens.py`); **passlib-fork 1.7.4.post1**; **cryptography 45.0.7** — pinned in `requirements.txt`; python-jose removed |
+| | CSWSH admin WebSocket | ✅ Done | `websocket_admin.py` Origin allowlist for cookie auth |
+| | Stripe webhook replay window | ✅ Done | `customer.py` signature tolerance 300s |
 | **Testing** | Pipeline worker tests | 🟡 Partial | `test_pipeline_worker_core.py`, `test_pipeline_worker_persistence.py`, hygiene tests |
 | | Integration tests | 🟡 Partial | `test_pipeline_full_cycle_smoke.py`, `test_pipeline_integration.py` (SQLite cycle, dirty save, restart) |
 | | Property-based | 🟡 Partial | `test_api_request_schemas_property.py` (Hypothesis on API bodies) |

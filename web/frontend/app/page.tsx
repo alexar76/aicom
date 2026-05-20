@@ -730,7 +730,10 @@ function CatalogProductCard({
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
     >
-      <Link href={`/product/${product.id}`} className="block h-full">
+      <Link
+        href={`/product/${product.id}`}
+        className="block h-full rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400/80"
+      >
         <GlassCard
           hover
           glow={product.state === 'COMPLETED'}
@@ -812,9 +815,9 @@ function CatalogProductCard({
                 </span>
               )}
             </div>
-            <Button variant="ghost" size="sm">
+            <span className="inline-flex items-center rounded-xl border border-transparent px-4 py-2 text-sm font-medium text-[color:var(--text-secondary)]">
               Details →
-            </Button>
+            </span>
           </div>
         </GlassCard>
       </Link>
@@ -1303,7 +1306,7 @@ export default function HomePage() {
       <HeroSection copy={siteCopy} />
       <FeaturesSection copy={siteCopy} />
       <PipelineSection copy={siteCopy} />
-      <ArchitectureOrbit />
+      <ArchitectureOrbit copy={siteCopy} />
       <ProductsSection copy={siteCopy} />
       <TrustBlock />
       <SeoFaqSection />

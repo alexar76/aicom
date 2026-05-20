@@ -85,6 +85,12 @@ def _verify_stripe_signature(payload: bytes, sig_header: str, secret: str) -> bo
     sig = parts.get("v1")
     if not ts or not sig:
         return False
+    try:
+        ts_int = int(ts)
+    except ValueError:
+        return False
+    if abs(time.time() - ts_int) > 300:
+        return False
     signed_payload = f"{ts}.{payload.decode('utf-8')}".encode("utf-8")
     expected = hmac.new(secret.encode("utf-8"), signed_payload, hashlib.sha256).hexdigest()
     return hmac.compare_digest(expected, sig)

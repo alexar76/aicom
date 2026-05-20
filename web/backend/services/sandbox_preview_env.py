@@ -117,9 +117,9 @@ def _pip_install_requirements(cwd: Path, code_dir: Path) -> None:
             "pydantic-settings",
             "stripe",
             "httpx",
-            "passlib[bcrypt]",
+            "passlib-fork[bcrypt]==1.7.4.post1",
             "bcrypt==4.0.1",
-            "python-jose[cryptography]",
+            "PyJWT[crypto]==2.10.1",
         ]
     )
     for spec in extras:

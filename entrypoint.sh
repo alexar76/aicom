@@ -171,17 +171,37 @@ echo "Director AI Worker started (PID: $DIRECTOR_PID)"
 # Default: 1 worker (each process would otherwise pick a random JWT secret).
 # Set JWT_SECRET_KEY in the environment to allow multiple workers (recommended under load).
 if [ -z "${UVICORN_WORKERS:-}" ]; then
-  if [ -n "${JWT_SECRET_KEY:-}" ]; then
-    UVICORN_WORKERS=2
-  else
-    UVICORN_WORKERS=1
-  fi
+  UVICORN_WORKERS=1
 fi
+# Cap workers — multiprocess supervisor has caused worker crash-loops under load (API 500/timeouts).
+case "${UVICORN_WORKERS}" in
+  ''|*[!0-9]*) UVICORN_WORKERS=1 ;;
+esac
+if [ "${UVICORN_WORKERS}" -gt 2 ] 2>/dev/null; then
+  UVICORN_WORKERS=2
+fi
+start_backend() {
+  cd /app
+  python3 -m uvicorn web.backend.main:app --host 0.0.0.0 --port 8081 --workers "${UVICORN_WORKERS}" &
+  echo $! >/tmp/aicom-backend.pid
+}
+
 echo "Starting FastAPI backend on port 8081 (${UVICORN_WORKERS} worker(s))..."
-cd /app
-python3 -m uvicorn web.backend.main:app --host 0.0.0.0 --port 8081 --workers "${UVICORN_WORKERS}" &
-BACKEND_PID=$!
-echo "Backend started (PID: $BACKEND_PID)"
+start_backend
+echo "Backend started (PID: $(cat /tmp/aicom-backend.pid))"
+
+# Restart API if the worker dies (pipeline/QA load otherwise leaves Next.js proxying to ECONNREFUSED → HTTP 500).
+(
+  while true; do
+    sleep 5
+    pid="$(cat /tmp/aicom-backend.pid 2>/dev/null || true)"
+    if [ -z "${pid}" ] || ! kill -0 "${pid}" 2>/dev/null; then
+      echo "FastAPI backend not running — restarting..."
+      start_backend
+      echo "Backend restarted (PID: $(cat /tmp/aicom-backend.pid))"
+    fi
+  done
+) &
 
 # ── Next.js Frontend ──────────────────────────────────────────────────────
 echo "Starting Next.js frontend on port 8080..."
