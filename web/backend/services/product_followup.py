@@ -292,6 +292,8 @@ def patch_admin_decisions(
                 raise ValueError("admin_force_list_note is required (min 5 chars) when forcing storefront")
             cur["admin_force_list_note"] = note
             cur["admin_force_list_at"] = now
+            cur[STOREFRONT_ESTABLISHED_LISTING_KEY] = True
+            cur.setdefault("storefront_established_listing_at", now)
         else:
             cur.pop("admin_force_list_note", None)
             cur.pop("admin_force_list_at", None)

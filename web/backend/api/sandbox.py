@@ -71,6 +71,7 @@ from web.backend.services.sandbox_compose_preview import (
     start_compose_preview,
     stop_compose_for_sandbox,
 )
+from web.backend.services.sandbox_spec_landing import resolve_sandbox_index_html
 from core.paths import code_dir as resolve_product_code_dir, pipeline_json_path, sandbox_registry_path, specs_dir, product_state_dir
 from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 from web.backend.services.sandbox_static_rewrite import (
@@ -326,6 +327,10 @@ def _start_sandbox_for_product(product_id: str) -> dict:
     port = 9000 + len(_active_sandboxes) % 1000  # allocate unique port
 
     product_code_dir = _get_product_code_dir(product_id)
+    if product_code_dir:
+        from web.backend.services.sandbox_spec_landing import materialize_spec_landing_on_disk
+
+        materialize_spec_landing_on_disk(product_id, code_root=product_code_dir)
     host_port = None
 
     compose_proxy_port: Optional[int] = None
@@ -416,6 +421,32 @@ async def start_sandbox_storefront(product_id: str, request: Request):
     return _start_sandbox_for_product(product_id)
 
 
+@router.get("/ready/{sandbox_id}")
+async def sandbox_ready(sandbox_id: str):
+    """Poll-friendly readiness for sandbox preview (used by storefront/admin loaders)."""
+    sandbox = _lookup_sandbox(sandbox_id)
+    if not sandbox or sandbox.get("status") != "running":
+        return {"ready": False, "progress": 0, "stage": "not_running"}
+
+    product_id = sandbox.get("product_id", "")
+    product_code_dir = _get_product_code_dir(product_id) if product_id else None
+    if not product_code_dir:
+        return {"ready": False, "progress": 25, "stage": "no_code"}
+
+    idx = product_code_dir / "index.html"
+    if not idx.is_file():
+        return {"ready": False, "progress": 40, "stage": "index_missing"}
+
+    try:
+        size = idx.stat().st_size
+    except OSError:
+        size = 0
+    if size < 400:
+        return {"ready": False, "progress": 60, "stage": "index_building"}
+
+    return {"ready": True, "progress": 100, "stage": "preview_ready"}
+
+
 @router.get("/view/{sandbox_id}")
 async def view_sandbox(request: Request, sandbox_id: str):
     """View sandbox content in browser — renders HTML demo in iframe."""
@@ -424,6 +455,9 @@ async def view_sandbox(request: Request, sandbox_id: str):
         raise HTTPException(status_code=404, detail="Sandbox not found or not running")
 
     product_id = sandbox.get("product_id", "unknown")
+    from web.backend.services.sandbox_remediation_badge import remediation_badge_markup
+
+    rework_badge_html = remediation_badge_markup(product_id)
     product_code_dir = _get_product_code_dir(product_id)
     sb_state = _active_sandboxes.get(sandbox_id) or sandbox
     compose_ok = sb_state.get("compose_proxy_port") is not None
@@ -578,6 +612,7 @@ async def view_sandbox(request: Request, sandbox_id: str):
                 sandbox="{SANDBOX_IFRAME_SANDBOX_ATTR}" referrerpolicy="no-referrer"></iframe>
         </div>
     </div>
+    {rework_badge_html}
 </body>
 </html>"""
         else:
@@ -601,6 +636,7 @@ async def view_sandbox(request: Request, sandbox_id: str):
     <h1>🔬 Sandbox: {product_id}</h1>
     <p class="note">No index.html found. Select a file to preview:</p>
     <ul>{file_list_html}</ul>
+    {rework_badge_html}
 </body>
 </html>"""
     else:
@@ -647,12 +683,20 @@ async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
     if not full_path.exists() or not full_path.is_file():
         raise HTTPException(status_code=404, detail=f"File not found: {file_path}")
 
+    norm_path = file_path.replace("\\", "/").lstrip("/")
+    from web.backend.services.sandbox_file_policy import sandbox_file_path_allowed
+
+    if not sandbox_file_path_allowed(norm_path):
+        raise HTTPException(status_code=403, detail="File type not available for sandbox preview")
+
     try:
         content = full_path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
         # Binary file — return as-is
         content = full_path.read_bytes()
         return Response(content=content, media_type="application/octet-stream")
+    if norm_path in ("index.html", "index.htm") and isinstance(content, str):
+        content = resolve_sandbox_index_html(product_id, content)
 
     # Determine content type
     ext = full_path.suffix.lower()

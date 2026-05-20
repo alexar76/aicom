@@ -34,12 +34,17 @@ function clearAdminSessionAndRedirectToLogin(): void {
 export class ApiRequestError extends Error {
   readonly status: number;
   readonly endpoint: string;
+  readonly detailPayload?: Record<string, unknown>;
 
-  constructor(message: string, opts: { status: number; endpoint: string }) {
+  constructor(
+    message: string,
+    opts: { status: number; endpoint: string; detailPayload?: Record<string, unknown> },
+  ) {
     super(message);
     this.name = 'ApiRequestError';
     this.status = opts.status;
     this.endpoint = opts.endpoint;
+    this.detailPayload = opts.detailPayload;
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
@@ -634,6 +639,7 @@ class ApiClient {
       }
       const error = (await response.json().catch(() => ({}))) as { detail?: unknown };
       let detail = error.detail;
+      let detailPayload: Record<string, unknown> | undefined;
       if (Array.isArray(detail)) {
         detail = detail
           .map((d: unknown) =>
@@ -642,14 +648,18 @@ class ApiClient {
               : JSON.stringify(d),
           )
           .join('; ');
-      } else if (detail !== null && detail !== undefined && typeof detail !== 'string') {
-        detail = JSON.stringify(detail);
+      } else if (detail !== null && detail !== undefined && typeof detail === 'object') {
+        detailPayload = detail as Record<string, unknown>;
+        detail =
+          typeof detailPayload.message === 'string'
+            ? detailPayload.message
+            : JSON.stringify(detailPayload);
       }
       const msg =
         typeof detail === 'string' && detail.trim()
           ? detail.trim()
           : `HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}`.trim();
-      throw new ApiRequestError(msg, { status: response.status, endpoint });
+      throw new ApiRequestError(msg, { status: response.status, endpoint, detailPayload });
     }
 
     return response.json();
@@ -756,8 +766,16 @@ class ApiClient {
     return this.request(`/payment/status/${paymentId}`);
   }
 
-  async confirmPayment(paymentId: string, txHash: string): Promise<PaymentStatus> {
-    return this.request(`/payment/confirm/${paymentId}`, {
+  async confirmPayment(
+    paymentId: string,
+    txHash: string,
+    opts?: { testConfirmations?: number },
+  ): Promise<PaymentStatus> {
+    const q =
+      opts?.testConfirmations !== undefined
+        ? `?test_confirmations=${encodeURIComponent(String(opts.testConfirmations))}`
+        : '';
+    return this.request(`/payment/confirm/${paymentId}${q}`, {
       method: 'POST',
       body: JSON.stringify({ tx_hash: txHash }),
     });
@@ -1662,6 +1680,12 @@ class ApiClient {
       });
     }
     return this.request(`/sandbox/start/${productId}`, { method: 'POST' });
+  }
+
+  async sandboxReady(
+    sandboxId: string,
+  ): Promise<{ ready: boolean; progress: number; stage: string }> {
+    return this.request(`/sandbox/ready/${sandboxId}`, { publicStorefront: true });
   }
 
   async stopSandbox(sandboxId: string): Promise<{ status: string }> {

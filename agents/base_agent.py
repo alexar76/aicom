@@ -277,14 +277,25 @@ class BaseAgent(ABC):
             })
         
         elif self.agent_type == "developer":
-            product_name = self._derive_name(idea)
-            return json.dumps({
-                "code_summary": f"Web application for {product_name}",
-                "language": "html",
-                "files": [
-                    {
-                        "path": "index.html",
-                        "content": f"""<!DOCTYPE html>
+            product_id = getattr(agent_input, "product_id", None) or "prod-unknown"
+            spec: dict = {}
+            if agent_input and isinstance(agent_input.data, dict):
+                raw_spec = agent_input.data.get("specification")
+                if isinstance(raw_spec, dict):
+                    spec = raw_spec
+            product_name = str(spec.get("product_name") or self._derive_name(idea))
+            index_html: str | None = None
+            if spec.get("description") or spec.get("product_name"):
+                try:
+                    from web.backend.services.sandbox_spec_landing import build_spec_landing_html_from_spec
+
+                    index_html = build_spec_landing_html_from_spec(
+                        product_id, spec, subtle_banner=False
+                    )
+                except Exception as exc:
+                    log_suppressed(logger, "developer fallback spec landing", exc_info=exc)
+            if not index_html:
+                index_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -402,7 +413,14 @@ class BaseAgent(ABC):
         </p>
     </div>
 </body>
-</html>""",
+</html>"""
+            return json.dumps({
+                "code_summary": f"Web application for {product_name}",
+                "language": "html",
+                "files": [
+                    {
+                        "path": "index.html",
+                        "content": index_html,
                         "language": "html",
                         "description": "Main application entry point with demo UI",
                     },

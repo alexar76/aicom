@@ -63,12 +63,9 @@ def _verify_session_token(sess: dict[str, Any], token: Optional[str]) -> None:
 
 
 def _client_ip(request: Request) -> str:
-    xff = request.headers.get("x-forwarded-for")
-    if xff:
-        return xff.split(",")[0].strip()
-    if request.client:
-        return request.client.host or "unknown"
-    return "unknown"
+    from web.backend.http.client_ip import client_ip as resolve_client_ip
+
+    return resolve_client_ip(request)
 
 
 def _rate_check(ip: str, bucket: str, max_hits: int) -> None:

@@ -47,6 +47,9 @@ services:
       # Next.js storefront/admin CSP (see web/frontend/middleware.ts). Override with AIFACTORY_FRONTEND_CSP.
       AIFACTORY_FRONTEND_CSP: ${AIFACTORY_FRONTEND_CSP:-}
       AIFACTORY_ENABLE_DEFAULT_CSP: ${AIFACTORY_ENABLE_DEFAULT_CSP:-1}
+      # Crypto checkout: testnet RPC + optional stub confirmations (browser/CI drills only)
+      AIFACTORY_PAYMENT_TESTNET: ${AIFACTORY_PAYMENT_TESTNET:-0}
+      AIFACTORY_PAYMENT_VERIFY_STUB: ${AIFACTORY_PAYMENT_VERIFY_STUB:-0}
       AIFACTORY_ENABLE_HSTS: ${AIFACTORY_ENABLE_HSTS:-}
       AIFACTORY_HSTS_PRELOAD: ${AIFACTORY_HSTS_PRELOAD:-}
       # Firewall full default-deny ACL (off by default — set to 1 only after whitelisting operator IPs in

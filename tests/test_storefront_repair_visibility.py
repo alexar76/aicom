@@ -45,6 +45,38 @@ def test_mid_repair_visible_only_with_flag_and_state(tmp_path, monkeypatch):
     )
 
 
+def test_maybe_persist_established_on_repair_with_code(tmp_path, monkeypatch):
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path))
+    from web.backend.services.product_followup import storefront_established_listing_enabled
+    from web.backend.services.storefront_visibility import (
+        maybe_persist_storefront_established_for_repair_hold,
+    )
+
+    pid = "prod-repair-hold"
+    assert not storefront_established_listing_enabled(pid)
+    maybe_persist_storefront_established_for_repair_hold(
+        pid,
+        state_upper="DEV_FIXING",
+        has_generated_code=True,
+        storefront_blocked=False,
+    )
+    assert storefront_established_listing_enabled(pid)
+
+
+def test_established_pinned_survives_completed_state(monkeypatch, tmp_path):
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path))
+    from web.backend.services.product_followup import merge_mark_storefront_established_listing
+    from web.backend.services.storefront_visibility import established_storefront_pinned
+
+    pid = "prod-shipped"
+    merge_mark_storefront_established_listing(pid)
+    assert established_storefront_pinned(
+        pid,
+        has_generated_code=True,
+        storefront_blocked=False,
+    )
+
+
 def test_mid_repair_matches_storefront_grid_branch(monkeypatch, tmp_path):
     """Mirrors the mid-repair branch of ``_public_storefront_grid_accepts`` without importing FastAPI."""
     monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path))

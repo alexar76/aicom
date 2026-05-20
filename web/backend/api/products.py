@@ -35,7 +35,10 @@ from web.backend.services.marketplace_quality import (
 )
 from web.backend.services.product_followup import public_storefront_blocked
 from web.backend.services.product_naming import resolve_product_name
-from web.backend.services.storefront_visibility import is_mid_repair_storefront_visible
+from web.backend.services.storefront_visibility import (
+    established_storefront_pinned,
+    is_mid_repair_storefront_visible,
+)
 from web.backend.services.product_brief import build_stakeholder_brief
 from web.backend.services.storefront_pricing import (
     DEFAULT_STOREFRONT_PRICE_USDT,
@@ -391,6 +394,22 @@ def public_storefront_listing_eligible(pid: str, product: dict[str, Any]) -> tup
         return False, ["no_generated_code_on_disk_or_empty_manifest"]
     if public_storefront_blocked(pid):
         return False, ["hidden_from_public_storefront"]
+    from web.backend.services.storefront_visibility import (
+        maybe_persist_storefront_established_for_repair_hold,
+    )
+
+    maybe_persist_storefront_established_for_repair_hold(
+        pid,
+        state_upper=state,
+        has_generated_code=True,
+        storefront_blocked=False,
+    )
+    if established_storefront_pinned(
+        pid,
+        has_generated_code=True,
+        storefront_blocked=False,
+    ):
+        return True, ["listed_established_storefront_never_unlisted"]
     if is_mid_repair_storefront_visible(
         pid,
         product,
@@ -443,6 +462,22 @@ def _public_storefront_grid_accepts(pid: str, product: dict[str, Any]) -> bool:
         return False
     if public_storefront_blocked(pid):
         return False
+    from web.backend.services.storefront_visibility import (
+        maybe_persist_storefront_established_for_repair_hold,
+    )
+
+    maybe_persist_storefront_established_for_repair_hold(
+        pid,
+        state_upper=state,
+        has_generated_code=True,
+        storefront_blocked=False,
+    )
+    if established_storefront_pinned(
+        pid,
+        has_generated_code=True,
+        storefront_blocked=False,
+    ):
+        return True
     if is_mid_repair_storefront_visible(
         pid,
         product,

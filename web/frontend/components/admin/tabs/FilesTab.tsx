@@ -19,6 +19,7 @@ import {
   fetchPipelineCatalogAllPages,
 } from '@/lib/pipelineCatalogFetch';
 import toast from 'react-hot-toast';
+import { launchSandboxWithProgress } from '@/lib/sandboxLaunch';
 import { formatDate, localDateInputStartSeconds, localDateInputEndSeconds } from '@/lib/utils';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 
@@ -50,6 +51,7 @@ type ArtifactsPanelProps = {
   truncatedByCategory: Record<string, boolean> | null;
   sandboxIframeSrc: string | null;
   sandboxLoading: boolean;
+  sandboxProgress: { percent: number; label: string } | null;
   sandboxError: string | null;
   sandboxReloadKey: number;
   sandboxModalOpen: boolean;
@@ -74,6 +76,7 @@ function ProductArtifactsPanel({
   truncatedByCategory,
   sandboxIframeSrc,
   sandboxLoading,
+  sandboxProgress,
   sandboxError,
   sandboxReloadKey,
   sandboxModalOpen,
@@ -142,9 +145,12 @@ function ProductArtifactsPanel({
 
       <div className="mb-3 overflow-hidden rounded-xl border border-white/10 bg-black/40">
         {sandboxLoading && !sandboxIframeSrc ? (
-          <div className="flex aspect-video min-h-[200px] items-center justify-center gap-2 text-sm text-gray-400">
+          <div className="flex aspect-video min-h-[200px] flex-col items-center justify-center gap-3 px-6 text-sm text-gray-400">
             <Loader2 className="h-5 w-5 animate-spin" />
-            Starting sandbox…
+            <span>{sandboxProgress?.label ?? 'Starting sandbox…'}</span>
+            {sandboxProgress ? (
+              <ProgressBar value={sandboxProgress.percent} max={100} className="w-full max-w-xs h-2" showValue />
+            ) : null}
           </div>
         ) : sandboxError ? (
           <div className="flex aspect-video min-h-[200px] flex-col items-center justify-center gap-2 px-4 text-center text-sm text-red-300">
@@ -339,6 +345,10 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
   const [expandedFile, setExpandedFile] = useState<string | null>(null);
   const [sandboxIframeSrc, setSandboxIframeSrc] = useState<string | null>(null);
   const [sandboxLoading, setSandboxLoading] = useState(false);
+  const [sandboxProgress, setSandboxProgress] = useState<{
+    percent: number;
+    label: string;
+  } | null>(null);
   const [sandboxError, setSandboxError] = useState<string | null>(null);
   const [sandboxReloadKey, setSandboxReloadKey] = useState(0);
   const [sandboxModalOpen, setSandboxModalOpen] = useState(false);
@@ -507,9 +517,14 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
   const refreshSandbox = useCallback(async () => {
     if (!selectedProduct) return;
     setSandboxLoading(true);
+    setSandboxProgress({ percent: 5, label: 'Запуск…' });
     setSandboxError(null);
     try {
-      const result = await api.startSandbox(selectedProduct);
+      const result = await launchSandboxWithProgress(
+        selectedProduct,
+        undefined,
+        setSandboxProgress,
+      );
       const raw = result.url || `/api/sandbox/view/${result.sandbox_id}`;
       const abs = raw.startsWith('http') ? raw : new URL(raw, window.location.origin).href;
       setSandboxIframeSrc(abs);
@@ -521,6 +536,7 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
       toast.error(msg);
     } finally {
       setSandboxLoading(false);
+      setSandboxProgress(null);
     }
   }, [selectedProduct]);
 
@@ -633,6 +649,7 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
         truncatedByCategory={truncatedByCategory}
         sandboxIframeSrc={sandboxIframeSrc}
         sandboxLoading={sandboxLoading}
+        sandboxProgress={sandboxProgress}
         sandboxError={sandboxError}
         sandboxReloadKey={sandboxReloadKey}
         sandboxModalOpen={sandboxModalOpen}

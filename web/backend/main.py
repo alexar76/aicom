@@ -163,6 +163,15 @@ async def lifespan(app: FastAPI):
             logger.info("Provider id auto-migration: %s", mig)
     except Exception as e:
         logger.warning("Provider id auto-migration skipped: %s", e)
+
+    try:
+        from llm.persist_deepseek import sync_deepseek_provider_config
+
+        ds = sync_deepseek_provider_config(reset_circuit=True)
+        if ds.get("ok"):
+            logger.info("DeepSeek provider synced at startup: %s", ds)
+    except Exception as e:
+        logger.warning("DeepSeek provider sync skipped: %s", e)
     
     # Initialize telemetry
     app.state.telemetry = TelemetryCollector()

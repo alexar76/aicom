@@ -21,6 +21,15 @@ logger = logging.getLogger(__name__)
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 
+class TxHashAlreadyUsedError(ValueError):
+    """On-chain tx_hash is already bound to a different payment/order."""
+
+    def __init__(self, tx_hash: str, existing_payment_id: str):
+        self.tx_hash = tx_hash
+        self.existing_payment_id = existing_payment_id
+        super().__init__(f"tx_hash {tx_hash!r} already used by payment {existing_payment_id!r}")
+
+
 def _resolve_customer_jwt_secret() -> str:
     """Production: set CUSTOMER_JWT_SECRET or persist file via entrypoint."""
     env = os.environ.get("CUSTOMER_JWT_SECRET", "").strip()
@@ -184,6 +193,13 @@ class CommerceService:
         self.conn.execute("CREATE INDEX IF NOT EXISTS idx_orders_customer_id ON orders(customer_id)")
         self.conn.execute("CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC)")
         self.conn.execute("CREATE INDEX IF NOT EXISTS idx_orders_referral_source ON orders(referral_source)")
+        self.conn.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_tx_hash_unique
+            ON orders(tx_hash)
+            WHERE tx_hash IS NOT NULL AND tx_hash != ''
+            """
+        )
         self.conn.execute(
             "CREATE INDEX IF NOT EXISTS idx_stripe_sessions_customer_id ON stripe_checkout_sessions(customer_id)"
         )
@@ -567,6 +583,16 @@ class CommerceService:
         except JWTError:
             return None
 
+    def get_order_by_tx_hash(self, tx_hash: str) -> Optional[dict]:
+        tx = (tx_hash or "").strip()
+        if not tx:
+            return None
+        row = self.conn.execute(
+            "SELECT * FROM orders WHERE tx_hash = ?",
+            (tx,),
+        ).fetchone()
+        return dict(row) if row else None
+
     def create_order_and_license(
         self,
         customer_id: str,
@@ -584,6 +610,12 @@ class CommerceService:
         ).fetchone()
         if existing is not None:
             return dict(existing)
+
+        tx_clean = (tx_hash or "").strip()
+        if tx_clean:
+            dup = self.get_order_by_tx_hash(tx_clean)
+            if dup is not None and dup.get("payment_id") != payment_id:
+                raise TxHashAlreadyUsedError(tx_clean, str(dup.get("payment_id")))
 
         order_id = f"ord-{uuid.uuid4().hex[:12]}"
         license_key = f"lic-{uuid.uuid4().hex}-{uuid.uuid4().hex[:8]}"
@@ -631,7 +663,15 @@ class CommerceService:
             """,
             (license_key, order_id, customer_id, product_id, "active", now),
         )
-        self.conn.commit()
+        try:
+            self.conn.commit()
+        except sqlite3.IntegrityError as exc:
+            self.conn.rollback()
+            if tx_clean:
+                dup = self.get_order_by_tx_hash(tx_clean)
+                if dup is not None:
+                    raise TxHashAlreadyUsedError(tx_clean, str(dup.get("payment_id"))) from exc
+            raise
         return order
 
     def get_orders_for_customer(self, customer_id: str) -> list[dict]:

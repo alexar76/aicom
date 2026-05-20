@@ -22,11 +22,11 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
-import api from '@/lib/api';
+import api, { ApiRequestError } from '@/lib/api';
 import { getStoredReferral } from '@/lib/referral';
 import { truncateAddress, copyToClipboard } from '@/lib/utils';
 
-type Step = 'form' | 'payment' | 'confirming' | 'success' | 'error';
+type Step = 'form' | 'payment' | 'confirming' | 'awaiting_confirmations' | 'success' | 'error';
 
 interface ChainInfo {
   id: string;
@@ -51,7 +51,7 @@ interface ChainConfig {
   nativeCurrency: { name: string; symbol: string; decimals: number };
 }
 
-const CHAIN_CONFIG: Record<string, ChainConfig> = {
+const CHAIN_CONFIG_MAINNET: Record<string, ChainConfig> = {
   base: {
     chainId: 8453,
     chainName: 'Base',
@@ -75,6 +75,30 @@ const CHAIN_CONFIG: Record<string, ChainConfig> = {
   },
 };
 
+const CHAIN_CONFIG_TESTNET: Record<string, ChainConfig> = {
+  base: {
+    chainId: 84532,
+    chainName: 'Base Sepolia',
+    rpcUrl: 'https://sepolia.base.org',
+    explorer: 'https://sepolia.basescan.org/tx/',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  },
+  arbitrum: {
+    chainId: 421614,
+    chainName: 'Arbitrum Sepolia',
+    rpcUrl: 'https://sepolia-rollup.arbitrum.io/rpc',
+    explorer: 'https://sepolia.arbiscan.io/tx/',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  },
+  ethereum: {
+    chainId: 11155111,
+    chainName: 'Sepolia',
+    rpcUrl: 'https://rpc.sepolia.org',
+    explorer: 'https://sepolia.etherscan.io/tx/',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  },
+};
+
 export default function CheckoutPage() {
   const [selectedChain, setSelectedChain] = useState('base');
   const [selectedToken, setSelectedToken] = useState('USDT');
@@ -91,6 +115,13 @@ export default function CheckoutPage() {
   const [authPassword, setAuthPassword] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
   const [customerEmail, setCustomerEmail] = useState<string | null>(null);
+  const [paymentTestnet, setPaymentTestnet] = useState(false);
+  const [verifyStub, setVerifyStub] = useState(false);
+  const [minConfirmations, setMinConfirmations] = useState(2);
+  const [pendingConfirmations, setPendingConfirmations] = useState(0);
+  const [supportedChains, setSupportedChains] = useState<ChainInfo[]>(SUPPORTED_CHAINS);
+
+  const chainConfig = paymentTestnet ? CHAIN_CONFIG_TESTNET : CHAIN_CONFIG_MAINNET;
 
   // Wallet state
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
@@ -134,6 +165,18 @@ export default function CheckoutPage() {
     if (initialProduct) setProductId(initialProduct);
     const savedEmail = typeof window !== 'undefined' ? localStorage.getItem('customer_email') : null;
     if (savedEmail) setCustomerEmail(savedEmail);
+    api.getSupportedChains().then((meta: any) => {
+      if (Array.isArray(meta?.chains) && meta.chains.length > 0) {
+        setSupportedChains(meta.chains);
+      }
+      setPaymentTestnet(Boolean(meta?.testnet));
+      setVerifyStub(Boolean(meta?.verify_stub));
+      if (typeof meta?.min_confirmations === 'number') {
+        setMinConfirmations(meta.min_confirmations);
+      }
+    }).catch(() => {
+      /* keep defaults */
+    });
   }, []);
 
   useEffect(() => {
@@ -175,7 +218,7 @@ export default function CheckoutPage() {
 
   const switchChainInWallet = useCallback(async (chainId: string) => {
     if (typeof window === 'undefined' || !(window as any).ethereum) return;
-    const config = CHAIN_CONFIG[chainId];
+    const config = chainConfig[chainId];
     if (!config) return; // Solana etc. not supported via EVM wallet
 
     try {
@@ -202,7 +245,7 @@ export default function CheckoutPage() {
         }
       }
     }
-  }, []);
+  }, [chainConfig]);
 
   // ── Payment handlers ───────────────────────────────────────────────────
 
@@ -231,7 +274,7 @@ export default function CheckoutPage() {
     if (!paymentInfo || !walletAddress) return;
 
     const chainId = paymentInfo.chain;
-    const config = CHAIN_CONFIG[chainId];
+    const config = chainConfig[chainId];
 
     if (!config) {
       // Solana or other non-EVM — use manual tx hash
@@ -277,21 +320,40 @@ export default function CheckoutPage() {
     }
   };
 
-  const handleConfirmPayment = async (hash?: string) => {
-    const finalHash = hash || txHash;
+  const handleConfirmPayment = async (
+    hash?: string,
+    opts?: { testConfirmations?: number; silentPending?: boolean },
+  ) => {
+    const finalHash = hash || txHash || (verifyStub ? `0x${'ab'.repeat(32)}` : '');
     if (!finalHash) return;
 
     setIsConfirming(true);
-    setErrorMessage('');
+    if (!opts?.silentPending) setErrorMessage('');
 
     try {
-      const result = await api.confirmPayment(paymentInfo.payment_id, finalHash);
+      const result = await api.confirmPayment(paymentInfo.payment_id, finalHash, {
+        testConfirmations: opts?.testConfirmations,
+      });
       setPaymentInfo((prev: any) => ({ ...prev, ...result }));
       setStep('success');
-    } catch (err: any) {
-      const detail = err?.detail || err?.message || 'On-chain verification failed';
-      const errorText = typeof detail === 'object' ? detail.error || detail.message : detail;
-      setErrorMessage(errorText);
+    } catch (err: unknown) {
+      if (err instanceof ApiRequestError && err.status === 409) {
+        const payload = err.detailPayload;
+        if (payload?.status === 'pending_confirmation') {
+          const conf = Number(payload.confirmations ?? 0);
+          const required = Number(payload.required_confirmations ?? minConfirmations);
+          setPendingConfirmations(conf);
+          setMinConfirmations(required);
+          setTxHash(finalHash);
+          setStep('awaiting_confirmations');
+          return;
+        }
+      }
+      const detail =
+        err instanceof ApiRequestError
+          ? err.message
+          : (err as { message?: string })?.message || 'On-chain verification failed';
+      setErrorMessage(detail);
       setStep('error');
     } finally {
       setIsConfirming(false);
@@ -309,7 +371,7 @@ export default function CheckoutPage() {
   };
 
   const explorerUrl = (hash: string, chain: string) => {
-    const config = CHAIN_CONFIG[chain];
+    const config = chainConfig[chain];
     if (config) return `${config.explorer}${hash}`;
     if (chain === 'solana') return `https://solscan.io/tx/${hash}`;
     return '#';
@@ -345,6 +407,12 @@ export default function CheckoutPage() {
           <p className="text-gray-400">
             Pay with USDT, USDC, or ETH on your preferred blockchain
           </p>
+          {paymentTestnet && (
+            <p className="mt-3 text-sm text-amber-300">
+              Testnet mode — use Sepolia / Base Sepolia funds only
+              {verifyStub ? ' (stub confirmations enabled for drills)' : ''}
+            </p>
+          )}
         </motion.div>
 
         {/* Wallet Status */}
@@ -449,7 +517,7 @@ export default function CheckoutPage() {
                     Blockchain Network
                   </label>
                   <div className="grid grid-cols-4 gap-2">
-                    {SUPPORTED_CHAINS.map((chain) => (
+                    {supportedChains.map((chain) => (
                       <button
                         key={chain.id}
                         onClick={() => {
@@ -475,7 +543,7 @@ export default function CheckoutPage() {
                     Token
                   </label>
                   <div className="flex gap-3">
-                    {SUPPORTED_CHAINS.find((c) => c.id === selectedChain)?.tokens.map(
+                    {supportedChains.find((c) => c.id === selectedChain)?.tokens.map(
                       (token) => (
                         <button
                           key={token}
@@ -578,7 +646,7 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Send via Wallet (EVM chains) */}
-                {walletAddress && CHAIN_CONFIG[paymentInfo.chain] && (
+                {walletAddress && chainConfig[paymentInfo.chain] && (
                   <Button
                     className="w-full"
                     size="lg"
@@ -593,7 +661,7 @@ export default function CheckoutPage() {
                 {/* Manual Transaction Hash Input (fallback / Solana) */}
                 <div className="border-t border-white/10 pt-4">
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    {walletAddress && CHAIN_CONFIG[paymentInfo.chain]
+                    {walletAddress && chainConfig[paymentInfo.chain]
                       ? 'Or enter transaction hash manually'
                       : 'Transaction Hash (after sending)'}
                   </label>
@@ -606,12 +674,43 @@ export default function CheckoutPage() {
                     className="w-full mt-3"
                     size="lg"
                     onClick={() => handleConfirmPayment()}
-                    disabled={!txHash}
+                    disabled={!txHash && !verifyStub}
                     loading={isConfirming}
                     icon={<CheckCircle2 className="w-5 h-5" />}
                   >
                     {isConfirming ? 'Verifying...' : 'Confirm Payment'}
                   </Button>
+                  {verifyStub && paymentTestnet && (
+                    <div className="mt-3 space-y-2">
+                      <p className="text-xs text-amber-300/90">
+                        Testnet drill: 1 confirmation → 409 pending; then finalize → license once.
+                      </p>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="secondary"
+                          className="flex-1"
+                          onClick={() =>
+                            handleConfirmPayment(txHash || `0x${'cd'.repeat(32)}`, {
+                              testConfirmations: 1,
+                            })
+                          }
+                        >
+                          Stub: 1 conf
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          className="flex-1"
+                          onClick={() =>
+                            handleConfirmPayment(txHash || `0x${'cd'.repeat(32)}`, {
+                              testConfirmations: minConfirmations,
+                            })
+                          }
+                        >
+                          Stub: finalize
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {errorMessage && (
@@ -621,6 +720,47 @@ export default function CheckoutPage() {
                   </div>
                 )}
               </div>
+            </GlassCard>
+          </motion.div>
+        )}
+
+        {step === 'awaiting_confirmations' && paymentInfo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-lg mx-auto"
+          >
+            <GlassCard>
+              <motion.div className="text-center py-6">
+                <Loader2 className="w-14 h-14 text-amber-400 mx-auto mb-4 animate-spin" />
+                <h2 className="text-xl font-bold text-white mb-2">Awaiting confirmations</h2>
+                <p className="text-gray-400 text-sm mb-4">
+                  Payment seen on-chain ({pendingConfirmations}/{minConfirmations} confirmations).
+                  We will issue your license once the chain finalizes.
+                </p>
+                <Button
+                  className="w-full"
+                  onClick={() => handleConfirmPayment(txHash, { silentPending: true })}
+                  loading={isConfirming}
+                >
+                  Check again
+                </Button>
+                {verifyStub && (
+                  <div className="mt-4 flex gap-2">
+                    <Button
+                      variant="secondary"
+                      className="flex-1"
+                      onClick={() =>
+                        handleConfirmPayment(txHash || `0x${'ab'.repeat(32)}`, {
+                          testConfirmations: minConfirmations,
+                        })
+                      }
+                    >
+                      Stub: finalize ({minConfirmations} conf)
+                    </Button>
+                  </motion.div>
+                )}
+              </motion.div>
             </GlassCard>
           </motion.div>
         )}

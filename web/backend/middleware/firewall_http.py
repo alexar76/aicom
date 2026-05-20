@@ -8,23 +8,9 @@ import os
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from core.logging_utils import log_suppressed
+from web.backend.http.client_ip import client_ip as _client_ip
 
 logger = logging.getLogger(__name__)
-
-
-def _trusted_proxy_ips() -> frozenset[str]:
-    raw = (os.environ.get("AIFACTORY_TRUSTED_PROXY_IPS") or "127.0.0.1,::1").strip()
-    return frozenset(p.strip() for p in raw.split(",") if p.strip())
-
-
-def _client_ip(request: Request) -> str:
-    peer = request.client.host if request.client and request.client.host else ""
-    forwarded = (request.headers.get("x-forwarded-for") or "").strip()
-    if forwarded and peer in _trusted_proxy_ips():
-        return forwarded.split(",")[0].strip()
-    if peer:
-        return peer
-    return "unknown"
 
 
 def _request_port(request: Request) -> int:

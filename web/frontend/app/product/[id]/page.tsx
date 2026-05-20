@@ -33,6 +33,8 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import api, { Product } from '@/lib/api';
+import { launchSandboxWithProgress } from '@/lib/sandboxLaunch';
+import { SandboxLaunchOverlay } from '@/components/SandboxLaunchOverlay';
 import {
   formatDate,
   formatRelativeTime,
@@ -93,6 +95,10 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sandboxStarting, setSandboxStarting] = useState(false);
+  const [sandboxLaunchProgress, setSandboxLaunchProgress] = useState<{
+    percent: number;
+    label: string;
+  } | null>(null);
   const [securityReport, setSecurityReport] = useState<any>(null);
   const [reportLoading, setReportLoading] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -132,6 +138,7 @@ export default function ProductDetailPage() {
   const handleStartSandbox = async () => {
     if (!product || sandboxStarting) return;
     setSandboxStarting(true);
+    setSandboxLaunchProgress({ percent: 5, label: 'Запуск…' });
     trackEvent('sandbox_click', {}, product.id);
     void api.recordTelemetryEvent({
       product_id: product.id,
@@ -141,15 +148,19 @@ export default function ProductDetailPage() {
       locale: typeof navigator !== 'undefined' ? navigator.language : undefined,
     }).catch(() => {});
     try {
-      const result = await api.startSandbox(product.id, { fromStorefront: true });
+      const result = await launchSandboxWithProgress(
+        product.id,
+        { fromStorefront: true },
+        setSandboxLaunchProgress,
+      );
       setJourneyPromptOpen(true);
-      // Open in current tab to avoid popup blockers.
       window.location.href = result.url;
     } catch (err: any) {
       console.error('Failed to start sandbox:', err);
       alert('Failed to start sandbox: ' + (err.message || 'Unknown error'));
     } finally {
       setSandboxStarting(false);
+      setSandboxLaunchProgress(null);
     }
   };
 
@@ -303,6 +314,7 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen">
+      <SandboxLaunchOverlay open={sandboxStarting} progress={sandboxLaunchProgress} />
       {/* Header */}
       <header className="glass border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">

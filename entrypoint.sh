@@ -21,6 +21,12 @@ source /app/venv/bin/activate
 load_llm_provider_secrets
 load_sandbox_demo_password
 
+# DeepSeek: persist API key + v4 models + reset circuit (survives volume / deploy)
+python3 -m llm.persist_deepseek || echo "⚠ DeepSeek provider sync skipped (no key yet)"
+
+# Sandbox previews: replace factory boilerplate index.html with spec-built product pages
+python3 /app/scripts/materialize_all_spec_landings.py || echo "⚠ Spec landing materialize skipped"
+
 # ── Ensure All Data Directories Exist (bind mount compatibility) ──────────
 mkdir -p /app/data/config /app/data/logs /app/data/secrets /app/data/state
 mkdir -p /app/data/arch /app/data/bugs /app/data/code /app/data/specs

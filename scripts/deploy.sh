@@ -117,6 +117,14 @@ fi
 
 docker compose "${PASS_THROUGH[@]}" "${COMPOSE_FILES[@]}" up -d "${COMPOSE_SERVICES[@]}"
 
+# Post-up: LLM + sandbox previews on bind-mounted data (idempotent)
+docker compose "${PASS_THROUGH[@]}" "${COMPOSE_FILES[@]}" exec -T app \
+  python3 -m llm.persist_deepseek 2>/dev/null || true
+docker compose "${PASS_THROUGH[@]}" "${COMPOSE_FILES[@]}" exec -T app \
+  python3 /app/scripts/materialize_all_spec_landings.py 2>/dev/null \
+  || python3 "$ROOT/scripts/materialize_all_spec_landings.py" 2>/dev/null \
+  || true
+
 if [[ -x "$ROOT/scripts/install-claude-code-deepseek.sh" ]]; then
   "$ROOT/scripts/install-claude-code-deepseek.sh" -q || true
 fi

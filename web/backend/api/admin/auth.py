@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from web.backend.http.client_ip import client_ip
 from pydantic import BaseModel, Field
 
 from web.backend.core.admin_roles import normalize_role, require_admin_with_rbac
@@ -139,7 +140,7 @@ def _active_mfa_method(login_username: str) -> str:
 async def admin_login(request: Request, response: Response, login_data: LoginRequest):
     """Authenticate admin user (multi-user store + legacy admin.json)."""
     security: SecurityManager = request.app.state.security_manager
-    client_ip = request.client.host if request.client else "unknown"
+    peer_ip = client_ip(request)
 
     aus.ensure_legacy_admin_users_file()
 
@@ -149,15 +150,15 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
             detail="Admin not configured. Run 'ai-company init' first.",
         )
 
-    if not security.check_login_attempts(client_ip):
-        security.record_login_attempt(client_ip, False, login_data.username)
+    if not security.check_login_attempts(peer_ip):
+        security.record_login_attempt(peer_ip, False, login_data.username)
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
             detail="Too many login attempts. Please try again later.",
         )
 
     if not _verify_password_for_login(security, login_data.username, login_data.password):
-        security.record_login_attempt(client_ip, False, login_data.username)
+        security.record_login_attempt(peer_ip, False, login_data.username)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password",
@@ -169,7 +170,7 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
         from security import webauthn_admin as wa
 
         if not login_data.webauthn_credential:
-            security.record_login_attempt(client_ip, False, login_data.username)
+            security.record_login_attempt(peer_ip, False, login_data.username)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="WebAuthn required",
@@ -180,7 +181,7 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
                 login_data.webauthn_credential,
             )
         except ValueError as e:
-            security.record_login_attempt(client_ip, False, login_data.username)
+            security.record_login_attempt(peer_ip, False, login_data.username)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=str(e) or "Invalid passkey",
@@ -188,13 +189,13 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
     elif mfa == "totp":
         secret = cfg.get("totp_secret")
         if not login_data.totp_code:
-            security.record_login_attempt(client_ip, False, login_data.username)
+            security.record_login_attempt(peer_ip, False, login_data.username)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="2FA code required",
             )
         if not secret or not security.verify_totp(secret, login_data.totp_code):
-            security.record_login_attempt(client_ip, False, login_data.username)
+            security.record_login_attempt(peer_ip, False, login_data.username)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid 2FA code",
@@ -206,7 +207,7 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
         norm_user,
         role=normalize_role(role_str).value,
     )
-    security.record_login_attempt(client_ip, True, login_data.username)
+    security.record_login_attempt(peer_ip, True, login_data.username)
 
     cookie_secure = _access_token_cookie_secure(request)
     csrf = new_csrf_token()

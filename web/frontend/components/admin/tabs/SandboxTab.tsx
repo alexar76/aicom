@@ -83,6 +83,8 @@ import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineSta
 import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
+import { launchSandboxWithProgress } from '@/lib/sandboxLaunch';
+import { SandboxLaunchOverlay } from '@/components/SandboxLaunchOverlay';
 
 export function SandboxTab({ locale }: { locale: AdminLocale }) {
   const [products, setProducts] = useState<any[]>([]);
@@ -93,6 +95,10 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
   const [expandedProduct, setExpandedProduct] = useState<string | null>(null);
   const [remoteUrls, setRemoteUrls] = useState<Record<string, string>>({});
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [sandboxLaunchProgress, setSandboxLaunchProgress] = useState<{
+    percent: number;
+    label: string;
+  } | null>(null);
 
   const loadData = async () => {
     try {
@@ -154,10 +160,11 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
 
   const handleStartSandbox = async (productId: string) => {
     setActionLoading(`start-${productId}`);
+    setSandboxLaunchProgress({ percent: 5, label: 'Запуск…' });
     try {
-      const result = await api.startSandbox(productId);
+      const result = await launchSandboxWithProgress(productId, undefined, setSandboxLaunchProgress);
       showMessage('success', `Sandbox ${result.sandbox_id} started`);
-      await loadData();
+      window.location.href = result.url;
     } catch (err: unknown) {
       const msg =
         err instanceof Error && /invalid or expired token/i.test(err.message)
@@ -168,6 +175,7 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
       showMessage('error', msg);
     } finally {
       setActionLoading(null);
+      setSandboxLaunchProgress(null);
     }
   };
 
@@ -216,6 +224,10 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
 
   return (
     <div className="space-y-6">
+      <SandboxLaunchOverlay
+        open={sandboxLaunchProgress !== null}
+        progress={sandboxLaunchProgress}
+      />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl font-semibold text-white">{t(locale, 'sandbox.title')}</h2>
         <Button variant="secondary" size="sm" onClick={loadData} className="w-full shrink-0 sm:w-auto">

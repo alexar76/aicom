@@ -18,8 +18,8 @@ providers:
     enabled: true
     health_check_endpoint: /v1/models
     models:
-      heavy: deepseek-reasoner
-      light: deepseek-chat
+      heavy: deepseek-v4-pro
+      light: deepseek-v4-flash
     priority: 10
     provider_type: openai_compatible
   anthropic_cloud:
@@ -75,7 +75,7 @@ providers:
       max_tokens: 32000
       supports_streaming: true
       supports_vision: false
-    enabled: true
+    enabled: false
     health_check_endpoint: /v1/models
     models:
       heavy: qwen/qwen3.6-35b-a3b

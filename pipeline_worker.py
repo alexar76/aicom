@@ -236,7 +236,14 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         if self._agents:
             return
 
-        # Initialize LLM router with provider config path
+        # Sync DeepSeek key/models from secrets before loading router (resets stuck circuit)
+        try:
+            from llm.persist_deepseek import sync_deepseek_provider_config
+
+            sync_deepseek_provider_config(reset_circuit=True)
+        except Exception as exc:
+            logger.warning("DeepSeek provider sync skipped: %s", exc)
+
         from llm import LLMRouter
         self._llm_router = LLMRouter(str(model_providers_path()))
         await self._llm_router.start_health_checks(interval_sec=60)

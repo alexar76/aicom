@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import time
 import uuid
 from pathlib import Path
@@ -19,11 +20,11 @@ from typing import Optional
 from core.paths import config_path, pending_payments_path
 from core.config_merge import load_merged_config
 
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException, Query
 from web3 import Web3
 from web.backend.schemas.api_requests import ConfirmPaymentRequest, CreatePaymentRequest
 from web3.exceptions import TransactionNotFound
-from web.backend.services.commerce import CommerceService
+from web.backend.services.commerce import CommerceService, TxHashAlreadyUsedError
 from web.backend.services.storefront_pricing import checkout_usdt_from_sales_file
 
 logger = logging.getLogger(__name__)
@@ -112,6 +113,19 @@ def _load_pending_payments_from_disk() -> None:
 
 _load_pending_payments_from_disk()
 
+def _env_truthy(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def payment_testnet_enabled() -> bool:
+    return _env_truthy("AIFACTORY_PAYMENT_TESTNET")
+
+
+def payment_verify_stub_enabled() -> bool:
+    """Testnet-only stub for confirmation UX (browser/CI); never on mainnet."""
+    return payment_testnet_enabled() and _env_truthy("AIFACTORY_PAYMENT_VERIFY_STUB")
+
+
 # ── Public RPC endpoints for on-chain verification ──────────────────────────
 RPC_ENDPOINTS = {
     "base": "https://mainnet.base.org",
@@ -119,6 +133,18 @@ RPC_ENDPOINTS = {
     "ethereum": "https://cloudflare-eth.com",
     "solana": "https://api.mainnet-beta.solana.com",
 }
+
+if payment_testnet_enabled():
+    RPC_ENDPOINTS = {
+        "base": os.environ.get("AIFACTORY_PAYMENT_RPC_BASE", "https://sepolia.base.org"),
+        "arbitrum": os.environ.get(
+            "AIFACTORY_PAYMENT_RPC_ARBITRUM", "https://sepolia-rollup.arbitrum.io/rpc"
+        ),
+        "ethereum": os.environ.get("AIFACTORY_PAYMENT_RPC_ETHEREUM", "https://rpc.sepolia.org"),
+        "solana": os.environ.get(
+            "AIFACTORY_PAYMENT_RPC_SOLANA", "https://api.devnet.solana.com"
+        ),
+    }
 
 # ── ERC20 token contract addresses per chain ────────────────────────────────
 TOKEN_ADDRESSES = {
@@ -131,6 +157,15 @@ TOKEN_ADDRESSES = {
         "USDC": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
     },
 }
+if payment_testnet_enabled():
+    TOKEN_ADDRESSES = {
+        "base": {
+            "USDC": "0x036CbD53842c6846639782599ee2Ba9d052Ce55f",
+        },
+        "arbitrum": {
+            "USDC": "0x75faf114eafb1BDbe2F0316DF893FD858CE0AA96",
+        },
+    }
 
 # ── Supported chains ────────────────────────────────────────────────────────
 SUPPORTED_CHAINS = [
@@ -139,8 +174,24 @@ SUPPORTED_CHAINS = [
     {"id": "ethereum", "name": "Ethereum", "icon": "💎", "tokens": ["ETH", "USDT", "USDC"]},
     {"id": "solana", "name": "Solana", "icon": "🟣", "tokens": ["USDC", "SOL"]},
 ]
+if payment_testnet_enabled():
+    SUPPORTED_CHAINS = [
+        {"id": "base", "name": "Base Sepolia", "icon": "🔵", "tokens": ["ETH", "USDC"]},
+        {"id": "arbitrum", "name": "Arbitrum Sepolia", "icon": "🔴", "tokens": ["ETH", "USDC"]},
+        {"id": "ethereum", "name": "Sepolia", "icon": "💎", "tokens": ["ETH", "USDC"]},
+        {"id": "solana", "name": "Solana Devnet", "icon": "🟣", "tokens": ["USDC", "SOL"]},
+    ]
 
-MIN_CONFIRMATIONS = 2  # minimum confirmations for a tx to be considered final
+MIN_CONFIRMATIONS = max(
+    1,
+    int(os.environ.get("AIFACTORY_PAYMENT_MIN_CONFIRMATIONS", "2") or "2"),
+)
+
+# Mainnet USDC mint (SPL) — used when checkout currency is USDC on Solana.
+SOLANA_USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+
+# Allow tiny float/rounding slack (0.1%) on token amounts.
+_AMOUNT_TOLERANCE_RATIO = 0.001
 
 # ── Token decimals (6 for USDC everywhere; USDT: 18 on Base, 6 on Arbitrum) ─
 TOKEN_DECIMALS = {
@@ -167,6 +218,36 @@ def _get_address_for_chain(chain: str) -> str:
     return RECIPIENT_ADDRESS_EVM
 
 
+def _minimum_paid_amount(expected_amount: float) -> float:
+    if expected_amount <= 0:
+        return 0.0
+    return expected_amount * (1.0 - _AMOUNT_TOLERANCE_RATIO)
+
+
+def _confirmations_sufficient(confirmations: int) -> bool:
+    return int(confirmations) >= MIN_CONFIRMATIONS
+
+
+def _stub_verify_result(confirmations: int) -> dict:
+    """Synthetic on-chain result for testnet checkout drills (AIFACTORY_PAYMENT_VERIFY_STUB)."""
+    conf = max(0, int(confirmations))
+    if _confirmations_sufficient(conf):
+        return {
+            "verified": True,
+            "confirmations": conf,
+            "from": "0x" + "a" * 40,
+            "block_number": 1000 + conf,
+        }
+    if conf > 0:
+        return {
+            "verified": False,
+            "pending": True,
+            "confirmations": conf,
+            "error": f"Awaiting confirmations ({conf}/{MIN_CONFIRMATIONS})",
+        }
+    return {"verified": False, "error": "Transaction not found on chain"}
+
+
 def _get_web3(chain: str) -> Web3:
     """Get a Web3 instance connected to the given chain's public RPC."""
     rpc = RPC_ENDPOINTS.get(chain)
@@ -191,7 +272,7 @@ def _verify_evm_transaction(
     3. For native ETH: ``tx.to`` matches recipient and ``tx.value >= amount``
     4. For ERC20 tokens: logs contain a Transfer event where ``to`` matches
        the recipient and the transferred value >= expected amount
-    5. Confirmations counted (not enforced; returned for transparency)
+    5. Confirmations must be >= MIN_CONFIRMATIONS before settlement
     """
     w3 = _get_web3(chain)
 
@@ -234,10 +315,19 @@ def _verify_evm_transaction(
             }
 
         value_eth = float(w3.from_wei(tx.get("value", 0), "ether"))
-        if value_eth < expected_amount:
+        min_amount = _minimum_paid_amount(expected_amount)
+        if value_eth < min_amount:
             return {
                 "verified": False,
                 "error": f"Insufficient amount. Expected ≥{expected_amount} ETH, got {value_eth} ETH",
+            }
+
+        if not _confirmations_sufficient(confirmations):
+            return {
+                "verified": False,
+                "pending": True,
+                "confirmations": confirmations,
+                "error": f"Awaiting confirmations ({confirmations}/{MIN_CONFIRMATIONS})",
             }
 
         return {
@@ -293,8 +383,17 @@ def _verify_evm_transaction(
             value_raw = int.from_bytes(bytes.fromhex(data_hex.zfill(64)), "big")
             value_transferred = value_raw / (10 ** decimals)
 
-            if value_transferred < expected_amount:
+            min_amount = _minimum_paid_amount(expected_amount)
+            if value_transferred < min_amount:
                 continue  # Transfer exists but amount is too low
+
+            if not _confirmations_sufficient(confirmations):
+                return {
+                    "verified": False,
+                    "pending": True,
+                    "confirmations": confirmations,
+                    "error": f"Awaiting confirmations ({confirmations}/{MIN_CONFIRMATIONS})",
+                }
 
             return {
                 "verified": True,
@@ -320,16 +419,49 @@ def _verify_evm_transaction(
 # ── Solana verification ──────────────────────────────────────────────────────
 
 
+def _solana_confirmations(tx_data: dict) -> int:
+    conf = tx_data.get("confirmations")
+    if conf is not None:
+        try:
+            return max(0, int(conf))
+        except (TypeError, ValueError):
+            pass
+    return 1 if tx_data.get("slot") else 0
+
+
+def _solana_token_balance_delta(meta: dict, owner: str, mint: str) -> Optional[float]:
+    """Net SPL token UI amount received by ``owner`` for ``mint`` in this transaction."""
+
+    def _index(balances: list) -> dict[tuple[str, str], float]:
+        out: dict[tuple[str, str], float] = {}
+        for entry in balances or []:
+            if not isinstance(entry, dict):
+                continue
+            if entry.get("owner") != owner or entry.get("mint") != mint:
+                continue
+            ui = entry.get("uiTokenAmount") or {}
+            try:
+                out[(owner, mint)] = float(ui.get("uiAmount") or 0)
+            except (TypeError, ValueError):
+                out[(owner, mint)] = 0.0
+        return out
+
+    pre = _index(meta.get("preTokenBalances") or [])
+    post = _index(meta.get("postTokenBalances") or [])
+    key = (owner, mint)
+    return post.get(key, 0.0) - pre.get(key, 0.0)
+
+
 def _verify_solana_transaction(
     tx_hash: str,
     expected_recipient: str,
     expected_amount: float,
+    expected_token: str = "SOL",
 ) -> dict:
     """
-    Verify a Solana transaction on-chain.
+    Verify a Solana transaction on-chain (native SOL or SPL USDC).
 
-    Uses the Solana JSON-RPC API to fetch the transaction and inspect
-    its post-balances / account keys to verify the recipient and amount.
+    Never marks verified when amount is below expectation or confirmations are insufficient.
     """
     import httpx
 
@@ -337,9 +469,11 @@ def _verify_solana_transaction(
     if not rpc_url:
         return {"verified": False, "error": "Solana RPC endpoint not configured"}
 
+    token = (expected_token or "SOL").upper()
+    min_amount = _minimum_paid_amount(expected_amount)
+
     try:
         with httpx.Client(timeout=30) as client:
-            # Fetch transaction
             payload = {
                 "jsonrpc": "2.0",
                 "id": 1,
@@ -356,72 +490,104 @@ def _verify_solana_transaction(
             return {"verified": False, "error": "Transaction not found on Solana"}
 
         tx_data = data["result"]
-
-        # Check transaction meta for error
-        meta = tx_data.get("meta", {})
+        meta = tx_data.get("meta") or {}
         if meta.get("err") is not None:
             return {"verified": False, "error": f"Transaction failed on Solana: {meta['err']}"}
 
-        # Get the transaction message
-        tx_obj = tx_data.get("transaction", {})
-        message = tx_obj.get("message", {})
+        tx_obj = tx_data.get("transaction") or {}
+        message = tx_obj.get("message") or {}
+        account_keys = message.get("accountKeys") or []
+        confirmations = _solana_confirmations(tx_data)
+        slot = tx_data.get("slot", 0)
+        from_addr = ""
+        if account_keys:
+            first = account_keys[0]
+            from_addr = first.get("pubkey", "") if isinstance(first, dict) else str(first)
 
-        # Check account keys for recipient
-        account_keys = message.get("accountKeys", [])
-        recipient_found = False
-        for acct in account_keys:
-            pubkey = acct.get("pubkey", "")
+        if token in ("USDC", "USDT"):
+            mint = SOLANA_USDC_MINT if token == "USDC" else ""
+            if not mint:
+                return {"verified": False, "error": f"Solana SPL verification not configured for {token}"}
+            amount_received = _solana_token_balance_delta(meta, expected_recipient, mint)
+            if amount_received is None or amount_received < min_amount:
+                return {
+                    "verified": False,
+                    "error": (
+                        f"Insufficient {token} transfer to {expected_recipient}. "
+                        f"Expected ≥{expected_amount}, got {amount_received}"
+                    ),
+                }
+            if not _confirmations_sufficient(confirmations):
+                return {
+                    "verified": False,
+                    "pending": True,
+                    "confirmations": confirmations,
+                    "error": f"Awaiting confirmations ({confirmations}/{MIN_CONFIRMATIONS})",
+                }
+            return {
+                "verified": True,
+                "confirmations": confirmations,
+                "from": from_addr,
+                "to": expected_recipient,
+                "amount": amount_received,
+                "token": token,
+                "block_number": slot,
+            }
+
+        # Native SOL
+        post_balances = meta.get("postBalances") or []
+        pre_balances = meta.get("preBalances") or []
+        recipient_idx = -1
+        for i, acct in enumerate(account_keys):
+            pubkey = acct.get("pubkey", "") if isinstance(acct, dict) else str(acct)
             if pubkey == expected_recipient:
-                recipient_found = True
+                recipient_idx = i
                 break
 
-        if not recipient_found:
+        if recipient_idx < 0:
             return {
                 "verified": False,
                 "error": f"Recipient {expected_recipient} not found in transaction accounts",
             }
 
-        # Check post-balances to verify amount
-        post_balances = meta.get("postBalances", [])
-        pre_balances = meta.get("preBalances", [])
-        # Find the index of the recipient account
-        recipient_idx = -1
-        for i, acct in enumerate(account_keys):
-            pubkey = acct.get("pubkey", "")
-            if pubkey == expected_recipient:
-                recipient_idx = i
-                break
-
-        if recipient_idx >= 0 and recipient_idx < len(post_balances):
-            amount_lamports = post_balances[recipient_idx] - pre_balances[recipient_idx]
-            amount_sol = amount_lamports / 1_000_000_000
-            if amount_sol < expected_amount and amount_sol > 0:
-                # Could be partial — check if it's close enough
-                # Also check preBalances of sender
-                if amount_sol < expected_amount:
-                    # Maybe recipient received from multiple sources
-                    pass
-
-            # Get slot/confirmations
-            slot = tx_data.get("slot", 0)
-
+        if recipient_idx >= len(post_balances) or recipient_idx >= len(pre_balances):
             return {
-                "verified": True,
-                "confirmations": tx_data.get("confirmations", 0),
-                "from": account_keys[0].get("pubkey", "") if account_keys else "",
-                "to": expected_recipient,
-                "amount": amount_sol,
-                "block_number": slot,
+                "verified": False,
+                "error": "Could not read recipient balance change for this transaction",
             }
 
-        # If we can't determine the amount via post-balances, try parsing instructions
+        amount_lamports = int(post_balances[recipient_idx]) - int(pre_balances[recipient_idx])
+        if amount_lamports <= 0:
+            return {
+                "verified": False,
+                "error": f"No SOL credited to {expected_recipient}",
+            }
+
+        amount_sol = amount_lamports / 1_000_000_000
+        if amount_sol < min_amount:
+            return {
+                "verified": False,
+                "error": (
+                    f"Insufficient SOL. Expected ≥{expected_amount}, got {amount_sol} SOL"
+                ),
+            }
+
+        if not _confirmations_sufficient(confirmations):
+            return {
+                "verified": False,
+                "pending": True,
+                "confirmations": confirmations,
+                "error": f"Awaiting confirmations ({confirmations}/{MIN_CONFIRMATIONS})",
+            }
+
         return {
             "verified": True,
-            "confirmations": tx_data.get("confirmations", 0),
-            "from": account_keys[0].get("pubkey", "") if account_keys else "",
+            "confirmations": confirmations,
+            "from": from_addr,
             "to": expected_recipient,
-            "amount": expected_amount,
-            "block_number": tx_data.get("slot", 0),
+            "amount": amount_sol,
+            "token": "SOL",
+            "block_number": slot,
         }
 
     except Exception as exc:
@@ -492,7 +658,11 @@ async def payment_status(payment_id: str):
 
 
 @router.post("/confirm/{payment_id}")
-async def confirm_payment(payment_id: str, body: ConfirmPaymentRequest):
+async def confirm_payment(
+    payment_id: str,
+    body: ConfirmPaymentRequest,
+    test_confirmations: Optional[int] = Query(None, ge=0, le=128),
+):
     """Confirm a payment by verifying the transaction on-chain.
 
     The backend queries the respective blockchain's public RPC to:
@@ -524,20 +694,51 @@ async def confirm_payment(payment_id: str, body: ConfirmPaymentRequest):
 
     # Normalise tx hash (EVM chains use 0x prefix, Solana uses base58)
     if chain == "solana":
-        # Solana tx hashes are base58 — no prefix needed
         tx_hash_clean = tx_hash
     else:
-        if not tx_hash.startswith("0x"):
-            tx_hash_clean = "0x" + tx_hash
-        else:
-            tx_hash_clean = tx_hash
+        tx_hash_clean = tx_hash if tx_hash.startswith("0x") else f"0x{tx_hash}"
+
+    existing_order = commerce.get_order_by_tx_hash(tx_hash_clean)
+    if existing_order:
+        if existing_order.get("payment_id") == payment_id:
+            return {
+                "status": "confirmed",
+                "payment_id": payment_id,
+                "tx_hash": tx_hash_clean,
+                "order_id": existing_order["id"],
+                "license_key": existing_order["license_key"],
+                "message": "Payment was already confirmed.",
+            }
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": "Transaction hash already used for another order",
+                "existing_payment_id": existing_order.get("payment_id"),
+            },
+        )
+
+    if payment.get("status") == "pending_confirmation":
+        if payment.get("tx_hash") and payment.get("tx_hash") != tx_hash_clean:
+            raise HTTPException(
+                status_code=400,
+                detail="This payment is awaiting confirmations for a different transaction hash",
+            )
+    elif payment.get("tx_hash"):
+        if payment.get("tx_hash") != tx_hash_clean:
+            raise HTTPException(
+                status_code=400,
+                detail="Transaction hash does not match the one submitted earlier",
+            )
 
     # ── On-chain verification ────────────────────────────────────────────
-    if chain == "solana":
+    if test_confirmations is not None and payment_verify_stub_enabled():
+        result = _stub_verify_result(test_confirmations)
+    elif chain == "solana":
         result = _verify_solana_transaction(
             tx_hash=tx_hash_clean,
             expected_recipient=expected_recipient,
             expected_amount=amount,
+            expected_token=token,
         )
     elif chain in RPC_ENDPOINTS:
         result = _verify_evm_transaction(
@@ -554,6 +755,26 @@ async def confirm_payment(payment_id: str, body: ConfirmPaymentRequest):
         }
 
     if not result.get("verified"):
+        if result.get("pending"):
+            payment["status"] = "pending_confirmation"
+            payment["tx_hash"] = tx_hash_clean
+            payment["pending_since"] = payment.get("pending_since") or time.time()
+            payment["last_verification"] = {
+                "confirmations": result.get("confirmations", 0),
+                "required_confirmations": MIN_CONFIRMATIONS,
+            }
+            _pending_payments[payment_id] = payment
+            _persist_pending_payments()
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "message": "Payment verified but awaiting block confirmations",
+                    "status": "pending_confirmation",
+                    "confirmations": result.get("confirmations", 0),
+                    "required_confirmations": MIN_CONFIRMATIONS,
+                    "error": result.get("error"),
+                },
+            )
         payment["status"] = "failed"
         payment["failed_at"] = time.time()
         payment["failure_reason"] = result.get("error", "verification_failed")
@@ -577,16 +798,25 @@ async def confirm_payment(payment_id: str, body: ConfirmPaymentRequest):
         "block_number": result.get("block_number", 0),
     }
 
-    order = commerce.create_order_and_license(
-        customer_id=payment["customer_id"],
-        customer_email=payment["customer_email"],
-        payment_id=payment_id,
-        product_id=payment["product_id"],
-        amount=payment["amount"],
-        currency=payment["currency"],
-        tx_hash=tx_hash_clean,
-        referral_source=payment.get("referral_source"),
-    )
+    try:
+        order = commerce.create_order_and_license(
+            customer_id=payment["customer_id"],
+            customer_email=payment["customer_email"],
+            payment_id=payment_id,
+            product_id=payment["product_id"],
+            amount=payment["amount"],
+            currency=payment["currency"],
+            tx_hash=tx_hash_clean,
+            referral_source=payment.get("referral_source"),
+        )
+    except TxHashAlreadyUsedError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": "Transaction hash already used for another order",
+                "existing_payment_id": exc.existing_payment_id,
+            },
+        ) from exc
 
     _pending_payments.pop(payment_id, None)
     _persist_pending_payments()
@@ -610,4 +840,9 @@ async def confirm_payment(payment_id: str, body: ConfirmPaymentRequest):
 @router.get("/chains")
 async def get_supported_chains():
     """Return the list of supported blockchain networks and tokens."""
-    return {"chains": SUPPORTED_CHAINS}
+    return {
+        "chains": SUPPORTED_CHAINS,
+        "testnet": payment_testnet_enabled(),
+        "verify_stub": payment_verify_stub_enabled(),
+        "min_confirmations": MIN_CONFIRMATIONS,
+    }
