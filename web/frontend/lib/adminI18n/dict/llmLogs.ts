@@ -23,4 +23,24 @@ export const LLM_LOGS_DICT: I18nDict = {
     es: 'Cargando…',
   },
   'llmLogs.btn.loadMore': { en: 'Load more', ru: 'Загрузить ещё', es: 'Cargar más' },
+  'llmLogs.empty.server': {
+    en: 'No LLM calls in the current server filter.',
+    ru: 'Нет вызовов LLM по текущему фильтру на сервере.',
+    es: 'No hay llamadas LLM con el filtro actual del servidor.',
+  },
+  'llmLogs.empty.hint': {
+    en: 'Try another provider or time range, or refresh after new traffic.',
+    ru: 'Смените провайдера или диапазон дат, либо обновите после новых запросов.',
+    es: 'Pruebe otro proveedor o rango de fechas, o actualice tras nuevo tráfico.',
+  },
+  'llmLogs.error.load': {
+    en: 'Could not load LLM logs',
+    ru: 'Не удалось загрузить LLM-логи',
+    es: 'No se pudieron cargar los registros LLM',
+  },
+  'llmLogs.error.auth': {
+    en: 'Sign in again at /admin/login (admin session expired or missing).',
+    ru: 'Войдите снова на /admin/login (сессия админа истекла или отсутствует).',
+    es: 'Inicie sesión de nuevo en /admin/login (sesión admin caducada o ausente).',
+  },
 };

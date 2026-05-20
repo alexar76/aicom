@@ -584,9 +584,10 @@ class ApiClient {
       ...(fetchInit.headers as Record<string, string>),
     };
 
+    const isAdminApi = endpoint.startsWith('/admin');
     if (adminToken) {
       headers['Authorization'] = `Bearer ${adminToken}`;
-    } else if (customerToken) {
+    } else if (customerToken && !isAdminApi) {
       headers['Authorization'] = `Bearer ${customerToken}`;
     }
 
@@ -610,14 +611,30 @@ class ApiClient {
           ? AbortSignal.timeout(clientTimeoutMs)
           : undefined;
 
-    let response: Response;
-    try {
-      response = await fetch(`${this.baseUrl}${endpoint}`, {
+    const doFetch = (hdrs: Record<string, string>) =>
+      fetch(`${this.baseUrl}${endpoint}`, {
         ...fetchInit,
-        headers,
+        headers: hdrs,
         credentials: 'include',
         ...(signal ? { signal } : {}),
       });
+
+    let response: Response;
+    try {
+      response = await doFetch(headers);
+      // Stale Bearer in localStorage can block a valid HttpOnly admin cookie.
+      if (
+        response.status === 401 &&
+        adminToken &&
+        isAdminSessionEndpoint(endpoint) &&
+        typeof window !== 'undefined'
+      ) {
+        const { Authorization: _drop, ...cookieOnly } = headers;
+        response = await doFetch(cookieOnly);
+        if (response.ok) {
+          localStorage.removeItem('admin_token');
+        }
+      }
     } catch (e: unknown) {
       const m = e instanceof Error ? e.message : String(e);
       throw new ApiRequestError(m || 'Network error: could not reach the API', {
@@ -627,9 +644,9 @@ class ApiClient {
     }
 
     if (!response.ok) {
-      // 401: expired JWT in localStorage blocks valid cookies — clear and re-login on admin/sandbox APIs
       if (response.status === 401 && typeof window !== 'undefined') {
-        if (adminToken && isAdminSessionEndpoint(endpoint)) {
+        if (isAdminSessionEndpoint(endpoint)) {
+          localStorage.removeItem('admin_token');
           clearAdminSessionAndRedirectToLogin();
         }
         if (customerToken && !adminToken) {
@@ -1645,6 +1662,7 @@ class ApiClient {
     since?: number,
     until?: number,
     offset: number = 0,
+    clientTimeoutMs: number = 120_000,
   ): Promise<{
     logs: any[];
     count: number;
@@ -1657,7 +1675,7 @@ class ApiClient {
     if (provider) params.set('provider', provider);
     if (since != null && Number.isFinite(since)) params.set('since', String(since));
     if (until != null && Number.isFinite(until)) params.set('until', String(until));
-    return this.request(`/admin/llm/logs?${params}`);
+    return this.request(`/admin/llm/logs?${params}`, { clientTimeoutMs });
   }
 
   // ── Sandbox & Git ───────────────────────────────────────────────────────

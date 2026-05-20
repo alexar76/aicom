@@ -86,55 +86,47 @@ from web.backend.api.products import count_showcase_listable_products, is_shippe
 from ._router import router
 from .models import *
 from .helpers import *
+from .routes_agents import _aggregate_llm_logs_for_summary, _llm_log_sort_ts
 
-@router.get("/llm/logs")
-async def get_llm_logs(
-    limit: int = Query(100, ge=1, le=2000, description="Page size (newest-first window)."),
-    offset: int = Query(0, ge=0, le=2_000_000, description="Skip this many newest-matching rows before returning a page."),
-    provider: Optional[str] = Query(None),
-    since: Optional[float] = Query(
-        None,
-        description="Inclusive range start as Unix time in seconds (e.g. from Date.now()/1000).",
-    ),
-    until: Optional[float] = Query(
-        None,
-        description="Inclusive range end as Unix time in seconds.",
-    ),
-):
-    """Get LLM API call logs for admin visibility (newest entries first).
-
-    Use ``offset`` + ``limit`` to page through results without loading the whole file in the browser.
-    When ``since`` and/or ``until`` are set, ``summary`` aggregates **all** matching rows; ``logs`` is only
-    the requested page.
-    """
+def _load_llm_logs_page(
+    *,
+    limit: int,
+    offset: int,
+    provider: Optional[str],
+    since: Optional[float],
+    until: Optional[float],
+) -> dict[str, Any]:
+    """Sync loader for ``llm_calls.jsonl`` (run via ``asyncio.to_thread`` under pipeline load)."""
     from llm.pricing_estimate import enrich_llm_log_entry
 
-    limit = max(1, min(int(limit or 100), 2000))
-    offset = max(0, min(int(offset or 0), 2_000_000))
     log_file = llm_calls_log_path()
     indexed: list[tuple[int, dict]] = []
     use_time_range = since is not None or until is not None
 
     if log_file.exists():
-        with open(log_file, "r") as f:
+        with open(log_file, "r", encoding="utf-8", errors="replace") as f:
             for line_no, line in enumerate(f):
                 line = line.strip()
-                if line:
-                    try:
-                        entry = json.loads(line)
-                        if provider and entry.get("provider") != provider:
+                if not line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                    if provider and entry.get("provider") != provider:
+                        continue
+                    if use_time_range:
+                        ts = _llm_log_sort_ts(entry)
+                        if since is not None and ts < float(since):
                             continue
-                        if use_time_range:
-                            ts = _llm_log_sort_ts(entry)
-                            if since is not None and ts < float(since):
-                                continue
-                            if until is not None and ts > float(until):
-                                continue
-                        indexed.append((line_no, entry))
-                    except json.JSONDecodeError as _suppressed_exc:
-                        log_suppressed(logger, "non-fatal (web/backend/api/admin/dashboard.py)", exc_info=_suppressed_exc)
+                        if until is not None and ts > float(until):
+                            continue
+                    indexed.append((line_no, entry))
+                except json.JSONDecodeError as _suppressed_exc:
+                    log_suppressed(
+                        logger,
+                        "non-fatal (web/backend/api/admin/dashboard/routes_llm_logs.py)",
+                        exc_info=_suppressed_exc,
+                    )
 
-    # Newest first; larger line_no wins on timestamp ties (later JSONL line = newer).
     indexed.sort(key=lambda x: (_llm_log_sort_ts(x[1]), x[0]), reverse=True)
     logs = [e for _, e in indexed]
     summary: dict[str, Any] | None = None
@@ -157,4 +149,36 @@ async def get_llm_logs(
         "offset": offset,
         "limit": limit,
     }
+
+
+@router.get("/llm/logs")
+async def get_llm_logs(
+    limit: int = Query(100, ge=1, le=2000, description="Page size (newest-first window)."),
+    offset: int = Query(0, ge=0, le=2_000_000, description="Skip this many newest-matching rows before returning a page."),
+    provider: Optional[str] = Query(None),
+    since: Optional[float] = Query(
+        None,
+        description="Inclusive range start as Unix time in seconds (e.g. from Date.now()/1000).",
+    ),
+    until: Optional[float] = Query(
+        None,
+        description="Inclusive range end as Unix time in seconds.",
+    ),
+):
+    """Get LLM API call logs for admin visibility (newest entries first).
+
+    Use ``offset`` + ``limit`` to page through results without loading the whole file in the browser.
+    When ``since`` and/or ``until`` are set, ``summary`` aggregates **all** matching rows; ``logs`` is only
+    the requested page.
+    """
+    limit = max(1, min(int(limit or 100), 2000))
+    offset = max(0, min(int(offset or 0), 2_000_000))
+    return await asyncio.to_thread(
+        _load_llm_logs_page,
+        limit=limit,
+        offset=offset,
+        provider=provider,
+        since=since,
+        until=until,
+    )
 

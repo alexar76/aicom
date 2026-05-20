@@ -1,6 +1,26 @@
 import type { I18nDict } from '../types';
 
 export const PROVIDERS_DICT: I18nDict = {
+  'providers.error.load': {
+    en: 'Could not load providers',
+    ru: 'Не удалось загрузить провайдеров',
+    es: 'No se pudieron cargar los proveedores',
+  },
+  'providers.error.auth': {
+    en: 'Sign in again at /admin/login (admin role required).',
+    ru: 'Войдите снова на /admin/login (нужна роль администратора).',
+    es: 'Inicie sesión de nuevo en /admin/login (se requiere rol admin).',
+  },
+  'providers.empty': {
+    en: 'No LLM providers configured yet.',
+    ru: 'LLM-провайдеры ещё не настроены.',
+    es: 'Aún no hay proveedores LLM configurados.',
+  },
+  'providers.empty.hint': {
+    en: 'Use Setup wizard or Add Provider, or check data/config/model_providers.yaml on the server.',
+    ru: 'Мастер настройки или «Добавить провайдера», либо data/config/model_providers.yaml на сервере.',
+    es: 'Use el asistente de configuración o Añadir proveedor, o model_providers.yaml en el servidor.',
+  },
   'providers.title': {
     en: 'LLM Providers',
     ru: 'Провайдеры LLM',

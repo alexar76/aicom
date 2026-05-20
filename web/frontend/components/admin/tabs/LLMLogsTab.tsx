@@ -72,6 +72,7 @@ import SupportQueueTab from '@/components/SupportQueueTab';
 import OutreachTab from '@/components/OutreachTab';
 import { QRCodeSVG } from 'qrcode.react';
 import api, {
+  ApiRequestError,
   DashboardData,
   ProviderStatus,
   AgentStatus,
@@ -136,6 +137,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
   const searchParams = useSearchParams();
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [filterProvider, setFilterProvider] = useState('');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
@@ -273,6 +275,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
 
   const refreshLogs = useCallback(async () => {
     setLoading(true);
+    setLoadError(null);
     try {
       const since = parseDatetimeLocalToUnixSeconds(dateFrom);
       const until = parseDatetimeLocalToUnixSeconds(dateTo);
@@ -286,14 +289,23 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
       setLogs(data.logs || []);
       setTotalRows(typeof data.total === 'number' ? data.total : (data.logs || []).length);
       setServerSummary(data.summary ?? null);
-    } catch {
+    } catch (err: unknown) {
       setLogs([]);
       setTotalRows(0);
       setServerSummary(null);
+      if (err instanceof ApiRequestError) {
+        const hint =
+          err.status === 401 || err.status === 403
+            ? t(locale, 'llmLogs.error.auth')
+            : err.message;
+        setLoadError(`${t(locale, 'llmLogs.error.load')}: ${hint}`);
+      } else {
+        setLoadError(t(locale, 'llmLogs.error.load'));
+      }
     } finally {
       setLoading(false);
     }
-  }, [filterProvider, dateFrom, dateTo]);
+  }, [filterProvider, dateFrom, dateTo, locale]);
 
   const loadMoreLogs = useCallback(async () => {
     if (loadingMoreGuard.current) return;
@@ -560,13 +572,20 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
             <div className="animate-spin w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full mx-auto mb-3" />
             <p className="text-gray-500 text-sm">Loading logs...</p>
           </div>
+        ) : loadError ? (
+          <div className="text-center py-12">
+            <AlertTriangle className="w-12 h-12 text-amber-400 mx-auto mb-3" />
+            <p className="text-amber-200/90 text-sm">{loadError}</p>
+            <Button variant="secondary" size="sm" className="mt-4" onClick={() => void refreshLogs()}>
+              <RefreshCw className="w-3.5 h-3.5 mr-1" />
+              {t(locale, 'llmLogs.btn.refresh')}
+            </Button>
+          </div>
         ) : logs.length === 0 ? (
           <div className="text-center py-12">
             <ScrollText className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-500">No LLM calls in the current server filter.</p>
-            <p className="text-xs text-gray-600 mt-1">
-              Try another provider or time range, or refresh after new traffic.
-            </p>
+            <p className="text-gray-500">{t(locale, 'llmLogs.empty.server')}</p>
+            <p className="text-xs text-gray-600 mt-1">{t(locale, 'llmLogs.empty.hint')}</p>
           </div>
         ) : filteredLogs.length === 0 ? (
           <div className="space-y-4 py-8 text-center">

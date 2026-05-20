@@ -86,6 +86,7 @@ from web.backend.api.products import count_showcase_listable_products, is_shippe
 from ._router import router
 from .models import *
 from .helpers import *
+from .helpers import _circuit_breakers_metrics
 
 @router.get("/providers")
 async def get_providers():

@@ -71,6 +71,7 @@ import SupportQueueTab from '@/components/SupportQueueTab';
 import OutreachTab from '@/components/OutreachTab';
 import { QRCodeSVG } from 'qrcode.react';
 import api, {
+  ApiRequestError,
   DashboardData,
   ProviderStatus,
   AgentStatus,
@@ -92,6 +93,8 @@ import { CircuitBreakerPanel } from '../providers/CircuitBreakerPanel';
 
 export function ProvidersTab({ locale }: { locale: AdminLocale }) {
   const [providers, setProviders] = useState<ProviderStatus[]>([]);
+  const [providersLoading, setProvidersLoading] = useState(true);
+  const [providersLoadError, setProvidersLoadError] = useState<string | null>(null);
   const [llmPricing, setLlmPricing] = useState<Record<string, LlmPricingProviderRow> | null>(null);
   const [pricingDraft, setPricingDraft] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState<string | null>(null);
@@ -119,6 +122,8 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
   }, [llmPricing]);
 
   const loadProviders = async () => {
+    setProvidersLoading(true);
+    setProvidersLoadError(null);
     try {
       const [data, pricingRes] = await Promise.all([
         api.getProviders(),
@@ -131,7 +136,20 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
         setLlmPricing(null);
       }
     } catch (e) {
+      setProviders([]);
+      setLlmPricing(null);
+      if (e instanceof ApiRequestError) {
+        const hint =
+          e.status === 401 || e.status === 403
+            ? t(locale, 'providers.error.auth')
+            : e.message;
+        setProvidersLoadError(`${t(locale, 'providers.error.load')}: ${hint}`);
+      } else {
+        setProvidersLoadError(t(locale, 'providers.error.load'));
+      }
       console.error('Failed to load providers:', e);
+    } finally {
+      setProvidersLoading(false);
     }
   };
 
@@ -283,6 +301,26 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
       </div>
 
       {/* Provider Cards */}
+      {providersLoading ? (
+        <div className="flex items-center justify-center py-16 text-gray-400">
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      ) : providersLoadError ? (
+        <div className="text-center py-12">
+          <AlertTriangle className="w-12 h-12 text-amber-400 mx-auto mb-3" />
+          <p className="text-amber-200/90 text-sm">{providersLoadError}</p>
+          <Button variant="secondary" size="sm" className="mt-4" onClick={() => void loadProviders()}>
+            <RefreshCw className="w-3.5 h-3.5 mr-1" />
+            {t(locale, 'providers.btn.refresh')}
+          </Button>
+        </div>
+      ) : providers.length === 0 ? (
+        <div className="text-center py-12">
+          <Cpu className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+          <p className="text-gray-500">{t(locale, 'providers.empty')}</p>
+          <p className="text-xs text-gray-600 mt-1">{t(locale, 'providers.empty.hint')}</p>
+        </div>
+      ) : (
       <div className="grid md:grid-cols-2 gap-4">
         {providers.map((provider, i) => (
           <motion.div
@@ -549,6 +587,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
           </motion.div>
         ))}
       </div>
+      )}
 
       {/* Routing Rules Section */}
       {showRoutingRules && (

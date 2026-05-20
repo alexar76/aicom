@@ -55,6 +55,8 @@ export default function AdminLoginPage() {
       );
 
       localStorage.setItem('admin_token', response.access_token);
+      localStorage.removeItem('customer_token');
+      localStorage.removeItem('customer_email');
       window.location.href = '/admin';
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : t(locale, 'login.invalidCredentials');

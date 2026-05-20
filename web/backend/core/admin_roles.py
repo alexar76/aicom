@@ -64,8 +64,8 @@ def rank(role: AdminRole) -> int:
 
 
 # GET paths viewers must not access (secrets / privileged config).
+# ``/api/admin/providers`` is allowed for viewers (read-only, no API keys in response).
 VIEWER_BLOCKED_GET_PREFIXES: tuple[str, ...] = (
-    "/api/admin/providers",
     "/api/admin/llm-pricing",
     "/api/admin/security",
     "/api/admin/settings",
