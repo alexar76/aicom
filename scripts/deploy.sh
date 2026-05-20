@@ -98,7 +98,14 @@ if [[ "${AIFACTORY_USE_HOST_DOCKER:-}" == "1" ]]; then
 else
   COMPOSE_FILES+=(-f docker-compose.dind.yml)
 fi
-if [[ -d "$ROOT/data/secrets/llm" ]] && compgen -G "$ROOT/data/secrets/llm/*_api_key" >/dev/null 2>&1; then
+# Only mount Docker secrets when every file referenced in docker-compose.secrets.yml exists.
+_secrets_overlay_ready() {
+  local f
+  for f in deepseek_api_key anthropic_api_key groq_api_key together_api_key; do
+    [[ -f "$ROOT/data/secrets/llm/$f" ]] || return 1
+  done
+}
+if _secrets_overlay_ready; then
   COMPOSE_FILES+=(-f docker-compose.secrets.yml)
 fi
 
@@ -109,6 +116,10 @@ else
 fi
 
 docker compose "${PASS_THROUGH[@]}" "${COMPOSE_FILES[@]}" up -d "${COMPOSE_SERVICES[@]}"
+
+if [[ -x "$ROOT/scripts/install-claude-code-deepseek.sh" ]]; then
+  "$ROOT/scripts/install-claude-code-deepseek.sh" -q || true
+fi
 
 echo ""
 echo "deploy.sh: done. Default URLs (see AICOM_PORT_* in .env):"

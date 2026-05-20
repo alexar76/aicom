@@ -141,7 +141,7 @@ export default function ProductDetailPage() {
       locale: typeof navigator !== 'undefined' ? navigator.language : undefined,
     }).catch(() => {});
     try {
-      const result = await api.startSandbox(product.id);
+      const result = await api.startSandbox(product.id, { fromStorefront: true });
       setJourneyPromptOpen(true);
       // Open in current tab to avoid popup blockers.
       window.location.href = result.url;

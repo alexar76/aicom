@@ -14,6 +14,22 @@ function readCsrfCookie(): string | null {
   return m ? decodeURIComponent(m[1]) : null;
 }
 
+/** Admin UI routes that require a valid JWT (includes /sandbox/*). */
+function isAdminSessionEndpoint(endpoint: string): boolean {
+  return endpoint.startsWith('/admin') || endpoint.startsWith('/sandbox');
+}
+
+function clearAdminSessionAndRedirectToLogin(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem('admin_token');
+  const onAdminUi =
+    window.location.pathname.startsWith('/admin') &&
+    !window.location.pathname.startsWith('/admin/login');
+  if (onAdminUi) {
+    window.location.href = '/admin/login';
+  }
+}
+
 /** Thrown by {@link ApiClient.request} so UI can map status + message to recovery steps. */
 export class ApiRequestError extends Error {
   readonly status: number;
@@ -545,11 +561,18 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit & { clientTimeoutMs?: number } = {}
+    options: RequestInit & { clientTimeoutMs?: number; publicStorefront?: boolean } = {}
   ): Promise<T> {
-    const { clientTimeoutMs, ...fetchInit } = options;
-    const adminToken = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
-    const customerToken = typeof window !== 'undefined' ? localStorage.getItem('customer_token') : null;
+    const { clientTimeoutMs, publicStorefront, ...fetchInit } = options;
+    // Storefront sandbox must not send a stale admin_token from a prior Admin session.
+    const adminToken =
+      publicStorefront || typeof window === 'undefined'
+        ? null
+        : localStorage.getItem('admin_token');
+    const customerToken =
+      publicStorefront || typeof window === 'undefined'
+        ? null
+        : localStorage.getItem('customer_token');
     
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -599,16 +622,10 @@ class ApiClient {
     }
 
     if (!response.ok) {
-      // 401: redirect to admin login only for admin API — never on public /support or storefront
+      // 401: expired JWT in localStorage blocks valid cookies — clear and re-login on admin/sandbox APIs
       if (response.status === 401 && typeof window !== 'undefined') {
-        if (adminToken && endpoint.startsWith('/admin')) {
-          localStorage.removeItem('admin_token');
-          const onAdminUi =
-            window.location.pathname.startsWith('/admin') &&
-            !window.location.pathname.startsWith('/admin/login');
-          if (onAdminUi) {
-            window.location.href = '/admin/login';
-          }
+        if (adminToken && isAdminSessionEndpoint(endpoint)) {
+          clearAdminSessionAndRedirectToLogin();
         }
         if (customerToken && !adminToken) {
           localStorage.removeItem('customer_token');
@@ -1563,11 +1580,7 @@ class ApiClient {
         /* ignore */
       }
       if (res.status === 401 && typeof window !== 'undefined' && token) {
-        localStorage.removeItem('admin_token');
-        const onAdminUi =
-          window.location.pathname.startsWith('/admin') &&
-          !window.location.pathname.startsWith('/admin/login');
-        if (onAdminUi) window.location.href = '/admin/login';
+        clearAdminSessionAndRedirectToLogin();
       }
       throw new Error(msg);
     }
@@ -1631,7 +1644,10 @@ class ApiClient {
 
   // ── Sandbox & Git ───────────────────────────────────────────────────────
 
-  async startSandbox(productId: string): Promise<{
+  async startSandbox(
+    productId: string,
+    opts?: { fromStorefront?: boolean },
+  ): Promise<{
     sandbox_id: string;
     status: string;
     url: string;
@@ -1639,6 +1655,12 @@ class ApiClient {
     preview_api?: { enabled: boolean; proxy_prefix: string | null; status: string | null };
     compose_preview?: { enabled: boolean; proxy_prefix: string | null; status: string | null };
   }> {
+    if (opts?.fromStorefront) {
+      return this.request(`/sandbox/storefront/start/${productId}`, {
+        method: 'POST',
+        publicStorefront: true,
+      });
+    }
     return this.request(`/sandbox/start/${productId}`, { method: 'POST' });
   }
 

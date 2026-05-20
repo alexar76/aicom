@@ -49,6 +49,11 @@ services:
       AIFACTORY_ENABLE_DEFAULT_CSP: ${AIFACTORY_ENABLE_DEFAULT_CSP:-1}
       AIFACTORY_ENABLE_HSTS: ${AIFACTORY_ENABLE_HSTS:-}
       AIFACTORY_HSTS_PRELOAD: ${AIFACTORY_HSTS_PRELOAD:-}
+      # Firewall full default-deny ACL (off by default — set to 1 only after whitelisting operator IPs in
+      # data/config/firewall_rules.json, otherwise you lock yourself out of the Admin panel).
+      AIFACTORY_FIREWALL_ENFORCE: ${AIFACTORY_FIREWALL_ENFORCE:-0}
+      # Public demo: set to 1 to disable git_push, sandbox start, and other destructive admin endpoints
+      AIFACTORY_DEMO_READONLY: ${AIFACTORY_DEMO_READONLY:-0}
       PROMETHEUS_MULTIPROC_DIR: /tmp/prometheus_multiproc
       # First-run only: 1 = autonomous pipeline, 0 = ideas only (default; see entrypoint wizard)
       AIFACTORY_AUTONOMOUS_PIPELINE: ${AIFACTORY_AUTONOMOUS_PIPELINE:-}

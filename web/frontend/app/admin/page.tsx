@@ -140,11 +140,19 @@ function AdminPageInner() {
     const token = localStorage.getItem('admin_token');
     if (!token) {
       window.location.href = '/admin/login';
-    } else {
-      setAuthChecked(true);
-      prefetchAdminDashboard();
+      return;
     }
     setLocale(detectAdminLocale());
+    api
+      .getMe()
+      .then(() => {
+        setAuthChecked(true);
+        prefetchAdminDashboard();
+      })
+      .catch(() => {
+        localStorage.removeItem('admin_token');
+        window.location.href = '/admin/login';
+      });
   }, []);
 
   useEffect(() => {

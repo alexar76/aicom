@@ -47,7 +47,7 @@ GitHub’s README viewer **does not embed YouTube iframes** — use the thumbnai
 
 **Typical LLM API cost:** **~$0.30–$2** landing first pass; **~$3–$15+** `full_software` with QA cycles. Bring your own keys; host ~**$7/mo** separate.
 
-**13 pipeline agents** + Playwright E2E gates, security scans, storefront deployment.
+**11 core pipeline agents** (PM, Architect, Design Critic, Methodologist, Developer, Hardening, QA, Security, DevOps, Marketing, Sales) + 2 optional (Evolution Analyst, Market Research Analyst). See `config/pipeline_flow.json` `agent_flow` + runtime test gate, Playwright E2E, security scans, storefront deployment.
 
 ## Quick start
 

@@ -158,8 +158,14 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
       const result = await api.startSandbox(productId);
       showMessage('success', `Sandbox ${result.sandbox_id} started`);
       await loadData();
-    } catch (err: any) {
-      showMessage('error', err?.message || 'Failed to start sandbox');
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error && /invalid or expired token/i.test(err.message)
+          ? 'Session expired — sign in again at Admin → Login, then retry.'
+          : err instanceof Error
+            ? err.message
+            : 'Failed to start sandbox';
+      showMessage('error', msg);
     } finally {
       setActionLoading(null);
     }

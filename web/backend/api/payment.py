@@ -172,7 +172,7 @@ def _get_web3(chain: str) -> Web3:
     rpc = RPC_ENDPOINTS.get(chain)
     if not rpc:
         raise HTTPException(status_code=400, detail=f"Unsupported chain: {chain}")
-    return Web3(Web3.HTTPProvider(rpc))
+    return Web3(Web3.HTTPProvider(rpc, request_kwargs={"timeout": 30}))
 
 
 def _verify_evm_transaction(

@@ -16,9 +16,11 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import subprocess
 import time
 import uuid
+from collections import defaultdict, deque
 from pathlib import Path
 from typing import Optional
 
@@ -26,8 +28,35 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
 
+import os
+import re
+
 from web.backend.core.admin_roles import require_admin_with_rbac
 from web.backend.services.sandbox_proxy_headers import sandbox_proxy_forward_headers
+
+_GIT_REF_RE = re.compile(r'^[a-zA-Z0-9][a-zA-Z0-9._/@+-]*$')
+
+
+def _validate_git_ref_name(value: str, label: str = "ref") -> str:
+    """Reject git CLI argument injection: no leading ``-``, whitelist chars only."""
+    v = (value or "").strip()
+    if not v:
+        raise HTTPException(status_code=400, detail=f"git {label} is required")
+    if v.startswith("-"):
+        raise HTTPException(status_code=400, detail=f"git {label} must not start with '-'")
+    if not _GIT_REF_RE.match(v):
+        raise HTTPException(status_code=400, detail=f"git {label} contains invalid characters: {v!r}")
+    return v
+
+
+def _demo_readonly_guard(action: str = "write") -> None:
+    """Block destructive admin endpoints on public demo instances."""
+    if os.environ.get("AIFACTORY_DEMO_READONLY", "").strip() == "1":
+        raise HTTPException(
+            status_code=403,
+            detail=f"Demo mode: {action} operations are disabled. "
+            "Self-host to unlock full pipeline features.",
+        )
 from web.backend.services.url_safety import validate_git_remote_url
 
 from core.logging_utils import log_suppressed
@@ -42,7 +71,7 @@ from web.backend.services.sandbox_compose_preview import (
     start_compose_preview,
     stop_compose_for_sandbox,
 )
-from core.paths import code_dir, pipeline_json_path, sandbox_registry_path, specs_dir, product_state_dir
+from core.paths import code_dir as resolve_product_code_dir, pipeline_json_path, sandbox_registry_path, specs_dir, product_state_dir
 from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 from web.backend.services.sandbox_static_rewrite import (
     SANDBOX_HTML_CSP,
@@ -114,15 +143,15 @@ def _lookup_sandbox(sandbox_id: str) -> Optional[dict]:
 
 def _get_product_code_dir(product_id: str) -> Optional[Path]:
     """Get the code directory for a product, if it exists."""
-    root = code_dir(product_id)
+    root = resolve_product_code_dir(product_id)
     return root if root.exists() else None
 
 
-def _should_try_fastapi_preview(code_dir: Path, compose_ok: bool) -> bool:
+def _should_try_fastapi_preview(product_code_dir: Path, compose_ok: bool) -> bool:
     """Use uvicorn preview for FastAPI repos when compose is unavailable or failed."""
     if compose_ok:
         return False
-    if not detect_fastapi_backend(code_dir):
+    if not detect_fastapi_backend(product_code_dir):
         return False
     if preview_api_enabled():
         return True
@@ -130,11 +159,11 @@ def _should_try_fastapi_preview(code_dir: Path, compose_ok: bool) -> bool:
     return True
 
 
-def _ensure_fastapi_preview(sandbox_id: str, entry: dict, code_dir: Path) -> bool:
+def _ensure_fastapi_preview(sandbox_id: str, entry: dict, product_code_dir: Path) -> bool:
     """Start loopback uvicorn if missing; mutates registry entry. Returns True when listening."""
     if entry.get("backend_preview_port"):
         return True
-    bp, uv_proc, pst = start_fastapi_preview(sandbox_id=sandbox_id, code_dir=code_dir)
+    bp, uv_proc, pst = start_fastapi_preview(sandbox_id=sandbox_id, code_dir=product_code_dir)
     entry["backend_preview_port"] = bp
     entry["preview_api_status"] = pst
     if uv_proc:
@@ -211,8 +240,8 @@ def _finalize_sandbox_proxy_response(
 
 def _try_docker_run(sandbox_id: str, product_id: str, port: int) -> bool:
     """Try to start a real Docker container for the sandbox."""
-    code_dir = _get_product_code_dir(product_id)
-    if not code_dir:
+    product_code_dir = _get_product_code_dir(product_id)
+    if not product_code_dir:
         return False
     
     try:
@@ -223,7 +252,7 @@ def _try_docker_run(sandbox_id: str, product_id: str, port: int) -> bool:
             memory="256m",
             cpus="0.5",
             workdir="/app/product",
-            volume_mount=f"{code_dir}:/app/product:ro",
+            volume_mount=f"{product_code_dir}:/app/product:ro",
             publish_port=port,
             read_only_root=True,
             pids_limit=64,
@@ -254,19 +283,55 @@ def _try_docker_run(sandbox_id: str, product_id: str, port: int) -> bool:
         return False
 
 
-@router.post("/start/{product_id}")
-async def start_sandbox(product_id: str, _admin: dict = Depends(require_admin_with_rbac)):
-    """Start a sandbox for a product."""
+_STOREFRONT_START_WINDOW_SEC = 3600
+_STOREFRONT_START_MAX_PER_HOUR = int(os.environ.get("AIFACTORY_SANDBOX_STOREFRONT_STARTS_PER_HOUR", "60"))
+_storefront_start_attempts: dict[str, deque[float]] = defaultdict(deque)
+
+
+def _client_ip(request: Request) -> str:
+    forwarded = (request.headers.get("x-forwarded-for") or "").strip()
+    peer = request.client.host if request.client else ""
+    trusted = tuple(
+        p.strip() for p in (os.environ.get("AIFACTORY_TRUSTED_PROXY_IPS") or "127.0.0.1,::1").split(",") if p.strip()
+    )
+    if forwarded and peer in trusted:
+        return forwarded.split(",")[0].strip()
+    return peer or "unknown"
+
+
+def _enforce_storefront_start_rate_limit(ip: str) -> None:
+    now = time.time()
+    window = _storefront_start_attempts[ip]
+    while window and now - window[0] > _STOREFRONT_START_WINDOW_SEC:
+        window.popleft()
+    if len(window) >= _STOREFRONT_START_MAX_PER_HOUR:
+        raise HTTPException(status_code=429, detail="Too many sandbox previews. Try again later.")
+    window.append(now)
+
+
+def _storefront_allows_sandbox_preview(product_id: str) -> bool:
+    from web.backend.api.products import _get_products_map, _public_storefront_grid_accepts
+
+    product = _get_products_map().get(product_id)
+    if not product:
+        return False
+    if not _public_storefront_grid_accepts(product_id, product):
+        return False
+    return _product_has_code(product_id)
+
+
+def _start_sandbox_for_product(product_id: str) -> dict:
+    """Core sandbox start logic (admin and public storefront)."""
     sandbox_id = f"sandbox-{uuid.uuid4().hex[:12]}"
     port = 9000 + len(_active_sandboxes) % 1000  # allocate unique port
 
-    code_dir = _get_product_code_dir(product_id)
+    product_code_dir = _get_product_code_dir(product_id)
     host_port = None
 
     compose_proxy_port: Optional[int] = None
     compose_preview_status: Optional[str] = None
-    if code_dir:
-        cpp, cst, _cproj = start_compose_preview(code_dir, sandbox_id)
+    if product_code_dir:
+        cpp, cst, _cproj = start_compose_preview(product_code_dir, sandbox_id)
         compose_proxy_port = cpp
         compose_preview_status = cst
 
@@ -290,7 +355,7 @@ async def start_sandbox(product_id: str, _admin: dict = Depends(require_admin_wi
         "url": f"/sandbox/{sandbox_id}",
         "port": host_port,
         "docker_mode": docker_success,
-        "has_code": code_dir is not None,
+        "has_code": product_code_dir is not None,
         "backend_preview_port": None,
         "preview_api_status": None,
         "compose_proxy_port": compose_proxy_port,
@@ -300,8 +365,8 @@ async def start_sandbox(product_id: str, _admin: dict = Depends(require_admin_wi
     _save_registry()
 
     preview_payload: dict = {"enabled": False, "proxy_prefix": None, "status": None}
-    if code_dir and _should_try_fastapi_preview(code_dir, compose_ok):
-        if _ensure_fastapi_preview(sandbox_id, entry, code_dir):
+    if product_code_dir and _should_try_fastapi_preview(product_code_dir, compose_ok):
+        if _ensure_fastapi_preview(sandbox_id, entry, product_code_dir):
             preview_payload = {
                 "enabled": True,
                 "proxy_prefix": f"/api/sandbox/backend/{sandbox_id}/",
@@ -334,6 +399,23 @@ async def start_sandbox(product_id: str, _admin: dict = Depends(require_admin_wi
     }
 
 
+@router.post("/start/{product_id}")
+async def start_sandbox(product_id: str, _admin: dict = Depends(require_admin_with_rbac)):
+    """Start a sandbox for a product (admin console)."""
+    _demo_readonly_guard("sandbox start")
+    return _start_sandbox_for_product(product_id)
+
+
+@router.post("/storefront/start/{product_id}")
+async def start_sandbox_storefront(product_id: str, request: Request):
+    """Start a sandbox preview for a product listed on the public storefront (no admin login)."""
+    _demo_readonly_guard("sandbox start")
+    _enforce_storefront_start_rate_limit(_client_ip(request))
+    if not _storefront_allows_sandbox_preview(product_id):
+        raise HTTPException(status_code=404, detail="Product preview not available")
+    return _start_sandbox_for_product(product_id)
+
+
 @router.get("/view/{sandbox_id}")
 async def view_sandbox(request: Request, sandbox_id: str):
     """View sandbox content in browser — renders HTML demo in iframe."""
@@ -342,11 +424,11 @@ async def view_sandbox(request: Request, sandbox_id: str):
         raise HTTPException(status_code=404, detail="Sandbox not found or not running")
 
     product_id = sandbox.get("product_id", "unknown")
-    code_dir = _get_product_code_dir(product_id)
+    product_code_dir = _get_product_code_dir(product_id)
     sb_state = _active_sandboxes.get(sandbox_id) or sandbox
     compose_ok = sb_state.get("compose_proxy_port") is not None
-    if code_dir and _should_try_fastapi_preview(code_dir, compose_ok):
-        _ensure_fastapi_preview(sandbox_id, sb_state, code_dir)
+    if product_code_dir and _should_try_fastapi_preview(product_code_dir, compose_ok):
+        _ensure_fastapi_preview(sandbox_id, sb_state, product_code_dir)
         if sandbox_id in _active_sandboxes:
             _active_sandboxes[sandbox_id].update(
                 {
@@ -365,13 +447,13 @@ async def view_sandbox(request: Request, sandbox_id: str):
         )
 
     # Serve generated HTML via iframe demo (same path as mock mode)
-    if code_dir:
+    if product_code_dir:
         files = []
         has_index_html = False
-        for f in sorted(code_dir.rglob("*")):
+        for f in sorted(product_code_dir.rglob("*")):
             if f.is_file() and not f.name.startswith("."):
                 try:
-                    rel = f.relative_to(code_dir)
+                    rel = f.relative_to(product_code_dir)
                     files.append(str(rel))
                     if f.name == "index.html":
                         has_index_html = True
@@ -406,7 +488,7 @@ async def view_sandbox(request: Request, sandbox_id: str):
                 "<span style=\"color:#8888aa\">fetch('/api/…') is rewritten in-page.</span>"
                 "</span>"
             )
-        elif not compose_ok and code_dir and ((code_dir / "backend").is_dir() or (code_dir / "server").is_dir()):
+        elif not compose_ok and product_code_dir and ((product_code_dir / "backend").is_dir() or (product_code_dir / "server").is_dir()):
             hint_extra = ""
             if preview_api_enabled():
                 hint_extra = " Preview API mode is on — ensure <code>backend/main.py</code> exposes FastAPI <code>app</code>."
@@ -550,15 +632,15 @@ async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
         raise HTTPException(status_code=404, detail="Sandbox not found or not running")
 
     product_id = sandbox.get("product_id", "unknown")
-    code_dir = _get_product_code_dir(product_id)
-    if not code_dir:
+    product_code_dir = _get_product_code_dir(product_id)
+    if not product_code_dir:
         raise HTTPException(status_code=404, detail="Code directory not found")
 
-    full_path = code_dir / file_path
+    full_path = product_code_dir / file_path
     # Security: ensure the resolved path is within the code directory
     try:
         full_path = full_path.resolve()
-        full_path.relative_to(code_dir.resolve())
+        full_path.relative_to(product_code_dir.resolve())
     except (ValueError, FileNotFoundError):
         raise HTTPException(status_code=403, detail="Access denied")
 
@@ -779,7 +861,7 @@ async def git_init(
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    product_code_dir = code_dir(product_id)
+    product_code_dir = resolve_product_code_dir(product_id)
     if not product_code_dir.exists():
         raise HTTPException(status_code=404, detail="No code directory found for this product")
 
@@ -845,7 +927,10 @@ async def git_push(
     _admin: dict = Depends(require_admin_with_rbac),
 ):
     """Commit any pending changes and push to the configured remote."""
-    product_code_dir = code_dir(product_id)
+    _demo_readonly_guard("git push")
+    remote = _validate_git_ref_name(remote, "remote")
+    branch = _validate_git_ref_name(branch, "branch")
+    product_code_dir = resolve_product_code_dir(product_id)
     repo_dir = product_code_dir / ".git"
     if not repo_dir.exists():
         raise HTTPException(status_code=400, detail="Git repository not initialized. Call git/init first.")
@@ -903,8 +988,8 @@ async def git_push(
 @router.get("/git/status/{product_id}")
 async def git_status(product_id: str):
     """Get git status for a product's codebase."""
-    code_dir = code_dir(product_id)
-    repo_dir = code_dir / ".git"
+    product_code_dir = resolve_product_code_dir(product_id)
+    repo_dir = product_code_dir / ".git"
     if not repo_dir.exists():
         return {"status": "not_initialized", "product_id": product_id}
 
@@ -914,28 +999,28 @@ async def git_status(product_id: str):
         # Check remote
         remote_result = subprocess.run(
             ["git", "remote", "-v"],
-            cwd=str(code_dir), capture_output=True, text=True, timeout=5
+            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
         )
         remotes = remote_result.stdout.strip().split("\n") if remote_result.stdout.strip() else []
 
         # Check branch
         branch_result = subprocess.run(
             ["git", "branch", "--show-current"],
-            cwd=str(code_dir), capture_output=True, text=True, timeout=5
+            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
         )
         branch = branch_result.stdout.strip()
 
         # Check status
         status_result = subprocess.run(
             ["git", "status", "--porcelain"],
-            cwd=str(code_dir), capture_output=True, text=True, timeout=5
+            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
         )
         changes = status_result.stdout.strip().split("\n") if status_result.stdout.strip() else []
 
         # Check log
         log_result = subprocess.run(
             ["git", "log", "--oneline", "-10"],
-            cwd=str(code_dir), capture_output=True, text=True, timeout=5
+            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
         )
         commits = log_result.stdout.strip().split("\n") if log_result.stdout.strip() else []
 
@@ -957,7 +1042,8 @@ async def git_status(product_id: str):
 
 def _product_has_code(product_id: str) -> bool:
     """Check if a product has actual generated code files on disk."""
-    manifest_path = code_dir(product_id) / "code_manifest.json"
+    product_code_dir = resolve_product_code_dir(product_id)
+    manifest_path = product_code_dir / "code_manifest.json"
     if not manifest_path.exists():
         return False
     try:
@@ -966,10 +1052,9 @@ def _product_has_code(product_id: str) -> bool:
         files = manifest.get("files", [])
         if not files:
             return False
-        code_dir = code_dir(product_id)
         for f_entry in files:
             fpath = f_entry.get("path") or f_entry.get("file_path", "")
-            if fpath and (code_dir / fpath).exists():
+            if fpath and (product_code_dir / fpath).exists():
                 return True
         return False
     except Exception:
@@ -978,11 +1063,11 @@ def _product_has_code(product_id: str) -> bool:
 
 def _product_has_html_files(product_id: str) -> bool:
     """Check if a product has at least one .html file in its code directory."""
-    code_dir = code_dir(product_id)
-    if not code_dir.exists():
+    product_code_dir = resolve_product_code_dir(product_id)
+    if not product_code_dir.exists():
         return False
     try:
-        for _ in code_dir.rglob("*.html"):
+        for _ in product_code_dir.rglob("*.html"):
             return True
     except Exception as _suppressed_exc:
         log_suppressed(logger, "non-fatal (web/backend/api/sandbox.py)", exc_info=_suppressed_exc)

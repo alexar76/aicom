@@ -131,6 +131,11 @@ async def lifespan(app: FastAPI):
     """Application lifespan: setup and cleanup."""
     # Startup
     logger.info("Starting AI-Factory web backend...")
+    if os.environ.get("AIFACTORY_USE_HOST_DOCKER", "").strip() == "1":
+        logger.warning(
+            "SECURITY: AIFACTORY_USE_HOST_DOCKER=1 mounts /var/run/docker.sock — "
+            "full host root escape risk. Use only for emergency debugging, never in production."
+        )
     
     # Initialize config
     app.state.config = AppConfig()

@@ -28,7 +28,11 @@ ollama==0.3.3
 aiohttp==3.10.5
 
 # ── Authentication & Security ──────────────────────────────────────────────
+# NOTE: python-jose 3.3.0 is unmaintained (2021). The CVEs against the npm "jose"
+# library do NOT affect this Python package, but plan a migration to PyJWT.
 python-jose[cryptography]==3.3.0
+# NOTE: passlib 1.7.4 is unmaintained (2020). The passlib-fork package is the
+# maintained successor and is a drop-in replacement.
 passlib[bcrypt]==1.7.4
 pyotp==2.9.0
 webauthn>=2.2.0
