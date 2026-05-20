@@ -223,16 +223,7 @@ sequenceDiagram
 
 ## Compared to hosted AI app builders
 
-Rough positioning — **verify vendor pricing/features** before debates. Extended tables: [competitive-analysis.md](./competitive-analysis.md).
-
-| | Bolt.new | Lovable | v0 | Devin | **AI-Factory** |
-|--|:---:|:---:|:---:|:---:|:---:|
-| **Self-hosted** | ❌ | ❌ | ❌ | ❌ | ✅ MIT |
-| **Your data & LLM keys** | ❌ | ❌ | ❌ | ❌ | ✅ |
-| **E2E / QA gates** | ❌ | ❌ | ❌ | partial | ✅ Deep Playwright crawl |
-| **Human gate** | ❌ | ❌ | ❌ | ✅ | ✅ Human pipeline |
-| **Multi-agent pipeline** | ❌ | ❌ | ❌ | ❌ | ✅ 13 agents + worker gates |
-| **Typical price** | ~$20/mo | ~$50/mo | ~$20/mo | ~$500/mo | **Host ~$7/mo + API** |
+Hosted builders (Bolt.new, Lovable, v0, Devin) and AI-Factory solve different problems. Hosted products give a polished editor, team accounts, integrations, and pay-per-seat pricing; AI-Factory gives a **self-hosted MIT pipeline** with your own LLM keys, on-disk artifacts/state, Playwright E2E + security gates, an optional human gate, and a public storefront — at the cost of running Docker and bringing your own keys. Don’t treat this as a head-to-head ranking — pick by which trade-off matches your context, and verify vendor pricing/features yourself.
 
 ---
 

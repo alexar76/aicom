@@ -191,11 +191,20 @@ start_backend
 echo "Backend started (PID: $(cat /tmp/aicom-backend.pid))"
 
 # Restart API if the worker dies (pipeline/QA load otherwise leaves Next.js proxying to ECONNREFUSED → HTTP 500).
+# Note: kill -0 succeeds on zombie PIDs — also treat State: Z and failed /api/health as dead.
 (
   while true; do
     sleep 5
     pid="$(cat /tmp/aicom-backend.pid 2>/dev/null || true)"
+    needs_restart=0
     if [ -z "${pid}" ] || ! kill -0 "${pid}" 2>/dev/null; then
+      needs_restart=1
+    elif [ -r "/proc/${pid}/status" ] && grep -qE '^State:[[:space:]]*Z' "/proc/${pid}/status" 2>/dev/null; then
+      needs_restart=1
+    elif ! curl -sf --max-time 3 http://127.0.0.1:8081/api/health >/dev/null 2>&1; then
+      needs_restart=1
+    fi
+    if [ "${needs_restart}" -eq 1 ]; then
       echo "FastAPI backend not running — restarting..."
       start_backend
       echo "Backend restarted (PID: $(cat /tmp/aicom-backend.pid))"

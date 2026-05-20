@@ -191,7 +191,7 @@ const EN: MarketingStrings = {
       iconKey: 'bot',
       title: 'Specialized agents',
       description:
-        'Twelve pipeline roles (Analyst, PM, Methodologist, Architect, Designer/UX, Developer, QA, Security, DevOps, Marketing, Sales, Evolution) — each step bounded so outputs stay maintainable.',
+        'Specialized roles per stage (Analyst, PM, Methodologist, Architect, Designer/UX, Developer, QA, Security, DevOps, Marketing, Sales, Evolution) — each step bounded so outputs stay maintainable. See `agents/` for the full list.',
       gradient: 'from-purple-500 to-pink-500',
     },
     {

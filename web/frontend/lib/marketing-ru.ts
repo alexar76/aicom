@@ -75,7 +75,7 @@ export const MARKETING_RU: MarketingStrings = {
       iconKey: 'bot',
       title: 'Специализированные агенты',
       description:
-        '12 ролей (Analyst, PM, Methodologist, Architect, Designer/UX, Developer, QA, Security, DevOps, Marketing, Sales, Evolution) — каждый шаг ограничен для поддерживаемости.',
+        'Специализированные роли по стадиям (Analyst, PM, Methodologist, Architect, Designer/UX, Developer, QA, Security, DevOps, Marketing, Sales, Evolution) — каждый шаг ограничен. Полный список — в каталоге `agents/`.',
       gradient: 'from-purple-500 to-pink-500',
     },
     {

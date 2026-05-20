@@ -75,7 +75,7 @@ export const MARKETING_ES: MarketingStrings = {
       iconKey: 'bot',
       title: 'Agentes especializados',
       description:
-        'Doce roles (Analyst, PM, Methodologist, Architect, Designer/UX, Developer, QA, Security, DevOps, Marketing, Sales, Evolution) — cada paso acotado.',
+        'Roles especializados por etapa (Analyst, PM, Methodologist, Architect, Designer/UX, Developer, QA, Security, DevOps, Marketing, Sales, Evolution) — cada paso acotado. Lista completa: directorio `agents/`.',
       gradient: 'from-purple-500 to-pink-500',
     },
     {

@@ -47,7 +47,7 @@ GitHub’s README viewer **does not embed YouTube iframes** — use the thumbnai
 
 **Typical LLM API cost:** **~$0.30–$2** landing first pass; **~$3–$15+** `full_software` with QA cycles. Bring your own keys; host ~**$7/mo** separate.
 
-**11 core pipeline agents** (PM, Architect, Design Critic, Methodologist, Developer, Hardening, QA, Security, DevOps, Marketing, Sales) + 2 optional (Evolution Analyst, Market Research Analyst). See `config/pipeline_flow.json` `agent_flow` + runtime test gate, Playwright E2E, security scans, storefront deployment.
+**Pipeline roles** (one Python class each under [`agents/`](agents/)): Analyst, PM, Methodologist, Architect, Design Critic, Developer, Hardening, QA, Security, DevOps, Marketing, Sales, Evolution Analyst. Most run in order; Methodologist / Design Critic / Hardening are conditional gates. The canonical sequence is [`config/pipeline_flow.json`](config/pipeline_flow.json) — count agents by `ls agents/*.py` rather than by README text. Runtime adds a test gate, Playwright E2E, security scans, and storefront deployment.
 
 ## Quick start
 
@@ -79,17 +79,9 @@ There is **no** default password in the repo. On an empty `data/` volume, the en
 
 Faster after the stack is up: `./demo.sh "SaaS for managing remote teams"` (set `DEMO_ADMIN_PASSWORD` to your bootstrap password; opens Pipeline).
 
-## Why self-hosted?
+## Positioning
 
-Rough positioning — **verify vendor pricing/features** before debates.
-
-| | Bolt.new | Lovable | v0 | Devin | **AI-Factory** |
-|--|:---:|:---:|:---:|:---:|:---:|
-| **Self-hosted** | ❌ | ❌ | ❌ | ❌ | ✅ MIT |
-| **Your data & LLM keys** | ❌ | ❌ | ❌ | ❌ | ✅ |
-| **E2E / QA gates** | ❌ | ❌ | ❌ | partial | ✅ Deep Playwright crawl |
-| **Human gate** | ❌ | ❌ | ❌ | ✅ | ✅ Human pipeline |
-| **Typical price** | ~$20/mo | ~$50/mo | ~$20/mo | ~$500/mo | **~$7/mo host + API** |
+AI-Factory is a different shape from hosted builders like Bolt.new, Lovable, v0, or Devin: it’s a **self-hosted MIT pipeline** you run on your own box with your own LLM keys, and it persists artifacts, state, and gates on disk you control. Those products are polished hosted experiences and ship features we don’t have (cloud editor, team accounts, prebuilt integrations); we trade that for transparency, no per-seat pricing, and the option to fork. If you want zero-ops and a managed UI, use them. If you want the agents, gates, and storefront under your control, keep reading.
 
 ## The pipeline
 

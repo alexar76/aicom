@@ -300,7 +300,7 @@ const docSections: DocSection[] = [
 
         <SubHeading>Core Capabilities</SubHeading>
         <List items={[
-          'Twelve specialized pipeline roles in the admin roster: Analyst, PM, Methodologist, Architect, Designer (UX), Developer, QA, Security, DevOps, Marketing, Sales, and Evolution Analyst — plus Director as a meta-agent; `ui_experience` in architecture is the binding UX brief for the Developer',
+          'Specialized pipeline roles in the admin roster: Analyst, PM, Methodologist, Architect, Designer (UX), Developer, QA, Security, DevOps, Marketing, Sales, Evolution Analyst — plus Director as a meta-agent. `agents/` in the repo is the source of truth; `ui_experience` in architecture is the binding UX brief for the Developer.',
           'Multi-LLM routing with failover — local Ollama, DeepSeek, Together, Groq',
           'Director AI — scheduled analysis, decisions queue, reports',
           'Crypto storefront — USDT/USDC (Base, Arbitrum, Ethereum, Solana); default list ~$4.99 USDT when sales artifacts omit price',
