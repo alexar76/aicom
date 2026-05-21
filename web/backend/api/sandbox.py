@@ -50,14 +50,6 @@ def _validate_git_ref_name(value: str, label: str = "ref") -> str:
     return v
 
 
-def _demo_readonly_guard(action: str = "write") -> None:
-    """Block destructive admin endpoints on public demo instances."""
-    if os.environ.get("AIFACTORY_DEMO_READONLY", "").strip() == "1":
-        raise HTTPException(
-            status_code=403,
-            detail=f"Demo mode: {action} operations are disabled. "
-            "Self-host to unlock full pipeline features.",
-        )
 from web.backend.services.url_safety import validate_git_remote_url
 
 from core.logging_utils import log_suppressed
@@ -417,14 +409,14 @@ def _start_sandbox_for_product(product_id: str) -> dict:
 @router.post("/start/{product_id}")
 async def start_sandbox(product_id: str, _admin: dict = Depends(require_admin_with_rbac)):
     """Start a sandbox for a product (admin console)."""
-    _demo_readonly_guard("sandbox start")
     return _start_sandbox_for_product(product_id)
 
 
 @router.post("/storefront/start/{product_id}")
 async def start_sandbox_storefront(product_id: str, request: Request):
     """Start a sandbox preview for a product listed on the public storefront (no admin login)."""
-    _demo_readonly_guard("sandbox start")
+    # Storefront preview is the core public demo experience — allowed even when
+    # AIFACTORY_DEMO_READONLY=1 (rate limits + shelf checks still apply).
     _enforce_storefront_start_rate_limit(_client_ip(request))
     if not _storefront_allows_sandbox_preview(product_id):
         raise HTTPException(status_code=404, detail="Product preview not available")
@@ -1017,7 +1009,6 @@ async def git_push(
     _admin: dict = Depends(require_admin_with_rbac),
 ):
     """Commit any pending changes and push to the configured remote."""
-    _demo_readonly_guard("git push")
     remote = _validate_git_ref_name(remote, "remote")
     branch = _validate_git_ref_name(branch, "branch")
     product_code_dir = resolve_product_code_dir(product_id)

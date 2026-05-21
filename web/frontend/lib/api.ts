@@ -550,6 +550,27 @@ export interface FactoryRestorePreview {
   warnings: string[];
 }
 
+export interface FactoryBackupOnDiskEntry {
+  filename: string;
+  relative_path: string;
+  size_bytes: number;
+  modified_at_utc: string;
+}
+
+export interface FactoryBackupSchedule {
+  enabled: boolean;
+  time: string;
+  timezone: string;
+  include_sandboxes: boolean;
+  retention: number;
+  last_date?: string | null;
+  last_run_utc?: string | null;
+  last_file?: string | null;
+  last_error?: string | null;
+  on_disk_backups: FactoryBackupOnDiskEntry[];
+  public_demo?: boolean;
+}
+
 export interface ChatMessage {
   id: string;
   username: string;
@@ -1632,6 +1653,24 @@ class ApiClient {
     return this.request(`/admin/products/${productId}/security-report`);
   }
 
+  async getFactoryBackupSchedule(): Promise<FactoryBackupSchedule> {
+    return this.request('/admin/factory-backup/schedule');
+  }
+
+  async updateFactoryBackupSchedule(
+    patch: Partial<
+      Pick<
+        FactoryBackupSchedule,
+        'enabled' | 'time' | 'timezone' | 'include_sandboxes' | 'retention'
+      >
+    >
+  ): Promise<FactoryBackupSchedule> {
+    return this.request('/admin/factory-backup/schedule', {
+      method: 'PATCH',
+      body: JSON.stringify(patch),
+    });
+  }
+
   /** Upload backup ZIP → preview warnings (admin+, not on public demo). */
   async previewFactoryRestore(file: File): Promise<FactoryRestorePreview> {
     const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
@@ -1706,8 +1745,32 @@ class ApiClient {
 
   /** Full factory data volume ZIP (admin+). Settings → Factory backup. */
   async downloadFactoryBackupZip(includeSandboxes = false): Promise<void> {
+    const { parseContentDispositionFilename, saveBlobAsDownload } = await import(
+      './browserDownload'
+    );
     const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
     const qs = includeSandboxes ? '?include_sandboxes=true' : '';
+    const suggestedName = 'aicom-factory-backup.zip';
+
+    type SaveHandle = { createWritable: () => Promise<{ write: (b: Blob) => Promise<void>; close: () => Promise<void> }> };
+    let saveHandle: SaveHandle | null = null;
+    if (typeof window !== 'undefined' && 'showSaveFilePicker' in window) {
+      try {
+        const w = window as unknown as {
+          showSaveFilePicker: (opts: {
+            suggestedName: string;
+            types: { description: string; accept: Record<string, string[]> }[];
+          }) => Promise<SaveHandle>;
+        };
+        saveHandle = await w.showSaveFilePicker({
+          suggestedName,
+          types: [{ description: 'ZIP archive', accept: { 'application/zip': ['.zip'] } }],
+        });
+      } catch (e) {
+        if (e instanceof DOMException && e.name === 'AbortError') return;
+      }
+    }
+
     const res = await fetch(`${this.baseUrl}/admin/factory-backup.zip${qs}`, {
       method: 'GET',
       headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -1729,38 +1792,51 @@ class ApiClient {
       throw new Error(msg);
     }
     const blob = await res.blob();
-    const cd = res.headers.get('Content-Disposition');
-    let filename = `aicom-factory-backup.zip`;
-    if (cd) {
-      const star = /filename\*=UTF-8''([^;]+)/i.exec(cd);
-      const quoted = /filename="([^"]+)"/i.exec(cd);
-      const plain = /filename=([^;\s]+)/i.exec(cd);
-      const raw = star?.[1] ?? quoted?.[1] ?? plain?.[1];
-      if (raw) {
-        try {
-          filename = decodeURIComponent(raw.replace(/^"+|"+$/g, ''));
-        } catch {
-          filename = raw.replace(/^"+|"+$/g, '');
-        }
+    const filename = parseContentDispositionFilename(
+      res.headers.get('Content-Disposition'),
+      suggestedName
+    );
+    if (saveHandle) {
+      if (!blob.size) {
+        throw new Error(
+          'Download is empty (0 bytes). The server may have timed out while building the archive.'
+        );
       }
+      const writable = await saveHandle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      return;
     }
-    const url = URL.createObjectURL(blob);
-    try {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.rel = 'noopener';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } finally {
-      URL.revokeObjectURL(url);
-    }
+    await saveBlobAsDownload(blob, filename, { offerSavePicker: false });
   }
 
   /** Factory owner: ZIP of on-disk artifacts for one product (Admin → Files tree + EXPORT_MANIFEST.json). Operator+. */
   async downloadAdminProductOwnerZip(productId: string): Promise<void> {
+    const { parseContentDispositionFilename, saveBlobAsDownload } = await import(
+      './browserDownload'
+    );
     const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const suggestedName = `aicom-product-${productId.replace(/[^\w.-]+/g, '_')}.zip`;
+
+    type SaveHandle = { createWritable: () => Promise<{ write: (b: Blob) => Promise<void>; close: () => Promise<void> }> };
+    let saveHandle: SaveHandle | null = null;
+    if (typeof window !== 'undefined' && 'showSaveFilePicker' in window) {
+      try {
+        const w = window as unknown as {
+          showSaveFilePicker: (opts: {
+            suggestedName: string;
+            types: { description: string; accept: Record<string, string[]> }[];
+          }) => Promise<SaveHandle>;
+        };
+        saveHandle = await w.showSaveFilePicker({
+          suggestedName,
+          types: [{ description: 'ZIP archive', accept: { 'application/zip': ['.zip'] } }],
+        });
+      } catch (e) {
+        if (e instanceof DOMException && e.name === 'AbortError') return;
+      }
+    }
+
     const res = await fetch(
       `${this.baseUrl}/admin/products/${encodeURIComponent(productId)}/owner-export.zip`,
       {
@@ -1785,33 +1861,20 @@ class ApiClient {
       throw new Error(msg);
     }
     const blob = await res.blob();
-    const cd = res.headers.get('Content-Disposition');
-    let filename = `aicom-product-${productId.replace(/[^\w.-]+/g, '_')}.zip`;
-    if (cd) {
-      const star = /filename\*=UTF-8''([^;]+)/i.exec(cd);
-      const quoted = /filename="([^"]+)"/i.exec(cd);
-      const plain = /filename=([^;\s]+)/i.exec(cd);
-      const raw = star?.[1] ?? quoted?.[1] ?? plain?.[1];
-      if (raw) {
-        try {
-          filename = decodeURIComponent(raw.replace(/^"+|"+$/g, ''));
-        } catch {
-          filename = raw.replace(/^"+|"+$/g, '');
-        }
+    const filename = parseContentDispositionFilename(
+      res.headers.get('Content-Disposition'),
+      suggestedName
+    );
+    if (saveHandle) {
+      if (!blob.size) {
+        throw new Error('Download is empty (0 bytes).');
       }
+      const writable = await saveHandle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      return;
     }
-    const url = URL.createObjectURL(blob);
-    try {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.rel = 'noopener';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } finally {
-      URL.revokeObjectURL(url);
-    }
+    await saveBlobAsDownload(blob, filename, { offerSavePicker: false });
   }
 
   /** Public security report — no auth required, for product detail page */

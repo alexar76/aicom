@@ -57,7 +57,7 @@ services:
       # data/config/firewall_rules.json, otherwise you lock yourself out of the Admin panel).
       AIFACTORY_FIREWALL_ENFORCE: ${AIFACTORY_FIREWALL_ENFORCE:-0}
       # Public demo (magic-ai-factory.com): 1 = block backup/restore, settings save, password change,
-      # admin user CRUD, sandbox start, git push. Set in .env — survives rebuilds.
+      # admin user CRUD. Set in .env — survives rebuilds.
       AIFACTORY_DEMO_READONLY: ${AIFACTORY_DEMO_READONLY:-0}
       PROMETHEUS_MULTIPROC_DIR: /tmp/prometheus_multiproc
       # First-run only: 1 = autonomous pipeline, 0 = ideas only (default; see entrypoint wizard)

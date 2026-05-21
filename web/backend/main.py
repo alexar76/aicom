@@ -66,6 +66,7 @@ from .api.admin import pipeline_database as admin_pipeline_database
 from .api.metrics import get_registry
 from llm.router import LLMRouter
 from .services.corporate_standup import append_chat_message, standup_scheduler_loop
+from .services.factory_backup_scheduler import factory_backup_scheduler_loop
 
 logger = logging.getLogger(__name__)
 
@@ -199,6 +200,7 @@ async def lifespan(app: FastAPI):
     _ensure_discussion_seed_session()
 
     standup_task = asyncio.create_task(standup_scheduler_loop(app))
+    backup_schedule_task = asyncio.create_task(factory_backup_scheduler_loop(app))
 
     logger.info("AI-Factory web backend started")
     yield
@@ -211,10 +213,12 @@ async def lifespan(app: FastAPI):
         except Exception as _suppressed_exc:
             log_suppressed(logger, "llm_router close on shutdown", exc_info=_suppressed_exc)
     standup_task.cancel()
-    try:
-        await standup_task
-    except asyncio.CancelledError as _suppressed_exc:
-        log_suppressed(logger, "non-fatal (web/backend/main.py)", exc_info=_suppressed_exc)
+    backup_schedule_task.cancel()
+    for task in (standup_task, backup_schedule_task):
+        try:
+            await task
+        except asyncio.CancelledError as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/main.py)", exc_info=_suppressed_exc)
     logger.info("AI-Factory web backend shutting down")
 
 

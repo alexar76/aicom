@@ -97,7 +97,7 @@ See **[security.md](./security.md)** for narrative and production checklist. Qui
 | Variable | Role |
 |----------|------|
 | `AIFACTORY_DEV_BOOTSTRAP_PASSWORD` | Dev only: known password on first empty install (skips console prompt). |
-| `AIFACTORY_DEMO_READONLY` | `1` on public demo hosts (e.g. magic-ai-factory.com): blocks factory backup/restore, settings save, admin password change, user CRUD, sandbox start, git push. Persist in `.env` across rebuilds. See [security.md](./security.md#public-demo-mode-aifactory_demo_readonly1). |
+| `AIFACTORY_DEMO_READONLY` | `1` on public demo hosts (e.g. magic-ai-factory.com): blocks factory backup/restore, settings save, admin password change, user CRUD. Sandbox preview stays enabled. Persist in `.env` across rebuilds. See [security.md](./security.md#public-demo-mode-aifactory_demo_readonly1). |
 | `AIFACTORY_FACTORY_RESTORE_MAX_MB` | Max upload size for factory restore ZIP from Admin (default `2048`). |
 | `AIFACTORY_CSRF_PROTECT` | `1` (default): CSRF double-submit for admin cookie sessions. |
 | `AIFACTORY_FIREWALL_ENFORCE` | `1`: enforce full firewall ACL on HTTP; unset = rate limit + deny list only. |

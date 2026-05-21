@@ -182,15 +182,16 @@ Everything persistent lives under the **`./data` → `/app/data`** bind mount: `
 | Method | When |
 |--------|------|
 | **Admin → Settings → Factory backup** | Download a ZIP via browser (**admin** / **super_admin**). Skips `sandboxes/` by default (checkbox to include). |
+| **Admin → Settings → Daily auto-backup** | Enable schedule (local time + timezone): writes `aicom-factory-backup-*.zip` into `data/backups/` once per day while the **app** container runs; retention prunes old files. |
 | **Admin → Settings → Restore** | Upload the same ZIP → preview (product counts, warnings) → three confirmations → **full snapshot replace** (auto pre-restore ZIP in `data/backups/`). Restart app after restore. |
-| **`./scripts/backup_factory_data.sh`** | On the host: `tar.gz` of the whole `data/` tree — best for large instances and cron. |
+| **`./scripts/backup_factory_data.sh`** | On the host: `tar.gz` of the whole `data/` tree — alternative for host-level cron. |
 | **Admin → Files → Download product ZIP** | One `prod-…` only — not a full backup. |
 
 Restore is **not a merge** — it replaces the live `data/` tree (except `data/backups/` and pending upload staging). CLI alternative: stop app, extract archive over `./data`, start again.
 
 **Public demo** (`AIFACTORY_DEMO_READONLY=1` on e.g. magic-ai-factory.com): backup, restore, settings save, admin password change, and user management are **blocked** so visitors cannot corrupt shared `admin` / `demo123` or catalog products.
 
-There is **no** “delete product” button in the admin UI. Destructive wipes are CLI-only (`scripts/wipe_pipeline_products.py`, `scripts/delete_pipeline_products.py`). Demo readonly also blocks sandbox start and git push.
+There is **no** “delete product” button in the admin UI. Destructive wipes are CLI-only (`scripts/wipe_pipeline_products.py`, `scripts/delete_pipeline_products.py`). Demo readonly blocks factory backup/restore, settings save, password change, and admin user CRUD — not sandbox preview.
 
 ---
 

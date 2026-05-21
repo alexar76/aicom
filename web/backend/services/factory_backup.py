@@ -171,6 +171,73 @@ def build_factory_backup_zip(*, include_sandboxes: bool = False) -> tuple[Path, 
     return Path(tmp_path), filename
 
 
+def factory_backups_dir() -> Path:
+    d = data_root() / "backups"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def persist_factory_backup_to_disk(*, include_sandboxes: bool = False) -> dict[str, Any]:
+    """
+    Build a factory ZIP and move it into ``data/backups/`` (scheduled / on-disk backups).
+    """
+    zip_path, filename = build_factory_backup_zip(include_sandboxes=include_sandboxes)
+    dest = factory_backups_dir() / filename
+    try:
+        shutil.move(str(zip_path), str(dest))
+    except Exception:
+        zip_path.unlink(missing_ok=True)
+        raise
+    size = dest.stat().st_size
+    return {
+        "filename": filename,
+        "relative_path": f"backups/{filename}",
+        "size_bytes": size,
+        "saved_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+def list_on_disk_factory_backups(*, limit: int = 20) -> list[dict[str, Any]]:
+    """Newest-first ZIPs in data/backups/ matching factory backup naming."""
+    out: list[dict[str, Any]] = []
+    bdir = factory_backups_dir()
+    files = sorted(
+        (p for p in bdir.glob("aicom-factory-backup-*.zip") if p.is_file()),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    for p in files[: max(1, limit)]:
+        st = p.stat()
+        out.append(
+            {
+                "filename": p.name,
+                "relative_path": f"backups/{p.name}",
+                "size_bytes": st.st_size,
+                "modified_at_utc": datetime.fromtimestamp(st.st_mtime, tz=timezone.utc).isoformat(),
+            }
+        )
+    return out
+
+
+def prune_factory_backups_on_disk(*, retention: int) -> list[str]:
+    """Keep the newest ``retention`` scheduled backups; delete older aicom-factory-backup-*.zip."""
+    keep = max(1, min(int(retention), 365))
+    bdir = factory_backups_dir()
+    files = sorted(
+        (p for p in bdir.glob("aicom-factory-backup-*.zip") if p.is_file()),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    removed: list[str] = []
+    for p in files[keep:]:
+        try:
+            p.unlink(missing_ok=True)
+            removed.append(p.name)
+        except OSError:
+            log_suppressed(logger, f"factory backup prune failed for {p.name}", exc_info=True)
+    return removed
+
+
 def _restore_uploads_dir() -> Path:
     d = data_root() / _RESTORE_UPLOADS_DIR
     d.mkdir(parents=True, exist_ok=True)

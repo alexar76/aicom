@@ -15,10 +15,8 @@ When **`AIFACTORY_DEMO_READONLY=1`** is set in `.env` (read by `docker compose`)
 | **Settings → Save** | Keeps Director/autopilot/URLs stable for everyone |
 | **Admin password change** | Keeps shared `demo123` working |
 | **Admin user CRUD** | No add/delete/edit; super-admin accounts are never deletable |
-| **Sandbox start** (preview stacks) | Reduces abuse / resource burn |
-| **Git push** from sandbox | No arbitrary code push to remotes |
 
-**Still allowed on demo:** browse Pipeline, LLM logs (read), storefront, create products (within normal pipeline), most read-only admin tabs.
+**Still allowed on demo:** browse Pipeline, LLM logs (read), **sandbox preview** (admin + storefront), git push from sandbox, create products (within normal pipeline), most read-only admin tabs.
 
 There is **no** “delete product” button in the UI on any instance.
 

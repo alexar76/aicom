@@ -39,7 +39,8 @@ When enabled, the API returns **403** for:
 | `POST /api/admin/settings` | Shared Director/autopilot/URLs stay stable |
 | `POST /api/admin/auth/change-password` | Shared `demo123` must keep working |
 | Admin user create/update/delete | No lockout of other visitors |
-| Sandbox `start`, sandbox `git push` | Abuse and resource limits |
+
+**Still allowed on demo:** sandbox preview (admin and storefront), pipeline browsing, product creation within normal limits. Storefront starts are rate-limited.
 
 The admin UI reads `public_demo` from `GET /api/admin/auth/me` and shows a banner on **Settings**; backup/restore controls are hidden.
 

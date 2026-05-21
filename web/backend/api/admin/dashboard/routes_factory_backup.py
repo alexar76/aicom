@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import logging
+from typing import Optional
 
 from fastapi import BackgroundTasks, Depends, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse
+from pydantic import BaseModel, Field
 
 from web.backend.core.admin_roles import AdminRole, normalize_role, rank, require_admin_with_rbac
 from web.backend.services.factory_backup import (
@@ -14,12 +16,25 @@ from web.backend.services.factory_backup import (
     restore_factory_from_upload,
     save_restore_upload,
 )
+from web.backend.services.factory_backup_scheduler import (
+    apply_schedule_patch,
+    schedule_from_config,
+)
+from web.backend.services.corporate_standup import load_admin_config
 from web.backend.services.public_demo_guard import require_not_public_demo
 
 from ._router import router
 from .helpers import _unlink_path_quiet
 
 logger = logging.getLogger(__name__)
+
+
+class FactoryBackupSchedulePatch(BaseModel):
+    enabled: Optional[bool] = None
+    time: Optional[str] = Field(None, description="Local time HH:MM (24h)")
+    timezone: Optional[str] = None
+    include_sandboxes: Optional[bool] = None
+    retention: Optional[int] = Field(None, ge=1, le=365)
 
 
 def _require_admin_owner(admin: dict) -> None:
@@ -29,6 +44,28 @@ def _require_admin_owner(admin: dict) -> None:
             status_code=403,
             detail="Factory backup/restore requires admin or super_admin role.",
         )
+
+
+@router.get("/factory-backup/schedule")
+async def get_factory_backup_schedule(admin: dict = Depends(require_admin_with_rbac)):
+    """Daily auto-backup settings and recent on-disk ZIPs in data/backups/."""
+    _require_admin_owner(admin)
+    return schedule_from_config(load_admin_config())
+
+
+@router.patch("/factory-backup/schedule")
+async def patch_factory_backup_schedule(
+    body: FactoryBackupSchedulePatch,
+    admin: dict = Depends(require_admin_with_rbac),
+):
+    """Update daily auto-backup schedule (stored in admin.json)."""
+    require_not_public_demo("factory backup schedule")
+    _require_admin_owner(admin)
+    try:
+        cfg = load_admin_config()
+        return apply_schedule_patch(cfg, body.model_dump(exclude_unset=True))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.get("/factory-backup.zip")

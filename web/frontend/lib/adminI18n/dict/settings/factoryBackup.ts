@@ -36,6 +36,16 @@ export const FACTORY_BACKUP_SETTINGS_DICT: I18nDict = {
     ru: 'Не удалось скачать бэкап фабрики',
     es: 'Error al descargar la copia de la fábrica',
   },
+  'settings.factoryBackup.preparing': {
+    en: 'Building archive… choose save location if prompted, then wait.',
+    ru: 'Собираем архив… если браузер спросит — укажите файл, затем подождите.',
+    es: 'Generando archivo… elija ubicación si el navegador lo pide y espere.',
+  },
+  'settings.factoryBackup.downloadDone': {
+    en: 'Factory backup saved',
+    ru: 'Бэкап фабрики сохранён',
+    es: 'Copia de la fábrica guardada',
+  },
   'settings.factoryBackup.demoBlocked': {
     en: 'Public demo: backup and restore are disabled so shared products and the demo admin password stay intact. Self-host for full owner controls.',
     ru: 'Публичное демо: бэкап и восстановление отключены, чтобы не ломать общие продукты и пароль admin. Для полного контроля — свой инстанс.',
@@ -110,5 +120,70 @@ export const FACTORY_BACKUP_SETTINGS_DICT: I18nDict = {
     en: 'Factory restore failed',
     ru: 'Восстановление не удалось',
     es: 'Error al restaurar',
+  },
+  'settings.factoryBackup.scheduleTitle': {
+    en: 'Daily auto-backup (on disk)',
+    ru: 'Ежедневный автобэкап (на диск)',
+    es: 'Copia automática diaria (en disco)',
+  },
+  'settings.factoryBackup.scheduleIntro': {
+    en: 'At the chosen local time the app writes a full factory ZIP to data/backups/ (same format as manual download). Old files are pruned by retention count. Requires the app container to stay running.',
+    ru: 'В выбранное локальное время приложение пишет полный ZIP фабрики в data/backups/ (как при ручном скачивании). Старые файлы удаляются по лимиту хранения. Нужен работающий контейнер app.',
+    es: 'A la hora local elegida la app guarda un ZIP completo en data/backups/ (igual que la descarga manual). Se eliminan copias antiguas según retención. El contenedor app debe estar en ejecución.',
+  },
+  'settings.factoryBackup.scheduleEnable': {
+    en: 'Enable daily auto-backup',
+    ru: 'Включить ежедневный автобэкап',
+    es: 'Activar copia automática diaria',
+  },
+  'settings.factoryBackup.scheduleTime': {
+    en: 'Local time (HH:MM)',
+    ru: 'Локальное время (ЧЧ:ММ)',
+    es: 'Hora local (HH:MM)',
+  },
+  'settings.factoryBackup.scheduleTimezone': {
+    en: 'Timezone (IANA)',
+    ru: 'Часовой пояс (IANA)',
+    es: 'Zona horaria (IANA)',
+  },
+  'settings.factoryBackup.scheduleRetention': {
+    en: 'Keep last N backups on disk',
+    ru: 'Хранить последних N бэкапов на диске',
+    es: 'Conservar las últimas N copias en disco',
+  },
+  'settings.factoryBackup.scheduleSave': {
+    en: 'Save schedule',
+    ru: 'Сохранить расписание',
+    es: 'Guardar programación',
+  },
+  'settings.factoryBackup.scheduleSaved': {
+    en: 'Auto-backup schedule saved',
+    ru: 'Расписание автобэкапа сохранено',
+    es: 'Programación guardada',
+  },
+  'settings.factoryBackup.scheduleSaveFailed': {
+    en: 'Failed to save schedule',
+    ru: 'Не удалось сохранить расписание',
+    es: 'Error al guardar programación',
+  },
+  'settings.factoryBackup.scheduleLastRun': {
+    en: 'Last successful run',
+    ru: 'Последний успешный запуск',
+    es: 'Última ejecución correcta',
+  },
+  'settings.factoryBackup.scheduleLastError': {
+    en: 'Last error',
+    ru: 'Последняя ошибка',
+    es: 'Último error',
+  },
+  'settings.factoryBackup.scheduleOnDisk': {
+    en: 'Files in data/backups/',
+    ru: 'Файлы в data/backups/',
+    es: 'Archivos en data/backups/',
+  },
+  'settings.factoryBackup.scheduleNone': {
+    en: 'No on-disk backups yet',
+    ru: 'На диске пока нет бэкапов',
+    es: 'Aún no hay copias en disco',
   },
 };
