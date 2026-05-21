@@ -17,6 +17,10 @@ import yaml
 from core.paths import data_root, model_providers_path, secrets_dir
 from llm.bootstrap_providers import ensure_model_providers_file
 from llm.circuit_breaker import get_circuit_store
+from llm.factory_defaults import (
+    DEEPSEEK_V4_FLASH_CONTEXT_WINDOW,
+    DEEPSEEK_V4_PRO_CONTEXT_WINDOW,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -50,13 +54,35 @@ def _write_secret_file(key: str) -> Path:
     return path
 
 
+def _merge_deepseek_provider(existing: dict[str, Any] | None, api_key: str) -> dict[str, Any]:
+    """Apply DeepSeek defaults but preserve admin-edited models and capabilities."""
+    block = _deepseek_provider_block(api_key)
+    if not isinstance(existing, dict):
+        return block
+    out = dict(block)
+    for key in ("models", "priority", "health_check_endpoint", "enabled", "provider_type", "base_url"):
+        if key in existing and existing[key] is not None:
+            if key == "models" and isinstance(existing["models"], dict):
+                out["models"] = {**block["models"], **existing["models"]}
+            else:
+                out[key] = existing[key]
+    ex_caps = existing.get("capabilities")
+    if isinstance(ex_caps, dict) and ex_caps:
+        base_caps = block["capabilities"]
+        out["capabilities"] = {**base_caps, **ex_caps}
+    out["api_key"] = api_key
+    out["api_key_env"] = None
+    return out
+
+
 def _deepseek_provider_block(api_key: str) -> dict[str, Any]:
     return {
         "api_key": api_key,
         "api_key_env": None,
         "base_url": DEFAULT_BASE_URL,
         "capabilities": {
-            "context_window": 1_000_000,
+            "context_window": DEEPSEEK_V4_PRO_CONTEXT_WINDOW,
+            "context_window_light": DEEPSEEK_V4_FLASH_CONTEXT_WINDOW,
             "max_tokens": 64_000,
             "supports_streaming": True,
             "supports_vision": False,
@@ -104,7 +130,11 @@ def sync_deepseek_provider_config(
     if not isinstance(providers, dict):
         providers = {}
 
-    providers[DEEPSEEK_PROVIDER_ID] = _deepseek_provider_block(key)
+    existing = providers.get(DEEPSEEK_PROVIDER_ID)
+    providers[DEEPSEEK_PROVIDER_ID] = _merge_deepseek_provider(
+        existing if isinstance(existing, dict) else None,
+        key,
+    )
 
     if disable_local_fallbacks:
         for local_name in ("lm_studio", "local_ollama"):

@@ -261,7 +261,24 @@ class OpenAICompatibleProvider(LLMProvider):
         return self.health
 
     def get_capabilities(self) -> ModelCapabilities:
-        # Default capabilities for external API models
+        caps = (self.config or {}).get("capabilities") or {}
+        if isinstance(caps, dict) and caps.get("context_window"):
+            ctx_heavy = int(caps.get("context_window") or 128_000)
+            ctx_light = int(caps.get("context_window_light") or ctx_heavy)
+            max_tok = int(caps.get("max_tokens") or 8192)
+            models = (self.config or {}).get("models") or {}
+            light_model = str(models.get("light") or "").strip()
+            active = str(self.model or "").strip()
+            ctx = ctx_light if light_model and active == light_model else ctx_heavy
+            return ModelCapabilities(
+                context_window=ctx,
+                max_tokens=max_tok,
+                supports_vision=bool(caps.get("supports_vision", False)),
+                supports_streaming=bool(caps.get("supports_streaming", True)),
+                supports_functions=True,
+                supports_json_mode=True,
+            )
+        # Legacy fallbacks when YAML capabilities are missing
         if "70b" in self.model.lower() or "deepseek-chat" in self.model.lower():
             return ModelCapabilities(
                 context_window=65536,
@@ -271,15 +288,14 @@ class OpenAICompatibleProvider(LLMProvider):
                 supports_functions=True,
                 supports_json_mode=True,
             )
-        else:
-            return ModelCapabilities(
-                context_window=32768,
-                max_tokens=4096,
-                supports_vision=False,
-                supports_streaming=True,
-                supports_functions=True,
-                supports_json_mode=True,
-            )
+        return ModelCapabilities(
+            context_window=32768,
+            max_tokens=4096,
+            supports_vision=False,
+            supports_streaming=True,
+            supports_functions=True,
+            supports_json_mode=True,
+        )
 
     def _build_messages(self, prompt: str, config: GenerationConfig) -> list[dict]:
         """Build the messages array for the chat completions API."""

@@ -104,7 +104,8 @@ const emptyProviderForm: CreateProviderPayload = {
   enabled: true,
   models: { heavy: '', light: '' },
   capabilities: {
-    context_window: 128000,
+    context_window: 1000000,
+    context_window_light: 1000000,
     max_tokens: 32000,
     supports_vision: false,
     supports_streaming: true,
@@ -133,11 +134,32 @@ export function ProviderFormModal({
 
   useEffect(() => {
     if (isOpen) {
-      setForm(initial ? { ...emptyProviderForm, ...initial } : { ...emptyProviderForm });
+      if (initial) {
+        setForm({
+          ...emptyProviderForm,
+          ...initial,
+          models: { ...emptyProviderForm.models, ...initial.models },
+          capabilities: {
+            ...emptyProviderForm.capabilities,
+            ...initial.capabilities,
+            context_window_light:
+              initial.capabilities?.context_window_light ??
+              initial.capabilities?.context_window ??
+              emptyProviderForm.capabilities?.context_window_light,
+          },
+        });
+      } else {
+        setForm({ ...emptyProviderForm });
+      }
       setKeyConfigured(Boolean(initial?.api_key_configured));
       setError('');
     }
   }, [isOpen, initial]);
+
+  const parseCapInt = (raw: string, fallback: number) => {
+    const n = parseInt(raw, 10);
+    return Number.isFinite(n) && n > 0 ? n : fallback;
+  };
 
   const handleSubmit = async () => {
     if (!form.name.trim()) { setError('Provider name is required'); return; }
@@ -258,29 +280,61 @@ export function ProviderFormModal({
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Context Window</label>
+            <label className="block text-gray-400 text-xs mb-1">Context Window (heavy)</label>
             <Input
               type="number"
-              value={form.capabilities?.context_window || 128000}
-              onChange={(e) => updateField('capabilities', { ...form.capabilities, context_window: parseInt(e.target.value) || 128000 })}
+              min={1}
+              value={form.capabilities?.context_window ?? 128000}
+              onChange={(e) =>
+                updateField('capabilities', {
+                  ...form.capabilities,
+                  context_window: parseCapInt(e.target.value, form.capabilities?.context_window ?? 128000),
+                })
+              }
             />
           </div>
+          <div>
+            <label className="block text-gray-400 text-xs mb-1">Context Window (light)</label>
+            <Input
+              type="number"
+              min={1}
+              value={form.capabilities?.context_window_light ?? form.capabilities?.context_window ?? 1000000}
+              onChange={(e) =>
+                updateField('capabilities', {
+                  ...form.capabilities,
+                  context_window_light: parseCapInt(
+                    e.target.value,
+                    form.capabilities?.context_window_light ?? form.capabilities?.context_window ?? 1000000
+                  ),
+                })
+              }
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-400 text-xs mb-1">Max Tokens</label>
             <Input
               type="number"
-              value={form.capabilities?.max_tokens || 32000}
-              onChange={(e) => updateField('capabilities', { ...form.capabilities, max_tokens: parseInt(e.target.value) || 32000 })}
+              min={1}
+              value={form.capabilities?.max_tokens ?? 32000}
+              onChange={(e) =>
+                updateField('capabilities', {
+                  ...form.capabilities,
+                  max_tokens: parseCapInt(e.target.value, form.capabilities?.max_tokens ?? 32000),
+                })
+              }
             />
           </div>
           <div>
             <label className="block text-gray-400 text-xs mb-1">Priority</label>
             <Input
               type="number"
-              value={form.priority || 10}
-              onChange={(e) => updateField('priority', parseInt(e.target.value) || 10)}
+              value={form.priority ?? 10}
+              onChange={(e) => updateField('priority', parseCapInt(e.target.value, form.priority ?? 10))}
             />
           </div>
         </div>

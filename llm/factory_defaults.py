@@ -7,6 +7,10 @@ Providers may clamp `max_tokens` / context to their API limits; these are the
 
 # Admin UI + model_providers template defaults (OpenAI-compatible APIs often allow 128k / 32k on top tiers)
 FACTORY_CONTEXT_WINDOW_DEFAULT = 128_000
+
+# DeepSeek V4 (official API, Apr 2026): 1M context on Pro and Flash — https://api-docs.deepseek.com/news/news260424
+DEEPSEEK_V4_PRO_CONTEXT_WINDOW = 1_000_000
+DEEPSEEK_V4_FLASH_CONTEXT_WINDOW = 1_000_000
 # Upper request budget; router clamps per model via llm.token_budget (DeepSeek → 128k output).
 FACTORY_MAX_OUTPUT_TOKENS_HEAVY = 128_000
 FACTORY_MAX_OUTPUT_TOKENS_LIGHT = 32_000

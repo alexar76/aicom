@@ -304,10 +304,12 @@ export interface ProviderStatus {
   base_url?: string;
   capabilities?: {
     context_window: number;
+    context_window_light?: number;
     max_tokens: number;
     supports_vision: boolean;
     supports_streaming: boolean;
   };
+  health_check_endpoint?: string;
   priority?: number;
   is_default?: boolean;
   circuit?: CircuitBreakerRow;
@@ -369,6 +371,7 @@ export interface CreateProviderPayload {
   models?: { heavy?: string; light?: string };
   capabilities?: {
     context_window?: number;
+    context_window_light?: number;
     max_tokens?: number;
     supports_vision?: boolean;
     supports_streaming?: boolean;
@@ -1102,6 +1105,8 @@ class ApiClient {
       circuit: config.circuit,
       api_key_configured: config.api_key_configured ?? false,
       api_key_env: config.api_key_env ?? null,
+      capabilities: config.capabilities,
+      health_check_endpoint: config.health_check_endpoint,
     }));
   }
 

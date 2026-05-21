@@ -270,7 +270,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
       models: { heavy: p.models?.heavy || '', light: p.models?.light || '' },
       capabilities: p.capabilities || undefined,
       priority: p.priority || 10,
-      health_check_endpoint: '/v1/models',
+      health_check_endpoint: p.health_check_endpoint || '/v1/models',
     });
     setShowAddModal(true);
   };

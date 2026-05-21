@@ -122,6 +122,7 @@ async def get_providers():
             if not available_models:
                 available_models = list(set(filter(None, [active_heavy, active_light])))
             
+            caps = pconf.get("capabilities") if isinstance(pconf.get("capabilities"), dict) else {}
             providers[name] = {
                 "enabled": pconf.get("enabled", False),
                 "type": pconf.get("provider_type", "unknown"),
@@ -132,6 +133,18 @@ async def get_providers():
                     "heavy": active_heavy,
                     "light": active_light,
                 },
+                "capabilities": {
+                    "context_window": caps.get("context_window", FACTORY_CONTEXT_WINDOW_DEFAULT),
+                    "context_window_light": caps.get(
+                        "context_window_light",
+                        caps.get("context_window", FACTORY_CONTEXT_WINDOW_DEFAULT),
+                    ),
+                    "max_tokens": caps.get("max_tokens", FACTORY_MAX_OUTPUT_TOKENS_HEAVY),
+                    "supports_vision": bool(caps.get("supports_vision", False)),
+                    "supports_streaming": bool(caps.get("supports_streaming", True)),
+                },
+                "priority": pconf.get("priority", 10),
+                "health_check_endpoint": pconf.get("health_check_endpoint", "/v1/models"),
                 "available_models": available_models,
                 "status": "online" if available_models else ("disabled" if not pconf.get("enabled", False) else "offline"),
                 "is_default": name == default_provider,
@@ -411,6 +424,7 @@ DEFAULT_PROVIDER_TEMPLATE = {
     "models": {"heavy": "", "light": "", "vision": None},
     "capabilities": {
         "context_window": FACTORY_CONTEXT_WINDOW_DEFAULT,
+        "context_window_light": FACTORY_CONTEXT_WINDOW_DEFAULT,
         "max_tokens": FACTORY_MAX_OUTPUT_TOKENS_HEAVY,
         "supports_vision": False,
         "supports_streaming": True,
@@ -453,8 +467,9 @@ async def create_provider(request: Request):
         provider_config["models"]["light"] = body["models"].get("light", "")
     if "capabilities" in body:
         caps = provider_config["capabilities"]
-        caps["context_window"] = body["capabilities"].get("context_window", caps["context_window"])
-        caps["max_tokens"] = body["capabilities"].get("max_tokens", caps["max_tokens"])
+        for cap in ("context_window", "context_window_light", "max_tokens"):
+            if cap in body["capabilities"]:
+                caps[cap] = body["capabilities"][cap]
     if "priority" in body:
         provider_config["priority"] = int(body["priority"])
     if "health_check_endpoint" in body:
@@ -501,7 +516,13 @@ async def update_provider(provider_name: str, request: Request):
     # Update capabilities
     if "capabilities" in body:
         pconf.setdefault("capabilities", {})
-        for cap in ("context_window", "max_tokens", "supports_vision", "supports_streaming"):
+        for cap in (
+            "context_window",
+            "context_window_light",
+            "max_tokens",
+            "supports_vision",
+            "supports_streaming",
+        ):
             if cap in body["capabilities"]:
                 pconf["capabilities"][cap] = body["capabilities"][cap]
     
