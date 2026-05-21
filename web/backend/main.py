@@ -582,6 +582,9 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
 @app.post("/api/admin/settings")
 async def update_admin_settings(request: Request, _admin: dict = Depends(require_admin_with_rbac)):
     """Update platform settings (auto-pipeline, git, docker, Telegram alerts)."""
+    from web.backend.services.public_demo_guard import require_not_public_demo
+
+    require_not_public_demo("platform settings save")
     _ = _admin
     body = await request.json()
     config = app.state.config

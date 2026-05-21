@@ -791,5 +791,12 @@ def _append_metrics_history(metrics: dict):
         logger.warning(f"Failed to append metrics history: {e}")
 
 
+def _unlink_path_quiet(p: str) -> None:
+    try:
+        Path(p).unlink(missing_ok=True)
+    except OSError:
+        log_suppressed(logger, "dashboard: temp file cleanup failed", exc_info=True)
+
+
 # ── Enhanced Dashboard Endpoint ─────────────────────────────────────────────
 

@@ -7,6 +7,7 @@ import { ACCOUNT_SETTINGS_DICT } from './account';
 import { TELEGRAM_SETTINGS_DICT } from './telegram';
 import { QUALITY_SETTINGS_DICT } from './quality';
 import { PIPELINE_DB_SETTINGS_DICT } from './pipelineDb';
+import { FACTORY_BACKUP_SETTINGS_DICT } from './factoryBackup';
 
 export const SETTINGS_DICT: I18nDict = {
   ...DIRECTOR_SETTINGS_DICT,
@@ -17,4 +18,5 @@ export const SETTINGS_DICT: I18nDict = {
   ...TELEGRAM_SETTINGS_DICT,
   ...QUALITY_SETTINGS_DICT,
   ...PIPELINE_DB_SETTINGS_DICT,
+  ...FACTORY_BACKUP_SETTINGS_DICT,
 };

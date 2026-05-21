@@ -1,6 +1,6 @@
 # FAQ — AI-Factory (подробный)
 
-> Краткое руководство со скриншотами: [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) · English: [FAQ.md](./FAQ.md)
+> Краткое руководство со скриншотами: [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) · English: [FAQ.md](./FAQ.md) · Español: [FAQ.es.md](./FAQ.es.md)
 
 ---
 
@@ -244,7 +244,7 @@ PNG не коммитятся или ещё не сняты — запустит
 
 | Уровень | Документ |
 |---------|----------|
-| Оператор UI | [USER_GUIDE.ru.md](./USER_GUIDE.ru.md), этот FAQ |
+| Оператор UI | [USER_GUIDE.ru.md](./USER_GUIDE.ru.md), этот FAQ · ES: [USER_GUIDE.es.md](./USER_GUIDE.es.md) |
 | Владелец инстанса | [owner-guide.md](./owner-guide.md) |
 | DevOps / env | [configuration.md](./configuration.md), [production-domain.md](./production-domain.md) |
 | API интеграция | [api-integration-guide.md](./api-integration-guide.md) |

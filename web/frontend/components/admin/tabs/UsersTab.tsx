@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { UserPlus, Trash2, Shield, Loader2, RefreshCw } from 'lucide-react';
+import { UserPlus, Trash2, Shield, Loader2, RefreshCw, Pencil } from 'lucide-react';
 import { AdminScrollArea } from '@/components/admin/AdminScrollArea';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
@@ -68,11 +68,23 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
   const [users, setUsers] = useState<AdminPanelUser[]>([]);
   const [rolesMeta, setRolesMeta] = useState<AdminRoleMeta[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userMgmtLocked, setUserMgmtLocked] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [editUser, setEditUser] = useState<AdminPanelUser | null>(null);
+  const [editPassword, setEditPassword] = useState('');
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newRole, setNewRole] = useState('operator');
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    void api
+      .getMe()
+      .then((me) =>
+        setUserMgmtLocked(Boolean(me.blocks_admin_user_management || me.public_demo || me.public_demo_readonly))
+      )
+      .catch(() => setUserMgmtLocked(false));
+  }, []);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -126,7 +138,28 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
     }
   };
 
+  const handlePasswordReset = async () => {
+    if (!editUser) return;
+    if (editPassword.length < 12) {
+      toast.error(t(locale, 'users.passwordMin'));
+      return;
+    }
+    setSaving(true);
+    try {
+      await api.resetAdminUserPassword(editUser.id, editPassword);
+      toast.success(t(locale, 'users.passwordUpdated'));
+      setEditUser(null);
+      setEditPassword('');
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      toast.error(msg);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const toggleEnabled = async (u: AdminPanelUser) => {
+    if (userMgmtLocked) return;
     try {
       await api.patchAdminUser(u.id, { enabled: !u.enabled });
       await load();
@@ -137,6 +170,7 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
   };
 
   const changeRole = async (u: AdminPanelUser, role: string) => {
+    if (userMgmtLocked) return;
     try {
       await api.patchAdminUser(u.id, { role });
       await load();
@@ -161,9 +195,17 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
   }, [rolesMeta, locale, users]);
 
   const selectClass =
-    'rounded-lg border border-white/15 bg-slate-900 px-2 py-1.5 text-sm text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40';
+    'rounded-lg border border-white/15 bg-slate-900 px-2 py-1.5 text-sm text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 disabled:opacity-50 disabled:cursor-not-allowed';
 
   const remove = async (u: AdminPanelUser) => {
+    if (u.role === 'super_admin') {
+      toast.error(t(locale, 'users.cannotDeleteSuperAdmin'));
+      return;
+    }
+    if (userMgmtLocked) {
+      toast.error(t(locale, 'users.demoBlocked'));
+      return;
+    }
     if (!confirm(tVars(locale, 'users.confirmDelete', { name: u.username }))) return;
     try {
       await api.deleteAdminUser(u.id);
@@ -174,6 +216,8 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
       toast.error(msg);
     }
   };
+
+  const canDelete = (u: AdminPanelUser) => u.role !== 'super_admin' && !userMgmtLocked;
 
   return (
     <div className="space-y-6 max-w-5xl">
@@ -191,13 +235,21 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
               <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               {t(locale, 'users.refresh')}
             </Button>
-            <Button onClick={() => setModalOpen(true)} className="w-full sm:w-auto">
-              <UserPlus className="w-4 h-4 mr-2" />
-              {t(locale, 'users.add')}
-            </Button>
+            {!userMgmtLocked && (
+              <Button onClick={() => setModalOpen(true)} className="w-full sm:w-auto">
+                <UserPlus className="w-4 h-4 mr-2" />
+                {t(locale, 'users.add')}
+              </Button>
+            )}
           </div>
         </div>
       </motion.div>
+
+      {userMgmtLocked && (
+        <p className="text-sm text-sky-200/90 rounded-lg border border-sky-500/40 bg-sky-950/30 p-3">
+          {t(locale, 'users.demoBlocked')}
+        </p>
+      )}
 
       <GlassCard className="p-0 overflow-hidden">
         {loading ? (
@@ -224,6 +276,7 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
                       <select
                         value={u.role}
                         onChange={(e) => changeRole(u, e.target.value)}
+                        disabled={userMgmtLocked}
                         className={selectClass}
                       >
                         {roleOptions.map((r) => (
@@ -237,7 +290,8 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
                       <button
                         type="button"
                         onClick={() => toggleEnabled(u)}
-                        className={`text-xs px-2 py-1 rounded-lg border ${
+                        disabled={userMgmtLocked}
+                        className={`text-xs px-2 py-1 rounded-lg border disabled:opacity-50 disabled:cursor-not-allowed ${
                           u.enabled
                             ? 'border-emerald-500/40 text-emerald-300'
                             : 'border-red-500/40 text-red-300'
@@ -247,14 +301,32 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
                       </button>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <button
-                        type="button"
-                        onClick={() => remove(u)}
-                        className="p-2 rounded-lg text-red-400 hover:bg-red-500/10"
-                        aria-label="Delete"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="inline-flex items-center gap-1 justify-end">
+                        {!userMgmtLocked && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditUser(u);
+                              setEditPassword('');
+                            }}
+                            className="p-2 rounded-lg text-indigo-300 hover:bg-indigo-500/10"
+                            aria-label={t(locale, 'users.editPassword')}
+                            title={t(locale, 'users.editPassword')}
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </button>
+                        )}
+                        {canDelete(u) ? (
+                          <button
+                            type="button"
+                            onClick={() => remove(u)}
+                            className="p-2 rounded-lg text-red-400 hover:bg-red-500/10"
+                            aria-label="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        ) : null}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -306,6 +378,35 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
             </Button>
           </div>
         </div>
+      </Modal>
+
+      <Modal
+        isOpen={editUser !== null}
+        onClose={() => !saving && setEditUser(null)}
+        title={t(locale, 'users.modalEditTitle')}
+      >
+        {editUser && (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-400">
+              <span className="text-white font-medium">{editUser.username}</span>
+            </p>
+            <Input
+              label={t(locale, 'users.newPassword')}
+              type="password"
+              value={editPassword}
+              onChange={(e) => setEditPassword(e.target.value)}
+              placeholder="••••••••••••"
+            />
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="secondary" onClick={() => setEditUser(null)} disabled={saving}>
+                {t(locale, 'users.cancel')}
+              </Button>
+              <Button onClick={handlePasswordReset} loading={saving} disabled={editPassword.length < 12}>
+                {t(locale, 'users.save')}
+              </Button>
+            </div>
+          </div>
+        )}
       </Modal>
     </div>
   );

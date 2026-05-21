@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import apiClient from '@/lib/api';
@@ -12,7 +13,18 @@ import { Modal } from '@/components/ui/Modal';
 import { t } from '@/lib/adminI18n';
 import type { SettingsTabApi } from './useSettingsTabState';
 
-export function AccountSecuritySettings({ api }: { api: SettingsTabApi }) {
+export function AccountSecuritySettings({
+  api,
+  publicDemo = false,
+}: {
+  api: SettingsTabApi;
+  publicDemo?: boolean;
+}) {
+  const [pwdCurrent, setPwdCurrent] = useState('');
+  const [pwdNew, setPwdNew] = useState('');
+  const [pwdConfirm, setPwdConfirm] = useState('');
+  const [pwdBusy, setPwdBusy] = useState(false);
+
   const {
     locale,
     twofaEnabled,
@@ -52,12 +64,54 @@ export function AccountSecuritySettings({ api }: { api: SettingsTabApi }) {
     <>
       <GlassCard>
         <h3 className="text-lg font-medium text-white mb-4">{t(locale, 'settings.section.changePassword')}</h3>
-        <div className="space-y-4">
-          <Input label={t(locale, 'settings.password.current')} type="password" />
-          <Input label={t(locale, 'settings.password.new')} type="password" />
-          <Input label={t(locale, 'settings.password.confirm')} type="password" />
-          <Button>{t(locale, 'settings.password.update')}</Button>
-        </div>
+        {publicDemo ? (
+          <p className="text-sm text-sky-200/90">{t(locale, 'settings.factoryBackup.demoBlocked')}</p>
+        ) : (
+          <div className="space-y-4">
+            <Input
+              label={t(locale, 'settings.password.current')}
+              type="password"
+              value={pwdCurrent}
+              onChange={(e) => setPwdCurrent(e.target.value)}
+            />
+            <Input
+              label={t(locale, 'settings.password.new')}
+              type="password"
+              value={pwdNew}
+              onChange={(e) => setPwdNew(e.target.value)}
+            />
+            <Input
+              label={t(locale, 'settings.password.confirm')}
+              type="password"
+              value={pwdConfirm}
+              onChange={(e) => setPwdConfirm(e.target.value)}
+            />
+            <Button
+              loading={pwdBusy}
+              disabled={pwdBusy || pwdNew.length < 12 || pwdNew !== pwdConfirm}
+              onClick={async () => {
+                if (pwdNew !== pwdConfirm) {
+                  toast.error(t(locale, 'settings.password.mismatch'));
+                  return;
+                }
+                setPwdBusy(true);
+                try {
+                  await apiClient.changePassword(pwdCurrent, pwdNew);
+                  toast.success(t(locale, 'settings.password.updated'));
+                  setPwdCurrent('');
+                  setPwdNew('');
+                  setPwdConfirm('');
+                } catch (e) {
+                  toast.error(e instanceof Error ? e.message : String(e));
+                } finally {
+                  setPwdBusy(false);
+                }
+              }}
+            >
+              {t(locale, 'settings.password.update')}
+            </Button>
+          </div>
+        )}
       </GlassCard>
 
       <GlassCard>

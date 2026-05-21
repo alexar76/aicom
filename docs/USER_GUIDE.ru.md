@@ -1,7 +1,7 @@
 # Руководство пользователя AI-Factory (подробное)
 
 > **Для кого:** операторы фабрики, владельцы инстанса, поддержка — витрина, админка, пайплайн.  
-> **Английская версия (те же скриншоты):** [USER_GUIDE.md](./USER_GUIDE.md) · **FAQ:** [FAQ.ru.md](./FAQ.ru.md)
+> **Английская версия (те же скриншоты):** [USER_GUIDE.md](./USER_GUIDE.md) · **FAQ:** [FAQ.ru.md](./FAQ.ru.md) · **Español:** [USER_GUIDE.es.md](./USER_GUIDE.es.md)
 
 > **Скриншоты** лежат в [`docs/assets/screenshots/`](./assets/screenshots/). Если файлов `.png` нет в клоне — поднимите стек и выполните:
 >
@@ -375,6 +375,7 @@
 | Документ | Когда читать |
 |----------|----------------|
 | [FAQ.ru.md](./FAQ.ru.md) | Ответы на частые вопросы |
+| [USER_GUIDE.es.md](./USER_GUIDE.es.md) / [FAQ.es.md](./FAQ.es.md) | Guía y FAQ en español |
 | [owner-guide.md](./owner-guide.md) | Владелец продакшн-инстанса |
 | [admin-guide.md](./admin-guide.md) | Каждая вкладка, API |
 | [security.md](./security.md) | Пароли, CSRF, sandbox |

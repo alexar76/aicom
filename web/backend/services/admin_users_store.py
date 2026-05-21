@@ -228,14 +228,8 @@ def delete_user(user_id: str) -> None:
             kept.append(u)
     if not victim:
         raise LookupError("User not found")
-    if str(victim.get("role")) == "super_admin" and victim.get("enabled", True):
-        others = sum(
-            1
-            for x in kept
-            if str(x.get("role")) == "super_admin" and x.get("enabled", True)
-        )
-        if others < 1:
-            raise ValueError("Cannot delete the last super_admin")
+    if str(victim.get("role")) == "super_admin":
+        raise ValueError("Cannot delete a super_admin account")
     raw["users"] = kept
     _save_raw(raw)
     logger.info("Deleted admin user id=%s", user_id)

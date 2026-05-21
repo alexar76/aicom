@@ -19,6 +19,7 @@ from pydantic import BaseModel, Field
 
 from web.backend.core.admin_roles import normalize_role, require_admin_with_rbac
 from web.backend.services.demo_credentials import sandbox_demo_password_uses_default
+from web.backend.services.public_demo_guard import public_demo_status, require_not_public_demo
 from web.backend.core.security import SecurityManager
 from web.backend.middleware.csrf import CSRF_COOKIE, CSRF_HEADER, new_csrf_token
 from web.backend.services import admin_users_store as aus
@@ -275,6 +276,7 @@ async def get_current_admin_info(
         "webauthn_enabled": webauthn_enabled,
         "mfa_method": mfa_method or None,
         "sandbox_demo_password_uses_default": sandbox_demo_password_uses_default(),
+        **public_demo_status(),
     }
 
 
@@ -401,6 +403,7 @@ async def change_password(
     current_admin: dict = Depends(require_admin_with_rbac),
 ):
     """Change password for the logged-in account (store + legacy sync when applicable)."""
+    require_not_public_demo("admin password change")
     security: SecurityManager = request.app.state.security_manager
 
     if len(new_password) < 12:

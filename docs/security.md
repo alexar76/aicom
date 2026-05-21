@@ -21,6 +21,36 @@ After first login, change the password via **Admin → Users** (super_admin) or 
 
 ---
 
+## Public demo mode (`AIFACTORY_DEMO_READONLY=1`)
+
+> **Disclaimer:** [magic-ai-factory.com](https://magic-ai-factory.com) is a **shared demonstration**. Credentials `admin` / `demo123` are public. The instance is **not** a private factory.
+
+Set in root **`.env`** (persists across `docker compose build` / `up`; file is not committed):
+
+```bash
+AIFACTORY_DEMO_READONLY=1
+```
+
+When enabled, the API returns **403** for:
+
+| Action | Rationale |
+|--------|-----------|
+| Factory backup / restore ZIP | No bulk exfiltration or catalog wipe |
+| `POST /api/admin/settings` | Shared Director/autopilot/URLs stay stable |
+| `POST /api/admin/auth/change-password` | Shared `demo123` must keep working |
+| Admin user create/update/delete | No lockout of other visitors |
+| Sandbox `start`, sandbox `git push` | Abuse and resource limits |
+
+The admin UI reads `public_demo` from `GET /api/admin/auth/me` and shows a banner on **Settings**; backup/restore controls are hidden.
+
+**Self-hosted:** leave unset or `AIFACTORY_DEMO_READONLY=0`. Use bootstrap password, full Settings, and backup/restore.
+
+Automation: `scripts/fill_production_env.py --public-url https://magic-ai-factory.com` appends `AIFACTORY_DEMO_READONLY=1` if missing. See [production-domain.md](./production-domain.md).
+
+There is **no** admin UI action to delete pipeline products; demo protection does not rely on hiding delete buttons alone.
+
+---
+
 ## HTTP security middleware
 
 | Control | Env / behavior |

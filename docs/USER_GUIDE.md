@@ -1,7 +1,7 @@
 # AI-Factory User Guide (detailed)
 
 > **Audience:** operators, product owners, and support using the **storefront** and **admin panel**.  
-> **Русская версия (подробнее, те же скриншоты):** [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) · **FAQ:** [FAQ.md](./FAQ.md) · [FAQ.ru.md](./FAQ.ru.md)
+> **Русская версия (те же скриншоты):** [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) · **Español:** [USER_GUIDE.es.md](./USER_GUIDE.es.md) · **FAQ:** [FAQ.md](./FAQ.md) · [FAQ.ru.md](./FAQ.ru.md) · [FAQ.es.md](./FAQ.es.md)
 
 > **Screenshots** live in [`docs/assets/screenshots/`](./assets/screenshots/). If PNGs are missing in your clone, start the stack and run:
 >
@@ -335,8 +335,9 @@ Refresh: `cd web/frontend && npm run capture-docs-screenshots` — details in [a
 
 | Document | When |
 |----------|------|
-| [FAQ.md](./FAQ.md) / [FAQ.ru.md](./FAQ.ru.md) | Frequent questions |
-| [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) | Full Russian walkthrough |
+| [FAQ.md](./FAQ.md) / [FAQ.ru.md](./FAQ.ru.md) / [FAQ.es.md](./FAQ.es.md) | Frequent questions |
+| [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) | Russian walkthrough |
+| [USER_GUIDE.es.md](./USER_GUIDE.es.md) | Spanish walkthrough |
 | [owner-guide.md](./owner-guide.md) | Production owner |
 | [admin-guide.md](./admin-guide.md) | Every admin tab |
 | [admin-panel-rbac.md](./admin-panel-rbac.md) | Roles |

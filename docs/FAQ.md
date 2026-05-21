@@ -1,6 +1,6 @@
 # FAQ — AI-Factory (detailed)
 
-> Illustrated guide: [USER_GUIDE.md](./USER_GUIDE.md) · **Русский:** [FAQ.ru.md](./FAQ.ru.md) · [USER_GUIDE.ru.md](./USER_GUIDE.ru.md)
+> Illustrated guide: [USER_GUIDE.md](./USER_GUIDE.md) · **Русский:** [FAQ.ru.md](./FAQ.ru.md) · [USER_GUIDE.ru.md](./USER_GUIDE.ru.md) · **Español:** [FAQ.es.md](./FAQ.es.md) · [USER_GUIDE.es.md](./USER_GUIDE.es.md)
 
 ---
 

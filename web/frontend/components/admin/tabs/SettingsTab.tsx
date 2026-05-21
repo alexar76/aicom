@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import apiClient from '@/lib/api';
 import { PipelineDatabaseSettings } from '@/components/admin/settings/PipelineDatabaseSettings';
 import { DirectorPipelineSettings } from '@/components/admin/settings/DirectorPipelineSettings';
 import { DirectorStandupSettings } from '@/components/admin/settings/DirectorStandupSettings';
@@ -18,13 +20,28 @@ import type { AdminLocale } from '@/lib/adminI18n';
 import { t } from '@/lib/adminI18n';
 import { QualitySettingsCollapsible } from './QualitySettingsCollapsible';
 import { DemoReplayMonitorSection } from './DemoReplayMonitorSection';
+import { FactoryBackupSettings } from '@/components/admin/settings/FactoryBackupSettings';
 
 export function SettingsTab({ locale }: { locale: AdminLocale }) {
   const api = useSettingsTabState(locale);
+  const [publicDemo, setPublicDemo] = useState(false);
+
+  useEffect(() => {
+    void apiClient
+      .getMe()
+      .then((me) => setPublicDemo(Boolean(me.public_demo || me.public_demo_readonly)))
+      .catch(() => setPublicDemo(false));
+  }, []);
 
   return (
     <div className="w-full min-w-0 max-w-2xl space-y-6">
       <h2 className="text-xl font-semibold text-white mb-4">{t(locale, 'settings.pageTitle')}</h2>
+
+      {publicDemo && (
+        <p className="text-sm text-sky-200/90 rounded-lg border border-sky-500/40 bg-sky-950/30 p-3">
+          {t(locale, 'settings.factoryBackup.demoBlocked')}
+        </p>
+      )}
 
       <DirectorPipelineSettings api={api} />
 
@@ -56,7 +73,7 @@ export function SettingsTab({ locale }: { locale: AdminLocale }) {
       <ContentSettings api={api} />
       <TelegramSettings api={api} />
 
-      {!api.settingsLoading && (
+      {!publicDemo && !api.settingsLoading && (
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
           <div className="flex items-center gap-2 text-sm">
             {api.settingsSaving ? (
@@ -74,7 +91,8 @@ export function SettingsTab({ locale }: { locale: AdminLocale }) {
         </div>
       )}
 
-      <AccountSecuritySettings api={api} />
+      <FactoryBackupSettings locale={locale} />
+      <AccountSecuritySettings api={api} publicDemo={publicDemo} />
       <DemoReplayMonitorSection variant="settings" />
       <ThemeSettings api={api} />
     </div>

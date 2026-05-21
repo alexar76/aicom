@@ -9,7 +9,12 @@ In the project root `.env` (not committed), set:
 ```bash
 # Canonical URL for Open Graph, sitemap, and server-side metadata (baked at `docker compose build`).
 NEXT_PUBLIC_SITE_URL=https://magic-ai-factory.com
+
+# Public demo: shared admin/demo123 — block backup, restore, settings save, password change (required).
+AIFACTORY_DEMO_READONLY=1
 ```
+
+> **Disclaimer:** Anyone can log in as `admin` / `demo123` on this host. `AIFACTORY_DEMO_READONLY=1` prevents visitors from changing the password, overwriting settings, or restoring a foreign backup onto the shared catalog. Details: [security.md](./security.md#public-demo-mode-aifactory_demo_readonly1).
 
 If nginx serves **HTTP on port 80** only, use:
 

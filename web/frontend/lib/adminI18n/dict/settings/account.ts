@@ -21,6 +21,16 @@ export const ACCOUNT_SETTINGS_DICT: I18nDict = {
     ru: 'Подтвердите новый пароль',
     es: 'Confirmar nueva contraseña',
   },
+  'settings.password.mismatch': {
+    en: 'New password and confirmation do not match',
+    ru: 'Новый пароль и подтверждение не совпадают',
+    es: 'La nueva contraseña y la confirmación no coinciden',
+  },
+  'settings.password.updated': {
+    en: 'Password changed',
+    ru: 'Пароль изменён',
+    es: 'Contraseña cambiada',
+  },
   'settings.password.update': {
     en: 'Update Password',
     ru: 'Обновить пароль',

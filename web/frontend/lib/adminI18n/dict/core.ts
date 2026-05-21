@@ -168,6 +168,24 @@ export const CORE_DICT: I18nDict = {
     ru: 'Удалить пользователя {name}? Вход будет невозможен.',
     es: '¿Eliminar a {name}? Ya no podrá iniciar sesión.',
   },
+  'users.demoBlocked': {
+    en: 'Public demo: user management is read-only. Self-host for full controls.',
+    ru: 'Публичное демо: управление пользователями только для просмотра. Для полного доступа разверните свою фабрику.',
+    es: 'Demo público: gestión de usuarios solo lectura. Auto-aloje para control total.',
+  },
+  'users.cannotDeleteSuperAdmin': {
+    en: 'Super-admin accounts cannot be deleted.',
+    ru: 'Учётную запись супер-админа нельзя удалить.',
+    es: 'No se puede eliminar una cuenta super-admin.',
+  },
+  'users.editPassword': { en: 'Change password', ru: 'Сменить пароль', es: 'Cambiar contraseña' },
+  'users.modalEditTitle': { en: 'Set new password', ru: 'Новый пароль', es: 'Nueva contraseña' },
+  'users.newPassword': { en: 'New password', ru: 'Новый пароль', es: 'Nueva contraseña' },
+  'users.passwordUpdated': {
+    en: 'Password updated',
+    ru: 'Пароль обновлён',
+    es: 'Contraseña actualizada',
+  },
   'security.demoPassword.title': {
     en: 'Change the sandbox demo password',
     ru: 'Смените демо-пароль песочницы',

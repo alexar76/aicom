@@ -4,16 +4,18 @@
 
 | Language | Files |
 |----------|--------|
-| **English (primary)** | All guides under `docs/` except the two RU companions below — technical reference, ops, API, architecture. |
+| **English (primary)** | All guides under `docs/` except the optional RU/ES companions below — technical reference, ops, API, architecture. |
 | **Russian (optional)** | [`USER_GUIDE.ru.md`](./USER_GUIDE.ru.md), [`FAQ.ru.md`](./FAQ.ru.md) — same topics as the English user guide / FAQ, maintained in parallel. |
+| **Spanish (optional)** | [`USER_GUIDE.es.md`](./USER_GUIDE.es.md), [`FAQ.es.md`](./FAQ.es.md) — same topics as EN user guide / FAQ. UI: `NEXT_PUBLIC_MARKETING_LOCALE=es`, Admin locale **es**. |
 
-Operator-facing UI strings may be **en / ru / es** in Admin; that is product i18n, not documentation locale.
+Operator-facing UI strings may be **en / ru / es** in Admin; that is product i18n, not documentation locale. Wiki language policy: [`scripts/wiki-gitea/Languages.md`](../scripts/wiki-gitea/Languages.md).
 
 ## Operator / owner playbook
 
 - **`USER_GUIDE.md`** — **detailed illustrated walkthrough** (EN): situation cheat sheet, scenario playbooks, Pipeline catalog loading, screenshot index. Start here for **hands-on usage**.
 - **`USER_GUIDE.ru.md`** — **подробное руководство (RU)** с теми же скриншотами, кейсами и таблицей «куда смотреть».
-- **`FAQ.md`** / **`FAQ.ru.md`** — **detailed FAQ** (EN + RU): Pipeline retries, cache, storefront vs Completed, LLM, discovery, data volumes.
+- **`USER_GUIDE.es.md`** — **guía detallada (ES)** con las mismas capturas y escenarios.
+- **`FAQ.md`** / **`FAQ.ru.md`** / **`FAQ.es.md`** — **detailed FAQ** (EN + RU + ES): Pipeline retries, cache, storefront vs Completed, LLM, discovery, data volumes.
 - **`owner-guide.md`** — English handbook for the platform owner: step-by-step flows, **Mermaid** diagrams, storefront policy, support vs pipeline, pitfalls. Start here if you run an instance.
 - **`api-integration-guide.md`** — REST integration: auth patterns, router map, curl examples (companion to Swagger `/api/docs`).
 - **`cli-reference.md`** — commands implemented in `cli/ai_company_cli.py`, plus notes on stubs vs real behavior.

@@ -70,8 +70,8 @@ Try it out: [https://magic-ai-factory.com](https://magic-ai-factory.com)
 - Username: `admin`
 - Password: `demo123`
 
-> ⚠️ `demo123` applies **only** to the public demo at magic-ai-factory.com — not to self-hosted installs.  
-> Self-hosted: bootstrap password (`data/secrets/bootstrap_admin.txt` or TTY prompt). See [docs/security.md](docs/security.md).
+> ⚠️ **Public demo disclaimer:** `demo123` applies **only** to [magic-ai-factory.com](https://magic-ai-factory.com) — a **shared** site, not your private factory. Production `.env` must include **`AIFACTORY_DEMO_READONLY=1`** so visitors cannot change the password, save Settings, or run factory backup/restore. See [docs/security.md](docs/security.md#public-demo-mode-aifactory_demo_readonly1).  
+> Self-hosted: bootstrap password (`data/secrets/bootstrap_admin.txt` or TTY prompt); leave `AIFACTORY_DEMO_READONLY` unset or `0`.
 
 #### Self-hosted (first install)
 

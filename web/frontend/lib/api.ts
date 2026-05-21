@@ -518,6 +518,33 @@ export interface AdminMeResponse {
   mfa_method?: string | null;
   /** True when unset/blank or still set to the legacy public demo password SandboxDemo!2026 (unsafe on reachable hosts). */
   sandbox_demo_password_uses_default?: boolean;
+  /** AIFACTORY_DEMO_READONLY=1 — shared demo host (e.g. admin/demo123). */
+  public_demo?: boolean;
+  public_demo_readonly?: boolean;
+  blocks_factory_backup?: boolean;
+  blocks_factory_restore?: boolean;
+  blocks_admin_password_change?: boolean;
+  blocks_admin_user_management?: boolean;
+  blocks_platform_settings_save?: boolean;
+}
+
+export interface FactoryRestorePreview {
+  restore_token: string;
+  restore_mode: string;
+  backup: {
+    backup_manifest: Record<string, unknown>;
+    archive_files: number;
+    archive_bytes_uncompressed: number;
+  };
+  current: {
+    products_total: number;
+    products_by_state: Record<string, number>;
+    has_config_overlay?: boolean;
+    has_secrets_dir?: boolean;
+    data_total_bytes?: number;
+    top_level_dirs?: string[];
+  };
+  warnings: string[];
 }
 
 export interface ChatMessage {
@@ -927,6 +954,13 @@ class ApiClient {
   async deleteAdminUser(userId: string): Promise<{ ok: boolean }> {
     return this.request(`/admin/users/${encodeURIComponent(userId)}`, {
       method: 'DELETE',
+    });
+  }
+
+  async resetAdminUserPassword(userId: string, newPassword: string): Promise<{ ok: boolean; username?: string }> {
+    return this.request(`/admin/users/${encodeURIComponent(userId)}/password`, {
+      method: 'POST',
+      body: JSON.stringify({ new_password: newPassword }),
     });
   }
 
@@ -1591,6 +1625,132 @@ class ApiClient {
 
   async getSecurityReport(productId: string): Promise<{ product_id: string; report: any }> {
     return this.request(`/admin/products/${productId}/security-report`);
+  }
+
+  /** Upload backup ZIP → preview warnings (admin+, not on public demo). */
+  async previewFactoryRestore(file: File): Promise<FactoryRestorePreview> {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const form = new FormData();
+    form.append('file', file);
+    const res = await fetch(`${this.baseUrl}/admin/factory-backup/preview`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      credentials: 'include',
+      body: form,
+    });
+    if (!res.ok) {
+      let msg = `HTTP ${res.status}`;
+      try {
+        const body = (await res.json()) as { detail?: unknown };
+        if (typeof body.detail === 'string') msg = body.detail;
+      } catch {
+        /* ignore */
+      }
+      if (res.status === 401 && typeof window !== 'undefined' && token) {
+        clearAdminSessionAndRedirectToLogin();
+      }
+      throw new Error(msg);
+    }
+    return res.json() as Promise<FactoryRestorePreview>;
+  }
+
+  /** Execute full snapshot restore from preview token (admin+, not on public demo). */
+  async executeFactoryRestore(
+    restoreToken: string,
+    confirms: {
+      confirm_replace_all: boolean;
+      confirm_trusted_backup: boolean;
+      confirm_saved_current_backup: boolean;
+    },
+  ): Promise<{
+    ok: boolean;
+    message: string;
+    restart_recommended?: boolean;
+    pre_restore_backup_file?: string | null;
+  }> {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const form = new FormData();
+    form.append('restore_token', restoreToken);
+    form.append('confirm_replace_all', confirms.confirm_replace_all ? 'true' : 'false');
+    form.append('confirm_trusted_backup', confirms.confirm_trusted_backup ? 'true' : 'false');
+    form.append(
+      'confirm_saved_current_backup',
+      confirms.confirm_saved_current_backup ? 'true' : 'false',
+    );
+    const res = await fetch(`${this.baseUrl}/admin/factory-backup/restore`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      credentials: 'include',
+      body: form,
+    });
+    if (!res.ok) {
+      let msg = `HTTP ${res.status}`;
+      try {
+        const body = (await res.json()) as { detail?: unknown };
+        if (typeof body.detail === 'string') msg = body.detail;
+      } catch {
+        /* ignore */
+      }
+      if (res.status === 401 && typeof window !== 'undefined' && token) {
+        clearAdminSessionAndRedirectToLogin();
+      }
+      throw new Error(msg);
+    }
+    return res.json();
+  }
+
+  /** Full factory data volume ZIP (admin+). Settings → Factory backup. */
+  async downloadFactoryBackupZip(includeSandboxes = false): Promise<void> {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const qs = includeSandboxes ? '?include_sandboxes=true' : '';
+    const res = await fetch(`${this.baseUrl}/admin/factory-backup.zip${qs}`, {
+      method: 'GET',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      credentials: 'include',
+    });
+    if (!res.ok) {
+      let msg = `HTTP ${res.status}`;
+      try {
+        const body = (await res.json()) as { detail?: unknown };
+        const d = body?.detail;
+        if (typeof d === 'string' && d.trim()) msg = d.trim();
+        else if (d != null && typeof d !== 'string') msg = JSON.stringify(d);
+      } catch {
+        /* ignore */
+      }
+      if (res.status === 401 && typeof window !== 'undefined' && token) {
+        clearAdminSessionAndRedirectToLogin();
+      }
+      throw new Error(msg);
+    }
+    const blob = await res.blob();
+    const cd = res.headers.get('Content-Disposition');
+    let filename = `aicom-factory-backup.zip`;
+    if (cd) {
+      const star = /filename\*=UTF-8''([^;]+)/i.exec(cd);
+      const quoted = /filename="([^"]+)"/i.exec(cd);
+      const plain = /filename=([^;\s]+)/i.exec(cd);
+      const raw = star?.[1] ?? quoted?.[1] ?? plain?.[1];
+      if (raw) {
+        try {
+          filename = decodeURIComponent(raw.replace(/^"+|"+$/g, ''));
+        } catch {
+          filename = raw.replace(/^"+|"+$/g, '');
+        }
+      }
+    }
+    const url = URL.createObjectURL(blob);
+    try {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } finally {
+      URL.revokeObjectURL(url);
+    }
   }
 
   /** Factory owner: ZIP of on-disk artifacts for one product (Admin → Files tree + EXPORT_MANIFEST.json). Operator+. */

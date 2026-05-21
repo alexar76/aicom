@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from web.backend.core.admin_roles import AdminRole, ROLE_DESCRIPTIONS, require_admin_with_rbac
 from web.backend.core.security import SecurityManager
 from web.backend.services import admin_users_store as store
+from web.backend.services.public_demo_guard import require_not_public_demo
 
 router = APIRouter(
     prefix="/api/admin/users",
@@ -37,6 +38,10 @@ class UserUpdate(BaseModel):
     enabled: Optional[bool] = None
 
 
+class UserPasswordReset(BaseModel):
+    new_password: str = Field(..., min_length=12, max_length=256)
+
+
 @router.get("/roles/meta")
 async def roles_meta(_admin: dict = Depends(require_admin_with_rbac)):
     """Role ids and English descriptions for the admin Users UI (super_admin only)."""
@@ -61,6 +66,7 @@ async def list_users(_admin: dict = Depends(require_admin_with_rbac)):
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_user(request: Request, body: UserCreate, _admin: dict = Depends(require_admin_with_rbac)):
+    require_not_public_demo("admin user management")
     security: SecurityManager = request.app.state.security_manager
     try:
         store.validate_username(body.username)
@@ -77,6 +83,7 @@ async def create_user(request: Request, body: UserCreate, _admin: dict = Depends
 
 @router.patch("/{user_id}")
 async def patch_user(user_id: str, body: UserUpdate, _admin: dict = Depends(require_admin_with_rbac)):
+    require_not_public_demo("admin user management")
     try:
         kw: dict = {}
         if body.role is not None:
@@ -96,8 +103,31 @@ async def patch_user(user_id: str, body: UserUpdate, _admin: dict = Depends(requ
     return {k: v for k, v in u.items() if k != "password_hash"}
 
 
+@router.post("/{user_id}/password")
+async def reset_user_password(
+    request: Request,
+    user_id: str,
+    body: UserPasswordReset,
+    _admin: dict = Depends(require_admin_with_rbac),
+):
+    """Super-admin sets a new password for another admin panel user."""
+    require_not_public_demo("admin user management")
+    security: SecurityManager = request.app.state.security_manager
+    try:
+        store.update_user(user_id, password_hash=security.hash_password(body.new_password))
+    except LookupError:
+        raise HTTPException(status_code=404, detail="User not found") from None
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    u = store.get_user_by_id(user_id)
+    if not u:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"ok": True, "username": u.get("username")}
+
+
 @router.delete("/{user_id}")
 async def remove_user(user_id: str, _admin: dict = Depends(require_admin_with_rbac)):
+    require_not_public_demo("admin user management")
     try:
         store.delete_user(user_id)
     except LookupError:

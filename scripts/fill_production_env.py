@@ -7,6 +7,7 @@ Typical automation:
   - ``AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION`` — default ``1`` when absent.
   - ``NEXT_PUBLIC_SITE_URL`` + ``AIFACTORY_CORS_ORIGINS`` — when ``--public-url`` is passed
     and those keys are not already set in the file.
+  - ``AIFACTORY_DEMO_READONLY=1`` — when ``--public-url`` host is ``magic-ai-factory.com`` (public demo).
 
 Why not always auto-guess CORS? The factory cannot know your real public URL without you
 (or reverse-proxy headers at runtime). Passing ``--public-url`` once fixes that.
@@ -74,6 +75,9 @@ def main() -> int:
             additions.append(("NEXT_PUBLIC_SITE_URL", public_url))
         if "AIFACTORY_CORS_ORIGINS" not in keys:
             additions.append(("AIFACTORY_CORS_ORIGINS", public_url))
+        host = public_url.lower().replace("https://", "").replace("http://", "").split("/")[0]
+        if "magic-ai-factory.com" in host and "AIFACTORY_DEMO_READONLY" not in keys:
+            additions.append(("AIFACTORY_DEMO_READONLY", "1"))
 
     if "AIFACTORY_FIREWALL_RULES_FERNET_KEY" not in keys:
         try:

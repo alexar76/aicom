@@ -175,7 +175,26 @@ The storefront **support chat** calls `/api/support/*`. The assistant **Lumen** 
 
 ---
 
-## 7. Where to go deeper
+## 7. Backups (full factory data)
+
+Everything persistent lives under the **`./data` → `/app/data`** bind mount: `state/pipeline.db`, `pipeline.json`, `config/`, `secrets/`, `code/`, `specs/`, `logs/`, `discovery/`, storefront orders, etc.
+
+| Method | When |
+|--------|------|
+| **Admin → Settings → Factory backup** | Download a ZIP via browser (**admin** / **super_admin**). Skips `sandboxes/` by default (checkbox to include). |
+| **Admin → Settings → Restore** | Upload the same ZIP → preview (product counts, warnings) → three confirmations → **full snapshot replace** (auto pre-restore ZIP in `data/backups/`). Restart app after restore. |
+| **`./scripts/backup_factory_data.sh`** | On the host: `tar.gz` of the whole `data/` tree — best for large instances and cron. |
+| **Admin → Files → Download product ZIP** | One `prod-…` only — not a full backup. |
+
+Restore is **not a merge** — it replaces the live `data/` tree (except `data/backups/` and pending upload staging). CLI alternative: stop app, extract archive over `./data`, start again.
+
+**Public demo** (`AIFACTORY_DEMO_READONLY=1` on e.g. magic-ai-factory.com): backup, restore, settings save, admin password change, and user management are **blocked** so visitors cannot corrupt shared `admin` / `demo123` or catalog products.
+
+There is **no** “delete product” button in the admin UI. Destructive wipes are CLI-only (`scripts/wipe_pipeline_products.py`, `scripts/delete_pipeline_products.py`). Demo readonly also blocks sandbox start and git push.
+
+---
+
+## 8. Where to go deeper
 
 | Topic | Document |
 |-------|----------|

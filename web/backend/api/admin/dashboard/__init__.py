@@ -21,6 +21,7 @@ from . import (  # noqa: F401 — register routes on shared router
     routes_pipeline,
     routes_products,
     routes_providers,
+    routes_factory_backup,
 )
 
 __all__ = [

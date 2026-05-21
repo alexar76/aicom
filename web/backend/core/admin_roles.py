@@ -75,6 +75,7 @@ VIEWER_BLOCKED_GET_PREFIXES: tuple[str, ...] = (
     "/api/admin/chat/settings",
     "/api/admin/release",
     "/api/admin/reference-templates",
+    "/api/admin/factory-backup",
 )
 
 # Non-GET requests operators cannot perform (prefix match).
@@ -91,6 +92,7 @@ OPERATOR_WRITE_DENIED_PREFIXES: tuple[str, ...] = (
     "/api/admin/release",
     "/api/admin/reference-templates",
     "/api/admin/feedback",
+    "/api/admin/factory-backup",
 )
 
 # Auth endpoints restricted to admin+ (platform owner actions on legacy admin.json).
