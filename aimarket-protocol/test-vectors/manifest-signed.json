@@ -1,0 +1,51 @@
+{
+  "protocol_version": "v1",
+  "generated_at": "2026-05-21T20:34:09Z",
+  "base_url": "https://test-hub.example.com",
+  "products_count": 3,
+  "capabilities_count": 5,
+  "tools": [
+    {
+      "name": "prod-001.translate.multi@v2",
+      "description": "Translate text to multiple locales",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "locales": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "text"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "translations": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "price_per_call_usd": 0.4,
+      "p50_latency_ms": 8100,
+      "success_rate_30d": 0.97,
+      "product_id": "prod-001",
+      "capability_id": "translate.multi@v2"
+    }
+  ],
+  "signature": {
+    "algorithm": "ed25519",
+    "public_key": "11qYAYKxCrfVS/7TyWQHOg7hcvPapiMlrwIaaPcHURo=",
+    "value": "p0OpyzvElde3ovCs+ORvwcRGAtuTCH+dN19b8E7+trJDwVN5aHEC1uJN19E6kw/dxlbome8tvTZ+pFOLJq6MDw=="
+  }
+}

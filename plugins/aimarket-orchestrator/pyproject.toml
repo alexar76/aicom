@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-orchestrator"
+version = "2.0.0"
+description = "Orchestrator as a capability — sells the 'brain', not just muscles"
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["aimarket-hub>=2.0.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.entry-points."aimarket.plugins"]
+orchestrator = "aimarket_orchestrator.plugin:OrchestratorPlugin"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_orchestrator*"]

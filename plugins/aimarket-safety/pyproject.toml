@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-safety"
+version = "2.0.0"
+description = "AIMarket Hub plugin: pre/post-invoke safety classifier with constitutional contracts"
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["aimarket-hub>=2.0.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.entry-points."aimarket.plugins"]
+safety = "aimarket_safety.plugin:SafetyPlugin"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_safety*"]

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-tee"
+version = "2.0.0"
+description = "TEE-attested execution (AWS Nitro Enclaves / Intel TDX)"
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["aimarket-hub>=2.0.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.entry-points."aimarket.plugins"]
+tee = "aimarket_tee.plugin:TEEPlugin"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_tee*"]

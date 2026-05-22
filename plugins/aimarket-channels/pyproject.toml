@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-channels"
+version = "2.0.0"
+description = "Pre-funded payment channels — off-chain ledger, on-chain settlement"
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["aimarket-hub>=2.0.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.entry-points."aimarket.plugins"]
+channels = "aimarket_channels.plugin:ChannelsPlugin"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_channels*"]

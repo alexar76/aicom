@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://modelmarket.dev/schemas/well-known.json",
+  "title": "AI Market Well-Known Manifest",
+  "description": "Root discovery endpoint at /.well-known/ai-market.json",
+  "type": "object",
+  "required": ["name", "protocol_versions", "manifest_url", "signer_public_key"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Human-readable hub name"
+    },
+    "protocol_versions": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["v1", "v2", "mcp"]},
+      "minItems": 1
+    },
+    "hub_version": {
+      "type": "string",
+      "description": "Semver of hub software"
+    },
+    "mcp_endpoint": {
+      "type": "string",
+      "format": "uri"
+    },
+    "manifest_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "products_count": {"type": "integer", "minimum": 0},
+    "capabilities_count": {"type": "integer", "minimum": 0},
+    "federated_capabilities_count": {"type": "integer", "minimum": 0},
+    "supported_chains": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "supported_tokens": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "signer_public_key": {
+      "type": "string",
+      "description": "Base64-encoded Ed25519 public key"
+    },
+    "federation": {
+      "type": "object",
+      "properties": {
+        "crawl_interval_s": {"type": "integer", "minimum": 60},
+        "routing_fee_bps": {"type": "integer", "minimum": 0, "maximum": 10000},
+        "min_trust_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "seed_list": {
+          "type": "array",
+          "items": {"type": "string", "format": "uri"}
+        }
+      }
+    },
+    "peers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["url", "name"],
+        "properties": {
+          "url": {"type": "string", "format": "uri"},
+          "name": {"type": "string"},
+          "capabilities_count": {"type": "integer"},
+          "last_crawl": {"type": "string", "format": "date-time"},
+          "trust_score": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    }
+  }
+}

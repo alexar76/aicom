@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  hub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9080:9080"
+    environment:
+      - AIMARKET_HUB_NAME=AI-Factory Federation Hub
+      - AIMARKET_HUB_URL=http://0.0.0.0:9080
+      - AIMARKET_DB_PATH=/app/data/hub.db
+      - AIMARKET_SIGNING_KEY_PATH=/app/data/hub_signing_key
+      - AIMARKET_SEED_LIST=
+      - AIMARKET_CRAWL_INTERVAL_S=3600
+      - AIMARKET_ROUTING_FEE_BPS=100
+      - AIMARKET_MIN_TRUST_SCORE=0.3
+      - AIMARKET_MAX_CRAWL_DEPTH=3
+      - AIMARKET_REQUEST_TIMEOUT_S=30
+    volumes:
+      - hub_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9080/.well-known/ai-market.json"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  hub_data:

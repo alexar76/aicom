@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-agent"
+version = "2.0.0"
+description = "Reference consumer agent for AIMarket Protocol v2 — AI-to-AI discovery, payment, invoke"
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["httpx>=0.28", "cryptography>=44"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-httpx>=0.35"]
+
+[project.scripts]
+aimarket-agent = "aimarket_agent.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_agent*"]

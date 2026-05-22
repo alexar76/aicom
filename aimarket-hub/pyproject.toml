@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-hub"
+version = "3.0.0"
+description = "AI Market Federation Hub — crawl, index, search, and route AI capabilities across the network"
+license = {text = "Apache-2.0"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.28",
+    "fastapi>=0.115",
+    "uvicorn>=0.34",
+    "pydantic>=2.10",
+    "cryptography>=44",
+    "jsonschema>=4.23",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-asyncio>=0.25", "pytest-httpx>=0.35"]
+all = [
+    "aimarket-hub[dev]",
+    "aimarket-safety>=2.0",
+    "aimarket-reputation>=2.0",
+    "aimarket-auction>=2.0",
+    "aimarket-personas>=2.0",
+    "aimarket-streaming>=2.0",
+    "aimarket-nft>=2.0",
+    "aimarket-tee>=2.0",
+    "aimarket-mcp>=2.0",
+    "aimarket-orchestrator>=2.0",
+    "aimarket-data>=2.0",
+    "aimarket-promo>=2.0",
+    "aimarket-zk>=2.0",
+    "aimarket-dataset>=2.0",
+    "aimarket-factory-bridge>=2.0",
+]
+
+[project.scripts]
+aimarket = "aimarket_hub.cli:_entrypoint"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_hub*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

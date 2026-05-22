@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIMarket Widget — Theme Gallery</title>
+<link rel="stylesheet" href="themes.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  header {
+    padding: 40px 20px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #0d1117, #161b22);
+    color: #c9d1d9;
+  }
+  header h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.5px; }
+  header p { color: #8b949e; margin-top: 8px; font-size: 16px; }
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+    gap: 32px;
+    padding: 40px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .theme-card {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+  .theme-label {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .copy-btn {
+    font-size: 11px; padding: 4px 12px; border-radius: 6px; border: 1px solid #cbd5e1;
+    background: #fff; cursor: pointer; font-weight: 600;
+  }
+  .copy-btn:hover { background: #f1f5f9; }
+  .demo-footer {
+    text-align: center; padding: 40px 20px; color: #94a3b8; font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🤖 AIMarket Widget</h1>
+  <p>Embeddable AI capability search — 6 premium themes · MIT Licensed</p>
+  <p style="margin-top:12px;font-size:13px;color:#58a6ff;">
+    &lt;script src="widget.js" data-theme="..." data-intent="..." data-budget="3.00"&gt;&lt;/script&gt;
+  </p>
+</header>
+
+<div class="theme-grid">
+  <div class="theme-card" id="demo-cyber"></div>
+  <div class="theme-card" id="demo-neon"></div>
+  <div class="theme-card" id="demo-light"></div>
+  <div class="theme-card" id="demo-paper"></div>
+  <div class="theme-card" id="demo-midnight"></div>
+  <div class="theme-card" id="demo-ocean"></div>
+</div>
+
+<div class="demo-footer">
+  Powered by <a href="https://modelmarket.dev" style="color:#3b82f6;">aimarket-hub</a> —
+  <a href="https://github.com/anthropics/aimarket-hub" style="color:#3b82f6;">GitHub</a>
+</div>
+
+<script>
+const THEMES = ['cyber', 'neon', 'light', 'paper', 'midnight', 'ocean'];
+const HUB_URL = 'http://localhost:9080';
+
+function buildWidget(theme) {
+  const root = document.createElement('div');
+  root.className = `aimw-root aimw-theme-${theme}`;
+
+  root.innerHTML = `
+    <div class="aimw-header">AI Market</div>
+    <div class="aimw-subheader">Discover & invoke AI capabilities</div>
+    <input class="aimw-search" type="text" placeholder="What do you need? (translate, legal review, summarize...)" value="translate to 5 languages" />
+    <div class="aimw-budget">
+      <span style="font-size:13px;color:var(--aimw-text-dim);">Budget:</span>
+      <span style="font-size:14px;font-weight:700;">$</span>
+      <input type="number" value="3.00" min="0.1" max="10000" step="0.1" />
+      <button class="aimw-btn">Search</button>
+    </div>
+    <div style="margin-top:8px;">
+      <!-- Demo cards -->
+      <div class="aimw-card">
+        <div class="aimw-card-info">
+          <div class="aimw-card-name">
+            translate.multi@v2
+            <span class="aimw-badge aimw-badge-trust">trust 0.92</span>
+          </div>
+          <div class="aimw-card-desc">Translate text to multiple locales in one call</div>
+          <div class="aimw-card-meta">
+            <span class="aimw-card-meta-item">$0.40</span>
+            <span class="aimw-card-meta-item">8.1s</span>
+            <span class="aimw-card-meta-item">97% success</span>
+            <span class="aimw-badge aimw-badge-federated">federated</span>
+          </div>
+        </div>
+        <button class="aimw-btn">Try</button>
+      </div>
+      <div class="aimw-card">
+        <div class="aimw-card-info">
+          <div class="aimw-card-name">
+            legal.review@v1
+            <span class="aimw-badge aimw-badge-safety">safety gate</span>
+          </div>
+          <div class="aimw-card-desc">Review documents for legal and compliance issues</div>
+          <div class="aimw-card-meta">
+            <span class="aimw-card-meta-item">$1.20</span>
+            <span class="aimw-card-meta-item">11.4s</span>
+            <span class="aimw-card-meta-item">99% success</span>
+          </div>
+        </div>
+        <button class="aimw-btn aimw-btn-outline">Try</button>
+      </div>
+      <div class="aimw-card">
+        <div class="aimw-card-info">
+          <div class="aimw-card-name">
+            summarize@v1
+            <span class="aimw-badge aimw-badge-trust">trust 0.88</span>
+          </div>
+          <div class="aimw-card-desc">Summarize content produced by the workflow</div>
+          <div class="aimw-card-meta">
+            <span class="aimw-card-meta-item">$0.25</span>
+            <span class="aimw-card-meta-item">2.8s</span>
+          </div>
+        </div>
+        <button class="aimw-btn">Try</button>
+      </div>
+    </div>
+    <div class="aimw-result" style="margin-top:14px;">
+      <strong>✓ translate.multi@v2</strong>
+      <span style="font-size:11px;"> · $0.40 · 8.1s · <span class="aimw-badge aimw-badge-safety">safety passed</span></span>
+      <pre style="margin-top:8px;font-size:12px;white-space:pre-wrap;">{
+  "translations": {
+    "ru": "перевести на 5 языков",
+    "en": "translate to 5 languages",
+    "de": "in 5 Sprachen übersetzen",
+    "fr": "traduire en 5 langues",
+    "ja": "5か国語に翻訳する"
+  }
+}</pre>
+    </div>
+    <div class="aimw-footer">
+      Powered by <a href="https://modelmarket.dev">aimarket-hub</a> · affiliate: <span style="color:var(--aimw-accent);">earned $0.12</span>
+    </div>
+  `;
+
+  // Add theme label
+  const label = document.createElement('div');
+  label.className = 'theme-label';
+  label.innerHTML = `
+    <span>${theme} theme</span>
+    <span>
+      <button class="copy-btn" data-theme="${theme}">&lt;script&gt; copy</button>
+    </span>
+  `;
+
+  const container = document.getElementById(`demo-${theme}`);
+  container.appendChild(label);
+  container.appendChild(root);
+
+  // Copy button
+  label.querySelector('.copy-btn').addEventListener('click', () => {
+    const code = `<script src="https://cdn.modelmarket.dev/widget.js"
+        data-theme="${theme}"
+        data-intent="translate"
+        data-budget="3.00"
+        data-hub-url="https://hub.modelmarket.dev"
+        data-affiliate-id="my_site"><\\/script>`;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = label.querySelector('.copy-btn');
+      btn.textContent = 'copied!';
+      setTimeout(() => btn.textContent = '<script> copy', 1500);
+    });
+  });
+}
+
+THEMES.forEach(buildWidget);
+</script>
+</body>
+</html>

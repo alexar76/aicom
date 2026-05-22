@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Economy Live · modelmarket.dev</title>
+<style>
+  /* ── Design tokens ─────────────────────────────────────────── */
+  :root {
+    --bg-0: #04050a;
+    --bg-1: #0a0d1a;
+    --bg-2: #11172a;
+    --border: #1f2a44;
+    --border-glow: #38507a;
+
+    --text: #e8edff;
+    --text-dim: #7a86a3;
+    --text-faint: #4a536b;
+
+    --cyan: #5ee4ff;
+    --cyan-soft: #5ee4ff20;
+    --magenta: #ff6bd6;
+    --magenta-soft: #ff6bd620;
+    --lime: #b4ff5e;
+    --lime-soft: #b4ff5e20;
+    --amber: #ffb84d;
+    --red: #ff5e7a;
+
+    --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-0);
+    color: var(--text);
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* ── Background particle field ─────────────────────────────── */
+  #bg-canvas {
+    position: fixed; inset: 0;
+    z-index: 0;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse at top left, #5ee4ff10 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, #ff6bd610 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .shell {
+    position: relative; z-index: 1;
+    max-width: 1480px; margin: 0 auto;
+    padding: 24px 32px 64px;
+  }
+
+  /* ── Top bar ───────────────────────────────────────────────── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .brand {
+    font-family: var(--font-mono);
+    font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
+    color: var(--text);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .brand-mark {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--cyan), var(--magenta));
+    display: grid; place-items: center;
+    font-size: 13px; font-weight: 800; color: var(--bg-0);
+    box-shadow: 0 0 24px var(--cyan-soft);
+  }
+  .brand-title { display: flex; flex-direction: column; line-height: 1.2; }
+  .brand-title small { color: var(--text-dim); font-size: 11px; font-weight: 400; }
+
+  .connection {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--text-dim);
+  }
+  .pulse-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 10px var(--lime);
+    animation: pulse-dot 1.6s ease-in-out infinite;
+  }
+  .pulse-dot.is-offline { background: var(--red); box-shadow: 0 0 10px var(--red); }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  /* ── Hero counters ─────────────────────────────────────────── */
+  .heroes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .hero {
+    position: relative;
+    background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 100%);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 0%, var(--accent-soft, transparent) 100%);
+    opacity: 0.4; pointer-events: none;
+  }
+  .hero:hover { border-color: var(--border-glow); box-shadow: 0 0 24px #0a0d1a, 0 0 1px var(--accent, var(--cyan)); }
+  .hero[data-accent="cyan"] { --accent: var(--cyan); --accent-soft: var(--cyan-soft); }
+  .hero[data-accent="lime"] { --accent: var(--lime); --accent-soft: var(--lime-soft); }
+  .hero[data-accent="magenta"] { --accent: var(--magenta); --accent-soft: var(--magenta-soft); }
+  .hero[data-accent="amber"] { --accent: var(--amber); --accent-soft: #ffb84d20; }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .hero-value {
+    font-family: var(--font-mono);
+    font-size: 38px; font-weight: 700; line-height: 1;
+    color: var(--text);
+    background: linear-gradient(135deg, var(--accent), var(--text));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    transition: filter 0.3s;
+  }
+  .hero-value.is-flash { filter: brightness(1.6) drop-shadow(0 0 16px var(--accent)); }
+  .hero-sub {
+    margin-top: 10px;
+    font-size: 11px; color: var(--text-faint);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hero-spark {
+    margin-top: 12px; height: 32px; width: 100%;
+  }
+
+  /* ── Ticker ────────────────────────────────────────────────── */
+  .ticker-wrap {
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .ticker-wrap::before,
+  .ticker-wrap::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none;
+  }
+  .ticker-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg-1), transparent); }
+  .ticker-wrap::after { right: 0; background: linear-gradient(-90deg, var(--bg-1), transparent); }
+  .ticker {
+    display: inline-block; white-space: nowrap;
+    padding: 14px 0;
+    animation: ticker-scroll 90s linear infinite;
+    font-family: var(--font-mono); font-size: 13px;
+  }
+  .ticker.is-empty { animation: none; padding-left: 24px; color: var(--text-dim); }
+  .ticker:hover { animation-play-state: paused; }
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .ticker-item { display: inline-block; margin: 0 28px; }
+  .ticker-item .agent { color: var(--cyan); }
+  .ticker-item .arrow { color: var(--text-faint); margin: 0 6px; }
+  .ticker-item .cap { color: var(--magenta); }
+  .ticker-item .price { color: var(--lime); font-weight: 700; margin: 0 6px; }
+  .ticker-item .check { color: var(--lime); margin-left: 4px; }
+  .ticker-item .fail { color: var(--red); margin-left: 4px; }
+
+  /* ── Main grid ─────────────────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 980px) {
+    .grid { grid-template-columns: 1fr; }
+    .heroes { grid-template-columns: repeat(2, 1fr); }
+    .shell { padding: 16px; }
+    .hero-value { font-size: 30px; }
+  }
+
+  .card {
+    background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 100%);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .card-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .card-title {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .card-filters {
+    display: flex; gap: 6px;
+  }
+  .filter {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 6px; cursor: pointer;
+    transition: all 0.18s;
+  }
+  .filter:hover { color: var(--text); border-color: var(--border-glow); }
+  .filter.is-active { background: var(--cyan-soft); color: var(--cyan); border-color: var(--cyan); }
+
+  /* ── Feed ──────────────────────────────────────────────────── */
+  #feed {
+    display: flex; flex-direction: column; gap: 8px;
+    max-height: 520px; overflow-y: auto;
+    padding-right: 4px;
+  }
+  #feed::-webkit-scrollbar { width: 6px; }
+  #feed::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .feed-row {
+    display: grid;
+    grid-template-columns: 28px 1fr 80px 70px 28px;
+    align-items: center; gap: 12px;
+    padding: 10px 12px;
+    background: var(--bg-0);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-family: var(--font-mono); font-size: 13px;
+    animation: row-enter 0.4s ease-out both;
+  }
+  @keyframes row-enter {
+    from { opacity: 0; transform: translateY(-8px); border-color: var(--cyan); box-shadow: 0 0 12px var(--cyan-soft); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .feed-icon { font-size: 16px; opacity: 0.85; }
+  .feed-cap { color: var(--text); }
+  .feed-cap .hub-pill { color: var(--cyan); margin-left: 8px; font-size: 10px; opacity: 0.7; }
+  .feed-price { color: var(--lime); font-weight: 600; text-align: right; }
+  .feed-latency { color: var(--text-dim); font-size: 11px; text-align: right; }
+  .feed-status { font-size: 13px; }
+  .feed-status.ok { color: var(--lime); }
+  .feed-status.err { color: var(--red); }
+  .feed-empty {
+    padding: 32px; text-align: center; color: var(--text-faint);
+    font-family: var(--font-mono); font-size: 12px;
+  }
+
+  /* ── Side panels ───────────────────────────────────────────── */
+  .stack { display: flex; flex-direction: column; gap: 20px; }
+  .leaderboard { list-style: none; padding: 0; margin: 0; }
+  .leaderboard li {
+    display: grid; grid-template-columns: 22px 1fr auto; gap: 10px;
+    padding: 8px 0;
+    font-family: var(--font-mono); font-size: 12px;
+    align-items: center;
+  }
+  .leaderboard li + li { border-top: 1px solid var(--border); }
+  .leaderboard .rank { color: var(--text-faint); font-weight: 700; }
+  .leaderboard .rank.gold { color: var(--amber); }
+  .leaderboard .rank.silver { color: var(--text-dim); }
+  .leaderboard .rank.bronze { color: #cd7f32; }
+  .leaderboard .name { color: var(--text); }
+  .leaderboard .count {
+    color: var(--cyan); font-weight: 600;
+    background: var(--cyan-soft); border-radius: 4px;
+    padding: 2px 8px; font-size: 11px;
+  }
+  .lb-bar {
+    grid-column: 2 / -1;
+    height: 3px; background: var(--bg-0); border-radius: 2px;
+    margin-top: 4px; overflow: hidden;
+  }
+  .lb-bar > i {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--magenta));
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ── Revenue sparkline ─────────────────────────────────────── */
+  .revenue-big {
+    font-family: var(--font-mono); font-size: 32px; font-weight: 700; line-height: 1;
+    background: linear-gradient(135deg, var(--lime), var(--text));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+  }
+  .revenue-sub { font-size: 11px; color: var(--text-dim); }
+  #revenue-spark { width: 100%; height: 60px; margin-top: 12px; }
+
+  /* ── Federation graph ──────────────────────────────────────── */
+  #fed-svg { width: 100%; height: 220px; }
+  .fed-node circle { transition: r 0.3s, filter 0.3s; }
+  .fed-node:hover circle { r: 14; filter: drop-shadow(0 0 8px var(--cyan)); }
+  .fed-edge { stroke: var(--border-glow); stroke-width: 1; stroke-dasharray: 4 6; opacity: 0.6; }
+  .fed-edge.is-active { stroke: var(--cyan); opacity: 1; animation: edge-flow 1.4s linear infinite; }
+  @keyframes edge-flow {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -20; }
+  }
+  .fed-node text {
+    font-family: var(--font-mono); font-size: 10px; fill: var(--text); text-anchor: middle;
+  }
+  .fed-empty {
+    padding: 24px; text-align: center; color: var(--text-faint); font-size: 12px;
+  }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  .foot {
+    margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-faint);
+  }
+  .foot a { color: var(--cyan); text-decoration: none; }
+  .foot a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="shell">
+
+  <!-- ── Top bar ─────────────────────────────────────────────── -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark">AI</div>
+      <div class="brand-title">
+        <span>AI Economy Live</span>
+        <small id="hub-name">modelmarket.dev</small>
+      </div>
+    </div>
+    <div class="connection">
+      <span class="pulse-dot" id="conn-dot"></span>
+      <span id="conn-text">Connecting…</span>
+    </div>
+  </div>
+
+  <!-- ── Hero counters ──────────────────────────────────────── -->
+  <div class="heroes">
+    <div class="hero" data-accent="cyan">
+      <div class="hero-label">Invocations</div>
+      <div class="hero-value" id="hero-inv">0</div>
+      <div class="hero-sub"><span>↗</span> <span id="hero-inv-sub">awaiting first call</span></div>
+      <svg class="hero-spark" id="spark-inv" preserveAspectRatio="none" viewBox="0 0 100 32"></svg>
+    </div>
+    <div class="hero" data-accent="lime">
+      <div class="hero-label">Revenue / Hour</div>
+      <div class="hero-value" id="hero-rev">$0.00</div>
+      <div class="hero-sub"><span>●</span> <span id="hero-rev-sub">extrapolated</span></div>
+      <svg class="hero-spark" id="spark-rev" preserveAspectRatio="none" viewBox="0 0 100 32"></svg>
+    </div>
+    <div class="hero" data-accent="magenta">
+      <div class="hero-label">Federated Hubs</div>
+      <div class="hero-value" id="hero-hubs">0</div>
+      <div class="hero-sub"><span>◆</span> <span id="hero-hubs-sub">peers in network</span></div>
+    </div>
+    <div class="hero" data-accent="amber">
+      <div class="hero-label">Capabilities</div>
+      <div class="hero-value" id="hero-caps">0</div>
+      <div class="hero-sub"><span>▣</span> <span id="hero-caps-sub">tools available</span></div>
+    </div>
+  </div>
+
+  <!-- ── Ticker ─────────────────────────────────────────────── -->
+  <div class="ticker-wrap">
+    <div class="ticker is-empty" id="ticker">
+      <span class="ticker-item">Waiting for live invocations…</span>
+    </div>
+  </div>
+
+  <!-- ── Main grid ──────────────────────────────────────────── -->
+  <div class="grid">
+
+    <!-- Feed -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Live Invocation Feed</div>
+        <div class="card-filters" id="filters">
+          <button class="filter is-active" data-filter="all">All</button>
+          <button class="filter" data-filter="success">✓ Success</button>
+          <button class="filter" data-filter="failure">✗ Failed</button>
+          <button class="filter" data-filter="local">Local</button>
+          <button class="filter" data-filter="federated">Federated</button>
+        </div>
+      </div>
+      <div id="feed">
+        <div class="feed-empty">No events yet — the marketplace is quiet</div>
+      </div>
+    </div>
+
+    <!-- Side -->
+    <div class="stack">
+      <div class="card">
+        <div class="card-head"><div class="card-title">Revenue · Last 60 min</div></div>
+        <div class="revenue-big" id="rev-big">$0.00</div>
+        <div class="revenue-sub">Success rate · <span id="rev-success">—</span> · Avg invoke · <span id="rev-avg">—</span></div>
+        <svg id="revenue-spark" preserveAspectRatio="none" viewBox="0 0 200 60"></svg>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">Top Capabilities Today</div></div>
+        <ul class="leaderboard" id="top-caps">
+          <li><span class="rank">—</span><span class="name" style="color:var(--text-faint)">waiting for data</span><span class="count">0</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">Hub Federation</div></div>
+        <svg id="fed-svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 400 220"></svg>
+        <div class="fed-empty" id="fed-empty" style="display:none">No peers connected yet</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div>Protocol v2 · powered by <a href="https://modelmarket.dev" target="_blank">aimarket-hub</a></div>
+    <div id="last-update">—</div>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+// ── Hub URL resolution ──────────────────────────────────────
+// Priority: ?hub=… query → <meta name="aimarket-hub"> → window.location.origin.
+// Hard-coded localhost was a dev convenience that silently broke prod
+// (HTTPS pages can't fetch http://localhost — mixed content).
+const HUB_URL = (function () {
+  try {
+    const qp = new URLSearchParams(window.location.search).get('hub');
+    if (qp) return qp.replace(/\/$/, '');
+    const meta = document.querySelector('meta[name="aimarket-hub"]');
+    if (meta && meta.content) return meta.content.replace(/\/$/, '');
+    return window.location.origin;
+  } catch (e) { return ''; }
+})();
+
+const POLL_MS = 3000;
+const FEED_MAX = 60;
+const SPARK_POINTS = 30;
+
+let currentFilter = 'all';
+let allEvents = [];
+let lastInvocations = 0;
+let lastEventId = 0;
+let sparkInv = [];      // rolling invocations sample
+let sparkRev = [];      // rolling revenue sample
+let revHistory = [];    // 60-min revenue points
+
+// ── Particle background ─────────────────────────────────────
+(function bg() {
+  const c = document.getElementById('bg-canvas');
+  const ctx = c.getContext('2d');
+  let particles = [];
+  function resize() {
+    c.width = window.innerWidth * window.devicePixelRatio;
+    c.height = window.innerHeight * window.devicePixelRatio;
+    c.style.width = window.innerWidth + 'px';
+    c.style.height = window.innerHeight + 'px';
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    const w = window.innerWidth, h = window.innerHeight;
+    const count = Math.min(80, Math.floor(w * h / 18000));
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
+      r: Math.random() * 1.4 + 0.4,
+      hue: Math.random() < 0.5 ? 195 : 320,
+    }));
+  }
+  function step() {
+    const w = window.innerWidth, h = window.innerHeight;
+    ctx.clearRect(0, 0, w, h);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+      ctx.fillStyle = `hsla(${p.hue}, 90%, 70%, 0.6)`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    }
+    // Subtle connections
+    ctx.lineWidth = 0.4;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 120) {
+          ctx.strokeStyle = `rgba(94, 228, 255, ${0.08 * (1 - d / 120)})`;
+          ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(step);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  step();
+})();
+
+// ── Number animations ──────────────────────────────────────
+function animateNumber(el, fromVal, toVal, opts = {}) {
+  const { duration = 600, prefix = '', suffix = '', decimals = 0, flash = true } = opts;
+  const t0 = performance.now();
+  function tick(t) {
+    const k = Math.min(1, (t - t0) / duration);
+    const eased = 1 - Math.pow(1 - k, 3);  // easeOutCubic
+    const v = fromVal + (toVal - fromVal) * eased;
+    el.textContent = prefix + v.toFixed(decimals) + suffix;
+    if (k < 1) requestAnimationFrame(tick);
+    else el.textContent = prefix + toVal.toFixed(decimals) + suffix;
+  }
+  requestAnimationFrame(tick);
+  if (flash && fromVal !== toVal) {
+    el.classList.add('is-flash');
+    setTimeout(() => el.classList.remove('is-flash'), 600);
+  }
+}
+
+function fmtNumber(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(2) + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+  return String(n);
+}
+
+// ── Sparklines ─────────────────────────────────────────────
+function drawSpark(svgId, values, color) {
+  const svg = document.getElementById(svgId);
+  if (!svg || values.length < 2) { svg.innerHTML = ''; return; }
+  const w = 100, h = 32;
+  const min = Math.min(...values), max = Math.max(...values);
+  const range = (max - min) || 1;
+  const step = w / (values.length - 1);
+  const pts = values.map((v, i) => `${i * step},${h - ((v - min) / range) * (h - 4) - 2}`).join(' ');
+  const lastPt = pts.split(' ').slice(-1)[0].split(',');
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="g-${svgId}" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="${color}" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <polygon fill="url(#g-${svgId})" points="0,${h} ${pts} ${w},${h}"/>
+    <polyline fill="none" stroke="${color}" stroke-width="1.5" points="${pts}"/>
+    <circle cx="${lastPt[0]}" cy="${lastPt[1]}" r="2" fill="${color}"/>
+  `;
+}
+
+function drawRevenueSpark(values) {
+  const svg = document.getElementById('revenue-spark');
+  if (values.length < 2) {
+    svg.innerHTML = '<text x="100" y="34" text-anchor="middle" fill="#4a536b" font-family="JetBrains Mono, monospace" font-size="11">collecting data…</text>';
+    return;
+  }
+  const w = 200, h = 60;
+  const min = Math.min(...values, 0), max = Math.max(...values) || 1;
+  const range = (max - min) || 1;
+  const step = w / (values.length - 1);
+  const pts = values.map((v, i) => `${i * step},${h - ((v - min) / range) * (h - 6) - 3}`).join(' ');
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="grev" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="#b4ff5e" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#b4ff5e" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <polygon fill="url(#grev)" points="0,${h} ${pts} ${w},${h}"/>
+    <polyline fill="none" stroke="#b4ff5e" stroke-width="1.8" points="${pts}"/>
+  `;
+}
+
+// ── Filter buttons ─────────────────────────────────────────
+document.getElementById('filters').addEventListener('click', (ev) => {
+  const btn = ev.target.closest('.filter');
+  if (!btn) return;
+  for (const b of document.querySelectorAll('.filter')) b.classList.remove('is-active');
+  btn.classList.add('is-active');
+  currentFilter = btn.dataset.filter;
+  renderFeed(allEvents);
+});
+
+// ── Capability icons ───────────────────────────────────────
+const CAP_ICONS = {
+  translate: '🌐', legal: '⚖️', code: '💻', data: '📊',
+  image: '🎨', audio: '🎙️', video: '🎬', summarize: '📝',
+  default: '🤖',
+};
+function capIcon(capId) {
+  for (const k in CAP_ICONS) if (capId && capId.startsWith(k)) return CAP_ICONS[k];
+  return CAP_ICONS.default;
+}
+
+function hostOf(url) {
+  if (!url || url === 'local') return '';
+  try { return new URL(url).host; } catch { return url; }
+}
+
+// ── Rendering ──────────────────────────────────────────────
+function renderFeed(events) {
+  const el = document.getElementById('feed');
+  const filtered = events.filter(e => {
+    if (currentFilter === 'success') return e.success;
+    if (currentFilter === 'failure') return !e.success;
+    if (currentFilter === 'local') return e.source_hub === 'local';
+    if (currentFilter === 'federated') return e.source_hub !== 'local';
+    return true;
+  }).slice(0, FEED_MAX);
+
+  if (!filtered.length) {
+    el.innerHTML = '<div class="feed-empty">No events matching this filter</div>';
+    return;
+  }
+  el.innerHTML = filtered.map(e => {
+    const ok = !!e.success;
+    const hub = hostOf(e.source_hub);
+    return `
+      <div class="feed-row">
+        <span class="feed-icon">${capIcon(e.capability_id)}</span>
+        <span class="feed-cap">${(e.capability_id || 'unknown')}${hub ? `<span class="hub-pill">via ${hub}</span>` : ''}</span>
+        <span class="feed-price">$${(e.price_usd || 0).toFixed(2)}</span>
+        <span class="feed-latency">${e.latency_ms ?? '?'}ms</span>
+        <span class="feed-status ${ok ? 'ok' : 'err'}">${ok ? '✓' : '✗'}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderTicker(events) {
+  const ticker = document.getElementById('ticker');
+  if (!events.length) {
+    ticker.classList.add('is-empty');
+    ticker.innerHTML = '<span class="ticker-item">No events yet — start invoking capabilities</span>';
+    return;
+  }
+  ticker.classList.remove('is-empty');
+  const items = [];
+  // Duplicate for seamless loop
+  for (let loop = 0; loop < 2; loop++) {
+    for (const e of events.slice(0, 20)) {
+      const ok = e.success;
+      items.push(`<span class="ticker-item">${capIcon(e.capability_id)} <span class="agent">AI</span><span class="arrow">→</span><span class="cap">${e.capability_id || '?'}</span><span class="price">$${(e.price_usd || 0).toFixed(2)}</span><span class="${ok ? 'check' : 'fail'}">${ok ? '✓' : '✗'}</span></span>`);
+    }
+  }
+  ticker.innerHTML = items.join('');
+}
+
+function renderTopCaps(events) {
+  const counts = {};
+  for (const e of events) {
+    const k = e.capability_id || 'unknown';
+    counts[k] = (counts[k] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  if (!sorted.length) {
+    document.getElementById('top-caps').innerHTML = '<li><span class="rank">—</span><span class="name" style="color:var(--text-faint)">no data yet</span><span class="count">0</span></li>';
+    return;
+  }
+  const max = sorted[0][1] || 1;
+  const rankClass = (i) => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+  document.getElementById('top-caps').innerHTML = sorted.map(([name, count], i) => `
+    <li>
+      <span class="rank ${rankClass(i)}">${i + 1}</span>
+      <span class="name">${capIcon(name)} ${name}</span>
+      <span class="count">${count}</span>
+      <div class="lb-bar"><i style="width:${(count / max) * 100}%"></i></div>
+    </li>
+  `).join('');
+}
+
+function renderFederation(summary, events) {
+  const svg = document.getElementById('fed-svg');
+  const empty = document.getElementById('fed-empty');
+  const peers = summary.peers_count || 0;
+
+  if (peers === 0) {
+    svg.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  svg.style.display = 'block';
+  empty.style.display = 'none';
+
+  const cx = 200, cy = 110, r = 70;
+  const peerHubs = [];
+  const seenHubs = new Set();
+  for (const ev of events) {
+    if (ev.source_hub && ev.source_hub !== 'local' && !seenHubs.has(ev.source_hub)) {
+      seenHubs.add(ev.source_hub);
+      peerHubs.push(ev.source_hub);
+    }
+  }
+  // Fallback: synthesise peer placeholders if count > seen
+  while (peerHubs.length < peers) {
+    peerHubs.push(`peer-${peerHubs.length + 1}`);
+  }
+  const N = Math.max(1, peerHubs.length);
+
+  let edges = '';
+  let nodes = `<g class="fed-node">
+    <circle cx="${cx}" cy="${cy}" r="14" fill="url(#center-grad)" filter="drop-shadow(0 0 12px #5ee4ff)"/>
+    <text x="${cx}" y="${cy + 28}">modelmarket.dev</text>
+  </g>`;
+
+  for (let i = 0; i < N; i++) {
+    const angle = (Math.PI * 2 * i) / N - Math.PI / 2;
+    const px = cx + Math.cos(angle) * r;
+    const py = cy + Math.sin(angle) * r;
+    const recentlyActive = events.some(e => e.source_hub === peerHubs[i]);
+    edges += `<line class="fed-edge ${recentlyActive ? 'is-active' : ''}" x1="${cx}" y1="${cy}" x2="${px}" y2="${py}"/>`;
+    nodes += `<g class="fed-node">
+      <circle cx="${px}" cy="${py}" r="8" fill="#ff6bd6" opacity="0.8"/>
+      <text x="${px}" y="${py + 20}">${hostOf(peerHubs[i]) || peerHubs[i].slice(0, 12)}</text>
+    </g>`;
+  }
+
+  svg.innerHTML = `
+    <defs>
+      <radialGradient id="center-grad">
+        <stop offset="0%" stop-color="#5ee4ff" stop-opacity="1"/>
+        <stop offset="100%" stop-color="#5ee4ff" stop-opacity="0.5"/>
+      </radialGradient>
+    </defs>
+    ${edges}
+    ${nodes}
+  `;
+}
+
+// ── Connection state ───────────────────────────────────────
+function setConnState(online, label) {
+  const dot = document.getElementById('conn-dot');
+  const txt = document.getElementById('conn-text');
+  dot.classList.toggle('is-offline', !online);
+  txt.textContent = label;
+}
+
+// ── Polling ────────────────────────────────────────────────
+async function fetchData() {
+  try {
+    const resp = await fetch(`${HUB_URL}/ai-market/v2/stats/live?limit=80`, { cache: 'no-store' });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+
+    const s = data.summary || {};
+    const events = data.events || [];
+    allEvents = events;
+
+    setConnState(true, `Live · ${new Date().toLocaleTimeString()}`);
+
+    // Hero counters
+    const inv = s.total_invocations || 0;
+    const rev = s.revenue_per_hour_usd || 0;
+    const hubs = s.peers_count || 0;
+    const caps = s.capabilities_count || 0;
+
+    const heroInv = document.getElementById('hero-inv');
+    animateNumber(heroInv, parseFloat((heroInv.textContent || '0').replace(/[^\d.]/g, '')) || 0, inv,
+      { duration: 800, flash: inv !== lastInvocations });
+    document.getElementById('hero-inv-sub').textContent =
+      inv === 0 ? 'awaiting first call'
+      : inv > lastInvocations ? `+${inv - lastInvocations} since last poll`
+      : `${(s.success_rate * 100).toFixed(1)}% success`;
+    lastInvocations = inv;
+
+    const heroRev = document.getElementById('hero-rev');
+    animateNumber(heroRev, parseFloat((heroRev.textContent || '0').replace(/[^\d.]/g, '')) || 0, rev,
+      { duration: 800, prefix: '$', decimals: 2 });
+    document.getElementById('hero-rev-sub').textContent = `extrapolated · ${events.length} samples`;
+
+    const heroHubs = document.getElementById('hero-hubs');
+    animateNumber(heroHubs, parseFloat(heroHubs.textContent) || 0, hubs, { duration: 600 });
+    document.getElementById('hero-hubs-sub').textContent = hubs === 0 ? 'no peers yet' : `${hubs} peer${hubs === 1 ? '' : 's'} in network`;
+
+    const heroCaps = document.getElementById('hero-caps');
+    animateNumber(heroCaps, parseFloat(heroCaps.textContent) || 0, caps, { duration: 600 });
+    document.getElementById('hero-caps-sub').textContent = `tools available · ${s.federated_capabilities_count || caps} federated`;
+
+    // Sparks
+    sparkInv.push(inv); if (sparkInv.length > SPARK_POINTS) sparkInv.shift();
+    sparkRev.push(rev); if (sparkRev.length > SPARK_POINTS) sparkRev.shift();
+    drawSpark('spark-inv', sparkInv, '#5ee4ff');
+    drawSpark('spark-rev', sparkRev, '#b4ff5e');
+
+    // Revenue panel
+    document.getElementById('rev-big').textContent = `$${rev.toFixed(2)}`;
+    document.getElementById('rev-success').textContent = `${((s.success_rate || 0) * 100).toFixed(1)}%`;
+    document.getElementById('rev-avg').textContent = `$${(s.avg_price_usd || 0).toFixed(2)}`;
+    revHistory.push(rev); if (revHistory.length > 60) revHistory.shift();
+    drawRevenueSpark(revHistory);
+
+    // Feed, ticker, top caps, federation
+    renderFeed(events);
+    renderTicker(events);
+    renderTopCaps(events);
+    renderFederation(s, events);
+
+    document.getElementById('last-update').textContent = `last update · ${new Date().toLocaleTimeString()}`;
+  } catch (err) {
+    console.error('[live] fetch failed:', err);
+    setConnState(false, 'Disconnected — retrying…');
+  }
+}
+
+fetchData();
+setInterval(fetchData, POLL_MS);
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+# aimarket-promo plugin

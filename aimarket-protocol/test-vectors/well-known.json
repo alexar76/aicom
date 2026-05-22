@@ -1,0 +1,27 @@
+{
+  "name": "Test AI Hub",
+  "protocol_versions": [
+    "v1",
+    "v2"
+  ],
+  "hub_version": "2.0.0",
+  "mcp_endpoint": "https://test-hub.example.com/ai-market/mcp",
+  "manifest_url": "https://test-hub.example.com/ai-market/manifest",
+  "products_count": 3,
+  "capabilities_count": 5,
+  "federated_capabilities_count": 12,
+  "supported_chains": [
+    "base"
+  ],
+  "supported_tokens": [
+    "USDT"
+  ],
+  "signer_public_key": "11qYAYKxCrfVS/7TyWQHOg7hcvPapiMlrwIaaPcHURo=",
+  "federation": {
+    "crawl_interval_s": 3600,
+    "routing_fee_bps": 100,
+    "min_trust_score": 0.3,
+    "seed_list": []
+  },
+  "peers": []
+}

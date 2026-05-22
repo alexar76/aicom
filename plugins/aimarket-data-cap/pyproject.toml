@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-data-cap"
+version = "2.0.0"
+description = "Data-as-capability — private RAG corpus as paid capability"
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["aimarket-hub>=2.0.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.entry-points."aimarket.plugins"]
+data-cap = "aimarket_data_cap.plugin:DataCapPlugin"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_data_cap*"]

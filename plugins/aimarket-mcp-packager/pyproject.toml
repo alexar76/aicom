@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-mcp-packager"
+version = "2.0.0"
+description = "Package products as ready-to-run MCP servers for Claude Desktop"
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["aimarket-hub>=2.0.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.entry-points."aimarket.plugins"]
+mcp-packager = "aimarket_mcp_packager.plugin:MCPPlugin"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_mcp_packager*"]

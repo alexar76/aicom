@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://modelmarket.dev/schemas/receipt.json",
+  "title": "AI Market Signed Receipt",
+  "description": "Payment receipt for a capability invocation",
+  "type": "object",
+  "required": ["nonce", "product_id", "capability_id", "price_usd", "timestamp", "signature"],
+  "properties": {
+    "nonce": {"type": "string", "description": "Unique receipt identifier"},
+    "product_id": {"type": "string"},
+    "capability_id": {"type": "string"},
+    "price_usd": {"type": "number", "minimum": 0},
+    "latency_ms": {"type": "integer"},
+    "success": {"type": "boolean"},
+    "channel_id": {"type": "string"},
+    "consumer_hub": {"type": "string", "format": "uri"},
+    "routing_fee_bps": {"type": "integer"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": {"type": "string", "const": "ed25519"},
+        "value": {"type": "string"}
+      }
+    }
+  }
+}
