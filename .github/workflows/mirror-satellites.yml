@@ -1,0 +1,45 @@
+name: Mirror Satellites
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    name: Mirror satellite repos
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - prefix: aimarket-protocol
+            repo: alexar76/aimarket-protocol
+          - prefix: aimarket-hub
+            repo: alexar76/aimarket-hub
+          - prefix: aimarket-widget
+            repo: alexar76/aimarket-widget
+          - prefix: aimarket-agent
+            repo: alexar76/aimarket-agent
+          - prefix: plugins
+            repo: alexar76/aimarket-plugins
+
+    steps:
+      - name: Checkout monorepo with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: false
+
+      - name: Split subtree for ${{ matrix.prefix }}
+        run: |
+          git subtree split --prefix=${{ matrix.prefix }} -b export/${{ matrix.prefix }}
+
+      - name: Push to ${{ matrix.repo }}
+        run: |
+          git remote add satellite https://x-access-token:${{ secrets.MIRROR_SATELLITE_PAT }}@github.com/${{ matrix.repo }}.git
+          git push --force satellite export/${{ matrix.prefix }}:main
