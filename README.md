@@ -102,6 +102,8 @@ flowchart LR
 
 Full diagrams (runtime architecture, state machine, discovery, storefront gates, comparison tables): **[docs/architecture-diagrams.md](docs/architecture-diagrams.md)**.
 
+Module boundaries, sandbox facade, scaling path: **[docs/architecture/module-boundaries.md](docs/architecture/module-boundaries.md)**, **[docs/architecture/scaling.md](docs/architecture/scaling.md)**. Production startup guard: **`AIFACTORY_PROD=1`** (refuses `demo123` / `admin123`) — see [docs/security.md](docs/security.md#production-guard-aifactory_prod1).
+
 ### Ship-then-keep-improving
 
 AI-Factory is built around a **ship-then-keep-improving** loop — not “one shot and forget”:

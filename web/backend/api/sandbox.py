@@ -53,16 +53,16 @@ def _validate_git_ref_name(value: str, label: str = "ref") -> str:
 from web.backend.services.url_safety import validate_git_remote_url
 
 from core.logging_utils import log_suppressed
-from web.backend.services.sandbox_preview_api import (
+from web.backend.services.sandbox_runtime import (
+    append_image_and_command,
     detect_fastapi_backend,
+    hardened_docker_run_args,
     preview_api_enabled,
     register_preview_proc,
-    start_fastapi_preview,
-    stop_preview_for_sandbox,
-)
-from web.backend.services.sandbox_compose_preview import (
     start_compose_preview,
+    start_fastapi_preview,
     stop_compose_for_sandbox,
+    stop_preview_for_sandbox,
 )
 from web.backend.services.sandbox_spec_landing import resolve_sandbox_index_html
 from web.backend.services.sandbox_static_entry import (
@@ -71,7 +71,6 @@ from web.backend.services.sandbox_static_entry import (
     static_preview_file,
 )
 from core.paths import code_dir as resolve_product_code_dir, pipeline_json_path, sandbox_registry_path, specs_dir, product_state_dir
-from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 from web.backend.services.sandbox_static_rewrite import (
     SANDBOX_HTML_CSP,
     SANDBOX_IFRAME_SANDBOX_ATTR,

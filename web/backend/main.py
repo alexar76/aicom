@@ -133,6 +133,9 @@ async def lifespan(app: FastAPI):
     """Application lifespan: setup and cleanup."""
     # Startup
     logger.info("Starting AI-Factory web backend...")
+    from security.prod_startup_guard import assert_production_startup_safe
+
+    assert_production_startup_safe(exit_on_failure=True)
     if os.environ.get("AIFACTORY_USE_HOST_DOCKER", "").strip() == "1":
         logger.warning(
             "SECURITY: AIFACTORY_USE_HOST_DOCKER=1 mounts /var/run/docker.sock — "
@@ -390,6 +393,13 @@ app.include_router(sandbox.router)
 app.include_router(marketing.router)
 app.include_router(payment.router)
 app.include_router(ai_market.router)
+from web.backend.api.ai_market_protocol_v1 import (
+    capabilities_router as ai_market_capabilities_v1,
+    wellknown_router as ai_market_wellknown_v1,
+)
+
+app.include_router(ai_market_wellknown_v1)
+app.include_router(ai_market_capabilities_v1)
 app.include_router(feedback.router)
 app.include_router(customer.router)
 app.include_router(support_chat.router)

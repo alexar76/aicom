@@ -111,6 +111,7 @@ fi
 # For first install with a prompt: docker compose run --rm -it app  (or ./run.sh with a TTY)
 cd /app
 python3 -m security.bootstrap_admin || exit 1
+python3 -c "from security.prod_startup_guard import assert_production_startup_safe; assert_production_startup_safe()" || exit 1
 
 # ── Prometheus Multiproc Directory ─────────────────────────────────────────
 # The prometheus_client library requires this directory to exist when

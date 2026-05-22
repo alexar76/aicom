@@ -22,6 +22,7 @@ from . import (  # noqa: F401 — register routes on shared router
     routes_products,
     routes_providers,
     routes_factory_backup,
+    routes_platform,
 )
 
 __all__ = [

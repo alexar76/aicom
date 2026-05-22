@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { t, tVars } from '@/lib/adminI18n';
 import type { SettingsTabApi } from './useSettingsTabState';
+import { useAdminSessionStore } from '@/lib/adminSessionStore';
 
 export function ContentSettings({ api }: { api: SettingsTabApi }) {
+  const publicDemo = useAdminSessionStore((s) => Boolean(s.me?.public_demo));
   const {
     locale,
     settingsLoading,
@@ -313,6 +315,11 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
           {t(locale, 'settings.section.headSnippet')}
         </h3>
         <p className="text-sm text-gray-400 mb-4">{t(locale, 'settings.headSnippet.intro')}</p>
+        {publicDemo ? (
+          <p className="text-sm text-amber-200/90 mb-4 rounded-lg border border-amber-500/35 bg-amber-950/25 px-3 py-2">
+            {t(locale, 'settings.demo.headSnippetBlocked')}
+          </p>
+        ) : null}
         {settingsLoading ? (
           <div className="flex items-center gap-2 text-sm text-gray-400">
             <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -327,17 +334,19 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
               id="published_site_head_html"
               rows={10}
               spellCheck={false}
+              readOnly={publicDemo}
               placeholder={t(locale, 'settings.headSnippet.placeholder')}
               value={headHtml}
               onChange={(e) => handleSettingChange('published_site_head_html', e.target.value)}
               onBlur={() => {
+                if (publicDemo) return;
                 if (adminAutosaveTimerRef.current) {
                   clearTimeout(adminAutosaveTimerRef.current);
                   adminAutosaveTimerRef.current = null;
                 }
                 void persistAdminSettings();
               }}
-              className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 font-mono text-xs text-white placeholder:text-gray-600 focus:border-emerald-500/40 focus:outline-none"
+              className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 font-mono text-xs text-white placeholder:text-gray-600 focus:border-emerald-500/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
             />
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
               <p className="text-xs text-gray-500 min-w-0">{t(locale, 'settings.headSnippet.footer')}</p>

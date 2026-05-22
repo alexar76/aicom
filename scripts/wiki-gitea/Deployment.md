@@ -33,6 +33,18 @@ Production: **magic-ai-factory.com** — nginx → Compose **9080**.
 
 Full notes: [`docs/production-domain.md`](http://5.129.212.122/Superowner/aicom/src/branch/main/docs/production-domain.md)
 
+## AIMarket Hub — modelmarket.dev (TLS)
+
+Federation hub on **`https://modelmarket.dev`** (nginx `:443` → Docker hub **`127.0.0.1:9083`**).
+
+```bash
+sudo CERTBOT_EMAIL=you@example.com ./scripts/setup-modelmarket-ssl.sh
+```
+
+Or: [`docs/production-modelmarket-dev.md`](http://5.129.212.122/Superowner/aicom/src/branch/main/docs/production-modelmarket-dev.md) — certbot + **`certbot.timer`** auto-renewal.
+
+DNS: `modelmarket.dev` and `www` → same host as the factory.
+
 ## Static storefront deploy (optional)
 
 After DevOps stage: Vercel / Netlify / Cloudflare Pages tokens in `.env` and `data/state/.../auto_publish.json`.

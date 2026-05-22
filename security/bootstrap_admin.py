@@ -107,6 +107,13 @@ def _resolve_initial_password() -> tuple[str, str]:
             raise ValueError(
                 f"AIFACTORY_DEV_BOOTSTRAP_PASSWORD must be at least {_MIN_PASSWORD_LEN} characters"
             )
+        from security.prod_startup_guard import KNOWN_INSECURE_PASSWORDS, is_production_mode
+
+        if is_production_mode() and dev_pw.lower() in KNOWN_INSECURE_PASSWORDS:
+            raise ValueError(
+                f"AIFACTORY_DEV_BOOTSTRAP_PASSWORD must not be a known demo password ({dev_pw!r}) "
+                "when AIFACTORY_PROD=1"
+            )
         return dev_pw, "dev_env"
 
     prompted = _prompt_password_interactive()
@@ -134,6 +141,9 @@ def bootstrap_admin_if_needed() -> int:
     Returns 0 on success / skip, 1 on failure.
     """
     if _admin_already_configured():
+        from security.prod_startup_guard import assert_production_startup_safe
+
+        assert_production_startup_safe(exit_on_failure=True)
         return 0
 
     try:

@@ -15,8 +15,16 @@ import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 
 function agentTitle(locale: AdminLocale, agent: AgentStatus): string {
   if (agent.type === 'designer') return t(locale, 'agents.role.designerUx');
-  if (agent.type === 'methodologist') return t(locale, 'agents.role.methodologist');
+  const key = `agents.role.${agent.type}`;
+  const label = t(locale, key);
+  if (label !== key) return label;
   return agent.type.replace(/_/g, ' ');
+}
+
+function agentStatusLabel(locale: AdminLocale, status: string): string {
+  const key = `agents.status.${status}`;
+  const label = t(locale, key);
+  return label !== key ? label : status;
 }
 
 function formatLogLineTime(ts: number): string {
@@ -133,7 +141,7 @@ export function AgentsTab({ locale }: { locale: AdminLocale }) {
                   <div className="text-3xl shrink-0">{getAgentIcon(agent.type)}</div>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                      <h3 className="text-white font-medium capitalize">{agentTitle(locale, agent)}</h3>
+                      <h3 className="text-white font-medium">{agentTitle(locale, agent)}</h3>
                       <Badge
                         variant={
                           agent.status === 'running'
@@ -143,7 +151,7 @@ export function AgentsTab({ locale }: { locale: AdminLocale }) {
                               : 'info'
                         }
                       >
-                        {agent.status}
+                        {agentStatusLabel(locale, agent.status)}
                       </Badge>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
@@ -176,7 +184,7 @@ export function AgentsTab({ locale }: { locale: AdminLocale }) {
                       : 'info'
                 }
               >
-                {detail.status}
+                {agentStatusLabel(locale, detail.status)}
               </Badge>
               <span className="text-xs text-gray-500 font-mono">{detail.type}</span>
             </div>
@@ -239,7 +247,7 @@ export function AgentsTab({ locale }: { locale: AdminLocale }) {
                   </div>
                   <div>
                     <dt className="text-gray-500">{t(locale, 'agents.modal.metricDerivedStatus')}</dt>
-                    <dd className="text-gray-200">{detail.log_metrics.status}</dd>
+                    <dd className="text-gray-200">{agentStatusLabel(locale, detail.log_metrics.status)}</dd>
                   </div>
                 </dl>
               </div>

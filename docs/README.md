@@ -52,7 +52,8 @@ Operator-facing UI strings may be **en / ru / es** in Admin; that is product i18
 
 ## Protocols and domain playbooks
 
-- `ai-market-protocol-v0.md` — reference protocol for AI-to-AI commerce.
+- **`ai-market-protocol-v1.md`** — **AI Market Protocol v1**: `.well-known`, MCP manifest, HTTP 402, payment channels, pipelines, reference agent (`cli/ai_market_agent.py`).
+- `ai-market-protocol-v0.md` — v0 pilot (catalog, on-chain settlement confirm, license invoke).
 - **`domain-guides/README.md`** — index of all **10 built-in** domain methodology packs + links to short playbooks (source: `web/backend/services/domain_methodology/packs/`).
 - Full pack table and methodology schema: **`methodology-agent.md`**.
 - Narrative playbooks live under `domain-guides/` (see index); note `fintech.md` maps to pack `finance_billing`, `healthcare.md` → `healthcare_wellness`, `ecommerce.md` → `ecommerce`.
@@ -61,6 +62,7 @@ Operator-facing UI strings may be **en / ru / es** in Admin; that is product i18
 
 - `gallery/README.md` — **README hero gallery**: WebP tiles from **`scripts/capture_gallery_landings.py`** (`/api/sandbox/file/…/index.html`, default stack **:9080**).
 - `production-domain.md` — **Public hostname** for this fleet: **`magic-ai-factory.com`**, nginx on **:80**, `NEXT_PUBLIC_SITE_URL`, rebuild notes.
+- **`production-modelmarket-dev.md`** — **AIMarket Hub** at **`https://modelmarket.dev`**, certbot TLS, hub Docker on **:9083**.
 - `assets/screenshots/README.md` — capture workflow and screenshot inventory.
 - `assets/screenshots/MISSING.md` — coverage report (what is captured vs pending refresh).
 

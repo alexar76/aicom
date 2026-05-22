@@ -39,7 +39,7 @@ export function SettingsTab({ locale }: { locale: AdminLocale }) {
 
       {publicDemo && (
         <p className="text-sm text-sky-200/90 rounded-lg border border-sky-500/40 bg-sky-950/30 p-3">
-          {t(locale, 'settings.factoryBackup.demoBlocked')}
+          {t(locale, 'settings.demo.readonlyBanner')}
         </p>
       )}
 

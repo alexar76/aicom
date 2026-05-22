@@ -151,7 +151,7 @@ export function PipelineTab({ locale }: { locale: AdminLocale }) {
 
   return (
     <motion.div className="space-y-4">
-      <PipelineOnboardingCoach />
+      <PipelineOnboardingCoach locale={locale} />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
         <div>
           <h2 className="text-xl font-semibold text-white">{t(locale, 'pipeline.title')}</h2>

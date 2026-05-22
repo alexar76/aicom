@@ -21,6 +21,16 @@ export type FactoryFloorNode = {
   circuit_tripped?: boolean;
 };
 
+export type AiMarketFloorEvent = {
+  type?: string;
+  product_id?: string;
+  capability_id?: string;
+  price_usd?: number;
+  latency_ms?: number;
+  success?: boolean;
+  time?: number;
+};
+
 export type FactoryFloorPayload = {
   nodes?: FactoryFloorNode[];
   edges?: Array<{ from: string; to: string; kind?: string }>;
@@ -28,6 +38,7 @@ export type FactoryFloorPayload = {
   running_count?: number;
   open_circuits?: string[];
   updated_at?: number;
+  ai_market?: { events?: AiMarketFloorEvent[]; total_usd_1h?: number };
 };
 
 function isFactoryFloorPayload(x: unknown): x is FactoryFloorPayload {

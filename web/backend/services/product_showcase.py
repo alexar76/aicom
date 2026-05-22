@@ -33,25 +33,94 @@ def _index_path() -> Path:
     return p
 
 
-def enqueue_product_showcase(product_id: str, *, base_url: str | None = None) -> dict:
-    """Queue a showcase capture job (deduped per hour)."""
+def _resolve_showcase_capture_base_url(explicit: str | None = None) -> str:
+    """URL Playwright uses to open sandbox preview (must be reachable from this process)."""
+    if explicit and str(explicit).strip():
+        url = str(explicit).strip().rstrip("/")
+    else:
+        url = (
+            os.environ.get("AIFACTORY_SHOWCASE_BASE_URL", "").strip()
+            or os.environ.get("AIFACTORY_PUBLIC_URL", "").strip()
+            or os.environ.get("NEXT_PUBLIC_SITE_URL", "").strip()
+            or "http://127.0.0.1:8080"
+        ).rstrip("/")
+    # In Docker the app listens on 8080; host-mapped 9080 is not open inside the container.
+    if Path("/.dockerenv").is_file():
+        for host in ("127.0.0.1", "localhost"):
+            url = url.replace(f"http://{host}:9080", f"http://{host}:8080")
+            url = url.replace(f"https://{host}:9080", f"https://{host}:8080")
+    return url
+
+
+def _pending_showcase_queued(pid: str, *, within_sec: float = 120.0) -> bool:
+    q = _queue_path()
+    if not q.is_file():
+        return False
+    cutoff = time.time() - within_sec
+    for line in reversed(q.read_text(encoding="utf-8", errors="replace").splitlines()):
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if str(row.get("product_id") or "") != pid:
+            continue
+        if row.get("status") == "queued" and float(row.get("queued_at") or 0) >= cutoff:
+            return True
+    return False
+
+
+def get_product_showcase_status(product_id: str) -> dict:
+    """Last queue row for a product (queued / done / failed)."""
     pid = str(product_id or "").strip()
     if not pid:
         raise ValueError("product_id required")
+    q = _queue_path()
+    if not q.is_file():
+        return {"product_id": pid, "status": "none"}
+    last: dict | None = None
+    for line in reversed(q.read_text(encoding="utf-8", errors="replace").splitlines()):
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if str(row.get("product_id") or "") == pid:
+            last = row
+            break
+    if not last:
+        return {"product_id": pid, "status": "none"}
+    return {
+        "product_id": pid,
+        "status": str(last.get("status") or "unknown"),
+        "queued_at": last.get("queued_at"),
+        "completed_at": last.get("completed_at"),
+        "error": last.get("error"),
+        "base_url": last.get("base_url"),
+    }
+
+
+def enqueue_product_showcase(product_id: str, *, base_url: str | None = None) -> dict:
+    """Queue a showcase capture job (deduped while a recent queued row exists)."""
+    pid = str(product_id or "").strip()
+    if not pid:
+        raise ValueError("product_id required")
+    capture_url = _resolve_showcase_capture_base_url(base_url)
+    if _pending_showcase_queued(pid):
+        return {"status": "already_queued", "product_id": pid, "base_url": capture_url}
     row = {
         "product_id": pid,
         "queued_at": time.time(),
-        "base_url": (base_url or os.environ.get("AIFACTORY_PUBLIC_URL") or "http://127.0.0.1:9080").rstrip("/"),
+        "base_url": capture_url,
         "status": "queued",
     }
     q = _queue_path()
-    recent = q.read_text(encoding="utf-8", errors="replace") if q.is_file() else ""
-    if pid in recent and "queued" in recent[-4000:]:
-        return {"status": "already_queued", "product_id": pid}
     with q.open("a", encoding="utf-8") as f:
         f.write(json.dumps(row, ensure_ascii=False) + "\n")
     _spawn_worker_once()
-    return {"status": "queued", "product_id": pid}
+    return {"status": "queued", "product_id": pid, "base_url": capture_url}
 
 
 def _spawn_worker_once() -> None:
@@ -111,13 +180,17 @@ def _capture_showcase(product_id: str, *, base_url: str) -> None:
     env["DEMO_VIDEO_BASE_URL"] = base_url
     env["DEMO_VIDEO_SANDBOX_PRODUCT_ID"] = product_id
     env["DEMO_VIDEO_OUT"] = str(RECORDINGS_DIR)
-    subprocess.run(
+    proc = subprocess.run(
         [sys.executable, str(script)],
         cwd=str(repo),
         env=env,
         timeout=int(os.environ.get("AIFACTORY_SHOWCASE_TIMEOUT_SEC", "300")),
-        check=True,
+        capture_output=True,
+        text=True,
     )
+    if proc.returncode != 0:
+        err = (proc.stderr or proc.stdout or "").strip()[:500]
+        raise RuntimeError(err or f"record_product_showcase exited {proc.returncode}")
     _register_gallery_entry(product_id, base_url)
 
 

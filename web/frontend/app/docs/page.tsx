@@ -809,10 +809,15 @@ docker exec -it ai-factory python cli/ai_company_cli.py create-idea "Your produc
 
         <GlassCard className="p-4 my-3">
           <div className="flex items-center gap-3 mb-2">
-            <Badge variant="warning">PILOT</Badge>
-            <code className="text-sm text-white">/ai-market/*</code>
+            <Badge variant="warning">PROTOCOL</Badge>
+            <code className="text-sm text-white">/.well-known/ai-market.json · /ai-market/*</code>
           </div>
-          <p className="text-sm text-gray-400">Separate AI-to-AI commerce pilot — not proxied as /api/ai-market.</p>
+          <p className="text-sm text-gray-400">
+            AI Market Protocol v1 — MCP manifest, HTTP 402 payments, channels, pipelines. Not under{' '}
+            <code className="text-gray-300">/api</code>. Reference:{' '}
+            <code className="text-gray-300">cli/ai_market_agent.py</code>, docs{' '}
+            <code className="text-gray-300">ai-market-protocol-v1.md</code>.
+          </p>
         </GlassCard>
 
         <GlassCard className="p-4 my-3">

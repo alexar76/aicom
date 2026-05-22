@@ -78,6 +78,10 @@ def main() -> int:
         host = public_url.lower().replace("https://", "").replace("http://", "").split("/")[0]
         if "magic-ai-factory.com" in host and "AIFACTORY_DEMO_READONLY" not in keys:
             additions.append(("AIFACTORY_DEMO_READONLY", "1"))
+        if "NEXT_PUBLIC_GA_MEASUREMENT_ID" not in keys:
+            from core.ga4_defaults import GA4_MEASUREMENT_ID
+
+            additions.append(("NEXT_PUBLIC_GA_MEASUREMENT_ID", GA4_MEASUREMENT_ID))
 
     if "AIFACTORY_FIREWALL_RULES_FERNET_KEY" not in keys:
         try:

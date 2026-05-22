@@ -9,6 +9,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:9080}
+        NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
     ports:
       - "${AICOM_PORT_FRONTEND:-9080}:8080"
       - "${AICOM_PORT_API:-9081}:8081"
@@ -35,6 +36,7 @@ services:
       INTERNAL_API_URL: http://127.0.0.1:8081
       UVICORN_WORKERS: ${UVICORN_WORKERS:-1}
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
+      NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
       # Comma-separated browser origins for API CORS; unset = dev defaults + NEXT_PUBLIC_SITE_URL
       AIFACTORY_CORS_ORIGINS: ${AIFACTORY_CORS_ORIGINS:-}
       # Fernet key (urlsafe base64) encrypts ``data/config/firewall_rules.json`` at rest; unset = plain JSON (dev)

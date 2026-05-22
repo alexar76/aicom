@@ -637,4 +637,74 @@ export const PIPELINE_TAB_DICT: I18nDict = {
     ru: 'в очереди',
     es: 'pendiente',
   },
+  'pipeline.coach.title': {
+    en: 'Pipeline in 60 seconds — no manual required',
+    ru: 'Пайплайн за 60 секунд — без руководства',
+    es: 'Pipeline en 60 segundos — sin manual',
+  },
+  'pipeline.coach.step0Prefix': {
+    en: 'Step 0: open',
+    ru: 'Шаг 0: откройте',
+    es: 'Paso 0: abra',
+  },
+  'pipeline.coach.step0Suffix': {
+    en: 'and save one LLM provider — otherwise every agent task will fail.',
+    ru: 'и сохраните одного LLM-провайдера — иначе все задачи агентов будут падать.',
+    es: 'y guarde un proveedor LLM; si no, todas las tareas de agentes fallarán.',
+  },
+  'pipeline.coach.step1.label': {
+    en: 'Green row',
+    ru: 'Зелёная строка',
+    es: 'Fila verde',
+  },
+  'pipeline.coach.step1.rest': {
+    en: '= shipped (COMPLETED). Amber = fixing. Red = failed — expand for the error line.',
+    ru: '= доставлено (COMPLETED). Янтарная = доработка. Красная = ошибка — разверните строку для текста ошибки.',
+    es: '= enviado (COMPLETED). Ámbar = corrección. Roja = fallo — expanda para ver el error.',
+  },
+  'pipeline.coach.step2.label': {
+    en: 'Muted rows',
+    ru: 'Тусклые строки',
+    es: 'Filas atenuadas',
+  },
+  'pipeline.coach.step2.rest': {
+    en: '= cached snapshot; the bar under the title shows live hydration. Wait for 100% before trusting storefront counts.',
+    ru: '= кэшированный снимок; полоса под заголовком показывает живую подгрузку. Дождитесь 100%, прежде чем доверять счётчикам витрины.',
+    es: '= instantánea en caché; la barra bajo el título muestra hidratación en vivo. Espere al 100% antes de confiar en los totales de tienda.',
+  },
+  'pipeline.coach.step3.label': {
+    en: 'Queue work',
+    ru: 'Поставить в очередь',
+    es: 'Encolar trabajo',
+  },
+  'pipeline.coach.step3.rest': {
+    en: '(idea → review → start). Turn on auto-pipeline in Settings if you want a steady stream.',
+    ru: '(идея → проверка → старт). Включите авто-пайплайн в «Настройках», если нужен постоянный поток.',
+    es: '(idea → revisión → inicio). Active el auto-pipeline en Configuración para un flujo continuo.',
+  },
+  'pipeline.coach.step4.label': {
+    en: 'Stuck?',
+    ru: 'Застряли?',
+    es: '¿Atascado?',
+  },
+  'pipeline.coach.step4.prefix': {
+    en: 'Check',
+    ru: 'Откройте',
+    es: 'Abra',
+  },
+  'pipeline.coach.step4.rest': {
+    en: 'and filter State = FAILED here.',
+    ru: 'и отфильтруйте здесь State = FAILED.',
+    es: 'y filtre aquí State = FAILED.',
+  },
+  'pipeline.coach.optionalDeepDive': {
+    en: 'Optional deep dive',
+    ru: 'Подробнее в документации',
+    es: 'Profundizar (opcional)',
+  },
+  'pipeline.coach.dismiss': {
+    en: 'Dismiss pipeline coach',
+    ru: 'Скрыть подсказку по пайплайну',
+    es: 'Ocultar guía del pipeline',
+  },
 };

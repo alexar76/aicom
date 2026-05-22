@@ -37,4 +37,5 @@ def public_demo_status() -> dict:
         "blocks_admin_password_change": on,
         "blocks_admin_user_management": on,
         "blocks_platform_settings_save": on,
+        "blocks_published_site_head_html_save": on,
     }

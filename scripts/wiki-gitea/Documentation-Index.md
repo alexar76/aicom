@@ -58,7 +58,10 @@ Wiki pages are **curated summaries**; deep guides stay in the repo (versioned wi
 | Doc | Topic |
 |-----|-------|
 | [`api-integration-guide.md`](http://5.129.212.122/Superowner/aicom/src/branch/main/docs/api-integration-guide.md) | REST |
+| [`ai-market-protocol-v1.md`](http://5.129.212.122/Superowner/aicom/src/branch/main/docs/ai-market-protocol-v1.md) | AI-to-AI commerce (MCP, 402, channels) |
+| [`ai-market-protocol-v0.md`](http://5.129.212.122/Superowner/aicom/src/branch/main/docs/ai-market-protocol-v0.md) | v0 pilot (settlement, licenses) |
 | [`cli-reference.md`](http://5.129.212.122/Superowner/aicom/src/branch/main/docs/cli-reference.md) | CLI |
+| Wiki | [[AI-Market-Protocol]] |
 
 ## Competitive / positioning
 

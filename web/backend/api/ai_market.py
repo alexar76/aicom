@@ -32,6 +32,10 @@ from web.backend.services.commerce import CommerceService
 router = APIRouter(prefix="/ai-market", tags=["ai-market"])
 commerce = CommerceService()
 
+from web.backend.api.ai_market_protocol_v1 import router as ai_market_v1_router  # noqa: E402
+
+router.include_router(ai_market_v1_router)
+
 
 def _decode_customer(authorization: str | None) -> dict | None:
     """Decode the customer JWT from an ``Authorization: Bearer`` header.
@@ -129,6 +133,17 @@ async def list_products():
         state = str((p or {}).get("state") or "").upper()
         if state not in {"COMPLETED", "DEPLOYED_PRODUCTION"}:
             continue
+        caps = []
+        try:
+            from web.backend.services.ai_market_protocol.catalog import list_capabilities
+
+            caps = [
+                {"id": c["capability_id"], "product_id": pid, "price_per_call_usd": c["price_per_call_usd"]}
+                for c in list_capabilities()
+                if c["product_id"] == pid
+            ]
+        except Exception:
+            caps = []
         out.append(
             {
                 "id": pid,
@@ -136,7 +151,7 @@ async def list_products():
                 "description": str((p or {}).get("idea") or ""),
                 "category": str((p or {}).get("category") or "uncategorized"),
                 "tags": (p or {}).get("tags") or [],
-                "capabilities": [],
+                "capabilities": caps,
                 "pricing": {},
                 "license": {},
                 "quality": {},

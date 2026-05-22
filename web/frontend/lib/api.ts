@@ -1093,6 +1093,17 @@ class ApiClient {
     return this.request('/admin/wow/showcase/gallery');
   }
 
+  async getProductShowcaseStatus(productId: string): Promise<{
+    product_id: string;
+    status: string;
+    queued_at?: number;
+    completed_at?: number;
+    error?: string;
+    base_url?: string;
+  }> {
+    return this.request(`/admin/wow/showcase/status/${encodeURIComponent(productId)}`);
+  }
+
   async analyzePromptFailures(): Promise<{ proposals: any[]; count: number }> {
     return this.request('/admin/wow/prompts/analyze', { method: 'POST' });
   }

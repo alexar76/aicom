@@ -216,12 +216,17 @@ export function FactoryFloorTab({ locale }: { locale: AdminLocale }) {
 
   const { flowNodes, flowEdges } = useMemo(() => {
     const agents = floor?.nodes || [];
-    const n: Node[] = agents.map((a, i) => ({
-      id: a.id,
-      type: 'agent',
-      position: { x: (i % 4) * 240, y: Math.floor(i / 4) * 130 },
-      data: { ...a, shake: a.circuit_tripped },
-    }));
+    const n: Node[] = agents.map((a, i) => {
+      const gridIndex = a.id === 'external_agent' ? 0 : i;
+      const col = a.id === 'external_agent' ? 0 : (gridIndex % 4);
+      const row = a.id === 'external_agent' ? 0 : Math.floor(gridIndex / 4);
+      return {
+        id: a.id,
+        type: 'agent',
+        position: { x: col * 240 - (a.id === 'external_agent' ? 40 : 0), y: row * 130 },
+        data: { ...a, shake: a.circuit_tripped },
+      };
+    });
     const hot = new Set((floor?.hot_edges || []).map((e) => `${e.from}->${e.to}`));
     const e: Edge[] = (floor?.edges || []).map((edge, idx) => ({
       id: `e-${edge.from}-${edge.to}-${idx}`,
@@ -316,6 +321,22 @@ export function FactoryFloorTab({ locale }: { locale: AdminLocale }) {
         <p className="text-xs text-rose-400">
           Circuit open: {floor?.open_circuits?.join(', ')}
         </p>
+      ) : null}
+
+      {(floor?.ai_market?.events?.length || 0) > 0 ? (
+        <GlassCard className="p-3 border-cyan-500/25">
+          <p className="text-xs font-medium text-cyan-200 mb-2">
+            AI Market (external agents) · ${Number(floor?.ai_market?.total_usd_1h ?? 0).toFixed(2)} recent
+          </p>
+          <ul className="space-y-1 max-h-32 overflow-y-auto text-[10px] text-slate-400 font-mono">
+            {(floor?.ai_market?.events || []).slice(0, 8).map((ev, idx) => (
+              <li key={`${ev.time}-${idx}`}>
+                {ev.capability_id || ev.type} → ${Number(ev.price_usd ?? 0).toFixed(2)}
+                {ev.latency_ms != null ? ` · ${ev.latency_ms}ms` : ''}
+              </li>
+            ))}
+          </ul>
+        </GlassCard>
       ) : null}
     </div>
   );

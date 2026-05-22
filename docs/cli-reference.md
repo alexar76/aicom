@@ -38,6 +38,20 @@ Some README examples use the shorthand **`ai-company`** — that binary is **not
 | `wallet withdraw …` | **Interactive demo** — confirms then prints fake initiation message. |
 | `test-payment <product_id>` | **Smoke placeholder** for payment wiring. |
 
+### AI Market (`cli/ai_market_agent.py`, `cli/ai_market_sdk.py`)
+
+| Script | Purpose |
+|--------|---------|
+| `ai_market_agent.py` | **Protocol v1 reference agent** — discover → channel → invoke → settle (WOW demo). |
+| `ai_market_sdk.py` | HTTP client: v0 pilot + v1 (`well_known`, `manifest_v1`, `discover`, `open_channel`, `invoke_capability_v1`). |
+
+```bash
+python cli/ai_market_agent.py "translate spec to 5 langs + legal review" \
+  --budget 3.0 --base-url http://127.0.0.1:9080
+```
+
+See [ai-market-protocol-v1.md](./ai-market-protocol-v1.md).
+
 ---
 
 ## Examples

@@ -6,6 +6,7 @@ import { applyTheme } from '@/lib/utils';
 import type { AdminLocale } from '@/lib/adminI18n';
 import { t, tVars } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
+import { useAdminSessionStore } from '@/lib/adminSessionStore';
 import {
   DEFAULT_QUALITY_SETTINGS,
   type QualitySettingsState,
@@ -37,6 +38,9 @@ const ADMIN_AUTOSAVE_MS = 700;
 const CORP_AUTOSAVE_MS = 650;
 
 export function useSettingsTabState(locale: AdminLocale) {
+  const publicDemo = useAdminSessionStore((s) =>
+    Boolean(s.me?.public_demo || (s.me as { public_demo_readonly?: boolean } | null)?.public_demo_readonly),
+  );
   const [currentTheme, setCurrentTheme] = useState<string>('cyberpunk');
   const [themeSaving, setThemeSaving] = useState<string | null>(null);
 
@@ -354,6 +358,10 @@ export function useSettingsTabState(locale: AdminLocale) {
   const adminPayloadSignature = () => stableStringify(buildAdminPayload());
 
   const persistAdminSettings = async (): Promise<boolean> => {
+    if (publicDemo) {
+      toast.error(t(locale, 'settings.demo.settingsSaveBlocked'), { id: 'demo-settings-blocked' });
+      return false;
+    }
     const sig = adminPayloadSignature();
     if (sig === lastAdminPersistSigRef.current) {
       return true;
@@ -381,7 +389,7 @@ export function useSettingsTabState(locale: AdminLocale) {
   };
 
   useEffect(() => {
-    if (settingsLoading) {
+    if (publicDemo || settingsLoading) {
       adminBaselineReadyRef.current = false;
       return;
     }
@@ -407,7 +415,7 @@ export function useSettingsTabState(locale: AdminLocale) {
         adminAutosaveTimerRef.current = null;
       }
     };
-  }, [settings, qualitySettings, telegramBotTokenInput, settingsLoading]);
+  }, [settings, qualitySettings, telegramBotTokenInput, settingsLoading, publicDemo]);
 
   useEffect(() => {
     if (!corpChatHydratedRef.current || settingsLoading) {

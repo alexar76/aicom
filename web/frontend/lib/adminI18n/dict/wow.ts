@@ -51,6 +51,51 @@ export const WOW_DICT: I18nDict = {
     ru: 'Авто-запись Playwright для готовых продуктов (docs/gallery).',
     es: 'Clips Playwright auto-capturados para productos publicados.',
   },
+  'wow.showcaseProductId': {
+    en: 'Product ID',
+    ru: 'ID продукта',
+    es: 'ID del producto',
+  },
+  'wow.showcaseRecord': {
+    en: 'Record showcase',
+    ru: 'Записать витрину',
+    es: 'Grabar escaparate',
+  },
+  'wow.showcaseRecording': {
+    en: 'Recording…',
+    ru: 'Запись…',
+    es: 'Grabando…',
+  },
+  'wow.showcaseQueued': {
+    en: 'Showcase queued — Playwright is capturing the sandbox preview.',
+    ru: 'Запись в очереди — Playwright снимает превью sandbox.',
+    es: 'Grabación en cola — Playwright captura la vista previa del sandbox.',
+  },
+  'wow.showcaseAlreadyQueued': {
+    en: 'Already recording this product — wait for the current job to finish.',
+    ru: 'Этот продукт уже записывается — дождитесь завершения текущей задачи.',
+    es: 'Este producto ya se está grabando — espere a que termine el trabajo actual.',
+  },
+  'wow.showcaseDone': {
+    en: 'Showcase clip ready in the gallery.',
+    ru: 'Клип витрины готов — смотрите в галерее ниже.',
+    es: 'Clip del escaparate listo — véalo en la galería.',
+  },
+  'wow.showcaseFailed': {
+    en: 'Showcase capture failed',
+    ru: 'Не удалось записать витрину',
+    es: 'Falló la grabación del escaparate',
+  },
+  'wow.showcaseOpenPreview': {
+    en: 'Open preview',
+    ru: 'Открыть превью',
+    es: 'Abrir vista previa',
+  },
+  'wow.showcaseEmpty': {
+    en: 'No showcase clips yet — enter a shipped product ID and press Record.',
+    ru: 'Клипов пока нет — укажите ID доставленного продукта и нажмите «Записать витрину».',
+    es: 'Aún no hay clips — indique el ID de un producto enviado y pulse Grabar.',
+  },
   'wow.promptLoopIntro': {
     en: 'Meta-agent analyzes failed tasks and proposes prompt patches with A/B apply.',
     ru: 'Мета-агент анализирует провалы и предлагает патчи промптов с A/B.',

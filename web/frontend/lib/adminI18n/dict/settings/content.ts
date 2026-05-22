@@ -234,9 +234,24 @@ export const CONTENT_SETTINGS_DICT: I18nDict = {
     es: 'HTML / scripts para <head>',
   },
   'settings.headSnippet.placeholder': {
-    en: '<!-- Example: GA4 -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag(\'js\', new Date());\n  gtag(\'config\', \'G-XXXX\');\n</script>',
-    ru: '<!-- Пример: GA4 -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag(\'js\', new Date());\n  gtag(\'config\', \'G-XXXX\');\n</script>',
-    es: '<!-- Ejemplo: GA4 -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag(\'js\', new Date());\n  gtag(\'config\', \'G-XXXX\');\n</script>',
+    en: '<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-67NJ81W2YY"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag(\'js\', new Date());\n  gtag(\'config\', \'G-67NJ81W2YY\');\n</script>',
+    ru: '<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-67NJ81W2YY"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag(\'js\', new Date());\n  gtag(\'config\', \'G-67NJ81W2YY\');\n</script>',
+    es: '<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-67NJ81W2YY"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag(\'js\', new Date());\n  gtag(\'config\', \'G-67NJ81W2YY\');\n</script>',
+  },
+  'settings.demo.readonlyBanner': {
+    en: 'Public demo mode: Settings are read-only (including Google Analytics head snippet, backup, password). Analytics still works via NEXT_PUBLIC_GA_MEASUREMENT_ID in .env. Self-host with AIFACTORY_DEMO_READONLY=0 to save from Admin.',
+    ru: 'Публичное демо: «Настройки» только для чтения (в т.ч. сниппет GA в <head>, бэкап, пароль). Счётчик GA на витрине работает через NEXT_PUBLIC_GA_MEASUREMENT_ID в .env. На своём инстансе отключите AIFACTORY_DEMO_READONLY=0 — тогда сохранение из админки включится.',
+    es: 'Demo público: Ajustes son solo lectura (snippet GA en <head>, copia, contraseña). Analytics en la tienda vía NEXT_PUBLIC_GA_MEASUREMENT_ID en .env. Autoaloje con AIFACTORY_DEMO_READONLY=0 para guardar desde Admin.',
+  },
+  'settings.demo.settingsSaveBlocked': {
+    en: 'Demo mode: settings are not saved. Set NEXT_PUBLIC_GA_MEASUREMENT_ID in .env or self-host without demo readonly.',
+    ru: 'Демо-режим: настройки не сохраняются. Для GA укажите NEXT_PUBLIC_GA_MEASUREMENT_ID в .env или поднимите свой инстанс без demo readonly.',
+    es: 'Modo demo: los ajustes no se guardan. Use NEXT_PUBLIC_GA_MEASUREMENT_ID en .env o autoaloje sin demo readonly.',
+  },
+  'settings.demo.headSnippetBlocked': {
+    en: 'This field cannot be saved on the shared demo. Use NEXT_PUBLIC_GA_MEASUREMENT_ID=G-67NJ81W2YY in .env (already recommended for magic-ai-factory.com) or self-host to edit and save the snippet here.',
+    ru: 'На общем демо поле не сохраняется. Для счётчика GA используйте NEXT_PUBLIC_GA_MEASUREMENT_ID=G-67NJ81W2YY в .env (рекомендуется для magic-ai-factory.com) или свой инстанс без demo readonly.',
+    es: 'En el demo compartido no se guarda. Para GA use NEXT_PUBLIC_GA_MEASUREMENT_ID=G-67NJ81W2YY en .env o autoaloje sin demo readonly.',
   },
   'settings.headSnippet.footer': {
     en: 'Max 100,000 characters (server truncates beyond that). Already-built pages are not rewritten; run Developer again or edit HTML on disk to apply changes retroactively. This field autosaves a few seconds after edits — blur the field to save immediately.',

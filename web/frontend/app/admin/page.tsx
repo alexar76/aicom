@@ -47,9 +47,10 @@ const FilesTabLazy = dynamic(
     ),
   },
 );
-import { AdminLocale, detectAdminLocale, saveAdminLocale, t } from '@/lib/adminI18n';
+import { t } from '@/lib/adminI18n';
 import api from '@/lib/api';
 import { prefetchAdminDashboard } from '@/lib/prefetchAdminDashboard';
+import { useAdminSessionStore } from '@/lib/adminSessionStore';
 
 const ADMIN_TAB_IDS = new Set([
   'dashboard',
@@ -125,44 +126,35 @@ function AdminPageInner() {
   }, []);
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [locale, setLocale] = useState<AdminLocale>(() =>
-    typeof window !== 'undefined' ? detectAdminLocale() : 'en',
+  const locale = useAdminSessionStore((s) => s.locale);
+  const setLocale = useAdminSessionStore((s) => s.setLocale);
+  const authChecked = useAdminSessionStore((s) => s.authChecked);
+  const setAuthChecked = useAdminSessionStore((s) => s.setAuthChecked);
+  const hydrateLocale = useAdminSessionStore((s) => s.hydrateLocale);
+  const refreshMe = useAdminSessionStore((s) => s.refreshMe);
+  const adminRole = useAdminSessionStore((s) => s.me?.role ?? null);
+  const sandboxDemoPasswordDefault = useAdminSessionStore(
+    (s) => Boolean(s.me?.sandbox_demo_password_uses_default),
   );
-  const [adminRole, setAdminRole] = useState<string | null>(null);
-  const [sandboxDemoPasswordDefault, setSandboxDemoPasswordDefault] = useState(false);
   const [demoPwBannerDismissed, setDemoPwBannerDismissed] = useState(() => {
     if (typeof window === 'undefined') return false;
     return sessionStorage.getItem('aicom_hide_default_demo_pw_banner') === '1';
   });
 
   useEffect(() => {
-    setLocale(detectAdminLocale());
+    hydrateLocale();
     api
       .getMe()
-      .then(() => {
+      .then(async () => {
         setAuthChecked(true);
+        await refreshMe();
         prefetchAdminDashboard();
       })
       .catch(() => {
         localStorage.removeItem('admin_token');
         window.location.href = '/admin/login';
       });
-  }, []);
-
-  useEffect(() => {
-    if (!authChecked) return;
-    api
-      .getMe()
-      .then((m) => {
-        setAdminRole(m.role || null);
-        setSandboxDemoPasswordDefault(Boolean(m.sandbox_demo_password_uses_default));
-      })
-      .catch(() => {
-        setAdminRole(null);
-        setSandboxDemoPasswordDefault(false);
-      });
-  }, [authChecked]);
+  }, [hydrateLocale, refreshMe, setAuthChecked]);
 
   const renderTab = () => {
     if (!authChecked) return null;
@@ -235,10 +227,7 @@ function AdminPageInner() {
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
         locale={locale}
-        onLocaleChange={(next) => {
-          setLocale(next);
-          saveAdminLocale(next);
-        }}
+        onLocaleChange={setLocale}
         onLogout={handleLogout}
         showUsersTab={adminRole === 'super_admin'}
       />

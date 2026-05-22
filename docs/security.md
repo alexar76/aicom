@@ -36,7 +36,7 @@ When enabled, the API returns **403** for:
 | Action | Rationale |
 |--------|-----------|
 | Factory backup / restore ZIP | No bulk exfiltration or catalog wipe |
-| `POST /api/admin/settings` | Shared Director/autopilot/URLs stay stable |
+| `POST /api/admin/settings` | Shared Director/autopilot/URLs stay stable (GA head snippet, autopilot, etc.) |
 | `POST /api/admin/auth/change-password` | Shared `demo123` must keep working |
 | Admin user create/update/delete | No lockout of other visitors |
 
@@ -47,6 +47,20 @@ The admin UI reads `public_demo` from `GET /api/admin/auth/me` and shows a banne
 **Self-hosted:** leave unset or `AIFACTORY_DEMO_READONLY=0`. Use bootstrap password, full Settings, and backup/restore.
 
 Automation: `scripts/fill_production_env.py --public-url https://magic-ai-factory.com` appends `AIFACTORY_DEMO_READONLY=1` if missing. See [production-domain.md](./production-domain.md).
+
+---
+
+## Production guard (`AIFACTORY_PROD=1`)
+
+For **real** production (not the public demo), set `AIFACTORY_PROD=1` in `.env`. Startup **refuses** to run if:
+
+- `AIFACTORY_DEV_BOOTSTRAP_PASSWORD` is a known weak password (`demo123`, `admin123`, …), or
+- The configured admin account still verifies as one of those passwords, or
+- `AIFACTORY_DEMO_READONLY=1` is set (demo and prod flags are mutually exclusive).
+
+Implementation: `security/prod_startup_guard.py` (entrypoint + FastAPI lifespan).
+
+**Public demo** ([magic-ai-factory.com](https://magic-ai-factory.com)): use `AIFACTORY_DEMO_READONLY=1` only — do **not** set `AIFACTORY_PROD=1`.
 
 There is **no** admin UI action to delete pipeline products; demo protection does not rely on hiding delete buttons alone.
 

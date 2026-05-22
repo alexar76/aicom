@@ -184,6 +184,36 @@ def _agent_log_pulse() -> dict[str, str]:
     return pulse
 
 
+def _ai_market_external_slice() -> dict[str, Any]:
+    """Recent AI Market Protocol v1 invocations for Factory Floor WOW overlay."""
+    try:
+        from web.backend.services.ai_market_protocol.stats import list_recent_stats
+
+        events = list_recent_stats(16)
+    except Exception:
+        logger.debug("factory_floor ai_market stats unavailable", exc_info=True)
+        events = []
+    if not events:
+        return {"events": [], "node": None, "hot_edges": []}
+    last = events[0]
+    total_usd = sum(float(e.get("price_usd") or 0) for e in events if e.get("type") == "invoke")
+    node = {
+        "id": "external_agent",
+        "label": "🤖 External AI",
+        "status": "running",
+        "prompt_line": f"{last.get('capability_id', 'invoke')} · ${float(last.get('price_usd') or 0):.2f}",
+        "provider": "ai-market",
+        "model": "protocol-v1",
+        "latency_ms": last.get("latency_ms"),
+        "cost_usd": float(last.get("price_usd") or 0),
+        "product_id": last.get("product_id"),
+        "circuit_tripped": False,
+    }
+    target = "developer" if "developer" in _stage_order() else (_stage_order()[0] if _stage_order() else "analyst")
+    hot = [{"from": "external_agent", "to": target, "pulse_id": "ai-market-live"}]
+    return {"events": events, "node": node, "hot_edges": hot, "total_usd_1h": round(total_usd, 4)}
+
+
 def build_factory_floor_slice(
     *,
     sqlite_path: Path,
@@ -252,6 +282,11 @@ def build_factory_floor_slice(
         if idx > 0:
             hot_edges.append({"from": stage_order[idx - 1], "to": agent, "pulse_id": f"pulse-{i}"})
 
+    ai_market = _ai_market_external_slice()
+    if ai_market.get("node"):
+        nodes.insert(0, ai_market["node"])
+        hot_edges = list(ai_market.get("hot_edges") or []) + hot_edges
+
     return {
         "nodes": nodes,
         "edges": _pipeline_edges(),
@@ -259,4 +294,8 @@ def build_factory_floor_slice(
         "running_count": len(running),
         "open_circuits": sorted(open_providers),
         "updated_at": time.time(),
+        "ai_market": {
+            "events": ai_market.get("events") or [],
+            "total_usd_1h": ai_market.get("total_usd_1h", 0),
+        },
     }

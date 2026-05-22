@@ -77,7 +77,9 @@ COPY . .
 # ── Frontend Build ─────────────────────────────────────────────────────────
 # NEXT_PUBLIC_* is inlined at `next build`; override via compose build args for production domains.
 ARG NEXT_PUBLIC_SITE_URL=http://localhost:9080
+ARG NEXT_PUBLIC_GA_MEASUREMENT_ID=
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+ENV NEXT_PUBLIC_GA_MEASUREMENT_ID=${NEXT_PUBLIC_GA_MEASUREMENT_ID}
 WORKDIR /app/web/frontend
 # PWA manifest requires on-disk PNGs (prebuild); ensure icons exist if npm lifecycle changes.
 RUN python3 scripts/gen_pwa_icons.py

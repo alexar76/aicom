@@ -57,7 +57,18 @@ When `AIFACTORY_SUPPORT_REQUIRE_TOKEN` is enabled (default **on**), mutating sup
 | `/api/telemetry/*` | Client telemetry ingestion |
 | `/api/customer/*` | Registration, login, entitlements (see routes) |
 
-**Note:** `/ai-market/*` is a **separate pilot router** (prefix **without** `/api`) for AI-to-AI protocol experiments — do not confuse it with the main storefront catalog.
+**Note:** `/ai-market/*` and `/.well-known/ai-market.json` are a **separate router** (prefix **without** `/api`) for the **AI Market Protocol** — do not confuse with the main storefront catalog. See **[ai-market-protocol-v1.md](./ai-market-protocol-v1.md)** (v1) and [v0 pilot](./ai-market-protocol-v0.md).
+
+| AI Market v1 (public) | Purpose |
+|----------------------|---------|
+| `GET /.well-known/ai-market.json` | Root crawl manifest |
+| `GET /ai-market/manifest` | MCP tool catalog (signed) |
+| `POST /ai-market/discover` | NL → execution plan |
+| `POST /capabilities/{pid}/{cid}/invoke` | Capability call (402 → pay → retry) |
+| `POST /ai-market/channel/open` · `close` | Payment channel |
+| `POST /ai-market/pipelines` | DAG + bill of materials |
+
+Reference CLI: `python cli/ai_market_agent.py "…" --budget 3.0 --base-url https://your-host`
 
 ---
 
@@ -135,4 +146,5 @@ curl -sS 'http://localhost:9080/api/products?category=saas' | jq '.count'
 - [owner-guide.md](./owner-guide.md) — operator scenarios tying UI ↔ API  
 - [admin-guide.md](./admin-guide.md) — tab-by-tab mapping  
 - [marketing.md](./marketing.md) — storefront behavior & env vars  
-- [ai-market-protocol-v0.md](./ai-market-protocol-v0.md) — separate `/ai-market` pilot  
+- [ai-market-protocol-v1.md](./ai-market-protocol-v1.md) — AI Market v1 (MCP, 402, channels, pipelines)  
+- [ai-market-protocol-v0.md](./ai-market-protocol-v0.md) — v0 pilot (settlement, licenses)  

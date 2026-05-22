@@ -13,7 +13,11 @@ from web.backend.schemas.api_requests import (
     ProductShowcaseEnqueueRequest,
 )
 from web.backend.services.pipeline_replay_timeline import build_replay_timeline, fork_replay_from_frame
-from web.backend.services.product_showcase import enqueue_product_showcase, list_showcase_gallery
+from web.backend.services.product_showcase import (
+    enqueue_product_showcase,
+    get_product_showcase_status,
+    list_showcase_gallery,
+)
 from web.backend.services.prompt_improvement_loop import analyze_failures_and_propose, apply_proposal, list_proposals
 
 router = APIRouter(prefix="/wow", tags=["admin-wow"], dependencies=[Depends(require_admin_with_rbac)])
@@ -75,6 +79,15 @@ async def post_showcase_enqueue(body: ProductShowcaseEnqueueRequest, _admin: dic
 async def get_showcase_gallery(_admin: dict = Depends(require_admin_with_rbac)):
     _ = _admin
     return list_showcase_gallery()
+
+
+@router.get("/showcase/status/{product_id}")
+async def get_showcase_status(product_id: str, _admin: dict = Depends(require_admin_with_rbac)):
+    _ = _admin
+    try:
+        return get_product_showcase_status(product_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @router.post("/prompts/analyze")

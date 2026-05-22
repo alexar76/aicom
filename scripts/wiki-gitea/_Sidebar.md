@@ -15,6 +15,7 @@
 
 **Develop**
 - [API](API-Integration)
+- [AI Market Protocol](AI-Market-Protocol)
 - [Agents](Agents)
 - [Architecture](Architecture)
 

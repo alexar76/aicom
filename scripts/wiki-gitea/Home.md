@@ -47,6 +47,7 @@ More detail: [[Quick-Start]] · [[Deployment]]
 | Docker / production | [[Deployment]] |
 | Passwords, CSRF, sandbox | [[Security]] |
 | REST API | [[API-Integration]] |
+| AI Market (AI-to-AI) | [[AI-Market-Protocol]] |
 | Agents and gates | [[Agents]] |
 | FAQ | [[FAQ]] |
 | Architecture (Mermaid) | [[Architecture]] |

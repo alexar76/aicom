@@ -12,7 +12,7 @@ When **`AIFACTORY_DEMO_READONLY=1`** is set in `.env` (read by `docker compose`)
 |---------|-----|
 | Factory backup download | Prevents exfiltrating all demo products/secrets |
 | Factory restore | Prevents wiping or replacing the shared catalog |
-| **Settings → Save** | Keeps Director/autopilot/URLs stable for everyone |
+| **Settings → Save** | Keeps Director/autopilot/URLs stable for everyone (includes **GA / head snippet** — use `NEXT_PUBLIC_GA_MEASUREMENT_ID` in `.env` on demo) |
 | **Admin password change** | Keeps shared `demo123` working |
 | **Admin user CRUD** | No add/delete/edit; super-admin accounts are never deletable |
 
