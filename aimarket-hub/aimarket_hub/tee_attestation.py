@@ -41,11 +41,15 @@ class TEEAttestation:
     signature: str = ""  # Signed by enclave key (simulated here)
 
     def canonical(self) -> str:
+        # All three PCR values are covered by the signature.
+        # PCR0: firmware/boot chain, PCR1: kernel/OS, PCR2: application code
         return (
             f"platform:{self.platform}"
             f"|enclave_id:{self.enclave_id}"
             f"|code_hash:{self.code_hash}"
             f"|pcr0:{self.pcr_values.get('pcr0', '')}"
+            f"|pcr1:{self.pcr_values.get('pcr1', '')}"
+            f"|pcr2:{self.pcr_values.get('pcr2', '')}"
             f"|instance:{self.instance_id}"
             f"|region:{self.region}"
             f"|timestamp:{self.timestamp}"
@@ -53,6 +57,9 @@ class TEEAttestation:
         )
 
     def sign(self, signer: Signer) -> "TEEAttestation":
+        # NOTE: In production, this must be signed by the TEE enclave key
+        # (Nitro KMS / TDX Quote), not the hub's general-purpose Signer.
+        # This implementation is a simulation for development and testing.
         self.signature = signer.sign_canonical(self.canonical())
         return self
 

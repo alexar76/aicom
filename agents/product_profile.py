@@ -6,7 +6,18 @@ from __future__ import annotations
 import os
 import re
 
-from core.delivery_profile import FULL_SOFTWARE, MARKETING_LANDING, normalize_delivery_profile
+from core.delivery_profile import DESKTOP_APP, FULL_SOFTWARE, MARKETING_LANDING, normalize_delivery_profile
+
+__all__ = [
+    "DESKTOP_APP",
+    "FULL_SOFTWARE",
+    "MARKETING_LANDING",
+    "normalize_delivery_profile",
+    "infer_delivery_profile",
+    "post_devops_human_gate_required",
+    "admin_charter_forces_landing_only",
+    "research_artifact_implies_full_product",
+]
 
 
 def infer_delivery_profile(admin_instructions: str | None, idea: str | None) -> str:
@@ -21,6 +32,25 @@ def infer_delivery_profile(admin_instructions: str | None, idea: str | None) -> 
     # Explicit operator charter in admin instructions wins over all heuristics.
     if admin_charter_forces_landing_only(admin_instructions):
         return MARKETING_LANDING
+
+    desktop_markers = (
+        "desktop app",
+        "desktop application",
+        "electron",
+        "tauri",
+        "flutter desktop",
+        "native client",
+        "native app",
+        "system tray",
+        "macos app",
+        "windows app",
+        "linux app",
+        "offline-first desktop",
+        "desktop tool",
+        "installable app",
+    )
+    if any(x in blob for x in desktop_markers):
+        return DESKTOP_APP
 
     # Strong backend / platform signals — prefer full_software even if copy says "page"
     strong_backend = any(
@@ -91,6 +121,7 @@ def infer_delivery_profile(admin_instructions: str | None, idea: str | None) -> 
             "android app",
             "react native",
             "flutter app",
+            "flutter desktop",
         )
     )
     # Nuclear option for operators: default everything to full product (brochure needs explicit charter or --landing).
@@ -187,7 +218,7 @@ def post_devops_human_gate_required(product: dict | None) -> bool:
         prof = normalize_delivery_profile(str(dp))
     else:
         prof = infer_delivery_profile(product.get("admin_instructions"), product.get("idea"))
-    return prof == FULL_SOFTWARE
+    return prof in (FULL_SOFTWARE, DESKTOP_APP)
 
 
 def admin_charter_forces_landing_only(admin_instructions: str | None) -> bool:

@@ -498,6 +498,13 @@ def assess_product_demo(
     """
     Return a small report: score 0–100, human-readable issues, spec coverage heuristic.
     """
+    from core.delivery_profile import DESKTOP_APP, normalize_delivery_profile
+    from web.backend.services.desktop_product import assess_desktop_product_demo
+
+    dp = normalize_delivery_profile(str((spec or {}).get("delivery_profile") or "")) if isinstance(spec, dict) else None
+    if dp == DESKTOP_APP:
+        return assess_desktop_product_demo(product_id, spec=spec, data_root=data_root)
+
     code_dir = resolve_data_root(data_root) / "code" / product_id
     issues: list[dict[str, str]] = []
     index_html = _read_index_html(code_dir)
@@ -733,14 +740,18 @@ LANDING_NON_BLOCKING_ISSUE_CODES = frozenset(
 
 def quality_gates_pass(report: dict[str, Any], *, delivery_profile: str | None = None) -> bool:
     """Return True if demo/TZ gates allow advancing past QA (to security)."""
-    from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
+    from core.delivery_profile import DESKTOP_APP, MARKETING_LANDING, normalize_delivery_profile
 
     strict = strict_demo_gates()
     visual_strict = visual_quality_strict()
     min_score = demo_quality_min_score()
-    landing = normalize_delivery_profile(delivery_profile) == MARKETING_LANDING
+    profile = normalize_delivery_profile(delivery_profile)
+    landing = profile == MARKETING_LANDING
+    desktop = profile == DESKTOP_APP
     if landing:
         min_score = min(min_score, max(0, int(os.environ.get("AIFACTORY_LANDING_DEMO_MIN_SCORE", "45") or 45)))
+    if desktop:
+        min_score = min(min_score, max(0, int(os.environ.get("AIFACTORY_DESKTOP_DEMO_MIN_SCORE", "50") or 50)))
 
     if report.get("score", 0) < min_score:
         return False
@@ -749,6 +760,8 @@ def quality_gates_pass(report: dict[str, Any], *, delivery_profile: str | None =
     critical = CRITICAL_ISSUE_CODES
     if landing:
         critical = critical - LANDING_NON_BLOCKING_ISSUE_CODES
+    if desktop:
+        critical = critical - frozenset({"no_index_html", "sandbox_localhost_urls", "broken_internal_link", "tiny_html"})
     if codes & critical:
         return False
 
@@ -767,7 +780,10 @@ def quality_gates_pass(report: dict[str, Any], *, delivery_profile: str | None =
         if any(i.get("code") == "ux_structure_thin" for i in report.get("issues", []) if isinstance(i, dict)):
             return False
 
-    if not report.get("has_index_html", True):
+    if not report.get("has_index_html", True) and not desktop:
+        return False
+
+    if desktop and not report.get("desktop_ready", True):
         return False
 
     return True

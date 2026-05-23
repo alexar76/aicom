@@ -1,38 +1,37 @@
-# Security Policy
+# Security Policy — AI Market Hub
 
-## Supported versions
+## Reporting a Vulnerability
 
-Security fixes are applied to the latest `main` branch.
+**DO NOT open a public issue.** Send to `security@aicom.io` (PGP below).
 
-## Reporting vulnerabilities
+Response within 24 hours. Full disclosure after fix + 30 days.
 
-Do not open public issues for vulnerabilities.
+## Bug Bounty
 
-Report privately to project maintainers with:
+Launching with mainnet on Immunefi. See `contracts/audits/PAYMENT_LAYER_SECURITY_AUDIT.md` for detailed findings.
 
-- affected component and commit/version
-- reproduction steps or proof of concept
-- impact assessment
-- suggested remediation (optional)
+### Scope & Rewards (when funded, pool target $250k)
 
-If you already opened a public issue by mistake, edit it immediately to remove sensitive details.
+| Severity | Reward | Example |
+|---|---|---|
+| Critical | $50k–$250k | Direct theft of escrowed funds, signature forgery |
+| High | $10k–$50k | Channel hijacking, replay bypass, safety gate bypass |
+| Medium | $2k–$10k | DoS on channels, balance inconsistency |
+| Low | $500–$2k | Edge case with no fund loss |
 
-## Scope
+### Out of Scope
+- Attacks requiring multisig key compromise
+- Known issues in the internal audit
 
-- Authentication and authorization flows
-- Payment and wallet integration paths
-- Sandbox/code execution boundaries
-- Secret storage and key management
-- CI/CD credential handling
+## Audit Reports
 
-## Secret handling policy
+| Date | Firm | Scope | Report |
+|---|---|---|---|
+| 2026-05 | Internal | Payment channels, contracts, signing | `contracts/audits/` |
+| TBD | External #1 | Full | Coming |
+| TBD | External #2 | Contracts | Coming |
 
-- Never commit API tokens, private keys, wallet addresses intended for production, internal host IPs, or user credentials.
-- Use environment variables, secret managers, or runtime-local config files excluded from VCS.
-- Rotate compromised credentials immediately and invalidate old tokens.
+## PGP
 
-## Response SLA
-
-- Initial triage: within 72 hours
-- Severity classification and remediation plan: within 7 days
-- Status updates: at least weekly until resolved
+Email `security@aicom.io` for PGP key. Key fingerprint published on request.
+Do not include sensitive details in the initial email — we will provide the PGP key for encrypted follow-up.

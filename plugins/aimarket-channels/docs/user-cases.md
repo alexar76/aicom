@@ -1,0 +1,23 @@
+# aimarket-channels — User Cases
+
+### Agent orchestrator
+
+One deposit, N micro-invokes, one settlement TX
+
+### Mobile app
+
+Pre-fund $5 wallet for session; refund unused balance on exit
+
+### Batch ETL
+
+Run 50 capability calls without 50 on-chain transactions
+
+
+## Cross-plugin workflows
+
+| Combine with | Workflow |
+|--------------|----------|
+| `aimarket-channels` | Pre-fund session, run plugin features, settle once |
+| `aimarket-safety` | Block unsafe calls before paid invoke |
+| `aimarket-provenance` | Attach receipt to every successful invoke |
+| `aimarket-reputation` | Weight search results by provider trust score |

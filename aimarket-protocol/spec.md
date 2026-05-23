@@ -49,6 +49,10 @@ Protocol v2 adds **federation**: multiple hubs form a network where:
 | **Routing fee** | Opt-in percentage a hub takes for forwarding an invocation |
 | **Reputation event** | Signed attestation about a provider or capability |
 
+### 1.4. Ecosystem architecture (visual)
+
+For a single map of how Factory, Hub, Mesh, clients, plugins, and on-chain settlement connect under this protocol, see **[ecosystem.md](ecosystem.md)** (Mermaid diagrams: topology, invoke paths, federation mesh, plugin pipeline, persistence).
+
 ---
 
 ## 2. Discovery
@@ -401,6 +405,7 @@ The reference implementation lives at [aimarket-hub](../aimarket-hub/). It is Ap
 
 ## 10. References
 
+- [Ecosystem architecture map](ecosystem.md) — Mermaid topology (Factory · Hub · Mesh · clients · chain)
 - [Protocol v1](../docs/ai-market-protocol-v1.md) — Single-marketplace baseline
 - [JSON Schema Core](https://json-schema.org/draft/2020-12/json-schema-core.html)
 - [Ed25519](https://datatracker.ietf.org/doc/html/rfc8032)

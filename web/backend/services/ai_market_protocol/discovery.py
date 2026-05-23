@@ -6,7 +6,11 @@ import json
 import re
 from typing import Any
 
-from web.backend.services.ai_market_protocol.catalog import list_capabilities, parse_capability_ref
+from web.backend.services.ai_market_protocol.catalog import (
+    list_capabilities,
+    list_factory_capabilities,
+    parse_capability_ref,
+)
 
 
 def _draft_input(cap: dict[str, Any], query: str) -> dict[str, Any]:
@@ -116,11 +120,15 @@ async def discover_capabilities(
     constraints: dict[str, Any] | None = None,
     limit: int = 8,
     llm_router: Any = None,
+    catalog: str = "shipped",
 ) -> dict[str, Any]:
     constraints = constraints or {}
     max_latency = constraints.get("max_latency_ms")
 
-    all_caps = list_capabilities()
+    if catalog == "factory":
+        all_caps = list_factory_capabilities()
+    else:
+        all_caps = list_capabilities()
     candidates: list[dict[str, Any]] = []
     for cap in all_caps:
         if max_latency is not None and int(cap.get("p50_latency_ms") or 0) > int(max_latency):

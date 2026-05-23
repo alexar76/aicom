@@ -1,30 +1,32 @@
-# Packaging templates (`full_software`)
+# Packaging templates
 
-These folders are **reference layouts** the Architect/Developer stages may mirror. Each ships **Railway-oriented** files so generated repos are deployable without inventing config from scratch.
+## Web (`full_software`)
 
-## `full_stack_fastapi/`
+Reference layouts the Architect/Developer stages may mirror for deployable web products.
+
+### `full_stack_fastapi/`
 
 | File | Role |
 |------|------|
 | `Dockerfile` | Multi-stage Python image (`uvicorn` on `$PORT`) |
-| `docker-compose.yml` | Local / sandbox preview (`WEB_HOST_PORT`) |
-| `nixpacks.toml` | Railway **Nixpacks** build when not using Dockerfile builder |
-| `Procfile` | Process type `web` for Procfile-based hosts |
-| `railway.json` | Railway **`$schema`** deploy hints (Dockerfile builder by default) |
-| `app/main.py` | FastAPI app + sample HTML routes (`/`, `/login`, `/tasks`, `/settings`) + REST |
+| `docker-compose.yml` | Local / sandbox preview |
+| `nixpacks.toml` | Railway Nixpacks build |
+| `app/main.py` | FastAPI app + sample HTML routes |
 
-Gallery screenshots for the root README are produced from this template via **`scripts/capture_gallery_fullstack_packaging_demo.py`**.
-
-## `full_stack_react_express/`
+### `full_stack_react_express/`
 
 | File | Role |
 |------|------|
-| `server.js` | Minimal Express (`/health`, `/api/items`) |
+| `server.js` | Minimal Express API |
 | `package.json` | Node 20+ |
 | `Dockerfile` | Alpine Node runtime |
-| `docker-compose.yml` | Single-service compose |
-| `nixpacks.toml` | Node Nixpacks |
-| `Procfile` | `web` |
-| `railway.json` | Same schema pattern as FastAPI template |
 
-Extend with a Vite/React client and DB per product charter.
+## Desktop (`desktop_app`)
+
+### `tauri_desktop/`
+
+Tauri v2 shell: `src-tauri/` + `ui/` WebView. Storefront lists as **download-first** desktop SKU (no browser sandbox).
+
+See `tauri_desktop/README.md` for `cargo tauri dev` / `cargo tauri build`.
+
+Optional: Flutter desktop when admin/spec requests it (`pubspec.yaml` + `lib/main.dart`).

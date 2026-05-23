@@ -1,0 +1,23 @@
+name: aicom_desktop_core
+description: Shared themes, hub economics UI, locale packs, backup, and marketplace helpers for AICOM desktop SKUs.
+publish_to: none
+version: 0.2.0
+
+environment:
+  sdk: ^3.2.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+  shared_preferences: ^2.3.4
+  path_provider: ^2.1.5
+  file_picker: ^8.1.7
+  provider: ^6.1.2
+  aimarket_agent:
+    path: ../../../aimarket-sdks/dart
+
+flutter:
+  generate: true

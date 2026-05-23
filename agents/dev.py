@@ -26,12 +26,14 @@ logger = logging.getLogger(__name__)
 from .base_agent import BaseAgent, AgentInput, AgentOutput
 from .dev_delivery import (
     DeliveryMode,
+    desktop_app_appendix,
     full_software_browser_appendix,
     infer_delivery_mode,
+    infer_desktop_stack,
     system_prompt_for_mode,
     validate_saved_files,
 )
-from .product_profile import FULL_SOFTWARE, normalize_delivery_profile
+from .product_profile import DESKTOP_APP, FULL_SOFTWARE, normalize_delivery_profile
 from llm import LLMRouter, GenerationConfig
 from llm.agent_prompt_split import (
     build_developer_system_prompt,
@@ -90,16 +92,24 @@ class DeveloperAgent(BaseAgent):
         if not isinstance(architecture, dict):
             architecture = {}
 
-        mode = infer_delivery_mode(admin_instructions or None, spec)
-        stack_rules = system_prompt_for_mode(mode)
-
         raw_dp = agent_input.data.get("delivery_profile")
         dprof = normalize_delivery_profile(str(raw_dp).strip() if raw_dp is not None else None)
+        if not agent_input.data.get("delivery_profile") and spec.get("delivery_profile"):
+            dprof = normalize_delivery_profile(str(spec.get("delivery_profile")))
+        mode = infer_delivery_mode(admin_instructions or None, spec, dprof)
+        desktop_stack = infer_desktop_stack(admin_instructions or None, spec) if mode == DeliveryMode.DESKTOP_APP else "tauri"
+        stack_rules = system_prompt_for_mode(mode, desktop_stack=desktop_stack)
         fs_appendix = (
             full_software_browser_appendix()
             if dprof == FULL_SOFTWARE and mode == DeliveryMode.WEB_APP
             else ""
         )
+        desktop_appendix = (
+            desktop_app_appendix(desktop_stack)
+            if dprof == DESKTOP_APP or mode == DeliveryMode.DESKTOP_APP
+            else ""
+        )
+        fs_appendix = (fs_appendix + desktop_appendix).strip()
 
         polyglot_block = ""
         if dprof == FULL_SOFTWARE and isinstance(architecture, dict):
@@ -236,7 +246,7 @@ class DeveloperAgent(BaseAgent):
 
                 timeout_sec = (
                     FACTORY_TIMEOUT_CODE_GENERATION_SEC
-                    if dprof == FULL_SOFTWARE
+                    if dprof in (FULL_SOFTWARE, DESKTOP_APP)
                     else (120.0 if mode == DeliveryMode.PYTHON_CLI else 150.0)
                 )
                 config = GenerationConfig(

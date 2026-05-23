@@ -21,6 +21,8 @@ MARKETPLACE_CATEGORY_IDS: tuple[str, ...] = (
     "iot",
     "security",
     "productivity",
+    "career",
+    "desktop",
 )
 
 _MARKETPLACE_CATEGORY_SET = frozenset(MARKETPLACE_CATEGORY_IDS)
@@ -64,6 +66,24 @@ def slug_to_marketplace_category(raw: Any) -> Optional[str]:
         "productivity": "productivity",
         "collaboration": "productivity",
         "workflow": "productivity",
+        "career": "career",
+        "hiring": "career",
+        "recruitment": "career",
+        "hr": "career",
+        "human_resources": "career",
+        "jobs": "career",
+        "job_search": "career",
+        "resume": "career",
+        "cv": "career",
+        "linkedin": "career",
+        "interview": "career",
+        "desktop": "desktop",
+        "desktop_app": "desktop",
+        "electron": "desktop",
+        "tauri": "desktop",
+        "native_app": "desktop",
+        "flutter_app": "desktop",
+        "desktop_tool": "desktop",
         # funnel noise to None so caller can fall back to product.category
         "uncategorized": None,
         "other": None,
@@ -110,6 +130,8 @@ def infer_marketplace_category_from_signals(product: dict, marketing: Optional[d
         ("security", ("sso", "oauth", "encrypt", "vulnerability", "xss", "audit log", "secrets", "mfa")),
         ("productivity", ("kanban", "calendar", "reminder", "notes app", "tasks", "time track", "meeting")),
         ("saas", ("dashboard", "crm", "subscription", "workspace", "team", "multi-tenant")),
+        ("career", ("resume", "cv", "job search", "recruit", "hiring", "career coach", "linkedin profile", "ats", "interview prep", "salary benchmark", "headline", "cover letter", "job board", "applicant tracking")),
+        ("desktop", ("desktop app", "electron", "tauri", "native client", "flutter desktop", "system tray", "offline-first", "local file", "auto-start", "keyboard shortcut")),
     )
     for cat_id, kws in rules:
         if any(k in blob for k in kws):

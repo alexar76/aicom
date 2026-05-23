@@ -41,8 +41,9 @@ LANDING_HTML = """<!DOCTYPE html>
   <div class="card"><h3>HTTP 402 Payments</h3><p>Pay-per-call via on-chain USDT/USDC. Pre-funded channels for multi-step workflows.</p><p style="margin-top:8px;"><a href="/ai-market/v2/manifest">Manifest</a></p></div>
   <div class="card"><h3>Safety Gate</h3><p>Every request passes safety classifiers. Injection, PII, medical — atomic abort + refund + signed receipt.</p></div>
   <div class="card"><h3>Federation</h3><p>Crawl other hubs via <code>.well-known</code>. Index capabilities. Route invocations. Google for AI marketplaces.</p></div>
-  <div class="card"><h3>14 Plugins</h3><p>Reputation, TEE, auction, streaming, ZK proofs, NFT, personas, and more. Extensible architecture.</p><p style="margin-top:8px;"><a href="/ai-market/v2/plugins">Plugin catalog</a></p></div>
+  <div class="card"><h3>14 Plugins</h3><p>Reputation, TEE, auction, streaming, ZK proofs, NFT, personas, and more. Extensible architecture.</p><p style="margin-top:8px;"><a href="/plugins/demo">Live demo</a> · <a href="/ai-market/v2/plugins">Catalog (JSON)</a></p></div>
   <div class="card"><h3>Live Economy</h3><p>Real-time invocation feed. $/hour ticker. Leaderboards. Bloomberg Terminal for AI.</p><p style="margin-top:8px;"><a href="/live">Launch</a></p></div>
+  <div class="card"><h3>Widget Demo</h3><p>Embeddable AI capability widget. 6 premium themes, auto-theme detection, search + invoke in one script tag.</p><p style="margin-top:8px;"><a href="/widget/demo">Try it</a> · <a href="/examples">Embed guide</a></p></div>
 </div>
 <div class="endpoints">
   <h2>API Reference</h2>
@@ -89,12 +90,22 @@ INTEGRATION_EXAMPLES_HTML = """<!DOCTYPE html>
   .plugin-card .cat { font-size:10px; color:#6b7280; text-transform:uppercase; letter-spacing:0.5px; }
   .plugin-card p { font-size:12px; color:#9ca3af; margin-top:4px; line-height:1.4; }
   .plugin-card code { font-size:11px; color:#6c5ce7; background:#1a1a2e; padding:1px 5px; border-radius:3px; }
+  .cta-row { margin-bottom:20px; }
+  .cta-btn { display:inline-block; padding:10px 18px; background:#6c5ce7; color:#fff !important; font-weight:700;
+             font-size:13px; border-radius:8px; text-decoration:none; }
+  .cta-btn:hover { background:#7c6ef7; }
+  .cta-btn-outline { background:transparent; border:1px solid #374151; color:#9ca3af !important; margin-left:10px; }
+  .cta-btn-outline:hover { border-color:#6c5ce7; color:#e5e7eb !important; }
+  .subtitle a { color:#6c5ce7; font-weight:600; text-decoration:none; }
+  .subtitle a:hover { text-decoration:underline; }
 </style>
 </head>
 <body><div class="container">
 <div class="back"><a href="/">← modelmarket.dev</a></div>
 <h1><span>Integration</span> Examples</h1>
-<p class="subtitle">Every way to connect to the AI Economy — 6 integration methods + 14 plugin examples</p>
+<p class="subtitle">Every way to connect to the AI Economy — 6 integration methods + 14 plugin examples.
+  <a href="/plugins/demo">Open live plugin demo →</a>
+  · <a href="/widget/demo">Widget demo</a></p>
 
 <div class="tabs">
   <div class="tab active" onclick="showTab('methods')">6 Integration Methods</div>
@@ -130,6 +141,7 @@ result = agent.run(<span class="s">"translate spec to 5 languages + legal review
 print(f"Spent: ${result['total_spent_usd']:.2f}")</pre></div>
 
 <div class="section"><h2>3. Widget Embed — 1 script tag</h2>
+<p style="color:#9ca3af;font-size:13px;margin-bottom:10px;"><a href="/widget/demo" style="color:#6c5ce7;font-weight:600;">Widget theme gallery demo →</a></p>
 <pre><span class="c">&lt;!-- Add to any HTML page. Blog owner earns 30% of widget spend --&gt;</span>
 &lt;script src=<span class="s">"https://modelmarket.dev/widget/widget.js"</span>
         data-theme=<span class="s">"cyber"</span>
@@ -167,7 +179,11 @@ aimarket crawl --base-url https://modelmarket.dev</pre></div>
 </div>
 
 <div id="tab-plugins" style="display:none">
-<p class="subtitle" style="margin-bottom:16px;">All 14 plugins installable via pip. Each auto-discovers and registers with the hub at startup.</p>
+<div class="cta-row">
+  <a class="cta-btn" href="/plugins/demo">→ Interactive plugin demo</a>
+  <a class="cta-btn cta-btn-outline" href="/ai-market/v2/plugins">Plugin catalog (JSON)</a>
+</div>
+<p class="subtitle" style="margin-bottom:16px;">All 14 plugins installable via pip. Each auto-discovers and registers with the hub at startup. Try live routes on the <a href="/plugins/demo">plugin demo page</a>.</p>
 <div class="plugin-grid">
 
 <div class="plugin-card"><h3>aimarket-safety</h3><div class="cat">security</div><p>Pre/post-invoke safety classifier. Blocks injection, PII, medical, harassment. Issues signed rejection receipts with auto-refund.</p><code>pip install aimarket-safety</code></div>
@@ -206,7 +222,6 @@ function showTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('[id^="tab-"]').forEach(d => d.style.display = 'none');
   document.getElementById('tab-' + name).style.display = 'block';
-  document.querySelector('.tab.' + (name === 'methods' ? '' : '')).classList.add('active');
   // Activate correct tab
   document.querySelectorAll('.tab').forEach(function(t) {
     if ((name === 'methods' && t.textContent.includes('6 Integration')) ||

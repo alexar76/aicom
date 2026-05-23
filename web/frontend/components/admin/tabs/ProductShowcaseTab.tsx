@@ -158,10 +158,18 @@ export function ProductShowcaseTab({ locale }: { locale: AdminLocale }) {
               >
                 {t(locale, 'wow.showcaseOpenPreview')}
               </a>
-              {String(e.clip || '').endsWith('.webm') || String(e.clip || '').endsWith('.mp4') ? (
-                <video src={`/docs/gallery/recordings/${e.clip}`} className="w-full rounded-lg" controls muted />
+              {entryHasClip(e) ? (
+                <video
+                  src={`/docs/gallery/recordings/${e.clip}`}
+                  className="w-full rounded-lg"
+                  controls
+                  muted
+                  onError={(ev) => {
+                    ev.currentTarget.style.display = 'none';
+                  }}
+                />
               ) : (
-                <p className="text-[11px] text-gray-500">{e.clip}</p>
+                <p className="text-[11px] text-gray-500">{e.clip || '—'}</p>
               )}
             </GlassCard>
           ))}

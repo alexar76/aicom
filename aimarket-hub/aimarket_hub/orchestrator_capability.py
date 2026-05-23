@@ -141,10 +141,14 @@ class Orchestrator:
         for step in plan.steps:
             inp = dict(step.get("draft_input") or {})
             if context:
-                # Replace placeholder with previous result
-                inp_str = json.dumps(inp)
-                inp_str = inp_str.replace("{output_from_previous}", json.dumps(context))
-                inp = json.loads(inp_str)
+                # Inject previous output as a known key — NOT via string replacement
+                # (String replace + json.loads allows JSON injection via attacker-controlled context)
+                if "output_from_previous" not in inp:
+                    inp["output_from_previous"] = context
+                # Also inject into any explicit "{output_from_previous}" placeholder values
+                for key, val in inp.items():
+                    if isinstance(val, str) and "{output_from_previous}" in val:
+                        inp[key] = val.replace("{output_from_previous}", json.dumps(context))
 
             try:
                 result = invoker(

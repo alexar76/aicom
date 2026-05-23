@@ -10,7 +10,9 @@ and hook into the invoke pipeline (pre/post checks). See plugin.py.
 from __future__ import annotations
 
 import json
+import logging
 import os
+import secrets
 import time
 from typing import Any, Optional
 
@@ -19,9 +21,17 @@ from fastapi import APIRouter, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, Field
+# Pydantic models imported from api_models
 
-from aimarket_hub.channels import close_channel, open_channel
+from aimarket_hub.api_models import (
+    AnnounceRequest,
+    ChannelCloseRequest,
+    ChannelOpenRequest,
+    InvokeRequest,
+    ReputationEventsRequest,
+    SearchRequest,
+)
+from aimarket_hub.channels import close_channel, debit_channel, open_channel
 from aimarket_hub.config import HubConfig
 from aimarket_hub.database import HubDatabase
 from aimarket_hub.demo_seeder import seed_demo_capabilities
@@ -31,50 +41,7 @@ from aimarket_hub.safety_gate import SafetyGate, default_safety_gate
 from aimarket_hub.signing import Signer
 from aimarket_hub.trust import TrustScorer
 
-
-# ── Pydantic models ────────────────────────────────────────────
-
-
-class SearchRequest(BaseModel):
-    intent: str = Field("", max_length=4000)
-    budget: Optional[float] = Field(None, ge=0, le=100_000)
-    max_latency_ms: Optional[int] = Field(None, ge=0)
-    min_trust: Optional[float] = Field(None, ge=0, le=1)
-    hub: str = Field("any", max_length=256)
-    limit: int = Field(20, ge=1, le=100)
-
-
-class InvokeRequest(BaseModel):
-    product_id: str = Field(..., min_length=2, max_length=80)
-    capability_id: str = Field(..., min_length=2, max_length=80)
-    source_hub: str = Field("local", max_length=256)
-    input: dict[str, Any] = Field(default_factory=dict)
-
-
-class AnnounceRequest(BaseModel):
-    hub_url: str = Field(..., max_length=256)
-    well_known_url: str = Field(..., max_length=256)
-    capabilities_count: int = Field(0, ge=0)
-    hub_name: str = Field("", max_length=128)
-    signer_public_key: str = Field("", max_length=128)
-    signature: Optional[dict[str, str]] = None
-
-
-class ReputationEventsRequest(BaseModel):
-    events: list[dict[str, Any]] = Field(..., min_length=1, max_length=100)
-
-
-class ChannelOpenRequest(BaseModel):
-    deposit_usd: float = Field(..., gt=0, le=10_000)
-    token: Optional[str] = Field(None, max_length=16)
-    chain: Optional[str] = Field(None, max_length=32)
-    wallet: str = Field("", max_length=128)
-    tx_hash: str = Field("", max_length=128)
-
-
-class ChannelCloseRequest(BaseModel):
-    channel_id: str = Field(..., min_length=8, max_length=64)
-    settle_tx_hash: str = Field("", max_length=128)
+logger = logging.getLogger(__name__)
 
 
 # ── Router factory ─────────────────────────────────────────────
@@ -102,11 +69,12 @@ def create_app(
     trust_scorer = trust_scorer or TrustScorer(db)
     builtin_safety = default_safety_gate()  # Built-in fallback
 
-    # Seed demo capabilities on first startup
-    seeded = seed_demo_capabilities(db)
-    if seeded:
-        import logging
-        logging.getLogger(__name__).info("Seeded %d demo capabilities", seeded)
+    # Seed demo capabilities only when explicitly allowed (off in production stacks)
+    if os.environ.get("AIMARKET_SKIP_DEMO_SEED", "").strip().lower() not in ("1", "true", "yes"):
+        seeded = seed_demo_capabilities(db)
+        if seeded:
+            import logging
+            logging.getLogger(__name__).info("Seeded %d demo capabilities", seeded)
 
     # Import real products from AI-Factory if bridge is available
     try:
@@ -129,12 +97,40 @@ def create_app(
         version="3.0.0",
         description="Lean federation hub for AI capability discovery and routing. Plugins extend functionality.",
     )
+    # CORS: default to empty allowlist (require AIMARKET_CORS_ORIGINS to enable cross-origin).
+    # Previous default of ["*"] enabled drive-by CSRF on state-changing endpoints.
+    _cors_env = os.environ.get("AIMARKET_CORS_ORIGINS", "").strip()
+    _cors_origins = [o.strip() for o in _cors_env.split(",") if o.strip()] if _cors_env else []
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_origins=_cors_origins,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization", "X-Payment-Channel", "X-AIMarket-Affiliate", "X-Market-Signature", "X-AIMarket-Routing-Hub", "X-AIMarket-Routing-Fee", "X-AIMarket-Crawler"],
     )
+
+    # Admin token for federation/crawl-control endpoints.
+    # If unset, those endpoints are disabled (fail-closed).
+    _ADMIN_TOKEN = os.environ.get("AIMARKET_ADMIN_TOKEN", "").strip()
+    if not _ADMIN_TOKEN:
+        logger.warning(
+            "AIMARKET_ADMIN_TOKEN not set — /federation/announce and "
+            "/federation/crawl will reject all requests. Set this env var "
+            "to enable peer registration and crawling."
+        )
+
+    def _require_admin(authorization: str) -> None:
+        """Reject if Bearer token doesn't match AIMARKET_ADMIN_TOKEN. Fail-closed."""
+        import hmac
+        if not _ADMIN_TOKEN:
+            raise HTTPException(
+                status_code=503,
+                detail="Admin endpoints disabled: AIMARKET_ADMIN_TOKEN not configured",
+            )
+        if not authorization.startswith("Bearer "):
+            raise HTTPException(status_code=401, detail="Missing Bearer token")
+        token = authorization[7:]
+        if not hmac.compare_digest(token, _ADMIN_TOKEN):
+            raise HTTPException(status_code=403, detail="Invalid admin token")
 
     # Attach plugin registry to app state
     app.state.plugins = plugins
@@ -165,9 +161,10 @@ def create_app(
             "products_count": db.count_capabilities("local"),
             "capabilities_count": db.count_capabilities("local"),
             "federated_capabilities_count": db.count_capabilities(),
-            "supported_chains": [config.payment_chain],
-            "supported_tokens": [config.payment_token],
-            "payment_recipient": config.payment_recipient if not config.payment_verify_stub else "demo-mode (stub verification)",
+            "supported_chains": config.payment_chains,
+            "supported_tokens": config.payment_tokens,
+            # Payment recipient hidden from public manifest — exposed only when stub mode
+            "payment_configured": not config.payment_verify_stub,
             "payment_testnet": config.payment_testnet,
             "signer_public_key": signer.public_key_b64,
             "federation": {
@@ -351,9 +348,12 @@ def create_app(
             # Try real factory backend first, fall back to demo stub
             factory_url = os.environ.get("AIFACTORY_PUBLIC_URL", "")
             cap = db.get_capability(body.product_id, body.capability_id)
-            is_demo = cap and "[DEMO]" in (cap.description or "")
+            is_demo = bool(cap and "[DEMO]" in (cap.description or ""))
 
             if factory_url and not is_demo:
+                # Validate product_id/capability_id to prevent path traversal
+                if not _is_safe_path(body.product_id) or not _is_safe_path(body.capability_id):
+                    raise HTTPException(status_code=400, detail="Invalid product or capability ID")
                 try:
                     async with httpx.AsyncClient(timeout=30) as fc:
                         fr = await fc.post(
@@ -398,11 +398,40 @@ def create_app(
                     "protocol_version": "v2",
                 })
 
+            # ── Payment: debit channel if one is provided ──────────
+            if cap is None:
+                raise HTTPException(status_code=404, detail=f"Unknown capability: {body.capability_id}")
+
+            price = cap.price_per_call_usd
+            nonce = f"rcpt_{secrets.token_hex(16)}"
+
+            if x_payment_channel:
+                # Only debit if this is a real (non-demo) execution with a reachable factory.
+                # Never skip debit silently — demo flag should only be set for intentional
+                # [DEMO] capabilities, not for missing factory_url.
+                if is_demo:
+                    debit_result = {"success": True, "demo": True}
+                elif not factory_url:
+                    debit_result = debit_channel(x_payment_channel, price, receipt_id=nonce)
+                else:
+                    debit_result = debit_channel(x_payment_channel, price, receipt_id=nonce)
+                if debit_result.get("error"):
+                    return JSONResponse(status_code=402, content={
+                        "success": False,
+                        "error": "payment_failed",
+                        "detail": debit_result.get("error"),
+                        "needed": price,
+                        "protocol_version": "v2",
+                    })
+                remaining = debit_result.get("remaining_balance", 0)
+            else:
+                remaining = None
+
             receipt = signer.sign_receipt({
-                "nonce": f"rcpt_{int(time.time())}",
+                "nonce": nonce,
                 "product_id": body.product_id,
                 "capability_id": body.capability_id,
-                "price_usd": 0.40,
+                "price_usd": price,
                 "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             })
 
@@ -410,7 +439,7 @@ def create_app(
                 capability_id=body.capability_id,
                 product_id=body.product_id,
                 source_hub="local",
-                price_usd=0.40,
+                price_usd=price,
                 latency_ms=elapsed_ms,
                 success=True,
                 timestamp=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -418,16 +447,24 @@ def create_app(
             )
             db.record_invocation(stat)
 
-            return JSONResponse(status_code=200, content={
+            # Attach provenance receipt if the plugin generated one
+            provenance_receipt = result.pop("_provenance_receipt", None)
+
+            response_body = {
                 "success": True,
                 "result": result,
                 "receipt": receipt,
-                "price_usd": 0.40,
+                "price_usd": price,
                 "latency_ms": elapsed_ms,
                 "safety_checked": True,
                 "plugins_checked": plugins.count(),
                 "protocol_version": "v2",
-            })
+            }
+            if provenance_receipt:
+                response_body["provenance_receipt"] = provenance_receipt
+            if remaining is not None:
+                response_body["remaining_balance"] = remaining
+            return JSONResponse(status_code=200, content=response_body)
 
         # Federated invoke — route to provider hub
         peer = db.get_peer(body.source_hub)
@@ -461,6 +498,9 @@ def create_app(
                     consumer_hub=config.hub_url,
                 )
                 db.record_invocation(stat)
+                # FIXME: routing fee is advertised but not collected from the
+                # channel. The routing hub should debit its fee from the payment
+                # channel before forwarding the request to the provider.
                 result_data["routed_via"] = config.hub_url
                 result_data["routing_fee_bps"] = config.routing_fee_bps
                 return result_data
@@ -470,8 +510,33 @@ def create_app(
 
     # ── Federation ──────────────────────────────────────────────
 
+    def _validate_hub_url(url: str) -> None:
+        """Reject URLs pointing to internal/private hosts (SSRF prevention).
+
+        Uses the same DNS-resolving safety check as the crawler — protects
+        against DNS rebinding (evil.com → 192.168.x.x) and IPv4-mapped IPv6.
+        """
+        from aimarket_hub.crawler import _url_is_safe
+
+        if not url:
+            raise HTTPException(status_code=400, detail="hub_url is required")
+        if any(c in url for c in "\r\n\t"):
+            raise HTTPException(status_code=400, detail="Invalid characters in URL")
+        if not _url_is_safe(url):
+            raise HTTPException(
+                status_code=400,
+                detail=f"URL resolves to restricted network or invalid scheme: {url[:40]}...",
+            )
+
     @router.post("/federation/announce")
-    async def federation_announce(body: AnnounceRequest):
+    async def federation_announce(
+        body: AnnounceRequest,
+        authorization: str = Header(default=""),
+    ):
+        _require_admin(authorization)
+        _validate_hub_url(body.hub_url)
+        if body.well_known_url:
+            _validate_hub_url(body.well_known_url)
         peer = Peer(
             url=body.hub_url,
             name=body.hub_name or body.hub_url,
@@ -498,11 +563,12 @@ def create_app(
         }
 
     @router.post("/federation/crawl")
-    async def trigger_crawl():
+    async def trigger_crawl(authorization: str = Header(default="")):
+        _require_admin(authorization)
         from aimarket_hub.crawler import Crawler
         crawler = Crawler(config=config, db=db, signer=signer, trust_scorer=trust_scorer)
         try:
-            stats = await crawler.crawl(clear_first=True)
+            stats = await crawler.crawl(clear_first=False)
         finally:
             await crawler.close()
         return {"status": "complete", "stats": stats}
@@ -528,24 +594,80 @@ def create_app(
     @router.post("/reputation/events")
     async def submit_reputation_events(body: ReputationEventsRequest):
         from aimarket_hub.models import ReputationEvent
+        rejected = 0
         for ev in body.events:
+            provider = ev.get("provider_hub", "")
+            sig = ev.get("signature")
+            consumer = ev.get("consumer_hub", "")
+
+            # Require non-empty provider and consumer hubs
+            if not provider or not consumer:
+                rejected += 1
+                continue
+
+            # Require signature — prevents anonymous reputation poisoning
+            if not sig or not isinstance(sig, dict) or not sig.get("value"):
+                rejected += 1
+                continue
+
+            # Verify signature against known peer public key
+            peer = db.get_peer(consumer)
+            if not peer or not peer.public_key:
+                rejected += 1
+                continue
+
+            # Build canonical form matching the event's signed fields
+            canonical = (
+                f"type:{ev.get('type','')}"
+                f"|provider_hub:{provider}"
+                f"|timestamp:{ev.get('timestamp','')}"
+                f"|price_usd:{ev.get('price_usd',0)}"
+                f"|latency_ms:{ev.get('latency_ms',0)}"
+            )
+            if not signer.verify(peer.public_key, sig["value"], canonical):
+                rejected += 1
+                continue
+
             db.record_reputation_event(ReputationEvent(
                 event_type=ev.get("type", "unknown"),
-                provider_hub=ev.get("provider_hub", ""),
+                provider_hub=provider,
                 capability_id=ev.get("capability_id"),
                 timestamp=ev.get("timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())),
                 price_usd=ev.get("price_usd", 0),
                 latency_ms=ev.get("latency_ms", 0),
-                consumer_hub=ev.get("consumer_hub", config.hub_url),
-                signature=json.dumps(ev.get("signature") or {}),
+                consumer_hub=consumer,
+                signature=json.dumps(sig),
             ))
-        return {"received": len(body.events)}
+        return {"received": len(body.events) - rejected, "rejected": rejected}
 
     @router.get("/stats/live")
     async def live_stats(limit: int = 50):
         stats = db.recent_stats(limit=min(limit, 200))
         summary = db.stats_summary()
         return {"events": stats, "summary": summary, "protocol_version": "v2"}
+
+    # ── ACEX Capital (Pulse Terminal) ───────────────────────────
+
+    from aimarket_hub.capital_pricing import hub_capital_pricing
+
+    @router.get("/capital/pricing")
+    async def capital_pricing(
+        chain: str = "any",
+        listing_id: str | None = None,
+        limit: int = 50,
+    ):
+        """Capability revenue indices for Pulse Terminal (ACEX Phase 2)."""
+        return hub_capital_pricing(db, chain=chain, listing_id=listing_id, limit=min(limit, 200))
+
+    capital_alias = APIRouter(prefix="/api/v2/capital", tags=["acex-capital"])
+
+    @capital_alias.get("/pricing")
+    async def capital_pricing_alias(
+        chain: str = "any",
+        listing_id: str | None = None,
+        limit: int = 50,
+    ):
+        return hub_capital_pricing(db, chain=chain, listing_id=listing_id, limit=min(limit, 200))
 
     # ── Payment Channels ────────────────────────────────────────
 
@@ -567,6 +689,7 @@ def create_app(
         result = close_channel(
             channel_id=body.channel_id,
             settle_tx_hash=body.settle_tx_hash,
+            wallet=body.wallet or "",
         )
         if result.get("error"):
             return JSONResponse(status_code=400, content=result)
@@ -590,6 +713,9 @@ def create_app(
         import os as _os
         registry_path = _os.path.join(_os.path.dirname(__file__), "..", "plugins.json")
         if _os.path.isfile(registry_path):
+            if _os.path.getsize(registry_path) > 5_000_000:
+                logger.warning("plugins.json exceeds 5MB — rejecting")
+                return {"registry_version": "1.0", "plugins": [], "error": "registry file too large"}
             with open(registry_path) as f:
                 return json.load(f)
         return {"registry_version": "1.0", "plugins": [], "note": "No plugins.json found. Add plugins via PR to the curated registry."}
@@ -606,13 +732,18 @@ def create_app(
 
     # Register plugin routes under /ai-market/v2/p/{name}/...
     for p in plugins.plugins:
-        if p._list_hooks() and "register_routes" in [h for h in p._list_hooks()]:
-            plugin_router = APIRouter(prefix=f"/p/{p.name}", tags=[f"plugin-{p.name}"])
+        if "register_routes" not in p._list_hooks():
+            continue
+        plugin_router = APIRouter(prefix=f"/p/{p.name}", tags=[f"plugin-{p.name}"])
+        try:
             p.register_routes(plugin_router)
-            app.include_router(plugin_router)
+            router.include_router(plugin_router)
+        except Exception as exc:
+            logger.error("Plugin %s route registration failed: %s", p.name, exc)
 
     app.include_router(wellknown_router)
     app.include_router(router)
+    app.include_router(capital_alias)
 
     # ── Landing page & Integration Examples ──────────────────
 
@@ -640,11 +771,21 @@ def create_app(
             widget_dir = candidate
             break
 
+    @app.get("/plugins/demo", response_class=HTMLResponse)
+    async def plugins_demo():
+        hub_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        demo_html = os.path.join(hub_root, "plugins-demo.html")
+        if os.path.isfile(demo_html):
+            with open(demo_html, encoding="utf-8") as f:
+                return HTMLResponse(f.read())
+        return HTMLResponse("<h1>Plugin demo not found</h1>", status_code=404)
+
     @app.get("/widget/demo", response_class=HTMLResponse)
     async def widget_demo():
         demo_html = os.path.join(widget_dir, "demo.html") if widget_dir else None
         if demo_html and os.path.isfile(demo_html):
-            return HTMLResponse(open(demo_html).read())
+            with open(demo_html, encoding="utf-8") as f:
+                return HTMLResponse(f.read())
         return HTMLResponse("<h1>Widget demo not found</h1>", status_code=404)
 
     @app.get("/live", response_class=HTMLResponse)

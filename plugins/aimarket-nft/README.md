@@ -1,5 +1,24 @@
 # aimarket-nft
 
+## Value in plain words
+
+Pre-paid AI credits as transferable tokens — gift them, resell unused balance, or run loyalty programs without building billing from scratch.
+
+**Простыми словами:** Предоплаченные кредиты AI как передаваемые токены — подарить, перепродать остаток или сделать программу лояльности без биллинга с нуля.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **Tokenized pre-paid capability credits. Transferable between owners.**
 Pre-pay for 1000 calls → get an NFT. Sell on secondary market. Transfer to sub-agents. Gift to friends. Liquidity for unused credits. Something Stripe fundamentally cannot do.
 

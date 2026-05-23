@@ -1,0 +1,22 @@
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+aimarket_escrow = "A1M4rk3tEscrowChanne1Paym3nt5oLProg"
+
+[programs.devnet]
+aimarket_escrow = "A1M4rk3tEscrowChanne1Paym3nt5oLProg"
+
+[programs.mainnet]
+aimarket_escrow = "A1M4rk3tEscrowChanne1Paym3nt5oLProg"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json tests/**/*.ts"

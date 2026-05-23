@@ -1,0 +1,29 @@
+name: personal_finance_coach
+description: Local-first personal finance intelligence. Bank data never leaves your device.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.2.0
+
+dependencies:
+  aicom_desktop_core:
+    path: ../packages/aicom_desktop_core
+  aicom_platform_init:
+    path: ../packages/aicom_platform_init
+  provider: ^6.1.2
+  flutter:
+    sdk: flutter
+  path_provider: ^2.1.0
+  csv: ^6.0.0
+  intl: ^0.20.2
+  aimarket_agent:
+    path: ../../aimarket-sdks/dart
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lints: ^3.0.0
+
+flutter:
+  uses-material-design: true

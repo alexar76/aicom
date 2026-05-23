@@ -3,11 +3,11 @@
 Weekly export of ai-market-corpus-week-N.jsonl:
     Anonymized task→capability→outcome→price tuples.
 
-Researchers cite this; marketing effect is enormous.
-Also serves as training data for the orchestrator.
-
 Privacy:
-    - Product IDs are hashed (SHA-256, truncated)
+    - Product/capability IDs are SALTED SHA-256 (16 hex chars).
+      Salt is loaded from AIMARKET_DATASET_SALT or generated per-deploy
+      and persisted to data/dataset_salt — rainbow tables built against
+      one deploy don't transfer to another.
     - No consumer identifying info
     - No PII in task text (scrubbed)
     - No wallet addresses
@@ -20,6 +20,7 @@ import json
 import logging
 import os
 import re
+import secrets
 import time
 from pathlib import Path
 from typing import Any
@@ -28,10 +29,45 @@ from aimarket_hub.database import HubDatabase
 
 logger = logging.getLogger(__name__)
 
+_SALT_FILE = Path(os.environ.get("AIMARKET_DATASET_SALT_PATH", "data/dataset_salt"))
+
+
+def _load_or_create_salt() -> bytes:
+    """Load persistent dataset salt or generate a new one on first use.
+
+    Salt must be stable across exports (so the same product gets the
+    same hash week-over-week) but unguessable to outsiders.
+    """
+    env_salt = os.environ.get("AIMARKET_DATASET_SALT", "").strip()
+    if env_salt:
+        return env_salt.encode()
+    if _SALT_FILE.exists():
+        return _SALT_FILE.read_bytes()
+    _SALT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    salt = secrets.token_bytes(32)
+    _SALT_FILE.write_bytes(salt)
+    try:
+        os.chmod(_SALT_FILE, 0o600)
+    except OSError:
+        pass
+    logger.warning(
+        "Generated new dataset salt at %s — back this up if you want "
+        "anonymized IDs to stay stable across deploys.",
+        _SALT_FILE,
+    )
+    return salt
+
+
+_SALT = _load_or_create_salt()
+
 
 def _anonymize_id(s: str) -> str:
-    """Hash an ID to a consistent but unlinkable string."""
-    return hashlib.sha256(s.encode()).hexdigest()[:12]
+    """Hash an ID with a per-deploy salt to a consistent but unlinkable string.
+
+    16-char prefix = 64 bits of entropy after salting — rainbow tables
+    against public namespaces (capability_id) become infeasible.
+    """
+    return hashlib.sha256(_SALT + s.encode()).hexdigest()[:16]
 
 
 def _scrub_pii(text: str) -> str:

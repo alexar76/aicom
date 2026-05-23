@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from unittest.mock import patch
 
 from web.backend.services import product_showcase as ps
@@ -19,3 +20,21 @@ def test_resolve_showcase_base_url_explicit_passthrough(monkeypatch):
     with patch.object(ps.Path, "is_file", return_value=True):
         url = ps._resolve_showcase_capture_base_url("https://magic-ai-factory.com")
     assert url == "https://magic-ai-factory.com"
+
+
+def test_list_showcase_gallery_skips_missing_clip(tmp_path, monkeypatch):
+    recordings = tmp_path / "recordings"
+    recordings.mkdir()
+    idx_dir = tmp_path / "state"
+    idx_dir.mkdir()
+    idx_file = idx_dir / "product_showcase_index.json"
+    idx_file.write_text(
+        '{"entries": [{"product_id": "prod-x", "clip": "ghost.webm", "preview_url": "http://x"}]}',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(ps, "RECORDINGS_DIR", recordings)
+    monkeypatch.setattr(ps, "_index_path", lambda: idx_file)
+    result = ps.list_showcase_gallery()
+    assert result["count"] == 0
+    assert result["entries"] == []
+    assert json.loads(idx_file.read_text()) == {"entries": []}

@@ -117,12 +117,26 @@ class PluginRegistry:
     plugins: list[HubPlugin] = field(default_factory=list)
 
     def discover(self, db: Any = None) -> int:
-        """Discover installed plugins via setuptools entry points."""
+        """Discover installed plugins via setuptools entry points.
+
+        If AIMARKET_PLUGIN_WHITELIST is set (comma-separated plugin names),
+        only plugins on the whitelist are loaded. This prevents supply-chain
+        attacks via PyPI squatting on the aimarket.plugins entry point group.
+        """
+        import os
+
         try:
             from importlib.metadata import entry_points
         except ImportError:
             logger.warning("importlib.metadata not available — plugins disabled")
             return 0
+
+        # Plugin whitelist — prevents arbitrary plugins from loading
+        whitelist_raw = os.environ.get("AIMARKET_PLUGIN_WHITELIST", "")
+        whitelist = (
+            set(n.strip() for n in whitelist_raw.split(",") if n.strip())
+            if whitelist_raw else None
+        )
 
         # entry_points(group=...) is Python 3.10+. On 3.9 the function returns
         # a dict-like grouped object.
@@ -133,6 +147,11 @@ class PluginRegistry:
 
         count = 0
         for ep in eps:
+            if whitelist and ep.name not in whitelist:
+                logger.warning(
+                    "Plugin %s is not in AIMARKET_PLUGIN_WHITELIST — skipped", ep.name
+                )
+                continue
             try:
                 plugin_cls = ep.load()
                 plugin = plugin_cls()

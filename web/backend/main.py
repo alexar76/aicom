@@ -393,13 +393,16 @@ app.include_router(sandbox.router)
 app.include_router(marketing.router)
 app.include_router(payment.router)
 app.include_router(ai_market.router)
-from web.backend.api.ai_market_protocol_v1 import (
-    capabilities_router as ai_market_capabilities_v1,
-    wellknown_router as ai_market_wellknown_v1,
+from web.backend.api.acex_capital import router as acex_capital_router
+
+app.include_router(acex_capital_router, prefix="/api")
+from web.backend.api.ai_market_protocol_v2 import (
+    capabilities_router as ai_market_capabilities_v2,
+    wellknown_router as ai_market_wellknown_v2,
 )
 
-app.include_router(ai_market_wellknown_v1)
-app.include_router(ai_market_capabilities_v1)
+app.include_router(ai_market_wellknown_v2)
+app.include_router(ai_market_capabilities_v2)
 app.include_router(feedback.router)
 app.include_router(customer.router)
 app.include_router(support_chat.router)
@@ -964,12 +967,24 @@ async def admin_create_product(
         raise HTTPException(status_code=400, detail="Product idea is required")
 
     from agents.product_profile import infer_delivery_profile, normalize_delivery_profile
+    from marketplace_taxonomy import slug_to_marketplace_category
+    from web.backend.services.desktop_product import infer_category_for_new_product
 
     idea_stripped = request.idea.strip()
     if request.delivery_profile:
         dprof = normalize_delivery_profile(request.delivery_profile)
     else:
         dprof = infer_delivery_profile(request.admin_instructions, idea_stripped)
+
+    category = infer_category_for_new_product(
+        idea_stripped,
+        request.admin_instructions or "",
+        dprof,
+    )
+    if request.category:
+        mapped = slug_to_marketplace_category(request.category)
+        if mapped:
+            category = mapped
 
     from llm.content_languages import product_locale_fields
 
@@ -987,7 +1002,7 @@ async def admin_create_product(
         "delivery_profile": dprof,
         "production_mode": bool(request.production_mode),
         **locale_fields,
-        "category": "saas",
+        "category": category,
         "tags": [],
         "state": "IDEA_RECEIVED",
         "created_at": timestamp,

@@ -1,31 +1,50 @@
-"""ZK-Proof Verification for Private Capability Invocation.
+"""ZK-Proof simulation — DEVELOPMENT ONLY (fail-loud opt-in required).
 
-Zero-knowledge proofs that a capability was correctly invoked without revealing
-the input. Consumer proves "I sent valid input matching the schema" without
-revealing the input content. Provider proves "I executed correctly" without
-revealing model weights or internal state.
+⚠️  THIS IS NOT ZERO-KNOWLEDGE.
 
-Uses simulation of Groth16/PLONK proving schemes. In production, this would
-integrate with circom/gnark for actual ZK circuit compilation.
+This module provides signed SHA-256 commitments dressed in ZK terminology.
+It does NOT hide inputs, does NOT prove computation, and provides
+NO cryptographic guarantees beyond Ed25519 signatures on hashes.
 
-Architecture:
-    Consumer generates ZK proof of valid input
-    Provider verifies proof → executes capability
-    Provider generates ZK proof of correct execution
-    Consumer verifies proof → accepts result
+It exists only for:
+  1. Local development against the ZK API shape
+  2. Testing the invoke flow without setting up real circuit infrastructure
 
-This is #10 from the extended roadmap — unlocks privacy-preserving AI invocation.
+To prevent accidental production use, the prover/verifier raises
+RuntimeError unless `AIMARKET_ZK_SIMULATED=1` is explicitly set.
+
+For real ZK (Groth16/PLONK), integrate circom + bellman or gnark.
+The interface here is intentionally compatible so a real backend can
+drop in without API churn.
+
+Every output dict carries `"simulated": true` so downstream consumers
+cannot mistake these for real proofs.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import logging
+import os
 import time
 from dataclasses import dataclass, field
 from typing import Any
 
 from aimarket_hub.signing import Signer
+
+logger = logging.getLogger(__name__)
+
+
+def _require_simulated_opt_in() -> None:
+    """Fail-loud unless operator has explicitly acknowledged simulation."""
+    if os.environ.get("AIMARKET_ZK_SIMULATED", "").strip() != "1":
+        raise RuntimeError(
+            "ZKProver is a development simulation, not real ZK. "
+            "To use it in dev/test, set AIMARKET_ZK_SIMULATED=1. "
+            "For production, integrate a real Groth16/PLONK backend "
+            "(circom + bellman/gnark) — see contracts/zk/ for the interface."
+        )
 
 
 @dataclass
@@ -114,10 +133,11 @@ class ZKProver:
             json.dumps(input_schema, sort_keys=True).encode()
         ).hexdigest()
 
-        # Pedersen commitment to input (simulated)
+        # NOTE: SHA-256 hash, NOT a real Pedersen commitment.
+        # Not hiding, not binding. Simulated for development only.
         input_json = json.dumps(input_payload, sort_keys=True)
         input_commitment = hashlib.sha256(
-            f"pedersen:{input_json}:{int(time.time())}".encode()
+            f"simulated_commitment:{input_json}:{int(time.time())}".encode()
         ).hexdigest()
 
         # Nullifier to prevent double-use
@@ -126,8 +146,11 @@ class ZKProver:
         ).hexdigest()[:32]
 
         # Simulated Groth16 proof
+        # NOTE: This is a SHA-256 hash of public values, NOT a Groth16 proof.
+        # Anyone can recompute this — it proves nothing.
+        # Production requires circom circuit + bellman/bn254 prover.
         proof_bytes = hashlib.sha256(
-            f"groth16:input:{schema_hash}:{input_commitment}:{nullifier}".encode()
+            f"simulated_proof:input:{schema_hash}:{input_commitment}:{nullifier}".encode()
         ).hexdigest()
 
         # Public signals: schema hash, commitment, capability ID
@@ -143,7 +166,9 @@ class ZKProver:
             public_signals=public_signals,
         ).sign(self.signer)
 
-        self._used_nullifiers.add(nullifier)
+        # NOTE: Nullifier marking happens in verify_input_proof, not here.
+        # Adding to set during prove would self-DoS private_invoke_flow
+        # (the same ZKProver instance proves AND verifies).
         return proof
 
     def verify_input_proof(
@@ -162,7 +187,8 @@ class ZKProver:
             return {"valid": False, "reason": "Invalid proof signature"}
 
         # Check nullifier not already used
-        if proof.nullifier in self._used_nullifiers and proof.nullifier != list(self._used_nullifiers)[-1]:
+        # Nullifier double-spend check (best-effort for simulated proofs)
+        if proof.nullifier in self._used_nullifiers:
             return {"valid": False, "reason": "Nullifier already used (double-spend attempt)"}
 
         # Check schema hash matches
@@ -175,12 +201,14 @@ class ZKProver:
 
         # Simulate ZK proof verification (in production: actual Groth16 verify)
         expected_proof = hashlib.sha256(
-            f"groth16:input:{proof.schema_hash}:{proof.input_commitment}:{proof.nullifier}".encode()
+            f"simulated_proof:input:{proof.schema_hash}:{proof.input_commitment}:{proof.nullifier}".encode()
         ).hexdigest()
 
         if proof.proof_bytes != expected_proof:
             return {"valid": False, "reason": "ZK proof verification failed"}
 
+        # Mark nullifier as used only on successful verification (prevents replay).
+        self._used_nullifiers.add(proof.nullifier)
         return {"valid": True, "reason": "Proof verified — input is valid without being revealed"}
 
     # ── Output Proof ───────────────────────────────────────────
@@ -200,7 +228,7 @@ class ZKProver:
         """
         output_json = json.dumps(output_payload, sort_keys=True)
         output_commitment = hashlib.sha256(
-            f"pedersen:{output_json}:{int(time.time())}".encode()
+            f"simulated_output_commitment:{output_json}:{int(time.time())}".encode()
         ).hexdigest()
 
         # Simulated Groth16 proof — proves execution correctness

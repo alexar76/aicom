@@ -62,7 +62,19 @@ class TestSigning:
             "capabilities_count": 5,
         }
         manifest["signature"] = signer.sign_manifest(manifest)
-        assert signer.verify_manifest_signature(manifest)
+        # Verification requires a known pinned pubkey (no self-verifying).
+        assert signer.verify_manifest_signature(manifest, signer.public_key_b64)
+
+    def test_verify_manifest_no_known_key_fails(self, signer):
+        """Without a pinned pubkey, verification fails (fail-closed)."""
+        manifest = {
+            "protocol_version": "v1",
+            "generated_at": "2026-05-21T12:00:00Z",
+            "capabilities_count": 5,
+        }
+        manifest["signature"] = signer.sign_manifest(manifest)
+        assert not signer.verify_manifest_signature(manifest)
+        assert not signer.verify_manifest_signature(manifest, "")
 
     def test_verify_manifest_signature_tampered(self, signer):
         manifest = {
@@ -72,7 +84,7 @@ class TestSigning:
         }
         manifest["signature"] = signer.sign_manifest(manifest)
         manifest["capabilities_count"] = 999  # Tampered
-        assert not signer.verify_manifest_signature(manifest)
+        assert not signer.verify_manifest_signature(manifest, signer.public_key_b64)
 
     def test_sign_receipt(self, signer):
         receipt = {

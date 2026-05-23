@@ -1,5 +1,24 @@
 # aimarket-auction
 
+## Value in plain words
+
+Scarce AI capacity goes to whoever values it most right now — like airline yield management. Providers earn more at peak; buyers save money off-peak.
+
+**Простыми словами:** Редкая мощность AI достаётся тому, кому она сейчас важнее — как динамические цены у авиакомпаний. Продавцы зарабатывают в пик; покупатели экономят в спокойное время.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **Real-time spot bidding market for AI tasks. Uber-vibes for AI.**
 Consumer posts a task. Multiple providers bid in real-time with price, latency, and success rate. Consumer picks the winner. One demo video = 500 retweets.
 

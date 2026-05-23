@@ -180,6 +180,8 @@ CATEGORIES = [
     {"id": "iot", "name": "IoT", "icon": "cpu", "description": "IoT, embedded systems"},
     {"id": "security", "name": "Security", "icon": "shield", "description": "Security tools, scanners"},
     {"id": "productivity", "name": "Productivity", "icon": "zap", "description": "Productivity apps, collaboration"},
+    {"id": "career", "name": "Career", "icon": "briefcase", "description": "Career coaching, resume tools, job search"},
+    {"id": "desktop", "name": "Desktop", "icon": "monitor", "description": "Desktop apps, native clients, offline tools"},
 ]
 
 CATEGORY_IDS = list(MARKETPLACE_CATEGORY_IDS)
@@ -272,9 +274,18 @@ def _resolved_delivery_profile(product: dict[str, Any], spec_inner: Optional[dic
     return normalize_delivery_profile(str(raw))
 
 
-def _storefront_stack_label(tech_stack: dict[str, Any]) -> str:
+def _storefront_stack_label(tech_stack: dict[str, Any], *, product: dict | None = None, code_root: Path | None = None) -> str:
+    from web.backend.services.desktop_product import desktop_stack_label, is_desktop_product
+
+    if is_desktop_product(product):
+        lbl = desktop_stack_label(code_root)
+        if lbl:
+            return lbl
     if not isinstance(tech_stack, dict):
         return ""
+    desktop = tech_stack.get("desktop") or tech_stack.get("client")
+    if isinstance(desktop, str) and desktop.strip():
+        return desktop.strip()[:140]
     parts: list[str] = []
     for key in ("frontend", "backend", "database"):
         v = tech_stack.get(key)
@@ -424,10 +435,18 @@ def is_shipped_pipeline_product_state(state: Any) -> bool:
     return s in ("COMPLETED", "DEPLOYED_PRODUCTION")
 
 
-def _storefront_front_page_gate(pid: str) -> tuple[bool, list[str]]:
-    """Mandatory vitrine «морда»: openable HTML that passes sandbox_ready heuristics."""
+def _storefront_front_page_gate(pid: str, product: dict[str, Any] | None = None, spec_inner: dict | None = None) -> tuple[bool, list[str]]:
+    """Mandatory vitrine: HTML sandbox for web products; desktop scaffold for desktop_app."""
+    from core.delivery_profile import DESKTOP_APP, normalize_delivery_profile
+    from web.backend.services.desktop_product import desktop_storefront_ready, is_desktop_product
     from web.backend.services.sandbox_static_entry import storefront_front_page_ready
 
+    dprof = normalize_delivery_profile(
+        str((product or {}).get("delivery_profile") or (spec_inner or {}).get("delivery_profile") or "")
+    )
+    if dprof == DESKTOP_APP or is_desktop_product(product, specification=spec_inner, delivery_profile=dprof):
+        ok, reasons = desktop_storefront_ready(pid)
+        return (True, []) if ok else (False, ["desktop_storefront_not_ready", *reasons[:8]])
     ok, _rel, reasons = storefront_front_page_ready(pid)
     if ok:
         return True, []
@@ -441,7 +460,7 @@ def public_storefront_listing_eligible(pid: str, product: dict[str, Any]) -> tup
         return False, ["no_generated_code_on_disk_or_empty_manifest"]
     if public_storefront_blocked(pid):
         return False, ["hidden_from_public_storefront"]
-    fp_ok, fp_reasons = _storefront_front_page_gate(pid)
+    fp_ok, fp_reasons = _storefront_front_page_gate(pid, product, _spec_inner_for_storefront(pid, product))
     if not fp_ok:
         return False, fp_reasons
     from web.backend.services.storefront_visibility import (
@@ -512,7 +531,7 @@ def _public_storefront_grid_accepts(pid: str, product: dict[str, Any]) -> bool:
         return False
     if public_storefront_blocked(pid):
         return False
-    fp_ok, _ = _storefront_front_page_gate(pid)
+    fp_ok, _ = _storefront_front_page_gate(pid, product, _spec_inner_for_storefront(pid, product))
     if not fp_ok:
         return False
     from web.backend.services.storefront_visibility import (
@@ -674,7 +693,11 @@ async def list_products(
                     implementation_summary = arch_disk["tech_stack"]
 
                 dprof = _resolved_delivery_profile(product, spec_inner)
-                stack_label = _storefront_stack_label(implementation_summary)
+                stack_label = _storefront_stack_label(
+                    implementation_summary,
+                    product=product,
+                    code_root=code_dir(pid),
+                )
 
                 card = {
                     "id": pid,
@@ -758,9 +781,19 @@ def _build_product_detail_response(product_id: str) -> dict[str, Any]:
     mq_eval = evaluate_marketplace_quality(
         product_id, specification=spec_inner, delivery_profile=dprof
     )
-    stack_lbl = ""
-    if isinstance(architecture_data, dict) and isinstance(architecture_data.get("tech_stack"), dict):
-        stack_lbl = _storefront_stack_label(architecture_data["tech_stack"])
+    from web.backend.services.desktop_product import desktop_product_kind_meta, is_desktop_product
+
+    stack_lbl = _storefront_stack_label(
+        impl_summary,
+        product=product,
+        code_root=code_dir(product_id),
+    )
+    if not stack_lbl and isinstance(architecture_data, dict) and isinstance(architecture_data.get("tech_stack"), dict):
+        stack_lbl = _storefront_stack_label(
+            architecture_data["tech_stack"],
+            product=product,
+            code_root=code_dir(product_id),
+        )
     stakeholder_brief = build_stakeholder_brief(
         product_id,
         product.get("idea", "") or "",
@@ -788,6 +821,11 @@ def _build_product_detail_response(product_id: str) -> dict[str, Any]:
         "is_template": is_template,
         "delivery_profile": dprof,
         "storefront_stack_label": stack_lbl,
+        **(
+            desktop_product_kind_meta(product, code_dir(product_id))
+            if is_desktop_product(product, specification=spec_inner, delivery_profile=dprof)
+            else {}
+        ),
         "idea": product.get("idea", ""),
         "category": category,
         "tags": tags,

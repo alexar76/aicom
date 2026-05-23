@@ -1,7 +1,10 @@
-"""Pre-funded payment channels for off-chain capability invocation.
+"""DEPRECATED — use aimarket_hub.channels instead.
 
-Implements the channel/open, channel/close endpoints from Protocol v1/v2 spec.
-Channels allow multi-step workflows without per-call on-chain transactions.
+This standalone plugin is outdated (in-memory, float math, no rate limiting).
+The canonical implementation lives in aimarket-hub/aimarket_hub/channels.py
+(SQLite-backed, integer cents, rate limiting, background sweep, env config).
+
+Kept for reference only. Do not install in production.
 """
 
 from __future__ import annotations

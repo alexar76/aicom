@@ -8,7 +8,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from agents.product_profile import FULL_SOFTWARE, MARKETING_LANDING
+from agents.product_profile import DESKTOP_APP, FULL_SOFTWARE, MARKETING_LANDING
 
 # Prefix for every issue string so PM retries / logs show which gate failed.
 STRUCTURAL_SPEC_PREFIX = "[structural_spec] "
@@ -34,7 +34,7 @@ def validate_specification(spec: dict[str, Any], delivery_profile: str) -> tuple
     if not isinstance(spec, dict):
         return False, [_sg("Specification must be a JSON object")]
 
-    profile = delivery_profile if delivery_profile in (MARKETING_LANDING, FULL_SOFTWARE) else MARKETING_LANDING
+    profile = delivery_profile if delivery_profile in (MARKETING_LANDING, FULL_SOFTWARE, DESKTOP_APP) else MARKETING_LANDING
 
     if not _str_len(spec.get("product_name"), 2):
         issues.append(_sg("product_name: required, min 2 chars"))
@@ -72,7 +72,7 @@ def validate_specification(spec: dict[str, Any], delivery_profile: str) -> tuple
                 )
             )
 
-    if profile == FULL_SOFTWARE:
+    if profile in (FULL_SOFTWARE, DESKTOP_APP):
         fr = spec.get("functional_requirements") or []
         if not isinstance(fr, list) or len(fr) < 3:
             issues.append(
@@ -131,6 +131,16 @@ def validate_specification(spec: dict[str, Any], delivery_profile: str) -> tuple
                     issues.append(_sg(f"non_functional_requirements[{j}].requirement: required"))
                 if not _str_len(n.get("measurable_criteria"), 8):
                     issues.append(_sg(f"non_functional_requirements[{j}].measurable_criteria: how we verify"))
+
+    if profile == DESKTOP_APP:
+        blob = f"{spec.get('description') or ''} {spec.get('product_name') or ''}".lower()
+        if not any(x in blob for x in ("desktop", "tauri", "electron", "flutter", "native", "offline", "local")):
+            issues.append(
+                _sg(
+                    "desktop_app: description should state desktop runtime (Tauri/Electron/Flutter) "
+                    "and local/offline behavior"
+                )
+            )
 
     spec.setdefault("delivery_profile", profile)
     return len(issues) == 0, issues

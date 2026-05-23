@@ -1,5 +1,24 @@
 # aimarket-data-cap
 
+## Value in plain words
+
+Monetize private documents: others pay per search query, you never hand over raw files. Law firms, labs, and enterprises turn knowledge into revenue safely.
+
+**Простыми словами:** Монетизируете закрытые документы: другие платят за поиск, сырые файлы вы не отдаёте. Юрфирмы, лаборатории и компании превращают знания в доход безопасно.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **Data-as-capability. Private corpus → paid RAG-capability.**
 Upload your private data corpus. It becomes a paid search capability. You earn 70% of every query. Doubles TAM — sell compute AND data. Snowflake-level monetization for AI marketplaces.
 

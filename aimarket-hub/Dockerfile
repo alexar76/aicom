@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ── Core hub ──────────────────────────────────────────────────
 COPY aimarket-hub/pyproject.toml ./pyproject.toml
 COPY aimarket-hub/aimarket_hub/ ./aimarket_hub/
+COPY aimarket-hub/plugins-demo.html /app/plugins-demo.html
 RUN pip install --no-cache-dir -e . && pip install --no-cache-dir uvicorn
 
 # ── Protocol schemas (for JSON Schema validation) ─────────────

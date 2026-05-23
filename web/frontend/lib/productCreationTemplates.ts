@@ -7,7 +7,7 @@ export type ProductCreationTemplate = {
   id: string;
   name: string;
   createdAt: number;
-  deliveryChoice: 'full_software' | 'marketing_landing' | 'infer';
+  deliveryChoice: 'full_software' | 'marketing_landing' | 'desktop_app' | 'infer';
   mode: 'prototype' | 'production';
   instructions: string;
 };

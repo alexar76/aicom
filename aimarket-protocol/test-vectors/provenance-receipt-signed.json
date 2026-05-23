@@ -1,0 +1,61 @@
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://verify.aimarket.org/schemas/provenance-receipt.json"
+  ],
+  "id": "urn:uuid:test-vector-001",
+  "type": ["VerifiableCredential", "AIProvenanceReceipt"],
+  "issuer": {
+    "id": "https://hub.aimarket.org",
+    "name": "AIMarket Hub (test vector)",
+    "publicKeyJwk": {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo"
+    }
+  },
+  "issuanceDate": "2026-05-23T12:00:00Z",
+  "credentialSubject": {
+    "modelId": "claude-sonnet-4@anthropic",
+    "providerHub": "https://hub.aimarket.org",
+    "inputHash": {
+      "algorithm": "SHA-256",
+      "value": "a3f2c8b1e5d4f7a6b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2"
+    },
+    "outputHash": {
+      "algorithm": "SHA-256",
+      "value": "b4e3d2c1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3"
+    },
+    "parentReceipts": [],
+    "timestamp": "2026-05-23T12:00:00Z",
+    "latencyMs": 2340,
+    "priceUsd": 0.15,
+    "invocationNonce": "nonce_test_001",
+    "teeAttestation": {
+      "platform": "AWS_NITRO",
+      "enclaveId": "i-0a1b2c3d4e5f67890",
+      "codeHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pcrValues": {
+        "pcr0": "sha256:abc...",
+        "pcr1": "sha256:def...",
+        "pcr2": "sha256:ghi..."
+      },
+      "instanceId": "i-0a1b2c3d4e5f67890",
+      "region": "us-east-1",
+      "timestamp": "2026-05-23T12:00:00Z",
+      "signature": "base64signatureplaceholder..."
+    }
+  },
+  "proof": {
+    "type": "Ed25519Signature2018",
+    "created": "2026-05-23T12:00:01Z",
+    "verificationMethod": "did:key:z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "base64signatureplaceholder..."
+  },
+  "hubInfo": {
+    "hubName": "AIMarket Hub",
+    "hubVersion": "3.0.0",
+    "protocolVersion": "v2"
+  }
+}

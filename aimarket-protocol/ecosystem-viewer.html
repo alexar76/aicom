@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AIMarket Ecosystem — Diagrams</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+      sequence: { useMaxWidth: true, wrap: true },
+      securityLevel: 'loose',
+    });
+    window.mermaid = mermaid;
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; background: #0b0f19; color: #e2e8f0; }
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(11, 15, 25, 0.95); backdrop-filter: blur(8px);
+      border-bottom: 1px solid #1e293b; padding: 0.75rem 1.25rem;
+    }
+    header h1 { margin: 0 0 0.5rem; font-size: 1.1rem; }
+    nav { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    nav button {
+      background: transparent; color: #7dd3fc; border: 1px solid #334155;
+      border-radius: 6px; padding: 0.3rem 0.65rem; font-size: 0.8rem; cursor: pointer;
+    }
+    nav button:hover, nav button.active { background: #1e3a5f; border-color: #38bdf8; }
+    main { padding: 1rem 1.25rem 3rem; max-width: 1600px; margin: 0 auto; }
+    section {
+      margin-bottom: 2rem; padding: 1.25rem; background: #111827;
+      border: 1px solid #1f2937; border-radius: 12px;
+    }
+    section h2 { margin: 0 0 1rem; font-size: 0.95rem; color: #94a3b8; }
+    .mermaid-wrap { overflow-x: auto; min-height: 120px; }
+    #status { color: #94a3b8; font-size: 0.85rem; }
+    #status.error { color: #f87171; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AIMarket Protocol — Ecosystem</h1>
+    <nav id="nav"></nav>
+    <p id="status">Loading ecosystem.md…</p>
+  </header>
+  <main id="main"></main>
+  <script type="module">
+    const titles = [
+      '1. Topology',
+      '2. Planes',
+      '3. Invoke',
+      '4. Federation',
+      '5. Plugins',
+      '6. Persistence',
+    ];
+
+    async function load() {
+      const status = document.getElementById('status');
+      const main = document.getElementById('main');
+      const nav = document.getElementById('nav');
+      let md;
+      try {
+        const res = await fetch('ecosystem.md');
+        if (!res.ok) throw new Error(res.statusText);
+        md = await res.text();
+      } catch (e) {
+        status.textContent = 'Open via local server: python3 -m http.server 8765 in aimarket-protocol/';
+        status.className = 'error';
+        return;
+      }
+      const blocks = [...md.matchAll(/```mermaid\n([\s\S]*?)```/g)].map((m) => m[1].trim());
+      status.textContent = `${blocks.length} diagrams from ecosystem.md`;
+      blocks.forEach((src, i) => {
+        const id = `d${i}`;
+        const btn = document.createElement('button');
+        btn.textContent = titles[i] || `Diagram ${i + 1}`;
+        btn.onclick = () => {
+          document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+          nav.querySelectorAll('button').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+        };
+        if (i === 0) btn.classList.add('active');
+        nav.appendChild(btn);
+
+        const sec = document.createElement('section');
+        sec.id = id;
+        sec.innerHTML = `<h2>${titles[i] || 'Diagram ' + (i + 1)}</h2><div class="mermaid-wrap"></div>`;
+        const el = document.createElement('pre');
+        el.className = 'mermaid';
+        el.textContent = src;
+        sec.querySelector('.mermaid-wrap').appendChild(el);
+        main.appendChild(sec);
+      });
+      await window.mermaid.run({ querySelector: '.mermaid' });
+    }
+    load();
+  </script>
+</body>
+</html>

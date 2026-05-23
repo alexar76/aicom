@@ -52,6 +52,7 @@ Operator-facing UI strings may be **en / ru / es** in Admin; that is product i18
 
 ## Protocols and domain playbooks
 
+- **[ecosystem-architecture.md](./ecosystem-architecture.md)** — **Monorepo map**: AI-Factory ↔ AIMarket Hub ↔ desktop apps (C4, Mermaid sequences, deployment topology).
 - **`ai-market-protocol-v1.md`** — **AI Market Protocol v1**: `.well-known`, MCP manifest, HTTP 402, payment channels, pipelines, reference agent (`cli/ai_market_agent.py`).
 - `ai-market-protocol-v0.md` — v0 pilot (catalog, on-chain settlement confirm, license invoke).
 - **`domain-guides/README.md`** — index of all **10 built-in** domain methodology packs + links to short playbooks (source: `web/backend/services/domain_methodology/packs/`).

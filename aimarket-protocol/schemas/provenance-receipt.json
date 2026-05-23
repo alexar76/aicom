@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verify.aimarket.org/schemas/provenance-receipt.json",
+  "title": "AI Provenance Receipt",
+  "description": "Self-contained cryptographic receipt for AI-generated outputs. JSON-LD compatible with W3C Verifiable Credentials. Embeds the issuer's Ed25519 public key so verification requires no external lookups.",
+  "type": "object",
+  "required": [
+    "@context", "id", "type",
+    "issuer", "issuanceDate",
+    "credentialSubject", "proof"
+  ],
+  "properties": {
+    "@context": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "format": "uri" },
+      "contains": { "const": "https://www.w3.org/2018/credentials/v1" }
+    },
+    "id": {
+      "type": "string",
+      "description": "Receipt identifier — urn:uuid:<uuid> or https://verify.aimarket.org/r/<id>"
+    },
+    "type": {
+      "type": "array",
+      "minItems": 1,
+      "contains": { "const": "VerifiableCredential" },
+      "items": { "type": "string" }
+    },
+    "issuer": {
+      "type": "object",
+      "required": ["id", "name", "publicKeyJwk"],
+      "properties": {
+        "id": { "type": "string", "format": "uri" },
+        "name": { "type": "string" },
+        "publicKeyJwk": {
+          "type": "object",
+          "required": ["kty", "crv", "x"],
+          "properties": {
+            "kty": { "type": "string", "const": "OKP" },
+            "crv": { "type": "string", "const": "Ed25519" },
+            "x": { "type": "string", "description": "base64url-encoded 32-byte Ed25519 public key (RFC 8037)" }
+          }
+        }
+      }
+    },
+    "issuanceDate": {
+      "type": "string", "format": "date-time"
+    },
+    "credentialSubject": {
+      "type": "object",
+      "required": ["modelId", "providerHub", "inputHash", "outputHash", "timestamp"],
+      "properties": {
+        "modelId": {
+          "type": "string",
+          "description": "Model identifier — e.g., 'claude-sonnet-4@anthropic' or 'gpt-4o@openai'"
+        },
+        "providerHub": {
+          "type": "string", "format": "uri",
+          "description": "Hub that issued this receipt"
+        },
+        "inputHash": {
+          "type": "object",
+          "required": ["algorithm", "value"],
+          "properties": {
+            "algorithm": { "type": "string", "const": "SHA-256" },
+            "value": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          }
+        },
+        "outputHash": {
+          "type": "object",
+          "required": ["algorithm", "value"],
+          "properties": {
+            "algorithm": { "type": "string", "const": "SHA-256" },
+            "value": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          }
+        },
+        "parentReceipts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Receipt IDs forming the provenance chain (e.g., RAG retrieval → generation)"
+        },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "latencyMs": { "type": "integer", "minimum": 0 },
+        "priceUsd": { "type": "number", "minimum": 0 },
+        "invocationNonce": { "type": "string" },
+        "teeAttestation": {
+          "type": "object",
+          "description": "TEE attestation proving computation ran in a trusted enclave",
+          "properties": {
+            "platform": { "type": "string", "enum": ["AWS_NITRO", "INTEL_TDX", "AMD_SEV", "AZURE_CC"] },
+            "enclaveId": { "type": "string" },
+            "codeHash": { "type": "string" },
+            "pcrValues": { "type": "object" },
+            "instanceId": { "type": "string" },
+            "region": { "type": "string" },
+            "timestamp": { "type": "string", "format": "date-time" },
+            "signature": { "type": "string" }
+          }
+        },
+        "zkInputProof": {
+          "type": "object",
+          "description": "ZK proof that input matches schema without revealing it"
+        },
+        "zkOutputProof": {
+          "type": "object",
+          "description": "ZK proof of correct execution"
+        },
+        "reputationScore": {
+          "type": "number", "minimum": 0, "maximum": 1
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "required": ["type", "created", "verificationMethod", "proofPurpose", "proofValue"],
+      "properties": {
+        "type": { "type": "string", "const": "Ed25519Signature2018" },
+        "created": { "type": "string", "format": "date-time" },
+        "verificationMethod": { "type": "string" },
+        "proofPurpose": { "type": "string", "const": "assertionMethod" },
+        "proofValue": { "type": "string", "description": "base64-encoded Ed25519 signature over canonical credentialSubject" }
+      }
+    },
+    "hubInfo": {
+      "type": "object",
+      "properties": {
+        "hubName": { "type": "string" },
+        "hubVersion": { "type": "string" },
+        "protocolVersion": { "type": "string" }
+      }
+    }
+  }
+}

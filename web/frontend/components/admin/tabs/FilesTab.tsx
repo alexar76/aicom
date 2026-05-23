@@ -20,6 +20,7 @@ import {
 } from '@/lib/pipelineCatalogFetch';
 import toast from 'react-hot-toast';
 import { launchSandboxWithProgress } from '@/lib/sandboxLaunch';
+import { sandboxLaunchLabel } from '@/lib/sandboxLaunchI18n';
 import { formatDate, localDateInputStartSeconds, localDateInputEndSeconds } from '@/lib/utils';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 
@@ -517,12 +518,12 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
   const refreshSandbox = useCallback(async () => {
     if (!selectedProduct) return;
     setSandboxLoading(true);
-    setSandboxProgress({ percent: 5, label: 'Запуск…' });
+    setSandboxProgress({ percent: 5, label: sandboxLaunchLabel(locale, 'starting') });
     setSandboxError(null);
     try {
       const result = await launchSandboxWithProgress(
         selectedProduct,
-        undefined,
+        { locale },
         setSandboxProgress,
       );
       const raw = result.url || `/api/sandbox/view/${result.sandbox_id}`;
@@ -538,7 +539,7 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
       setSandboxLoading(false);
       setSandboxProgress(null);
     }
-  }, [selectedProduct]);
+  }, [locale, selectedProduct]);
 
   const downloadOwnerArchive = useCallback(async () => {
     if (!selectedProduct) return;

@@ -1,0 +1,25 @@
+name: reputation_dashboard
+description: Yelp for aimarket — honest ratings and reviews for marketplace capabilities.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.2.0
+  flutter: ^3.24.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.2
+  aicom_desktop_core:
+    path: ../packages/aicom_desktop_core
+  aimarket_agent:
+    path: ../../aimarket-sdks/dart
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lints: ^3.0.0
+
+flutter:
+  uses-material-design: true

@@ -7,7 +7,7 @@ from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-_DELIVERY = Literal["marketing_landing", "full_software"]
+_DELIVERY = Literal["marketing_landing", "full_software", "desktop_app"]
 _LOCALE_RE = r"^[a-z]{2}(-[A-Za-z]{2,8})?$"
 _PRODUCT_ID_RE = re.compile(r"^prod-[a-z0-9]{8,64}$", re.I)
 _EVM_TX_RE = re.compile(r"^0x[a-fA-F0-9]{64}$")
@@ -24,6 +24,7 @@ class CreateProductRequest(BaseModel):
     idea: str = Field(..., min_length=3, max_length=8000)
     admin_instructions: Optional[str] = Field(None, max_length=16000)
     delivery_profile: Optional[_DELIVERY] = None
+    category: Optional[str] = Field(None, max_length=32)
     production_mode: bool = False
     interface_locale: Optional[str] = Field(None, max_length=16, pattern=_LOCALE_RE)
     content_locale: Optional[str] = Field(None, max_length=16)
@@ -46,6 +47,7 @@ class BatchCreateIdeasRequest(BaseModel):
     active_limit: int = Field(30, ge=1, le=200)
     admin_instructions: Optional[str] = Field(None, max_length=16000)
     delivery_profile: Optional[_DELIVERY] = None
+    category: Optional[str] = Field(None, max_length=32)
     production_mode: bool = False
     interface_locale: Optional[str] = Field(None, max_length=16, pattern=_LOCALE_RE)
     content_locale: Optional[str] = Field(None, max_length=16)

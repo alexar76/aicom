@@ -1,5 +1,24 @@
 # aimarket-streaming
 
+## Value in plain words
+
+Streams long AI answers token by token and charges fairly for what you actually read — stop early, pay less. Better for chat UIs and long reports.
+
+**Простыми словами:** Длинные ответы AI идут по токенам, платите за то, что реально получили — остановили раньше, заплатили меньше. Удобно для чата и длинных отчётов.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **SSE/WS streaming + per-chunk billing with micro-receipts.**
 Capability streams tokens. Every N tokens → signed micro-receipt. Consumer can cancel mid-stream — pays only for what was received. Channel balance debited incrementally.
 

@@ -250,6 +250,8 @@ def evaluate_marketplace_quality(
     min_design_novelty = marketplace_min_design_novelty()
     min_release_score = marketplace_min_release_score()
 
+    from core.delivery_profile import DESKTOP_APP, FULL_SOFTWARE, MARKETING_LANDING
+
     resolved_profile = _resolve_delivery_profile_for_marketplace(
         product_id, specification, delivery_profile, root
     )
@@ -299,13 +301,21 @@ def evaluate_marketplace_quality(
     }
 
     from web.backend.services.sandbox_static_entry import storefront_front_page_ready
+    from web.backend.services.desktop_product import desktop_storefront_ready, is_desktop_product
 
-    fp_ok, _fp_rel, fp_reasons = storefront_front_page_ready(
-        product_id,
-        code_root=root / "code" / product_id,
+    desktop_product = resolved_profile == DESKTOP_APP or is_desktop_product(
+        delivery_profile=resolved_profile,
+        specification=specification,
     )
+    if desktop_product:
+        fp_ok, fp_reasons = desktop_storefront_ready(product_id, code_root=root / "code" / product_id)
+    else:
+        fp_ok, _fp_rel, fp_reasons = storefront_front_page_ready(
+            product_id,
+            code_root=root / "code" / product_id,
+        )
     if not fp_ok:
-        reasons.append("storefront_front_page_required")
+        reasons.append("storefront_front_page_required" if not desktop_product else "desktop_storefront_not_ready")
         reasons.extend(fp_reasons[:8])
         return {
             "eligible": False,
@@ -361,6 +371,8 @@ def evaluate_marketplace_quality(
                 "telemetry_gates_all_passed": telemetry_all_ok,
                 "marketplace_rules": rules,
             }
+
+    # desktop_app skips full_software browser preview gate (download-first SKU)
 
     if require_quality_constitution:
         constitution = evaluate_quality_constitution(product_id, data_root=data_root)

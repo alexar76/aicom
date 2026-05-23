@@ -98,8 +98,10 @@ export interface Product {
   architecture?: any;
   /** Subset of tech stack for list cards (from architecture.tech_stack) */
   implementation_summary?: Record<string, string>;
-  /** PM/storefront: marketing_landing | full_software */
+  /** PM/storefront: marketing_landing | full_software | desktop_app */
   delivery_profile?: string | null;
+  product_kind?: string | null;
+  desktop_framework?: string | null;
   /** Compact tech stack line for explore cards */
   storefront_stack_label?: string | null;
   code?: any;
@@ -2049,6 +2051,7 @@ class ApiClient {
     admin_instructions?: string;
     production_mode?: boolean;
     delivery_profile?: string;
+    category?: string;
     interface_locale?: string;
     content_locale?: string;
   }): Promise<{ product_id: string; state: string; message: string }> {

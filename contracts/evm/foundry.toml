@@ -1,0 +1,17 @@
+[profile.default]
+solc = "0.8.28"
+src = "."
+test = "test"
+script = "script"
+lib_path = ["lib"]
+remappings = [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"
+]
+
+[optimizer]
+enabled = true
+runs = 200
+
+[rpc_endpoints]
+base-mainnet = "${RPC_BASE_MAINNET}"
+base-sepolia = "${RPC_BASE_SEPOLIA}"

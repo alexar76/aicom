@@ -50,7 +50,19 @@ resolve_compose_files() {
   else
     COMPOSE_FILES+=(-f docker-compose.dind.yml)
   fi
-  if [[ -d data/secrets/llm ]] && compgen -G "data/secrets/llm/*_api_key" >/dev/null 2>&1; then
+  local secrets_dir="data/secrets/llm"
+  local secrets_overlay=1
+  if [[ -d "$secrets_dir" ]]; then
+    for req in deepseek_api_key anthropic_api_key groq_api_key together_api_key; do
+      if [[ ! -f "$secrets_dir/$req" ]]; then
+        secrets_overlay=0
+        break
+      fi
+    done
+  else
+    secrets_overlay=0
+  fi
+  if [[ "$secrets_overlay" -eq 1 ]]; then
     COMPOSE_FILES+=(-f docker-compose.secrets.yml)
   fi
 }

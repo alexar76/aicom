@@ -1311,7 +1311,7 @@ function Footer({ copy }: { copy: MarketingStrings }) {
   ];
 
   return (
-    <footer className="border-t border-white/5 px-4 pt-8 pb-[max(6rem,calc(4.5rem+env(safe-area-inset-bottom)))] md:pb-8">
+    <footer className="border-t border-white/5 px-4 pt-8 pb-[var(--storefront-footer-pad)] md:pb-8">
       <div className="mx-auto flex max-w-6xl min-w-0 flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-8">
         <div className="flex shrink-0 items-center justify-center gap-2 md:justify-start">
           <Cpu className="h-5 w-5 shrink-0 text-indigo-400" aria-hidden />

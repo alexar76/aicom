@@ -94,6 +94,29 @@ def production_startup_issues() -> list[str]:
             "Change it via Settings or re-bootstrap before running with AIFACTORY_PROD=1."
         )
 
+    # Payment: refuse production with stub verification
+    if os.environ.get("AIFACTORY_PAYMENT_VERIFY_STUB", "1").strip() == "1":
+        issues.append(
+            "AIFACTORY_PAYMENT_VERIFY_STUB=1 in production mode — all payment "
+            "transactions would be accepted without on-chain verification. "
+            "Set AIFACTORY_PAYMENT_VERIFY_STUB=0 before running with AIFACTORY_PROD=1."
+        )
+
+    # Payment: refuse production without a configured recipient
+    recipient = (os.environ.get("AIMARKET_PAYMENT_RECIPIENT") or "").strip()
+    if not recipient or recipient.startswith("0x000000000000000000000000000000000000"):
+        issues.append(
+            "AIMARKET_PAYMENT_RECIPIENT is not set or is the zero address — "
+            "real payments have nowhere to settle. Set a valid wallet address."
+        )
+
+    # Payment: refuse production testnet mode
+    if os.environ.get("AIFACTORY_PAYMENT_TESTNET", "1").strip() == "1":
+        issues.append(
+            "AIFACTORY_PAYMENT_TESTNET=1 in production mode — testnet mode "
+            "accepts demo transaction hashes. Set AIFACTORY_PAYMENT_TESTNET=0."
+        )
+
     return issues
 
 

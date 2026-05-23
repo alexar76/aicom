@@ -316,7 +316,7 @@ class ReputationOracle:
         #   - 0.05 * min(disputes, 10)/10  (dispute count penalty)
         import math
 
-        bond_signal = min(math.log10(1 + bond_usd) / 4.0, 1.0) * 0.2
+        bond_signal = min(math.log10(max(bond_usd, 1)) / 4.0, 1.0) * 0.2
         perf_signal = success * 0.3
         quality_signal = quality * 0.2
         slash_penalty = slash * 0.3

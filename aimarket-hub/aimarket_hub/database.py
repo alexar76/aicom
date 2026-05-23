@@ -1,33 +1,47 @@
-"""SQLite-backed index for capabilities, peers, receipts, and reputation events.
+"""Database index for capabilities, peers, receipts, and reputation events.
 
-Single-file database. Zero-dependency beyond stdlib sqlite3.
-Supports the hub MVP without Postgres — can be upgraded later.
+Supports SQLite (default) and PostgreSQL via DATABASE_URL env var.
+Uses the DBBackend abstraction for dialect-agnostic queries.
 """
 
 from __future__ import annotations
 
 import json
-import sqlite3
 import time
 from pathlib import Path
 from typing import Any
 
 from aimarket_hub.models import Capability, InvocationStat, Peer, ReputationEvent
+from aimarket_hub.db_backend import DBBackend, create_backend
+from aimarket_hub.migrations import Migrations
 
 
 class HubDatabase:
-    """SQLite database for the hub index."""
+    """Hub index database — SQLite or PostgreSQL via DATABASE_URL.
 
-    def __init__(self, db_path: str | Path = "data/hub.db"):
+    Args:
+        db_path: SQLite path (used when database_url is not set)
+        database_url: PostgreSQL connection string (optional)
+    """
+
+    def __init__(
+        self,
+        db_path: str | Path = "data/hub.db",
+        database_url: str = "",
+    ):
         self.db_path = Path(db_path)
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        self._conn = sqlite3.connect(str(self.db_path), check_same_thread=False)
-        self._conn.row_factory = sqlite3.Row
-        self._conn.execute("PRAGMA journal_mode=WAL")
-        self._conn.execute("PRAGMA foreign_keys=ON")
-        self._migrate()
+        self._backend: DBBackend = create_backend(
+            database_url=database_url, db_path=db_path,
+        )
+        migrations = Migrations(self._backend)
+        migrations.apply()
+        self._conn = self._backend  # backward compat for tests
 
     def _migrate(self) -> None:
+        # Keep for backward compat — actual migration runs via Migrations in __init__
+        pass
+
+    def _legacy_migrate(self) -> None:
         cur = self._conn.cursor()
         cur.executescript("""
             CREATE TABLE IF NOT EXISTS capabilities (
@@ -274,7 +288,7 @@ class HubDatabase:
     # ── Maintenance ───────────────────────────────────────────
 
     def close(self) -> None:
-        self._conn.close()
+        self._backend.close()
 
 
 def _row_to_capability(row: sqlite3.Row) -> Capability:

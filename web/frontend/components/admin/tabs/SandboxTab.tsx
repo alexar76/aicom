@@ -85,6 +85,7 @@ import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib
 import toast from 'react-hot-toast';
 import { launchSandboxWithProgress } from '@/lib/sandboxLaunch';
 import { SandboxLaunchOverlay } from '@/components/SandboxLaunchOverlay';
+import { sandboxLaunchLabel } from '@/lib/sandboxLaunchI18n';
 
 export function SandboxTab({ locale }: { locale: AdminLocale }) {
   const [products, setProducts] = useState<any[]>([]);
@@ -160,9 +161,13 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
 
   const handleStartSandbox = async (productId: string) => {
     setActionLoading(`start-${productId}`);
-    setSandboxLaunchProgress({ percent: 5, label: 'Запуск…' });
+    setSandboxLaunchProgress({ percent: 5, label: sandboxLaunchLabel(locale, 'starting') });
     try {
-      const result = await launchSandboxWithProgress(productId, undefined, setSandboxLaunchProgress);
+      const result = await launchSandboxWithProgress(
+        productId,
+        { locale },
+        setSandboxLaunchProgress,
+      );
       showMessage('success', `Sandbox ${result.sandbox_id} started`);
       window.location.href = result.url;
     } catch (err: unknown) {
@@ -227,6 +232,7 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
       <SandboxLaunchOverlay
         open={sandboxLaunchProgress !== null}
         progress={sandboxLaunchProgress}
+        locale={locale}
       />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl font-semibold text-white">{t(locale, 'sandbox.title')}</h2>

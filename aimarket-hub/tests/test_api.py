@@ -1,5 +1,6 @@
 """Integration tests for the hub API (FastAPI test client)."""
 
+import os
 import tempfile
 from pathlib import Path
 
@@ -13,8 +14,26 @@ from aimarket_hub.models import Capability, Peer
 from aimarket_hub.signing import Signer
 
 
+ADMIN_TOKEN = "test-admin-token-not-for-production"
+ADMIN_HEADERS = {"Authorization": f"Bearer {ADMIN_TOKEN}"}
+
+
+@pytest.fixture(autouse=True)
+def _bypass_url_safety_for_tests(monkeypatch):
+    """Production _url_is_safe rejects unresolvable hostnames; tests use
+    *.example.com subdomains that don't resolve."""
+    import aimarket_hub.crawler as _c
+    def _safe(url: str) -> bool:
+        if not url or not url.startswith(("http://", "https://")):
+            return False
+        bad = ("localhost", "127.", "0.0.0.0", "[::1]", "192.168.", "10.", "169.254.")
+        return not any(b in url.lower() for b in bad)
+    monkeypatch.setattr(_c, "_url_is_safe", _safe)
+
+
 @pytest.fixture
-def client():
+def client(monkeypatch):
+    monkeypatch.setenv("AIMARKET_ADMIN_TOKEN", ADMIN_TOKEN)
     with tempfile.TemporaryDirectory() as tmp:
         db_path = Path(tmp) / "test.db"
         key_path = Path(tmp) / "test_key"
@@ -79,18 +98,16 @@ class TestSearch:
 
 class TestInvoke:
     def test_local_invoke_returns_result(self, client):
+        # Unknown capability returns 404 (security fix: no silent fallback)
         resp = client.post("/ai-market/v2/invoke", json={
             "product_id": "prod-test",
-            "capability_id": "test@v1",
+            "capability_id": "cap-does-not-exist",
             "source_hub": "local",
             "input": {"text": "hello"},
         })
-        assert resp.status_code == 200
+        assert resp.status_code == 404
         data = resp.json()
-        assert data["success"] is True
-        assert "result" in data
-        assert "receipt" in data
-        assert data["safety_checked"] is True
+        assert "Unknown capability" in data["detail"]
 
     def test_invoke_unknown_hub_returns_404(self, client):
         resp = client.post("/ai-market/v2/invoke", json={
@@ -118,25 +135,64 @@ class TestInvoke:
 
 class TestFederationAnnounce:
     def test_announce_adds_peer(self, client):
-        resp = client.post("/ai-market/v2/federation/announce", json={
-            "hub_url": "https://new-hub.example.com",
-            "well_known_url": "https://new-hub.example.com/.well-known/ai-market.json",
-            "capabilities_count": 10,
-            "hub_name": "New Test Hub",
-            "signer_public_key": "test_key",
-        })
+        resp = client.post(
+            "/ai-market/v2/federation/announce",
+            json={
+                "hub_url": "https://new-hub.example.com",
+                "well_known_url": "https://new-hub.example.com/.well-known/ai-market.json",
+                "capabilities_count": 10,
+                "hub_name": "New Test Hub",
+                "signer_public_key": "test_key",
+            },
+            headers=ADMIN_HEADERS,
+        )
         assert resp.status_code == 200
         data = resp.json()
         assert data["acknowledged"] is True
         assert data["peer_added"] is True
 
+    def test_announce_requires_admin_token(self, client):
+        """Without Bearer token, /announce must reject."""
+        resp = client.post(
+            "/ai-market/v2/federation/announce",
+            json={
+                "hub_url": "https://x.example.com",
+                "well_known_url": "https://x.example.com/.well-known/ai-market.json",
+                "capabilities_count": 0,
+            },
+        )
+        assert resp.status_code == 401
+
+    def test_announce_rejects_internal_urls(self, client):
+        """SSRF guard: private/loopback URLs rejected."""
+        for url in [
+            "http://localhost:8080",
+            "http://127.0.0.1",
+            "http://192.168.1.1",
+            "http://169.254.169.254",  # AWS metadata
+        ]:
+            resp = client.post(
+                "/ai-market/v2/federation/announce",
+                json={
+                    "hub_url": url,
+                    "well_known_url": url + "/.well-known/ai-market.json",
+                    "capabilities_count": 0,
+                },
+                headers=ADMIN_HEADERS,
+            )
+            assert resp.status_code == 400, f"{url} should be rejected"
+
     def test_peers_list_includes_announced(self, client):
         # Add a peer
-        client.post("/ai-market/v2/federation/announce", json={
-            "hub_url": "https://peer.example.com",
-            "well_known_url": "https://peer.example.com/.well-known/ai-market.json",
-            "capabilities_count": 5,
-        })
+        client.post(
+            "/ai-market/v2/federation/announce",
+            json={
+                "hub_url": "https://peer.example.com",
+                "well_known_url": "https://peer.example.com/.well-known/ai-market.json",
+                "capabilities_count": 5,
+            },
+            headers=ADMIN_HEADERS,
+        )
         resp = client.get("/ai-market/v2/federation/peers")
         assert resp.status_code == 200
         data = resp.json()
@@ -164,7 +220,25 @@ class TestReputation:
         })
         assert resp.status_code == 200
         data = resp.json()
-        assert data["received"] == 1
+        assert data["rejected"] == 1
+
+
+class TestCapitalPricing:
+    def test_hub_capital_pricing(self, client):
+        resp = client.get("/ai-market/v2/capital/pricing?chain=any&limit=5")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["protocol"] == "acex"
+        assert "listings" in data
+        assert "indices" in data
+        assert data["pulse_terminal"]["hub_endpoint"] == "/ai-market/v2/capital/pricing"
+
+    def test_api_v2_capital_pricing_alias(self, client):
+        resp = client.get("/api/v2/capital/pricing?chain=solana")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["chain"] == "solana"
+        assert data["liquidity"]["primary"]["provider"] == "jupiter"
 
 
 class TestStats:

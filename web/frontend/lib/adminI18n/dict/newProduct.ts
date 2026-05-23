@@ -109,4 +109,11 @@ export const NEW_PRODUCT_DICT: I18nDict = {
   'newProduct.preset.landing.short': { en: 'Landing profile · fast path', ru: 'Лендинг · быстрый путь', es: 'Landing · ruta rápida' },
   'newProduct.preset.internal.label': { en: 'Internal admin tool', ru: 'Внутренний админ-инструмент', es: 'Herramienta admin interna' },
   'newProduct.preset.internal.short': { en: 'Full product · production-minded', ru: 'Полный продукт · прод', es: 'Producto completo · producción' },
+  'newProduct.preset.desktop.label': { en: 'Desktop app (Tauri)', ru: 'Desktop-приложение (Tauri)', es: 'App de escritorio (Tauri)' },
+  'newProduct.preset.desktop.short': { en: 'desktop_app · installable SKU', ru: 'desktop_app · установка', es: 'desktop_app · instalable' },
+  'newProduct.delivery.desktop': {
+    en: 'Desktop app (Tauri / Flutter / Electron)',
+    ru: 'Desktop-приложение (Tauri / Flutter / Electron)',
+    es: 'App de escritorio (Tauri / Flutter / Electron)',
+  },
 };

@@ -1,0 +1,46 @@
+[package]
+name = "local-security-audit"
+version = "0.1.0"
+edition = "2021"
+description = "Tauri desktop app — scan local git repos for secrets, CVEs, and anti-patterns. No code upload."
+authors = ["Alex"]
+license = "MIT"
+repository = "https://github.com/your-org/local-security-audit"
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-build = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+aimarket-agent = { path = "../../aimarket-sdks/rust" }
+git2 = "0.19"
+regex = "1"
+tokio = { version = "1", features = ["full"] }
+dirs = "5"
+rmp-serde = "1"
+sled = "0.34"
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "2"
+log = "0.4"
+env_logger = "0.11"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[lib]
+name = "local_security_audit_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[[bin]]
+name = "local-security-audit"
+path = "src-tauri/src/main.rs"
+
+[package.metadata.bundle]
+identifier = "com.aicom.local-security-audit"
+display-name = "Local Security Audit"
+category = "DeveloperTool"
+copyright = "MIT"

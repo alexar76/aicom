@@ -14,7 +14,7 @@ from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
-_VALID_DELIVERY = frozenset({"full_software", "marketing_landing", "infer"})
+_VALID_DELIVERY = frozenset({"full_software", "marketing_landing", "desktop_app", "infer"})
 
 
 def _heuristic_fallback(idea: str) -> dict[str, Any]:
@@ -87,7 +87,7 @@ async def prefill_from_idea(idea: str, llm_router: Any | None) -> dict[str, Any]
     prompt = (
         "You help configure an AI software factory product run. Given the user's IDEA, "
         "reply with a single JSON object only, no markdown, keys:\n"
-        '- "delivery_profile": one of "full_software", "marketing_landing", "infer"\n'
+        '- "delivery_profile": one of "full_software", "marketing_landing", "desktop_app", "infer"\n'
         '- "production_mode": boolean\n'
         '- "instructions": concise English instructions for agents (string, may be empty)\n'
         '- "rationale": one short sentence why these defaults fit\n'

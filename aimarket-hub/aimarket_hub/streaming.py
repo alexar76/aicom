@@ -28,12 +28,18 @@ class ChunkReceipt:
     price_per_token_usd: float
     chunk_price_usd: float
     cumulative_price_usd: float
+    session_id: str = ""       # binds receipt to specific session (EXP-68)
+    capability_id: str = ""    # binds receipt to specific capability (EXP-68)
     timestamp: str = field(default_factory=lambda: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
     signature: str = ""
 
     def sign(self, signer: Signer) -> "ChunkReceipt":
+        # Canonical includes session_id + capability_id so receipts from one
+        # cheap stream cannot be replayed as receipts of a different expensive stream.
         canonical = (
-            f"chunk:{self.chunk_index}"
+            f"session:{self.session_id}"
+            f"|capability:{self.capability_id}"
+            f"|chunk:{self.chunk_index}"
             f"|tokens:{self.token_count}"
             f"|cum_tokens:{self.cumulative_tokens}"
             f"|price:{self.chunk_price_usd}"
@@ -97,12 +103,22 @@ class StreamingBiller:
         self._sessions[session_id] = session
         return session
 
+    # Hard cap on session length to prevent runaway billing (EXP-70)
+    MAX_TOKENS_PER_SESSION = 100_000
+
     async def stream_tokens(
         self,
         session: StreamSession,
         token_generator,
     ) -> AsyncIterator[dict[str, Any]]:
         """Stream tokens with per-chunk billing.
+
+        Behavior:
+          - On cancel: stops immediately; partial chunks are NOT billed
+            (EXP-67: previously a final chunk was billed after cancel).
+          - Exceptions are logged and re-raised (EXP-69: previously
+            silently swallowed, hiding signing/network failures).
+          - Sessions cap at MAX_TOKENS_PER_SESSION tokens (EXP-70).
 
         Args:
             session: Active streaming session
@@ -114,80 +130,57 @@ class StreamingBiller:
         chunk_tokens: list[str] = []
         chunk_index = 0
 
-        try:
-            async for token in token_generator:
-                if session.cancelled:
-                    break
+        def _bill_chunk(toks: list[str], final: bool) -> dict[str, Any]:
+            nonlocal chunk_index
+            chunk_index += 1
+            chunk_price = len(toks) * session.price_per_token_usd
+            session.total_price_usd += chunk_price
+            receipt = ChunkReceipt(
+                chunk_index=chunk_index,
+                token_count=len(toks),
+                cumulative_tokens=session.total_tokens,
+                price_per_token_usd=session.price_per_token_usd,
+                chunk_price_usd=round(chunk_price, 6),
+                cumulative_price_usd=round(session.total_price_usd, 6),
+                session_id=session.session_id,
+                capability_id=session.capability_id,
+            ).sign(self.signer)
+            session.chunks.append(receipt)
+            payload = {
+                "tokens": list(toks),
+                "chunk_receipt": {
+                    "chunk_index": receipt.chunk_index,
+                    "token_count": receipt.token_count,
+                    "chunk_price_usd": receipt.chunk_price_usd,
+                    "cumulative_price_usd": receipt.cumulative_price_usd,
+                    "signature": receipt.signature,
+                },
+                "cumulative_tokens": session.total_tokens,
+                "cumulative_price_usd": session.total_price_usd,
+                "session_id": session.session_id,
+            }
+            if final:
+                payload["final"] = True
+            return payload
 
-                chunk_tokens.append(token)
-                session.total_tokens += 1
+        async for token in token_generator:
+            # Check cancel before any work to avoid post-cancel billing (EXP-67)
+            if session.cancelled:
+                return
+            if session.total_tokens >= self.MAX_TOKENS_PER_SESSION:
+                session.cancelled = True
+                return
 
-                if len(chunk_tokens) >= session.tokens_per_chunk:
-                    chunk_index += 1
-                    chunk_price = len(chunk_tokens) * session.price_per_token_usd
-                    session.total_price_usd += chunk_price
+            chunk_tokens.append(token)
+            session.total_tokens += 1
 
-                    receipt = ChunkReceipt(
-                        chunk_index=chunk_index,
-                        token_count=len(chunk_tokens),
-                        cumulative_tokens=session.total_tokens,
-                        price_per_token_usd=session.price_per_token_usd,
-                        chunk_price_usd=round(chunk_price, 6),
-                        cumulative_price_usd=round(session.total_price_usd, 6),
-                    ).sign(self.signer)
+            if len(chunk_tokens) >= session.tokens_per_chunk:
+                yield _bill_chunk(chunk_tokens, final=False)
+                chunk_tokens = []
 
-                    session.chunks.append(receipt)
-
-                    yield {
-                        "tokens": list(chunk_tokens),
-                        "chunk_receipt": {
-                            "chunk_index": receipt.chunk_index,
-                            "token_count": receipt.token_count,
-                            "chunk_price_usd": receipt.chunk_price_usd,
-                            "cumulative_price_usd": receipt.cumulative_price_usd,
-                            "signature": receipt.signature,
-                        },
-                        "cumulative_tokens": session.total_tokens,
-                        "cumulative_price_usd": session.cumulative_price_usd,
-                        "session_id": session.session_id,
-                    }
-                    chunk_tokens = []
-
-            # Final partial chunk
-            if chunk_tokens and not session.cancelled:
-                chunk_index += 1
-                chunk_price = len(chunk_tokens) * session.price_per_token_usd
-                session.total_price_usd += chunk_price
-
-                receipt = ChunkReceipt(
-                    chunk_index=chunk_index,
-                    token_count=len(chunk_tokens),
-                    cumulative_tokens=session.total_tokens,
-                    price_per_token_usd=session.price_per_token_usd,
-                    chunk_price_usd=round(chunk_price, 6),
-                    cumulative_price_usd=round(session.total_price_usd, 6),
-                ).sign(self.signer)
-
-                session.chunks.append(receipt)
-
-                yield {
-                    "tokens": list(chunk_tokens),
-                    "chunk_receipt": {
-                        "chunk_index": receipt.chunk_index,
-                        "token_count": receipt.token_count,
-                        "chunk_price_usd": receipt.chunk_price_usd,
-                        "cumulative_price_usd": receipt.cumulative_price_usd,
-                        "signature": receipt.signature,
-                    },
-                    "cumulative_tokens": session.total_tokens,
-                    "cumulative_price_usd": session.cumulative_price_usd,
-                    "session_id": session.session_id,
-                    "final": True,
-                }
-
-        except Exception:
-            # On error, consumer only pays for received chunks
-            pass
+        # Final partial chunk — only if not cancelled
+        if chunk_tokens and not session.cancelled:
+            yield _bill_chunk(chunk_tokens, final=True)
 
     def cancel_session(self, session_id: str) -> dict[str, Any]:
         """Cancel mid-stream — consumer pays only for received tokens."""

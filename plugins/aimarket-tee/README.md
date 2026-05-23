@@ -1,5 +1,24 @@
 # aimarket-tee
 
+## Value in plain words
+
+Runs sensitive AI inside secure hardware so even the server owner cannot read your input. You get a hardware attestation — proof the right code ran in a protected enclave.
+
+**Простыми словами:** Чувствительный AI работает в защищённом железе — даже владелец сервера не видит ваш ввод. Получаете аппаратное подтверждение: нужный код выполнен в изолированной среде.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **TEE-attested execution for AI capabilities. AWS Nitro Enclaves / Intel TDX.**
 Before invoke, the server sends a cryptographic attestation report: "this code runs in an encrypted hardware enclave. I physically cannot see your input." Receipts are signed by the enclave key. Unlocks enterprise, legal, medical, and finance verticals.
 

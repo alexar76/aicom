@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
-import Script from 'next/script';
 import '@/styles/globals.css';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { MarketingShell } from '@/components/MarketingShell';
+import { AiMarketWidgetLoader } from '@/components/AiMarketWidgetLoader';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import { PwaRegister } from '@/components/PwaRegister';
 
@@ -74,22 +74,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark" data-theme-bg="dark">
+      <head>
+        <link rel="stylesheet" href="/themes.css" />
+      </head>
       <body className="cyber-grid min-h-screen min-w-0 overflow-x-hidden antialiased">
         <PwaRegister />
         <GoogleAnalytics />
-        <Script
-          src="/aimarket.js"
-          data-theme="auto"
-          data-intent=""
-          data-budget="3.00"
-          data-hub-url={site}
-          data-affiliate-id="aifactory_storefront"
-          strategy="lazyOnload"
-        />
         <ThemeProvider>
           <Suspense fallback={null}>
             <MarketingShell>
               <div className="relative z-10 min-w-0">{children}</div>
+              <AiMarketWidgetLoader />
             </MarketingShell>
           </Suspense>
         </ThemeProvider>

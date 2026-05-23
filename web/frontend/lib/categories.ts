@@ -11,6 +11,8 @@ export const CATEGORY_LABELS: Record<string, string> = {
   iot: 'IoT',
   security: 'Security',
   productivity: 'Productivity',
+  career: 'Career',
+  desktop: 'Desktop apps',
 };
 
 export const CATEGORY_EMOJIS: Record<string, string> = {
@@ -23,6 +25,8 @@ export const CATEGORY_EMOJIS: Record<string, string> = {
   iot: '📡',
   security: '🔒',
   productivity: '⚡',
+  career: '💼',
+  desktop: '🖥️',
   uncategorized: '📁',
 };
 

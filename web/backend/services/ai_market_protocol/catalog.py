@@ -25,6 +25,7 @@ import time
 from typing import Any
 
 from core.paths import pipeline_json_path
+from core.delivery_profile import DESKTOP_APP, normalize_delivery_profile
 
 from web.backend.services.ai_market_protocol.config import pilot_tuple
 
@@ -216,6 +217,38 @@ def _synthesize_capabilities(pid: str, p: dict[str, Any]) -> list[dict[str, Any]
         add("legal.review@v1", "legal.review", "Review documents for legal and compliance issues", 1.10, 10200, [])
     if re.search(r"fraud|risk|score|analyt", blob):
         add("score.risk@v1", "score.risk", "Score risk signals for the domain workflow", 0.55, 620, [])
+    dp = normalize_delivery_profile(str(p.get("delivery_profile") or ""))
+    if dp == DESKTOP_APP or str(p.get("category") or "").lower() == "desktop" or re.search(
+        r"desktop|electron|tauri|flutter\s*desktop|native\s*client", blob
+    ):
+        caps.append({
+            "capability_id": "desktop.install@v1",
+            "product_id": pid,
+            "name": "desktop.install",
+            "version": "v1",
+            "description": f"Download and install {name} desktop app (macOS / Windows / Linux source bundle)",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "platform": {"type": "string", "enum": ["macos", "windows", "linux", "source"]},
+                },
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "download_url": {"type": "string"},
+                    "product_kind": {"type": "string", "const": "desktop_app"},
+                    "framework": {"type": "string"},
+                    "checksum_sha256": {"type": "string"},
+                },
+            },
+            "price_per_call_usd": 2.50,
+            "p50_latency_ms": 1200,
+            "success_rate_30d": 0.96,
+            "agent": "",
+            "prompt_template": "",
+            "suggested_next": [],
+        })
     return caps
 
 
@@ -238,8 +271,47 @@ def list_capabilities() -> list[dict[str, Any]]:
     return out
 
 
+def list_factory_capabilities(*, exclude_smoke_demos: bool = True) -> list[dict[str, Any]]:
+    """Capabilities from real pipeline products that have generated code on disk.
+
+    Uses the same SQLite/JSON source as the public storefront (not shipped-only JSON).
+    Excludes external hub demo product ids and optional in-repo ``prod-demo-*`` smoke SKUs.
+    """
+    try:
+        from web.backend.api.products import _get_products_map, _product_has_code
+    except Exception:
+        return list_capabilities()
+
+    hub_demo_ids = frozenset({"prod-translate", "prod-legal", "prod-summarize", "prod-code"})
+    out: list[dict[str, Any]] = []
+    for pid, product in _get_products_map().items():
+        if not isinstance(product, dict):
+            continue
+        if pid in hub_demo_ids:
+            continue
+        if exclude_smoke_demos and str(pid).startswith("prod-demo-"):
+            continue
+        if not _product_has_code(pid):
+            continue
+        display = str(product.get("name") or product.get("idea") or pid)[:160]
+        state = str(product.get("state") or "").upper()
+        for cap in _capability_defs_for_product(pid, product):
+            row = dict(cap)
+            desc = str(row.get("description") or "").strip()
+            if desc.upper().startswith("[DEMO]"):
+                desc = desc[6:].strip()
+            row["description"] = desc
+            row["product_display_name"] = display
+            row["pipeline_state"] = state
+            out.append(row)
+    return out
+
+
 def get_capability(product_id: str, capability_id: str) -> dict[str, Any] | None:
     for c in list_capabilities():
+        if c["product_id"] == product_id and c["capability_id"] == capability_id:
+            return c
+    for c in list_factory_capabilities():
         if c["product_id"] == product_id and c["capability_id"] == capability_id:
             return c
     return None

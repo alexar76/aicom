@@ -35,6 +35,14 @@ def client(tmp_path, monkeypatch):
         encoding="utf-8",
     )
     monkeypatch.setenv("AICOM_PIPELINE_JSON", str(pipeline))
+    # Factory catalog requires generated code on disk (not hub demos).
+    code_root = tmp_path / "data" / "code" / "prod-test0001"
+    code_root.mkdir(parents=True, exist_ok=True)
+    (code_root / "index.html").write_text("<html></html>", encoding="utf-8")
+    (code_root / "code_manifest.json").write_text(
+        json.dumps({"files": [{"path": "index.html"}]}),
+        encoding="utf-8",
+    )
     yield TestClient(app)
 
 
@@ -132,6 +140,46 @@ def test_discover_latency_constraint(client):
     for m in matches:
         # None should violate the constraint
         pass  # constraint filtering is best-effort in keyword mode
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# v2 widget compatibility (GET search, POST invoke)
+# ═══════════════════════════════════════════════════════════════════════
+
+def test_v2_search_widget(client):
+    r = client.get(
+        "/ai-market/v2/search",
+        params={"intent": "translate legal", "budget": 10.0, "limit": 6},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body.get("protocol_version") == "v2"
+    assert body.get("catalog") == "factory"
+    assert "matches" in body
+    assert body.get("factory_products_with_code", 0) >= 1
+    assert body["matches"], "factory search should return real pipeline products"
+    for m in body["matches"]:
+        assert "product_id" in m
+        assert "capability_id" in m
+        assert "name" in m
+        assert "trust_score" in m
+        assert m.get("source_hub_name") == "AI-Factory"
+        assert m.get("source_hub") == "local"
+        assert not str(m.get("product_id") or "").startswith("prod-translate")
+        assert "[DEMO]" not in str(m.get("description") or "").upper()
+
+
+def test_v2_invoke_requires_channel(client):
+    r = client.post(
+        "/ai-market/v2/invoke",
+        json={
+            "product_id": "prod-test0001",
+            "capability_id": "translate.multi@v2",
+            "source_hub": "local",
+            "input": {"text": "hello"},
+        },
+    )
+    assert r.status_code == 402
 
 
 # ═══════════════════════════════════════════════════════════════════════

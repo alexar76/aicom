@@ -141,10 +141,11 @@ class Orchestrator:
         for step in plan.steps:
             inp = dict(step.get("draft_input") or {})
             if context:
-                # Replace placeholder with previous result
-                inp_str = json.dumps(inp)
-                inp_str = inp_str.replace("{output_from_previous}", json.dumps(context))
-                inp = json.loads(inp_str)
+                if "output_from_previous" not in inp:
+                    inp["output_from_previous"] = context
+                for key, val in inp.items():
+                    if isinstance(val, str) and "{output_from_previous}" in val:
+                        inp[key] = val.replace("{output_from_previous}", json.dumps(context))
 
             try:
                 result = invoker(

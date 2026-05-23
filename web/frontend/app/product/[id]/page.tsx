@@ -35,6 +35,8 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import api, { Product } from '@/lib/api';
 import { launchSandboxWithProgress } from '@/lib/sandboxLaunch';
 import { SandboxLaunchOverlay } from '@/components/SandboxLaunchOverlay';
+import { detectMarketingLocale } from '@/lib/marketing';
+import { sandboxLaunchLabel } from '@/lib/sandboxLaunchI18n';
 import {
   formatDate,
   formatRelativeTime,
@@ -99,6 +101,7 @@ export default function ProductDetailPage() {
     percent: number;
     label: string;
   } | null>(null);
+  const [storefrontLocale, setStorefrontLocale] = useState<'en' | 'ru' | 'es'>('en');
   const [securityReport, setSecurityReport] = useState<any>(null);
   const [reportLoading, setReportLoading] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -112,6 +115,17 @@ export default function ProductDetailPage() {
   const [journeyVote, setJourneyVote] = useState<'yes' | 'partial' | 'no' | null>(null);
   const [journeyNote, setJourneyNote] = useState('');
   const [journeySending, setJourneySending] = useState(false);
+
+  useEffect(() => {
+    setStorefrontLocale(detectMarketingLocale());
+    const onLocale = () => setStorefrontLocale(detectMarketingLocale());
+    window.addEventListener('marketing-locale-changed', onLocale);
+    window.addEventListener('storage', onLocale);
+    return () => {
+      window.removeEventListener('marketing-locale-changed', onLocale);
+      window.removeEventListener('storage', onLocale);
+    };
+  }, []);
 
   useEffect(() => {
     if (params.id) {
@@ -135,10 +149,13 @@ export default function ProductDetailPage() {
     }).catch(() => {});
   }, [product?.id, product?.state]);
 
+  const isDesktopProduct =
+    product?.delivery_profile === 'desktop_app' || product?.product_kind === 'desktop_app';
+
   const handleStartSandbox = async () => {
     if (!product || sandboxStarting) return;
     setSandboxStarting(true);
-    setSandboxLaunchProgress({ percent: 5, label: 'Запуск…' });
+    setSandboxLaunchProgress({ percent: 5, label: sandboxLaunchLabel(storefrontLocale, 'starting') });
     trackEvent('sandbox_click', {}, product.id);
     void api.recordTelemetryEvent({
       product_id: product.id,
@@ -150,7 +167,7 @@ export default function ProductDetailPage() {
     try {
       const result = await launchSandboxWithProgress(
         product.id,
-        { fromStorefront: true },
+        { fromStorefront: true, locale: storefrontLocale },
         setSandboxLaunchProgress,
       );
       setJourneyPromptOpen(true);
@@ -314,7 +331,7 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen">
-      <SandboxLaunchOverlay open={sandboxStarting} progress={sandboxLaunchProgress} />
+      <SandboxLaunchOverlay open={sandboxStarting} progress={sandboxLaunchProgress} locale={storefrontLocale} />
       {/* Header */}
       <header className="glass border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -348,6 +365,11 @@ export default function ProductDetailPage() {
             {product.delivery_profile === 'full_software' && (
               <Badge variant="success" className="text-xs">
                 Full product
+              </Badge>
+            )}
+            {product.delivery_profile === 'desktop_app' && (
+              <Badge variant="info" className="text-xs">
+                Desktop app
               </Badge>
             )}
           </div>
@@ -932,8 +954,18 @@ export default function ProductDetailPage() {
             onClick={handleStartSandbox}
             disabled={sandboxStarting}
           >
-            {sandboxStarting ? 'Starting...' : 'View in Sandbox'}
+            {sandboxStarting
+              ? 'Starting...'
+              : isDesktopProduct
+                ? 'Preview UI shell'
+                : 'View in Sandbox'}
           </Button>
+          {isDesktopProduct && (
+            <p className="w-full text-xs text-gray-500 -mt-2">
+              Installable build: purchase to download the source bundle
+              {product.desktop_framework ? ` (${product.desktop_framework})` : ''}. macOS / Windows / Linux.
+            </p>
+          )}
           <Button
             variant="secondary"
             icon={reportLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Shield className="w-4 h-4" />}

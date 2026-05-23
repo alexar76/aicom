@@ -125,19 +125,153 @@
   --aimw-font: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/* ── Host: fixed panel (storefront embed) ──────────────────── */
+#aimarket-widget-host {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  z-index: 380;
+  width: min(320px, calc(100vw - 2.5rem));
+  max-height: min(85vh, 640px);
+  overflow: hidden;
+  pointer-events: none;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#aimarket-widget-host.aimw-host-expanded {
+  width: min(420px, calc(100vw - 2.5rem));
+  overflow: auto;
+}
+
 /* ── Shared widget layout ──────────────────────────────────── */
 .aimw-root {
   font-family: var(--aimw-font);
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 10px 12px;
   border-radius: var(--aimw-radius);
   box-shadow: var(--aimw-shadow);
   background: var(--aimw-bg);
   color: var(--aimw-text);
-  transition: all 0.3s ease;
+  transition:
+    padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s ease;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  isolation: isolate;
 }
-.aimw-root * { box-sizing: border-box; }
+.aimw-root.aimw-expanded {
+  padding: 16px 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Compact bar (default) ─────────────────────────────────── */
+.aimw-compact-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.aimw-toggle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 2px solid var(--aimw-border);
+  border-radius: var(--aimw-radius);
+  background: var(--aimw-card-bg);
+  color: var(--aimw-text-dim);
+  cursor: pointer;
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+.aimw-toggle:hover {
+  border-color: var(--aimw-accent);
+  color: var(--aimw-text);
+  background: color-mix(in srgb, var(--aimw-accent) 12%, var(--aimw-card-bg));
+}
+.aimw-root.aimw-expanded .aimw-toggle {
+  transform: rotate(180deg);
+  color: var(--aimw-text);
+}
+
+/* ── Expandable panel (animated) ───────────────────────────── */
+.aimw-expanded-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin-top: 0;
+  transition:
+    grid-template-rows 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.32s ease,
+    margin-top 0.35s ease;
+}
+.aimw-root.aimw-expanded .aimw-expanded-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 12px;
+}
+.aimw-expanded-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.aimw-root.aimw-expanded .aimw-header,
+.aimw-root.aimw-expanded .aimw-subheader,
+.aimw-root.aimw-expanded .aimw-affiliate-tag,
+.aimw-root.aimw-expanded .aimw-budget,
+.aimw-root.aimw-expanded .aimw-footer {
+  animation: aimw-slideIn 0.38s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+.aimw-root.aimw-expanded .aimw-subheader { animation-delay: 0.04s; }
+.aimw-root.aimw-expanded .aimw-affiliate-tag { animation-delay: 0.06s; }
+.aimw-root.aimw-expanded .aimw-budget { animation-delay: 0.08s; }
+.aimw-root.aimw-expanded .aimw-footer { animation-delay: 0.1s; }
+
+@keyframes aimw-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aimw-root,
+  .aimw-expanded-panel,
+  .aimw-toggle,
+  #aimarket-widget-host,
+  .aimw-root.aimw-expanded .aimw-header,
+  .aimw-root.aimw-expanded .aimw-subheader,
+  .aimw-root.aimw-expanded .aimw-affiliate-tag,
+  .aimw-root.aimw-expanded .aimw-budget,
+  .aimw-root.aimw-expanded .aimw-footer {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+.aimw-root *,
+.aimw-root *::before,
+.aimw-root *::after {
+  box-sizing: border-box;
+}
+
+.aimw-root input,
+.aimw-root button {
+  font: inherit;
+  line-height: 1.4;
+  margin: 0;
+  appearance: auto;
+}
 
 .aimw-header {
   font-size: 20px;
@@ -154,15 +288,18 @@
 }
 
 .aimw-search {
+  display: block;
+  flex: 1;
   width: 100%;
-  padding: 12px 16px;
+  min-width: 0;
+  padding: 11px 14px;
   border-radius: var(--aimw-radius);
   border: 2px solid var(--aimw-border);
   background: var(--aimw-card-bg);
   color: var(--aimw-text);
   font-size: 14px;
   font-family: var(--aimw-font);
-  margin-bottom: 12px;
+  margin: 0;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .aimw-search:focus {
@@ -256,13 +393,20 @@
 }
 
 .aimw-budget {
-  margin-bottom: 14px;
-  display: flex;
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto minmax(72px, 1fr) auto;
   gap: 8px;
   align-items: center;
 }
+.aimw-budget span {
+  white-space: nowrap;
+  color: var(--aimw-text-dim);
+  font-size: 13px;
+}
 .aimw-budget input {
-  width: 90px;
+  width: 100%;
+  min-width: 0;
   padding: 8px 10px;
   border-radius: var(--aimw-radius);
   border: 2px solid var(--aimw-border);
@@ -271,6 +415,9 @@
   font-family: var(--aimw-font);
   font-size: 14px;
   text-align: right;
+}
+.aimw-budget .aimw-btn {
+  justify-self: end;
 }
 .aimw-budget input:focus {
   outline: none;
@@ -331,11 +478,35 @@
   text-align: center;
   font-size: 10px;
   color: var(--aimw-accent);
-  margin-bottom: 8px;
+  margin: 0 0 10px;
   padding: 4px 10px;
   background: color-mix(in srgb, var(--aimw-accent) 10%, transparent);
   border-radius: 100px;
-  display: inline-block;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  align-self: center;
+}
+
+#aimw-results,
+#aimw-output {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  #aimarket-widget-host {
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
+    bottom: 5.5rem;
+  }
+  .aimw-budget {
+    grid-template-columns: 1fr;
+  }
+  .aimw-budget .aimw-btn {
+    width: 100%;
+    justify-self: stretch;
+  }
 }
 
 .aimw-spinner {
@@ -349,3 +520,8 @@
 }
 @keyframes aimw-spin { to { transform: rotate(360deg); } }
 @keyframes aimw-fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+#aimw-results,
+#aimw-output {
+  animation: aimw-fadeIn 0.35s ease;
+}

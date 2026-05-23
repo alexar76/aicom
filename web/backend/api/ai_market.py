@@ -33,8 +33,10 @@ router = APIRouter(prefix="/ai-market", tags=["ai-market"])
 commerce = CommerceService()
 
 from web.backend.api.ai_market_protocol_v1 import router as ai_market_v1_router  # noqa: E402
+from web.backend.api.ai_market_protocol_v2 import router as ai_market_v2_router  # noqa: E402
 
 router.include_router(ai_market_v1_router)
+router.include_router(ai_market_v2_router)
 
 
 def _decode_customer(authorization: str | None) -> dict | None:

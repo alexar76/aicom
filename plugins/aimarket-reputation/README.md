@@ -1,5 +1,24 @@
 # aimarket-reputation
 
+## Value in plain words
+
+Shows who you can trust on the marketplace. Providers put money at stake; cheaters lose it. Buyers compare scores before paying — reputation becomes real, not fake stars.
+
+**Простыми словами:** Показывает, кому на маркетплейсе можно доверять. Продавцы ставят залог; мошенники его теряют. Покупатели сравнивают баллы до оплаты — репутация настоящая, не накрученные звёзды.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **Stake-bond + signed outcomes + dispute resolution. On-chain reputation aggregation.**
 Providers lock USDT bond against quality. Every invoke generates a signed outcome. Disputes slash bonds. Reputation is a cryptographically verifiable aggregate — not website reviews.
 

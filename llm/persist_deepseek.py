@@ -201,9 +201,9 @@ def main() -> int:
         reset_circuit=not args.no_reset_circuit,
     )
     if not result.get("ok"):
-        print(f"FAILED: {result.get('error')}")
+        logger.error("FAILED: %s", result.get('error'))
         return 1
-    print(yaml.safe_dump(result, default_flow_style=False))
+    logger.info(yaml.safe_dump(result, default_flow_style=False))
     return 0
 
 

@@ -13,6 +13,20 @@ from aimarket_hub.models import Capability, Peer
 from aimarket_hub.signing import Signer
 
 
+@pytest.fixture(autouse=True)
+def _bypass_url_safety_for_tests(monkeypatch):
+    """Tests use *.example.com which doesn't DNS-resolve; the production
+    _url_is_safe would block all such URLs as unresolvable.
+    Override to accept any non-loopback URL for the duration of the test."""
+    import aimarket_hub.crawler as _c
+    def _safe(url: str) -> bool:
+        if not url or not url.startswith(("http://", "https://")):
+            return False
+        bad = ("localhost", "127.", "0.0.0.0", "[::1]")
+        return not any(b in url.lower() for b in bad)
+    monkeypatch.setattr(_c, "_url_is_safe", _safe)
+
+
 @pytest.fixture
 def db():
     with tempfile.TemporaryDirectory() as tmp:
@@ -108,8 +122,12 @@ class TestCrawler:
         assert stats["indexed"] == 0
 
     @pytest.mark.asyncio
-    async def test_crawl_clears_federated_before_recrawl(self, db, signer, config):
-        """clear_first=True removes old federated capabilities."""
+    async def test_crawl_does_not_clear_atomically_pre_crawl(self, db, signer, config):
+        """clear_first=True is now a no-op (EXP-34 fix). Federated catalog
+        is NOT cleared before crawl — the empty-catalog DoS window is gone.
+        Old federated capabilities remain until they are refreshed or pruned
+        by a dedicated cleanup step.
+        """
         db.upsert_capability(Capability(
             capability_id="old@v1", product_id="old-prod", name="old",
             source_hub="https://old-hub.example.com",
@@ -124,7 +142,8 @@ class TestCrawler:
         with patch.object(crawler, "_crawl_one", side_effect=mock_crawl_one):
             await crawler.crawl(clear_first=True)
 
-        assert db.count_federated() == 0
+        # Old capabilities remain (EXP-34: no pre-crawl clear)
+        assert db.count_federated() >= 1
 
     @pytest.mark.asyncio
     async def test_crawl_peer_recorded(self, db, signer, config):
@@ -147,13 +166,13 @@ class TestCrawler:
 
     @pytest.mark.asyncio
     async def test_routed_price_computation(self, db, signer, config):
-        """Routed prices include the routing fee."""
+        """Routed prices include the routing fee, computed in integer cents."""
         config.routing_fee_bps = 200
 
         crawler = Crawler(config=config, db=db, signer=signer)
-        # Test the routed price formula directly
+        # Integer-cents math: $0.40 + 2% fee = 41 cents = $0.41 (rounded)
         routed = crawler._routed_price(0.40)
-        assert routed == pytest.approx(0.408, abs=0.001)
+        assert routed == pytest.approx(0.41, abs=0.005)
 
     @pytest.mark.asyncio
     async def test_crawl_extracts_peer_urls(self, db, signer, config):

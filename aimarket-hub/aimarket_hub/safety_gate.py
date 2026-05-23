@@ -140,6 +140,19 @@ _HARASSMENT_RES: list[re.Pattern[str]] = [
     re.compile(r"\b(hate\s+speech|racial\s+slur|discriminat)\b", re.I),
 ]
 
+# ── Illegal content ───────────────────────────────────────────
+
+_ILLEGAL_RES: list[re.Pattern[str]] = [
+    re.compile(r"\b(how\s+to\s+make|build|construct|synthesize)\b.*\b(bomb|explosive|weapon|firearm|grenade)\b", re.I),
+    re.compile(r"\b(cook|synthesize|manufactur(e|ing))\b.*\b(meth(amphetamine)?|fentanyl|heroin|cocaine|mdma|lsd)\b", re.I),
+    re.compile(r"\b(child(\s+|-)?(porn|sexual|abuse)|cp\b|csam|loli(con)?)\b", re.I),
+    re.compile(r"\b(human\s+trafficking|slave\s+trade|sell\s+(a\s+)?(person|human|child))\b", re.I),
+    re.compile(r"\b(launder(ing)?\s+money|money\s+launder(ing)?)\b", re.I),
+    re.compile(r"\b(hack(ing)?|break\s+into|exploit)\b.*\b(bank|atm|nuclear|power\s+grid|hospital)\s+(system|network)\b", re.I),
+    re.compile(r"\b(ransomware|botnet|ddos|malware)\s+(code|payload|sample|builder)\b", re.I),
+    re.compile(r"\b(assassinat(e|ion)|hire\s+a\s+hit)\b", re.I),
+]
+
 
 class SafetyGate:
     """Pre-invoke and post-response safety classifier.
@@ -211,6 +224,23 @@ class SafetyGate:
         if not verdict.passed:
             return verdict
 
+        # Check for prompt-injection patterns leaked into output
+        # (jailbroken LLM might echo system prompts or instruction templates)
+        verdict = self._check_injection(text)
+        if not verdict.passed:
+            return verdict
+
+        # Check illegal content in output if configured
+        if "class:illegal" in self.contract.blocked_categories:
+            hits = sum(1 for p in _ILLEGAL_RES if p.search(text))
+            if hits >= 1:
+                return SafetyVerdict(
+                    passed=False,
+                    category="class:illegal",
+                    reason="Response contains illegal content patterns — blocked by provider policy",
+                    blocked_input=text[:200],
+                )
+
         return SafetyVerdict(passed=True)
 
     def build_rejection_receipt(
@@ -252,23 +282,32 @@ class SafetyGate:
     # ── Internal checks ────────────────────────────────────────
 
     @staticmethod
-    def _extract_text(payload: dict[str, Any]) -> str:
-        """Extract all text from a payload for scanning."""
+    def _extract_text(payload: Any) -> str:
+        """Extract all text from a payload for scanning.
+
+        Walks dict keys AND values (EXP-57: attacker hides jailbreaks in keys),
+        converts bytes, ints, floats to strings, and applies NFKC Unicode
+        normalization so fullwidth/Cyrillic homoglyphs don't bypass regex.
+        """
         if isinstance(payload, str):
-            return payload
+            return unicodedata.normalize("NFKC", payload)
+        if isinstance(payload, (bytes, bytearray)):
+            try:
+                return unicodedata.normalize("NFKC", payload.decode("utf-8", errors="replace"))
+            except Exception:
+                return ""
+        if isinstance(payload, (int, float, bool)):
+            return str(payload)
         parts: list[str] = []
-        for v in payload.values():
-            if isinstance(v, str):
-                parts.append(v)
-            elif isinstance(v, dict):
+        if isinstance(payload, dict):
+            for k, v in payload.items():
+                if isinstance(k, str):
+                    parts.append(unicodedata.normalize("NFKC", k))
                 parts.append(SafetyGate._extract_text(v))
-            elif isinstance(v, list):
-                for item in v:
-                    if isinstance(item, str):
-                        parts.append(item)
-                    elif isinstance(item, dict):
-                        parts.append(SafetyGate._extract_text(item))
-        return " ".join(parts)
+        elif isinstance(payload, (list, tuple, set)):
+            for item in payload:
+                parts.append(SafetyGate._extract_text(item))
+        return " ".join(p for p in parts if p)
 
     @staticmethod
     def _check_injection(text: str) -> SafetyVerdict:
@@ -357,6 +396,16 @@ class SafetyGate:
                     passed=False,
                     category="class:children",
                     reason="Input references children's data — blocked by provider policy",
+                    blocked_input=text[:200],
+                )
+
+        if "class:illegal" in blocked:
+            hits = sum(1 for p in _ILLEGAL_RES if p.search(text))
+            if hits >= 1:
+                return SafetyVerdict(
+                    passed=False,
+                    category="class:illegal",
+                    reason="Input matches known patterns for illegal content/activity",
                     blocked_input=text[:200],
                 )
 

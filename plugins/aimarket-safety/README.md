@@ -1,5 +1,24 @@
 # aimarket-safety
 
+## Value in plain words
+
+Stops dangerous or manipulative prompts before they reach any AI provider. If a call is blocked, you get a signed receipt and your money back — the marketplace stays safe for everyone.
+
+**Простыми словами:** Останавливает опасные или манипулятивные промпты до того, как они дойдут до AI. При блокировке — подписанный чек и возврат денег. Маркетплейс остаётся безопасным для всех.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **Pre/post-invoke safety classifier with constitutional contracts.**
 Every request and response passes through safety classifiers. Flagged → atomic abort + refund + signed rejection receipt. Liability shield for both provider and consumer.
 

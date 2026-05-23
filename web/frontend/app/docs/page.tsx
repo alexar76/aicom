@@ -1521,7 +1521,7 @@ export default function DocsPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-8 px-4">
+      <footer className="border-t border-white/5 px-4 pt-8 pb-[var(--storefront-footer-pad)] md:py-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Cpu className="w-5 h-5 text-indigo-400" />

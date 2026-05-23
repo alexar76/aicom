@@ -13,6 +13,7 @@ Verifies the full federation cycle:
 
 from __future__ import annotations
 
+import os
 import tempfile
 from pathlib import Path
 
@@ -25,6 +26,23 @@ from aimarket_hub.database import HubDatabase
 from aimarket_hub.models import Capability, Peer
 from aimarket_hub.safety_gate import SafetyGate, make_constitutional_contract
 from aimarket_hub.signing import Signer
+
+
+ADMIN_TOKEN = "test-admin-token-not-for-production"
+ADMIN_HEADERS = {"Authorization": f"Bearer {ADMIN_TOKEN}"}
+
+
+@pytest.fixture(autouse=True)
+def _set_admin_token(monkeypatch):
+    monkeypatch.setenv("AIMARKET_ADMIN_TOKEN", ADMIN_TOKEN)
+    # Bypass production DNS-resolving URL safety check for test domains
+    import aimarket_hub.crawler as _c
+    def _safe(url: str) -> bool:
+        if not url or not url.startswith(("http://", "https://")):
+            return False
+        bad = ("localhost", "[::1]", "192.168.", "10.", "169.254.")
+        return not any(b in url.lower() for b in bad)
+    monkeypatch.setattr(_c, "_url_is_safe", _safe)
 
 
 def _make_test_app(name: str, port: int, db_path: str, key_path: str, seed_list: list[str] | None = None):
@@ -91,7 +109,7 @@ class TestCrossHubDiscovery:
         client_a, client_b = two_hubs
 
         # Hub A announces itself to Hub B
-        r = client_b.post("/ai-market/v2/federation/announce", json={
+        r = client_b.post("/ai-market/v2/federation/announce", headers=ADMIN_HEADERS, json={
             "hub_url": "http://127.0.0.1:9085",
             "well_known_url": "http://127.0.0.1:9085/.well-known/ai-market.json",
             "capabilities_count": 5,
@@ -111,7 +129,7 @@ class TestCrossHubDiscovery:
         client_a, client_b = two_hubs
 
         # Hub B announces itself to Hub A
-        r = client_a.post("/ai-market/v2/federation/announce", json={
+        r = client_a.post("/ai-market/v2/federation/announce", headers=ADMIN_HEADERS, json={
             "hub_url": "http://127.0.0.1:9086",
             "well_known_url": "http://127.0.0.1:9086/.well-known/ai-market.json",
             "capabilities_count": 3,
@@ -132,7 +150,7 @@ class TestCrossHubInvoke:
         client_a, client_b = two_hubs
 
         # First, establish the peer relationship
-        client_a.post("/ai-market/v2/federation/announce", json={
+        client_a.post("/ai-market/v2/federation/announce", headers=ADMIN_HEADERS, json={
             "hub_url": "http://127.0.0.1:9086",
             "well_known_url": "http://127.0.0.1:9086/.well-known/ai-market.json",
             "capabilities_count": 3,
@@ -153,10 +171,10 @@ class TestCrossHubInvoke:
     def test_local_invoke_still_works_with_peers(self, two_hubs):
         client_a, client_b = two_hubs
 
-        # Even with peers, local invoke should work
+        # Even with peers, local invoke should work — use a seeded capability
         r = client_a.post("/ai-market/v2/invoke", json={
-            "product_id": "prod-test",
-            "capability_id": "test.local@v1",
+            "product_id": "prod-summarize",
+            "capability_id": "summarize@v1",
             "source_hub": "local",
             "input": {"text": "test"},
         })
@@ -185,7 +203,7 @@ class TestCrossHubCatalog:
         assert len(wk_before.json()["peers"]) == 0
 
         # Announce Hub B to A
-        client_a.post("/ai-market/v2/federation/announce", json={
+        client_a.post("/ai-market/v2/federation/announce", headers=ADMIN_HEADERS, json={
             "hub_url": "http://127.0.0.1:9086",
             "well_known_url": "http://127.0.0.1:9086/.well-known/ai-market.json",
             "capabilities_count": 3,
@@ -220,10 +238,10 @@ class TestCrossHubSafetyGate:
     def test_clean_invoke_passes_on_both_hubs(self, two_hubs):
         client_a, client_b = two_hubs
 
-        # Local invoke on A
+        # Local invoke on A — use seeded capability
         r = client_a.post("/ai-market/v2/invoke", json={
-            "product_id": "prod-clean",
-            "capability_id": "clean@v1",
+            "product_id": "prod-translate",
+            "capability_id": "translate.multi@v2",
             "source_hub": "local",
             "input": {"text": "translate to French"},
         })
@@ -232,8 +250,8 @@ class TestCrossHubSafetyGate:
 
         # Local invoke on B
         r = client_b.post("/ai-market/v2/invoke", json={
-            "product_id": "prod-clean",
-            "capability_id": "clean@v1",
+            "product_id": "prod-summarize",
+            "capability_id": "summarize@v1",
             "source_hub": "local",
             "input": {"text": "summarize this article"},
         })
@@ -262,27 +280,63 @@ class TestCrossHubReputation:
     """Reputation events flow between hubs."""
 
     def test_submit_reputation_for_peer(self, two_hubs):
-        client_a, client_b = two_hubs
+        """Reputation events now require signature from a peer registered with pubkey."""
+        from aimarket_hub.signing import Signer
 
-        # Submit a reputation event about Hub B
-        r = client_a.post("/ai-market/v2/reputation/events", json={
-            "events": [{
-                "type": "invocation_success",
-                "provider_hub": "http://127.0.0.1:9086",
-                "capability_id": "legal.review@v1",
-                "price_usd": 1.20,
-                "latency_ms": 11400,
-                "consumer_hub": "http://127.0.0.1:9085",
-            }]
-        })
+        client_a, client_b = two_hubs
+        consumer_url = "http://127.0.0.1:9085"
+        consumer_signer = Signer(key_path="/tmp/test_consumer_key")
+
+        # 1) Register consumer as a peer of hub A with its pubkey
+        r = client_a.post(
+            "/ai-market/v2/federation/announce",
+            headers=ADMIN_HEADERS,
+            json={
+                "hub_url": consumer_url,
+                "well_known_url": f"{consumer_url}/.well-known/ai-market.json",
+                "capabilities_count": 0,
+                "signer_public_key": consumer_signer.public_key_b64,
+            },
+        )
+        assert r.status_code == 200
+
+        # 2) Sign the reputation event
+        event = {
+            "type": "invocation_success",
+            "provider_hub": "http://127.0.0.1:9086",
+            "capability_id": "legal.review@v1",
+            "price_usd": 1.20,
+            "latency_ms": 11400,
+            "consumer_hub": consumer_url,
+            "timestamp": "2026-05-23T12:00:00Z",
+        }
+        canonical = (
+            f"type:{event['type']}"
+            f"|provider_hub:{event['provider_hub']}"
+            f"|timestamp:{event['timestamp']}"
+            f"|price_usd:{event['price_usd']}"
+            f"|latency_ms:{event['latency_ms']}"
+        )
+        event["signature"] = {"value": consumer_signer.sign_canonical(canonical)}
+
+        # 3) Submit
+        r = client_a.post("/ai-market/v2/reputation/events", json={"events": [event]})
         assert r.status_code == 200
         assert r.json()["received"] == 1
 
-        # Check reputation for Hub B
-        r = client_a.get("/ai-market/v2/reputation/http://127.0.0.1:9086")
+    def test_reputation_rejects_unsigned_events(self, two_hubs):
+        """Unsigned events must be rejected (EXP-2)."""
+        client_a, _ = two_hubs
+        r = client_a.post("/ai-market/v2/reputation/events", json={
+            "events": [{
+                "type": "failure",
+                "provider_hub": "http://attacker.example.com",
+                "consumer_hub": "http://x.example.com",
+            }]
+        })
         assert r.status_code == 200
-        data = r.json()
-        assert "trust_score" in data
+        assert r.json()["received"] == 0
+        assert r.json()["rejected"] == 1
 
 
 class TestCrossHubStats:
@@ -291,13 +345,19 @@ class TestCrossHubStats:
     def test_stats_track_invocations(self, two_hubs):
         client_a, _ = two_hubs
 
-        # Do some invocations
-        for i in range(3):
+        # Do some invocations against seeded capabilities (404 for unknown caps now)
+        seeded = [
+            ("prod-translate", "translate.multi@v2"),
+            ("prod-legal", "legal.review@v1"),
+            ("prod-summarize", "summarize@v1"),
+        ]
+        for product_id, capability_id in seeded:
             client_a.post("/ai-market/v2/invoke", json={
-                "product_id": f"prod-{i}",
-                "capability_id": f"cap{i}@v1",
+                "product_id": product_id,
+                "capability_id": capability_id,
                 "source_hub": "local",
-                "input": {"text": f"test {i}"},
+                "input": {"text": "harmless test"} if capability_id != "legal.review@v1"
+                         else {"documents": {"contract": "..."}},
             })
 
         # Check stats
@@ -322,3 +382,21 @@ class TestWidgetServing:
         client_a, _ = two_hubs
         r = client_a.get("/widget/demo")
         assert r.status_code in (200, 404)
+
+    def test_plugins_demo_page_loads(self, two_hubs):
+        client_a, _ = two_hubs
+        r = client_a.get("/plugins/demo")
+        assert r.status_code in (200, 404)
+        if r.status_code == 200:
+            assert "Plugin Demo" in r.text
+
+    def test_plugin_routes_mounted_under_v2_prefix(self, two_hubs):
+        """Plugin HTTP routes must live under /ai-market/v2/p/{name}/…"""
+        client_a, _ = two_hubs
+        plugins = client_a.get("/ai-market/v2/plugins").json().get("plugins", [])
+        promo = next((p for p in plugins if p.get("name") == "aimarket-promo"), None)
+        if not promo:
+            pytest.skip("aimarket-promo not loaded in test hub")
+        r = client_a.get("/ai-market/v2/p/aimarket-promo/promo/stats")
+        assert r.status_code == 200, r.text
+        assert client_a.get("/p/aimarket-promo/promo/stats").status_code == 404

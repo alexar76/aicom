@@ -1,0 +1,10 @@
+name: aicom_platform_init
+description: Conditional sqflite FFI bootstrap for AI-Factory desktop apps.
+publish_to: none
+
+environment:
+  sdk: ^3.2.0
+
+dependencies:
+  sqflite_common_ffi: ^2.3.5
+  sqflite: ^2.4.2

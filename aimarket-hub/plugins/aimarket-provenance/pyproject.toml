@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-provenance"
+version = "1.0.0"
+description = "AI Provenance Layer — cryptographic receipts for AI outputs with verifiable origin"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.11"
+dependencies = [
+    "aimarket-hub>=3.0",
+    "pydantic>=2.10",
+]
+
+[project.entry-points."aimarket.plugins"]
+provenance = "aimarket_provenance.plugin:ProvenancePlugin"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_provenance*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

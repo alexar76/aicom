@@ -231,6 +231,22 @@ def _register_gallery_entry(product_id: str, base_url: str, media: str | None = 
     idx_path.write_text(json.dumps(idx, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
+def _clip_path(clip: str) -> Path:
+    name = Path(str(clip or "")).name
+    return RECORDINGS_DIR / name
+
+
+def _entry_has_playable_clip(entry: dict) -> bool:
+    clip = str(entry.get("clip") or "")
+    if not (clip.endswith(".webm") or clip.endswith(".mp4")):
+        return bool(clip)
+    path = _clip_path(clip)
+    try:
+        return path.is_file() and path.stat().st_size > 1024
+    except OSError:
+        return False
+
+
 def list_showcase_gallery() -> dict:
     idx_path = _index_path()
     if not idx_path.is_file():
@@ -240,7 +256,11 @@ def list_showcase_gallery() -> dict:
     except json.JSONDecodeError:
         return {"entries": [], "count": 0}
     entries = idx.get("entries") if isinstance(idx.get("entries"), list) else []
-    return {"entries": entries, "count": len(entries)}
+    playable = [e for e in entries if isinstance(e, dict) and _entry_has_playable_clip(e)]
+    if len(playable) != len(entries):
+        idx["entries"] = playable
+        idx_path.write_text(json.dumps(idx, indent=2, ensure_ascii=False), encoding="utf-8")
+    return {"entries": playable, "count": len(playable)}
 
 
 def maybe_enqueue_on_deploy(product_id: str, new_state: str) -> None:

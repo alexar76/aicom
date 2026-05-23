@@ -1,5 +1,24 @@
 # aimarket-zk
 
+## Value in plain words
+
+Prove an AI ran correctly on secret input without revealing the input — for M&A, legal, and regulated workflows where showing the document is not an option.
+
+**Простыми словами:** Доказываете, что AI корректно обработал секретный ввод, не раскрывая его — для M&A, права и регулируемых процессов, где показать документ нельзя.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **Zero-knowledge proofs for private AI capability invocation.**
 Consumer proves "I sent valid input matching the schema" without revealing the input. Provider proves "I executed correctly" without revealing model weights or computation trace. Neither party sees the other's private data.
 

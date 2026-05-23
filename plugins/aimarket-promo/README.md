@@ -1,5 +1,24 @@
 # aimarket-promo
 
+## Value in plain words
+
+Time-limited signed discounts fill idle AI capacity — like happy hour for GPU slots. Providers move spare compute; buyers catch real deals.
+
+**Простыми словами:** Подписанные скидки на время заполняют простаивающую мощность AI — «happy hour» для GPU. Продавцы загружают простой; покупатели ловят настоящие акции.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **Time-locked discount offers signed by providers. Yield Management for AI.**
 Provider signs "50% off for queries in the next 2 hours." Crawler agents auto-discover promos. Consumers auto-apply the best available discount at invoke time. Providers pop demand when they have spare capacity.
 

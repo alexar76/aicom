@@ -35,43 +35,24 @@ def import_factory_products(
 ) -> int:
     """Import AI-Factory shipped products into the hub as local capabilities.
 
-    Reads the factory's pipeline.json, extracts COMPLETED/DEPLOYED_PRODUCTION
-    products, and indexes them as local capabilities in the hub database.
+    Reads COMPLETED/DEPLOYED products from SQLite (when available) and
+    pipeline.json, then indexes capabilities in the hub database.
 
     Returns the number of capabilities imported.
     """
-    import json
-    from pathlib import Path
+    from aimarket_hub.factory_products_loader import iter_shipped_factory_products
 
     try:
-        from core.paths import pipeline_json_path as _factory_pipeline_path
+        products = iter_shipped_factory_products(pipeline_json_path)
     except ImportError:
-        # Standalone hub without factory — no products to import
         return 0
 
-    path = Path(pipeline_json_path) if pipeline_json_path else _factory_pipeline_path()
-    if not path.exists():
-        return 0
-
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return 0
-
-    products = data.get("products") if isinstance(data, dict) else {}
-    if not isinstance(products, dict):
+    if not products:
         return 0
 
     count = 0
     for pid, pdata in products.items():
-        state = str((pdata or {}).get("state") or "").upper()
-        if state not in {"COMPLETED", "DEPLOYED_PRODUCTION"}:
-            continue
-
-        # Use the catalog synthesis logic from the existing AI-Factory
-        from web.backend.services.ai_market_protocol.catalog import _capability_defs_for_product
-
-        caps = _capability_defs_for_product(pid, pdata or {})
+        caps = _capability_rows_for_product(pid, pdata or {})
         for cap in caps:
             db.upsert_capability(Capability(
                 capability_id=cap["capability_id"],
@@ -92,6 +73,34 @@ def import_factory_products(
             count += 1
 
     return count
+
+
+def _capability_rows_for_product(pid: str, pdata: dict[str, Any]) -> list[dict[str, Any]]:
+    """Factory catalog synthesis when available; hub heuristics as fallback."""
+    try:
+        from web.backend.services.ai_market_protocol.catalog import _capability_defs_for_product
+
+        return _capability_defs_for_product(pid, pdata)
+    except Exception:
+        from aimarket_hub.auto_listing import _generate_capabilities
+
+        rows: list[dict[str, Any]] = []
+        for cap in _generate_capabilities(pid, pdata):
+            rows.append({
+                "capability_id": cap.capability_id,
+                "product_id": cap.product_id,
+                "name": cap.name,
+                "version": cap.version,
+                "description": cap.description,
+                "input_schema": cap.input_schema,
+                "output_schema": cap.output_schema,
+                "price_per_call_usd": cap.price_per_call_usd,
+                "p50_latency_ms": cap.p50_latency_ms,
+                "success_rate_30d": cap.success_rate_30d,
+                "agent": "",
+                "prompt_template": "",
+            })
+        return rows
 
 
 def export_hub_catalog_for_storefront(

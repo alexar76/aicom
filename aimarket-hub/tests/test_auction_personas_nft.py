@@ -114,9 +114,16 @@ class TestNFTRegistry:
         assert nft.price_per_call_usd == 0.40
 
     def test_transfer_nft(self):
+        from aimarket_hub.signing import Signer
         registry = NFTRegistry()
+        # Owner has a signing key registered
+        alice_signer = Signer(key_path="/tmp/test_alice_key")
+        registry.register_owner_pubkey("0xAlice", alice_signer.public_key_b64)
+
         nft = registry.mint("cap@v1", "p1", 100, 0.40, "0xAlice")
-        result = registry.transfer(nft.token_id, "0xAlice", "0xBob")
+        canonical = f"transfer:{nft.token_id}:0xAlice:0xBob:0"
+        sig = alice_signer.sign_canonical(canonical)
+        result = registry.transfer(nft.token_id, "0xAlice", "0xBob", sig)
         assert result["transferred"]
         assert nft.owner_address == "0xBob"
         assert nft.transfer_count == 1
@@ -124,7 +131,15 @@ class TestNFTRegistry:
     def test_transfer_not_owner_fails(self):
         registry = NFTRegistry()
         nft = registry.mint("cap@v1", "p1", 100, 0.40, "0xAlice")
-        result = registry.transfer(nft.token_id, "0xEve", "0xBob")
+        result = registry.transfer(nft.token_id, "0xEve", "0xBob", "any-sig")
+        assert "error" in result
+
+    def test_transfer_without_signature_fails(self):
+        """Transfer requires signature from owner's pubkey."""
+        registry = NFTRegistry()
+        nft = registry.mint("cap@v1", "p1", 100, 0.40, "0xAlice")
+        result = registry.transfer(nft.token_id, "0xAlice", "0xBob")
+        # Owner pubkey not registered → must error
         assert "error" in result
 
     def test_consume_call(self):
@@ -144,10 +159,22 @@ class TestNFTRegistry:
         assert "error" in result
 
     def test_gift(self):
+        from aimarket_hub.signing import Signer
         registry = NFTRegistry()
-        nft = registry.gift("cap@v1", "p1", 50, 0.40, "0xAlice", "0xBob")
-        assert nft.owner_address == "0xBob"
-        assert nft.remaining_calls == 50
+        alice_signer = Signer(key_path="/tmp/test_alice_gift_key")
+        registry.register_owner_pubkey("0xAlice", alice_signer.public_key_b64)
+
+        # First we mint to know the token_id for signing canonical
+        # gift() handles mint + transfer atomically — we need a way to sign first.
+        # Compute canonical for a known token_id pattern (transfer_count=0).
+        # Simpler: do the mint manually, then call transfer with proper signature.
+        nft_pre = registry.mint("cap@v1", "p1", 50, 0.40, "0xAlice")
+        canonical = NFTRegistry.compute_gift_canonical(nft_pre.token_id, "0xAlice", "0xBob")
+        sig = alice_signer.sign_canonical(canonical)
+        result = registry.transfer(nft_pre.token_id, "0xAlice", "0xBob", sig)
+        assert result["transferred"]
+        assert nft_pre.owner_address == "0xBob"
+        assert nft_pre.remaining_calls == 50
 
     def test_get_owned(self):
         registry = NFTRegistry()

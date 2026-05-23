@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugin Demo — modelmarket.dev</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+         background: #0a0e17; color: #e5e7eb; padding: 40px 20px; min-height: 100vh; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .back { margin-bottom: 20px; } .back a { color: #6c5ce7; text-decoration: none; font-weight: 600; }
+  h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px; } h1 span { color: #6c5ce7; }
+  .subtitle { color: #6b7280; margin-bottom: 28px; line-height: 1.6; max-width: 720px; }
+  .subtitle a { color: #6c5ce7; font-weight: 600; text-decoration: none; }
+  .subtitle a:hover { text-decoration: underline; }
+  .stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  .stat { background: #111827; border: 1px solid #1f2937; border-radius: 10px; padding: 14px 20px; min-width: 140px; }
+  .stat .n { font-size: 28px; font-weight: 800; color: #6c5ce7; }
+  .stat .l { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+  .card { background: #111827; border: 1px solid #1f2937; border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .card h3 { font-size: 15px; font-weight: 700; }
+  .cat { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
+  .card p { font-size: 12px; color: #9ca3af; line-height: 1.5; flex: 1; }
+  .card code { font-size: 11px; color: #6c5ce7; background: #1a1a2e; padding: 2px 6px; border-radius: 4px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .btn { font-size: 12px; font-weight: 600; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;
+         background: #6c5ce7; color: #fff; text-decoration: none; display: inline-block; }
+  .btn:hover { background: #7c6ef7; }
+  .btn-outline { background: transparent; border: 1px solid #374151; color: #9ca3af; }
+  .btn-outline:hover { border-color: #6c5ce7; color: #e5e7eb; }
+  .out { margin-top: 8px; background: #0d1117; border: 1px solid #1f2937; border-radius: 6px;
+         padding: 10px; font-size: 11px; max-height: 160px; overflow: auto; display: none;
+         white-space: pre-wrap; word-break: break-word; color: #a5b4fc; }
+  .out.show { display: block; }
+  .err { color: #f87171; }
+  .loading { color: #6b7280; padding: 40px; text-align: center; }
+  .nav-links { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+  .nav-links a { font-size: 13px; color: #9ca3af; text-decoration: none; padding: 6px 12px;
+                 border: 1px solid #1f2937; border-radius: 8px; }
+  .nav-links a:hover { border-color: #6c5ce7; color: #e5e7eb; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="back"><a href="/examples">← Integration Examples</a> · <a href="/">modelmarket.dev</a></div>
+  <h1><span>Plugin</span> Demo</h1>
+  <p class="subtitle">
+    Live playground for all hub plugins — loaded from <code>/ai-market/v2/plugins</code>.
+    Try routes under <code>/ai-market/v2/p/{plugin}/…</code>. Also see
+    <a href="/widget/demo">Widget demo</a> and <a href="/examples">integration guide</a>.
+  </p>
+  <div class="nav-links">
+    <a href="/ai-market/v2/plugins" target="_blank" rel="noopener">Plugin catalog (JSON)</a>
+    <a href="/widget/demo">Widget demo</a>
+    <a href="/live">Live economy</a>
+    <a href="/.well-known/ai-market.json" target="_blank" rel="noopener">Discovery</a>
+  </div>
+  <div class="stats" id="stats" style="display:none">
+    <div class="stat"><div class="n" id="stat-count">—</div><div class="l">Loaded plugins</div></div>
+    <div class="stat"><div class="n" id="stat-live">—</div><div class="l">With live routes</div></div>
+  </div>
+  <div id="grid" class="loading">Loading plugins from hub…</div>
+</div>
+<script>
+var DEMO = {
+  "aimarket-safety": [
+    { method: "GET", path: "/ai-market/v2/p/aimarket-safety/safety/constitutional", label: "Constitutional contracts" }
+  ],
+  "aimarket-personas": [
+    { method: "GET", path: "/ai-market/v2/p/aimarket-personas/personas/names", label: "Persona names" },
+    { method: "POST", path: "/ai-market/v2/p/aimarket-personas/personas/generate", label: "Generate persona",
+      body: { capability_id: "translate@v1", product_id: "demo-prod", description: "Multilingual translator" } }
+  ],
+  "aimarket-zk": [
+    { method: "GET", path: "/ai-market/v2/p/aimarket-zk/zk/stats", label: "ZK stats" },
+    { method: "POST", path: "/ai-market/v2/p/aimarket-zk/zk/prove-input", label: "Prove input",
+      body: { capability_id: "cap@v1", input_schema: { type: "object" }, input_payload: { text: "hello" } } }
+  ],
+  "aimarket-promo": [
+    { method: "GET", path: "/ai-market/v2/p/aimarket-promo/promo/active", label: "Active promos" },
+    { method: "GET", path: "/ai-market/v2/p/aimarket-promo/promo/stats", label: "Promo stats" }
+  ],
+  "aimarket-nft": [
+    { method: "GET", path: "/ai-market/v2/p/aimarket-nft/nft/stats", label: "NFT stats" }
+  ],
+  "aimarket-orchestrator": [
+    { method: "POST", path: "/ai-market/v2/p/aimarket-orchestrator/orchestrator/plan", label: "Plan task",
+      body: { task: "translate + legal review", budget_usd: 3.0 } }
+  ],
+  "aimarket-mcp-packager": [
+    { method: "POST", path: "/ai-market/v2/p/aimarket-mcp-packager/mcp/package", label: "Package MCP",
+      body: { capability_id: "cap@v1", product_id: "demo", name: "Lyra", description: "Translator", input_schema: {} } }
+  ]
+};
+
+function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+async function tryRoute(btn, demo) {
+  var out = btn.closest(".card").querySelector(".out");
+  out.classList.add("show");
+  out.textContent = "Loading…";
+  out.classList.remove("err");
+  try {
+    var opts = { method: demo.method, headers: { "Accept": "application/json" } };
+    if (demo.body) {
+      opts.headers["Content-Type"] = "application/json";
+      opts.body = JSON.stringify(demo.body);
+    }
+    var r = await fetch(demo.path, opts);
+    var text = await r.text();
+    var pretty = text;
+    try { pretty = JSON.stringify(JSON.parse(text), null, 2); } catch (e) {}
+    out.textContent = r.status + " " + r.statusText + "\n\n" + pretty;
+    if (!r.ok) out.classList.add("err");
+  } catch (e) {
+    out.textContent = "Error: " + e.message;
+    out.classList.add("err");
+  }
+}
+
+function render(plugins) {
+  var live = 0;
+  var html = '<div class="grid">';
+  plugins.forEach(function (p) {
+    var name = p.name || p.id || "unknown";
+    var demos = DEMO[name] || [];
+    if (demos.length) live++;
+    html += '<div class="card">';
+    html += '<h3>' + esc(name) + '</h3>';
+    html += '<div class="cat">' + esc(p.category || "plugin") + ' · v' + esc(p.version || "?") + '</div>';
+    html += '<p>' + esc(p.description || "") + '</p>';
+    html += '<code>pip install ' + esc(name) + '</code>';
+    html += '<div class="actions">';
+    if (demos.length) {
+      demos.forEach(function (d, i) {
+        html += '<button type="button" class="btn" data-plugin="' + esc(name) + '" data-idx="' + i + '">' + esc(d.label) + '</button>';
+      });
+    } else {
+      html += '<span class="btn btn-outline" style="cursor:default;opacity:.7">Invoke hooks only</span>';
+    }
+    html += '<a class="btn btn-outline" href="/ai-market/v2/plugins/' + encodeURIComponent(name) + '" target="_blank" rel="noopener">JSON</a>';
+    html += '</div><pre class="out"></pre></div>';
+  });
+  html += '</div>';
+  document.getElementById("grid").innerHTML = html;
+  document.getElementById("stat-count").textContent = plugins.length;
+  document.getElementById("stat-live").textContent = live;
+  document.getElementById("stats").style.display = "flex";
+  document.querySelectorAll(".card .btn[data-plugin]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var demos = DEMO[btn.getAttribute("data-plugin")];
+      var idx = parseInt(btn.getAttribute("data-idx"), 10);
+      if (demos && demos[idx]) tryRoute(btn, demos[idx]);
+    });
+  });
+}
+
+fetch("/ai-market/v2/plugins")
+  .then(function (r) { return r.json(); })
+  .then(function (data) {
+    var list = data.plugins || [];
+    if (!list.length) {
+      document.getElementById("grid").innerHTML = '<p class="loading">No plugins loaded. Install via pip and restart the hub.</p>';
+      return;
+    }
+    render(list);
+  })
+  .catch(function (e) {
+    document.getElementById("grid").innerHTML = '<p class="loading err">Failed to load plugins: ' + esc(e.message) + '</p>';
+  });
+</script>
+</body>
+</html>

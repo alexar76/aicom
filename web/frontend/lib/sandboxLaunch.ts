@@ -1,8 +1,18 @@
 import api from '@/lib/api';
+import {
+  normalizeSandboxLaunchLocale,
+  sandboxLaunchLabel,
+  type SandboxLaunchLocale,
+} from '@/lib/sandboxLaunchI18n';
 
 export type SandboxLaunchProgress = {
   percent: number;
   label: string;
+};
+
+export type SandboxLaunchOptions = {
+  fromStorefront?: boolean;
+  locale?: SandboxLaunchLocale | string | null;
 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -12,23 +22,26 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
  */
 export async function launchSandboxWithProgress(
   productId: string,
-  options: { fromStorefront?: boolean } | undefined,
+  options: SandboxLaunchOptions | undefined,
   onProgress: (p: SandboxLaunchProgress) => void,
 ): Promise<{ sandbox_id: string; url: string }> {
-  onProgress({ percent: 8, label: 'Запуск песочницы…' });
+  const locale = normalizeSandboxLaunchLocale(options?.locale);
+  const L = (key: Parameters<typeof sandboxLaunchLabel>[1]) => sandboxLaunchLabel(locale, key);
+
+  onProgress({ percent: 8, label: L('startingSandbox') });
   const result = await api.startSandbox(productId, options);
   const sandboxId = result.sandbox_id;
   const viewUrl = result.url?.startsWith('http')
     ? result.url
     : `${typeof window !== 'undefined' ? window.location.origin : ''}${result.url || `/api/sandbox/view/${sandboxId}`}`;
 
-  onProgress({ percent: 35, label: 'Подготовка кода продукта…' });
+  onProgress({ percent: 35, label: L('preparingCode') });
   let ready = false;
   for (let attempt = 0; attempt < 24; attempt++) {
     const pct = Math.min(35 + attempt * 2, 92);
     onProgress({
       percent: pct,
-      label: attempt < 4 ? 'Сборка превью…' : 'Загрузка лендинга…',
+      label: attempt < 4 ? L('buildingPreview') : L('loadingLanding'),
     });
     try {
       const status = await api.sandboxReady(sandboxId);
@@ -54,7 +67,7 @@ export async function launchSandboxWithProgress(
     await sleep(attempt < 3 ? 400 : 700);
   }
 
-  onProgress({ percent: ready ? 100 : 96, label: ready ? 'Готово' : 'Открываем превью…' });
+  onProgress({ percent: ready ? 100 : 96, label: ready ? L('done') : L('openingPreview') });
   await sleep(ready ? 120 : 0);
   return { sandbox_id: sandboxId, url: viewUrl };
 }

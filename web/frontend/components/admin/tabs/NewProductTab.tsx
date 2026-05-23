@@ -96,9 +96,19 @@ const QUICK_PRESET_I18N: Record<
   saas: { labelKey: 'newProduct.preset.b2b.label', shortKey: 'newProduct.preset.b2b.short' },
   landing: { labelKey: 'newProduct.preset.landing.label', shortKey: 'newProduct.preset.landing.short' },
   internal: { labelKey: 'newProduct.preset.internal.label', shortKey: 'newProduct.preset.internal.short' },
+  desktop: { labelKey: 'newProduct.preset.desktop.label', shortKey: 'newProduct.preset.desktop.short' },
 };
 
 const QUICK_PRESETS = [
+  {
+    id: 'desktop',
+    idea:
+      'Tauri desktop app for local-first contract review: drag-drop PDF/DOCX, offline clause highlighting, jurisdiction rule packs, optional AI Market capability hooks. macOS / Windows / Linux.',
+    deliveryChoice: 'desktop_app' as const,
+    mode: 'prototype' as const,
+    instructions:
+      'Tauri v2 + Rust backend commands. WebView UI in ui/. Local SQLite for session state. No cloud upload of document text. README with cargo tauri dev/build.',
+  },
   {
     id: 'saas',
     idea:
@@ -135,9 +145,10 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
   const [step, setStep] = useState(1);
   const [idea, setIdea] = useState('');
   const [instructions, setInstructions] = useState('');
-  const [deliveryChoice, setDeliveryChoice] = useState<'full_software' | 'marketing_landing' | 'infer'>(
-    'full_software',
-  );
+  const [deliveryChoice, setDeliveryChoice] = useState<
+    'full_software' | 'marketing_landing' | 'desktop_app' | 'infer'
+  >('full_software');
+  const [categoryChoice, setCategoryChoice] = useState<string>('saas');
   const [mode, setMode] = useState<'prototype' | 'production'>('prototype');
   const [contentLocale, setContentLocale] = useState<ContentLocaleChoice>('auto');
   const [submitting, setSubmitting] = useState(false);
@@ -228,6 +239,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
   const applyQuickPreset = (p: (typeof QUICK_PRESETS)[number]) => {
     setIdea(p.idea);
     setDeliveryChoice(p.deliveryChoice);
+    setCategoryChoice(p.id === 'desktop' ? 'desktop' : p.id === 'landing' ? 'landings' : 'saas');
     setMode(p.mode);
     setInstructions(p.instructions);
     setStep(2);
@@ -245,7 +257,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
 
   const applyCloudTemplate = (t: (typeof cloudTemplates)[0]) => {
     const dp = t.delivery_profile;
-    if (dp === 'marketing_landing' || dp === 'full_software' || dp === 'infer') {
+    if (dp === 'marketing_landing' || dp === 'full_software' || dp === 'desktop_app' || dp === 'infer') {
       setDeliveryChoice(dp);
     } else {
       setDeliveryChoice('infer');
@@ -291,9 +303,10 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
     try {
       const r = await api.prefillProductFromIdea({ idea: idea.trim(), consent: true });
       const dp = r.delivery_profile;
-      if (dp === 'marketing_landing' || dp === 'full_software' || dp === 'infer') {
+      if (dp === 'marketing_landing' || dp === 'full_software' || dp === 'desktop_app' || dp === 'infer') {
         setDeliveryChoice(dp);
       }
+      if (dp === 'desktop_app') setCategoryChoice('desktop');
       setMode(r.production_mode ? 'production' : 'prototype');
       if (r.instructions) setInstructions(r.instructions);
       toast.success(`AI suggestion applied (${r.source})${r.rationale ? ` — ${r.rationale}` : ''}`);
@@ -334,6 +347,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
         interface_locale: locale,
         content_locale: contentLocale,
         ...(deliveryChoice !== 'infer' ? { delivery_profile: deliveryChoice } : {}),
+        ...(categoryChoice ? { category: categoryChoice } : {}),
       });
       const pid = typeof data.product_id === 'string' ? data.product_id : null;
       setCreatedId(pid);
@@ -522,6 +536,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                           variant="secondary"
                           onClick={() => {
                             setDeliveryChoice(hint.suggestedDelivery!);
+                            if (hint.suggestedCategory) setCategoryChoice(hint.suggestedCategory);
                             setDismissedHint(true);
                             toast.success(t(locale, 'newProduct.suggestionApplied'));
                           }}
@@ -530,7 +545,9 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                             label:
                               hint.suggestedDelivery === 'marketing_landing'
                                 ? t(locale, 'newProduct.applyLanding')
-                                : t(locale, 'newProduct.applyFull'),
+                                : hint.suggestedDelivery === 'desktop_app'
+                                  ? t(locale, 'newProduct.delivery.desktop')
+                                  : t(locale, 'newProduct.applyFull'),
                           })}
                         </Button>
                         <Button type="button" size="sm" variant="ghost" onClick={() => setDismissedHint(true)}>
@@ -599,11 +616,14 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                     <select
                       value={deliveryChoice}
                       onChange={(e) =>
-                        setDeliveryChoice(e.target.value as 'full_software' | 'marketing_landing' | 'infer')
+                        setDeliveryChoice(
+                          e.target.value as 'full_software' | 'marketing_landing' | 'desktop_app' | 'infer',
+                        )
                       }
                       className="input-glass"
                     >
                       <option value="full_software">{t(locale, 'newProduct.delivery.full')}</option>
+                      <option value="desktop_app">{t(locale, 'newProduct.delivery.desktop')}</option>
                       <option value="marketing_landing">{t(locale, 'newProduct.delivery.landing')}</option>
                       <option value="infer">{t(locale, 'newProduct.delivery.infer')}</option>
                     </select>

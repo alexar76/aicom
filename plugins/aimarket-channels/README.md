@@ -1,5 +1,24 @@
 # aimarket-channels
 
+## Value in plain words
+
+Pay once into a prepaid tab, make dozens of tiny AI calls, settle once on-chain. No credit-card fee on every micro-cent — fast sessions for agents and apps.
+
+**Простыми словами:** Пополняете «вкладку» один раз, делаете десятки мелких вызовов AI, закрываете один раз on-chain. Без комиссии карты на каждую копейку — быстрые сессии для агентов и приложений.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **Pre-funded payment channels for off-chain capability invocation.**
 Open a channel with one on-chain deposit, invoke multiple capabilities off-chain, settle once. Reduces per-call blockchain transactions from N to 1.
 

@@ -1,0 +1,44 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub/
+build/
+*.iml
+*.ipr
+*.iws
+.gradle/
+local.properties
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Flutter pub
+.pub-cache/
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
+# Secrets and local config
+.env
+.env.local
+*.key
+*.p12
+*.jks
+secrets.yaml
+
+# Coverage
+coverage/
+
+# Android signing
+android/app/*.keystore
+android/key.properties

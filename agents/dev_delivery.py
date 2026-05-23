@@ -13,17 +13,42 @@ from typing import Any
 class DeliveryMode(str, Enum):
     WEB_APP = "web_app"
     PYTHON_CLI = "python_cli"
+    DESKTOP_APP = "desktop_app"
+
+
+def _spec_delivery_profile(specification: dict[str, Any] | None) -> str | None:
+    if not isinstance(specification, dict):
+        return None
+    raw = specification.get("delivery_profile")
+    return str(raw).strip() if raw else None
+
+
+def infer_desktop_stack(admin_instructions: str | None, specification: dict[str, Any] | None) -> str:
+    """Return ``tauri``, ``flutter``, or ``electron`` (default tauri)."""
+    blob = f"{admin_instructions or ''}\n{json.dumps(specification or {})}".lower()
+    if "flutter" in blob:
+        return "flutter"
+    if "electron" in blob:
+        return "electron"
+    return "tauri"
 
 
 def infer_delivery_mode(
     admin_instructions: str | None,
     specification: dict[str, Any] | None,
+    delivery_profile: str | None = None,
 ) -> DeliveryMode:
     """
-    Decide whether output must be browser web assets or Python CLI/package.
+    Decide whether output must be browser web assets, Python CLI/package, or desktop app.
 
     Default remains WEB_APP for backward compatibility when unconstrained.
     """
+    from core.delivery_profile import DESKTOP_APP, normalize_delivery_profile
+
+    dp_raw = delivery_profile or _spec_delivery_profile(specification)
+    if dp_raw and normalize_delivery_profile(dp_raw) == DESKTOP_APP:
+        return DeliveryMode.DESKTOP_APP
+
     a = (admin_instructions or "").strip().lower()
     spec = specification or {}
     spec_text = json.dumps(spec).lower()
@@ -42,6 +67,32 @@ def infer_delivery_mode(
     )
     if any(h in a for h in web_hints):
         return DeliveryMode.WEB_APP
+
+    desktop_hints = (
+        "desktop app",
+        "tauri",
+        "electron",
+        "flutter desktop",
+        "native client",
+        "system tray",
+        "installable",
+        "macos app",
+        "windows app",
+    )
+    if any(h in a for h in desktop_hints):
+        return DeliveryMode.DESKTOP_APP
+    if any(
+        phrase in spec_text
+        for phrase in (
+            "desktop app",
+            "tauri",
+            "electron",
+            "flutter desktop",
+            "native client",
+            "system tray",
+        )
+    ):
+        return DeliveryMode.DESKTOP_APP
 
     # Strong Python CLI signals (admin wins over vague defaults)
     py_kw = bool(re.search(r"\bpython\b", a)) or "python" in spec_text
@@ -90,7 +141,7 @@ def infer_delivery_mode(
     return DeliveryMode.WEB_APP
 
 
-def system_prompt_for_mode(mode: DeliveryMode) -> str:
+def system_prompt_for_mode(mode: DeliveryMode, *, desktop_stack: str = "tauri") -> str:
     """Stack-specific rules appended into the developer system prompt."""
     if mode == DeliveryMode.PYTHON_CLI:
         return """=== REQUIRED OUTPUT STACK: PYTHON CLI (NOT A WEBSITE) ===
@@ -100,6 +151,36 @@ def system_prompt_for_mode(mode: DeliveryMode) -> str:
 - FORBIDDEN in deliverables: .html, .htm, .jsx, .tsx, .vue, .css (unless trivial stub — prefer NONE), .js (except no JS at all for CLI).
 - Do NOT create index.html, app.js, or SPA assets under any circumstance for this mode.
 - Include README with install/run examples (e.g. pip install -e . ; python -m mycli --help).
+"""
+
+    if mode == DeliveryMode.DESKTOP_APP:
+        stack = (desktop_stack or "tauri").strip().lower()
+        if stack == "flutter":
+            return """=== REQUIRED OUTPUT STACK: FLUTTER DESKTOP (NOT A WEBSITE) ===
+- Deliver a **Flutter desktop** project for macOS / Windows / Linux.
+- Required: pubspec.yaml, lib/main.dart, README.md with `flutter pub get` + `flutter run -d macos|windows|linux`.
+- Include at least one polished screen implementing the product charter (Material 3 or custom theme).
+- Optional: integration_test/ or test/widget_test.dart with a smoke test.
+- FORBIDDEN as primary deliverable: standalone marketing index.html without Flutter project structure.
+- Ship code_manifest.json listing all source files. No placeholder "coming soon" UI.
+"""
+        if stack == "electron":
+            return """=== REQUIRED OUTPUT STACK: ELECTRON DESKTOP ===
+- Deliver an Electron app: package.json (with electron dependency), main process entry (main.js or electron/main.ts), preload if needed.
+- Required UI folder (renderer/) with index.html + CSS + JS implementing the product workflow.
+- README.md with `npm install` + `npm start` and notes for `npm run build` / electron-builder when applicable.
+- FORBIDDEN: server-only backend without a desktop shell window.
+"""
+        return """=== REQUIRED OUTPUT STACK: TAURI v2 DESKTOP (NOT A BROWSER-ONLY SITE) ===
+- Deliver a **Tauri v2** desktop app scaffold (reference: packaging/templates/tauri_desktop/).
+- Required tree:
+  - src-tauri/Cargo.toml, src-tauri/tauri.conf.json, src-tauri/src/main.rs (or lib.rs + main.rs)
+  - ui/index.html + ui/style.css + ui/app.js (WebView UI implementing the product charter)
+  - README.md with prerequisites (Rust, Node) and commands: `cd src-tauri && cargo tauri dev` / `cargo tauri build`
+- Register Tauri commands for core product actions (local file I/O, settings, marketplace hooks as stubs if needed).
+- Privacy-first: sensitive user data stays local unless spec explicitly requires sync.
+- FORBIDDEN as sole deliverable: a static landing page without Tauri shell.
+- Ship code_manifest.json. UI must feel like a real desktop tool (sidebar or toolbar, not a brochure scroll).
 """
 
     return """=== REQUIRED OUTPUT STACK: WEB (browser) ===
@@ -176,12 +257,40 @@ def validate_saved_files(mode: DeliveryMode, relative_paths: list[str]) -> tuple
 
         return True, ""
 
+    if mode == DeliveryMode.DESKTOP_APP:
+        norm = [p.replace("\\", "/") for p in lower]
+        if any(p.endswith("src-tauri/cargo.toml") for p in norm):
+            if not any(p.endswith((".html", ".htm")) for p in norm):
+                return False, "Tauri desktop requires HTML UI (ui/index.html or src/index.html)"
+            return True, ""
+        if any(p.endswith("pubspec.yaml") for p in norm) and any(p.endswith("lib/main.dart") for p in norm):
+            return True, ""
+        if any(p.endswith("package.json") for p in norm) and any(p.endswith((".html", ".htm")) for p in norm):
+            return True, ""
+        return False, (
+            "Desktop mode requires Tauri (src-tauri/Cargo.toml + HTML UI), "
+            "Flutter (pubspec.yaml + lib/main.dart), or Electron (package.json + HTML UI)"
+        )
+
     # WEB_APP
     has_html = any(p.endswith((".html", ".htm")) for p in lower)
     if not has_html:
         return False, "Web stack requires at least one .html file (e.g. index.html)"
 
     return True, ""
+
+
+def desktop_app_appendix(desktop_stack: str = "tauri") -> str:
+    """Extra charter when delivery_profile is desktop_app."""
+    stack = (desktop_stack or "tauri").strip().lower()
+    return f"""
+=== DESKTOP APP — MARKETPLACE SKU ===
+- Category: desktop. Product kind: desktop_app. Framework target: {stack}.
+- Ship BUILD.md or README section: install deps, dev run, release build per OS.
+- Optional: DESKTOP_PLATFORMS.md listing macOS (.dmg), Windows (.msi/.exe), Linux (.AppImage/.deb).
+- Hub lists capability {{slug}}.desktop@v1 — source archive is the full repo under code/.
+- Do not depend on cloud-only preview; reviewers run `cargo tauri dev` or `flutter run -d macos`.
+"""
 
 
 def full_software_browser_appendix() -> str:

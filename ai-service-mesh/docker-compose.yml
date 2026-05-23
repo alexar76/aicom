@@ -1,0 +1,64 @@
+services:
+  aimarket-hub:
+    build:
+      context: ../aimarket-hub
+      dockerfile: Dockerfile
+    ports:
+      - "9080:9080"
+    environment:
+      AIMARKET_SKIP_DEMO_SEED: "1"
+      AIFACTORY_PUBLIC_URL: ${AIFACTORY_PUBLIC_URL:-}
+    volumes:
+      - hub_data:/data
+
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_USER: ${MESH_POSTGRES_USER:-mesh}
+      POSTGRES_PASSWORD: ${MESH_POSTGRES_PASSWORD:?Set MESH_POSTGRES_PASSWORD for postgres profile}
+      POSTGRES_DB: ${MESH_POSTGRES_DB:-mesh}
+    volumes:
+      - mesh_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mesh -d mesh"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mesh-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      MESH_ENV: production
+      MESH_PORT: 8090
+      MESH_CORS_ORIGINS: http://localhost:5173
+      MESH_HUB_URL: http://aimarket-hub:9080
+      MESH_SKIP_DEMO_CAPABILITIES: "true"
+      MESH_REJECT_DEMO_INVOKE_OUTPUT: "true"
+      MESH_API_TOKEN: ${MESH_API_TOKEN:?Set MESH_API_TOKEN — do not use default dev tokens in Docker}
+      MESH_ADMIN_TOKEN: ${MESH_ADMIN_TOKEN:?Set MESH_ADMIN_TOKEN — do not use default dev tokens in Docker}
+      MESH_DATA_DIR: /data
+      MESH_DATABASE_URL: ${MESH_DATABASE_URL:-}
+    volumes:
+      - mesh_data:/data
+    depends_on:
+      aimarket-hub:
+        condition: service_started
+
+  mesh-dashboard:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - mesh-api
+
+volumes:
+  hub_data:
+  mesh_data:
+  mesh_pg:

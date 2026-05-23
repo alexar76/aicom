@@ -1,0 +1,26 @@
+{
+  "name": "@aimarket/agent",
+  "version": "0.1.0",
+  "description": "AI Market Protocol v2 consumer SDK for TypeScript — Electron, Node.js, web apps",
+  "repository": "https://github.com/alexar76/aimarket-sdks",
+  "homepage": "https://github.com/alexar76/aimarket-sdks/tree/main/typescript",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0",
+    "@types/node": "^20.0.0",
+    "eslint": "^8.57.0"
+  }
+}

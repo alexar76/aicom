@@ -55,9 +55,9 @@ class TestDatasetExporter:
             path = export_dataset(db, tmp, week_number=21)
             lines = path.read_text().strip().split("\n")
             record = json.loads(lines[0])
-            # Product IDs should be hashed (12-char hex), not original
+            # Product IDs should be salted-hashed (16-char hex), not original
             assert record["product_id"] != "prod-0"
-            assert len(record["product_id"]) == 12
+            assert len(record["product_id"]) == 16
 
     def test_export_all_time(self, db):
         with tempfile.TemporaryDirectory() as tmp:

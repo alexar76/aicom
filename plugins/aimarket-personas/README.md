@@ -1,5 +1,24 @@
 # aimarket-personas
 
+## Value in plain words
+
+Gives each capability a clear, buyer-friendly AI persona — so non-technical users understand what they're buying without reading API docs.
+
+**Простыми словами:** У каждой возможности появляется понятный «персонаж» AI — нетехническим пользователям ясно, что они покупают, без чтения API-документации.
+
+Full text: [docs/value.md](docs/value.md)
+
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+---
+
 **Auto-generated AI agent personas for every capability.**
 Instead of "capability prod-83a7b", discovery returns "Hi, I'm Lyra. I do legal translation. 412 tasks, 96% success, $0.40 avg." Makes the marketplace chat-native. Claude/GPT recommend "try Lyra", not "try product-7d8f...".
 

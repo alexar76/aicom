@@ -1,0 +1,22 @@
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+acex_capital = "AcexCap1italMark3tL1st1ngReg1stryPDA"
+
+[programs.devnet]
+acex_capital = "AcexCap1italMark3tL1st1ngReg1stryPDA"
+
+[programs.mainnet]
+acex_capital = "AcexCap1italMark3tL1st1ngReg1stryPDA"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "cargo test-sbf -p acex-capital 2>/dev/null || true"

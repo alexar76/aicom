@@ -18,6 +18,65 @@
 
 ---
 
+## Monorepo & AIMarket ecosystem
+
+This repository is the **AICOM monorepo**: a self-hosted **AI-Factory** pipeline plus the **AIMarket** federated commerce layer (hub, protocol, SDKs, 8 desktop apps, 15 plugins).
+
+```mermaid
+flowchart TB
+  subgraph factory["AI-Factory · magic-ai-factory.com"]
+    DISC["Discovery"]
+    PIPE["13-agent pipeline"]
+    SHIP["Shipped products"]
+    DISC --> PIPE --> SHIP
+  end
+
+  subgraph aimarket["AIMarket · modelmarket.dev"]
+    HUB["AIMarket Hub"]
+    PROT["Protocol v2 spec"]
+    PLG["15 plugins"]
+    HUB --- PLG
+    HUB --- PROT
+  end
+
+  subgraph consume["Consumers"]
+    DSK["8× Flutter desktop"]
+    WGT["Embed widget"]
+    SDK["aimarket_agent SDK"]
+  end
+
+  SHIP -->|"factory_bridge · sync"| HUB
+  DSK --> SDK --> HUB
+  WGT --> HUB
+```
+
+| Package | Path | Docs |
+|---------|------|------|
+| **AI-Factory** (this README) | `web/` · `agents/` · `orchestrator/` | [architecture-diagrams.md](docs/architecture-diagrams.md) |
+| **AIMarket Hub** | [`aimarket-hub/`](aimarket-hub/) | [aimarket-hub/README.md](aimarket-hub/README.md) |
+| **Protocol v2** | [`aimarket-protocol/`](aimarket-protocol/) | [spec.md](aimarket-protocol/spec.md) |
+| **Hub plugins** | [`plugins/`](plugins/) | README + `docs/` per plugin |
+| **Desktop SKUs** | [`desktop-integrations/`](desktop-integrations/) | 8 apps · [value.md](desktop-integrations/interview-prep-coach/docs/value.md) pattern |
+| **Dart SDK** | [`aimarket-sdks/dart/`](aimarket-sdks/dart/) | Consumer SDK for desktop apps |
+| **Widget** | [`aimarket-widget/`](aimarket-widget/) | Drop-in search + invoke |
+| **ACEX** | [`acex/`](acex/) | Agent Listing Protocol · CapShares · Pulse Terminal |
+
+**Full ecosystem reference (C4, sequences, deployment):** **[docs/ecosystem-architecture.md](docs/ecosystem-architecture.md)**
+
+### Killer feature — Auto-Mesh Pipeline
+
+**AI-Factory doesn’t stop at code generation.** A pipeline run can **discover marketplace agents, fund a USDT channel, invoke them in sequence, and ship a connected product** — mesh orchestration without hand-wiring each API.
+
+| | |
+|---|---|
+| **What** | Intent → hub discover → multi-agent invoke → QA gates → hub catalog sync |
+| **Why** | Network effect: every shipped product becomes capability fodder for the next run |
+| **Deep dive** | [docs/killer-feature-auto-mesh-pipeline.md](docs/killer-feature-auto-mesh-pipeline.md) · [Ecosystem killer features](docs/killer-features.md) |
+
+Production split: Factory **:9080** · Hub **:9083** → [production-modelmarket-dev.md](docs/production-modelmarket-dev.md)
+
+---
+
 <h2 id="demo-video">▶ Demo video</h2>
 
 **Primary:** [YouTube — Idea → agents → shippable product](https://youtu.be/Gg9a52-ZbNA) (embedded on the [live homepage](https://magic-ai-factory.com) hero).
@@ -47,7 +106,7 @@ GitHub’s README viewer **does not embed YouTube iframes** — use the thumbnai
 
 **Typical LLM API cost:** **~$0.30–$2** landing first pass; **~$3–$15+** `full_software` with QA cycles. Bring your own keys; host ~**$7/mo** separate.
 
-**Pipeline roles** (one Python class each under [`agents/`](agents/)): Analyst, PM, Methodologist, Architect, Design Critic, Developer, Hardening, QA, Security, DevOps, Marketing, Sales, Evolution Analyst. Most run in order; Methodologist / Design Critic / Hardening are conditional gates. The canonical sequence is [`config/pipeline_flow.json`](config/pipeline_flow.json) — count agents by `ls agents/*.py` rather than by README text. Runtime adds a test gate, Playwright E2E, security scans, and storefront deployment.
+**Pipeline roles** (one Python class each under [`agents/`](agents/)): Analyst, PM, Methodologist, Architect, Design Critic, Developer, DevOps, Evolution Analyst, Hardening, Marketing, Product Profile, QA, Sales, Security, Spec Quality Gate, plus `base_agent.py`. Most run in order; Methodologist / Design Critic / Hardening are conditional gates. The canonical sequence is [`config/pipeline_flow.json`](config/pipeline_flow.json). Runtime adds a test gate, Playwright E2E, security scans, and storefront deployment.
 
 ## Quick start
 
@@ -519,3 +578,13 @@ Reproduce timing: enqueue via `./demo.sh` / Admin → Pipeline, then `python scr
 **Who is it not for?** Anyone wanting a hosted no-ops builder with zero setup — use Bolt/Lovable/v0 instead.
 
 Questions: **[docs/FAQ.md](docs/FAQ.md)** · **[docs/FAQ.ru.md](docs/FAQ.ru.md)**
+
+---
+
+## Disclaimer
+
+**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.** See [LICENSE](LICENSE) for the full terms.
+
+**Smart contracts** (`contracts/evm/`, `contracts/solana/`) use **Ownable-gated admin functions** — only the contract owner can authorize hubs and whitelist tokens. The escrow holds funds in a non-custodial model: users deposit directly into the contract; channel participants control their funds; and there is a 24-hour auto-refund path that does not depend on any privileged account. No upgradeable proxies are used.
+
+**Deployment:** always use the provided deploy scripts (`contracts/evm/script/Deploy.s.sol` for EVM, `contracts/solana/` Anchor scripts for Solana). **Do not deploy from a personal EOA** — use a dedicated deployer key or the project's multisig to avoid key leaks and ensure deterministic CREATE2 addresses across chains.

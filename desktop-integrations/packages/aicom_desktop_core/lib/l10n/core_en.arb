@@ -1,0 +1,40 @@
+{
+  "@@locale": "en",
+  "connectWallet": "Connect wallet to use AI Market Protocol",
+  "connect": "Connect",
+  "channelBalance": "channel {balance}",
+  "@channelBalance": {
+    "placeholders": {
+      "balance": {"type": "String"}
+    }
+  },
+  "sessionSpent": "spent {amount}",
+  "@sessionSpent": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "economicsLine": "{hub} · {channel} · {spent}",
+  "@economicsLine": {
+    "placeholders": {
+      "hub": {"type": "String"},
+      "channel": {"type": "String"},
+      "spent": {"type": "String"}
+    }
+  },
+  "settings": "Settings",
+  "language": "Language",
+  "languagePacksTitle": "Language packs",
+  "languagePacksHint": "Drop JSON packs into language-packs/{appId}/ (e.g. de.json). Restart or tap Reload packs.",
+  "reloadLanguagePacks": "Reload language packs",
+  "backupTitle": "Backup & restore",
+  "exportBackup": "Export user data to file",
+  "importBackup": "Import user data from file",
+  "backupExported": "Backup saved",
+  "backupImported": "Backup restored",
+  "backupFailed": "Backup operation failed",
+  "selectLanguage": "Select language",
+  "english": "English",
+  "russian": "Russian",
+  "spanish": "Spanish"
+}

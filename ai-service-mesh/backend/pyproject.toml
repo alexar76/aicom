@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-service-mesh"
+version = "0.1.0"
+description = "AI Service Mesh — agents discover, verify, and pay other agents autonomously"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.28",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.34",
+    "pydantic>=2.10",
+    "pydantic-settings>=2.7",
+    "cryptography>=44",
+]
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary,pool]>=3.2"]
+dev = ["pytest>=8", "pytest-asyncio>=0.25", "pytest-httpx>=0.35", "locust>=2.32"]
+
+[project.scripts]
+ai-mesh = "ai_service_mesh.main:cli"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ai_service_mesh*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = ["integration: live HTTP e2e tests (no invoke stubs)"]

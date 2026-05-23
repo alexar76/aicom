@@ -1,5 +1,7 @@
 # AI Market Protocol v1
 
+> **Ecosystem map (v1 + v2 + Mesh + Factory):** see [`aimarket-protocol/ecosystem.md`](../aimarket-protocol/ecosystem.md).
+
 ## North Star
 
 Every AI-Factory product is an **MCP-compatible server** that any model (Claude, GPT, Gemini, local) can discover via `.well-known`, read its schema, pay per-call through HTTP 402 with on-chain settlement, and invoke — **without human dashboards.**

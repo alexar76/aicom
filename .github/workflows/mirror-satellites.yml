@@ -33,13 +33,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          fetch-tags: false
+          ref: ${{ github.ref_name }}
 
-      - name: Split subtree for ${{ matrix.prefix }}
+      - name: Verify working tree and prefix
         run: |
-          git subtree split --prefix=${{ matrix.prefix }} -b export/${{ matrix.prefix }}
+          git log -1 --oneline
+          echo "Resolved HEAD: $(git rev-parse HEAD)"
+          echo "Prefix contents:"
+          ls -la ${{ matrix.prefix }}/
 
-      - name: Push to ${{ matrix.repo }}
+      - name: Push subtree to ${{ matrix.repo }}
         run: |
           git remote add satellite https://x-access-token:${{ secrets.MIRROR_SATELLITE_PAT }}@github.com/${{ matrix.repo }}.git
-          git push --force satellite export/${{ matrix.prefix }}:main
+          git subtree push --prefix=${{ matrix.prefix }} satellite main

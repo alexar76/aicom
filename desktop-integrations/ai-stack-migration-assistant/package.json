@@ -1,0 +1,128 @@
+{
+  "name": "ai-stack-migration-assistant",
+  "displayName": "AI Stack Migration Assistant",
+  "version": "0.1.0",
+  "description": "Auto-migrate AI stack code when LLMs, frameworks, or embedding models release breaking changes. Marketplace-powered migration rules.",
+  "publisher": "aicom",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexar76/ai-stack-migration-assistant"
+  },
+  "homepage": "https://github.com/alexar76/ai-stack-migration-assistant",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "migration",
+    "ai",
+    "llm",
+    "gpt",
+    "claude",
+    "langchain",
+    "openai",
+    "anthropic",
+    "marketplace"
+  ],
+  "activationEvents": [
+    "onCommand:aiStack.detectMigrations",
+    "onCommand:aiStack.applyMigration",
+    "onCommand:aiStack.viewDiff",
+    "onCommand:aiStack.runTests",
+    "onView:aiStack.sidebar"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "aiStack.detectMigrations",
+        "title": "AI Stack: Detect Migrations"
+      },
+      {
+        "command": "aiStack.applyMigration",
+        "title": "AI Stack: Apply Migration Rule"
+      },
+      {
+        "command": "aiStack.viewDiff",
+        "title": "AI Stack: Preview Migration Diff"
+      },
+      {
+        "command": "aiStack.runTests",
+        "title": "AI Stack: Run Tests After Migration"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aiStack",
+          "title": "AI Stack Migration",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "aiStack": [
+        {
+          "id": "aiStack.sidebar",
+          "name": "Migration Rules"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "AI Stack Migration Assistant",
+      "properties": {
+        "aiStackMigration.hubUrl": {
+          "type": "string",
+          "default": "https://hub.aicom.io",
+          "description": "AI Market hub URL for migration rule discovery"
+        },
+        "aiStackMigration.walletKey": {
+          "type": "string",
+          "default": "",
+          "description": "Hex-encoded Ed25519 private key for payment channels"
+        },
+        "aiStackMigration.autoRunTests": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically run the project test suite after applying a migration"
+        },
+        "aiStackMigration.monthlyBudget": {
+          "type": "number",
+          "default": 10,
+          "description": "Monthly USD budget for migration rule purchases"
+        },
+        "aiStackMigration.dataTier": {
+          "type": "string",
+          "default": "tier-3",
+          "description": "Data retention tier (tier-3 = 30-day rule TTL)",
+          "enum": ["tier-1", "tier-2", "tier-3"]
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -watch -p tsconfig.json",
+    "lint": "eslint src/",
+    "package": "vsce package",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aimarket/agent": "github:alexar76/aimarket-sdks#main"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "vsce": "^2.15.0"
+  }
+}

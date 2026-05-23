@@ -185,6 +185,104 @@ DEMO_PRODUCTS: list[dict[str, Any]] = [
 ]
 
 
+def seed_product_files_sqlite(cfg: dict[str, Any], *, data_root: Path | None = None) -> None:
+    """Write demo artifacts + mark COMPLETED in SQLite (no PipelineStateMachine / prometheus)."""
+    import sqlite3
+
+    root = data_root or DATA
+    pid = cfg["id"]
+    now = time.time()
+
+    spec_inner = {
+        "product_name": cfg["product_name"],
+        "delivery_profile": cfg["delivery_profile"],
+        "category": cfg["taxonomy_category"],
+        "description": cfg["selling_description"],
+        "core_features": [
+            {"name": "Structured brief → generated artifact"},
+            {"name": "Sandbox preview with relative URLs"},
+            {"name": "Storefront-ready marketing metadata"},
+        ],
+    }
+    spec_dir = root / "specs" / pid
+    spec_dir.mkdir(parents=True, exist_ok=True)
+    (spec_dir / "specification.json").write_text(
+        json.dumps({"specification": spec_inner}, indent=2),
+        encoding="utf-8",
+    )
+
+    mdir = root / "state" / pid
+    mdir.mkdir(parents=True, exist_ok=True)
+    marketing_doc = {
+        "marketing": {
+            "product_name": cfg["product_name"],
+            "selling_description": cfg["selling_description"],
+            "category": cfg["taxonomy_category"],
+            "tags": cfg["tags"],
+            "monetization_scheme": {
+                "paid_tiers": [
+                    {
+                        "name": "pro",
+                        "price_usd_monthly": float(cfg["usdt_price"]),
+                        "features": ["sandbox preview", "download entitlement"],
+                        "target_audience": "builders",
+                    }
+                ]
+            },
+        }
+    }
+    (mdir / "marketing_content.json").write_text(
+        json.dumps(marketing_doc, indent=2),
+        encoding="utf-8",
+    )
+    sales_doc = {
+        "sales_data": {
+            "pricing": {"supported_chains": ["base"], "usdt_price": cfg["usdt_price"]},
+        }
+    }
+    (mdir / "sales_config.json").write_text(json.dumps(sales_doc, indent=2), encoding="utf-8")
+
+    code_dir = root / "code" / pid
+    code_dir.mkdir(parents=True, exist_ok=True)
+    (code_dir / "index.html").write_text(cfg["html"](), encoding="utf-8")
+    (code_dir / "code_manifest.json").write_text(
+        json.dumps({"files": [{"path": "index.html"}]}, indent=2),
+        encoding="utf-8",
+    )
+
+    followup_dir = root / "state" / "product_followup"
+    followup_dir.mkdir(parents=True, exist_ok=True)
+    (followup_dir / f"{pid}.json").write_text(
+        json.dumps(
+            {
+                "admin_force_list": True,
+                "admin_force_list_note": "Seeded demo showcase — operator showroom listing",
+                "admin_force_list_at": now,
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    db_path = root / "state" / "pipeline.db"
+    con = sqlite3.connect(db_path)
+    try:
+        row = con.execute("SELECT id FROM products WHERE id = ?", (pid,)).fetchone()
+        if row:
+            con.execute(
+                "UPDATE products SET state = ?, idea = ?, category = ?, updated_at = ?, error = NULL WHERE id = ?",
+                ("COMPLETED", cfg["idea"], cfg["taxonomy_category"], now, pid),
+            )
+        else:
+            con.execute(
+                "INSERT INTO products (id, idea, state, created_at, updated_at, category) VALUES (?,?,?,?,?,?)",
+                (pid, cfg["idea"], "COMPLETED", now, now, cfg["taxonomy_category"]),
+            )
+        con.commit()
+    finally:
+        con.close()
+
+
 def _write_followup(pid: str) -> None:
     d = DATA / "state" / "product_followup"
     d.mkdir(parents=True, exist_ok=True)

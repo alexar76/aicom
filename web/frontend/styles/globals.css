@@ -50,6 +50,14 @@
   
   /* Spacing */
   --header-height: 72px;
+  /* Mobile clearance for fixed AIMarket + support widgets above footer nav */
+  --storefront-footer-pad: 2rem;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --storefront-footer-pad: max(11rem, calc(9rem + env(safe-area-inset-bottom, 0px)));
+  }
 }
 
 /* ── Base Styles ───────────────────────────────────────────────────────── */

@@ -1,0 +1,53 @@
+# ── PostgreSQL overlay for AI-Factory ───────────────────────────────────────
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.pg.yml up -d
+#
+# This overlay adds a PostgreSQL 16 service and wires it into the app
+# via the DATABASE_URL environment variable. All hub data (capabilities,
+# peers, channels, provenance receipts) is stored in PostgreSQL.
+#
+# Without this overlay, the app defaults to SQLite (zero-config).
+#
+# Environment variables (optional):
+#   POSTGRES_USER     — default: aicom
+#   POSTGRES_PASSWORD — default: aicom
+#   POSTGRES_DB       — default: aicom
+#   POSTGRES_PORT     — default: 5432
+
+version: "3.9"
+
+services:
+  app:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-aicom}:${POSTGRES_PASSWORD:-aicom}@postgres:5432/${POSTGRES_DB:-aicom}"
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: aicom-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aicom}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aicom}
+      POSTGRES_DB: ${POSTGRES_DB:-aicom}
+      PGUSER: ${POSTGRES_USER:-aicom}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-aicom}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aicom} -d ${POSTGRES_DB:-aicom}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - aicom_net
+
+volumes:
+  pgdata:
+    driver: local
