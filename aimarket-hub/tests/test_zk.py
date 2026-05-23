@@ -1,4 +1,4 @@
-"""Tests for ZK-proof verification module."""
+"""Tests for ZK-proof verification module (simulated)."""
 
 import tempfile
 from pathlib import Path
@@ -7,6 +7,12 @@ import pytest
 
 from aimarket_hub.signing import Signer
 from aimarket_hub.zk_proofs import ZKInputProof, ZKOutputProof, ZKProver
+
+
+@pytest.fixture(autouse=True)
+def _opt_in_simulated_zk(monkeypatch):
+    """Opt in to the development ZK simulation for all tests in this file."""
+    monkeypatch.setenv("AIMARKET_ZK_SIMULATED", "1")
 
 
 @pytest.fixture
@@ -88,10 +94,23 @@ class TestZKFlow:
         assert result["success"]
         assert result["input_proof"]["verified"]
         assert result["output_proof"]["verified"]
-        assert result["privacy_guarantees"]["input_hidden"]
-        assert result["privacy_guarantees"]["double_spend_protected"]
+        # Privacy guarantees deliberately set to False — this is a simulation,
+        # not real ZK. Caller must check "simulated" flag before trusting privacy.
+        assert result["simulated"] is True
+        assert result["privacy_guarantees"]["input_hidden"] is False
+        assert result["privacy_guarantees"]["double_spend_protected"] is False
+        assert "warning" in result
 
     def test_stats(self, prover):
         s = prover.stats()
         assert "nullifiers_used" in s
         assert "zk_scheme" in s
+        assert s["simulated"] is True
+
+    def test_opt_in_required(self, monkeypatch):
+        """ZKProverSimulated must refuse to instantiate without explicit opt-in."""
+        from aimarket_hub.zk_proofs import ZKProverSimulated
+        monkeypatch.delenv("AIMARKET_ZK_SIMULATED", raising=False)
+        import pytest
+        with pytest.raises(RuntimeError, match="simulation, not real ZK"):
+            ZKProverSimulated()

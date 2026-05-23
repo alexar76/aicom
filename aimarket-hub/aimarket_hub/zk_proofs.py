@@ -102,19 +102,48 @@ class ZKOutputProof:
         return self
 
 
-class ZKProver:
-    """Zero-knowledge proof generator and verifier.
+class ZKProverSimulated:
+    """SIMULATED ZK proof generator — NOT real zero-knowledge.
 
-    Simulates Groth16 proving for:
-    1. Input validity: "I know an input that satisfies schema S"
-    2. Output correctness: "I executed capability C on input I and got output O"
+    This class produces signed SHA-256 commitments and labels them "ZK proofs".
+    It exists for local development and API-shape testing only.
 
-    In production: circom circuits → Groth16/PLONK via bellman/gnark.
+    Real Groth16 / PLONK requires:
+      - circom or gnark circuit compilation
+      - Trusted setup (Groth16) or universal setup (PLONK)
+      - bellman/arkworks/gnark prover/verifier libraries
+      - Significant gas + verification cost on-chain
+
+    To use this development simulation, opt in:
+        export AIMARKET_ZK_SIMULATED=1
+
+    Without that env var, instantiation raises RuntimeError to prevent
+    accidental production use.
+
+    Every output dict from this class carries `"simulated": True` and
+    `"warning": "..."` fields so consumers cannot mistake the result
+    for a real ZK proof.
     """
 
     def __init__(self, signer: Signer | None = None):
+        _require_simulated_opt_in()
         self.signer = signer or Signer()
         self._used_nullifiers: set[str] = set()  # Prevent double-proofs
+        logger.warning(
+            "ZKProverSimulated initialized — output is NOT real ZK. "
+            "Set AIMARKET_ZK_SIMULATED=0 in production."
+        )
+
+    @staticmethod
+    def _mark_simulated(d: dict[str, Any]) -> dict[str, Any]:
+        """Stamp every returned dict so callers cannot mistake it for real ZK."""
+        d["simulated"] = True
+        d.setdefault(
+            "warning",
+            "This is a development simulation, not a real ZK proof. "
+            "Output proves nothing about input/computation privacy.",
+        )
+        return d
 
     # ── Input Proof ────────────────────────────────────────────
 
@@ -184,20 +213,20 @@ class ZKProver:
         """
         # Check signature
         if not self.signer.verify(prover_public_key, proof.signature, proof.canonical()):
-            return {"valid": False, "reason": "Invalid proof signature"}
+            return self._mark_simulated({"valid": False, "reason": "Invalid proof signature"})
 
         # Check nullifier not already used
         # Nullifier double-spend check (best-effort for simulated proofs)
         if proof.nullifier in self._used_nullifiers:
-            return {"valid": False, "reason": "Nullifier already used (double-spend attempt)"}
+            return self._mark_simulated({"valid": False, "reason": "Nullifier already used (double-spend attempt)"})
 
         # Check schema hash matches
         if proof.schema_hash != expected_schema_hash:
-            return {"valid": False, "reason": "Schema hash mismatch"}
+            return self._mark_simulated({"valid": False, "reason": "Schema hash mismatch"})
 
         # Check capability ID
         if proof.capability_id != expected_capability_id:
-            return {"valid": False, "reason": "Capability ID mismatch"}
+            return self._mark_simulated({"valid": False, "reason": "Capability ID mismatch"})
 
         # Simulate ZK proof verification (in production: actual Groth16 verify)
         expected_proof = hashlib.sha256(
@@ -205,11 +234,11 @@ class ZKProver:
         ).hexdigest()
 
         if proof.proof_bytes != expected_proof:
-            return {"valid": False, "reason": "ZK proof verification failed"}
+            return self._mark_simulated({"valid": False, "reason": "ZK proof verification failed"})
 
         # Mark nullifier as used only on successful verification (prevents replay).
         self._used_nullifiers.add(proof.nullifier)
-        return {"valid": True, "reason": "Proof verified — input is valid without being revealed"}
+        return self._mark_simulated({"valid": True, "reason": "Proof verified — input is valid without being revealed"})
 
     # ── Output Proof ───────────────────────────────────────────
 
@@ -259,22 +288,22 @@ class ZKProver:
     ) -> dict[str, Any]:
         """Verify a ZK output proof."""
         if not self.signer.verify(prover_public_key, proof.signature, proof.canonical()):
-            return {"valid": False, "reason": "Invalid proof signature"}
+            return self._mark_simulated({"valid": False, "reason": "Invalid proof signature"})
 
         if proof.input_commitment != expected_input_commitment:
-            return {"valid": False, "reason": "Input commitment mismatch — result is for different input"}
+            return self._mark_simulated({"valid": False, "reason": "Input commitment mismatch — result is for different input"})
 
         if proof.capability_id != expected_capability_id:
-            return {"valid": False, "reason": "Capability ID mismatch"}
+            return self._mark_simulated({"valid": False, "reason": "Capability ID mismatch"})
 
         expected_proof = hashlib.sha256(
             f"groth16:output:{proof.invocation_id}:{proof.input_commitment}:{proof.output_commitment}".encode()
         ).hexdigest()
 
         if proof.proof_bytes != expected_proof:
-            return {"valid": False, "reason": "ZK proof verification failed"}
+            return self._mark_simulated({"valid": False, "reason": "ZK proof verification failed"})
 
-        return {"valid": True, "reason": "Proof verified — output is correct without revealing execution trace"}
+        return self._mark_simulated({"valid": True, "reason": "Proof verified — output is correct without revealing execution trace"})
 
     # ── Combined ZK Flow ───────────────────────────────────────
 
@@ -308,7 +337,11 @@ class ZKProver:
             input_proof, schema_hash, capability_id, self.signer.public_key_b64,
         )
         if not verification["valid"]:
-            return {"success": False, "error": "ZK input proof rejected", "detail": verification}
+            return self._mark_simulated({
+                "success": False,
+                "error": "ZK input proof rejected",
+                "detail": verification,
+            })
 
         # Step 3: Execute
         result = executor(product_id, capability_id, {"zk_input_commitment": input_proof.input_commitment})
@@ -326,7 +359,7 @@ class ZKProver:
             self.signer.public_key_b64,
         )
 
-        return {
+        return self._mark_simulated({
             "success": output_verification["valid"],
             "invocation_id": invocation_id,
             "input_proof": {
@@ -341,18 +374,26 @@ class ZKProver:
                 "verified": output_verification["valid"],
             },
             "result": result,
+            # privacy_guarantees deliberately understates — this is a simulation,
+            # not a real ZK proof. Setting hidden=False to prevent any caller
+            # treating these properties as cryptographically enforced.
             "privacy_guarantees": {
-                "input_hidden": True,
-                "execution_trace_hidden": True,
-                "double_spend_protected": True,
-                "zk_scheme": "Groth16 (simulated)",
-                "note": "In production: circom circuits + bn254 curve",
+                "input_hidden": False,
+                "execution_trace_hidden": False,
+                "double_spend_protected": False,
+                "zk_scheme": "SHA-256 commitment (simulated only)",
+                "note": "Real ZK requires circom circuits + bn254 curve. This output is for development/testing only.",
             },
-        }
+        })
 
     def stats(self) -> dict[str, Any]:
-        return {
+        return self._mark_simulated({
             "nullifiers_used": len(self._used_nullifiers),
-            "zk_scheme": "Groth16 (simulated)",
+            "zk_scheme": "SHA-256 commitment (simulated only)",
             "production_recommendation": "circom circuits compiled to bn254 via bellman/gnark",
-        }
+        })
+
+
+# Backward-compat alias — code that imported ZKProver still works.
+# The opt-in env check fires on instantiation, so prod deploys still get the warning.
+ZKProver = ZKProverSimulated

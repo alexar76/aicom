@@ -1,0 +1,181 @@
+# Monorepo → GitHub satellite mapping (source of truth for mirror + release scripts).
+# Org defaults to alexar76; override with SATELLITE_GITHUB_ORG env.
+
+org: alexar76
+
+satellites:
+  - id: aimarket-desktop
+    repo: aimarket-desktop
+    license: mit
+    paths:
+      - desktop-integrations
+    export_layout:
+      apps_from: desktop-integrations
+      packages_from: desktop-integrations/packages
+      # Per-app language packs — colocated with SKU (preferred)
+      language_packs:
+        preferred: desktop-integrations/{app}/language-packs
+        legacy_root: language-packs/{app}
+        target: apps/{app}/language-packs
+    registries:
+      - github-releases
+    ci:
+      - flutter-analyze
+      - flutter-build-web-matrix
+    notes: >
+      Depends on aimarket-sdks (Dart) via pub git/path — not vendored in this repo.
+      Do NOT embed aimarket-sdks/dart here; use separate aimarket-sdks satellite.
+
+  - id: aimarket-sdks
+    repo: aimarket-sdks
+    license: mit
+    paths:
+      - aimarket-sdks
+    export_layout:
+      root_from: aimarket-sdks
+      preserve:
+        - dart
+        - typescript
+        - rust
+    registries:
+      - pub.dev:aimarket_agent
+      - npm:@aimarket/agent
+      - crates.io:aimarket_agent
+    ci:
+      - dart-test
+      - typescript-build
+      - cargo-test
+
+  - id: pulse-terminal
+    repo: pulse-terminal
+    license: mit
+    paths:
+      - apps/pulse-terminal
+    export_layout:
+      root_from: apps/pulse-terminal
+    registries:
+      - ghcr:pulse-terminal
+      - github-releases
+    ci:
+      - npm-build
+    notes: >
+      ACEX capital markets UI. Consumes GET/WS /api/v2/capital/pricing from factory or hub.
+      Part of acex ecosystem; ships as standalone repo for Electron/web distribution.
+
+  - id: acex
+    repo: acex
+    license: apache-2.0
+    paths:
+      - acex
+    export_layout:
+      root_from: acex
+    registries:
+      - github-releases
+    ci:
+      - forge-test
+      - pytest-acex-docs
+    notes: >
+      Pulse Terminal is a separate satellite (pulse-terminal), not a subfolder export.
+
+  - id: ai-service-mesh
+    repo: ai-service-mesh
+    license: mit
+    paths:
+      - ai-service-mesh
+    export_layout:
+      root_from: ai-service-mesh
+    registries:
+      - pypi:ai-service-mesh
+      - ghcr:mesh-api
+      - ghcr:mesh-dashboard
+    ci:
+      - pytest-backend
+      - npm-build-frontend
+
+  - id: aimarket-hub
+    repo: aimarket-hub
+    license: apache-2.0
+    paths:
+      - aimarket-hub
+    export_layout:
+      root_from: aimarket-hub
+    registries:
+      - pypi:aimarket-hub
+      - ghcr:aimarket-hub
+    ci:
+      - pytest-hub
+
+  - id: aimarket-widget
+    repo: aimarket-widget
+    license: mit
+    paths:
+      - aimarket-widget
+    export_layout:
+      root_from: aimarket-widget
+    registries:
+      - npm:@aimarket/widget
+      - github-releases
+    ci:
+      - static-smoke
+
+  - id: aimarket-protocol
+    repo: aimarket-protocol
+    license: mit
+    paths:
+      - aimarket-protocol
+    export_layout:
+      root_from: aimarket-protocol
+    registries:
+      - github-releases
+    ci: []
+
+  - id: aimarket-agent
+    repo: aimarket-agent
+    license: mit
+    paths:
+      - aimarket-agent
+    export_layout:
+      root_from: aimarket-agent
+    registries:
+      - pypi:aimarket-agent
+    ci:
+      - pytest-agent
+
+  - id: aimarket-plugins
+    repo: aimarket-plugins
+    license: mit
+    paths:
+      - plugins:plugins
+      - aimarket-hub/plugins/aimarket-provenance
+    export_layout:
+      plugins_from: plugins
+      extra:
+        - from: aimarket-hub/plugins/aimarket-provenance
+          to: plugins/aimarket-provenance
+    registries:
+      - pypi:per-plugin
+    ci:
+      - pytest-plugins
+
+  - id: aicom
+    repo: aicom
+    license: mit
+    optional: true
+    paths:
+      - .
+    exclude_paths:
+      - desktop-integrations
+      - acex
+      - ai-service-mesh
+      - aimarket-hub
+      - aimarket-widget
+      - aimarket-protocol
+      - aimarket-agent
+      - plugins
+      - aimarket-sdks
+      - apps/pulse-terminal
+      - language-packs
+    registries:
+      - ghcr:aicom-factory
+    ci:
+      - pytest-core

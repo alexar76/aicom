@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 90% 60% at 10% -10%, rgba(212, 175, 55, 0.07), transparent),
+    radial-gradient(ellipse 70% 50% at 90% 0%, rgba(34, 211, 238, 0.1), transparent),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(139, 92, 246, 0.06), transparent),
+    #04060d;
+}
+
+.terminal-grid {
+  background-image:
+    linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.88);
+  }
+}
+
+.live-dot {
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.25);
+}

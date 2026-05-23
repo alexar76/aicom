@@ -82,7 +82,16 @@ def test_acex_phase2_files_present():
 def test_factory_capital_pricing_route_source():
     src = (Path(__file__).resolve().parents[1] / "web" / "backend" / "api" / "acex_capital.py").read_text()
     assert "/pricing" in src
+    assert "/pricing/ws" in src
+    assert "/pricing/stream" in src
     assert "build_pricing_snapshot" in src
+
+
+def test_pulse_terminal_app_present():
+    root = Path(__file__).resolve().parents[1] / "apps" / "pulse-terminal"
+    assert (root / "package.json").is_file()
+    assert (root / "src" / "App.tsx").is_file()
+    assert (root / "src" / "hooks" / "usePricingStream.ts").is_file()
 
 
 def test_hub_capital_pricing_route_source():

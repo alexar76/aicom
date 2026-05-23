@@ -133,6 +133,8 @@ def build_pricing_snapshot(
         "pulse_terminal": {
             "refresh_ms": 5000,
             "pricing_endpoint": "/api/v2/capital/pricing",
+            "pricing_stream": "/api/v2/capital/pricing/stream",
+            "pricing_ws": "/api/v2/capital/pricing/ws",
             "hub_endpoint": "/ai-market/v2/capital/pricing",
         },
     }

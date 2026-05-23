@@ -27,10 +27,17 @@ REPOS: list[tuple[str, str, str]] = [
     ]],
     ("desktop-integrations/packages/aicom_desktop_core", "aicom_desktop_core", "mit"),
     ("desktop-integrations/packages/aicom_platform_init", "aicom_platform_init", "mit"),
+    # Desktop monorepo root (entire satellite)
+    ("desktop-integrations", "aimarket-desktop", "mit"),
     ("aimarket-sdks/dart", "aimarket_agent_dart", "mit"),
     ("aimarket-hub", "aimarket-hub", "apache"),
     ("aimarket-protocol", "aimarket-protocol", "mit"),
     ("aimarket-widget", "aimarket-widget", "mit"),
+    ("apps/pulse-terminal", "pulse-terminal", "mit"),
+    ("aimarket-sdks", "aimarket-sdks", "mit"),
+    ("ai-service-mesh", "ai-service-mesh", "mit"),
+    ("acex", "acex", "apache"),
+    ("aimarket-agent", "aimarket-agent", "mit"),
 ]
 
 
@@ -63,6 +70,29 @@ def security(name: str, kind: str) -> str:
             f"- `{name}` embed script (`widget.js`), themes, and demo pages\n"
             "- DOM XSS safety, hub v2 API calls, payment channel / affiliate headers\n"
             "- Unsafe `data-hub-url` or fetch targets"
+        ),
+        "pulse-terminal": (
+            f"- `{name}` ACEX dashboard (Vite/React)\n"
+            "- WebSocket/SSE pricing feed, API proxy config\n"
+            "- XSS via hub pricing payloads rendered in DOM"
+        ),
+        "sdks": (
+            f"- `{name}` consumer SDKs (Dart, TypeScript, Rust)\n"
+            "- Wallet key handling, hub HTTP client, TEE verification helpers"
+        ),
+        "desktop-monorepo": (
+            f"- `{name}` Flutter desktop/web applications\n"
+            "- Local SQLite, wallet keys, language pack JSON loading"
+        ),
+        "mesh": (
+            f"- `{name}` AI Service Mesh control plane\n"
+            "- Agent discovery, task routing, escrow, SSRF protection\n"
+            "- MESH_API_TOKEN / MESH_ADMIN_TOKEN authentication"
+        ),
+        "acex": (
+            f"- `{name}` Arbitrary Code Execution contracts and verification\n"
+            "- EVM/Solana smart contracts, TEE attestations\n"
+            "- Zero-trust execution verification"
         ),
     }.get(kind, f"- `{name}`")
 
@@ -104,10 +134,20 @@ def kind_for(path: str) -> str:
         return "plugin"
     if path.startswith("desktop-integrations/") and "/packages/" not in path:
         return "desktop"
+    if path == "desktop-integrations":
+        return "desktop-monorepo"
     if path == "aimarket-hub":
         return "hub"
     if path == "aimarket-widget":
         return "widget"
+    if path == "apps/pulse-terminal":
+        return "pulse-terminal"
+    if path == "aimarket-sdks":
+        return "sdks"
+    if path == "ai-service-mesh":
+        return "mesh"
+    if path == "acex":
+        return "acex"
     return "package"
 
 
@@ -118,6 +158,9 @@ def main() -> None:
             print(f"SKIP missing {rel}")
             continue
         lic_src = APACHE if lic == "apache" else MIT
+        if not lic_src.is_file():
+            print(f"SKIP missing license template: {lic_src}")
+            continue
         lic_dst = root / "LICENSE"
         if lic_src.resolve() != lic_dst.resolve():
             shutil.copy2(lic_src, lic_dst)

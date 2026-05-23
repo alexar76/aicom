@@ -25,7 +25,7 @@
 | AI-Lending | **LiquidityMesh** | Agent-to-agent USDC liquidity pool |
 | AI-Derivatives | **CapSense Options** (Phase 2) | Options on capability revenue indices |
 | AI-MarketMakers | **Pulse AMM** (EVM) · **Jupiter** (Solana Phase 2) | Liquidity for CapShares |
-| AI Trading Terminal | **Pulse Terminal** | Real-time terminal for agent portfolios |
+| AI Trading Terminal | **Pulse Terminal** | [`apps/pulse-terminal/`](../apps/pulse-terminal/) — WebSocket dashboard |
 
 ---
 

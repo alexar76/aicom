@@ -4,11 +4,24 @@
 # Single-container deployment with all components:
 #   - Python 3.12 backend (FastAPI + Uvicorn)
 #   - Node.js 20 + Next.js frontend
-#   - Docker-in-Docker for sandbox execution
 #   - All data persisted in /app/data
+#
+# Sandbox Docker support:
+#   By default the Docker CLI is NOT bundled — sandbox container preview
+#   is disabled (the API gracefully degrades to a static HTTP fallback).
+#
+#   To opt into Docker-in-Docker sandbox preview, build with:
+#     docker build --build-arg INCLUDE_DOCKER_SANDBOX=1 -t aicom .
+#
+#   ⚠️  DinD requires running the resulting container as `--privileged` or
+#       with `/var/run/docker.sock` mounted. Both grant near-root access to
+#       the host kernel. Only enable on hardened internal infra.
+#       For external preview, prefer a remote Docker host via DOCKER_HOST.
 # ============================================================================
 
 FROM ubuntu:24.04 AS base
+
+ARG INCLUDE_DOCKER_SANDBOX=0
 
 LABEL version="2.1.0"
 LABEL description="AUTONOMOUS AI-FACTORY — Autonomous AI Company Platform"
@@ -36,9 +49,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config \
     libssl-dev \
     libffi-dev \
-    # Docker-in-Docker
-    docker.io \
-    docker-compose-v2 \
     # Utilities (minimal runtime; use docker exec for interactive debugging)
     git \
     procps \
@@ -47,6 +57,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Cleanup
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# ── Optional Docker-in-Docker (opt-in via --build-arg) ─────────────────────
+# Default: NOT installed (smaller image, no privileged-container requirement).
+# When INCLUDE_DOCKER_SANDBOX=1, installs docker.io and docker-compose-v2 so
+# /api/sandbox/* can spin up real preview containers. Container then needs
+# --privileged or socket mount to actually run docker.
+RUN if [ "$INCLUDE_DOCKER_SANDBOX" = "1" ]; then \
+        echo "Installing Docker CLI for sandbox preview…" && \
+        apt-get update && apt-get install -y --no-install-recommends \
+            docker.io docker-compose-v2 && \
+        apt-get clean && rm -rf /var/lib/apt/lists/*; \
+    else \
+        echo "Skipping Docker CLI install (set --build-arg INCLUDE_DOCKER_SANDBOX=1 to enable)"; \
+    fi
+ENV AIFACTORY_SANDBOX_DOCKER_AVAILABLE=${INCLUDE_DOCKER_SANDBOX}
 
 # ── Node.js 20 LTS ─────────────────────────────────────────────────────────
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -83,7 +108,11 @@ ENV NEXT_PUBLIC_GA_MEASUREMENT_ID=${NEXT_PUBLIC_GA_MEASUREMENT_ID}
 WORKDIR /app/web/frontend
 # PWA manifest requires on-disk PNGs (prebuild); ensure icons exist if npm lifecycle changes.
 RUN python3 scripts/gen_pwa_icons.py
-RUN npm install \
+# --ignore-scripts blocks malicious postinstall hooks from transitive deps (EXP-89).
+# `npm rebuild` after install ensures native modules that legitimately need a
+# build step (e.g., sharp) still get compiled, in a controlled phase.
+RUN npm ci --ignore-scripts \
+    && npm rebuild \
     && npm run build \
     && npm prune --production
 

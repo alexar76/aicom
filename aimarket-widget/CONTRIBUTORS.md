@@ -3,16 +3,13 @@
 ## Maintainers
 
 - **AI Commons / AI-Factory** — primary maintainers ([security@aicom.io](mailto:security@aicom.io))
-- Standalone repo: [github.com/alexar76/aimarket-widget](https://github.com/alexar76/aimarket-widget)
 
-## How to contribute
+## Contributing
 
-See **[CONTRIBUTING.md](CONTRIBUTING.md)** for setup, PR checklist, and code style.
-
-1. Fork → branch → PR
-2. Manual test with `demo.html`
+1. Fork the repository (when published as a standalone repo)
+2. Open a PR with tests and documentation updates
 3. Sign off commits (`Signed-off-by:`) for DCO traceability
 
 ## Recognition
 
-Contributors are credited in git history and release notes. Thank you for improving the embeddable AI marketplace surface.
+Contributors are listed in git history. For release notes, see the monorepo tag or GitHub Releases page.

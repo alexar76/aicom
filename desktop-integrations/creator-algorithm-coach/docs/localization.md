@@ -20,8 +20,8 @@ Shared UI (wallet, backup, economics bar) comes from `aicom_desktop_core` ARB fi
 ## Add a new language pack (extensible)
 
 1. Create JSON in one of these folders:
-   - `~/Documents/AICOM/language-packs/creator-algorithm-coach/xx.json` (desktop)
-   - `language-packs/creator-algorithm-coach/xx.json` (next to the app / repo root for dev)
+   - `~/Documents/AICOM/language-packs/creator-algorithm-coach/xx.json` (desktop runtime)
+   - `language-packs/xx.json` **inside this app directory** (dev / git — preferred)
 
 2. Format:
 
@@ -37,7 +37,7 @@ Shared UI (wallet, backup, economics bar) comes from `aicom_desktop_core` ARB fi
 4. In app **Settings → Reload language packs**
 5. Select the new locale from the list
 
-Example: see `language-packs/creator-algorithm-coach/de.json` in this repo.
+Example: see `language-packs/de.json` in this app directory (e.g. `apps/reputation-dashboard/language-packs/` in the desktop monorepo).
 
 ## Regenerate built-in catalogs
 
