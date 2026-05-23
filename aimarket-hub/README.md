@@ -1,6 +1,6 @@
-# AIMarket Hub v2.0.0
+# AIMarket Hub v3.0.0
 
-**License:** Apache-2.0  
+**License:** Apache-2.0
 **Status:** Reference implementation of [AIMarket Protocol v2](../aimarket-protocol/spec.md)
 
 Federation hub for AI capability discovery, indexing, search, and routing.
