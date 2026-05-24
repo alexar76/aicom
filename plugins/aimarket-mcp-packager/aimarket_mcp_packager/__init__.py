@@ -1,1 +1,0 @@
-# aimarket-mcp-packager plugin

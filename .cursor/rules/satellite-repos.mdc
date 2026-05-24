@@ -1,0 +1,52 @@
+---
+description: How to push aicom monorepo vs separate satellite GitHub repos
+alwaysApply: true
+---
+
+# Satellite repos — push rules for agents
+
+The `aicom` folder is a **dev monorepo**. Several subfolders have **their own GitHub repos** and must **NOT** be pushed to `alexar76/aicom` via plain `git push`.
+
+## Source of truth
+
+- Map: `scripts/satellite-map.yaml`
+- Orchestrator: `scripts/publish_all_repos.sh` (idempotent)
+- Single satellite: `scripts/publish_satellite.sh <id>` or `scripts/mirror_satellites.sh --satellite <id>`
+- Factory only: `scripts/publish_aicom_factory.sh`
+
+## When user asks to "push" or "publish"
+
+| Intent | Command |
+|--------|---------|
+| Everything (satellites + trimmed aicom) | `./scripts/publish_all_repos.sh` |
+| All satellites only | `./scripts/publish_all_repos.sh --satellites-only` |
+| Trimmed aicom factory only | `./scripts/publish_all_repos.sh --factory-only` |
+| One repo | `./scripts/publish_all_repos.sh --satellite <id>` |
+
+Set `GH_PAT` or `GITHUB_TOKEN` for authenticated pushes.
+
+**Do NOT** run `git push origin main` on the monorepo root to update public GitHub — that uploads satellite folders into `aicom`.
+
+## Monorepo path → GitHub repo
+
+| Satellite id | Monorepo path | GitHub repo |
+|--------------|---------------|-------------|
+| `aicom-wiki` | `scripts/wiki-gitea/` | `alexar76/aicom.wiki` |
+| `ai-service-mesh` | `ai-service-mesh/` | `alexar76/ai-service-mesh` |
+| `aimarket-desktop` | `desktop-integrations/` | `alexar76/aimarket-desktop` |
+| `pulse-terminal` | `apps/pulse-terminal/` | `alexar76/pulse-terminal` |
+| `acex` | `acex/` | `alexar76/acex` |
+| `aimarket-agent` | `aimarket-agent/` | `alexar76/aimarket-agent` |
+| `aimarket-hub` | `aimarket-hub/` | `alexar76/aimarket-hub` |
+| `aimarket-protocol` | `aimarket-protocol/` | `alexar76/aimarket-protocol` |
+| `aimarket-sdks` | `aimarket-sdks/` | `alexar76/aimarket-sdks` |
+| `aimarket-widget` | `aimarket-widget/` | `alexar76/aimarket-widget` |
+| `aimarket-plugins` | `plugins/` | `alexar76/aimarket-plugins` |
+
+## language-packs/reputation-dashboard
+
+Not a separate public repo. Legacy root path `language-packs/reputation-dashboard/` is excluded from factory aicom and merged into `aimarket-desktop` at `apps/reputation-dashboard/language-packs/` when mirroring. Prefer canonical path: `desktop-integrations/reputation-dashboard/language-packs/`.
+
+## Idempotency
+
+All publish scripts exit 0 with "already in sync" / "No changes" when remotes match — safe to re-run.

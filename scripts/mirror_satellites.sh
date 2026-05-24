@@ -297,8 +297,8 @@ export_plugins() {
 
   echo ""
   echo "━━━ ${sat_id} ━━━"
-  echo "  Source:  plugins/ → plugins/"
-  echo "           aimarket-hub/plugins/aimarket-provenance → plugins/aimarket-provenance"
+  echo "  Source:  plugins/aimarket-* → repo root"
+  echo "           aimarket-hub/plugins/aimarket-provenance → aimarket-provenance/"
   echo "  Remote:  ${GITHUB_HOST}/${GITHUB_ORG}/${repo}"
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
@@ -322,19 +322,30 @@ export_plugins() {
 
   local rsync_args=(-a --exclude .git --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude build --exclude dist --exclude .DS_Store)
 
-  # Main plugins
-  mkdir -p "$clone/plugins"
-  if [[ -d "$ROOT/plugins" ]]; then
-    rsync "${rsync_args[@]}" "$ROOT/plugins/" "$clone/plugins/"
-    echo "  ✓ plugins/"
+  # Flat layout: aimarket-* packages at repo root (matches github.com/alexar76/aimarket-plugins)
+  for pkg in "$ROOT"/plugins/aimarket-*/; do
+    [[ -d "$pkg" ]] || continue
+    local name
+    name=$(basename "$pkg")
+    rsync "${rsync_args[@]}" "$pkg/" "$clone/$name/"
+    echo "  ✓ $name/"
+  done
+
+  if [[ -f "$ROOT/plugins/README.md" ]]; then
+    cp "$ROOT/plugins/README.md" "$clone/README.md"
+    echo "  ✓ README.md"
   fi
 
-  # Extra: aimarket-provenance from aimarket-hub
+  if [[ -d "$ROOT/plugins/docs" ]]; then
+    rsync "${rsync_args[@]}" "$ROOT/plugins/docs/" "$clone/docs/"
+    echo "  ✓ docs/"
+  fi
+
+  # aimarket-provenance lives under aimarket-hub in the monorepo
   local provenance_src="$ROOT/aimarket-hub/plugins/aimarket-provenance"
   if [[ -d "$provenance_src" ]]; then
-    mkdir -p "$clone/plugins/aimarket-provenance"
-    rsync "${rsync_args[@]}" "$provenance_src/" "$clone/plugins/aimarket-provenance/"
-    echo "  ✓ plugins/aimarket-provenance (from aimarket-hub)"
+    rsync "${rsync_args[@]}" "$provenance_src/" "$clone/aimarket-provenance/"
+    echo "  ✓ aimarket-provenance/ (from aimarket-hub)"
   fi
 
   _copy_governance "$clone" "mit" "aimarket-plugins"
@@ -593,6 +604,62 @@ CIEOF
   echo "  ✓ .github/workflows/ci.yml (flutter-analyze + flutter-build-web matrix)"
 }
 
+export_wiki() {
+  local sat_id="aicom-wiki"
+  local repo="aicom.wiki"
+  local src="$ROOT/scripts/wiki-gitea"
+  local remote_url="${AUTH_PREFIX}${GITHUB_HOST}/${GITHUB_ORG}/${repo}.git"
+  local wiki_branch="$BRANCH"
+
+  echo ""
+  echo "━━━ ${sat_id} ━━━"
+  echo "  Source:  scripts/wiki-gitea/*.md"
+  echo "  Remote:  ${GITHUB_HOST}/${GITHUB_ORG}/${repo}"
+
+  [[ -d "$src" ]] || { echo "  ⚠️  SKIP: wiki source missing: $src"; return 1; }
+
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    echo "  [dry-run] would sync wiki pages → $repo/"
+    return 0
+  fi
+
+  local clone="$WORKDIR/${repo}"
+
+  if git ls-remote "$remote_url" "refs/heads/$wiki_branch" &>/dev/null; then
+    :
+  elif git ls-remote "$remote_url" "refs/heads/master" &>/dev/null; then
+    wiki_branch="master"
+  fi
+
+  if git ls-remote "$remote_url" "refs/heads/$wiki_branch" &>/dev/null; then
+    git clone --depth 1 --branch "$wiki_branch" "$remote_url" "$clone" 2>/dev/null || {
+      git clone --depth 1 "$remote_url" "$clone"
+      (cd "$clone" && git checkout -B "$wiki_branch" 2>/dev/null || git checkout -b "$wiki_branch")
+    }
+  else
+    mkdir -p "$clone"
+    (cd "$clone" && git init && git checkout -b "$wiki_branch")
+    echo "  ℹ️  Remote repo not found — initializing fresh"
+  fi
+
+  find "$src" -maxdepth 1 -name '*.md' ! -name 'README.md' -print0 | while IFS= read -r -d '' f; do
+    cp -f "$f" "$clone/"
+  done
+
+  for old in "$clone"/*.md; do
+    [[ -e "$old" ]] || continue
+    local base
+    base=$(basename "$old")
+    [[ "$base" == "README.md" ]] && continue
+    [[ -f "$src/$base" ]] || rm -f "$old"
+  done
+
+  local saved_branch="$BRANCH"
+  BRANCH="$wiki_branch"
+  _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "mit"
+  BRANCH="$saved_branch"
+}
+
 # ── Commit & Push ───────────────────────────────────────────────────────────
 
 _commit_and_push() {
@@ -673,6 +740,9 @@ export_satellite() {
     aimarket-agent)
       export_simple "$sat_id" "aimarket-agent" "aimarket-agent" "mit"
       ;;
+    aicom-wiki)
+      export_wiki
+      ;;
     aicom)
       echo ""
       echo "━━━ aicom (trimmed factory) ━━━"
@@ -726,5 +796,7 @@ echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aimarket-widget"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aimarket-protocol"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aimarket-agent"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aimarket-plugins"
+echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aicom.wiki"
 echo ""
-echo "Workflow: .github/workflows/mirror-satellites.yml"
+echo "All repos: ./scripts/publish_all_repos.sh"
+echo "Workflow:  .github/workflows/mirror-satellites.yml"

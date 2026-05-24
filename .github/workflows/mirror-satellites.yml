@@ -4,45 +4,49 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      satellite:
+        description: 'Satellite id (empty = all). See scripts/satellite-map.yaml'
+        required: false
+        default: ''
+      satellites_only:
+        description: 'Skip trimmed aicom factory push'
+        type: boolean
+        default: false
+      factory_only:
+        description: 'Push trimmed aicom factory only'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
-  mirror:
-    name: Mirror satellite repos
+  publish:
+    name: Publish satellites + factory
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - prefix: aimarket-protocol
-            repo: alexar76/aimarket-protocol
-          - prefix: aimarket-hub
-            repo: alexar76/aimarket-hub
-          - prefix: aimarket-widget
-            repo: alexar76/aimarket-widget
-          - prefix: aimarket-agent
-            repo: alexar76/aimarket-agent
-          - prefix: plugins
-            repo: alexar76/aimarket-plugins
-
     steps:
-      - name: Checkout monorepo with full history
+      - name: Checkout monorepo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.ref_name }}
 
-      - name: Verify working tree and prefix
-        run: |
-          git log -1 --oneline
-          echo "Resolved HEAD: $(git rev-parse HEAD)"
-          echo "Prefix contents:"
-          ls -la ${{ matrix.prefix }}/
+      - name: Install PyYAML
+        run: pip install pyyaml
 
-      - name: Push subtree to ${{ matrix.repo }}
+      - name: Publish repos (idempotent)
+        env:
+          GH_PAT: ${{ secrets.MIRROR_SATELLITE_PAT }}
+          GITHUB_TOKEN: ${{ secrets.MIRROR_SATELLITE_PAT }}
+          SATELLITE_GITHUB_ORG: alexar76
+          AICOM_FACTORY_REMOTE: https://x-access-token:${{ secrets.MIRROR_SATELLITE_PAT }}@github.com/alexar76/aicom.git
         run: |
-          git remote add satellite https://x-access-token:${{ secrets.MIRROR_SATELLITE_PAT }}@github.com/${{ matrix.repo }}.git
-          git subtree push --prefix=${{ matrix.prefix }} satellite main
+          chmod +x scripts/publish_all_repos.sh scripts/mirror_satellites.sh scripts/publish_aicom_factory.sh
+          ARGS=()
+          if [[ "${{ inputs.factory_only }}" == "true" ]]; then
+            ARGS+=(--factory-only)
+          elif [[ "${{ inputs.satellites_only }}" == "true" ]]; then
+            ARGS+=(--satellites-only)
+          elif [[ -n "${{ inputs.satellite }}" ]]; then
+            ARGS+=(--satellite "${{ inputs.satellite }}")
+          fi
+          ./scripts/publish_all_repos.sh "${ARGS[@]}"

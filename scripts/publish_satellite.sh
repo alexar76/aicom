@@ -85,6 +85,11 @@ if [[ "$SAT_ID" == "aimarket-plugins" ]]; then
   exec bash "$ROOT/scripts/mirror_satellites.sh" --satellite aimarket-plugins "$@"
   exit $?
 fi
+if [[ "$SAT_ID" == "aicom-wiki" ]]; then
+  echo "→ aicom-wiki requires wiki page filter — delegating to mirror_satellites.sh"
+  exec bash "$ROOT/scripts/mirror_satellites.sh" --satellite aicom-wiki "$@"
+  exit $?
+fi
 
 SRC="$ROOT/$SRC_PATH"
 [[ -d "$SRC" ]] || { echo "error: source missing: $SRC" >&2; exit 2; }

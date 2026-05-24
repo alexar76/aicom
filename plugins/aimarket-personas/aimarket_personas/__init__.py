@@ -1,1 +1,0 @@
-# aimarket-personas plugin

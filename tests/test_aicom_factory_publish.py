@@ -26,8 +26,22 @@ def test_factory_excludes_all_satellite_roots():
         "apps/pulse-terminal",
         "plugins",
         "language-packs",
+        "wiki",
+        "scripts/wiki-gitea",
     ):
         assert p in excludes, p
+
+
+def test_publish_all_repos_script_exists():
+    assert (ROOT / "scripts" / "publish_all_repos.sh").is_file()
+
+
+def test_satellite_map_includes_wiki():
+    import yaml
+
+    data = yaml.safe_load((ROOT / "scripts" / "satellite-map.yaml").read_text())
+    ids = {s["id"] for s in data.get("satellites", [])}
+    assert "aicom-wiki" in ids
 
 
 def test_publish_scripts_exist():

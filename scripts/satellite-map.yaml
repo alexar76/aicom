@@ -157,6 +157,23 @@ satellites:
     ci:
       - pytest-plugins
 
+  - id: aicom-wiki
+    repo: aicom.wiki
+    license: mit
+    paths:
+      - scripts/wiki-gitea
+    export_layout:
+      root_from: scripts/wiki-gitea
+      wiki_pages:
+        include: "*.md"
+        exclude:
+          - README.md
+    registries: []
+    ci: []
+    notes: >
+      GitHub wiki repo (alexar76/aicom.wiki). Source of truth: scripts/wiki-gitea/*.md.
+      Gitea wiki push remains optional via scripts/push-gitea-wiki.sh.
+
   - id: aicom
     repo: aicom
     license: mit
@@ -175,6 +192,8 @@ satellites:
       - aimarket-sdks
       - apps/pulse-terminal
       - language-packs
+      - wiki
+      - scripts/wiki-gitea
     registries:
       - ghcr:aicom-factory
     ci:
