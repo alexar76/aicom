@@ -115,6 +115,11 @@ for p in "${EXCLUDES[@]}"; do
   fi
 done
 
+# Runtime pipeline state must never ship to public factory remote
+if [[ -e "$CLONE/data/state" ]]; then
+  rm -rf "$CLONE/data/state"
+fi
+
 cd "$CLONE"
 git add -A
 
@@ -122,6 +127,7 @@ git add -A
 for p in "${EXCLUDES[@]}"; do
   git rm -rf --ignore-unmatch "$p" 2>/dev/null || true
 done
+git rm -rf --ignore-unmatch data/state 2>/dev/null || true
 
 if git diff --cached --quiet && git diff --quiet; then
   echo "Nothing to commit — factory remote already matches trimmed tree."
