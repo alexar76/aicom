@@ -26,6 +26,7 @@ DEFAULT_RSYNC_EXCLUDES = [
     "build",
     "dist",
     ".mesh_data",
+    "data/state",
     "data/channels.db-shm",
     "data/channels.db-wal",
     "*.egg-info",
