@@ -25,9 +25,11 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [oidcEnabled, setOidcEnabled] = useState(false);
 
   useEffect(() => {
     setLocale(detectAdminLocale());
+    api.oidcStatus().then((s) => setOidcEnabled(Boolean(s.enabled))).catch(() => {});
   }, []);
 
   const onLocaleChange = (next: AdminLocale) => {
@@ -191,6 +193,27 @@ export default function AdminLoginPage() {
                   ? t(locale, 'login.verify2fa')
                   : t(locale, 'login.submit')}
             </Button>
+
+            {oidcEnabled && !requires2FA && !requiresWebAuthn && (
+              <>
+                <motion.div className="relative flex items-center py-1">
+                  <div className="grow border-t border-white/10" />
+                  <span className="mx-3 text-xs text-gray-500">{t(locale, 'login.ssoDivider')}</span>
+                  <div className="grow border-t border-white/10" />
+                </motion.div>
+                <Button
+                  className="w-full"
+                  size="lg"
+                  variant="secondary"
+                  onClick={() => {
+                    window.location.href = '/api/admin/auth/oidc/login';
+                  }}
+                  disabled={loading}
+                >
+                  {t(locale, 'login.sso')}
+                </Button>
+              </>
+            )}
           </div>
 
           <p className="text-center text-xs text-gray-600 mt-6">{t(locale, 'login.footer')}</p>

@@ -920,6 +920,10 @@ class ApiClient {
     });
   }
 
+  async oidcStatus(): Promise<{ enabled: boolean; issuer: string | null }> {
+    return this.request('/admin/auth/oidc/status');
+  }
+
   async webauthnLoginOptions(username: string): Promise<{ publicKey: Record<string, unknown> }> {
     return this.request('/admin/auth/webauthn/login/options', {
       method: 'POST',

@@ -142,6 +142,15 @@ Open an issue with:
 - Add focused tests for pipeline state transitions, quality gates, or finance aggregation.
 - Improve admin UI filters, error messages, or observability panels.
 - Per-route OpenAPI `summary` / `description` on heavily used admin endpoints.
+
+Use the **good first issue** template when opening starter tasks. Audit follow-ups (no grants): [`docs/audit-remediation.md`](docs/audit-remediation.md).
+
+## Security scans (before PR)
+
+```bash
+./scripts/run_security_benchmark.sh    # pytest security subset
+./scripts/run_dependency_audit.sh      # bandit + pip-audit + npm audit
+```
 - Type hints on a single agent module you are already modifying.
 
 ## Where to read more

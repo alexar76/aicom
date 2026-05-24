@@ -21,7 +21,8 @@ from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from passlib.context import CryptContext
 
-from core.jwt_tokens import decode_hs256_optional, encode_hs256
+from web.backend.core.oidc_auth import username_from_trusted_header
+from web.backend.http.client_ip import client_ip
 from core.paths import jwt_secret_file_path, legacy_admin_path, legacy_audit_log_path
 from core.logging_utils import log_suppressed
 
@@ -332,6 +333,18 @@ async def get_current_admin(
         )
 
     token = None
+
+    # Trusted reverse-proxy SSO (Authelia / oauth2-proxy / Keycloak gate)
+    peer_ip = client_ip(request)
+    hdr_user = username_from_trusted_header(dict(request.headers), peer_ip)
+    if hdr_user:
+        return {
+            "sub": hdr_user,
+            "username": hdr_user,
+            "admin": True,
+            "role": (os.environ.get("AIFACTORY_SSO_TRUSTED_DEFAULT_ROLE") or "admin"),
+            "sso": "trusted-header",
+        }
     
     # Try Authorization header first
     if credentials:

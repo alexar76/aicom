@@ -82,6 +82,7 @@ There is **no** admin UI action to delete pipeline products; demo protection doe
 | **LLM provider ids** | On startup, `auto_migrate_provider_ids()` renames legacy keys in `model_providers.yaml` and `llm_calls.jsonl` (`AIFACTORY_AUTO_MIGRATE_PROVIDER_IDS=1`, default). |
 | **WebAuthn 2FA** | Passkeys as alternative to TOTP (`mfa_method`: `webauthn` \| `totp`). Env: `AIFACTORY_WEBAUTHN_RP_ID`, `AIFACTORY_WEBAUTHN_ORIGIN`, `AIFACTORY_WEBAUTHN_RP_NAME`. |
 | **CI security benchmark** | `scripts/run_security_benchmark.sh` — pytest subset for CSRF, firewall, audit, sandbox, usage guard, WebAuthn helpers. |
+| **Dependency / SAST CI** | `scripts/run_dependency_audit.sh` — Bandit (fail High), pip-audit, npm audit. Workflow: `.github/workflows/security-scan.yml`. Tracker: [audit-remediation.md](./audit-remediation.md). |
 
 ---
 

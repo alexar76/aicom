@@ -181,7 +181,7 @@ def resolve_product_name(
     collision = base_slug in used or _web_exact_name_exists(name)
     if collision:
         # Short numeric disambiguator — avoids ugly 4-hex fragments users read as garbage.
-        h = hashlib.sha1(product_id.encode("utf-8")).hexdigest()
+        h = hashlib.sha1(product_id.encode("utf-8"), usedforsecurity=False).hexdigest()
         tail = str(int(h[:8], 16) % 900 + 100)
         name = f"{name} ({tail})"
         base_slug = _slug(name)

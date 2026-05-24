@@ -154,7 +154,8 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD python3 -c "import urllib.request; urllib.request.urlopen('http://localhost:8081/api/health')" || exit 1
 
 # ── Entry Point ────────────────────────────────────────────────────────────
-EXPOSE 8080
+# 8080 = Next.js frontend, 8081 = FastAPI backend (see entrypoint.sh)
+EXPOSE 8080 8081
 
 # Make entrypoint executable
 RUN chmod +x /app/entrypoint.sh

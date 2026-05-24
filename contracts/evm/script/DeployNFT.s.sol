@@ -41,6 +41,21 @@ contract DeployCapabilityNFTScript is Script {
         console.log("Chain ID: %d", block.chainid);
         console.log("Owner: %s", nft.owner());
 
+        // ── Ownership transfer to multisig ──────────────────────────
+        string memory safeAddr = vm.envOr("SAFE_ADDRESS", string(""));
+        if (bytes(safeAddr).length > 0) {
+            address safe = _parseHexAddress(safeAddr);
+            require(safe != address(0), "SAFE_ADDRESS is not a valid address");
+            console.log("Initiating ownership transfer to Safe: %s", safe);
+            nft.transferOwnership(safe);
+            console.log("Ownership transfer initiated. Safe must call acceptOwnership().");
+        } else {
+            console.log("SAFE_ADDRESS not set -- deployer retains ownership.");
+            console.log("For production, re-run with SAFE_ADDRESS=<multisig>.");
+        }
+
+        console.log("Deployment complete.");
+
         return nft;
     }
 

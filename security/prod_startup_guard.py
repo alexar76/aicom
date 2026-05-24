@@ -125,6 +125,63 @@ def production_startup_issues() -> list[str]:
             "real Groth16 circuits before running with AIFACTORY_PROD=1."
         )
 
+    # Database: SQLite is dev/demo only — Postgres required for production load.
+    sqlite_flag = os.environ.get("USE_SQLITE", "").strip().lower()
+    pipeline_db = os.environ.get("PIPELINE_DB_BACKEND", "sqlite").strip().lower()
+    if sqlite_flag in ("1", "true", "yes") or pipeline_db == "sqlite":
+        issues.append(
+            "SQLite pipeline backend in production mode (USE_SQLITE or "
+            "PIPELINE_DB_BACKEND=sqlite). Use Postgres for production — see "
+            "docs/architecture/scaling.md and set PIPELINE_DB_BACKEND=postgres."
+        )
+
+    # LLM: at least one enabled provider must have a resolvable API key.
+    try:
+        from llm.startup_validation import production_llm_key_issues
+
+        issues.extend(production_llm_key_issues())
+    except Exception as exc:
+        logger.warning("prod_startup_guard: LLM key validation skipped: %s", exc)
+
+    # ZK: groth16 artifacts must exist when AIMARKET_ZK_BACKEND=groth16.
+    try:
+        from security.zk_artifacts import production_zk_issues
+
+        issues.extend(production_zk_issues())
+    except Exception as exc:
+        logger.warning("prod_startup_guard: ZK artifact validation skipped: %s", exc)
+
+    # Mandatory admin 2FA when AIFACTORY_REQUIRE_ADMIN_2FA=1.
+    if os.environ.get("AIFACTORY_REQUIRE_ADMIN_2FA", "").strip().lower() in ("1", "true", "yes"):
+        issues.extend(_production_2fa_issues())
+
+    return issues
+
+
+def _production_2fa_issues() -> list[str]:
+    """Require TOTP or WebAuthn on the primary admin account."""
+    from security import webauthn_admin as wa
+
+    issues: list[str] = []
+    cfg_path = legacy_admin_path()
+    if not cfg_path.is_file():
+        issues.append(
+            "AIFACTORY_REQUIRE_ADMIN_2FA=1 but admin.json is missing — "
+            "bootstrap admin and enable TOTP or WebAuthn."
+        )
+        return issues
+    try:
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        issues.append("Cannot read admin.json for 2FA requirement check.")
+        return issues
+    totp_on = bool(cfg.get("totp_enabled") and cfg.get("totp_secret"))
+    webauthn_on = wa.webauthn_is_enabled(cfg if isinstance(cfg, dict) else {})
+    if not totp_on and not webauthn_on:
+        issues.append(
+            "AIFACTORY_REQUIRE_ADMIN_2FA=1 but neither TOTP nor WebAuthn is enabled "
+            "for the primary admin. Enable 2FA in Admin → Settings before production."
+        )
     return issues
 
 

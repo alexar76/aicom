@@ -50,6 +50,7 @@ from .core.telemetry import TelemetryCollector
 from .api import products, sandbox, payment, feedback, customer, marketing, support_chat, telemetry_events, ai_market
 from .api import pipeline_demo_replay_public
 from .api.admin import auth as admin_auth
+from .api.admin import oidc_auth as admin_oidc_auth
 from .api.admin import dashboard as admin_dashboard
 from .api.admin import demo_replay_routes as admin_demo_replay_routes
 from .api.admin import chat as admin_chat
@@ -408,6 +409,7 @@ app.include_router(customer.router)
 app.include_router(support_chat.router)
 app.include_router(telemetry_events.router)
 app.include_router(admin_auth.router)
+app.include_router(admin_oidc_auth.router)
 app.include_router(admin_dashboard.router)
 app.include_router(admin_demo_replay_routes.router, prefix="/api/admin")
 app.include_router(admin_chat.router)

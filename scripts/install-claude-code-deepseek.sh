@@ -9,6 +9,7 @@ TEMPLATE_DIR="$ROOT/config/claude-code"
 KEY_FILE="$ROOT/data/secrets/llm/deepseek_api_key"
 ENV_OUT="${CLAUDE_CODE_DEEPSEEK_ENV:-/root/.config/claude-code/deepseek.env}"
 SETTINGS_OUT="${CLAUDE_CODE_SETTINGS:-/root/.claude/settings.json}"
+WRAPPER_OUT="${CLAUDE_CODE_WRAPPER:-${HOME}/.local/bin/claude}"
 MARKER='api.deepseek.com/anthropic'
 QUIET=0
 
@@ -16,13 +17,19 @@ usage() {
   cat <<'EOF'
 Usage: install-claude-code-deepseek.sh [--quiet] [--check]
 
-Installs ~/.claude/settings.json and ~/.config/claude-code/deepseek.env from
-config/claude-code/ in this repo. Reads the API key from:
+Installs ~/.claude/settings.json, ~/.config/claude-code/deepseek.env, and a
+~/.local/bin/claude wrapper from config/claude-code/ in this repo. Reads the
+API key from:
   data/secrets/llm/deepseek_api_key
 or, if missing, migrates from an existing deepseek.env / DEEPSEEK_API_KEY.
 
-Do not add 'source ~/.config/claude-code/deepseek.env' to ~/.bashrc — Claude Code
-reads the key via apiKeyHelper; exporting ANTHROPIC_AUTH_TOKEN causes an auth conflict.
+DeepSeek auth model (no conflict on restart):
+  - Key lives in deepseek.env as DEEPSEEK_API_KEY (never ANTHROPIC_AUTH_TOKEN).
+  - Claude Code reads it via settings.json → apiKeyHelper.
+  - Shell startup unsets ANTHROPIC_AUTH_TOKEN and prepends ~/.local/bin so the
+    `claude` wrapper strips any stale token inherited from Cursor / old sessions.
+
+Do NOT add 'source ~/.config/claude-code/deepseek.env' to ~/.bashrc.
 
 --quiet   Only print errors
 --check   Exit 0 if config is present and valid, 1 otherwise (no writes)
@@ -42,7 +49,7 @@ read_key() {
     # shellcheck source=/dev/null
     source "$ENV_OUT" 2>/dev/null || true
     set -u
-    k="${ANTHROPIC_AUTH_TOKEN:-}"
+    k="${DEEPSEEK_API_KEY:-${ANTHROPIC_AUTH_TOKEN:-}}"
     if [[ -n "$k" ]]; then
       mkdir -p "$(dirname "$KEY_FILE")"
       printf '%s' "$k" >"$KEY_FILE"
@@ -65,28 +72,77 @@ read_key() {
 
 config_ok() {
   [[ -f "$SETTINGS_OUT" ]] && grep -qF "$MARKER" "$SETTINGS_OUT" 2>/dev/null \
+    && grep -qF 'DEEPSEEK_API_KEY' "$SETTINGS_OUT" 2>/dev/null \
     && [[ -f "$ENV_OUT" ]] && grep -qF "$MARKER" "$ENV_OUT" 2>/dev/null \
-    && grep -qF 'ANTHROPIC_AUTH_TOKEN=sk-' "$ENV_OUT" 2>/dev/null
+    && grep -qF 'DEEPSEEK_API_KEY=sk-' "$ENV_OUT" 2>/dev/null \
+    && [[ -x "$WRAPPER_OUT" ]] \
+    && grep -qF 'ANTHROPIC_AUTH_TOKEN' "$WRAPPER_OUT" 2>/dev/null
 }
 
 install_files() {
   local key="$1"
-  mkdir -p "$(dirname "$ENV_OUT")" "$(dirname "$SETTINGS_OUT")"
+  mkdir -p "$(dirname "$ENV_OUT")" "$(dirname "$SETTINGS_OUT")" "$(dirname "$WRAPPER_OUT")"
   sed "s|__DEEPSEEK_API_KEY__|${key}|g" "$TEMPLATE_DIR/deepseek.env.template" >"$ENV_OUT"
   chmod 600 "$ENV_OUT"
   cp "$TEMPLATE_DIR/settings.json" "$SETTINGS_OUT"
   chmod 600 "$SETTINGS_OUT"
+  install_claude_wrapper
 }
 
-# Sourcing deepseek.env in ~/.bashrc exports ANTHROPIC_AUTH_TOKEN and conflicts with apiKeyHelper.
-remove_bashrc_deepseek_source() {
+install_claude_wrapper() {
+  cat >"$WRAPPER_OUT" <<'WRAPPER'
+#!/usr/bin/env bash
+# Managed by aicom/scripts/install-claude-code-deepseek.sh
+# Strip ANTHROPIC_AUTH_TOKEN from the environment before launching Claude Code.
+# The API key is supplied via ~/.claude/settings.json → apiKeyHelper →
+# ~/.config/claude-code/deepseek.env (DEEPSEEK_API_KEY). Exporting
+# ANTHROPIC_AUTH_TOKEN in the shell causes "Auth conflict" on every start.
+REAL_CLAUDE="$(PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" command -v claude 2>/dev/null || true)"
+if [[ -z "$REAL_CLAUDE" || "$REAL_CLAUDE" == "$0" ]]; then
+  REAL_CLAUDE="/usr/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe"
+fi
+exec env -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_API_KEY "$REAL_CLAUDE" "$@"
+WRAPPER
+  chmod 755 "$WRAPPER_OUT"
+}
+
+# Never source deepseek.env from ~/.bashrc — and always unset stale tokens that
+# Cursor / old sessions may have injected into the environment.
+ensure_bashrc_claude() {
   local rc="${HOME}/.bashrc"
   [[ -f "$rc" ]] || return 0
-  if grep -qF '. /root/.config/claude-code/deepseek.env' "$rc" 2>/dev/null \
-    || grep -qF 'source /root/.config/claude-code/deepseek.env' "$rc" 2>/dev/null; then
+
+  # Remove legacy lines that sourced deepseek.env (exports ANTHROPIC_AUTH_TOKEN).
+  if grep -qF '.config/claude-code/deepseek.env' "$rc" 2>/dev/null; then
     sed -i '/\.config\/claude-code\/deepseek\.env/d' "$rc"
-    log "Removed deepseek.env source from $rc (use apiKeyHelper only)"
+    log "Removed deepseek.env source from $rc"
   fi
+
+  local marker='# aicom: claude-code deepseek (managed — do not edit)'
+  if grep -qF "$marker" "$rc" 2>/dev/null; then
+    return 0
+  fi
+
+  # Insert BEFORE `[ -z "$PS1" ] && return` so non-interactive shells (cron,
+  # Cursor subshells) also strip ANTHROPIC_AUTH_TOKEN.
+  local tmp
+  tmp="$(mktemp)"
+  awk -v block="$(cat <<'AWKBLOCK'
+
+# aicom: claude-code deepseek (managed — do not edit)
+# Must run before the interactive-only guard below — Cursor terminals inherit
+# ANTHROPIC_AUTH_TOKEN from parent processes; strip it so apiKeyHelper is the
+# sole auth path. Key: ~/.config/claude-code/deepseek.env → DEEPSEEK_API_KEY.
+/root/claudecode/aicom/scripts/install-claude-code-deepseek.sh -q 2>/dev/null || true
+unset ANTHROPIC_AUTH_TOKEN ANTHROPIC_API_KEY 2>/dev/null || true
+export PATH="$HOME/.local/bin:$PATH"
+AWKBLOCK
+)" '
+    /^\[ -z "\$PS1" \] && return/ && !done { print block; done=1 }
+    { print }
+  ' "$rc" >"$tmp"
+  mv "$tmp" "$rc"
+  log "Inserted Claude Code env guard at top of $rc"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -102,12 +158,12 @@ done
 [[ -f "$TEMPLATE_DIR/deepseek.env.template" ]] || { err "missing template"; exit 2; }
 
 if config_ok; then
-  remove_bashrc_deepseek_source
+  ensure_bashrc_claude
   log "Claude Code DeepSeek config OK"
   exit 0
 fi
 
 key="$(read_key)" || exit 1
 install_files "$key"
-remove_bashrc_deepseek_source
-log "Installed Claude Code DeepSeek → $SETTINGS_OUT , $ENV_OUT"
+ensure_bashrc_claude
+log "Installed Claude Code DeepSeek → $SETTINGS_OUT , $ENV_OUT , $WRAPPER_OUT"

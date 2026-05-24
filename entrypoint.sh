@@ -21,6 +21,9 @@ source /app/venv/bin/activate
 load_llm_provider_secrets
 load_sandbox_demo_password
 
+# Fernet vault sync + HashiCorp/env resolver → export LLM keys
+python3 -m security.bootstrap_secrets || echo "⚠ Secret vault bootstrap skipped"
+
 # DeepSeek: persist API key + v4 models + reset circuit (survives volume / deploy)
 python3 -m llm.persist_deepseek || echo "⚠ DeepSeek provider sync skipped (no key yet)"
 
@@ -28,7 +31,7 @@ python3 -m llm.persist_deepseek || echo "⚠ DeepSeek provider sync skipped (no 
 python3 /app/scripts/materialize_all_spec_landings.py || echo "⚠ Spec landing materialize skipped"
 
 # ── Ensure All Data Directories Exist (bind mount compatibility) ──────────
-mkdir -p /app/data/config /app/data/logs /app/data/secrets /app/data/state
+mkdir -p /app/data/config /app/data/logs /app/data/secrets /app/data/secrets/zk /app/data/state
 mkdir -p /app/data/arch /app/data/bugs /app/data/code /app/data/specs
 mkdir -p /app/data/telemetry /app/data/feedback
 mkdir -p /app/data/reports/director
@@ -209,6 +212,8 @@ esac
 # single-writer lock causes crash loops under concurrent multiprocess load.
 # Default 1 worker is safe for SQLite. For multi-worker production, set
 # PIPELINE_DB_BACKEND=postgres and PIPELINE_DATABASE_URL before increasing.
+# Root cause of multi-worker instability under load is tracked as KI-3 in
+# docs/known-issues.md — supervisor below is mitigation, not a fix.
 if [ -z "${UVICORN_WORKERS:-}" ]; then
   UVICORN_WORKERS=1
 fi
@@ -216,7 +221,7 @@ case "${UVICORN_WORKERS}" in
   ''|*[!0-9]*) UVICORN_WORKERS=1 ;;
 esac
 if [ "${UVICORN_WORKERS}" -gt 4 ] 2>/dev/null; then
-  echo "⚠ UVICORN_WORKERS=${UVICORN_WORKERS} > 4 — capping at 4 (see entrypoint.sh KNOWN ISSUE note)."
+  echo "⚠ UVICORN_WORKERS=${UVICORN_WORKERS} > 4 — capping at 4 (see docs/known-issues.md KI-3)."
   UVICORN_WORKERS=4
 fi
 

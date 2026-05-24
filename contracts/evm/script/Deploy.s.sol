@@ -33,9 +33,9 @@ contract DeployScript is Script {
         string memory hubsEnv = vm.envOr("INITIAL_HUBS", string(""));
         string memory tokensEnv = vm.envOr("INITIAL_TOKENS", string(""));
 
-        // INITIAL_HUBS must be set explicitly — no dev-default that could ship
-        // a useless 0x111…111 hub to mainnet via a forgotten env var. Likewise
-        // INITIAL_TOKENS — the same USDC address is not valid across networks
+        // INITIAL_HUBS must be set explicitly -- no dev-default that could ship
+        // a useless 0x111...111 hub to mainnet via a forgotten env var. Likewise
+        // INITIAL_TOKENS -- the same USDC address is not valid across networks
         // (mainnet/sepolia/arbitrum all differ), and a wrong default is worse
         // than a missing one.
         require(
@@ -50,7 +50,7 @@ contract DeployScript is Script {
         initialHubs = parseAddressList(hubsEnv);
         initialTokens = parseAddressList(tokensEnv);
 
-        // Sanity: reject the zero address — a parser glitch (trailing comma,
+        // Sanity: reject the zero address -- a parser glitch (trailing comma,
         // empty entry) would otherwise silently authorize address(0).
         for (uint256 i = 0; i < initialHubs.length; i++) {
             require(initialHubs[i] != address(0), "INITIAL_HUBS contains zero address");
@@ -88,6 +88,23 @@ contract DeployScript is Script {
         assert(escrow.whitelistedTokens(initialTokens[0]));
 
         console.log("Constructor params verified on-chain.");
+
+        // ── Ownership transfer to multisig ──────────────────────────
+        // If SAFE_ADDRESS is set, initiate the two-step ownership transfer
+        // to a Gnosis Safe (or any multisig). The Safe must call
+        // acceptOwnership() separately (see script/AcceptOwnership.s.sol).
+        string memory safeAddr = vm.envOr("SAFE_ADDRESS", string(""));
+        if (bytes(safeAddr).length > 0) {
+            address safe = parseAddress(safeAddr);
+            require(safe != address(0), "SAFE_ADDRESS is not a valid address");
+            console.log("Initiating ownership transfer to Safe: %s", safe);
+            escrow.transferOwnership(safe);
+            console.log("Ownership transfer initiated. Safe must call acceptOwnership().");
+        } else {
+            console.log("SAFE_ADDRESS not set -- deployer retains ownership.");
+            console.log("For production, re-run with SAFE_ADDRESS=<multisig>.");
+        }
+
         console.log("Deployment complete.");
 
         return escrow;

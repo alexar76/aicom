@@ -24,4 +24,10 @@ export const LOGIN_DICT: I18nDict = {
   },
   'login.invalidCredentials': { en: 'Invalid credentials', ru: 'Неверные учётные данные', es: 'Credenciales inválidas' },
   'login.language': { en: 'Language', ru: 'Язык', es: 'Idioma' },
+  'login.ssoDivider': { en: 'or', ru: 'или', es: 'o' },
+  'login.sso': {
+    en: 'Sign in with SSO',
+    ru: 'Войти через SSO',
+    es: 'Iniciar sesión con SSO',
+  },
 };

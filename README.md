@@ -267,6 +267,7 @@ POST /api/admin/discovery/run   # JWT; see OpenAPI /api/docs
 - **[docs/README.md](docs/README.md)** — index, admin navigation map
 - **[docs/admin-guide.md](docs/admin-guide.md)** — every Admin tab
 - **[docs/FAQ.md](docs/FAQ.md)** · **[docs/FAQ.ru.md](docs/FAQ.ru.md)**
+- **[docs/known-issues.md](docs/known-issues.md)** — open items that can't be closed in-repo (ZK ceremony, external audit, supervisor root cause) — review before mainnet
 - Screenshots: `cd web/frontend && npm run capture-docs-screenshots`
 
 Licensing: `LICENSE` (MIT), `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`
