@@ -35,8 +35,14 @@ case "$PHASE" in
       exit 1
     fi
     echo "Phase 2: contributor '$CONTRIB_NAME'"
-    ENTROPY="$(openssl rand -hex 32)"
-    snarkjs zkey contribute "$IN_ZKEY" "$OUT_ZKEY" "$CONTRIB_NAME" "$ENTROPY" -v
+    # Entropy MUST NOT appear in argv (/proc/*/cmdline). snarkjs reads it from stdin
+    # when -e is omitted (interactive prompt path in misc.getRandomRng).
+    ENTROPY_FILE="$(mktemp)"
+    chmod 600 "$ENTROPY_FILE"
+    openssl rand -hex 32 > "$ENTROPY_FILE"
+    printf '%s\n' "$(cat "$ENTROPY_FILE")" | snarkjs zkey contribute "$IN_ZKEY" "$OUT_ZKEY" -n "$CONTRIB_NAME" -v
+    shred -uf "$ENTROPY_FILE" 2>/dev/null || rm -f "$ENTROPY_FILE"
+    unset ENTROPY_FILE
     echo ""
     echo "Attestation: publish SHA256 of $OUT_ZKEY and destroy local entropy."
     sha256sum "$OUT_ZKEY"
@@ -51,6 +57,10 @@ case "$PHASE" in
   install-secrets)
     DEST="${AIFACTORY_DATA_ROOT:-$ROOT/data}/secrets/zk"
     mkdir -p "$DEST"
+    ZKEY_SRC="$ZK/build/input_validity_0001.zkey"
+    if [[ -f "$DEST/input_validity_0001.zkey" && -f "$ZKEY_SRC" ]]; then
+      cp -f "$DEST/input_validity_0001.zkey" "$DEST/input_validity_0001.zkey.bak.$(date +%s)"
+    fi
     cp -f "$ZK/build/input_validity_js/input_validity.wasm" "$DEST/input_validity.wasm" 2>/dev/null \
       || cp -f "$ZK/build/input_validity.wasm" "$DEST/" 2>/dev/null || true
     cp -f "$ZK/build/input_validity_0001.zkey" "$DEST/input_validity_0001.zkey"

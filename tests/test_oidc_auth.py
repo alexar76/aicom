@@ -56,3 +56,14 @@ def test_trusted_header_rejects_untrusted_cidr(monkeypatch):
 def test_client_in_trusted_cidr_loopback():
     assert oa.client_in_trusted_cidr("127.0.0.1") is True
     assert oa.client_in_trusted_cidr("8.8.8.8") is False
+
+
+def test_safe_post_login_url_rejects_external(monkeypatch):
+    monkeypatch.delenv("AIFACTORY_PUBLIC_BASE_URL", raising=False)
+    assert oa.safe_post_login_url("/admin/dashboard") == "/admin/dashboard"
+    assert oa.safe_post_login_url("https://evil.example/phish") == "/admin"
+
+
+def test_safe_post_login_url_allows_own_domain(monkeypatch):
+    monkeypatch.setenv("AIFACTORY_PUBLIC_BASE_URL", "https://factory.example")
+    assert oa.safe_post_login_url("https://factory.example/admin") == "https://factory.example/admin"

@@ -18,6 +18,7 @@ from web.backend.core.oidc_auth import (
     map_groups_to_role,
     new_oidc_state,
     oidc_enabled,
+    safe_post_login_url,
     verify_id_token,
 )
 from web.backend.core.security import SecurityManager
@@ -26,7 +27,6 @@ from web.backend.middleware.csrf import CSRF_COOKIE, CSRF_HEADER, new_csrf_token
 from web.backend.services import admin_users_store as aus
 from web.backend.api.admin.auth import (
     _access_token_cookie_secure,
-    _resolve_role_for_login,
 )
 
 logger = logging.getLogger(__name__)
@@ -64,15 +64,19 @@ def _issue_session(
     )
 
 
-def _ensure_oidc_user(username: str, role: str) -> None:
-    """Auto-provision OIDC users on first login (viewer by default)."""
+def _sync_oidc_user(username: str, role: str) -> None:
+    """Provision or refresh OIDC user role from current IdP group mapping."""
     aus.ensure_legacy_admin_users_file()
-    if aus.get_user_by_username(username):
+    normalized = normalize_role(role).value
+    existing = aus.get_user_by_username(username)
+    if existing:
+        if str(existing.get("role")) != normalized:
+            aus.update_user(str(existing["id"]), role=normalized)
         return
     aus.create_user(
         username=username,
         password_hash="!",  # OIDC-only — password login disabled (empty hash fails verify)
-        role=normalize_role(role).value,
+        role=normalized,
     )
 
 
@@ -125,11 +129,10 @@ async def oidc_callback(request: Request, code: str = "", state: str = ""):
     role = map_groups_to_role([str(g) for g in groups]) if groups else (
         os.environ.get("AIFACTORY_OIDC_DEFAULT_ROLE") or "viewer"
     )
-    _ensure_oidc_user(username, role)
+    _sync_oidc_user(username, role)
 
-    frontend = (os.environ.get("AIFACTORY_OIDC_POST_LOGIN_URL") or "/admin").strip()
-    resp = RedirectResponse(url=frontend, status_code=302)
-    _issue_session(request, resp, username, _resolve_role_for_login(username) if aus.get_user_by_username(username) else role)
+    resp = RedirectResponse(url=safe_post_login_url(os.environ.get("AIFACTORY_OIDC_POST_LOGIN_URL")), status_code=302)
+    _issue_session(request, resp, username, role)
     resp.delete_cookie(OIDC_STATE_COOKIE, path="/")
     resp.delete_cookie(OIDC_NONCE_COOKIE, path="/")
     security: SecurityManager = request.app.state.security_manager

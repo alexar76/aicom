@@ -224,6 +224,26 @@ multipart uploads, no untrusted langchain inputs).
 
 ---
 
+## Post-audit code fixes (2026-05-24, in-repo)
+
+Internal review of `b4d64ebf` / `90652fd8` surfaced issues fixed in
+follow-up commits (not operator blockers):
+
+| ID | Severity | Issue | Fix |
+|----|----------|-------|-----|
+| NEW-1 | CRITICAL | ZK ceremony entropy in argv (`ps` leak) | `zk_ceremony_coordinator.sh`: stdin pipe, no `-e` |
+| NEW-2 | HIGH | OIDC nonce optional | Strict `nonce` required in `verify_id_token` |
+| NEW-3 | HIGH | OIDC role stale after group change | `_sync_oidc_user` updates role every login |
+| NEW-4 | MEDIUM | Vault token over HTTP | Refuse remote HTTP; warn on loopback |
+| NEW-5 | MEDIUM | `/zk/prove-input` DoS | Per-IP rate limit (`AIMARKET_ZK_PROVE_RATE_LIMIT`) |
+| NEW-6 | MEDIUM | Truncated proof fields | Return full commitments/nullifier |
+| NEW-7 | MEDIUM | zkey overwrite | Backup before `install-secrets` |
+| NEW-8 | MEDIUM | OIDC post-login open redirect | `safe_post_login_url()` validation |
+
+**Still operator/vendor (unchanged):** KI-1 … KI-5 above.
+
+---
+
 ## How to close an entry
 
 When one of these is resolved:

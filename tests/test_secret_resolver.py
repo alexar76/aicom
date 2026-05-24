@@ -54,3 +54,18 @@ def test_hashicorp_configured_requires_addr_and_token(monkeypatch):
     monkeypatch.setenv("VAULT_ADDR", "https://vault.example.com")
     monkeypatch.setenv("VAULT_TOKEN", "hvs.test")
     assert sr._hashicorp_configured() is True
+
+
+def test_hashicorp_refuses_remote_http(monkeypatch):
+    monkeypatch.setenv("VAULT_ADDR", "http://vault.internal:8200")
+    monkeypatch.setenv("VAULT_TOKEN", "hvs.test")
+    monkeypatch.delenv("AIFACTORY_HASHICORP_VAULT_ALLOW_HTTP", raising=False)
+    assert sr._read_hashicorp("aicom/deepseek-api-key") is None
+
+
+def test_hashicorp_allows_loopback_http(monkeypatch):
+    monkeypatch.setenv("VAULT_ADDR", "http://127.0.0.1:8200")
+    monkeypatch.setenv("VAULT_TOKEN", "hvs.test")
+    monkeypatch.delenv("AIFACTORY_HASHICORP_VAULT_ALLOW_HTTP", raising=False)
+    # No vault server — expect None from network error, not HTTP refusal
+    assert sr._vault_http_allowed("http://127.0.0.1:8200") is True

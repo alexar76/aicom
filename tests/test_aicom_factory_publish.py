@@ -27,6 +27,7 @@ def test_factory_excludes_all_satellite_roots():
         "plugins",
         "wiki",
         "scripts/wiki-gitea",
+        "alien-monitor",
     ):
         assert p in excludes, p
 

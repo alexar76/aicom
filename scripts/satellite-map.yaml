@@ -305,6 +305,29 @@ satellites:
       GitHub wiki repo (alexar76/aicom.wiki). Canonical markdown source: scripts/wiki-gitea/.
       Gitea wiki: scripts/push-gitea-wiki.sh. Local clone folder wiki/ is dev-only (not published).
 
+  - id: alien-monitor
+    repo: alien-monitor
+    description: "Alien Monitor — real-time 3D ecosystem pulse visualizer with AI assistant."
+    topics:
+      - alien-monitor
+      - 3d-visualization
+      - ai-assistant
+      - aimarket
+      - dashboard
+      - ecosystem
+      - monitoring
+      - real-time
+      - threejs
+      - webgl
+    license: mit
+    paths:
+      - alien-monitor
+    export_layout:
+      root_from: alien-monitor
+    registries:
+      - github-releases
+    ci: []
+
   - id: aicom
     repo: aicom
     description: "AI-Factory — autonomous pipeline that designs, builds, tests, and publishes products."
@@ -336,6 +359,7 @@ satellites:
       - apps/pulse-terminal
       - wiki
       - scripts/wiki-gitea
+      - alien-monitor
     registries:
       - ghcr:aicom-factory
     ci:

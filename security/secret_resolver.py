@@ -44,6 +44,15 @@ def _read_hashicorp(path: str) -> dict[str, Any] | None:
     mount = (os.environ.get("AIFACTORY_HASHICORP_VAULT_MOUNT") or "secret").strip().strip("/")
     if not addr or not token:
         return None
+    if addr.startswith("http://") and not _vault_http_allowed(addr):
+        logger.error(
+            "Refusing HashiCorp Vault over plain HTTP (%s) — set https:// or "
+            "AIFACTORY_HASHICORP_VAULT_ALLOW_HTTP=1 for loopback-only dev",
+            addr,
+        )
+        return None
+    if addr.startswith("http://"):
+        logger.warning("HashiCorp Vault token sent over plain HTTP to %s", addr)
     url = f"{addr}/v1/{mount}/data/{path.lstrip('/')}"
     req = request.Request(url, headers={"X-Vault-Token": token})
     try:
@@ -54,6 +63,19 @@ def _read_hashicorp(path: str) -> dict[str, Any] | None:
         return None
     data = payload.get("data", {}).get("data")
     return data if isinstance(data, dict) else None
+
+
+def _vault_http_allowed(addr: str) -> bool:
+    if os.environ.get("AIFACTORY_HASHICORP_VAULT_ALLOW_HTTP", "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+    ):
+        return True
+    from urllib.parse import urlparse
+
+    host = (urlparse(addr).hostname or "").lower()
+    return host in ("127.0.0.1", "localhost", "::1")
 
 
 def _resolve_backend() -> str:

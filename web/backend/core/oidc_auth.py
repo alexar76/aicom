@@ -99,9 +99,25 @@ def verify_id_token(id_token: str, nonce: str) -> dict[str, Any]:
         issuer=issuer,
         options={"require": ["exp", "iat", "sub"]},
     )
-    if claims.get("nonce") and claims["nonce"] != nonce:
-        raise ValueError("OIDC nonce mismatch")
+    if claims.get("nonce") != nonce:
+        raise ValueError("OIDC nonce missing or mismatched")
     return claims
+
+
+def safe_post_login_url(raw: str | None) -> str:
+    """Return a same-origin admin path; reject operator misconfig open redirects."""
+    url = (raw or "/admin").strip()
+    if url.startswith("/") and not url.startswith("//"):
+        return url
+    own = (
+        os.environ.get("AIFACTORY_PUBLIC_BASE_URL")
+        or os.environ.get("AIFACTORY_BASE_URL")
+        or ""
+    ).strip().rstrip("/")
+    if own and (url == own or url.startswith(own + "/")):
+        return url
+    logger.warning("Unsafe AIFACTORY_OIDC_POST_LOGIN_URL %r — falling back to /admin", url)
+    return "/admin"
 
 
 def map_groups_to_role(groups: list[str]) -> str:
