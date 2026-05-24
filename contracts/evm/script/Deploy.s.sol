@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.28;
 
-import {Script} from "forge-std/Script.sol";
-import {AIMarketEscrow} from "../AIMarketEscrow.sol";
+import {Script, console} from "forge-std/Script.sol";
+import {AIMarketEscrow} from "../src/AIMarketEscrow.sol";
 
 /**
  * @title DeployScript

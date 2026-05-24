@@ -2,7 +2,7 @@
 pragma solidity ^0.8.28;
 
 import {Test, console} from "forge-std/Test.sol";
-import {AIMarketEscrow} from "../AIMarketEscrow.sol";
+import {AIMarketEscrow} from "../src/AIMarketEscrow.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 // ── Mock ERC20 with configurable decimals ────────────────────────────────────
@@ -498,7 +498,7 @@ contract AIMarketEscrowTest is Test {
         escrow.expireChannel(CHANNEL_ID);
 
         assertEq(token.balanceOf(depositor), depBefore + DEPOSIT_AMOUNT);
-        assertEq(token.balanceOf(hub), 0, "no debit happened — hub gets nothing");
+        assertEq(token.balanceOf(hub), 0, "no debit happened - hub gets nothing");
         assertEq(
             uint256(escrow.getChannel(CHANNEL_ID).status),
             uint256(AIMarketEscrow.ChannelStatus.Expired)
@@ -648,20 +648,22 @@ contract AIMarketEscrowTest is Test {
 
     function test_eip712_signatureTampering_channelId() public {
         _openChannel(CHANNEL_ID, DEPOSIT_AMOUNT);
-        uint256 deadline = block.timestamp + 1 hours;
-
-        bytes memory sig = _signDebit(CHANNEL_ID, hub, DEBIT_AMOUNT, RECEIPT_ID, 0, deadline);
-        vm.prank(hub);
-        escrow.debitChannel(CHANNEL_ID, DEBIT_AMOUNT, RECEIPT_ID, deadline, sig);
-
-        // Try to use that signature on a different channel
         bytes32 otherId = keccak256("other-channel");
         _openChannel(otherId, DEPOSIT_AMOUNT);
+        uint256 deadline = block.timestamp + 1 hours;
+
+        // Sign for CHANNEL_ID but submit the digest on `otherId`. Use a fresh
+        // receiptId so the contract's receipt double-spend guard doesn't fire
+        // first (defense in depth) — we want this revert path to land on the
+        // signature check.
+        bytes32 freshReceipt = keccak256("receipt-fresh");
+        bytes memory sig = _signDebit(CHANNEL_ID, hub, DEBIT_AMOUNT, freshReceipt, 0, deadline);
+
         vm.prank(hub);
         vm.expectRevert(
             abi.encodeWithSelector(AIMarketEscrow.InvalidSignature.selector)
         );
-        escrow.debitChannel(otherId, DEBIT_AMOUNT, RECEIPT_ID, deadline, sig);
+        escrow.debitChannel(otherId, DEBIT_AMOUNT, freshReceipt, deadline, sig);
     }
 
     /// @notice After hardfork (chainid change), digest must use the new chainId.

@@ -48,6 +48,10 @@ contracts/zk/
 
 ## One-time setup (operator)
 
+> **CRITICAL for production:** A single-contributor zkey is cryptographically
+> weak. For mainnet, run a multi-party ceremony with at least 3 unrelated
+> contributors. See **[ZK_CEREMONY.md](ZK_CEREMONY.md)** for the full guide.
+
 ```bash
 # 1. Install tools
 curl -L https://docs.circom.io/install/ | sh        # circom

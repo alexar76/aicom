@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Deploy AIMarketEscrow to an EVM chain.
 #
+# ⚠️  This deploys the ROOT AIMarketEscrow contract (aimarket-hub escrow).
+#    For ACEX capital-markets contracts, use acex/contracts/evm/deploy.sh instead.
+#    The two sets are INDEPENDENT — deploying the wrong one will give you a
+#    contract that doesn't match your hub/ACEX configuration.
+#
 # Two signing modes:
 #   1. --ledger      Hardware wallet (RECOMMENDED for mainnet)
 #                    Key never leaves the device; nothing visible in ps aux.

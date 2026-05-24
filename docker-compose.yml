@@ -1,8 +1,38 @@
 # AI-Factory v2.1 — Docker Compose
 # Use Docker Compose V2 (`docker compose`). Ubuntu: docker-compose-plugin
+#
+# Architecture: Single-container "batteries-included" design. FastAPI (API),
+# pipeline worker, and Next.js (SSR/storefront) run in one container for
+# zero-config self-hosting. The broader ecosystem (Hub, ACEX, Service Mesh) are
+# separate containers/products deployed independently. See docs/ecosystem-architecture.md.
 # Project `.env` is auto-loaded for variable substitution (copy from .env.example).
+#
+# ⚠️  Non-root container note:
+# The `app` container runs as UID/GID 10001 (`aifactory`) — see Dockerfile.
+# The bind-mounted ./data directory MUST be writable by this UID. The
+# `data-init` sidecar below chowns it on first start (it runs as root
+# briefly, exits, and never touches network — minimal attack surface).
+# If you prefer to skip the sidecar, pre-create the directories yourself:
+#   sudo install -d -o 10001 -g 10001 -m 0750 ./data ./data/secrets
 
 services:
+  data-init:
+    image: alpine:3.19
+    user: "0:0"
+    # Ensure bind-mount ownership matches the non-root UID inside `app`.
+    # `chown` is a no-op when already correct; runs once and exits.
+    # No network — pulls only the alpine base, which the operator already
+    # has from prior pulls (or can pin via `image: alpine:3.19@sha256:...`).
+    command: >
+      sh -c "set -e;
+             install -d -o 10001 -g 10001 -m 0750 /data /data/secrets /data/logs /data/state /data/config;
+             chown -R 10001:10001 /data 2>/dev/null || true;
+             echo 'data-init: ownership normalized to 10001:10001'"
+    volumes:
+      - ./data:/data
+    network_mode: none
+    restart: "no"
+
   app:
     build:
       context: .
@@ -10,6 +40,13 @@ services:
       args:
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:9080}
         NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
+    # Defense in depth — Dockerfile already sets USER aifactory, but make it
+    # explicit at the compose layer too. Operators sometimes layer custom
+    # Dockerfiles on top; this guarantees non-root regardless.
+    user: "10001:10001"
+    depends_on:
+      data-init:
+        condition: service_completed_successfully
     ports:
       - "${AICOM_PORT_FRONTEND:-9080}:8080"
       - "${AICOM_PORT_API:-9081}:8081"
@@ -23,74 +60,90 @@ services:
       - path: .env
         required: false
     environment:
-      # Admin → Settings (YAML overlay) must live under the ./data volume or it is lost on container recreate.
+      # ═══════════════════════════════════════════════════════════════════
+      #  Env-flag taxonomy (35+ AIFACTORY_* vars grouped by subsystem):
+      #    [config]    — filesystem paths, DB backend
+      #    [network]   — CORS, CSP, HSTS, firewall
+      #    [payment]   — on-chain checkout, escrow, testnet/stub guards
+      #    [pipeline]  — quality loops, concurrency, SLO targets
+      #    [sandbox]   — preview isolation, compose generation
+      #    [discovery] — AI market federation, webhooks
+      #    [demo]      — public-demo read-only lockdown
+      #  Each flag is a temporary escape hatch until the default graduates.
+      #  See docs/architecture/module-boundaries.md for the long-term plan.
+      # ═══════════════════════════════════════════════════════════════════
+
+      # [config] Admin → Settings (YAML overlay) must live under the ./data volume or it is lost on container recreate.
       AIFACTORY_CONFIG_YAML: /app/data/config/admin_config_overlay.yaml
       AIFACTORY_CONFIG_FRAGMENTS_DIR: /app/config/fragments
-      # JWT: entrypoint sets JWT_SECRET_KEY from data/secrets/jwt_secret.key (never use an empty default here).
+      # [config] JWT: entrypoint sets JWT_SECRET_KEY from data/secrets/jwt_secret.key (never use an empty default here).
       USE_SQLITE: "true"
       SQLITE_PATH: /app/data/state/pipeline.db
-      # Optional: switch pipeline store to PostgreSQL (Admin → Settings → Pipeline database)
+      # [config] Optional: switch pipeline store to PostgreSQL (Admin → Settings → Pipeline database)
       PIPELINE_DB_BACKEND: ${PIPELINE_DB_BACKEND:-sqlite}
       PIPELINE_DATABASE_URL: ${PIPELINE_DATABASE_URL:-}
-      # Same container: Next.js SSR & explore pages call the API on loopback
+      # [network] Same container: Next.js SSR & explore pages call the API on loopback
       INTERNAL_API_URL: http://127.0.0.1:8081
       UVICORN_WORKERS: ${UVICORN_WORKERS:-1}
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
       NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
-      # Comma-separated browser origins for API CORS; unset = dev defaults + NEXT_PUBLIC_SITE_URL
+      # [network] Comma-separated browser origins for API CORS; unset = dev defaults + NEXT_PUBLIC_SITE_URL
       AIFACTORY_CORS_ORIGINS: ${AIFACTORY_CORS_ORIGINS:-}
-      # Fernet key (urlsafe base64) encrypts ``data/config/firewall_rules.json`` at rest; unset = plain JSON (dev)
+      # [network] Fernet key (urlsafe base64) encrypts ``data/config/firewall_rules.json`` at rest; unset = plain JSON (dev)
       AIFACTORY_FIREWALL_RULES_FERNET_KEY: ${AIFACTORY_FIREWALL_RULES_FERNET_KEY:-}
-      # Compose sandbox previews: internal Docker bridge (no internet egress); 0 if stacks need outbound calls
+      # [sandbox] Compose sandbox previews: internal Docker bridge (no internet egress); 0 if stacks need outbound calls
       AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION: ${AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION:-1}
-      # Pipeline SandboxIsolation: fail instead of subprocess fallback when docker is unavailable.
+      # [sandbox] Pipeline SandboxIsolation: fail instead of subprocess fallback when docker is unavailable.
       AIFACTORY_SANDBOX_REQUIRE_CONTAINER: ${AIFACTORY_SANDBOX_REQUIRE_CONTAINER:-1}
-      # API CSP (strict JSON default in main.py when ENABLE_DEFAULT_CSP=1). Override with AIFACTORY_CSP.
+      # [network] API CSP (strict JSON default in main.py when ENABLE_DEFAULT_CSP=1). Override with AIFACTORY_CSP.
       AIFACTORY_CSP: ${AIFACTORY_CSP:-}
-      # Next.js storefront/admin CSP (see web/frontend/middleware.ts). Override with AIFACTORY_FRONTEND_CSP.
+      # [network] Next.js storefront/admin CSP (see web/frontend/middleware.ts). Override with AIFACTORY_FRONTEND_CSP.
       AIFACTORY_FRONTEND_CSP: ${AIFACTORY_FRONTEND_CSP:-}
       AIFACTORY_ENABLE_DEFAULT_CSP: ${AIFACTORY_ENABLE_DEFAULT_CSP:-1}
-      # Crypto checkout: testnet RPC + optional stub confirmations (browser/CI drills only)
+      # [payment] Crypto checkout: testnet RPC for dev; set to 0 for mainnet. Guarded by prod_startup_guard.
       AIFACTORY_PAYMENT_TESTNET: ${AIFACTORY_PAYMENT_TESTNET:-0}
       AIFACTORY_PAYMENT_VERIFY_STUB: ${AIFACTORY_PAYMENT_VERIFY_STUB:-0}
+      # [network] HSTS
       AIFACTORY_ENABLE_HSTS: ${AIFACTORY_ENABLE_HSTS:-}
       AIFACTORY_HSTS_PRELOAD: ${AIFACTORY_HSTS_PRELOAD:-}
-      # Firewall full default-deny ACL (off by default — set to 1 only after whitelisting operator IPs in
+      # [network] Firewall full default-deny ACL (off by default — set to 1 only after whitelisting operator IPs in
       # data/config/firewall_rules.json, otherwise you lock yourself out of the Admin panel).
       AIFACTORY_FIREWALL_ENFORCE: ${AIFACTORY_FIREWALL_ENFORCE:-0}
-      # Public demo (magic-ai-factory.com): 1 = block backup/restore, settings save, password change,
+      # [demo] Public demo (magic-ai-factory.com): 1 = block backup/restore, settings save, password change,
       # admin user CRUD. Set in .env — survives rebuilds.
       AIFACTORY_DEMO_READONLY: ${AIFACTORY_DEMO_READONLY:-0}
       PROMETHEUS_MULTIPROC_DIR: /tmp/prometheus_multiproc
-      # First-run only: 1 = autonomous pipeline, 0 = ideas only (default; see entrypoint wizard)
+      # [pipeline] First-run only: 1 = autonomous pipeline, 0 = ideas only (default; see entrypoint wizard)
       AIFACTORY_AUTONOMOUS_PIPELINE: ${AIFACTORY_AUTONOMOUS_PIPELINE:-}
-      # Discovery must not silently enqueue ranked ideas unless you opt in (1).
+      # [discovery] Discovery must not silently enqueue ranked ideas unless you opt in (1).
       AIFACTORY_DISCOVERY_AUTO_ENQUEUE: ${AIFACTORY_DISCOVERY_AUTO_ENQUEUE:-0}
+      # [pipeline] SLO targets
       AIFACTORY_PIPELINE_SLO_TARGET_PASS_RATE: ${AIFACTORY_PIPELINE_SLO_TARGET_PASS_RATE:-0.75}
       AIFACTORY_PIPELINE_SLO_MAX_REGRESSION: ${AIFACTORY_PIPELINE_SLO_MAX_REGRESSION:-0.05}
       AIFACTORY_PIPELINE_SLO_MAX_MTTR_HOURS: ${AIFACTORY_PIPELINE_SLO_MAX_MTTR_HOURS:-12}
+      # [discovery] AI Market federation
       AIFACTORY_AI_MARKET_CHAIN: ${AIFACTORY_AI_MARKET_CHAIN:-base}
       AIFACTORY_AI_MARKET_TOKEN: ${AIFACTORY_AI_MARKET_TOKEN:-USDT}
       AIFACTORY_AI_MARKET_CONTRACT: ${AIFACTORY_AI_MARKET_CONTRACT:-}
       AIFACTORY_AI_MARKET_ENTITLEMENT_DAYS: ${AIFACTORY_AI_MARKET_ENTITLEMENT_DAYS:-30}
       AIFACTORY_AI_MARKET_WEBHOOK_1: ${AIFACTORY_AI_MARKET_WEBHOOK_1:-}
       AIFACTORY_AI_MARKET_WEBHOOK_2: ${AIFACTORY_AI_MARKET_WEBHOOK_2:-}
-      # Pipeline remediation and throughput controls
+      # [pipeline] Pipeline remediation and throughput controls
       AIFACTORY_MAX_QUALITY_LOOPS: ${AIFACTORY_MAX_QUALITY_LOOPS:-8}
       AIFACTORY_GATE_FAILING_MODEL: ${AIFACTORY_GATE_FAILING_MODEL:-}
       AIFACTORY_MAX_RUNNING_TASKS: ${AIFACTORY_MAX_RUNNING_TASKS:-24}
       AIFACTORY_TASK_EXECUTOR_CONCURRENCY: ${AIFACTORY_TASK_EXECUTOR_CONCURRENCY:-12}
-      # Generated FastAPI live preview in sandbox iframe + QA-style uvicorn (sessions/cookies)
+      # [sandbox] Generated FastAPI live preview in sandbox iframe + QA-style uvicorn (sessions/cookies)
       AIFACTORY_SANDBOX_PREVIEW_API: ${AIFACTORY_SANDBOX_PREVIEW_API:-1}
-      # Run product docker-compose.yml in sandbox (DB + API + web); set 0 to disable
+      # [sandbox] Run product docker-compose.yml in sandbox (DB + API + web); set 0 to disable
       AIFACTORY_SANDBOX_COMPOSE_PREVIEW: ${AIFACTORY_SANDBOX_COMPOSE_PREVIEW:-1}
       AIFACTORY_SANDBOX_DEMO_EMAIL: ${AIFACTORY_SANDBOX_DEMO_EMAIL:-sandbox.demo@aicom.local}
-      # Set in `.env` or let entrypoint generate data/secrets/sandbox_demo_password on first start.
+      # [sandbox] Set in `.env` or let entrypoint generate data/secrets/sandbox_demo_password on first start.
       AIFACTORY_SANDBOX_DEMO_PASSWORD: ${AIFACTORY_SANDBOX_DEMO_PASSWORD:-}
-      # Playwright deep crawl budget (see docs/pipeline-operations.md)
+      # [pipeline] Playwright deep crawl budget (see docs/pipeline-operations.md)
       AIFACTORY_BROWSER_MAX_PAGES: ${AIFACTORY_BROWSER_MAX_PAGES:-100}
       AIFACTORY_BROWSER_E2E_SERVE_MODE: ${AIFACTORY_BROWSER_E2E_SERVE_MODE:-auto}
-      # Admin Live Monitor demo replay uploads (see docs/pipeline-operations.md)
+      # [pipeline] Admin Live Monitor demo replay uploads (see docs/pipeline-operations.md)
       AIFACTORY_PIPELINE_DEMO_MAX_MB: ${AIFACTORY_PIPELINE_DEMO_MAX_MB:-120}
     restart: unless-stopped
     networks:

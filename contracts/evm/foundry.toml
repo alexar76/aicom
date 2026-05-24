@@ -1,16 +1,18 @@
 [profile.default]
 solc = "0.8.28"
-src = "."
+# `src = "."` would sweep in `lib/`, `script/`, and `test/` as sources; pin
+# the production contracts explicitly so `forge build` only compiles them
+# (tests still resolve via `test = "test"`).
+src = "src"
 test = "test"
 script = "script"
-lib_path = ["lib"]
+libs = ["lib"]
 remappings = [
-    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "forge-std/=lib/forge-std/src/"
 ]
-
-[optimizer]
-enabled = true
-runs = 200
+optimizer = true
+optimizer_runs = 200
 
 [rpc_endpoints]
 base-mainnet = "${RPC_BASE_MAINNET}"

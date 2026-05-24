@@ -2,6 +2,10 @@
 # Deploy aimarket-escrow to Solana.
 # Private key is read from console (no echo) and NEVER persisted.
 #
+# ⚠️  This deploys the ROOT aimarket-escrow Solana program (hub escrow).
+#    For ACEX capital-markets Solana programs, use acex/contracts/solana/deploy.sh.
+#    The two programs are INDEPENDENT with different program IDs.
+#
 # Usage:
 #   cd contracts/solana
 #   ./deploy.sh devnet

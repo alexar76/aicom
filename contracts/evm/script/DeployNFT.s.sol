@@ -2,7 +2,7 @@
 pragma solidity ^0.8.28;
 
 import {Script, console} from "forge-std/Script.sol";
-import {AIMarketCapabilityNFT} from "../AIMarketCapabilityNFT.sol";
+import {AIMarketCapabilityNFT} from "../src/AIMarketCapabilityNFT.sol";
 
 /**
  * @title DeployCapabilityNFT

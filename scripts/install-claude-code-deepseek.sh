@@ -21,6 +21,9 @@ config/claude-code/ in this repo. Reads the API key from:
   data/secrets/llm/deepseek_api_key
 or, if missing, migrates from an existing deepseek.env / DEEPSEEK_API_KEY.
 
+Do not add 'source ~/.config/claude-code/deepseek.env' to ~/.bashrc — Claude Code
+reads the key via apiKeyHelper; exporting ANTHROPIC_AUTH_TOKEN causes an auth conflict.
+
 --quiet   Only print errors
 --check   Exit 0 if config is present and valid, 1 otherwise (no writes)
 EOF
@@ -75,6 +78,17 @@ install_files() {
   chmod 600 "$SETTINGS_OUT"
 }
 
+# Sourcing deepseek.env in ~/.bashrc exports ANTHROPIC_AUTH_TOKEN and conflicts with apiKeyHelper.
+remove_bashrc_deepseek_source() {
+  local rc="${HOME}/.bashrc"
+  [[ -f "$rc" ]] || return 0
+  if grep -qF '. /root/.config/claude-code/deepseek.env' "$rc" 2>/dev/null \
+    || grep -qF 'source /root/.config/claude-code/deepseek.env' "$rc" 2>/dev/null; then
+    sed -i '/\.config\/claude-code\/deepseek\.env/d' "$rc"
+    log "Removed deepseek.env source from $rc (use apiKeyHelper only)"
+  fi
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -q|--quiet) QUIET=1; shift ;;
@@ -88,10 +102,12 @@ done
 [[ -f "$TEMPLATE_DIR/deepseek.env.template" ]] || { err "missing template"; exit 2; }
 
 if config_ok; then
+  remove_bashrc_deepseek_source
   log "Claude Code DeepSeek config OK"
   exit 0
 fi
 
 key="$(read_key)" || exit 1
 install_files "$key"
+remove_bashrc_deepseek_source
 log "Installed Claude Code DeepSeek → $SETTINGS_OUT , $ENV_OUT"

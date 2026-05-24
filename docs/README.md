@@ -10,6 +10,8 @@
 
 Operator-facing UI strings may be **en / ru / es** in Admin; that is product i18n, not documentation locale. Wiki language policy: [`scripts/wiki-gitea/Languages.md`](../scripts/wiki-gitea/Languages.md).
 
+**In-app docs** at `/docs` (Next.js) use JSON language packs in [`web/frontend/language-packs/docs/`](../web/frontend/language-packs/docs/) — regenerate with `python3 scripts/generate_docs_i18n.py`. Wiki ecosystem overview: [`scripts/wiki-gitea/Ecosystem.md`](../scripts/wiki-gitea/Ecosystem.md).
+
 ## Operator / owner playbook
 
 - **`USER_GUIDE.md`** — **detailed illustrated walkthrough** (EN): situation cheat sheet, scenario playbooks, Pipeline catalog loading, screenshot index. Start here for **hands-on usage**.

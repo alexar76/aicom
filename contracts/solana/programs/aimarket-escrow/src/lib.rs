@@ -1,14 +1,28 @@
 //! AIMarketEscrow — Solana escrow program for AI Market Protocol v2.
 //!
-//! Implements the channel/open, channel/debit, channel/close lifecycle
-//! on Solana using PDAs and SPL tokens (USDC on Solana).
+//! Implements the channel/open, channel/debit, channel/settle/refund/expire
+//! lifecycle on Solana using PDAs and SPL tokens (USDC on Solana).
 //!
 //! Key Solana-specific design:
-//!   - PDA escrow accounts derived from (depositor, channel_id)
-//!   - SPL Token vault: tokens held in a PDA-owned ATA
-//!   - Ed25519 signature verification for debit authorization (native, not EIP-712)
+//!   - Channel PDA: seeds = [b"channel", channel_id] — accounting state
+//!   - Vault   PDA: seeds = [b"vault",   channel_id] — SPL Token holder
+//!   - AuthorizedHub PDA: seeds = [b"authorized_hub", hub_pubkey] — one
+//!     entry per hub, gated by global admin config
+//!   - Ed25519 signature verification for debit authorization via sysvar
+//!     instruction inspection (native syscall, not EIP-712)
 //!   - Native 24h expiry via Clock sysvar
-//!   - Closed PDA accounts refund rent to depositor
+//!   - On debit, the channel binds to its first hub. Subsequent debits must
+//!     come from the same hub.
+//!   - On settle/expire, hub gets used_amount, depositor gets the remainder
+//!     (`expire` is the same economics as `settle` — permissionless cleanup).
+//!
+//! Audit-relevant invariants:
+//!   - Every CPI signer uses `[b"vault", channel_id, vault_bump]` (NOT
+//!     `b"channel"` — that's the accounting PDA, not the token authority).
+//!   - Every ATA referenced in a transfer is constrained: depositor_ata.owner
+//!     == channel.depositor, hub_ata.owner == channel.hub.
+//!   - debit_message includes `hub` pubkey so a depositor's signature for
+//!     hub A cannot be reused by hub B.
 
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
@@ -45,6 +59,7 @@ pub mod aimarket_escrow {
         let clock = Clock::get()?;
 
         channel.depositor = ctx.accounts.depositor.key();
+        channel.hub = Pubkey::default(); // bound on first debit
         channel.channel_id = channel_id;
         channel.token_mint = ctx.accounts.token_mint.key();
         channel.deposit_amount = deposit_amount;
@@ -56,7 +71,6 @@ pub mod aimarket_escrow {
         channel.bump = ctx.bumps.channel;
         channel.vault_bump = ctx.bumps.vault;
 
-        // Transfer tokens from depositor to escrow vault
         let cpi_ctx = CpiContext::new(
             ctx.accounts.token_program.to_account_info(),
             Transfer {
@@ -83,6 +97,9 @@ pub mod aimarket_escrow {
     /// Only an authorized hub can call this. The hub must present
     /// a valid Ed25519 signature from the depositor authorizing the debit.
     /// Signature is verified via the native Ed25519 syscall.
+    ///
+    /// On first debit, channel.hub is bound to `ctx.accounts.hub.key()`.
+    /// Subsequent debits must come from the same hub.
     pub fn debit_channel(
         ctx: Context<DebitChannel>,
         channel_id: [u8; 32],
@@ -91,16 +108,23 @@ pub mod aimarket_escrow {
         deadline: i64,
         // Ed25519 signature from depositor: 64 bytes
         signature: [u8; 64],
-        // Depositor's Ed25519 public key (matches PDA derivation)
-        depositor_pubkey: [u8; 32],
     ) -> Result<()> {
         let channel = &mut ctx.accounts.channel;
+        let hub_key = ctx.accounts.hub.key();
 
-        // Verify hub is authorized
+        // ── Authorization ─────────────────────────────────────────
+        // The AuthorizedHub PDA is keyed by the hub's own pubkey, so passing
+        // any random PDA can't fake authorization — its derivation depends
+        // on the signer.
         require!(
             ctx.accounts.authorized_hub.is_authorized,
             AimarketError::Unauthorized
         );
+        require!(
+            ctx.accounts.authorized_hub.hub == hub_key,
+            AimarketError::Unauthorized
+        );
+
         require!(channel.status() == ChannelStatus::Open, AimarketError::ChannelNotOpen);
 
         let clock = Clock::get()?;
@@ -108,9 +132,18 @@ pub mod aimarket_escrow {
         require!(clock.unix_timestamp <= deadline, AimarketError::ChannelExpired);
         require!(amount <= channel.balance, AimarketError::InsufficientBalance);
 
-        // Verify depositor's Ed25519 signature
+        // Bind hub to channel on first debit; reject mismatched hubs after.
+        if channel.hub == Pubkey::default() {
+            channel.hub = hub_key;
+        }
+        require!(channel.hub == hub_key, AimarketError::Unauthorized);
+
+        // ── Verify depositor's Ed25519 signature ─────────────────
+        // `hub_key` is part of the message — a signature for hub A is not
+        // usable by hub B even if both are authorized.
         let message = debit_message(
             channel_id,
+            hub_key,
             channel.token_mint,
             amount,
             receipt_id,
@@ -119,7 +152,7 @@ pub mod aimarket_escrow {
         );
         require!(
             verify_ed25519(
-                &depositor_pubkey,
+                &channel.depositor.to_bytes(),
                 &message,
                 &signature,
                 &ctx.accounts.instructions_sysvar.to_account_info(),
@@ -128,9 +161,9 @@ pub mod aimarket_escrow {
         );
 
         // Execute debit
-        channel.nonce += 1;
-        channel.balance -= amount;
-        channel.used_amount += amount;
+        channel.nonce = channel.nonce.checked_add(1).ok_or(AimarketError::Overflow)?;
+        channel.balance = channel.balance.checked_sub(amount).ok_or(AimarketError::Overflow)?;
+        channel.used_amount = channel.used_amount.checked_add(amount).ok_or(AimarketError::Overflow)?;
 
         emit!(ChannelDebited {
             channel_id,
@@ -143,12 +176,15 @@ pub mod aimarket_escrow {
     }
 
     /// Settle a channel: transfer used funds to hub, refund rest to depositor.
+    /// Callable by depositor or by the bound hub.
     pub fn settle_channel(ctx: Context<SettleChannel>, channel_id: [u8; 32]) -> Result<()> {
         let channel = &mut ctx.accounts.channel;
 
+        // Either depositor or bound hub can initiate settle.
+        let caller = ctx.accounts.caller.key();
         require!(
-            channel.depositor == ctx.accounts.depositor.key()
-                || ctx.accounts.authorized_hub.is_authorized,
+            caller == channel.depositor
+                || (channel.hub != Pubkey::default() && caller == channel.hub),
             AimarketError::Unauthorized
         );
         require!(channel.status() == ChannelStatus::Open, AimarketError::ChannelNotOpen);
@@ -158,46 +194,26 @@ pub mod aimarket_escrow {
         let used = channel.used_amount;
         let refund = channel.balance;
 
-        // Pay hub for used invocations
         if used > 0 {
-            let seeds: &[&[u8]] = &[
-                b"channel",
-                channel_id.as_ref(),
-                &[channel.vault_bump],
-            ];
-            let signer_seeds: &[&[&[u8]]] = &[seeds];
-
-            let cpi_ctx = CpiContext::new_with_signer(
-                ctx.accounts.token_program.to_account_info(),
-                Transfer {
-                    from: ctx.accounts.vault.to_account_info(),
-                    to: ctx.accounts.hub_ata.to_account_info(),
-                    authority: ctx.accounts.vault.to_account_info(),
-                },
-                signer_seeds,
-            );
-            token::transfer(cpi_ctx, used)?;
+            transfer_from_vault(
+                &ctx.accounts.token_program,
+                &ctx.accounts.vault,
+                &ctx.accounts.hub_ata,
+                channel_id,
+                channel.vault_bump,
+                used,
+            )?;
         }
 
-        // Refund remaining to depositor
         if refund > 0 {
-            let seeds: &[&[u8]] = &[
-                b"channel",
-                channel_id.as_ref(),
-                &[channel.vault_bump],
-            ];
-            let signer_seeds: &[&[&[u8]]] = &[seeds];
-
-            let cpi_ctx = CpiContext::new_with_signer(
-                ctx.accounts.token_program.to_account_info(),
-                Transfer {
-                    from: ctx.accounts.vault.to_account_info(),
-                    to: ctx.accounts.depositor_ata.to_account_info(),
-                    authority: ctx.accounts.vault.to_account_info(),
-                },
-                signer_seeds,
-            );
-            token::transfer(cpi_ctx, refund)?;
+            transfer_from_vault(
+                &ctx.accounts.token_program,
+                &ctx.accounts.vault,
+                &ctx.accounts.depositor_ata,
+                channel_id,
+                channel.vault_bump,
+                refund,
+            )?;
         }
 
         emit!(ChannelSettled {
@@ -221,14 +237,20 @@ pub mod aimarket_escrow {
         Ok(())
     }
 
-    /// Authorize or deauthorize a hub. Only callable by the global admin.
-    pub fn authorize_hub(ctx: Context<AdminAuth>, is_authorized: bool) -> Result<()> {
+    /// Authorize or deauthorize a specific hub. Only callable by the global admin.
+    ///
+    /// One AuthorizedHub PDA per hub, keyed by hub pubkey — this lets the
+    /// admin maintain a list of authorized hubs rather than a single global
+    /// toggle (previous design held one PDA per admin, making the field
+    /// useless as an identity proof).
+    pub fn authorize_hub(ctx: Context<AdminAuth>, hub: Pubkey, is_authorized: bool) -> Result<()> {
         require!(
-            ctx.accounts.config.admin == ctx.accounts.authority.key(),
+            ctx.accounts.config.admin == ctx.accounts.admin.key(),
             AimarketError::Unauthorized
         );
+        ctx.accounts.authorized_hub.hub = hub;
         ctx.accounts.authorized_hub.is_authorized = is_authorized;
-        ctx.accounts.authorized_hub.authority = ctx.accounts.authority.key();
+        emit!(HubAuthorized { hub, is_authorized });
         Ok(())
     }
 
@@ -241,34 +263,25 @@ pub mod aimarket_escrow {
         require!(reason.len() <= 128, AimarketError::ReasonTooLong);
         let channel = &mut ctx.accounts.channel;
 
-        require!(channel.depositor == ctx.accounts.depositor.key(), AimarketError::Unauthorized);
         require!(channel.status() == ChannelStatus::Open, AimarketError::ChannelNotOpen);
         require!(channel.used_amount == 0, AimarketError::RefundAfterDebit);
 
         channel.status = ChannelStatus::Refunded as u8;
-        let total = channel.balance + channel.used_amount;
+        // used_amount == 0, so total == balance == deposit_amount.
+        let refund = channel.balance;
 
-        let seeds: &[&[u8]] = &[
-            b"channel",
-            channel_id.as_ref(),
-            &[channel.vault_bump],
-        ];
-        let signer_seeds: &[&[&[u8]]] = &[seeds];
-
-        let cpi_ctx = CpiContext::new_with_signer(
-            ctx.accounts.token_program.to_account_info(),
-            Transfer {
-                from: ctx.accounts.vault.to_account_info(),
-                to: ctx.accounts.depositor_ata.to_account_info(),
-                authority: ctx.accounts.vault.to_account_info(),
-            },
-            signer_seeds,
-        );
-        token::transfer(cpi_ctx, total)?;
+        transfer_from_vault(
+            &ctx.accounts.token_program,
+            &ctx.accounts.vault,
+            &ctx.accounts.depositor_ata,
+            channel_id,
+            channel.vault_bump,
+            refund,
+        )?;
 
         emit!(ChannelRefunded {
             channel_id,
-            amount: total,
+            amount: refund,
             reason,
         });
 
@@ -276,6 +289,9 @@ pub mod aimarket_escrow {
     }
 
     /// Permissionless expiry — anyone can close an expired channel.
+    /// Economics match `settle_channel`: hub gets used_amount, depositor
+    /// gets the remainder. Previously this returned the full deposit to
+    /// the depositor, letting depositors wait 24h to avoid paying the hub.
     pub fn expire_channel(ctx: Context<ExpireChannel>, channel_id: [u8; 32]) -> Result<()> {
         let channel = &mut ctx.accounts.channel;
         let clock = Clock::get()?;
@@ -284,33 +300,70 @@ pub mod aimarket_escrow {
         require!(clock.unix_timestamp > channel.expires_at, AimarketError::ChannelNotExpired);
 
         channel.status = ChannelStatus::Expired as u8;
-        let total = channel.balance + channel.used_amount;
 
-        let seeds: &[&[u8]] = &[
-            b"channel",
-            channel_id.as_ref(),
-            &[channel.vault_bump],
-        ];
-        let signer_seeds: &[&[&[u8]]] = &[seeds];
+        let used = channel.used_amount;
+        let refund = channel.balance;
 
-        let cpi_ctx = CpiContext::new_with_signer(
-            ctx.accounts.token_program.to_account_info(),
-            Transfer {
-                from: ctx.accounts.vault.to_account_info(),
-                to: ctx.accounts.depositor_ata.to_account_info(),
-                authority: ctx.accounts.vault.to_account_info(),
-            },
-            signer_seeds,
-        );
-        token::transfer(cpi_ctx, total)?;
+        if used > 0 && channel.hub != Pubkey::default() {
+            transfer_from_vault(
+                &ctx.accounts.token_program,
+                &ctx.accounts.vault,
+                &ctx.accounts.hub_ata,
+                channel_id,
+                channel.vault_bump,
+                used,
+            )?;
+        }
+        if refund > 0 {
+            transfer_from_vault(
+                &ctx.accounts.token_program,
+                &ctx.accounts.vault,
+                &ctx.accounts.depositor_ata,
+                channel_id,
+                channel.vault_bump,
+                refund,
+            )?;
+        }
 
-        emit!(ChannelExpired {
+        emit!(ChannelExpiredAndSettled {
             channel_id,
-            refund_amount: total,
+            used_amount: used,
+            refund_amount: refund,
         });
 
         Ok(())
     }
+}
+
+// ── Vault helper ─────────────────────────────────────────────────
+
+/// CPI to transfer tokens from the vault PDA. The signer seeds MUST be
+/// `[b"vault", channel_id, vault_bump]` — those are the seeds the vault
+/// account was actually derived from. The previous code used `b"channel"`
+/// here, which is the *accounting* PDA, not the token authority — so
+/// every settle/refund/expire transfer reverted with seeds mismatch.
+fn transfer_from_vault<'info>(
+    token_program: &Program<'info, Token>,
+    vault: &Account<'info, TokenAccount>,
+    dest: &Account<'info, TokenAccount>,
+    channel_id: [u8; 32],
+    vault_bump: u8,
+    amount: u64,
+) -> Result<()> {
+    let bump_seed = [vault_bump];
+    let seeds: [&[u8]; 3] = [b"vault", channel_id.as_ref(), &bump_seed];
+    let signer_seeds: &[&[&[u8]]] = &[&seeds];
+
+    let cpi_ctx = CpiContext::new_with_signer(
+        token_program.to_account_info(),
+        Transfer {
+            from: vault.to_account_info(),
+            to: dest.to_account_info(),
+            authority: vault.to_account_info(),
+        },
+        signer_seeds,
+    );
+    token::transfer(cpi_ctx, amount)
 }
 
 // ── Global Config ─────────────────────────────────────────────────
@@ -326,6 +379,9 @@ pub struct ProgramConfig {
 #[account]
 pub struct Channel {
     pub depositor: Pubkey,
+    /// Bound to the first hub that successfully debits; Pubkey::default()
+    /// until then. Subsequent debits must come from the same hub.
+    pub hub: Pubkey,
     pub channel_id: [u8; 32],
     pub token_mint: Pubkey,
     pub deposit_amount: u64,
@@ -339,13 +395,20 @@ pub struct Channel {
 }
 
 impl Channel {
+    pub const SIZE: usize = 8        // discriminator
+        + 32 + 32                    // depositor + hub
+        + 32                         // channel_id
+        + 32                         // token_mint
+        + 8 + 8 + 8 + 8 + 8          // 5x u64/i64
+        + 1 + 1 + 1;                 // status + 2 bumps
+
     fn status(&self) -> ChannelStatus {
         match self.status {
             0 => ChannelStatus::Open,
             1 => ChannelStatus::Settled,
             2 => ChannelStatus::Refunded,
             3 => ChannelStatus::Expired,
-            _ => ChannelStatus::Open, // default for uninitialized
+            _ => ChannelStatus::Open,
         }
     }
 }
@@ -360,8 +423,15 @@ pub enum ChannelStatus {
 
 #[account]
 pub struct AuthorizedHub {
-    pub authority: Pubkey, // admin who authorized
+    /// The hub's own pubkey. Stored explicitly so we can defend against
+    /// account substitution (PDA derivation is the primary check; this
+    /// is a belt-and-suspenders identity check inside debit_channel).
+    pub hub: Pubkey,
     pub is_authorized: bool,
+}
+
+impl AuthorizedHub {
+    pub const SIZE: usize = 8 + 32 + 1;
 }
 
 // ── Contexts ─────────────────────────────────────────────────────
@@ -375,7 +445,7 @@ pub struct OpenChannel<'info> {
     #[account(
         init,
         payer = depositor,
-        space = 8 + 32 + 32 + 32 + 8 + 8 + 8 + 8 + 8 + 1 + 1 + 1, // ~150 bytes
+        space = Channel::SIZE,
         seeds = [b"channel", channel_id.as_ref()],
         bump
     )]
@@ -392,7 +462,11 @@ pub struct OpenChannel<'info> {
     )]
     pub vault: Account<'info, TokenAccount>,
 
-    #[account(mut)]
+    #[account(
+        mut,
+        constraint = depositor_ata.owner == depositor.key() @ AimarketError::Unauthorized,
+        constraint = depositor_ata.mint == token_mint.key()  @ AimarketError::TokenNotSupported,
+    )]
     pub depositor_ata: Account<'info, TokenAccount>,
 
     pub token_mint: Account<'info, Mint>,
@@ -403,7 +477,7 @@ pub struct OpenChannel<'info> {
 #[derive(Accounts)]
 #[instruction(channel_id: [u8; 32])]
 pub struct DebitChannel<'info> {
-    #[account(mut)]
+    /// The calling hub. Its pubkey is bound into the depositor signature.
     pub hub: Signer<'info>,
 
     #[account(
@@ -413,31 +487,31 @@ pub struct DebitChannel<'info> {
     )]
     pub channel: Account<'info, Channel>,
 
+    /// PDA keyed by hub pubkey — so passing a random AuthorizedHub PDA
+    /// won't work; the runtime forces this to be the one derived for
+    /// the actual signer.
     #[account(
-        seeds = [b"vault", channel_id.as_ref()],
-        bump = channel.vault_bump,
+        seeds = [b"authorized_hub", hub.key().as_ref()],
+        bump,
+        constraint = authorized_hub.hub == hub.key() @ AimarketError::Unauthorized,
     )]
-    pub vault: Account<'info, TokenAccount>, // not mut — no transfer on debit, only accounting
-
     pub authorized_hub: Account<'info, AuthorizedHub>,
 
-    /// CHECK: Sysvar account address is verified by Solana runtime.
-    /// Needed to inspect the prior Ed25519 verification instruction.
-    #[account(address = solana_program::sysvar::instructions::ID)]
+    /// CHECK: Sysvar address is verified by Solana runtime.
+    /// Used to inspect the prior Ed25519 verification instruction.
+    #[account(address = anchor_lang::solana_program::sysvar::instructions::ID)]
     pub instructions_sysvar: UncheckedAccount<'info>,
 }
 
 #[derive(Accounts)]
 #[instruction(channel_id: [u8; 32])]
 pub struct SettleChannel<'info> {
-    #[account(mut)]
-    pub depositor: Signer<'info>,
+    pub caller: Signer<'info>,
 
     #[account(
         mut,
         seeds = [b"channel", channel_id.as_ref()],
         bump = channel.bump,
-        constraint = channel.depositor == depositor.key() @ AimarketError::Unauthorized,
     )]
     pub channel: Account<'info, Channel>,
 
@@ -448,21 +522,30 @@ pub struct SettleChannel<'info> {
     )]
     pub vault: Account<'info, TokenAccount>,
 
-    #[account(mut)]
+    #[account(
+        mut,
+        constraint = depositor_ata.owner == channel.depositor @ AimarketError::Unauthorized,
+        constraint = depositor_ata.mint  == channel.token_mint @ AimarketError::TokenNotSupported,
+    )]
     pub depositor_ata: Account<'info, TokenAccount>,
 
-    /// CHECK: validated by authorized_hub account
-    #[account(mut)]
+    /// Hub destination ATA. MUST be owned by `channel.hub` — without this
+    /// constraint, anyone could redirect the hub's earnings to their own ATA.
+    /// When `channel.hub == Pubkey::default()` (no debit happened), `used == 0`
+    /// and this ATA is not actually written to.
+    #[account(
+        mut,
+        constraint = (channel.used_amount == 0) || (hub_ata.owner == channel.hub) @ AimarketError::Unauthorized,
+        constraint = hub_ata.mint == channel.token_mint @ AimarketError::TokenNotSupported,
+    )]
     pub hub_ata: Account<'info, TokenAccount>,
 
-    pub authorized_hub: Account<'info, AuthorizedHub>,
     pub token_program: Program<'info, Token>,
 }
 
 #[derive(Accounts)]
 #[instruction(channel_id: [u8; 32])]
 pub struct RefundChannel<'info> {
-    #[account(mut)]
     pub depositor: Signer<'info>,
 
     #[account(
@@ -480,7 +563,11 @@ pub struct RefundChannel<'info> {
     )]
     pub vault: Account<'info, TokenAccount>,
 
-    #[account(mut)]
+    #[account(
+        mut,
+        constraint = depositor_ata.owner == channel.depositor @ AimarketError::Unauthorized,
+        constraint = depositor_ata.mint  == channel.token_mint @ AimarketError::TokenNotSupported,
+    )]
     pub depositor_ata: Account<'info, TokenAccount>,
 
     pub token_program: Program<'info, Token>,
@@ -489,8 +576,8 @@ pub struct RefundChannel<'info> {
 #[derive(Accounts)]
 #[instruction(channel_id: [u8; 32])]
 pub struct ExpireChannel<'info> {
-    #[account(mut)]
-    pub caller: Signer<'info>, // anyone can call (permissionless)
+    /// Permissionless — anyone can pay gas to expire a channel.
+    pub caller: Signer<'info>,
 
     #[account(
         mut,
@@ -506,8 +593,20 @@ pub struct ExpireChannel<'info> {
     )]
     pub vault: Account<'info, TokenAccount>,
 
-    #[account(mut)]
+    #[account(
+        mut,
+        constraint = depositor_ata.owner == channel.depositor @ AimarketError::Unauthorized,
+        constraint = depositor_ata.mint  == channel.token_mint @ AimarketError::TokenNotSupported,
+    )]
     pub depositor_ata: Account<'info, TokenAccount>,
+
+    /// Same constraints as in SettleChannel — see notes there.
+    #[account(
+        mut,
+        constraint = (channel.used_amount == 0) || (hub_ata.owner == channel.hub) @ AimarketError::Unauthorized,
+        constraint = hub_ata.mint == channel.token_mint @ AimarketError::TokenNotSupported,
+    )]
+    pub hub_ata: Account<'info, TokenAccount>,
 
     pub token_program: Program<'info, Token>,
 }
@@ -530,21 +629,23 @@ pub struct InitConfig<'info> {
 }
 
 #[derive(Accounts)]
+#[instruction(hub: Pubkey)]
 pub struct AdminAuth<'info> {
     #[account(mut)]
-    pub authority: Signer<'info>,
+    pub admin: Signer<'info>,
 
     #[account(
         seeds = [b"config"],
         bump,
+        constraint = config.admin == admin.key() @ AimarketError::Unauthorized,
     )]
     pub config: Account<'info, ProgramConfig>,
 
     #[account(
         init_if_needed,
-        payer = authority,
-        space = 8 + 32 + 1,
-        seeds = [b"authorized_hub", authority.key().as_ref()],
+        payer = admin,
+        space = AuthorizedHub::SIZE,
+        seeds = [b"authorized_hub", hub.as_ref()],
         bump,
     )]
     pub authorized_hub: Account<'info, AuthorizedHub>,
@@ -586,10 +687,21 @@ pub struct ChannelRefunded {
     pub reason: String,
 }
 
+/// Renamed from `ChannelExpired` to avoid name collision with the
+/// `ChannelExpired` error variant (Anchor IDL consumers couldn't tell them
+/// apart). The post-debit settlement semantics also changed — name change
+/// signals that to off-chain consumers.
 #[event]
-pub struct ChannelExpired {
+pub struct ChannelExpiredAndSettled {
     pub channel_id: [u8; 32],
+    pub used_amount: u64,
     pub refund_amount: u64,
+}
+
+#[event]
+pub struct HubAuthorized {
+    pub hub: Pubkey,
+    pub is_authorized: bool,
 }
 
 // ── Errors ───────────────────────────────────────────────────────
@@ -620,23 +732,29 @@ pub enum AimarketError {
     ReasonTooLong,
     #[msg("Refund not allowed after first debit")]
     RefundAfterDebit,
+    #[msg("Arithmetic overflow")]
+    Overflow,
 }
 
 // ── Ed25519 verification ────────────────────────────────────────
 
 /// Debit authorization message format.
+/// `hub` is part of the message — a depositor's signature for hub A
+/// cannot be reused by hub B even if both are authorized.
 fn debit_message(
     channel_id: [u8; 32],
+    hub: Pubkey,
     token_mint: Pubkey,
     amount: u64,
     receipt_id: [u8; 32],
     nonce: u64,
     deadline: i64,
 ) -> Vec<u8> {
-    let mut msg = Vec::new();
+    let mut msg = Vec::with_capacity(15 + 32 + 32 + 32 + 32 + 8 + 32 + 8 + 8);
     msg.extend_from_slice(b"aimarket:debit:");
     msg.extend_from_slice(&channel_id);
     msg.extend_from_slice(&crate::id().to_bytes());
+    msg.extend_from_slice(&hub.to_bytes());
     msg.extend_from_slice(&token_mint.to_bytes());
     msg.extend_from_slice(&amount.to_le_bytes());
     msg.extend_from_slice(&receipt_id);
@@ -652,20 +770,6 @@ fn debit_message(
 /// (Ed25519SigVerify111111111111111111111111111) already verifies the
 /// cryptography — we just confirm a matching (pubkey, message, signature)
 /// was actually verified by it in this transaction.
-///
-/// Ed25519 program instruction data layout (per Solana docs):
-///   [num_signatures: u8] [padding: u8]
-///   [Ed25519SignatureOffsets * num_signatures]  // 14 bytes each
-///   [signature data, pubkey data, message data — referenced by offsets]
-///
-/// Ed25519SignatureOffsets (14 bytes):
-///   [signature_offset: u16]            // offset within ix data
-///   [signature_instruction_index: u16] // u16::MAX = current ix
-///   [public_key_offset: u16]
-///   [public_key_instruction_index: u16]
-///   [message_data_offset: u16]
-///   [message_data_size: u16]
-///   [message_instruction_index: u16]
 fn verify_ed25519(
     pubkey: &[u8; 32],
     message: &[u8],
@@ -675,22 +779,24 @@ fn verify_ed25519(
     #[cfg(test)]
     {
         let _ = (pubkey, message, signature, instructions_sysvar);
-        return Ok(true); // Accept all signatures in test builds
+        // Accept all signatures in `cargo test` only. `anchor build` builds
+        // without the `test` cfg, so the on-chain binary always runs the
+        // real check below.
+        return Ok(true);
     }
 
     #[cfg(not(test))]
     {
-        use solana_program::sysvar::instructions::{
+        use anchor_lang::solana_program::sysvar::instructions::{
             load_current_index_checked, load_instruction_at_checked,
         };
 
         let ed25519_program_id =
-            solana_program::pubkey!("Ed25519SigVerify111111111111111111111111111");
+            anchor_lang::solana_program::pubkey!("Ed25519SigVerify111111111111111111111111111");
 
         let current_idx = load_current_index_checked(instructions_sysvar)
             .map_err(|_| error!(AimarketError::InvalidSignature))?;
 
-        // Scan all instructions PRIOR to the current one
         for i in 0..current_idx {
             let ix = match load_instruction_at_checked(i as usize, instructions_sysvar) {
                 Ok(ix) => ix,
@@ -725,7 +831,6 @@ fn verify_ed25519_ix_data(
     if num_sigs == 0 {
         return false;
     }
-    // header (count + padding) + offsets table
     let header_size = 2 + num_sigs * OFFSETS_SIZE;
     if data.len() < header_size {
         return false;
@@ -738,7 +843,6 @@ fn verify_ed25519_ix_data(
         let msg_offset = u16::from_le_bytes([data[off + 8], data[off + 9]]) as usize;
         let msg_size = u16::from_le_bytes([data[off + 10], data[off + 11]]) as usize;
 
-        // Bounds checks
         if sig_offset.saturating_add(64) > data.len() {
             continue;
         }

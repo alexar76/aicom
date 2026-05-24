@@ -2,7 +2,7 @@
 pragma solidity ^0.8.28;
 
 import {Test} from "forge-std/Test.sol";
-import {AIMarketCapabilityNFT} from "../AIMarketCapabilityNFT.sol";
+import {AIMarketCapabilityNFT} from "../src/AIMarketCapabilityNFT.sol";
 
 contract AIMarketCapabilityNFTTest is Test {
     AIMarketCapabilityNFT public nft;

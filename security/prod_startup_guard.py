@@ -117,6 +117,14 @@ def production_startup_issues() -> list[str]:
             "accepts demo transaction hashes. Set AIFACTORY_PAYMENT_TESTNET=0."
         )
 
+    # ZK: refuse simulated ZK in production (privacy-preserving claims are void)
+    if os.environ.get("AIMARKET_ZK_SIMULATED", "1").strip() == "1":
+        issues.append(
+            "AIMARKET_ZK_SIMULATED=1 in production mode — ZK proofs are simulated "
+            "(no cryptographic privacy). Set AIMARKET_ZK_SIMULATED=0 and deploy "
+            "real Groth16 circuits before running with AIFACTORY_PROD=1."
+        )
+
     return issues
 
 

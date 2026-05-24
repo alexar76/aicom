@@ -42,7 +42,7 @@ C4Context
 | [`plugins/`](../plugins/) | 14 pip-installable hub plugins | one repo per plugin |
 | [`aimarket-sdks/`](../aimarket-sdks/) | Dart / TS / Rust client SDKs | per language |
 | [`aimarket-widget/`](../aimarket-widget/) | Embeddable search + invoke widget | `aimarket-widget` |
-| [`desktop-integrations/`](../desktop-integrations/) | 8 Flutter desktop SKUs + shared packages | one repo per app |
+| [`desktop-integrations/`](../desktop-integrations/) | 8 Flutter desktop SKUs (sharing `aicom_desktop_core`) + 1 standalone Rust SKU (`local-security-audit`) | one repo per app |
 | [`contracts/`](../contracts/) | EVM + Solana payment contracts | `aicom-contracts` |
 
 ---
@@ -175,11 +175,12 @@ sequenceDiagram
 
 ## 6. Desktop product layer
 
-Eight first-party SKUs share [`aicom_desktop_core`](../desktop-integrations/packages/aicom_desktop_core/):
+Eight Flutter SKUs share [`aicom_desktop_core`](../desktop-integrations/packages/aicom_desktop_core/) (Dart). One additional SKU — [`local-security-audit`](../desktop-integrations/local-security-audit/) — is written in Rust and uses its own native core; it does not depend on `aicom_desktop_core`.
 
 ```mermaid
 flowchart TB
-  CORE["aicom_desktop_core<br/>themes · l10n · wallet bar · backup"]
+  CORE["aicom_desktop_core<br/>themes · l10n · wallet bar · backup<br/>(Dart — 8 Flutter SKUs)"]
+  RUST["local-security-audit<br/>(Rust — standalone)"]
   SDK["aimarket_agent Dart SDK"]
 
   subgraph apps["Desktop SKUs"]
@@ -191,12 +192,14 @@ flowchart TB
     A6["discovery-prospector"]
     A7["freelance-contract-reviewer"]
     A8["reputation-dashboard"]
+    A9["local-security-audit"]
   end
 
   HUB["AIMarket Hub"]
 
   CORE --> apps
   SDK --> apps
+  RUST --> A9
   apps -->|"discover · channel · invoke"| HUB
 ```
 

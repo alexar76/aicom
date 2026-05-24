@@ -214,7 +214,42 @@ export_simple() {
 
   rsync "${rsync_args[@]}" "$src/" "$clone/"
 
+  _inject_mirror_banner "$clone" "$sat_id" "$repo"
+
   _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "$license"
+}
+
+# ── Mirror notice for read-only satellites ─────────────────────────────────
+# See docs/repository-canonical-policy.md — the monorepo is canonical for
+# every satellite; PRs against the mirrors are redirected here. Prepend a
+# short banner to the satellite's README.md so visitors don't open PRs in
+# the wrong place. Idempotent — re-running does not re-inject.
+_inject_mirror_banner() {
+  local target="$1"
+  local sat_id="$2"
+  local repo="$3"
+  local readme="$target/README.md"
+  local banner_marker="<!-- aicom-mirror-notice -->"
+
+  [[ -f "$readme" ]] || return 0
+  if grep -qF "$banner_marker" "$readme" 2>/dev/null; then
+    return 0
+  fi
+
+  local tmp
+  tmp="$(mktemp)"
+  {
+    printf '%s\n' "$banner_marker"
+    printf '> **Mirror — read-only.**\n'
+    printf '> The canonical source for `%s` lives in the AI-Factory monorepo.\n' "$sat_id"
+    printf '> Open issues and PRs at `Superowner/aicom`; commits pushed here are\n'
+    printf '> overwritten by `scripts/mirror_satellites.sh` on the next sync run.\n'
+    printf '> See `docs/repository-canonical-policy.md` for the policy.\n'
+    printf '\n'
+    cat "$readme"
+  } > "$tmp"
+  mv "$tmp" "$readme"
+  echo "  ✓ MIRROR banner injected into README.md"
 }
 
 export_desktop_monorepo() {
@@ -317,6 +352,8 @@ export_desktop_monorepo() {
   mkdir -p "$clone/.github/workflows"
   _generate_desktop_ci "$clone"
 
+  _inject_mirror_banner "$clone" "$sat_id" "$repo"
+
   _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "mit"
 }
 
@@ -369,6 +406,7 @@ export_plugins() {
   fi
 
   _copy_governance "$clone" "mit" "aimarket-plugins"
+  _inject_mirror_banner "$clone" "$sat_id" "$repo"
 
   _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "mit"
 }

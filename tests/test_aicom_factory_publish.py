@@ -55,6 +55,21 @@ def test_satellite_map_has_github_descriptions():
     assert not missing, f"missing description: {missing}"
 
 
+def test_satellite_map_has_github_topics():
+    import yaml
+
+    data = yaml.safe_load((ROOT / "scripts" / "satellite-map.yaml").read_text())
+    missing = [
+        sat.get("id")
+        for sat in data.get("satellites", [])
+        if sat.get("id") != "aicom-wiki" and not sat.get("topics")
+    ]
+    assert not missing, f"missing topics: {missing}"
+    for extra in data.get("extra_repos") or []:
+        assert extra.get("topics"), f"extra repo {extra.get('repo')} missing topics"
+        assert (extra.get("description") or "").strip()
+
+
 def test_publish_scripts_exist():
     assert (ROOT / "scripts" / "publish_aicom_factory.sh").is_file()
     assert (ROOT / "scripts" / "publish_satellite.sh").is_file()
