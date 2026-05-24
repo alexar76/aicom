@@ -12,10 +12,9 @@ satellites:
     export_layout:
       apps_from: desktop-integrations
       packages_from: desktop-integrations/packages
-      # Per-app language packs — colocated with SKU (preferred)
+      # Per-app language packs — colocated with SKU
       language_packs:
-        preferred: desktop-integrations/{app}/language-packs
-        legacy_root: language-packs/{app}
+        source: desktop-integrations/{app}/language-packs
         target: apps/{app}/language-packs
     registries:
       - github-releases
@@ -171,8 +170,8 @@ satellites:
     registries: []
     ci: []
     notes: >
-      GitHub wiki repo (alexar76/aicom.wiki). Source of truth: scripts/wiki-gitea/*.md.
-      Gitea wiki push remains optional via scripts/push-gitea-wiki.sh.
+      GitHub wiki repo (alexar76/aicom.wiki). Canonical markdown source: scripts/wiki-gitea/.
+      Gitea wiki: scripts/push-gitea-wiki.sh. Local clone folder wiki/ is dev-only (not published).
 
   - id: aicom
     repo: aicom
@@ -191,7 +190,6 @@ satellites:
       - plugins
       - aimarket-sdks
       - apps/pulse-terminal
-      - language-packs
       - wiki
       - scripts/wiki-gitea
     registries:

@@ -113,15 +113,37 @@ done
 
 # ── Auth setup ──────────────────────────────────────────────────────────────
 TOKEN="${GH_PAT:-${GITHUB_TOKEN:-}}"
+if [[ -z "$TOKEN" ]]; then
+  _origin_url="$(git remote get-url origin 2>/dev/null || true)"
+  if [[ "$_origin_url" =~ https://[^:/]+:([^@]+)@ ]]; then
+    TOKEN="${BASH_REMATCH[1]}"
+  fi
+  unset _origin_url
+fi
+
 if [[ -z "$TOKEN" && "$DRY_RUN" -eq 0 ]]; then
   echo "⚠️  GH_PAT / GITHUB_TOKEN not set — will attempt unauthenticated git push"
   echo "   Set GH_PAT or GITHUB_TOKEN in environment for authenticated pushes."
-  AUTH_PREFIX=""
-  AUTH_SUFFIX=""
-else
-  AUTH_PREFIX="https://${TOKEN}@${GITHUB_HOST}/"
-  AUTH_SUFFIX=""
 fi
+
+export AICOM_MIRROR_GH_TOKEN="$TOKEN"
+
+satellite_remote_url() {
+  local repo="$1"
+  echo "https://${GITHUB_HOST}/${GITHUB_ORG}/${repo}.git"
+}
+
+git_auth() {
+  if [[ -n "${AICOM_MIRROR_GH_TOKEN:-}" ]]; then
+    local auth_header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$AICOM_MIRROR_GH_TOKEN" | base64 | tr -d '\n')"
+    GIT_CONFIG_COUNT=1 \
+    GIT_CONFIG_KEY_0=http.extraHeader \
+    GIT_CONFIG_VALUE_0="$auth_header" \
+    git "$@"
+  else
+    git "$@"
+  fi
+}
 
 # ── Workdir setup ───────────────────────────────────────────────────────────
 if [[ "$DRY_RUN" -eq 0 ]]; then
@@ -146,7 +168,8 @@ export_simple() {
   local extra_excludes="${5:-}"
 
   local src="$ROOT/$src_rel"
-  local remote_url="${AUTH_PREFIX}${GITHUB_HOST}/${GITHUB_ORG}/${repo}.git"
+  local remote_url
+  remote_url="$(satellite_remote_url "$repo")"
 
   echo ""
   echo "━━━ ${sat_id} ━━━"
@@ -163,9 +186,9 @@ export_simple() {
   local clone="$WORKDIR/${repo}"
 
   # Clone or init
-  if git ls-remote "$remote_url" "refs/heads/$BRANCH" &>/dev/null; then
-    git clone --depth 1 --branch "$BRANCH" "$remote_url" "$clone" 2>/dev/null || {
-      git clone --depth 1 "$remote_url" "$clone"
+  if git_auth ls-remote "$remote_url" "refs/heads/$BRANCH" &>/dev/null; then
+    git_auth clone --depth 1 --branch "$BRANCH" "$remote_url" "$clone" 2>/dev/null || {
+      git_auth clone --depth 1 "$remote_url" "$clone"
       (cd "$clone" && git checkout -B "$BRANCH" 2>/dev/null || git checkout -b "$BRANCH")
     }
   else
@@ -197,7 +220,8 @@ export_simple() {
 export_desktop_monorepo() {
   local sat_id="aimarket-desktop"
   local repo="aimarket-desktop"
-  local remote_url="${AUTH_PREFIX}${GITHUB_HOST}/${GITHUB_ORG}/${repo}.git"
+  local remote_url
+  remote_url="$(satellite_remote_url "$repo")"
 
   echo ""
   echo "━━━ ${sat_id} ━━━"
@@ -212,9 +236,9 @@ export_desktop_monorepo() {
 
   local clone="$WORKDIR/${repo}"
 
-  if git ls-remote "$remote_url" "refs/heads/$BRANCH" &>/dev/null; then
-    git clone --depth 1 --branch "$BRANCH" "$remote_url" "$clone" 2>/dev/null || {
-      git clone --depth 1 "$remote_url" "$clone"
+  if git_auth ls-remote "$remote_url" "refs/heads/$BRANCH" &>/dev/null; then
+    git_auth clone --depth 1 --branch "$BRANCH" "$remote_url" "$clone" 2>/dev/null || {
+      git_auth clone --depth 1 "$remote_url" "$clone"
       (cd "$clone" && git checkout -B "$BRANCH" 2>/dev/null || git checkout -b "$BRANCH")
     }
   else
@@ -244,6 +268,11 @@ export_desktop_monorepo() {
   local rsync_base_args=(-a --exclude .git --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude .dart_tool --exclude build --exclude dist --exclude .DS_Store)
 
   for sku in $skus; do
+    # Allowlist sku names — prevents path traversal via rogue manifest entries (SH-1).
+    if [[ ! "$sku" =~ ^[a-z0-9-]+$ ]]; then
+      echo "  ⚠️  Skipping invalid sku name: $sku"
+      continue
+    fi
     local src_dir="$ROOT/desktop-integrations/$sku"
     local dst_dir="$clone/apps/$sku"
     if [[ -d "$src_dir" ]]; then
@@ -253,16 +282,11 @@ export_desktop_monorepo() {
 
       # ── Language packs (colocated) ──
       local lp_src="$ROOT/desktop-integrations/$sku/language-packs"
-      local lp_legacy="$ROOT/language-packs/$sku"
       local lp_dst="$dst_dir/language-packs"
-      mkdir -p "$lp_dst"
-
       if [[ -d "$lp_src" ]]; then
+        mkdir -p "$lp_dst"
         rsync "${rsync_base_args[@]}" "$lp_src/" "$lp_dst/"
         echo "    ↳ language-packs from desktop-integrations/$sku/"
-      elif [[ -d "$lp_legacy" ]]; then
-        rsync "${rsync_base_args[@]}" "$lp_legacy/" "$lp_dst/"
-        echo "    ↳ language-packs from legacy language-packs/$sku/"
       fi
     else
       echo "  ⚠️  SKU directory missing: desktop-integrations/$sku"
@@ -280,6 +304,12 @@ export_desktop_monorepo() {
   # ── Generate melos.yaml ──
   _generate_melos_yaml "$clone" "$skus"
 
+  # Root README from monorepo (product gallery + ecosystem)
+  if [[ -f "$ROOT/desktop-integrations/README.md" ]]; then
+    cp "$ROOT/desktop-integrations/README.md" "$clone/README.md"
+    echo "  ✓ README.md (from desktop-integrations/)"
+  fi
+
   # ── Governance files ──
   _copy_governance "$clone" "mit" "aimarket-desktop" "desktop-monorepo"
 
@@ -293,12 +323,13 @@ export_desktop_monorepo() {
 export_plugins() {
   local sat_id="aimarket-plugins"
   local repo="aimarket-plugins"
-  local remote_url="${AUTH_PREFIX}${GITHUB_HOST}/${GITHUB_ORG}/${repo}.git"
+  local remote_url
+  remote_url="$(satellite_remote_url "$repo")"
 
   echo ""
   echo "━━━ ${sat_id} ━━━"
-  echo "  Source:  plugins/aimarket-* → repo root"
-  echo "           aimarket-hub/plugins/aimarket-provenance → aimarket-provenance/"
+  echo "  Source:  plugins/ → plugins/"
+  echo "           aimarket-hub/plugins/aimarket-provenance → plugins/aimarket-provenance"
   echo "  Remote:  ${GITHUB_HOST}/${GITHUB_ORG}/${repo}"
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
@@ -308,9 +339,9 @@ export_plugins() {
 
   local clone="$WORKDIR/${repo}"
 
-  if git ls-remote "$remote_url" "refs/heads/$BRANCH" &>/dev/null; then
-    git clone --depth 1 --branch "$BRANCH" "$remote_url" "$clone" 2>/dev/null || {
-      git clone --depth 1 "$remote_url" "$clone"
+  if git_auth ls-remote "$remote_url" "refs/heads/$BRANCH" &>/dev/null; then
+    git_auth clone --depth 1 --branch "$BRANCH" "$remote_url" "$clone" 2>/dev/null || {
+      git_auth clone --depth 1 "$remote_url" "$clone"
       (cd "$clone" && git checkout -B "$BRANCH" 2>/dev/null || git checkout -b "$BRANCH")
     }
   else
@@ -322,30 +353,19 @@ export_plugins() {
 
   local rsync_args=(-a --exclude .git --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude build --exclude dist --exclude .DS_Store)
 
-  # Flat layout: aimarket-* packages at repo root (matches github.com/alexar76/aimarket-plugins)
-  for pkg in "$ROOT"/plugins/aimarket-*/; do
-    [[ -d "$pkg" ]] || continue
-    local name
-    name=$(basename "$pkg")
-    rsync "${rsync_args[@]}" "$pkg/" "$clone/$name/"
-    echo "  ✓ $name/"
-  done
-
-  if [[ -f "$ROOT/plugins/README.md" ]]; then
-    cp "$ROOT/plugins/README.md" "$clone/README.md"
-    echo "  ✓ README.md"
+  # Main plugins
+  mkdir -p "$clone/plugins"
+  if [[ -d "$ROOT/plugins" ]]; then
+    rsync "${rsync_args[@]}" "$ROOT/plugins/" "$clone/plugins/"
+    echo "  ✓ plugins/"
   fi
 
-  if [[ -d "$ROOT/plugins/docs" ]]; then
-    rsync "${rsync_args[@]}" "$ROOT/plugins/docs/" "$clone/docs/"
-    echo "  ✓ docs/"
-  fi
-
-  # aimarket-provenance lives under aimarket-hub in the monorepo
+  # Extra: aimarket-provenance from aimarket-hub
   local provenance_src="$ROOT/aimarket-hub/plugins/aimarket-provenance"
   if [[ -d "$provenance_src" ]]; then
-    rsync "${rsync_args[@]}" "$provenance_src/" "$clone/aimarket-provenance/"
-    echo "  ✓ aimarket-provenance/ (from aimarket-hub)"
+    mkdir -p "$clone/plugins/aimarket-provenance"
+    rsync "${rsync_args[@]}" "$provenance_src/" "$clone/plugins/aimarket-provenance/"
+    echo "  ✓ plugins/aimarket-provenance (from aimarket-hub)"
   fi
 
   _copy_governance "$clone" "mit" "aimarket-plugins"
@@ -608,13 +628,15 @@ export_wiki() {
   local sat_id="aicom-wiki"
   local repo="aicom.wiki"
   local src="$ROOT/scripts/wiki-gitea"
-  local remote_url="${AUTH_PREFIX}${GITHUB_HOST}/${GITHUB_ORG}/${repo}.git"
+  local remote_url
+  remote_url="$(satellite_remote_url "$repo")"
   local wiki_branch="$BRANCH"
 
   echo ""
   echo "━━━ ${sat_id} ━━━"
   echo "  Source:  scripts/wiki-gitea/*.md"
   echo "  Remote:  ${GITHUB_HOST}/${GITHUB_ORG}/${repo}"
+  echo "  Note:    wiki/ is local-only — not exported"
 
   [[ -d "$src" ]] || { echo "  ⚠️  SKIP: wiki source missing: $src"; return 1; }
 
@@ -625,15 +647,15 @@ export_wiki() {
 
   local clone="$WORKDIR/${repo}"
 
-  if git ls-remote "$remote_url" "refs/heads/$wiki_branch" &>/dev/null; then
-    :
-  elif git ls-remote "$remote_url" "refs/heads/master" &>/dev/null; then
-    wiki_branch="master"
+  if ! git_auth ls-remote "$remote_url" "refs/heads/$wiki_branch" &>/dev/null; then
+    if git_auth ls-remote "$remote_url" "refs/heads/master" &>/dev/null; then
+      wiki_branch="master"
+    fi
   fi
 
-  if git ls-remote "$remote_url" "refs/heads/$wiki_branch" &>/dev/null; then
-    git clone --depth 1 --branch "$wiki_branch" "$remote_url" "$clone" 2>/dev/null || {
-      git clone --depth 1 "$remote_url" "$clone"
+  if git_auth ls-remote "$remote_url" "refs/heads/$wiki_branch" &>/dev/null; then
+    git_auth clone --depth 1 --branch "$wiki_branch" "$remote_url" "$clone" 2>/dev/null || {
+      git_auth clone --depth 1 "$remote_url" "$clone"
       (cd "$clone" && git checkout -B "$wiki_branch" 2>/dev/null || git checkout -b "$wiki_branch")
     }
   else
@@ -695,7 +717,7 @@ Auto-generated by scripts/mirror_satellites.sh"
   fi
 
   echo "  🚀 Pushing to ${GITHUB_HOST}/${GITHUB_ORG}/${repo} ..."
-  git push origin "HEAD:$BRANCH" 2>&1 || {
+  git_auth push origin "HEAD:$BRANCH" 2>&1 || {
     echo "  ⚠️  Push failed — check GH_PAT/GITHUB_TOKEN permissions"
     return 1
   }

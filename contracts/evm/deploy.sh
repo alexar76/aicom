@@ -1,28 +1,49 @@
 #!/usr/bin/env bash
 # Deploy AIMarketEscrow to an EVM chain.
-# Private key is read from console (no echo) and NEVER persisted.
+#
+# Two signing modes:
+#   1. --ledger      Hardware wallet (RECOMMENDED for mainnet)
+#                    Key never leaves the device; nothing visible in ps aux.
+#   2. private key   Pasted at console prompt, hidden input, cleared from
+#                    env and history immediately after broadcast.
 #
 # Usage:
 #   cd contracts/evm
-#   ./deploy.sh base          # Base mainnet
-#   ./deploy.sh base-sepolia  # Base Sepolia testnet
-#   ./deploy.sh ethereum      # Ethereum mainnet
-#   ./deploy.sh arbitrum      # Arbitrum One
+#   ./deploy.sh base                                          # private key prompt
+#   ./deploy.sh base --ledger                                 # hw wallet, default path
+#   ./deploy.sh base --ledger --derivation "m/44'/60'/1'/0/0" # custom path
+#   ./deploy.sh base-sepolia
+#   ./deploy.sh ethereum
+#   ./deploy.sh arbitrum
 #
-# What happens:
-#   - You paste the private key at the prompt (input hidden)
-#   - Foundry deploys the contract
-#   - Key is cleared from shell history and env immediately after
-#   - NOTHING is written to disk
+# Env overrides:
+#   INITIAL_HUBS=0x..,0x..    initial authorized hub addresses
+#   INITIAL_TOKENS=0x..,0x..  initial whitelisted USDT/USDC addresses
+#   FORGE_ARGS="..."          extra args appended to forge script
 
 set -euo pipefail
 
 CHAIN="${1:-}"
 if [ -z "$CHAIN" ]; then
-    echo "Usage: $0 <chain>"
-    echo "  base | base-sepolia | ethereum | arbitrum"
+    echo "Usage: $0 <chain> [--ledger [--derivation PATH] [--sender 0x...]]"
+    echo "  chain: base | base-sepolia | ethereum | arbitrum"
     exit 1
 fi
+shift || true
+
+# ── Parse signing options ────────────────────────────────────────
+USE_LEDGER=0
+LEDGER_DERIVATION="m/44'/60'/0'/0/0"
+LEDGER_SENDER=""
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --ledger)        USE_LEDGER=1; shift ;;
+        --derivation)    LEDGER_DERIVATION="$2"; shift 2 ;;
+        --sender)        LEDGER_SENDER="$2"; shift 2 ;;
+        *)               echo "Unknown option: $1"; exit 1 ;;
+    esac
+done
 
 # ── RPC mapping ──────────────────────────────────────────────────
 case "$CHAIN" in
@@ -53,97 +74,138 @@ case "$CHAIN" in
         ;;
 esac
 
-# ── Read private key from console ────────────────────────────────
+# ── Banner ───────────────────────────────────────────────────────
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  AIMarketEscrow — Deploy to ${CHAIN}"
-echo "╠══════════════════════════════════════════════════════════════╣"
-echo "║  Paste the deployer private key (input hidden):             ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
-# Read with hidden input (no echo to terminal, not even stars)
-if [ -t 0 ]; then
-    # Terminal available — use read -s
-    read -s -p "Private key (0x...): " DEPLOYER_PRIVATE_KEY
-    echo ""  # newline after hidden input
+if [ "$USE_LEDGER" -eq 1 ]; then
+    # ── Ledger path: key stays on device ─────────────────────────
+    if [ -z "$LEDGER_SENDER" ]; then
+        echo "Reading deployer address from Ledger (derivation: $LEDGER_DERIVATION) …"
+        LEDGER_SENDER="$(cast wallet address --ledger --mnemonic-derivation-path "$LEDGER_DERIVATION" 2>/dev/null || true)"
+        if [ -z "$LEDGER_SENDER" ]; then
+            echo "ERROR: Could not read Ledger address. Unlock device and open the Ethereum app."
+            exit 1
+        fi
+    fi
+    DEPLOYER_ADDR="$LEDGER_SENDER"
 else
-    # Non-interactive — read from stdin (pipe)
-    read -r DEPLOYER_PRIVATE_KEY
-fi
+    # ── Private-key path: paste at hidden prompt ─────────────────
+    echo "Paste the deployer private key (input hidden) — or rerun with --ledger:"
+    if [ -t 0 ]; then
+        read -s -p "Private key (0x...): " DEPLOYER_PRIVATE_KEY
+        echo ""
+    else
+        read -r DEPLOYER_PRIVATE_KEY
+    fi
 
-# Validate format
-if [ -z "$DEPLOYER_PRIVATE_KEY" ]; then
-    echo "ERROR: No private key provided."
-    exit 1
+    if [ -z "$DEPLOYER_PRIVATE_KEY" ]; then
+        echo "ERROR: No private key provided."
+        exit 1
+    fi
+    if [[ ! "$DEPLOYER_PRIVATE_KEY" =~ ^(0x)?[0-9a-fA-F]{64}$ ]]; then
+        echo "ERROR: Private key must be 64 hex characters (with optional 0x prefix)."
+        DEPLOYER_PRIVATE_KEY="REDACTED"
+        exit 1
+    fi
+    PRIVATE_KEY="${DEPLOYER_PRIVATE_KEY#0x}"
+    DEPLOYER_ADDR="$(cast wallet address "0x${PRIVATE_KEY}" 2>/dev/null || echo unknown)"
 fi
-
-if [[ ! "$DEPLOYER_PRIVATE_KEY" =~ ^(0x)?[0-9a-fA-F]{64}$ ]]; then
-    echo "ERROR: Private key must be 64 hex characters (with optional 0x prefix)."
-    # Key is invalid, but still clear it
-    DEPLOYER_PRIVATE_KEY="REDACTED"
-    exit 1
-fi
-
-# Normalize: strip 0x prefix if present (Foundry handles both, but safer)
-PRIVATE_KEY="${DEPLOYER_PRIVATE_KEY#0x}"
 
 echo ""
-echo "Deployer address: $(cast wallet address "0x${PRIVATE_KEY}" 2>/dev/null || echo "unknown")"
+echo "Deployer address: $DEPLOYER_ADDR"
 echo "Chain: $CHAIN"
 echo "RPC: $RPC_URL"
+echo "Signing: $( [ "$USE_LEDGER" -eq 1 ] && echo "Ledger ($LEDGER_DERIVATION)" || echo "console private key" )"
 echo ""
 
 read -p "Continue? (y/N) " CONFIRM
 if [ "$CONFIRM" != "y" ] && [ "$CONFIRM" != "Y" ]; then
     echo "Aborted."
-    PRIVATE_KEY="REDACTED"
-    DEPLOYER_PRIVATE_KEY="REDACTED"
+    [ -n "${PRIVATE_KEY:-}" ] && PRIVATE_KEY="REDACTED" && unset PRIVATE_KEY
+    [ -n "${DEPLOYER_PRIVATE_KEY:-}" ] && DEPLOYER_PRIVATE_KEY="REDACTED" && unset DEPLOYER_PRIVATE_KEY
     exit 0
 fi
 
 echo ""
 echo "Deploying..."
 
-# ── Build initial hub/token args ─────────────────────────────────
 # Default: deployer is the first authorized hub
-DEPLOYER_ADDR=$(cast wallet address "0x${PRIVATE_KEY}")
 INITIAL_HUBS="${INITIAL_HUBS:-$DEPLOYER_ADDR}"
-
-# ── Run Foundry deploy ───────────────────────────────────────────
-export PRIVATE_KEY="0x${PRIVATE_KEY}"
 export INITIAL_HUBS
 export INITIAL_TOKENS="${INITIAL_TOKENS:-}"
 
-forge script script/Deploy.s.sol \
-    --rpc-url "$RPC_URL" \
-    --broadcast \
-    --private-key "0x${PRIVATE_KEY}" \
-    $( [ -n "$ETHERSCAN_API_KEY" ] && echo "--verify --verifier-url $VERIFIER_URL --etherscan-api-key $ETHERSCAN_API_KEY" ) \
-    ${FORGE_ARGS:-}
+# ── Run Foundry deploy ───────────────────────────────────────────
+VERIFY_FLAGS=""
+if [ -n "$ETHERSCAN_API_KEY" ]; then
+    VERIFY_FLAGS="--verify --verifier-url $VERIFIER_URL --etherscan-api-key $ETHERSCAN_API_KEY"
+fi
 
-DEPLOY_EXIT=$?
+if [ "$USE_LEDGER" -eq 1 ]; then
+    # Foundry script forge has --ledger flag — the Forge `vm.envUint("PRIVATE_KEY")`
+    # in Deploy.s.sol means we must not use that script when signing via Ledger.
+    # Instead deploy via `forge create` with Ledger, then run the constructor
+    # logic by inlining bytecode.
+    echo ""
+    echo "⚠️  NOTE: The current Deploy.s.sol uses vm.envUint('PRIVATE_KEY') and"
+    echo "    cannot drive a Ledger directly. To deploy with Ledger:"
+    echo ""
+    echo "    forge create script/../AIMarketEscrow.sol:AIMarketEscrow \\"
+    echo "        --rpc-url $RPC_URL \\"
+    echo "        --ledger --mnemonic-derivation-path \"$LEDGER_DERIVATION\" \\"
+    echo "        --sender $DEPLOYER_SENDER \\"
+    echo "        --constructor-args \"[$INITIAL_HUBS]\" \"[$INITIAL_TOKENS]\" \\"
+    echo "        $VERIFY_FLAGS"
+    echo ""
+    echo "    Then call setHubAuthorization / setTokenWhitelist for any extras."
+    echo ""
+    read -p "Run the forge create command above now? (y/N) " RUN_FORGE
+    if [ "$RUN_FORGE" != "y" ] && [ "$RUN_FORGE" != "Y" ]; then
+        echo "Aborted — copy the command above to run manually."
+        exit 0
+    fi
+    # shellcheck disable=SC2086
+    forge create AIMarketEscrow.sol:AIMarketEscrow \
+        --rpc-url "$RPC_URL" \
+        --ledger --mnemonic-derivation-path "$LEDGER_DERIVATION" \
+        --sender "$DEPLOYER_ADDR" \
+        --constructor-args "[$INITIAL_HUBS]" "[$INITIAL_TOKENS]" \
+        $VERIFY_FLAGS \
+        ${FORGE_ARGS:-}
+    DEPLOY_EXIT=$?
+else
+    export PRIVATE_KEY="0x${PRIVATE_KEY}"
+    # shellcheck disable=SC2086
+    forge script script/Deploy.s.sol \
+        --rpc-url "$RPC_URL" \
+        --broadcast \
+        --private-key "0x${PRIVATE_KEY}" \
+        $VERIFY_FLAGS \
+        ${FORGE_ARGS:-}
+    DEPLOY_EXIT=$?
+fi
 
 # ── IMMEDIATELY clear key from env and shell ─────────────────────
-PRIVATE_KEY="REDACTED"
-DEPLOYER_PRIVATE_KEY="REDACTED"
-unset PRIVATE_KEY
-unset DEPLOYER_PRIVATE_KEY
+if [ "$USE_LEDGER" -ne 1 ]; then
+    PRIVATE_KEY="REDACTED"
+    DEPLOYER_PRIVATE_KEY="REDACTED"
+    unset PRIVATE_KEY
+    unset DEPLOYER_PRIVATE_KEY
+fi
 unset INITIAL_HUBS
 unset INITIAL_TOKENS
-
-# Also clear from bash history (if we're in an interactive session)
 history -c 2>/dev/null || true
 history -w 2>/dev/null || true
 
 echo ""
 if [ $DEPLOY_EXIT -eq 0 ]; then
     echo "=== Deploy complete ==="
-    echo "Private key cleared from environment."
     echo "Set AIMARKET_ESCROW_EVM_ADDRESS= in your .env"
 else
     echo "=== Deploy FAILED (exit $DEPLOY_EXIT) ==="
-    echo "Private key cleared from environment."
 fi
 
 exit $DEPLOY_EXIT

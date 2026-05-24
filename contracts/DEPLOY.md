@@ -22,8 +22,21 @@ sh -c "$(curl -sSfL https://release.solana.com/v1.18.26/install)"
 cargo install --locked --tag v0.30.1 --git https://github.com/coral-xyz/anchor anchor-cli
 ```
 
-**Hardware wallet recommended** (Ledger/Trezor) for mainnet deployer keys.
-For Foundry: `--ledger --mnemonic-derivation-path "m/44'/60'/0'/0/0"` instead of `--private-key`.
+**Hardware wallet STRONGLY recommended** (Ledger/Trezor) for mainnet deployer keys.
+Plain `--private-key` exposes the key as an argv to `forge` / `cast` — visible in
+`ps aux` on multi-user hosts for the duration of the command.
+
+For Foundry on Ledger:
+```bash
+forge script script/Deploy.s.sol \
+    --rpc-url base-mainnet --broadcast \
+    --ledger --mnemonic-derivation-path "m/44'/60'/0'/0/0" \
+    --sender 0xYourLedgerAddress
+```
+
+Same for `cast send` / `cast wallet address`. The `deploy.sh` / `deploy-nft.sh`
+scripts use `--private-key` for convenience — for production deploys, run the
+underlying `forge script` directly with `--ledger`.
 
 ---
 

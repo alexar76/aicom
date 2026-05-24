@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -430,9 +431,23 @@ def emit(slug: str, locales: dict[str, dict[str, str]]) -> None:
     print(f"OK {out}")
 
 
+def emit_language_packs(slug: str, locales: dict[str, dict[str, str]]) -> None:
+    pack_dir = DESKTOP / slug / "language-packs"
+    pack_dir.mkdir(parents=True, exist_ok=True)
+    for loc in ("en", "ru", "es"):
+        payload = {"@@locale": loc, **locales[loc]}
+        out = pack_dir / f"{loc}.json"
+        out.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        print(f"OK {out}")
+
+
 def main() -> None:
     for slug, locales in CATALOG.items():
         emit(slug, locales)
+        emit_language_packs(slug, locales)
 
 
 if __name__ == "__main__":

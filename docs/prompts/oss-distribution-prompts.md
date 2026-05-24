@@ -29,12 +29,11 @@ Source of truth: **private/dev monorepo `aicom`**. Public GitHub mirrors are **s
 
 ### Language packs — colocate with app
 
-**Do not** keep a top-level `language-packs/<app>/` in the satellite desktop repo.
+**Do not** keep a top-level `language-packs/` folder in the satellite desktop repo.
 
 | Monorepo (canonical) | Export target in `aimarket-desktop` |
 |----------------------|-------------------------------------|
 | `desktop-integrations/<app>/language-packs/*.json` | `apps/<app>/language-packs/` |
-| Legacy `language-packs/<app>/` at repo root | Migrate on mirror → same target |
 
 Runtime path on user machine stays: `~/Documents/AICOM/language-packs/<app-id>/`.
 
@@ -96,8 +95,7 @@ aimarket-desktop/
 
 **Language packs:** mirror script MUST:
 1. Copy `desktop-integrations/{app}/language-packs/` → `apps/{app}/language-packs/`
-2. Fallback-merge legacy root `language-packs/{app}/` if present
-3. Never emit a top-level `language-packs/` folder in the satellite
+2. Never emit a top-level `language-packs/` folder in the satellite
 
 ### aimarket-sdks repo (target `aimarket-sdks`)
 
@@ -140,7 +138,6 @@ Export `ai-service-mesh/` as root. Require strong MESH_* tokens in compose.
 - [ ] `.github/workflows/mirror-satellites.yml` — matrix all satellites
 - [ ] `.github/workflows/release.yml` — group tags
 - [ ] `scripts/release.sh patch|minor|major`
-- [ ] Migrate any root `language-packs/<app>/` → `desktop-integrations/<app>/language-packs/`
 - [ ] `scripts/bootstrap_repo_legal_docs.py` — add kinds: desktop-monorepo, sdks, pulse-terminal
 - [ ] Secrets: GH_PAT, PYPI_TOKEN, NPM_TOKEN, PUB_CREDENTIALS, GHCR_TOKEN, CRATES_TOKEN
 
@@ -149,7 +146,6 @@ Export `ai-service-mesh/` as root. Require strong MESH_* tokens in compose.
 - Split each desktop SKU into its own GitHub repo
 - Embed aimarket-sdks inside aimarket-desktop
 - Put Pulse Terminal inside acex/ or aimarket-desktop/
-- Leave language-packs only at monorepo root without per-app colocation
 - Ship default MESH_* tokens or API keys
 
 When done, print: satellite URLs, workflow paths, command for Prompt #2.
@@ -184,7 +180,7 @@ Read `scripts/satellite-map.yaml` for the authoritative satellite list.
 Only release groups with changed paths since last group tag.
 
 Path hints:
-- Desktop: `desktop-integrations/`, `language-packs/` (legacy), `desktop-integrations/*/language-packs/`
+- Desktop: `desktop-integrations/`, `desktop-integrations/*/language-packs/`
 - SDKs: `aimarket-sdks/`
 - Pulse: `apps/pulse-terminal/`
 - ACEX: `acex/` (exclude apps/pulse-terminal)
@@ -225,7 +221,6 @@ Markdown release notes grouped by: Desktop, SDKs, Pulse Terminal, ACEX, Mesh, Hu
 |------|------|
 | `desktop-integrations/*` | 8 Flutter desktop/web SKUs |
 | `desktop-integrations/<app>/language-packs/` | Per-app i18n JSON (canonical) |
-| `language-packs/` | Legacy root — migrate into apps |
 | `aimarket-sdks/` | Dart + TypeScript + Rust SDKs |
 | `apps/pulse-terminal/` | ACEX Pulse Terminal UI |
 | `acex/` | Agent Capital Exchange |

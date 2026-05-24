@@ -45,7 +45,7 @@ Shared UI (wallet, backup, economics bar) comes from `aicom_desktop_core` ARB fi
 4. In app **Settings → Reload language packs**
 5. Select the new locale from the list
 
-Example: see `language-packs/de.json` in this app directory (e.g. `apps/reputation-dashboard/language-packs/` in the desktop monorepo).
+Example: see `language-packs/en.json`, `ru.json`, and `es.json` in this app directory (plus optional `de.json` for extra locales).
 
 ## Regenerate built-in catalogs
 

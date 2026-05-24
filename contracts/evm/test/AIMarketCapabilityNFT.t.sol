@@ -211,4 +211,121 @@ contract AIMarketCapabilityNFTTest is Test {
         assertEq(nft.name(), "AIMarket Capability Entitlement");
         assertEq(nft.symbol(), "AIMCAP");
     }
+
+    // ── New: per-token consume pause ─────────────────────────────
+
+    function test_setConsumePaused_byTokenOwner() public {
+        uint256 tokenId = nft.mint(alice, CAP_ID, PROD_ID, 10, 400_000);
+
+        vm.prank(alice);
+        nft.setConsumePaused(tokenId, true);
+
+        vm.prank(hub);
+        vm.expectRevert(
+            abi.encodeWithSelector(AIMarketCapabilityNFT.TokenConsumePaused.selector, tokenId)
+        );
+        nft.consumeCall(tokenId);
+
+        // Owner can unpause
+        vm.prank(alice);
+        nft.setConsumePaused(tokenId, false);
+        vm.prank(hub);
+        nft.consumeCall(tokenId);
+        assertEq(nft.remainingCalls(tokenId), 9);
+    }
+
+    function test_setConsumePaused_byContractOwner() public {
+        uint256 tokenId = nft.mint(alice, CAP_ID, PROD_ID, 10, 400_000);
+
+        // owner is `this`
+        nft.setConsumePaused(tokenId, true);
+        assertTrue(nft.consumePaused(tokenId));
+    }
+
+    function test_setConsumePaused_rejectsStranger() public {
+        uint256 tokenId = nft.mint(alice, CAP_ID, PROD_ID, 10, 400_000);
+
+        vm.prank(stranger);
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                AIMarketCapabilityNFT.NotTokenOwnerOrContractOwner.selector, stranger
+            )
+        );
+        nft.setConsumePaused(tokenId, true);
+    }
+
+    // ── New: bulk-deauthorize ────────────────────────────────────
+
+    function test_setAuthorizedHubBulk_deauthorize() public {
+        address hub2 = address(0xBEEF1);
+        address hub3 = address(0xBEEF2);
+        nft.setAuthorizedHub(hub2, true);
+        nft.setAuthorizedHub(hub3, true);
+
+        address[] memory hubs = new address[](3);
+        hubs[0] = hub;
+        hubs[1] = hub2;
+        hubs[2] = hub3;
+        nft.setAuthorizedHubBulk(hubs, false);
+
+        assertFalse(nft.authorizedHubs(hub));
+        assertFalse(nft.authorizedHubs(hub2));
+        assertFalse(nft.authorizedHubs(hub3));
+    }
+
+    function test_setAuthorizedHubBulk_revertsIfNotOwner() public {
+        address[] memory hubs = new address[](1);
+        hubs[0] = hub;
+        vm.prank(stranger);
+        vm.expectRevert();
+        nft.setAuthorizedHubBulk(hubs, false);
+    }
+
+    // ── New: emergency pause ─────────────────────────────────────
+
+    function test_pause_blocksMintAndConsume() public {
+        uint256 tokenId = nft.mint(alice, CAP_ID, PROD_ID, 10, 400_000);
+
+        nft.pause();
+
+        vm.expectRevert(); // EnforcedPause
+        nft.mint(alice, CAP_ID, PROD_ID, 10, 400_000);
+
+        vm.prank(hub);
+        vm.expectRevert();
+        nft.consumeCall(tokenId);
+    }
+
+    function test_pause_allowsTransfers() public {
+        // Pause shouldn't trap user funds — transfers must remain possible.
+        uint256 tokenId = nft.mint(alice, CAP_ID, PROD_ID, 10, 400_000);
+        nft.pause();
+
+        vm.prank(alice);
+        nft.transferFrom(alice, bob, tokenId);
+        assertEq(nft.ownerOf(tokenId), bob);
+    }
+
+    function test_unpause_restoresConsume() public {
+        uint256 tokenId = nft.mint(alice, CAP_ID, PROD_ID, 10, 400_000);
+        nft.pause();
+        nft.unpause();
+
+        vm.prank(hub);
+        nft.consumeCall(tokenId);
+        assertEq(nft.remainingCalls(tokenId), 9);
+    }
+
+    // ── New: burn cleans up entitlement ──────────────────────────
+
+    function test_burn_clearsEntitlement() public {
+        uint256 tokenId = nft.mint(alice, CAP_ID, PROD_ID, 10, 400_000);
+        vm.prank(alice);
+        nft.burn(tokenId);
+
+        // Stale view queries return safe values, not garbage from storage.
+        assertEq(nft.remainingCalls(tokenId), 0);
+        assertTrue(nft.isExhausted(tokenId));
+        assertFalse(nft.consumePaused(tokenId));
+    }
 }

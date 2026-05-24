@@ -16,6 +16,7 @@ ActionKind = Literal[
     "discovery_gap_detail",
     "discovery_sdk_export",
     "freelance_review_report",
+    "discovery_refresh",
     "wallet_popup",
 ]
 
@@ -30,6 +31,7 @@ class ScreenStep:
     action: ActionKind = "landing"
     label: str = ""
     index: int = 0
+    fragment: str = ""
 
 
 @dataclass(frozen=True)
@@ -57,17 +59,17 @@ MANIFEST: dict[str, SkuManifest] = {
         port=9923,
         screens=[
             ScreenStep("overview", "landing"),
-            ScreenStep("import", "nav_rail", index=1),
-            ScreenStep("marketplace", "nav_rail", index=2),
-            ScreenStep("privacy", "nav_rail", index=3),
+            ScreenStep("import", "landing", fragment="import"),
+            ScreenStep("marketplace", "landing", fragment="marketplace"),
+            ScreenStep("privacy", "landing", fragment="privacy"),
         ],
     ),
     "capability-composer": SkuManifest(
         port=9924,
         screens=[
             ScreenStep("canvas", "landing"),
-            ScreenStep("discover", "nav_rail", index=1),
-            ScreenStep("templates", "nav_rail", index=2),
+            ScreenStep("discover", "landing", fragment="discover"),
+            ScreenStep("templates", "landing", fragment="templates"),
             ScreenStep("export", "composer_export"),
         ],
     ),
@@ -92,20 +94,22 @@ MANIFEST: dict[str, SkuManifest] = {
     ),
     "discovery-prospector": SkuManifest(
         port=9927,
+        dart_defines={"SCREENSHOT_DEMO": "true"},
         screens=[
             ScreenStep("gaps-list", "landing"),
             ScreenStep("gap-detail", "discovery_gap_detail"),
-            ScreenStep("telemetry", "click_text", "Refresh Telemetry"),
+            ScreenStep("telemetry", "discovery_refresh"),
             ScreenStep("sdk-export", "discovery_sdk_export"),
         ],
     ),
     "freelance-contract-reviewer": SkuManifest(
         port=9928,
+        dart_defines={"SCREENSHOT_DEMO": "true"},
         screens=[
             ScreenStep("dashboard", "landing"),
             ScreenStep("upload", "nav_bottom", index=1),
             ScreenStep("marketplace", "nav_bottom", index=2),
-            ScreenStep("review-report", "freelance_review_report"),
+            ScreenStep("review-report", "nav_bottom", index=1),
         ],
     ),
     "reputation-dashboard": SkuManifest(

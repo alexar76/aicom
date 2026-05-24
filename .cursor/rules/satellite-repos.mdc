@@ -43,6 +43,21 @@ Set `GH_PAT` or `GITHUB_TOKEN` for authenticated pushes.
 | `aimarket-widget` | `aimarket-widget/` | `alexar76/aimarket-widget` |
 | `aimarket-plugins` | `plugins/` | `alexar76/aimarket-plugins` |
 
+## Wiki — three paths, one source
+
+| Path | Role |
+|------|------|
+| **`scripts/wiki-gitea/`** | Canonical markdown — edit here |
+| **`aicom-wiki` satellite** | Publishes to `alexar76/aicom.wiki` on GitHub |
+| **`wiki/`** | Local git clones only (`wiki/github/aicom.wiki/`, `wiki/aicom.wiki/`) — **not** pushed to `aicom`, not a satellite |
+
+```bash
+./scripts/publish_all_repos.sh --satellite aicom-wiki   # GitHub wiki
+./scripts/push-gitea-wiki.sh                            # Gitea wiki (optional)
+```
+
+Do not commit contents of `wiki/*` clones — folder is gitignored except `wiki/README.md`.
+
 ## language-packs/reputation-dashboard
 
 Not a separate public repo. Legacy root path `language-packs/reputation-dashboard/` is excluded from factory aicom and merged into `aimarket-desktop` at `apps/reputation-dashboard/language-packs/` when mirroring. Prefer canonical path: `desktop-integrations/reputation-dashboard/language-packs/`.

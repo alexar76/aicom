@@ -48,7 +48,9 @@ config.dev.yaml
 .env.local
 .env.*.local
 
-# Generated data
-data/state/
+# Local wiki git clones (nested repos — not part of monorepo)
+wiki/*
+!wiki/README.md
+
 data/public/pipeline_demo_replay/
 data/reports/

@@ -21,6 +21,28 @@ VIEWPORT = {"width": 1440, "height": 900}
 WAIT_MS = 1800
 
 
+def _viewport(page) -> tuple[int, int]:
+    vp = page.viewport_size or VIEWPORT
+    return vp["width"], vp["height"]
+
+
+def _enable_flutter_semantics(page) -> None:
+    page.wait_for_timeout(900)
+    for selector in ("flt-semantics-placeholder", '[aria-label="Enable accessibility"]'):
+        loc = page.locator(selector)
+        if loc.count() > 0:
+            try:
+                loc.first.click(timeout=3000)
+                page.wait_for_timeout(500)
+                return
+            except Exception:
+                continue
+    page.keyboard.press("Tab")
+    page.wait_for_timeout(250)
+    page.keyboard.press("Enter")
+    page.wait_for_timeout(500)
+
+
 def build_and_serve(slug: str, port: int, manifest) -> subprocess.Popen:
     app = DESKTOP / slug
     subprocess.run([str(FLUTTER), "pub", "get"], cwd=app, check=True)
@@ -30,12 +52,17 @@ def build_and_serve(slug: str, port: int, manifest) -> subprocess.Popen:
         "web",
         "--release",
         "--no-tree-shake-icons",
+        "--no-wasm-dry-run",
     ]
     if manifest.wallet:
         cmd += ["--dart-define=WALLET_KEY=" + DEV_WALLET_KEY]
     for key, value in manifest.dart_defines.items():
         cmd += [f"--dart-define={key}={value}"]
-    subprocess.run(cmd, cwd=app, check=True)
+    try:
+        subprocess.run(cmd, cwd=app, check=True)
+    except subprocess.CalledProcessError:
+        subprocess.run([str(FLUTTER), "clean"], cwd=app, check=True)
+        subprocess.run(cmd, cwd=app, check=True)
     subprocess.run(["fuser", "-k", f"{port}/tcp"], capture_output=True)
     proc = subprocess.Popen(
         [sys.executable, "-m", "http.server", str(port), "--bind", "127.0.0.1"],
@@ -48,6 +75,7 @@ def build_and_serve(slug: str, port: int, manifest) -> subprocess.Popen:
 
 
 def _click_label(page, label: str) -> None:
+    _enable_flutter_semantics(page)
     for locator in (
         page.get_by_role("button", name=label),
         page.get_by_role("tab", name=label),
@@ -91,38 +119,114 @@ def _complete_interview_onboarding(page) -> None:
 
 
 def _composer_export(page) -> None:
-    page.get_by_role("button", name="New Pipeline").click(timeout=8000)
+    _enable_flutter_semantics(page)
+    w, h = _viewport(page)
+    for locator in (
+        page.get_by_role("button", name="New Pipeline"),
+        page.get_by_text("New Pipeline", exact=True),
+    ):
+        try:
+            locator.first.click(timeout=5000, force=True)
+            break
+        except Exception:
+            continue
+    else:
+        page.mouse.click(w // 2, int(h * 0.58))
     page.wait_for_timeout(400)
-    field = page.get_by_label("Pipeline name")
-    field.fill("Demo Outreach Pipeline")
-    page.get_by_role("button", name="Create").click(timeout=8000)
+    for locator in (
+        page.get_by_label("Pipeline name"),
+        page.get_by_placeholder("e.g., LinkedIn -> Email -> CRM"),
+    ):
+        try:
+            locator.first.fill("Demo Outreach Pipeline", timeout=5000)
+            break
+        except Exception:
+            continue
+    else:
+        page.keyboard.type("Demo Outreach Pipeline")
+    for locator in (
+        page.get_by_role("button", name="Create"),
+        page.get_by_text("Create", exact=True),
+    ):
+        try:
+            locator.first.click(timeout=5000, force=True)
+            break
+        except Exception:
+            continue
+    else:
+        page.keyboard.press("Enter")
     page.wait_for_timeout(WAIT_MS)
-    page.get_by_role("button", name="Export pipeline").click(timeout=8000)
+    for locator in (
+        page.get_by_role("button", name="Export pipeline"),
+        page.locator('[aria-label="Export pipeline"]'),
+    ):
+        try:
+            locator.first.click(timeout=5000, force=True)
+            page.wait_for_timeout(WAIT_MS)
+            return
+        except Exception:
+            continue
+    page.mouse.click(w - 180, 36)
     page.wait_for_timeout(WAIT_MS)
 
 
 def _discovery_gap_detail(page) -> None:
-    page.wait_for_timeout(3000)
-    tiles = page.locator("flt-semantics").filter(has_text="Niche Score")
-    if tiles.count() == 0:
-        page.get_by_text("Refresh Telemetry", exact=False).first.click(timeout=8000)
-        page.wait_for_timeout(4000)
-    list_items = page.locator("[role='button']").filter(has_text="Score")
-    if list_items.count() > 0:
-        list_items.first.click(timeout=8000)
-    else:
-        page.locator("flt-semantics").filter(has_text="gaps found").first.click(timeout=8000)
+    _enable_flutter_semantics(page)
+    page.wait_for_timeout(2500)
+    for locator in (
+        page.locator("[role='button']").filter(has_text="Score"),
+        page.locator("flt-semantics").filter(has_text="Niche Score"),
+    ):
+        if locator.count() > 0:
+            try:
+                locator.first.click(timeout=5000, force=True)
+                page.wait_for_timeout(WAIT_MS)
+                return
+            except Exception:
+                continue
+    page.mouse.click(210, 320)
+    page.wait_for_timeout(WAIT_MS)
+
+
+def _discovery_refresh(page) -> None:
+    _enable_flutter_semantics(page)
+    w, _ = _viewport(page)
+    for locator in (
+        page.get_by_text("Refresh Telemetry", exact=False),
+        page.locator('[aria-label="Refresh Telemetry"]'),
+        page.locator('[tooltip="Refresh Telemetry"]'),
+    ):
+        try:
+            if locator.count() > 0:
+                locator.first.click(timeout=5000, force=True)
+                page.wait_for_timeout(WAIT_MS)
+                return
+        except Exception:
+            continue
+    page.mouse.click(w - 96, 36)
     page.wait_for_timeout(WAIT_MS)
 
 
 def _discovery_sdk_export(page) -> None:
     _discovery_gap_detail(page)
-    page.get_by_role("button", name="Copy SDK Code").click(timeout=8000)
+    _enable_flutter_semantics(page)
+    for locator in (
+        page.get_by_role("button", name="Copy SDK Code"),
+        page.get_by_text("Copy SDK Code", exact=True),
+    ):
+        try:
+            locator.first.click(timeout=5000, force=True)
+            page.wait_for_timeout(WAIT_MS)
+            return
+        except Exception:
+            continue
+    w, _ = _viewport(page)
+    page.mouse.click(w - 150, 36)
     page.wait_for_timeout(WAIT_MS)
 
 
 def _freelance_review_report(page) -> None:
-    _click_label(page, "Upload")
+    _click_bottom_nav(page, 1, slots=4)
     if not SAMPLE_CONTRACT.is_file():
         FIXTURES.mkdir(parents=True, exist_ok=True)
         SAMPLE_CONTRACT.write_text(
@@ -141,8 +245,43 @@ def _freelance_review_report(page) -> None:
 
 
 def _wallet_popup(page) -> None:
-    page.get_by_role("button", name="Marketplace").click(timeout=8000)
+    _enable_flutter_semantics(page)
+    w, _ = _viewport(page)
+    for locator in (
+        page.get_by_role("button", name="Marketplace"),
+        page.locator('[aria-label="Marketplace"]'),
+    ):
+        try:
+            locator.first.click(timeout=5000, force=True)
+            page.wait_for_timeout(WAIT_MS)
+            return
+        except Exception:
+            continue
+    page.mouse.click(w - 120, 36)
     page.wait_for_timeout(WAIT_MS)
+
+
+def _wait_for_flutter_ready(page, slug: str) -> None:
+    page.wait_for_selector("flt-glass-pane", state="attached", timeout=90000)
+    page.wait_for_timeout(1200)
+    markers = {
+        "interview-prep-coach": ["AI Market", "Interview Prep Coach", "Today's Prep", "Discover Question Banks"],
+        "personal-finance-coach": ["Financial Overview", "Finance Coach"],
+        "capability-composer": ["No Pipeline Open", "Pipeline", "Capability Composer"],
+        "cold-outreach-coach": ["Cold Outreach", "Outreach"],
+        "creator-algorithm-coach": ["Creator", "Algorithm"],
+        "discovery-prospector": ["Discovery", "Niche", "gaps"],
+        "freelance-contract-reviewer": ["Contract", "Freelance"],
+        "reputation-dashboard": ["Reputation", "Top", "Capabilities"],
+    }
+    for text in markers.get(slug, []):
+        try:
+            page.get_by_text(text, exact=False).first.wait_for(timeout=20000)
+            page.wait_for_timeout(800)
+            return
+        except Exception:
+            continue
+    page.wait_for_timeout(2500)
 
 
 def _click_bottom_nav(page, index: int, *, slots: int = 4) -> None:
@@ -154,14 +293,50 @@ def _click_bottom_nav(page, index: int, *, slots: int = 4) -> None:
     page.wait_for_timeout(WAIT_MS)
 
 
-def _click_rail_nav(page, index: int) -> None:
-    page.mouse.click(48, 100 + index * 80)
+def _click_rail_nav(page, index: int, *, label: str = "") -> None:
+    _enable_flutter_semantics(page)
+    if label:
+        for locator in (
+            page.locator("flt-semantics").filter(has_text=label),
+            page.get_by_text(label, exact=True),
+        ):
+            try:
+                if locator.count() > 0:
+                    locator.first.click(timeout=6000, force=True)
+                    page.wait_for_timeout(WAIT_MS)
+                    return
+            except Exception:
+                continue
+    page.mouse.click(40, 84 + index * 72)
     page.wait_for_timeout(WAIT_MS)
 
 
-def prepare_page(page, slug: str, url: str) -> None:
-    page.goto(url, wait_until="networkidle", timeout=90000)
+def prepare_page(page, slug: str, url: str, *, fragment: str = "") -> None:
+    if slug == "interview-prep-coach":
+        page.add_init_script(
+            """() => {
+              localStorage.setItem('flutter.onboarding_complete', 'true');
+            }"""
+        )
+    target = f"{url}?tab={fragment}" if fragment else url
+    page.goto(target, wait_until="networkidle", timeout=90000)
     page.wait_for_timeout(WAIT_MS)
+    _enable_flutter_semantics(page)
+    _wait_for_flutter_ready(page, slug)
+    tab_markers = {
+        "import": "Import bank CSVs",
+        "marketplace": "Finance Marketplace",
+        "privacy": "never leaves this device",
+        "discover": "Discover Capabilities",
+        "templates": "Pipeline Templates",
+    }
+    marker = tab_markers.get(fragment)
+    if marker:
+        try:
+            page.get_by_text(marker, exact=False).first.wait_for(timeout=15000)
+            page.wait_for_timeout(600)
+        except Exception:
+            page.wait_for_timeout(2000)
 
 
 def run_step(page, step: ScreenStep, manifest: SkuManifest) -> None:
@@ -175,7 +350,7 @@ def run_step(page, step: ScreenStep, manifest: SkuManifest) -> None:
         _click_bottom_nav(page, step.index, slots=manifest.bottom_nav_slots)
         return
     if action == "nav_rail":
-        _click_rail_nav(page, step.index)
+        _click_rail_nav(page, step.index, label=step.label)
         return
     if action == "click_text":
         page.get_by_text(step.label, exact=False).first.click(timeout=8000)
@@ -189,6 +364,9 @@ def run_step(page, step: ScreenStep, manifest: SkuManifest) -> None:
         return
     if action == "discovery_sdk_export":
         _discovery_sdk_export(page)
+        return
+    if action == "discovery_refresh":
+        _discovery_refresh(page)
         return
     if action == "freelance_review_report":
         _freelance_review_report(page)
@@ -223,8 +401,10 @@ def capture_slug(slug: str) -> None:
             browser = p.chromium.launch()
             page = browser.new_page(viewport=VIEWPORT)
 
-            for step in manifest.screens:
-                prepare_page(page, slug, url)
+            for i, step in enumerate(manifest.screens):
+                fragment = step.fragment or ""
+                if i == 0 or fragment or step.action in ("landing", "interview_onboarding"):
+                    prepare_page(page, slug, url, fragment=fragment)
                 if step.action not in ("landing", "interview_onboarding"):
                     run_step(page, step, manifest)
                 out = shots_dir / f"{step.name}.png"

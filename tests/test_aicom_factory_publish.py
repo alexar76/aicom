@@ -25,7 +25,6 @@ def test_factory_excludes_all_satellite_roots():
         "desktop-integrations",
         "apps/pulse-terminal",
         "plugins",
-        "language-packs",
         "wiki",
         "scripts/wiki-gitea",
     ):

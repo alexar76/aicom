@@ -1,0 +1,13 @@
+# snarkjs build outputs (regenerable via setup.sh)
+build/
+node_modules/
+
+# Operator-private proving keys — NEVER commit
+*_0001.zkey
+*_final.zkey
+
+# Powers-of-tau cache (large, downloaded from public source)
+*.ptau
+
+# Witness generation artifacts
+*.wtns

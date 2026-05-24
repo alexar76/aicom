@@ -39,6 +39,48 @@ def _federation_hub_url() -> str:
     ).rstrip("/")
 
 
+def _federation_url_is_safe(url: str) -> bool:
+    """Reject internal/loopback URLs and non-HTTPS-or-HTTP schemes (API2-1).
+
+    The operator's federation hub MUST be a publicly reachable hostname.
+    Internal hosts in this var would turn /search and /invoke into SSRF
+    proxies forwarding user input to attacker-chosen internal services.
+    """
+    try:
+        from aimarket_hub.crawler import _url_is_safe
+
+        return _url_is_safe(url)
+    except Exception:  # pragma: no cover — fall back to a strict prefix check
+        if not url.startswith(("https://", "http://")):
+            return False
+        bad = (
+            "localhost",
+            "127.",
+            "0.0.0.0",
+            "[::1]",
+            "10.",
+            "192.168.",
+            "169.254.",
+            "172.16.",
+            "172.17.",
+            "172.18.",
+            "172.19.",
+            "172.20.",
+            "172.21.",
+            "172.22.",
+            "172.23.",
+            "172.24.",
+            "172.25.",
+            "172.26.",
+            "172.27.",
+            "172.28.",
+            "172.29.",
+            "172.30.",
+            "172.31.",
+        )
+        return not any(b in url.lower() for b in bad)
+
+
 def _trust_for_state(state: str) -> float:
     s = (state or "").upper()
     if s in ("COMPLETED", "DEPLOYED_PRODUCTION"):
@@ -134,8 +176,19 @@ async def search_v2(
 
     if not matches and intent.strip() and _widget_federate_search():
         fed_url = _federation_hub_url()
+        if not _federation_url_is_safe(fed_url):
+            # Operator misconfiguration — refuse to make the call (API2-1).
+            return {
+                "query": intent,
+                "matches": [],
+                "catalog": "factory",
+                "error": "federation_url_unsafe",
+                "detail": "AIMARKET_FEDERATION_HUB_URL must be a public, non-loopback URL.",
+                "protocol_version": "v2",
+            }
         try:
-            async with httpx.AsyncClient(timeout=20.0) as client:
+            limits = httpx.Limits(max_connections=10, max_keepalive_connections=5)
+            async with httpx.AsyncClient(timeout=20.0, limits=limits) as client:
                 r = await client.get(
                     f"{fed_url}/ai-market/v2/search",
                     params={"intent": intent, "budget": budget, "limit": limit},
@@ -175,8 +228,18 @@ async def invoke_v2(
     """Invoke only factory capabilities unless federation is explicitly enabled."""
     if body.source_hub and body.source_hub not in ("local", "") and _widget_federate_search():
         fed_url = _federation_hub_url()
+        if not _federation_url_is_safe(fed_url):
+            return JSONResponse(
+                status_code=502,
+                content={
+                    "success": False,
+                    "error": "federation_url_unsafe",
+                    "detail": "AIMARKET_FEDERATION_HUB_URL must be a public, non-loopback URL.",
+                },
+            )
         try:
-            async with httpx.AsyncClient(timeout=60.0) as client:
+            limits = httpx.Limits(max_connections=10, max_keepalive_connections=5)
+            async with httpx.AsyncClient(timeout=60.0, limits=limits) as client:
                 headers = {"Content-Type": "application/json"}
                 if x_payment_channel:
                     headers["X-Payment-Channel"] = x_payment_channel

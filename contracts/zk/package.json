@@ -1,0 +1,13 @@
+{
+  "name": "aimarket-zk",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Circom circuits + snarkjs setup for AIMarket Groth16 backend.",
+  "dependencies": {
+    "circomlib": "2.0.5"
+  },
+  "scripts": {
+    "setup": "bash scripts/setup.sh",
+    "verify": "snarkjs groth16 verify verifier/verification_key.json build/public.json build/proof.json"
+  }
+}

@@ -24,10 +24,23 @@ set -euo pipefail
 
 CHAIN="${1:-}"
 if [ -z "$CHAIN" ]; then
-    echo "Usage: $0 <chain>"
-    echo "  base | base-sepolia | ethereum | arbitrum"
+    echo "Usage: $0 <chain> [--ledger [--derivation PATH]]"
+    echo "  chain: base | base-sepolia | ethereum | arbitrum"
     exit 1
 fi
+shift || true
+
+USE_LEDGER=0
+LEDGER_DERIVATION="m/44'/60'/0'/0/0"
+LEDGER_SENDER=""
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --ledger)     USE_LEDGER=1; shift ;;
+        --derivation) LEDGER_DERIVATION="$2"; shift 2 ;;
+        --sender)     LEDGER_SENDER="$2"; shift 2 ;;
+        *)            echo "Unknown option: $1"; exit 1 ;;
+    esac
+done
 
 case "$CHAIN" in
     base)
@@ -59,69 +72,102 @@ esac
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  AIMarketCapabilityNFT — Deploy to ${CHAIN}"
-echo "╠══════════════════════════════════════════════════════════════╣"
-echo "║  Paste the deployer private key (input hidden):             ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
-if [ -t 0 ]; then
-    read -s -p "Private key (0x...): " DEPLOYER_PRIVATE_KEY
-    echo ""
+if [ "$USE_LEDGER" -eq 1 ]; then
+    if [ -z "$LEDGER_SENDER" ]; then
+        echo "Reading deployer address from Ledger (derivation: $LEDGER_DERIVATION) …"
+        LEDGER_SENDER="$(cast wallet address --ledger --mnemonic-derivation-path "$LEDGER_DERIVATION" 2>/dev/null || true)"
+        if [ -z "$LEDGER_SENDER" ]; then
+            echo "ERROR: Could not read Ledger address. Unlock device and open the Ethereum app."
+            exit 1
+        fi
+    fi
+    DEPLOYER_ADDR="$LEDGER_SENDER"
 else
-    read -r DEPLOYER_PRIVATE_KEY
-fi
+    echo "Paste the deployer private key (input hidden) — or rerun with --ledger:"
+    if [ -t 0 ]; then
+        read -s -p "Private key (0x...): " DEPLOYER_PRIVATE_KEY
+        echo ""
+    else
+        read -r DEPLOYER_PRIVATE_KEY
+    fi
 
-if [ -z "$DEPLOYER_PRIVATE_KEY" ]; then
-    echo "ERROR: No private key provided."
-    exit 1
-fi
+    if [ -z "$DEPLOYER_PRIVATE_KEY" ]; then
+        echo "ERROR: No private key provided."
+        exit 1
+    fi
 
-if [[ ! "$DEPLOYER_PRIVATE_KEY" =~ ^(0x)?[0-9a-fA-F]{64}$ ]]; then
-    echo "ERROR: Private key must be 64 hex characters (with optional 0x prefix)."
-    DEPLOYER_PRIVATE_KEY="REDACTED"
-    exit 1
-fi
+    if [[ ! "$DEPLOYER_PRIVATE_KEY" =~ ^(0x)?[0-9a-fA-F]{64}$ ]]; then
+        echo "ERROR: Private key must be 64 hex characters (with optional 0x prefix)."
+        DEPLOYER_PRIVATE_KEY="REDACTED"
+        exit 1
+    fi
 
-PRIVATE_KEY="${DEPLOYER_PRIVATE_KEY#0x}"
-DEPLOYER_ADDR=$(cast wallet address "0x${PRIVATE_KEY}")
+    PRIVATE_KEY="${DEPLOYER_PRIVATE_KEY#0x}"
+    DEPLOYER_ADDR=$(cast wallet address "0x${PRIVATE_KEY}")
+fi
 
 echo ""
 echo "Deployer address: ${DEPLOYER_ADDR}"
 echo "Chain: $CHAIN"
 echo "RPC: $RPC_URL"
+echo "Signing: $( [ "$USE_LEDGER" -eq 1 ] && echo "Ledger ($LEDGER_DERIVATION)" || echo "console private key" )"
 echo "Initial authorized hubs: ${INITIAL_HUBS:-(deployer only)}"
 echo ""
 
 read -p "Continue? (y/N) " CONFIRM
 if [ "$CONFIRM" != "y" ] && [ "$CONFIRM" != "Y" ]; then
     echo "Aborted."
-    PRIVATE_KEY="REDACTED"
-    DEPLOYER_PRIVATE_KEY="REDACTED"
+    [ -n "${PRIVATE_KEY:-}" ] && PRIVATE_KEY="REDACTED" && unset PRIVATE_KEY
+    [ -n "${DEPLOYER_PRIVATE_KEY:-}" ] && DEPLOYER_PRIVATE_KEY="REDACTED" && unset DEPLOYER_PRIVATE_KEY
     exit 0
 fi
 
-# Default: deployer is the first authorized hub
 INITIAL_HUBS="${INITIAL_HUBS:-$DEPLOYER_ADDR}"
 
 echo ""
 echo "Deploying AIMarketCapabilityNFT..."
 
-export PRIVATE_KEY="0x${PRIVATE_KEY}"
-export INITIAL_HUBS
+VERIFY_FLAGS=""
+if [ -n "$ETHERSCAN_API_KEY" ]; then
+    VERIFY_FLAGS="--verify --verifier-url $VERIFIER_URL --etherscan-api-key $ETHERSCAN_API_KEY"
+fi
 
-forge script script/DeployNFT.s.sol \
-    --rpc-url "$RPC_URL" \
-    --broadcast \
-    --private-key "0x${PRIVATE_KEY}" \
-    $( [ -n "$ETHERSCAN_API_KEY" ] && echo "--verify --verifier-url $VERIFIER_URL --etherscan-api-key $ETHERSCAN_API_KEY" ) \
-    ${FORGE_ARGS:-}
+if [ "$USE_LEDGER" -eq 1 ]; then
+    # AIMarketCapabilityNFT constructor takes no args — initial hubs are set
+    # via setAuthorizedHub() after deploy (one tx per hub on Ledger; OK for a
+    # small initial set, scriptable for larger via cast send loops).
+    # shellcheck disable=SC2086
+    forge create AIMarketCapabilityNFT.sol:AIMarketCapabilityNFT \
+        --rpc-url "$RPC_URL" \
+        --ledger --mnemonic-derivation-path "$LEDGER_DERIVATION" \
+        --sender "$DEPLOYER_ADDR" \
+        $VERIFY_FLAGS \
+        ${FORGE_ARGS:-}
+    DEPLOY_EXIT=$?
+    NFT_ADDR_HINT=" (copy 'Deployed to:' address from output above)"
+else
+    export PRIVATE_KEY="0x${PRIVATE_KEY}"
+    export INITIAL_HUBS
+    # shellcheck disable=SC2086
+    forge script script/DeployNFT.s.sol \
+        --rpc-url "$RPC_URL" \
+        --broadcast \
+        --private-key "0x${PRIVATE_KEY}" \
+        $VERIFY_FLAGS \
+        ${FORGE_ARGS:-}
+    DEPLOY_EXIT=$?
+    NFT_ADDR_HINT=""
+fi
 
-DEPLOY_EXIT=$?
-
-PRIVATE_KEY="REDACTED"
-DEPLOYER_PRIVATE_KEY="REDACTED"
-unset PRIVATE_KEY
-unset DEPLOYER_PRIVATE_KEY
+if [ "$USE_LEDGER" -ne 1 ]; then
+    PRIVATE_KEY="REDACTED"
+    DEPLOYER_PRIVATE_KEY="REDACTED"
+    unset PRIVATE_KEY
+    unset DEPLOYER_PRIVATE_KEY
+fi
 unset INITIAL_HUBS
 
 history -c 2>/dev/null || true
@@ -130,9 +176,8 @@ history -w 2>/dev/null || true
 echo ""
 if [ $DEPLOY_EXIT -eq 0 ]; then
     echo "=== Deploy complete ==="
-    echo "Private key cleared from environment."
     echo ""
-    echo "Next steps:"
+    echo "Next steps:${NFT_ADDR_HINT}"
     echo "  1. Copy the deployed address from the logs above"
     echo "  2. Add to your hub .env:"
     echo "       AIMARKET_NFT_CONTRACT=<deployed_address>"
