@@ -43,6 +43,18 @@ def test_satellite_map_includes_wiki():
     assert "aicom-wiki" in ids
 
 
+def test_satellite_map_has_github_descriptions():
+    import yaml
+
+    data = yaml.safe_load((ROOT / "scripts" / "satellite-map.yaml").read_text())
+    missing = [
+        sat.get("id")
+        for sat in data.get("satellites", [])
+        if not (sat.get("description") or "").strip()
+    ]
+    assert not missing, f"missing description: {missing}"
+
+
 def test_publish_scripts_exist():
     assert (ROOT / "scripts" / "publish_aicom_factory.sh").is_file()
     assert (ROOT / "scripts" / "publish_satellite.sh").is_file()

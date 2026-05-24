@@ -6,6 +6,7 @@ org: alexar76
 satellites:
   - id: aimarket-desktop
     repo: aimarket-desktop
+    description: "10 desktop & IDE apps for AIMarket — Flutter, Tauri, and VS Code in one Melos monorepo."
     license: mit
     paths:
       - desktop-integrations
@@ -27,6 +28,7 @@ satellites:
 
   - id: aimarket-sdks
     repo: aimarket-sdks
+    description: "Official AIMarket client SDKs — Dart, TypeScript, and Rust."
     license: mit
     paths:
       - aimarket-sdks
@@ -47,6 +49,7 @@ satellites:
 
   - id: pulse-terminal
     repo: pulse-terminal
+    description: "Pulse Terminal — ACEX capital markets dashboard with live agent pricing."
     license: mit
     paths:
       - apps/pulse-terminal
@@ -63,6 +66,7 @@ satellites:
 
   - id: acex
     repo: acex
+    description: "ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents."
     license: apache-2.0
     paths:
       - acex
@@ -78,6 +82,7 @@ satellites:
 
   - id: ai-service-mesh
     repo: ai-service-mesh
+    description: "AI Service Mesh — autonomous agent discovery, verification, escrow, and payments."
     license: mit
     paths:
       - ai-service-mesh
@@ -93,6 +98,7 @@ satellites:
 
   - id: aimarket-hub
     repo: aimarket-hub
+    description: "AIMarket Hub — federated capability catalog, channels, invoke API, and plugins."
     license: apache-2.0
     paths:
       - aimarket-hub
@@ -106,6 +112,7 @@ satellites:
 
   - id: aimarket-widget
     repo: aimarket-widget
+    description: "Embeddable AIMarket storefront widget — drop-in JS/CSS for any website."
     license: mit
     paths:
       - aimarket-widget
@@ -119,6 +126,7 @@ satellites:
 
   - id: aimarket-protocol
     repo: aimarket-protocol
+    description: "AIMarket Protocol v2 — open specs, JSON schemas, and test vectors."
     license: mit
     paths:
       - aimarket-protocol
@@ -130,6 +138,7 @@ satellites:
 
   - id: aimarket-agent
     repo: aimarket-agent
+    description: "Python client for discovering and invoking AIMarket hub capabilities."
     license: mit
     paths:
       - aimarket-agent
@@ -142,6 +151,7 @@ satellites:
 
   - id: aimarket-plugins
     repo: aimarket-plugins
+    description: "15 AIMarket hub plugins — TEE escrow, channels, reputation, safety, and more."
     license: mit
     paths:
       - plugins:plugins
@@ -158,6 +168,7 @@ satellites:
 
   - id: aicom-wiki
     repo: aicom.wiki
+    description: "Documentation wiki for AI-Factory and the AIMarket ecosystem."
     license: mit
     paths:
       - scripts/wiki-gitea
@@ -175,6 +186,7 @@ satellites:
 
   - id: aicom
     repo: aicom
+    description: "AI-Factory — autonomous pipeline that designs, builds, tests, and publishes products."
     license: mit
     optional: true
     paths:

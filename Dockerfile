@@ -74,9 +74,18 @@ RUN if [ "$INCLUDE_DOCKER_SANDBOX" = "1" ]; then \
 ENV AIFACTORY_SANDBOX_DOCKER_AVAILABLE=${INCLUDE_DOCKER_SANDBOX}
 
 # ── Node.js 20 LTS ─────────────────────────────────────────────────────────
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g npm@latest \
+# Install via NodeSource apt repo with explicit GPG keyring (no `curl | bash`),
+# so a compromised deb.nodesource.com setup script can't RCE the image build.
+# npm pinned to a fixed version for reproducible builds.
+RUN install -d -m 0755 /etc/apt/keyrings \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+        | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && chmod 0644 /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" \
+        > /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends nodejs \
+    && npm install -g npm@10.9.0 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -126,9 +135,19 @@ RUN mkdir -p /app/data/config /app/data/specs /app/data/arch /app/data/code /app
     && mkdir -p /app/llm/_defaults \
     && cp /app/data/config/model_providers.example.yaml /app/llm/_defaults/model_providers.example.yaml
 
-# Set permissions
+# ── Non-root runtime user ──────────────────────────────────────────────────
+# Drop from root before CMD so a Python/JS RCE doesn't immediately get root
+# inside the container (and via docker socket / --privileged: on the host).
+# uid 10001 to stay clear of Ubuntu's reserved 1000–9999 range.
+RUN groupadd --system --gid 10001 aifactory \
+    && useradd --system --uid 10001 --gid aifactory --shell /usr/sbin/nologin --home-dir /app aifactory \
+    && chown -R aifactory:aifactory /app
+
+# Set permissions (after chown so ownership sticks)
 RUN chmod -R 755 /app \
     && chmod -R 700 /app/data/secrets
+
+USER aifactory:aifactory
 
 # ── Health Check ───────────────────────────────────────────────────────────
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \

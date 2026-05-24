@@ -33,20 +33,30 @@ contract DeployScript is Script {
         string memory hubsEnv = vm.envOr("INITIAL_HUBS", string(""));
         string memory tokensEnv = vm.envOr("INITIAL_TOKENS", string(""));
 
-        if (bytes(hubsEnv).length > 0) {
-            initialHubs = parseAddressList(hubsEnv);
-        } else {
-            // Dev default: a single known test hub
-            initialHubs = new address[](1);
-            initialHubs[0] = address(0x1111111111111111111111111111111111111111);
-        }
+        // INITIAL_HUBS must be set explicitly — no dev-default that could ship
+        // a useless 0x111…111 hub to mainnet via a forgotten env var. Likewise
+        // INITIAL_TOKENS — the same USDC address is not valid across networks
+        // (mainnet/sepolia/arbitrum all differ), and a wrong default is worse
+        // than a missing one.
+        require(
+            bytes(hubsEnv).length > 0,
+            "INITIAL_HUBS is required (comma-separated authorized hub addresses)"
+        );
+        require(
+            bytes(tokensEnv).length > 0,
+            "INITIAL_TOKENS is required (comma-separated whitelisted ERC-20 token addresses for this chain)"
+        );
 
-        if (bytes(tokensEnv).length > 0) {
-            initialTokens = parseAddressList(tokensEnv);
-        } else {
-            // USDC on Base mainnet
-            initialTokens = new address[](1);
-            initialTokens[0] = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913;
+        initialHubs = parseAddressList(hubsEnv);
+        initialTokens = parseAddressList(tokensEnv);
+
+        // Sanity: reject the zero address — a parser glitch (trailing comma,
+        // empty entry) would otherwise silently authorize address(0).
+        for (uint256 i = 0; i < initialHubs.length; i++) {
+            require(initialHubs[i] != address(0), "INITIAL_HUBS contains zero address");
+        }
+        for (uint256 i = 0; i < initialTokens.length; i++) {
+            require(initialTokens[i] != address(0), "INITIAL_TOKENS contains zero address");
         }
 
         // ── Deploy ──────────────────────────────────────────────────

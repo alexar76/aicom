@@ -18,65 +18,6 @@
 
 ---
 
-## Monorepo & AIMarket ecosystem
-
-This repository is the **AICOM monorepo**: a self-hosted **AI-Factory** pipeline plus the **AIMarket** federated commerce layer (hub, protocol, SDKs, 8 desktop apps, 15 plugins).
-
-```mermaid
-flowchart TB
-  subgraph factory["AI-Factory · magic-ai-factory.com"]
-    DISC["Discovery"]
-    PIPE["13-agent pipeline"]
-    SHIP["Shipped products"]
-    DISC --> PIPE --> SHIP
-  end
-
-  subgraph aimarket["AIMarket · modelmarket.dev"]
-    HUB["AIMarket Hub"]
-    PROT["Protocol v2 spec"]
-    PLG["15 plugins"]
-    HUB --- PLG
-    HUB --- PROT
-  end
-
-  subgraph consume["Consumers"]
-    DSK["8× Flutter desktop"]
-    WGT["Embed widget"]
-    SDK["aimarket_agent SDK"]
-  end
-
-  SHIP -->|"factory_bridge · sync"| HUB
-  DSK --> SDK --> HUB
-  WGT --> HUB
-```
-
-| Package | Path | Docs |
-|---------|------|------|
-| **AI-Factory** (this README) | `web/` · `agents/` · `orchestrator/` | [architecture-diagrams.md](docs/architecture-diagrams.md) |
-| **AIMarket Hub** | [`aimarket-hub/`](aimarket-hub/) | [aimarket-hub/README.md](aimarket-hub/README.md) |
-| **Protocol v2** | [`aimarket-protocol/`](aimarket-protocol/) | [spec.md](aimarket-protocol/spec.md) |
-| **Hub plugins** | [`plugins/`](plugins/) | README + `docs/` per plugin |
-| **Desktop SKUs** | [`desktop-integrations/`](desktop-integrations/) | 8 apps · [value.md](desktop-integrations/interview-prep-coach/docs/value.md) pattern |
-| **Dart SDK** | [`aimarket-sdks/dart/`](aimarket-sdks/dart/) | Consumer SDK for desktop apps |
-| **Widget** | [`aimarket-widget/`](aimarket-widget/) | Drop-in search + invoke |
-| **ACEX** | [`acex/`](acex/) | Agent Listing Protocol · CapShares · Pulse Terminal |
-
-**Full ecosystem reference (C4, sequences, deployment):** **[docs/ecosystem-architecture.md](docs/ecosystem-architecture.md)**
-
-### Killer feature — Auto-Mesh Pipeline
-
-**AI-Factory doesn’t stop at code generation.** A pipeline run can **discover marketplace agents, fund a USDT channel, invoke them in sequence, and ship a connected product** — mesh orchestration without hand-wiring each API.
-
-| | |
-|---|---|
-| **What** | Intent → hub discover → multi-agent invoke → QA gates → hub catalog sync |
-| **Why** | Network effect: every shipped product becomes capability fodder for the next run |
-| **Deep dive** | [docs/killer-feature-auto-mesh-pipeline.md](docs/killer-feature-auto-mesh-pipeline.md) · [Ecosystem killer features](docs/killer-features.md) |
-
-Production split: Factory **:9080** · Hub **:9083** → [production-modelmarket-dev.md](docs/production-modelmarket-dev.md)
-
----
-
 <h2 id="demo-video">▶ Demo video</h2>
 
 **Primary:** [YouTube — Idea → agents → shippable product](https://youtu.be/Gg9a52-ZbNA) (embedded on the [live homepage](https://magic-ai-factory.com) hero).
@@ -517,6 +458,68 @@ flowchart TB
 Compose maps container **8080/8081** → host **9080/9081**.
 
 More diagrams (state machine, discovery, storefront gates, comparison): **[docs/architecture-diagrams.md](docs/architecture-diagrams.md)**.
+
+</details>
+
+<details>
+<summary><strong>Ecosystem</strong></summary>
+
+## Monorepo & AIMarket ecosystem
+
+This repository is the **AICOM monorepo**: a self-hosted **AI-Factory** pipeline plus the **AIMarket** federated commerce layer (hub, protocol, SDKs, 8 desktop apps, 15 plugins).
+
+```mermaid
+flowchart TB
+  subgraph factory["AI-Factory · magic-ai-factory.com"]
+    DISC["Discovery"]
+    PIPE["13-agent pipeline"]
+    SHIP["Shipped products"]
+    DISC --> PIPE --> SHIP
+  end
+
+  subgraph aimarket["AIMarket · modelmarket.dev"]
+    HUB["AIMarket Hub"]
+    PROT["Protocol v2 spec"]
+    PLG["15 plugins"]
+    HUB --- PLG
+    HUB --- PROT
+  end
+
+  subgraph consume["Consumers"]
+    DSK["8× Flutter desktop"]
+    WGT["Embed widget"]
+    SDK["aimarket_agent SDK"]
+  end
+
+  SHIP -->|"factory_bridge · sync"| HUB
+  DSK --> SDK --> HUB
+  WGT --> HUB
+```
+
+| Package | Path | Docs |
+|---------|------|------|
+| **AI-Factory** (this README) | `web/` · `agents/` · `orchestrator/` | [architecture-diagrams.md](docs/architecture-diagrams.md) |
+| **AIMarket Hub** | [`aimarket-hub/`](aimarket-hub/) | [aimarket-hub/README.md](aimarket-hub/README.md) |
+| **Protocol v2** | [`aimarket-protocol/`](aimarket-protocol/) | [spec.md](aimarket-protocol/spec.md) |
+| **Hub plugins** | [`plugins/`](plugins/) | README + `docs/` per plugin |
+| **Desktop SKUs** | [`desktop-integrations/`](desktop-integrations/) | 8 apps · [value.md](desktop-integrations/interview-prep-coach/docs/value.md) pattern |
+| **Dart SDK** | [`aimarket-sdks/dart/`](aimarket-sdks/dart/) | Consumer SDK for desktop apps |
+| **Widget** | [`aimarket-widget/`](aimarket-widget/) | Drop-in search + invoke |
+| **ACEX** | [`acex/`](acex/) | Agent Listing Protocol · CapShares · Pulse Terminal |
+
+**Full ecosystem reference (C4, sequences, deployment):** **[docs/ecosystem-architecture.md](docs/ecosystem-architecture.md)**
+
+### Killer feature — Auto-Mesh Pipeline
+
+**AI-Factory doesn’t stop at code generation.** A pipeline run can **discover marketplace agents, fund a USDT channel, invoke them in sequence, and ship a connected product** — mesh orchestration without hand-wiring each API.
+
+| | |
+|---|---|
+| **What** | Intent → hub discover → multi-agent invoke → QA gates → hub catalog sync |
+| **Why** | Network effect: every shipped product becomes capability fodder for the next run |
+| **Deep dive** | [docs/killer-feature-auto-mesh-pipeline.md](docs/killer-feature-auto-mesh-pipeline.md) · [Ecosystem killer features](docs/killer-features.md) |
+
+Production split: Factory **:9080** · Hub **:9083** → [production-modelmarket-dev.md](docs/production-modelmarket-dev.md)
 
 </details>
 

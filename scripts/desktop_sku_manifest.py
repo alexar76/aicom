@@ -17,6 +17,7 @@ ActionKind = Literal[
     "discovery_sdk_export",
     "freelance_review_report",
     "discovery_refresh",
+    "interview_mock",
     "wallet_popup",
 ]
 
@@ -47,11 +48,11 @@ MANIFEST: dict[str, SkuManifest] = {
     "interview-prep-coach": SkuManifest(
         port=9922,
         wallet=False,
-        dart_defines={"SKIP_ONBOARDING": "true"},
+        dart_defines={"SKIP_ONBOARDING": "true", "SCREENSHOT_DEMO": "true"},
         screens=[
             ScreenStep("prep-dashboard", "landing"),
             ScreenStep("marketplace-browse", "nav_bottom", index=1),
-            ScreenStep("mock-interview", "nav_bottom", index=0),
+            ScreenStep("mock-interview", "interview_mock"),
             ScreenStep("wallet-details", "wallet_popup"),
         ],
     ),

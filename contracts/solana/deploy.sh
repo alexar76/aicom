@@ -58,20 +58,27 @@ fi
 TMP_KEYFILE=$(mktemp)
 chmod 600 "$TMP_KEYFILE"
 
-# Handle both JSON array format [1,2,3,...] and base58 string
+# Handle both JSON array format [1,2,3,...] and base58 string.
+# RAW_KEY is passed via stdin — never interpolated into the Python source
+# (would be a code-injection sink for an attacker-controlled "key").
 if [[ "$RAW_KEY" == \[* ]]; then
-    echo "$RAW_KEY" > "$TMP_KEYFILE"
+    printf '%s' "$RAW_KEY" > "$TMP_KEYFILE"
 else
-    # Assume base58 — convert to JSON bytes array
-    python3 -c "
+    printf '%s' "$RAW_KEY" | python3 -c '
 import json, sys, base58
-key_bytes = base58.b58decode('$RAW_KEY')
-print(json.dumps(list(key_bytes)))
-" > "$TMP_KEYFILE"
+key_bytes = base58.b58decode(sys.stdin.read().strip())
+sys.stdout.write(json.dumps(list(key_bytes)))
+' > "$TMP_KEYFILE" || {
+        echo "ERROR: Failed to decode base58 private key."
+        rm -f "$TMP_KEYFILE"
+        unset RAW_KEY
+        exit 1
+    }
 fi
 
-# Clear console variable
+# Clear console variable (best-effort; key still in TMP_KEYFILE until rm).
 RAW_KEY="REDACTED"
+unset RAW_KEY
 
 # Show pubkey
 PUBKEY=$(solana-keygen pubkey "$TMP_KEYFILE" 2>/dev/null || echo "unknown")
@@ -100,13 +107,18 @@ anchor build 2>&1 || {
 # ── Deploy ───────────────────────────────────────────────────────
 echo "Deploying to $NETWORK..."
 
+DEPLOY_LOG=$(mktemp)
 solana program deploy \
     --url "$RPC_URL" \
     --keypair "$TMP_KEYFILE" \
     target/deploy/aimarket_escrow.so \
-    ${DEPLOY_ARGS:-}
+    ${DEPLOY_ARGS:-} 2>&1 | tee "$DEPLOY_LOG"
 
-DEPLOY_EXIT=$?
+DEPLOY_EXIT=${PIPESTATUS[0]}
+
+# Extract real Program ID from solana CLI output (line "Program Id: <pubkey>").
+PROGRAM_ID=$(grep -Ei '^Program Id: ' "$DEPLOY_LOG" | awk '{print $NF}' | tail -n 1)
+rm -f "$DEPLOY_LOG"
 
 # ── IMMEDIATELY remove keypair ───────────────────────────────────
 rm -f "$TMP_KEYFILE"
@@ -115,7 +127,12 @@ unset RAW_KEY
 echo ""
 if [ $DEPLOY_EXIT -eq 0 ]; then
     echo "=== Deploy complete ==="
-    echo "Program ID: A1M4rk3tEscrowChanne1Paym3nt5oLProg"
+    if [ -n "$PROGRAM_ID" ]; then
+        echo "Program ID: $PROGRAM_ID"
+        echo "Set AIMARKET_ESCROW_SOL_PROGRAM_ID=$PROGRAM_ID in your hub .env"
+    else
+        echo "⚠ Could not parse Program ID from deploy output — check logs above."
+    fi
     echo "Temporary keypair DELETED."
 else
     echo "=== Deploy FAILED (exit $DEPLOY_EXIT) ==="

@@ -311,6 +311,12 @@ def _click_rail_nav(page, index: int, *, label: str = "") -> None:
     page.wait_for_timeout(WAIT_MS)
 
 
+def _interview_mock_interview(page) -> None:
+    _click_bottom_nav(page, 0, slots=4)
+    page.get_by_text("Mock Interview", exact=False).first.click(timeout=8000)
+    page.wait_for_timeout(WAIT_MS)
+
+
 def prepare_page(page, slug: str, url: str, *, fragment: str = "") -> None:
     if slug == "interview-prep-coach":
         page.add_init_script(
@@ -370,6 +376,9 @@ def run_step(page, step: ScreenStep, manifest: SkuManifest) -> None:
         return
     if action == "freelance_review_report":
         _freelance_review_report(page)
+        return
+    if action == "interview_mock":
+        _interview_mock_interview(page)
         return
     if action == "wallet_popup":
         _wallet_popup(page)

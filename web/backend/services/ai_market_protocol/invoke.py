@@ -105,6 +105,10 @@ def _parse_llm_result(raw: str, cap: dict[str, Any]) -> dict[str, Any]:
 # Execution (real LLM or mock fallback)
 # ---------------------------------------------------------------------------
 
+class CapabilityExecutionError(RuntimeError):
+    """Raised when LLM execution fails; the caller must NOT charge the user."""
+
+
 async def _execute_capability(
     cap: dict[str, Any],
     product: dict[str, Any],
@@ -113,7 +117,10 @@ async def _execute_capability(
 ) -> dict[str, Any]:
     """Execute a capability, using the LLM router when available.
 
-    Falls back to deterministic mock output when no LLM router is configured.
+    Returns a mock placeholder ONLY when no LLM router is configured at all
+    (dev / smoke-test mode). When an LLM router IS configured but its call
+    fails, we raise CapabilityExecutionError — the caller refunds the channel
+    instead of charging the user for placeholder output.
     """
     cap_name, _ = parse_capability_ref(str(cap["capability_id"]))
     pname = str(product.get("name") or product.get("idea") or "")[:120]
@@ -129,11 +136,17 @@ async def _execute_capability(
                 task_type="ai_market_invoke",
                 config=GenerationConfig(temperature=0.3, max_tokens=2048, json_mode=True),
             )
-            return _parse_llm_result(raw, cap)
-        except Exception:
-            pass  # fall through to mock
+        except Exception as exc:
+            # LLM was configured and the call failed — refuse to bill the user
+            # for the deterministic mock below. The invoke handler turns this
+            # into a 503 + channel refund.
+            raise CapabilityExecutionError(
+                f"LLM execution failed for {cap_name}: {exc.__class__.__name__}"
+            ) from exc
+        return _parse_llm_result(raw, cap)
 
-    # Mock fallback — deterministic placeholder
+    # Mock fallback — deterministic placeholder. Only reached when llm_router
+    # is None or the capability has no agent/prompt_template (dev/test).
     text = str(inp.get("text") or inp.get("task") or "")
     if cap_name.startswith("translate"):
         locales = inp.get("locales") or ["ru", "en", "de", "fr", "ja"]

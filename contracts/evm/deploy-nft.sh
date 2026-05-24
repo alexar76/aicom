@@ -169,9 +169,8 @@ if [ "$USE_LEDGER" -ne 1 ]; then
     unset DEPLOYER_PRIVATE_KEY
 fi
 unset INITIAL_HUBS
-
-history -c 2>/dev/null || true
-history -w 2>/dev/null || true
+# `history -c` in a subshell is a no-op for the parent's history; if you
+# pasted a key into the calling shell, clear it yourself (`history -d N`).
 
 echo ""
 if [ $DEPLOY_EXIT -eq 0 ]; then
@@ -185,8 +184,16 @@ if [ $DEPLOY_EXIT -eq 0 ]; then
     echo "       AIMARKET_NFT_CHAIN=$CHAIN"
     echo "       AIMARKET_NFT_OWNER_KEY=<owner_private_key_kept_separately>"
     echo "  3. To authorize additional hubs later:"
-    echo "       cast send <NFT_ADDR> 'setAuthorizedHub(address,bool)' <HUB> true \\"
-    echo "         --private-key <OWNER_KEY> --rpc-url $RPC_URL"
+    if [ "$USE_LEDGER" -eq 1 ]; then
+        echo "       cast send <NFT_ADDR> 'setAuthorizedHub(address,bool)' <HUB> true \\"
+        echo "         --ledger --mnemonic-derivation-path \"$LEDGER_DERIVATION\" \\"
+        echo "         --from $DEPLOYER_ADDR --rpc-url $RPC_URL"
+    else
+        echo "       cast send <NFT_ADDR> 'setAuthorizedHub(address,bool)' <HUB> true \\"
+        echo "         --ledger --mnemonic-derivation-path \"$LEDGER_DERIVATION\" \\"
+        echo "         --rpc-url $RPC_URL"
+        echo "     (or repeat this deploy script's private-key flow — but Ledger is preferred)"
+    fi
 else
     echo "=== Deploy FAILED (exit $DEPLOY_EXIT) ==="
     echo "Private key cleared from environment."

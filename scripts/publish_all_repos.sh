@@ -161,6 +161,12 @@ case "$MODE" in
 esac
 
 echo ""
+echo "Syncing GitHub repo descriptions …"
+if [[ "$DRY_RUN" -eq 0 ]]; then
+  python3 "$ROOT/scripts/sync_github_repo_descriptions.py" || true
+fi
+
+echo ""
 if [[ $errors -eq 0 ]]; then
   echo "✅ publish_all_repos finished successfully (idempotent — no-op if already in sync)."
   exit 0

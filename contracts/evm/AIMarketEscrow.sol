@@ -47,7 +47,6 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
     error TokenNotSupported();
     error ReceiptAlreadyUsed(bytes32 receiptId);
     error RefundAfterDebit();
-    error InvalidHubRecipient();
 
     // ── Events ───────────────────────────────────────────────────
 
@@ -79,7 +78,13 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
         string reason // "safety_blocked", "provider_error", "user_cancelled"
     );
 
-    event ChannelExpired(bytes32 indexed channelId, uint256 refundAmount);
+    // Distinct name from the `ChannelExpired()` error to avoid collision in
+    // log decoders/indexers that don't namespace events vs errors.
+    event ChannelExpiredAndSettled(
+        bytes32 indexed channelId,
+        uint256 usedAmount,
+        uint256 refundAmount
+    );
 
     event HubAuthorized(address indexed hub, bool authorized);
     event TokenWhitelisted(address indexed token, bool whitelisted);
@@ -112,9 +117,6 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
     // Receipt IDs that have been used (prevents double-spend)
     mapping(bytes32 => bool) public usedReceipts;
 
-    // Hub nonces for replay protection on debit signatures
-    mapping(address => uint256) public hubNonces;
-
     // Channel expiry window (24h default)
     uint256 public constant CHANNEL_EXPIRY = 24 hours;
 
@@ -124,25 +126,25 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
     // Minimum deposit per channel
     uint256 public constant MIN_DEPOSIT = 1e6; // $1.00
 
-    // EIP-712 type hash for debit authorization
+    // EIP-712 type hash for debit authorization.
+    // `hub` is part of the signed payload so a depositor's signature is bound to
+    // exactly one hub — preventing any other authorized hub from front-running
+    // the first debit and capturing the channel.
     bytes32 private constant DEBIT_TYPEHASH = keccak256(
-        "DebitAuthorization(bytes32 channelId,address token,uint256 amount,bytes32 receiptId,uint256 nonce,uint256 deadline)"
+        "DebitAuthorization(bytes32 channelId,address hub,address token,uint256 amount,bytes32 receiptId,uint256 nonce,uint256 deadline)"
     );
 
-    bytes32 private immutable DOMAIN_SEPARATOR;
+    // EIP-712 domain separator: chainId baked in at deploy time. We also expose
+    // a recompute path (`_buildDomainSeparator`) so verification re-derives the
+    // separator if the chain forks (chainid changes), avoiding cross-fork replay.
+    bytes32 private immutable INITIAL_DOMAIN_SEPARATOR;
+    uint256 private immutable INITIAL_CHAIN_ID;
 
     // ── Constructor ──────────────────────────────────────────────
 
     constructor(address[] memory _initialHubs, address[] memory _initialTokens) Ownable(msg.sender) {
-        DOMAIN_SEPARATOR = keccak256(
-            abi.encode(
-                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
-                keccak256(bytes("AIMarketEscrow")),
-                keccak256(bytes("1")),
-                block.chainid,
-                address(this)
-            )
-        );
+        INITIAL_CHAIN_ID = block.chainid;
+        INITIAL_DOMAIN_SEPARATOR = _buildDomainSeparator(block.chainid);
 
         for (uint256 i = 0; i < _initialHubs.length; i++) {
             authorizedHubs[_initialHubs[i]] = true;
@@ -152,6 +154,28 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
             whitelistedTokens[_initialTokens[i]] = true;
             emit TokenWhitelisted(_initialTokens[i], true);
         }
+    }
+
+    // ── EIP-712 domain helpers ───────────────────────────────────
+
+    function _buildDomainSeparator(uint256 chainId) private view returns (bytes32) {
+        return keccak256(
+            abi.encode(
+                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+                keccak256(bytes("AIMarketEscrow")),
+                keccak256(bytes("1")),
+                chainId,
+                address(this)
+            )
+        );
+    }
+
+    /// @dev Return cached separator on the original chain, or recompute on fork.
+    function _domainSeparator() internal view returns (bytes32) {
+        if (block.chainid == INITIAL_CHAIN_ID) {
+            return INITIAL_DOMAIN_SEPARATOR;
+        }
+        return _buildDomainSeparator(block.chainid);
     }
 
     // ── Admin (gated by Ownable) ─────────────────────────────────
@@ -249,11 +273,14 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
         }
         if (msg.sender != ch.hub) revert Unauthorized();
 
-        // Verify depositor's EIP-712 signature authorizing this debit
+        // Verify depositor's EIP-712 signature authorizing this debit.
+        // `msg.sender` (the calling hub) is part of the signed payload, so a
+        // depositor's signature for hub A cannot be used by hub B.
         bytes32 structHash = keccak256(
             abi.encode(
                 DEBIT_TYPEHASH,
                 channelId,
+                msg.sender,
                 ch.token,
                 amount,
                 receiptId,
@@ -261,7 +288,7 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
                 deadline
             )
         );
-        bytes32 digest = MessageHashUtils.toTypedDataHash(DOMAIN_SEPARATOR, structHash);
+        bytes32 digest = MessageHashUtils.toTypedDataHash(_domainSeparator(), structHash);
         address signer = ECDSA.recover(digest, signature);
         if (signer != ch.depositor) revert InvalidSignature();
 
@@ -279,13 +306,11 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
     /**
      * @notice Settle a channel — transfer used funds to hub, refund rest to depositor.
      * @dev Can be called by depositor OR authorized hub after channel use.
+     *      Payment goes to `ch.hub` (bound at first debit). No caller-supplied
+     *      recipient — that would let either side redirect funds.
      * @param channelId Channel to settle
-     * @param hubRecipient Address to receive the spent portion (hub's wallet)
      */
-    function settleChannel(
-        bytes32 channelId,
-        address hubRecipient
-    ) external nonReentrant {
+    function settleChannel(bytes32 channelId) external nonReentrant {
         Channel storage ch = channels[channelId];
         if (ch.depositor == address(0)) revert ChannelNotFound();
         if (ch.status != ChannelStatus.Open) revert ChannelNotOpen();
@@ -293,11 +318,6 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
         // Either depositor or bound hub can initiate settlement
         if (msg.sender != ch.depositor && msg.sender != ch.hub) {
             revert Unauthorized();
-        }
-        // If channel was debited, hubRecipient must match the bound hub.
-        // If no debit happened (ch.hub == 0), hubRecipient is ignored (no payment).
-        if (ch.usedAmount > 0 && hubRecipient != ch.hub) {
-            revert InvalidHubRecipient();
         }
 
         ch.status = ChannelStatus.Settled;
@@ -339,18 +359,24 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
         if (ch.usedAmount > 0) revert RefundAfterDebit();
 
         ch.status = ChannelStatus.Refunded;
-        uint256 total = ch.balance + ch.usedAmount;
+        // usedAmount is guaranteed 0 here; refund == balance == deposit.
+        uint256 refund = ch.balance;
 
-        IERC20(ch.token).safeTransfer(ch.depositor, total);
+        IERC20(ch.token).safeTransfer(ch.depositor, refund);
 
-        emit ChannelRefunded(channelId, total, reason);
+        emit ChannelRefunded(channelId, refund, reason);
     }
 
     // ── Channel: Expire ──────────────────────────────────────────
 
     /**
-     * @notice Close an expired channel and refund depositor.
+     * @notice Close an expired channel: pay hub its accumulated `usedAmount`
+     *         and refund the remaining `balance` to the depositor.
      * @dev Anyone can call this after expiry (permissionless cleanup).
+     *      Previously this returned the full deposit to the depositor — that
+     *      let depositors avoid paying the hub by simply waiting 24h before
+     *      calling settle. Now expiry has identical economic semantics to
+     *      settleChannel, only without the auth requirement.
      */
     function expireChannel(bytes32 channelId) external nonReentrant {
         Channel storage ch = channels[channelId];
@@ -359,12 +385,18 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
         if (block.timestamp <= ch.expiresAt) revert ChannelNotExpired();
 
         ch.status = ChannelStatus.Expired;
-        uint256 total = ch.balance + ch.usedAmount;
 
-        // Full refund on expiry (no hub payment for unused channel)
-        IERC20(ch.token).safeTransfer(ch.depositor, total);
+        uint256 used = ch.usedAmount;
+        uint256 refund = ch.balance;
 
-        emit ChannelExpired(channelId, total);
+        if (used > 0 && ch.hub != address(0)) {
+            IERC20(ch.token).safeTransfer(ch.hub, used);
+        }
+        if (refund > 0) {
+            IERC20(ch.token).safeTransfer(ch.depositor, refund);
+        }
+
+        emit ChannelExpiredAndSettled(channelId, used, refund);
     }
 
     // ── Views ────────────────────────────────────────────────────
@@ -385,9 +417,12 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
     /**
      * @notice Compute EIP-712 digest for a debit authorization.
      * @dev Used off-chain by depositor to sign debit authorizations.
+     *      `hub` MUST match the calling hub's address — depositor signs for one
+     *      specific hub only.
      */
     function computeDebitDigest(
         bytes32 channelId,
+        address hub,
         address token,
         uint256 amount,
         bytes32 receiptId,
@@ -395,12 +430,12 @@ contract AIMarketEscrow is ReentrancyGuard, Ownable {
         uint256 deadline
     ) external view returns (bytes32) {
         bytes32 structHash = keccak256(
-            abi.encode(DEBIT_TYPEHASH, channelId, token, amount, receiptId, nonce, deadline)
+            abi.encode(DEBIT_TYPEHASH, channelId, hub, token, amount, receiptId, nonce, deadline)
         );
-        return MessageHashUtils.toTypedDataHash(DOMAIN_SEPARATOR, structHash);
+        return MessageHashUtils.toTypedDataHash(_domainSeparator(), structHash);
     }
 
     function domainSeparator() external view returns (bytes32) {
-        return DOMAIN_SEPARATOR;
+        return _domainSeparator();
     }
 }

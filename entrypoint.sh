@@ -75,15 +75,17 @@ JWT_SECRET_FILE="/app/data/secrets/jwt_secret.key"
 mkdir -p /app/data/secrets
 if [ ! -f "$JWT_SECRET_FILE" ]; then
     echo "Generating persistent JWT secret key..."
-    python3 -c "
-import os, hashlib
-# Generate a 64-char hex key from random data
-key = hashlib.sha256(os.urandom(64)).hexdigest()
-with open('$JWT_SECRET_FILE', 'w') as f:
-    f.write(key)
-os.chmod('$JWT_SECRET_FILE', 0o600)
-print('JWT secret key created')
-"
+    # secrets.token_hex(32) → 64 hex chars / 256 bits of CSPRNG entropy.
+    # (Previous version hashed urandom(64) through SHA-256, which threw away
+    # half the entropy for no security benefit.)
+    JWT_SECRET_FILE_ESCAPED="$JWT_SECRET_FILE" python3 - <<'PY'
+import os, secrets
+path = os.environ["JWT_SECRET_FILE_ESCAPED"]
+with open(path, "w") as f:
+    f.write(secrets.token_hex(32))
+os.chmod(path, 0o600)
+print("JWT secret key created")
+PY
 fi
 chmod 600 "$JWT_SECRET_FILE" 2>/dev/null || true
 # Never trust an empty JWT_SECRET_KEY from compose/env — file is authoritative in Docker.

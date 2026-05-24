@@ -153,10 +153,10 @@ if [ "$USE_LEDGER" -eq 1 ]; then
     echo "⚠️  NOTE: The current Deploy.s.sol uses vm.envUint('PRIVATE_KEY') and"
     echo "    cannot drive a Ledger directly. To deploy with Ledger:"
     echo ""
-    echo "    forge create script/../AIMarketEscrow.sol:AIMarketEscrow \\"
+    echo "    forge create AIMarketEscrow.sol:AIMarketEscrow \\"
     echo "        --rpc-url $RPC_URL \\"
     echo "        --ledger --mnemonic-derivation-path \"$LEDGER_DERIVATION\" \\"
-    echo "        --sender $DEPLOYER_SENDER \\"
+    echo "        --sender $DEPLOYER_ADDR \\"
     echo "        --constructor-args \"[$INITIAL_HUBS]\" \"[$INITIAL_TOKENS]\" \\"
     echo "        $VERIFY_FLAGS"
     echo ""
@@ -197,8 +197,9 @@ if [ "$USE_LEDGER" -ne 1 ]; then
 fi
 unset INITIAL_HUBS
 unset INITIAL_TOKENS
-history -c 2>/dev/null || true
-history -w 2>/dev/null || true
+# Note: `history -c` would only affect THIS subshell's history (already
+# gone on exit). Cleaning the parent shell's history is the operator's job:
+#   history -d <line>  (or shred -u ~/.bash_history if paranoid)
 
 echo ""
 if [ $DEPLOY_EXIT -eq 0 ]; then
