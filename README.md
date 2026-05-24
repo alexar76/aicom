@@ -6,6 +6,12 @@
 </p>
 
 <p align="center">
+  <a href="#testing-coverage"><img src="docs/badges/coverage.svg" alt="Test coverage" /></a>
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License" />
+  <img src="https://img.shields.io/badge/tests-pytest-0A9EDC?logo=pytest&logoColor=white" alt="pytest" />
+</p>
+
+<p align="center">
   <img src="docs/gallery/landing-01.webp" alt="AI-Factory generated marketing landing (1440×900)" width="920" />
 </p>
 
@@ -224,7 +230,7 @@ Before **screen recordings** or **streaming**, avoid showing `git remote -v` if 
 ## CI/CD
 
 - Gitea: `.gitea/workflows/deploy.yml`
-- GitHub: `.github/workflows/ci.yml` — `pytest -q` + `npm run build`
+- GitHub: `.github/workflows/ci.yml` — `pytest -q --cov` + coverage badge + `npm run build`
 - **Pre-release:** [docs/github-release-checklist.md](docs/github-release-checklist.md)
 
 ### Full Pipeline Smoke
@@ -538,7 +544,16 @@ python -m orchestrator.migrate \
 
 Tables: `products`, `tasks` — nested fields stored as JSON.
 
-## Testing
+## Testing {#testing-coverage}
+
+[![coverage](docs/badges/coverage.svg)](docs/badges/coverage.svg) — backend line coverage (`web/`, `agents/`, `orchestrator/`, `director/`, `pipeline_worker/`). CI uploads `coverage.json` + badge artifact; refresh locally with:
+
+```bash
+USE_SQLITE=true pytest -q --cov --cov-report=term --cov-report=json:coverage.json
+python scripts/generate_coverage_badge.py
+```
+
+Quick smoke (Docker):
 
 ```bash
 docker exec ai-factory python -m pytest tests/test_pipeline.py tests/test_pipeline_sqlite.py -v
