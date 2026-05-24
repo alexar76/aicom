@@ -158,7 +158,7 @@ if [ "$USE_LEDGER" -eq 1 ]; then
     echo "⚠️  NOTE: The current Deploy.s.sol uses vm.envUint('PRIVATE_KEY') and"
     echo "    cannot drive a Ledger directly. To deploy with Ledger:"
     echo ""
-    echo "    forge create src/AIMarketEscrow.sol:AIMarketEscrow \\"
+    echo "    forge create AIMarketEscrow.sol:AIMarketEscrow \\"
     echo "        --rpc-url $RPC_URL \\"
     echo "        --ledger --mnemonic-derivation-path \"$LEDGER_DERIVATION\" \\"
     echo "        --sender $DEPLOYER_ADDR \\"
@@ -173,7 +173,7 @@ if [ "$USE_LEDGER" -eq 1 ]; then
         exit 0
     fi
     # shellcheck disable=SC2086
-    forge create src/AIMarketEscrow.sol:AIMarketEscrow \
+    forge create AIMarketEscrow.sol:AIMarketEscrow \
         --rpc-url "$RPC_URL" \
         --ledger --mnemonic-derivation-path "$LEDGER_DERIVATION" \
         --sender "$DEPLOYER_ADDR" \

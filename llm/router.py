@@ -24,6 +24,7 @@ from core.paths import model_providers_path
 from core.throughput_limits import effective_llm_max_parallel_requests, effective_llm_min_interval_sec
 from .bootstrap_providers import ensure_model_providers_file
 from .circuit_breaker import CircuitOpenError, get_circuit_store, sync_prometheus_from_snapshot
+from .cost_guard import get_cost_guard
 from .provider import LLMProvider, GenerationConfig, ProviderStatus
 from .usage_guard import get_usage_guard
 from .local_ollama import LocalOllamaProvider
@@ -156,6 +157,20 @@ class LLMRouter:
         self._sync_circuit_metrics(name, row, prev)
 
     @staticmethod
+    def _publish_llm_event(provider_name: str, task_type: str, config: GenerationConfig, duration_s: float) -> None:
+        try:
+            from core.events import LLMCallLogged, get_event_bus
+            get_event_bus().publish_background(LLMCallLogged(
+                provider=provider_name,
+                model=config.model_override or "unknown",
+                task_type=task_type,
+                tokens_used=config.max_tokens,
+                duration_ms=duration_s * 1000.0,
+            ))
+        except Exception:
+            pass
+
+    @staticmethod
     def _sync_circuit_metrics(name: str, row: dict, prev: dict) -> None:
         m = _metrics()
         m.set_circuit_state(name, str(row.get("state") or "closed"))
@@ -233,6 +248,12 @@ class LLMRouter:
 
         config.model_role = self._resolve_model_role_for_config(provider_name, config, rule)
 
+        # Dynamic model routing: downgrade when budget is tight/critical.
+        config.model_override = get_cost_guard().resolve_model(
+            provider_name, task_type, config.model_override,
+            available_models=self._provider_configs.get(provider_name, {}).get("models"),
+        )
+
         cache_key = self._build_cache_key(prompt, task_type, config)
         if self._cache_enabled:
             cached = self._cache_get(cache_key)
@@ -266,6 +287,7 @@ class LLMRouter:
                 _metrics().inc_llm_request(current, "success")
                 _metrics().observe_llm_duration(current, duration)
                 self._record_circuit_success(current)
+                self._publish_llm_event(current, task_type, config, duration)
                 return result
             except Exception as e:
                 duration = time.time() - start_time
@@ -419,6 +441,12 @@ class LLMRouter:
                 config.model_override = model_name
         config.model_role = self._resolve_model_role_for_config(provider_name, config, rule)
 
+        # Dynamic model routing: downgrade when budget is tight/critical.
+        config.model_override = get_cost_guard().resolve_model(
+            provider_name, task_type, config.model_override,
+            available_models=self._provider_configs.get(provider_name, {}).get("models"),
+        )
+
         tried: set[str] = set()
         current = provider_name
         last_error: Optional[Exception] = None
@@ -436,12 +464,14 @@ class LLMRouter:
                 current = self._next_failover(task_type, current, tried)
                 continue
             try:
+                start_time = time.time()
                 await self._usage_guard.acquire()
                 async with self._request_sem:
                     await self._rate_limit_wait()
                     async for token in provider.stream(prompt, config):
                         yield token
                 self._record_circuit_success(current)
+                self._publish_llm_event(current, task_type, config, time.time() - start_time)
                 return
             except Exception as e:
                 self._record_circuit_failure(current, str(e))

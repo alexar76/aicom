@@ -4,8 +4,8 @@ Three contracts ship in this repo. Each is independent; deploy what you need.
 
 | Contract | Path | Purpose | Required for |
 |---|---|---|---|
-| **AIMarketEscrow** | `evm/src/AIMarketEscrow.sol` | EVM payment channels (USDT/USDC) | Any chain in `payment_chains` |
-| **AIMarketCapabilityNFT** | `evm/src/AIMarketCapabilityNFT.sol` | ERC-721 transferable entitlements | NFT plugin / `OnChainNFTRegistry` |
+| **AIMarketEscrow** | `evm/AIMarketEscrow.sol` | EVM payment channels (USDT/USDC) | Any chain in `payment_chains` |
+| **AIMarketCapabilityNFT** | `evm/AIMarketCapabilityNFT.sol` | ERC-721 transferable entitlements | NFT plugin / `OnChainNFTRegistry` |
 | **aimarket-escrow** | `solana/programs/aimarket-escrow/` | Solana payment channels (USDC) | Solana support |
 
 ---

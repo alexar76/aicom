@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>MIT · self-hosted · idea → shippable web product</strong><br/>
-  <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> · <a href="#demo-video">Demo video</a> · <a href="#gallery">Gallery</a> · <a href="#quick-start">Quick start</a>
+  <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> · <a href="#demo-video">Demo video</a> · <a href="#gallery">Gallery</a> · <a href="#alien-monitor">Alien Monitor</a> · <a href="#quick-start">Quick start</a>
 </p>
 
 <p align="center">
@@ -47,6 +47,22 @@ GitHub’s README viewer **does not embed YouTube iframes** — use the thumbnai
 
 ---
 
+<h2 id="alien-monitor">👽 Alien Monitor</h2>
+
+**Live 3D pulse of the AIMarket ecosystem** — Hub, Factory, contracts, agents, and on-chain metrics in one cosmic graph.
+
+| | |
+|---|---|
+| **Public demo** | **[https://magic-ai-factory.com/monitor/](https://magic-ai-factory.com/monitor/)** |
+| **Default mode** | LIVE — polls Hub (`:9083`), Factory API (`:9081`), Prometheus (`:9090`), and chain RPC from `.env` |
+| **Local dev** | `cd alien-monitor && ./start.sh` → http://localhost:5173 |
+| **Deploy on this host** | `./scripts/deploy_alien_monitor.sh` (Docker + nginx `/monitor/`) |
+| **Source** | [`alien-monitor/`](alien-monitor/) · satellite repo also on Gitea |
+
+Switch **TEST / LIVE / UNI** in the top-right control bar. On the public demo, **LIVE** shows real stack metrics from the same server.
+
+---
+
 **One sentence → a shippable web product (landing or full stack). Self-hosted.**
 
 **Typical wall-clock (DeepSeek, no QA rework loops):** `marketing_landing` **~20–25 min** to first previewable code; `full_software` **~25–45 min** for a simple brief, **hours** when gates iterate — [FAQ & scope](#faq--scope). **Not** a 15-second generator.
@@ -70,6 +86,8 @@ docker compose up -d --build
 #### 🌐 Live Demo
 
 Try it out: [https://magic-ai-factory.com](https://magic-ai-factory.com)
+
+**Alien Monitor (ecosystem 3D):** [https://magic-ai-factory.com/monitor/](https://magic-ai-factory.com/monitor/) — live Hub/Factory/Prometheus + chain metrics, no login required.
 
 **Demo Admin Access:**
 - URL: [https://magic-ai-factory.com/admin/login](https://magic-ai-factory.com/admin/login)

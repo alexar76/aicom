@@ -8,25 +8,32 @@
 # Safe Transaction Builder).
 #
 # Usage:
-#   # For escrow contract
+#   # Ledger flow (RECOMMENDED for mainnet — key never leaves device)
 #   SAFE_ADDRESS=0xYourSafe... CONTRACT_ADDRESS=0xEscrow... \
+#   RPC_URL=<rpc> \
+#     ./scripts/transfer_contract_ownership.sh --ledger
+#
+#   # Custom Ledger derivation
+#   SAFE_ADDRESS=0x... CONTRACT_ADDRESS=0x... RPC_URL=<rpc> \
+#     ./scripts/transfer_contract_ownership.sh --ledger --derivation "m/44'/60'/1'/0/0"
+#
+#   # Private-key flow (only for testnet / CI — key is visible in `ps aux`
+#   # for the duration of the cast send call)
+#   SAFE_ADDRESS=0x... CONTRACT_ADDRESS=0x... \
 #   PRIVATE_KEY=<deployer_key> RPC_URL=<rpc> \
 #     ./scripts/transfer_contract_ownership.sh
 #
-#   # For NFT contract
-#   SAFE_ADDRESS=0xYourSafe... CONTRACT_ADDRESS=0xNFT... \
-#   PRIVATE_KEY=<deployer_key> RPC_URL=<rpc> \
-#     ./scripts/transfer_contract_ownership.sh
-#
-#   # Check current ownership state
+#   # Check current ownership state (no signing key needed)
 #   CONTRACT_ADDRESS=0x... RPC_URL=<rpc> \
 #     ./scripts/transfer_contract_ownership.sh --check
 #
 # Environment:
 #   SAFE_ADDRESS        — Gnosis Safe (or any multisig) address
 #   CONTRACT_ADDRESS    — Deployed contract address
-#   PRIVATE_KEY         — Current owner's private key (deployer)
 #   RPC_URL             — Chain RPC endpoint
+#   PRIVATE_KEY         — Current owner's private key (omit if using --ledger)
+#   LEDGER_DERIVATION   — Optional override for --ledger (default m/44'/60'/0'/0/0)
+#   LEDGER_FROM         — Optional explicit Ledger sender address (skips cast wallet probe)
 # =============================================================================
 set -euo pipefail
 
@@ -34,18 +41,30 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # ── Parse args ──────────────────────────────────────────────────────────────
 CHECK_ONLY=0
-if [[ "${1:-}" == "--check" ]]; then
-    CHECK_ONLY=1
-fi
+USE_LEDGER=0
+LEDGER_DERIVATION="${LEDGER_DERIVATION:-m/44'/60'/0'/0/0}"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --check)       CHECK_ONLY=1; shift ;;
+        --ledger)      USE_LEDGER=1; shift ;;
+        --derivation)  LEDGER_DERIVATION="$2"; shift 2 ;;
+        *)             echo "Unknown option: $1" >&2; exit 1 ;;
+    esac
+done
 
 # ── Validate inputs ─────────────────────────────────────────────────────────
 die() { echo "ERROR: $*" >&2; exit 1; }
 
 if [[ "$CHECK_ONLY" -eq 0 ]]; then
     SAFE_ADDRESS="${SAFE_ADDRESS:-}"
-    PRIVATE_KEY="${PRIVATE_KEY:-}"
-    [[ -n "$SAFE_ADDRESS" ]]  || die "SAFE_ADDRESS is required (0x... Safe multisig address)"
-    [[ -n "$PRIVATE_KEY" ]]   || die "PRIVATE_KEY is required (current owner's key)"
+    [[ -n "$SAFE_ADDRESS" ]] || die "SAFE_ADDRESS is required (0x... Safe multisig address)"
+    if [[ "$USE_LEDGER" -eq 1 ]]; then
+        :  # No PRIVATE_KEY when --ledger
+    else
+        PRIVATE_KEY="${PRIVATE_KEY:-}"
+        [[ -n "$PRIVATE_KEY" ]] || die "PRIVATE_KEY is required (current owner's key) — or pass --ledger"
+    fi
 fi
 
 CONTRACT_ADDRESS="${CONTRACT_ADDRESS:-}"
@@ -90,14 +109,26 @@ if [[ "$CHECK_ONLY" -eq 1 ]]; then
     exit 0
 fi
 
-# ── Verify current owner matches our key ────────────────────────────────────
-DEPLOYER_ADDR=$(cast wallet address --private-key "$PRIVATE_KEY" 2>/dev/null)
-echo "Deployer:        $DEPLOYER_ADDR"
+# ── Resolve deployer address ────────────────────────────────────────────────
+if [[ "$USE_LEDGER" -eq 1 ]]; then
+    if [[ -n "${LEDGER_FROM:-}" ]]; then
+        DEPLOYER_ADDR="$LEDGER_FROM"
+    else
+        DEPLOYER_ADDR=$(cast wallet address --ledger --mnemonic-derivation-path "$LEDGER_DERIVATION" 2>/dev/null || true)
+        [[ -n "$DEPLOYER_ADDR" ]] || die "Cannot read Ledger address. Unlock device, open Ethereum app, or set LEDGER_FROM=0x..."
+    fi
+else
+    DEPLOYER_ADDR=$(cast wallet address --private-key "$PRIVATE_KEY" 2>/dev/null)
+fi
 
+echo "Deployer:        $DEPLOYER_ADDR"
+echo "Signing:         $( [[ "$USE_LEDGER" -eq 1 ]] && echo "Ledger ($LEDGER_DERIVATION)" || echo "private key" )"
+echo ""
+
+# ── Verify current owner matches our key ────────────────────────────────────
 if [[ "${CURRENT_OWNER,,}" != "${DEPLOYER_ADDR,,}" ]]; then
-    echo ""
     echo "WARNING: Current owner ($CURRENT_OWNER) does not match"
-    echo "         the provided PRIVATE_KEY address ($DEPLOYER_ADDR)."
+    echo "         the provided key address ($DEPLOYER_ADDR)."
     echo "         You are not the current owner. Transfer will likely fail."
     echo ""
     read -rp "Continue anyway? (y/N) " confirm
@@ -113,16 +144,12 @@ if [[ "${PENDING_OWNER,,}" != "${PENDING_ZERO,,}" ]]; then
         echo "   No on-chain action needed from deployer."
         echo "   Safe signers must now call acceptOwnership()."
         echo ""
-        echo "   Via AcceptOwnership.s.sol:"
-        echo "     SAFE_ADDRESS=$SAFE_ADDRESS CONTRACT_ADDRESS=$CONTRACT_ADDRESS \\"
-        echo "       PRIVATE_KEY=<safe_signer_key> RPC_URL=$RPC_URL \\"
-        echo "       forge script contracts/evm/script/AcceptOwnership.s.sol \\"
-        echo "         --rpc-url $RPC_URL --broadcast"
-        echo ""
-        echo "   Via Safe Transaction Builder:"
-        echo "     1. Build calldata: cast calldata \"acceptOwnership()\""
-        echo "     2. Create Safe tx: to=$CONTRACT_ADDRESS, data=<calldata>, value=0"
-        echo "     3. Collect N-of-M signatures, execute."
+        echo "   ⚠️  AcceptOwnership.s.sol works ONLY when the pending owner"
+        echo "      is an EOA (forge script transmits from a single key)."
+        echo "      For a real Gnosis Safe multisig, use the Safe Transaction Builder:"
+        echo "       1. Build calldata: cast calldata \"acceptOwnership()\""
+        echo "       2. Create Safe tx: to=$CONTRACT_ADDRESS, data=<calldata>, value=0"
+        echo "       3. Collect N-of-M signatures, execute."
         exit 0
     else
         echo ""
@@ -136,12 +163,25 @@ echo ""
 echo "Initiating ownership transfer to Safe: $SAFE_ADDRESS"
 echo ""
 
-TX_HASH=$(cast send --private-key "$PRIVATE_KEY" "$CONTRACT_ADDRESS" \
-    "transferOwnership(address)" "$SAFE_ADDRESS" \
-    --json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('transactionHash','UNKNOWN'))" 2>/dev/null || echo "UNKNOWN")
+if [[ "$USE_LEDGER" -eq 1 ]]; then
+    # N-3: Ledger path — key never touches RAM/argv, not visible in ps aux.
+    TX_HASH=$(cast send "$CONTRACT_ADDRESS" \
+        "transferOwnership(address)" "$SAFE_ADDRESS" \
+        --ledger --mnemonic-derivation-path "$LEDGER_DERIVATION" \
+        --from "$DEPLOYER_ADDR" \
+        --json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('transactionHash','UNKNOWN'))" 2>/dev/null || echo "UNKNOWN")
+else
+    TX_HASH=$(cast send --private-key "$PRIVATE_KEY" "$CONTRACT_ADDRESS" \
+        "transferOwnership(address)" "$SAFE_ADDRESS" \
+        --json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('transactionHash','UNKNOWN'))" 2>/dev/null || echo "UNKNOWN")
+fi
 
 if [[ "$TX_HASH" == "UNKNOWN" ]]; then
-    die "Transaction failed. Check PRIVATE_KEY, RPC_URL, and on-chain state."
+    if [[ "$USE_LEDGER" -eq 1 ]]; then
+        die "Transaction failed. Check Ledger connection, RPC_URL, and on-chain state."
+    else
+        die "Transaction failed. Check PRIVATE_KEY, RPC_URL, and on-chain state."
+    fi
 fi
 
 echo "Transaction:     $TX_HASH"
@@ -157,14 +197,7 @@ if [[ "${NEW_PENDING,,}" == "${SAFE_ADDRESS,,}" ]]; then
     echo ""
     echo "═══ Next step — Safe signers must accept ownership ═══"
     echo ""
-    echo "Option A — Use AcceptOwnership.s.sol (forge-native):"
-    echo "  SAFE_ADDRESS=$SAFE_ADDRESS \\"
-    echo "  CONTRACT_ADDRESS=$CONTRACT_ADDRESS \\"
-    echo "  PRIVATE_KEY=<one_safe_signer_key> \\"
-    echo "    forge script contracts/evm/script/AcceptOwnership.s.sol \\"
-    echo "      --rpc-url $RPC_URL --broadcast"
-    echo ""
-    echo "Option B — Use Safe Transaction Builder (recommended):"
+    echo "For a Gnosis Safe multisig, use the Safe Transaction Builder:"
     echo "  1. calldata = \$(cast calldata \"acceptOwnership()\")"
     echo "  2. Create Safe transaction:"
     echo "       to:      $CONTRACT_ADDRESS"
@@ -173,7 +206,10 @@ if [[ "${NEW_PENDING,,}" == "${SAFE_ADDRESS,,}" ]]; then
     echo "  3. Collect N-of-M signatures"
     echo "  4. Execute"
     echo ""
-    echo "Option C — Verify manually:"
+    echo "If pending owner is an EOA (testnet drill only), you can use"
+    echo "AcceptOwnership.s.sol (see contracts/evm/script/AcceptOwnership.s.sol)."
+    echo ""
+    echo "Verify manually:"
     echo "  cast call $CONTRACT_ADDRESS \"pendingOwner()(address)\""
     echo "  cast call $CONTRACT_ADDRESS \"owner()(address)\""
 elif [[ "$NEW_PENDING" == "ERROR" ]]; then

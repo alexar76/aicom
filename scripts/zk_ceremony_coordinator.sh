@@ -35,13 +35,21 @@ case "$PHASE" in
       exit 1
     fi
     echo "Phase 2: contributor '$CONTRIB_NAME'"
-    # Entropy MUST NOT appear in argv (/proc/*/cmdline). snarkjs reads it from stdin
-    # when -e is omitted (interactive prompt path in misc.getRandomRng).
+    # SECURITY (NEW-1): entropy must never reach argv (/proc/*/cmdline) or
+    # a shell variable (visible via `ps eww`, `/proc/*/environ`, or shell
+    # crash core dump). snarkjs accepts entropy from stdin when -e is
+    # omitted — we feed the temp file directly to its stdin, never through
+    # a command substitution (which would expand into argv of the wrapping
+    # process).
     ENTROPY_FILE="$(mktemp)"
     chmod 600 "$ENTROPY_FILE"
+    # `trap` guarantees the entropy file is shredded even if the next
+    # command crashes, exits early, or is signalled.
+    trap 'shred -uf "$ENTROPY_FILE" 2>/dev/null || rm -f "$ENTROPY_FILE"' EXIT
     openssl rand -hex 32 > "$ENTROPY_FILE"
-    printf '%s\n' "$(cat "$ENTROPY_FILE")" | snarkjs zkey contribute "$IN_ZKEY" "$OUT_ZKEY" -n "$CONTRIB_NAME" -v
+    snarkjs zkey contribute "$IN_ZKEY" "$OUT_ZKEY" -n "$CONTRIB_NAME" -v < "$ENTROPY_FILE"
     shred -uf "$ENTROPY_FILE" 2>/dev/null || rm -f "$ENTROPY_FILE"
+    trap - EXIT
     unset ENTROPY_FILE
     echo ""
     echo "Attestation: publish SHA256 of $OUT_ZKEY and destroy local entropy."

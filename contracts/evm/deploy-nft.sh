@@ -140,7 +140,7 @@ if [ "$USE_LEDGER" -eq 1 ]; then
     # via setAuthorizedHub() after deploy (one tx per hub on Ledger; OK for a
     # small initial set, scriptable for larger via cast send loops).
     # shellcheck disable=SC2086
-    forge create src/AIMarketCapabilityNFT.sol:AIMarketCapabilityNFT \
+    forge create AIMarketCapabilityNFT.sol:AIMarketCapabilityNFT \
         --rpc-url "$RPC_URL" \
         --ledger --mnemonic-derivation-path "$LEDGER_DERIVATION" \
         --sender "$DEPLOYER_ADDR" \

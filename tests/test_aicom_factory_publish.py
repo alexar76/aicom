@@ -44,6 +44,16 @@ def test_satellite_map_includes_wiki():
     assert "aicom-wiki" in ids
 
 
+def test_satellite_map_includes_alien_monitor():
+    import yaml
+
+    data = yaml.safe_load((ROOT / "scripts" / "satellite-map.yaml").read_text())
+    by_id = {s["id"]: s for s in data.get("satellites", [])}
+    assert "alien-monitor" in by_id
+    assert by_id["alien-monitor"]["repo"] == "alien-monitor"
+    assert "alien-monitor" in by_id["alien-monitor"]["topics"]
+
+
 def test_satellite_map_has_github_descriptions():
     import yaml
 

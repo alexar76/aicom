@@ -42,10 +42,11 @@ contract DeployCapabilityNFTScript is Script {
         console.log("Owner: %s", nft.owner());
 
         // ── Ownership transfer to multisig ──────────────────────────
-        string memory safeAddr = vm.envOr("SAFE_ADDRESS", string(""));
-        if (bytes(safeAddr).length > 0) {
-            address safe = _parseHexAddress(safeAddr);
-            require(safe != address(0), "SAFE_ADDRESS is not a valid address");
+        // SECURITY (N-1): vm.envOr(string,address) validates the 0x-prefixed
+        // 40-hex-char address format and reverts on malformed input. The
+        // earlier _parseHexAddress() silently accepted any prefix length.
+        address safe = vm.envOr("SAFE_ADDRESS", address(0));
+        if (safe != address(0)) {
             console.log("Initiating ownership transfer to Safe: %s", safe);
             nft.transferOwnership(safe);
             console.log("Ownership transfer initiated. Safe must call acceptOwnership().");

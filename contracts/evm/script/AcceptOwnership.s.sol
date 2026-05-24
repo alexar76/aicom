@@ -6,35 +6,43 @@ import {Ownable2Step} from "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 /**
  * @title AcceptOwnershipScript
- * @notice Accept pending ownership of AIMarket contracts from a Gnosis Safe
- *         (or any EOA/multisig that is the pending owner).
+ * @notice Accept pending ownership of AIMarket contracts when the pending
+ *         owner is an EOA.
  *
- * This is step 2 of the two-step ownership transfer initiated by the deploy
- * scripts. After Deploy.s.sol (or DeployNFT.s.sol) calls `transferOwnership(safe)`,
- * the Safe signers coordinate to broadcast this script.
+ * ⚠️  IMPORTANT — this script DOES NOT work for a Gnosis Safe (or any
+ * contract-wallet) pending owner.
  *
- * Usage (Safe UI / multisig):
- *   # For the escrow contract
- *   SAFE_ADDRESS=0xYourSafe... \
- *   CONTRACT_ADDRESS=0xEscrowAddress... \
- *   PRIVATE_KEY=0xOneOfTheSafeSigners... \
- *     forge script script/AcceptOwnership.s.sol \
- *       --rpc-url base-mainnet --broadcast
+ * acceptOwnership() in Ownable2Step requires `msg.sender == pendingOwner`.
+ * When the pending owner is a Safe contract address, the call MUST originate
+ * from the Safe — i.e. produced by a Safe transaction signed by N-of-M
+ * owners. Running this script under `forge --broadcast --private-key=<EOA>`
+ * sends from the EOA, so `msg.sender != pendingOwner` and the tx reverts
+ * (you lose gas, ownership stays pending).
  *
- *   # For the NFT contract
- *   CONTRACT_ADDRESS=0xNFTAddress... \
- *     forge script script/AcceptOwnership.s.sol \
- *       --rpc-url base-mainnet --broadcast
+ * Use this script ONLY in these cases:
+ *   - testnet / dev drills where the pending owner is an EOA you control
+ *   - migration flows where pendingOwner is an upgrade-key EOA
  *
- * Usage (Safe Transaction Builder — recommended for multisig):
- *   1. Build calldata: cast calldata "acceptOwnership()"
- *   2. Create Safe transaction with `to = CONTRACT_ADDRESS`,
- *      `data = <calldata>`, `value = 0`.
+ * For a real Gnosis Safe multisig (the production-recommended path),
+ * use the Safe Transaction Builder:
+ *   1. calldata = $(cast calldata "acceptOwnership()")
+ *   2. In the Safe UI, build a transaction:
+ *        to:    CONTRACT_ADDRESS
+ *        data:  <calldata>
+ *        value: 0
  *   3. Collect N-of-M signatures.
  *   4. Execute.
  *
- * Either approach works — this script is the forge-native path; the Safe UI
- * path uses raw calldata.
+ * Usage (this script, EOA path):
+ *   SAFE_ADDRESS=0xPendingOwnerEOA \
+ *   CONTRACT_ADDRESS=0xEscrowAddress \
+ *   PRIVATE_KEY=0xPendingOwnerEOAKey \
+ *     forge script script/AcceptOwnership.s.sol \
+ *       --rpc-url base-sepolia --broadcast
+ *
+ * The script refuses to broadcast if the pending owner has bytecode (i.e.
+ * is a contract) so you cannot accidentally burn gas trying to call
+ * acceptOwnership from an EOA against a Safe pending owner.
  */
 contract AcceptOwnershipScript is Script {
     function run() external {
@@ -42,9 +50,9 @@ contract AcceptOwnershipScript is Script {
         address safeAddr = vm.envAddress("SAFE_ADDRESS");
 
         console.log("Contract: %s", contractAddr);
-        console.log("Safe (pending owner): %s", safeAddr);
+        console.log("Pending owner (env): %s", safeAddr);
 
-        // Verify: the contract's pendingOwner() must be the Safe
+        // Verify: the contract's pendingOwner() must be the env-provided address
         address pending = Ownable2Step(contractAddr).pendingOwner();
         require(
             pending == safeAddr,
@@ -54,11 +62,23 @@ contract AcceptOwnershipScript is Script {
         console.log("Pending owner verified: %s", pending);
         console.log("Current owner: %s", Ownable2Step(contractAddr).owner());
 
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        address signer = vm.addr(deployerPrivateKey);
-        console.log("Signer: %s", signer);
+        // N-2: refuse early if pending owner is a contract — acceptOwnership
+        // would revert (msg.sender = forge EOA != pendingOwner = Safe contract).
+        // Tell the operator exactly what to do instead.
+        require(
+            !_isContract(pending),
+            "Pending owner is a contract (e.g. Gnosis Safe). Use the Safe Transaction Builder: cast calldata 'acceptOwnership()' -> Safe tx to=CONTRACT_ADDRESS,data=<calldata>,value=0. See docstring."
+        );
 
-        vm.startBroadcast(deployerPrivateKey);
+        uint256 ownerPrivateKey = vm.envUint("PRIVATE_KEY");
+        address signer = vm.addr(ownerPrivateKey);
+        console.log("Signer: %s", signer);
+        require(
+            signer == pending,
+            "PRIVATE_KEY address does not match pendingOwner — accept would revert"
+        );
+
+        vm.startBroadcast(ownerPrivateKey);
 
         Ownable2Step(contractAddr).acceptOwnership();
 
@@ -69,5 +89,14 @@ contract AcceptOwnershipScript is Script {
         require(newOwner == safeAddr, "Ownership transfer failed");
         console.log("Ownership accepted. New owner: %s", newOwner);
         console.log("Done.");
+    }
+
+    /// @dev True if `addr` has bytecode. EOAs have empty extcodesize.
+    function _isContract(address addr) internal view returns (bool) {
+        uint256 size;
+        assembly {
+            size := extcodesize(addr)
+        }
+        return size > 0;
     }
 }

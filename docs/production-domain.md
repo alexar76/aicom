@@ -105,6 +105,18 @@ systemctl list-timers 'certbot*'
 
 After HTTPS works, set **`NEXT_PUBLIC_SITE_URL=https://magic-ai-factory.com`** in `.env` and **`docker compose build app && docker compose up -d`** so Next.js metadata and OG URLs use `https`.
 
+### Alien Monitor (`/monitor/`)
+
+Public demo: **https://magic-ai-factory.com/monitor/** — 3D ecosystem visualizer (LIVE mode against this host’s Hub/Factory/Prometheus).
+
+Deploy or refresh:
+
+```bash
+./scripts/deploy_alien_monitor.sh
+```
+
+Nginx snippet (also in `deploy/nginx/snippets/alien-monitor.conf`): proxies `/monitor/` → `127.0.0.1:9100`. The deploy script patches the live Certbot vhost if the block is missing.
+
 ## Related
 
 - Compose port overrides: `AICOM_PORT_FRONTEND`, `AICOM_PORT_API` in `.env.example`

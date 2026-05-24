@@ -21,7 +21,7 @@ dataSources:
         - Settlement
       abis:
         - name: AIMarketEscrow
-          file: ../src/AIMarketEscrow.sol
+          file: ../AIMarketEscrow.sol
       eventHandlers:
         - event: ChannelOpened(indexed bytes32,indexed address,address,uint256,uint256)
           handler: handleChannelOpened

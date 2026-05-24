@@ -1,0 +1,103 @@
+[project]
+name = "aicom"
+version = "2.1.0"
+description = "Autonomous AI-Factory — multi-agent pipeline for software product creation"
+requires-python = ">=3.12"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+exclude = [
+    "*.ipynb",
+    ".venv",
+    ".git",
+    "__pycache__",
+    "node_modules",
+    "web/frontend",
+    "aimarket-sdks",
+    "plugins",
+    "aimarket-hub",
+    "aimarket-agent",
+    "aimarket-protocol",
+    "aimarket-widget",
+    "ai-service-mesh",
+    "acex",
+    "alien-monitor",
+    "coach",
+    "config",
+    "contracts",
+    "deploy",
+    "desktop-integrations",
+    "desktop-products",
+    "director",
+    "docs",
+    "grafana",
+    "packaging",
+    "promo",
+    "scripts",
+    "tests",
+    "data",
+    "plans",
+    "reference_templates",
+]
+
+[tool.ruff.lint]
+select = [
+    "E", "F",           # pyflakes
+    "I",                # isort
+    "N",                # pep8-naming
+    "UP",               # pyupgrade
+    "B",                # flake8-bugbear
+    "C4",               # flake8-comprehensions
+    "SIM",              # flake8-simplify
+    "TCH",              # flake8-type-checking-imports
+    "PIE",              # flake8-pie
+    "RUF100",           # unused noqa
+]
+ignore = [
+    "E501",             # line too long — formatter territory
+    "N818",             # exception names must end with Error
+    "E402",             # module-level import not at top (allowed after logger init)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["agents", "core", "llm", "orchestrator", "security", "web"]
+
+[tool.ruff.lint.per-file-ignores]
+# Pre-existing code: allow F401 (unused import) in modules that re-export
+"agents/__init__.py" = ["F401"]
+# Pre-existing code patterns
+"agents/security.py" = ["F401", "F841"]
+"main.py" = ["F401", "F841"]
+"pipeline_worker.py" = ["F401", "F841"]
+"tests/*" = ["F401", "F811", "F841"]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+exclude = [
+    '^tests/',
+    '^\.venv/',
+    '^web/frontend/',
+    '^aimarket-sdks/',
+    '^plugins/',
+    '^aimarket-hub/',
+    '^aimarket-agent/',
+    '^aimarket-protocol/',
+    '^aimarket-widget/',
+    '^ai-service-mesh/',
+    '^acex/',
+    '^alien-monitor/',
+    '^coach/',
+    '^config/',
+    '^contracts/',
+    '^deploy/',
+    '^desktop-integrations/',
+    '^desktop-products/',
+    '^director/',
+    '^docs/',
+    '^grafana/',
+    '^packaging/',
+    '^promo/',
+    '^scripts/',
+]

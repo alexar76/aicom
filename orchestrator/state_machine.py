@@ -299,6 +299,23 @@ class PipelineStateMachine:
             await asyncio.to_thread(self._save_state_to_json)
         return task
 
+    @staticmethod
+    def _publish_task_event(task: Task, status: str) -> None:
+        """Publish a TaskCompleted event on the global event bus (best-effort)."""
+        try:
+            from core.events import TaskCompleted, get_event_bus
+            get_event_bus().publish_background(TaskCompleted(
+                task_id=task.id,
+                product_id=task.product_id,
+                agent_type=task.agent_type,
+                status=status,
+                state=task.state,
+                output_data=task.output_data if status == "completed" else None,
+                error=task.error if status == "failed" else None,
+            ))
+        except Exception:
+            pass
+
     def _apply_task_completion(
         self, task_id: str, output: dict
     ) -> tuple[bool, Optional[Product], Optional[str]]:
@@ -319,6 +336,8 @@ class PipelineStateMachine:
             duration = task.completed_at - task.started_at
             PrometheusMetrics.observe_task_duration(task.agent_type, duration)
         PrometheusMetrics.inc_task("completed")
+
+        self._publish_task_event(task, "completed")
 
         product = self.products.get(task.product_id)
         if product:
@@ -373,6 +392,7 @@ class PipelineStateMachine:
         else:
             task.status = TaskStatus.FAILED
             PrometheusMetrics.inc_task("failed")
+            self._publish_task_event(task, "failed")
             product = self.products.get(task.product_id)
             if product:
                 product.state = PipelineState.FAILED

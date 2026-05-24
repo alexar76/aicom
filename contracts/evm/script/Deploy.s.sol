@@ -93,10 +93,14 @@ contract DeployScript is Script {
         // If SAFE_ADDRESS is set, initiate the two-step ownership transfer
         // to a Gnosis Safe (or any multisig). The Safe must call
         // acceptOwnership() separately (see script/AcceptOwnership.s.sol).
-        string memory safeAddr = vm.envOr("SAFE_ADDRESS", string(""));
-        if (bytes(safeAddr).length > 0) {
-            address safe = parseAddress(safeAddr);
-            require(safe != address(0), "SAFE_ADDRESS is not a valid address");
+        //
+        // SECURITY (N-1): use vm.envOr(string,address) — Foundry validates the
+        // 0x-prefixed 40-hex-char address format and reverts on malformed input.
+        // The earlier parseAddress() silently accepted any prefix length
+        // (e.g. SAFE_ADDRESS="0xabc" → 0x0000…abc), which would have routed
+        // ownership to an unrecoverable address.
+        address safe = vm.envOr("SAFE_ADDRESS", address(0));
+        if (safe != address(0)) {
             console.log("Initiating ownership transfer to Safe: %s", safe);
             escrow.transferOwnership(safe);
             console.log("Ownership transfer initiated. Safe must call acceptOwnership().");

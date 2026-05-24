@@ -1,50 +1,74 @@
 #!/usr/bin/env bash
-# Deploy Alien Monitor on the AI-Factory host (nginx → /monitor/).
-#
-# Canonical source: alien-monitor/ in the aicom monorepo.
-# GitHub mirror: https://github.com/alexar76/alien-monitor
-#
-# Usage (from monorepo root):
-#   ./scripts/deploy_alien_monitor.sh
-#   ./scripts/deploy_alien_monitor.sh --no-build
-#   ./scripts/deploy_alien_monitor.sh --down
-#
+# Build Alien Monitor, start Docker, wire nginx /monitor/ on magic-ai-factory.com.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MONITOR="$ROOT/alien-monitor"
-COMPOSE=(docker compose -f "$MONITOR/docker-compose.prod.yml")
-NO_BUILD=0
-ACTION=up
+NGINX_SITE="${NGINX_SITE:-/etc/nginx/sites-enabled/magic-ai-factory.com}"
+SNIPPET="$ROOT/deploy/nginx/snippets/alien-monitor.conf"
+PUBLIC_URL="${ALIEN_MONITOR_PUBLIC_URL:-https://magic-ai-factory.com/monitor/}"
 
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --no-build) NO_BUILD=1; shift ;;
-    --down) ACTION=down; shift ;;
-    -h|--help)
-      sed -n '1,20p' "$0" | tail -n +2
-      exit 0
-      ;;
-    *) echo "unknown option: $1" >&2; exit 1 ;;
-  esac
-done
+echo "=== Alien Monitor deploy ==="
 
-[[ -d "$MONITOR" ]] || { echo "error: missing $MONITOR" >&2; exit 2; }
-[[ -f "$MONITOR/docker-compose.prod.yml" ]] || { echo "error: missing docker-compose.prod.yml" >&2; exit 2; }
-
-if [[ "$ACTION" == down ]]; then
-  "${COMPOSE[@]}" down
-  echo "OK alien-monitor stopped"
-  exit 0
+if [[ ! -d "$MONITOR" ]]; then
+  echo "ERROR: $MONITOR not found" >&2
+  exit 1
 fi
 
-if [[ "$NO_BUILD" -eq 0 ]]; then
-  "${COMPOSE[@]}" up -d --build
+# Stop dev processes that may hold :9100 / :5173
+for port in 9100 5173; do
+  if command -v fuser >/dev/null 2>&1; then
+    fuser -k "${port}/tcp" 2>/dev/null || true
+  fi
+done
+sleep 1
+
+cd "$MONITOR"
+docker compose -f docker-compose.prod.yml up -d --build
+
+echo "Waiting for health..."
+for _ in $(seq 1 30); do
+  if curl -sf "http://127.0.0.1:9100/api/health" >/dev/null 2>&1; then
+    break
+  fi
+  sleep 2
+done
+curl -sf "http://127.0.0.1:9100/api/health" | head -c 200 || {
+  echo "ERROR: Alien Monitor backend not healthy on :9100" >&2
+  docker compose -f docker-compose.prod.yml logs --tail=40
+  exit 1
+}
+echo ""
+
+if [[ -f "$NGINX_SITE" ]] && [[ -f "$SNIPPET" ]]; then
+  if grep -q 'location \^~ /monitor/' "$NGINX_SITE"; then
+    echo "nginx: /monitor/ already configured in $NGINX_SITE"
+  else
+  echo "Patching nginx ($NGINX_SITE)..."
+  python3 - "$NGINX_SITE" "$SNIPPET" <<'PY'
+import sys
+from pathlib import Path
+
+site = Path(sys.argv[1])
+snippet = Path(sys.argv[2]).read_text(encoding="utf-8")
+text = site.read_text(encoding="utf-8")
+marker = "    location / {"
+if marker not in text:
+    raise SystemExit(f"Could not find insertion point in {site}")
+if "location ^~ /monitor/" in text:
+    raise SystemExit(0)
+site.write_text(text.replace(marker, snippet + "\n" + marker, 1), encoding="utf-8")
+print(f"Patched {site}")
+PY
+  fi
+  if command -v nginx >/dev/null 2>&1; then
+    sudo nginx -t
+    sudo systemctl reload nginx
+  fi
 else
-  "${COMPOSE[@]}" up -d
+  echo "NOTE: nginx site not found ($NGINX_SITE) — add deploy/nginx/snippets/alien-monitor.conf manually"
 fi
 
 echo ""
-echo "Alien Monitor: http://127.0.0.1:9100 (host network, LIVE mode)"
-echo "Public (via nginx): https://magic-ai-factory.com/monitor/"
-echo "Health: curl -s http://127.0.0.1:9100/api/health"
+echo "Alien Monitor live at: $PUBLIC_URL"
+echo "Health: ${PUBLIC_URL}api/health"
