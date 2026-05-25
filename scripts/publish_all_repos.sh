@@ -51,6 +51,7 @@ Options:
 Examples:
   ./scripts/publish_all_repos.sh
   ./scripts/publish_all_repos.sh --satellite aimarket-hub
+  ./scripts/publish_all_repos.sh --satellite alien-monitor
   ./scripts/publish_all_repos.sh --satellite aicom-wiki
   ./scripts/publish_all_repos.sh --factory-only --dry-run
 

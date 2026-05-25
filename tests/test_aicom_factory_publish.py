@@ -27,6 +27,7 @@ def test_factory_excludes_all_satellite_roots():
         "plugins",
         "wiki",
         "scripts/wiki-gitea",
+        "alien-monitor",
     ):
         assert p in excludes, p
 
@@ -43,6 +44,16 @@ def test_satellite_map_includes_wiki():
     assert "aicom-wiki" in ids
 
 
+def test_satellite_map_includes_alien_monitor():
+    import yaml
+
+    data = yaml.safe_load((ROOT / "scripts" / "satellite-map.yaml").read_text())
+    by_id = {s["id"]: s for s in data.get("satellites", [])}
+    assert "alien-monitor" in by_id
+    assert by_id["alien-monitor"]["repo"] == "alien-monitor"
+    assert "alien-monitor" in by_id["alien-monitor"]["topics"]
+
+
 def test_satellite_map_has_github_descriptions():
     import yaml
 
@@ -53,6 +64,21 @@ def test_satellite_map_has_github_descriptions():
         if not (sat.get("description") or "").strip()
     ]
     assert not missing, f"missing description: {missing}"
+
+
+def test_satellite_map_has_github_topics():
+    import yaml
+
+    data = yaml.safe_load((ROOT / "scripts" / "satellite-map.yaml").read_text())
+    missing = [
+        sat.get("id")
+        for sat in data.get("satellites", [])
+        if sat.get("id") != "aicom-wiki" and not sat.get("topics")
+    ]
+    assert not missing, f"missing topics: {missing}"
+    for extra in data.get("extra_repos") or []:
+        assert extra.get("topics"), f"extra repo {extra.get('repo')} missing topics"
+        assert (extra.get("description") or "").strip()
 
 
 def test_publish_scripts_exist():
