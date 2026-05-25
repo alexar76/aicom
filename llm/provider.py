@@ -83,6 +83,11 @@ class LLMProvider(ABC):
         self._last_request_time = 0.0
         self._total_requests = 0
         self._total_tokens = 0
+        # Last call's actual token usage (input+output). Populated by
+        # `_update_metrics`. Best-effort under concurrency — a parallel call
+        # to the SAME provider instance will overwrite. Router consumes this
+        # immediately after `generate` returns, before yielding back.
+        self._last_call_tokens = 0
 
     @abstractmethod
     async def generate(self, prompt: str, config: Optional[GenerationConfig] = None) -> str:
@@ -151,6 +156,7 @@ class LLMProvider(ABC):
         """Update internal metrics after a request."""
         self._total_requests += 1
         self._total_tokens += tokens_used
+        self._last_call_tokens = tokens_used
         self._last_request_time = time.time()
         self.health.latency_ms = latency_ms
 

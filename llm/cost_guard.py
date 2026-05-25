@@ -144,6 +144,14 @@ class CostGuard:
                         task_type, requested_model, model,
                     )
                 return model or requested_model
+            if norm_task not in _CRITICAL_TASK_TYPES:
+                # Unknown task_type — treat as critical (keep heavy model) but
+                # log so the operator knows to classify it explicitly. Avoids
+                # silently passing through unclassified tasks under budget pressure.
+                logger.debug(
+                    "CostGuard: unknown task_type=%r under tight tier — keeping %s (add to _CRITICAL_TASK_TYPES or _NON_CRITICAL_TASK_TYPES)",
+                    task_type, requested_model,
+                )
             return requested_model
 
         # tier == "critical" — everything goes to budget

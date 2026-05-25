@@ -319,6 +319,13 @@ class AIFactory:
         if "llm_router" in self._components:
             await self._components["llm_router"].close()
 
+        # Drain EventBus
+        try:
+            from core.events import get_event_bus
+            await get_event_bus().shutdown()
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (main.py)", exc_info=_suppressed_exc)
+
         logger.info("AI-Factory shutdown complete")
 
     def get_status(self) -> dict:

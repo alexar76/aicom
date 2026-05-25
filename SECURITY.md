@@ -1,37 +1,46 @@
-# Security Policy — AI Market Hub
+# Security Policy — AI-Factory
 
 ## Reporting a Vulnerability
 
-**DO NOT open a public issue.** Send to `security@aicom.io` (PGP below).
+**Do not open a public issue.** Email `security@aicom.io`.
 
-Response within 24 hours. Full disclosure after fix + 30 days.
+We aim to acknowledge within 72 hours. Coordinated disclosure: we ask for up
+to 90 days to ship a fix before public write-up. Credit is given on request.
+
+If you need an encrypted channel, ask in your initial (non-sensitive) email
+and we will share a PGP key for follow-up.
+
+## Pre-mainnet status
+
+This repository is **pre-mainnet**. Open operator-side items that block a
+mainnet deploy are tracked in [`docs/known-issues.md`](docs/known-issues.md)
+(KI-1 ZK trusted setup, KI-2 external contract audit, KI-3 supervisor RCA,
+KI-4 multisig owner transfer, KI-5 CVE backlog). Testnet drills and self-hosted
+non-financial deployments are unaffected.
 
 ## Bug Bounty
 
-Launching with mainnet on Immunefi. See `contracts/audits/PAYMENT_LAYER_SECURITY_AUDIT.md` for detailed findings.
+**Status: not yet active.** A public Immunefi program is planned alongside
+mainnet launch of the contracts under `contracts/`. Until then, please report
+findings to the email above. The table below is the **target** structure for
+the launch program, not a live commitment.
 
-### Scope & Rewards (when funded, pool target $250k)
-
-| Severity | Reward | Example |
+| Severity | Target reward | Example |
 |---|---|---|
 | Critical | $50k–$250k | Direct theft of escrowed funds, signature forgery |
 | High | $10k–$50k | Channel hijacking, replay bypass, safety gate bypass |
 | Medium | $2k–$10k | DoS on channels, balance inconsistency |
 | Low | $500–$2k | Edge case with no fund loss |
 
-### Out of Scope
+Planned out-of-scope:
 - Attacks requiring multisig key compromise
-- Known issues in the internal audit
+- Items already listed in `docs/known-issues.md`
 
 ## Audit Reports
 
 | Date | Firm | Scope | Report |
 |---|---|---|---|
 | 2026-05 | Internal | Payment channels, contracts, signing | `contracts/audits/` |
-| TBD | External #1 | Full | Coming |
-| TBD | External #2 | Contracts | Coming |
 
-## PGP
-
-Email `security@aicom.io` for PGP key. Key fingerprint published on request.
-Do not include sensitive details in the initial email — we will provide the PGP key for encrypted follow-up.
+External audits are part of the mainnet pre-flight (see KI-2). Reports will
+be linked here once delivered.

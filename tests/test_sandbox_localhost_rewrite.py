@@ -65,10 +65,10 @@ def test_inject_base_strips_conflicting_base_and_adds_api_base():
 
 def test_public_origin_from_host_header():
     class Req:
-        headers = {"host": "5.129.212.122:9080"}
+        headers = {"host": "203.0.113.10:9080"}
         url = type("U", (), {"scheme": "http"})()
 
-    assert sb.public_origin_from_request(Req()) == "http://5.129.212.122:9080"
+    assert sb.public_origin_from_request(Req()) == "http://203.0.113.10:9080"
 
 
 def test_public_origin_prefers_x_forwarded():
@@ -84,23 +84,23 @@ def test_public_origin_prefers_x_forwarded():
 
 def test_sandbox_public_url_joins_origin():
     class Req:
-        headers = {"host": "5.129.212.122:9080"}
+        headers = {"host": "203.0.113.10:9080"}
         url = type("U", (), {"scheme": "http"})()
 
     assert (
         sb.sandbox_public_url(Req(), "/api/sandbox/file/x/index.html")
-        == "http://5.129.212.122:9080/api/sandbox/file/x/index.html"
+        == "http://203.0.113.10:9080/api/sandbox/file/x/index.html"
     )
 
 
 def test_inject_base_href_absolute_when_request_has_host():
     class Req:
-        headers = {"host": "5.129.212.122:9080"}
+        headers = {"host": "203.0.113.10:9080"}
         url = type("U", (), {"scheme": "http"})()
 
     html = "<html><head></head><body></body></html>"
     out = sb._inject_iframe_base_href(html, "sandbox-abc", Req())
-    assert 'href="http://5.129.212.122:9080/api/sandbox/file/sandbox-abc/"' in out
+    assert 'href="http://203.0.113.10:9080/api/sandbox/file/sandbox-abc/"' in out
 
 
 def test_rewrite_loopback_location_header():

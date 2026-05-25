@@ -9,7 +9,10 @@
   <a href="#testing-coverage"><img src="docs/badges/coverage.svg" alt="Test coverage" /></a>
   <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License" />
   <img src="https://img.shields.io/badge/tests-pytest-0A9EDC?logo=pytest&logoColor=white" alt="pytest" />
+  <a href="docs/known-issues.md"><img src="https://img.shields.io/badge/status-pre--mainnet-orange" alt="Pre-mainnet status" /></a>
 </p>
+
+> **Pre-mainnet.** The self-hosted pipeline and storefront are usable today. The on-chain payment-channel contracts under [`contracts/`](contracts/) are **not yet deployed to mainnet** — operator-side items (ZK trusted setup, external audit, multisig owner, supervisor RCA, CVE backlog) are tracked in [`docs/known-issues.md`](docs/known-issues.md) (KI-1…KI-5). Testnet drills and non-financial self-hosting are unaffected. See [`ROADMAP.md`](ROADMAP.md).
 
 <p align="center">
   <img src="docs/gallery/landing-01.webp" alt="AI-Factory generated marketing landing (1440×900)" width="920" />

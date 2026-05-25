@@ -4,6 +4,23 @@ version = "2.1.0"
 description = "Autonomous AI-Factory — multi-agent pipeline for software product creation"
 requires-python = ">=3.12"
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Lint / type-check scope
+# ─────────────────────────────────────────────────────────────────────────────
+# ruff and mypy are scoped to the NEW critical modules — `core/`, `llm/`,
+# `orchestrator/`, `security/`, `agents/`. Legacy subtrees (web/frontend,
+# desktop-integrations, aimarket-*, plugins, satellites, etc.) are excluded
+# until their migration PRs land. This is bootstrap-strict, not whole-repo
+# strict: a green CI here means new modules are clean; legacy code is still
+# subject to incremental cleanup PRs tracked outside the lint config.
+#
+# When migrating a new directory:
+#   1. Remove it from BOTH `tool.ruff.exclude` and `tool.mypy.exclude`.
+#   2. Run `ruff check <dir>/` + `mypy <dir>/` locally and fix findings.
+#   3. Add the directory to the CI `mypy` job line in .github/workflows/ci.yml
+#      so type errors block future PRs in that subtree.
+# ─────────────────────────────────────────────────────────────────────────────
+
 [tool.ruff]
 target-version = "py312"
 line-length = 120

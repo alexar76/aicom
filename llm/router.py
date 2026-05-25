@@ -156,15 +156,33 @@ class LLMRouter:
             m.inc_circuit_open(name)
         self._sync_circuit_metrics(name, row, prev)
 
-    @staticmethod
-    def _publish_llm_event(provider_name: str, task_type: str, config: GenerationConfig, duration_s: float) -> None:
+    def _publish_llm_event(
+        self,
+        provider_name: str,
+        task_type: str,
+        config: GenerationConfig,
+        duration_s: float,
+    ) -> None:
+        # M2: prefer actual tokens from the provider's last call. `_last_call_tokens`
+        # is populated by `_update_metrics` inside each provider's generate/stream.
+        # Falls back to `config.max_tokens` (upper bound) for providers that don't
+        # report usage or when the call failed before metrics were updated.
+        actual_tokens: int | None = None
+        try:
+            provider = self.providers.get(provider_name)
+            if provider is not None:
+                last = getattr(provider, "_last_call_tokens", 0)
+                if last and last > 0:
+                    actual_tokens = int(last)
+        except Exception:
+            actual_tokens = None
         try:
             from core.events import LLMCallLogged, get_event_bus
             get_event_bus().publish_background(LLMCallLogged(
                 provider=provider_name,
                 model=config.model_override or "unknown",
                 task_type=task_type,
-                tokens_used=config.max_tokens,
+                tokens_used=actual_tokens if actual_tokens is not None else config.max_tokens,
                 duration_ms=duration_s * 1000.0,
             ))
         except Exception:
