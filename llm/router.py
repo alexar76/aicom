@@ -258,6 +258,12 @@ class LLMRouter:
             config = GenerationConfig(timeout_sec=timeout)
         config.task_type = task_type
 
+        from core.pipeline_cost_guard import assert_product_within_budget
+
+        pid = getattr(config, "product_id", None)
+        if pid:
+            assert_product_within_budget(str(pid))
+
         if rule and config.model_override is None:
             model_role = rule.get("model_role", "heavy")
             model_name = self._get_model_for_role(provider_name, model_role)
@@ -293,12 +299,50 @@ class LLMRouter:
 
             start_time = time.time()
             try:
-                logger.info(
-                    f"Routing to provider '{current}' for task '{task_type}'"
-                    f" (model: {config.model_override or 'default'})"
-                )
-                self._apply_output_token_budget(current, config)
-                result = await self._generate_via_provider(current, prompt, config)
+                from core.tracing import span
+
+                # OTel `gen_ai.*` semantic conventions — LangSmith / Phoenix /
+                # Helicone recognise spans tagged this way as LLM calls and
+                # render them with model / tokens / cost rather than as opaque
+                # "llm.generate" rows. Legacy `llm.*` / `product.id` aliases
+                # are kept so existing dashboards keep working.
+                model_name = config.model_override or "default"
+                span_attrs = {
+                    "gen_ai.system": current,
+                    "gen_ai.operation.name": "chat",
+                    "gen_ai.request.model": model_name,
+                    "gen_ai.request.temperature": float(getattr(config, "temperature", 0.0) or 0.0),
+                    "gen_ai.request.max_tokens": int(getattr(config, "max_tokens", 0) or 0),
+                    "llm.provider": current,
+                    "llm.task_type": task_type,
+                    "ai.task_type": task_type,
+                }
+                if pid:
+                    span_attrs["aifactory.product_id"] = str(pid)
+                    span_attrs["product.id"] = str(pid)
+                with span("llm.generate", attributes=span_attrs) as llm_span:
+                    logger.info(
+                        f"Routing to provider '{current}' for task '{task_type}'"
+                        f" (model: {config.model_override or 'default'})"
+                    )
+                    self._apply_output_token_budget(current, config)
+                    result = await self._generate_via_provider(current, prompt, config)
+                    # Best-effort token accounting — providers here return raw
+                    # strings, so we use the chars/4 fallback OTel recommends
+                    # when no tokenizer is wired. Replace per-provider once a
+                    # real usage payload is available.
+                    if llm_span is not None:
+                        try:
+                            in_tokens = max(1, len(prompt) // 4)
+                            out_tokens = max(1, len(result) // 4)
+                            llm_span.set_attribute("gen_ai.usage.input_tokens", in_tokens)
+                            llm_span.set_attribute("gen_ai.usage.output_tokens", out_tokens)
+                            llm_span.set_attribute(
+                                "gen_ai.usage.total_tokens", in_tokens + out_tokens
+                            )
+                            llm_span.set_attribute("gen_ai.response.model", model_name)
+                        except Exception:
+                            pass
                 if self._cache_enabled:
                     self._cache_set(cache_key, result)
                 duration = time.time() - start_time

@@ -149,6 +149,8 @@ class BaseAgent(ABC):
                 final_prompt = user_part
             base_cfg = config if config is not None else GenerationConfig()
             cfg = replace(base_cfg, agent_type=self.agent_type)
+            if agent_input and agent_input.product_id:
+                cfg = replace(cfg, product_id=agent_input.product_id)
             # Stronger model for gate-failing repair rounds (AIFACTORY_GATE_FAILING_MODEL)
             if agent_input and isinstance(agent_input.data, dict):
                 gfm = agent_input.data.get("gate_failing_model")

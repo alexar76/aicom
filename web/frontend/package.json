@@ -11,6 +11,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
+    "test:unit": "vitest run",
     "test:visual": "AI_FACTORY_E2E_TESTS=1 playwright test",
     "capture-docs-screenshots": "node scripts/capture-docs-screenshots.mjs"
   },
@@ -39,6 +40,7 @@
     "eslint-config-next": "^14.2.0",
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.9"
   }
 }

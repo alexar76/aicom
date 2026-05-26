@@ -60,13 +60,44 @@ def _ensure_relative_sqlite_dirs(cwd: Path, code_dir: Path) -> None:
         (base / ".aicom_sandbox").mkdir(parents=True, exist_ok=True)
 
 
-def _pip_install_one(spec: str) -> None:
+def _preview_venv_python(code_dir: Path, sandbox_id: str) -> Path:
+    """Isolated venv per sandbox — never pip-install into the factory /app/venv."""
+    sid = re.sub(r"[^\w-]", "_", (sandbox_id or "sandbox")[:48])
+    venv_dir = code_dir / ".aicom_sandbox" / sid / "preview-venv"
+    python_bin = venv_dir / "bin" / "python"
+    if python_bin.is_file():
+        return python_bin
+    venv_dir.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(
+        [sys.executable, "-m", "venv", str(venv_dir)],
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=True,
+    )
+    bootstrap = [
+        "uvicorn[standard]==0.30.6",
+        "fastapi==0.115.0",
+        "pydantic==2.9.0",
+        "pydantic-settings==2.5.0",
+    ]
+    subprocess.run(
+        [str(python_bin), "-m", "pip", "install", "-q", *bootstrap],
+        capture_output=True,
+        text=True,
+        timeout=300,
+        check=False,
+    )
+    return python_bin
+
+
+def _pip_install_one(python_bin: Path, spec: str) -> None:
     spec = spec.strip()
     if not spec or spec.startswith("#"):
         return
     try:
         subprocess.run(
-            [sys.executable, "-m", "pip", "install", "-q", spec],
+            [str(python_bin), "-m", "pip", "install", "-q", spec],
             capture_output=True,
             text=True,
             timeout=120,
@@ -76,7 +107,7 @@ def _pip_install_one(spec: str) -> None:
         logger.debug("sandbox_preview_env: pip skipped %s (%s)", spec[:40], e)
 
 
-def _pip_install_requirements(cwd: Path, code_dir: Path) -> None:
+def _pip_install_requirements(cwd: Path, code_dir: Path, python_bin: Path) -> None:
     """Install deps; fall back line-by-line when generated requirements.txt has conflicts."""
     req_paths: list[Path] = []
     for p in (cwd / "requirements.txt", code_dir / "requirements.txt", cwd.parent / "requirements.txt"):
@@ -86,7 +117,7 @@ def _pip_install_requirements(cwd: Path, code_dir: Path) -> None:
     for req_path in req_paths:
         try:
             r = subprocess.run(
-                [sys.executable, "-m", "pip", "install", "-q", "-r", str(req_path)],
+                [str(python_bin), "-m", "pip", "install", "-q", "-r", str(req_path)],
                 capture_output=True,
                 text=True,
                 timeout=240,
@@ -102,7 +133,7 @@ def _pip_install_requirements(cwd: Path, code_dir: Path) -> None:
         except (subprocess.TimeoutExpired, OSError) as e:
             logger.warning("sandbox_preview_env: pip -r skipped (%s)", e)
         for line in req_path.read_text(encoding="utf-8", errors="replace").splitlines():
-            _pip_install_one(line)
+            _pip_install_one(python_bin, line)
 
     extras: list[str] = []
     if code_requires_postgres(code_dir):
@@ -123,16 +154,16 @@ def _pip_install_requirements(cwd: Path, code_dir: Path) -> None:
         ]
     )
     for spec in extras:
-        _pip_install_one(spec)
+        _pip_install_one(python_bin, spec)
 
 
-def _run_alembic_if_present(cwd: Path, env: dict[str, str]) -> None:
+def _run_alembic_if_present(cwd: Path, env: dict[str, str], python_bin: Path) -> None:
     ini = cwd / "alembic.ini"
     if not ini.is_file() and not (cwd / "app" / "alembic").is_dir():
         return
     try:
         subprocess.run(
-            [sys.executable, "-m", "alembic", "upgrade", "head"],
+            [str(python_bin), "-m", "alembic", "upgrade", "head"],
             cwd=str(cwd),
             env=env,
             capture_output=True,
@@ -144,14 +175,14 @@ def _run_alembic_if_present(cwd: Path, env: dict[str, str]) -> None:
         logger.warning("sandbox_preview_env: alembic upgrade skipped (%s)", e)
 
 
-def _run_seed_script(cwd: Path, env: dict[str, str]) -> None:
+def _run_seed_script(cwd: Path, env: dict[str, str], python_bin: Path) -> None:
     for rel in ("scripts/seed_demo.py", "scripts/seed.py", "app/seed.py"):
         sp = cwd / rel
         if not sp.is_file():
             continue
         try:
             subprocess.run(
-                [sys.executable, str(sp)],
+                [str(python_bin), str(sp)],
                 cwd=str(cwd),
                 env=env,
                 capture_output=True,
@@ -190,7 +221,8 @@ def build_fastapi_preview_env(
         env["PYTHONPATH"] = py_path
 
     _ensure_relative_sqlite_dirs(cwd, code_dir)
-    meta: dict[str, Any] = {"postgres_ephemeral": False}
+    preview_python = _preview_venv_python(code_dir, sandbox_id)
+    meta: dict[str, Any] = {"postgres_ephemeral": False, "preview_python": str(preview_python)}
 
     needs_pg = code_requires_postgres(code_dir)
     if needs_pg:
@@ -226,8 +258,8 @@ def build_fastapi_preview_env(
     env.setdefault("ENVIRONMENT", "sandbox")
     env.setdefault("AICOM_SANDBOX", "1")
 
-    _pip_install_requirements(cwd, code_dir)
-    _run_alembic_if_present(cwd, env)
-    _run_seed_script(cwd, env)
+    _pip_install_requirements(cwd, code_dir, preview_python)
+    _run_alembic_if_present(cwd, env, preview_python)
+    _run_seed_script(cwd, env, preview_python)
 
     return env, meta

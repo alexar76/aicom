@@ -260,10 +260,10 @@ export default function CheckoutPage() {
         product_id: productId,
         chain: selectedChain,
         token: selectedToken,
-        amount: parseFloat(amount),
         referral_source,
       });
       setPaymentInfo(payment);
+      setAmount(String(payment.amount));
     } catch (err) {
       setErrorMessage('Failed to create payment. Please try again.');
       setStep('form');

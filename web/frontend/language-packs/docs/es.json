@@ -50,6 +50,7 @@
     "agents": "Agentes de IA",
     "pipeline": "Flujo del pipeline",
     "crypto": "Pagos cripto",
+    "uniCredit": "Bus UNI",
     "security": "Seguridad",
     "director": "Director AI",
     "configuration": "Configuración"
@@ -494,7 +495,9 @@
       "Gestión de timeouts — cada paso con timeout configurable (default 30s)",
       "Ejecución paralela — varios productos en distintas etapas del pipeline",
       "Persistencia de estado — JSON (default) o backend SQLite3 opcional con migración CLI",
-      "Director override — Director AI puede ajustar timeouts y prioridades"
+      "Director override — Director AI puede ajustar timeouts y prioridades",
+      "Tope de gasto LLM por producto (USD) — Admin → Ajustes → Calidad del pipeline (0 = sin límite); env AIFACTORY_MAX_PIPELINE_COST_USD tiene prioridad",
+      "Tarjetas de producto en Pipeline: gráficos de gasto LLM, plazo y calidad"
     ],
     "directorCycleTitle": "Ciclo Director AI (cada 4 horas)",
     "directorCycleIntro": "En paralelo al product pipeline, Director AI corre cada 4 horas:",
@@ -551,6 +554,39 @@
         "tokens": "USDT, USDC"
       }
     ]
+  },
+  "uniCredit": {
+    "titleGradient": "bus UNI",
+    "intro": "UNI es crédito interno fijado a USDT — no es un token negociable. Todas las operaciones en la plataforma usan UNI enteros; USDT solo en entrada/salida vía treasury.",
+    "pegTitle": "Tipo de cambio fijo",
+    "pegBody": "1 UNI = $0.01 USDT (100 UNI por $1). Soporta microcobros LLM sin USDT float. AIFACTORY_UNI_USD_CENTS_PER_UNI=1 (legacy: AIFACTORY_UNI_USDT_RATE=100).",
+    "feesTitle": "Comisiones (por defecto)",
+    "feesItems": [
+      "Top-up: 0% (AIFACTORY_UNI_TOPUP_SPREAD_BPS=0)",
+      "Invoke / channel: 5% plataforma (AIFACTORY_UNI_PLATFORM_FEE_BPS=500)",
+      "Retiro: 1% + mínimo $20 (AIFACTORY_UNI_WITHDRAW_FEE_BPS=100, AIFACTORY_UNI_MIN_WITHDRAW_UNI=2000)",
+      "Comisiones → cartera PLATFORM_FEES"
+    ],
+    "treasuryTitle": "Invariante treasury",
+    "treasuryBody": "USDT on-chain ≥ UNI outstanding × $0.01. Job uni_treasury_audit; alerta si reserve_ratio < 0.999. AIFACTORY_UNI_TREASURY_USDT_OBSERVED para auditoría manual.",
+    "flowTitle": "Flujo típico",
+    "flowItems": [
+      "Top-up USDT → POST /api/uni/topup/confirm → crédito UNI",
+      "Canal → hold; invoke → spend_hold: 95% vendedor, 5% plataforma",
+      "Compra capability → charge() debita comprador",
+      "Retiro → POST /api/uni/withdraw → cola on-chain"
+    ],
+    "apiTitle": "API HTTP",
+    "apiItems": [
+      "GET /api/uni/config — peg y bps",
+      "GET /api/uni/wallet — balance_uni",
+      "GET /api/uni/receipts — recibos firmados",
+      "POST /api/uni/topup/intent — treasury",
+      "POST /api/uni/grant — funding Monitor"
+    ],
+    "settingsTitle": "Ajustes Admin relacionados",
+    "settingsBody": "Tope LLM por producto: Admin → Ajustes → Calidad del pipeline → Coste LLM máx. (quality.max_pipeline_cost_usd). Complementa UNI.",
+    "docsMarkdown": "Ver docs/uni-economics.md y docs/postgres-production-runbook.md en el repositorio."
   },
   "security": {
     "titleGradient": "seguridad",
@@ -665,6 +701,13 @@
     "modelProvidersTitle": "Model Providers (model_providers.yaml)",
     "routingRulesTitle": "Reglas de enrutamiento",
     "globalConfigTitle": "Global Config (config.yaml)",
+    "qualityBlockTitle": "Bloque quality: (calidad del pipeline)",
+    "qualityBlockItems": [
+      "max_pipeline_repair_rounds — límite de ciclos QA-repair antes de FAILED",
+      "max_pipeline_cost_usd — tope de gasto LLM por producto en USD (0 = sin límite); gráficos en Pipeline",
+      "demo / visual / browser / marketplace — mismos campos que Admin → Ajustes → Calidad del pipeline",
+      "Variables AIFACTORY_* tienen prioridad sobre YAML guardado en Docker"
+    ],
     "themesTitle": "Temas",
     "themesIntro": "Hay cinco temas preinstalados:",
     "themeItems": [

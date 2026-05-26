@@ -1,5 +1,122 @@
 /** Pure helpers for Pipeline Monitor product rows and tasks. */
 
+import { PIPELINE_PRODUCT_STATES_FOR_FILTER } from '@/lib/pipelineFlow';
+
+const PRODUCT_STATE_RANK: Record<string, number> = Object.fromEntries(
+  PIPELINE_PRODUCT_STATES_FOR_FILTER.map((s, i) => [s, i]),
+);
+
+/** Pipeline state reached when a stage's agent completes its happy-path transition. */
+export const STAGE_TARGET_STATE: Record<string, string> = {
+  analyst: 'MARKET_RESEARCHED',
+  pm: 'SPEC_WRITTEN',
+  marketing: 'MARKET_CONTENT_READY',
+  methodologist: 'METHODOLOGY_REVIEWED',
+  architect: 'ARCH_DESIGNED',
+  designer: 'DESIGN_CRITIQUED',
+  developer: 'CODE_COMMITTED',
+  qa: 'QA_TESTING',
+  security: 'SECURITY_SCANNED',
+  devops: 'SALES_ACTIVE',
+  sales: 'SANDBOX_RUNNING',
+};
+
+const SHIPPED_PRODUCT_STATES = new Set([
+  'SALES_ACTIVE',
+  'SANDBOX_RUNNING',
+  'TELEMETRY_COLLECTING',
+  'EVOLUTION_ANALYZING',
+  'COMPLETED',
+  'DEPLOYED_PRODUCTION',
+]);
+
+function productStateRank(state: string): number {
+  const key = String(state || '').toUpperCase();
+  return PRODUCT_STATE_RANK[key] ?? -1;
+}
+
+export function isMaturePipelineProduct(product: Record<string, unknown>): boolean {
+  const completedN = Number(
+    (product.task_counts as { completed?: number } | undefined)?.completed ?? 0,
+  );
+  const pulseDone = Number(
+    (product.pulse as { completed_stages?: number } | undefined)?.completed_stages ?? 0,
+  );
+  return completedN >= 40 || pulseDone >= 8;
+}
+
+export type PipelineStageStatus = 'completed' | 'running' | 'failed' | 'pending';
+
+/** Infer stage tile status from product maturity when per-agent task rows were compacted. */
+export function inferStageStatus(
+  product: Record<string, unknown>,
+  stage: string,
+  taskList: Record<string, unknown>[],
+): PipelineStageStatus {
+  const task = findTaskForStage(taskList, stage);
+  const direct = String(task?.status ?? '').toLowerCase();
+  const pState = String(product.state ?? '').toUpperCase();
+  const pRank = productStateRank(pState);
+  const target = STAGE_TARGET_STATE[stage];
+  const tRank = target ? productStateRank(target) : -1;
+  const matureBuild = isMaturePipelineProduct(product);
+
+  if (
+    SHIPPED_PRODUCT_STATES.has(pState) ||
+    (matureBuild && !['FAILED', 'CANCELLED', 'IDEA_RECEIVED'].includes(pState))
+  ) {
+    if (direct === 'running' && (stage === 'qa' || stage === 'developer')) return 'running';
+    if (direct === 'failed') return 'failed';
+    return 'completed';
+  }
+
+  if (tRank >= 0 && pRank > tRank) return 'completed';
+  if (direct === 'failed') return 'failed';
+  if (direct === 'running') return 'running';
+  if (direct === 'completed') return 'completed';
+  return 'pending';
+}
+
+export function syntheticTaskForStage(
+  stage: string,
+  status: PipelineStageStatus,
+  productState: string,
+): Record<string, unknown> {
+  return {
+    agent_type: stage === 'designer' ? 'architect' : stage,
+    status,
+    state: STAGE_TARGET_STATE[stage] ?? productState,
+    synthetic: true,
+    output_data: {
+      summary:
+        'Stage inferred from product maturity — historical task rows were compacted during repair / hardening loops.',
+    },
+  };
+}
+
+export function resolveStagePresentation(
+  product: Record<string, unknown>,
+  stage: string,
+  taskList: Record<string, unknown>[],
+): { status: PipelineStageStatus; task: Record<string, unknown> | null } {
+  const status = inferStageStatus(product, stage, taskList);
+  const task = findTaskForStage(taskList, stage);
+  if (task) {
+    const merged = { ...task };
+    if (status !== 'pending' && String(task.status ?? '').toLowerCase() !== status) {
+      merged.status = status;
+    }
+    return { status, task: merged };
+  }
+  if (status !== 'pending') {
+    return {
+      status,
+      task: syntheticTaskForStage(stage, status, String(product.state ?? '')),
+    };
+  }
+  return { status, task: null };
+}
+
 export function getFailureSummary(product: Record<string, unknown>): string[] {
   const lines: string[] = [];
   const primary = String(product?.failure_reason || '').trim();

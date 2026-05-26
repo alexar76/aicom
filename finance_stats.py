@@ -162,6 +162,14 @@ def compute_financial_metrics(
     out["revenue_last_24h"] = out["revenue_last_24h_approx_usd"]
     out["revenue_last_7d"] = out["revenue_last_7d_approx_usd"]
     out["revenue_last_30d"] = out["revenue_last_30d_approx_usd"]
+    try:
+        from core.uni.config import uni_enabled
+        from core.uni.wallet import UniWalletService
+
+        if uni_enabled():
+            out["uni"] = UniWalletService().economy_summary()
+    except Exception as exc:
+        logger.debug("UNI finance metrics skipped: %s", exc)
     return out
 
 

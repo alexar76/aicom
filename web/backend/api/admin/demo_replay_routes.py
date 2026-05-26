@@ -120,4 +120,9 @@ async def demo_replay_media(filename: str, _admin: dict = Depends(require_admin_
     else:
         mt = "video/quicktime"
 
-    return FileResponse(path, media_type=mt, filename=filename)
+    return FileResponse(
+        path,
+        media_type=mt,
+        filename=filename,
+        headers={"Accept-Ranges": "bytes"},
+    )

@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from fastapi import APIRouter, Header, Request, Response
+from fastapi import APIRouter, Depends, Header, Request, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
@@ -26,6 +26,7 @@ from web.backend.services.ai_market_protocol import (
     quote_capability_price,
 )
 from web.backend.services.ai_market_protocol.config import base_public_url
+from web.backend.services.customer_auth import require_customer
 
 wellknown_router = APIRouter(tags=["ai-market-wellknown"])
 capabilities_router = APIRouter(tags=["ai-market-capabilities"])
@@ -132,13 +133,15 @@ async def pricing_post(product_id: str, capability_id: str, body: InvokeBody):
 
 
 @router.post("/channel/open")
-async def channel_open(body: ChannelOpenRequest):
+async def channel_open(body: ChannelOpenRequest, customer: dict = Depends(require_customer)):
     out = open_channel(
         deposit_usd=body.deposit_usd,
         token=body.token,
         chain=body.chain,
         wallet=body.wallet,
         tx_hash=body.tx_hash,
+        customer_id=str(customer.get("sub") or ""),
+        customer_email=str(customer.get("email") or ""),
     )
     if out.get("error"):
         return JSONResponse(status_code=400, content=out)
@@ -146,20 +149,25 @@ async def channel_open(body: ChannelOpenRequest):
 
 
 @router.post("/channel/close")
-async def channel_close(body: ChannelCloseRequest):
-    out = close_channel(channel_id=body.channel_id, settle_tx_hash=body.settle_tx_hash)
+async def channel_close(body: ChannelCloseRequest, customer: dict = Depends(require_customer)):
+    out = close_channel(
+        channel_id=body.channel_id,
+        settle_tx_hash=body.settle_tx_hash,
+        customer_id=str(customer.get("sub") or ""),
+    )
     if out.get("error"):
         return JSONResponse(status_code=400, content=out)
     return out
 
 
 @router.post("/pipelines")
-async def run_pipeline(body: PipelineRequest, request: Request):
+async def run_pipeline(body: PipelineRequest, request: Request, authorization: str | None = Header(default=None)):
     nodes = [n.model_dump() for n in body.nodes]
     return await execute_pipeline(
         nodes=nodes,
         channel_id=body.channel_id,
         base_url=base_public_url(),
+        authorization=authorization,
         llm_router=_get_llm_router(request),
     )
 
@@ -186,6 +194,7 @@ async def invoke_capability_root(
     x_payment: str | None = Header(default=None, alias="X-Payment"),
     x_payment_channel: str | None = Header(default=None, alias="X-Payment-Channel"),
     x_ai_market_license: str | None = Header(default=None, alias="x-ai-market-license"),
+    authorization: str | None = Header(default=None),
 ):
     status, payload, headers = await invoke_capability_v1(
         product_id=product_id,
@@ -195,6 +204,7 @@ async def invoke_capability_root(
         x_payment=x_payment,
         x_payment_channel=x_payment_channel,
         x_ai_market_license=x_ai_market_license,
+        authorization=authorization,
         llm_router=_get_llm_router(request),
     )
     return JSONResponse(status_code=status, content=payload, headers=headers)
@@ -209,8 +219,9 @@ async def invoke_capability_prefixed(
     x_payment: str | None = Header(default=None, alias="X-Payment"),
     x_payment_channel: str | None = Header(default=None, alias="X-Payment-Channel"),
     x_ai_market_license: str | None = Header(default=None, alias="x-ai-market-license"),
+    authorization: str | None = Header(default=None),
 ):
     return await invoke_capability_root(
         product_id, capability_id, body, request,
-        x_payment, x_payment_channel, x_ai_market_license,
+        x_payment, x_payment_channel, x_ai_market_license, authorization,
     )

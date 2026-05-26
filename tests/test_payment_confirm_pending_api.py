@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import uuid
+from collections import defaultdict, deque
+
 import pytest
 
-from web.backend.services.commerce import CommerceService
+from web.backend.services.commerce import CommerceService, TxHashAlreadyUsedError
 
 
 @pytest.fixture
@@ -14,13 +17,19 @@ def pay_client(tmp_path, monkeypatch):
     monkeypatch.setenv("AIFACTORY_PAYMENT_TESTNET", "1")
     monkeypatch.setenv("AIFACTORY_PAYMENT_VERIFY_STUB", "1")
     monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path / "data"))
-    CommerceService(base_dir=str(tmp_path / "data" / "store"))
+    monkeypatch.setenv("AIFACTORY_CUSTOMER_REGISTER_MAX_PER_HOUR", "1000")
+    monkeypatch.setattr("web.backend.api.customer._register_attempts", defaultdict(deque))
+    store = str(tmp_path / "data" / "store")
+    svc = CommerceService(base_dir=store)
 
-    import importlib
+    import web.backend.api.customer as customer_mod
     import web.backend.api.payment as pay_mod
+    import web.backend.services.customer_auth as customer_auth_mod
 
-    importlib.reload(pay_mod)
-    monkeypatch.setattr(pay_mod, "commerce", CommerceService(base_dir=str(tmp_path / "data" / "store")))
+    pay_mod._pending_payments.clear()
+    monkeypatch.setattr(customer_mod, "commerce", svc)
+    monkeypatch.setattr(customer_auth_mod, "_commerce", svc)
+    monkeypatch.setattr(pay_mod, "commerce", svc)
 
     from fastapi.testclient import TestClient
     from web.backend.main import app
@@ -31,7 +40,7 @@ def pay_client(tmp_path, monkeypatch):
 
 def test_confirm_pending_then_license_once(pay_client):
     client, pay_mod = pay_client
-    email = "pay-pending@example.test"
+    email = f"pay-pending-{uuid.uuid4().hex[:8]}@example.test"
     password = "password12345"
     reg = client.post("/api/customer/register", json={"email": email, "password": password})
     assert reg.status_code == 200
@@ -45,7 +54,6 @@ def test_confirm_pending_then_license_once(pay_client):
             "product_id": "prod-9388c62f0666",
             "chain": "base",
             "token": "ETH",
-            "amount": 0.01,
         },
     )
     assert create.status_code == 200
@@ -79,8 +87,7 @@ def test_confirm_pending_then_license_once(pay_client):
         f"/api/payment/confirm/{payment_id}?test_confirmations={pay_mod.MIN_CONFIRMATIONS}",
         json={"tx_hash": tx},
     )
-    assert r3.status_code == 200
-    assert r3.json()["license_key"] == license_key
+    assert r3.status_code == 404
 
     orders = client.get("/api/customer/orders", headers=auth)
     assert orders.status_code == 200

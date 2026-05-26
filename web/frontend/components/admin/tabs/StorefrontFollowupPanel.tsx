@@ -92,7 +92,7 @@ export function StorefrontFollowupPanel({
   onPatch: (productId: string, patch: Record<string, unknown>) => void;
 }) {
   const st = String(product.state || '').toUpperCase();
-  if (st !== 'COMPLETED' && st !== 'DEPLOYED_PRODUCTION') return null;
+  const showPanel = st === 'COMPLETED' || st === 'DEPLOYED_PRODUCTION';
 
   const sf = (product.storefront_followup || {}) as Record<string, unknown>;
   const visible = Boolean(product.storefront_visible);
@@ -414,6 +414,8 @@ export function StorefrontFollowupPanel({
       setReworkLoading(false);
     }
   };
+
+  if (!showPanel) return null;
 
   return (
     <div className="mb-4 rounded-xl border border-white/10 bg-white/[0.02] p-3 space-y-3">

@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 _DELIVERY = Literal["marketing_landing", "full_software", "desktop_app"]
 _LOCALE_RE = r"^[a-z]{2}(-[A-Za-z]{2,8})?$"
@@ -178,10 +178,11 @@ class FeedbackSubmitRequest(BaseModel):
 
 
 class CreatePaymentRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     product_id: str = Field(..., min_length=5, max_length=80)
     chain: _CHAIN = "base"
     token: str = Field(default="USDT", max_length=16)
-    amount: Optional[float] = Field(None, gt=0, le=1_000_000)
     referral_source: Optional[str] = Field(None, max_length=128)
 
     @field_validator("product_id")
@@ -239,7 +240,6 @@ class AiMarketSettlementConfirmRequest(BaseModel):
     customer_id: Optional[str] = Field(None, max_length=80)
     customer_email: Optional[str] = Field(None, max_length=254)
     wallet_address: Optional[str] = Field(None, max_length=128)
-    amount: float = Field(..., gt=0, le=1_000_000)
 
     @field_validator("product_id")
     @classmethod

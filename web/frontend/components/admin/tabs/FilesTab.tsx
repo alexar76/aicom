@@ -471,9 +471,19 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
           signal: AbortSignal.timeout(FILES_FETCH_MS),
         });
         if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
+          let detail = `HTTP ${res.status}`;
+          try {
+            const errBody = await res.json();
+            if (errBody?.detail) detail = String(errBody.detail);
+          } catch {
+            /* ignore */
+          }
+          throw new Error(detail);
         }
         const data = await res.json();
+        if (typeof data.count === 'number' && data.count > 0 && !(data.files?.length)) {
+          throw new Error('API returned count but empty files array');
+        }
         setFiles(data.files || []);
         setTruncatedByCategory(
           data.truncated_by_category && typeof data.truncated_by_category === 'object'

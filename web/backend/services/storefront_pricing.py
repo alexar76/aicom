@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Any, Optional
 
-from core.paths import resolve_data_root
+from core.paths import pipeline_json_path, resolve_data_root
 
 DEFAULT_STOREFRONT_PRICE_USDT = 4.99
 
@@ -125,6 +125,45 @@ def checkout_usdt_from_sales_file(
     if tier_p is not None:
         return tier_p
     return float(default_usdt)
+
+
+def _read_pipeline_product(product_id: str) -> dict[str, Any] | None:
+    path = pipeline_json_path()
+    if not path.is_file():
+        return None
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, TypeError):
+        return None
+    products = raw.get("products") if isinstance(raw, dict) else None
+    if not isinstance(products, dict):
+        return None
+    p = products.get(product_id)
+    return p if isinstance(p, dict) else None
+
+
+def pilot_settlement_price_usdt(
+    product_id: str,
+    *,
+    data_root: Path | None = None,
+    default_usdt: float = DEFAULT_STOREFRONT_PRICE_USDT,
+) -> float:
+    """
+    Authoritative checkout USDT for AI Market pilot on-chain settlement.
+    Caller must not accept a client-supplied amount.
+    """
+    p = _read_pipeline_product(product_id)
+    if not p:
+        raise ValueError("product not found")
+    state = str(p.get("state") or "").upper()
+    if state not in {"COMPLETED", "DEPLOYED_PRODUCTION"}:
+        raise ValueError("product not available for purchase")
+    price = checkout_usdt_from_sales_file(
+        product_id, data_root=data_root, default_usdt=default_usdt
+    )
+    if price <= 0:
+        raise ValueError("product not purchasable")
+    return float(price)
 
 
 def read_sales_inner_and_pricing(product_id: str, *, data_root: Path | None = None) -> tuple[dict[str, Any], dict[str, Any]]:

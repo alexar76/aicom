@@ -39,6 +39,26 @@ def test_build_product_pulse_counts_completed_stages(tmp_path: Path):
     assert len(pulse["stage_dots"]) == 11
 
 
+def test_mature_dev_fixing_marks_all_stages_completed(tmp_path: Path):
+    """Repair-loop products with many completed tasks should show full stage bar."""
+    tasks = (
+        [{"agent_type": "developer", "status": "completed", "product_id": "p-mature"}] * 50
+        + [{"agent_type": "qa", "status": "completed", "product_id": "p-mature"}] * 50
+        + [{"agent_type": "qa", "status": "running", "started_at": 1.0, "product_id": "p-mature"}]
+    )
+    row = {
+        "id": "p-mature",
+        "state": "DEV_FIXING",
+        "tasks": tasks,
+        "architecture": {},
+        "spec": {},
+        "economics": {},
+    }
+    pulse = build_product_pulse(row, light=True, data_root=tmp_path)
+    assert pulse["completed_stages"] == 11
+    assert pulse["stage_dots"] == ["done"] * 11
+
+
 def test_quality_red_when_telemetry_gates_fail(tmp_path: Path):
     pid = "p-gate"
     tel_dir = tmp_path / "telemetry" / pid

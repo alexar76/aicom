@@ -294,6 +294,17 @@ def store_dir() -> Path:
     return data_root() / "store"
 
 
+def uni_db_path() -> Path:
+    override = os.environ.get("UNI_SQLITE_PATH", "").strip()
+    if override:
+        return Path(override)
+    from core.uni.config import uni_use_commerce_db
+
+    if uni_use_commerce_db():
+        return store_dir() / "commerce.db"
+    return store_dir() / "uni_ledger.db"
+
+
 def store_licenses_path() -> Path:
     return store_dir() / "licenses.json"
 

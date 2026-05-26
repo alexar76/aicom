@@ -22,9 +22,19 @@ export const QUALITY_SETTINGS_DICT: I18nDict = {
     es: 'Los valores se guardan en la config de la plataforma en quality:. Si el despliegue define variables AIFACTORY_* coincidentes, siguen teniendo prioridad para override en Docker.',
   },
   'settings.quality.section.repair': {
-    en: 'Repair budget',
-    ru: 'Бюджет доработок',
-    es: 'Presupuesto de reparación',
+    en: 'Repair budget & LLM spend',
+    ru: 'Бюджет доработок и затраты LLM',
+    es: 'Presupuesto de reparación y gasto LLM',
+  },
+  'settings.quality.maxPipelineCost.label': {
+    en: 'Max LLM cost per product (USD)',
+    ru: 'Макс. стоимость LLM на продукт (USD)',
+    es: 'Coste LLM máx. por producto (USD)',
+  },
+  'settings.quality.maxPipelineCost.desc': {
+    en: '0 = unlimited. When set, the pipeline aborts agent tasks once estimated LLM spend (llm_calls.jsonl) exceeds this cap. Env AIFACTORY_MAX_PIPELINE_COST_USD overrides this field when set.',
+    ru: '0 = без лимита. При значении > 0 пайплайн останавливает задачи агентов, когда оценочные затраты LLM (llm_calls.jsonl) превышают лимит. Переменная AIFACTORY_MAX_PIPELINE_COST_USD имеет приоритет над полем.',
+    es: '0 = sin límite. Si es > 0, el pipeline detiene tareas cuando el gasto LLM estimado (llm_calls.jsonl) supera el tope. La variable AIFACTORY_MAX_PIPELINE_COST_USD tiene prioridad sobre este campo.',
   },
   'settings.quality.maxRepair.label': {
     en: 'Max quality repair rounds',

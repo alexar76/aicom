@@ -699,6 +699,33 @@ docker compose exec app python /app/cli/ai_company_cli.py audit export --from=20
       ),
     },
     {
+      id: 'uni-credit',
+      title: st.uniCredit,
+      icon: Coins,
+      content: (
+        <div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            UNI <span className="text-gradient-primary">{t.uniCredit.titleGradient}</span>
+          </h2>
+          <Paragraph>{t.uniCredit.intro}</Paragraph>
+          <SubHeading>{t.uniCredit.pegTitle}</SubHeading>
+          <Paragraph>{t.uniCredit.pegBody}</Paragraph>
+          <SubHeading>{t.uniCredit.feesTitle}</SubHeading>
+          <List items={t.uniCredit.feesItems} />
+          <SubHeading>{t.uniCredit.treasuryTitle}</SubHeading>
+          <Paragraph>{t.uniCredit.treasuryBody}</Paragraph>
+          <SubHeading>{t.uniCredit.flowTitle}</SubHeading>
+          <List items={t.uniCredit.flowItems} />
+          <SubHeading>{t.uniCredit.apiTitle}</SubHeading>
+          <List items={t.uniCredit.apiItems} />
+          <InfoBox title={t.uniCredit.settingsTitle} variant="info">
+            {t.uniCredit.settingsBody}
+          </InfoBox>
+          <Paragraph>{t.uniCredit.docsMarkdown}</Paragraph>
+        </div>
+      ),
+    },
+    {
       id: 'security',
       title: st.security,
       icon: Shield,
@@ -803,6 +830,8 @@ docker compose exec app python /app/cli/ai_company_cli.py audit export --from=20
     model_role: "heavy"
     fallback_provider: "deepseek_api"`} language="yaml" />
           <SubHeading>{t.configuration.globalConfigTitle}</SubHeading>
+          <SubHeading>{t.configuration.qualityBlockTitle}</SubHeading>
+          <List items={t.configuration.qualityBlockItems} />
           <CodeBlock code={`# Global platform settings
 orchestrator:
   default_timeout_sec: 30

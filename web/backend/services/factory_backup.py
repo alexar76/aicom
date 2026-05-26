@@ -11,6 +11,7 @@ import logging
 import os
 import shutil
 import sqlite3
+import stat
 import tempfile
 import uuid
 import zipfile
@@ -257,6 +258,45 @@ def _read_backup_manifest(zf: zipfile.ZipFile) -> dict[str, Any]:
     return data
 
 
+def _validate_zip_member(dest_real: Path, info: zipfile.ZipInfo) -> None:
+    """Reject ZipSlip, absolute paths, and symlink entries before extraction."""
+    name = info.filename
+    if not name or name.endswith("/"):
+        # Directory entries still must not escape the staging root.
+        if name:
+            _validate_zip_member_path(dest_real, name)
+        return
+    _validate_zip_member_path(dest_real, name)
+    mode = (info.external_attr >> 16) & 0xFFFF
+    if info.create_system == 3 and stat.S_ISLNK(mode):
+        raise ValueError(f"Refusing symlink in backup: {name!r}")
+
+
+def _validate_zip_member_path(dest_real: Path, name: str) -> None:
+    if name.startswith(("/", "\\")) or os.path.isabs(name):
+        raise ValueError(f"Absolute path in backup: {name!r}")
+    if ".." in Path(name.replace("\\", "/")).parts:
+        raise ValueError(f"Path traversal in backup: {name!r}")
+    target = (dest_real / name).resolve()
+    try:
+        target.relative_to(dest_real)
+    except ValueError as exc:
+        raise ValueError(f"Path traversal in backup: {name!r}") from exc
+
+
+def safe_extract_zip(zf: zipfile.ZipFile, dest: Path) -> None:
+    """Extract backup ZIP into dest with ZipSlip/symlink guards (Python 3.12+ data filter)."""
+    dest_real = dest.resolve()
+    dest_real.mkdir(parents=True, exist_ok=True)
+    for info in zf.infolist():
+        _validate_zip_member(dest_real, info)
+    try:
+        zf.extractall(dest_real, filter="data")
+    except TypeError:
+        # filter= requires Python 3.12+; members are pre-validated above.
+        zf.extractall(dest_real)
+
+
 def inspect_backup_zip(zip_path: Path) -> dict[str, Any]:
     """Read manifest and file stats from an uploaded backup ZIP."""
     with zipfile.ZipFile(zip_path, "r") as zf:
@@ -420,7 +460,7 @@ def restore_factory_from_upload(
         staging = Path(tempfile.mkdtemp(prefix="aicom-restore-staging-"))
         try:
             with zipfile.ZipFile(upload_path, "r") as zf:
-                zf.extractall(staging)
+                safe_extract_zip(zf, staging)
             removed = _clear_data_root_for_restore(root)
             copied = 0
             for item in staging.iterdir():
@@ -428,9 +468,9 @@ def restore_factory_from_upload(
                     continue
                 dest = root / item.name
                 if item.is_dir():
-                    shutil.copytree(item, dest, symlinks=False, dirs_exist_ok=True)
+                    shutil.copytree(item, dest, symlinks=True, dirs_exist_ok=True)
                 else:
-                    shutil.copy2(item, dest)
+                    shutil.copy2(item, dest, follow_symlinks=False)
                 copied += 1
         finally:
             shutil.rmtree(staging, ignore_errors=True)

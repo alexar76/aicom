@@ -262,3 +262,9 @@ def record_llm_call_spend(entry: dict[str, Any]) -> None:
         get_usage_guard().record_spend(float(est))
     except (TypeError, ValueError):
         return
+    try:
+        from core.pipeline_cost_guard import ingest_llm_log_entry
+
+        ingest_llm_log_entry(entry)
+    except Exception:
+        pass

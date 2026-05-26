@@ -691,15 +691,33 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         dirty_products: set[str] | None = None,
         dirty_tasks: set[str] | None = None,
     ):
-        """Delegate to :class:`orchestrator.task_executor.PipelineTaskExecutor`."""
-        await self._task_executor.process_task(
-            self,
-            task,
-            products,
-            task_queue,
-            dirty_products=dirty_products,
-            dirty_tasks=dirty_tasks,
-        )
+        """Delegate to :class:`orchestrator.task_executor.PipelineTaskExecutor`.
+
+        Wrapped in a ``factory.pipeline_stage`` span so any LLM calls the
+        agent makes during the stage become child spans — LangSmith /
+        Phoenix render the resulting trace tree as
+        ``factory.pipeline_stage → llm.generate``.
+        """
+        from core.tracing import span
+
+        attrs = {
+            "factory.task_id": str(task.get("id") or ""),
+            "factory.agent_type": str(task.get("agent_type") or ""),
+            "factory.target_state": str(task.get("state") or ""),
+            "aifactory.product_id": str(task.get("product_id") or ""),
+            "product.id": str(task.get("product_id") or ""),
+            "factory.retry": int(task.get("retry_count") or 0),
+        }
+        stage_name = f"factory.pipeline_stage:{task.get('agent_type') or 'unknown'}"
+        with span(stage_name, attributes=attrs):
+            await self._task_executor.process_task(
+                self,
+                task,
+                products,
+                task_queue,
+                dirty_products=dirty_products,
+                dirty_tasks=dirty_tasks,
+            )
 
     def _latest_bug_context(self, product: dict) -> str:
         """Compact bug summary for developer/QA fix tasks (from product.last_bug_context)."""
@@ -739,6 +757,14 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             return None
 
         agent_type, next_state = next_info
+        if current_state == "HUMAN_REVIEW_PENDING":
+            from web.backend.services.product_followup import post_devops_human_review_approved
+
+            if agent_type == "__human_gate__" and not post_devops_human_review_approved(
+                str(product.get("id") or "")
+            ):
+                return None
+            agent_type, next_state = "sales", "SALES_ACTIVE"
         if current_state == "SECURITY_SCANNED" and agent_type == "devops":
             from web.backend.services.product_followup import post_devops_human_review_approved
 
@@ -826,6 +852,17 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
 
 async def main():
     """Entry point for the pipeline worker."""
+    # Initialize OpenTelemetry tracing (no-op when OTEL_EXPORTER_OTLP_ENDPOINT
+    # is unset). Boots the tracer once so pipeline-stage spans + their child
+    # LLM spans appear in LangSmith / Phoenix from the very first cycle.
+    try:
+        from core.tracing import init_tracing
+
+        if init_tracing(service_name=os.environ.get("OTEL_SERVICE_NAME") or "aicom-worker"):
+            logger.info("OpenTelemetry tracing active (pipeline worker)")
+    except Exception as exc:
+        logger.warning("OpenTelemetry init skipped: %s", exc)
+
     worker = PipelineWorker()
     try:
         await worker.run()

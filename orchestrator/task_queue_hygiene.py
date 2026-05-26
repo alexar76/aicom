@@ -564,6 +564,13 @@ def missing_forward_task(product: dict, task_queue: list) -> dict | None:
     if not flow:
         return None
     agent_type, next_state = flow
+    if pstate == "HUMAN_REVIEW_PENDING":
+        from web.backend.services.product_followup import post_devops_human_review_approved
+
+        pid_gate = str(product.get("id") or "")
+        if agent_type == "__human_gate__" and not post_devops_human_review_approved(pid_gate):
+            return None
+        agent_type, next_state = "sales", "SALES_ACTIVE"
     pid = product.get("id")
     if not pid:
         return None

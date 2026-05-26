@@ -56,6 +56,8 @@ class GenerationConfig:
     agent_type: Optional[str] = None
     #: Routing tier for pricing when only total token counts exist ("heavy" | "light")
     model_role: Optional[str] = None
+    #: Pipeline product id for per-product LLM spend caps (llm_calls.jsonl)
+    product_id: Optional[str] = None
 
 
 @dataclass

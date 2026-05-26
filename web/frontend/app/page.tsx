@@ -1052,7 +1052,7 @@ function ProductsSection({ copy }: { copy: MarketingStrings }) {
                 <Search className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                 <p className="text-gray-400 text-lg mb-2">No results found</p>
                 <p className="text-gray-500 text-sm mb-6">
-                  No products match "{searchQuery}". Try a different search term.
+                  No products match &ldquo;{searchQuery}&rdquo;. Try a different search term.
                 </p>
                 <Button variant="ghost" onClick={() => setSearchQuery('')}>
                   Clear Search

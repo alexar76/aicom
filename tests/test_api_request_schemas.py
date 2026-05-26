@@ -103,13 +103,12 @@ def test_confirm_payment_tx_hash() -> None:
     assert ok.tx_hash.startswith("0x")
 
 
-def test_ai_market_settlement_requires_amount() -> None:
-    with pytest.raises(ValidationError):
-        AiMarketSettlementConfirmRequest(
-            product_id="prod-abc123def456",
-            tx_hash="0x" + "b" * 64,
-            amount=0,
-        )
+def test_ai_market_settlement_no_client_amount() -> None:
+    m = AiMarketSettlementConfirmRequest(
+        product_id="prod-abc123def456",
+        tx_hash="0x" + "b" * 64,
+    )
+    assert "amount" not in AiMarketSettlementConfirmRequest.model_fields
 
 
 def test_ai_market_search_strips_task() -> None:

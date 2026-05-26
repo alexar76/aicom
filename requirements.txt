@@ -71,6 +71,9 @@ duckduckgo_search>=7.5.0,<8.0
 # ── Monitoring ─────────────────────────────────────────────────────────────
 prometheus-client==0.20.0
 psutil==6.0.0
+opentelemetry-api==1.27.0
+opentelemetry-sdk==1.27.0
+opentelemetry-exporter-otlp-proto-http==1.27.0
 
 # ── Market Research ──────────────────────────────────────────────────────────
 duckduckgo_search==7.5.1

@@ -52,8 +52,7 @@ SETTLEMENT_JSON="$(curl -sS -X POST "${BASE_URL}/ai-market/pilot/settlement/conf
     \"contract_address\": \"${CONTRACT_ADDRESS}\",
     \"customer_id\": \"${CUSTOMER_ID}\",
     \"customer_email\": \"${CUSTOMER_EMAIL}\",
-    \"wallet_address\": \"${WALLET_ADDRESS}\",
-    \"amount\": ${AMOUNT}
+    \"wallet_address\": \"${WALLET_ADDRESS}\"
   }")"
 echo "${SETTLEMENT_JSON}" | python3 -m json.tool
 LICENSE_KEY="$(echo "${SETTLEMENT_JSON}" | python3 -c 'import json,sys;print((json.load(sys.stdin).get("license_key") or "").strip())')"

@@ -18,14 +18,15 @@ import { ProductPulse, type ProductPulsePayload } from '../tabs/ProductPulse';
 import { HumanReviewGatePanel } from '../tabs/HumanReviewGatePanel';
 import { StorefrontFollowupPanel } from '../tabs/StorefrontFollowupPanel';
 import { PipelineProductFailedPanel } from './PipelineProductFailedPanel';
+import { PipelineProductVitalsCharts } from './PipelineProductVitalsCharts';
 import { PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
 import { bucketPipelineProductForCategoryFilter } from '@/lib/pipelineCategoryBucket';
 import { formatRelativeTime, getStateLabel, formatDate } from '@/lib/utils';
 import { pipelineTaskApiStatusLabel } from './pipelineTabHelpers';
 import {
-  findTaskForStage,
   formatTaskDuration,
   pipelineAgentEmoji,
+  resolveStagePresentation,
 } from '@/lib/pipelineProductHelpers';
 
 export type PipelineCatalogProduct = Record<string, any> & {
@@ -177,6 +178,10 @@ export function PipelineProductList({
                 </div>
               </div>
 
+              {(product.economics || product.pulse) && (
+                <PipelineProductVitalsCharts product={product} locale={locale} />
+              )}
+
               {/* ── Per-Product Economics Badges ─────────────────── */}
               {product.economics && (
                 <div className="flex flex-wrap items-center gap-2 mb-3 text-[11px]">
@@ -289,8 +294,12 @@ export function PipelineProductList({
                 <p className="text-[10px] text-gray-500 mb-2">{t(locale, 'pipeline.stageFlow.hint')}</p>
                 <div className="flex items-center min-w-max gap-0">
                   {(PIPELINE_STAGE_ORDER as readonly string[]).map((agentType, ai, arr) => {
-                      const task = findTaskForStage(tasks, agentType);
-                      const status = String(task?.status ?? 'pending');
+                      const { status: stageStatus, task } = resolveStagePresentation(
+                        product as Record<string, unknown>,
+                        agentType,
+                        tasks,
+                      );
+                      const status = stageStatus;
                       /** Designer (UX) mirrors Architect — use fuchsia, not emerald, so it is not mistaken for a generic “green done” pipeline cell. */
                       const stageColors: Record<string, string> =
                         agentType === 'designer'
@@ -331,7 +340,12 @@ export function PipelineProductList({
                                     : t(locale, 'pipeline.stage.tileTitle.default')
                               }
                               onClick={() =>
-                                openTaskDetailModal(product.id, productTitle, agentType, task ? { ...task } : null)
+                                openTaskDetailModal(
+                                  product.id,
+                                  productTitle,
+                                  agentType,
+                                  task ? { ...task } : null,
+                                )
                               }
                               className="flex flex-col items-center gap-1 rounded-xl p-0.5 -m-0.5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 transition-colors cursor-pointer group"
                             >

@@ -27,7 +27,11 @@ from web.backend.schemas.api_requests import (
     AiMarketSearchRequest,
     AiMarketSettlementConfirmRequest,
 )
-from web.backend.services.commerce import CommerceService
+from web.backend.services.commerce import CommerceService, TxHashAlreadyUsedError
+from web.backend.services.storefront_pricing import (
+    checkout_usdt_from_sales_file,
+    pilot_settlement_price_usdt,
+)
 
 router = APIRouter(prefix="/ai-market", tags=["ai-market"])
 commerce = CommerceService()
@@ -39,32 +43,7 @@ router.include_router(ai_market_v1_router)
 router.include_router(ai_market_v2_router)
 
 
-def _decode_customer(authorization: str | None) -> dict | None:
-    """Decode the customer JWT from an ``Authorization: Bearer`` header.
-
-    Returns the token payload or ``None`` if the header is absent or malformed.
-    Raises 401 only when a token is supplied but invalid/expired, so callers can
-    distinguish "anonymous" from "bad credentials".
-    """
-    if not authorization:
-        return None
-    parts = authorization.split(" ", 1)
-    if len(parts) != 2 or parts[0].lower() != "bearer":
-        return None
-    token = parts[1].strip()
-    if not token:
-        return None
-    payload = commerce.decode_token(token)
-    if not payload:
-        raise HTTPException(status_code=401, detail="Invalid or expired customer token")
-    return payload
-
-
-def _require_customer(authorization: str | None = Header(default=None)) -> dict:
-    payload = _decode_customer(authorization)
-    if not payload:
-        raise HTTPException(status_code=401, detail="Missing customer token")
-    return payload
+from web.backend.services.customer_auth import decode_customer, require_customer
 
 
 def _pilot_config() -> dict[str, str]:
@@ -224,7 +203,9 @@ async def get_embed_config(product_id: str):
     return {
         "product_id": product_id,
         "name": str(p.get("name") or p.get("idea") or product_id)[:120],
-        "default_price": os.environ.get("AIFACTORY_AI_MARKET_EMBED_PRICE", "9.99"),
+        "default_price": str(
+            checkout_usdt_from_sales_file(product_id)
+        ),
         "script_path": "/aimarket.js",
         "settlement_path": "/api/ai-market/pilot/settlement/confirm",
         "protocol_version": "v0",
@@ -253,7 +234,7 @@ async def confirm_pilot_settlement(
     product_id = body.product_id
     tx_hash = body.tx_hash
 
-    auth_payload = _decode_customer(authorization)
+    auth_payload = decode_customer(authorization)
     if auth_payload:
         customer_id = str(auth_payload.get("sub") or "").strip()
         customer_email = str(auth_payload.get("email") or "").strip()
@@ -270,7 +251,21 @@ async def confirm_pilot_settlement(
         customer_id = f"aimkt-{uuid.uuid4().hex[:8]}"
         customer_email = f"{customer_id}@ai-market.local"
     wallet = body.wallet_address or ""
-    amount = body.amount
+    try:
+        amount = pilot_settlement_price_usdt(product_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    tx_existing = commerce.get_order_by_tx_hash(tx_hash)
+    if tx_existing is not None:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": "Transaction hash already used for another order",
+                "existing_payment_id": tx_existing.get("payment_id"),
+            },
+        )
+
     if chain != cfg["chain"] or token != cfg["token"]:
         raise HTTPException(status_code=400, detail=f"pilot supports only {cfg['chain']} + {cfg['token']}")
     if cfg["contract"] and contract.lower() != cfg["contract"].lower():
@@ -293,15 +288,24 @@ async def confirm_pilot_settlement(
     if not verify.get("verified"):
         raise HTTPException(status_code=400, detail=f"on-chain verification failed: {verify.get('error')}")
     payment_id = f"aimarket-{tx_hash[:24]}"
-    order = commerce.create_order_and_license(
-        customer_id=customer_id,
-        customer_email=customer_email,
-        payment_id=payment_id,
-        product_id=product_id,
-        amount=amount,
-        currency=token,
-        tx_hash=tx_hash,
-    )
+    try:
+        order = commerce.create_order_and_license(
+            customer_id=customer_id,
+            customer_email=customer_email,
+            payment_id=payment_id,
+            product_id=product_id,
+            amount=amount,
+            currency=token,
+            tx_hash=tx_hash,
+        )
+    except TxHashAlreadyUsedError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": "Transaction hash already used for another order",
+                "existing_payment_id": exc.existing_payment_id,
+            },
+        ) from exc
     event = {
         "type": "ai_market_entitlement_activated",
         "time": time.time(),
@@ -323,7 +327,7 @@ async def confirm_pilot_settlement(
 
 
 @router.get("/entitlements/{customer_id}")
-async def list_entitlements(customer_id: str, payload: dict = Depends(_require_customer)):
+async def list_entitlements(customer_id: str, payload: dict = Depends(require_customer)):
     # Authorization: a customer may only list their own entitlements.
     # Synthetic anonymous IDs created via ``/pilot/settlement/confirm`` (prefix
     # ``aimkt-``) cannot be queried because they have no JWT — that is

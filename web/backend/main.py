@@ -68,6 +68,7 @@ from .api.metrics import get_registry
 from llm.router import LLMRouter
 from .services.corporate_standup import append_chat_message, standup_scheduler_loop
 from .services.factory_backup_scheduler import factory_backup_scheduler_loop
+from .services.uni_scheduler import uni_scheduler_loop
 
 logger = logging.getLogger(__name__)
 
@@ -137,6 +138,18 @@ async def lifespan(app: FastAPI):
     from security.prod_startup_guard import assert_production_startup_safe
 
     assert_production_startup_safe(exit_on_failure=True)
+
+    # Initialize OpenTelemetry tracing (no-op when OTEL_EXPORTER_OTLP_ENDPOINT
+    # is unset). Explicit init ensures the first request doesn't pay the
+    # lazy-setup cost and that LangSmith/Phoenix start receiving spans
+    # immediately. Service name defaults to OTEL_SERVICE_NAME or "aicom-web".
+    try:
+        from core.tracing import init_tracing
+
+        if init_tracing(service_name=os.environ.get("OTEL_SERVICE_NAME") or "aicom-web"):
+            logger.info("OpenTelemetry tracing active (web backend)")
+    except Exception as exc:
+        logger.warning("OpenTelemetry init skipped: %s", exc)
     if os.environ.get("AIFACTORY_USE_HOST_DOCKER", "").strip() == "1":
         logger.warning(
             "SECURITY: AIFACTORY_USE_HOST_DOCKER=1 mounts /var/run/docker.sock — "
@@ -205,6 +218,7 @@ async def lifespan(app: FastAPI):
 
     standup_task = asyncio.create_task(standup_scheduler_loop(app))
     backup_schedule_task = asyncio.create_task(factory_backup_scheduler_loop(app))
+    uni_jobs_task = asyncio.create_task(uni_scheduler_loop(app))
 
     logger.info("AI-Factory web backend started")
     yield
@@ -218,7 +232,8 @@ async def lifespan(app: FastAPI):
             log_suppressed(logger, "llm_router close on shutdown", exc_info=_suppressed_exc)
     standup_task.cancel()
     backup_schedule_task.cancel()
-    for task in (standup_task, backup_schedule_task):
+    uni_jobs_task.cancel()
+    for task in (standup_task, backup_schedule_task, uni_jobs_task):
         try:
             await task
         except asyncio.CancelledError as _suppressed_exc:
@@ -406,6 +421,9 @@ app.include_router(ai_market_wellknown_v2)
 app.include_router(ai_market_capabilities_v2)
 app.include_router(feedback.router)
 app.include_router(customer.router)
+from web.backend.api import uni_wallet as uni_wallet_api
+
+app.include_router(uni_wallet_api.router)
 app.include_router(support_chat.router)
 app.include_router(telemetry_events.router)
 app.include_router(admin_auth.router)

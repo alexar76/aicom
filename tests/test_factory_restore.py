@@ -38,6 +38,26 @@ def test_preview_restore_warnings(tmp_path, monkeypatch):
     assert any("REPLACE" in w or "replace" in w.lower() for w in prev["warnings"])
 
 
+def test_restore_rejects_zipslip(tmp_path, monkeypatch):
+    data = tmp_path / "data"
+    data.mkdir(parents=True)
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(data))
+
+    from web.backend.services.factory_backup import save_restore_upload, restore_factory_from_upload
+
+    zpath = tmp_path / "evil.zip"
+    with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr(
+            "_BACKUP_MANIFEST.json",
+            json.dumps({"backup_type": "aicom_factory_full", "workspace_id": "default"}),
+        )
+        zf.writestr("../../../../tmp/pwned.txt", "evil")
+
+    token, _ = save_restore_upload(zpath.read_bytes())
+    with pytest.raises(ValueError, match="traversal|Absolute"):
+        restore_factory_from_upload(token, create_pre_restore_backup=False)
+
+
 def test_restore_replaces_data(tmp_path, monkeypatch):
     data = tmp_path / "data"
     (data / "code" / "prod-live").mkdir(parents=True)

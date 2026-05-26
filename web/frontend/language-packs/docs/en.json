@@ -50,6 +50,7 @@
     "agents": "AI Agents",
     "pipeline": "Pipeline Flow",
     "crypto": "Crypto Payments",
+    "uniCredit": "UNI credit bus",
     "security": "Security",
     "director": "Director AI",
     "configuration": "Configuration"
@@ -494,7 +495,9 @@
       "Timeout management — each step has a configurable timeout (default 30s)",
       "Parallel execution — multiple products can be in different pipeline stages",
       "State persistence — JSON (default) or optional SQLite3 backend with CLI migration",
-      "Director override — Director AI can adjust timeouts and priorities"
+      "Director override — Director AI can adjust timeouts and priorities",
+      "Per-product LLM spend cap (USD) — set in Admin → Settings → Pipeline & product quality (0 = unlimited); optional env AIFACTORY_MAX_PIPELINE_COST_USD overrides",
+      "Pipeline product cards show inline charts: LLM spend by agent, timeline progress, quality score"
     ],
     "directorCycleTitle": "Director AI Cycle (Every 4 Hours)",
     "directorCycleIntro": "In parallel with the product pipeline, the Director AI runs every 4 hours:",
@@ -551,6 +554,39 @@
         "tokens": "USDT, USDC"
       }
     ]
+  },
+  "uniCredit": {
+    "titleGradient": "credit bus",
+    "intro": "UNI is internal store credit pegged to USDT — not a tradable token. All in-platform debits and credits use whole UNI at a fixed rate; USDT is only the on-ramp and off-ramp through platform treasury wallets.",
+    "pegTitle": "Fixed peg",
+    "pegBody": "1 UNI = $0.01 USDT (100 UNI per $1). This supports micro-billing for LLM calls without floating-point USDT ledgers. Configure via AIFACTORY_UNI_USD_CENTS_PER_UNI=1 (legacy alias AIFACTORY_UNI_USDT_RATE=100).",
+    "feesTitle": "Fee schedule (defaults)",
+    "feesItems": [
+      "Top-up spread: 0% (AIFACTORY_UNI_TOPUP_SPREAD_BPS=0) — psy-friendly onboarding",
+      "Per invoke / channel spend: 5% platform fee (AIFACTORY_UNI_PLATFORM_FEE_BPS=500)",
+      "Withdrawal: 1% + minimum $20 equivalent (AIFACTORY_UNI_WITHDRAW_FEE_BPS=100, AIFACTORY_UNI_MIN_WITHDRAW_UNI=2000)",
+      "Platform fees accrue to wallet owner_id=PLATFORM_FEES — withdrawn like any seller"
+    ],
+    "treasuryTitle": "Treasury invariant",
+    "treasuryBody": "On-chain USDT in treasury must cover all outstanding user UNI at the peg. Background job uni_treasury_audit records reserve_ratio; alert when below 0.999. Set AIFACTORY_UNI_TREASURY_USDT_OBSERVED for manual audits until chain indexer is wired.",
+    "flowTitle": "Typical flow",
+    "flowItems": [
+      "Customer tops up USDT → POST /api/uni/topup/confirm → UNI credited (receipt kind=topup)",
+      "AI Market channel open → hold reserves UNI; invoke → spend_hold splits 95% seller / 5% platform",
+      "Direct capability purchase → charge() atomically debits buyer and credits seller + platform",
+      "Seller withdraw → POST /api/uni/withdraw → queued on-chain payout (dispatcher integration)"
+    ],
+    "apiTitle": "HTTP API",
+    "apiItems": [
+      "GET /api/uni/config — peg and fee bps",
+      "GET /api/uni/wallet — balance_uni, available_uni",
+      "GET /api/uni/receipts — signed receipt history",
+      "POST /api/uni/topup/intent — treasury deposit instructions",
+      "POST /api/uni/grant — monitor funding (X-Uni-Grant-Secret)"
+    ],
+    "settingsTitle": "Related admin settings",
+    "settingsBody": "Pipeline per-product LLM cap (USD) lives under Admin → Settings → Pipeline & product quality → Max LLM cost per product (quality.max_pipeline_cost_usd). UNI economics do not replace this cap — they complement on-chain commerce.",
+    "docsMarkdown": "See also docs/uni-economics.md and docs/postgres-production-runbook.md in the repository."
   },
   "security": {
     "titleGradient": "Security",
@@ -665,6 +701,13 @@
     "modelProvidersTitle": "Model Providers (model_providers.yaml)",
     "routingRulesTitle": "Routing Rules",
     "globalConfigTitle": "Global Config (config.yaml)",
+    "qualityBlockTitle": "Pipeline quality block (quality:)",
+    "qualityBlockItems": [
+      "max_pipeline_repair_rounds — QA repair loop budget before FAILED",
+      "max_pipeline_cost_usd — per-product LLM spend cap in USD (0 = unlimited); shown on Pipeline product vitals charts",
+      "demo / visual / browser / marketplace gates — same fields as Admin → Settings → Pipeline & product quality",
+      "Env vars AIFACTORY_* override saved YAML when set (Docker hard override)"
+    ],
     "themesTitle": "Themes",
     "themesIntro": "Five pre-installed themes are available:",
     "themeItems": [

@@ -102,21 +102,23 @@ class DirectorScheduler:
         
         if self.on_analysis_complete:
             try:
+                started_at = time.time()
                 if asyncio.iscoroutinefunction(self.on_analysis_complete):
                     result = await self.on_analysis_complete()
                 else:
                     result = self.on_analysis_complete()
-                
+                duration = round(time.time() - started_at, 2)
                 self._last_analysis_time = time.time()
                 self._analysis_count += 1
                 self._last_status = {
                     "success": True,
                     "timestamp": self._last_analysis_time,
                     "analysis_count": self._analysis_count,
+                    "duration_seconds": duration,
                 }
                 self._log("INFO", f"Analysis cycle #{self._analysis_count} completed successfully",
                           analysis_count=self._analysis_count,
-                          duration=round(time.time() - self._last_analysis_time, 2))
+                          duration=duration)
                 return self._last_status
             except Exception as e:
                 logger.error(f"On-demand analysis failed: {e}")

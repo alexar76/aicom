@@ -151,6 +151,7 @@ class OpenAICompatibleProvider(LLMProvider):
                 task_type=cfg.task_type,
                 agent_type=cfg.agent_type,
                 model_role=getattr(cfg, "model_role", None),
+                product_id=getattr(cfg, "product_id", None),
             )
             return response_text
 
@@ -181,6 +182,7 @@ class OpenAICompatibleProvider(LLMProvider):
                 task_type=cfg.task_type,
                 agent_type=cfg.agent_type,
                 model_role=getattr(cfg, "model_role", None),
+                product_id=getattr(cfg, "product_id", None),
             )
             raise RuntimeError(f"Generation failed for {self.name}: {e}")
 
@@ -316,6 +318,7 @@ class OpenAICompatibleProvider(LLMProvider):
         task_type: Optional[str] = None,
         agent_type: Optional[str] = None,
         model_role: Optional[str] = None,
+        product_id: Optional[str] = None,
     ):
         """Log LLM API call to JSONL file for admin visibility."""
         try:
@@ -344,6 +347,8 @@ class OpenAICompatibleProvider(LLMProvider):
                 entry["completion_tokens"] = int(completion_tokens)
             if model_role:
                 entry["model_role"] = str(model_role)
+            if product_id:
+                entry["product_id"] = str(product_id)
 
             amodel = model or self.model
             est = estimate_llm_call_cost_usd(

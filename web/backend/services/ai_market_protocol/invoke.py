@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import time
 import uuid
 from typing import Any
@@ -16,7 +17,8 @@ from web.backend.services.ai_market_protocol.catalog import (
     parse_capability_ref,
 )
 from web.backend.services.ai_market_protocol.channels import deduct_channel, get_channel, refund_channel
-from web.backend.services.ai_market_protocol.config import demo_payment_bypass, pilot_tuple
+from web.backend.services.ai_market_protocol.config import pilot_tuple
+from web.backend.services.ai_market_protocol.on_chain import verify_tx_payment
 from web.backend.services.ai_market_protocol.pricing import quote_capability_price
 from web.backend.services.ai_market_protocol.receipts import create_receipt
 from web.backend.services.ai_market_protocol.stats import append_stat
@@ -218,27 +220,6 @@ def build_payment_required(
     }
 
 
-def _verify_tx_payment(*, tx_hash: str, amount_usd: float, chain: str, token: str) -> bool:
-    if demo_payment_bypass() and (tx_hash.startswith("demo-") or tx_hash.startswith("0xdemo")):
-        return True
-    recipient = payment_api._get_address_for_chain(chain)
-    if chain == "solana":
-        verify = payment_api._verify_solana_transaction(
-            tx_hash=tx_hash,
-            expected_recipient=recipient,
-            expected_amount=amount_usd,
-        )
-    else:
-        verify = payment_api._verify_evm_transaction(
-            chain=chain,
-            tx_hash=tx_hash,
-            expected_recipient=recipient,
-            expected_amount=amount_usd,
-            expected_token=token,
-        )
-    return bool(verify.get("verified"))
-
-
 # ---------------------------------------------------------------------------
 # Main invoke entry point
 # ---------------------------------------------------------------------------
@@ -252,6 +233,7 @@ async def invoke_capability_v1(
     x_payment: str | None = None,
     x_payment_channel: str | None = None,
     x_ai_market_license: str | None = None,
+    authorization: str | None = None,
     llm_router: Any = None,
 ) -> tuple[int, dict[str, Any], dict[str, str]]:
     """Returns (status_code, json_body, extra_headers).
@@ -281,7 +263,20 @@ async def invoke_capability_v1(
         ch = get_channel(x_payment_channel.strip())
         if not ch or ch.get("status") != "open":
             raise HTTPException(status_code=402, detail="invalid or closed payment channel")
-        deduct = deduct_channel(x_payment_channel.strip(), price, ref=f"{product_id}/{capability_id}")
+        owner = str(ch.get("customer_id") or "")
+        if owner:
+            from web.backend.services.customer_auth import decode_customer
+
+            payload = decode_customer(authorization)
+            if not payload or str(payload.get("sub") or "") != owner:
+                raise HTTPException(status_code=403, detail="payment channel not owned by caller")
+        from uuid import uuid4
+
+        deduct = deduct_channel(
+            x_payment_channel.strip(),
+            price,
+            ref=f"{product_id}/{capability_id}/{uuid4().hex[:8]}",
+        )
         if not deduct.get("ok"):
             pay_req = build_payment_required(
                 product_id=product_id, capability_id=capability_id, amount_usd=price, base_url=base_url
@@ -302,7 +297,7 @@ async def invoke_capability_v1(
         token = str(pay.get("token") or pilot_tuple()["token"]).upper()
         if not tx_hash:
             raise HTTPException(status_code=400, detail="X-Payment missing tx_hash")
-        if not _verify_tx_payment(tx_hash=tx_hash, amount_usd=price, chain=chain, token=token):
+        if not verify_tx_payment(tx_hash=tx_hash, amount_usd=price, chain=chain, token=token):
             raise HTTPException(status_code=402, detail="on-chain payment not verified")
         paid = True
         payment_kind = "on_chain"
@@ -354,6 +349,35 @@ async def invoke_capability_v1(
         result_summary={"keys": list(result.keys())[:12]},
     )
 
+    uni_receipt = None
+    if success and paid:
+        from web.backend.services.uni_bridge import record_capability_settlement
+
+        buyer_id = ""
+        if payment_kind == "channel" and x_payment_channel:
+            ch = get_channel(x_payment_channel.strip())
+            buyer_id = str((ch or {}).get("customer_id") or "")
+        elif authorization:
+            from web.backend.services.customer_auth import decode_customer
+
+            payload = decode_customer(authorization)
+            buyer_id = str((payload or {}).get("sub") or "")
+        uni_settle = record_capability_settlement(
+            buyer_owner_id=buyer_id or "anonymous",
+            product_id=product_id,
+            capability_id=capability_id,
+            price_usd=price,
+            payment_ref=payment_ref,
+            hub_id=str(os.environ.get("AIFACTORY_PUBLIC_URL", "")).strip(),
+            llm_tokens=0,
+        )
+        if uni_settle:
+            if uni_settle.get("error"):
+                success = False
+                err_type = err_type or "uni_settlement_failed"
+            else:
+                uni_receipt = uni_settle.get("uni_receipt")
+
     append_stat({
         "type": "invoke",
         "product_id": product_id,
@@ -376,6 +400,8 @@ async def invoke_capability_v1(
         "continuation": {"suggested_next": _continuation_hints(cap)},
         "protocol_version": "v1",
     }
+    if uni_receipt:
+        body["uni_receipt"] = uni_receipt
     if not success:
         body["error_type"] = err_type
     return 200, body, {}

@@ -243,17 +243,27 @@ class AIMarketClient:
         customer_id: str = "",
         customer_email: str = "",
         wallet_address: str = "",
-        amount: float = 0.0,
     ) -> dict[str, Any]:
         """POST /ai-market/pilot/settlement/confirm — verify tx + create license."""
+        payload: dict[str, Any] = {
+            "product_id": product_id,
+            "tx_hash": tx_hash,
+        }
+        if chain:
+            payload["chain"] = chain
+        if token:
+            payload["token"] = token
+        if contract_address:
+            payload["contract_address"] = contract_address
+        if customer_id:
+            payload["customer_id"] = customer_id
+        if customer_email:
+            payload["customer_email"] = customer_email
+        if wallet_address:
+            payload["wallet_address"] = wallet_address
         r = requests.post(
             self._url("/ai-market/pilot/settlement/confirm"),
-            json={
-                "product_id": product_id, "tx_hash": tx_hash,
-                "chain": chain, "token": token, "contract_address": contract_address,
-                "customer_id": customer_id, "customer_email": customer_email,
-                "wallet_address": wallet_address, "amount": amount,
-            },
+            json=payload,
             headers=self._auth_headers(),
             timeout=self.timeout_sec,
         )

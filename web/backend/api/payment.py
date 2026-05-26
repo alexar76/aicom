@@ -32,6 +32,16 @@ logger = logging.getLogger(__name__)
 # Fallback when product has no usable price in sales_config (align with storefront default landing SKU).
 DEFAULT_CHECKOUT_AMOUNT_USDT = 4.99
 
+
+def _catalog_checkout_usdt(product_id: str) -> float:
+    """Authoritative checkout price — never trust a client-supplied amount."""
+    price = checkout_usdt_from_sales_file(
+        product_id, default_usdt=DEFAULT_CHECKOUT_AMOUNT_USDT
+    )
+    if price <= 0:
+        raise HTTPException(status_code=400, detail="Product not purchasable")
+    return float(price)
+
 router = APIRouter(prefix="/api/payment", tags=["payment"])
 
 # ── Wallet addresses (merged platform config; see docs/configuration.md) ──
@@ -617,10 +627,8 @@ async def create_payment(body: CreatePaymentRequest, authorization: Optional[str
     if not customer_id or not customer_email:
         raise HTTPException(status_code=401, detail="Customer authentication required")
 
-    # Load product pricing from sales config (admin override wins; see storefront_pricing).
-    price = body.amount or checkout_usdt_from_sales_file(
-        body.product_id, default_usdt=DEFAULT_CHECKOUT_AMOUNT_USDT
-    )
+    # Authoritative catalog price — ignore any client-supplied amount.
+    price = _catalog_checkout_usdt(body.product_id)
 
     wallet_address = _get_address_for_chain(body.chain)
 
@@ -689,7 +697,8 @@ async def confirm_payment(
 
     chain = payment["chain"]
     token = payment["currency"]
-    amount = payment["amount"]
+    amount = _catalog_checkout_usdt(payment["product_id"])
+    payment["amount"] = amount
     expected_recipient = _get_address_for_chain(chain)
 
     # Normalise tx hash (EVM chains use 0x prefix, Solana uses base58)
@@ -817,6 +826,17 @@ async def confirm_payment(
                 "existing_payment_id": exc.existing_payment_id,
             },
         ) from exc
+
+    from web.backend.services.uni_bridge import credit_payment_confirm
+
+    credit_payment_confirm(
+        customer_id=payment["customer_id"],
+        product_id=payment["product_id"],
+        usd_amount=amount,
+        tx_hash=tx_hash_clean,
+        chain=chain,
+        token=token,
+    )
 
     _pending_payments.pop(payment_id, None)
     _persist_pending_payments()

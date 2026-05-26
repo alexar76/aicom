@@ -212,6 +212,19 @@ def build_product_pulse(
     state_u = state_raw.strip().upper()
     tasks = [dict(x) for x in (row.get("tasks") or []) if isinstance(x, dict)]
 
+    completed_agents = {
+        str(t.get("agent_type") or "").lower()
+        for t in tasks
+        if _task_status_lower(t) == "completed"
+    }
+    if "developer" in completed_agents or "dev" in completed_agents:
+        completed_agents.add("developer")
+        completed_agents.add("dev")
+    if "architect" in completed_agents:
+        completed_agents.add("designer")
+    repair_state = state_u in ("DEV_FIXING", "BUG_FOUND", "QA_TESTING", "CODE_TESTING")
+    mature_build = len([t for t in tasks if _task_status_lower(t) == "completed"]) >= 40
+
     stage_statuses: list[str] = []
     stage_dots: list[Literal["done", "run", "todo", "fail"]] = []
     for st in PIPELINE_STAGE_ORDER:
@@ -219,6 +232,19 @@ def build_product_pulse(
         status = _task_status_lower(t) if t else ""
         if not status:
             status = "pending"
+        if mature_build and repair_state:
+            agent_key = st
+            if st == "designer" and "architect" in completed_agents:
+                status = "completed"
+            elif st == "methodologist" and (
+                "methodologist" in completed_agents
+                or ("pm" in completed_agents and "qa" in completed_agents)
+            ):
+                status = "completed"
+            elif agent_key in completed_agents or (
+                st == "developer" and ("developer" in completed_agents or "dev" in completed_agents)
+            ):
+                status = "completed"
         stage_statuses.append(status)
         if status == "completed":
             stage_dots.append("done")
@@ -247,6 +273,25 @@ def build_product_pulse(
     if current_stage is None:
         current_stage = "sales"
         current_status = "completed" if completed_stages >= TOTAL_STAGES else "pending"
+
+    _shipped_display_states = frozenset(
+        {
+            "SALES_ACTIVE",
+            "SANDBOX_RUNNING",
+            "TELEMETRY_COLLECTING",
+            "EVOLUTION_ANALYZING",
+            "COMPLETED",
+            "DEPLOYED_PRODUCTION",
+        }
+    )
+    if state_u in _shipped_display_states or (
+        mature_build and state_u not in ("FAILED", "CANCELLED", "IDEA_RECEIVED")
+    ):
+        stage_statuses = ["completed"] * TOTAL_STAGES
+        stage_dots = ["done"] * TOTAL_STAGES
+        completed_stages = TOTAL_STAGES
+        current_stage = "sales"
+        current_status = "completed"
 
     agent_label = STAGE_AGENT_TITLE.get(current_stage, current_stage.replace("_", " ").title())
     if _terminal_pipeline_state(state_u):

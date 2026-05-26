@@ -9,6 +9,7 @@ import json
 import logging
 import math
 import os
+import re
 import tempfile
 import time
 import zipfile
@@ -46,7 +47,6 @@ from core.paths import (
 )
 from web.backend.core.admin_roles import AdminRole, normalize_role, rank, require_admin_with_rbac
 from finance_stats import compute_dashboard_revenue
-from llm.bootstrap_providers import ensure_model_providers_file
 from llm.factory_defaults import FACTORY_CONTEXT_WINDOW_DEFAULT, FACTORY_MAX_OUTPUT_TOKENS_HEAVY
 from web.backend.services.catalog_hardening import harden_catalog_products
 from web.backend.services.product_naming import resolve_product_name
@@ -105,17 +105,29 @@ async def get_director_reports():
     return {"reports": reports}
 
 
+_DIRECTOR_REPORT_NAME = re.compile(r"^[A-Za-z0-9._-]+\.md$")
+
+
+def _resolve_director_report(filename: str) -> Path:
+    """Resolve report path under director_reports_dir; block path traversal."""
+    if not _DIRECTOR_REPORT_NAME.fullmatch(filename or ""):
+        raise HTTPException(status_code=400, detail="Invalid report filename")
+    base = director_reports_dir().resolve()
+    report_file = (base / filename).resolve()
+    try:
+        report_file.relative_to(base)
+    except ValueError:
+        raise HTTPException(status_code=403, detail="Access denied") from None
+    if not report_file.is_file():
+        raise HTTPException(status_code=404, detail="Report not found")
+    return report_file
+
+
 @router.get("/director/report/{filename}")
 async def get_director_report(filename: str):
     """Get a specific Director AI report."""
-    report_file = director_reports_dir() / filename
-    if not report_file.exists():
-        from fastapi import HTTPException
-        raise HTTPException(status_code=404, detail="Report not found")
-    
-    with open(report_file, "r") as f:
-        content = f.read()
-    
+    report_file = _resolve_director_report(filename)
+    content = report_file.read_text(encoding="utf-8")
     return {"filename": filename, "content": content}
 
 

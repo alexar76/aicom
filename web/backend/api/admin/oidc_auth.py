@@ -64,20 +64,23 @@ def _issue_session(
     )
 
 
-def _sync_oidc_user(username: str, role: str) -> None:
-    """Provision or refresh OIDC user role from current IdP group mapping."""
+def _sync_oidc_user(username: str, role: str) -> dict:
+    """Provision or refresh OIDC user; skip role overwrite when account is disabled."""
     aus.ensure_legacy_admin_users_file()
     normalized = normalize_role(role).value
     existing = aus.get_user_by_username(username)
     if existing:
+        if existing.get("enabled", True) is False:
+            return existing
         if str(existing.get("role")) != normalized:
             aus.update_user(str(existing["id"]), role=normalized)
-        return
-    aus.create_user(
+        return existing
+    created = aus.create_user(
         username=username,
         password_hash="!",  # OIDC-only — password login disabled (empty hash fails verify)
         role=normalized,
     )
+    return created or aus.get_user_by_username(username) or {}
 
 
 @router.get("/oidc/status")
@@ -129,10 +132,13 @@ async def oidc_callback(request: Request, code: str = "", state: str = ""):
     role = map_groups_to_role([str(g) for g in groups]) if groups else (
         os.environ.get("AIFACTORY_OIDC_DEFAULT_ROLE") or "viewer"
     )
-    _sync_oidc_user(username, role)
+    row = _sync_oidc_user(username, role)
+    if not row.get("enabled", True):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account disabled")
 
+    session_role = str(row.get("role") or role)
     resp = RedirectResponse(url=safe_post_login_url(os.environ.get("AIFACTORY_OIDC_POST_LOGIN_URL")), status_code=302)
-    _issue_session(request, resp, username, role)
+    _issue_session(request, resp, username, session_role)
     resp.delete_cookie(OIDC_STATE_COOKIE, path="/")
     resp.delete_cookie(OIDC_NONCE_COOKIE, path="/")
     security: SecurityManager = request.app.state.security_manager

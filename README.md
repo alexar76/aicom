@@ -64,6 +64,17 @@ GitHub’s README viewer **does not embed YouTube iframes** — use the thumbnai
 
 Switch **TEST / LIVE / UNI** in the top-right control bar. On the public demo, **LIVE** shows real stack metrics from the same server.
 
+<h3 id="pulse-terminal">📈 Pulse Terminal (ACEX)</h3>
+
+**Capital-markets dashboard** — live CapShare NAV, revenue indices, and WebSocket pricing from Factory.
+
+| | |
+|---|---|
+| **Public demo** | **[https://magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)** |
+| **Local dev** | `cd apps/pulse-terminal && npm run dev` → http://localhost:5199 |
+| **Deploy with Monitor** | `./scripts/deploy_alien_monitor.sh` (Docker + nginx `/pulse/`) |
+| **Source** | [`apps/pulse-terminal/`](apps/pulse-terminal/) · [`acex/`](acex/) |
+
 ---
 
 **One sentence → a shippable web product (landing or full stack). Self-hosted.**

@@ -23,6 +23,7 @@ from passlib.context import CryptContext
 
 from web.backend.core.oidc_auth import username_from_trusted_header
 from web.backend.http.client_ip import client_ip
+from core.jwt_tokens import decode_hs256_optional, encode_hs256
 from core.paths import jwt_secret_file_path, legacy_admin_path, legacy_audit_log_path
 from core.logging_utils import log_suppressed
 

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import time
 import uuid
 from collections.abc import Callable, Coroutine
 from datetime import UTC, datetime
@@ -245,8 +246,14 @@ class EventBus:
             },
         }
 
-    async def shutdown(self) -> None:
-        """Cancel all worker tasks. Idempotent. Call on process shutdown."""
+    async def shutdown(self, *, drain_timeout: float = 3.0) -> None:
+        """Drain subscriber queues, then cancel worker tasks. Idempotent."""
+        deadline = time.time() + drain_timeout
+        while time.time() < deadline:
+            pending = sum(q.qsize() for q in self._queues.values())
+            if pending == 0:
+                break
+            await asyncio.sleep(0.05)
         for sub_id, task in list(self._tasks.items()):
             if not task.done():
                 task.cancel()

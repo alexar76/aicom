@@ -446,7 +446,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                         <span className="text-gray-400">{testResults[provider.name]?.latency_ms}ms</span>
                       </div>
                       <div className="text-gray-400 ml-5">
-                        "{testResults[provider.name]?.response}"
+                        &ldquo;{testResults[provider.name]?.response}&rdquo;
                       </div>
                     </div>
                   ) : (

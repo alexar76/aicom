@@ -248,6 +248,12 @@ export function PipelineTabModals(props: PipelineTabModalsProps) {
               <p className="text-gray-400 text-sm leading-relaxed">{t(locale, 'pipeline.modals.task.noTask')}</p>
             )}
 
+            {taskStageModal.task && taskStageModal.task.synthetic === true && (
+              <p className="text-xs text-emerald-200/95 bg-emerald-500/10 border border-emerald-500/25 rounded-lg px-3 py-2 leading-relaxed">
+                {t(locale, 'pipeline.modals.task.inferredStage')}
+              </p>
+            )}
+
             {taskStageModal.task && (() => {
               const taskRec = taskStageModal.task;
               const st = (taskRec.status as string) || 'unknown';

@@ -5,6 +5,7 @@ import { ChevronDown, SlidersHorizontal } from 'lucide-react';
 import { type AdminLocale, t } from '@/lib/adminI18n';
 
 export type QualitySettingsState = {
+  max_pipeline_cost_usd: number;
   max_pipeline_repair_rounds: number;
   demo_quality_min_score: number;
   strict_demo_gates: boolean;
@@ -30,6 +31,7 @@ export type QualitySettingsState = {
 };
 
 export const DEFAULT_QUALITY_SETTINGS: QualitySettingsState = {
+  max_pipeline_cost_usd: 0,
   max_pipeline_repair_rounds: 25,
   demo_quality_min_score: 55,
   strict_demo_gates: true,
@@ -162,6 +164,16 @@ export function QualitySettingsCollapsible({ locale, open, onToggle, quality, on
           <div>
             <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">{t(locale, 'settings.quality.section.repair')}</h4>
             <div className="space-y-3">
+              <NumberRow
+                label={t(locale, 'settings.quality.maxPipelineCost.label')}
+                description={t(locale, 'settings.quality.maxPipelineCost.desc')}
+                value={quality.max_pipeline_cost_usd}
+                min={0}
+                max={100000}
+                step={0.5}
+                onChange={(v) => onChange('max_pipeline_cost_usd', v)}
+                disabled={disabled}
+              />
               <NumberRow
                 label={t(locale, 'settings.quality.maxRepair.label')}
                 description={t(locale, 'settings.quality.maxRepair.desc')}

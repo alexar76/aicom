@@ -41,3 +41,49 @@ def test_sqlite_env_for_simple_fastapi(tmp_path: Path, monkeypatch) -> None:
     assert "sqlite" in env["DATABASE_URL"].lower()
     assert meta.get("postgres_ephemeral") is not True
     assert (root / "data").is_dir()
+
+
+def test_preview_venv_isolated_from_factory_python(tmp_path: Path, monkeypatch) -> None:
+    """pip/uvicorn for sandbox previews must not use the factory sys.executable."""
+    import sys
+    from unittest.mock import MagicMock, patch
+
+    root = tmp_path / "prod"
+    backend = root / "backend"
+    backend.mkdir(parents=True)
+    (backend / "requirements.txt").write_text("httpx\n", encoding="utf-8")
+    (backend / "app").mkdir()
+    (backend / "app" / "main.py").write_text("from fastapi import FastAPI\napp = FastAPI()\n", encoding="utf-8")
+
+    fake_factory = Path("/fake/factory/python")
+    preview_py = root / ".aicom_sandbox" / "test_sb" / "preview-venv" / "bin" / "python"
+    preview_py.parent.mkdir(parents=True)
+    preview_py.write_text("", encoding="utf-8")
+
+    def fake_preview_venv(_code_dir: Path, _sid: str) -> Path:
+        return preview_py
+
+    pip_calls: list[list[str]] = []
+
+    def capture_run(cmd, **kwargs):
+        pip_calls.append(list(cmd))
+        if cmd[:3] == [str(preview_py), "-m", "pip"] and "-r" in cmd:
+            return MagicMock(returncode=0, stdout="", stderr="")
+        return MagicMock(returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(
+        "web.backend.services.sandbox_preview_env._preview_venv_python",
+        fake_preview_venv,
+    )
+    with patch("web.backend.services.sandbox_preview_env.subprocess.run", side_effect=capture_run):
+        env, meta = build_fastapi_preview_env(
+            sandbox_id="test-sb",
+            code_dir=root,
+            cwd=backend,
+            base_env={},
+        )
+
+    assert meta["preview_python"] == str(preview_py)
+    assert all(str(preview_py) in call for call in pip_calls)
+    assert not any(str(fake_factory) in call for call in pip_calls)
+    assert sys.executable not in {call[0] for call in pip_calls}

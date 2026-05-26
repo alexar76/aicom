@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import time
 import uuid
 from pathlib import Path
@@ -8,7 +9,11 @@ from typing import Any
 
 from core.paths import batch_pipeline_queue_path
 
+logger = logging.getLogger(__name__)
+
 QUEUE_PATH = batch_pipeline_queue_path()
+_MAX_BATCH_ITEMS = 5000
+_TERMINAL_BATCH_STATUSES = frozenset({"created", "failed", "cancelled"})
 
 
 def _default_queue_doc() -> dict[str, Any]:
@@ -35,11 +40,35 @@ def save_batch_queue(doc: dict[str, Any], path: Path = QUEUE_PATH) -> None:
     path.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def _trim_batch_items(items: list[dict[str, Any]], *, max_items: int = _MAX_BATCH_ITEMS) -> list[dict[str, Any]]:
+    if len(items) <= max_items:
+        return items
+    terminal = [x for x in items if str(x.get("status") or "").lower() in _TERMINAL_BATCH_STATUSES]
+    active = [x for x in items if str(x.get("status") or "").lower() not in _TERMINAL_BATCH_STATUSES]
+    trimmed = terminal + active
+    if len(trimmed) > max_items:
+        dropped = len(trimmed) - max_items
+        logger.warning(
+            "batch queue trim dropped %d items (max=%d); oldest non-terminal items removed",
+            dropped,
+            max_items,
+        )
+        trimmed = trimmed[-max_items:]
+    elif len(items) > max_items:
+        logger.warning(
+            "batch queue trim dropped %d terminal items (max=%d)",
+            len(items) - max_items,
+            max_items,
+        )
+        trimmed = trimmed[-max_items:]
+    return trimmed
+
+
 def enqueue_batch_items(items: list[dict[str, Any]], path: Path = QUEUE_PATH) -> None:
     doc = load_batch_queue(path)
     existing = doc.get("items") if isinstance(doc.get("items"), list) else []
     existing.extend(items)
-    doc["items"] = existing[-5000:]
+    doc["items"] = _trim_batch_items(existing)
     save_batch_queue(doc, path)
 
 

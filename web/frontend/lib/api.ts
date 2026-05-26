@@ -401,7 +401,6 @@ export interface PaymentRequest {
   product_id: string;
   chain?: string;
   token?: string;
-  amount?: number;
   /** Partner / UTM referral captured as ?ref= (stored client-side) */
   referral_source?: string;
 }

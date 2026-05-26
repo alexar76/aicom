@@ -15,6 +15,7 @@
     "QA_TESTING": ["security", "SECURITY_SCANNED"],
     "BUG_FOUND": ["developer", "DEV_FIXING"],
     "SECURITY_SCANNED": ["devops", "SALES_ACTIVE"],
+    "HUMAN_REVIEW_PENDING": ["__human_gate__", "SALES_ACTIVE"],
     "SALES_ACTIVE": ["sales", "SANDBOX_RUNNING"],
     "SANDBOX_RUNNING": ["devops", "TELEMETRY_COLLECTING"],
     "TELEMETRY_COLLECTING": ["analyst", "EVOLUTION_ANALYZING"],

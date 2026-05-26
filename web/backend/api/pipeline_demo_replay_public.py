@@ -42,5 +42,8 @@ async def get_public_pipeline_demo_replay() -> FileResponse:
         path,
         media_type=mt,
         filename=fn,
-        headers={"Cache-Control": "private, max-age=300"},
+        headers={
+            "Cache-Control": "private, max-age=300",
+            "Accept-Ranges": "bytes",
+        },
     )

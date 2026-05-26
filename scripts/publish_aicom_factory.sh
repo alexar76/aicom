@@ -3,7 +3,7 @@
 #
 # Satellites (separate repos): acex, ai-service-mesh, aimarket-hub, aimarket-widget,
 # aimarket-protocol, aimarket-sdks, aimarket-agent, desktop-integrations, pulse-terminal,
-# plugins, alien-monitor — see scripts/satellite-map.yaml
+# plugins — see scripts/satellite-map.yaml
 #
 # Usage:
 #   ./scripts/publish_aicom_factory.sh --dry-run

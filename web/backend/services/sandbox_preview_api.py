@@ -113,6 +113,7 @@ def start_fastapi_preview(
         code_dir=code_dir,
         cwd=cwd,
     )
+    preview_python = prep_meta.get("preview_python") or sys.executable
     if prep_meta.get("postgres_status") == "docker_unavailable" and prep_meta.get("postgres_ephemeral") is not True:
         from web.backend.services.sandbox_preview_env import code_requires_postgres
 
@@ -125,7 +126,7 @@ def start_fastapi_preview(
         timeout_sec = 45.0
 
     cmd = [
-        sys.executable,
+        str(preview_python),
         "-m",
         "uvicorn",
         module,

@@ -224,6 +224,7 @@ async def invoke_v2(
     request: Request,
     x_payment_channel: str | None = Header(default=None, alias="X-Payment-Channel"),
     x_aimarket_affiliate: str | None = Header(default=None, alias="X-AIMarket-Affiliate"),
+    authorization: str | None = Header(default=None),
 ):
     """Invoke only factory capabilities unless federation is explicitly enabled."""
     if body.source_hub and body.source_hub not in ("local", "") and _widget_federate_search():
@@ -274,6 +275,7 @@ async def invoke_v2(
         body_input=body.input,
         base_url=base_public_url(),
         x_payment_channel=x_payment_channel,
+        authorization=authorization,
         llm_router=getattr(request.app.state, "llm_router", None),
     )
 

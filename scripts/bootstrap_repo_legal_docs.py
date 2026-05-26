@@ -34,6 +34,7 @@ REPOS: list[tuple[str, str, str]] = [
     ("aimarket-protocol", "aimarket-protocol", "mit"),
     ("aimarket-widget", "aimarket-widget", "mit"),
     ("apps/pulse-terminal", "pulse-terminal", "mit"),
+    ("alien-monitor", "alien-monitor", "mit"),
     ("aimarket-sdks", "aimarket-sdks", "mit"),
     ("ai-service-mesh", "ai-service-mesh", "mit"),
     ("acex", "acex", "apache"),

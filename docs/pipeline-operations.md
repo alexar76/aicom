@@ -122,6 +122,7 @@ This is an iterative convergence loop: products are reworked until they pass sto
 | Variable | Default in code | Meaning |
 |----------|-----------------|---------|
 | `AIFACTORY_MAX_QUALITY_LOOPS` | `10` | Maximum remediation cycles for one product before forced `FAILED` |
+| `AIFACTORY_MAX_PIPELINE_COST_USD` | `0` (off) | Per-product LLM spend cap (USD); aborts agent tasks when `llm_calls.jsonl` spend exceeds cap. **Admin → Settings → Pipeline & product quality → Max LLM cost per product** writes `quality.max_pipeline_cost_usd` in overlay YAML (env wins when set). |
 
 ### Methodologist gate (domain process compliance)
 

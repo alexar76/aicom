@@ -86,17 +86,26 @@ from web.backend.api.products import count_showcase_listable_products, is_shippe
 from ._router import router
 from .models import *
 from .helpers import *
+from .artifact_files import (
+    admin_product_artifact_category_dirs,
+    build_product_owner_export_zip,
+    preview_artifact_file,
+    sanitize_admin_product_id,
+    unlink_path_quiet,
+    walk_artifact_files,
+)
+from .routes_director_reports import _admin_merged_pipeline_product
 
 @router.get("/products/{product_id}/files")
 async def get_product_files(product_id: str):
     """Browse all generated files/artifacts for a product (recursive per category)."""
-    pid = _sanitize_admin_product_id(product_id)
-    base_dirs = _admin_product_artifact_category_dirs(pid)
+    pid = sanitize_admin_product_id(product_id)
+    base_dirs = admin_product_artifact_category_dirs(pid)
 
     files: list[dict[str, Any]] = []
     truncated_by_category: dict[str, bool] = {}
     for category, dir_path in base_dirs.items():
-        paths, truncated = _walk_artifact_files(dir_path)
+        paths, truncated = walk_artifact_files(dir_path)
         if truncated:
             truncated_by_category[category] = True
         for fpath in paths:
@@ -110,7 +119,7 @@ async def get_product_files(product_id: str):
                 size_bytes = fpath.stat().st_size
             except OSError:
                 size_bytes = 0
-            preview, err = _preview_artifact_file(fpath, size_bytes=size_bytes)
+            preview, err = preview_artifact_file(fpath, size_bytes=size_bytes)
             entry: dict[str, Any] = {
                 "category": category,
                 "filename": rel,
@@ -143,7 +152,7 @@ async def download_product_owner_export_zip(
 
     Requires **operator** role or higher — viewers can browse file previews but must not bulk-export IP.
     """
-    pid = _sanitize_admin_product_id(product_id)
+    pid = sanitize_admin_product_id(product_id)
     role = normalize_role(admin.get("role"))
     if rank(role) < rank(AdminRole.OPERATOR):
         raise HTTPException(
@@ -152,7 +161,7 @@ async def download_product_owner_export_zip(
         )
 
     merged = _admin_merged_pipeline_product(pid)
-    dirs = _admin_product_artifact_category_dirs(pid)
+    dirs = admin_product_artifact_category_dirs(pid)
     has_file = False
     for root in dirs.values():
         if root.is_dir():
@@ -169,8 +178,10 @@ async def download_product_owner_export_zip(
             detail="Product not found, or no pipeline record and no on-disk artifacts yet.",
         )
 
-    zip_path, filename = _build_product_owner_export_zip(pid)
-    background_tasks.add_task(_unlink_path_quiet, str(zip_path))
+    zip_path, filename = build_product_owner_export_zip(
+        pid, merged_pipeline_product=merged
+    )
+    background_tasks.add_task(unlink_path_quiet, str(zip_path))
     return FileResponse(
         path=str(zip_path),
         filename=filename,

@@ -150,14 +150,16 @@ export function Sidebar({
                 onTabChange(tab.id);
                 if (window.innerWidth < 768) onToggle();
               }}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+              className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
                 activeTab === tab.id
                   ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
-              <tab.icon className="w-5 h-5 shrink-0" />
-              {!collapsed && <span>{tab.label}</span>}
+              <tab.icon className="w-5 h-5 shrink-0 mt-0.5" />
+              {!collapsed && (
+                <span className="min-w-0 flex-1 text-left leading-snug">{tab.label}</span>
+              )}
             </button>
           ))}
         </nav>
@@ -199,11 +201,13 @@ export function Sidebar({
           <button
             type="button"
             onClick={onLogout}
-            className="w-full flex items-center justify-center md:justify-start gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
+            className="w-full flex items-start justify-center md:justify-start gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
             aria-label={t(locale, 'app.logout')}
           >
-            <LogOut className="w-5 h-5 shrink-0" strokeWidth={2} />
-            {!collapsed && <span>{t(locale, 'app.logout')}</span>}
+            <LogOut className="w-5 h-5 shrink-0 mt-0.5" strokeWidth={2} />
+            {!collapsed && (
+              <span className="min-w-0 flex-1 text-left leading-snug">{t(locale, 'app.logout')}</span>
+            )}
           </button>
         </div>
       </aside>

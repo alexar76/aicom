@@ -97,6 +97,7 @@ export function DemoReplayMonitorSection({
   const [err, setErr] = useState<string | null>(null);
   const [title, setTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
+  const [videoBlobUrl, setVideoBlobUrl] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -144,8 +145,54 @@ export function DemoReplayMonitorSection({
     }
   };
 
+  /** Uploaded files: load via admin media (Bearer/cookie) — public URL 404s when volume missing the file. */
+  useEffect(() => {
+    let revoked: string | null = null;
+    const fn = adminCfg?.media_filename;
+    if (adminCfg?.source !== 'upload' || !fn || typeof window === 'undefined') {
+      setVideoBlobUrl(null);
+      return () => {
+        if (revoked) URL.revokeObjectURL(revoked);
+      };
+    }
+    const token = localStorage.getItem('admin_token');
+    const headers: Record<string, string> = {};
+    if (token) headers.Authorization = `Bearer ${token}`;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const r = await fetch(`/api/admin/demo-replay/media/${encodeURIComponent(fn)}`, {
+          credentials: 'include',
+          headers,
+        });
+        if (!r.ok) {
+          const pub = await fetch(`/api/public/pipeline-demo-replay`);
+          if (!pub.ok) throw new Error(`HTTP ${r.status}`);
+          const blob = await pub.blob();
+          if (cancelled) return;
+          revoked = URL.createObjectURL(blob);
+          setVideoBlobUrl(revoked);
+          setErr(null);
+          return;
+        }
+        const blob = await r.blob();
+        if (cancelled) return;
+        revoked = URL.createObjectURL(blob);
+        setVideoBlobUrl(revoked);
+        setErr(null);
+      } catch {
+        if (!cancelled) setVideoBlobUrl(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+      if (revoked) URL.revokeObjectURL(revoked);
+    };
+  }, [adminCfg?.source, adminCfg?.media_filename, adminCfg?.updated_at]);
+
   /** Prefer PATCH response (adminCfg) so video reappears immediately after re-enabling — no dashboard refresh. */
   const playSrc = useMemo(() => {
+    if (videoBlobUrl) return videoBlobUrl;
     const raw =
       adminCfg?.enabled && adminCfg.play_url
         ? adminCfg.play_url
@@ -158,7 +205,13 @@ export function DemoReplayMonitorSection({
       : typeof window !== 'undefined'
         ? `${window.location.origin}${raw}`
         : raw;
-  }, [adminCfg?.enabled, adminCfg?.play_url, demoReplay?.enabled, demoReplay?.play_url]);
+  }, [
+    videoBlobUrl,
+    adminCfg?.enabled,
+    adminCfg?.play_url,
+    demoReplay?.enabled,
+    demoReplay?.play_url,
+  ]);
 
   return (
     <GlassCard
@@ -199,9 +252,10 @@ export function DemoReplayMonitorSection({
         </label>
       </div>
 
-      {playSrc ? (
+      {playSrc || (adminCfg?.source === 'upload' && adminCfg.media_filename) ? (
         /* Video + backdrop-filter on same ancestor → Chromium often composites a blurry / stuck first frame. */
         <div className="relative mb-4 isolate overflow-hidden rounded-lg border border-white/10 bg-black">
+          {playSrc ? (
           <video
             key={playSrc}
             controls
@@ -225,6 +279,12 @@ export function DemoReplayMonitorSection({
             );
           }}
           />
+          ) : (
+            <div className="flex items-center justify-center gap-2 py-16 text-sm text-gray-500">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Loading video…
+            </div>
+          )}
         </div>
       ) : (
         <div className="mb-4 rounded-lg border border-dashed border-white/15 bg-white/[0.02] px-4 py-8 text-center text-sm text-gray-500">

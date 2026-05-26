@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import json
 import os
+import uuid
 import pytest
+from collections import defaultdict, deque
 from fastapi.testclient import TestClient
 
 from web.backend.main import app
@@ -18,6 +20,8 @@ from web.backend.main import app
 @pytest.fixture
 def client(tmp_path, monkeypatch):
     """Test client with a single COMPLETED product seeded in pipeline.json."""
+    monkeypatch.setenv("CUSTOMER_JWT_SECRET", "test-customer-jwt-secret-ci-only")
+    monkeypatch.setenv("JWT_SECRET_KEY", "test-jwt-secret-ci-only-32chars-minimum!!")
     monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path / "data"))
     monkeypatch.setenv("AIFACTORY_AI_MARKET_DEMO_PAYMENT", "1")
     pipeline = tmp_path / "data" / "state" / "pipeline.json"
@@ -44,6 +48,25 @@ def client(tmp_path, monkeypatch):
         encoding="utf-8",
     )
     yield TestClient(app)
+
+
+@pytest.fixture
+def customer_auth(client, monkeypatch):
+    monkeypatch.setenv("CUSTOMER_JWT_SECRET", "test-customer-jwt-secret-ci-only")
+    monkeypatch.setenv("JWT_SECRET_KEY", "test-jwt-secret-ci-only-32chars-minimum!!")
+    monkeypatch.setenv("AIFACTORY_CUSTOMER_REGISTER_MAX_PER_HOUR", "1000")
+    monkeypatch.setattr("web.backend.api.customer._register_attempts", defaultdict(deque))
+    email = f"aim-{uuid.uuid4().hex[:10]}@test.local"
+    reg = client.post(
+        "/api/customer/register",
+        json={"email": email, "password": "password12345"},
+    )
+    assert reg.status_code == 200, reg.text
+    return {"Authorization": f"Bearer {reg.json()['access_token']}"}
+
+
+def _with_channel(auth: dict, channel_id: str) -> dict:
+    return {**auth, "X-Payment-Channel": channel_id}
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -233,7 +256,7 @@ def test_invoke_402_without_payment(client):
     assert "expires_at" in pay_req
 
 
-def test_invoke_402_then_channel(client):
+def test_invoke_402_then_channel(client, customer_auth):
     """Full cycle: 402 → open channel → invoke → close."""
     pid = "prod-test0001"
     cid = "translate.multi@v2"
@@ -243,7 +266,11 @@ def test_invoke_402_then_channel(client):
     assert r0.status_code == 402
 
     # Step 2: open channel
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 3.0, "tx_hash": "demo-x"})
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 3.0, "tx_hash": "demo-x"},
+        headers=customer_auth,
+    )
     assert ch.status_code == 200
     ch_id = ch.json()["channel"]["channel_id"]
     assert ch_id.startswith("ch_")
@@ -252,7 +279,7 @@ def test_invoke_402_then_channel(client):
     r1 = client.post(
         f"/capabilities/{pid}/{cid}/invoke",
         json={"input": {"text": "hello", "locales": ["ru", "en"]}},
-        headers={"X-Payment-Channel": ch_id},
+        headers=_with_channel(customer_auth, ch_id),
     )
     assert r1.status_code == 200
     body = r1.json()
@@ -267,7 +294,7 @@ def test_invoke_402_then_channel(client):
     assert "suggested_next" in body["continuation"]
 
     # Step 4: close channel
-    close = client.post("/ai-market/channel/close", json={"channel_id": ch_id})
+    close = client.post("/ai-market/channel/close", json={"channel_id": ch_id}, headers=customer_auth)
     assert close.status_code == 200
     settlement = close.json().get("settlement", {})
     assert settlement.get("used_usd", 0) > 0
@@ -300,80 +327,111 @@ def test_invoke_nonexistent_capability(client):
 # Channel lifecycle
 # ═══════════════════════════════════════════════════════════════════════
 
-def test_channel_open_close(client):
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 5.0, "tx_hash": "demo-abc"})
+def test_channel_open_close(client, customer_auth):
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 5.0, "tx_hash": "demo-abc"},
+        headers=customer_auth,
+    )
     assert ch.status_code == 200
     ch_id = ch.json()["channel"]["channel_id"]
     assert ch.json()["channel"]["status"] == "open"
     assert ch.json()["channel"]["deposit_usd"] == 5.0
     assert ch.json()["channel"]["balance_usd"] == 5.0
 
-    close = client.post("/ai-market/channel/close", json={"channel_id": ch_id})
+    close = client.post("/ai-market/channel/close", json={"channel_id": ch_id}, headers=customer_auth)
     assert close.status_code == 200
     assert close.json()["channel"]["status"] == "closed"
     assert close.json()["settlement"]["used_usd"] == 0.0
     assert close.json()["settlement"]["refund_usd"] == 5.0
 
 
-def test_channel_insufficient_balance(client):
+def test_channel_insufficient_balance(client, customer_auth):
     """Invoke with tiny deposit → 402 on insufficient balance."""
     pid = "prod-test0001"
     # legal.review_localized costs $1.20 — well above a $0.01 deposit
     cid = "legal.review_localized@v1"
 
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 0.01, "tx_hash": "demo-tiny"})
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 0.01, "tx_hash": "demo-tiny"},
+        headers=customer_auth,
+    )
     ch_id = ch.json()["channel"]["channel_id"]
 
     r = client.post(
         f"/capabilities/{pid}/{cid}/invoke",
         json={"input": {"documents": {"a": "test"}}},
-        headers={"X-Payment-Channel": ch_id},
+        headers=_with_channel(customer_auth, ch_id),
     )
     # Should fail — $0.01 < $1.20
     assert r.status_code == 402
     assert "X-Payment-Required" in r.headers
 
 
-def test_channel_already_closed(client):
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 1.0, "tx_hash": "demo-close1"})
+def test_channel_already_closed(client, customer_auth):
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 1.0, "tx_hash": "demo-close1"},
+        headers=customer_auth,
+    )
     ch_id = ch.json()["channel"]["channel_id"]
-    client.post("/ai-market/channel/close", json={"channel_id": ch_id})
+    client.post("/ai-market/channel/close", json={"channel_id": ch_id}, headers=customer_auth)
     # Second close should fail
-    r = client.post("/ai-market/channel/close", json={"channel_id": ch_id})
+    r = client.post("/ai-market/channel/close", json={"channel_id": ch_id}, headers=customer_auth)
     assert r.status_code == 400
     assert "error" in r.json()
 
 
-def test_channel_not_found(client):
-    r = client.post("/ai-market/channel/close", json={"channel_id": "ch_nonexistent"})
+def test_channel_not_found(client, customer_auth):
+    r = client.post(
+        "/ai-market/channel/close",
+        json={"channel_id": "ch_nonexistent"},
+        headers=customer_auth,
+    )
     assert r.status_code == 400
     assert "error" in r.json()
 
 
-def test_open_channel_invalid_deposit(client):
-    # Pydantic rejects negative deposit with 422
-    r = client.post("/ai-market/channel/open", json={"deposit_usd": -5.0})
+def test_open_channel_invalid_deposit(client, customer_auth):
+    r = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": -5.0},
+        headers=customer_auth,
+    )
     assert r.status_code in (400, 422)
-    # Deposit above max ($10,000) rejected
-    r2 = client.post("/ai-market/channel/open", json={"deposit_usd": 20000})
+    r2 = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 20000},
+        headers=customer_auth,
+    )
     assert r2.status_code in (400, 422)
+
+
+def test_channel_open_requires_auth(client):
+    r = client.post("/ai-market/channel/open", json={"deposit_usd": 5.0, "tx_hash": "demo-x"})
+    assert r.status_code == 401
 
 
 # ═══════════════════════════════════════════════════════════════════════
 # Multiple invokes on same channel (off-chain ledger)
 # ═══════════════════════════════════════════════════════════════════════
 
-def test_multiple_invokes_same_channel(client):
+def test_multiple_invokes_same_channel(client, customer_auth):
     pid = "prod-test0001"
 
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 5.0, "tx_hash": "demo-multi"})
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 5.0, "tx_hash": "demo-multi"},
+        headers=customer_auth,
+    )
     ch_id = ch.json()["channel"]["channel_id"]
 
     # Invoke translate.multi ($0.40)
     r1 = client.post(
         f"/capabilities/{pid}/translate.multi@v2/invoke",
         json={"input": {"text": "hello", "locales": ["ru"]}},
-        headers={"X-Payment-Channel": ch_id},
+        headers=_with_channel(customer_auth, ch_id),
     )
     assert r1.status_code == 200
 
@@ -381,12 +439,12 @@ def test_multiple_invokes_same_channel(client):
     r2 = client.post(
         f"/capabilities/{pid}/summarize@v1/invoke",
         json={"input": {"text": "hello"}},
-        headers={"X-Payment-Channel": ch_id},
+        headers=_with_channel(customer_auth, ch_id),
     )
     assert r2.status_code == 200
 
     # Close — should have used ~$0.65
-    close = client.post("/ai-market/channel/close", json={"channel_id": ch_id})
+    close = client.post("/ai-market/channel/close", json={"channel_id": ch_id}, headers=customer_auth)
     assert close.status_code == 200
     used = close.json()["settlement"]["used_usd"]
     assert 0.60 <= used <= 0.70
@@ -396,9 +454,13 @@ def test_multiple_invokes_same_channel(client):
 # Pipeline DAG execution
 # ═══════════════════════════════════════════════════════════════════════
 
-def test_pipeline_trace(client):
+def test_pipeline_trace(client, customer_auth):
     pid = "prod-test0001"
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 5.0, "tx_hash": "demo-p"})
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 5.0, "tx_hash": "demo-p"},
+        headers=customer_auth,
+    )
     ch_id = ch.json()["channel"]["channel_id"]
 
     r = client.post(
@@ -422,6 +484,7 @@ def test_pipeline_trace(client):
                 },
             ],
         },
+        headers=customer_auth,
     )
     assert r.status_code == 200
     body = r.json()
@@ -446,9 +509,13 @@ def test_pipeline_invalid_channel(client):
     assert "error" in r.json()
 
 
-def test_pipeline_single_node(client):
+def test_pipeline_single_node(client, customer_auth):
     pid = "prod-test0001"
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 2.0, "tx_hash": "demo-single"})
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 2.0, "tx_hash": "demo-single"},
+        headers=customer_auth,
+    )
     ch_id = ch.json()["channel"]["channel_id"]
 
     r = client.post(
@@ -457,6 +524,7 @@ def test_pipeline_single_node(client):
             "channel_id": ch_id,
             "nodes": [{"product_id": pid, "capability_id": "summarize@v1", "input": {"text": "test"}}],
         },
+        headers=customer_auth,
     )
     assert r.status_code == 200
     assert r.json().get("trace_id", "").startswith("tr_")
@@ -466,17 +534,21 @@ def test_pipeline_single_node(client):
 # Signed receipts
 # ═══════════════════════════════════════════════════════════════════════
 
-def test_receipt_after_invoke(client):
+def test_receipt_after_invoke(client, customer_auth):
     pid = "prod-test0001"
     cid = "run@v1"
 
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 1.0, "tx_hash": "demo-rcpt"})
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 1.0, "tx_hash": "demo-rcpt"},
+        headers=customer_auth,
+    )
     ch_id = ch.json()["channel"]["channel_id"]
 
     r = client.post(
         f"/capabilities/{pid}/{cid}/invoke",
         json={"input": {"task": "receipt-test"}},
-        headers={"X-Payment-Channel": ch_id},
+        headers=_with_channel(customer_auth, ch_id),
     )
     assert r.status_code == 200
     receipt = r.json().get("receipt") or {}
@@ -514,17 +586,21 @@ def test_stats_returns_events(client):
 # Dual-route invoke (both /capabilities/... and /ai-market/capabilities/...)
 # ═══════════════════════════════════════════════════════════════════════
 
-def test_invoke_via_prefixed_route(client):
+def test_invoke_via_prefixed_route(client, customer_auth):
     """The /ai-market/capabilities/.../invoke route proxies to the same handler."""
     pid = "prod-test0001"
     cid = "run@v1"
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 1.0, "tx_hash": "demo-prefix"})
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 1.0, "tx_hash": "demo-prefix"},
+        headers=customer_auth,
+    )
     ch_id = ch.json()["channel"]["channel_id"]
 
     r = client.post(
         f"/ai-market/capabilities/{pid}/{cid}/invoke",
         json={"input": {"task": "prefixed"}},
-        headers={"X-Payment-Channel": ch_id},
+        headers=_with_channel(customer_auth, ch_id),
     )
     assert r.status_code == 200
     assert r.json().get("success") is True
@@ -534,15 +610,19 @@ def test_invoke_via_prefixed_route(client):
 # Continuation hints
 # ═══════════════════════════════════════════════════════════════════════
 
-def test_continuation_hints_in_response(client):
+def test_continuation_hints_in_response(client, customer_auth):
     pid = "prod-test0001"
-    ch = client.post("/ai-market/channel/open", json={"deposit_usd": 2.0, "tx_hash": "demo-cont"})
+    ch = client.post(
+        "/ai-market/channel/open",
+        json={"deposit_usd": 2.0, "tx_hash": "demo-cont"},
+        headers=customer_auth,
+    )
     ch_id = ch.json()["channel"]["channel_id"]
 
     r = client.post(
         f"/capabilities/{pid}/translate.multi@v2/invoke",
         json={"input": {"text": "hello", "locales": ["ru", "en"]}},
-        headers={"X-Payment-Channel": ch_id},
+        headers=_with_channel(customer_auth, ch_id),
     )
     assert r.status_code == 200
     continuation = r.json().get("continuation") or {}

@@ -15,6 +15,7 @@ from core.config_merge import load_merged_config
 from core.paths import config_path
 
 DEFAULT_QUALITY: dict[str, Any] = {
+    "max_pipeline_cost_usd": 0.0,
     "max_pipeline_repair_rounds": 25,
     "demo_quality_min_score": 55,
     "strict_demo_gates": True,
@@ -103,7 +104,12 @@ def quality_yaml_slice() -> dict[str, Any]:
                 }.get(k, (0, 10**9))
                 out[k] = _coerce_int(v, int(base), lo=bounds[0], hi=bounds[1])
             elif isinstance(base, float):
-                out[k] = _coerce_float(v, float(base), lo=0.0, hi=1.0)
+                float_bounds = {
+                    "max_pipeline_cost_usd": (0.0, 100_000.0),
+                    "marketplace_min_design_novelty": (0.0, 1.0),
+                }
+                lo, hi = float_bounds.get(k, (0.0, 1.0))
+                out[k] = _coerce_float(v, float(base), lo=lo, hi=hi)
     _CACHE_MTIME = mtime
     _CACHE_SLICE = out
     return dict(out)
@@ -136,6 +142,19 @@ def _env_bool(name: str) -> bool | None:
     if not _env_nonempty(name):
         return None
     return os.environ[name].strip().lower() in ("1", "true", "yes", "on")
+
+
+def max_pipeline_cost_usd() -> float:
+    """
+    Per-product LLM spend cap (USD). ``0`` disables the guard.
+
+    Resolution: ``AIFACTORY_MAX_PIPELINE_COST_USD`` env (when set) overrides
+    Admin → Settings → Pipeline & product quality → Max LLM cost per product.
+    """
+    e = _env_float("AIFACTORY_MAX_PIPELINE_COST_USD")
+    if e is not None:
+        return max(0.0, e)
+    return max(0.0, float(quality_yaml_slice().get("max_pipeline_cost_usd", 0.0)))
 
 
 def max_pipeline_repair_rounds() -> int:
@@ -339,7 +358,12 @@ def normalize_quality_settings_payload(raw: Any) -> dict[str, Any] | None:
             }.get(k, (0, 10**9))
             out[k] = _coerce_int(v, int(base), lo=bounds[0], hi=bounds[1])
         elif isinstance(base, float):
-            out[k] = _coerce_float(v, float(base), lo=0.0, hi=1.0)
+            float_bounds = {
+                "max_pipeline_cost_usd": (0.0, 100_000.0),
+                "marketplace_min_design_novelty": (0.0, 1.0),
+            }
+            lo, hi = float_bounds.get(k, (0.0, 1.0))
+            out[k] = _coerce_float(v, float(base), lo=lo, hi=hi)
     return out
 
 

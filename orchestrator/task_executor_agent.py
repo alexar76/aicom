@@ -86,8 +86,30 @@ async def run_agent_task(
             timestamp=time.time(),
         )
 
+        from core.pipeline_cost_guard import PipelineCostBudgetExceeded, assert_product_within_budget
+        from core.tracing import span
+
+        try:
+            assert_product_within_budget(pid)
+        except PipelineCostBudgetExceeded as budget_exc:
+            err = str(budget_exc)
+            logger.error("Product %s pipeline LLM budget exceeded: %s", pid, err)
+            task["status"] = "failed"
+            task["error"] = err
+            task["completed_at"] = time.time()
+            task["failure_category"] = "budget_exceeded"
+            if pid in products:
+                products[pid]["state"] = "FAILED"
+                products[pid]["failure_reason"] = err
+                products[pid]["updated_at"] = time.time()
+            return
+
         logger.info(f"Calling real agent '{agent_type}' for task {task_id}")
-        output = await agent.execute(agent_input)
+        with span(
+            "pipeline.agent_task",
+            attributes={"agent.type": agent_type, "product.id": pid, "task.id": task_id},
+        ):
+            output = await agent.execute(agent_input)
 
         if output.success:
             task["status"] = "completed"
@@ -711,21 +733,27 @@ async def run_agent_task(
         ])
 
         if is_json_error:
-            retry_count = task.get("retry_count", 0)
-            max_retries = 2  # Allow up to 2 retries (3 total attempts)
+            json_retries = int(task.get("json_parse_retry_count") or 0)
+            from core.pipeline_retry_limits import json_parse_max_retries
 
-            if retry_count < max_retries:
+            max_json_retries = json_parse_max_retries()
+
+            if json_retries < max_json_retries:
                 logger.warning(
-                    f"🔄 Retry {retry_count + 1}/{max_retries + 1} "
-                    f"for {agent_type} task {task_id}: {error_msg}"
+                    "JSON parse retry %d/%d for %s task %s: %s",
+                    json_retries + 1,
+                    max_json_retries,
+                    agent_type,
+                    task_id,
+                    error_msg,
                 )
-                # Reset task for retry — keep it in the queue as PENDING
-                task["retry_count"] = retry_count + 1
+                task["json_parse_retry_count"] = json_retries + 1
                 task["status"] = "pending"
                 task["error"] = None
                 task["started_at"] = None
                 task["completed_at"] = None
-                return  # Skip fail_task, task will be picked up next cycle
+                await asyncio.sleep(min(2 ** json_retries, 8))
+                return
 
         # Permanent failure (exhausted retries or non-retryable error)
         task["status"] = "failed"

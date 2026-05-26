@@ -23,3 +23,8 @@ def task_max_retries() -> int:
 def pm_spec_auto_requeue_max() -> int:
     """How many times PM spec-gate failures auto-reopen the product instead of terminal FAILED."""
     return _env_int("AIFACTORY_PM_SPEC_AUTO_REQUEUE_MAX", 5, lo=0, hi=50)
+
+
+def json_parse_max_retries() -> int:
+    """Retries for transient LLM JSON parse failures (separate from task_max_retries)."""
+    return _env_int("AIFACTORY_JSON_PARSE_MAX_RETRIES", 2, lo=0, hi=10)

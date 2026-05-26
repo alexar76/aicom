@@ -392,7 +392,7 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
                       </div>
                     ) : (
                       <div className="text-center py-3">
-                        <p className="text-xs text-gray-500">Click "Load Status" to view git details</p>
+                        <p className="text-xs text-gray-500">Click &ldquo;Load Status&rdquo; to view git details</p>
                       </div>
                     )}
 

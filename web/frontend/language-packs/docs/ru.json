@@ -50,6 +50,7 @@
     "agents": "ИИ-агенты",
     "pipeline": "Конвейер",
     "crypto": "Криптоплатежи",
+    "uniCredit": "Шина UNI",
     "security": "Безопасность",
     "director": "Director AI",
     "configuration": "Конфигурация"
@@ -494,7 +495,9 @@
       "Управление таймаутами — каждый шаг с настраиваемым timeout (по умолчанию 30s)",
       "Параллельное выполнение — несколько продуктов на разных этапах pipeline",
       "Сохранение состояния — JSON (по умолчанию) или опциональный SQLite3 backend с CLI migration",
-      "Director override — Director AI может менять timeouts и приоритеты"
+      "Director override — Director AI может менять timeouts и приоритеты",
+      "Лимит LLM на продукт (USD) — Admin → Настройки → Качество пайплайна (0 = без лимита); env AIFACTORY_MAX_PIPELINE_COST_USD имеет приоритет",
+      "Карточки продуктов в Pipeline: диаграммы затрат LLM, срока и качества"
     ],
     "directorCycleTitle": "Цикл Director AI (каждые 4 часа)",
     "directorCycleIntro": "Параллельно product pipeline Director AI запускается каждые 4 часа:",
@@ -551,6 +554,39 @@
         "tokens": "USDT, USDC"
       }
     ]
+  },
+  "uniCredit": {
+    "titleGradient": "шина UNI",
+    "intro": "UNI — внутренний store credit с фиксированным курсом к USDT, не торгуемый токен. Все операции внутри платформы — в целых UNI; USDT только на входе и выходе через treasury.",
+    "pegTitle": "Фиксированный курс",
+    "pegBody": "1 UNI = $0.01 USDT (100 UNI за $1). Поддерживает микротранзакции за LLM без float USDT. AIFACTORY_UNI_USD_CENTS_PER_UNI=1 (legacy: AIFACTORY_UNI_USDT_RATE=100).",
+    "feesTitle": "Комиссии (по умолчанию)",
+    "feesItems": [
+      "Top-up: 0% (AIFACTORY_UNI_TOPUP_SPREAD_BPS=0)",
+      "Invoke / channel spend: 5% платформе (AIFACTORY_UNI_PLATFORM_FEE_BPS=500)",
+      "Вывод: 1% + минимум $20 (AIFACTORY_UNI_WITHDRAW_FEE_BPS=100, AIFACTORY_UNI_MIN_WITHDRAW_UNI=2000)",
+      "Комиссии платформы — кошелёк PLATFORM_FEES, вывод как у продавца"
+    ],
+    "treasuryTitle": "Инвариант treasury",
+    "treasuryBody": "USDT в treasury ≥ все outstanding UNI × $0.01. Джоб uni_treasury_audit; алерт при reserve_ratio < 0.999. AIFACTORY_UNI_TREASURY_USDT_OBSERVED — ручной ввод для аудита.",
+    "flowTitle": "Типовой поток",
+    "flowItems": [
+      "Top-up USDT → POST /api/uni/topup/confirm → зачисление UNI",
+      "Открытие channel → hold; invoke → spend_hold: 95% продавцу, 5% платформе",
+      "Покупка capability → charge() атомарно списывает покупателя",
+      "Вывод продавца → POST /api/uni/withdraw → очередь on-chain"
+    ],
+    "apiTitle": "HTTP API",
+    "apiItems": [
+      "GET /api/uni/config — курс и bps комиссий",
+      "GET /api/uni/wallet — balance_uni, available_uni",
+      "GET /api/uni/receipts — подписанные квитанции",
+      "POST /api/uni/topup/intent — адрес treasury",
+      "POST /api/uni/grant — funding из Monitor (X-Uni-Grant-Secret)"
+    ],
+    "settingsTitle": "Связанные настройки Admin",
+    "settingsBody": "Лимит LLM на продукт (USD): Admin → Настройки → Качество пайплайна → Макс. стоимость LLM (quality.max_pipeline_cost_usd). Дополняет, а не заменяет UNI.",
+    "docsMarkdown": "См. docs/uni-economics.md и docs/postgres-production-runbook.md в репозитории."
   },
   "security": {
     "titleGradient": "безопасность",
@@ -665,6 +701,13 @@
     "modelProvidersTitle": "Model Providers (model_providers.yaml)",
     "routingRulesTitle": "Правила маршрутизации",
     "globalConfigTitle": "Global Config (config.yaml)",
+    "qualityBlockTitle": "Блок quality: (качество пайплайна)",
+    "qualityBlockItems": [
+      "max_pipeline_repair_rounds — лимит циклов QA-repair до FAILED",
+      "max_pipeline_cost_usd — лимит LLM на продукт в USD (0 = без лимита); отображается на диаграммах в Pipeline",
+      "demo / visual / browser / marketplace — те же поля, что Admin → Настройки → Качество пайплайна",
+      "Переменные AIFACTORY_* переопределяют YAML при задании в Docker"
+    ],
     "themesTitle": "Темы",
     "themesIntro": "Доступны пять предустановленных тем:",
     "themeItems": [

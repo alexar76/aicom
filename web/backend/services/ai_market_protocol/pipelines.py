@@ -31,6 +31,7 @@ async def execute_pipeline(
     nodes: list[dict[str, Any]],
     channel_id: str | None,
     base_url: str,
+    authorization: str | None = None,
     llm_router: Any = None,
 ) -> dict[str, Any]:
     if channel_id:
@@ -78,6 +79,7 @@ async def execute_pipeline(
             body_input=inp,
             base_url=base_url,
             x_payment_channel=channel_id,
+            authorization=authorization,
             llm_router=llm_router,
         )
         step = {

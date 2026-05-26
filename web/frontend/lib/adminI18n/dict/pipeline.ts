@@ -301,6 +301,61 @@ export const PIPELINE_TAB_DICT: I18nDict = {
     ru: 'Создано {date}',
     es: 'Creado {date}',
   },
+  'pipeline.vitals.aria': {
+    en: 'Product vitals: cost, deadline, quality',
+    ru: 'Показатели продукта: затраты, срок, качество',
+    es: 'Indicadores: coste, plazo, calidad',
+  },
+  'pipeline.vitals.costTitle': {
+    en: 'LLM spend',
+    ru: 'Затраты LLM',
+    es: 'Gasto LLM',
+  },
+  'pipeline.vitals.deadlineTitle': {
+    en: 'Timeline',
+    ru: 'Срок',
+    es: 'Plazo',
+  },
+  'pipeline.vitals.qualityTitle': {
+    en: 'Quality',
+    ru: 'Качество',
+    es: 'Calidad',
+  },
+  'pipeline.vitals.costCap': {
+    en: 'cap ${cap}',
+    ru: 'лимит ${cap}',
+    es: 'tope ${cap}',
+  },
+  'pipeline.vitals.costNoCap': {
+    en: 'no per-product cap',
+    ru: 'без лимита на продукт',
+    es: 'sin tope por producto',
+  },
+  'pipeline.vitals.costTotal': {
+    en: 'Total ${cost}',
+    ru: 'Итого ${cost}',
+    es: 'Total ${cost}',
+  },
+  'pipeline.vitals.deadlineDone': {
+    en: 'Finished',
+    ru: 'Завершён',
+    es: 'Terminado',
+  },
+  'pipeline.vitals.deadlineDoneFailed': {
+    en: 'Failed / stopped',
+    ru: 'Ошибка / остановлен',
+    es: 'Fallido / detenido',
+  },
+  'pipeline.vitals.deadlineUnknown': {
+    en: 'ETA pending',
+    ru: 'ETA уточняется',
+    es: 'ETA pendiente',
+  },
+  'pipeline.vitals.qualityUnknown': {
+    en: 'Not scored yet',
+    ru: 'Оценка ещё не выставлена',
+    es: 'Sin puntuación aún',
+  },
   'pipeline.economics.llmTooltip': {
     en: 'LLM API cost: {cost} · {calls} calls · {tokens} tokens',
     ru: 'Стоимость LLM API: {cost} · {calls} вызовов · {tokens} токенов',
@@ -539,6 +594,14 @@ export const PIPELINE_TAB_DICT: I18nDict = {
       'Задачи для этапа пока нет: пайплайн не дошёл, задача не создана или данные ещё грузятся. Разверните «Показать задачи» на карточке для полного списка.',
     es:
       'Aún no hay tarea en cola: el pipeline no llegó, no se creó la tarea o los datos cargan. Expande Mostrar tareas en la tarjeta para la lista completa.',
+  },
+  'pipeline.modals.task.inferredStage': {
+    en:
+      'This stage is marked complete from product maturity (40+ finished tasks or shipped state). Historical per-agent rows were compacted during repair loops — expand Show Tasks for the live QA/Dev queue.',
+    ru:
+      'Этап отмечен выполненным по зрелости продукта (40+ завершённых задач или статус «отгружен»). Старые записи по агентам сжаты в циклах починки — разверните «Показать задачи» для актуальной очереди QA/Dev.',
+    es:
+      'Etapa marcada completa por madurez del producto (40+ tareas o estado enviado). Filas históricas compactadas en bucles de reparación — expande Mostrar tareas para la cola QA/Dev.',
   },
   'pipeline.modals.task.targetState': {
     en: 'Target pipeline state:',

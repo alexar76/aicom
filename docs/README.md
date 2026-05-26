@@ -35,7 +35,11 @@ Operator-facing UI strings may be **en / ru / es** in Admin; that is product i18
 
 - **`architecture-diagrams.md`** — **Mermaid hub**: full runtime architecture, pipeline LR + extended gates, state machine, discovery, storefront flow, comparison table, Grafana panel map (moved from root README).
 - **`architecture-orchestrator.md`** — pipeline worker SRP split, sync/async state machine, Director JSON vs SQLite decisions store.
-- `pipeline-operations.md` — discovery, scheduler, batch pipeline, benchmark gate, monitoring loops.
+- `pipeline-operations.md` — discovery, scheduler, batch pipeline, benchmark gate, monitoring loops, **per-product LLM spend cap** (Admin Settings + env).
+- `uni-economics.md` — UNI store credit (fixed peg, fees, treasury, API); aligns with in-app docs section **UNI credit bus** (EN/RU/ES).
+- `postgres-production-runbook.md` — Postgres cutover for pipeline and UNI ledger.
+- **`observability-langsmith.md`** — opt-in OpenTelemetry tracing for **LangSmith / Phoenix / Helicone / Jaeger**. Uses `gen_ai.*` semantic conventions on every LLM call; `factory.pipeline_stage` parent spans show the agent tree; `trace_id` is stamped into UNI receipts so a buyer can follow a payment back to the LLM trace.
+- `sandbox-trust-model.md` — sandbox isolation limits and hardening checklist.
 - `agents.md` — pipeline agent roster, **markdown system prompts** under `agents/prompts/`, including `methodologist`.
 - `audit-delta-changes.md` — Staff audit remediation tracker (circuit breaker, watchfiles, API v1, logging).
 - `methodology-agent.md` — domain methodology gate, domain packs, artifacts, and rework behavior.
