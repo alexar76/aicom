@@ -809,6 +809,9 @@ export_satellite() {
     aicom-wiki)
       export_wiki
       ;;
+    alien-monitor)
+      export_simple "$sat_id" "alien-monitor" "alien-monitor" "mit"
+      ;;
     aicom)
       echo ""
       echo "━━━ aicom (trimmed factory) ━━━"
@@ -865,6 +868,7 @@ echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aimarket-plugins"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aicom.wiki"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/linked-in-profile-coach"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aicom-landing"
+echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/alien-monitor"
 echo ""
 echo "All repos: ./scripts/publish_all_repos.sh"
 echo "Workflow:  .github/workflows/mirror-satellites.yml"

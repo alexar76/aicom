@@ -56,6 +56,15 @@ if [[ -z "$REMOTE" ]]; then
   REMOTE="$(git remote get-url origin 2>/dev/null || true)"
 fi
 
+redact_remote() {
+  local url="$1"
+  if [[ "$url" =~ ^https?://[^/@]+@[^/]+ ]]; then
+    echo "$url" | sed -E 's#(https?://)[^:@/]+:[^@]+@#\1***:***@#'
+  else
+    echo "$url"
+  fi
+}
+
 EXCLUDES=()
 while IFS= read -r line; do EXCLUDES+=("$line"); done < <(python3 "$ROOT/scripts/aicom_publish_config.py" list-excludes)
 RSYNC_EXCLUDE_ARGS=()
@@ -63,7 +72,7 @@ while IFS= read -r line; do RSYNC_EXCLUDE_ARGS+=("$line"); done < <(python3 "$RO
 
 echo "== AI-Factory publish (satellite paths excluded) =="
 echo "Source:  $ROOT"
-echo "Remote:  ${REMOTE:-<none>}"
+echo "Remote:  $(redact_remote "${REMOTE:-<none>}")"
 echo "Branch:  $BRANCH"
 echo ""
 echo "Excluded from factory push:"
@@ -95,7 +104,7 @@ if [[ -z "$REMOTE" ]]; then
   exit 2
 fi
 
-echo "Cloning $REMOTE (branch $BRANCH) …"
+echo "Cloning $(redact_remote "$REMOTE") (branch $BRANCH) …"
 git clone --depth 1 --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null || {
   git clone --depth 1 "$REMOTE" "$WORKDIR/clone"
   cd "$WORKDIR/clone"
@@ -145,6 +154,6 @@ if [[ "$NO_PUSH" -eq 1 ]]; then
   exit 0
 fi
 
-echo "Pushing to $REMOTE ($BRANCH) …"
+echo "Pushing to $(redact_remote "$REMOTE") ($BRANCH) …"
 git push origin "HEAD:$BRANCH"
-echo "OK factory remote updated — satellite folders removed from $REMOTE"
+echo "OK factory remote updated — satellite folders removed from $(redact_remote "$REMOTE")"
