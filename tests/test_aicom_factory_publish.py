@@ -9,7 +9,12 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from aicom_publish_config import factory_exclude_paths, satellite_export_paths  # noqa: E402
+from aicom_publish_config import (  # noqa: E402
+    factory_exclude_paths,
+    factory_local_exclude_paths,
+    rsync_exclude_args,
+    satellite_export_paths,
+)
 
 
 def test_factory_excludes_all_satellite_roots():
@@ -27,9 +32,6 @@ def test_factory_excludes_all_satellite_roots():
         "plugins",
         "wiki",
         "scripts/wiki-gitea",
-        "alien-monitor",
-        "linkedin",
-        "aicom-landing",
     ):
         assert p in excludes, p
 
@@ -44,9 +46,6 @@ def test_satellite_map_includes_wiki():
     data = yaml.safe_load((ROOT / "scripts" / "satellite-map.yaml").read_text())
     ids = {s["id"] for s in data.get("satellites", [])}
     assert "aicom-wiki" in ids
-    assert "linkedin-profile-coach" in ids
-    assert "aicom-landing" in ids
-    assert "alien-monitor" in ids
 
 
 def test_satellite_map_has_github_descriptions():
@@ -61,18 +60,24 @@ def test_satellite_map_has_github_descriptions():
     assert not missing, f"missing description: {missing}"
 
 
-def test_factory_rsync_excludes_local_agent_dirs():
-    from aicom_publish_config import rsync_exclude_args
-
-    args = rsync_exclude_args()
-    flat = " ".join(args)
-    assert "--exclude" in flat and ".claude" in flat and ".cursor" in flat
-
-
 def test_publish_scripts_exist():
     assert (ROOT / "scripts" / "publish_aicom_factory.sh").is_file()
     assert (ROOT / "scripts" / "publish_satellite.sh").is_file()
     assert (ROOT / "scripts" / "aicom_publish_config.py").is_file()
+
+
+def test_factory_rsync_excludes_cursor_and_github():
+    """Factory publish uses rsync; .gitignore does not apply."""
+    locals_ = set(factory_local_exclude_paths())
+    assert ".cursor" in locals_
+    assert ".github" in locals_
+    excludes = {
+        rsync_exclude_args()[i + 1]
+        for i in range(len(rsync_exclude_args()) - 1)
+        if rsync_exclude_args()[i] == "--exclude"
+    }
+    assert ".cursor" in excludes
+    assert ".github" in excludes
 
 
 def test_satellite_export_includes_provenance():

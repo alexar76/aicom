@@ -17,7 +17,9 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import api, { type DashboardData } from '@/lib/api';
 import {
+  applyPublicStorefrontCount,
   createEmptyDashboardData,
+  isPipelineMetricsReady,
   mergeDashboardQuick,
   readAdminMetricsCache,
   writeAdminMetricsCache,
@@ -61,11 +63,7 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
       try {
         const vitrine = await fetchPublicStorefrontListableCount();
         if (!cancelled && vitrine !== null) {
-          setData((prev) => ({
-            ...prev,
-            dashboard_partial: false,
-            pipeline: { ...prev.pipeline, storefront_visible_products: vitrine },
-          }));
+          setData((prev) => applyPublicStorefrontCount(prev, vitrine));
         }
       } catch {
         /* keep dashboard payload */
@@ -80,6 +78,7 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
     };
   }, []);
 
+  const pipelineReady = isPipelineMetricsReady(data);
   const total = data.pipeline.total_products;
   const completed = data.pipeline.completed_products;
   const sfRaw = data.pipeline.storefront_visible_products;
@@ -88,14 +87,20 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
   const storefront = sfRaw ?? 0;
   const failed = data.pipeline.failed_products;
   const active = data.pipeline.active_products;
-  const completionRate = total > 0 ? (completed / total) * 100 : 0;
+  const completionRate = pipelineReady && total > 0 ? (completed / total) * 100 : 0;
   const storefrontYieldPct =
-    !sfPending && completed > 0 ? Math.round((storefront / completed) * 100) : null;
+    pipelineReady && !sfPending && completed > 0
+      ? Math.round((storefront / completed) * 100)
+      : null;
 
-  const factoryHealthScore = (() => {
+  const factoryHealthScore = ((): number | null => {
+    if (!pipelineReady) return null;
     const p = data.pipeline;
     const t = p.total_products || 0;
-    if (t <= 0) return 100;
+    if (t <= 0) {
+      if (!sfPending && storefront > 0) return 40;
+      return null;
+    }
     const failedN = p.failed_products || 0;
     const timeouts = p.timed_out_tasks || 0;
     const pending = p.pending_tasks || 0;
@@ -111,28 +116,32 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
   })();
 
   const healthBandKey =
-    factoryHealthScore >= 75
-      ? 'dashboard.health.strong'
-      : factoryHealthScore >= 50
-        ? 'dashboard.health.fair'
-        : 'dashboard.health.attention';
+    factoryHealthScore == null
+      ? 'dashboard.health.loading'
+      : factoryHealthScore >= 75
+        ? 'dashboard.health.strong'
+        : factoryHealthScore >= 50
+          ? 'dashboard.health.fair'
+          : 'dashboard.health.attention';
+
+  const pipelineStatValue = (n: number) => (pipelineReady ? n : null);
 
   const stats = [
     {
       label: t(locale, 'dashboard.stat.total'),
-      value: total,
+      value: pipelineStatValue(total),
       icon: FileText,
       color: 'from-indigo-500 to-purple-500',
     },
     {
       label: t(locale, 'dashboard.stat.active'),
-      value: active,
+      value: pipelineStatValue(active),
       icon: Activity,
       color: 'from-emerald-500 to-teal-500',
     },
     {
       label: t(locale, 'dashboard.stat.shipped'),
-      value: completed,
+      value: pipelineStatValue(completed),
       icon: CheckCircle2,
       color: 'from-green-500 to-emerald-500',
     },
@@ -144,7 +153,7 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
     },
     {
       label: t(locale, 'dashboard.stat.rework'),
-      value: failed,
+      value: pipelineStatValue(failed),
       icon: AlertTriangle,
       color: 'from-amber-500 to-orange-500',
     },
@@ -271,15 +280,28 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
             <p className="mt-1 max-w-2xl text-sm text-gray-400">{t(locale, 'dashboard.health.subtitle')}</p>
           </div>
           <div className="text-right">
-            <p className="text-4xl font-bold text-violet-200 tabular-nums">{factoryHealthScore}</p>
+            {factoryHealthScore == null ? (
+              <p className="flex items-center justify-end gap-2 text-gray-400 text-sm">
+                <Loader2 className="w-5 h-5 animate-spin shrink-0" aria-hidden />
+                …
+              </p>
+            ) : (
+              <p className="text-4xl font-bold text-violet-200 tabular-nums">{factoryHealthScore}</p>
+            )}
             <p className="text-xs capitalize text-gray-500">{t(locale, healthBandKey)}</p>
           </div>
         </div>
         <div className="mt-4">
           <ProgressBar
-            value={factoryHealthScore}
+            value={factoryHealthScore ?? 0}
             label={t(locale, 'dashboard.health.label')}
-            variant={factoryHealthScore >= 70 ? 'success' : 'warning'}
+            variant={
+              factoryHealthScore == null
+                ? 'primary'
+                : factoryHealthScore >= 70
+                  ? 'success'
+                  : 'warning'
+            }
           />
         </div>
       </GlassCard>
@@ -338,18 +360,31 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
         <GlassCard>
           <h3 className="text-lg font-semibold text-white mb-4">Pipeline Metrics</h3>
           <div className="space-y-4">
-            <ProgressBar value={Math.round(completionRate)} label="Completion Rate" variant="success" />
+            {pipelineReady ? (
+              <ProgressBar value={Math.round(completionRate)} label="Completion Rate" variant="success" />
+            ) : (
+              <p className="text-sm text-gray-500 flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin shrink-0" aria-hidden />
+                {t(locale, 'dashboard.loadingLive')}
+              </p>
+            )}
             <div className="flex justify-between text-sm text-gray-400">
               <span>Pending Tasks</span>
-              <span className="text-white font-medium tabular-nums">{data.pipeline.pending_tasks}</span>
+              <span className="text-white font-medium tabular-nums">
+                {pipelineReady ? data.pipeline.pending_tasks : '…'}
+              </span>
             </div>
             <div className="flex justify-between text-sm text-gray-400">
               <span>Running Tasks</span>
-              <span className="text-white font-medium tabular-nums">{data.pipeline.running_tasks}</span>
+              <span className="text-white font-medium tabular-nums">
+                {pipelineReady ? data.pipeline.running_tasks : '…'}
+              </span>
             </div>
             <div className="flex justify-between text-sm text-gray-400">
               <span>Timed Out Tasks</span>
-              <span className="text-white font-medium tabular-nums">{data.pipeline.timed_out_tasks}</span>
+              <span className="text-white font-medium tabular-nums">
+                {pipelineReady ? data.pipeline.timed_out_tasks : '…'}
+              </span>
             </div>
           </div>
         </GlassCard>
@@ -357,21 +392,30 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
         <GlassCard>
           <h3 className="text-lg font-semibold text-white mb-4">System Resources</h3>
           <div className="space-y-4">
-            <ProgressBar
-              value={data.resources.cpu_percent}
-              label="CPU"
-              variant={data.resources.cpu_percent > 80 ? 'warning' : 'primary'}
-            />
-            <ProgressBar
-              value={data.resources.memory_percent}
-              label="Memory"
-              variant={data.resources.memory_percent > 80 ? 'warning' : 'primary'}
-            />
-            <ProgressBar
-              value={data.resources.disk_percent}
-              label="Disk"
-              variant={data.resources.disk_percent > 80 ? 'warning' : 'primary'}
-            />
+            {pipelineReady ? (
+              <>
+                <ProgressBar
+                  value={data.resources.cpu_percent}
+                  label="CPU"
+                  variant={data.resources.cpu_percent > 80 ? 'warning' : 'primary'}
+                />
+                <ProgressBar
+                  value={data.resources.memory_percent}
+                  label="Memory"
+                  variant={data.resources.memory_percent > 80 ? 'warning' : 'primary'}
+                />
+                <ProgressBar
+                  value={data.resources.disk_percent}
+                  label="Disk"
+                  variant={data.resources.disk_percent > 80 ? 'warning' : 'primary'}
+                />
+              </>
+            ) : (
+              <p className="text-sm text-gray-500 flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin shrink-0" aria-hidden />
+                {t(locale, 'dashboard.loadingLive')}
+              </p>
+            )}
           </div>
         </GlassCard>
       </div>

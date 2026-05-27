@@ -97,7 +97,11 @@ async def get_dashboard(
 ):
     """Get enhanced dashboard metrics including agent_metrics, director_status, escalations."""
     if quick:
-        return get_or_build_dashboard(_build_quick_dashboard_metrics, quick=True)
+        try:
+            return get_or_build_dashboard(_build_quick_dashboard_metrics, quick=True)
+        except Exception as exc:
+            logger.exception("Quick dashboard build failed, using degraded snapshot: %s", exc)
+            return _build_degraded_dashboard_metrics()
     cached = get_cached_dashboard(quick=False)
     if cached is not None:
         metrics = cached

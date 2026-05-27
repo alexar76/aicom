@@ -50,10 +50,10 @@ export function SettingsTab({ locale }: { locale: AdminLocale }) {
         </p>
       )}
 
-      <div className="flex flex-col lg:flex-row lg:items-start lg:gap-8">
+      <div className="flex flex-col lg:flex-row lg:items-start lg:gap-8 lg:min-h-0">
         <SettingsSectionNav locale={locale} />
 
-        <div className="flex-1 min-w-0 max-w-2xl space-y-6">
+        <div className="flex-1 min-w-0 max-w-2xl space-y-6 pb-8">
           <SettingsSection id="factory-hold">
             <FactoryHoldSettings api={api} />
           </SettingsSection>

@@ -28,6 +28,25 @@ def test_git_status_requires_admin(client):
     assert r.status_code != 200
 
 
+def test_sandbox_view_with_preview_token(client):
+    sid = "sandbox-" + uuid.uuid4().hex
+    token = "preview-view-token-value-32chars-ok"
+    import web.backend.api.sandbox as sb_mod
+
+    sb_mod._active_sandboxes[sid] = {
+        "id": sid,
+        "product_id": "prod-demo-landing-studio",
+        "preview_token": token,
+        "status": "running",
+    }
+    denied = client.get(f"/api/sandbox/view/{sid}")
+    assert denied.status_code == 403
+    ok = client.get(f"/api/sandbox/view/{sid}", params={"preview_token": token})
+    assert ok.status_code == 200
+    assert "Sandbox Demo" in ok.text or "Sandbox:" in ok.text
+    sb_mod._active_sandboxes.pop(sid, None)
+
+
 def test_sandbox_backend_proxy_requires_preview_token(client):
     sid = "sandbox-" + uuid.uuid4().hex
     token = "preview-test-token-value"

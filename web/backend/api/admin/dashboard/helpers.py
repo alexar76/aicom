@@ -775,6 +775,79 @@ def _build_full_metrics(*, include_product_pulses: bool = False) -> dict:
     return asyncio.run(_build_full_metrics_async(include_product_pulses=include_product_pulses))
 
 
+def _build_degraded_dashboard_metrics() -> dict:
+    """Last-resort dashboard when builders throw (disk full, SQLite lock). Never raises."""
+    pipeline_counts: dict[str, int] = {
+        "total_products": 0,
+        "active_products": 0,
+        "completed_products": 0,
+        "failed_products": 0,
+        "pending_tasks": 0,
+        "running_tasks": 0,
+        "timed_out_tasks": 0,
+    }
+    state_distribution: dict[str, int] = {}
+    try:
+        pipeline_counts, state_distribution = _fast_pipeline_metrics()
+    except Exception as e:
+        logger.warning("Degraded dashboard: pipeline aggregates failed (%s)", e)
+
+    storefront_visible: int | None = None
+    try:
+        storefront_visible = count_showcase_listable_products()
+    except Exception as e:
+        logger.warning("Degraded dashboard: storefront count failed (%s)", e)
+
+    resources = {"cpu_percent": 0.0, "memory_percent": 0.0, "disk_percent": 0.0}
+    try:
+        import psutil
+
+        resources = {
+            "cpu_percent": float(psutil.cpu_percent(interval=0.05)),
+            "memory_percent": float(psutil.virtual_memory().percent),
+            "disk_percent": float(psutil.disk_usage("/").percent),
+        }
+    except Exception:
+        pass
+
+    empty_esc = {
+        "total_all_time": 0,
+        "recent_1h": 0,
+        "by_agent": {},
+        "recent_events": [],
+    }
+    revenue = {"last_24h": 0.0, "last_7d": 0.0, "last_30d": 0.0}
+    try:
+        revenue = compute_dashboard_revenue(str(factory_data_root()), time.time())
+    except Exception as e:
+        logger.warning("Degraded dashboard: revenue failed (%s)", e)
+
+    return {
+        "pipeline": {
+            **pipeline_counts,
+            "storefront_visible_products": storefront_visible,
+            "state_distribution": state_distribution,
+            "failed_alerts": [],
+        },
+        "resources": resources,
+        "revenue": revenue,
+        "security": {"status": "healthy", "failed_logins_15min": 0},
+        "agent_metrics": {},
+        "director_status": {
+            "report_count": 0,
+            "last_report_time": None,
+            "pending_decisions": 0,
+            "status": "unknown",
+        },
+        "escalations": empty_esc,
+        "escalation_summary": empty_esc,
+        "collected_at": time.time(),
+        "demo_replay": metrics_demo_replay_slice(),
+        "dashboard_partial": True,
+        "dashboard_build_degraded": True,
+    }
+
+
 def _build_quick_dashboard_metrics() -> dict:
     """Lightweight dashboard payload for first paint (SQL aggregates only)."""
     pipeline_counts, state_distribution = _fast_pipeline_metrics()
@@ -802,6 +875,23 @@ def _build_quick_dashboard_metrics() -> dict:
     except Exception as e:
         logger.debug("dashboard quick failed_alerts: %s", e)
 
+    revenue = {"last_24h": 0.0, "last_7d": 0.0, "last_30d": 0.0}
+    try:
+        revenue = compute_dashboard_revenue(str(factory_data_root()), time.time())
+    except Exception as e:
+        logger.warning("Quick dashboard: revenue metrics failed (%s)", e)
+
+    director_status = {
+        "report_count": 0,
+        "last_report_time": None,
+        "pending_decisions": 0,
+        "status": "unknown",
+    }
+    try:
+        director_status = _collect_director_status(include_benchmark_payload=False)
+    except Exception as e:
+        logger.warning("Quick dashboard: director_status failed (%s)", e)
+
     return {
         "pipeline": {
             **pipeline_counts,
@@ -814,13 +904,13 @@ def _build_quick_dashboard_metrics() -> dict:
             "memory_percent": memory,
             "disk_percent": disk,
         },
-        "revenue": compute_dashboard_revenue(str(factory_data_root()), time.time()),
+        "revenue": revenue,
         "security": {
             "status": "healthy",
             "failed_logins_15min": 0,
         },
         "agent_metrics": {},
-        "director_status": _collect_director_status(include_benchmark_payload=False),
+        "director_status": director_status,
         "escalations": empty_esc,
         "escalation_summary": empty_esc,
         "collected_at": time.time(),

@@ -56,6 +56,31 @@ if [[ -z "$REMOTE" ]]; then
   REMOTE="$(git remote get-url origin 2>/dev/null || true)"
 fi
 
+mask_git_url() {
+  local url="${1:-}"
+  [[ -z "$url" ]] && return 0
+  python3 - "$url" <<'PY'
+import sys, urllib.parse
+
+raw = sys.argv[1]
+if "://" not in raw:
+    print(raw)
+    raise SystemExit
+p = urllib.parse.urlsplit(raw)
+netloc = p.hostname or ""
+if p.port:
+    netloc = f"{netloc}:{p.port}"
+if p.username or p.password:
+    netloc = f"***:***@{netloc}"
+print(urllib.parse.urlunsplit((p.scheme, netloc, p.path, p.query, p.fragment)))
+PY
+}
+
+REMOTE_DISPLAY="${REMOTE:-<none>}"
+if [[ -n "$REMOTE" ]]; then
+  REMOTE_DISPLAY="$(mask_git_url "$REMOTE")"
+fi
+
 EXCLUDES=()
 while IFS= read -r line; do EXCLUDES+=("$line"); done < <(python3 "$ROOT/scripts/aicom_publish_config.py" list-excludes)
 RSYNC_EXCLUDE_ARGS=()
@@ -63,7 +88,7 @@ while IFS= read -r line; do RSYNC_EXCLUDE_ARGS+=("$line"); done < <(python3 "$RO
 
 echo "== AI-Factory publish (satellite paths excluded) =="
 echo "Source:  $ROOT"
-echo "Remote:  ${REMOTE:-<none>}"
+echo "Remote:  $REMOTE_DISPLAY"
 echo "Branch:  $BRANCH"
 echo ""
 echo "Excluded from factory push:"
@@ -95,7 +120,7 @@ if [[ -z "$REMOTE" ]]; then
   exit 2
 fi
 
-echo "Cloning $REMOTE (branch $BRANCH) …"
+echo "Cloning $REMOTE_DISPLAY (branch $BRANCH) …"
 git clone --depth 1 --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null || {
   git clone --depth 1 "$REMOTE" "$WORKDIR/clone"
   cd "$WORKDIR/clone"
@@ -139,6 +164,6 @@ if [[ "$NO_PUSH" -eq 1 ]]; then
   exit 0
 fi
 
-echo "Pushing to $REMOTE ($BRANCH) …"
+echo "Pushing to $REMOTE_DISPLAY ($BRANCH) …"
 git push origin "HEAD:$BRANCH"
-echo "OK factory remote updated — satellite folders removed from $REMOTE"
+echo "OK factory remote updated — satellite folders removed from $REMOTE_DISPLAY"

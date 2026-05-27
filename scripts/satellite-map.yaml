@@ -216,12 +216,33 @@ satellites:
     description: "Alien Monitor — real-time 3D ecosystem pulse visualizer with AI assistant."
     license: mit
     paths:
+      # Only this monorepo folder — NOT linked-in-profile-coach / aicom-landing (separate repos).
       - alien-monitor
     export_layout:
       root_from: alien-monitor
     registries:
       - github-releases
     ci: []
+
+  # Standalone sibling repos (not mirrored from monorepo paths — maintain in their own checkouts).
+  - id: linked-in-profile-coach
+    repo: linked-in-profile-coach
+    description: "LinkedIn Profile Coach — Flutter desktop/mobile app (coach submodule / sibling repo)."
+    license: mit
+    optional: true
+    paths: []
+    notes: >
+      Canonical source: github.com/alexar76/linked-in-profile-coach (or Gitea mirror).
+      Do not add to alien-monitor paths. Submodule in aicom: coach/
+
+  - id: aicom-landing
+    repo: aicom-landing
+    description: "Fast marketing landing generator — separate from full AI-Factory pipeline."
+    license: mit
+    optional: true
+    paths: []
+    notes: >
+      Standalone repo (github.com/alexar76/aicom-landing). Not exported from monorepo paths.
 
   - id: aicom
     repo: aicom

@@ -34,6 +34,20 @@ DEFAULT_RSYNC_EXCLUDES = [
     "*.egg-info",
 ]
 
+# Never rsync to public factory remote (alexar76/aicom). Monorepo .gitignore covers
+# local git only — publish_aicom_factory.sh uses rsync, not git add.
+# Keep aligned with .dockerignore (IDE/CI) and mirror_satellites.sh hygiene.
+FACTORY_LOCAL_EXCLUDES = [
+    ".cursor",
+    ".claude",
+    ".gitea",
+]
+
+# Submodule: publish gitlink only — never rsync expanded coach/ tree to public factory.
+FACTORY_SUBMODULE_PATHS = [
+    "coach",
+]
+
 
 def _load_map() -> dict[str, Any]:
     if yaml is None:
@@ -82,10 +96,22 @@ def factory_exclude_paths() -> list[str]:
     return sorted(dict.fromkeys([*explicit, *satellite_export_paths()]))
 
 
+def factory_local_exclude_paths() -> list[str]:
+    return list(FACTORY_LOCAL_EXCLUDES)
+
+
+def factory_submodule_paths() -> list[str]:
+    return list(FACTORY_SUBMODULE_PATHS)
+
+
 def rsync_exclude_args() -> list[str]:
     args: list[str] = []
     for p in DEFAULT_RSYNC_EXCLUDES:
         args.extend(["--exclude", p])
+    for p in factory_local_exclude_paths():
+        args.extend(["--exclude", p])
+    for p in factory_submodule_paths():
+        args.extend(["--exclude", f"{p}/"])
     for p in factory_exclude_paths():
         args.extend(["--exclude", f"{p}/"])
     return args
@@ -95,6 +121,14 @@ def main() -> int:
     cmd = sys.argv[1] if len(sys.argv) > 1 else "list-excludes"
     if cmd == "list-excludes":
         for p in factory_exclude_paths():
+            print(p)
+        return 0
+    if cmd == "list-local-excludes":
+        for p in factory_local_exclude_paths():
+            print(p)
+        return 0
+    if cmd == "list-submodules":
+        for p in factory_submodule_paths():
             print(p)
         return 0
     if cmd == "rsync-args":

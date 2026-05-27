@@ -30,7 +30,7 @@ docker build -f "$ROOT/aimarket-hub/Dockerfile" -t modelmarket-hub:latest "$ROOT
 
 docker rm -f modelmarket-hub 2>/dev/null || true
 docker run -d --name modelmarket-hub --restart unless-stopped \
-  -p "127.0.0.1:${HUB_PORT}:9080" \
+  -p "127.0.0.1:${HUB_PORT}:9083" \
   -e AIMARKET_HUB_NAME=modelmarket.dev \
   -e AIMARKET_HUB_URL="https://modelmarket.dev" \
   -e AIMARKET_SEED_LIST="https://magic-ai-factory.com/.well-known/ai-market.json" \

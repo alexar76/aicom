@@ -5,11 +5,18 @@
 
 import type { DashboardData } from '@/lib/api';
 
-export const ADMIN_METRICS_CACHE_KEY = 'aicom_admin_dashboard_swr_v3';
+export const ADMIN_METRICS_CACHE_KEY = 'aicom_admin_dashboard_swr_v4';
 
 function isCachedMetricsPayload(x: unknown): x is DashboardData {
   if (!x || typeof x !== 'object') return false;
   const o = x as DashboardData;
+  if (
+    o.dashboard_partial &&
+    (o.pipeline?.total_products ?? 0) === 0 &&
+    !o.dashboard_build_degraded
+  ) {
+    return false;
+  }
   return (
     o.pipeline != null &&
     typeof o.pipeline.total_products === 'number' &&
@@ -95,5 +102,23 @@ export function mergeDashboardQuick(prev: DashboardData, quick: DashboardData): 
       ...quick.pipeline,
       storefront_visible_products: storefront,
     },
+  };
+}
+
+/** True when pipeline totals are authoritative (not the zero placeholder before API load). */
+export function isPipelineMetricsReady(data: DashboardData): boolean {
+  if (data.dashboard_build_degraded) return true;
+  if (!data.dashboard_partial) return true;
+  return (data.pipeline?.total_products ?? 0) > 0;
+}
+
+/** Public vitrine count only — must not mark the dashboard as fully loaded. */
+export function applyPublicStorefrontCount(
+  prev: DashboardData,
+  vitrine: number,
+): DashboardData {
+  return {
+    ...prev,
+    pipeline: { ...prev.pipeline, storefront_visible_products: vitrine },
   };
 }

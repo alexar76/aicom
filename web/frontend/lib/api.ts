@@ -163,6 +163,8 @@ export interface PipelineFailedAlert {
 export interface DashboardData {
   /** True when payload is the fast `?quick=1` path; full fetch clears this. */
   dashboard_partial?: boolean;
+  /** Server used a minimal fallback after a metrics build error. */
+  dashboard_build_degraded?: boolean;
   pipeline: {
     total_products: number;
     active_products: number;
@@ -1036,7 +1038,8 @@ class ApiClient {
 
   async getDashboard(quick?: boolean): Promise<DashboardData> {
     const suffix = quick === true ? '?quick=1' : '';
-    return this.request(`/admin/dashboard${suffix}`);
+    const clientTimeoutMs = quick === true ? 20_000 : 120_000;
+    return this.request(`/admin/dashboard${suffix}`, { clientTimeoutMs });
   }
 
   async getDemoReplayAdmin(): Promise<DemoReplayAdminConfig> {

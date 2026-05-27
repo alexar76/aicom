@@ -26,8 +26,12 @@ services:
     command: >
       sh -c "set -e;
              install -d -o 10001 -g 10001 -m 0750 /data /data/secrets /data/logs /data/state /data/config;
-             chown -R 10001:10001 /data 2>/dev/null || true;
-             echo 'data-init: ownership normalized to 10001:10001'"
+             for d in /data/secrets /data/logs /data/state /data/config /data/store /data/specs /data/arch /data/code /data/bugs /data/telemetry /data/reports /data/sandboxes /data/public; do
+               [ -d \"$$d\" ] && chown -R 10001:10001 \"$$d\" 2>/dev/null || true;
+             done;
+             [ -d /data/prometheus ] && chown -R 65534:65534 /data/prometheus 2>/dev/null || true;
+             [ -d /data/grafana ] && chown -R 472:472 /data/grafana 2>/dev/null || true;
+             echo 'data-init: ownership normalized (app=10001, prometheus=65534, grafana=472)'"
     volumes:
       - ./data:/data
     network_mode: none

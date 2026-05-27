@@ -28,3 +28,12 @@ def test_sqlite_get_metrics_uses_lowercase_task_status():
     ).read_text(encoding="utf-8")
     assert "lower(trim(status)) = 'running'" in text
     assert "lower(trim(status)) = 'pending'" in text
+
+
+def test_degraded_dashboard_metrics_helper_exists():
+    text = (
+        Path(__file__).resolve().parents[1]
+        / "web/backend/api/admin/dashboard/helpers.py"
+    ).read_text(encoding="utf-8")
+    assert "def _build_degraded_dashboard_metrics()" in text
+    assert '"dashboard_build_degraded": True' in text

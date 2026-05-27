@@ -7,7 +7,7 @@ from typing import Optional
 
 from fastapi import HTTPException, Request
 
-from web.backend.core.security import get_current_admin
+from web.backend.core.security import get_current_admin, security_scheme
 
 
 def mint_sandbox_preview_token() -> str:
@@ -26,8 +26,10 @@ def preview_token_from_request(request: Request, sandbox_id: str) -> Optional[st
 
 
 async def optional_admin(request: Request) -> Optional[dict]:
+    """Return admin JWT payload when present; None for anonymous preview-token access."""
     try:
-        return await get_current_admin(request)
+        credentials = await security_scheme(request)
+        return await get_current_admin(request, credentials)
     except HTTPException:
         return None
 

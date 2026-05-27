@@ -71,6 +71,11 @@ done
 [[ -n "$SAT_ID" ]] || { usage; exit 1; }
 
 read -r REPO_NAME SRC_PATH < <(resolve_satellite "$SAT_ID")
+if [[ -z "$SRC_PATH" || "$SRC_PATH" == "." ]]; then
+  echo "error: satellite '$SAT_ID' has no monorepo export path (paths: [] in satellite-map.yaml)." >&2
+  echo "  Do not publish standalone siblings from the monorepo — maintain them in their own checkout." >&2
+  exit 2
+fi
 ORG="${SATELLITE_GITHUB_ORG:-alexar76}"
 REMOTE="${REMOTE:-git@${SATELLITE_GITHUB_HOST:-github.com}:${ORG}/${REPO_NAME}.git}"
 
@@ -110,14 +115,26 @@ git clone --depth 1 --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null ||
   (cd "$WORKDIR/clone" && git checkout -B "$BRANCH")
 }
 
-rsync -a --delete \
-  --exclude .git \
-  --exclude node_modules \
-  --exclude __pycache__ \
-  --exclude .venv \
-  --exclude build \
-  --exclude dist \
-  "$SRC/" "$WORKDIR/clone/"
+LOCAL_EXCLUDES=()
+while IFS= read -r line; do LOCAL_EXCLUDES+=("$line"); done < <(python3 "$ROOT/scripts/aicom_publish_config.py" list-local-excludes)
+
+RSYNC_EX=( -a --delete
+  --exclude .git
+  --exclude node_modules
+  --exclude __pycache__
+  --exclude .venv
+  --exclude build
+  --exclude dist
+)
+for p in "${LOCAL_EXCLUDES[@]}"; do
+  RSYNC_EX+=(--exclude "$p")
+done
+
+rsync "${RSYNC_EX[@]}" "$SRC/" "$WORKDIR/clone/"
+
+for p in "${LOCAL_EXCLUDES[@]}"; do
+  [[ -e "$WORKDIR/clone/$p" ]] && rm -rf "$WORKDIR/clone/$p"
+done
 
 cd "$WORKDIR/clone"
 git add -A

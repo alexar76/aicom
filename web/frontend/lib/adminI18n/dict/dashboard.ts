@@ -34,6 +34,11 @@ export const DASHBOARD_DICT: I18nDict = {
     es: 'Señal 0–100 de métricas (fallos, timeouts, cola, vitrina).',
   },
   'dashboard.health.label': { en: 'Composite health', ru: 'Сводное здоровье', es: 'Salud compuesta' },
+  'dashboard.health.loading': {
+    en: 'loading metrics',
+    ru: 'загрузка метрик',
+    es: 'cargando métricas',
+  },
   'dashboard.health.strong': { en: 'strong', ru: 'хорошо', es: 'fuerte' },
   'dashboard.health.fair': { en: 'fair', ru: 'средне', es: 'regular' },
   'dashboard.health.attention': { en: 'needs attention', ru: 'нужно внимание', es: 'requiere atención' },

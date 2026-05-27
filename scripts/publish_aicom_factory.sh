@@ -130,7 +130,9 @@ if [[ -e "$CLONE/data/state" ]]; then
 fi
 
 # rsync --exclude does not delete these from an existing remote clone
-for p in .claude .cursor; do
+LOCAL_EXCLUDES=()
+while IFS= read -r line; do LOCAL_EXCLUDES+=("$line"); done < <(python3 "$ROOT/scripts/aicom_publish_config.py" list-local-excludes)
+for p in "${LOCAL_EXCLUDES[@]}"; do
   rm -rf "$CLONE/$p"
 done
 
@@ -141,7 +143,10 @@ git add -A
 for p in "${EXCLUDES[@]}"; do
   git rm -rf --ignore-unmatch "$p" 2>/dev/null || true
 done
-git rm -rf --ignore-unmatch data/state .claude .cursor 2>/dev/null || true
+for p in "${LOCAL_EXCLUDES[@]}"; do
+  git rm -rf --ignore-unmatch "$p" 2>/dev/null || true
+done
+git rm -rf --ignore-unmatch data/state 2>/dev/null || true
 
 if git diff --cached --quiet && git diff --quiet; then
   echo "Nothing to commit — factory remote already matches trimmed tree."
