@@ -119,17 +119,28 @@ def _neutralize_iframe_breakouts(html: str) -> str:
     return _TARGET_BREAKOUT_RE.sub("", html)
 
 
-def inject_preview_api_fetch_shim(html: str, sandbox_id: str) -> str:
+def inject_preview_api_fetch_shim(
+    html: str,
+    sandbox_id: str,
+    *,
+    preview_token: str | None = None,
+) -> str:
     """Rewrite browser fetch('/api/…') to the sandbox reverse-proxy prefix (live FastAPI preview)."""
+    import json
+
     sid = re.sub(r"[^\w\-]", "", sandbox_id)
     if not sid:
         return html
+    token_js = json.dumps((preview_token or "").strip())
     shim = (
         '<script id="aicom-sandbox-api-proxy">'
-        "(function(){var BASE='/api/sandbox/backend/" + sid + "';"
+        "(function(){var BASE='/api/sandbox/backend/" + sid + "';var PT=" + token_js + ";"
         "function rewrite(u){if(typeof u!=='string')return u;if(u.indexOf(BASE)===0)return u;"
         "if(u.startsWith('/api/'))return BASE+u;return u;}"
-        "var of=window.fetch;window.fetch=function(input,init){"
+        "function withAuth(init){init=init||{};if(!PT)return init;"
+        "var h=new Headers(init.headers||{});if(!h.has('X-Sandbox-Preview-Token'))"
+        "h.set('X-Sandbox-Preview-Token',PT);var o=Object.assign({},init);o.headers=h;return o;}"
+        "var of=window.fetch;window.fetch=function(input,init){init=withAuth(init);"
         "try{if(typeof input==='string')return of(rewrite(input),init);"
         "if(typeof Request!=='undefined'&&input instanceof Request){var nu=rewrite(input.url);"
         "if(nu!==input.url)input=new Request(nu,input);}}"
@@ -225,6 +236,7 @@ def rewrite_upstream_proxy_body(
     proxy_kind: str,
     inject_backend_fetch_shim: bool,
     public_origin: str = "",
+    preview_token: str | None = None,
 ) -> tuple[bytes, bool]:
     """
     Rewrite compose/backend reverse-proxy bodies so loopback URLs stay on the factory origin.
@@ -249,7 +261,7 @@ def rewrite_upstream_proxy_body(
         )
         text = inject_html_base_href(text, prefix)
         if inject_backend_fetch_shim:
-            text = inject_preview_api_fetch_shim(text, sandbox_id)
+            text = inject_preview_api_fetch_shim(text, sandbox_id, preview_token=preview_token)
         text = _inject_loopback_navigation_guard(text)
         return text.encode("utf-8"), True
     if ct in ("text/css", "application/javascript", "application/x-javascript", "text/javascript"):

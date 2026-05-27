@@ -83,6 +83,7 @@ import { INITIAL_AGENTS_TAB_ROWS, PIPELINE_STAGE_ORDER } from '@/lib/pipelineSta
 import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTheme } from '@/lib/utils';
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
+import { ProductImprovementHoldToggle } from '@/components/admin/pipeline/ProductImprovementHoldToggle';
 
 export function StorefrontFollowupPanel({
   product,
@@ -91,6 +92,7 @@ export function StorefrontFollowupPanel({
   product: Record<string, unknown>;
   onPatch: (productId: string, patch: Record<string, unknown>) => void;
 }) {
+  const locale = detectAdminLocale();
   const st = String(product.state || '').toUpperCase();
   const showPanel = st === 'COMPLETED' || st === 'DEPLOYED_PRODUCTION';
 
@@ -419,6 +421,12 @@ export function StorefrontFollowupPanel({
 
   return (
     <div className="mb-4 rounded-xl border border-white/10 bg-white/[0.02] p-3 space-y-3">
+      <ProductImprovementHoldToggle
+        locale={locale}
+        productId={String(product.id)}
+        storefrontFollowup={sf}
+        onPatch={onPatch}
+      />
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-xs uppercase tracking-wide text-gray-500">Storefront</span>
         {visible ? (

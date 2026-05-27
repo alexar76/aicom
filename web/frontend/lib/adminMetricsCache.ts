@@ -5,7 +5,7 @@
 
 import type { DashboardData } from '@/lib/api';
 
-export const ADMIN_METRICS_CACHE_KEY = 'aicom_admin_dashboard_swr_v1';
+export const ADMIN_METRICS_CACHE_KEY = 'aicom_admin_dashboard_swr_v3';
 
 function isCachedMetricsPayload(x: unknown): x is DashboardData {
   if (!x || typeof x !== 'object') return false;
@@ -84,19 +84,16 @@ export function writeAdminMetricsCacheIfValid(data: unknown): void {
   }
 }
 
-/** Merge quick dashboard response onto cache/zeros without dropping known storefront count. */
+/** Merge quick dashboard — do not keep stale storefront counts from old cache. */
 export function mergeDashboardQuick(prev: DashboardData, quick: DashboardData): DashboardData {
-  const qSf = quick.pipeline.storefront_visible_products;
-  const pSf = prev.pipeline.storefront_visible_products;
-  if ((qSf === null || qSf === undefined) && typeof pSf === 'number') {
-    return {
-      ...quick,
-      pipeline: {
-        ...quick.pipeline,
-        storefront_visible_products: pSf,
-      },
-      dashboard_partial: true,
-    };
-  }
-  return { ...quick, dashboard_partial: true };
+  const storefront =
+    quick.pipeline.storefront_visible_products ?? prev.pipeline.storefront_visible_products;
+  return {
+    ...quick,
+    dashboard_partial: true,
+    pipeline: {
+      ...quick.pipeline,
+      storefront_visible_products: storefront,
+    },
+  };
 }

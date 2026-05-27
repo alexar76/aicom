@@ -21,6 +21,9 @@ from pydantic import BaseModel, Field
 from fastapi.responses import FileResponse, StreamingResponse
 
 from core.logging_utils import log_suppressed
+
+logger = logging.getLogger(__name__)
+
 from core.paths import (
     architecture_json_path,
     audit_log_dir,
@@ -387,6 +390,63 @@ def _task_status_lower(t: dict) -> str:
 _AGENT_LOG_FULL_READ_MAX_BYTES = 200_000
 _AGENT_LOG_TAIL_MAX_BYTES = 512_000
 _AGENT_LOG_TAIL_MAX_LINES = 3_000
+# Not agent execution logs — use GET /admin/llm/logs for llm_calls.jsonl.
+_AGENT_LOG_JSONL_SKIP = frozenset({"llm_calls"})
+
+
+def agent_log_entry_time(entry: dict[str, Any]) -> float:
+    t = entry.get("time", 0)
+    try:
+        return float(t)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def load_agent_execution_logs(
+    *,
+    agent: str | None = None,
+    limit: int = 200,
+    since: float | None = None,
+    until: float | None = None,
+) -> dict[str, Any]:
+    """Tail-bounded read of per-agent ``*.jsonl`` under ``logs_dir()`` (excludes ``llm_calls``)."""
+    logs_dir_path = logs_dir()
+    if not logs_dir_path.exists():
+        return {"logs": [], "count": 0, "total": 0}
+
+    all_logs: list[dict[str, Any]] = []
+    agent_files = sorted(logs_dir_path.glob("*.jsonl"))
+    if agent:
+        agent_files = [f for f in agent_files if f.stem == agent]
+
+    for log_file in agent_files:
+        if log_file.stem in _AGENT_LOG_JSONL_SKIP:
+            continue
+        try:
+            entries = _read_jsonl_entries_for_agent_log(log_file)
+        except Exception as exc:
+            logger.warning("Failed to read agent log %s: %s", log_file, exc)
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            entry_agent = str(entry.get("agent") or log_file.stem)
+            if agent and entry_agent != agent:
+                continue
+            row = dict(entry)
+            if not row.get("agent"):
+                row["agent"] = entry_agent
+            all_logs.append(row)
+
+    if since is not None:
+        all_logs = [x for x in all_logs if agent_log_entry_time(x) >= since]
+    if until is not None:
+        all_logs = [x for x in all_logs if agent_log_entry_time(x) <= until]
+
+    all_logs.sort(key=agent_log_entry_time)
+    window_total = len(all_logs)
+    tail = all_logs[-limit:] if all_logs else []
+    return {"logs": tail, "count": len(tail), "total": window_total}
 
 
 def _read_jsonl_tail_entries(path: Path, *, max_bytes: int, max_lines: int) -> list[dict[str, Any]]:
@@ -456,6 +516,8 @@ def _collect_agent_metrics() -> dict:
     agents: dict[str, Any] = {}
     if log_dir.exists():
         for log_file in sorted(log_dir.glob("*.jsonl")):
+            if log_file.stem in _AGENT_LOG_JSONL_SKIP:
+                continue
             agent_type = log_file.stem
             entries = _read_jsonl_entries_for_agent_log(log_file)
             if entries:
@@ -611,11 +673,11 @@ async def _build_full_metrics_async(*, include_product_pulses: bool = False) -> 
     """Build the complete metrics payload (async-safe SQLite aggregates)."""
     pipeline_counts, state_distribution = await _fast_pipeline_metrics_async()
 
+    storefront_visible: int | None = None
     try:
         storefront_visible = count_showcase_listable_products()
     except Exception as e:
         logger.warning("Dashboard metrics: storefront visible count failed (%s)", e)
-        storefront_visible = 0
 
     # Resource metrics
     try:

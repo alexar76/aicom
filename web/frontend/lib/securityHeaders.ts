@@ -9,6 +9,7 @@ export const DEFAULT_FRONTEND_CSP = [
   "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
+  "media-src 'self' blob:",
   "font-src 'self' data:",
   "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://region1.google-analytics.com",
   "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",

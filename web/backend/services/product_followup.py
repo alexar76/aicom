@@ -19,6 +19,8 @@ logger = logging.getLogger(__name__)
 STOREFRONT_ESTABLISHED_LISTING_KEY = "storefront_established_listing"
 POST_DEVOPS_HUMAN_APPROVED_AT_KEY = "post_devops_human_review_approved_at"
 POST_DEVOPS_HUMAN_APPROVE_NOTE_KEY = "post_devops_human_review_approve_note"
+IMPROVEMENT_ON_HOLD_KEY = "improvement_on_hold"
+IMPROVEMENT_ON_HOLD_AT_KEY = "improvement_on_hold_at"
 
 
 def _data_root() -> Path:
@@ -93,7 +95,26 @@ def normalize_pipeline_followup(raw: Optional[dict[str, Any]]) -> dict[str, Any]
         "admin_decisions_updated_at": raw.get("admin_decisions_updated_at"),
         "storefront_established_listing": bool(raw.get(STOREFRONT_ESTABLISHED_LISTING_KEY)),
         "storefront_established_listing_at": raw.get("storefront_established_listing_at"),
+        "improvement_on_hold": bool(raw.get(IMPROVEMENT_ON_HOLD_KEY)),
+        "improvement_on_hold_at": raw.get(IMPROVEMENT_ON_HOLD_AT_KEY),
     }
+
+
+def is_product_improvement_on_hold(product_id: str) -> bool:
+    """When True, worker skips auto-improvement tasks for this product (monitoring, refactor, remediation)."""
+    raw = read_followup(product_id)
+    return bool(raw and raw.get(IMPROVEMENT_ON_HOLD_KEY))
+
+
+def set_product_improvement_on_hold(product_id: str, on_hold: bool) -> dict[str, Any]:
+    cur = read_followup(product_id) or {}
+    cur[IMPROVEMENT_ON_HOLD_KEY] = bool(on_hold)
+    if on_hold:
+        cur[IMPROVEMENT_ON_HOLD_AT_KEY] = time.time()
+    else:
+        cur.pop(IMPROVEMENT_ON_HOLD_AT_KEY, None)
+    write_followup(product_id, cur)
+    return normalize_pipeline_followup(cur)
 
 
 # Back-compat alias

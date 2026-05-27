@@ -36,8 +36,29 @@ def test_get_product_files_route_via_testclient(admin_files_client, tmp_path):
 
 
 def test_get_product_files_requires_admin_dependency(admin_files_client):
-    """Without override, RBAC dependency would reject — ensure route is wired."""
+    """Route is wired into the router with the expected path."""
     from web.backend.api.admin.dashboard._router import router
 
     paths = [getattr(r, "path", "") for r in router.routes]
     assert any("products/{product_id}/files" in p for p in paths)
+
+
+def test_get_product_files_rejects_unauthenticated(tmp_path, monkeypatch):
+    """Without a session cookie / Bearer token, the live RBAC dependency must
+    reject anonymous callers — guards against accidentally removing
+    Depends(require_admin_with_rbac) from the route in the future."""
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path))
+    from web.backend.api.admin.dashboard import routes_products  # noqa: F401
+    from web.backend.api.admin.dashboard._router import router
+
+    app = FastAPI()
+    app.include_router(router)
+    # NO dependency_overrides — real require_admin_with_rbac runs.
+    client = TestClient(app)
+
+    resp = client.get("/api/admin/products/prod-files-route-test/files")
+    # 401 (no auth) or 403 (auth present but role insufficient) both prove the
+    # dependency fires; the important thing is we never see a 200 from anon.
+    assert resp.status_code in (401, 403), (
+        f"anonymous request should be refused, got {resp.status_code}: {resp.text}"
+    )

@@ -14,6 +14,7 @@ import {
   writePipelineCatalogCache,
   type PipelineCatalogSummaryCached,
 } from '@/lib/pipelineCatalogCache';
+import { fetchPublicStorefrontListableCount } from '@/lib/refreshStorefrontListableCount';
 
 export type PipelineCatalogSummary = PipelineCatalogSummaryCached;
 
@@ -127,6 +128,24 @@ export function usePipelineCatalog(pipelineSort: 'newest' | 'shipped_first') {
       });
     };
 
+    const refreshStorefrontTotal = () => {
+      void fetchPublicStorefrontListableCount().then((n) => {
+        if (cancelled || isStale() || n === null) return;
+        setCatalogSummary((prev) => {
+          const base: PipelineCatalogSummary =
+            prev ??
+            ({
+              total_products: 0,
+              shipped_products: 0,
+              failed_products: 0,
+              storefront_listable_products: n,
+              sort: pipelineSort,
+            } as PipelineCatalogSummary);
+          return { ...base, storefront_listable_products: n };
+        });
+      });
+    };
+
     (async () => {
       let rowsLoaded = 0;
       let expectedTotal = 0;
@@ -219,6 +238,7 @@ export function usePipelineCatalog(pipelineSort: 'newest' | 'shipped_first') {
         );
 
         bumpCacheWriteLater(merged0, knownTotal || merged0.length, lastSummaryState);
+        refreshStorefrontTotal();
 
         let offset = firstBatch.length;
         if (offset < knownTotal) {
@@ -264,6 +284,7 @@ export function usePipelineCatalog(pipelineSort: 'newest' | 'shipped_first') {
             : mergePreview(networkHead).length;
         const fullyMerged = mergePreview(networkHead).slice(0, finalCap);
         flushCacheWrite(fullyMerged, knownTotal, lastSummaryState);
+        refreshStorefrontTotal();
 
         if (fellBackToFullThisSession && !cancelled && !isStale()) {
           setCatalogNotice(

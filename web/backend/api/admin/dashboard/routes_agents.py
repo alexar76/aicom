@@ -38,7 +38,6 @@ from core.paths import (
     market_research_path,
     marketing_content_path,
     metrics_history_path,
-    model_providers_path,
     pipeline_db_path,
     pipeline_json_path,
     reports_dir,
@@ -46,7 +45,6 @@ from core.paths import (
 )
 from web.backend.core.admin_roles import AdminRole, normalize_role, rank, require_admin_with_rbac
 from finance_stats import compute_dashboard_revenue
-from llm.bootstrap_providers import ensure_model_providers_file
 from llm.factory_defaults import FACTORY_CONTEXT_WINDOW_DEFAULT, FACTORY_MAX_OUTPUT_TOKENS_HEAVY
 from web.backend.services.catalog_hardening import harden_catalog_products
 from web.backend.services.product_naming import resolve_product_name

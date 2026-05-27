@@ -286,7 +286,11 @@ async def invoke_v2(
     return JSONResponse(status_code=status, content=payload, headers=extra_headers)
 
 
-# Root-level routes (/.well-known, /capabilities/.../invoke) shared with v1 implementation.
+# Re-export root-level routers (/.well-known, /capabilities/.../invoke) for
+# backward compatibility with anything that imports them from this module.
+# main.py imports DIRECTLY from v1 — these aliases are retained for any
+# external/extension code that started consuming the v2 names. Treat as
+# deprecated: the routers are v1 implementations and live in v1.
 from web.backend.api.ai_market_protocol_v1 import (  # noqa: E402
     capabilities_router,
     wellknown_router,

@@ -31,17 +31,23 @@ def _is_production_env() -> bool:
     env = os.environ.get("AIFACTORY_ENV", "").strip().lower()
     if env in _PRODUCTION_ENV_TAGS:
         return True
-    # Fallback marker used by some deploy scripts.
-    return os.environ.get("AIFACTORY_PRODUCTION", "").strip().lower() in ("1", "true", "yes")
+    # Two production-marker env vars exist in the repo: ``AIFACTORY_PROD=1`` is
+    # consumed by ``security/prod_startup_guard.py``; ``AIFACTORY_PRODUCTION=1``
+    # appears in some deploy scripts. Honour BOTH so a deployment that flips
+    # only one of them still triggers the demo-bypass interlock.
+    for key in ("AIFACTORY_PROD", "AIFACTORY_PRODUCTION"):
+        if os.environ.get(key, "").strip().lower() in ("1", "true", "yes", "on"):
+            return True
+    return False
 
 
 def demo_payment_bypass() -> bool:
     """Allow ``demo-*`` / ``0xdemo*`` tx hashes to bypass on-chain verification.
 
     Hard-disabled when the deployment self-identifies as production via
-    ``AIFACTORY_ENV`` (production|prod|live) or ``AIFACTORY_PRODUCTION=1``. A
-    misconfigured ``AIFACTORY_AI_MARKET_DEMO_PAYMENT=1`` in prod would otherwise
-    let any caller mint UNI / open payment channels for free.
+    ``AIFACTORY_ENV`` (production|prod|live), ``AIFACTORY_PROD=1``, or
+    ``AIFACTORY_PRODUCTION=1``. A misconfigured ``AIFACTORY_AI_MARKET_DEMO_PAYMENT=1``
+    in prod would otherwise let any caller mint UNI / open payment channels for free.
     """
     if _is_production_env():
         return False

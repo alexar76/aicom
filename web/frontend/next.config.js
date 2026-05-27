@@ -4,7 +4,10 @@ const nextConfig = {
     domains: ['localhost', 'magic-ai-factory.com'],
   },
   async rewrites() {
-    const backend = process.env.AICOM_BACKEND_INTERNAL_URL || 'http://localhost:8081';
+    const backend =
+      process.env.AICOM_BACKEND_INTERNAL_URL ||
+      process.env.INTERNAL_API_URL ||
+      'http://localhost:8081';
     return [
       {
         source: '/api/:path*',

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   Sparkles,
@@ -39,6 +39,7 @@ import {
   type ContentLocaleChoice,
 } from '@/lib/contentLanguages';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
+import { useNewProductTabStore } from '@/lib/newProductTabStore';
 
 function getStepLabels(locale: AdminLocale): readonly [string, string, string] {
   return [
@@ -142,31 +143,50 @@ const INTRO_STORAGE = 'aicom_new_product_intro_dismissed_v1';
 
 export function NewProductTab({ locale }: { locale: AdminLocale }) {
   const stepLabels = useMemo(() => getStepLabels(locale), [locale]);
-  const [step, setStep] = useState(1);
-  const [idea, setIdea] = useState('');
-  const [instructions, setInstructions] = useState('');
-  const [deliveryChoice, setDeliveryChoice] = useState<
-    'full_software' | 'marketing_landing' | 'desktop_app' | 'infer'
-  >('full_software');
-  const [categoryChoice, setCategoryChoice] = useState<string>('saas');
-  const [mode, setMode] = useState<'prototype' | 'production'>('prototype');
-  const [contentLocale, setContentLocale] = useState<ContentLocaleChoice>('auto');
-  const [submitting, setSubmitting] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
-  const [createdId, setCreatedId] = useState<string | null>(null);
-  const [submitFailure, setSubmitFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
-  const [templatesFailure, setTemplatesFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
-  const [prefillFailure, setPrefillFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
-  const [cloudOpFailure, setCloudOpFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
-  const [templates, setTemplates] = useState<ProductCreationTemplate[]>([]);
-  const [cloudTemplates, setCloudTemplates] = useState<
-    { id: string; name: string; delivery_profile: string; production_mode: boolean; instructions: string }[]
-  >([]);
-  const [templateName, setTemplateName] = useState('');
-  const [dismissedHint, setDismissedHint] = useState(false);
-  const [consentAiPrefill, setConsentAiPrefill] = useState(false);
-  const [aiBusy, setAiBusy] = useState(false);
-  const [introDismissed, setIntroDismissed] = useState(true);
+  const {
+    step,
+    setStep,
+    idea,
+    setIdea,
+    instructions,
+    setInstructions,
+    deliveryChoice,
+    setDeliveryChoice,
+    categoryChoice,
+    setCategoryChoice,
+    mode,
+    setMode,
+    contentLocale,
+    setContentLocale,
+    submitting,
+    setSubmitting,
+    result,
+    setResult,
+    createdId,
+    setCreatedId,
+    submitFailure,
+    setSubmitFailure,
+    templatesFailure,
+    setTemplatesFailure,
+    prefillFailure,
+    setPrefillFailure,
+    cloudOpFailure,
+    setCloudOpFailure,
+    templates,
+    setTemplates,
+    cloudTemplates,
+    setCloudTemplates,
+    templateName,
+    setTemplateName,
+    dismissedHint,
+    setDismissedHint,
+    consentAiPrefill,
+    setConsentAiPrefill,
+    aiBusy,
+    setAiBusy,
+    introDismissed,
+    setIntroDismissed,
+  } = useNewProductTabStore();
 
   const hint = useMemo(() => inferProductDefaultsFromIdea(idea), [idea]);
 

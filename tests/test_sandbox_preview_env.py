@@ -43,6 +43,47 @@ def test_sqlite_env_for_simple_fastapi(tmp_path: Path, monkeypatch) -> None:
     assert (root / "data").is_dir()
 
 
+def test_build_fastapi_preview_env_skips_pip_when_postgres_and_no_docker(
+    tmp_path: Path, monkeypatch
+) -> None:
+    root = tmp_path / "pg_prod"
+    backend = root / "backend"
+    backend.mkdir(parents=True)
+    (root / "docker-compose.yml").write_text(
+        "services:\n  postgres:\n    image: postgres:16\n",
+        encoding="utf-8",
+    )
+    (backend / "app").mkdir()
+    (backend / "app" / "db.py").write_text("postgresql://user:pass@postgres/db\n", encoding="utf-8")
+
+    pip_called = {"n": 0}
+
+    def fake_pip(*_a, **_k):
+        pip_called["n"] += 1
+
+    monkeypatch.setattr(
+        "web.backend.services.sandbox_preview_env._pip_install_requirements",
+        fake_pip,
+    )
+    monkeypatch.setattr(
+        "web.backend.services.sandbox_docker.docker_available",
+        lambda: False,
+    )
+
+    env, meta = build_fastapi_preview_env(
+        sandbox_id="sb-skip",
+        code_dir=root,
+        cwd=backend,
+        base_env={},
+        skip_heavy_setup=True,
+    )
+
+    assert meta.get("skip_heavy_setup") is True
+    assert meta.get("postgres_status") == "docker_unavailable"
+    assert pip_called["n"] == 0
+    assert "preview_python" not in meta
+
+
 def test_preview_venv_isolated_from_factory_python(tmp_path: Path, monkeypatch) -> None:
     """pip/uvicorn for sandbox previews must not use the factory sys.executable."""
     import sys

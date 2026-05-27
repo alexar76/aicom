@@ -99,6 +99,11 @@ export const PIPELINE_TAB_DICT: I18nDict = {
     ru: 'Состояние «доставлено»',
     es: 'Estado enviado',
   },
+  'pipeline.stat.shippedStateTooltip': {
+    en: 'Rows in COMPLETED / DEPLOYED_PRODUCTION only. Products in repair (e.g. DEV_FIXING) can still appear on the public vitrine if they were listed before — see Public storefront.',
+    ru: 'Только COMPLETED / DEPLOYED_PRODUCTION. Продукты в доработке (напр. DEV_FIXING) могут оставаться на витрине, если уже были опубликованы — см. «Публичная витрина».',
+    es: 'Solo COMPLETED / DEPLOYED_PRODUCTION. Productos en reparación (p. ej. DEV_FIXING) pueden seguir en la vitrina si ya se publicaron — ver Escaparate público.',
+  },
   'pipeline.stat.publicStorefrontTitle': {
     en: 'Public storefront',
     ru: 'Публичная витрина',
@@ -315,6 +320,126 @@ export const PIPELINE_TAB_DICT: I18nDict = {
     en: 'Timeline',
     ru: 'Срок',
     es: 'Plazo',
+  },
+  'pipeline.vitals.progressTitle': {
+    en: 'Pipeline progress',
+    ru: 'Прогресс пайплайна',
+    es: 'Progreso del pipeline',
+  },
+  'pipeline.vitals.progressUnknown': {
+    en: 'Stage data pending',
+    ru: 'Данные по стадиям ещё не загружены',
+    es: 'Datos de etapas pendientes',
+  },
+  'pipeline.vitals.progressCancelled': {
+    en: 'Cancelled',
+    ru: 'Отменён',
+    es: 'Cancelado',
+  },
+  'pipeline.vitals.progressStages': {
+    en: '{done}/{total} stages',
+    ru: '{done}/{total} стадий',
+    es: '{done}/{total} etapas',
+  },
+  'pipeline.vitals.progressStagesEta': {
+    en: '{done}/{total} stages · {eta}',
+    ru: '{done}/{total} стадий · {eta}',
+    es: '{done}/{total} etapas · {eta}',
+  },
+  'pipeline.vitals.progressTasks': {
+    en: '{done}/{total} tasks',
+    ru: '{done}/{total} задач',
+    es: '{done}/{total} tareas',
+  },
+  'pipeline.vitals.progressRepairTasks': {
+    en: 'Repair ({state}): {done}/{total} tasks',
+    ru: 'Доработка ({state}): {done}/{total} задач',
+    es: 'Reparación ({state}): {done}/{total} tareas',
+  },
+  'pipeline.vitals.progressRepairEta': {
+    en: 'Repair ({state}) · {eta}',
+    ru: 'Доработка ({state}) · {eta}',
+    es: 'Reparación ({state}) · {eta}',
+  },
+  'pipeline.vitals.costCallsTokens': {
+    en: '{calls} calls · {tokens} tokens',
+    ru: '{calls} вызовов · {tokens} токенов',
+    es: '{calls} llamadas · {tokens} tokens',
+  },
+  'pipeline.vitals.costFromLog': {
+    en: 'from llm_calls.jsonl',
+    ru: 'из llm_calls.jsonl',
+    es: 'desde llm_calls.jsonl',
+  },
+  'pipeline.vitals.costNoLog': {
+    en: 'No LLM calls logged for this product',
+    ru: 'Нет записей LLM по этому продукту',
+    es: 'Sin llamadas LLM registradas para este producto',
+  },
+  'pipeline.vitals.qualityHuman': {
+    en: 'Human score {score}/5',
+    ru: 'Оценка {score}/5',
+    es: 'Puntuación humana {score}/5',
+  },
+  'pipeline.vitals.qualityDemo': {
+    en: 'Demo gate score {score}/100',
+    ru: 'Demo gate {score}/100',
+    es: 'Demo gate {score}/100',
+  },
+  'pipeline.vitals.qualityQaPass': {
+    en: 'QA gates passed',
+    ru: 'QA gates пройдены',
+    es: 'QA gates superados',
+  },
+  'pipeline.vitals.qualityQaFail': {
+    en: 'QA gates failed',
+    ru: 'QA gates не пройдены',
+    es: 'QA gates fallidos',
+  },
+  'pipeline.vitals.tableTitle': {
+    en: 'Vitals table (filtered products)',
+    ru: 'Таблица показателей (отфильтрованные продукты)',
+    es: 'Tabla de indicadores (productos filtrados)',
+  },
+  'pipeline.vitals.tableHint': {
+    en: 'Same metrics as the three rings per card: LLM spend (USD), pipeline stage progress, quality when scored.',
+    ru: 'Те же метрики, что три кольца на карточке: затраты LLM (USD), прогресс стадий, качество при наличии оценки.',
+    es: 'Mismas métricas que los tres anillos: gasto LLM (USD), progreso de etapas, calidad si hay puntuación.',
+  },
+  'pipeline.vitals.colProduct': {
+    en: 'Product',
+    ru: 'Продукт',
+    es: 'Producto',
+  },
+  'pipeline.vitals.colState': {
+    en: 'State',
+    ru: 'Статус',
+    es: 'Estado',
+  },
+  'pipeline.vitals.colCost': {
+    en: 'LLM $',
+    ru: 'LLM $',
+    es: 'LLM $',
+  },
+  'pipeline.vitals.colProgress': {
+    en: 'Progress',
+    ru: 'Прогресс',
+    es: 'Progreso',
+  },
+  'pipeline.vitals.colQuality': {
+    en: 'Quality',
+    ru: 'Качество',
+    es: 'Calidad',
+  },
+  'pipeline.vitals.colNotes': {
+    en: 'Notes',
+    ru: 'Пояснение',
+    es: 'Notas',
+  },
+  'pipeline.vitals.ofCap': {
+    en: 'of cap',
+    ru: 'от лимита',
+    es: 'del tope',
   },
   'pipeline.vitals.qualityTitle': {
     en: 'Quality',

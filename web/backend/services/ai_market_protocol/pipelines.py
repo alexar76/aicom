@@ -39,7 +39,14 @@ async def execute_pipeline(
         if not ch or ch.get("status") != "open":
             return {"error": "invalid_channel", "channel_id": channel_id}
 
+    # NB: this ``trace_id`` is the PIPELINE'S opaque id (``tr_<hex12>``) used
+    # to look up the persisted BoM, NOT the OTel W3C trace id (32-hex) used by
+    # UNI receipts (``core.uni.receipts.trace_id``). The two namespaces collide
+    # by name only; we emit BOTH below so consumers don't conflate them.
     trace_id = f"tr_{uuid.uuid4().hex[:12]}"
+    from core.tracing import current_trace_id_hex
+
+    otel_trace_id = current_trace_id_hex()  # None when tracing is disabled
     t0 = time.time()
     steps_out: list[dict[str, Any]] = []
     total_usd = 0.0
@@ -104,6 +111,8 @@ async def execute_pipeline(
         "duration_ms": int((time.time() - t0) * 1000),
         "completed_at": time.time(),
     }
+    if otel_trace_id:
+        bom["otel_trace_id"] = otel_trace_id
     bom["signature"] = sign_payload(bom)
     _save_trace(trace_id, bom)
     append_stat({"type": "pipeline", "trace_id": trace_id, "steps": len(steps_out), "total_usd": total_usd})

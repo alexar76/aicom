@@ -36,6 +36,11 @@ export const AGENT_LOGS_DICT: I18nDict = {
     ru: 'Очистите поиск или фильтр ошибок для «{agent}».',
     es: 'Prueba a limpiar búsqueda/errores para «{agent}».',
   },
+  'agentLogs.error.load': {
+    en: 'Could not load agent logs',
+    ru: 'Не удалось загрузить журнал агентов',
+    es: 'No se pudieron cargar los registros de agentes',
+  },
   'agentLogs.emptyHintGeneric': {
     en: 'Try clearing filters or refresh.',
     ru: 'Сбросьте фильтры или обновите.',

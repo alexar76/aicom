@@ -38,7 +38,6 @@ from core.paths import (
     market_research_path,
     marketing_content_path,
     metrics_history_path,
-    model_providers_path,
     pipeline_db_path,
     pipeline_json_path,
     reports_dir,
@@ -46,7 +45,6 @@ from core.paths import (
 )
 from web.backend.core.admin_roles import AdminRole, normalize_role, rank, require_admin_with_rbac
 from finance_stats import compute_dashboard_revenue
-from llm.bootstrap_providers import ensure_model_providers_file
 from llm.factory_defaults import FACTORY_CONTEXT_WINDOW_DEFAULT, FACTORY_MAX_OUTPUT_TOKENS_HEAVY
 from web.backend.services.catalog_hardening import harden_catalog_products
 from web.backend.services.product_naming import resolve_product_name
@@ -86,6 +84,9 @@ from web.backend.api.products import count_showcase_listable_products, is_shippe
 from ._router import router
 from .helpers import *
 
+logger = logging.getLogger(__name__)
+
+
 @router.get("/dashboard")
 async def get_dashboard(
     background_tasks: BackgroundTasks,
@@ -101,7 +102,21 @@ async def get_dashboard(
     if cached is not None:
         metrics = cached
     else:
-        metrics = await _build_full_metrics_async(include_product_pulses=False)
+        try:
+            metrics = await _build_full_metrics_async(include_product_pulses=False)
+        except Exception as exc:
+            logger.exception("Full dashboard metrics build failed: %s", exc)
+            metrics = _build_quick_dashboard_metrics()
+            metrics = dict(metrics)
+            metrics["dashboard_partial"] = True
+            metrics["dashboard_build_degraded"] = True
+            try:
+                sf = count_showcase_listable_products()
+                if sf is not None:
+                    metrics["pipeline"] = dict(metrics.get("pipeline") or {})
+                    metrics["pipeline"]["storefront_visible_products"] = sf
+            except Exception as sf_exc:
+                logger.warning("Storefront count during dashboard fallback failed: %s", sf_exc)
         set_cached_dashboard(metrics, quick=False)
     background_tasks.add_task(_append_metrics_history, metrics)
     out = dict(metrics)

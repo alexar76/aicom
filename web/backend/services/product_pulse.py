@@ -166,6 +166,24 @@ def _load_gate_telemetry(product_id: str, data_root: Path) -> Optional[dict[str,
         return None
 
 
+def enrich_pipeline_catalog_quality_fields(row: dict[str, Any], *, data_root: Path) -> None:
+    """Attach qa_gates / demo score from gate telemetry (works for light + full catalog)."""
+    pid = str(row.get("id") or "")
+    if not pid:
+        return
+    tel = _load_gate_telemetry(pid, data_root)
+    if not isinstance(tel, dict):
+        return
+    if "gates_all_passed" in tel:
+        row["qa_gates_all_passed"] = tel.get("gates_all_passed")
+    demo = tel.get("demo_quality")
+    if isinstance(demo, dict) and demo.get("score") is not None:
+        try:
+            row["demo_quality"] = {"score": float(demo["score"])}
+        except (TypeError, ValueError):
+            pass
+
+
 def _terminal_pipeline_state(state: str) -> bool:
     s = state.strip().upper()
     return s in ("COMPLETED", "DEPLOYED_PRODUCTION", "FAILED", "CANCELLED")
@@ -324,7 +342,8 @@ def build_product_pulse(
         quality_pulse, quality_hint = "red", "Pipeline failed"
     elif any(_task_status_lower(t) == "failed" for t in tasks):
         quality_pulse, quality_hint = "red", "Agent task failed"
-    elif not light:
+    else:
+        # Light catalog still reads demo_quality_gate.json (cheap); only skips heavy spec/task payloads.
         tel = _load_gate_telemetry(pid, data_root) if pid else None
         if isinstance(tel, dict):
             if tel.get("gates_all_passed") is True:
@@ -343,8 +362,6 @@ def build_product_pulse(
                 quality_pulse, quality_hint = "amber", "Build progressing — QA not finished"
             else:
                 quality_pulse, quality_hint = "green", "No blocking issues yet"
-    else:
-        quality_pulse, quality_hint = "unknown", "Light catalog — telemetry skipped"
 
     economics = row.get("economics") if isinstance(row.get("economics"), dict) else {}
     qs = economics.get("quality_score")

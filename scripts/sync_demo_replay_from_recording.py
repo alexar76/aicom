@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-Copy docs/gallery/recordings/pipeline-demo-latest.webm into the admin demo-replay upload dir
-and enable Live Monitor replay (uses server-local media URL).
+Copy bundled pipeline demo recording into the admin demo-replay upload dir
+and enable Live Monitor replay.
+
+Prefers ``.mp4`` (Safari / broad browser support); also copies ``.webm`` when present.
 
 Run on the host that mounts ./data → /app/data (or set AIFACTORY_DATA_ROOT).
 
@@ -13,13 +15,13 @@ from __future__ import annotations
 
 import shutil
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-# Host-side runs use repo ./data, not /app/data
 import os
 
 os.environ.setdefault("AIFACTORY_DATA_ROOT", str(ROOT / "data"))
@@ -31,16 +33,36 @@ from web.backend.services.pipeline_demo_replay import (  # noqa: E402
 )
 
 
+def _pick_source() -> tuple[Path, str]:
+    """Return (source_path, dest_basename) — mp4 preferred."""
+    candidates = (
+        ROOT / "docs" / "gallery" / "recordings" / "pipeline-demo-latest.mp4",
+        ROOT / "web" / "frontend" / "public" / "demo" / "pipeline-demo.mp4",
+        ROOT / "docs" / "gallery" / "recordings" / "pipeline-demo-latest.webm",
+    )
+    for p in candidates:
+        if p.is_file() and p.suffix.lower() == ".mp4":
+            return p, "pipeline-demo-latest.mp4"
+    for p in candidates:
+        if p.is_file():
+            return p, f"pipeline-demo-latest{p.suffix.lower()}"
+    raise FileNotFoundError(
+        "No demo video found. Expected docs/gallery/recordings/pipeline-demo-latest.mp4 "
+        "or web/frontend/public/demo/pipeline-demo.mp4"
+    )
+
+
 def main() -> int:
-    src = ROOT / "docs" / "gallery" / "recordings" / "pipeline-demo-latest.webm"
-    if not src.is_file():
-        print(f"Missing recording: {src}", file=sys.stderr)
-        return 1
+    src, dest_name = _pick_source()
     dest_dir = upload_dir()
     dest_dir.mkdir(parents=True, exist_ok=True)
-    dest_name = "pipeline-demo-latest.webm"
     dest = dest_dir / dest_name
     shutil.copy2(src, dest)
+
+    # Optional second format for operators who want webm in admin media folder
+    webm_src = ROOT / "docs" / "gallery" / "recordings" / "pipeline-demo-latest.webm"
+    if webm_src.is_file() and dest_name.endswith(".mp4"):
+        shutil.copy2(webm_src, dest_dir / "pipeline-demo-latest.webm")
 
     cfg = load_raw_config()
     cfg["enabled"] = True
@@ -48,8 +70,9 @@ def main() -> int:
     cfg["source"] = "upload"
     cfg["media_filename"] = dest_name
     cfg["video_url"] = None
+    cfg["updated_at"] = time.time()
     save_config(cfg)
-    print(f"OK — replay enabled using {dest}")
+    print(f"OK — replay enabled using {dest} (source: {src.name})")
     return 0
 
 

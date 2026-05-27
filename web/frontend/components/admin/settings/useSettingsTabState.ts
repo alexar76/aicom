@@ -45,6 +45,7 @@ export function useSettingsTabState(locale: AdminLocale) {
   const [themeSaving, setThemeSaving] = useState<string | null>(null);
 
   const [settings, setSettings] = useState({
+    factory_on_hold: false,
     auto_pipeline: false,
     auto_pipeline_interval_minutes: 60,
     local_high_throughput_enabled: false,
@@ -77,7 +78,15 @@ export function useSettingsTabState(locale: AdminLocale) {
     reference_prompt_max_chars: 14000,
     pipeline_db_backend: 'sqlite' as 'sqlite' | 'postgres' | 'json',
     pipeline_database_url: '',
+    telegram_notify_host_disk: true,
+    disk_warn_used_pct: 90,
+    disk_crit_used_pct: 96,
+    disk_warn_free_gb: 4,
+    disk_crit_free_gb: 1,
+    disk_alert_cooldown_hours: 8,
+    disk_monitor_interval_minutes: 15,
   });
+  const [diskMonitorLive, setDiskMonitorLive] = useState<Record<string, unknown> | null>(null);
   const [pipelineDbStatus, setPipelineDbStatus] = useState<Record<string, unknown> | null>(null);
   const [throughputEffective, setThroughputEffective] = useState<AdminThroughputSnapshot | null>(null);
   const [throughputSnapshotBusy, setThroughputSnapshotBusy] = useState(false);
@@ -152,8 +161,10 @@ export function useSettingsTabState(locale: AdminLocale) {
       quality: qualityPayload,
       pipeline_db_status: pipeStatus,
       pipeline_database_url_masked: _urlMasked,
+      disk_monitor_live: diskLive,
       ...rest
     } = data;
+    setDiskMonitorLive(diskLive && typeof diskLive === 'object' ? (diskLive as Record<string, unknown>) : null);
     setPipelineDbStatus(pipeStatus && typeof pipeStatus === 'object' ? pipeStatus : null);
     if (te && typeof te === 'object') {
       setThroughputEffective(te as AdminThroughputSnapshot);
@@ -190,6 +201,7 @@ export function useSettingsTabState(locale: AdminLocale) {
       telegram_bot_token_configured: _tb,
       railway_token_configured: _rw,
       reference_templates_catalog: _rc,
+      disk_monitor_live: _diskLive,
       quality,
       ...rest
     } = data;
@@ -286,7 +298,55 @@ export function useSettingsTabState(locale: AdminLocale) {
     }
   };
 
+  const persistSettingsPatch = async (
+    patch: Record<string, unknown>,
+    toastKey?: string,
+  ): Promise<boolean> => {
+    setSettingsSaving(true);
+    setSettingsMessage(null);
+    try {
+      const result = await api.updateAdminSettings(patch);
+      const fresh = await api.getAdminSettings();
+      ingestAdminSettingsResponse(fresh);
+      lastAdminPersistSigRef.current = adminSigFromGetResponse(fresh);
+      setSettingsMessage(`✅ ${result.message}`);
+      window.setTimeout(() => setSettingsMessage(null), 3200);
+      if (toastKey) toast.success(t(locale, toastKey));
+      return true;
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : t(locale, 'settings.error.unknown');
+      setSettingsMessage(tVars(locale, 'settings.error.saveWithMessage', { message: msg }));
+      toast.error((e as Error)?.message || t(locale, 'settings.toast.saveSettingsFailed'));
+      return false;
+    } finally {
+      setSettingsSaving(false);
+    }
+  };
+
   const handleSettingChange = (key: string, value: unknown) => {
+    if (key === 'factory_on_hold') {
+      const next = Boolean(value);
+      setSettings((prev) => ({ ...prev, factory_on_hold: next }));
+      void (async () => {
+        const ok = await persistSettingsPatch(
+          { factory_on_hold: next },
+          next ? 'settings.toast.factoryHoldOn' : 'settings.toast.factoryHoldOff',
+        );
+        if (ok) window.dispatchEvent(new CustomEvent('aicom-factory-hold', { detail: next }));
+      })();
+      return;
+    }
+
+    if (key === 'local_high_throughput_enabled') {
+      const next = Boolean(value);
+      setSettings((prev) => ({ ...prev, local_high_throughput_enabled: next }));
+      void persistSettingsPatch(
+        { local_high_throughput_enabled: next },
+        next ? 'settings.toast.highThroughputOn' : 'settings.toast.highThroughputOff',
+      );
+      return;
+    }
+
     setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -341,6 +401,7 @@ export function useSettingsTabState(locale: AdminLocale) {
     delete payload.throughput_effective;
     delete payload.pipeline_db_status;
     delete payload.pipeline_database_url_masked;
+    delete (payload as Record<string, unknown>).disk_monitor_live;
     payload.published_site_head_html =
       typeof settings.published_site_head_html === 'string'
         ? settings.published_site_head_html
@@ -556,9 +617,11 @@ export function useSettingsTabState(locale: AdminLocale) {
 
   return {
     locale,
+    publicDemo,
     currentTheme,
     themeSaving,
     settings,
+    diskMonitorLive,
     pipelineDbStatus,
     throughputEffective,
     throughputSnapshotBusy,

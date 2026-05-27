@@ -23,6 +23,7 @@ import {
   writeAdminMetricsCache,
 } from '@/lib/adminMetricsCache';
 import { prefetchAdminDashboard } from '@/lib/prefetchAdminDashboard';
+import { fetchPublicStorefrontListableCount } from '@/lib/refreshStorefrontListableCount';
 import { CostOutcomeHeatmap } from '@/components/admin/tabs/CostOutcomeHeatmap';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 
@@ -56,6 +57,18 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
         }
       } catch {
         /* quick or cache remains */
+      }
+      try {
+        const vitrine = await fetchPublicStorefrontListableCount();
+        if (!cancelled && vitrine !== null) {
+          setData((prev) => ({
+            ...prev,
+            dashboard_partial: false,
+            pipeline: { ...prev.pipeline, storefront_visible_products: vitrine },
+          }));
+        }
+      } catch {
+        /* keep dashboard payload */
       } finally {
         if (!cancelled) setRefreshing(false);
       }
@@ -232,8 +245,10 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
                     )}
                   </p>
                 </div>
-                <motion.div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} p-2`}>
-                  <stat.icon className="w-full h-full text-white" />
+                <motion.div
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center overflow-visible rounded-xl bg-gradient-to-br ${stat.color}`}
+                >
+                  <stat.icon className="h-5 w-5 text-white" strokeWidth={2} />
                 </motion.div>
               </div>
             </GlassCard>
@@ -246,10 +261,10 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
           <div>
             <h3 className="flex items-center gap-2 text-lg font-semibold leading-normal text-white">
               <span
-                className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-violet-400"
+                className="inline-flex h-8 w-8 shrink-0 items-center justify-center overflow-visible text-violet-400"
                 aria-hidden
               >
-                <Gauge className="h-5 w-5" strokeWidth={2} />
+                <Gauge className="h-6 w-6" strokeWidth={2} />
               </span>
               {t(locale, 'dashboard.health.title')}
             </h3>
@@ -274,10 +289,10 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
           <div>
             <h3 className="flex items-center gap-2 text-lg font-semibold leading-normal text-white">
               <span
-                className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-cyan-400"
+                className="inline-flex h-8 w-8 shrink-0 items-center justify-center overflow-visible text-cyan-400"
                 aria-hidden
               >
-                <Store className="h-5 w-5" strokeWidth={2} />
+                <Store className="h-6 w-6" strokeWidth={2} />
               </span>
               {t(locale, 'dashboard.storefront.title')}
             </h3>

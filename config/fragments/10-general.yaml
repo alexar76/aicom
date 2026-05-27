@@ -5,6 +5,7 @@ general:
   admin_email: admin@ai-factory.local
   default_language: en
   timezone: UTC
+  factory_on_hold: false
   auto_pipeline: false
   auto_pipeline_interval_minutes: 60
   git_remote_url: ''
@@ -15,6 +16,14 @@ general:
   telegram_notify_enabled: false
   telegram_notify_pipeline_stages: true
   telegram_notify_new_products: true
+  telegram_notify_host_disk: true
+  # Host disk Telegram alerts (Admin → Settings → Host disk alerts; env AIFACTORY_DISK_* overrides at runtime)
+  disk_warn_used_pct: 90
+  disk_crit_used_pct: 96
+  disk_warn_free_gb: 4
+  disk_crit_free_gb: 1
+  disk_alert_cooldown_hours: 8
+  disk_monitor_interval_minutes: 15
   railway_deploy_enabled: false
   railway_project_id: ''
   railway_environment: ''

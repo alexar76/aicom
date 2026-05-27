@@ -125,6 +125,11 @@ export function AgentLogsTab({ locale }: { locale: AdminLocale }) {
       setLogTotal(data.total || 0);
     } catch (err) {
       console.error('Failed to load agent logs:', err);
+      setLogs([]);
+      setLogCount(0);
+      setLogTotal(0);
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`${t(locale, 'agentLogs.error.load')}: ${msg}`);
     } finally {
       setLoading(false);
     }

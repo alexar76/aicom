@@ -1368,9 +1368,10 @@ class ApiClient {
   async updatePipelineProductFollowup(
     productId: string,
     body: {
-      followup: 'planned' | 'not_pursuing' | null;
+      followup?: 'planned' | 'not_pursuing' | null;
       planned_notes?: string;
       not_pursuing_reason?: string;
+      improvement_on_hold?: boolean;
     }
   ): Promise<{
     product_id: string;
@@ -1932,6 +1933,11 @@ class ApiClient {
     status: string;
     url: string;
     expires_at: number;
+    preview_tier?: 'full' | 'degraded';
+    startup_phase?: string;
+    startup_warning?: string | null;
+    degraded_badge?: boolean;
+    degraded_reasons?: string[];
     preview_api?: { enabled: boolean; proxy_prefix: string | null; status: string | null };
     compose_preview?: { enabled: boolean; proxy_prefix: string | null; status: string | null };
   }> {
@@ -1946,7 +1952,17 @@ class ApiClient {
 
   async sandboxReady(
     sandboxId: string,
-  ): Promise<{ ready: boolean; progress: number; stage: string; preview_path?: string }> {
+  ): Promise<{
+    ready: boolean;
+    progress: number;
+    stage: string;
+    preview_path?: string;
+    preview_tier?: string;
+    startup_phase?: string;
+    startup_warning?: string | null;
+    degraded_badge?: boolean;
+    degraded_reasons?: string[];
+  }> {
     return this.request(`/sandbox/ready/${sandboxId}`, { publicStorefront: true });
   }
 
@@ -2094,6 +2110,7 @@ class ApiClient {
   // ── Settings ─────────────────────────────────────────────────────────────
 
   async getAdminSettings(): Promise<{
+    factory_on_hold?: boolean;
     auto_pipeline: boolean;
     auto_pipeline_interval_minutes: number;
     local_high_throughput_enabled: boolean;
@@ -2150,6 +2167,7 @@ class ApiClient {
     pipeline_database_url?: string;
     pipeline_database_url_masked?: string;
     pipeline_db_status?: Record<string, unknown>;
+    disk_monitor_live?: Record<string, unknown> | null;
   }> {
     return this.request('/admin/settings');
   }

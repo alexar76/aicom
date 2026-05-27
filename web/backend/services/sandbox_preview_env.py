@@ -201,10 +201,14 @@ def build_fastapi_preview_env(
     code_dir: Path,
     cwd: Path,
     base_env: Optional[dict[str, str]] = None,
+    skip_heavy_setup: bool = False,
 ) -> tuple[dict[str, str], dict[str, Any]]:
     """
     Build subprocess env for uvicorn preview.
     Returns (env, meta) where meta may include ephemeral postgres port.
+
+    When ``skip_heavy_setup`` is True (postgres required but Docker unavailable), returns
+    early without pip/alembic/seed so storefront starts do not exhaust host RAM.
     """
     env = dict(base_env or os.environ)
     env["PYTHONUNBUFFERED"] = "1"
@@ -221,14 +225,22 @@ def build_fastapi_preview_env(
         env["PYTHONPATH"] = py_path
 
     _ensure_relative_sqlite_dirs(cwd, code_dir)
-    preview_python = _preview_venv_python(code_dir, sandbox_id)
-    meta: dict[str, Any] = {"postgres_ephemeral": False, "preview_python": str(preview_python)}
+    meta: dict[str, Any] = {"postgres_ephemeral": False}
 
     needs_pg = code_requires_postgres(code_dir)
     if needs_pg:
         from web.backend.services.sandbox_docker import docker_available, ensure_ephemeral_postgres
 
-        if docker_available():
+        if not docker_available():
+            meta["postgres_status"] = "docker_unavailable"
+            meta["skip_heavy_setup"] = True
+            logger.warning(
+                "sandbox %s: postgres required; Docker unavailable — skipping pip/uvicorn prep",
+                sandbox_id[:16],
+            )
+            if skip_heavy_setup:
+                return env, meta
+        else:
             _port, pg_url, st = ensure_ephemeral_postgres(sandbox_id)
             if pg_url and st == "ok":
                 env["DATABASE_URL"] = pg_url
@@ -241,18 +253,20 @@ def build_fastapi_preview_env(
                     sandbox_id[:16],
                     st,
                 )
-        else:
-            meta["postgres_status"] = "docker_unavailable"
-            logger.warning(
-                "sandbox %s: postgres required; mount /var/run/docker.sock for compose or ephemeral DB",
-                sandbox_id[:16],
-            )
     else:
         async_url = _sqlite_url_for_sandbox(code_dir, sandbox_id, async_driver=True)
         sync_url = _sqlite_url_for_sandbox(code_dir, sandbox_id, async_driver=False)
         env.setdefault("DATABASE_URL", async_url)
         meta["database_url"] = async_url
         meta["database_url_sync"] = sync_url
+
+    if meta.get("postgres_status") == "docker_unavailable" and needs_pg:
+        meta["skip_heavy_setup"] = True
+        if skip_heavy_setup:
+            return env, meta
+
+    preview_python = _preview_venv_python(code_dir, sandbox_id)
+    meta["preview_python"] = str(preview_python)
 
     env.setdefault("REDIS_URL", "redis://127.0.0.1:6379/0")
     env.setdefault("ENVIRONMENT", "sandbox")

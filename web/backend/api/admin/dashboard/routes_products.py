@@ -38,7 +38,6 @@ from core.paths import (
     market_research_path,
     marketing_content_path,
     metrics_history_path,
-    model_providers_path,
     pipeline_db_path,
     pipeline_json_path,
     reports_dir,
@@ -46,10 +45,11 @@ from core.paths import (
 )
 from web.backend.core.admin_roles import AdminRole, normalize_role, rank, require_admin_with_rbac
 from finance_stats import compute_dashboard_revenue
-from llm.bootstrap_providers import ensure_model_providers_file
 from llm.factory_defaults import FACTORY_CONTEXT_WINDOW_DEFAULT, FACTORY_MAX_OUTPUT_TOKENS_HEAVY
 from web.backend.services.catalog_hardening import harden_catalog_products
 from web.backend.services.product_naming import resolve_product_name
+
+logger = logging.getLogger(__name__)
 from web.backend.services.policy_audit import sync_sqlite_from_pipeline_json
 from web.backend.services.human_pipeline import (
     approve_post_devops_human_review,
@@ -221,14 +221,6 @@ async def get_product_architecture(product_id: str):
         raise HTTPException(status_code=500, detail="Invalid architecture file")
 
 
-def _agent_log_time(entry: dict[str, Any]) -> float:
-    t = entry.get("time", 0)
-    try:
-        return float(t)
-    except (TypeError, ValueError):
-        return 0.0
-
-
 @router.get("/agent/logs")
 async def get_agent_logs(
     agent: Optional[str] = None,
@@ -236,43 +228,18 @@ async def get_agent_logs(
     since: Optional[float] = Query(None, description="Unix seconds, inclusive lower bound on entry `time`"),
     until: Optional[float] = Query(None, description="Unix seconds, inclusive upper bound on entry `time`"),
 ):
-    """Get agent execution logs from all agent log files."""
-    logs_dir_path = logs_dir()
-    all_logs: list[dict[str, Any]] = []
-
-    if not logs_dir_path.exists():
-        return {"logs": [], "count": 0, "total": 0}
-
-    agent_files = list(logs_dir_path.glob("*.jsonl"))
-    if agent:
-        agent_files = [f for f in agent_files if f.stem == agent]
-
-    for log_file in agent_files:
-        try:
-            with open(log_file, "r") as f:
-                for line in f:
-                    line = line.strip()
-                    if line:
-                        try:
-                            entry = json.loads(line)
-                            if agent and entry.get("agent") != agent:
-                                continue
-                            all_logs.append(entry)
-                        except json.JSONDecodeError as _suppressed_exc:
-                            log_suppressed(logger, "non-fatal (web/backend/api/admin/dashboard.py)", exc_info=_suppressed_exc)
-        except Exception as e:
-            logger.warning(f"Failed to read agent log {log_file}: {e}")
-
-    if since is not None:
-        all_logs = [x for x in all_logs if _agent_log_time(x) >= since]
-    if until is not None:
-        all_logs = [x for x in all_logs if _agent_log_time(x) <= until]
-
-    # Sort by time ascending, return the last `limit` rows (most recent within the window)
-    all_logs.sort(key=_agent_log_time)
-    window_total = len(all_logs)
-    tail = all_logs[-limit:] if all_logs else []
-    return {"logs": tail, "count": len(tail), "total": window_total}
+    """Get agent execution logs from per-agent ``*.jsonl`` files (tail-bounded; excludes ``llm_calls.jsonl``)."""
+    try:
+        return await asyncio.to_thread(
+            load_agent_execution_logs,
+            agent=agent,
+            limit=limit,
+            since=since,
+            until=until,
+        )
+    except Exception as exc:
+        logger.exception("Agent logs load failed: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Failed to load agent logs: {exc}") from exc
 
 
 @router.get("/products/{product_id}/security-report")

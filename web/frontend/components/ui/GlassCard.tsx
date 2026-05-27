@@ -10,6 +10,7 @@ interface GlassCardProps {
   hover?: boolean;
   glow?: boolean;
   onClick?: () => void;
+  id?: string;
 }
 
 export function GlassCard({
@@ -18,9 +19,11 @@ export function GlassCard({
   hover = true,
   glow = false,
   onClick,
+  id,
 }: GlassCardProps) {
   return (
     <motion.div
+      id={id}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}

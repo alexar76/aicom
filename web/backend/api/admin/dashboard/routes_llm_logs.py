@@ -38,7 +38,6 @@ from core.paths import (
     market_research_path,
     marketing_content_path,
     metrics_history_path,
-    model_providers_path,
     pipeline_db_path,
     pipeline_json_path,
     reports_dir,
@@ -46,7 +45,6 @@ from core.paths import (
 )
 from web.backend.core.admin_roles import AdminRole, normalize_role, rank, require_admin_with_rbac
 from finance_stats import compute_dashboard_revenue
-from llm.bootstrap_providers import ensure_model_providers_file
 from llm.factory_defaults import FACTORY_CONTEXT_WINDOW_DEFAULT, FACTORY_MAX_OUTPUT_TOKENS_HEAVY
 from web.backend.services.catalog_hardening import harden_catalog_products
 from web.backend.services.product_naming import resolve_product_name
@@ -87,6 +85,9 @@ from ._router import router
 from .models import *
 from .helpers import *
 from .routes_agents import _aggregate_llm_logs_for_summary, _llm_log_sort_ts
+
+logger = logging.getLogger(__name__)
+
 
 def _load_llm_logs_page(
     *,
@@ -173,12 +174,16 @@ async def get_llm_logs(
     """
     limit = max(1, min(int(limit or 100), 2000))
     offset = max(0, min(int(offset or 0), 2_000_000))
-    return await asyncio.to_thread(
-        _load_llm_logs_page,
-        limit=limit,
-        offset=offset,
-        provider=provider,
-        since=since,
-        until=until,
-    )
+    try:
+        return await asyncio.to_thread(
+            _load_llm_logs_page,
+            limit=limit,
+            offset=offset,
+            provider=provider,
+            since=since,
+            until=until,
+        )
+    except Exception as exc:
+        logger.exception("LLM logs load failed: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Failed to load LLM logs: {exc}") from exc
 

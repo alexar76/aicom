@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   LayoutGrid,
   Loader2,
@@ -27,6 +27,7 @@ import { resolveActionableFailure } from '@/lib/actionableErrors';
 import { fetchPipelineCatalogPageSingleMode } from '@/lib/pipelineCatalogFetch';
 import toast from 'react-hot-toast';
 import { useWorkshopCanvas } from '@/hooks/admin/useWorkshopCanvas';
+import { useWorkshopTabStore } from '@/lib/workshopTabStore';
 
 type Row = Record<string, unknown> & { id?: string; state?: string; idea?: string };
 
@@ -50,20 +51,56 @@ function urlBase64ToUint8Array(base64String: string) {
 }
 
 export function WorkshopTab({ locale }: { locale: AdminLocale }) {
-  const [rows, setRows] = useState<Row[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [boardFailure, setBoardFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
-  const [diffFailure, setDiffFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
-  const [patternFailure, setPatternFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
-  const [pushFailure, setPushFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
-  const [pushTestFailure, setPushTestFailure] = useState<ReturnType<typeof resolveActionableFailure> | null>(null);
-  const [workshopIntroDismissed, setWorkshopIntroDismissed] = useState(true);
-  const [aId, setAId] = useState('');
-  const [bId, setBId] = useState('');
-  const [leftJson, setLeftJson] = useState('');
-  const [rightJson, setRightJson] = useState('');
-  const [diffBusy, setDiffBusy] = useState(false);
-  const [materialKind, setMaterialKind] = useState<'spec' | 'architecture'>('spec');
+  const {
+    rows,
+    setRows,
+    loading,
+    setLoading,
+    boardFailure,
+    setBoardFailure,
+    diffFailure,
+    setDiffFailure,
+    patternFailure,
+    setPatternFailure,
+    pushFailure,
+    setPushFailure,
+    pushTestFailure,
+    setPushTestFailure,
+    workshopIntroDismissed,
+    setWorkshopIntroDismissed,
+    aId,
+    setAId,
+    bId,
+    setBId,
+    leftJson,
+    setLeftJson,
+    rightJson,
+    setRightJson,
+    diffBusy,
+    setDiffBusy,
+    materialKind,
+    setMaterialKind,
+    labPid,
+    setLabPid,
+    labSandboxId,
+    setLabSandboxId,
+    labRefreshMs,
+    setLabRefreshMs,
+    labTick,
+    setLabTick,
+    patterns,
+    setPatterns,
+    patternsBusy,
+    setPatternsBusy,
+    patName,
+    setPatName,
+    patTags,
+    setPatTags,
+    patDoc,
+    setPatDoc,
+    pushBusy,
+    setPushBusy,
+  } = useWorkshopTabStore();
 
   const {
     canvasPid,
@@ -88,19 +125,6 @@ export function WorkshopTab({ locale }: { locale: AdminLocale }) {
     onNodePointerMove,
     onNodePointerUp,
   } = useWorkshopCanvas();
-
-  const [labPid, setLabPid] = useState('');
-  const [labSandboxId, setLabSandboxId] = useState('');
-  const [labRefreshMs, setLabRefreshMs] = useState(8000);
-  const [labTick, setLabTick] = useState(0);
-
-  const [patterns, setPatterns] = useState<any[]>([]);
-  const [patternsBusy, setPatternsBusy] = useState(false);
-  const [patName, setPatName] = useState('');
-  const [patTags, setPatTags] = useState('');
-  const [patDoc, setPatDoc] = useState('{\n  "example": true\n}');
-
-  const [pushBusy, setPushBusy] = useState(false);
 
   useEffect(() => {
     try {

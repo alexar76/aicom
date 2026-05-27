@@ -30,7 +30,7 @@ def _ttl_sec() -> float:
 
 
 def _max_wait_sec() -> float:
-    return max(0.5, float(os.environ.get("AIFACTORY_STOREFRONT_LISTABLE_MAX_WAIT_SEC", "2.5")))
+    return max(0.5, float(os.environ.get("AIFACTORY_STOREFRONT_LISTABLE_MAX_WAIT_SEC", "8.0")))
 
 
 def invalidate_storefront_categories_cache() -> None:
@@ -40,8 +40,17 @@ def invalidate_storefront_categories_cache() -> None:
         _force_refresh = True
 
 
-def _empty_payload() -> dict[str, Any]:
-    return {"categories": [], "total_count": 0}
+def _empty_payload(*, pending: bool = False) -> dict[str, Any]:
+    return {"categories": [], "total_count": None, "pending": pending, "stale": False}
+
+
+def _wrap_payload(payload: dict[str, Any], *, stale: bool = False) -> dict[str, Any]:
+    out = dict(payload)
+    out["stale"] = stale
+    out.setdefault("pending", False)
+    if "total_count" in out and out["total_count"] is not None:
+        out["total_count"] = int(out["total_count"])
+    return out
 
 
 def _work() -> dict[str, Any]:
@@ -64,13 +73,13 @@ def get_storefront_categories_cached() -> dict[str, Any]:
             and _cached is not None
             and (now - _cached_mono) < ttl
         ):
-            return _cached
+            return _wrap_payload(_cached, stale=False)
         _force_refresh = False
 
         if _inflight is not None and _inflight.done():
             try:
                 pl = _inflight.result()
-                if isinstance(pl, dict) and "total_count" in pl:
+                if isinstance(pl, dict) and pl.get("total_count") is not None:
                     _cached = pl
                     _cached_mono = time.monotonic()
             except Exception as e:
@@ -79,7 +88,7 @@ def get_storefront_categories_cached() -> dict[str, Any]:
 
         now = time.monotonic()
         if _cached is not None and (now - _cached_mono) < ttl:
-            return _cached
+            return _wrap_payload(_cached, stale=False)
 
         if _inflight is None:
             _inflight = _executor.submit(_work)
@@ -87,26 +96,26 @@ def get_storefront_categories_cached() -> dict[str, Any]:
 
     try:
         payload = fut.result(timeout=max_wait)
-        if not isinstance(payload, dict) or "total_count" not in payload:
+        if not isinstance(payload, dict) or payload.get("total_count") is None:
             raise ValueError("invalid categories payload")
         with _lock:
             _cached = payload
             _cached_mono = time.monotonic()
             _inflight = None
-        return payload
+        return _wrap_payload(payload, stale=False)
     except FuturesTimeout:
         logger.warning(
-            "storefront counts cache: compute exceeded %.1fs — returning stale or empty",
+            "storefront counts cache: compute exceeded %.1fs — returning stale or pending",
             max_wait,
         )
         with _lock:
             if _cached is not None:
-                return _cached
-            return _empty_payload()
+                return _wrap_payload(_cached, stale=True)
+            return _empty_payload(pending=True)
     except Exception as e:
         logger.warning("storefront counts cache: compute failed (%s)", e)
         with _lock:
             _inflight = None
             if _cached is not None:
-                return _cached
-        return _empty_payload()
+                return _wrap_payload(_cached, stale=True)
+        return _empty_payload(pending=True)

@@ -17,6 +17,7 @@ import { CATEGORY_LABELS, CATEGORY_COLORS } from '../tabs/pipelineConstants';
 import { ProductPulse, type ProductPulsePayload } from '../tabs/ProductPulse';
 import { HumanReviewGatePanel } from '../tabs/HumanReviewGatePanel';
 import { StorefrontFollowupPanel } from '../tabs/StorefrontFollowupPanel';
+import { ProductImprovementHoldToggle } from './ProductImprovementHoldToggle';
 import { PipelineProductFailedPanel } from './PipelineProductFailedPanel';
 import { PipelineProductVitalsCharts } from './PipelineProductVitalsCharts';
 import { PIPELINE_STAGE_ORDER } from '@/lib/pipelineStages';
@@ -136,6 +137,13 @@ export function PipelineProductList({
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 sm:shrink-0 sm:justify-end">
+                  <ProductImprovementHoldToggle
+                    locale={locale}
+                    productId={String(product.id)}
+                    storefrontFollowup={product.storefront_followup as Record<string, unknown> | undefined}
+                    onPatch={mergeProductPatch}
+                    compact
+                  />
                   <Badge variant={product.production_mode ? 'warning' : 'info'}>
                     {product.production_mode
                       ? t(locale, 'pipeline.card.modeProduction')

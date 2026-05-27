@@ -43,6 +43,21 @@ const LABELS = {
     ru: 'Открываем превью…',
     es: 'Abriendo vista previa…',
   },
+  heavyStackWarning: {
+    en: 'Full stack may take several minutes — please wait…',
+    ru: 'Полный стек может собираться несколько минут — подождите…',
+    es: 'El stack completo puede tardar varios minutos…',
+  },
+  degradedPreview: {
+    en: 'Reduced preview (static only — server low on disk/memory)',
+    ru: 'Урезанное превью (только статика — мало места или памяти на сервере)',
+    es: 'Vista previa reducida (solo estática — poco disco o memoria)',
+  },
+  bootstrapping: {
+    en: 'Building Docker stack & API…',
+    ru: 'Сборка Docker-стека и API…',
+    es: 'Construyendo stack Docker y API…',
+  },
 } as const;
 
 export type SandboxLaunchLabelKey = keyof typeof LABELS;

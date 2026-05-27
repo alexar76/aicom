@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import React, { useEffect, useMemo, useCallback, useRef } from 'react';
 import {
   RefreshCw,
   Loader2,
@@ -23,6 +23,7 @@ import { launchSandboxWithProgress } from '@/lib/sandboxLaunch';
 import { sandboxLaunchLabel } from '@/lib/sandboxLaunchI18n';
 import { formatDate, localDateInputStartSeconds, localDateInputEndSeconds } from '@/lib/utils';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
+import { useFilesTabStore } from '@/lib/filesTabStore';
 
 /** Match Pipeline tab tiny first page — small batches + visible progress. */
 const FILES_CATALOG_PAGE = 2;
@@ -331,35 +332,60 @@ function ProductArtifactsPanel({
 }
 
 export function FilesTab({ locale }: { locale: AdminLocale }) {
-  const [products, setProducts] = useState<any[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
-  const [files, setFiles] = useState<any[]>([]);
-  const [truncatedByCategory, setTruncatedByCategory] = useState<Record<string, boolean> | null>(null);
-  const [catalogInitialLoading, setCatalogInitialLoading] = useState(true);
-  const [catalogLoadingMore, setCatalogLoadingMore] = useState(false);
-  const [catalogTotal, setCatalogTotal] = useState<number | null>(null);
-  const [lastCatalogBatchSize, setLastCatalogBatchSize] = useState(0);
-  const [catalogProgress, setCatalogProgress] = useState<{ loaded: number; total: number | null } | null>(null);
-  const [productsLoadError, setProductsLoadError] = useState<string | null>(null);
-  const [productsReloadKey, setProductsReloadKey] = useState(0);
-  const [fileLoading, setFileLoading] = useState(false);
-  const [expandedFile, setExpandedFile] = useState<string | null>(null);
-  const [sandboxIframeSrc, setSandboxIframeSrc] = useState<string | null>(null);
-  const [sandboxLoading, setSandboxLoading] = useState(false);
-  const [sandboxProgress, setSandboxProgress] = useState<{
-    percent: number;
-    label: string;
-  } | null>(null);
-  const [sandboxError, setSandboxError] = useState<string | null>(null);
-  const [sandboxReloadKey, setSandboxReloadKey] = useState(0);
-  const [sandboxModalOpen, setSandboxModalOpen] = useState(false);
-  const [productSearch, setProductSearch] = useState('');
-  const [productStateFilter, setProductStateFilter] = useState('all');
-  const [createdFrom, setCreatedFrom] = useState('');
-  const [createdTo, setCreatedTo] = useState('');
-  const [fileSearch, setFileSearch] = useState('');
-  const [fileCategoryFilter, setFileCategoryFilter] = useState('all');
-  const [ownerZipBusy, setOwnerZipBusy] = useState(false);
+  const {
+    products,
+    setProducts,
+    selectedProduct,
+    setSelectedProduct,
+    files,
+    setFiles,
+    truncatedByCategory,
+    setTruncatedByCategory,
+    catalogInitialLoading,
+    setCatalogInitialLoading,
+    catalogLoadingMore,
+    setCatalogLoadingMore,
+    catalogTotal,
+    setCatalogTotal,
+    lastCatalogBatchSize,
+    setLastCatalogBatchSize,
+    catalogProgress,
+    setCatalogProgress,
+    productsLoadError,
+    setProductsLoadError,
+    productsReloadKey,
+    setProductsReloadKey,
+    fileLoading,
+    setFileLoading,
+    expandedFile,
+    setExpandedFile,
+    sandboxIframeSrc,
+    setSandboxIframeSrc,
+    sandboxLoading,
+    setSandboxLoading,
+    sandboxProgress,
+    setSandboxProgress,
+    sandboxError,
+    setSandboxError,
+    sandboxReloadKey,
+    setSandboxReloadKey,
+    sandboxModalOpen,
+    setSandboxModalOpen,
+    productSearch,
+    setProductSearch,
+    productStateFilter,
+    setProductStateFilter,
+    createdFrom,
+    setCreatedFrom,
+    createdTo,
+    setCreatedTo,
+    fileSearch,
+    setFileSearch,
+    fileCategoryFilter,
+    setFileCategoryFilter,
+    ownerZipBusy,
+    setOwnerZipBusy,
+  } = useFilesTabStore();
   const productsRef = useRef<any[]>([]);
   const productListScrollRef = useRef<HTMLDivElement>(null);
   const catalogSentinelRef = useRef<HTMLDivElement>(null);

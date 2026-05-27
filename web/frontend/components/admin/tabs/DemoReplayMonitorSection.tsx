@@ -97,7 +97,6 @@ export function DemoReplayMonitorSection({
   const [err, setErr] = useState<string | null>(null);
   const [title, setTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
-  const [videoBlobUrl, setVideoBlobUrl] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -145,54 +144,14 @@ export function DemoReplayMonitorSection({
     }
   };
 
-  /** Uploaded files: load via admin media (Bearer/cookie) — public URL 404s when volume missing the file. */
-  useEffect(() => {
-    let revoked: string | null = null;
-    const fn = adminCfg?.media_filename;
-    if (adminCfg?.source !== 'upload' || !fn || typeof window === 'undefined') {
-      setVideoBlobUrl(null);
-      return () => {
-        if (revoked) URL.revokeObjectURL(revoked);
-      };
-    }
-    const token = localStorage.getItem('admin_token');
-    const headers: Record<string, string> = {};
-    if (token) headers.Authorization = `Bearer ${token}`;
-    let cancelled = false;
-    void (async () => {
-      try {
-        const r = await fetch(`/api/admin/demo-replay/media/${encodeURIComponent(fn)}`, {
-          credentials: 'include',
-          headers,
-        });
-        if (!r.ok) {
-          const pub = await fetch(`/api/public/pipeline-demo-replay`);
-          if (!pub.ok) throw new Error(`HTTP ${r.status}`);
-          const blob = await pub.blob();
-          if (cancelled) return;
-          revoked = URL.createObjectURL(blob);
-          setVideoBlobUrl(revoked);
-          setErr(null);
-          return;
-        }
-        const blob = await r.blob();
-        if (cancelled) return;
-        revoked = URL.createObjectURL(blob);
-        setVideoBlobUrl(revoked);
-        setErr(null);
-      } catch {
-        if (!cancelled) setVideoBlobUrl(null);
-      }
-    })();
-    return () => {
-      cancelled = true;
-      if (revoked) URL.revokeObjectURL(revoked);
-    };
-  }, [adminCfg?.source, adminCfg?.media_filename, adminCfg?.updated_at]);
-
   /** Prefer PATCH response (adminCfg) so video reappears immediately after re-enabling — no dashboard refresh. */
+  const origin =
+    typeof window !== 'undefined' ? window.location.origin : '';
+
+  /** Bundled H.264 clip in Next ``public/`` — plays in Safari when API webm fails. */
+  const bundledMp4Src = origin ? `${origin}/demo/pipeline-demo.mp4` : '/demo/pipeline-demo.mp4';
+
   const playSrc = useMemo(() => {
-    if (videoBlobUrl) return videoBlobUrl;
     const raw =
       adminCfg?.enabled && adminCfg.play_url
         ? adminCfg.play_url
@@ -202,16 +161,10 @@ export function DemoReplayMonitorSection({
     if (!raw) return null;
     return raw.startsWith('http://') || raw.startsWith('https://')
       ? raw
-      : typeof window !== 'undefined'
-        ? `${window.location.origin}${raw}`
+      : origin
+        ? `${origin}${raw}`
         : raw;
-  }, [
-    videoBlobUrl,
-    adminCfg?.enabled,
-    adminCfg?.play_url,
-    demoReplay?.enabled,
-    demoReplay?.play_url,
-  ]);
+  }, [adminCfg?.enabled, adminCfg?.play_url, demoReplay?.enabled, demoReplay?.play_url, origin]);
 
   return (
     <GlassCard
@@ -255,14 +208,14 @@ export function DemoReplayMonitorSection({
       {playSrc || (adminCfg?.source === 'upload' && adminCfg.media_filename) ? (
         /* Video + backdrop-filter on same ancestor → Chromium often composites a blurry / stuck first frame. */
         <div className="relative mb-4 isolate overflow-hidden rounded-lg border border-white/10 bg-black">
-          {playSrc ? (
+          {playSrc || bundledMp4Src ? (
           <video
-            key={playSrc}
+            key={`${playSrc || ''}|${bundledMp4Src}`}
             controls
             playsInline
             className="relative z-10 block w-full max-h-[min(52vh,520px)] object-contain bg-black [transform:translateZ(0)]"
-            src={playSrc}
-            preload="auto"
+            preload="metadata"
+            onLoadedData={() => setErr(null)}
             onError={(e) => {
             const el = e.currentTarget;
             const code = el.error?.code;
@@ -270,15 +223,23 @@ export function DemoReplayMonitorSection({
               code === 2
                 ? 'Network error loading media.'
                 : code === 3
-                  ? 'Decode error — try re-encoding (H.264/AAC for .mp4, VP9 for .webm).'
+                  ? 'Decode error — try the bundled .mp4 fallback or re-upload as H.264 .mp4.'
                   : code === 4
                     ? 'Source not supported for this browser.'
                     : 'Playback failed.';
             setErr(
-              `${hint} If this is an uploaded file, use “Upload video” again or check the network tab for 404/403 on the media URL.`,
+              `${hint} Fallback: ${bundledMp4Src}. API: ${playSrc || 'none'}.`,
             );
           }}
-          />
+          >
+            {playSrc ? (
+              <source
+                src={playSrc}
+                type={playSrc.includes('.webm') ? 'video/webm' : 'video/mp4'}
+              />
+            ) : null}
+            <source src={bundledMp4Src} type="video/mp4" />
+          </video>
           ) : (
             <div className="flex items-center justify-center gap-2 py-16 text-sm text-gray-500">
               <Loader2 className="w-5 h-5 animate-spin" />

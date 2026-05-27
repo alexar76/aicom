@@ -12,7 +12,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 
-from web.backend.services.pipeline_demo_replay import FILENAME_SAFE, load_raw_config, upload_dir
+from web.backend.services.pipeline_demo_replay import load_raw_config, resolve_uploaded_media_path
 
 router = APIRouter(tags=["public-pipeline-demo-replay"])
 
@@ -24,12 +24,10 @@ async def get_public_pipeline_demo_replay() -> FileResponse:
         raise HTTPException(status_code=404, detail="Demo replay is not published")
     if str(cfg.get("source") or "") != "upload":
         raise HTTPException(status_code=404, detail="No uploaded demo asset")
-    fn = cfg.get("media_filename")
-    if not isinstance(fn, str) or not fn or not FILENAME_SAFE.match(fn):
+    path = resolve_uploaded_media_path(cfg)
+    if path is None:
         raise HTTPException(status_code=404, detail="Not found")
-    path = upload_dir() / fn
-    if not path.is_file():
-        raise HTTPException(status_code=404, detail="Not found")
+    fn = path.name
 
     if fn.endswith(".webm"):
         mt = "video/webm"

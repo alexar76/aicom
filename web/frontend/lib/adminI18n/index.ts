@@ -8,6 +8,7 @@ import { COMMON_DICT } from './dict/common';
 import { AGENTS_DICT } from './dict/agents';
 import { WORKSHOP_DICT } from './dict/workshop';
 import { PIPELINE_TAB_DICT } from './dict/pipeline';
+import { PIPELINE_IMPROVEMENT_HOLD_DICT } from './dict/pipelineImprovementHold';
 import { SETTINGS_DICT } from './dict/settings';
 import { FILES_TAB_DICT } from './dict/files';
 import { BRAINSTORM_DICT } from './dict/brainstorm';
@@ -33,6 +34,7 @@ const DICT: I18nDict = {
   ...AGENTS_DICT,
   ...WORKSHOP_DICT,
   ...PIPELINE_TAB_DICT,
+  ...PIPELINE_IMPROVEMENT_HOLD_DICT,
   ...SETTINGS_DICT,
   ...FILES_TAB_DICT,
   ...BRAINSTORM_DICT,

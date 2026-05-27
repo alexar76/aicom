@@ -49,6 +49,10 @@ def test_upload_source_play_url(dr_root):
         save_config,
     )
 
+    ud = dr_root / "public" / "pipeline_demo_replay"
+    ud.mkdir(parents=True, exist_ok=True)
+    (ud / "demo_123.webm").write_bytes(b"WEBM")
+
     cfg = load_raw_config()
     cfg["enabled"] = True
     cfg["source"] = "upload"
@@ -57,7 +61,22 @@ def test_upload_source_play_url(dr_root):
     save_config(cfg)
 
     m = metrics_demo_replay_slice()
-    assert m["play_url"] == "/api/public/pipeline-demo-replay"
+    assert m["play_url"].startswith("/api/public/pipeline-demo-replay")
+
+
+def test_resolve_uploaded_media_prefers_mp4_sibling(dr_root):
+    from web.backend.services.pipeline_demo_replay import load_raw_config, resolve_uploaded_media_path, save_config
+
+    ud = dr_root / "public" / "pipeline_demo_replay"
+    ud.mkdir(parents=True, exist_ok=True)
+    (ud / "pipeline-demo-latest.mp4").write_bytes(b"MP4")
+    cfg = load_raw_config()
+    cfg["source"] = "upload"
+    cfg["media_filename"] = "pipeline-demo-latest.webm"
+    save_config(cfg)
+    path = resolve_uploaded_media_path(cfg)
+    assert path is not None
+    assert path.name == "pipeline-demo-latest.mp4"
 
 
 def test_public_demo_replay_no_auth(tmp_path, monkeypatch):

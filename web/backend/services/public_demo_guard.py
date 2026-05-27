@@ -38,4 +38,5 @@ def public_demo_status() -> dict:
         "blocks_admin_user_management": on,
         "blocks_platform_settings_save": on,
         "blocks_published_site_head_html_save": on,
+        "allows_factory_on_hold_toggle": True,
     }

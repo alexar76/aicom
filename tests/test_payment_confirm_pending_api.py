@@ -70,8 +70,10 @@ def test_confirm_pending_then_license_once(pay_client):
     assert body["confirmations"] == 1
     assert body["required_confirmations"] == pay_mod.MIN_CONFIRMATIONS
 
-    status = client.get(f"/api/payment/status/{payment_id}")
+    status = client.get(f"/api/payment/status/{payment_id}", headers=auth)
+    assert status.status_code == 200
     assert status.json()["status"] == "pending_confirmation"
+    assert "customer_email" not in status.json()
 
     r2 = client.post(
         f"/api/payment/confirm/{payment_id}?test_confirmations={pay_mod.MIN_CONFIRMATIONS}",

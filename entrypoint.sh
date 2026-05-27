@@ -21,6 +21,16 @@ source /app/venv/bin/activate
 load_llm_provider_secrets
 load_sandbox_demo_password
 
+# ── Git credential helper (product pushes; never embed tokens in remotes) ───
+# Persist credentials inside the data volume rather than the container FS.
+GIT_CRED_FILE="${GIT_CREDENTIALS_FILE:-${AIFACTORY_DATA_ROOT:-/app/data}/secrets/git-credentials}"
+if [ ! -f "$GIT_CRED_FILE" ]; then
+  mkdir -p "$(dirname "$GIT_CRED_FILE")" || true
+  touch "$GIT_CRED_FILE" || true
+fi
+chmod 600 "$GIT_CRED_FILE" 2>/dev/null || true
+git config --global credential.helper "store --file ${GIT_CRED_FILE}" || true
+
 # Fernet vault sync + HashiCorp/env resolver → export LLM keys
 python3 -m security.bootstrap_secrets || echo "⚠ Secret vault bootstrap skipped"
 

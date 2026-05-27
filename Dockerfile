@@ -139,13 +139,16 @@ RUN mkdir -p /app/data/config /app/data/specs /app/data/arch /app/data/code /app
 # Drop from root before CMD so a Python/JS RCE doesn't immediately get root
 # inside the container (and via docker socket / --privileged: on the host).
 # uid 10001 to stay clear of Ubuntu's reserved 1000–9999 range.
+# Own only writable runtime paths — chown -R /app duplicates venv+node_modules and exhausts disk on build.
 RUN groupadd --system --gid 10001 aifactory \
     && useradd --system --uid 10001 --gid aifactory --shell /usr/sbin/nologin --home-dir /app aifactory \
-    && chown -R aifactory:aifactory /app
+    && chown -R aifactory:aifactory /app/data /app/git-repos /app/llm \
+    && chown aifactory:aifactory /app/entrypoint.sh
 
-# Set permissions (after chown so ownership sticks)
-RUN chmod -R 755 /app \
-    && chmod -R 700 /app/data/secrets
+# Writable runtime dirs only — avoid chmod -R on venv/node_modules (duplicates layers, fills disk).
+RUN chmod -R 755 /app/data /app/git-repos /app/llm \
+    && chmod -R 700 /app/data/secrets \
+    && chmod 755 /app/entrypoint.sh
 
 USER aifactory:aifactory
 

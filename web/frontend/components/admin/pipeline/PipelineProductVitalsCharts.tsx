@@ -15,67 +15,31 @@ import {
 } from 'recharts';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 import { CHART_COLORS, DARK_CHART_TOOLTIP, usdTooltipFmt } from '@/lib/chartTheme';
-import type { ProductPulsePayload } from '../tabs/ProductPulse';
+import {
+  computePipelineProductVitals,
+  formatVitalsPercent,
+  formatVitalsUsd,
+} from '@/lib/pipelineProductVitals';
+import { agentCostBarLabel } from '@/lib/pipelineProductHelpers';
 import type { PipelineCatalogProduct } from './PipelineProductList';
 
 const CHART_H = 108;
-
-function qualityPercent(
-  economics: Record<string, unknown> | undefined,
-  pulse: ProductPulsePayload | undefined,
-): number {
-  const qs = economics?.quality_score;
-  if (typeof qs === 'number' && Number.isFinite(qs)) {
-    return Math.min(100, Math.max(0, (qs / 5) * 100));
-  }
-  const pulseMap: Record<string, number> = { green: 85, amber: 55, red: 25, unknown: 40 };
-  if (pulse?.quality_pulse) {
-    return pulseMap[pulse.quality_pulse] ?? 40;
-  }
-  return 0;
-}
-
-function deadlinePercent(
-  product: PipelineCatalogProduct,
-  pulse: ProductPulsePayload | undefined,
-  locale: AdminLocale,
-): { pct: number; label: string } {
-  const state = String(product.state || '').toUpperCase();
-  if (state === 'COMPLETED' || state === 'DEPLOYED_PRODUCTION' || state === 'FAILED' || state === 'CANCELLED') {
-    return {
-      pct: 100,
-      label:
-        state === 'FAILED'
-          ? t(locale, 'pipeline.vitals.deadlineDoneFailed')
-          : t(locale, 'pipeline.vitals.deadlineDone'),
-    };
-  }
-  if (pulse?.eta_label) {
-    const eta = pulse.eta_seconds;
-    if (typeof eta === 'number' && eta > 0) {
-      const raw = Number(product.created_at) || 0;
-      const createdSec = raw > 1e12 ? raw / 1000 : raw;
-      const elapsed = Math.max(0, Date.now() / 1000 - createdSec);
-      const pct = Math.min(95, Math.max(5, (elapsed / (elapsed + eta)) * 100));
-      return { pct, label: pulse.eta_label };
-    }
-    return { pct: 50, label: pulse.eta_label };
-  }
-  return { pct: 35, label: t(locale, 'pipeline.vitals.deadlineUnknown') };
-}
 
 function MiniRadial({
   pct,
   fill,
   label,
   sublabel,
+  empty,
 }: {
-  pct: number;
+  pct: number | null;
   fill: string;
   label: string;
   sublabel: string;
+  empty?: boolean;
 }) {
-  const data = [{ name: 'v', value: Math.min(100, Math.max(0, pct)), fill }];
+  const value = empty || pct == null ? 0 : Math.min(100, Math.max(0, pct));
+  const data = [{ name: 'v', value, fill }];
   return (
     <div className="flex flex-col items-center">
       <div className="w-full" style={{ height: CHART_H }}>
@@ -108,35 +72,43 @@ export function PipelineProductVitalsCharts({
   product: PipelineCatalogProduct;
   locale: AdminLocale;
 }) {
+  const vitals = useMemo(() => computePipelineProductVitals(product, locale), [product, locale]);
   const eco = (product.economics || {}) as Record<string, unknown>;
-  const pulse = product.pulse as ProductPulsePayload | undefined;
-
-  const costUsd = Number(eco.llm_cost_usd) || 0;
-  const capUsd = Number(eco.pipeline_cost_cap_usd) || 0;
-  const costPct = capUsd > 0 ? Math.min(100, (costUsd / capUsd) * 100) : Math.min(100, costUsd * 8);
 
   const agentBar = useMemo(() => {
     const breakdown = (eco.llm_agent_breakdown || {}) as Record<string, { cost_usd?: number }>;
     return Object.entries(breakdown)
-      .map(([name, s]) => ({ name: name.slice(0, 6), cost: Number(s?.cost_usd) || 0 }))
+      .map(([name, s]) => ({ name: agentCostBarLabel(name), cost: Number(s?.cost_usd) || 0 }))
       .filter((r) => r.cost > 0)
       .sort((a, b) => b.cost - a.cost)
       .slice(0, 5);
   }, [eco.llm_agent_breakdown]);
 
-  const { pct: deadlinePct, label: deadlineLabel } = useMemo(
-    () => deadlinePercent(product, pulse, locale),
-    [product, pulse, locale],
-  );
-  const qPct = qualityPercent(eco, pulse);
-  const qLabel =
-    typeof eco.quality_score === 'number'
-      ? `${eco.quality_score}/5`
-      : pulse?.quality_hint?.slice(0, 28) || t(locale, 'pipeline.vitals.qualityUnknown');
+  const costFill =
+    vitals.costPct != null && vitals.costPct >= 90
+      ? '#f87171'
+      : vitals.costPct != null && vitals.costPct >= 70
+        ? '#fbbf24'
+        : '#34d399';
+  const progressFill =
+    vitals.progressPct != null && vitals.progressPct >= 85 ? '#fbbf24' : '#22d3ee';
+  const qualityFill =
+    vitals.qualityPct == null
+      ? '#64748b'
+      : vitals.qualityPct >= 70
+        ? '#34d399'
+        : vitals.qualityPct >= 45
+          ? '#fbbf24'
+          : '#f87171';
 
-  const costFill = costPct >= 90 ? '#f87171' : costPct >= 70 ? '#fbbf24' : '#34d399';
-  const deadlineFill = deadlinePct >= 85 ? '#fbbf24' : '#22d3ee';
-  const qualityFill = qPct >= 70 ? '#34d399' : qPct >= 45 ? '#fbbf24' : '#f87171';
+  const costRadialPct = vitals.costPct ?? (vitals.costUsd > 0 ? 100 : null);
+  const costLabel = formatVitalsUsd(vitals.costUsd);
+  const costSublabel =
+    vitals.costCapUsd > 0
+      ? tVars(locale, 'pipeline.vitals.costCap', { cap: vitals.costCapUsd.toFixed(0) })
+      : vitals.costUsd > 0
+        ? vitals.costDetail
+        : t(locale, 'pipeline.vitals.costNoCap');
 
   return (
     <div
@@ -164,36 +136,45 @@ export function PipelineProductVitalsCharts({
           </div>
         ) : (
           <MiniRadial
-            pct={costPct}
+            pct={costRadialPct}
             fill={costFill}
-            label={usdTooltipFmt(costUsd)}
-            sublabel={
-              capUsd > 0
-                ? tVars(locale, 'pipeline.vitals.costCap', { cap: capUsd.toFixed(0) })
-                : t(locale, 'pipeline.vitals.costNoCap')
-            }
+            label={costLabel}
+            sublabel={costSublabel}
+            empty={vitals.costUsd <= 0 && vitals.costPct == null}
           />
         )}
         {agentBar.length > 0 && (
           <p className="text-[10px] text-center text-gray-400 -mt-1">
-            {tVars(locale, 'pipeline.vitals.costTotal', { cost: costUsd.toFixed(2) })}
-            {capUsd > 0 ? ` · cap $${capUsd.toFixed(0)}` : ''}
+            {tVars(locale, 'pipeline.vitals.costTotal', { cost: vitals.costUsd.toFixed(2) })}
+            {vitals.costCapUsd > 0 ? ` · cap $${vitals.costCapUsd.toFixed(0)}` : ''}
           </p>
         )}
       </div>
 
       <div className="rounded-lg bg-black/20 p-1.5">
         <p className="text-[9px] uppercase tracking-wider text-gray-500 px-1 mb-0.5">
-          {t(locale, 'pipeline.vitals.deadlineTitle')}
+          {t(locale, 'pipeline.vitals.progressTitle')}
         </p>
-        <MiniRadial pct={deadlinePct} fill={deadlineFill} label={`${Math.round(deadlinePct)}%`} sublabel={deadlineLabel} />
+        <MiniRadial
+          pct={vitals.progressPct}
+          fill={progressFill}
+          label={formatVitalsPercent(vitals.progressPct)}
+          sublabel={vitals.progressDetail}
+          empty={vitals.progressPct == null}
+        />
       </div>
 
       <div className="rounded-lg bg-black/20 p-1.5">
         <p className="text-[9px] uppercase tracking-wider text-gray-500 px-1 mb-0.5">
           {t(locale, 'pipeline.vitals.qualityTitle')}
         </p>
-        <MiniRadial pct={qPct} fill={qualityFill} label={`${Math.round(qPct)}%`} sublabel={qLabel} />
+        <MiniRadial
+          pct={vitals.qualityPct}
+          fill={qualityFill}
+          label={formatVitalsPercent(vitals.qualityPct)}
+          sublabel={vitals.qualityDetail}
+          empty={vitals.qualityPct == null}
+        />
       </div>
     </div>
   );

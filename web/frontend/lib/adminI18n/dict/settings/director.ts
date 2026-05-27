@@ -202,4 +202,14 @@ export const DIRECTOR_SETTINGS_DICT: I18nDict = {
     ru: 'Автогенерация включена: не чаще одного раза каждые {minutes} минут.',
     es: 'Autogeneración activa: como mucho una vez cada {minutes} minutos.',
   },
+  'settings.toast.highThroughputOn': {
+    en: 'Local high-throughput mode enabled',
+    ru: 'Локальный высокопроизводительный режим включён',
+    es: 'Modo local de alto rendimiento activado',
+  },
+  'settings.toast.highThroughputOff': {
+    en: 'Local high-throughput mode disabled',
+    ru: 'Локальный высокопроизводительный режим выключен',
+    es: 'Modo local de alto rendimiento desactivado',
+  },
 };

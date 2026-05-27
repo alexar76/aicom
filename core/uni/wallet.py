@@ -112,7 +112,21 @@ class UniWalletService:
                 meta={**meta, "seller": seller_owner_id, "fee_uni": fee},
                 idempotency_key=idempotency_key,
             ):
-                return {"duplicate": True, "idempotency_key": idempotency_key}
+                # Caller asked for an idempotent retry and the first attempt
+                # already persisted. Return the ORIGINAL receipt so they can
+                # quote it downstream — same contract as a fresh charge.
+                # Pass `conn` to avoid re-acquiring the process-wide write lock.
+                from core.uni.receipts import get_receipt_by_idempotency_key
+
+                prior = get_receipt_by_idempotency_key(idempotency_key, conn=conn)
+                return {
+                    "duplicate": True,
+                    "idempotency_key": idempotency_key,
+                    "receipt": prior,
+                    "amount_uni": gross,
+                    "platform_fee_uni": fee,
+                    "net_to_seller_uni": net,
+                }
             if not self._debit_available(conn, buyer["wallet_id"], gross, ts):
                 raise InsufficientFundsError("insufficient_balance")
             self._credit_balance(conn, seller["wallet_id"], net, ts, lifetime_in=True)
@@ -373,7 +387,15 @@ class UniWalletService:
                 meta={"hold_id": hold_id, "channel_id": channel_id, "fee_uni": fee, "net_uni": net},
                 idempotency_key=idem,
             ):
-                return {"ok": False, "duplicate": True, "error": "duplicate_spend"}
+                from core.uni.receipts import get_receipt_by_idempotency_key
+
+                prior = get_receipt_by_idempotency_key(idem, conn=conn)
+                return {
+                    "ok": False,
+                    "duplicate": True,
+                    "error": "duplicate_spend",
+                    "receipt": prior,
+                }
             new_remaining = remaining - gross
             status = "open" if new_remaining > 0 else "depleted"
             if uni_db_backend() == "postgres":
@@ -544,9 +566,13 @@ class UniWalletService:
                 idempotency_key=idempotency_key,
             ):
                 row = self._fetch_wallet(conn, wallet_id)
+                from core.uni.receipts import get_receipt_by_idempotency_key
+
+                prior = get_receipt_by_idempotency_key(idempotency_key, conn=conn)
                 return {
                     "wallet": self._wallet_view(row or {}),
                     "duplicate": True,
+                    "receipt": prior,
                 }
             if uni_db_backend() == "postgres":
                 conn.execute(

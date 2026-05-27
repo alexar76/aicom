@@ -42,6 +42,22 @@ Anything that needs “what the factory would see in production” should use **
 
 Secrets that must never live in the main overlay (Telegram tokens) use `data/secrets/telegram.yaml` and env vars; stripping legacy keys from the overlay still edits **only** the primary file (`telegram_credentials._strip_legacy_telegram_keys_in_config_yaml`).
 
+### Host disk Telegram alerts
+
+Defaults ship in `config/fragments/10-general.yaml` under `general.disk_*` and `general.telegram_notify_host_disk`. Operators can edit them in **Admin → Settings → Host disk alerts** (autosave with the rest of platform settings).
+
+| `general.*` key | Default | Meaning |
+|-----------------|---------|---------|
+| `disk_warn_used_pct` | `90` | Warning when used % on a monitored path is ≥ this |
+| `disk_crit_used_pct` | `96` | Critical when used % ≥ this |
+| `disk_warn_free_gb` | `4` | Warning when free space &lt; this (GB) |
+| `disk_crit_free_gb` | `1` | Critical when free space &lt; this (GB) |
+| `disk_alert_cooldown_hours` | `8` | Minimum hours before repeating the same alert level |
+| `disk_monitor_interval_minutes` | `15` | Background check interval |
+| `telegram_notify_host_disk` | `true` | Send Telegram when thresholds are breached |
+
+Runtime env overrides (until process restart) take precedence over saved settings — see `.env.example` (`AIFACTORY_DISK_WARN_USED_PCT`, `AIFACTORY_DISK_CRIT_USED_PCT`, `AIFACTORY_DISK_WARN_FREE_GB`, `AIFACTORY_DISK_CRIT_FREE_GB`, `AIFACTORY_DISK_ALERT_COOLDOWN_SEC`, `AIFACTORY_DISK_MONITOR_INTERVAL_SEC`, `AIFACTORY_DISK_MONITOR_PATHS`, `AIFACTORY_TELEGRAM_NOTIFY_HOST_DISK`). Implementation: `web/backend/services/host_disk_monitor.py`.
+
 ## Director / benchmark league (optional)
 
 Autonomous benchmark runs (`scripts/benchmark_pass_rate.py`, triggered by Director on SLO breach or periodic autorun) call **admin** HTTP endpoints. Without credentials they would return **401** and overload the API.

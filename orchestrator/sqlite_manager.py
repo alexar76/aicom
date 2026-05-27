@@ -581,25 +581,25 @@ class SQLiteManager:
         ).fetchone()["cnt"]
 
         pending_tasks = self.conn.execute(
-            "SELECT COUNT(*) as cnt FROM tasks WHERE status = 'PENDING'"
+            "SELECT COUNT(*) as cnt FROM tasks WHERE lower(trim(status)) = 'pending'"
             " AND workspace_id = ?",
             (self.workspace_id,),
         ).fetchone()["cnt"]
 
         running_tasks = self.conn.execute(
-            "SELECT COUNT(*) as cnt FROM tasks WHERE status = 'RUNNING'"
+            "SELECT COUNT(*) as cnt FROM tasks WHERE lower(trim(status)) = 'running'"
             " AND workspace_id = ?",
             (self.workspace_id,),
         ).fetchone()["cnt"]
 
         failed_tasks = self.conn.execute(
-            "SELECT COUNT(*) as cnt FROM tasks WHERE status = 'FAILED'"
+            "SELECT COUNT(*) as cnt FROM tasks WHERE lower(trim(status)) = 'failed'"
             " AND workspace_id = ?",
             (self.workspace_id,),
         ).fetchone()["cnt"]
 
         timeout_tasks = self.conn.execute(
-            "SELECT COUNT(*) as cnt FROM tasks WHERE status = 'TIMEOUT'"
+            "SELECT COUNT(*) as cnt FROM tasks WHERE lower(trim(status)) IN ('timeout', 'timed_out')"
             " AND workspace_id = ?",
             (self.workspace_id,),
         ).fetchone()["cnt"]

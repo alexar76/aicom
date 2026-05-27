@@ -559,8 +559,10 @@ class DirectorWorker:
                     # Run analysis
                     result = await self.run_full_analysis()
 
+                    from core.factory_hold import is_factory_on_hold
+
                     # If trigger had auto_pipeline flag, create product
-                    if trigger_data.get("auto_pipeline") or self._auto_pipeline_enabled:
+                    if (trigger_data.get("auto_pipeline") or self._auto_pipeline_enabled) and not is_factory_on_hold():
                         await self._auto_create_product()
                     if trigger_data.get("benchmark_now") is True:
                         await self._run_benchmark_league_once()
@@ -577,7 +579,9 @@ class DirectorWorker:
             try:
                 self._load_config()  # Reload config to get latest settings
 
-                if self._auto_pipeline_enabled:
+                from core.factory_hold import is_factory_on_hold
+
+                if self._auto_pipeline_enabled and not is_factory_on_hold():
                     now = time.time()
                     elapsed = (now - self._last_auto_product_time) / 60
                     if elapsed >= self._auto_pipeline_interval_minutes:

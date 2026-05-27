@@ -12,6 +12,30 @@ The worker does **not** rely on a fixed sleep-only loop. It combines:
 
 Health + wake: `GET http://127.0.0.1:8091/health` inside the app container. See **[configuration.md](./configuration.md)** for env vars.
 
+## Per-product improvement hold
+
+**Pipeline** — chip **Пауза / Hold** on each product card, or full toggle in the expanded **Storefront** section.
+
+| Setting | Storage | Effect |
+|---------|---------|--------|
+| `improvement_on_hold` | `data/state/product_followup/<product_id>.json` | Skips market monitoring, refactor sprint, storefront auto-remediation, and starting pending tasks for that product only. |
+
+API: `PATCH /api/admin/pipeline/products/{id}/followup` with `{ "improvement_on_hold": true \| false }`.
+
+## Factory hold (pause / resume)
+
+**Admin → Settings** — first card **Factory hold** (status label + switch; no text inside the knob).
+
+| State | Effect |
+|-------|--------|
+| **ON HOLD** | Pipeline worker skips new work; Director does not auto-enqueue products. Queued ideas and in-flight state stay on disk. |
+| **RUNNING** | Normal operation. |
+
+- Persists in **`{DATA_ROOT}/config/`** merged config as **`general.factory_on_hold`** (auto-save on toggle).
+- **Works in public demo mode** (`AIFACTORY_DEMO_READONLY=1`) — the only Settings control allowed on the shared demo host.
+- Emergency env override: **`AIFACTORY_FACTORY_ON_HOLD=1`** (see `core/factory_hold.py`).
+- When hold is active, a **banner** appears on other admin tabs linking back to Settings.
+
 ## Discovery (pre-pipeline opportunity phase)
 
 Before `IDEA_RECEIVED`, autonomous mode now runs a dedicated Discovery stage in `director/discovery_pipeline.py`:
@@ -312,6 +336,16 @@ Router-level in-memory cache reduces repeated prompt latency/cost for identical 
 | `AIFACTORY_LLM_CACHE_MAX_ENTRIES` | `500` | Maximum cache size before oldest-entry eviction |
 
 Implementation: `llm/router.py`.
+
+## Testing (local)
+
+| Command | What it runs |
+|---------|----------------|
+| `./scripts/run_all_tests.sh` | Backend `pytest tests/` + frontend `npm run test:unit` (Vitest) |
+| `pytest tests/test_agent_logs_api.py -q` | Agent execution log API (tail read, excludes `llm_calls.jsonl`) |
+| `USE_SQLITE=true pytest -q --cov` | Full backend suite with coverage (CI-style) |
+
+Agent execution logs are written to **`data/logs/<agent_type>.jsonl`** by `agents/base_agent.py`. Admin **Agent Logs** (`GET /api/admin/agent/logs`) reads those files only — not **`llm_calls.jsonl`** (use **LLM Logs** for that). Large files are tail-bounded so the tab stays responsive.
 
 ## Runtime test execution fallback
 

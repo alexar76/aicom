@@ -38,7 +38,6 @@ from core.paths import (
     market_research_path,
     marketing_content_path,
     metrics_history_path,
-    model_providers_path,
     pipeline_db_path,
     pipeline_json_path,
     reports_dir,
@@ -46,7 +45,6 @@ from core.paths import (
 )
 from web.backend.core.admin_roles import AdminRole, normalize_role, rank, require_admin_with_rbac
 from finance_stats import compute_dashboard_revenue
-from llm.bootstrap_providers import ensure_model_providers_file
 from llm.factory_defaults import FACTORY_CONTEXT_WINDOW_DEFAULT, FACTORY_MAX_OUTPUT_TOKENS_HEAVY
 from web.backend.services.catalog_hardening import harden_catalog_products
 from web.backend.services.product_naming import resolve_product_name
@@ -75,7 +73,11 @@ from web.backend.services.storefront_counts_cache import invalidate_storefront_c
 from web.backend.services.product_economics import compute_roi_band, get_product_llm_costs
 from web.backend.services.factory_floor import build_factory_floor_slice
 from web.backend.services.cost_outcome_heatmap import build_cost_outcome_heatmap
-from web.backend.services.product_pulse import build_product_pulse, build_product_pulses_for_metrics
+from web.backend.services.product_pulse import (
+    build_product_pulse,
+    build_product_pulses_for_metrics,
+    enrich_pipeline_catalog_quality_fields,
+)
 from web.backend.services.storefront_pricing import (
     patch_admin_storefront_usdt,
     read_sales_inner_and_pricing,
@@ -296,7 +298,7 @@ async def get_pipeline_products(
                     "total_products": 0,
                     "shipped_products": 0,
                     "failed_products": 0,
-                    "storefront_listable_products": 0,
+                    "storefront_listable_products": None,
                     "light": light,
                     "sort": sort,
                 },
@@ -318,7 +320,7 @@ async def get_pipeline_products(
                     "total_products": 0,
                     "shipped_products": 0,
                     "failed_products": 0,
-                    "storefront_listable_products": 0,
+                    "storefront_listable_products": None,
                     "light": light,
                     "sort": sort,
                 },
@@ -366,12 +368,11 @@ async def get_pipeline_products(
             )
             window = all_items[safe_offset : safe_offset + safe_limit]
 
-        storefront_listable = 0
+        storefront_listable: int | None = None
         try:
             storefront_listable = count_showcase_listable_products()
         except Exception as ex:
             logger.warning("pipeline products: storefront listable count failed (%s)", ex)
-            storefront_listable = 0
 
         result = []
         for pid, product in window:
@@ -510,65 +511,46 @@ async def get_pipeline_products(
             result.append(row)
         
         # ── Per-product economics enrichment ─────────────────────────────────
-        # Single pass over llm_calls.jsonl for all visible products (skipped in light catalog).
-        if not light:
-            try:
-                visible_ids = {r["id"] for r in result}
-                eco_map = get_product_llm_costs(visible_ids)
-                for r in result:
-                    pid = r["id"]
-                    eco = eco_map.get(pid)
-                    if eco is not None:
-                        r["economics"] = eco
-                        # Quality score from storefront followup (human, 1‑5) or fallback
-                        sf_q = r.get("storefront_followup", {}) or {}
-                        qs = sf_q.get("quality_score")
-                        try:
-                            qs_f = float(qs) if qs is not None else None
-                        except (TypeError, ValueError):
-                            qs_f = None
-                        r["economics"]["roi_band"] = compute_roi_band(
-                            eco.get("llm_cost_usd"), qs_f,
-                        )
-                        r["economics"]["quality_score"] = qs_f
-                        from core.quality_settings import max_pipeline_cost_usd
+        # Single pass over llm_calls.jsonl (light + full — vitals need real spend per product).
+        try:
+            from core.quality_settings import max_pipeline_cost_usd
 
-                        _cap = max_pipeline_cost_usd()
-                        if _cap > 0:
-                            r["economics"]["pipeline_cost_cap_usd"] = _cap
-                    else:
-                        r["economics"] = {
-                            "llm_cost_usd": 0.0,
-                            "llm_call_count": 0,
-                            "llm_total_tokens": 0,
-                            "llm_agent_breakdown": {},
-                            "quality_score": None,
-                            "roi_band": compute_roi_band(0.0, None),
-                        }
-            except Exception as eco_err:
-                logger.warning("Product economics enrichment failed: %s", eco_err)
-        else:
+            _cap = max_pipeline_cost_usd()
+            visible_ids = {r["id"] for r in result}
+            eco_map = get_product_llm_costs(visible_ids)
             for r in result:
+                pid = r["id"]
+                eco = eco_map.get(pid)
                 sf_q = r.get("storefront_followup", {}) or {}
                 qs = sf_q.get("quality_score")
                 try:
                     qs_f = float(qs) if qs is not None else None
                 except (TypeError, ValueError):
                     qs_f = None
-                r["economics"] = {
-                    "llm_cost_usd": 0.0,
-                    "llm_call_count": 0,
-                    "llm_total_tokens": 0,
-                    "llm_agent_breakdown": {},
-                    "quality_score": qs_f,
-                    "roi_band": compute_roi_band(0.0, qs_f),
-                }
+                if eco is not None:
+                    r["economics"] = eco
+                else:
+                    r["economics"] = {
+                        "llm_cost_usd": 0.0,
+                        "llm_call_count": 0,
+                        "llm_total_tokens": 0,
+                        "llm_agent_breakdown": {},
+                    }
+                r["economics"]["roi_band"] = compute_roi_band(
+                    r["economics"].get("llm_cost_usd"), qs_f,
+                )
+                r["economics"]["quality_score"] = qs_f
+                if _cap > 0:
+                    r["economics"]["pipeline_cost_cap_usd"] = _cap
+        except Exception as eco_err:
+            logger.warning("Product economics enrichment failed: %s", eco_err)
 
         try:
             dr = factory_data_root()
             for r in result:
                 try:
                     r["pulse"] = build_product_pulse(r, light=light, data_root=dr)
+                    enrich_pipeline_catalog_quality_fields(r, data_root=dr)
                 except Exception as ex:
                     logger.debug("product pulse for %s: %s", r.get("id"), ex)
                     r["pulse"] = None
@@ -606,12 +588,22 @@ async def get_pipeline_products(
 async def patch_pipeline_product_followup(product_id: str, body: StorefrontFollowupPatch):
     """Set manual storefront follow-up label (planned rework vs not pursuing). Stored on disk under state/product_followup/."""
     try:
-        record = validate_and_save(
-            product_id,
-            followup=body.followup,
-            planned_notes=body.planned_notes,
-            not_pursuing_reason=body.not_pursuing_reason,
-        )
+        from web.backend.services.product_followup import set_product_improvement_on_hold
+
+        record = None
+        if body.improvement_on_hold is not None:
+            record = set_product_improvement_on_hold(product_id, bool(body.improvement_on_hold))
+        if body.followup is not None or body.planned_notes is not None or body.not_pursuing_reason is not None:
+            record = validate_and_save(
+                product_id,
+                followup=body.followup,
+                planned_notes=body.planned_notes,
+                not_pursuing_reason=body.not_pursuing_reason,
+            )
+        if record is None:
+            from web.backend.services.product_followup import read_followup, normalize_pipeline_followup
+
+            record = normalize_pipeline_followup(read_followup(product_id))
         vis, reasons = _admin_pipeline_storefront_hints(product_id)
         invalidate_storefront_categories_cache()
         return {

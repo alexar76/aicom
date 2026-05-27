@@ -19,11 +19,12 @@ import json
 import logging
 import os
 import subprocess
+import threading
 import time
 import uuid
 from collections import defaultdict, deque
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -71,6 +72,13 @@ from web.backend.services.sandbox_static_entry import (
     static_preview_file,
 )
 from core.paths import code_dir as resolve_product_code_dir, pipeline_json_path, sandbox_registry_path, specs_dir, product_state_dir
+from web.backend.services.sandbox_preview_auth import (
+    append_preview_token_query,
+    mint_sandbox_preview_token,
+    require_sandbox_proxy_access,
+    require_sandbox_view_access,
+    sanitize_git_remote_line,
+)
 from web.backend.services.sandbox_static_rewrite import (
     SANDBOX_HTML_CSP,
     SANDBOX_IFRAME_SANDBOX_ATTR,
@@ -99,6 +107,7 @@ router = APIRouter(prefix="/api/sandbox", tags=["sandbox"])
 # rest fail at proxy time with 502/503 rather than hiding the sandbox entirely.
 _SANDBOX_REGISTRY_PATH = sandbox_registry_path()
 _active_sandboxes: dict[str, dict] = {}
+_registry_lock = threading.Lock()
 
 
 def _save_registry() -> None:
@@ -122,6 +131,12 @@ def _load_registry() -> None:
             _active_sandboxes.update(
                 {str(k): v for k, v in data.items() if isinstance(v, dict)}
             )
+            from web.backend.services.sandbox_guards import prune_expired_sandboxes
+
+            prune_expired_sandboxes(_active_sandboxes)
+            for entry in _active_sandboxes.values():
+                if isinstance(entry, dict) and not entry.get("preview_token"):
+                    entry["preview_token"] = mint_sandbox_preview_token()
             logger.info("sandbox registry: loaded %d entries", len(_active_sandboxes))
     except Exception as e:
         logger.warning("sandbox registry load failed: %s", e)
@@ -211,6 +226,7 @@ def _finalize_sandbox_proxy_response(
 
     ct = upstream.headers.get("content-type")
     body = upstream.content
+    sb = _lookup_sandbox(sandbox_id) or {}
     new_body, is_html = rewrite_upstream_proxy_body(
         body,
         ct,
@@ -218,6 +234,7 @@ def _finalize_sandbox_proxy_response(
         proxy_kind=proxy_kind,
         inject_backend_fetch_shim=inject_backend_fetch_shim,
         public_origin=public_origin_from_request(request),
+        preview_token=sb.get("preview_token"),
     )
     if new_body != body:
         for hk in list(out_headers.keys()):
@@ -318,56 +335,100 @@ def _storefront_allows_sandbox_preview(product_id: str) -> bool:
     return _product_has_code(product_id)
 
 
-def _start_sandbox_for_product(product_id: str) -> dict:
-    """Core sandbox start logic (admin and public storefront)."""
-    sandbox_id = f"sandbox-{uuid.uuid4().hex[:12]}"
-    port = 9000 + len(_active_sandboxes) % 1000  # allocate unique port
+def _degraded_preview_badge_html(sb_state: dict[str, Any]) -> str:
+    if sb_state.get("preview_tier") != "degraded":
+        return ""
+    from web.backend.services.sandbox_guards import degraded_badge_message
 
-    product_code_dir = _get_product_code_dir(product_id)
-    if product_code_dir:
-        from web.backend.services.sandbox_spec_landing import materialize_spec_landing_on_disk
+    msg = degraded_badge_message(sb_state.get("degraded_reasons"))
+    return (
+        '<span style="margin-left:0.75rem;font-size:0.7rem;padding:0.2rem 0.55rem;'
+        'border-radius:6px;background:rgba(234,179,8,0.15);color:#facc15;'
+        'border:1px solid rgba(234,179,8,0.35)" title="'
+        + msg.replace('"', "&quot;")
+        + '">⚠ '
+        + msg
+        + "</span>"
+    )
 
-        materialize_spec_landing_on_disk(product_id, code_root=product_code_dir)
-    host_port = None
 
+def _build_sandbox_start_response(
+    sandbox_id: str,
+    entry: dict[str, Any],
+    *,
+    preview_payload: dict[str, Any],
+    compose_preview_payload: dict[str, Any],
+    plan: Any | None = None,
+) -> dict[str, Any]:
+    preview_token = entry.get("preview_token") or ""
+    view_url = f"/api/sandbox/view/{sandbox_id}"
+    if preview_token:
+        view_url = append_preview_token_query(view_url, preview_token)
+    out: dict[str, Any] = {
+        "sandbox_id": sandbox_id,
+        "status": entry.get("status", "running"),
+        "url": view_url,
+        "expires_at": entry.get("expires_at", time.time() + 3600),
+        "port": entry.get("port"),
+        "docker_mode": entry.get("docker_mode", False),
+        "preview_tier": entry.get("preview_tier", "full"),
+        "startup_phase": entry.get("startup_phase", "ready"),
+        "preview_api": preview_payload,
+        "compose_preview": compose_preview_payload,
+    }
+    if entry.get("degraded_reasons"):
+        out["degraded_reasons"] = entry["degraded_reasons"]
+    warning = (plan.startup_warning if plan else None) or entry.get("startup_warning")
+    if warning:
+        out["startup_warning"] = warning
+    if entry.get("preview_tier") == "degraded":
+        out["degraded_badge"] = True
+    return out
+
+
+def _run_full_sandbox_bootstrap(
+    sandbox_id: str,
+    product_id: str,
+    product_code_dir: Path,
+    port: int,
+    *,
+    storefront: bool,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Compose + optional DinD + uvicorn preview (full product demo)."""
     compose_proxy_port: Optional[int] = None
     compose_preview_status: Optional[str] = None
-    if product_code_dir:
-        cpp, cst, _cproj = start_compose_preview(product_code_dir, sandbox_id)
-        compose_proxy_port = cpp
-        compose_preview_status = cst
-
+    cpp, cst, _cproj = start_compose_preview(
+        product_code_dir,
+        sandbox_id,
+        storefront=storefront,
+    )
+    compose_proxy_port = cpp
+    compose_preview_status = cst
     compose_ok = compose_preview_status == "ok" and compose_proxy_port is not None
 
-    # Static file DinD (skipped when compose stack is running — same Docker daemon)
     docker_success = False
+    host_port = None
     if not compose_ok:
         docker_success = _try_docker_run(sandbox_id, product_id, port)
-    if docker_success:
-        host_port = port
-        logger.info(f"Sandbox {sandbox_id} running as Docker container on port {port}")
-    else:
-        logger.info(f"Sandbox {sandbox_id} running in mock mode (no Docker available)")
+        if docker_success:
+            host_port = port
 
-    entry: dict = {
-        "id": sandbox_id,
-        "product_id": product_id,
-        "status": "running",
-        "started_at": time.time(),
-        "url": f"/sandbox/{sandbox_id}",
-        "port": host_port,
-        "docker_mode": docker_success,
-        "has_code": product_code_dir is not None,
-        "backend_preview_port": None,
-        "preview_api_status": None,
-        "compose_proxy_port": compose_proxy_port,
-        "compose_preview_status": compose_preview_status,
-    }
-    _active_sandboxes[sandbox_id] = entry
-    _save_registry()
+    with _registry_lock:
+        entry = _active_sandboxes.get(sandbox_id) or {}
+        entry.update(
+            {
+                "port": host_port,
+                "docker_mode": docker_success,
+                "compose_proxy_port": compose_proxy_port,
+                "compose_preview_status": compose_preview_status,
+                "startup_phase": "bootstrapping",
+            }
+        )
+        _active_sandboxes[sandbox_id] = entry
+        _save_registry()
 
-    preview_payload: dict = {"enabled": False, "proxy_prefix": None, "status": None}
-    if product_code_dir and _should_try_fastapi_preview(product_code_dir, compose_ok):
+    preview_payload: dict[str, Any] = {"enabled": False, "proxy_prefix": None, "status": None}
+    if _should_try_fastapi_preview(product_code_dir, compose_ok):
         if _ensure_fastapi_preview(sandbox_id, entry, product_code_dir):
             preview_payload = {
                 "enabled": True,
@@ -393,22 +454,154 @@ def _start_sandbox_for_product(product_id: str) -> dict:
         "status": compose_preview_status,
     }
 
-    return {
-        "sandbox_id": sandbox_id,
+    with _registry_lock:
+        entry = _active_sandboxes.get(sandbox_id) or {}
+        entry["startup_phase"] = "ready"
+        _active_sandboxes[sandbox_id] = entry
+        _save_registry()
+
+    return preview_payload, compose_preview_payload
+
+
+def _background_full_bootstrap(
+    sandbox_id: str,
+    product_id: str,
+    port: int,
+    *,
+    storefront: bool,
+) -> None:
+    try:
+        product_code_dir = _get_product_code_dir(product_id)
+        if not product_code_dir:
+            return
+        _run_full_sandbox_bootstrap(
+            sandbox_id,
+            product_id,
+            product_code_dir,
+            port,
+            storefront=storefront,
+        )
+    except Exception:
+        logger.exception("background sandbox bootstrap failed sandbox=%s", sandbox_id[:16])
+        with _registry_lock:
+            entry = _active_sandboxes.get(sandbox_id)
+            if entry:
+                entry["startup_phase"] = "failed"
+                _save_registry()
+
+
+def _start_sandbox_for_product(product_id: str, *, storefront: bool = False) -> dict:
+    """Core sandbox start: full stack by default; degraded static only when disk/RAM is low."""
+    from web.backend.services.sandbox_guards import (
+        enforce_concurrency_limit,
+        evaluate_sandbox_resource_plan,
+    )
+
+    with _registry_lock:
+        enforce_concurrency_limit(_active_sandboxes, storefront=storefront)
+
+    sandbox_id = f"sandbox-{uuid.uuid4().hex}"
+    preview_token = mint_sandbox_preview_token()
+    port = 9000 + (len(_active_sandboxes) % 1000)
+
+    product_code_dir = _get_product_code_dir(product_id)
+    if product_code_dir:
+        from web.backend.services.sandbox_spec_landing import materialize_spec_landing_on_disk
+
+        materialize_spec_landing_on_disk(product_id, code_root=product_code_dir)
+
+    static_rel = (
+        resolve_static_preview_relpath(product_code_dir) if product_code_dir else None
+    )
+    plan = evaluate_sandbox_resource_plan(
+        product_code_dir,
+        has_static_preview=static_rel is not None,
+    )
+
+    entry: dict[str, Any] = {
+        "id": sandbox_id,
+        "product_id": product_id,
+        "preview_token": preview_token,
         "status": "running",
-        "url": f"/api/sandbox/view/{sandbox_id}",
+        "started_at": time.time(),
         "expires_at": time.time() + 3600,
-        "port": host_port,
-        "docker_mode": docker_success,
-        "preview_api": preview_payload,
-        "compose_preview": compose_preview_payload,
+        "url": f"/sandbox/{sandbox_id}",
+        "port": None,
+        "docker_mode": False,
+        "has_code": product_code_dir is not None,
+        "preview_tier": plan.tier,
+        "startup_phase": "starting",
+        "backend_preview_port": None,
+        "preview_api_status": None,
+        "compose_proxy_port": None,
+        "compose_preview_status": None,
     }
+    if plan.tier == "degraded":
+        entry["degraded_reasons"] = list(plan.reasons)
+        entry["startup_phase"] = "ready"
+        entry["startup_warning"] = None
+    elif plan.startup_warning:
+        entry["startup_warning"] = plan.startup_warning
+
+    with _registry_lock:
+        _active_sandboxes[sandbox_id] = entry
+        _save_registry()
+
+    preview_payload: dict[str, Any] = {"enabled": False, "proxy_prefix": None, "status": None}
+    compose_preview_payload: dict[str, Any] = {
+        "enabled": False,
+        "proxy_prefix": None,
+        "status": None,
+    }
+
+    if plan.tier == "degraded":
+        return _build_sandbox_start_response(
+            sandbox_id,
+            entry,
+            preview_payload=preview_payload,
+            compose_preview_payload=compose_preview_payload,
+            plan=plan,
+        )
+
+    if storefront:
+        threading.Thread(
+            target=_background_full_bootstrap,
+            args=(sandbox_id, product_id, port),
+            kwargs={"storefront": True},
+            daemon=True,
+            name=f"sandbox-bootstrap-{sandbox_id[:12]}",
+        ).start()
+        return _build_sandbox_start_response(
+            sandbox_id,
+            entry,
+            preview_payload=preview_payload,
+            compose_preview_payload=compose_preview_payload,
+            plan=plan,
+        )
+
+    if product_code_dir:
+        preview_payload, compose_preview_payload = _run_full_sandbox_bootstrap(
+            sandbox_id,
+            product_id,
+            product_code_dir,
+            port,
+            storefront=False,
+        )
+        entry = _active_sandboxes.get(sandbox_id) or entry
+
+    return _build_sandbox_start_response(
+        sandbox_id,
+        entry,
+        preview_payload=preview_payload,
+        compose_preview_payload=compose_preview_payload,
+        plan=plan,
+    )
 
 
 @router.post("/start/{product_id}")
 async def start_sandbox(product_id: str, _admin: dict = Depends(require_admin_with_rbac)):
     """Start a sandbox for a product (admin console)."""
-    return _start_sandbox_for_product(product_id)
+    return await asyncio.to_thread(_start_sandbox_for_product, product_id, storefront=False)
 
 
 @router.post("/storefront/start/{product_id}")
@@ -421,11 +614,20 @@ async def start_sandbox_storefront(product_id: str, request: Request):
         raise HTTPException(status_code=404, detail="Product preview not available")
     product_code_dir = _get_product_code_dir(product_id)
     if product_code_dir:
-        from web.backend.services.sandbox_spec_landing import materialize_spec_landing_on_disk
-
-        materialize_spec_landing_on_disk(product_id, code_root=product_code_dir)
         ensure_storefront_preview_index(product_id, code_root=product_code_dir)
-    return _start_sandbox_for_product(product_id)
+    try:
+        return await asyncio.to_thread(_start_sandbox_for_product, product_id, storefront=True)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.exception("storefront sandbox start failed product=%s", product_id)
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "code": "sandbox_start_failed",
+                "message": "Preview could not be started.",
+            },
+        ) from exc
 
 
 @router.get("/ready/{sandbox_id}")
@@ -441,14 +643,29 @@ async def sandbox_ready(sandbox_id: str):
         return {"ready": False, "progress": 25, "stage": "no_code"}
 
     sb_state = _active_sandboxes.get(sandbox_id) or sandbox
+    tier = sb_state.get("preview_tier") or "full"
+    phase = sb_state.get("startup_phase") or "ready"
+    base_meta = {
+        "preview_tier": tier,
+        "startup_phase": phase,
+        "degraded_badge": tier == "degraded",
+        "degraded_reasons": sb_state.get("degraded_reasons"),
+        "startup_warning": sb_state.get("startup_warning"),
+    }
+    if phase == "failed":
+        return {**base_meta, "ready": False, "progress": 0, "stage": "bootstrap_failed"}
+    if phase in ("starting", "bootstrapping"):
+        progress = 35 if phase == "starting" else 65
+        return {**base_meta, "ready": False, "progress": progress, "stage": phase}
+
     if sb_state.get("compose_proxy_port"):
-        return {"ready": True, "progress": 100, "stage": "compose_ready"}
+        return {**base_meta, "ready": True, "progress": 100, "stage": "compose_ready"}
     if sb_state.get("backend_preview_port"):
-        return {"ready": True, "progress": 100, "stage": "api_ready"}
+        return {**base_meta, "ready": True, "progress": 100, "stage": "api_ready"}
 
     rel = resolve_static_preview_relpath(product_code_dir)
     if not rel:
-        return {"ready": False, "progress": 40, "stage": "index_missing"}
+        return {**base_meta, "ready": False, "progress": 40, "stage": "index_missing"}
 
     idx = product_code_dir / rel
     try:
@@ -457,6 +674,7 @@ async def sandbox_ready(sandbox_id: str):
         size = 0
     if size < 400:
         return {
+            **base_meta,
             "ready": False,
             "progress": 60,
             "stage": "index_building",
@@ -464,11 +682,28 @@ async def sandbox_ready(sandbox_id: str):
         }
 
     return {
+        **base_meta,
         "ready": True,
         "progress": 100,
         "stage": "preview_ready",
         "preview_path": rel,
     }
+
+
+def _attach_sandbox_preview_cookie(response: HTMLResponse, sandbox_id: str, sandbox: dict) -> HTMLResponse:
+    token = (sandbox.get("preview_token") or "").strip()
+    if not token:
+        return response
+    max_age = max(60, int(sandbox.get("expires_at", time.time() + 3600) - time.time()))
+    response.set_cookie(
+        key=f"aicom_sbx_{sandbox_id}",
+        value=token,
+        httponly=True,
+        samesite="lax",
+        path="/api/sandbox/",
+        max_age=max_age,
+    )
+    return response
 
 
 @router.get("/view/{sandbox_id}")
@@ -477,8 +712,10 @@ async def view_sandbox(request: Request, sandbox_id: str):
     sandbox = _lookup_sandbox(sandbox_id)
     if not sandbox or sandbox.get("status") != "running":
         raise HTTPException(status_code=404, detail="Sandbox not found or not running")
+    await require_sandbox_view_access(sandbox_id, request, sandbox=sandbox)
 
     product_id = sandbox.get("product_id", "unknown")
+    preview_token = (sandbox.get("preview_token") or "").strip()
     from web.backend.services.sandbox_remediation_badge import remediation_badge_markup
 
     rework_badge_html = remediation_badge_markup(product_id)
@@ -536,6 +773,7 @@ async def view_sandbox(request: Request, sandbox_id: str):
         compose_proxy_port = sb_state.get("compose_proxy_port")
         compose_ok = compose_proxy_port is not None
         backend_preview_port = sb_state.get("backend_preview_port")
+        degraded_hint = _degraded_preview_badge_html(sb_state)
         compose_hint = ""
         if compose_ok:
             compose_hint = (
@@ -564,10 +802,16 @@ async def view_sandbox(request: Request, sandbox_id: str):
             )
 
         if compose_ok:
-            iframe_src = sandbox_public_url(request, f"/api/sandbox/compose/{sandbox_id}/")
+            compose_path = f"/api/sandbox/compose/{sandbox_id}/"
+            if preview_token:
+                compose_path = append_preview_token_query(compose_path, preview_token)
+            iframe_src = sandbox_public_url(request, compose_path)
             preview_label = "docker compose stack"
         elif backend_preview_port:
-            iframe_src = sandbox_public_url(request, f"/api/sandbox/backend/{sandbox_id}/")
+            backend_path = f"/api/sandbox/backend/{sandbox_id}/"
+            if preview_token:
+                backend_path = append_preview_token_query(backend_path, preview_token)
+            iframe_src = sandbox_public_url(request, backend_path)
             preview_label = "FastAPI live app"
         elif static_preview_rel:
             iframe_src = sandbox_public_url(
@@ -642,7 +886,7 @@ async def view_sandbox(request: Request, sandbox_id: str):
         </div>
         <div class="main">
             <div class="toolbar">
-                <span>🌐 Live Preview — <span style="color:#6366f1">{preview_label}</span></span>{compose_hint}{backend_hint}
+                <span>🌐 Live Preview — <span style="color:#6366f1">{preview_label}</span></span>{degraded_hint}{compose_hint}{backend_hint}
             </div>
             <iframe name="demo-frame" src="{iframe_src}" title="Demo Preview"
                 sandbox="{SANDBOX_IFRAME_SANDBOX_ATTR}" referrerpolicy="no-referrer"></iframe>
@@ -687,12 +931,16 @@ h1{{color:#6366f1}} .note{{color:#666;margin-top:2em}}
 <p class="note">Run the pipeline first to generate code, then start a sandbox.</p>
 </body></html>"""
 
-    return HTMLResponse(
-        content=html,
-        headers={
-            "Content-Security-Policy": SANDBOX_VIEWER_CSP,
-            "X-Content-Type-Options": "nosniff",
-        },
+    return _attach_sandbox_preview_cookie(
+        HTMLResponse(
+            content=html,
+            headers={
+                "Content-Security-Policy": SANDBOX_VIEWER_CSP,
+                "X-Content-Type-Options": "nosniff",
+            },
+        ),
+        sandbox_id,
+        sandbox,
     )
 
 
@@ -764,7 +1012,11 @@ async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
             content = _inject_iframe_base_href(content, sandbox_id, request)
             sbrec = _active_sandboxes.get(sandbox_id) or {}
             if sbrec.get("backend_preview_port"):
-                content = inject_preview_api_fetch_shim(content, sandbox_id)
+                content = inject_preview_api_fetch_shim(
+                    content,
+                    sandbox_id,
+                    preview_token=sbrec.get("preview_token"),
+                )
             content = _inject_loopback_navigation_guard(content)
             content = inject_sandbox_in_page_nav_helpers(content)
             return Response(
@@ -790,6 +1042,7 @@ async def sandbox_backend_proxy(sandbox_id: str, path: str, request: Request):
     sandbox = _lookup_sandbox(sandbox_id)
     if not sandbox or sandbox.get("status") != "running":
         raise HTTPException(status_code=404, detail="Sandbox not found or not running")
+    await require_sandbox_proxy_access(sandbox_id, request, sandbox=sandbox)
     port = sandbox.get("backend_preview_port")
     if not port:
         raise HTTPException(
@@ -835,6 +1088,7 @@ async def sandbox_compose_proxy(sandbox_id: str, path: str, request: Request):
     sandbox = _lookup_sandbox(sandbox_id)
     if not sandbox or sandbox.get("status") != "running":
         raise HTTPException(status_code=404, detail="Sandbox not found or not running")
+    await require_sandbox_proxy_access(sandbox_id, request, sandbox=sandbox)
     port = sandbox.get("compose_proxy_port")
     if not port:
         raise HTTPException(
@@ -1066,8 +1320,8 @@ async def git_push(
 
 
 @router.get("/git/status/{product_id}")
-async def git_status(product_id: str):
-    """Get git status for a product's codebase."""
+async def git_status(product_id: str, _admin: dict = Depends(require_admin_with_rbac)):
+    """Get git status for a product's codebase (admin only; remotes sanitized)."""
     product_code_dir = resolve_product_code_dir(product_id)
     repo_dir = product_code_dir / ".git"
     if not repo_dir.exists():
@@ -1081,7 +1335,11 @@ async def git_status(product_id: str):
             ["git", "remote", "-v"],
             cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
         )
-        remotes = remote_result.stdout.strip().split("\n") if remote_result.stdout.strip() else []
+        remotes = [
+            sanitize_git_remote_line(line)
+            for line in remote_result.stdout.strip().split("\n")
+            if line.strip()
+        ]
 
         # Check branch
         branch_result = subprocess.run(

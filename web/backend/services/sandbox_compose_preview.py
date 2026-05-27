@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from web.backend.services.demo_credentials import effective_sandbox_demo_password_for_compose
-from web.backend.services.sandbox_docker import pick_loopback_port
+from web.backend.services.sandbox_docker import docker_available, pick_loopback_port
 from core.logging_utils import log_suppressed
 from web.backend.services.sandbox_preview_network import (
     prepare_isolation_for_compose,
@@ -146,13 +146,32 @@ def _discover_compose_http_port(
     return best
 
 
-def start_compose_preview(code_dir: Path, sandbox_id: str) -> tuple[Optional[int], str, Optional[str]]:
+def compose_up_timeout_sec(*, storefront: bool = False) -> float:
+    if storefront:
+        try:
+            return max(30.0, float(os.environ.get("AIFACTORY_SANDBOX_STOREFRONT_COMPOSE_TIMEOUT", "90")))
+        except ValueError:
+            return 90.0
+    try:
+        return max(60.0, float(os.environ.get("AIFACTORY_SANDBOX_COMPOSE_UP_TIMEOUT", "420")))
+    except ValueError:
+        return 420.0
+
+
+def start_compose_preview(
+    code_dir: Path,
+    sandbox_id: str,
+    *,
+    storefront: bool = False,
+) -> tuple[Optional[int], str, Optional[str]]:
     """
     ``docker compose up -d --build`` with env-injected host ports.
     Returns (loopback port to reverse-proxy, status token, compose project name for teardown).
     """
     if not compose_preview_enabled():
         return None, "compose_preview_disabled", None
+    if not docker_available():
+        return None, "docker_cli_missing", None
     cf = find_compose_file(code_dir)
     if cf is None:
         return None, "no_compose_file", None
@@ -194,7 +213,7 @@ def start_compose_preview(code_dir: Path, sandbox_id: str) -> tuple[Optional[int
             env=env,
             capture_output=True,
             text=True,
-            timeout=420,
+            timeout=compose_up_timeout_sec(storefront=storefront),
         )
     except subprocess.TimeoutExpired:
         logger.warning("sandbox compose: up timed out sandbox=%s", sandbox_id[:16])

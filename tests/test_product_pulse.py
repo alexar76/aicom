@@ -74,3 +74,24 @@ def test_quality_red_when_telemetry_gates_fail(tmp_path: Path):
     }
     pulse = build_product_pulse(row, light=False, data_root=tmp_path)
     assert pulse["quality_pulse"] == "red"
+
+
+def test_light_catalog_still_reads_gate_telemetry(tmp_path: Path):
+    pid = "p-light-gate"
+    tel_dir = tmp_path / "telemetry" / pid
+    tel_dir.mkdir(parents=True)
+    (tel_dir / "demo_quality_gate.json").write_text(
+        '{"gates_all_passed": true, "demo_quality": {"score": 88}}',
+        encoding="utf-8",
+    )
+    row = {
+        "id": pid,
+        "state": "DEV_FIXING",
+        "tasks": [{"agent_type": "qa", "status": "completed", "product_id": pid}],
+        "architecture": {},
+        "spec": {},
+        "economics": {},
+    }
+    pulse = build_product_pulse(row, light=True, data_root=tmp_path)
+    assert pulse["quality_pulse"] == "green"
+    assert "skipped" not in (pulse.get("quality_hint") or "").lower()

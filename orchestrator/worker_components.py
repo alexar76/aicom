@@ -189,6 +189,13 @@ class TaskOrchestrator:
                 if running_total >= max_running_total:
                     break
                 pid = task["product_id"]
+                try:
+                    from web.backend.services.product_followup import is_product_improvement_on_hold
+
+                    if is_product_improvement_on_hold(pid):
+                        continue
+                except Exception:
+                    pass
                 if str((products.get(pid) or {}).get("state") or "").upper() == "FAILED":
                     continue
                 other_running = any(
@@ -297,8 +304,12 @@ class TaskOrchestrator:
             interval = 86400.0
         if interval <= 0:
             return False
+        from web.backend.services.product_followup import is_product_improvement_on_hold
+
         for pid, product in products.items():
             if product.get("state") != "COMPLETED":
+                continue
+            if is_product_improvement_on_hold(pid):
                 continue
             last_revision = product.get("last_market_revision", 0)
             if now - last_revision < interval:
@@ -346,9 +357,13 @@ class TaskOrchestrator:
             interval = 604800.0
         if interval <= 0:
             return False
+        from web.backend.services.product_followup import is_product_improvement_on_hold
+
         changed = False
         for pid, product in products.items():
             if product.get("state") != "COMPLETED":
+                continue
+            if is_product_improvement_on_hold(pid):
                 continue
             if any(
                 t.get("product_id") == pid

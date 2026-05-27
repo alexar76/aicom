@@ -138,6 +138,12 @@ def issue_receipt(
 
 
 def get_receipt(receipt_id: str) -> dict[str, Any] | None:
+    """Return the canonical signed payload for a receipt.
+
+    We deliberately read ``payload_json`` (the exact bytes that were signed)
+    rather than reassembling from columns — that way ``verify_receipt(payload)``
+    keeps working against the same byte sequence the signer produced.
+    """
     with uni_connection() as conn:
         if uni_db_backend() == "postgres":
             row = conn.execute(
@@ -160,26 +166,91 @@ def get_receipt(receipt_id: str) -> dict[str, Any] | None:
     return payload
 
 
-def list_receipts_for_wallet(wallet_id: str, *, since: float = 0.0, limit: int = 100) -> list[dict[str, Any]]:
+def get_receipt_by_idempotency_key(idempotency_key: str, *, conn: Any = None) -> dict[str, Any] | None:
+    """Find a previously-issued receipt by its idempotency_key.
+
+    Used by ``charge`` / ``_credit`` / ``spend_hold`` duplicate-claim branches so
+    they can return the *original* receipt to the caller — preserving the
+    contract that every successful (or duplicate) write returns a receipt the
+    caller can quote downstream.
+
+    Pass ``conn`` when calling from inside an open ``uni_connection()`` block
+    to avoid re-acquiring the process-wide write lock (which would deadlock
+    on the SQLite backend).
+    """
+    key = (idempotency_key or "").strip()
+    if not key:
+        return None
+
+    def _query(c: Any) -> dict[str, Any] | None:
+        if uni_db_backend() == "postgres":
+            row = c.execute(
+                "SELECT payload_json FROM uni_receipts WHERE idempotency_key = %s LIMIT 1",
+                (key,),
+            ).fetchone()
+        else:
+            row = c.execute(
+                "SELECT payload_json FROM uni_receipts WHERE idempotency_key = ? LIMIT 1",
+                (key,),
+            ).fetchone()
+        if not row:
+            return None
+        try:
+            return json.loads(row_to_dict(row).get("payload_json") or "{}")
+        except json.JSONDecodeError:
+            return None
+
+    if conn is not None:
+        return _query(conn)
+    with uni_connection() as c:
+        return _query(c)
+
+
+def list_receipts_for_wallet(
+    wallet_id: str,
+    *,
+    since: float = 0.0,
+    limit: int = 100,
+    role: str = "any",
+) -> list[dict[str, Any]]:
+    """List receipts where ``wallet_id`` is a party.
+
+    The v2 schema carries ``buyer_wallet_id`` and ``seller_wallet_id`` columns
+    explicitly. For a charge receipt, ``wallet_id`` == ``buyer_wallet_id``, so
+    the old "WHERE wallet_id = ?" filter missed every receipt where the wallet
+    was on the SELLING side. With ``role="any"`` (default) we now match either
+    side; ``role="buyer"`` or ``"seller"`` restrict the query when the caller
+    only wants one perspective (e.g. an admin dashboard).
+    """
     limit = max(1, min(limit, 500))
+    if role == "buyer":
+        where = "(wallet_id = ? OR buyer_wallet_id = ?)"
+        params: tuple[Any, ...] = (wallet_id, wallet_id)
+    elif role == "seller":
+        where = "(seller_wallet_id = ?)"
+        params = (wallet_id,)
+    else:  # any party
+        where = "(wallet_id = ? OR buyer_wallet_id = ? OR seller_wallet_id = ?)"
+        params = (wallet_id, wallet_id, wallet_id)
+    pg_where = where.replace("?", "%s")
     with uni_connection() as conn:
         if uni_db_backend() == "postgres":
             rows = conn.execute(
-                """
+                f"""
                 SELECT payload_json FROM uni_receipts
-                WHERE wallet_id = %s AND ts >= %s
+                WHERE {pg_where} AND ts >= %s
                 ORDER BY ts DESC LIMIT %s
                 """,
-                (wallet_id, since, limit),
+                (*params, since, limit),
             ).fetchall()
         else:
             rows = conn.execute(
-                """
+                f"""
                 SELECT payload_json FROM uni_receipts
-                WHERE wallet_id = ? AND ts >= ?
+                WHERE {where} AND ts >= ?
                 ORDER BY ts DESC LIMIT ?
                 """,
-                (wallet_id, since, limit),
+                (*params, since, limit),
             ).fetchall()
     out: list[dict[str, Any]] = []
     for row in rows:

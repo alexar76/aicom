@@ -42,6 +42,12 @@ from web.backend.api.ai_market_protocol_v2 import router as ai_market_v2_router 
 router.include_router(ai_market_v1_router)
 router.include_router(ai_market_v2_router)
 
+# Note: the root-level routes — `/.well-known/ai-market.json` and the
+# `/capabilities/{product}/{cap}/invoke` surface — are NOT included here
+# because they live at the root path (no `/ai-market` prefix). They are
+# mounted separately in `web/backend/main.py` directly from
+# `ai_market_protocol_v1` (see `ai_market_wellknown_router` / `ai_market_capabilities_router`).
+
 
 from web.backend.services.customer_auth import decode_customer, require_customer
 

@@ -18,6 +18,7 @@ import { usePipelineProductPulses } from '@/hooks/admin/usePipelineProductPulses
 import { PipelineOnboardingCoach } from '@/components/admin/pipeline/PipelineOnboardingCoach';
 import { PipelineTabModals } from '@/components/admin/pipeline/PipelineTabModals';
 import { PipelineProductList } from '@/components/admin/pipeline/PipelineProductList';
+import { PipelineProductVitalsTable } from '@/components/admin/pipeline/PipelineProductVitalsTable';
 
 export function PipelineTab({ locale }: { locale: AdminLocale }) {
   const [pipelineSort, setPipelineSort] = useState<'newest' | 'shipped_first'>('shipped_first');
@@ -237,7 +238,9 @@ export function PipelineTab({ locale }: { locale: AdminLocale }) {
                 <dd className="text-lg font-semibold text-white tabular-nums">{catalogSummary.total_products}</dd>
               </div>
               <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
-                <dt className="text-gray-500">{t(locale, 'pipeline.stat.shippedState')}</dt>
+                <dt className="text-gray-500" title={t(locale, 'pipeline.stat.shippedStateTooltip')}>
+                  {t(locale, 'pipeline.stat.shippedState')}
+                </dt>
                 <dd className="text-lg font-semibold text-emerald-300 tabular-nums">{catalogSummary.shipped_products}</dd>
               </div>
               <div className="rounded-lg bg-black/25 px-3 py-2 border border-white/10">
@@ -446,6 +449,8 @@ export function PipelineTab({ locale }: { locale: AdminLocale }) {
           </p>
         </div>
       ) : (
+        <>
+        <PipelineProductVitalsTable products={filteredProducts} locale={locale} />
         <PipelineProductList
           locale={locale}
           filteredProducts={filteredProducts}
@@ -462,6 +467,7 @@ export function PipelineTab({ locale }: { locale: AdminLocale }) {
           openTaskDetailModal={openTaskDetailModal}
           mergeProductPatch={mergeProductPatch}
         />
+        </>
       )}
 
       <PipelineTabModals

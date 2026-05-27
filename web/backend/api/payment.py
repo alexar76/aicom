@@ -20,7 +20,9 @@ from typing import Optional
 from core.paths import config_path, pending_payments_path
 from core.config_merge import load_merged_config
 
-from fastapi import APIRouter, Header, HTTPException, Query
+from fastapi import APIRouter, Depends, Header, HTTPException, Query
+
+from web.backend.services.customer_auth import require_customer
 from web3 import Web3
 from web.backend.schemas.api_requests import ConfirmPaymentRequest, CreatePaymentRequest
 from web3.exceptions import TransactionNotFound
@@ -615,7 +617,7 @@ async def create_payment(body: CreatePaymentRequest, authorization: Optional[str
     Returns the fixed wallet address the user must send funds to,
     along with the expected amount and token.
     """
-    payment_id = f"pay-{uuid.uuid4().hex[:12]}"
+    payment_id = f"pay-{uuid.uuid4().hex}"
     customer_id = None
     customer_email = None
     if authorization and authorization.startswith("Bearer "):
@@ -657,12 +659,29 @@ async def create_payment(body: CreatePaymentRequest, authorization: Optional[str
 
 
 @router.get("/status/{payment_id}")
-async def payment_status(payment_id: str):
-    """Check the current status of a payment."""
+async def payment_status(payment_id: str, customer: dict = Depends(require_customer)):
+    """Check the current status of a payment (customer must own the payment)."""
     payment = _pending_payments.get(payment_id)
     if not payment:
         raise HTTPException(status_code=404, detail="Payment not found")
-    return payment
+    owner = str(payment.get("customer_id") or "").strip()
+    caller = str(customer.get("sub") or "").strip()
+    if not owner or owner != caller:
+        raise HTTPException(status_code=403, detail="Payment does not belong to this customer")
+    return {
+        "payment_id": payment_id,
+        "status": payment.get("status"),
+        "product_id": payment.get("product_id"),
+        "amount": payment.get("amount"),
+        "currency": payment.get("currency"),
+        "chain": payment.get("chain"),
+        "expires_at": payment.get("expires_at"),
+        "tx_hash": payment.get("tx_hash"),
+        "confirmed_at": payment.get("confirmed_at"),
+        "confirmations": payment.get("confirmations"),
+        "order_id": payment.get("order_id"),
+        "license_key": payment.get("license_key") if payment.get("status") == "confirmed" else None,
+    }
 
 
 @router.post("/confirm/{payment_id}")

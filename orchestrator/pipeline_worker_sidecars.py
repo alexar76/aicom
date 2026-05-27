@@ -92,6 +92,7 @@ class PipelineWorkerSidecarMixin:
         from web.backend.services.product_followup import (
             admin_force_list_enabled,
             annotate_automated_storefront_backlog,
+            is_product_improvement_on_hold,
             storefront_followup_not_pursuing,
         )
 
@@ -112,6 +113,8 @@ class PipelineWorkerSidecarMixin:
             if _pending_completion_task(pid):
                 continue
             if storefront_followup_not_pursuing(pid):
+                continue
+            if is_product_improvement_on_hold(pid):
                 continue
             if admin_force_list_enabled(pid):
                 continue

@@ -321,12 +321,17 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
           <h3 className="text-sm font-medium text-gray-400 mb-4">Director AI</h3>
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                directorStatus.status === 'active' ? 'bg-emerald-500/20' : 'bg-gray-500/20'
-              }`}>
-                <BarChart3 className={`w-5 h-5 ${
-                  directorStatus.status === 'active' ? 'text-emerald-400' : 'text-gray-400'
-                }`} />
+              <div
+                className={`flex h-11 w-11 shrink-0 items-center justify-center overflow-visible rounded-xl ${
+                  directorStatus.status === 'active' ? 'bg-emerald-500/20' : 'bg-gray-500/20'
+                }`}
+              >
+                <BarChart3
+                  className={`h-6 w-6 ${
+                    directorStatus.status === 'active' ? 'text-emerald-400' : 'text-gray-400'
+                  }`}
+                  strokeWidth={2}
+                />
               </div>
               <div>
                 <p className="text-sm text-white font-medium capitalize">{directorStatus.status || 'unknown'}</p>

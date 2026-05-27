@@ -239,9 +239,9 @@ export const CONTENT_SETTINGS_DICT: I18nDict = {
     es: '<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-67NJ81W2YY"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag(\'js\', new Date());\n  gtag(\'config\', \'G-67NJ81W2YY\');\n</script>',
   },
   'settings.demo.readonlyBanner': {
-    en: 'Public demo mode: Settings are read-only (including Google Analytics head snippet, backup, password). Analytics still works via NEXT_PUBLIC_GA_MEASUREMENT_ID in .env. Self-host with AIFACTORY_DEMO_READONLY=0 to save from Admin.',
-    ru: 'Публичное демо: «Настройки» только для чтения (в т.ч. сниппет GA в <head>, бэкап, пароль). Счётчик GA на витрине работает через NEXT_PUBLIC_GA_MEASUREMENT_ID в .env. На своём инстансе отключите AIFACTORY_DEMO_READONLY=0 — тогда сохранение из админки включится.',
-    es: 'Demo público: Ajustes son solo lectura (snippet GA en <head>, copia, contraseña). Analytics en la tienda vía NEXT_PUBLIC_GA_MEASUREMENT_ID en .env. Autoaloje con AIFACTORY_DEMO_READONLY=0 para guardar desde Admin.',
+    en: 'Public demo mode: most Settings are read-only (backup, password, GA snippet, etc.). Exception: Factory hold at the top — pause or resume the pipeline on the shared demo host.',
+    ru: 'Публичное демо: большинство «Настроек» только для чтения (бэкап, пароль, сниппет GA и т.д.). Исключение: «Пауза фабрики» вверху — можно остановить или запустить пайплайн на общем демо-хосте.',
+    es: 'Demo público: la mayoría de Ajustes son solo lectura (copia, contraseña, snippet GA, etc.). Excepción: Pausa de la fábrica arriba — pausar o reanudar el pipeline en el host demo compartido.',
   },
   'settings.demo.settingsSaveBlocked': {
     en: 'Demo mode: settings are not saved. Set NEXT_PUBLIC_GA_MEASUREMENT_ID in .env or self-host without demo readonly.',

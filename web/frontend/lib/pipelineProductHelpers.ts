@@ -154,6 +154,21 @@ export function getLatestFailedTask(taskList: Record<string, unknown>[]): Record
   return failed.sort((a, b) => score(b) - score(a))[0] || null;
 }
 
+/** Short X-axis labels for per-agent cost bars (avoid naive slice cutting "developer" → "develo"). */
+export function agentCostBarLabel(agentType: string): string {
+  const k = agentType.toLowerCase().trim();
+  const fixed: Record<string, string> = {
+    developer: 'develop',
+    dev: 'develop',
+    methodologist: 'method',
+    architect: 'arch',
+    evolution_analyst: 'evolve',
+  };
+  if (fixed[k]) return fixed[k];
+  if (k.length <= 8) return k;
+  return k.slice(0, 8);
+}
+
 export function pipelineAgentEmoji(agentType: string): string {
   const icons: Record<string, string> = {
     analyst: '🔍',

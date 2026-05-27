@@ -84,6 +84,7 @@ services:
       PIPELINE_DATABASE_URL: ${PIPELINE_DATABASE_URL:-}
       # [network] Same container: Next.js SSR & explore pages call the API on loopback
       INTERNAL_API_URL: http://127.0.0.1:8081
+      AICOM_BACKEND_INTERNAL_URL: http://127.0.0.1:8081
       UVICORN_WORKERS: ${UVICORN_WORKERS:-1}
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
       NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
@@ -186,9 +187,13 @@ services:
       - "${AICOM_PORT_GRAFANA:-9082}:3000"
     volumes:
       - ./data/grafana:/var/lib/grafana
-      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
-      - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
-      - ./grafana/alerting:/etc/grafana/provisioning/alerting:ro
+      # NOTE: Grafana 13 provisioning is currently unstable in our container image
+      # (it crashes with "Datasource provisioning error: data source not found").
+      # Keep Grafana running; configure datasources/dashboards via UI until we
+      # rework provisioning for the new unified storage model.
+      # - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      # - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      # - ./grafana/alerting:/etc/grafana/provisioning/alerting:ro
     env_file:
       - path: .env
         required: false

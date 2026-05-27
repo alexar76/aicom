@@ -88,7 +88,8 @@ Switch **TEST / LIVE / UNI** in the top-right control bar. On the public demo, *
 ## Quick start
 
 ```bash
-git clone https://github.com/alexar76/aicom.git
+git clone --recurse-submodules https://github.com/alexar76/aicom.git
+# already cloned?  git submodule update --init coach
 cd aicom && cp -n .env.example .env
 docker compose up -d --build
 # → http://localhost:9080/admin/login  (user: admin)
@@ -542,6 +543,7 @@ flowchart TB
 | **Protocol v2** | [`aimarket-protocol/`](aimarket-protocol/) | [spec.md](aimarket-protocol/spec.md) |
 | **Hub plugins** | [`plugins/`](plugins/) | README + `docs/` per plugin |
 | **Desktop SKUs** | [`desktop-integrations/`](desktop-integrations/) | 8 apps · [value.md](desktop-integrations/interview-prep-coach/docs/value.md) pattern |
+| **LinkedIn Profile Coach** | [`coach/`](coach/) (git submodule) | Flutter desktop/mobile · [alexar76/linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) |
 | **Dart SDK** | [`aimarket-sdks/dart/`](aimarket-sdks/dart/) | Consumer SDK for desktop apps |
 | **Widget** | [`aimarket-widget/`](aimarket-widget/) | Drop-in search + invoke |
 | **ACEX** | [`acex/`](acex/) | Agent Listing Protocol · CapShares · Pulse Terminal |
@@ -583,6 +585,14 @@ Tables: `products`, `tasks` — nested fields stored as JSON.
 
 ```bash
 USE_SQLITE=true pytest -q --cov --cov-report=term --cov-report=json:coverage.json
+
+Full local suite (backend pytest + frontend Vitest):
+
+```bash
+./scripts/run_all_tests.sh
+```
+
+See also **[docs/pipeline-operations.md](docs/pipeline-operations.md)** (Testing).
 python scripts/generate_coverage_badge.py
 ```
 

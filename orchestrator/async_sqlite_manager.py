@@ -231,25 +231,26 @@ class AsyncSQLiteManager:
         total_tasks = int(await self._scalar("SELECT COUNT(*) FROM tasks WHERE workspace_id = ?", ws))
         pending_tasks = int(
             await self._scalar(
-                "SELECT COUNT(*) FROM tasks WHERE status = 'PENDING' AND workspace_id = ?",
+                "SELECT COUNT(*) FROM tasks WHERE lower(trim(status)) = 'pending' AND workspace_id = ?",
                 ws,
             )
         )
         running_tasks = int(
             await self._scalar(
-                "SELECT COUNT(*) FROM tasks WHERE status = 'RUNNING' AND workspace_id = ?",
+                "SELECT COUNT(*) FROM tasks WHERE lower(trim(status)) = 'running' AND workspace_id = ?",
                 ws,
             )
         )
         failed_tasks = int(
             await self._scalar(
-                "SELECT COUNT(*) FROM tasks WHERE status = 'FAILED' AND workspace_id = ?",
+                "SELECT COUNT(*) FROM tasks WHERE lower(trim(status)) = 'failed' AND workspace_id = ?",
                 ws,
             )
         )
         timeout_tasks = int(
             await self._scalar(
-                "SELECT COUNT(*) FROM tasks WHERE status = 'TIMEOUT' AND workspace_id = ?",
+                "SELECT COUNT(*) FROM tasks WHERE lower(trim(status)) IN ('timeout', 'timed_out')"
+                " AND workspace_id = ?",
                 ws,
             )
         )

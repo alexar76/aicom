@@ -11,6 +11,7 @@ import SupportQueueTab from '@/components/SupportQueueTab';
 import OutreachTab from '@/components/OutreachTab';
 import { Sidebar } from '@/components/admin/AdminSidebar';
 import { AdminShellOnboarding } from '@/components/admin/AdminShellOnboarding';
+import { FactoryHoldBanner } from '@/components/admin/FactoryHoldBanner';
 import {
   AgentsTab,
   AgentLogsTab,
@@ -140,6 +141,7 @@ function AdminPageInner() {
     if (typeof window === 'undefined') return false;
     return sessionStorage.getItem('aicom_hide_default_demo_pw_banner') === '1';
   });
+  const [factoryOnHold, setFactoryOnHold] = useState(false);
 
   useEffect(() => {
     hydrateLocale();
@@ -149,12 +151,33 @@ function AdminPageInner() {
         setAuthChecked(true);
         await refreshMe();
         prefetchAdminDashboard();
+        try {
+          const s = await api.getAdminSettings();
+          setFactoryOnHold(Boolean(s.factory_on_hold));
+        } catch {
+          setFactoryOnHold(false);
+        }
       })
       .catch(() => {
         localStorage.removeItem('admin_token');
         window.location.href = '/admin/login';
       });
   }, [hydrateLocale, refreshMe, setAuthChecked]);
+
+  useEffect(() => {
+    if (!authChecked) return;
+    void api.getAdminSettings().then((s) => setFactoryOnHold(Boolean(s.factory_on_hold))).catch(() => {});
+  }, [authChecked, activeTab]);
+
+  useEffect(() => {
+    if (!authChecked) return;
+    const onHoldChange = (e: Event) => {
+      const detail = (e as CustomEvent<boolean>).detail;
+      if (typeof detail === 'boolean') setFactoryOnHold(detail);
+    };
+    window.addEventListener('aicom-factory-hold', onHoldChange);
+    return () => window.removeEventListener('aicom-factory-hold', onHoldChange);
+  }, [authChecked]);
 
   const renderTab = () => {
     if (!authChecked) return null;
@@ -292,6 +315,16 @@ function AdminPageInner() {
           )}
 
         {authChecked ? <AdminShellOnboarding activeTab={activeTab} locale={locale} /> : null}
+
+        {authChecked && factoryOnHold && activeTab !== 'settings' ? (
+          <FactoryHoldBanner
+            locale={locale}
+            onOpenSettings={() => {
+              window.location.hash = 'factory-hold';
+              changeTab('settings');
+            }}
+          />
+        ) : null}
 
         {renderTab()}
       </main>

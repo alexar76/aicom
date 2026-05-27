@@ -82,16 +82,44 @@ def validate_external_url(url: str) -> bool:
     return False
 
 
+def resolve_uploaded_media_path(cfg: dict[str, Any] | None = None) -> Path | None:
+    """
+    Resolve on-disk upload for playback.
+
+    Prefers ``.mp4`` when the configured file is missing but a sibling exists
+    (Safari / many browsers do not decode ``.webm`` reliably).
+    """
+    cfg = cfg if cfg is not None else load_raw_config()
+    if str(cfg.get("source") or "") != "upload":
+        return None
+    fn = cfg.get("media_filename")
+    if not isinstance(fn, str) or not fn or not FILENAME_SAFE.match(fn):
+        return None
+    ud = upload_dir()
+    primary = ud / fn
+    if primary.is_file():
+        return primary
+    stem = Path(fn).stem
+    for ext in (".mp4", ".webm", ".mov"):
+        alt = ud / f"{stem}{ext}"
+        if alt.is_file():
+            return alt
+    return None
+
+
 def play_url_for_metrics(cfg: dict[str, Any]) -> str | None:
     if not cfg.get("enabled"):
         return None
     src = cfg.get("source") or "none"
     if src == "upload":
-        fn = cfg.get("media_filename")
-        if isinstance(fn, str) and fn and FILENAME_SAFE.match(fn):
-            # Public URL: <video> cannot send Bearer auth (admin media route would 401).
-            return "/api/public/pipeline-demo-replay"
-        return None
+        if resolve_uploaded_media_path(cfg) is None:
+            return None
+        # Public URL: <video> cannot send Bearer auth (admin media route would 401).
+        updated = cfg.get("updated_at")
+        base = "/api/public/pipeline-demo-replay"
+        if isinstance(updated, (int, float)) and updated > 0:
+            return f"{base}?v={int(updated)}"
+        return base
     if src == "external_url":
         vu = cfg.get("video_url")
         if isinstance(vu, str) and vu.strip():

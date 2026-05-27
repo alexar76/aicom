@@ -35,16 +35,42 @@ export async function launchSandboxWithProgress(
     ? result.url
     : `${typeof window !== 'undefined' ? window.location.origin : ''}${result.url || `/api/sandbox/view/${sandboxId}`}`;
 
-  onProgress({ percent: 35, label: L('preparingCode') });
+  const startupWarning =
+    typeof (result as { startup_warning?: string }).startup_warning === 'string'
+      ? (result as { startup_warning: string }).startup_warning
+      : null;
+  const previewTier = (result as { preview_tier?: string }).preview_tier;
+  const isDegraded = previewTier === 'degraded' || Boolean((result as { degraded_badge?: boolean }).degraded_badge);
+
+  if (startupWarning) {
+    onProgress({ percent: 18, label: L('heavyStackWarning') });
+    await sleep(800);
+  }
+  if (isDegraded) {
+    onProgress({ percent: 40, label: L('degradedPreview') });
+  } else {
+    onProgress({ percent: 35, label: L('preparingCode') });
+  }
+
+  const maxAttempts = isDegraded ? 24 : 48;
   let ready = false;
-  for (let attempt = 0; attempt < 24; attempt++) {
-    const pct = Math.min(35 + attempt * 2, 92);
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const pct = Math.min(35 + attempt * (isDegraded ? 2 : 1), 92);
     onProgress({
       percent: pct,
-      label: attempt < 4 ? L('buildingPreview') : L('loadingLanding'),
+      label:
+        attempt < 2 && !isDegraded
+          ? L('bootstrapping')
+          : attempt < 6
+            ? L('buildingPreview')
+            : L('loadingLanding'),
     });
     try {
       const status = await api.sandboxReady(sandboxId);
+      const phase = (status as { startup_phase?: string }).startup_phase;
+      if (phase === 'failed') {
+        throw new Error('Sandbox bootstrap failed on server');
+      }
       if (status.ready) {
         ready = true;
         break;
@@ -64,7 +90,7 @@ export async function launchSandboxWithProgress(
     } catch {
       /* retry */
     }
-    await sleep(attempt < 3 ? 400 : 700);
+    await sleep(attempt < 3 ? 500 : isDegraded ? 700 : 1200);
   }
 
   onProgress({ percent: ready ? 100 : 96, label: ready ? L('done') : L('openingPreview') });

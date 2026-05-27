@@ -7,6 +7,7 @@ import {
   writeAdminMetricsCache,
   writeAdminMetricsCacheIfValid,
 } from '@/lib/adminMetricsCache';
+import { fetchPublicStorefrontListableCount } from '@/lib/refreshStorefrontListableCount';
 
 export type MonitorConnectionStatus = 'connecting' | 'connected' | 'error';
 
@@ -19,18 +20,34 @@ export function useMonitorMetrics() {
   const [bootRefreshing, setBootRefreshing] = useState(() => bootSnapshotRef.current != null);
 
   useEffect(() => {
-    api
-      .getDashboard()
-      .then((data) => {
+    const load = async () => {
+      try {
+        const data = await api.getDashboard();
         setMetrics(data);
         writeAdminMetricsCache(data);
+      } catch {
+        /* cache / SSE may still update */
+      }
+      try {
+        const vitrine = await fetchPublicStorefrontListableCount();
+        if (vitrine !== null) {
+          setMetrics((prev: any) =>
+            prev
+              ? {
+                  ...prev,
+                  pipeline: { ...prev.pipeline, storefront_visible_products: vitrine },
+                }
+              : prev,
+          );
+        }
+      } catch {
+        /* ignore */
+      } finally {
         setInitialLoading(false);
         setBootRefreshing(false);
-      })
-      .catch(() => {
-        setInitialLoading(false);
-        setBootRefreshing(false);
-      });
+      }
+    };
+    void load();
   }, []);
 
   useEffect(() => {

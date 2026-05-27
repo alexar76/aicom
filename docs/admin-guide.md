@@ -301,6 +301,7 @@ Director generates reports on an interval (shown in UI); extra analysis can be t
 
 | Section | Settings |
 |---------|----------|
+| **Factory hold** | **First card** — large toggle **RUNNING / ON HOLD**. Pauses pipeline worker + Director auto-enqueue; saves automatically. Visible on all admin tabs via banner when on hold. **Allowed in public demo mode.** See **[pipeline-operations.md](pipeline-operations.md)** (Factory hold). |
 | **Demo replay** | Same embedded-video controls as **Live Monitor** → Demo replay (enable, title, URL or upload). Persisted with admin settings; secrets/adjacent config elsewhere unchanged. |
 | **Theme** | Theme selection for storefront and admin; CSS variables |
 | **AI Director & pipeline mode** | **Autonomous development** (timer-driven pipeline), interval in minutes, manual **Trigger Director**. **Local high-throughput mode** (powerful local host): raises pipeline parallelism; see **[pipeline-operations.md](pipeline-operations.md)** (“Local high-throughput preset”). The UI shows an **effective throughput** readout (config + env on this host) and **Refresh** without saving other fields. |
@@ -311,6 +312,8 @@ Director generates reports on an interval (shown in UI); extra analysis can be t
 | **Head snippet (generated sites)** | **`general.published_site_head_html`**: raw HTML/scripts inserted before `</head>` in each generated `*.html` when **Developer** completes (GA4 gtag, Yandex Metrica, site-verification `meta`, etc.). Empty = disabled. Does not rewrite already-built pages until the next Developer run (or manual file edit). |
 | **Corporate Chat / standup** | Director standup schedule (time, timezone, on/off) — mirrors chat settings |
 | **Telegram** | Bot token and chat ID can be set here or via **`TELEGRAM_BOT_TOKEN`** / **`TELEGRAM_CHAT_ID`** in env; values saved from admin are stored under **`data/secrets/telegram.yaml`** (not in committed `config.yaml`). |
+| **Host disk alerts** | Warning/critical thresholds (% used and GB free), check interval, repeat cooldown, and **Telegram alerts for disk space** toggle. Live status panel shows current levels for monitored paths. Ops can still override via **`AIFACTORY_DISK_*`** env vars until process restart — see **[configuration.md](./configuration.md)**. |
+| **Agent Logs** (sidebar) | Per-agent execution lines from **`data/logs/<agent>.jsonl`** (not LLM call log). API tail-reads large files; empty tab usually means the worker has not run agents yet or **`AIFACTORY_LOGS_DIR`** / data volume is not shared with the web container. |
 
 Saving goes through `updateAdminSettings` / `updateChatSettings` (see `web/frontend/lib/api.ts`).
 

@@ -216,9 +216,24 @@ async def lifespan(app: FastAPI):
     _ensure_corporate_chat_welcome()
     _ensure_discussion_seed_session()
 
+    async def _warm_storefront_counts() -> None:
+        try:
+            from web.backend.api.products import count_showcase_listable_products
+
+            n = await asyncio.to_thread(count_showcase_listable_products)
+            if n is not None:
+                logger.info("Storefront listable count warmed: %s", n)
+        except Exception as exc:
+            logger.debug("Storefront count warm-up skipped: %s", exc)
+
+    asyncio.create_task(_warm_storefront_counts())
+
     standup_task = asyncio.create_task(standup_scheduler_loop(app))
     backup_schedule_task = asyncio.create_task(factory_backup_scheduler_loop(app))
     uni_jobs_task = asyncio.create_task(uni_scheduler_loop(app))
+    from web.backend.services.host_disk_monitor import host_disk_monitor_loop
+
+    disk_monitor_task = asyncio.create_task(host_disk_monitor_loop())
 
     logger.info("AI-Factory web backend started")
     yield
@@ -233,7 +248,8 @@ async def lifespan(app: FastAPI):
     standup_task.cancel()
     backup_schedule_task.cancel()
     uni_jobs_task.cancel()
-    for task in (standup_task, backup_schedule_task, uni_jobs_task):
+    disk_monitor_task.cancel()
+    for task in (standup_task, backup_schedule_task, uni_jobs_task, disk_monitor_task):
         try:
             await task
         except asyncio.CancelledError as _suppressed_exc:
@@ -412,13 +428,17 @@ app.include_router(ai_market.router)
 from web.backend.api.acex_capital import router as acex_capital_router
 
 app.include_router(acex_capital_router, prefix="/api")
-from web.backend.api.ai_market_protocol_v2 import (
-    capabilities_router as ai_market_capabilities_v2,
-    wellknown_router as ai_market_wellknown_v2,
+# Root-level AI Market routes: `/.well-known/ai-market.json` and the
+# /capabilities/{product}/{cap}/invoke surface live on the v1 implementation
+# (imported directly to avoid the misleading "_v2" alias path through the v2
+# module — those routers ARE v1 today; the v2 module just re-exports them).
+from web.backend.api.ai_market_protocol_v1 import (
+    capabilities_router as ai_market_capabilities_router,
+    wellknown_router as ai_market_wellknown_router,
 )
 
-app.include_router(ai_market_wellknown_v2)
-app.include_router(ai_market_capabilities_v2)
+app.include_router(ai_market_wellknown_router)
+app.include_router(ai_market_capabilities_router)
 app.include_router(feedback.router)
 app.include_router(customer.router)
 from web.backend.api import uni_wallet as uni_wallet_api
@@ -545,6 +565,10 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
     from web.backend.services.telegram_credentials import resolve_telegram_token_chat_id, telegram_token_configured
 
     from core.quality_settings import admin_quality_panel_dict
+    from web.backend.services.host_disk_monitor import (
+        disk_monitor_live_status,
+        disk_monitor_settings_from_config,
+    )
 
     _ = _admin
     config = app.state.config
@@ -564,6 +588,7 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
         logger.warning("llm_limits panel for admin settings failed: %s", exc)
         llm_limits = None
     return {
+        "factory_on_hold": bool(config.get("general.factory_on_hold", False)),
         "auto_pipeline": config.get("general.auto_pipeline", False),
         "auto_pipeline_interval_minutes": config.get("general.auto_pipeline_interval_minutes", 60),
         "local_high_throughput_enabled": bool(config.get("general.local_high_throughput_enabled", False)),
@@ -582,6 +607,7 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
             )
         ),
         "telegram_notify_new_products": bool(config.get("general.telegram_notify_new_products", True)),
+        "telegram_notify_host_disk": bool(config.get("general.telegram_notify_host_disk", True)),
         "telegram_bot_token_configured": telegram_token_configured(),
         "auto_publish_enabled": bool(config.get("general.auto_publish_enabled", False)),
         "auto_publish_provider": str(config.get("general.auto_publish_provider") or "none"),
@@ -613,20 +639,36 @@ async def get_admin_settings(_admin: dict = Depends(require_admin_with_rbac)):
             str(config.get("general.pipeline_database_url", "") or "")
         ),
         "pipeline_db_status": pipeline_db_status(config),
+        **disk_monitor_settings_from_config(config),
+        "disk_monitor_live": disk_monitor_live_status(),
     }
 
 
 @app.post("/api/admin/settings")
 async def update_admin_settings(request: Request, _admin: dict = Depends(require_admin_with_rbac)):
     """Update platform settings (auto-pipeline, git, docker, Telegram alerts)."""
-    from web.backend.services.public_demo_guard import require_not_public_demo
+    from web.backend.services.public_demo_guard import is_public_demo, require_not_public_demo
 
-    require_not_public_demo("platform settings save")
     _ = _admin
     body = await request.json()
+    if is_public_demo():
+        disallowed = [k for k in body if k != "factory_on_hold"]
+        if disallowed:
+            require_not_public_demo("platform settings save")
     config = app.state.config
 
+    _DISK_MONITOR_SETTING_KEYS = (
+        "disk_warn_used_pct",
+        "disk_crit_used_pct",
+        "disk_warn_free_gb",
+        "disk_crit_free_gb",
+        "disk_alert_cooldown_hours",
+        "disk_monitor_interval_minutes",
+        "telegram_notify_host_disk",
+    )
+
     allowed_keys = [
+        "factory_on_hold",
         "auto_pipeline",
         "auto_pipeline_interval_minutes",
         "local_high_throughput_enabled",
@@ -639,6 +681,13 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
         "telegram_notify_pipeline_stages",
         "telegram_notify_pipeline_failed",
         "telegram_notify_new_products",
+        "telegram_notify_host_disk",
+        "disk_warn_used_pct",
+        "disk_crit_used_pct",
+        "disk_warn_free_gb",
+        "disk_crit_free_gb",
+        "disk_alert_cooldown_hours",
+        "disk_monitor_interval_minutes",
         "auto_publish_enabled",
         "auto_publish_provider",
         "auto_publish_netlify_site_id",
@@ -685,8 +734,23 @@ async def update_admin_settings(request: Request, _admin: dict = Depends(require
                     n = 60
                 # Director polls often; still enforce a sane minimum cadence (minutes).
                 val = max(15, min(10080, n))
+            if key in _DISK_MONITOR_SETTING_KEYS:
+                continue
             config.set(f"general.{key}", val)
             updated.append(key)
+
+    _disk_patch = {k: body[k] for k in _DISK_MONITOR_SETTING_KEYS if k in body}
+    if _disk_patch:
+        from web.backend.services.host_disk_monitor import (
+            disk_monitor_settings_from_config,
+            normalize_disk_monitor_settings,
+        )
+
+        merged = {**disk_monitor_settings_from_config(config), **_disk_patch}
+        for dk, dv in normalize_disk_monitor_settings(merged).items():
+            config.set(f"general.{dk}", dv)
+            if dk not in updated:
+                updated.append(dk)
 
     from web.backend.services.telegram_credentials import (
         resolve_telegram_token_chat_id,

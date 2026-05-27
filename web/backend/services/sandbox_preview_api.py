@@ -108,16 +108,20 @@ def start_fastapi_preview(
     cwd: Path = info["cwd"]
     module: str = info["module"]
 
+    from web.backend.services.sandbox_preview_env import code_requires_postgres
+
+    needs_pg = code_requires_postgres(code_dir)
     env, prep_meta = build_fastapi_preview_env(
         sandbox_id=sandbox_id,
         code_dir=code_dir,
         cwd=cwd,
+        skip_heavy_setup=True,
     )
+    if prep_meta.get("skip_heavy_setup") and needs_pg:
+        return None, None, "postgres_required_no_docker"
     preview_python = prep_meta.get("preview_python") or sys.executable
     if prep_meta.get("postgres_status") == "docker_unavailable" and prep_meta.get("postgres_ephemeral") is not True:
-        from web.backend.services.sandbox_preview_env import code_requires_postgres
-
-        if code_requires_postgres(code_dir):
+        if needs_pg:
             return None, None, "postgres_required_no_docker"
 
     try:

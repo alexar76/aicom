@@ -569,22 +569,26 @@ def _public_storefront_grid_accepts(pid: str, product: dict[str, Any]) -> bool:
     return True
 
 
-def count_showcase_listable_products() -> int:
+def count_showcase_listable_products() -> int | None:
     """How many products appear on the public storefront grid (same as ``total_count`` in ``/categories``).
 
     Uses the shared bounded-latency cache so admin metrics and pipeline catalog stay responsive.
+    Returns ``None`` when the scan is still running or timed out (never guess ``0``).
     """
     try:
         from web.backend.services.storefront_counts_cache import get_storefront_categories_cached
 
         d = get_storefront_categories_cached()
-        return int(d.get("total_count", 0))
+        raw = d.get("total_count")
+        if raw is None:
+            return None
+        return int(raw)
     except Exception as e:
         logger.warning("count_showcase_listable_products: cache failed (%s)", e)
         try:
             return int(build_storefront_categories_response().get("total_count", 0))
         except Exception:
-            return 0
+            return None
 
 
 @router.get("")

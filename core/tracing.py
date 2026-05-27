@@ -25,6 +25,49 @@ def _otel_enabled() -> bool:
     return disabled not in {"true", "1", "yes", "on"}
 
 
+def _resolve_otlp_endpoint() -> str:
+    """Pick the most specific OTLP endpoint env var (TRACES wins over generic)."""
+    return (
+        os.environ.get("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT", "").strip()
+        or os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT", "").strip()
+    )
+
+
+def _resolve_otlp_protocol() -> str:
+    """Honour ``OTEL_EXPORTER_OTLP_PROTOCOL`` (defaults to ``http/protobuf``).
+
+    Accepts the standard OTel values: ``http/protobuf`` (default) and ``grpc``.
+    Anything else falls back to HTTP — gRPC exporter is an optional dependency.
+    """
+    val = (
+        os.environ.get("OTEL_EXPORTER_OTLP_TRACES_PROTOCOL", "").strip().lower()
+        or os.environ.get("OTEL_EXPORTER_OTLP_PROTOCOL", "").strip().lower()
+        or "http/protobuf"
+    )
+    if val.startswith("grpc"):
+        return "grpc"
+    return "http/protobuf"
+
+
+def _build_otlp_exporter(endpoint: str) -> Any:
+    """Import + instantiate the OTLP span exporter matching the configured protocol."""
+    protocol = _resolve_otlp_protocol()
+    if protocol == "grpc":
+        try:
+            from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (  # type: ignore
+                OTLPSpanExporter as GrpcExporter,
+            )
+            return GrpcExporter(endpoint=endpoint)
+        except ImportError:
+            logger.warning(
+                "OTEL_EXPORTER_OTLP_PROTOCOL=grpc requested but "
+                "opentelemetry-exporter-otlp-proto-grpc is not installed — "
+                "falling back to HTTP exporter."
+            )
+    from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter as HttpExporter
+    return HttpExporter(endpoint=endpoint)
+
+
 def init_tracing(service_name: str | None = None) -> bool:
     """Configure OTLP exporter once per process. Returns True when a tracer is active."""
     global _TRACER, _INITIALIZED
@@ -37,7 +80,6 @@ def init_tracing(service_name: str | None = None) -> bool:
 
     try:
         from opentelemetry import trace
-        from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
         from opentelemetry.sdk.resources import Resource
         from opentelemetry.sdk.trace import TracerProvider
         from opentelemetry.sdk.trace.export import BatchSpanProcessor
@@ -48,19 +90,18 @@ def init_tracing(service_name: str | None = None) -> bool:
     name = service_name or os.environ.get("OTEL_SERVICE_NAME", "aicom")
     resource = Resource.create({"service.name": name})
     provider = TracerProvider(resource=resource)
-    endpoint = os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT", "").strip()
+    endpoint = _resolve_otlp_endpoint()
     if endpoint:
-        exporter = OTLPSpanExporter(endpoint=endpoint)
-        provider.add_span_processor(BatchSpanProcessor(exporter))
+        try:
+            exporter = _build_otlp_exporter(endpoint)
+            provider.add_span_processor(BatchSpanProcessor(exporter))
+        except ImportError:
+            logger.info("OpenTelemetry exporter packages not installed; spans will not be exported")
+            return False
     trace.set_tracer_provider(provider)
     _TRACER = trace.get_tracer(name)
-    logger.info("OpenTelemetry tracing enabled (service=%s)", name)
+    logger.info("OpenTelemetry tracing enabled (service=%s, protocol=%s)", name, _resolve_otlp_protocol())
     return True
-
-
-def get_tracer():
-    init_tracing()
-    return _TRACER
 
 
 @contextmanager
@@ -75,11 +116,11 @@ def span(
     callers can set additional attributes once results are known — e.g. token
     counts that aren't available at span start.
     """
-    tracer = get_tracer()
-    if tracer is None:
+    init_tracing()
+    if _TRACER is None:
         yield None
         return
-    with tracer.start_as_current_span(name) as current:
+    with _TRACER.start_as_current_span(name) as current:
         if attributes and current is not None:
             for key, value in attributes.items():
                 if value is not None:

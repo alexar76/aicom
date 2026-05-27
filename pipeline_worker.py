@@ -37,6 +37,7 @@ from orchestrator.pipeline_worker_sidecars import PipelineWorkerSidecarMixin
 from orchestrator.worker_components import PeerReviewEngine, QualityManager, TaskOrchestrator
 from orchestrator.runtime_guards import RuntimeGuards
 from orchestrator.task_executor import PipelineTaskExecutor
+from core.factory_hold import is_factory_on_hold
 from orchestrator.worker_utils import delivery_profile_from_product_dict, env_truthy
 
 logging.basicConfig(
@@ -463,6 +464,10 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         self._has_active_pipeline_work = any(
             t.get("status") in ("pending", "running") for t in task_queue
         )
+
+        if is_factory_on_hold():
+            logger.info("Factory on hold — skipping pipeline processing cycle")
+            return
         changed = False
         now = time.time()
         dirty_products: set[str] = set()
@@ -568,7 +573,11 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             sql_full_save = True
 
         # Phase 4c: Idle mid-pipeline products with no active task → enqueue next sequential step
+        from web.backend.services.product_followup import is_product_improvement_on_hold
+
         for pid, product in list(products.items()):
+            if is_product_improvement_on_hold(pid):
+                continue
             st = str(product.get("state") or "").upper()
             if st in ("COMPLETED", "FAILED", "CANCELLED", "IDEA_RECEIVED"):
                 continue

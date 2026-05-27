@@ -3,52 +3,10 @@
 
 org: alexar76
 
-# Standalone repos on github.com/alexar76 (not mirrored from monorepo).
-extra_repos:
-  - repo: aicom-landing
-    description: "Quick landing page generation"
-    topics:
-      - ai
-      - deepseek
-      - html-generator
-      - javascript
-      - landing-page
-      - landing-page-generator
-      - llm
-      - mit-license
-      - no-database
-      - nodejs
-      - ollama
-      - openai
-      - self-hosted
-      - static-site
-  - repo: linked-in-profile-coach
-    description: "LinkedIn profile coach — AI headlines, summaries, and networking tips with local-first privacy."
-    topics:
-      - ai
-      - career
-      - coach
-      - job-search
-      - linkedin
-      - llm
-      - profile
-      - self-hosted
-
 satellites:
   - id: aimarket-desktop
     repo: aimarket-desktop
     description: "10 desktop & IDE apps for AIMarket — Flutter, Tauri, and VS Code in one Melos monorepo."
-    topics:
-      - aimarket
-      - flutter
-      - dart
-      - tauri
-      - vscode-extension
-      - desktop-app
-      - melos
-      - marketplace
-      - ai-agents
-      - local-first
     license: mit
     paths:
       - desktop-integrations
@@ -71,14 +29,6 @@ satellites:
   - id: aimarket-sdks
     repo: aimarket-sdks
     description: "Official AIMarket client SDKs — Dart, TypeScript, and Rust."
-    topics:
-      - aimarket
-      - sdk
-      - dart
-      - typescript
-      - rust
-      - client-library
-      - ai-agents
     license: mit
     paths:
       - aimarket-sdks
@@ -100,14 +50,6 @@ satellites:
   - id: pulse-terminal
     repo: pulse-terminal
     description: "Pulse Terminal — ACEX capital markets dashboard with live agent pricing."
-    topics:
-      - acex
-      - ai-agents
-      - capital-markets
-      - dashboard
-      - electron
-      - trading
-      - websocket
     license: mit
     paths:
       - apps/pulse-terminal
@@ -125,14 +67,6 @@ satellites:
   - id: acex
     repo: acex
     description: "ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents."
-    topics:
-      - acex
-      - ai-agents
-      - capital-markets
-      - defi
-      - ethereum
-      - smart-contracts
-      - agent-economy
     license: apache-2.0
     paths:
       - acex
@@ -149,15 +83,6 @@ satellites:
   - id: ai-service-mesh
     repo: ai-service-mesh
     description: "AI Service Mesh — autonomous agent discovery, verification, escrow, and payments."
-    topics:
-      - ai-agents
-      - service-mesh
-      - discovery
-      - escrow
-      - payments
-      - python
-      - fastapi
-      - self-hosted
     license: mit
     paths:
       - ai-service-mesh
@@ -174,16 +99,6 @@ satellites:
   - id: aimarket-hub
     repo: aimarket-hub
     description: "AIMarket Hub — federated capability catalog, channels, invoke API, and plugins."
-    topics:
-      - aimarket
-      - ai-agents
-      - marketplace
-      - python
-      - fastapi
-      - mcp
-      - plugins
-      - federation
-      - api
     license: apache-2.0
     paths:
       - aimarket-hub
@@ -198,15 +113,6 @@ satellites:
   - id: aimarket-widget
     repo: aimarket-widget
     description: "Embeddable AIMarket storefront widget — drop-in JS/CSS for any website."
-    topics:
-      - aimarket
-      - javascript
-      - widget
-      - embeddable
-      - storefront
-      - html
-      - css
-      - ai-agents
     license: mit
     paths:
       - aimarket-widget
@@ -218,17 +124,36 @@ satellites:
     ci:
       - static-smoke
 
+  - id: linkedin-profile-coach
+    repo: linked-in-profile-coach
+    description: "LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support."
+    license: mit
+    paths:
+      - linkedin
+    export_layout:
+      root_from: linkedin
+    registries:
+      - github-releases
+    ci:
+      - flutter-analyze
+
+  - id: aicom-landing
+    repo: aicom-landing
+    description: "AI landing generator — one prompt → self-contained HTML in ~30-60s (MIT, 20 style presets)."
+    license: mit
+    paths:
+      - aicom-landing
+    export_layout:
+      root_from: aicom-landing
+    registries:
+      - npm:aicom-landing
+      - github-releases
+    ci:
+      - node-smoke
+
   - id: aimarket-protocol
     repo: aimarket-protocol
     description: "AIMarket Protocol v2 — open specs, JSON schemas, and test vectors."
-    topics:
-      - aimarket
-      - open-source
-      - json-schema
-      - protocol
-      - api-spec
-      - ai-agents
-      - interoperability
     license: mit
     paths:
       - aimarket-protocol
@@ -241,15 +166,6 @@ satellites:
   - id: aimarket-agent
     repo: aimarket-agent
     description: "Python client for discovering and invoking AIMarket hub capabilities."
-    topics:
-      - aimarket
-      - python
-      - ai-agents
-      - sdk
-      - httpx
-      - pip
-      - mcp
-      - automation
     license: mit
     paths:
       - aimarket-agent
@@ -263,16 +179,6 @@ satellites:
   - id: aimarket-plugins
     repo: aimarket-plugins
     description: "15 AIMarket hub plugins — TEE escrow, channels, reputation, safety, and more."
-    topics:
-      - aimarket
-      - plugins
-      - python
-      - tee
-      - escrow
-      - reputation
-      - safety
-      - channels
-      - ai-agents
     license: mit
     paths:
       - plugins:plugins
@@ -308,17 +214,6 @@ satellites:
   - id: alien-monitor
     repo: alien-monitor
     description: "Alien Monitor — real-time 3D ecosystem pulse visualizer with AI assistant."
-    topics:
-      - alien-monitor
-      - 3d-visualization
-      - ai-assistant
-      - aimarket
-      - dashboard
-      - ecosystem
-      - monitoring
-      - real-time
-      - threejs
-      - webgl
     license: mit
     paths:
       - alien-monitor
@@ -331,17 +226,6 @@ satellites:
   - id: aicom
     repo: aicom
     description: "AI-Factory — autonomous pipeline that designs, builds, tests, and publishes products."
-    topics:
-      - ai
-      - ai-agents
-      - autonomous-agents
-      - docker
-      - fastapi
-      - llm
-      - nextjs
-      - python
-      - self-hosted
-      - agent-economy
     license: mit
     optional: true
     paths:

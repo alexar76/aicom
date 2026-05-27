@@ -8,8 +8,14 @@ import { TELEGRAM_SETTINGS_DICT } from './telegram';
 import { QUALITY_SETTINGS_DICT } from './quality';
 import { PIPELINE_DB_SETTINGS_DICT } from './pipelineDb';
 import { FACTORY_BACKUP_SETTINGS_DICT } from './factoryBackup';
+import { FACTORY_HOLD_SETTINGS_DICT } from './factoryHold';
+import { HOST_DISK_SETTINGS_DICT } from './hostDisk';
+import { SETTINGS_NAV_DICT } from './nav';
 
 export const SETTINGS_DICT: I18nDict = {
+  ...SETTINGS_NAV_DICT,
+  ...HOST_DISK_SETTINGS_DICT,
+  ...FACTORY_HOLD_SETTINGS_DICT,
   ...DIRECTOR_SETTINGS_DICT,
   ...STANDUP_SETTINGS_DICT,
   ...DEPLOY_SETTINGS_DICT,

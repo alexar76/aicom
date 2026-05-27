@@ -66,6 +66,8 @@ Satellite ↔ monorepo map (quick reference):
   aimarket-sdks        ← aimarket-sdks/
   aimarket-plugins     ← plugins/ + provenance
   alien-monitor        ← alien-monitor/
+  linkedin-profile-coach ← linkedin/ → alexar76/linked-in-profile-coach
+  aicom-landing        ← aicom-landing/ → alexar76/aicom-landing
   aicom-wiki           ← scripts/wiki-gitea/ → alexar76/aicom.wiki
 
 Legacy language-packs/reputation-dashboard/ is NOT a separate repo — it is
