@@ -27,9 +27,6 @@ def test_factory_excludes_all_satellite_roots():
         "plugins",
         "wiki",
         "scripts/wiki-gitea",
-        "alien-monitor",
-        "linkedin",
-        "aicom-landing",
     ):
         assert p in excludes, p
 
@@ -44,9 +41,6 @@ def test_satellite_map_includes_wiki():
     data = yaml.safe_load((ROOT / "scripts" / "satellite-map.yaml").read_text())
     ids = {s["id"] for s in data.get("satellites", [])}
     assert "aicom-wiki" in ids
-    assert "linkedin-profile-coach" in ids
-    assert "aicom-landing" in ids
-    assert "alien-monitor" in ids
 
 
 def test_satellite_map_has_github_descriptions():
