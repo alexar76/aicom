@@ -61,6 +61,14 @@ def test_satellite_map_has_github_descriptions():
     assert not missing, f"missing description: {missing}"
 
 
+def test_factory_rsync_excludes_local_agent_dirs():
+    from aicom_publish_config import rsync_exclude_args
+
+    args = rsync_exclude_args()
+    flat = " ".join(args)
+    assert "--exclude" in flat and ".claude" in flat and ".cursor" in flat
+
+
 def test_publish_scripts_exist():
     assert (ROOT / "scripts" / "publish_aicom_factory.sh").is_file()
     assert (ROOT / "scripts" / "publish_satellite.sh").is_file()

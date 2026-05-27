@@ -202,7 +202,7 @@ export_simple() {
 
   # Build rsync exclude args
   local rsync_args=(-a)
-  for pat in .git .venv venv node_modules __pycache__ .pytest_cache .mypy_cache .dart_tool build dist .mesh_data "*.egg-info" .DS_Store; do
+  for pat in .git .claude .cursor .venv venv node_modules __pycache__ .pytest_cache .mypy_cache .dart_tool build dist .mesh_data "*.egg-info" .DS_Store; do
     rsync_args+=(--exclude "$pat")
   done
   if [[ -n "$extra_excludes" ]]; then
@@ -300,7 +300,7 @@ export_desktop_monorepo() {
     done
   fi
 
-  local rsync_base_args=(-a --exclude .git --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude .dart_tool --exclude build --exclude dist --exclude .DS_Store)
+  local rsync_base_args=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude .dart_tool --exclude build --exclude dist --exclude .DS_Store)
 
   for sku in $skus; do
     # Allowlist sku names — prevents path traversal via rogue manifest entries (SH-1).
@@ -388,7 +388,7 @@ export_plugins() {
 
   find "$clone" -mindepth 1 -not -name '.git' -not -path '*/.git/*' -exec rm -rf {} + 2>/dev/null || true
 
-  local rsync_args=(-a --exclude .git --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude build --exclude dist --exclude .DS_Store)
+  local rsync_args=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude build --exclude dist --exclude .DS_Store)
 
   # Main plugins
   mkdir -p "$clone/plugins"

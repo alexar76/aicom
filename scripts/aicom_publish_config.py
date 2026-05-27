@@ -16,6 +16,8 @@ MAP_PATH = Path(__file__).resolve().parent / "satellite-map.yaml"
 
 DEFAULT_RSYNC_EXCLUDES = [
     ".git",
+    ".claude",
+    ".cursor",
     ".venv",
     "venv",
     "node_modules",
