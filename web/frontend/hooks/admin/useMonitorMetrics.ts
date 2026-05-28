@@ -7,6 +7,7 @@ import {
   bootDashboardData,
   createEmptyDashboardData,
   isPipelineMetricsReady,
+  isSystemMetricsReady,
   writeAdminMetricsCacheIfValid,
 } from '@/lib/adminMetricsCache';
 import { connectAdminMetricsStream } from '@/lib/connectAdminMetricsStream';
@@ -30,11 +31,13 @@ export function useMonitorMetrics() {
   pausedRef.current = paused;
 
   const pipelineReady = metrics != null && isPipelineMetricsReady(metrics);
+  const systemReady = metrics != null && isSystemMetricsReady(metrics);
   const agentsReady =
     metrics != null &&
     !metrics.dashboard_partial &&
     Object.keys(metrics.agent_metrics ?? {}).length > 0;
   const pipelineLoading = !pipelineReady && (initialLoading || bootRefreshing);
+  const systemLoading = !systemReady && (initialLoading || bootRefreshing);
 
   const reloadMetrics = useCallback(async () => {
     setBootRefreshing(true);
@@ -123,6 +126,8 @@ export function useMonitorMetrics() {
     bootRefreshing,
     pipelineReady,
     pipelineLoading,
+    systemReady,
+    systemLoading,
     agentsReady,
     reloadMetrics,
   };

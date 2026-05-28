@@ -62,6 +62,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
     bootRefreshing,
     pipelineReady,
     pipelineLoading,
+    systemLoading,
     agentsReady,
     reloadMetrics,
   } = useMonitorMetrics();
@@ -329,7 +330,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
         {/* ── System Health ── */}
         <GlassCard>
           <h3 className="text-sm font-medium text-gray-400 mb-4">System Health</h3>
-          {pipelineLoading ? (
+          {systemLoading ? (
             <p className="text-sm text-gray-500 flex items-center gap-2 mb-4">
               <Loader2 className="w-4 h-4 animate-spin shrink-0" aria-hidden />
               {t(locale, 'dashboard.loadingLive')}
@@ -341,7 +342,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                 <span className="text-gray-400">CPU</span>
                 <span
                   className={`font-mono text-xs ${
-                    !pipelineLoading
+                    !systemLoading
                       ? cpuPct > 80
                         ? 'text-red-400'
                         : cpuPct > 50
@@ -350,7 +351,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                       : 'text-gray-500'
                   }`}
                 >
-                  {!pipelineLoading ? `${cpuPct.toFixed(1)}%` : '…'}
+                  {!systemLoading ? `${cpuPct.toFixed(1)}%` : '…'}
                 </span>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -359,7 +360,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                     cpuPct > 80 ? 'bg-red-500' : cpuPct > 50 ? 'bg-yellow-500' : 'bg-emerald-500'
                   }`}
                   initial={{ width: 0 }}
-                  animate={{ width: `${!pipelineLoading ? Math.min(cpuPct, 100) : 0}%` }}
+                  animate={{ width: `${!systemLoading ? Math.min(cpuPct, 100) : 0}%` }}
                   transition={{ duration: 0.5 }}
                 />
               </div>
@@ -369,7 +370,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                 <span className="text-gray-400">Memory</span>
                 <span
                   className={`font-mono text-xs ${
-                    !pipelineLoading
+                    !systemLoading
                       ? memPct > 80
                         ? 'text-red-400'
                         : memPct > 50
@@ -378,7 +379,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                       : 'text-gray-500'
                   }`}
                 >
-                  {!pipelineLoading ? `${memPct.toFixed(1)}%` : '…'}
+                  {!systemLoading ? `${memPct.toFixed(1)}%` : '…'}
                 </span>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -387,7 +388,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                     memPct > 80 ? 'bg-red-500' : memPct > 50 ? 'bg-yellow-500' : 'bg-blue-500'
                   }`}
                   initial={{ width: 0 }}
-                  animate={{ width: `${!pipelineLoading ? Math.min(memPct, 100) : 0}%` }}
+                  animate={{ width: `${!systemLoading ? Math.min(memPct, 100) : 0}%` }}
                   transition={{ duration: 0.5 }}
                 />
               </div>
@@ -397,7 +398,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                 <span className="text-gray-400">Disk</span>
                 <span
                   className={`font-mono text-xs ${
-                    !pipelineLoading
+                    !systemLoading
                       ? diskPct > 80
                         ? 'text-red-400'
                         : diskPct > 50
@@ -406,7 +407,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                       : 'text-gray-500'
                   }`}
                 >
-                  {!pipelineLoading ? `${diskPct.toFixed(1)}%` : '…'}
+                  {!systemLoading ? `${diskPct.toFixed(1)}%` : '…'}
                 </span>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -415,7 +416,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                     diskPct > 80 ? 'bg-red-500' : diskPct > 50 ? 'bg-yellow-500' : 'bg-purple-500'
                   }`}
                   initial={{ width: 0 }}
-                  animate={{ width: `${!pipelineLoading ? Math.min(diskPct, 100) : 0}%` }}
+                  animate={{ width: `${!systemLoading ? Math.min(diskPct, 100) : 0}%` }}
                   transition={{ duration: 0.5 }}
                 />
               </div>

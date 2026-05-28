@@ -7,6 +7,7 @@ import {
   bootDashboardData,
   mergeDashboardQuick,
   readAdminMetricsCache,
+  shouldWriteAdminMetricsCache,
   writeAdminMetricsCache,
 } from '@/lib/adminMetricsCache';
 import { hydrateDashboardFromPipelineCache } from '@/lib/dashboardPipelineBootstrap';
@@ -16,11 +17,15 @@ export type DashboardLoadResult = {
   snapshot: DashboardData;
   /** True when pipeline-summary or quick returned authoritative totals. */
   pipelineCountsReady: boolean;
+  /** True after quick/full sampled CPU, memory, disk (pipeline-summary alone is not enough). */
+  systemMetricsReady: boolean;
 };
 
 function persist(patch: DashboardData): DashboardData {
   const next = hydrateDashboardFromPipelineCache(patch);
-  writeAdminMetricsCache(next);
+  if (shouldWriteAdminMetricsCache(next)) {
+    writeAdminMetricsCache(next);
+  }
   return next;
 }
 
@@ -28,6 +33,7 @@ function persist(patch: DashboardData): DashboardData {
 export async function loadAdminDashboardLayers(): Promise<DashboardLoadResult> {
   let snapshot = bootDashboardData();
   let pipelineCountsReady = snapshot.pipeline.total_products > 0;
+  let systemMetricsReady = !snapshot.dashboard_partial;
 
   try {
     const summary = await api.getDashboardPipelineSummary();
@@ -45,18 +51,20 @@ export async function loadAdminDashboardLayers(): Promise<DashboardLoadResult> {
     snapshot = persist(mergeDashboardQuick(readAdminMetricsCache() ?? snapshot, quick));
     pipelineCountsReady =
       pipelineCountsReady || snapshot.pipeline.total_products > 0;
+    systemMetricsReady = true;
   } catch {
     /* pipeline-summary / cache may still update */
   }
 
-  return { snapshot, pipelineCountsReady };
+  return { snapshot, pipelineCountsReady, systemMetricsReady };
 }
 
 /** Background refresh — agents, heatmap, factory floor, storefront scan. */
 export async function loadAdminDashboardFull(): Promise<DashboardData | null> {
   try {
     const full = await api.getDashboard(false);
-    return persist(full);
+    const next = { ...full, dashboard_partial: false };
+    return persist(next);
   } catch {
     return readAdminMetricsCache();
   }

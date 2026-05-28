@@ -6,7 +6,7 @@
 import type { DashboardData } from '@/lib/api';
 import { hydrateDashboardFromPipelineCache } from '@/lib/dashboardPipelineBootstrap';
 
-export const ADMIN_METRICS_CACHE_KEY = 'aicom_admin_dashboard_swr_v5';
+export const ADMIN_METRICS_CACHE_KEY = 'aicom_admin_dashboard_swr_v6';
 
 function isCachedMetricsPayload(x: unknown): x is DashboardData {
   if (!x || typeof x !== 'object') return false;
@@ -15,6 +15,13 @@ function isCachedMetricsPayload(x: unknown): x is DashboardData {
     o.dashboard_partial &&
     (o.pipeline?.total_products ?? 0) === 0 &&
     !o.dashboard_build_degraded
+  ) {
+    return false;
+  }
+  if (
+    o.dashboard_partial &&
+    !o.dashboard_build_degraded &&
+    typeof o.collected_at !== 'number'
   ) {
     return false;
   }
@@ -27,6 +34,17 @@ function isCachedMetricsPayload(x: unknown): x is DashboardData {
     typeof o.revenue.last_24h === 'number' &&
     o.security != null
   );
+}
+
+/** CPU/RAM/disk and revenue are sampled on quick/full dashboard — not pipeline-summary alone. */
+export function isSystemMetricsReady(data: DashboardData): boolean {
+  if (data.dashboard_build_degraded) return true;
+  if (!data.dashboard_partial) return true;
+  return typeof data.collected_at === 'number' && Number.isFinite(data.collected_at);
+}
+
+export function shouldWriteAdminMetricsCache(data: DashboardData): boolean {
+  return isSystemMetricsReady(data);
 }
 
 /** Instant paint when there is no cache yet — zeros, not a blocking skeleton. */
@@ -138,8 +156,6 @@ export function isPipelineMetricsReady(data: DashboardData): boolean {
   const p = data.pipeline;
   if ((p?.total_products ?? 0) > 0) return true;
   if ((p?.running_tasks ?? 0) + (p?.pending_tasks ?? 0) > 0) return true;
-  const r = data.resources;
-  if ((r?.memory_percent ?? 0) > 0 || (r?.cpu_percent ?? 0) > 0) return true;
   return false;
 }
 

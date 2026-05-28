@@ -20,6 +20,7 @@ import {
   applyPublicStorefrontCount,
   bootDashboardData,
   isPipelineMetricsReady,
+  isSystemMetricsReady,
 } from '@/lib/adminMetricsCache';
 import { prefetchAdminDashboard } from '@/lib/prefetchAdminDashboard';
 import { fetchPublicStorefrontListableCount } from '@/lib/refreshStorefrontListableCount';
@@ -42,10 +43,9 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
 
     const run = async () => {
       try {
-        const { snapshot, pipelineCountsReady } = await loadAdminDashboardLayers();
+        const { snapshot } = await loadAdminDashboardLayers();
         if (!cancelled) {
           setData(snapshot);
-          if (pipelineCountsReady) setRefreshing(false);
         }
       } catch {
         /* cache / pipeline tab bootstrap may still have totals */
@@ -79,6 +79,8 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
 
   const pipelineReady = isPipelineMetricsReady(data) || hadCacheOnMount;
   const pipelineLoading = refreshing && !pipelineReady;
+  const systemReady = isSystemMetricsReady(data);
+  const systemLoading = refreshing && !systemReady;
   const total = data.pipeline.total_products;
   const completed = data.pipeline.completed_products;
   const sfRaw = data.pipeline.storefront_visible_products;
@@ -392,7 +394,7 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
         <GlassCard>
           <h3 className="text-lg font-semibold text-white mb-4">System Resources</h3>
           <div className="space-y-4">
-            {!pipelineLoading ? (
+            {!systemLoading ? (
               <>
                 <ProgressBar
                   value={data.resources.cpu_percent}
