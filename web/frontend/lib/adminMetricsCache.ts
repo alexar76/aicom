@@ -4,8 +4,9 @@
  */
 
 import type { DashboardData } from '@/lib/api';
+import { hydrateDashboardFromPipelineCache } from '@/lib/dashboardPipelineBootstrap';
 
-export const ADMIN_METRICS_CACHE_KEY = 'aicom_admin_dashboard_swr_v4';
+export const ADMIN_METRICS_CACHE_KEY = 'aicom_admin_dashboard_swr_v5';
 
 function isCachedMetricsPayload(x: unknown): x is DashboardData {
   if (!x || typeof x !== 'object') return false;
@@ -70,10 +71,17 @@ export function readAdminMetricsCache(): DashboardData | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as { data?: unknown };
     if (!parsed || !isCachedMetricsPayload(parsed.data)) return null;
-    return parsed.data;
+    return hydrateDashboardFromPipelineCache(parsed.data as DashboardData);
   } catch {
     return null;
   }
+}
+
+/** First paint: admin metrics cache, else pipeline catalog summary, else empty shell. */
+export function bootDashboardData(): DashboardData {
+  const cached = readAdminMetricsCache();
+  if (cached) return cached;
+  return hydrateDashboardFromPipelineCache(createEmptyDashboardData());
 }
 
 export function writeAdminMetricsCache(data: DashboardData): void {
@@ -91,16 +99,34 @@ export function writeAdminMetricsCacheIfValid(data: unknown): void {
   }
 }
 
-/** Merge quick dashboard — do not keep stale storefront counts from old cache. */
+function maxCount(a: number | undefined, b: number | undefined): number {
+  return Math.max(a ?? 0, b ?? 0);
+}
+
+/** Merge quick dashboard — never regress counts to zero when cache already has totals. */
 export function mergeDashboardQuick(prev: DashboardData, quick: DashboardData): DashboardData {
   const storefront =
     quick.pipeline.storefront_visible_products ?? prev.pipeline.storefront_visible_products;
+  const qp = quick.pipeline;
+  const pp = prev.pipeline;
   return {
     ...quick,
     dashboard_partial: true,
     pipeline: {
-      ...quick.pipeline,
+      ...qp,
+      total_products: maxCount(qp.total_products, pp.total_products),
+      active_products: maxCount(qp.active_products, pp.active_products),
+      completed_products: maxCount(qp.completed_products, pp.completed_products),
+      failed_products: maxCount(qp.failed_products, pp.failed_products),
+      pending_tasks: maxCount(qp.pending_tasks, pp.pending_tasks),
+      running_tasks: maxCount(qp.running_tasks, pp.running_tasks),
+      timed_out_tasks: maxCount(qp.timed_out_tasks, pp.timed_out_tasks),
       storefront_visible_products: storefront,
+      state_distribution:
+        Object.keys(qp.state_distribution ?? {}).length > 0
+          ? qp.state_distribution
+          : pp.state_distribution,
+      failed_alerts: (qp.failed_alerts?.length ?? 0) > 0 ? qp.failed_alerts : pp.failed_alerts,
     },
   };
 }
@@ -109,7 +135,12 @@ export function mergeDashboardQuick(prev: DashboardData, quick: DashboardData): 
 export function isPipelineMetricsReady(data: DashboardData): boolean {
   if (data.dashboard_build_degraded) return true;
   if (!data.dashboard_partial) return true;
-  return (data.pipeline?.total_products ?? 0) > 0;
+  const p = data.pipeline;
+  if ((p?.total_products ?? 0) > 0) return true;
+  if ((p?.running_tasks ?? 0) + (p?.pending_tasks ?? 0) > 0) return true;
+  const r = data.resources;
+  if ((r?.memory_percent ?? 0) > 0 || (r?.cpu_percent ?? 0) > 0) return true;
+  return false;
 }
 
 /** Public vitrine count only — must not mark the dashboard as fully loaded. */

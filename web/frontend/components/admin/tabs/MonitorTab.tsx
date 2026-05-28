@@ -61,6 +61,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
     initialLoading,
     bootRefreshing,
     pipelineReady,
+    pipelineLoading,
     agentsReady,
     reloadMetrics,
   } = useMonitorMetrics();
@@ -193,7 +194,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
           ) : null}
         </div>
         <div className="flex w-full shrink-0 flex-wrap items-center justify-end gap-2 sm:w-auto">
-          {!pipelineReady && !initialLoading ? (
+          {pipelineLoading ? (
             <Button
               variant="secondary"
               size="sm"
@@ -216,7 +217,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
         </div>
       </div>
 
-      {!pipelineReady && !initialLoading ? (
+      {pipelineLoading ? (
         <p className="rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-100/90">
           {connectionStatus === 'error'
             ? 'Live stream disconnected — showing last snapshot. Use Retry or check admin login / disk space.'
@@ -251,7 +252,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                {pipelineReady ? (
+                {!pipelineLoading ? (
                   <>
                     <span className="text-3xl font-bold text-white">{completionPct}%</span>
                     <span className="text-xs text-gray-500">complete</span>
@@ -264,7 +265,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
             <div className="w-full min-w-0 space-y-2 text-sm sm:flex-1">
               <div className="flex items-center justify-between gap-4">
                 <span className="text-gray-400">Total</span>
-                <MetricValue ready={pipelineReady} value={totalPipeline} />
+                <MetricValue ready={!pipelineLoading} value={totalPipeline} />
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="flex items-center gap-1.5">
@@ -272,7 +273,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                   <span className="text-gray-400">Shipped builds</span>
                 </span>
                 <MetricValue
-                  ready={pipelineReady}
+                  ready={!pipelineLoading}
                   value={completedPipeline}
                   className="text-emerald-400 font-medium"
                 />
@@ -294,7 +295,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                   <span className="text-gray-400">Active</span>
                 </span>
                 <MetricValue
-                  ready={pipelineReady}
+                  ready={!pipelineLoading}
                   value={activePipeline}
                   className="text-blue-400 font-medium"
                 />
@@ -305,7 +306,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                   <span className="text-gray-400">Needs rework</span>
                 </span>
                 <MetricValue
-                  ready={pipelineReady}
+                  ready={!pipelineLoading}
                   value={failedPipeline}
                   className="text-amber-400 font-medium"
                 />
@@ -328,7 +329,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
         {/* ── System Health ── */}
         <GlassCard>
           <h3 className="text-sm font-medium text-gray-400 mb-4">System Health</h3>
-          {!pipelineReady ? (
+          {pipelineLoading ? (
             <p className="text-sm text-gray-500 flex items-center gap-2 mb-4">
               <Loader2 className="w-4 h-4 animate-spin shrink-0" aria-hidden />
               {t(locale, 'dashboard.loadingLive')}
@@ -340,7 +341,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                 <span className="text-gray-400">CPU</span>
                 <span
                   className={`font-mono text-xs ${
-                    pipelineReady
+                    !pipelineLoading
                       ? cpuPct > 80
                         ? 'text-red-400'
                         : cpuPct > 50
@@ -349,7 +350,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                       : 'text-gray-500'
                   }`}
                 >
-                  {pipelineReady ? `${cpuPct.toFixed(1)}%` : '…'}
+                  {!pipelineLoading ? `${cpuPct.toFixed(1)}%` : '…'}
                 </span>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -358,7 +359,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                     cpuPct > 80 ? 'bg-red-500' : cpuPct > 50 ? 'bg-yellow-500' : 'bg-emerald-500'
                   }`}
                   initial={{ width: 0 }}
-                  animate={{ width: `${pipelineReady ? Math.min(cpuPct, 100) : 0}%` }}
+                  animate={{ width: `${!pipelineLoading ? Math.min(cpuPct, 100) : 0}%` }}
                   transition={{ duration: 0.5 }}
                 />
               </div>
@@ -368,7 +369,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                 <span className="text-gray-400">Memory</span>
                 <span
                   className={`font-mono text-xs ${
-                    pipelineReady
+                    !pipelineLoading
                       ? memPct > 80
                         ? 'text-red-400'
                         : memPct > 50
@@ -377,7 +378,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                       : 'text-gray-500'
                   }`}
                 >
-                  {pipelineReady ? `${memPct.toFixed(1)}%` : '…'}
+                  {!pipelineLoading ? `${memPct.toFixed(1)}%` : '…'}
                 </span>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -386,7 +387,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                     memPct > 80 ? 'bg-red-500' : memPct > 50 ? 'bg-yellow-500' : 'bg-blue-500'
                   }`}
                   initial={{ width: 0 }}
-                  animate={{ width: `${pipelineReady ? Math.min(memPct, 100) : 0}%` }}
+                  animate={{ width: `${!pipelineLoading ? Math.min(memPct, 100) : 0}%` }}
                   transition={{ duration: 0.5 }}
                 />
               </div>
@@ -396,7 +397,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                 <span className="text-gray-400">Disk</span>
                 <span
                   className={`font-mono text-xs ${
-                    pipelineReady
+                    !pipelineLoading
                       ? diskPct > 80
                         ? 'text-red-400'
                         : diskPct > 50
@@ -405,7 +406,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                       : 'text-gray-500'
                   }`}
                 >
-                  {pipelineReady ? `${diskPct.toFixed(1)}%` : '…'}
+                  {!pipelineLoading ? `${diskPct.toFixed(1)}%` : '…'}
                 </span>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -414,7 +415,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                     diskPct > 80 ? 'bg-red-500' : diskPct > 50 ? 'bg-yellow-500' : 'bg-purple-500'
                   }`}
                   initial={{ width: 0 }}
-                  animate={{ width: `${pipelineReady ? Math.min(diskPct, 100) : 0}%` }}
+                  animate={{ width: `${!pipelineLoading ? Math.min(diskPct, 100) : 0}%` }}
                   transition={{ duration: 0.5 }}
                 />
               </div>
@@ -426,14 +427,14 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
               <span className="text-gray-400">Security</span>
               <Badge
                 variant={
-                  !pipelineReady
+                  pipelineLoading
                     ? 'info'
                     : security.status === 'secure' || security.status === 'healthy'
                       ? 'success'
                       : 'error'
                 }
               >
-                {!pipelineReady ? '…' : security.status || 'unknown'}
+                {pipelineLoading ? '…' : security.status || 'unknown'}
               </Badge>
             </div>
             {security.failed_logins_15min > 0 && (
@@ -463,23 +464,23 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
               </div>
               <div>
                 <p className="text-sm text-white font-medium capitalize">
-                  {pipelineReady ? directorStatus.status || 'unknown' : '…'}
+                  {!pipelineLoading ? directorStatus.status || 'unknown' : '…'}
                 </p>
                 <p className="text-xs text-gray-500">
-                  {pipelineReady ? directorStatus.report_count || 0 : '…'} reports generated
+                  {!pipelineLoading ? directorStatus.report_count || 0 : '…'} reports generated
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white/5 rounded-xl p-3 text-center">
                 <p className="text-2xl font-bold text-indigo-400">
-                  {pipelineReady ? (directorStatus.pending_decisions ?? 0) : '…'}
+                  {!pipelineLoading ? (directorStatus.pending_decisions ?? 0) : '…'}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">Pending Decisions</p>
               </div>
               <div className="bg-white/5 rounded-xl p-3 text-center">
                 <p className="text-2xl font-bold text-purple-400">
-                  {pipelineReady ? directorStatus.report_count || 0 : '…'}
+                  {!pipelineLoading ? directorStatus.report_count || 0 : '…'}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">Total Reports</p>
               </div>
@@ -501,7 +502,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
         </div>
         {!agentsReady ? (
           <div className="text-center py-6">
-            {pipelineReady ? (
+            {!pipelineLoading ? (
               <>
                 <Bot className="w-8 h-8 text-gray-600 mx-auto mb-2" />
                 <p className="text-gray-500 text-sm">No agent metrics available yet.</p>

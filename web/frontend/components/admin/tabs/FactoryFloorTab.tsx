@@ -16,13 +16,14 @@ import '@xyflow/react/dist/style.css';
 import { motion } from 'framer-motion';
 import { Loader2, Radio, Zap } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
-import api from '@/lib/api';
 import {
   readFactoryFloorCache,
   writeFactoryFloorCache,
   type FactoryFloorNode,
   type FactoryFloorPayload,
 } from '@/lib/factoryFloorCache';
+import { connectAdminMetricsStream } from '@/lib/connectAdminMetricsStream';
+import { loadAdminDashboardFull } from '@/lib/loadAdminDashboardLayers';
 import { type AdminLocale, t } from '@/lib/adminI18n';
 
 const STATUS_COLOR: Record<string, string> = {
@@ -78,14 +79,8 @@ function useFactoryFloorLive(
   onPhase: (phase: LivePhase) => void,
   hasCachedFloor: boolean,
 ) {
-  const wsRef = useRef<WebSocket | null>(null);
-  const sseRef = useRef<EventSource | null>(null);
-  const fetchedRef = useRef(false);
-
   useEffect(() => {
     let cancelled = false;
-    let wsRetryTimer: number | undefined;
-    let sseRetryTimer: number | undefined;
 
     const applyMetrics = (payload: Record<string, unknown>) => {
       const ff = applyFloorPayload(payload.factory_floor as FactoryFloorPayload | undefined);
@@ -97,91 +92,30 @@ function useFactoryFloorLive(
       return false;
     };
 
-    const fetchOnce = async () => {
-      if (fetchedRef.current) return;
-      fetchedRef.current = true;
-      onPhase('fetching');
-      try {
-        const data = await api.getDashboard(false);
-        if (cancelled) return;
-        if (!applyMetrics(data as unknown as Record<string, unknown>)) {
-          onPhase('error');
-        }
-      } catch {
-        if (!cancelled) onPhase('error');
-      }
-    };
+    onPhase(hasCachedFloor ? 'cached' : 'fetching');
 
-    void fetchOnce();
+    void loadAdminDashboardFull().then((full) => {
+      if (cancelled || !full) return;
+      applyMetrics(full as unknown as Record<string, unknown>);
+    });
 
-    if (typeof window === 'undefined') {
-      return () => {
-        cancelled = true;
-      };
-    }
-
-    const connectSse = () => {
-      if (cancelled) return;
-      sseRef.current?.close();
-      const es = new EventSource('/api/admin/metrics/stream');
-      sseRef.current = es;
-      es.onopen = () => {
+    const disconnect = connectAdminMetricsStream({
+      onOpen: () => {
         if (!cancelled) onPhase('live');
-      };
-      es.onmessage = (ev) => {
-        try {
-          applyMetrics(JSON.parse(ev.data) as Record<string, unknown>);
-        } catch {
-          /* ignore */
+      },
+      onMessage: (data) => {
+        if (data && typeof data === 'object') {
+          applyMetrics(data as Record<string, unknown>);
         }
-      };
-      es.onerror = () => {
-        es.close();
-        if (!cancelled) {
-          onPhase(hasCachedFloor ? 'cached' : 'error');
-          sseRetryTimer = window.setTimeout(connectSse, 5000);
-        }
-      };
-    };
-
-    connectSse();
-
-    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const token = localStorage.getItem('admin_token');
-    const url = `${proto}//${window.location.host}/api/admin/ws/metrics`;
-
-    const connectWs = () => {
-      if (cancelled) return;
-      wsRef.current?.close();
-      const ws = token ? new WebSocket(url, ['Bearer', token]) : new WebSocket(url);
-      wsRef.current = ws;
-      ws.onopen = () => onPhase('live');
-      ws.onmessage = (ev) => {
-        try {
-          applyMetrics(JSON.parse(ev.data) as Record<string, unknown>);
-        } catch {
-          /* ignore */
-        }
-      };
-      ws.onerror = () => {
-        ws.close();
+      },
+      onError: () => {
         if (!cancelled) onPhase(hasCachedFloor ? 'cached' : 'error');
-      };
-      ws.onclose = () => {
-        if (!cancelled) wsRetryTimer = window.setTimeout(connectWs, 4000);
-      };
-    };
-
-    connectWs();
+      },
+    });
 
     return () => {
       cancelled = true;
-      if (wsRetryTimer) window.clearTimeout(wsRetryTimer);
-      if (sseRetryTimer) window.clearTimeout(sseRetryTimer);
-      wsRef.current?.close();
-      wsRef.current = null;
-      sseRef.current?.close();
-      sseRef.current = null;
+      disconnect();
     };
   }, [onFloor, onPhase, hasCachedFloor]);
 }

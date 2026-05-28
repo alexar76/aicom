@@ -87,6 +87,54 @@ from .helpers import *
 logger = logging.getLogger(__name__)
 
 
+@router.get("/dashboard/pipeline-summary")
+async def get_dashboard_pipeline_summary(_admin: dict = Depends(require_admin_with_rbac)):
+    """
+    Fast pipeline totals — same SQL as Pipeline Monitor ``catalog_summary`` (one query).
+    Use for dashboard first paint when the full dashboard payload is slow or contended.
+    """
+    _ = _admin
+
+    def _build() -> dict[str, Any]:
+        from orchestrator.sqlite_manager import SQLiteManager
+
+        from core.paths import pipeline_db_path
+
+        db = pipeline_db_path()
+        if not db.is_file():
+            return {
+                "total_products": 0,
+                "active_products": 0,
+                "completed_products": 0,
+                "failed_products": 0,
+                "pending_tasks": 0,
+                "running_tasks": 0,
+                "timed_out_tasks": 0,
+            }
+        sm = SQLiteManager(str(db))
+        sm.connect()
+        try:
+            counts = sm.get_catalog_summary_counts()
+            m = sm.get_metrics()
+        finally:
+            sm.close()
+        total = int(counts["total"])
+        shipped = int(counts["shipped"])
+        failed = int(counts["failed"])
+        active = max(0, total - shipped - failed)
+        return {
+            "total_products": total,
+            "active_products": active,
+            "completed_products": shipped,
+            "failed_products": failed,
+            "pending_tasks": int(m.get("pending_tasks") or 0),
+            "running_tasks": int(m.get("running_tasks") or 0),
+            "timed_out_tasks": int(m.get("timeout_tasks") or 0),
+        }
+
+    return await asyncio.to_thread(_build)
+
+
 @router.get("/dashboard")
 async def get_dashboard(
     background_tasks: BackgroundTasks,
@@ -98,7 +146,9 @@ async def get_dashboard(
     """Get enhanced dashboard metrics including agent_metrics, director_status, escalations."""
     if quick:
         try:
-            return get_or_build_dashboard(_build_quick_dashboard_metrics, quick=True)
+            return await asyncio.to_thread(
+                lambda: get_or_build_dashboard(_build_quick_dashboard_metrics, quick=True),
+            )
         except Exception as exc:
             logger.exception("Quick dashboard build failed, using degraded snapshot: %s", exc)
             return _build_degraded_dashboard_metrics()
@@ -108,6 +158,7 @@ async def get_dashboard(
     else:
         try:
             metrics = await _build_full_metrics_async(include_product_pulses=False)
+            set_cached_dashboard(metrics, quick=False)
         except Exception as exc:
             logger.exception("Full dashboard metrics build failed: %s", exc)
             metrics = _build_quick_dashboard_metrics()
@@ -121,7 +172,7 @@ async def get_dashboard(
                     metrics["pipeline"]["storefront_visible_products"] = sf
             except Exception as sf_exc:
                 logger.warning("Storefront count during dashboard fallback failed: %s", sf_exc)
-        set_cached_dashboard(metrics, quick=False)
+            set_cached_dashboard(metrics, quick=False)
     background_tasks.add_task(_append_metrics_history, metrics)
     out = dict(metrics)
     out["dashboard_partial"] = False
@@ -140,7 +191,7 @@ async def metrics_stream(request: Request):
             if await request.is_disconnected():
                 break
             try:
-                metrics = await _build_full_metrics_async(include_product_pulses=True)
+                metrics = await get_live_metrics_stream_payload()
                 _append_metrics_history(metrics)
                 yield f"data: {json.dumps(metrics)}\n\n"
             except Exception as e:

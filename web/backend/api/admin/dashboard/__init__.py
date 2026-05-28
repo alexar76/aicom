@@ -8,6 +8,8 @@ from .helpers import (
     _build_full_metrics_async,
     _build_quick_dashboard_metrics,
     _admin_sqlite_db_path,
+    _refresh_full_dashboard_cache,
+    get_live_metrics_stream_payload,
 )
 
 from . import (  # noqa: F401 — register routes on shared router
@@ -31,4 +33,6 @@ __all__ = [
     "_build_full_metrics_async",
     "_build_quick_dashboard_metrics",
     "_admin_sqlite_db_path",
+    "_refresh_full_dashboard_cache",
+    "get_live_metrics_stream_payload",
 ]

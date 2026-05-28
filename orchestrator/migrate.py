@@ -30,6 +30,27 @@ from core.logging_utils import log_suppressed
 logger = logging.getLogger(__name__)
 
 
+def prune_old_sqlite_backups(db_path: str, *, keep: int = 2) -> int:
+    """Remove old ``pipeline.db.bak.<ts>`` files, keeping the newest ``keep`` copies."""
+    keep_n = max(1, int(keep))
+    parent = Path(db_path).parent
+    stem = Path(db_path).name
+    candidates = sorted(
+        parent.glob(f"{stem}.bak.*"),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    removed = 0
+    for path in candidates[keep_n:]:
+        try:
+            path.unlink()
+            removed += 1
+            logger.info("Pruned old SQLite backup: %s", path)
+        except OSError as e:
+            logger.warning("Failed to prune backup %s: %s", path, e)
+    return removed
+
+
 def _backup_db(db_path: str) -> Optional[str]:
     """Copy existing SQLite DB to ``<db>.bak.<timestamp>``. Returns backup path or None."""
     src = Path(db_path)
@@ -39,6 +60,11 @@ def _backup_db(db_path: str) -> Optional[str]:
     dest = src.with_name(f"{src.name}.bak.{stamp}")
     shutil.copy2(src, dest)
     logger.info("SQLite backup created: %s", dest)
+    try:
+        keep = max(2, int(os.environ.get("AIFACTORY_SQLITE_BACKUP_KEEP", "2")))
+    except ValueError:
+        keep = 2
+    prune_old_sqlite_backups(db_path, keep=keep)
     return str(dest)
 
 

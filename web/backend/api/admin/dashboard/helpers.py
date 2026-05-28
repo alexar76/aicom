@@ -669,25 +669,12 @@ def _circuit_breakers_metrics(provider_names: list[str] | None = None) -> dict[s
         return {"providers": {}, "config": {}, "updated_at": time.time()}
 
 
-async def _build_full_metrics_async(*, include_product_pulses: bool = False) -> dict:
-    """Build the complete metrics payload (async-safe SQLite aggregates)."""
-    pipeline_counts, state_distribution = await _fast_pipeline_metrics_async()
-
-    storefront_visible: int | None = None
-    try:
-        storefront_visible = count_showcase_listable_products()
-    except Exception as e:
-        logger.warning("Dashboard metrics: storefront visible count failed (%s)", e)
-
-    # Resource metrics
-    try:
-        import psutil
-        cpu = psutil.cpu_percent(interval=0.05)
-        memory = psutil.virtual_memory().percent
-        disk = psutil.disk_usage("/").percent
-    except ImportError:
-        cpu = memory = disk = 0
-
+def _build_full_metrics_heavy_sync(
+    *,
+    pipeline_counts: dict[str, int],
+    include_product_pulses: bool,
+) -> dict[str, Any]:
+    """Blocking reads (agent logs, pulses, heatmap) — run in a thread pool only."""
     esc_summary = _collect_escalation_summary()
 
     product_pulses: dict[str, Any] = {}
@@ -740,11 +727,50 @@ async def _build_full_metrics_async(*, include_product_pulses: bool = False) -> 
         logger.debug("cost heatmap metrics: %s", e)
 
     return {
+        "failed_alerts": failed_alerts,
+        "agent_metrics": _collect_agent_metrics(),
+        "director_status": _collect_director_status(),
+        "escalations": esc_summary,
+        "escalation_summary": esc_summary,
+        "demo_replay": metrics_demo_replay_slice(),
+        "product_pulses": product_pulses,
+        "circuit_breakers": circuit_snap,
+        "factory_floor": factory_floor,
+        "cost_outcome_heatmap": cost_heatmap,
+    }
+
+
+async def _build_full_metrics_async(*, include_product_pulses: bool = False) -> dict:
+    """Build the complete metrics payload (async-safe SQLite aggregates)."""
+    pipeline_counts, state_distribution = await _fast_pipeline_metrics_async()
+
+    storefront_visible: int | None = None
+    try:
+        storefront_visible = count_showcase_listable_products()
+    except Exception as e:
+        logger.warning("Dashboard metrics: storefront visible count failed (%s)", e)
+
+    try:
+        import psutil
+
+        cpu = psutil.cpu_percent(interval=0.05)
+        memory = psutil.virtual_memory().percent
+        disk = psutil.disk_usage("/").percent
+    except ImportError:
+        cpu = memory = disk = 0
+
+    heavy = await asyncio.to_thread(
+        _build_full_metrics_heavy_sync,
+        pipeline_counts=pipeline_counts,
+        include_product_pulses=include_product_pulses,
+    )
+
+    return {
         "pipeline": {
             **pipeline_counts,
             "storefront_visible_products": storefront_visible,
             "state_distribution": state_distribution,
-            "failed_alerts": failed_alerts,
+            "failed_alerts": heavy["failed_alerts"],
         },
         "resources": {
             "cpu_percent": cpu,
@@ -756,18 +782,55 @@ async def _build_full_metrics_async(*, include_product_pulses: bool = False) -> 
             "status": "healthy",
             "failed_logins_15min": 0,
         },
-        "agent_metrics": _collect_agent_metrics(),
-        "director_status": _collect_director_status(),
-        # Legacy key name; Live Monitor reads ``escalation_summary`` (see admin UI).
-        "escalations": esc_summary,
-        "escalation_summary": esc_summary,
+        "agent_metrics": heavy["agent_metrics"],
+        "director_status": heavy["director_status"],
+        "escalations": heavy["escalations"],
+        "escalation_summary": heavy["escalation_summary"],
         "collected_at": time.time(),
-        "demo_replay": metrics_demo_replay_slice(),
-        "product_pulses": product_pulses,
-        "circuit_breakers": circuit_snap,
-        "factory_floor": factory_floor,
-        "cost_outcome_heatmap": cost_heatmap,
+        "demo_replay": heavy["demo_replay"],
+        "product_pulses": heavy["product_pulses"],
+        "circuit_breakers": heavy["circuit_breakers"],
+        "factory_floor": heavy["factory_floor"],
+        "cost_outcome_heatmap": heavy["cost_outcome_heatmap"],
     }
+
+
+_refresh_full_lock = asyncio.Lock()
+
+
+async def _refresh_full_dashboard_cache() -> None:
+    """Background refresh for stream clients (agent metrics, etc.)."""
+    if _refresh_full_lock.locked():
+        return
+    async with _refresh_full_lock:
+        try:
+            metrics = await _build_full_metrics_async(include_product_pulses=False)
+            set_cached_dashboard(metrics, quick=False)
+        except Exception as e:
+            logger.warning("Background full dashboard refresh failed: %s", e)
+
+
+async def get_live_metrics_stream_payload() -> dict[str, Any]:
+    """
+  Lightweight payload for WS/SSE — uses cache or quick SQL aggregates only.
+
+  Never runs agent-log scans on the event loop (those blocked quick HTTP for minutes
+  when multiple stream clients called full builds every few seconds).
+    """
+    full = get_cached_dashboard(quick=False)
+    if full is not None:
+        out = dict(full)
+        out["dashboard_partial"] = False
+        return out
+
+    quick = get_cached_dashboard(quick=True)
+    if quick is not None:
+        return dict(quick)
+
+    payload = await asyncio.to_thread(
+        lambda: get_or_build_dashboard(_build_quick_dashboard_metrics, quick=True),
+    )
+    return dict(payload)
 
 
 def _build_full_metrics(*, include_product_pulses: bool = False) -> dict:

@@ -398,10 +398,15 @@ async def admin_metrics_ws(websocket: WebSocket):
     subprotocol = selected_admin_subprotocol(websocket)
     await websocket.accept(subprotocol=subprotocol) if subprotocol else await websocket.accept()
     try:
+        tick = 0
         while True:
-            payload = await admin_dashboard._build_full_metrics_async()
+            payload = await admin_dashboard.get_live_metrics_stream_payload()
             await websocket.send_json(payload)
-            await asyncio.sleep(2.0)
+            tick += 1
+            # Refresh full metrics in the background occasionally (not every tick).
+            if tick % 10 == 0:
+                asyncio.create_task(admin_dashboard._refresh_full_dashboard_cache())
+            await asyncio.sleep(3.0)
     except WebSocketDisconnect:
         logger.debug("Admin metrics websocket disconnected")
     except Exception as e:

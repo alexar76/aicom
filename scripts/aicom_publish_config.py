@@ -41,6 +41,7 @@ FACTORY_LOCAL_EXCLUDES = [
     ".cursor",
     ".claude",
     ".gitea",
+    ".github",
 ]
 
 # Submodule: publish gitlink only — never rsync expanded coach/ tree to public factory.

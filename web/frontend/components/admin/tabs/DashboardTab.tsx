@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Activity,
@@ -18,25 +18,23 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import api, { type DashboardData } from '@/lib/api';
 import {
   applyPublicStorefrontCount,
-  createEmptyDashboardData,
+  bootDashboardData,
   isPipelineMetricsReady,
-  mergeDashboardQuick,
-  readAdminMetricsCache,
-  writeAdminMetricsCache,
 } from '@/lib/adminMetricsCache';
 import { prefetchAdminDashboard } from '@/lib/prefetchAdminDashboard';
 import { fetchPublicStorefrontListableCount } from '@/lib/refreshStorefrontListableCount';
+import {
+  loadAdminDashboardFull,
+  loadAdminDashboardLayers,
+} from '@/lib/loadAdminDashboardLayers';
 import { CostOutcomeHeatmap } from '@/components/admin/tabs/CostOutcomeHeatmap';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 
-function bootDashboardData(): DashboardData {
-  return readAdminMetricsCache() ?? createEmptyDashboardData();
-}
-
 export function DashboardTab({ locale }: { locale: AdminLocale }) {
-  const [data, setData] = useState<DashboardData>(bootDashboardData);
-  const [refreshing, setRefreshing] = useState(true);
-  const hadCacheOnMount = useState(() => readAdminMetricsCache() != null)[0];
+  const bootRef = useRef(bootDashboardData());
+  const [data, setData] = useState<DashboardData>(bootRef.current);
+  const [refreshing, setRefreshing] = useState(() => !isPipelineMetricsReady(bootRef.current));
+  const hadCacheOnMount = useState(() => isPipelineMetricsReady(bootRef.current))[0];
 
   useEffect(() => {
     let cancelled = false;
@@ -44,32 +42,33 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
 
     const run = async () => {
       try {
-        const quick = await api.getDashboard(true);
+        const { snapshot, pipelineCountsReady } = await loadAdminDashboardLayers();
         if (!cancelled) {
-          setData((prev) => mergeDashboardQuick(prev, quick));
+          setData(snapshot);
+          if (pipelineCountsReady) setRefreshing(false);
         }
       } catch {
-        /* keep cache / zeros */
+        /* cache / pipeline tab bootstrap may still have totals */
       }
-      try {
-        const full = await api.getDashboard(false);
-        if (!cancelled) {
-          setData(full);
-          writeAdminMetricsCache(full);
+
+      void (async () => {
+        try {
+          const full = await loadAdminDashboardFull();
+          if (!cancelled && full) setData(full);
+        } catch {
+          /* quick or cache remains */
         }
-      } catch {
-        /* quick or cache remains */
-      }
-      try {
-        const vitrine = await fetchPublicStorefrontListableCount();
-        if (!cancelled && vitrine !== null) {
-          setData((prev) => applyPublicStorefrontCount(prev, vitrine));
+        try {
+          const vitrine = await fetchPublicStorefrontListableCount();
+          if (!cancelled && vitrine !== null) {
+            setData((prev) => applyPublicStorefrontCount(prev, vitrine));
+          }
+        } catch {
+          /* keep dashboard payload */
+        } finally {
+          if (!cancelled) setRefreshing(false);
         }
-      } catch {
-        /* keep dashboard payload */
-      } finally {
-        if (!cancelled) setRefreshing(false);
-      }
+      })();
     };
 
     void run();
@@ -78,7 +77,8 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
     };
   }, []);
 
-  const pipelineReady = isPipelineMetricsReady(data);
+  const pipelineReady = isPipelineMetricsReady(data) || hadCacheOnMount;
+  const pipelineLoading = refreshing && !pipelineReady;
   const total = data.pipeline.total_products;
   const completed = data.pipeline.completed_products;
   const sfRaw = data.pipeline.storefront_visible_products;
@@ -94,7 +94,7 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
       : null;
 
   const factoryHealthScore = ((): number | null => {
-    if (!pipelineReady) return null;
+    if (pipelineLoading) return null;
     const p = data.pipeline;
     const t = p.total_products || 0;
     if (t <= 0) {
@@ -124,7 +124,7 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
           ? 'dashboard.health.fair'
           : 'dashboard.health.attention';
 
-  const pipelineStatValue = (n: number) => (pipelineReady ? n : null);
+  const pipelineStatValue = (n: number) => (pipelineLoading ? null : n);
 
   const stats = [
     {
@@ -360,7 +360,7 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
         <GlassCard>
           <h3 className="text-lg font-semibold text-white mb-4">Pipeline Metrics</h3>
           <div className="space-y-4">
-            {pipelineReady ? (
+            {!pipelineLoading ? (
               <ProgressBar value={Math.round(completionRate)} label="Completion Rate" variant="success" />
             ) : (
               <p className="text-sm text-gray-500 flex items-center gap-2">
@@ -371,19 +371,19 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
             <div className="flex justify-between text-sm text-gray-400">
               <span>Pending Tasks</span>
               <span className="text-white font-medium tabular-nums">
-                {pipelineReady ? data.pipeline.pending_tasks : '…'}
+                {!pipelineLoading ? data.pipeline.pending_tasks : '…'}
               </span>
             </div>
             <div className="flex justify-between text-sm text-gray-400">
               <span>Running Tasks</span>
               <span className="text-white font-medium tabular-nums">
-                {pipelineReady ? data.pipeline.running_tasks : '…'}
+                {!pipelineLoading ? data.pipeline.running_tasks : '…'}
               </span>
             </div>
             <div className="flex justify-between text-sm text-gray-400">
               <span>Timed Out Tasks</span>
               <span className="text-white font-medium tabular-nums">
-                {pipelineReady ? data.pipeline.timed_out_tasks : '…'}
+                {!pipelineLoading ? data.pipeline.timed_out_tasks : '…'}
               </span>
             </div>
           </div>
@@ -392,7 +392,7 @@ export function DashboardTab({ locale }: { locale: AdminLocale }) {
         <GlassCard>
           <h3 className="text-lg font-semibold text-white mb-4">System Resources</h3>
           <div className="space-y-4">
-            {pipelineReady ? (
+            {!pipelineLoading ? (
               <>
                 <ProgressBar
                   value={data.resources.cpu_percent}

@@ -1038,8 +1038,21 @@ class ApiClient {
 
   async getDashboard(quick?: boolean): Promise<DashboardData> {
     const suffix = quick === true ? '?quick=1' : '';
-    const clientTimeoutMs = quick === true ? 20_000 : 120_000;
+    const clientTimeoutMs = quick === true ? 15_000 : 90_000;
     return this.request(`/admin/dashboard${suffix}`, { clientTimeoutMs });
+  }
+
+  /** Same totals as Pipeline Monitor catalog_summary — sub-second SQL only. */
+  async getDashboardPipelineSummary(): Promise<{
+    total_products: number;
+    active_products: number;
+    completed_products: number;
+    failed_products: number;
+    pending_tasks: number;
+    running_tasks: number;
+    timed_out_tasks: number;
+  }> {
+    return this.request('/admin/dashboard/pipeline-summary', { clientTimeoutMs: 10_000 });
   }
 
   async getDemoReplayAdmin(): Promise<DemoReplayAdminConfig> {
