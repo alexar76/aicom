@@ -243,7 +243,7 @@ function AdminPageInner() {
   };
 
   return (
-    <div className="min-h-screen flex min-w-0">
+    <div className="flex h-[100dvh] max-h-[100dvh] min-w-0 overflow-hidden">
       <Sidebar
         activeTab={activeTab}
         onTabChange={changeTab}
@@ -255,7 +255,7 @@ function AdminPageInner() {
         showUsersTab={adminRole === 'super_admin'}
       />
 
-      <main className="flex-1 min-w-0 px-4 md:px-8 overflow-x-auto overflow-y-auto pt-[max(1rem,env(safe-area-inset-top))] md:pt-8 pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <main className="flex-1 min-h-0 min-w-0 px-4 md:px-8 overflow-x-auto overflow-y-auto overscroll-contain pt-[max(1rem,env(safe-area-inset-top))] md:pt-8 pb-[max(1rem,env(safe-area-inset-bottom))]">
         <div className="flex items-center justify-between mb-6 md:hidden">
           <button
             onClick={() => setSidebarCollapsed(false)}

@@ -89,14 +89,14 @@ export function SettingsSectionNav({ locale }: { locale: AdminLocale }) {
 
       {/* Desktop: stick to scrollport while settings column scrolls (parent flex uses items-start) */}
       <nav
-        className="hidden lg:block w-56 xl:w-60 shrink-0 sticky top-4 self-start z-10"
+        className="hidden lg:block w-56 xl:w-60 shrink-0 sticky top-[max(1rem,env(safe-area-inset-top))] md:top-8 self-start z-20"
         aria-label={t(locale, 'settings.nav.title')}
       >
-        <div className="rounded-xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-3 shadow-lg shadow-black/20">
+        <div className="rounded-xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-3 shadow-lg shadow-black/20 backdrop-blur-sm">
           <p className="text-[10px] uppercase tracking-wider text-gray-500 px-2 mb-2">
             {t(locale, 'settings.nav.title')}
           </p>
-          <div className="flex flex-col gap-0.5 max-h-[calc(100dvh-6rem)] overflow-y-auto pr-0.5 scrollbar-thin scrollbar-thumb-white/10">
+          <div className="flex flex-col gap-0.5 max-h-[calc(100dvh-7.5rem)] md:max-h-[calc(100dvh-9rem)] overflow-y-auto pr-0.5 scrollbar-thin scrollbar-thumb-white/10">
             {SETTINGS_NAV_ITEMS.map(({ id, labelKey, icon: Icon }) =>
               navButton(id, t(locale, labelKey), Icon),
             )}
