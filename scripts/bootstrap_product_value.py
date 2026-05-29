@@ -246,7 +246,6 @@ def inject_readme(readme: Path, title: str, en: str, ru: str) -> None:
     block = (
         "## Value in plain words\n\n"
         f"{en}\n\n"
-        f"**Простыми словами:** {ru}\n\n"
         "Full text: [docs/value.md](docs/value.md)\n\n"
     )
     if "## Value in plain words" in text:
@@ -286,8 +285,6 @@ def inject_user_guide(guide: Path, en: str, ru: str) -> None:
     block = f"""## Why it matters (plain words)
 
 {en}
-
-**Простыми словами:** {ru}
 
 """
     if "## Why it matters (plain words)" in text:
