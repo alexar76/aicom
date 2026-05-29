@@ -77,12 +77,17 @@ git_auth() {
 notes_file() {
   local sat_id="$1"
   local ver="${TAG#v}"
-  local f="$ROOT/scripts/release-notes/${ver}/${sat_id}.md"
-  if [[ -f "$f" ]]; then
-    echo "$f"
-  else
-    echo ""
-  fi
+  local f
+  for f in \
+    "$ROOT/scripts/release-notes/${TAG}/${sat_id}.md" \
+    "$ROOT/scripts/release-notes/v${ver}/${sat_id}.md" \
+    "$ROOT/scripts/release-notes/${ver}/${sat_id}.md"; do
+    if [[ -f "$f" ]]; then
+      echo "$f"
+      return
+    fi
+  done
+  echo ""
 }
 
 for sat_id in "${SAT_IDS[@]}"; do
