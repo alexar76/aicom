@@ -223,13 +223,13 @@ VALUES: dict[str, tuple[str, str, str]] = {
 
 
 def value_md(title: str, en: str, ru: str) -> str:
-    return f"""# {title} — Value in plain words
+    return f"""# {title} — Value
 
 ## English
 
 {en}
 
-## Русский (простыми словами)
+## Русский
 
 {ru}
 
@@ -323,8 +323,6 @@ def main() -> None:
         docs = root / "docs"
         docs.mkdir(exist_ok=True)
         (docs / "value.md").write_text(value_md(title, en, ru), encoding="utf-8")
-        inject_readme(root / "README.md", title, en, ru)
-        inject_user_guide(docs / "user-guide.md", en, ru)
         print(f"OK {rel}")
 
 

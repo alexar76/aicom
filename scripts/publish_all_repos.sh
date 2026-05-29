@@ -55,6 +55,7 @@ Examples:
   ./scripts/publish_all_repos.sh --factory-only --dry-run
 
 Satellite ↔ monorepo map (quick reference):
+  profile              ← scripts/profile-readme/README.md → alexar76/alexar76 (GitHub profile README only)
   aimarket-desktop     ← desktop-integrations/ (+ language-packs migration)
   pulse-terminal       ← apps/pulse-terminal/
   acex                 ← acex/

@@ -66,19 +66,18 @@ def test_publish_scripts_exist():
     assert (ROOT / "scripts" / "aicom_publish_config.py").is_file()
 
 
-def test_factory_rsync_excludes_agent_metadata_not_github():
-    """Factory publish uses rsync; .gitignore does not apply. Keep .github for CI/Pages."""
+def test_factory_rsync_excludes_cursor_and_github():
+    """Factory publish uses rsync; .gitignore does not apply."""
     locals_ = set(factory_local_exclude_paths())
     assert ".cursor" in locals_
-    assert ".claude" in locals_
-    assert ".github" not in locals_
+    assert ".github" in locals_
     excludes = {
         rsync_exclude_args()[i + 1]
         for i in range(len(rsync_exclude_args()) - 1)
         if rsync_exclude_args()[i] == "--exclude"
     }
     assert ".cursor" in excludes
-    assert ".github" not in excludes
+    assert ".github" in excludes
 
 
 def test_satellite_export_includes_provenance():

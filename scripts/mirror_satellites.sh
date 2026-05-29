@@ -214,6 +214,9 @@ export_simple() {
 
   rsync "${rsync_args[@]}" "$src/" "$clone/"
 
+  _copy_governance "$clone" "$license" "$repo" "${sat_id}"
+  _copy_github_templates "$clone"
+
   _inject_mirror_banner "$clone" "$sat_id" "$repo"
 
   _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "$license"
@@ -541,6 +544,16 @@ EOF
   echo "  ✓ Governance (LICENSE, SECURITY.md, CONTRIBUTING.md, CONTRIBUTORS.md, README.md)"
 }
 
+_copy_github_templates() {
+  local target="$1"
+  local src_tpl="$ROOT/scripts/satellite-github-templates/.github"
+  [[ -d "$src_tpl" ]] || return 0
+  mkdir -p "$target/.github"
+  # Merge templates; do not delete satellite-specific workflows from rsync.
+  cp -R "$src_tpl/"* "$target/.github/" 2>/dev/null || true
+  echo "  ✓ GitHub templates (ISSUE_TEMPLATE, pull_request_template)"
+}
+
 # ── melos.yaml generator ────────────────────────────────────────────────────
 
 _generate_melos_yaml() {
@@ -720,6 +733,49 @@ export_wiki() {
   BRANCH="$saved_branch"
 }
 
+# ── GitHub profile README ───────────────────────────────────────────────────
+# Special satellite: target repo is the profile repo (alexar76/alexar76).
+# Publishes ONLY README.md — no governance, no LICENSE, no mirror banner.
+# Existing files in the profile repo are preserved; only README.md is updated.
+export_profile() {
+  local sat_id="profile"
+  local repo="alexar76"
+  local src="$ROOT/scripts/profile-readme/README.md"
+  local remote_url
+  remote_url="$(satellite_remote_url "$repo")"
+
+  echo ""
+  echo "━━━ ${sat_id} (GitHub profile README) ━━━"
+  echo "  Source:  scripts/profile-readme/README.md"
+  echo "  Remote:  ${GITHUB_HOST}/${GITHUB_ORG}/${repo} (profile repo)"
+
+  [[ -f "$src" ]] || { echo "  ⚠️  SKIP: profile README source missing: $src"; return 1; }
+
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    echo "  [dry-run] would update README.md in ${GITHUB_ORG}/${repo}"
+    return 0
+  fi
+
+  local clone="$WORKDIR/${repo}"
+
+  if git_auth ls-remote "$remote_url" "refs/heads/$BRANCH" &>/dev/null; then
+    git_auth clone --depth 1 --branch "$BRANCH" "$remote_url" "$clone" 2>/dev/null || {
+      git_auth clone --depth 1 "$remote_url" "$clone"
+      (cd "$clone" && git checkout -B "$BRANCH" 2>/dev/null || git checkout -b "$BRANCH")
+    }
+  else
+    mkdir -p "$clone"
+    (cd "$clone" && git init && git checkout -b "$BRANCH")
+    echo "  ℹ️  Remote repo not found — initializing fresh"
+  fi
+
+  # Only manage README.md — do NOT wipe the repo (no banner / governance here).
+  cp -f "$src" "$clone/README.md"
+  echo "  ✓ README.md updated"
+
+  _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "mit"
+}
+
 # ── Commit & Push ───────────────────────────────────────────────────────────
 
 _commit_and_push() {
@@ -770,6 +826,9 @@ export_satellite() {
   local sat_id="$1"
 
   case "$sat_id" in
+    profile)
+      export_profile
+      ;;
     aimarket-desktop)
       export_desktop_monorepo
       ;;

@@ -423,7 +423,6 @@ def doc_index_block(title: str) -> str:
 | Document | Description |
 |----------|-------------|
 | [User guide](docs/user-guide.md) | Install, configure, verify plugin is loaded |
-| [Value (plain words)](docs/value.md) | Why this product matters — accessible explanation |
 | [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
 | [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
 
