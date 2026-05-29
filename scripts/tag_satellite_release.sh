@@ -114,14 +114,17 @@ for sat_id in "${SAT_IDS[@]}"; do
   git_auth push origin "$TAG" 2>&1 || echo "  ⚠️  Tag push failed (may already exist on remote)"
 
   cd "$ROOT"
-  if gh release view "$TAG" --repo "${GITHUB_ORG}/${repo}" &>/dev/null; then
+  export GH_TOKEN="${TOKEN:-}"
+  if GH_TOKEN="${TOKEN:-}" gh release view "$TAG" --repo "${GITHUB_ORG}/${repo}" &>/dev/null; then
     echo "  ℹ️  GitHub Release ${TAG} already exists"
   elif [[ -n "$notes" ]]; then
-    gh release create "$TAG" --repo "${GITHUB_ORG}/${repo}" --title "${TAG}" --notes-file "$notes"
-    echo "  ✅ GitHub Release ${TAG} created"
+    GH_TOKEN="${TOKEN:-}" gh release create "$TAG" --repo "${GITHUB_ORG}/${repo}" --title "${TAG}" --notes-file "$notes" \
+      && echo "  ✅ GitHub Release ${TAG} created" \
+      || echo "  ⚠️  Release create failed (tag ${TAG} is on remote — retry: GH_TOKEN=... gh release create ...)"
   else
-    gh release create "$TAG" --repo "${GITHUB_ORG}/${repo}" --title "${TAG}" --generate-notes
-    echo "  ✅ GitHub Release ${TAG} created (auto notes)"
+    GH_TOKEN="${TOKEN:-}" gh release create "$TAG" --repo "${GITHUB_ORG}/${repo}" --title "${TAG}" --generate-notes \
+      && echo "  ✅ GitHub Release ${TAG} created (auto notes)" \
+      || echo "  ⚠️  Release create failed (tag pushed)"
   fi
 
   rm -rf "$work"
