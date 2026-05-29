@@ -8,9 +8,8 @@ import os
 from psycopg.rows import dict_row
 from psycopg_pool import AsyncConnectionPool
 
-from .schema import POSTGRES_SCHEMA
 from .postgres_manager import _PRODUCT_UPSERT, _TASK_UPSERT
-from .sqlite_manager import METADATA_SQL_COLUMNS
+from .schema import POSTGRES_SCHEMA
 
 
 class AsyncPostgresManager:
@@ -116,7 +115,7 @@ class AsyncPostgresManager:
     async def upsert_product(self, product: dict) -> None:
         from .sqlite_manager import SQLiteManager
 
-        m = product.get("metadata", {}) or {}
+        product.get("metadata", {}) or {}
         values = SQLiteManager._product_dict_to_sql_values(product)
         pool = await self._require_pool()
         async with pool.connection() as conn:

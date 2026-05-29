@@ -13,12 +13,14 @@ from __future__ import annotations
 import json
 import logging
 import os
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from core.paths import pipeline_db_path, pipeline_json_path
 from core.pipeline_database import create_sync_pipeline_manager, pipeline_uses_sql_store
 from core.pipeline_worker_notify import notify_pipeline_worker_wake
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -204,9 +206,8 @@ def write_pipeline_state(
     if pipeline_uses_sql_store():
         ok = apply_state_to_sql_store(state)
         do_mirror = mirror_json if mirror_json is not None else pipeline_json_mirror_enabled()
-        if ok and do_mirror:
-            if not _write_json_file(state, json_path):
-                logger.warning("SQL save OK but pipeline.json mirror failed")
+        if ok and do_mirror and not _write_json_file(state, json_path):
+            logger.warning("SQL save OK but pipeline.json mirror failed")
         if ok:
             notify_pipeline_worker_wake()
         return ok

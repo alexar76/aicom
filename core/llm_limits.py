@@ -11,8 +11,8 @@ import os
 from typing import Any
 
 from core.config_merge import load_merged_config
-from core.paths import config_path
 from core.logging_utils import log_suppressed
+from core.paths import config_path
 from core.throughput_limits import (
     effective_llm_daily_cost_cap_usd,
     effective_llm_max_requests_per_minute,
@@ -58,7 +58,7 @@ def llm_limits_yaml_slice() -> dict[str, Any]:
         mtime = _CONFIG_PATH.stat().st_mtime
     except OSError:
         mtime = 0.0
-    if _CACHE_MTIME == mtime and _CACHE_SLICE is not None:
+    if mtime == _CACHE_MTIME and _CACHE_SLICE is not None:
         return dict(_CACHE_SLICE)
 
     out = dict(DEFAULT_LLM_LIMITS)

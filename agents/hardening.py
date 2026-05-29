@@ -7,12 +7,14 @@ Mandatory stabilization pass after initial code generation and before QA.
 from __future__ import annotations
 
 import time
+from typing import TYPE_CHECKING
 
 from .base_agent import AgentInput, AgentOutput
 from .dev import DeveloperAgent
 from .product_profile import FULL_SOFTWARE, normalize_delivery_profile
-from llm import LLMRouter
 
+if TYPE_CHECKING:
+    from llm import LLMRouter
 
 _FULL_SOFTWARE_AUTH_BLOCK = """
 FULL_SOFTWARE — AUTH & ACCESS (mandatory when the product has accounts or protected data):

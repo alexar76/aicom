@@ -8,7 +8,7 @@ import uuid
 from typing import Any
 
 from core.uni.config import uni_db_backend
-from core.uni.store import dumps_meta, row_to_dict, uni_connection
+from core.uni.store import row_to_dict, uni_connection
 
 
 def canonical_receipt_payload(payload: dict[str, Any]) -> dict[str, Any]:

@@ -5,9 +5,12 @@ from __future__ import annotations
 import logging
 import os
 import time
-from typing import Callable
+from typing import TYPE_CHECKING
 
 from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW, pipeline_product_states
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -63,9 +66,7 @@ def is_superseded_failed_task(task: dict, product: dict) -> bool:
     if pr > tr:
         return True
     err = (task.get("error") or "").lower()
-    if agent == "pm" and "specification failed quality gate" in err and not pm_spec_requeue_allowed(ps):
-        return True
-    return False
+    return bool(agent == "pm" and "specification failed quality gate" in err and not pm_spec_requeue_allowed(ps))
 
 
 def failed_task_may_terminalize_product(task: dict, product: dict) -> bool:
@@ -131,9 +132,7 @@ def is_likely_false_failed_product(product: dict, task_queue: list) -> bool:
     if not fr.strip():
         return True
 
-    if "specification failed quality gate" in fr and not failed_rows:
-        return True
-    return False
+    return bool("specification failed quality gate" in fr and not failed_rows)
 
 
 def recovery_state_after_false_failed(product: dict, task_queue: list | None = None) -> str:

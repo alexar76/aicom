@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 import logging
 import os
-from typing import Any, Optional
+from typing import Any
 
 from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
@@ -81,7 +81,7 @@ class PostgresManager:
         self.workspace_id = (
             workspace_id or os.environ.get("AIFACTORY_WORKSPACE_ID", "default").strip() or "default"
         )
-        self._pool: Optional[ConnectionPool] = None
+        self._pool: ConnectionPool | None = None
 
     def connect(self) -> None:
         if self._pool is not None:
@@ -136,7 +136,7 @@ class PostgresManager:
             ).fetchall()
         return [self._row_to_task_dict(r) for r in rows]
 
-    def get_product(self, product_id: str) -> Optional[dict[str, Any]]:
+    def get_product(self, product_id: str) -> dict[str, Any] | None:
         with self.pool.connection() as conn:
             row = conn.execute(
                 "SELECT * FROM products WHERE id = %s AND workspace_id = %s",

@@ -172,7 +172,7 @@ class UniWalletService:
         fee = platform_fee_uni(gross, fee_bps=uni_withdraw_fee_bps())
         if fee >= gross:
             raise UniWalletError("withdraw amount too small after fee")
-        net_uni = gross - fee
+        gross - fee
         net_usdt = withdraw_net_usd(gross, fee_bps=uni_withdraw_fee_bps())
         wallet = self.get_or_create_wallet(owner_id)
         ts = now_ts()
@@ -425,7 +425,7 @@ class UniWalletService:
             self._credit_balance(conn, seller["wallet_id"], net, ts, lifetime_in=True)
             if fee > 0:
                 self._credit_balance(conn, platform["wallet_id"], fee, ts, lifetime_in=True)
-            row = self._fetch_wallet(conn, wallet_id)
+            self._fetch_wallet(conn, wallet_id)
         from core.uni.receipts import issue_receipt
 
         receipt = issue_receipt(

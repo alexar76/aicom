@@ -10,6 +10,7 @@ import html as html_lib
 import logging
 import re
 from typing import Final
+
 from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)

@@ -17,15 +17,14 @@ from pathlib import Path
 from typing import Optional
 
 from agents.base_agent import (
-    BaseAgent,
     AgentInput,
     AgentOutput,
+    BaseAgent,
 )
-from llm import LLMRouter, GenerationConfig
-from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_QA_SEC
-
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
+from llm import GenerationConfig, LLMRouter
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_QA_SEC
 
 logger = logging.getLogger(__name__)
 
@@ -181,7 +180,7 @@ class SecurityAgent(BaseAgent):
         manifest_path = code_dir / "code_manifest.json"
         if manifest_path.exists():
             try:
-                with open(manifest_path, "r") as f:
+                with open(manifest_path) as f:
                     manifest = json.load(f)
                 raw_files = manifest.get("files", [])
                 # Handle case where manifest stores STRING paths instead of dicts
@@ -197,7 +196,7 @@ class SecurityAgent(BaseAgent):
                                     "full_path": str(path),
                                     "content": content,
                                 })
-                            except (IOError, OSError) as _suppressed_exc:
+                            except OSError as _suppressed_exc:
                                 log_suppressed(logger, "non-fatal (agents/security.py)", exc_info=_suppressed_exc)
                     return files
                 return raw_files
@@ -391,7 +390,7 @@ class SecurityAgent(BaseAgent):
                 for i, line in enumerate(lines):
                     # Skip comments and imports
                     stripped = line.strip()
-                    if stripped.startswith("#") or stripped.startswith("//") or stripped.startswith("/*"):
+                    if stripped.startswith(("#", "//", "/*")):
                         continue
                     if "import " in stripped or "from " in stripped:
                         continue
@@ -581,7 +580,7 @@ class SecurityAgent(BaseAgent):
 
     async def _generate_llm_security_review(
         self, agent_input: AgentInput, product_id: str, code_files: list[dict]
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """Try to generate an LLM-based security review if LLM is available."""
         try:
             code_samples = {}

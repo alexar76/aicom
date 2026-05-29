@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AICOM — an autonomous AI software company, in the open</title>
+<meta name="description" content="AICOM is an open-source ecosystem: a multi-agent factory that turns a prompt into a shipped product, a federated marketplace to discover and pay AI capabilities, and the protocol that connects them. Self-hosted. MIT/Apache." />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="AICOM — an autonomous AI software company, in the open" />
+<meta property="og:description" content="One prompt → a shipped product. A factory, a marketplace, and the protocol that wires them together. Self-hosted, open source." />
+<meta property="og:url" content="https://magic-ai-factory.com/" />
+<meta property="og:image" content="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg: #02030a;
+    --bg-2: #050816;
+    --panel: rgba(8, 14, 30, 0.55);
+    --panel-solid: rgba(8, 14, 30, 0.82);
+    --brd: rgba(80, 130, 200, 0.22);
+    --brd-hot: rgba(56, 224, 255, 0.55);
+    --ink: #cfe3ff;
+    --muted: #7e9fd0;
+    --faint: #56739f;
+    --cyan: #38e0ff;
+    --violet: #7b5cff;
+    --good: #38ffa6;
+    --amber: #ffcc4d;
+    --pink: #ff5d8a;
+    --radius: 16px;
+    --maxw: 1140px;
+    --head: 'Orbitron', system-ui, sans-serif;
+    --body: 'Rajdhani', system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--body); font-size: 17px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+
+  /* ── Live galaxy canvas ───────────────────────────────── */
+  #galaxy { position: fixed; inset: 0; z-index: 0; display: block; }
+  .nebula {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(50vw 50vw at 15% -5%, rgba(56,224,255,0.10), transparent 60%),
+      radial-gradient(46vw 46vw at 92% 6%, rgba(123,92,255,0.12), transparent 60%),
+      radial-gradient(60vw 60vw at 50% 116%, rgba(255,93,138,0.07), transparent 60%);
+    mix-blend-mode: screen;
+  }
+  /* HUD scanlines */
+  .scan {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .35;
+    background: repeating-linear-gradient(0deg, rgba(56,224,255,0.035) 0 1px, transparent 1px 3px);
+  }
+  .vignette {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    box-shadow: inset 0 0 240px 40px rgba(0,0,0,0.85);
+  }
+
+  .wrap { position: relative; z-index: 2; max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+
+  /* ── Nav ─────────────────────────────────────────────── */
+  nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px);
+    background: linear-gradient(180deg, rgba(2,3,10,0.85), rgba(2,3,10,0.35));
+    border-bottom: 1px solid var(--brd); }
+  nav .row { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-family: var(--head); font-weight: 900; letter-spacing: 3px; font-size: 18px; }
+  .brand .core { width: 14px; height: 14px; border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, #d6fbff, var(--cyan) 45%, var(--violet));
+    box-shadow: 0 0 14px var(--cyan), 0 0 34px rgba(123,92,255,.6); animation: corepulse 3s ease-in-out infinite; }
+  @keyframes corepulse { 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.18); } }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; letter-spacing: .5px; text-transform: uppercase; transition: color .2s, text-shadow .2s; }
+  .nav-links a:hover { color: var(--cyan); text-shadow: 0 0 12px rgba(56,224,255,.6); }
+  .nav-cta { color: var(--ink) !important; border: 1px solid var(--brd-hot); padding: 8px 15px; border-radius: 999px; box-shadow: 0 0 18px rgba(56,224,255,.18) inset; }
+  .nav-cta:hover { background: rgba(56,224,255,.10); }
+  @media (max-width: 720px) { .nav-links a:not(.nav-cta) { display:none; } }
+
+  /* ── Hero ────────────────────────────────────────────── */
+  header { padding: 96px 0 70px; text-align: center; }
+  .eyebrow { display:inline-flex; align-items:center; gap:9px; font-family: var(--head);
+    font-size: 11.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--cyan);
+    border: 1px solid var(--brd); background: var(--panel); backdrop-filter: blur(6px);
+    padding: 7px 16px; border-radius: 999px; margin-bottom: 28px; }
+  .eyebrow .pip { width: 7px; height: 7px; border-radius: 50%; background: var(--good);
+    box-shadow: 0 0 0 0 rgba(56,255,166,.6); animation: ping 2.2s infinite; }
+  @keyframes ping { 0%{ box-shadow:0 0 0 0 rgba(56,255,166,.55);} 70%{ box-shadow:0 0 0 10px rgba(56,255,166,0);} 100%{ box-shadow:0 0 0 0 rgba(56,255,166,0);} }
+
+  h1 { font-family: var(--head); font-weight: 900; font-size: clamp(32px, 6.2vw, 66px);
+    line-height: 1.04; letter-spacing: -0.5px; margin: 0 0 24px;
+    text-shadow: 0 0 40px rgba(56,224,255,.25); }
+  h1 .grad { background: linear-gradient(100deg, var(--cyan), #aef3ff 40%, var(--violet) 90%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .lede { max-width: 720px; margin: 0 auto 14px; font-size: clamp(17px, 2.4vw, 21px); color: var(--ink); font-weight: 400; }
+  .sub { max-width: 600px; margin: 0 auto 36px; color: var(--muted); font-size: 16px; }
+
+  .cta-row { display:flex; gap: 14px; justify-content:center; flex-wrap: wrap; }
+  .btn { display:inline-flex; align-items:center; gap:9px; padding: 14px 26px; border-radius: 12px;
+    font-family: var(--head); font-weight: 700; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;
+    text-decoration:none; transition: transform .15s, box-shadow .25s, border-color .2s; border: 1px solid transparent; }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { color: #021018; background: linear-gradient(100deg, var(--cyan), var(--violet));
+    box-shadow: 0 0 30px rgba(56,224,255,.4), 0 8px 30px rgba(123,92,255,.3); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 44px rgba(56,224,255,.65), 0 10px 40px rgba(123,92,255,.45); }
+  .btn-ghost { color: var(--ink); background: var(--panel); border-color: var(--brd-hot); backdrop-filter: blur(6px); }
+  .btn-ghost:hover { transform: translateY(-2px); background: rgba(56,224,255,.08); box-shadow: 0 0 24px rgba(56,224,255,.25); }
+  .btn svg { width: 18px; height: 18px; }
+
+  .hero-meta { margin-top: 32px; display:flex; gap: 26px; justify-content:center; flex-wrap: wrap;
+    font-family: var(--head); font-size: 11.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--faint); }
+  .hero-meta b { color: var(--cyan); font-weight: 700; }
+  .hero-meta a { color: var(--good); text-decoration: none; }
+  .hero-meta a:hover { text-shadow: 0 0 12px rgba(56,255,166,.6); }
+
+  /* ── Sections ────────────────────────────────────────── */
+  section { padding: 66px 0; position: relative; z-index: 2; }
+  .sec-head { text-align:center; max-width: 720px; margin: 0 auto 46px; }
+  .kicker { font-family: var(--head); font-size: 11.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--violet); }
+  .sec-head h2 { font-family: var(--head); font-weight: 700; font-size: clamp(24px, 4vw, 38px); margin: 12px 0; letter-spacing: 0; }
+  .sec-head p { color: var(--muted); margin: 0; font-size: 17px; }
+
+  /* Flow */
+  .flow { display:grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 14px; align-items: stretch; }
+  .flow-node { position: relative; background: var(--panel); backdrop-filter: blur(8px);
+    border: 1px solid var(--brd); border-radius: var(--radius); padding: 26px 22px; text-align:center; overflow: hidden; }
+  .flow-node::before { content:""; position:absolute; left:0; top:0; right:0; height:2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent); opacity:.6; }
+  .flow-node .ic { font-size: 32px; filter: drop-shadow(0 0 12px rgba(56,224,255,.5)); }
+  .flow-node h3 { font-family: var(--head); margin: 12px 0 7px; font-size: 17px; letter-spacing: .5px; }
+  .flow-node p { margin: 0; font-size: 14.5px; color: var(--muted); }
+  .flow-arrow { align-self:center; color: var(--cyan); font-size: 24px; text-shadow: 0 0 14px var(--cyan); }
+  @media (max-width: 820px) { .flow { grid-template-columns: 1fr; } .flow-arrow { transform: rotate(90deg); } }
+
+  /* Cards (HUD chrome) */
+  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; }
+  .card { position: relative; background: var(--panel); backdrop-filter: blur(8px);
+    border: 1px solid var(--brd); border-radius: var(--radius); padding: 24px;
+    display:flex; flex-direction:column; gap: 11px; transition: transform .18s, border-color .18s, box-shadow .25s; }
+  /* corner brackets */
+  .card::before, .card::after { content:""; position:absolute; width:14px; height:14px; pointer-events:none;
+    border-color: var(--brd-hot); transition: border-color .2s; }
+  .card::before { left:8px; top:8px; border-left:2px solid var(--brd); border-top:2px solid var(--brd); }
+  .card::after { right:8px; bottom:8px; border-right:2px solid var(--brd); border-bottom:2px solid var(--brd); }
+  .card:hover { transform: translateY(-5px); border-color: var(--brd-hot); box-shadow: 0 0 30px rgba(56,224,255,.18); }
+  .card:hover::before, .card:hover::after { border-color: var(--cyan); }
+  .card .tag { font-family: var(--head); font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--good); }
+  .card h3 { font-family: var(--head); margin: 0; font-size: 18px; letter-spacing: .3px; }
+  .card p { margin: 0; color: var(--muted); font-size: 15px; flex: 1; }
+  .card .links { display:flex; gap: 16px; margin-top: 4px; flex-wrap: wrap; }
+  .card .links a { color: var(--ink); text-decoration:none; font-family: var(--head); font-size: 12px; letter-spacing: .5px; text-transform: uppercase; font-weight: 600; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .2s, border-color .2s; }
+  .card .links a:hover { color: var(--cyan); border-color: var(--cyan); }
+  .card .links a.demo { color: var(--good); }
+  .card .links a.demo:hover { color: var(--good); border-color: var(--good); }
+
+  /* Features */
+  .feat { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; }
+  .feat .card { gap: 8px; }
+  .feat .n { font-family: var(--head); color: var(--pink); font-size: 13px; letter-spacing: 2px; }
+
+  /* Final */
+  .final { position: relative; text-align:center; background: var(--panel-solid); backdrop-filter: blur(10px);
+    border: 1px solid var(--brd-hot); border-radius: 24px; padding: 58px 28px; overflow:hidden;
+    box-shadow: 0 0 60px rgba(56,224,255,.12); }
+  .final::before { content:""; position:absolute; inset:0;
+    background: radial-gradient(60% 80% at 50% 0%, rgba(56,224,255,.12), transparent 70%); pointer-events:none; }
+  .final h2 { font-family: var(--head); font-weight: 900; font-size: clamp(24px, 4vw, 40px); margin: 0 0 14px; }
+  .final p { color: var(--muted); max-width: 560px; margin: 0 auto 30px; font-size: 17px; }
+
+  footer { border-top: 1px solid var(--brd); padding: 38px 0; text-align:center; color: var(--faint); font-size: 15px; position: relative; z-index: 2; }
+  footer a { color: var(--muted); text-decoration:none; }
+  footer a:hover { color: var(--cyan); }
+  .foot-links { display:flex; gap: 22px; justify-content:center; flex-wrap: wrap; margin-bottom: 14px; font-family: var(--head); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .gh-ico { fill: currentColor; }
+  @media (prefers-reduced-motion: reduce) { .core, .pip { animation: none; } }
+</style>
+</head>
+<body>
+<canvas id="galaxy" aria-hidden="true"></canvas>
+<div class="nebula"></div>
+<div class="scan"></div>
+<div class="vignette"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap row">
+    <div class="brand"><span class="core"></span> AICOM</div>
+    <div class="nav-links">
+      <a href="#flow">How it works</a>
+      <a href="#projects">Projects</a>
+      <a href="#features">Killer features</a>
+      <a class="nav-cta" href="https://github.com/alexar76/aicom" target="_blank" rel="noopener">★ Star</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="wrap">
+  <span class="eyebrow"><span class="pip"></span> Open source · self-hosted · MIT / Apache-2.0</span>
+  <h1>An autonomous AI software company,<br/><span class="grad">in the open.</span></h1>
+  <p class="lede">One prompt becomes a shipped web product. A federated marketplace lets agents discover, pay, and invoke each other. And an open protocol wires the whole thing together — all on infrastructure you control.</p>
+  <p class="sub">No hosted black box. Your keys, your data, your host. Fork any piece.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="https://github.com/alexar76/aicom" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" class="gh-ico" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      Star on GitHub
+    </a>
+    <a class="btn btn-ghost" href="https://magic-ai-factory.com" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+      Try the live demo
+    </a>
+  </div>
+  <div class="hero-meta">
+    <span><b>13</b> pipeline agents</span>
+    <span><b>1</b> prompt → product</span>
+    <span><b>Self-hosted</b> · non-custodial</span>
+    <span>Watch: <a href="https://youtu.be/Gg9a52-ZbNA" target="_blank" rel="noopener">2-min walkthrough ↗</a></span>
+  </div>
+</header>
+
+<!-- FLOW -->
+<section id="flow">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">The loop</div>
+      <h2>Ship on the factory → list on the hub → consume anywhere</h2>
+      <p>Every product the factory ships becomes a capability the next run can discover and reuse. The network compounds on itself.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-node"><div class="ic">🏭</div><h3>AI-Factory</h3><p>13 agents take a brief through spec → code → QA → security → deploy.</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="ic">🛰️</div><h3>AIMarket Hub</h3><p>Shipped capabilities are signed, indexed, and made searchable &amp; invocable.</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="ic">🧩</div><h3>Consumers</h3><p>Desktop apps, an embed widget, and SDKs invoke &amp; pay over USDT channels.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">The monorepo</div>
+      <h2>Twelve parts, one ecosystem</h2>
+      <p>Each piece is independently useful and open. Browse the source, or jump straight into a live demo.</p>
+    </div>
+    <div class="grid">
+
+      <div class="card">
+        <span class="tag">Core · Factory</span>
+        <h3>🏭 AI-Factory</h3>
+        <p>The multi-agent pipeline. Type an idea, watch Analyst → PM → Architect → Developer → QA → Security → DevOps → Marketing ship a real product with quality gates.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom" target="_blank" rel="noopener">GitHub ↗</a><a class="demo" href="https://magic-ai-factory.com" target="_blank" rel="noopener">Live demo ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Marketplace</span>
+        <h3>🛰️ AIMarket Hub</h3>
+        <p>Federation hub for AI capability discovery, micropayment routing, and plugin-extensible invoke. One HTTP surface to search, open channels, invoke, and settle on-chain.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom/tree/main/aimarket-hub" target="_blank" rel="noopener">GitHub ↗</a><a class="demo" href="https://modelmarket.dev" target="_blank" rel="noopener">Live hub ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Spec</span>
+        <h3>📜 AIMarket Protocol v2</h3>
+        <p>The normative spec + JSON schemas every part speaks: discovery, signed capabilities, payment channels, and invoke lifecycle. The contract that makes federation possible.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom/tree/main/aimarket-protocol" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Generator</span>
+        <h3>⚡ AI Landing Generator</h3>
+        <p>One prompt → one self-contained HTML landing in ~30–60s. Two agents (Architect → Developer), 20 style presets, no database. Perfect for MVPs and A/B copy.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom-landing" target="_blank" rel="noopener">GitHub ↗</a><a class="demo" href="https://magic-ai-factory.com/landing-page-generation/" target="_blank" rel="noopener">Try it ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Observability</span>
+        <h3>👽 Alien Monitor</h3>
+        <p>A live 3D pulse of the whole ecosystem — Hub, Factory, contracts, agents, and on-chain metrics rendered as one cosmic graph. No login required.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom/tree/main/alien-monitor" target="_blank" rel="noopener">GitHub ↗</a><a class="demo" href="https://magic-ai-factory.com/monitor/" target="_blank" rel="noopener">Live monitor ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Markets · ACEX</span>
+        <h3>📈 Pulse Terminal</h3>
+        <p>A capital-markets dashboard for the agent economy — live CapShare NAV, revenue indices, and WebSocket pricing streamed from the factory.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom/tree/main/acex" target="_blank" rel="noopener">GitHub ↗</a><a class="demo" href="https://magic-ai-factory.com/pulse/" target="_blank" rel="noopener">Live terminal ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Embed</span>
+        <h3>🔌 AIMarket Widget</h3>
+        <p>A drop-in widget that puts federated AI search + invoke on any website with one snippet. The 1-click on-ramp to the whole marketplace.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom/tree/main/aimarket-widget" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">SDKs</span>
+        <h3>🧰 Client SDKs</h3>
+        <p>Dart, TypeScript, and Rust client libraries for discovering and invoking capabilities — the same surface the desktop apps and widget are built on.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom/tree/main/aimarket-sdks" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Apps</span>
+        <h3>🖥️ Desktop SKUs</h3>
+        <p>Eight Flutter desktop apps sharing one core, plus a standalone Rust <em>Local Security Audit</em> SKU that scans a repo for secrets &amp; CVEs fully offline.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom/tree/main/desktop-integrations" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Plugins</span>
+        <h3>🧱 Hub Plugins</h3>
+        <p>Pip-installable plugins that hook the hub's invoke lifecycle — safety, compliance, routing, and custom capability adapters.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom/tree/main/plugins" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Settlement</span>
+        <h3>⛓️ Payment Contracts</h3>
+        <p>EVM + Solana non-custodial USDT payment channels. Users deposit directly; a 24h auto-refund path depends on no privileged account. No upgradeable proxies.</p>
+        <div class="links"><a href="https://github.com/alexar76/aicom/tree/main/contracts" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Desktop · Standalone</span>
+        <h3>💼 LinkedIn Profile Coach</h3>
+        <p>A Flutter desktop/mobile app built on the SDK — an example of a polished end-user product consuming the marketplace.</p>
+        <div class="links"><a href="https://github.com/alexar76/linked-in-profile-coach" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Why it's different</div>
+      <h2>Four things that don't exist together anywhere else</h2>
+      <p>Plenty of tools do one of these. Combining all four in one open stack is the whole point.</p>
+    </div>
+    <div class="feat">
+      <div class="card"><span class="n">01</span><h3>🕸️ Auto-Mesh Pipeline</h3><p>The factory discovers marketplace agents, funds a USDT channel, invokes them in sequence, and ships a connected product — no hand-wiring of APIs.</p></div>
+      <div class="card"><span class="n">02</span><h3>🛡️ Zero-Trust Discovery</h3><p>Every capability is signed, scored, and policy-checked <em>before</em> it can be invoked. Trust is verified, not assumed.</p></div>
+      <div class="card"><span class="n">03</span><h3>🔐 Non-custodial Escrow</h3><p>USDT payment channels with a 24-hour auto-refund. No privileged account can seize funds — settlement is on-chain and yours.</p></div>
+      <div class="card"><span class="n">04</span><h3>📥 1-Click Embed</h3><p>A single snippet drops federated AI search + invoke onto any site. The marketplace meets users where they already are.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section>
+  <div class="wrap">
+    <div class="final">
+      <h2>Run your own AI software company.</h2>
+      <p>Clone it, point it at your LLM keys, and watch a prompt become a product. It's all open — star the repo so you don't lose it.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/alexar76/aicom" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" class="gh-ico" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          Star on GitHub
+        </a>
+        <a class="btn btn-ghost" href="https://magic-ai-factory.com" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+          Open the live demo
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="https://github.com/alexar76/aicom" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://magic-ai-factory.com" target="_blank" rel="noopener">Factory demo</a>
+      <a href="https://modelmarket.dev" target="_blank" rel="noopener">Marketplace hub</a>
+      <a href="https://magic-ai-factory.com/monitor/" target="_blank" rel="noopener">Alien Monitor</a>
+      <a href="https://youtu.be/Gg9a52-ZbNA" target="_blank" rel="noopener">Walkthrough</a>
+    </div>
+    <div style="font-family:var(--body);text-transform:none;letter-spacing:0;">AICOM — open-source AI factory &amp; federated marketplace · MIT / Apache-2.0 · built by <a href="https://github.com/alexar76" target="_blank" rel="noopener">@alexar76</a></div>
+  </div>
+</footer>
+
+<script>
+/* ── Live galaxy: depth-projected starfield + drifting ecosystem nodes ── */
+(() => {
+  const canvas = document.getElementById('galaxy');
+  const ctx = canvas.getContext('2d');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, DPR, cx, cy;
+  const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.width = innerWidth * DPR;
+    H = canvas.height = innerHeight * DPR;
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+    cx = W / 2; cy = H / 2;
+  }
+  resize();
+  addEventListener('resize', resize);
+  // Pointer parallax (mouse + touch), resolution-independent
+  function aim(cxp, cyp) { mouse.tx = (cxp / innerWidth - 0.5); mouse.ty = (cyp / innerHeight - 0.5); }
+  addEventListener('mousemove', e => aim(e.clientX, e.clientY));
+  addEventListener('touchmove', e => { if (e.touches[0]) aim(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+
+  // Starfield — positions are NORMALIZED (independent of canvas size), so it
+  // fills the screen identically on a phone or a 4K monitor.
+  // x,y ∈ [-1,1] (screen-relative), z ∈ (0,1] is depth (1 = far, →0 = near/warp out).
+  const area = innerWidth * innerHeight;
+  const COUNT = Math.max(150, Math.min(520, Math.floor(area / 2600)));
+  const stars = [];
+  const palette = ['#38e0ff', '#7b5cff', '#9fe9ff', '#ffffff', '#38ffa6'];
+  for (let i = 0; i < COUNT; i++) {
+    stars.push({
+      x: Math.random() * 2 - 1,
+      y: Math.random() * 2 - 1,
+      z: Math.random() * 0.9 + 0.1,
+      r: Math.random() * 1.4 + 0.4,
+      c: palette[(Math.random() * palette.length) | 0],
+      tw: Math.random() * Math.PI * 2
+    });
+  }
+
+  // Ecosystem "planets" — glowing nodes that drift and link
+  const NODE_LABELS = ['Factory', 'Hub', 'Protocol', 'Widget', 'SDKs', 'Desktop', 'Contracts', 'ACEX'];
+  const nodes = NODE_LABELS.map((l, i) => {
+    const a = (i / NODE_LABELS.length) * Math.PI * 2;
+    return { a, rad: 0.30 + (i % 3) * 0.07, spd: 0.00018 + (i % 4) * 0.00006, size: 2.4 + (i % 3), c: i % 2 ? '#7b5cff' : '#38e0ff', label: l };
+  });
+
+  // Reduced-motion: animate much more gently rather than freezing entirely,
+  // so the page never looks "broken/static" — just calmer.
+  const warp = reduce ? 0.00035 : 0.0019;   // how fast stars fly toward you
+  const drift = reduce ? 0.25 : 1;          // node orbital speed multiplier
+  let t = 0;
+
+  function frame() {
+    t += 1;
+    mouse.x += (mouse.tx - mouse.x) * 0.05;
+    mouse.y += (mouse.ty - mouse.y) * 0.05;
+    ctx.clearRect(0, 0, W, H);
+
+    const minDim = Math.min(W, H);
+    const maxDim = Math.max(W, H);
+    const px = mouse.x * 0.10 * minDim, py = mouse.y * 0.10 * minDim;
+    const spread = maxDim * 0.62; // how far normalized coords map out from center
+
+    // stars — perspective warp, scaled to the actual canvas
+    for (const s of stars) {
+      s.z -= warp;
+      if (s.z <= 0.02) { s.z = 1; s.x = Math.random() * 2 - 1; s.y = Math.random() * 2 - 1; }
+      const k = 0.28 / s.z;                 // projection: smaller z → larger spread
+      const sx = cx + s.x * spread * k + px * (1 - s.z);
+      const sy = cy + s.y * spread * k + py * (1 - s.z);
+      if (sx < -20 || sx > W + 20 || sy < -20 || sy > H + 20) continue;
+      const depth = 1 - s.z;                // 0 far … 1 near
+      const tw = 0.55 + 0.45 * Math.sin(t * 0.03 + s.tw);
+      ctx.globalAlpha = Math.min(1, (0.25 + depth) * 1.3) * tw;
+      ctx.fillStyle = s.c;
+      ctx.beginPath();
+      ctx.arc(sx, sy, s.r * (0.5 + depth * 2.0) * DPR, 0, 7);
+      ctx.fill();
+    }
+
+    // ecosystem nodes + links
+    const pts = nodes.map(n => {
+      n.a += n.spd * drift;
+      const r = n.rad * minDim;
+      return {
+        x: cx + Math.cos(n.a) * r + px * 1.5,
+        y: cy + Math.sin(n.a) * r * 0.62 + py * 1.5,
+        n
+      };
+    });
+
+    // links between nearby nodes
+    ctx.lineWidth = 1 * DPR;
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+        const d = Math.hypot(dx, dy);
+        if (d < minDim * 0.34) {
+          ctx.globalAlpha = (1 - d / (minDim * 0.34)) * 0.22;
+          ctx.strokeStyle = '#38e0ff';
+          ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
+        }
+      }
+    }
+    // links to center (the core)
+    for (const p of pts) {
+      ctx.globalAlpha = 0.10; ctx.strokeStyle = '#7b5cff';
+      ctx.beginPath(); ctx.moveTo(cx + px, cy + py); ctx.lineTo(p.x, p.y); ctx.stroke();
+    }
+    // central core glow
+    const cg = ctx.createRadialGradient(cx + px, cy + py, 0, cx + px, cy + py, 80 * DPR);
+    cg.addColorStop(0, 'rgba(56,224,255,0.55)'); cg.addColorStop(1, 'rgba(56,224,255,0)');
+    ctx.globalAlpha = 1; ctx.fillStyle = cg;
+    ctx.beginPath(); ctx.arc(cx + px, cy + py, 80 * DPR, 0, 7); ctx.fill();
+
+    // node bodies
+    for (const p of pts) {
+      const pulse = 1 + 0.25 * Math.sin(t * 0.04 + p.n.a * 3);
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.n.size * 6 * DPR * pulse);
+      g.addColorStop(0, p.n.c); g.addColorStop(0.4, p.n.c + 'aa'); g.addColorStop(1, 'transparent');
+      ctx.globalAlpha = 0.9; ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.n.size * 6 * DPR * pulse, 0, 7); ctx.fill();
+      ctx.globalAlpha = 1; ctx.fillStyle = '#eafcff';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.n.size * DPR, 0, 7); ctx.fill();
+    }
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

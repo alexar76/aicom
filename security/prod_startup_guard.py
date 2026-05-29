@@ -13,8 +13,8 @@ import os
 import sys
 from pathlib import Path
 
-from core.paths import admin_users_path, legacy_admin_path
 from core.logging_utils import log_suppressed
+from core.paths import admin_users_path, legacy_admin_path
 
 logger = logging.getLogger(__name__)
 

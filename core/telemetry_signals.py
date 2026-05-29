@@ -7,8 +7,10 @@ Events posted via ``POST /api/telemetry/evolution-signal`` use ``event_type == e
 from __future__ import annotations
 
 import json
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 EVOLUTION_SIGNAL_EVENT_TYPE = "evolution_signal"
 

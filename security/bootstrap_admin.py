@@ -18,8 +18,8 @@ import sys
 import time
 from pathlib import Path
 
-from core.paths import admin_users_path, bootstrap_admin_secret_path, legacy_admin_path
 from core.logging_utils import log_suppressed
+from core.paths import admin_users_path, bootstrap_admin_secret_path, legacy_admin_path
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +72,7 @@ def _prompt_password_interactive() -> str | None:
     print("└──────────────────────────────────────────────────────────────────────────┘", file=sys.stderr)
     print("", file=sys.stderr)
 
-    for attempt in range(1, _MAX_PROMPT_ATTEMPTS + 1):
+    for _attempt in range(1, _MAX_PROMPT_ATTEMPTS + 1):
         try:
             p1 = getpass.getpass("Admin password: ")
             p2 = getpass.getpass("Confirm password: ")

@@ -13,13 +13,11 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
-import time
 import re
-from pathlib import Path
+import time
 from typing import Any
 
-from .base_agent import BaseAgent, AgentInput, AgentOutput
-from llm import LLMRouter, GenerationConfig
+from llm import GenerationConfig, LLMRouter
 from llm.agent_prompt_split import (
     build_architect_system_prompt,
     build_architect_user_data,
@@ -28,10 +26,11 @@ from llm.agent_prompt_split import (
 from llm.content_languages import ensure_architecture_content_language
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ARCHITECTURE_SEC
 
+from .base_agent import AgentInput, AgentOutput, BaseAgent
+
 logger = logging.getLogger(__name__)
 
 from agents.prompts.architect_role import ARCHITECT_SYSTEM_PROMPT
-
 
 
 def _needs_ui_experience(arch: dict, spec: dict, landing_charter: bool) -> bool:
@@ -46,9 +45,7 @@ def _needs_ui_experience(arch: dict, spec: dict, landing_charter: bool) -> bool:
         if any(x in fe for x in ("html", "css", "javascript", "react", "vue", "svelte", "spa", "tailwind")):
             return True
     blob = json.dumps(spec, ensure_ascii=False).lower() if isinstance(spec, dict) else ""
-    if any(k in blob for k in ("index.html", "landing page", "marketing landing", "dashboard ui", "single page")):
-        return True
-    return False
+    return bool(any(k in blob for k in ("index.html", "landing page", "marketing landing", "dashboard ui", "single page")))
 
 
 def _ui_experience_substantial(ux: object) -> bool:
@@ -61,9 +58,7 @@ def _ui_experience_substantial(ux: object) -> bool:
         return False
     if not isinstance(cv, dict) or len(cv) < 4:
         return False
-    if len(svg_b) < 30:
-        return False
-    return True
+    return not len(svg_b) < 30
 
 
 def _default_ui_experience(idea: str) -> dict:
@@ -269,8 +264,8 @@ def _default_ui_experience(idea: str) -> dict:
 
     svg_briefs = [
         (
-            f"Hero: full-width inline SVG with feTurbulence paper grain + soft vignette rect; ornamental **vector** "
-            f"corner brackets framing the headline (paths, no raster). Section dividers as single stroked paths."
+            "Hero: full-width inline SVG with feTurbulence paper grain + soft vignette rect; ornamental **vector** "
+            "corner brackets framing the headline (paths, no raster). Section dividers as single stroked paths."
         ),
         (
             "Bold SVG grid: repeating vector crosshair pattern in `<defs><pattern>`; hero **outline** illustration of the "

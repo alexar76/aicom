@@ -10,8 +10,12 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
-from typing import Callable, Optional
+from typing import TYPE_CHECKING
+
 from core.logging_utils import log_suppressed
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -43,9 +47,9 @@ class TimeoutManager:
             "methodologist": 60,
         }
         self._running = False
-        self._monitor_task: Optional[asyncio.Task] = None
+        self._monitor_task: asyncio.Task | None = None
 
-    def start_task(self, task_id: str, agent_type: str, callback: Callable, custom_timeout: Optional[int] = None):
+    def start_task(self, task_id: str, agent_type: str, callback: Callable, custom_timeout: int | None = None):
         """Start tracking a task with timeout."""
         timeout = custom_timeout or self._agent_timeouts.get(agent_type, self.default_timeout_sec)
         deadline = time.time() + timeout

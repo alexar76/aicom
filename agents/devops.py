@@ -14,13 +14,13 @@ from __future__ import annotations
 import json
 import logging
 import time
-from pathlib import Path
 
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
-from .base_agent import BaseAgent, AgentInput, AgentOutput
-from llm import LLMRouter, GenerationConfig
+from llm import GenerationConfig, LLMRouter
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
+
+from .base_agent import AgentInput, AgentOutput, BaseAgent
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class DevOpsAgent(BaseAgent):
     async def execute(self, agent_input: AgentInput) -> AgentOutput:
         start_time = time.time()
         product_id = agent_input.product_id
-        code_data = agent_input.data.get("code_data", {})
+        agent_input.data.get("code_data", {})
 
         self._log("INFO", f"Running DevOps tasks for {product_id}")
 

@@ -13,9 +13,9 @@ from orchestrator.task_executor_helpers import (
     fallback_agent_output,
     save_task_artifact,
 )
+from orchestrator.worker_utils import delivery_profile_from_product_dict
 from web.backend.services.marketplace_quality import evaluate_marketplace_quality
 from web.backend.services.requirements_clarifier import build_clarification_pack_llm
-from orchestrator.worker_utils import delivery_profile_from_product_dict
 
 logger = logging.getLogger("pipeline-worker")
 

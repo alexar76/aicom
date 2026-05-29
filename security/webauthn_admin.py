@@ -6,13 +6,11 @@ Credentials and flags live in ``data/config/admin.json`` (same as legacy TOTP me
 
 from __future__ import annotations
 
-import base64
 import json
 import logging
 import os
 import time
-from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from webauthn import (
     generate_authentication_options,
@@ -79,7 +77,7 @@ def load_admin_config() -> dict[str, Any]:
     if not ADMIN_JSON.exists():
         return {}
     try:
-        with open(ADMIN_JSON, "r", encoding="utf-8") as f:
+        with open(ADMIN_JSON, encoding="utf-8") as f:
             data = json.load(f)
         return data if isinstance(data, dict) else {}
     except (OSError, json.JSONDecodeError, TypeError):
@@ -121,7 +119,7 @@ def _store_challenge(cfg: dict[str, Any], kind: str, challenge: bytes, username:
     }
 
 
-def _pop_challenge(cfg: dict[str, Any], kind: str, username: str = "") -> Optional[bytes]:
+def _pop_challenge(cfg: dict[str, Any], kind: str, username: str = "") -> bytes | None:
     pending = cfg.get("webauthn_pending")
     if not isinstance(pending, dict):
         return None
@@ -232,10 +230,7 @@ def verify_authentication(username: str, credential: dict[str, Any]) -> None:
         raise ValueError("Login challenge expired or missing")
 
     cred_id = credential.get("id") or credential.get("rawId")
-    if isinstance(cred_id, str):
-        cred_id_b64 = cred_id
-    else:
-        cred_id_b64 = bytes_to_base64url(cred_id) if cred_id else ""
+    cred_id_b64 = cred_id if isinstance(cred_id, str) else bytes_to_base64url(cred_id) if cred_id else ""
 
     stored = None
     for c in list_credentials(cfg):

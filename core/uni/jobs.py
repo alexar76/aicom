@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-import time
 from typing import Any
 
 from core.uni.config import uni_db_backend, uni_enabled
@@ -129,7 +128,7 @@ def run_withdraw_dispatcher_job(*, max_batch: int = 5) -> dict[str, Any]:
                 continue
             wallet_id = str(row.get("wallet_id") or "")
             gross = int(round(float(row.get("amount_uni") or 0)))
-            fee = int(round(float(row.get("fee_uni") or 0)))
+            int(round(float(row.get("fee_uni") or 0)))
             refund = gross
             if uni_db_backend() == "postgres":
                 conn.execute(

@@ -15,12 +15,12 @@ import logging
 import os
 import sqlite3
 import time
-from typing import Any, Optional
+from typing import Any
 
+from core.logging_utils import log_suppressed
 from core.paths import pipeline_db_path
 
 from .schema import SQLITE_SCHEMA
-from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -45,13 +45,13 @@ class SQLiteManager:
             db_path = str(pipeline_db_path())
         self.db_path = db_path
         self.workspace_id = os.environ.get("AIFACTORY_WORKSPACE_ID", "default").strip() or "default"
-        self._conn: Optional[sqlite3.Connection] = None
+        self._conn: sqlite3.Connection | None = None
 
     # ------------------------------------------------------------------
     # Connection lifecycle
     # ------------------------------------------------------------------
 
-    def connect(self):
+    def connect(self) -> None:
         """Create connection, ensure directory exists, apply schema."""
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
         self._conn = sqlite3.connect(self.db_path)
@@ -97,7 +97,7 @@ class SQLiteManager:
         self._conn.commit()
         logger.debug("Connected to SQLite at %s", self.db_path)
 
-    def close(self):
+    def close(self) -> None:
         """Close the connection if open."""
         if self._conn:
             self._conn.close()
@@ -161,7 +161,6 @@ class SQLiteManager:
         # state may be None if column didn't exist before migration
         if d.get("state") is None:
             # Infer state from agent_type as fallback
-            from .state_machine import PipelineState
             agent_map = {
                 "analyst": "market_researched",
                 "pm": "spec_written",
@@ -249,7 +248,7 @@ class SQLiteManager:
         )
         self.conn.commit()
 
-    def get_product(self, product_id: str) -> Optional[dict]:
+    def get_product(self, product_id: str) -> dict | None:
         """Retrieve a single product by ID.
 
         Returns:
@@ -482,7 +481,7 @@ class SQLiteManager:
         )
         self.conn.commit()
 
-    def get_task(self, task_id: str) -> Optional[dict]:
+    def get_task(self, task_id: str) -> dict | None:
         """Retrieve a single task by ID."""
         row = self.conn.execute(
             "SELECT * FROM tasks WHERE id = ? AND workspace_id = ?", (task_id, self.workspace_id)

@@ -6,10 +6,11 @@ Orchestrates submodules: builtins, real agents, and fallbacks.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from orchestrator.task_executor_agent import run_agent_task
 from orchestrator.task_executor_builtin import run_builtin_task
 from orchestrator.task_executor_fallback import run_fallback_task
-from orchestrator.task_executor_helpers import PipelineTaskExecutorHost
 
 # Re-export helpers used by tests and pipeline_worker
 from orchestrator.task_executor_helpers import (  # noqa: F401
@@ -18,6 +19,11 @@ from orchestrator.task_executor_helpers import (  # noqa: F401
     record_task_lesson,
     save_task_artifact,
 )
+
+if TYPE_CHECKING:
+    from orchestrator.task_executor_helpers import (
+        PipelineTaskExecutorHost,
+    )
 
 
 class PipelineTaskExecutor:

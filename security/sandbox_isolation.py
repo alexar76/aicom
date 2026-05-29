@@ -5,22 +5,21 @@
 # and applications safely within the Docker container.
 # ============================================================================
 
-import os
 import json
-import time
-import uuid
+import logging
+import os
 import shutil
 import signal
-import logging
 import subprocess
-import tempfile
-from typing import Dict, List, Optional, Any
-from pathlib import Path
+import time
+import uuid
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
+from typing import Any
 
-from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 from core.logging_utils import log_suppressed
+from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 
 logger = logging.getLogger("ai_factory.security.sandbox")
 
@@ -51,15 +50,15 @@ class Sandbox:
     id: str
     product_id: str
     status: SandboxStatus = SandboxStatus.CREATED
-    port: Optional[int] = None
+    port: int | None = None
     work_dir: str = ""
-    pid: Optional[int] = None
+    pid: int | None = None
     created_at: float = field(default_factory=time.time)
-    started_at: Optional[float] = None
-    stopped_at: Optional[float] = None
+    started_at: float | None = None
+    stopped_at: float | None = None
     timeout_seconds: int = 300  # 5 minutes default
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    error: Optional[str] = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+    error: str | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -88,9 +87,9 @@ class SandboxIsolation:
         max_sandboxes: int = 10,
         default_timeout: int = 300,
         enable_network: bool = False,
-        execution_mode: Optional[str] = None,
+        execution_mode: str | None = None,
         container_image: str = "python:3.12-slim",
-        require_container: Optional[bool] = None,
+        require_container: bool | None = None,
     ):
         from core.paths import sandboxes_dir
 
@@ -109,14 +108,14 @@ class SandboxIsolation:
             else bool(require_container)
         )
         
-        self.sandboxes: Dict[str, Sandbox] = {}
+        self.sandboxes: dict[str, Sandbox] = {}
         self._allocated_ports: set = set()
         self._state_file = self.sandbox_base_dir / ".sandbox_state.json"
         
         self._load_state()
 
     @staticmethod
-    def _resolve_execution_mode(explicit: Optional[str]) -> str:
+    def _resolve_execution_mode(explicit: str | None) -> str:
         if explicit in ("process", "container"):
             return explicit
         env_mode = (os.environ.get("AIFACTORY_SANDBOX_EXECUTION_MODE") or "").strip().lower()
@@ -134,8 +133,8 @@ class SandboxIsolation:
         self,
         product_id: str,
         code_dir: str,
-        timeout_seconds: Optional[int] = None,
-        metadata: Dict = None,
+        timeout_seconds: int | None = None,
+        metadata: dict = None,
     ) -> Sandbox:
         """
         Create a new sandbox for a product.
@@ -182,7 +181,7 @@ class SandboxIsolation:
         logger.info(f"Sandbox {sandbox_id} created for product {product_id} on port {port}")
         return sandbox
 
-    def start_sandbox(self, sandbox_id: str, command: Optional[List[str]] = None) -> Sandbox:
+    def start_sandbox(self, sandbox_id: str, command: list[str] | None = None) -> Sandbox:
         """
         Start a sandbox by running the generated code.
         
@@ -261,7 +260,7 @@ class SandboxIsolation:
         self._save_state()
         return sandbox
 
-    def _start_container_sandbox(self, sandbox: Sandbox, command: List[str]) -> bool:
+    def _start_container_sandbox(self, sandbox: Sandbox, command: list[str]) -> bool:
         container_name = sandbox.id
         network_mode = "bridge" if self.enable_network else "none"
         command_text = " ".join(command)
@@ -385,25 +384,25 @@ class SandboxIsolation:
     # Monitoring
     # -----------------------------------------------------------------------
 
-    def get_sandbox(self, sandbox_id: str) -> Optional[Sandbox]:
+    def get_sandbox(self, sandbox_id: str) -> Sandbox | None:
         """Get sandbox info."""
         return self.sandboxes.get(sandbox_id)
 
-    def get_active_sandboxes(self) -> List[Sandbox]:
+    def get_active_sandboxes(self) -> list[Sandbox]:
         """Get all running/starting sandboxes."""
         return [
             s for s in self.sandboxes.values()
             if s.status in (SandboxStatus.RUNNING, SandboxStatus.STARTING)
         ]
 
-    def get_sandboxes_for_product(self, product_id: str) -> List[Sandbox]:
+    def get_sandboxes_for_product(self, product_id: str) -> list[Sandbox]:
         """Get all sandboxes for a product."""
         return [
             s for s in self.sandboxes.values()
             if s.product_id == product_id
         ]
 
-    def check_sandbox_health(self, sandbox_id: str) -> Dict[str, Any]:
+    def check_sandbox_health(self, sandbox_id: str) -> dict[str, Any]:
         """
         Check if a sandbox is healthy.
         Returns health status with details.
@@ -465,7 +464,7 @@ class SandboxIsolation:
         
         return result
 
-    def monitor_all(self) -> List[Dict[str, Any]]:
+    def monitor_all(self) -> list[dict[str, Any]]:
         """
         Monitor all sandboxes and handle timeouts.
         Returns list of health statuses.
@@ -574,7 +573,7 @@ class SandboxIsolation:
             else:
                 shutil.copy2(s, d)
 
-    def _detect_start_command(self, work_dir: Path) -> Optional[List[str]]:
+    def _detect_start_command(self, work_dir: Path) -> list[str] | None:
         """Auto-detect the start command for the code in work_dir."""
         # Check for common project types
         if (work_dir / "package.json").exists():

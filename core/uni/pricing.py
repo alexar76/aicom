@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
 
 from core.uni.config import uni_topup_spread_bps, uni_usd_cents_per_uni
-from core.uni.constants import UNI_PER_USDT
 
 
 def usd_to_uni(usd: float, *, apply_spread: bool = False) -> int:

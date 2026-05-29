@@ -10,14 +10,12 @@ import os
 import time
 import uuid
 
-from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile, gate_failing_model
 from core.logging_utils import log_suppressed
+from core.quality_settings import gate_failing_model, max_pipeline_repair_rounds_for_delivery_profile
 from orchestrator.task_executor_helpers import (
     PipelineTaskExecutorHost,
     build_task_context,
-    fallback_agent_output,
     record_task_lesson,
-    save_task_artifact,
 )
 from orchestrator.worker_utils import delivery_profile_from_product_dict, env_truthy, monitoring_refresh_decision
 from web.backend.services.marketplace_quality import evaluate_marketplace_quality

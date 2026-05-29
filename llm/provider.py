@@ -8,13 +8,16 @@ All providers must implement this interface to be used by the AI-Factory.
 from __future__ import annotations
 
 import enum
-import time
 import logging
+import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import AsyncGenerator, Optional
+from typing import TYPE_CHECKING
 
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator
 
 logger = logging.getLogger(__name__)
 
@@ -50,14 +53,14 @@ class GenerationConfig:
     stream: bool = False
     json_mode: bool = False
     timeout_sec: float = 30.0
-    model_override: Optional[str] = None
+    model_override: str | None = None
     # Filled by LLMRouter / BaseAgent for admin LLM logs (llm_calls.jsonl)
-    task_type: Optional[str] = None
-    agent_type: Optional[str] = None
+    task_type: str | None = None
+    agent_type: str | None = None
     #: Routing tier for pricing when only total token counts exist ("heavy" | "light")
-    model_role: Optional[str] = None
+    model_role: str | None = None
     #: Pipeline product id for per-product LLM spend caps (llm_calls.jsonl)
-    product_id: Optional[str] = None
+    product_id: str | None = None
 
 
 @dataclass
@@ -92,7 +95,7 @@ class LLMProvider(ABC):
         self._last_call_tokens = 0
 
     @abstractmethod
-    async def generate(self, prompt: str, config: Optional[GenerationConfig] = None) -> str:
+    async def generate(self, prompt: str, config: GenerationConfig | None = None) -> str:
         """
         Generate a complete response for the given prompt.
         
@@ -107,7 +110,7 @@ class LLMProvider(ABC):
 
     @abstractmethod
     async def stream(
-        self, prompt: str, config: Optional[GenerationConfig] = None
+        self, prompt: str, config: GenerationConfig | None = None
     ) -> AsyncGenerator[str, None]:
         """
         Stream a response token by token.

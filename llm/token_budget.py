@@ -7,6 +7,8 @@ output budget the active model supports (never the legacy 32k factory cap alone)
 
 from __future__ import annotations
 
+import contextlib
+
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_MAX_OUTPUT_TOKENS_LIGHT
 
 # Substring match on active model id (lowercase). Values are API output ceilings.
@@ -60,10 +62,8 @@ def resolve_max_output_tokens(
     if provider_config:
         cap = (provider_config.get("capabilities") or {}).get("max_tokens")
         if cap is not None:
-            try:
+            with contextlib.suppress(TypeError, ValueError):
                 ceilings.append(int(cap))
-            except (TypeError, ValueError):
-                pass
 
     ceiling = min(ceilings) if ceilings else _DEFAULT_CEILING
     # Never below 1; never above model ceiling (use max of req and ... no user wants max not min)

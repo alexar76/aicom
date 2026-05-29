@@ -12,24 +12,26 @@ Implements LLMProvider for external OpenAI-compatible APIs:
 from __future__ import annotations
 
 import json
+import logging
 import os
 import time
-import logging
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import AsyncGenerator, Optional
+from datetime import UTC, datetime
+from typing import TYPE_CHECKING
 
 import httpx
 
 from .pricing_estimate import estimate_llm_call_cost_usd
-from .usage_guard import record_llm_call_spend
 from .provider import (
-    LLMProvider,
     GenerationConfig,
+    LLMProvider,
     ModelCapabilities,
     ProviderHealth,
     ProviderStatus,
 )
+from .usage_guard import record_llm_call_spend
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator
 
 logger = logging.getLogger(__name__)
 
@@ -49,12 +51,12 @@ class OpenAICompatibleProvider(LLMProvider):
     def __init__(
         self,
         name: str = "openai_compatible",
-        config: Optional[dict] = None,
+        config: dict | None = None,
         base_url: str = "https://api.deepseek.com/v1",
-        api_key: Optional[str] = None,
-        api_key_env: Optional[str] = None,
+        api_key: str | None = None,
+        api_key_env: str | None = None,
         model: str = "deepseek-chat",
-        fallback_model: Optional[str] = None,
+        fallback_model: str | None = None,
     ):
         super().__init__(name, config or {})
         self.base_url = base_url.rstrip("/")
@@ -86,10 +88,9 @@ class OpenAICompatibleProvider(LLMProvider):
             limits=httpx.Limits(max_keepalive_connections=5, max_connections=10),
         )
 
-    async def generate(self, prompt: str, config: Optional[GenerationConfig] = None) -> str:
+    async def generate(self, prompt: str, config: GenerationConfig | None = None) -> str:
         cfg = config or GenerationConfig()
         start_time = time.time()
-        error = None
         response_text = ""
         tokens_used = 0
         active_model = cfg.model_override or self.model
@@ -108,7 +109,7 @@ class OpenAICompatibleProvider(LLMProvider):
 
             # Reasoning models (deepseek-reasoner, o1, o3) don't support response_format
             # Check the ACTIVE model, not self.model, since model_override may differ
-            active_is_reasoning = "reasoner" in active_model.lower() or active_model.startswith("o1") or active_model.startswith("o3")
+            active_is_reasoning = "reasoner" in active_model.lower() or active_model.startswith(("o1", "o3"))
             if cfg.json_mode and not active_is_reasoning:
                 payload["response_format"] = {"type": "json_object"}
 
@@ -159,7 +160,7 @@ class OpenAICompatibleProvider(LLMProvider):
             latency = (time.time() - start_time) * 1000
             self._update_metrics(0, latency)
             self._record_failure(str(e))
-            error = str(e)
+            str(e)
             
             # Try fallback model if available
             if self.fallback_model and self.model != self.fallback_model:
@@ -184,10 +185,10 @@ class OpenAICompatibleProvider(LLMProvider):
                 model_role=getattr(cfg, "model_role", None),
                 product_id=getattr(cfg, "product_id", None),
             )
-            raise RuntimeError(f"Generation failed for {self.name}: {e}")
+            raise RuntimeError(f"Generation failed for {self.name}: {e}") from e
 
     async def stream(
-        self, prompt: str, config: Optional[GenerationConfig] = None
+        self, prompt: str, config: GenerationConfig | None = None
     ) -> AsyncGenerator[str, None]:
         cfg = config or GenerationConfig()
         start_time = time.time()
@@ -231,7 +232,7 @@ class OpenAICompatibleProvider(LLMProvider):
             self._update_metrics(total_tokens, latency)
             self._record_failure(str(e))
             logger.error(f"OpenAI-compatible stream failed: {e}")
-            raise RuntimeError(f"Streaming failed for {self.name}: {e}")
+            raise RuntimeError(f"Streaming failed for {self.name}: {e}") from e
 
     async def check_health(self) -> ProviderHealth:
         start_time = time.time()
@@ -310,15 +311,15 @@ class OpenAICompatibleProvider(LLMProvider):
         response: str,
         latency_ms: float,
         success: bool,
-        error: Optional[str] = None,
+        error: str | None = None,
         tokens_used: int = 0,
-        prompt_tokens: Optional[int] = None,
-        completion_tokens: Optional[int] = None,
-        model: Optional[str] = None,
-        task_type: Optional[str] = None,
-        agent_type: Optional[str] = None,
-        model_role: Optional[str] = None,
-        product_id: Optional[str] = None,
+        prompt_tokens: int | None = None,
+        completion_tokens: int | None = None,
+        model: str | None = None,
+        task_type: str | None = None,
+        agent_type: str | None = None,
+        model_role: str | None = None,
+        product_id: str | None = None,
     ):
         """Log LLM API call to JSONL file for admin visibility."""
         try:
@@ -329,7 +330,7 @@ class OpenAICompatibleProvider(LLMProvider):
             log_file = log_dir / "llm_calls.jsonl"
 
             entry = {
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "provider": self.name,
                 "model": model or self.model,
                 "task_type": task_type,

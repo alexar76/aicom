@@ -6,11 +6,13 @@ from __future__ import annotations
 
 import json
 import logging
-from pathlib import Path
-from typing import Any, Optional, Protocol
+from typing import TYPE_CHECKING, Any, Protocol
 
 from core.paths import agent_artifact_dir, data_root
 from web.backend.services.learning_memory import append_lesson, load_recent_lessons
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 logger = logging.getLogger("pipeline-worker")
 
@@ -27,7 +29,7 @@ class PipelineTaskExecutorHost(Protocol):
     def _get_priority(self, agent_type: str) -> int: ...
     def _audit_agent_handoff(self, **kwargs: Any) -> None: ...
     def _run_runtime_tests(self, product_id: str, task_queue: list) -> dict: ...
-    def _create_next_task(self, product: dict) -> Optional[dict]: ...
+    def _create_next_task(self, product: dict) -> dict | None: ...
     def _load_spec(self, product_id: str) -> dict: ...
     def _load_arch(self, product_id: str) -> dict: ...
     def _architecture_gate(

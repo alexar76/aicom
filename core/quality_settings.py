@@ -8,7 +8,6 @@ without changing saved Admin settings.
 from __future__ import annotations
 
 import os
-from pathlib import Path
 from typing import Any
 
 from core.config_merge import load_merged_config
@@ -81,7 +80,7 @@ def quality_yaml_slice() -> dict[str, Any]:
         mtime = primary.stat().st_mtime
     except OSError:
         mtime = 0.0
-    if _CACHE_MTIME == mtime and _CACHE_SLICE is not None:
+    if mtime == _CACHE_MTIME and _CACHE_SLICE is not None:
         return dict(_CACHE_SLICE)
     merged = load_merged_config(primary)
     raw = merged.get("quality")

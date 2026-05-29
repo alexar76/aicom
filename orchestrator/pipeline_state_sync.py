@@ -178,6 +178,4 @@ def sqlite_product_should_keep_over_json(existing: Any, incoming: dict[str, Any]
         return True
     if ex_r > in_r + 1:
         return True
-    if ex_up > in_up + 1.0:
-        return True
-    return False
+    return ex_up > in_up + 1.0

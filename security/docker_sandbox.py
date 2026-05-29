@@ -4,7 +4,10 @@ Shared hardened ``docker run`` argument builder for preview / isolation sandboxe
 
 from __future__ import annotations
 
-from typing import Iterable, Sequence
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Sequence
 
 
 def hardened_docker_run_args(
@@ -16,6 +19,7 @@ def hardened_docker_run_args(
     workdir: str = "/workspace",
     volume_mount: str | None = None,
     publish_port: int | None = None,
+    publish_host: str = "127.0.0.1",
     read_only_root: bool = False,
     pids_limit: int = 64,
     user: str = "65534:65534",
@@ -53,7 +57,11 @@ def hardened_docker_run_args(
     if volume_mount:
         cmd.extend(["-v", volume_mount])
     if publish_port is not None:
-        cmd.extend(["-p", f"{publish_port}:{publish_port}"])
+        # Bind to loopback by default so sandbox previews are not exposed on
+        # every host interface (0.0.0.0). Callers that need a public bind can
+        # pass publish_host="0.0.0.0" explicitly.
+        host_prefix = f"{publish_host}:" if publish_host else ""
+        cmd.extend(["-p", f"{host_prefix}{publish_port}:{publish_port}"])
     if workdir:
         cmd.extend(["-w", workdir])
     return cmd

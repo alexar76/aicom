@@ -10,7 +10,6 @@ from core.uni.constants import (
     DEFAULT_PLATFORM_FEE_BPS,
     DEFAULT_TOPUP_FEE_BPS,
     DEFAULT_WITHDRAW_FEE_BPS,
-    UNI_PER_USDT,
 )
 
 UniDbBackend = Literal["sqlite", "postgres"]

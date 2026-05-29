@@ -7,19 +7,22 @@ Supports heavy (35B+), light (7B), and vision models.
 
 from __future__ import annotations
 
-import time
 import logging
-from typing import AsyncGenerator, Optional
+import time
+from typing import TYPE_CHECKING
 
 import httpx
 
 from .provider import (
-    LLMProvider,
     GenerationConfig,
+    LLMProvider,
     ModelCapabilities,
     ProviderHealth,
     ProviderStatus,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +40,7 @@ class LocalOllamaProvider(LLMProvider):
     def __init__(
         self,
         name: str = "local_ollama",
-        config: Optional[dict] = None,
+        config: dict | None = None,
         base_url: str = "http://localhost:11434",
         model: str = "qwen2.5-7b",
     ):
@@ -50,7 +53,7 @@ class LocalOllamaProvider(LLMProvider):
             limits=httpx.Limits(max_keepalive_connections=5, max_connections=10),
         )
 
-    async def generate(self, prompt: str, config: Optional[GenerationConfig] = None) -> str:
+    async def generate(self, prompt: str, config: GenerationConfig | None = None) -> str:
         cfg = config or GenerationConfig()
         start_time = time.time()
 
@@ -85,10 +88,10 @@ class LocalOllamaProvider(LLMProvider):
             self._update_metrics(0, latency)
             self._record_failure(str(e))
             logger.error(f"Ollama generate failed: {e}")
-            raise RuntimeError(f"Ollama generation failed: {e}")
+            raise RuntimeError(f"Ollama generation failed: {e}") from e
 
     async def stream(
-        self, prompt: str, config: Optional[GenerationConfig] = None
+        self, prompt: str, config: GenerationConfig | None = None
     ) -> AsyncGenerator[str, None]:
         cfg = config or GenerationConfig()
         start_time = time.time()
@@ -130,7 +133,7 @@ class LocalOllamaProvider(LLMProvider):
             self._update_metrics(total_tokens, latency)
             self._record_failure(str(e))
             logger.error(f"Ollama stream failed: {e}")
-            raise RuntimeError(f"Ollama streaming failed: {e}")
+            raise RuntimeError(f"Ollama streaming failed: {e}") from e
 
     async def check_health(self) -> ProviderHealth:
         start_time = time.time()

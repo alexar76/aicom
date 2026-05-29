@@ -28,16 +28,16 @@ import logging
 import time
 import uuid
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
+
 from .base_agent import AgentInput, AgentOutput, BaseAgent
 
 logger = logging.getLogger(__name__)
 from llm import GenerationConfig, LLMRouter
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_PM_SPEC_SEC
-
 from web.backend.services.domain_methodology import (
     DomainPack,
     get_domain_pack,
@@ -54,7 +54,6 @@ from web.backend.services.methodology_review import (
     review_spec,
 )
 
-
 _METHODOLOGIST_SYSTEM = load_prompt("methodologist_system_prompt.md")
 
 
@@ -68,7 +67,7 @@ class MethodologyAgent(BaseAgent):
             llm_router=llm_router,
             task_type="methodology_review",
         )
-        self._knowledge: Optional[MethodologyKnowledgeStore] = None
+        self._knowledge: MethodologyKnowledgeStore | None = None
 
     # ------------------------------------------------------------------
     # Knowledge access (lazy)
@@ -87,11 +86,11 @@ class MethodologyAgent(BaseAgent):
     def select_pack_for(
         self,
         idea: str,
-        category: Optional[str],
-        spec: Optional[dict],
+        category: str | None,
+        spec: dict | None,
         *,
-        forced_domain_id: Optional[str] = None,
-    ) -> Optional[DomainPack]:
+        forced_domain_id: str | None = None,
+    ) -> DomainPack | None:
         """Resolve which :class:`DomainPack` applies for this product.
 
         Honours ``forced_domain_id`` as an explicit override (admin / prompt
@@ -112,8 +111,8 @@ class MethodologyAgent(BaseAgent):
     def rank_packs(
         self,
         idea: str,
-        category: Optional[str],
-        spec: Optional[dict] = None,
+        category: str | None,
+        spec: dict | None = None,
     ) -> list[tuple[DomainPack, int]]:
         """Diagnostic ranking helper — proxy for :func:`score_domain_packs`."""
         return score_domain_packs(idea or "", category=category, spec=spec)
@@ -126,11 +125,11 @@ class MethodologyAgent(BaseAgent):
         self,
         product_id: str,
         idea: str,
-        category: Optional[str],
+        category: str | None,
         specification: dict,
         *,
-        delivery_profile: Optional[str] = None,
-        forced_domain_id: Optional[str] = None,
+        delivery_profile: str | None = None,
+        forced_domain_id: str | None = None,
         persist_case: bool = True,
     ) -> dict:
         """Run the post-spec methodology gate for one product.
@@ -167,12 +166,12 @@ class MethodologyAgent(BaseAgent):
         self,
         product_id: str,
         idea: str,
-        category: Optional[str],
-        specification: Optional[dict],
-        code_dir: Optional[Path] = None,
+        category: str | None,
+        specification: dict | None,
+        code_dir: Path | None = None,
         *,
-        delivery_profile: Optional[str] = None,
-        forced_domain_id: Optional[str] = None,
+        delivery_profile: str | None = None,
+        forced_domain_id: str | None = None,
         persist_case: bool = True,
     ) -> dict:
         """Run the post-implementation methodology gate over generated code.
@@ -217,7 +216,7 @@ class MethodologyAgent(BaseAgent):
         self,
         query: str,
         *,
-        domain: Optional[str] = None,
+        domain: str | None = None,
         kinds: tuple[str, ...] = ("lessons", "cases"),
         limit: int = 25,
     ) -> dict[str, list[dict[str, Any]]]:
@@ -239,9 +238,9 @@ class MethodologyAgent(BaseAgent):
         title: str,
         detail: str,
         severity: str = "medium",
-        keywords: Optional[list[str]] = None,
-        regex: Optional[list[str]] = None,
-        applies_to: Optional[list[str]] = None,
+        keywords: list[str] | None = None,
+        regex: list[str] | None = None,
+        applies_to: list[str] | None = None,
         fix_hint: str = "",
         source: str = "operator",
         weight: float = 1.0,
@@ -265,22 +264,22 @@ class MethodologyAgent(BaseAgent):
     def list_lessons(
         self,
         *,
-        domain: Optional[str] = None,
+        domain: str | None = None,
         enabled_only: bool = False,
-        applies_to: Optional[str] = None,
+        applies_to: str | None = None,
     ) -> list[dict[str, Any]]:
         """Return all lessons (optionally filtered) as plain dicts."""
         return [
-            l.to_dict()
-            for l in self.knowledge().list_lessons(
+            lesson.to_dict()
+            for lesson in self.knowledge().list_lessons(
                 domain=domain, enabled_only=enabled_only, applies_to=applies_to,
             )
         ]
 
-    def update_lesson(self, lesson_id: str, **changes: Any) -> Optional[dict[str, Any]]:
+    def update_lesson(self, lesson_id: str, **changes: Any) -> dict[str, Any] | None:
         """Edit a lesson by id; returns the updated payload or ``None`` if not found."""
-        l = self.knowledge().update_lesson(lesson_id, **changes)
-        return l.to_dict() if l else None
+        lesson = self.knowledge().update_lesson(lesson_id, **changes)
+        return lesson.to_dict() if lesson else None
 
     def delete_lesson(self, lesson_id: str) -> bool:
         """Delete a lesson by id; returns ``True`` when something was removed."""
@@ -293,7 +292,7 @@ class MethodologyAgent(BaseAgent):
         product_id: str,
         was_correct: bool,
         notes: str = "",
-        promote_finding_code: Optional[str] = None,
+        promote_finding_code: str | None = None,
         actor: str = "operator",
     ) -> dict[str, Any]:
         """Record operator feedback and (optionally) auto-promote a finding into a lesson.
@@ -318,7 +317,7 @@ class MethodologyAgent(BaseAgent):
         self,
         agent_input: AgentInput,
         *,
-        pack: Optional[DomainPack],
+        pack: DomainPack | None,
         heuristic_report: dict,
     ) -> dict:
         """Optional LLM enrichment of the heuristic report.

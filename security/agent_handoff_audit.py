@@ -12,7 +12,7 @@ import hashlib
 import json
 import logging
 import threading
-from typing import Any, Optional
+from typing import Any
 
 from core.paths import logs_dir
 
@@ -44,7 +44,7 @@ def fingerprint_payload(data: Any, *, max_keys: int = 40) -> dict[str, Any]:
     """Summarize a dict for audit without storing values (PII/secret safe)."""
     if not isinstance(data, dict):
         return {"type": type(data).__name__, "size": 0}
-    keys = sorted(str(k) for k in data.keys())[:max_keys]
+    keys = sorted(str(k) for k in data)[:max_keys]
     blob = json.dumps(keys, sort_keys=True, separators=(",", ":"))
     digest = hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16]
     return {"keys": keys, "key_count": len(data), "keys_digest": digest}
@@ -62,8 +62,8 @@ def log_agent_handoff(
     reason: str = "sequential",
     success: bool = True,
     blocked: bool = False,
-    output_data: Optional[dict[str, Any]] = None,
-    extra: Optional[dict[str, Any]] = None,
+    output_data: dict[str, Any] | None = None,
+    extra: dict[str, Any] | None = None,
 ) -> bool:
     """
     Append a hash-chained ``agent_handoff`` audit entry.
@@ -116,8 +116,8 @@ def log_handoff_from_task(
     reason: str = "sequential",
     success: bool = True,
     blocked: bool = False,
-    output_data: Optional[dict[str, Any]] = None,
-    extra: Optional[dict[str, Any]] = None,
+    output_data: dict[str, Any] | None = None,
+    extra: dict[str, Any] | None = None,
 ) -> bool:
     """Log handoff using the queued ``next_task`` dict from the pipeline worker."""
     return log_agent_handoff(

@@ -4,10 +4,12 @@ import json
 import logging
 import time
 import uuid
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from core.paths import batch_pipeline_queue_path
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 logger = logging.getLogger(__name__)
 

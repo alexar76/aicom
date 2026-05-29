@@ -5,14 +5,15 @@
 # for the platform's web interface and API endpoints.
 # ============================================================================
 
+import ipaddress
 import json
+import logging
 import os
 import time
-import ipaddress
-import logging
-from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
+
 from core.logging_utils import log_suppressed
 
 try:
@@ -36,7 +37,7 @@ class FirewallRule:
     action: str  # "allow" | "deny"
     source: str  # IP, CIDR, or "all"
     protocol: str = "tcp"
-    port: Optional[int] = None
+    port: int | None = None
     description: str = ""
     enabled: bool = True
     created_at: float = field(default_factory=time.time)
@@ -87,14 +88,14 @@ class FirewallManager:
         self,
         rules_file: str | None = None,
         *,
-        fernet_key: Optional[str] = None,
+        fernet_key: str | None = None,
     ):
         from core.paths import firewall_rules_path
 
         self.rules_file = Path(rules_file) if rules_file else firewall_rules_path()
         self._fernet_key_override = fernet_key
-        self.rules: List[FirewallRule] = []
-        self.rate_limits: Dict[str, RateLimitEntry] = {}
+        self.rules: list[FirewallRule] = []
+        self.rate_limits: dict[str, RateLimitEntry] = {}
         
         # Default rate limits (requests per window)
         self.default_rate_limit: int = 100       # requests
@@ -103,18 +104,18 @@ class FirewallManager:
         self.brute_force_block_duration: float = 900.0  # 15 minutes
         
         # Default allowed ports
-        self.allowed_ports: Set[int] = {80, 443, 8080, 3000, 8000}
+        self.allowed_ports: set[int] = {80, 443, 8080, 3000, 8000}
         
         self._load_rules()
         self._ensure_default_rules()
 
-    def _resolved_fernet_key(self) -> Optional[str]:
+    def _resolved_fernet_key(self) -> str | None:
         if self._fernet_key_override is not None:
             k = (self._fernet_key_override or "").strip()
             return k or None
         return (os.environ.get("AIFACTORY_FIREWALL_RULES_FERNET_KEY") or "").strip() or None
 
-    def _fernet_cipher(self) -> Optional[Any]:
+    def _fernet_cipher(self) -> Any | None:
         if Fernet is None:
             return None
         key = self._resolved_fernet_key()
@@ -126,7 +127,7 @@ class FirewallManager:
             logger.warning("AIFACTORY_FIREWALL_RULES_FERNET_KEY is invalid: %s", e)
             return None
 
-    def _payload_dict(self) -> Dict[str, Any]:
+    def _payload_dict(self) -> dict[str, Any]:
         return {
             "rules": [
                 {
@@ -144,7 +145,7 @@ class FirewallManager:
             "allowed_ports": sorted(self.allowed_ports),
         }
 
-    def _apply_payload_dict(self, data: Dict[str, Any]) -> None:
+    def _apply_payload_dict(self, data: dict[str, Any]) -> None:
         self.rules = [FirewallRule(**r) for r in data.get("rules", [])]
         self.allowed_ports = set(data.get("allowed_ports", [80, 443, 8080, 3000, 8000]))
 
@@ -168,7 +169,7 @@ class FirewallManager:
                 return True
         return False
 
-    def get_rules(self, enabled_only: bool = False) -> List[FirewallRule]:
+    def get_rules(self, enabled_only: bool = False) -> list[FirewallRule]:
         """Get all rules, optionally filtering to enabled only."""
         if enabled_only:
             return [r for r in self.rules if r.enabled]
@@ -185,7 +186,7 @@ class FirewallManager:
     # Access Control
     # -----------------------------------------------------------------------
 
-    def http_request_allowed(self, ip: str, port: int = 8081) -> Tuple[bool, str]:
+    def http_request_allowed(self, ip: str, port: int = 8081) -> tuple[bool, str]:
         """
         HTTP middleware policy: always enforce rate limits and explicit deny rules.
         Full default-deny ACL applies only when ``AIFACTORY_FIREWALL_ENFORCE=1``.
@@ -203,7 +204,7 @@ class FirewallManager:
             return self.is_allowed(ip, port)
         return True, "ok"
 
-    def is_allowed(self, ip: str, port: int = 8080) -> Tuple[bool, str]:
+    def is_allowed(self, ip: str, port: int = 8080) -> tuple[bool, str]:
         """
         Check if an IP:port combination is allowed.
         Returns (allowed, reason).
@@ -345,14 +346,14 @@ class FirewallManager:
     # Security Scan
     # -----------------------------------------------------------------------
 
-    def run_security_scan(self) -> Dict:
+    def run_security_scan(self) -> dict:
         """
         Run a security scan and return findings.
         Checks: open ports, rate limit status, blocked IPs, rule coverage.
         """
         now = time.time()
         findings = {
-            "open_ports": sorted(list(self.allowed_ports)),
+            "open_ports": sorted(self.allowed_ports),
             "total_rules": len(self.rules),
             "enabled_rules": sum(1 for r in self.rules if r.enabled),
             "blocked_ips": sum(1 for e in self.rate_limits.values() if e.blocked_until > now),

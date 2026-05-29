@@ -11,14 +11,17 @@ import json
 import logging
 import time
 from pathlib import Path
-from typing import Optional
 
-from .state_machine import PipelineStateMachine, TaskStatus
 from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
+from typing import TYPE_CHECKING
+
 from core.paths import escalations_log_path
+
+if TYPE_CHECKING:
+    from .state_machine import PipelineStateMachine
 
 ESCALATION_LOG_FILE = str(escalations_log_path())
 
@@ -44,7 +47,7 @@ class EscalationHandler:
         log_file = Path(ESCALATION_LOG_FILE)
         if log_file.exists():
             try:
-                with open(log_file, "r") as f:
+                with open(log_file) as f:
                     for line in f:
                         line = line.strip()
                         if line:

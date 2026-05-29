@@ -5,15 +5,16 @@
 # Uses hash chaining to detect log tampering.
 # ============================================================================
 
-import json
-import os
-import time
 import hashlib
+import json
 import logging
+import os
 import re
-from typing import Dict, List, Optional, Any
+import time
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from dataclasses import dataclass, field, asdict
+from typing import Any
+
 from core.logging_utils import log_suppressed
 
 logger = logging.getLogger("ai_factory.security.audit")
@@ -21,7 +22,7 @@ GENESIS_HASH = hashlib.sha256(b"AI_FACTORY_AUDIT_GENESIS").hexdigest()
 _AUDIT_FNAME = re.compile(r"^audit-(\d{8})-(\d{6})(?:-(\d+))?\.jsonl$")
 
 
-def _audit_log_files_chrono(log_dir: Path, *, reverse: bool = False) -> List[Path]:
+def _audit_log_files_chrono(log_dir: Path, *, reverse: bool = False) -> list[Path]:
     """
     Chronological order for ``audit-*.jsonl``.
 
@@ -63,7 +64,7 @@ class AuditEntry:
     action: str           # e.g., "login", "logout", "config_change", "pipeline_action"
     actor: str            # e.g., "admin", "system", "agent:pm"
     resource: str         # e.g., "auth", "pipeline/123", "config/theme"
-    details: Dict[str, Any]
+    details: dict[str, Any]
     severity: str         # "info", "warning", "error", "critical"
     ip_address: str = ""
     session_id: str = ""
@@ -106,9 +107,9 @@ class AuditLogger:
         self.max_file_size = max_file_size_mb * 1024 * 1024
         self.max_log_files = max_log_files
         
-        self._current_file: Optional[Path] = None
+        self._current_file: Path | None = None
         self._last_hash: str = ""
-        self._lock_file: Optional[Path] = None
+        self._lock_file: Path | None = None
         
         self._initialize()
 
@@ -201,7 +202,7 @@ class AuditLogger:
         action: str,
         actor: str,
         resource: str,
-        details: Dict[str, Any] = None,
+        details: dict[str, Any] = None,
         severity: str = "info",
         ip_address: str = "",
         session_id: str = "",
@@ -247,16 +248,16 @@ class AuditLogger:
         return entry
 
     # Convenience methods
-    def info(self, action: str, actor: str, resource: str, details: Dict[str, Any] = None, ip: str = "", session: str = "") -> AuditEntry:
+    def info(self, action: str, actor: str, resource: str, details: dict[str, Any] = None, ip: str = "", session: str = "") -> AuditEntry:
         return self.log(action, actor, resource, details, "info", ip, session)
 
-    def warning(self, action: str, actor: str, resource: str, details: Dict[str, Any] = None, ip: str = "", session: str = "") -> AuditEntry:
+    def warning(self, action: str, actor: str, resource: str, details: dict[str, Any] = None, ip: str = "", session: str = "") -> AuditEntry:
         return self.log(action, actor, resource, details, "warning", ip, session)
 
-    def error(self, action: str, actor: str, resource: str, details: Dict[str, Any] = None, ip: str = "", session: str = "") -> AuditEntry:
+    def error(self, action: str, actor: str, resource: str, details: dict[str, Any] = None, ip: str = "", session: str = "") -> AuditEntry:
         return self.log(action, actor, resource, details, "error", ip, session)
 
-    def critical(self, action: str, actor: str, resource: str, details: Dict[str, Any] = None, ip: str = "", session: str = "") -> AuditEntry:
+    def critical(self, action: str, actor: str, resource: str, details: dict[str, Any] = None, ip: str = "", session: str = "") -> AuditEntry:
         return self.log(action, actor, resource, details, "critical", ip, session)
 
     # -----------------------------------------------------------------------
@@ -267,12 +268,12 @@ class AuditLogger:
         self,
         limit: int = 100,
         offset: int = 0,
-        action_filter: Optional[str] = None,
-        actor_filter: Optional[str] = None,
-        severity_filter: Optional[str] = None,
-        since: Optional[float] = None,
-        until: Optional[float] = None,
-    ) -> List[AuditEntry]:
+        action_filter: str | None = None,
+        actor_filter: str | None = None,
+        severity_filter: str | None = None,
+        since: float | None = None,
+        until: float | None = None,
+    ) -> list[AuditEntry]:
         """
         Query audit logs with filters.
         Returns entries in reverse chronological order (newest first).
@@ -318,7 +319,7 @@ class AuditLogger:
     # Integrity Verification
     # -----------------------------------------------------------------------
 
-    def verify_integrity(self) -> Dict[str, Any]:
+    def verify_integrity(self) -> dict[str, Any]:
         """
         Verify the integrity of all audit logs.
         Checks hash chain continuity.
@@ -383,14 +384,14 @@ class AuditLogger:
     # Export
     # -----------------------------------------------------------------------
 
-    def export_json(self, output_path: str, filters: Dict = None) -> int:
+    def export_json(self, output_path: str, filters: dict = None) -> int:
         """Export audit logs to a JSON file. Returns number of entries."""
         entries = self.query(limit=1000000, **(filters or {}))
         data = [asdict(e) for e in entries]
         Path(output_path).write_text(json.dumps(data, indent=2))
         return len(entries)
 
-    def export_csv(self, output_path: str, filters: Dict = None) -> int:
+    def export_csv(self, output_path: str, filters: dict = None) -> int:
         """Export audit logs to a CSV file. Returns number of entries."""
         entries = self.query(limit=1000000, **(filters or {}))
         if not entries:

@@ -4,10 +4,12 @@ import logging
 import os
 import time
 import uuid
-from typing import Callable
+
 from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
+
+from typing import TYPE_CHECKING
 
 from core.throughput_limits import effective_max_running_tasks
 from orchestrator.task_queue_hygiene import (
@@ -21,6 +23,9 @@ from orchestrator.task_queue_hygiene import (
     try_pm_spec_requeue,
     unstick_blocked_tasks,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 def _task_status_norm(task: dict) -> str:

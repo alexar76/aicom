@@ -24,24 +24,23 @@ import tempfile
 import time
 import traceback
 from pathlib import Path
-from typing import Optional
 
-from .base_agent import BaseAgent, AgentInput, AgentOutput
-from llm import LLMRouter, GenerationConfig
-from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_QA_SEC
-
-from web.backend.services.browser_preview_e2e import run_browser_preview_e2e
-from web.backend.services.backend_runtime_e2e import run_backend_runtime_e2e
 from agents.product_profile import infer_delivery_profile
+from agents.prompts.load_prompt import load_prompt
 from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
+from core.logging_utils import log_suppressed
+from llm import GenerationConfig, LLMRouter
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_QA_SEC
+from web.backend.services.backend_runtime_e2e import run_backend_runtime_e2e
+from web.backend.services.browser_preview_e2e import run_browser_preview_e2e
 from web.backend.services.demo_quality import assess_product_demo, quality_gates_pass
 from web.backend.services.domain_acceptance_pack import build_domain_acceptance_pack
 from web.backend.services.domain_methodology import get_domain_pack, select_domain_pack
 from web.backend.services.methodology_review import review_implementation as _methodology_review_implementation
-from web.backend.services.traceability_matrix import build_traceability_matrix
 from web.backend.services.perf_slo import evaluate_perf_slo
-from agents.prompts.load_prompt import load_prompt
-from core.logging_utils import log_suppressed
+from web.backend.services.traceability_matrix import build_traceability_matrix
+
+from .base_agent import AgentInput, AgentOutput, BaseAgent
 
 logger = logging.getLogger(__name__)
 
@@ -118,10 +117,7 @@ class QAAgent(BaseAgent):
         if not isinstance(dc, dict) or dc.get("mode") != "deep_crawl":
             return {"skipped": True, "reason": "no_deep_crawl_report"}
         fr = inner_spec.get("functional_requirements")
-        if isinstance(fr, list):
-            fr_trim = fr[:20]
-        else:
-            fr_trim = []
+        fr_trim = fr[:20] if isinstance(fr, list) else []
         excerpt = {
             "product_name": inner_spec.get("product_name"),
             "description": (inner_spec.get("description") or "")[:2800],
@@ -210,7 +206,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
     async def execute(self, agent_input: AgentInput) -> AgentOutput:
         start_time = time.time()
         product_id = agent_input.product_id
-        code_data = agent_input.data.get("code_data", {})
+        agent_input.data.get("code_data", {})
         is_bug_fix = agent_input.data.get("is_bug_fix", False)
 
         self._log("INFO", f"Testing product {product_id}")
@@ -422,27 +418,26 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                 gist = "; ".join(str(g)[:200] for g in gaps[:10]) if gaps else (align.get("notes") or "alignment failure")
                 browser_e2e.setdefault("issues", []).append(f"spec_alignment_llm_failed:{gist[:1200]}")
 
-            if not browser_e2e.get("skipped"):
-                if not browser_e2e.get("passed", False):
-                    detail = browser_e2e.get("detail") or browser_e2e.get("error") or "browser check failed"
-                    for line in browser_e2e.get("issues") or []:
-                        all_bugs.append(
-                            {
-                                "severity": "high",
-                                "title": f"Browser E2E: {line[:120]}",
-                                "description": line,
-                                "file": f"code/{product_id}/index.html",
-                            }
-                        )
-                    if not browser_e2e.get("issues"):
-                        all_bugs.append(
-                            {
-                                "severity": "high",
-                                "title": "Browser E2E: preview check failed",
-                                "description": detail,
-                                "file": f"code/{product_id}/index.html",
-                            }
-                        )
+            if not browser_e2e.get("skipped") and not browser_e2e.get("passed", False):
+                detail = browser_e2e.get("detail") or browser_e2e.get("error") or "browser check failed"
+                for line in browser_e2e.get("issues") or []:
+                    all_bugs.append(
+                        {
+                            "severity": "high",
+                            "title": f"Browser E2E: {line[:120]}",
+                            "description": line,
+                            "file": f"code/{product_id}/index.html",
+                        }
+                    )
+                if not browser_e2e.get("issues"):
+                    all_bugs.append(
+                        {
+                            "severity": "high",
+                            "title": "Browser E2E: preview check failed",
+                            "description": detail,
+                            "file": f"code/{product_id}/index.html",
+                        }
+                    )
 
             # --- Runtime backend E2E (boot app + probe health/business route) ------------
             try:
@@ -461,27 +456,26 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                     "issues": [str(be)],
                 }
 
-            if not backend_e2e.get("skipped"):
-                if not backend_e2e.get("passed", False):
-                    detail = backend_e2e.get("detail") or backend_e2e.get("error") or "backend runtime check failed"
-                    for line in backend_e2e.get("issues") or []:
-                        all_bugs.append(
-                            {
-                                "severity": "high",
-                                "title": f"Backend runtime E2E: {line[:120]}",
-                                "description": line,
-                                "file": f"code/{product_id}",
-                            }
-                        )
-                    if not backend_e2e.get("issues"):
-                        all_bugs.append(
-                            {
-                                "severity": "high",
-                                "title": "Backend runtime E2E: boot/probe failed",
-                                "description": detail,
-                                "file": f"code/{product_id}",
-                            }
-                        )
+            if not backend_e2e.get("skipped") and not backend_e2e.get("passed", False):
+                detail = backend_e2e.get("detail") or backend_e2e.get("error") or "backend runtime check failed"
+                for line in backend_e2e.get("issues") or []:
+                    all_bugs.append(
+                        {
+                            "severity": "high",
+                            "title": f"Backend runtime E2E: {line[:120]}",
+                            "description": line,
+                            "file": f"code/{product_id}",
+                        }
+                    )
+                if not backend_e2e.get("issues"):
+                    all_bugs.append(
+                        {
+                            "severity": "high",
+                            "title": "Backend runtime E2E: boot/probe failed",
+                            "description": detail,
+                            "file": f"code/{product_id}",
+                        }
+                    )
 
             demo_gates_ok = quality_gates_pass(demo_report, delivery_profile=delivery_profile)
             browser_ok = browser_e2e.get("skipped") or browser_e2e.get("passed", False)
@@ -907,7 +901,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
             static_return_hits = 0
             for line in content.splitlines():
                 s = line.strip().lower()
-                if s.startswith("return {") or s.startswith("return {\"") or s.startswith("return {'"):
+                if s.startswith(("return {", 'return {"', "return {'")):
                     static_return_hits += 1
             if "@app." in lower and static_return_hits >= 2:
                 issues.append(
@@ -1071,7 +1065,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                 results["total"] = results["passed"] + results["failed"]
             except (FileNotFoundError, subprocess.TimeoutExpired, Exception) as e:
                 results["failures"].append({
-                    "name": f"pytest execution failed",
+                    "name": "pytest execution failed",
                     "file": test_file,
                     "error": str(e),
                 })
@@ -1093,7 +1087,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                 import_lines = []
                 for line in file_info["content"].split("\n"):
                     line = line.strip()
-                    if line.startswith("import ") or line.startswith("from "):
+                    if line.startswith(("import ", "from ")):
                         import_lines.append(line)
 
                 if import_lines:
@@ -1113,7 +1107,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                         test_content += f"        {imp_line}\n"
                         test_content += "        assert True\n"
                         test_content += "    except ImportError as e:\n"
-                        test_content += f"        assert False, f'Import failed: {{e}}'\n"
+                        test_content += "        assert False, f'Import failed: {e}'\n"
                         test_content += "\n"
 
                     test_dir = Path(tempfile.mkdtemp())
@@ -1228,7 +1222,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
         *,
         product_id: str,
         idea: str,
-        category: Optional[str],
+        category: str | None,
         spec_payload: dict,
     ) -> dict:
         """Domain methodology gate (post-implementation). See ``agents.methodologist``."""
@@ -1285,7 +1279,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
         - ensure architecture artifact exists;
         - ensure non-trivial backend has layered module shape.
         """
-        code_root = Path(self.data_root) / "code" / product_id
+        Path(self.data_root) / "code" / product_id
         arch_path = Path(self.data_root) / "arch" / product_id / "architecture.json"
         py_paths = [str(f.get("path", "")) for f in code_files if str(f.get("path", "")).endswith(".py")]
         py_count = len(py_paths)
@@ -1318,7 +1312,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
         product_id: str,
         code_files: list[dict],
         is_bug_fix: bool,
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """Try to generate an LLM-based review if LLM is available.
         
         Falls back gracefully to None if LLM is unavailable.

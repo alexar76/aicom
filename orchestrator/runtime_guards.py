@@ -4,12 +4,15 @@ import json
 import logging
 import os
 import time
-from pathlib import Path
+from typing import TYPE_CHECKING
 
+from core.logging_utils import log_suppressed
 from core.paths import resolve_data_root
 from core.quality_settings import quality_constitution_pipeline_enabled
 from web.backend.services.benchmark_gate import evaluate_benchmark_gate
-from core.logging_utils import log_suppressed
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +33,7 @@ class RuntimeGuards:
                 if isinstance(inner, dict):
                     return inner
                 return data if isinstance(data, dict) else {}
-            except (json.JSONDecodeError, IOError) as _suppressed_exc:
+            except (OSError, json.JSONDecodeError) as _suppressed_exc:
                 log_suppressed(logger, "non-fatal (orchestrator/runtime_guards.py)", exc_info=_suppressed_exc)
         return {}
 
@@ -44,7 +47,7 @@ class RuntimeGuards:
                 if isinstance(inner, dict):
                     return inner
                 return data if isinstance(data, dict) else {}
-            except (json.JSONDecodeError, IOError) as _suppressed_exc:
+            except (OSError, json.JSONDecodeError) as _suppressed_exc:
                 log_suppressed(logger, "non-fatal (orchestrator/runtime_guards.py)", exc_info=_suppressed_exc)
         return {}
 

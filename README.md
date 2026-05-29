@@ -14,6 +14,8 @@
 
 > **Pre-mainnet.** The self-hosted pipeline and storefront are usable today. The on-chain payment-channel contracts under [`contracts/`](contracts/) are **not yet deployed to mainnet** — operator-side items (ZK trusted setup, external audit, multisig owner, supervisor RCA, CVE backlog) are tracked in [`docs/known-issues.md`](docs/known-issues.md) (KI-1…KI-5). Testnet drills and non-financial self-hosting are unaffected. See [`ROADMAP.md`](ROADMAP.md).
 
+**AI-Factory turns one prompt into a shippable web product** — a multi-agent pipeline (research → design → code → QA → deploy) with a built-in storefront, payment rails, and live observability. Self-hosted: your keys, your infra, your data.
+
 <p align="center">
   <img src="docs/gallery/landing-01.webp" alt="AI-Factory generated marketing landing (1440×900)" width="920" />
 </p>
@@ -103,6 +105,8 @@ docker compose up -d --build
 Try it out: [https://magic-ai-factory.com](https://magic-ai-factory.com)
 
 **Alien Monitor (ecosystem 3D):** [https://magic-ai-factory.com/monitor/](https://magic-ai-factory.com/monitor/) — live Hub/Factory/Prometheus + chain metrics, no login required.
+
+**Ecosystem landing (GitHub Pages):** [https://alexar76.github.io/aicom/](https://alexar76.github.io/aicom/) — static map of the monorepo and satellites; published from [`ecosystem-landing/`](ecosystem-landing/) on push via [`.github/workflows/pages-ecosystem.yml`](.github/workflows/pages-ecosystem.yml). Optional custom domain: add `CNAME` in that folder + DNS — see [`ecosystem-landing/README.md`](ecosystem-landing/README.md).
 
 **Demo Admin Access:**
 - URL: [https://magic-ai-factory.com/admin/login](https://magic-ai-factory.com/admin/login)
@@ -579,12 +583,14 @@ python -m orchestrator.migrate \
 
 Tables: `products`, `tasks` — nested fields stored as JSON.
 
-## Testing {#testing-coverage}
+<h2 id="testing-coverage">Testing</h2>
 
 [![coverage](docs/badges/coverage.svg)](docs/badges/coverage.svg) — backend line coverage (`web/`, `agents/`, `orchestrator/`, `director/`, `pipeline_worker/`). CI uploads `coverage.json` + badge artifact; refresh locally with:
 
 ```bash
 USE_SQLITE=true pytest -q --cov --cov-report=term --cov-report=json:coverage.json
+python scripts/generate_coverage_badge.py
+```
 
 Full local suite (backend pytest + frontend Vitest):
 
@@ -593,8 +599,6 @@ Full local suite (backend pytest + frontend Vitest):
 ```
 
 See also **[docs/pipeline-operations.md](docs/pipeline-operations.md)** (Testing).
-python scripts/generate_coverage_badge.py
-```
 
 Quick smoke (Docker):
 

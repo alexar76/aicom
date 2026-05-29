@@ -8,14 +8,16 @@ import datetime
 import json
 import logging
 import os
-from pathlib import Path
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any
 
+from core.paths import pipeline_json_path
 from core.pipeline_state_writer import (
     read_pipeline_state_from_sql,
     should_recover_json_from_sqlite,
 )
-from core.paths import pipeline_json_path
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -48,13 +50,13 @@ class PipelineStatePersistence:
         if not self.state_file.exists():
             return None
         try:
-            with open(self.state_file, "r", encoding="utf-8") as f:
+            with open(self.state_file, encoding="utf-8") as f:
                 return json.load(f)
         except (json.JSONDecodeError, OSError) as e:
             logger.warning("Cannot read pipeline state: %s", e)
 
         try:
-            ts = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+            ts = datetime.datetime.now(datetime.UTC).strftime("%Y%m%dT%H%M%SZ")
             bad_backup = self.state_file.with_suffix(f".json.corrupt-{ts}.bak")
             try:
                 bad_backup.write_text(
@@ -101,7 +103,7 @@ class PipelineStatePersistence:
             get_tasks = getattr(self._async_store, "get_worker_tasks", None) or self._async_store.get_all_tasks
             tasks = await get_tasks()
             products_map = {p["id"]: p for p in products if isinstance(p.get("id"), str)}
-            current_task_id: Optional[str] = None
+            current_task_id: str | None = None
             for t in tasks:
                 st = str(t.get("status") or "").upper()
                 if st == "RUNNING":

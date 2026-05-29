@@ -8,13 +8,13 @@ the cap is reached; further agent tasks abort with :class:`PipelineCostBudgetExc
 
 from __future__ import annotations
 
+import contextlib
 import json
 import logging
 import os
 import threading
 import time
-from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from core.paths import logs_dir, state_dir
 
@@ -79,10 +79,8 @@ def _persist_state() -> None:
         tmp.replace(_STATE_PATH)
     finally:
         if tmp.exists() and tmp != _STATE_PATH:
-            try:
+            with contextlib.suppress(OSError):
                 tmp.unlink()
-            except OSError:
-                pass
 
 
 def _ensure_loaded() -> None:

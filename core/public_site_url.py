@@ -10,8 +10,10 @@ from __future__ import annotations
 import html
 import os
 import re
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 DEFAULT_PUBLIC_SITE_URL = "https://magic-ai-factory.com"
 
@@ -20,7 +22,7 @@ _LEGACY_WATERMARK_HOSTS = ("https://aifactory.dev", "http://aifactory.dev")
 
 def _is_http_url(url: str) -> bool:
     u = (url or "").strip()
-    return u.startswith("http://") or u.startswith("https://")
+    return u.startswith(("http://", "https://"))
 
 
 def _normalize_base(url: str) -> str:

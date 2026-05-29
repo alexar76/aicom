@@ -17,10 +17,11 @@ from __future__ import annotations
 import json
 import time
 
-from .base_agent import BaseAgent, AgentInput, AgentOutput
-from llm import LLMRouter, GenerationConfig
-from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
 from agents.prompts.load_prompt import load_prompt
+from llm import GenerationConfig, LLMRouter
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
+
+from .base_agent import AgentInput, AgentOutput, BaseAgent
 
 SALES_SYSTEM_PROMPT = load_prompt("sales_system_prompt.md")
 

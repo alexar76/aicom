@@ -77,7 +77,7 @@ def migrate_model_providers_yaml(config_path: str | Path) -> dict[str, int]:
         return stats
 
     try:
-        with open(p, "r", encoding="utf-8") as f:
+        with open(p, encoding="utf-8") as f:
             config = yaml.safe_load(f) or {}
     except Exception as e:
         logger.warning("Could not read %s for provider id migration: %s", p, e)

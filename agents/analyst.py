@@ -24,8 +24,6 @@ import asyncio
 import json
 import logging
 import time
-from pathlib import Path
-from typing import Optional
 
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
@@ -33,9 +31,15 @@ from core.telemetry_signals import extract_evolution_signals_from_jsonl_dir
 
 logger = logging.getLogger(__name__)
 
-from .base_agent import BaseAgent, AgentInput, AgentOutput
-from llm import LLMRouter, GenerationConfig
+from typing import TYPE_CHECKING
+
+from llm import GenerationConfig, LLMRouter
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ANALYST_SEC
+
+from .base_agent import AgentInput, AgentOutput, BaseAgent
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 # ── DuckDuckGo Search ────────────────────────────────────────────────────────
 
@@ -240,7 +244,7 @@ Be specific about competitors, pricing, and market trends found in the search.
 
         try:
             # Load initial research
-            with open(research_file, "r") as f:
+            with open(research_file) as f:
                 research_data = json.load(f)
             initial_research = research_data.get("market_research", {})
 
@@ -250,7 +254,7 @@ Be specific about competitors, pricing, and market trends found in the search.
             if telemetry_dir.exists():
                 for evo_file in sorted(telemetry_dir.glob("evolution_*.json")):
                     try:
-                        with open(evo_file, "r") as f:
+                        with open(evo_file) as f:
                             telemetry_data.append(json.load(f))
                     except Exception as _suppressed_exc:
                         log_suppressed(logger, "non-fatal (agents/analyst.py)", exc_info=_suppressed_exc)

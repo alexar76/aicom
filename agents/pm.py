@@ -17,9 +17,11 @@ import logging
 import re
 import time
 from pathlib import Path
-from typing import Optional
 
-from .base_agent import BaseAgent, AgentInput, AgentOutput
+from web.backend.services.domain_methodology import get_domain_pack, select_domain_pack
+from web.backend.services.methodology_review import review_spec as _methodology_review_spec
+
+from .base_agent import AgentInput, AgentOutput, BaseAgent
 from .product_profile import (
     FULL_SOFTWARE,
     MARKETING_LANDING,
@@ -29,8 +31,6 @@ from .product_profile import (
     normalize_delivery_profile,
     research_artifact_implies_full_product,
 )
-from web.backend.services.domain_methodology import select_domain_pack, get_domain_pack
-from web.backend.services.methodology_review import review_spec as _methodology_review_spec
 from .spec_quality_gate import (
     FUNCTIONAL_REQUIREMENT_ACCEPTANCE_MIN_CHARS,
     USER_STORY_ACCEPTANCE_MIN_CHARS,
@@ -59,7 +59,7 @@ def _repair_issue_bucket(line: str) -> str:
         return "structural_spec"
     if line.startswith("[production_mode]"):
         return "production_mode"
-    if line.startswith("[methodology|") or line.startswith("methodology["):
+    if line.startswith(("[methodology|", "methodology[")):
         return "methodology"
     return "other"
 
@@ -86,11 +86,11 @@ def _format_repair_issues_block(issues: list[str]) -> str:
             continue
         parts.append(f"### {title}\n" + "\n".join(f"- {r}" for r in rows))
     return "\n\n".join(parts) if parts else "\n".join(f"- {x}" for x in issues)
-from llm import LLMRouter, GenerationConfig
-from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_PM_SPEC_SEC
-from web.backend.services.spec_compiler import compile_product_brief
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
+from llm import GenerationConfig, LLMRouter
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_PM_SPEC_SEC
+from web.backend.services.spec_compiler import compile_product_brief
 
 logger = logging.getLogger(__name__)
 
@@ -217,10 +217,7 @@ def _production_spec_issues(spec: dict, profile: str, product_id: str | None = N
     product_name = str(spec.get("product_name") or "").strip()
     n = product_name.lower()
     if (
-        not product_name
-        or n.startswith("prod-")
-        or n.startswith("product ")
-        or n in {"product", "untitled", "new product"}
+        not product_name or n.startswith(("prod-", "product ")) or n in {"product", "untitled", "new product"}
     ):
         issues.append(_pg("product_name is placeholder-like; provide marketable unique name"))
     if len(product_name) < 4:
@@ -485,7 +482,7 @@ class PMAgent(BaseAgent):
         *,
         idea: str,
         admin: str,
-        category: Optional[str],
+        category: str | None,
         spec: dict,
     ):
         forced = ""
@@ -509,7 +506,7 @@ class PMAgent(BaseAgent):
         *,
         idea: str,
         admin: str,
-        category: Optional[str],
+        category: str | None,
         spec: dict,
         profile: str,
         product_id: str,
@@ -553,7 +550,7 @@ class PMAgent(BaseAgent):
         self,
         *,
         idea: str,
-        category: Optional[str],
+        category: str | None,
         spec: dict,
         profile: str,
         product_id: str,

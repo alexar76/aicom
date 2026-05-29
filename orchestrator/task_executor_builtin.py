@@ -7,8 +7,10 @@ from __future__ import annotations
 import logging
 import time
 import uuid
+from typing import TYPE_CHECKING
 
-from orchestrator.task_executor_helpers import PipelineTaskExecutorHost
+if TYPE_CHECKING:
+    from orchestrator.task_executor_helpers import PipelineTaskExecutorHost
 
 logger = logging.getLogger("pipeline-worker")
 

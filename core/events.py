@@ -8,6 +8,7 @@ for backpressure — swappable to Redis/NATS later via the same interface.
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import logging
 import time
 import uuid
@@ -254,13 +255,11 @@ class EventBus:
             if pending == 0:
                 break
             await asyncio.sleep(0.05)
-        for sub_id, task in list(self._tasks.items()):
+        for _sub_id, task in list(self._tasks.items()):
             if not task.done():
                 task.cancel()
-                try:
+                with contextlib.suppress(asyncio.CancelledError, Exception):
                     await task
-                except (asyncio.CancelledError, Exception):
-                    pass
         self._tasks.clear()
         self._queues.clear()
         self._drop_counts.clear()

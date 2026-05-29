@@ -16,14 +16,24 @@ import json
 import logging
 import shutil
 import time
-from pathlib import Path
 
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
-from .base_agent import BaseAgent, AgentInput, AgentOutput
+from typing import TYPE_CHECKING
+
+from llm import GenerationConfig, LLMRouter
+from llm.agent_prompt_split import (
+    build_developer_system_prompt,
+    build_developer_user_data,
+    format_user_data_message,
+)
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_CODE_GENERATION_SEC
+from web.backend.services.reference_templates import build_reference_template_prompt_block
+
+from .base_agent import AgentInput, AgentOutput, BaseAgent
 from .dev_delivery import (
     DeliveryMode,
     desktop_app_appendix,
@@ -34,14 +44,9 @@ from .dev_delivery import (
     validate_saved_files,
 )
 from .product_profile import DESKTOP_APP, FULL_SOFTWARE, normalize_delivery_profile
-from llm import LLMRouter, GenerationConfig
-from llm.agent_prompt_split import (
-    build_developer_system_prompt,
-    build_developer_user_data,
-    format_user_data_message,
-)
-from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_CODE_GENERATION_SEC
-from web.backend.services.reference_templates import build_reference_template_prompt_block
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 DEV_CORE_PROMPT = load_prompt("developer_core_prompt.md")
 

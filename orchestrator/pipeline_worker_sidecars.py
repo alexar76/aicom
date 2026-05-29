@@ -21,7 +21,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile, gate_failing_model
+from core.quality_settings import gate_failing_model, max_pipeline_repair_rounds_for_delivery_profile
 from orchestrator.worker_utils import env_truthy
 from web.backend.services.marketplace_quality import evaluate_marketplace_quality
 
@@ -325,7 +325,7 @@ class PipelineWorkerSidecarMixin:
             try:
                 pkg = json.loads(pkg_json.read_text(encoding="utf-8"))
             except Exception:
-                logger.debug("Failed to parse package.json for %s", product_id, exc_info=True)
+                logger.debug("Failed to parse package.json in %s", workdir, exc_info=True)
                 pkg = {}
             scripts = pkg.get("scripts") if isinstance(pkg, dict) else {}
             test_script = scripts.get("test") if isinstance(scripts, dict) else None

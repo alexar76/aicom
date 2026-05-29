@@ -1,0 +1,33 @@
+{
+  "session_id": "93bbe9bb-7965-465b-bd38-e71e814baac3",
+  "topic": "Production process — priorities, releases, and blockers",
+  "session_type": "feature_discussion",
+  "status": "pending",
+  "created_by": "admin",
+  "created_at": 1780037584.963334,
+  "updated_at": 1780037584.9633343,
+  "completed_at": null,
+  "participants": [
+    "pm",
+    "devops",
+    "qa"
+  ],
+  "context": {
+    "product_id": null,
+    "product_context": null,
+    "additional_instructions": "Align on pipeline priorities, deployment readiness, and risks. Press Start on this session to run the first agent round (requires LLM).",
+    "history_summary": null
+  },
+  "config": {
+    "max_rounds": 5,
+    "max_tokens_per_agent": 4000,
+    "temperature": 0.8,
+    "model_role": "heavy",
+    "allow_human_interrupt": true,
+    "consensus_threshold": 0.7,
+    "auto_conclude": true,
+    "inactivity_timeout_minutes": 30
+  },
+  "rounds": [],
+  "results": null
+}

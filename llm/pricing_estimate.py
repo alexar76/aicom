@@ -13,14 +13,15 @@ Env:
 from __future__ import annotations
 
 import json
-import os
-from pathlib import Path
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any
 
 import yaml
 
 from core.paths import llm_pricing_config_path
 from llm.provider_ids import is_legacy_provider_id, normalize_llm_provider_id
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 _yaml_cache: tuple[float, dict[str, Any]] = (0.0, {})
 
@@ -99,7 +100,7 @@ def _load_pricing_overrides() -> dict[str, Any]:
         return {}
 
 
-def _norm_role(role: Optional[str]) -> str:
+def _norm_role(role: str | None) -> str:
     r = str(role or "").strip().lower()
     return r if r in ("heavy", "light") else "heavy"
 
@@ -121,7 +122,7 @@ def _model_yaml_entry(model: str) -> Any:
     return None
 
 
-def _rates_model_in_out(model: str) -> Optional[tuple[float, float]]:
+def _rates_model_in_out(model: str) -> tuple[float, float] | None:
     """Return (input_per_mtok, output_per_mtok) if configured."""
     raw = _model_yaml_entry(model)
     if isinstance(raw, dict):
@@ -133,7 +134,7 @@ def _rates_model_in_out(model: str) -> Optional[tuple[float, float]]:
     return _BUILTIN_MODEL_IN_OUT_PER_MTOK.get(m)
 
 
-def _rate_for_model(model: str) -> Optional[float]:
+def _rate_for_model(model: str) -> float | None:
     """Blended $/Mtok for model (YAML float or builtin)."""
     m = (model or "").strip().lower()
     if not m:
@@ -170,7 +171,7 @@ def _provider_yaml_entry(provider: str) -> Any:
     return None
 
 
-def _rate_for_provider(provider: str) -> Optional[float]:
+def _rate_for_provider(provider: str) -> float | None:
     canon = normalize_llm_provider_id(provider).lower()
     if not canon:
         return None
@@ -184,7 +185,7 @@ def _rate_for_provider(provider: str) -> Optional[float]:
     return _BUILTIN_PROVIDER_DEFAULT_USD_PER_MTOK.get(canon)
 
 
-def _rate_for_provider_role(provider: str, model_role: Optional[str]) -> Optional[float]:
+def _rate_for_provider_role(provider: str, model_role: str | None) -> float | None:
     """$/Mtok when only total tokens are known; uses heavy/light if configured."""
     canon = normalize_llm_provider_id(provider).lower()
     role = _norm_role(model_role)
@@ -226,7 +227,7 @@ def estimate_llm_call_cost_usd(
     prompt_tokens: int | float | None = None,
     completion_tokens: int | float | None = None,
     model_role: str | None = None,
-) -> Optional[float]:
+) -> float | None:
     """
     Estimated USD for one call.
 
@@ -237,8 +238,8 @@ def estimate_llm_call_cost_usd(
     then provider default, then global default.
     """
     provider = normalize_llm_provider_id(provider)
-    pt: Optional[float] = None
-    ct: Optional[float] = None
+    pt: float | None = None
+    ct: float | None = None
     try:
         if prompt_tokens is not None:
             pt = float(prompt_tokens)
@@ -250,7 +251,7 @@ def estimate_llm_call_cost_usd(
     use_split = pt is not None and ct is not None and (pt > 0 or ct > 0)
     total_from_usage = (pt + ct) if use_split and pt is not None and ct is not None else None
 
-    tot: Optional[float] = None
+    tot: float | None = None
     try:
         if tokens_used is not None:
             tot = float(tokens_used)
@@ -258,7 +259,7 @@ def estimate_llm_call_cost_usd(
         tot = None
 
     if total_from_usage is not None and total_from_usage > 0:
-        token_basis: Optional[float] = total_from_usage
+        token_basis: float | None = total_from_usage
     elif tot is not None and tot > 0:
         token_basis = tot
     else:
@@ -312,7 +313,7 @@ def enrich_llm_log_entry(entry: dict[str, Any]) -> None:
     model = str(entry.get("model") or "")
     tokens = entry.get("tokens_used")
 
-    def _num(x: Any) -> Optional[float]:
+    def _num(x: Any) -> float | None:
         if isinstance(x, bool):
             return None
         if isinstance(x, (int, float)):
@@ -366,7 +367,7 @@ def effective_provider_fallback_usd_per_mtok(
     return _DEFAULT_FALLBACK_PER_MTOK, "default_builtin"
 
 
-def yaml_override_usd_per_mtok_for_provider(provider: str) -> Optional[float]:
+def yaml_override_usd_per_mtok_for_provider(provider: str) -> float | None:
     """Blended override in YAML for this provider id (scalar or blended_per_mtok), if any."""
     raw = _provider_yaml_entry(provider)
     if isinstance(raw, (int, float)):
@@ -378,7 +379,7 @@ def yaml_override_usd_per_mtok_for_provider(provider: str) -> Optional[float]:
     return None
 
 
-def builtin_provider_fallback_usd_per_mtok(provider: str) -> Optional[float]:
+def builtin_provider_fallback_usd_per_mtok(provider: str) -> float | None:
     """Built-in default $/1M for provider id (no YAML)."""
     canon = normalize_llm_provider_id(provider).lower()
     if not canon:
@@ -441,7 +442,7 @@ def migrate_llm_calls_provider_ids(
     return stats
 
 
-def write_llm_pricing_provider_rate(provider: str, usd_per_mtok: Optional[float]) -> None:
+def write_llm_pricing_provider_rate(provider: str, usd_per_mtok: float | None) -> None:
     """
     Persist or remove provider-tier rate in ``llm_pricing.yaml``.
     ``usd_per_mtok`` None removes the override; other keys in the file are preserved.

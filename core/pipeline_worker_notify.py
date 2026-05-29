@@ -6,8 +6,8 @@ import logging
 import os
 import urllib.error
 import urllib.request
-from core.logging_utils import log_suppressed
 
+from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 

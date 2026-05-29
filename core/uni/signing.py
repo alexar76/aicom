@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import base64
+import contextlib
 import json
 import os
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from core.paths import secrets_dir
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def signing_key_path() -> Path:
@@ -36,10 +39,8 @@ def _load_or_create_keypair() -> tuple[bytes, bytes]:
         seed = priv.private_bytes_raw()
         pub_bytes = pub.public_bytes_raw()
         path.write_bytes(seed + pub_bytes)
-        try:
+        with contextlib.suppress(OSError):
             os.chmod(path, 0o600)
-        except OSError:
-            pass
         return seed, pub_bytes
     except ImportError:
         seed = os.urandom(32)

@@ -6,11 +6,11 @@ from __future__ import annotations
 
 import json
 import re
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 
-class DeliveryMode(str, Enum):
+class DeliveryMode(StrEnum):
     WEB_APP = "web_app"
     PYTHON_CLI = "python_cli"
     DESKTOP_APP = "desktop_app"

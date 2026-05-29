@@ -13,8 +13,8 @@ from __future__ import annotations
 import os
 from typing import Any
 
-from core.paths import config_path
 from core.config_merge import load_merged_config
+from core.paths import config_path
 
 _CONFIG_PATH = config_path()
 _cache_mtime: float | None = None

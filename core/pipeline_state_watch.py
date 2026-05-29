@@ -6,10 +6,13 @@ Falls back to no-op when watchfiles is unavailable (worker still uses /wake + ad
 
 from __future__ import annotations
 
-import asyncio
 import logging
+from collections.abc import Callable
 from pathlib import Path
-from typing import Awaitable, Callable
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +28,7 @@ async def run_pipeline_state_watch(
 ) -> None:
     """Background task: call ``on_wake`` when pipeline state files change."""
     try:
-        from watchfiles import awatch, Change
+        from watchfiles import Change, awatch
     except ImportError:
         logger.info(
             "watchfiles not installed — pipeline worker uses /wake + poll only "

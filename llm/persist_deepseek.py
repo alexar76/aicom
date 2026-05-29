@@ -7,20 +7,23 @@ and circuit breaker state aligned with DEEPSEEK_API_KEY.
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import os
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 
-from core.paths import data_root, model_providers_path, secrets_dir
+from core.paths import data_root, model_providers_path
 from llm.bootstrap_providers import ensure_model_providers_file
 from llm.circuit_breaker import get_circuit_store
 from llm.factory_defaults import (
     DEEPSEEK_V4_FLASH_CONTEXT_WINDOW,
     DEEPSEEK_V4_PRO_CONTEXT_WINDOW,
 )
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -47,10 +50,8 @@ def _write_secret_file(key: str) -> Path:
     path = data_root() / DEEPSEEK_SECRET_REL
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(key.strip() + "\n", encoding="utf-8")
-    try:
+    with contextlib.suppress(OSError):
         path.chmod(0o600)
-    except OSError:
-        pass
     return path
 
 

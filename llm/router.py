@@ -12,28 +12,35 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import logging
-from core.logging_utils import log_suppressed
 import os
 import time
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING, Any
 
 import yaml
 
+from core.logging_utils import log_suppressed
 from core.paths import model_providers_path
 from core.throughput_limits import effective_llm_max_parallel_requests, effective_llm_min_interval_sec
+
+from .anthropic_provider import AnthropicProvider
 from .bootstrap_providers import ensure_model_providers_file
 from .circuit_breaker import CircuitOpenError, get_circuit_store, sync_prometheus_from_snapshot
 from .cost_guard import get_cost_guard
-from .provider import LLMProvider, GenerationConfig, ProviderStatus
-from .usage_guard import get_usage_guard
 from .local_ollama import LocalOllamaProvider
 from .openai_compatible import OpenAICompatibleProvider
-from .anthropic_provider import AnthropicProvider
+from .provider import GenerationConfig, LLMProvider, ProviderStatus
+from .usage_guard import get_usage_guard
+
 logger = logging.getLogger(__name__)
 
+if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator
 
-def _metrics():
+    from web.backend.api.metrics import PrometheusMetrics
+
+
+def _metrics() -> type[PrometheusMetrics]:
     from web.backend.api.metrics import PrometheusMetrics
 
     return PrometheusMetrics
@@ -55,10 +62,10 @@ class LLMRouter:
     def __init__(self, config_path: str | Path | None = None):
         self.config_path = str(config_path or model_providers_path())
         self.providers: dict[str, LLMProvider] = {}
-        self.routing_rules: list[dict] = []
-        self.default_provider: Optional[str] = None
-        self._provider_configs: dict[str, dict] = {}
-        self._health_check_task: Optional[asyncio.Task] = None
+        self.routing_rules: list[dict[str, Any]] = []
+        self.default_provider: str | None = None
+        self._provider_configs: dict[str, dict[str, Any]] = {}
+        self._health_check_task: asyncio.Task[None] | None = None
         self._running = False
         self._parallel_limit = max(1, effective_llm_max_parallel_requests())
         self._min_interval_sec = max(0.0, effective_llm_min_interval_sec())
@@ -73,14 +80,14 @@ class LLMRouter:
         self._circuit = get_circuit_store()
         self._load_config()
 
-    def _load_config(self):
+    def _load_config(self) -> None:
         """Load provider configuration from YAML file."""
         try:
             config_path = Path(self.config_path)
             logger.debug(f"LLMRouter loading config from: {self.config_path} (exists: {config_path.exists()})")
             ensure_model_providers_file(config_path)
 
-            with open(self.config_path, "r") as f:
+            with open(self.config_path) as f:
                 config = yaml.safe_load(f)
 
             self.routing_rules = config.get("routing_rules", [])
@@ -102,7 +109,8 @@ class LLMRouter:
                     continue
 
                 provider_type = pconf.get("provider_type", "openai_compatible")
-                
+
+                provider: LLMProvider
                 if provider_type in ("local_ollama", "ollama"):
                     provider = LocalOllamaProvider(
                         name=name,
@@ -189,14 +197,14 @@ class LLMRouter:
             pass
 
     @staticmethod
-    def _sync_circuit_metrics(name: str, row: dict, prev: dict) -> None:
+    def _sync_circuit_metrics(name: str, row: dict[str, Any], prev: dict[str, Any]) -> None:
         m = _metrics()
         m.set_circuit_state(name, str(row.get("state") or "closed"))
         recovery = row.get("last_recovery_duration_sec")
         if recovery is not None and prev.get("state") in ("open", "half_open"):
             m.observe_circuit_recovery(name, float(recovery))
 
-    async def start_health_checks(self, interval_sec: int = 60):
+    async def start_health_checks(self, interval_sec: int = 60) -> None:
         """Start periodic health checks for all providers."""
         self._running = True
         self._health_check_task = asyncio.create_task(
@@ -204,7 +212,7 @@ class LLMRouter:
         )
         logger.info("Health check loop started")
 
-    async def stop_health_checks(self):
+    async def stop_health_checks(self) -> None:
         """Stop periodic health checks."""
         self._running = False
         if self._health_check_task:
@@ -215,7 +223,7 @@ class LLMRouter:
                 log_suppressed(logger, "non-fatal (llm/router.py)", exc_info=_suppressed_exc)
         logger.info("Health check loop stopped")
 
-    async def _health_check_loop(self, interval_sec: int):
+    async def _health_check_loop(self, interval_sec: int) -> None:
         """Periodically check health of all providers."""
         while self._running:
             for name, provider in self.providers.items():
@@ -234,7 +242,7 @@ class LLMRouter:
                 log_suppressed(logger, "non-fatal (llm/router.py)", exc_info=_suppressed_exc)
             await asyncio.sleep(interval_sec)
 
-    def get_circuit_snapshot(self) -> dict:
+    def get_circuit_snapshot(self) -> dict[str, Any]:
         """Public circuit breaker state for admin / metrics."""
         return self._circuit.snapshot(list(self.providers.keys()))
 
@@ -242,7 +250,7 @@ class LLMRouter:
         self,
         prompt: str,
         task_type: str = "code_generation",
-        config: Optional[GenerationConfig] = None,
+        config: GenerationConfig | None = None,
     ) -> str:
         """
         Generate a response using the best provider for the task type.
@@ -286,8 +294,8 @@ class LLMRouter:
                 return cached
 
         tried: set[str] = set()
-        last_error: Optional[Exception] = None
-        current = provider_name
+        last_error: Exception | None = None
+        current: str | None = provider_name
 
         while current and current not in tried:
             tried.add(current)
@@ -400,7 +408,7 @@ class LLMRouter:
         task_type: str,
         current: str,
         tried: set[str],
-    ) -> Optional[str]:
+    ) -> str | None:
         """After the current provider fails, only try an explicit routing fallback (if configured)."""
         fb = self._get_fallback(task_type, current)
         if not fb or fb in tried or fb == current:
@@ -422,7 +430,7 @@ class LLMRouter:
         )
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
-    def _cache_get(self, key: str) -> Optional[str]:
+    def _cache_get(self, key: str) -> str | None:
         row = self._response_cache.get(key)
         if not row:
             return None
@@ -438,16 +446,16 @@ class LLMRouter:
             self._response_cache.pop(oldest_key, None)
         self._response_cache[key] = (time.time(), value)
 
-    def _get_model_for_role(self, provider_name: str, role: str) -> Optional[str]:
+    def _get_model_for_role(self, provider_name: str, role: str) -> str | None:
         pconf = self._provider_configs.get(provider_name)
         if not pconf:
             return None
-        models = pconf.get("models", {})
+        models: dict[str, str] = pconf.get("models", {})
         if role == "light":
             return models.get("light") or models.get("heavy")
         return models.get("heavy") or models.get("light")
 
-    def _infer_model_role(self, provider_name: str, active_model: Optional[str]) -> Optional[str]:
+    def _infer_model_role(self, provider_name: str, active_model: str | None) -> str | None:
         if not active_model or not str(active_model).strip():
             return None
         pconf = self._provider_configs.get(provider_name) or {}
@@ -465,7 +473,7 @@ class LLMRouter:
         self,
         provider_name: str,
         config: GenerationConfig,
-        rule: Optional[dict[str, object]],
+        rule: dict[str, object] | None,
     ) -> str:
         pconf = self._provider_configs.get(provider_name) or {}
         models = pconf.get("models", {}) or {}
@@ -482,8 +490,8 @@ class LLMRouter:
         self,
         prompt: str,
         task_type: str = "code_generation",
-        config: Optional[GenerationConfig] = None,
-    ):
+        config: GenerationConfig | None = None,
+    ) -> AsyncGenerator[str, None]:
         """Stream a response from the best provider (with circuit-aware failover)."""
         provider_name = self._select_provider(task_type)
         if not provider_name:
@@ -510,8 +518,8 @@ class LLMRouter:
         )
 
         tried: set[str] = set()
-        current = provider_name
-        last_error: Optional[Exception] = None
+        current: str | None = provider_name
+        last_error: Exception | None = None
 
         while current and current not in tried:
             tried.add(current)
@@ -555,7 +563,7 @@ class LLMRouter:
                 await asyncio.sleep(self._min_interval_sec - delta)
             self._last_request_mono = time.monotonic()
 
-    def _provider_is_available(self, name: Optional[str]) -> bool:
+    def _provider_is_available(self, name: str | None) -> bool:
         """True if provider is loaded, health is not UNAVAILABLE, and circuit allows traffic."""
         if not name or not isinstance(name, str):
             return False
@@ -566,7 +574,7 @@ class LLMRouter:
             return False
         return self._circuit_allows(name)
 
-    def _select_provider(self, task_type: str) -> Optional[str]:
+    def _select_provider(self, task_type: str) -> str | None:
         """Select provider for a task. Default provider is always tried first when configured."""
         if self.default_provider and self.default_provider in self.providers:
             return self.default_provider
@@ -575,17 +583,17 @@ class LLMRouter:
         if not rule:
             return self._select_fastest_available()
 
-        fallback = rule.get("fallback_provider")
+        fallback: str | None = rule.get("fallback_provider")
         if fallback and fallback in self.providers:
             return fallback
 
-        preferred = rule.get("preferred_provider", "auto")
+        preferred: str | None = rule.get("preferred_provider", "auto")
         if preferred not in (None, "auto") and preferred in self.providers:
             return preferred
 
         return self._select_fastest_available()
 
-    def _select_fastest_available(self) -> Optional[str]:
+    def _select_fastest_available(self) -> str | None:
         available = [
             (name, p.health.latency_ms)
             for name, p in self.providers.items()
@@ -602,20 +610,20 @@ class LLMRouter:
         available.sort(key=lambda x: x[1])
         return available[0][0]
 
-    def _get_rule(self, task_type: str) -> dict:
+    def _get_rule(self, task_type: str) -> dict[str, Any]:
         for rule in self.routing_rules:
             if rule.get("task_type") == task_type:
                 return rule
         return {}
 
-    def _get_fallback(self, task_type: str, current_provider: str) -> Optional[str]:
+    def _get_fallback(self, task_type: str, current_provider: str) -> str | None:
         rule = self._get_rule(task_type)
-        fallback = rule.get("fallback_provider")
+        fallback: str | None = rule.get("fallback_provider")
         if fallback and fallback != current_provider:
             return fallback
         return None
 
-    def get_provider_metrics(self) -> dict[str, dict]:
+    def get_provider_metrics(self) -> dict[str, dict[str, Any]]:
         return {name: p.get_metrics() for name, p in self.providers.items()}
 
     def get_available_providers(self) -> list[str]:
@@ -624,7 +632,7 @@ class LLMRouter:
             if self._provider_is_available(name)
         ]
 
-    async def reload_config(self):
+    async def reload_config(self) -> None:
         old_providers = self.providers
         self.providers = {}
         self._load_config()
@@ -638,7 +646,7 @@ class LLMRouter:
         
         logger.info("Provider configuration reloaded")
 
-    async def close(self):
+    async def close(self) -> None:
         await self.stop_health_checks()
         for provider in self.providers.values():
             try:

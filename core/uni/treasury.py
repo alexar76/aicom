@@ -6,11 +6,10 @@ import logging
 import uuid
 from typing import Any
 
-from core.uni.config import uni_treasury_usdt_observed
+from core.uni.config import uni_db_backend, uni_treasury_usdt_observed
 from core.uni.constants import PLATFORM_OWNER_ID, TREASURY_HEALTHY_RATIO
 from core.uni.pricing import uni_to_usd
 from core.uni.store import now_ts, row_to_dict, uni_connection
-from core.uni.config import uni_db_backend
 
 logger = logging.getLogger(__name__)
 

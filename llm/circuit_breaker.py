@@ -15,23 +15,24 @@ from __future__ import annotations
 import enum
 import json
 import logging
-import os
 import threading
 import time
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from core.paths import llm_circuit_state_path
 from llm.usage_guard import _exclusive_file_lock
 
+if TYPE_CHECKING:
+    from pathlib import Path
+
 logger = logging.getLogger(__name__)
 
-_STORE: Optional["CircuitBreakerStore"] = None
+_STORE: CircuitBreakerStore | None = None
 _STORE_LOCK = threading.Lock()
 
 
-class CircuitState(str, enum.Enum):
+class CircuitState(enum.StrEnum):
     CLOSED = "closed"
     OPEN = "open"
     HALF_OPEN = "half_open"
@@ -334,7 +335,7 @@ class CircuitBreakerStore:
         opened_at = row.get("opened_at")
         half_open_since = row.get("half_open_since")
         state = row.get("state", CircuitState.CLOSED.value)
-        seconds_until_half_open: Optional[float] = None
+        seconds_until_half_open: float | None = None
         if state == CircuitState.OPEN.value and opened_at is not None:
             remaining = self._config.open_duration_sec - (now - float(opened_at))
             seconds_until_half_open = max(0.0, round(remaining, 2))

@@ -92,6 +92,12 @@ known-first-party = ["agents", "core", "llm", "orchestrator", "security", "web"]
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
+# The mypy gate is scoped to the curated files passed on the CLI (see the
+# `mypy ...` step in .github/workflows/ci.yml). `follow_imports = silent`
+# type-checks against imported modules' real signatures but only *reports*
+# errors for the curated files — so a green gate means those modules are
+# strict-clean without forcing the whole legacy import graph to be typed first.
+follow_imports = "silent"
 exclude = [
     '^tests/',
     '^\.venv/',

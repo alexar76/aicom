@@ -15,13 +15,13 @@ from __future__ import annotations
 
 import json
 import time
-from pathlib import Path
 
-from .base_agent import BaseAgent, AgentInput, AgentOutput
-from llm import LLMRouter, GenerationConfig
+from agents.prompts.load_prompt import load_prompt
+from llm import GenerationConfig, LLMRouter
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
 from marketplace_taxonomy import slug_to_marketplace_category
-from agents.prompts.load_prompt import load_prompt
+
+from .base_agent import AgentInput, AgentOutput, BaseAgent
 
 MARKETING_SYSTEM_PROMPT = load_prompt("marketing_system_prompt.md")
 
@@ -55,7 +55,7 @@ class MarketingAgent(BaseAgent):
                     research_data = json.load(f)
                 research_context = json.dumps(research_data, indent=2)
                 self._log("INFO", f"Loaded market research for {product_id}")
-            except (json.JSONDecodeError, IOError) as e:
+            except (OSError, json.JSONDecodeError) as e:
                 self._log("WARNING", f"Could not load market research: {e}")
 
         try:
@@ -93,9 +93,12 @@ Focus on highlighting the product's unique value proposition and key benefits.
             response = await self._generate(prompt, config=config, agent_input=agent_input)
 
             marketing = self._extract_json(response)
-            if isinstance(marketing, dict) and marketing.get("category") is not None:
-                if slug_to_marketplace_category(marketing.get("category")) is None:
-                    marketing.pop("category", None)
+            if (
+                isinstance(marketing, dict)
+                and marketing.get("category") is not None
+                and slug_to_marketplace_category(marketing.get("category")) is None
+            ):
+                marketing.pop("category", None)
 
             if marketing is None:
                 elapsed = time.time() - start_time

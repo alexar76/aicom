@@ -3,8 +3,9 @@ from __future__ import annotations
 import json
 import logging
 import os
-import aiosqlite
 import sqlite3
+
+import aiosqlite
 
 from .schema import SQLITE_SCHEMA
 

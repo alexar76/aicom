@@ -18,9 +18,8 @@ import os
 import threading
 import time
 from contextlib import contextmanager
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Any, Iterator, Optional
+from datetime import UTC, datetime
+from typing import TYPE_CHECKING, Any
 
 from core.paths import state_dir
 from core.throughput_limits import (
@@ -30,9 +29,13 @@ from core.throughput_limits import (
     effective_llm_pre_call_reserve_usd,
 )
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from pathlib import Path
+
 logger = logging.getLogger(__name__)
 
-_GUARD: Optional["LLMUsageGuard"] = None
+_GUARD: LLMUsageGuard | None = None
 _GUARD_LOCK = threading.Lock()
 
 
@@ -54,11 +57,11 @@ class LLMUsageLimitError(RuntimeError):
 
 
 def _utc_day_key() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    return datetime.now(UTC).strftime("%Y-%m-%d")
 
 
 def _utc_month_key() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m")
+    return datetime.now(UTC).strftime("%Y-%m")
 
 
 def _empty_state() -> dict[str, Any]:
@@ -122,7 +125,7 @@ class LLMUsageGuard:
             "month": state["month"],
             "month_spend_usd": round(float(state["month_spend_usd"]), 6),
             "request_times": state.get("request_times") or [],
-            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(UTC).isoformat(),
         }
         self._state_path.parent.mkdir(parents=True, exist_ok=True)
         tmp = self._state_path.with_suffix(".tmp")

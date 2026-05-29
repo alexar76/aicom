@@ -9,7 +9,10 @@ from __future__ import annotations
 import logging
 import os
 from contextlib import contextmanager
-from typing import Any, Iterator, Optional
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +57,7 @@ def _build_otlp_exporter(endpoint: str) -> Any:
     protocol = _resolve_otlp_protocol()
     if protocol == "grpc":
         try:
-            from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (  # type: ignore
+            from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
                 OTLPSpanExporter as GrpcExporter,
             )
             return GrpcExporter(endpoint=endpoint)
@@ -108,7 +111,7 @@ def init_tracing(service_name: str | None = None) -> bool:
 def span(
     name: str,
     *,
-    attributes: Optional[dict[str, Any]] = None,
+    attributes: dict[str, Any] | None = None,
 ) -> Iterator[Any]:
     """Start a span when tracing is configured; otherwise no-op.
 
@@ -128,7 +131,7 @@ def span(
         yield current
 
 
-def current_trace_id_hex() -> Optional[str]:
+def current_trace_id_hex() -> str | None:
     """Return the active OTel trace id as a 32-char lowercase hex string, or None.
 
     Used to stamp business artifacts (e.g. UNI receipts) with a trace pointer so
@@ -149,7 +152,7 @@ def current_trace_id_hex() -> Optional[str]:
     return format(tid, "032x")
 
 
-def trace_url_for(trace_id: Optional[str]) -> Optional[str]:
+def trace_url_for(trace_id: str | None) -> str | None:
     """Render a trace URL from ``OTEL_TRACE_URL_TEMPLATE`` (``{trace_id}`` placeholder).
 
     Example: ``https://smith.langchain.com/o/<org>/projects/p/<proj>/r/{trace_id}``.

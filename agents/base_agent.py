@@ -9,17 +9,16 @@ from __future__ import annotations
 
 import json
 import logging
-from core.logging_utils import log_suppressed
 import os
 import re
 import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import Optional
 
+from core.logging_utils import log_suppressed
 from core.paths import data_root as default_data_root
-from llm import LLMProvider, GenerationConfig, LLMRouter
+from llm import GenerationConfig, LLMRouter
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +44,7 @@ class AgentInput:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "AgentInput":
+    def from_dict(cls, data: dict) -> AgentInput:
         return cls(
             task_id=data["task_id"],
             product_id=data["product_id"],
@@ -64,7 +63,7 @@ class AgentOutput:
     agent_type: str
     success: bool
     data: dict = field(default_factory=dict)
-    error: Optional[str] = None
+    error: str | None = None
     timestamp: float = 0.0
     metrics: dict = field(default_factory=dict)
 
@@ -126,10 +125,10 @@ class BaseAgent(ABC):
     async def _generate(
         self,
         prompt: str,
-        task_type: Optional[str] = None,
-        config: Optional[GenerationConfig] = None,
-        agent_input: Optional[AgentInput] = None,
-        system_prompt: Optional[str] = None,
+        task_type: str | None = None,
+        config: GenerationConfig | None = None,
+        agent_input: AgentInput | None = None,
+        system_prompt: str | None = None,
     ) -> str:
         """Generate text using the LLM router.
         
@@ -165,7 +164,7 @@ class BaseAgent(ABC):
             logger.warning(f"LLM unavailable for {self.agent_type}: {e}. Using fallback generation.")
             return await self._fallback_generate(prompt, task_type, agent_input)
 
-    def _augment_prompt_with_context(self, prompt: str, agent_input: Optional[AgentInput], lessons: list[dict]) -> str:
+    def _augment_prompt_with_context(self, prompt: str, agent_input: AgentInput | None, lessons: list[dict]) -> str:
         blocks: list[str] = []
         if lessons:
             blocks.append(
@@ -225,8 +224,8 @@ class BaseAgent(ABC):
     async def _fallback_generate(
         self,
         prompt: str,
-        task_type: Optional[str] = None,
-        agent_input: Optional[AgentInput] = None,
+        task_type: str | None = None,
+        agent_input: AgentInput | None = None,
     ) -> str:
         """Rule-based fallback generation when LLM is unavailable.
         
@@ -234,12 +233,11 @@ class BaseAgent(ABC):
         ensuring the pipeline can process products even without an LLM.
         """
         idea = ""
-        spec_text = ""
         if agent_input:
             idea = agent_input.data.get("idea", "")
             spec = agent_input.data.get("specification", {})
             if isinstance(spec, dict):
-                spec_text = spec.get("description", json.dumps(spec))
+                spec.get("description", json.dumps(spec))
         
         if self.agent_type == "pm":
             product_name = self._derive_name(idea)
@@ -598,7 +596,7 @@ export { fetchData };""",
             })
 
     @staticmethod
-    def _extract_json(text: str) -> Optional[dict]:
+    def _extract_json(text: str) -> dict | None:
         """Robustly extract and parse JSON from LLM response text.
 
         Handles:
@@ -753,7 +751,7 @@ export { fetchData };""",
             return " ".join(name_words)
         return "AI-Factory Product"
 
-    def _save_artifact(self, product_id: str, artifact_type: str, data: dict, filename: Optional[str] = None):
+    def _save_artifact(self, product_id: str, artifact_type: str, data: dict, filename: str | None = None):
         """Save an artifact to the filesystem."""
         import uuid
         fname = filename or f"{artifact_type}_{uuid.uuid4().hex[:8]}.json"
@@ -768,11 +766,11 @@ export { fetchData };""",
         logger.debug(f"Saved artifact: {filepath}")
         return str(filepath)
 
-    def _load_artifact(self, product_id: str, artifact_type: str, filename: str) -> Optional[dict]:
+    def _load_artifact(self, product_id: str, artifact_type: str, filename: str) -> dict | None:
         """Load an artifact from the filesystem."""
         path = self.data_root / artifact_type / product_id / filename
         if path.exists():
-            with open(path, "r") as f:
+            with open(path) as f:
                 return json.load(f)
         return None
 

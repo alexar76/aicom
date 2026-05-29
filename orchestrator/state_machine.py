@@ -13,15 +13,14 @@ import json
 import logging
 import os
 import time
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
 
+from agents.product_profile import post_devops_human_gate_required
+from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
 from core.paths import pipeline_db_path, pipeline_json_path
 from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW
 from web.backend.api.metrics import PrometheusMetrics
-from agents.product_profile import post_devops_human_gate_required
-from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
 
 logger = logging.getLogger(__name__)
 
@@ -73,12 +72,12 @@ class Task:
     input_data: dict = field(default_factory=dict)
     output_data: dict = field(default_factory=dict)
     created_at: float = 0.0
-    started_at: Optional[float] = None
-    completed_at: Optional[float] = None
+    started_at: float | None = None
+    completed_at: float | None = None
     timeout_sec: int = 30
     retry_count: int = 0
     max_retries: int = 3
-    error: Optional[str] = None
+    error: str | None = None
     priority: int = 5
 
     def to_dict(self) -> dict:
@@ -101,7 +100,7 @@ class Task:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "Task":
+    def from_dict(cls, data: dict) -> Task:
         task = cls(
             id=data["id"],
             product_id=data["product_id"],
@@ -145,7 +144,7 @@ class Product:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "Product":
+    def from_dict(cls, data: dict) -> Product:
         product = cls(
             id=data["id"],
             idea=data["idea"],
@@ -234,7 +233,7 @@ class PipelineStateMachine:
             self._sqlite_manager.connect()
         return self._sqlite_manager
 
-    def create_product(self, idea: str, product_id: Optional[str] = None) -> Product:
+    def create_product(self, idea: str, product_id: str | None = None) -> Product:
         """Create a new product and add it to the pipeline."""
         import uuid
         pid = product_id or f"prod-{uuid.uuid4().hex[:12]}"
@@ -253,7 +252,7 @@ class PipelineStateMachine:
         logger.info(f"Created product {pid}: {idea[:50]}...")
         return product
 
-    async def acreate_product(self, idea: str, product_id: Optional[str] = None) -> Product:
+    async def acreate_product(self, idea: str, product_id: str | None = None) -> Product:
         """Async create path with non-blocking SQLite persistence."""
         import uuid
         pid = product_id or f"prod-{uuid.uuid4().hex[:12]}"
@@ -272,7 +271,7 @@ class PipelineStateMachine:
         PrometheusMetrics.inc_product_created()
         return product
 
-    def get_next_task(self) -> Optional[Task]:
+    def get_next_task(self) -> Task | None:
         """Get the next pending task from the queue (highest priority first)."""
         pending = [t for t in self.task_queue if t.status == TaskStatus.PENDING]
         if not pending:
@@ -285,7 +284,7 @@ class PipelineStateMachine:
         self._save_state()
         return task
 
-    async def aget_next_task(self) -> Optional[Task]:
+    async def aget_next_task(self) -> Task | None:
         pending = [t for t in self.task_queue if t.status == TaskStatus.PENDING]
         if not pending:
             return None
@@ -318,7 +317,7 @@ class PipelineStateMachine:
 
     def _apply_task_completion(
         self, task_id: str, output: dict
-    ) -> tuple[bool, Optional[Product], Optional[str]]:
+    ) -> tuple[bool, Product | None, str | None]:
         """
         Mark task completed in memory, record metrics, advance product state / queue next task.
 
@@ -439,7 +438,7 @@ class PipelineStateMachine:
         self.task_queue.append(task)
         self._save_state()
 
-    def get_product(self, product_id: str) -> Optional[Product]:
+    def get_product(self, product_id: str) -> Product | None:
         return self.products.get(product_id)
 
     def get_all_products(self) -> list[Product]:
@@ -514,9 +513,7 @@ class PipelineStateMachine:
         if not extended_flow:
             if agent_type_raw == "design_critic":
                 agent_type_raw, next_state_raw = "developer", "CODE_COMMITTED"
-            elif agent_type_raw == "__runtime_test__":
-                agent_type_raw, next_state_raw = "qa", "QA_TESTING"
-            elif agent_type_raw == "hardening":
+            elif agent_type_raw == "__runtime_test__" or agent_type_raw == "hardening":
                 agent_type_raw, next_state_raw = "qa", "QA_TESTING"
         agent_type, next_state = agent_type_raw, PipelineState[next_state_raw]
 
@@ -563,7 +560,7 @@ class PipelineStateMachine:
         }
         return priorities.get(agent_type, 5)
 
-    def _find_task(self, task_id: str) -> Optional[Task]:
+    def _find_task(self, task_id: str) -> Task | None:
         for task in self.task_queue:
             if task.id == task_id:
                 return task
@@ -581,7 +578,7 @@ class PipelineStateMachine:
         try:
             path = Path(self.state_file)
             if path.exists():
-                with open(path, "r") as f:
+                with open(path) as f:
                     data = json.load(f)
                 
                 self.products = {
@@ -673,7 +670,7 @@ class PipelineStateMachine:
         except Exception as e:
             logger.error(f"Failed to save pipeline state to SQLite: {e}")
 
-    def migrate_json_to_sqlite(self, db_path: Optional[str] = None) -> dict:
+    def migrate_json_to_sqlite(self, db_path: str | None = None) -> dict:
         """Migrate data from the JSON state file to SQLite.
 
         Reads the existing JSON state file and bulk-inserts all products
@@ -698,7 +695,7 @@ class PipelineStateMachine:
                 logger.warning(f"State file {self.state_file} not found; nothing to migrate.")
                 return {"products_migrated": 0, "tasks_migrated": 0}
 
-            with open(path, "r") as f:
+            with open(path) as f:
                 data = json.load(f)
 
             product_dicts = list(data.get("products", {}).values())

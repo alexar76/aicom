@@ -5,8 +5,7 @@ Minimal, dependency-light client covering both protocol versions.
 
 Usage::
 
-    from cli.ai_market_sdk import AIMarketClient
-
+    # AIMarketClient from package cli.ai_market_sdk
     client = AIMarketClient(base_url="http://127.0.0.1:9080")
 
     # v1 flow (recommended)

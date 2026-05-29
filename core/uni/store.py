@@ -7,12 +7,14 @@ import logging
 import sqlite3
 import threading
 import time
-from contextlib import contextmanager
-from pathlib import Path
-from typing import Any, Iterator
+from contextlib import contextmanager, suppress
+from typing import TYPE_CHECKING, Any
 
 from core.paths import uni_db_path as resolve_uni_db_path
 from core.uni.config import uni_database_url, uni_db_backend
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 logger = logging.getLogger(__name__)
 
@@ -237,17 +239,13 @@ def _pg_execute_script(conn: Any, script: str) -> None:
 def _apply_postgres_migrations(conn: Any) -> None:
     _pg_execute_script(conn, _SCHEMA_V2_SQLITE.replace("REAL", "DOUBLE PRECISION"))
     for col, typ in _RECEIPT_V2_COLUMNS:
-        try:
+        with suppress(Exception):
             conn.execute(
                 f"ALTER TABLE uni_receipts ADD COLUMN IF NOT EXISTS {col} {typ.replace('REAL', 'DOUBLE PRECISION')}"
             )
-        except Exception:
-            pass
     for col, typ in _WALLET_V2_COLUMNS:
-        try:
+        with suppress(Exception):
             conn.execute(f"ALTER TABLE uni_wallets ADD COLUMN IF NOT EXISTS {col} {typ}")
-        except Exception:
-            pass
     conn.execute(
         """
         CREATE UNIQUE INDEX IF NOT EXISTS idx_uni_receipts_tx_kind

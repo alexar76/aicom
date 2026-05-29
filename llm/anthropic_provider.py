@@ -10,7 +10,7 @@ import json
 import logging
 import os
 import time
-from typing import AsyncGenerator, Optional
+from typing import TYPE_CHECKING
 
 import httpx
 
@@ -22,6 +22,9 @@ from .provider import (
     ProviderStatus,
 )
 
+if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator
+
 logger = logging.getLogger(__name__)
 
 
@@ -29,10 +32,10 @@ class AnthropicProvider(LLMProvider):
     def __init__(
         self,
         name: str = "anthropic_cloud",
-        config: Optional[dict] = None,
+        config: dict | None = None,
         base_url: str = "https://api.anthropic.com/v1",
-        api_key: Optional[str] = None,
-        api_key_env: Optional[str] = "ANTHROPIC_API_KEY",
+        api_key: str | None = None,
+        api_key_env: str | None = "ANTHROPIC_API_KEY",
         model: str = "claude-3-5-sonnet-latest",
     ):
         super().__init__(name, config or {})
@@ -58,7 +61,7 @@ class AnthropicProvider(LLMProvider):
             limits=httpx.Limits(max_keepalive_connections=5, max_connections=10),
         )
 
-    async def generate(self, prompt: str, config: Optional[GenerationConfig] = None) -> str:
+    async def generate(self, prompt: str, config: GenerationConfig | None = None) -> str:
         cfg = config or GenerationConfig()
         start = time.time()
         active_model = cfg.model_override or self.model
@@ -86,9 +89,9 @@ class AnthropicProvider(LLMProvider):
             latency = (time.time() - start) * 1000
             self._update_metrics(0, latency)
             self._record_failure(str(e))
-            raise RuntimeError(f"Generation failed for {self.name}: {e}")
+            raise RuntimeError(f"Generation failed for {self.name}: {e}") from e
 
-    async def stream(self, prompt: str, config: Optional[GenerationConfig] = None) -> AsyncGenerator[str, None]:
+    async def stream(self, prompt: str, config: GenerationConfig | None = None) -> AsyncGenerator[str, None]:
         cfg = config or GenerationConfig(stream=True)
         active_model = cfg.model_override or self.model
         start = time.time()
@@ -126,7 +129,7 @@ class AnthropicProvider(LLMProvider):
             latency = (time.time() - start) * 1000
             self._update_metrics(out_tokens, latency)
             self._record_failure(str(e))
-            raise RuntimeError(f"Streaming failed for {self.name}: {e}")
+            raise RuntimeError(f"Streaming failed for {self.name}: {e}") from e
 
         latency = (time.time() - start) * 1000
         self._update_metrics(out_tokens, latency)

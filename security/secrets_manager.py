@@ -5,16 +5,14 @@
 # with encryption at rest and secure in-memory storage.
 # ============================================================================
 
-import os
 import json
-import base64
-import time
 import logging
-from typing import Dict, Optional, Any
+import os
+import time
 from pathlib import Path
+from typing import Any
+
 from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 logger = logging.getLogger("ai_factory.security.secrets")
 
@@ -48,8 +46,8 @@ class SecretsManager:
         self.cache_ttl = cache_ttl_seconds
         
         # In-memory cache
-        self._cache: Dict[str, tuple[Any, float]] = {}  # key -> (value, expiry)
-        self._fernet: Optional[Fernet] = None
+        self._cache: dict[str, tuple[Any, float]] = {}  # key -> (value, expiry)
+        self._fernet: Fernet | None = None
         
         # Initialize encryption
         self._initialize_encryption()
@@ -195,7 +193,7 @@ class SecretsManager:
         logger.info(f"Imported {count} secrets from environment")
         return count
 
-    def export_to_env(self, prefix: str = "AI_FACTORY_") -> Dict[str, str]:
+    def export_to_env(self, prefix: str = "AI_FACTORY_") -> dict[str, str]:
         """
         Export secrets as environment variable mappings (for subprocesses).
         Returns dict of env var name → value.
@@ -207,7 +205,7 @@ class SecretsManager:
             env_map[env_key] = str(secrets[key])
         return env_map
 
-    def backup_vault(self, backup_path: Optional[str] = None) -> str:
+    def backup_vault(self, backup_path: str | None = None) -> str:
         """Create a backup of the encrypted vault."""
         if not self.secrets_file.exists():
             raise FileNotFoundError("No vault to backup")
@@ -229,7 +227,7 @@ class SecretsManager:
     # Internal
     # -----------------------------------------------------------------------
 
-    def _load_vault(self) -> Dict[str, Any]:
+    def _load_vault(self) -> dict[str, Any]:
         """Load and decrypt the vault."""
         if not self.secrets_file.exists():
             return {}
@@ -242,7 +240,7 @@ class SecretsManager:
             logger.error(f"Failed to decrypt vault: {e}")
             return {}
 
-    def _save_vault(self, secrets: Dict[str, Any]) -> None:
+    def _save_vault(self, secrets: dict[str, Any]) -> None:
         """Encrypt and save the vault."""
         try:
             json_data = json.dumps(secrets, indent=2).encode()
@@ -257,7 +255,7 @@ class SecretsManager:
     # Convenience Methods
     # -----------------------------------------------------------------------
 
-    def get_api_key(self, provider: str) -> Optional[str]:
+    def get_api_key(self, provider: str) -> str | None:
         """Get an API key for a specific provider."""
         return self.get_secret(f"api_key_{provider}")
 
@@ -265,7 +263,7 @@ class SecretsManager:
         """Set an API key for a specific provider."""
         self.set_secret(f"api_key_{provider}", key)
 
-    def get_admin_password_hash(self) -> Optional[str]:
+    def get_admin_password_hash(self) -> str | None:
         """Get the stored admin password hash."""
         return self.get_secret("admin_password_hash")
 
@@ -273,7 +271,7 @@ class SecretsManager:
         """Store the admin password hash."""
         self.set_secret("admin_password_hash", password_hash)
 
-    def get_totp_secret(self) -> Optional[str]:
+    def get_totp_secret(self) -> str | None:
         """Get the TOTP secret for 2FA."""
         return self.get_secret("totp_secret")
 

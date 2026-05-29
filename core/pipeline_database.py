@@ -8,8 +8,8 @@ import logging
 import os
 from typing import Any, Literal
 
-from core.paths import pipeline_db_path
 from core.logging_utils import log_suppressed
+from core.paths import pipeline_db_path
 
 logger = logging.getLogger(__name__)
 

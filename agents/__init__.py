@@ -54,4 +54,4 @@ def __getattr__(name: str) -> Any:
 
 
 def __dir__() -> list[str]:
-    return sorted(set(__all__) | {k for k in globals().keys() if not k.startswith("_")})
+    return sorted(set(__all__) | {k for k in globals() if not k.startswith("_")})

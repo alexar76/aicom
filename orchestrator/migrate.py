@@ -20,12 +20,12 @@ import shutil
 import sys
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Any
 
+from core.logging_utils import log_suppressed
 from core.paths import pipeline_db_path, pipeline_json_path
 
 from .sqlite_manager import SQLiteManager
-from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ def prune_old_sqlite_backups(db_path: str, *, keep: int = 2) -> int:
     return removed
 
 
-def _backup_db(db_path: str) -> Optional[str]:
+def _backup_db(db_path: str) -> str | None:
     """Copy existing SQLite DB to ``<db>.bak.<timestamp>``. Returns backup path or None."""
     src = Path(db_path)
     if not src.exists():
@@ -68,7 +68,7 @@ def _backup_db(db_path: str) -> Optional[str]:
     return str(dest)
 
 
-def _latest_backup(db_path: str) -> Optional[Path]:
+def _latest_backup(db_path: str) -> Path | None:
     parent = Path(db_path).parent
     stem = Path(db_path).name
     candidates = sorted(parent.glob(f"{stem}.bak.*"), key=lambda p: p.stat().st_mtime, reverse=True)
@@ -92,7 +92,7 @@ def migrate(
     *,
     backup: bool = True,
     rollback_on_failure: bool | None = None,
-) -> dict:
+) -> dict[str, Any]:
     if json_path is None:
         json_path = str(pipeline_json_path())
     if db_path is None:
@@ -117,7 +117,7 @@ def migrate(
             "on",
         }
 
-    backup_path: Optional[str] = None
+    backup_path: str | None = None
     if backup:
         backup_path = _backup_db(db_path)
 
@@ -127,7 +127,7 @@ def migrate(
         raise FileNotFoundError(f"JSON state file not found: {json_path}")
 
     # Read JSON
-    with open(path, "r") as f:
+    with open(path) as f:
         data = json.load(f)
 
     product_dicts = list(data.get("products", {}).values())
@@ -192,7 +192,7 @@ def migrate(
         manager.close()
 
 
-def main():
+def main() -> None:
     """CLI entry point."""
     logging.basicConfig(
         level=logging.INFO,
@@ -244,7 +244,7 @@ def main():
             db_path=args.db,
             backup=not args.no_backup,
         )
-        print(f"Migration successful!")
+        print("Migration successful!")
         print(f"  Products migrated: {result['products_migrated']}")
         print(f"  Tasks migrated:    {result['tasks_migrated']}")
         print(f"  Source:            {result['source']}")

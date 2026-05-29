@@ -12,11 +12,13 @@ import logging
 import sqlite3
 import time
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING
 
 from core.paths import director_decisions_path
-from .state_machine import PipelineStateMachine
-from .timeout_manager import TimeoutManager
+
+if TYPE_CHECKING:
+    from .state_machine import PipelineStateMachine
+    from .timeout_manager import TimeoutManager
 
 logger = logging.getLogger(__name__)
 
@@ -93,7 +95,7 @@ class DirectorIntegration:
         if existing > 0:
             return
         try:
-            with open(legacy, "r") as f:
+            with open(legacy) as f:
                 data = json.load(f)
             now = time.time()
             for status, items in (("pending", data.get("pending", [])), ("applied", data.get("applied", []))):

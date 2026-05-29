@@ -17,7 +17,9 @@ _REPO_ROOT = Path(__file__).resolve().parents[1]
 _SKIP_DIRS = {
     ".git",
     ".venv",
+    ".test-venv",
     "venv",
+    "test-venv",
     "__pycache__",
     "node_modules",
     ".next",

@@ -13,10 +13,11 @@ import json
 import time
 from pathlib import Path
 
-from .base_agent import BaseAgent, AgentInput, AgentOutput
-from llm import LLMRouter, GenerationConfig
-from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ARCHITECTURE_SEC
 from agents.prompts.load_prompt import load_prompt
+from llm import GenerationConfig, LLMRouter
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ARCHITECTURE_SEC
+
+from .base_agent import AgentInput, AgentOutput, BaseAgent
 
 DESIGN_CRITIC_SYSTEM = load_prompt("design_critic_system_prompt.md")
 
