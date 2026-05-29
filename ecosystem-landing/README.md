@@ -1,5 +1,7 @@
 # AICOM ecosystem landing
 
+> **Live site:** [alexar76.github.io/aicom](https://alexar76.github.io/aicom/)
+
 A single-file, dependency-free landing page that explains the whole AICOM
 ecosystem (AI-Factory, AIMarket Hub, Protocol, SDKs, desktop apps, contracts)
 and links each part to its source and live demo. Sci-fi "Alien Monitor" look

@@ -1,5 +1,7 @@
 # AI-Factory Documentation
 
+> **Ecosystem:** [AICOM overview & live demos](https://alexar76.github.io/aicom/)
+
 ## Documentation languages
 
 | Language | Files |

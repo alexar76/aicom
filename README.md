@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>MIT · self-hosted · idea → shippable web product</strong><br/>
-  <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> · <a href="#demo-video">Demo video</a> · <a href="#gallery">Gallery</a> · <a href="#alien-monitor">Alien Monitor</a> · <a href="#quick-start">Quick start</a>
+  <a href="https://alexar76.github.io/aicom/">Ecosystem landing</a> · <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> · <a href="#demo-video">Demo video</a> · <a href="#gallery">Gallery</a> · <a href="#alien-monitor">Alien Monitor</a> · <a href="#quick-start">Quick start</a>
 </p>
 
 <p align="center">
@@ -105,8 +105,6 @@ docker compose up -d --build
 Try it out: [https://magic-ai-factory.com](https://magic-ai-factory.com)
 
 **Alien Monitor (ecosystem 3D):** [https://magic-ai-factory.com/monitor/](https://magic-ai-factory.com/monitor/) — live Hub/Factory/Prometheus + chain metrics, no login required.
-
-**Ecosystem landing (GitHub Pages):** [https://alexar76.github.io/aicom/](https://alexar76.github.io/aicom/) — static map of the monorepo and satellites; published from [`ecosystem-landing/`](ecosystem-landing/) on push via [`.github/workflows/pages-ecosystem.yml`](.github/workflows/pages-ecosystem.yml). Optional custom domain: add `CNAME` in that folder + DNS — see [`ecosystem-landing/README.md`](ecosystem-landing/README.md).
 
 **Demo Admin Access:**
 - URL: [https://magic-ai-factory.com/admin/login](https://magic-ai-factory.com/admin/login)
@@ -511,6 +509,8 @@ More diagrams (state machine, discovery, storefront gates, comparison): **[docs/
 ## Monorepo & AIMarket ecosystem
 
 This repository is the **AICOM monorepo**: a self-hosted **AI-Factory** pipeline plus the **AIMarket** federated commerce layer (hub, protocol, SDKs, 8 desktop apps, 15 plugins).
+
+**Public ecosystem landing:** **[alexar76.github.io/aicom](https://alexar76.github.io/aicom/)** — all projects, killer features, and live demos on one page.
 
 ```mermaid
 flowchart TB

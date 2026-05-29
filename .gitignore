@@ -54,7 +54,17 @@ config.dev.yaml
 wiki/*
 !wiki/README.md
 
-# Generated data
+# Generated / runtime data (local factory only — never commit)
 data/state/
 data/public/pipeline_demo_replay/
 data/reports/
+data/secrets/
+data/logs/
+data/feedback/
+data/discussions/
+data/store/
+data/code/
+data/backups/
+data/sqlite/
+data/config/model_providers.yaml
+# Examples stay tracked: data/config/*.example.yaml, pipeline_demo_replay.json
