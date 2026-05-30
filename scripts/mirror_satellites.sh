@@ -751,6 +751,11 @@ export_profile() {
 
   [[ -f "$src" ]] || { echo "  ⚠️  SKIP: profile README source missing: $src"; return 1; }
 
+  if ! git_auth ls-remote "$remote_url" &>/dev/null; then
+    echo "  ⏭  SKIP: profile repo ${GITHUB_ORG}/${repo} not found on GitHub"
+    return 0
+  fi
+
   if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "  [dry-run] would update README.md in ${GITHUB_ORG}/${repo}"
     return 0

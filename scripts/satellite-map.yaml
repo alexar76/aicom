@@ -22,6 +22,7 @@ satellites:
 
   - id: profile
     repo: alexar76
+    optional: true
     description: "GitHub profile README — ecosystem map for alexar76."
     license: mit
     paths:
@@ -34,6 +35,7 @@ satellites:
       no LICENSE / SECURITY.md / mirror banner / governance.
       Canonical source: scripts/profile-readme/README.md. Handled by the
       dedicated export_profile() function in mirror_satellites.sh.
+      Optional: skipped in bulk publish until alexar76/alexar76 profile repo exists.
 
   - id: aimarket-desktop
     repo: aimarket-desktop
