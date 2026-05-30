@@ -1,0 +1,81 @@
+"""Tests for Marketing-agent launch blog posts."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from core.paths import blog_index_path, blog_posts_dir
+from web.backend.services.product_blog import build_launch_post, publish_product_launch_blog_post
+
+
+@pytest.fixture
+def blog_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    state = tmp_path / "state"
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path))
+    monkeypatch.setattr("web.backend.services.product_blog.blog_posts_dir", lambda: tmp_path / "blog" / "posts")
+    monkeypatch.setattr("web.backend.services.product_blog.blog_index_path", lambda: tmp_path / "blog" / "index.json")
+    monkeypatch.setattr(
+        "web.backend.services.product_blog.marketing_content_path",
+        lambda pid: state / pid / "marketing_content.json",
+    )
+    return state
+
+
+def _write_marketing(state: Path, product_id: str, marketing: dict) -> None:
+    d = state / product_id
+    d.mkdir(parents=True)
+    (d / "marketing_content.json").write_text(
+        json.dumps({"marketing": marketing}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+
+def test_build_launch_post_from_marketing_blog_block(blog_env: Path):
+    pid = "prod-test-01"
+    _write_marketing(
+        blog_env,
+        pid,
+        {
+            "product_name": "Nebula Desk",
+            "tagline": "Calm focus for noisy teams",
+            "short_description": "A tiny desk ritual app.",
+            "blog_post": {
+                "title": "Launch: Nebula Desk — calm focus rituals",
+                "excerpt": "Shipped a minimalist focus timer with team-aware quiet hours.",
+                "read_time_minutes": 7,
+                "tags": ["product launch", "productivity"],
+                "body": [
+                    {"type": "p", "text": "We shipped Nebula Desk for teams drowning in notification debt."},
+                    {"type": "h2", "text": "What landed"},
+                    {"type": "ul", "items": ["Quiet hours", "Focus sessions", "Team presence strip"]},
+                ],
+            },
+        },
+    )
+    post = build_launch_post(pid, product={"idea": "focus app"})
+    assert post is not None
+    assert post["slug"] == "launch-prod-test-01"
+    assert post["author"] == "AI-Factory Marketing"
+    assert any(b.get("type") == "product_link" for b in post["body"])
+
+
+def test_publish_writes_files(blog_env: Path):
+    pid = "prod-ship-99"
+    _write_marketing(
+        blog_env,
+        pid,
+        {
+            "product_name": "Pulse Relay",
+            "long_description": "Webhook inbox for developers.",
+            "key_benefits": ["Search", "Replay", "Retention defaults"],
+        },
+    )
+    assert publish_product_launch_blog_post(pid, product={"idea": "webhooks"})
+    slug = "launch-prod-ship-99"
+    post_file = blog_posts_dir() / f"{slug}.json"
+    assert post_file.is_file()
+    index = json.loads(blog_index_path().read_text(encoding="utf-8"))
+    assert any(p["slug"] == slug for p in index["posts"])

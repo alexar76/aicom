@@ -428,6 +428,9 @@ app.include_router(pipeline_demo_replay_public.router, prefix="/api")
 app.include_router(products.router)
 app.include_router(sandbox.router)
 app.include_router(marketing.router)
+from web.backend.api import blog_posts as blog_posts_api
+
+app.include_router(blog_posts_api.router)
 app.include_router(payment.router)
 app.include_router(ai_market.router)
 from web.backend.api.acex_capital import router as acex_capital_router

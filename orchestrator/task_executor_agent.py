@@ -514,6 +514,12 @@ async def run_agent_task(
             if target_state == "COMPLETED" and not critic_blocked and pid in products:
                 logger.info(f"Product {pid} pipeline completed!")
                 try:
+                    from web.backend.services.product_blog import publish_product_launch_blog_post
+
+                    publish_product_launch_blog_post(pid, product=products[pid])
+                except Exception:
+                    logger.debug("publish_product_launch_blog_post failed for %s", pid, exc_info=True)
+                try:
                     spec_done = host._load_spec(pid)
                     dp_done = delivery_profile_from_product_dict(products[pid]) if pid in products else None
                     mq_done = evaluate_marketplace_quality(

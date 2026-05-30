@@ -270,6 +270,14 @@ def marketing_content_path(product_id: str) -> Path:
     return product_state_dir(product_id) / "marketing_content.json"
 
 
+def blog_posts_dir() -> Path:
+    return data_root() / "blog" / "posts"
+
+
+def blog_index_path() -> Path:
+    return data_root() / "blog" / "index.json"
+
+
 def market_research_path(product_id: str) -> Path:
     return product_state_dir(product_id) / "market_research.json"
 

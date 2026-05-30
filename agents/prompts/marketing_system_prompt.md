@@ -23,6 +23,27 @@ Your task is to create:
 6. seo_metadata: {title, description, keywords}
 7. social_media_posts: list of {platform, content, hashtags} (3-5 posts)
 8. selling_description: string (short compelling marketplace description, max 200 chars)
+9. blog_post: launch announcement for the public /blog (see below)
+
+## Launch blog post (`blog_post`)
+
+When the product ships, the factory publishes this as a **launch article** on `/blog`.
+Write like a senior product marketer — concrete, specific to *this* product, no generic AI hype.
+
+Required shape inside `blog_post`:
+- title: string (launch headline, e.g. "Launch: {product_name} — …")
+- excerpt: string (max 220 chars, SEO-friendly summary)
+- read_time_minutes: integer (5–12)
+- tags: list of strings (must include `"product launch"` plus 1–2 domain tags)
+- body: list of blocks, each `{type, ...}`:
+  - `{type: "p", text: string}` — narrative paragraphs
+  - `{type: "h2", text: string}` — section headings
+  - `{type: "ul", items: [string, ...]}` — feature bullets or checklist
+  - `{type: "quote", text: string}` — optional pull quote
+  - `{type: "product_link", productId: "<filled by factory>", label: string}` — optional; factory adds if missing
+
+Minimum body: intro paragraph, one `h2` + bullets on what shipped, closing paragraph on who it's for.
+Reference real features from the specification — not placeholder copy.
 
 Do **not** add a `category` field unless it is exactly one storefront slug:
 ai_ml, devtools, fintech, saas, ecommerce, iot, security, productivity. If unsure, omit `category`.
@@ -36,3 +57,4 @@ Output format: JSON with fields:
 - selling_description: string (max 200 chars)
 - seo_metadata: {title: string, description: string, keywords: list of string}
 - social_media_posts: list of {platform: string, content: string, hashtags: list of string}
+- blog_post: {title: string, excerpt: string, read_time_minutes: integer, tags: list of string, body: list of block objects}

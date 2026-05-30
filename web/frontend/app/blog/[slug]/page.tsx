@@ -1,15 +1,18 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { BLOG_POSTS, getPostBySlug, type BlogBodyBlock } from '@/content/blogPosts';
+import { fetchLaunchBlogPost } from '@/lib/server-blog';
 
 type PageProps = { params: { slug: string } };
+
+export const dynamic = 'force-dynamic';
 
 export function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: PageProps) {
-  const post = getPostBySlug(params.slug);
+export async function generateMetadata({ params }: PageProps) {
+  const post = (await fetchLaunchBlogPost(params.slug)) ?? getPostBySlug(params.slug);
   if (!post) return { title: 'Post not found' };
   return {
     title: post.title,
@@ -56,12 +59,7 @@ function BlogBody({ blocks }: { blocks: BlogBodyBlock[] }) {
             return (
               <figure key={key} className="my-8">
                 <div className="rounded-xl overflow-hidden border border-white/10 bg-black/30 shadow-lg shadow-black/40">
-                  <img
-                    src={block.src}
-                    alt={block.alt}
-                    className="w-full h-auto block"
-                    loading="lazy"
-                  />
+                  <img src={block.src} alt={block.alt} className="w-full h-auto block" loading="lazy" />
                 </div>
                 {block.caption ? (
                   <figcaption className="mt-3 text-sm text-gray-500 text-center leading-snug px-2">
@@ -92,8 +90,8 @@ function BlogBody({ blocks }: { blocks: BlogBodyBlock[] }) {
   );
 }
 
-export default function BlogPostPage({ params }: PageProps) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: PageProps) {
+  const post = (await fetchLaunchBlogPost(params.slug)) ?? getPostBySlug(params.slug);
   if (!post) notFound();
   return (
     <main className="min-h-screen max-w-3xl mx-auto px-4 py-12 bg-[#060606]">

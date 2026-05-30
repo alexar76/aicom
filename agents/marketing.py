@@ -139,6 +139,7 @@ Focus on highlighting the product's unique value proposition and key benefits.
                     "selling_description": marketing.get("selling_description", ""),
                     "seo_metadata": marketing.get("seo_metadata", {}),
                     "social_media_posts": marketing.get("social_media_posts", []),
+                    "blog_post": marketing.get("blog_post"),
                     "marketing_file": f"state/{product_id}/marketing_content.json",
                 },
                 timestamp=time.time(),
