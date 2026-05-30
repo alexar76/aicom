@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Restore public GitHub repos after mistaken factory/satellite rsync from monorepo.
 #
-# - alexar76/aicom: run publish_aicom_factory.sh (strips .cursor, .github, coach tree)
+# - alexar76/aicom: run publish_aicom_factory.sh (strips .cursor, .claude, coach tree)
 # - alexar76/aicom-landing: reset to last pre-sync commit (removes .claude junk)
 # - alexar76/linked-in-profile-coach: reset to last real app commit (before monorepo dump)
 #

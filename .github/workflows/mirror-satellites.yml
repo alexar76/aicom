@@ -1,0 +1,52 @@
+name: Mirror Satellites
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      satellite:
+        description: 'Satellite id (empty = all). See scripts/satellite-map.yaml'
+        required: false
+        default: ''
+      satellites_only:
+        description: 'Skip trimmed aicom factory push'
+        type: boolean
+        default: false
+      factory_only:
+        description: 'Push trimmed aicom factory only'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish satellites + factory
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout monorepo
+        uses: actions/checkout@v4
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Publish repos (idempotent)
+        env:
+          GH_PAT: ${{ secrets.MIRROR_SATELLITE_PAT }}
+          GITHUB_TOKEN: ${{ secrets.MIRROR_SATELLITE_PAT }}
+          SATELLITE_GITHUB_ORG: alexar76
+          AICOM_FACTORY_REMOTE: https://x-access-token:${{ secrets.MIRROR_SATELLITE_PAT }}@github.com/alexar76/aicom.git
+        run: |
+          chmod +x scripts/publish_all_repos.sh scripts/mirror_satellites.sh scripts/publish_aicom_factory.sh
+          ARGS=()
+          if [[ "${{ inputs.factory_only }}" == "true" ]]; then
+            ARGS+=(--factory-only)
+          elif [[ "${{ inputs.satellites_only }}" == "true" ]]; then
+            ARGS+=(--satellites-only)
+          elif [[ -n "${{ inputs.satellite }}" ]]; then
+            ARGS+=(--satellite "${{ inputs.satellite }}")
+          fi
+          ./scripts/publish_all_repos.sh "${ARGS[@]}"
