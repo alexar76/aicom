@@ -329,6 +329,34 @@
     return HUB_URL.replace(/\/$/, "") + path;
   }
 
+  var SANDBOX_STORAGE_KEY = "aimw_visitor_id";
+  var sandboxQuota = { remaining: 3, max_trials: 3, enabled: true };
+
+  function getOrCreateVisitorId() {
+    try {
+      var existing = localStorage.getItem(SANDBOX_STORAGE_KEY);
+      if (existing && existing.length >= 8) return existing;
+      var id = "vis_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+      localStorage.setItem(SANDBOX_STORAGE_KEY, id);
+      return id;
+    } catch (e) {
+      return "vis_" + Date.now();
+    }
+  }
+
+  function refreshSandboxQuota(cb) {
+    var vid = getOrCreateVisitorId();
+    fetch(apiUrl("/ai-market/v2/sandbox/quota?visitor_id=" + encodeURIComponent(vid)))
+      .then(function(r) { return r.ok ? r.json() : {}; })
+      .then(function(data) {
+        if (data && typeof data.remaining === "number") {
+          sandboxQuota = data;
+        }
+        if (cb) cb(sandboxQuota);
+      })
+      .catch(function() { if (cb) cb(sandboxQuota); });
+  }
+
   // ── Search ──────────────────────────────────────────────────
 
   function doSearch() {
@@ -423,12 +451,13 @@
       infoDiv.appendChild(metaDiv);
 
       var tryBtn = document.createElement("button");
-      tryBtn.className = "aimw-btn";
-      safeText(tryBtn, "Try");
-      // Safe: addEventListener with closure captures the values
+      tryBtn.className = "aimw-btn aimw-btn-try";
+      var trialsLeft = sandboxQuota.remaining != null ? sandboxQuota.remaining : 3;
+      safeText(tryBtn, trialsLeft > 0 ? "Try free (" + trialsLeft + ")" : "Try (quota used)");
+      tryBtn.disabled = trialsLeft <= 0 && sandboxQuota.enabled !== false;
       (function(pid, cid, hub) {
         tryBtn.addEventListener("click", function() {
-          tryCapability(pid, cid, hub);
+          tryCapabilitySandbox(pid, cid, hub);
         });
       })(m.product_id, m.capability_id, m.source_hub || "local");
 
@@ -438,38 +467,112 @@
     });
   }
 
-  // ── Invoke ──────────────────────────────────────────────────
-  var globalTryCapability = null; // Stored for potential external use
+  // ── Invoke (sandbox + optional paid channel) ─────────────────
+  var globalTryCapability = null;
 
-  function tryCapability(productId, capabilityId, sourceHub) {
-    globalTryCapability = { productId: productId, capabilityId: capabilityId, sourceHub: sourceHub };
+  function renderInvokeResult(outputEl, capabilityId, status, result) {
+    if (!outputEl) return;
+    if (status === 403) {
+      outputEl.innerHTML = '<div class="aimw-error-box">' +
+        '<strong>Safety gate blocked</strong><br/>' +
+        ((result.category || "unknown").replace(/</g, "&lt;")) + ': ' +
+        ((result.reason || "").replace(/</g, "&lt;")) +
+        (result.refund && result.refund.refunded ? '<br/>Auto-refunded' : '') +
+        '</div>';
+      return;
+    }
+    if (status === 402) {
+      outputEl.innerHTML = '<div class="aimw-error-box">Payment required. Connect wallet.</div>';
+      return;
+    }
+    if (status === 429) {
+      outputEl.innerHTML = '<div class="aimw-error-box">Free trials used. Fund a channel to continue.</div>';
+      return;
+    }
+    var ok = result.success;
+    var mark = ok ? "OK" : "FAIL";
+    var price = result.price_usd || 0;
+    var listPrice = result.list_price_usd != null ? result.list_price_usd : price;
+    var sandboxTag = result.sandbox
+      ? '<span class="aimw-badge aimw-badge-safety">sandbox · ' + (result.remaining != null ? result.remaining + " left" : "free") + '</span>'
+      : '';
+    outputEl.innerHTML = '<div class="aimw-result">' +
+      '<strong>' + mark + ' ' + (capabilityId || "").replace(/</g, "&lt;") + '</strong>' +
+      '<span style="font-size:11px;"> · ' + (result.sandbox ? "free trial" : "$" + price.toFixed(2)) +
+      (result.sandbox && listPrice > 0 ? ' (list $' + listPrice.toFixed(2) + ')' : '') +
+      ' · ' + (result.latency_ms || "?") + 'ms</span>' +
+      sandboxTag +
+      (result.safety_checked ? '<span class="aimw-badge aimw-badge-safety">safety passed</span>' : '') +
+      '<pre style="margin-top:8px;font-size:12px;white-space:pre-wrap;">' +
+      JSON.stringify(result.result || {}, null, 2).replace(/</g, "&lt;") +
+      '</pre></div>';
+  }
+
+  function tryCapabilitySandbox(productId, capabilityId, sourceHub) {
+    globalTryCapability = { productId: productId, capabilityId: capabilityId, sourceHub: sourceHub, mode: "sandbox" };
+    var outputEl = document.getElementById("aimw-output");
+    var query = document.querySelector(".aimw-search") ? document.querySelector(".aimw-search").value : "";
+    var visitorId = getOrCreateVisitorId();
+    if (outputEl) {
+      outputEl.innerHTML = '<div class="aimw-spinner" style="margin:8px;"></div> Free trial: ' +
+        (capabilityId || "").replace(/</g, "&lt;") + '...';
+    }
+    var headers = {
+      "Content-Type": "application/json",
+      "X-AIMarket-Sandbox-Visitor": visitorId,
+    };
+    if (AFFILIATE_ID) headers["X-AIMarket-Affiliate"] = AFFILIATE_ID;
+
+    fetch(apiUrl("/ai-market/v2/invoke"), {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        product_id: productId,
+        capability_id: capabilityId,
+        source_hub: sourceHub,
+        input: { text: query },
+      }),
+    })
+      .then(function(r) {
+        return r.json().then(function(body) {
+          return { status: r.status, result: body };
+        });
+      })
+      .then(function(data) {
+        if (typeof data.result.remaining === "number") {
+          sandboxQuota.remaining = data.result.remaining;
+        }
+        refreshSandboxQuota();
+        renderInvokeResult(outputEl, capabilityId, data.status, data.result);
+      })
+      .catch(function(err) {
+        if (outputEl) {
+          outputEl.innerHTML = '<div class="aimw-error-box">Error: ' +
+            ((err.message || String(err)).replace(/</g, "&lt;")) + '</div>';
+        }
+      });
+  }
+
+  function tryCapabilityPaid(productId, capabilityId, sourceHub) {
+    globalTryCapability = { productId: productId, capabilityId: capabilityId, sourceHub: sourceHub, mode: "paid" };
     var outputEl = document.getElementById("aimw-output");
     var query = document.querySelector(".aimw-search") ? document.querySelector(".aimw-search").value : "";
     if (outputEl) {
-      outputEl.innerHTML = '<div class="aimw-spinner" style="margin:8px;"></div> Invoking ' +
-        (capabilityId || "").replace(/</g, "&lt;") + '...';
+      outputEl.innerHTML = '<div class="aimw-spinner" style="margin:8px;"></div> Invoking (paid channel)...';
     }
-
     var budgetVal = parseFloat((document.getElementById("aimw-budget-input") || {}).value || "3");
 
-    // Step 1: Open channel
-    fetch(apiUrl("/ai-market/channel/open"), {
+    fetch(apiUrl("/ai-market/v2/channel/open"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        deposit_usd: budgetVal,
-        tx_hash: "demo-" + Date.now(),
-      }),
+      body: JSON.stringify({ deposit_usd: budgetVal, tx_hash: "widget-" + Date.now() }),
     })
-      .then(function(r) { return r.ok ? r.json() : Promise.reject("Channel open failed"); })
+      .then(function(r) { return r.ok ? r.json() : Promise.reject(new Error("Channel open failed")); })
       .then(function(chData) {
         var channelId = chData.channel && chData.channel.channel_id;
         if (!channelId) throw new Error("No channel ID");
-
-        // Step 2: Invoke
         var headers = { "Content-Type": "application/json", "X-Payment-Channel": channelId };
         if (AFFILIATE_ID) headers["X-AIMarket-Affiliate"] = AFFILIATE_ID;
-
         return fetch(apiUrl("/ai-market/v2/invoke"), {
           method: "POST",
           headers: headers,
@@ -480,57 +583,23 @@
             input: { text: query },
           }),
         }).then(function(r) {
-          return { response: r, json: r.ok || r.status === 403 ? r.json() : Promise.reject("Invoke failed: " + r.status), channelId: channelId };
+          return r.json().then(function(body) {
+            return { status: r.status, result: body, channelId: channelId };
+          });
         });
       })
       .then(function(data) {
-        var resp = data.response;
-        var body = data.json.then ? data.json : Promise.resolve(data.json);
-        return body.then(function(result) {
-          return { status: resp.status, result: result, channelId: data.channelId };
-        });
-      })
-      .then(function(data) {
-        var result = data.result;
-        var channelId = data.channelId;
-
-        // Close channel
-        fetch(apiUrl("/ai-market/channel/close"), {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ channel_id: channelId, settle_tx_hash: "demo-settle-" + Date.now() }),
-        });
-
-        if (!outputEl) return;
-
-        if (data.status === 403) {
-          outputEl.innerHTML = '<div class="aimw-error-box">' +
-            '<strong>Safety gate blocked</strong><br/>' +
-            ((result.category || "unknown").replace(/</g, "&lt;")) + ': ' +
-            ((result.reason || "").replace(/</g, "&lt;")) +
-            (result.refund && result.refund.refunded ? '<br/>Auto-refunded' : '') +
-            '</div>';
-          return;
+        if (data.channelId) {
+          fetch(apiUrl("/ai-market/v2/channel/close"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              channel_id: data.channelId,
+              settle_tx_hash: "widget-settle-" + Date.now(),
+            }),
+          });
         }
-
-        if (data.status === 402) {
-          outputEl.innerHTML = '<div class="aimw-error-box">Payment required. Connect wallet.</div>';
-          return;
-        }
-
-        var ok = result.success;
-        var mark = ok ? "OK" : "FAIL";
-        var price = result.price_usd || 0;
-
-        outputEl.innerHTML = '<div class="aimw-result">' +
-          '<strong>' + mark + ' ' + (capabilityId || "").replace(/</g, "&lt;") + '</strong>' +
-          '<span style="font-size:11px;"> · $' + price.toFixed(2) + ' · ' + (result.latency_ms || "?") + 'ms</span>' +
-          (result.safety_checked ? '<span class="aimw-badge aimw-badge-safety">safety passed</span>' : '') +
-          '<pre style="margin-top:8px;font-size:12px;white-space:pre-wrap;">' +
-          JSON.stringify(result.result || {}, null, 2).replace(/</g, "&lt;") +
-          '</pre>' +
-          (AFFILIATE_ID ? '<div style="font-size:10px;margin-top:4px;">Earned $' + (price * 0.3).toFixed(4) + ' for ' + AFFILIATE_ID.replace(/</g, "&lt;") + '</div>' : '') +
-          '</div>';
+        renderInvokeResult(outputEl, capabilityId, data.status, data.result);
       })
       .catch(function(err) {
         if (outputEl) {
@@ -540,8 +609,13 @@
       });
   }
 
-  // Expose tryCapability for external programmatic use (safe — no inline onclick)
+  function tryCapability(productId, capabilityId, sourceHub) {
+    tryCapabilitySandbox(productId, capabilityId, sourceHub);
+  }
+
   global.__aimwTry = tryCapability;
+  global.__aimwTryPaid = tryCapabilityPaid;
+  global.__aimwTrySandbox = tryCapabilitySandbox;
 
   // ── Boot (skip admin — panel is storefront-only) ────────────
   function shouldMount() {
@@ -555,6 +629,7 @@
   function boot() {
     if (!shouldMount()) return;
     if (document.getElementById("aimarket-widget-host") && document.querySelector(".aimw-root")) return;
+    refreshSandboxQuota();
     makeRoot();
   }
 

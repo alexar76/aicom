@@ -17,13 +17,14 @@ if [[ ! -d "$MONITOR" ]]; then
   exit 1
 fi
 
-# Stop dev processes that may hold demo ports
+# Stop dev processes that may hold demo ports (host network — must free :9100 for container)
 for port in 9100 5173 5199; do
   if command -v fuser >/dev/null 2>&1; then
     fuser -k "${port}/tcp" 2>/dev/null || true
   fi
+  pkill -f "alien-monitor/backend/main.py" 2>/dev/null || true
 done
-sleep 1
+sleep 2
 
 cd "$MONITOR"
 docker compose -f docker-compose.prod.yml up -d --build
@@ -35,11 +36,33 @@ for _ in $(seq 1 30); do
   fi
   sleep 2
 done
-curl -sf "http://127.0.0.1:9100/api/health" | head -c 200 || {
+curl -sf "http://127.0.0.1:9100/api/health" | head -c 400 || {
   echo "ERROR: Alien Monitor backend not healthy on :9100" >&2
   docker compose -f docker-compose.prod.yml logs --tail=40 alien-monitor
   exit 1
 }
+echo ""
+
+echo "UNI bootstrap check (mode + blockchain_ready)..."
+for _ in $(seq 1 45); do
+  HEALTH_JSON="$(curl -sf "http://127.0.0.1:9100/api/health" 2>/dev/null || echo '{}')"
+  MODE="$(echo "$HEALTH_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('mode',''))" 2>/dev/null || true)"
+  BC_READY="$(echo "$HEALTH_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('blockchain_ready', False))" 2>/dev/null || true)"
+  if [[ "$MODE" != "universe" ]] || [[ "$BC_READY" == "True" ]]; then
+    echo "$HEALTH_JSON" | python3 -m json.tool 2>/dev/null || echo "$HEALTH_JSON"
+    break
+  fi
+  sleep 2
+done
+if [[ "$MODE" == "universe" && "$BC_READY" != "True" ]]; then
+  echo "WARNING: UNI mode but blockchain_ready=false — see docs/uni-troubleshooting.md"
+  docker compose -f docker-compose.prod.yml logs --tail=60 alien-monitor
+fi
+if [[ -f "$ROOT/data/alien-monitor/universe/hub.env.snippet" ]]; then
+  echo ""
+  echo "Hub wiring snippet (merge into .env, restart Hub):"
+  cat "$ROOT/data/alien-monitor/universe/hub.env.snippet"
+fi
 echo ""
 
 echo "Waiting for Pulse Terminal on :5199..."

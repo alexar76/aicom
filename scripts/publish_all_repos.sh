@@ -67,6 +67,7 @@ Satellite ↔ monorepo map (quick reference):
   aimarket-sdks        ← aimarket-sdks/
   aimarket-plugins     ← plugins/ + provenance
   alien-monitor        ← alien-monitor/
+  course               ← course-app/ → alexar76/orchestration-course
   linkedin-profile-coach ← linkedin/ → alexar76/linked-in-profile-coach
   aicom-landing        ← aicom-landing/ → alexar76/aicom-landing
   aicom-wiki           ← scripts/wiki-gitea/ → alexar76/aicom.wiki

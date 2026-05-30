@@ -56,6 +56,26 @@ if [[ -z "$REMOTE" ]]; then
   REMOTE="$(git remote get-url origin 2>/dev/null || true)"
 fi
 
+TOKEN="${GH_PAT:-${GITHUB_TOKEN:-}}"
+if [[ -z "$TOKEN" && "$REMOTE" =~ https://[^:/]+:([^@]+)@ ]]; then
+  TOKEN="${BASH_REMATCH[1]}"
+fi
+if [[ -n "$TOKEN" && "$REMOTE" =~ github\.com[:/]+([^/]+/[^/.]+)(\.git)? ]]; then
+  REMOTE="https://x-access-token:${TOKEN}@github.com/${BASH_REMATCH[1]}.git"
+fi
+
+git_auth() {
+  if [[ -n "${TOKEN:-}" ]]; then
+    local auth_header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 | tr -d '\n')"
+    GIT_CONFIG_COUNT=1 \
+    GIT_CONFIG_KEY_0=http.extraHeader \
+    GIT_CONFIG_VALUE_0="$auth_header" \
+    git "$@"
+  else
+    git "$@"
+  fi
+}
+
 redact_remote() {
   local url="$1"
   if [[ "$url" =~ ^https?://[^/@]+@[^/]+ ]]; then
@@ -105,8 +125,8 @@ if [[ -z "$REMOTE" ]]; then
 fi
 
 echo "Cloning $(redact_remote "$REMOTE") (branch $BRANCH) …"
-git clone --depth 1 --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null || {
-  git clone --depth 1 "$REMOTE" "$WORKDIR/clone"
+git_auth clone --depth 1 --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null || {
+  git_auth clone --depth 1 "$REMOTE" "$WORKDIR/clone"
   cd "$WORKDIR/clone"
   git checkout -B "$BRANCH" 2>/dev/null || git checkout -b "$BRANCH"
   cd "$ROOT"
@@ -165,5 +185,5 @@ if [[ "$NO_PUSH" -eq 1 ]]; then
 fi
 
 echo "Pushing to $(redact_remote "$REMOTE") ($BRANCH) …"
-git push origin "HEAD:$BRANCH"
+git_auth push origin "HEAD:$BRANCH"
 echo "OK factory remote updated — satellite folders removed from $(redact_remote "$REMOTE")"

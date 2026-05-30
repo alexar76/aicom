@@ -70,7 +70,7 @@ done
 
 [[ -n "$SAT_ID" ]] || { usage; exit 1; }
 
-read -r REPO_NAME SRC_PATH < <(resolve_satellite "$SAT_ID")
+{ read -r REPO_NAME; read -r SRC_PATH; } < <(resolve_satellite "$SAT_ID")
 if [[ -z "$SRC_PATH" || "$SRC_PATH" == "." ]]; then
   echo "error: satellite '$SAT_ID' has no monorepo export path (paths: [] in satellite-map.yaml)." >&2
   echo "  Do not publish standalone siblings from the monorepo — maintain them in their own checkout." >&2
@@ -93,6 +93,11 @@ fi
 if [[ "$SAT_ID" == "aicom-wiki" ]]; then
   echo "→ aicom-wiki requires wiki page filter — delegating to mirror_satellites.sh"
   exec bash "$ROOT/scripts/mirror_satellites.sh" --satellite aicom-wiki "$@"
+  exit $?
+fi
+if [[ "$SAT_ID" == "course" ]]; then
+  echo "→ course requires asset build + governance — delegating to mirror_satellites.sh"
+  exec bash "$ROOT/scripts/mirror_satellites.sh" --satellite course "$@"
   exit $?
 fi
 

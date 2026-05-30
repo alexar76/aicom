@@ -109,6 +109,23 @@ The ONLY synthetic element. Periodic capital injection:
 
 Funding grows with the universe — the multiplier increases as hubs and products accumulate. Visualized as golden particle beams flowing from outside the visible scene toward the hub.
 
+#### Hub liquidity (must stay true in UNI)
+
+External funding is the **only** synthetic capital. It must keep the **Hub usable**, not only fill escrow:
+
+| Layer | Mechanism | Config |
+|-------|-----------|--------|
+| On-chain | FakeUSDT `transfer` → escrow (default) or Hub payment address | `ALIEN_UNIVERSE_FUNDING_TARGET=escrow\|hub` |
+| Factory UNI bus | `POST /api/uni/grant` — ecosystem float | `AIFACTORY_UNI_GRANT_SECRET` **required** |
+| Hub treasury wallet | `universe:hub-treasury` bootstrap grant | `ALIEN_UNIVERSE_HUB_LIQUIDITY_GRANT_USD` (default 500) |
+| External buyer wallet | `universe:external-buyer` bootstrap grant | `ALIEN_UNIVERSE_BUYER_LIQUIDITY_GRANT_USD` (default 300) |
+| Periodic injections | Same rules as table above; interval/amount from env | `ALIEN_UNIVERSE_FUNDING_*` |
+| Growth multiplier | Rises with product + federated hub count | `update_growth_multiplier()` each EXPANSION+ tick |
+
+**Phase gates still require external funding totals** (e.g. ≥ $200 to leave EXPANSION). Buyer rounds use **real** Hub `channel/open` → `invoke` → `close`; bootstrap grants prevent empty ledger at first EXPANSION tick.
+
+Initial EXPANSION injection: `ALIEN_UNIVERSE_INITIAL_FUNDING_USD` (optional, default off) fires once when phase becomes EXPANSION.
+
 ### Hub Spawner (`universe_hub_spawner.py`)
 
 Creates new federated hubs:
@@ -197,3 +214,11 @@ Creates new federated hubs:
 
 ### TEST mode regression
 Switch to TEST mode — verify `EcosystemSimulator` produces same fake data as before, no scenario data visible.
+
+---
+
+## Production Docker (UNI with real deploy)
+
+Alien Monitor prod image (`alien-monitor/docker-compose.prod.yml`) defaults to `ALIEN_MODE=universe` and auto-bootstraps Anvil + contract deploy on startup. State persists under `data/alien-monitor/universe/`.
+
+**Troubleshooting:** [uni-troubleshooting.md](./uni-troubleshooting.md) — typical problems (`blockchain_ready: false`, forge failures, Hub not wired, Ganache vs Anvil, etc.).

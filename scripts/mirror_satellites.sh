@@ -871,6 +871,11 @@ export_satellite() {
     alien-monitor)
       export_simple "$sat_id" "alien-monitor" "alien-monitor" "mit"
       ;;
+    course)
+      echo "  Building course site + Colab notebooks …"
+      python3 "$ROOT/course-app/scripts/build_course_assets.py"
+      export_simple "$sat_id" "course-app" "orchestration-course" "mit"
+      ;;
     aicom)
       echo ""
       echo "━━━ aicom (trimmed factory) ━━━"
@@ -928,6 +933,8 @@ echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aicom.wiki"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/linked-in-profile-coach"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aicom-landing"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/alien-monitor"
+echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/orchestration-course"
+echo "  https://${GITHUB_ORG}.github.io/orchestration-course/"
 echo ""
 echo "All repos: ./scripts/publish_all_repos.sh"
 echo "Workflow:  .github/workflows/mirror-satellites.yml"

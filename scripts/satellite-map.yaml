@@ -4,6 +4,22 @@
 org: alexar76
 
 satellites:
+  - id: course
+    repo: orchestration-course
+    description: "AI Agent Orchestration — a hands-on course with the AIMarket economy embedded as an SDK (en/ru/es)."
+    license: mit
+    paths:
+      - course-app
+    export_layout:
+      root_from: course-app
+    registries: []
+    ci:
+      - pytest-course
+    notes: >
+      Standalone public repo (alexar76/orchestration-course). Teaches neutral
+      orchestration patterns; uses aimarket-agent SDK + an embedded sandbox hub
+      for real-economy labs. Source of truth: course-app/ in the monorepo.
+
   - id: profile
     repo: alexar76
     description: "GitHub profile README — ecosystem map for alexar76."

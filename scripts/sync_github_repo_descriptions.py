@@ -77,6 +77,9 @@ def main() -> int:
             continue
         repo = sat.get("repo") or sat_id
         desc = (sat.get("description") or "").strip()
+        if sat_id == "profile" or repo == org:
+            print(f"  skip {sat_id}: profile repo (no description API)")
+            continue
         if not desc:
             print(f"  skip {sat_id}: no description in satellite-map.yaml")
             continue

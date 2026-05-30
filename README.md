@@ -634,7 +634,7 @@ docker exec ai-factory python -m pytest tests/test_pipeline.py tests/test_pipeli
 
 Reproduce timing: enqueue via `./demo.sh` / Admin → Pipeline, then `python scripts/wait_pipeline_product.py --product-id …`.
 
-**LLM cost?** Logs use `estimated_cost_usd` per call (no `product_id` on older rows). Fleet total ≈ **$85** over **15** products (~**$5.7** average including long repair loops). Short first passes are often **sub‑dollar to a few dollars** on DeepSeek; **$0.20** is possible only for a **very small** landing with no retries — not a guarantee for `full_software`.
+**LLM cost?** Logs use `estimated_cost_usd` per call (no `product_id` on older rows). Fleet total ≈ **$85** over **10** products (~**$8.5** average including long repair loops). Short first passes are often **sub‑dollar to a few dollars** on DeepSeek; **$0.20** is possible only for a **very small** landing with no retries — not a guarantee for `full_software`.
 
 **Not a 30-second landing toy.** If you only need a fast marketing page, use **[aicom-landing](https://github.com/alexar76/aicom-landing)**. AI-Factory targets **real products** (full stack, gates, evolution).
 
