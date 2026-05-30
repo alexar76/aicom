@@ -79,11 +79,42 @@ Env (hub):
 - `ACEX_AUTO_IPO=1` — auto-float on auto-listing
 - `ACEX_REVENUE_SHARE_BPS` (default `5000` = 50% of each paid invoke to shareholders)
 - `ACEX_DEFAULT_MAX_SUPPLY` (default `1_000_000` CapShares), `ACEX_MIN_AUDIT_SCORE_BPS` (default `7000`)
-- `AIMARKET_ADMIN_TOKEN` — required for `/capital/ipo` and `/distribute` (minting is privileged)
+- `AIMARKET_ADMIN_TOKEN` — required for `/capital/ipo`, `/distribute`, and `/capital/audit/…/sync`
 
 ```bash
 # Offline end-to-end: factory ship → auto-list → IPO → revenue → distribute → claim
 python scripts/demo_agent_ipo.py
+```
+
+### Proof-of-Audit (factory → hub → ACEX)
+
+Staked auditor economics mirror `AgentAuditPool`: a slice of each **paid** invoke funds auditor rewards; Pulse Terminal shows cover, aggregate score, and default risk per listing.
+
+| Layer | Path | Role |
+|-------|------|------|
+| Hub ledger | `aimarket_hub/acex_audit.py` | Coverage + reward accrual (micro-USD, pro-rata by cover) |
+| Revenue routing | `aimarket_hub/api.py` `/invoke` | After IPO accrue → `accrue_audit_rewards(product_id, price)` |
+| Inspect / sync | `GET /…/capital/audit[/{id}]`, `POST /…/audit/{id}/sync` | Open reads; admin sync from chain |
+| Claim | `POST /…/capital/audit/{id}/claim` | Auditor pulls pending rewards (off-chain ledger) |
+| Pulse overlay | `acex/integrations/pricing.py` | `proof_of_audit` on each listing + snapshot totals |
+| Pulse UI | `apps/pulse-terminal/` DetailRail + Audit column | Cover, score, default risk, auditors |
+
+On-chain parity:
+
+- EVM: `acex/contracts/evm/src/AgentAuditPool.sol` — full stake / cover / slash / compensation.
+- Solana: `acex_capital` PoA instructions in `programs/acex-capital/src/lib.rs`.
+- Hub bridge to EVM `fundAuditRewards`: planned worker when `ACEX_AUDIT_BRIDGE_MODE=onchain`.
+
+Env (hub, in addition to IPO vars):
+
+- `ACEX_AUDIT_FEE_BPS` (default `100` = 1% of gross invoke to auditors)
+- `ACEX_AUDIT_DB_PATH`, `ACEX_AUDIT_BRIDGE_MODE` (`offchain` \| `onchain` \| `both`)
+- `ACEX_AUDIT_POOL_ADDRESS` — optional EVM pool for indexer
+
+Spec: [`acex/protocol/proof-of-audit.md`](../acex/protocol/proof-of-audit.md)
+
+```bash
+cd aimarket-hub && pytest tests/test_acex_audit.py tests/test_acex_ipo_api.py -q
 ```
 
 ### UNI virtual economy (alien-monitor)
@@ -112,6 +143,7 @@ See also `docs/uni-economy.md`, `docs/uni-troubleshooting.md`.
 | Feature | Repos | Status |
 |---------|-------|--------|
 | Agent IPO auto-listing + revenue routing | aicom pipeline + hub + acex | **Shipped** |
+| Proof-of-Audit hub ledger + Pulse UI + Solana mirror | hub + pulse-terminal + acex | **Shipped** |
 | On-chain `PulseDistributor` (Merkle settlement) | acex contracts | **Shipped** (forge-verified in acex CI) |
 | Signed receipt reputation score | hub + provenance + widget | Planned |
 | `aimarket verify <url>` | aimarket-protocol test vectors | Planned |
@@ -119,7 +151,7 @@ See also `docs/uni-economy.md`, `docs/uni-troubleshooting.md`.
 
 ## Professional checklist for releases
 
-1. Hub unit tests: `cd aimarket-hub && pytest tests/test_sandbox.py tests/test_acex_ipo.py tests/test_acex_ipo_api.py tests/test_api.py -q`
+1. Hub unit tests: `cd aimarket-hub && pytest tests/test_sandbox.py tests/test_acex_ipo.py tests/test_acex_audit.py tests/test_acex_ipo_api.py tests/test_api.py -q`
 2. Widget: hard-refresh storefront; confirm Try free decrements quota
 3. Agent demo: `demo_agent_to_agent.py` exit 0
 4. Agent IPO demo: `demo_agent_ipo.py` exit 0 (factory → hub → ACEX reconciles)

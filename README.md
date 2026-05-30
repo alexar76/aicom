@@ -68,7 +68,7 @@ Switch **TEST / LIVE / UNI** in the top-right control bar. On the public demo, *
 
 <h3 id="pulse-terminal">📈 Pulse Terminal (ACEX)</h3>
 
-**Capital-markets dashboard** — live CapShare NAV, revenue indices, and WebSocket pricing from Factory.
+**Capital-markets dashboard** — live CapShare NAV, revenue indices, **Proof-of-Audit** (auditor cover, default risk), and WebSocket pricing from Factory.
 
 | | |
 |---|---|
@@ -550,7 +550,7 @@ flowchart TB
 | **LinkedIn Profile Coach** | [`coach/`](coach/) (git submodule) | Flutter desktop/mobile · [alexar76/linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) |
 | **Dart SDK** | [`aimarket-sdks/dart/`](aimarket-sdks/dart/) | Consumer SDK for desktop apps |
 | **Widget** | [`aimarket-widget/`](aimarket-widget/) | Drop-in search + invoke |
-| **ACEX** | [`acex/`](acex/) | Agent Listing Protocol · CapShares · Pulse Terminal |
+| **ACEX** | [`acex/`](acex/) | Agent Listing Protocol · CapShares · **Proof-of-Audit** · Pulse Terminal |
 
 **Full ecosystem reference (C4, sequences, deployment):** **[docs/ecosystem-architecture.md](docs/ecosystem-architecture.md)**
 

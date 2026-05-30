@@ -77,6 +77,8 @@ def test_acex_phase2_files_present():
     lib = (root / "acex" / "contracts" / "solana" / "programs" / "acex-capital" / "src" / "lib.rs").read_text()
     assert "create_capsense_series" in lib
     assert "buy_capsense_option" in lib
+    assert "stake_audit" in lib
+    assert "fund_audit_rewards" in lib
 
 
 def test_factory_capital_pricing_route_source():
@@ -92,6 +94,30 @@ def test_pulse_terminal_app_present():
     assert (root / "package.json").is_file()
     assert (root / "src" / "App.tsx").is_file()
     assert (root / "src" / "hooks" / "usePricingStream.ts").is_file()
+
+
+def test_pricing_audit_overlay():
+    caps = [
+        {"product_id": "prod-a", "capability_id": "x", "price_per_call_usd": 0.1},
+    ]
+    audit_overlay = {
+        "prod-a": {
+            "enabled": True,
+            "aggregate_score_bps": 8000,
+            "total_cover_usd": 10_000.0,
+            "auditor_count": 1,
+            "audit_fee_bps": 100,
+            "accrued_audit_rewards_usd": 0.5,
+            "suggested_note_spread_bps": 400,
+            "default_risk": "none",
+            "default": {"defaulted": False, "baseline_price_usd": None, "twap_price_usd": None, "drawdown_bps": None},
+            "coverages": [],
+        }
+    }
+    body = build_pricing_snapshot(caps, audit_overlay=audit_overlay)
+    row = body["listings"][0]
+    assert row["proof_of_audit"]["enabled"] is True
+    assert body["proof_of_audit"]["listings_with_coverage"] == 1
 
 
 def test_hub_capital_pricing_route_source():
