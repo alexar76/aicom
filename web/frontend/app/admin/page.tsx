@@ -24,6 +24,7 @@ import {
   FactoryFloorTab,
   TimeTravelReplayTab,
   ProductShowcaseTab,
+  BlogPostsTab,
   PromptImprovementTab,
   NewProductTab,
   PipelineTab,
@@ -194,6 +195,8 @@ function AdminPageInner() {
         return <TimeTravelReplayTab locale={locale} />;
       case 'showcase':
         return <ProductShowcaseTab locale={locale} />;
+      case 'blog':
+        return <BlogPostsTab locale={locale} />;
       case 'prompt-loop':
         return <PromptImprovementTab locale={locale} />;
       case 'products':

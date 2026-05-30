@@ -32,6 +32,7 @@ import {
   Clock,
   Film,
   Sparkles,
+  Newspaper,
 } from 'lucide-react';
 import { AdminLocale, t } from '@/lib/adminI18n';
 
@@ -64,6 +65,7 @@ export function Sidebar({
     { id: 'factory-floor', label: t(locale, 'tab.factoryFloor'), icon: Zap },
     { id: 'time-travel', label: t(locale, 'tab.timeTravel'), icon: Clock },
     { id: 'showcase', label: t(locale, 'tab.showcase'), icon: Film },
+    { id: 'blog', label: t(locale, 'tab.blog'), icon: Newspaper },
     { id: 'prompt-loop', label: t(locale, 'tab.promptLoop'), icon: Sparkles },
     { id: 'pipeline', label: t(locale, 'tab.pipeline'), icon: Activity },
     { id: 'new-product', label: t(locale, 'tab.newProduct'), icon: Plus },

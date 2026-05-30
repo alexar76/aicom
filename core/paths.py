@@ -274,6 +274,10 @@ def blog_posts_dir() -> Path:
     return data_root() / "blog" / "posts"
 
 
+def blog_assets_dir() -> Path:
+    return data_root() / "blog" / "assets"
+
+
 def blog_index_path() -> Path:
     return data_root() / "blog" / "index.json"
 

@@ -19,6 +19,7 @@ import { LLM_LOGS_DICT } from './dict/llmLogs';
 import { AGENT_LOGS_DICT } from './dict/agentLogs';
 import { CORPORATE_CHAT_DICT } from './dict/corporateChat';
 import { WOW_DICT } from './dict/wow';
+import { BLOG_DICT } from './dict/blog';
 import type { AdminLocale, I18nDict } from './types';
 
 export type { AdminLocale } from './types';
@@ -45,6 +46,7 @@ const DICT: I18nDict = {
   ...AGENT_LOGS_DICT,
   ...CORPORATE_CHAT_DICT,
   ...WOW_DICT,
+  ...BLOG_DICT,
 };
 
 export function detectAdminLocale(): AdminLocale {

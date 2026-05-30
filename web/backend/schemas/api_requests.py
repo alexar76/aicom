@@ -391,3 +391,26 @@ class ProductShowcaseEnqueueRequest(BaseModel):
 
 class PromptImprovementApplyRequest(BaseModel):
     proposal_id: str = Field(..., min_length=4, max_length=120)
+
+
+class BlogPostUpdateRequest(BaseModel):
+    title: Optional[str] = Field(None, min_length=1, max_length=300)
+    excerpt: Optional[str] = Field(None, max_length=500)
+    readTime: Optional[str] = Field(None, max_length=40)
+    tags: Optional[list[str]] = None
+    body: Optional[list[dict[str, Any]]] = None
+    status: Optional[str] = Field(None, pattern="^(published|draft)$")
+    publishedAt: Optional[str] = Field(None, max_length=20)
+    author: Optional[str] = Field(None, max_length=120)
+    relatedProducts: Optional[list[dict[str, Any]]] = None
+
+
+class BlogPostBackfillRequest(BaseModel):
+    only_missing: bool = True
+    capture_screenshots: bool = False
+    overwrite: bool = False
+    base_url: Optional[str] = Field(None, max_length=500)
+
+
+class BlogScreenshotRequest(BaseModel):
+    base_url: Optional[str] = Field(None, max_length=500)

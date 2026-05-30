@@ -470,8 +470,10 @@ app.include_router(admin_users_api.router)
 app.include_router(admin_iteration_hub.router)
 app.include_router(admin_pipeline_database.router)
 from web.backend.api.admin import wow_features as admin_wow_features
+from web.backend.api.admin import blog_posts_admin as admin_blog_posts
 
 app.include_router(admin_wow_features.router, prefix="/api/admin")
+app.include_router(admin_blog_posts.router, prefix="/api/admin")
 
 from web.backend.openapi_meta import apply_openapi_metadata
 

@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
 
+from web.backend.services.blog_screenshot import asset_file_for_request
 from web.backend.services.product_blog import get_blog_post, list_blog_posts
 
 router = APIRouter(prefix="/api/blog", tags=["blog"])
@@ -19,4 +21,14 @@ def api_get_blog_post(slug: str) -> dict:
     post = get_blog_post(slug)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
+    if str(post.get("status") or "published") == "draft":
+        raise HTTPException(status_code=404, detail="Post not found")
     return post
+
+
+@router.get("/assets/{filename}")
+def api_blog_asset(filename: str):
+    path = asset_file_for_request(filename)
+    if not path:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    return FileResponse(path, media_type="image/webp")

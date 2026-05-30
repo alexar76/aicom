@@ -40,7 +40,14 @@ Required shape inside `blog_post`:
   - `{type: "h2", text: string}` — section headings
   - `{type: "ul", items: [string, ...]}` — feature bullets or checklist
   - `{type: "quote", text: string}` — optional pull quote
+  - `{type: "img", src: string, alt: string, caption?: string}` — optional hero screenshot (see below)
   - `{type: "product_link", productId: "<filled by factory>", label: string}` — optional; factory adds if missing
+
+Optional screenshot (marketer decides):
+- `include_screenshot`: boolean — set `true` when a visual hero helps (landings, dashboards, storefronts). When true, the factory captures the sandbox preview and inserts an `img` block automatically.
+- You may also add an explicit `{type: "img", src: "__FACTORY_SCREENSHOT__", alt: "...", caption?: "..."}` block; the factory replaces `__FACTORY_SCREENSHOT__` with the captured URL.
+- `screenshot_caption`: optional string — caption under the hero image when `include_screenshot` is true.
+- Set `include_screenshot: false` for CLI tools, APIs, or products where visuals add little value.
 
 Minimum body: intro paragraph, one `h2` + bullets on what shipped, closing paragraph on who it's for.
 Reference real features from the specification — not placeholder copy.
@@ -57,4 +64,4 @@ Output format: JSON with fields:
 - selling_description: string (max 200 chars)
 - seo_metadata: {title: string, description: string, keywords: list of string}
 - social_media_posts: list of {platform: string, content: string, hashtags: list of string}
-- blog_post: {title: string, excerpt: string, read_time_minutes: integer, tags: list of string, body: list of block objects}
+- blog_post: {title: string, excerpt: string, read_time_minutes: integer, tags: list of string, include_screenshot: boolean, screenshot_caption?: string, body: list of block objects}

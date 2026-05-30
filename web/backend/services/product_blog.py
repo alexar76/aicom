@@ -5,19 +5,31 @@ from __future__ import annotations
 import json
 import logging
 import re
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from core.paths import blog_index_path, blog_posts_dir, marketing_content_path
+from core.paths import blog_index_path, blog_posts_dir, data_root, marketing_content_path
+from web.backend.services.blog_screenshot import (
+    FACTORY_SCREENSHOT_TOKEN,
+    blog_asset_public_url,
+    capture_blog_hero,
+)
 
 logger = logging.getLogger(__name__)
 
 _ALLOWED_BLOCKS = {"p", "h2", "quote", "ul", "img", "product_link"}
 _SLUG_SAFE = re.compile(r"[^a-z0-9]+")
+_INDEX_FIELDS = ("slug", "title", "excerpt", "publishedAt", "readTime", "tags", "author", "productId", "status")
 
 
-def _normalize_body(raw: Any, *, product_id: str, product_name: str) -> list[dict[str, Any]]:
+def _normalize_body(
+    raw: Any,
+    *,
+    product_id: str,
+    product_name: str,
+    screenshot_url: str | None = None,
+) -> list[dict[str, Any]]:
     blocks: list[dict[str, Any]] = []
     if isinstance(raw, list):
         for item in raw:
@@ -37,9 +49,12 @@ def _normalize_body(raw: Any, *, product_id: str, product_name: str) -> list[dic
                 if items:
                     blocks.append({"type": "ul", "items": items})
             elif kind == "img" and item.get("src"):
+                src = str(item["src"]).strip()
+                if src in (FACTORY_SCREENSHOT_TOKEN, "factory_screenshot"):
+                    src = screenshot_url or blog_asset_public_url(product_id)
                 block: dict[str, Any] = {
                     "type": "img",
-                    "src": str(item["src"]).strip(),
+                    "src": src,
                     "alt": str(item.get("alt") or product_name).strip(),
                 }
                 if item.get("caption"):
@@ -69,6 +84,29 @@ def _normalize_body(raw: Any, *, product_id: str, product_name: str) -> list[dic
     return blocks
 
 
+def _maybe_prepend_screenshot(
+    body: list[dict[str, Any]],
+    *,
+    product_id: str,
+    product_name: str,
+    screenshot_url: str | None,
+    caption: str | None = None,
+) -> list[dict[str, Any]]:
+    if not screenshot_url:
+        return body
+    if any(b.get("type") == "img" for b in body):
+        return body
+    img_block: dict[str, Any] = {
+        "type": "img",
+        "src": screenshot_url,
+        "alt": product_name or product_id,
+    }
+    if caption:
+        img_block["caption"] = caption
+    insert_at = 1 if body and body[0].get("type") == "p" else 0
+    return body[:insert_at] + [img_block] + body[insert_at:]
+
+
 def _fallback_body(marketing: dict[str, Any], *, product_id: str, product_name: str) -> list[dict[str, Any]]:
     parts: list[dict[str, Any]] = []
     tagline = str(marketing.get("tagline") or "").strip()
@@ -77,12 +115,23 @@ def _fallback_body(marketing: dict[str, Any], *, product_id: str, product_name: 
         parts.append({"type": "p", "text": tagline})
     if long_desc:
         parts.append({"type": "p", "text": long_desc})
+    if not parts:
+        plan = str(marketing.get("marketing_plan") or marketing.get("selling_description") or "").strip()
+        if plan:
+            parts.append({"type": "p", "text": plan})
     benefits = marketing.get("key_benefits")
     if isinstance(benefits, list):
         items = [str(b).strip() for b in benefits if str(b).strip()]
         if items:
             parts.append({"type": "h2", "text": "Key benefits"})
             parts.append({"type": "ul", "items": items[:5]})
+    elif not parts:
+        parts.append(
+            {
+                "type": "p",
+                "text": f"{product_name} has shipped from the AI-Factory pipeline and is live on the marketplace.",
+            }
+        )
     parts.append(
         {
             "type": "product_link",
@@ -109,7 +158,26 @@ def _load_marketing(product_id: str) -> dict[str, Any] | None:
     return marketing if isinstance(marketing, dict) else None
 
 
-def build_launch_post(product_id: str, *, product: dict[str, Any] | None = None) -> dict[str, Any] | None:
+def _wants_screenshot(blog: dict[str, Any]) -> bool:
+    if blog.get("include_screenshot") is True:
+        return True
+    body = blog.get("body")
+    if isinstance(body, list):
+        for item in body:
+            if isinstance(item, dict) and item.get("type") == "img":
+                src = str(item.get("src") or "")
+                if src in (FACTORY_SCREENSHOT_TOKEN, "factory_screenshot"):
+                    return True
+    return False
+
+
+def build_launch_post(
+    product_id: str,
+    *,
+    product: dict[str, Any] | None = None,
+    capture_screenshot: bool = False,
+    base_url: str | None = None,
+) -> dict[str, Any] | None:
     marketing = _load_marketing(product_id)
     if not marketing:
         return None
@@ -121,6 +189,10 @@ def build_launch_post(product_id: str, *, product: dict[str, Any] | None = None)
         or product_id
     ).strip()
     blog = marketing.get("blog_post") if isinstance(marketing.get("blog_post"), dict) else {}
+
+    screenshot_url: str | None = None
+    if capture_screenshot and _wants_screenshot(blog):
+        screenshot_url = capture_blog_hero(product_id, base_url=base_url)
 
     title = str(blog.get("title") or f"Launch: {product_name}").strip()
     excerpt = str(
@@ -144,9 +216,29 @@ def build_launch_post(product_id: str, *, product: dict[str, Any] | None = None)
     if "product launch" not in [t.lower() for t in tags]:
         tags.insert(0, "product launch")
 
-    body = _normalize_body(blog.get("body"), product_id=product_id, product_name=product_name)
+    body = _normalize_body(
+        blog.get("body"),
+        product_id=product_id,
+        product_name=product_name,
+        screenshot_url=screenshot_url,
+    )
     if not body:
         body = _fallback_body(marketing, product_id=product_id, product_name=product_name)
+
+    caption = str(blog.get("screenshot_caption") or "").strip() or None
+    if caption:
+        for block in body:
+            if isinstance(block, dict) and block.get("type") == "img" and not block.get("caption"):
+                block["caption"] = caption
+
+    if _wants_screenshot(blog):
+        body = _maybe_prepend_screenshot(
+            body,
+            product_id=product_id,
+            product_name=product_name,
+            screenshot_url=screenshot_url,
+            caption=caption,
+        )
 
     return {
         "slug": launch_slug(product_id),
@@ -157,9 +249,11 @@ def build_launch_post(product_id: str, *, product: dict[str, Any] | None = None)
         "readTime": f"{read_minutes} min",
         "tags": tags,
         "author": "AI-Factory Marketing",
+        "status": "published",
         "relatedProducts": [{"productId": product_id, "label": product_name}],
         "body": body,
         "source": "marketing_agent",
+        "includeScreenshot": bool(_wants_screenshot(blog)),
     }
 
 
@@ -168,6 +262,10 @@ def _write_index(posts: list[dict[str, Any]]) -> None:
     idx_path.parent.mkdir(parents=True, exist_ok=True)
     posts_sorted = sorted(posts, key=lambda p: p.get("publishedAt") or "", reverse=True)
     idx_path.write_text(json.dumps({"posts": posts_sorted}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _index_summary(post: dict[str, Any]) -> dict[str, Any]:
+    return {k: post[k] for k in _INDEX_FIELDS if k in post}
 
 
 def _load_index() -> list[dict[str, Any]]:
@@ -182,30 +280,80 @@ def _load_index() -> list[dict[str, Any]]:
     return [p for p in posts if isinstance(p, dict)] if isinstance(posts, list) else []
 
 
-def publish_product_launch_blog_post(product_id: str, *, product: dict[str, Any] | None = None) -> bool:
-    """Persist a launch blog post when a product pipeline completes."""
-    post = build_launch_post(product_id, product=product)
-    if not post:
-        logger.info("blog: skip %s — no marketing content", product_id)
-        return False
-
-    slug = str(post["slug"])
+def _save_post_file(post: dict[str, Any]) -> None:
+    slug = str(post.get("slug") or "").strip()
+    if not slug:
+        raise ValueError("slug required")
     posts_dir = blog_posts_dir()
     posts_dir.mkdir(parents=True, exist_ok=True)
     post_path = posts_dir / f"{slug}.json"
     post_path.write_text(json.dumps(post, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+
+def _upsert_index_summary(post: dict[str, Any]) -> None:
+    slug = str(post.get("slug") or "")
     index = [p for p in _load_index() if p.get("slug") != slug]
-    summary = {k: post[k] for k in ("slug", "title", "excerpt", "publishedAt", "readTime", "tags", "author", "productId") if k in post}
-    index.append(summary)
+    index.append(_index_summary(post))
     _write_index(index)
 
+
+def publish_product_launch_blog_post(
+    product_id: str,
+    *,
+    product: dict[str, Any] | None = None,
+    capture_screenshot: bool = True,
+    base_url: str | None = None,
+    overwrite: bool = False,
+) -> bool:
+    """Persist a launch blog post when a product pipeline completes."""
+    slug = launch_slug(product_id)
+    existing = get_blog_post(slug)
+    if existing and not overwrite:
+        if str(existing.get("source") or "") == "admin_edited":
+            logger.info("blog: skip %s — admin-edited post exists", slug)
+            return False
+        logger.info("blog: skip %s — already published", slug)
+        return False
+
+    post = build_launch_post(
+        product_id,
+        product=product,
+        capture_screenshot=capture_screenshot,
+        base_url=base_url,
+    )
+    if not post:
+        logger.info("blog: skip %s — no marketing content", product_id)
+        return False
+
+    if existing and str(existing.get("source") or "") == "admin_edited":
+        # Preserve admin edits; only refresh screenshot if requested and missing img
+        if capture_screenshot and post.get("includeScreenshot"):
+            body = list(existing.get("body") or [])
+            if not any(b.get("type") == "img" for b in body if isinstance(b, dict)):
+                shot = capture_blog_hero(product_id, base_url=base_url)
+                if shot:
+                    existing["body"] = _maybe_prepend_screenshot(
+                        body,
+                        product_id=product_id,
+                        product_name=str(existing.get("title") or product_id),
+                        screenshot_url=shot,
+                    )
+                    _save_post_file(existing)
+                    _upsert_index_summary(existing)
+                    return True
+        return False
+
+    _save_post_file(post)
+    _upsert_index_summary(post)
     logger.info("blog: published launch post %s for %s", slug, product_id)
     return True
 
 
-def list_blog_posts() -> list[dict[str, Any]]:
-    return _load_index()
+def list_blog_posts(*, include_drafts: bool = False) -> list[dict[str, Any]]:
+    posts = _load_index()
+    if include_drafts:
+        return posts
+    return [p for p in posts if str(p.get("status") or "published") != "draft"]
 
 
 def get_blog_post(slug: str) -> dict[str, Any] | None:
@@ -217,3 +365,102 @@ def get_blog_post(slug: str) -> dict[str, Any] | None:
     except (OSError, json.JSONDecodeError):
         return None
     return data if isinstance(data, dict) else None
+
+
+def update_blog_post(slug: str, patch: dict[str, Any], *, edited_by: str = "admin") -> dict[str, Any]:
+    post = get_blog_post(slug)
+    if not post:
+        raise ValueError(f"Post not found: {slug}")
+
+    allowed = {
+        "title",
+        "excerpt",
+        "readTime",
+        "tags",
+        "body",
+        "status",
+        "publishedAt",
+        "author",
+        "relatedProducts",
+    }
+    for key, value in patch.items():
+        if key in allowed:
+            post[key] = value
+
+    post["source"] = "admin_edited"
+    post["editedAt"] = datetime.now(timezone.utc).isoformat()
+    post["editedBy"] = edited_by
+    _save_post_file(post)
+    _upsert_index_summary(post)
+    return post
+
+
+def regenerate_post_screenshot(slug: str, *, base_url: str | None = None) -> dict[str, Any]:
+    post = get_blog_post(slug)
+    if not post:
+        raise ValueError(f"Post not found: {slug}")
+    product_id = str(post.get("productId") or "").strip()
+    if not product_id:
+        raise ValueError("Post has no productId")
+
+    shot = capture_blog_hero(product_id, base_url=base_url)
+    if not shot:
+        raise RuntimeError("Screenshot capture failed — is the app running with sandbox access?")
+
+    body = [b for b in (post.get("body") or []) if not (isinstance(b, dict) and b.get("type") == "img")]
+    product_name = str(post.get("title") or product_id)
+    related = post.get("relatedProducts")
+    if isinstance(related, list) and related:
+        product_name = str((related[0] or {}).get("label") or product_name)
+    post["body"] = _maybe_prepend_screenshot(
+        body,
+        product_id=product_id,
+        product_name=product_name,
+        screenshot_url=shot,
+    )
+    post["includeScreenshot"] = True
+    _save_post_file(post)
+    return post
+
+
+def backfill_launch_posts(
+    *,
+    only_missing: bool = True,
+    capture_screenshots: bool = False,
+    base_url: str | None = None,
+    overwrite: bool = False,
+) -> dict[str, Any]:
+    """Create launch posts for every product with marketing_content.json."""
+    state_root = data_root() / "state"
+    if not state_root.is_dir():
+        return {"published": 0, "skipped": 0, "errors": []}
+
+    published = 0
+    skipped = 0
+    errors: list[str] = []
+    for d in sorted(state_root.iterdir()):
+        if not d.is_dir() or not d.name.startswith("prod-"):
+            continue
+        pid = d.name
+        if not marketing_content_path(pid).is_file():
+            skipped += 1
+            continue
+        slug = launch_slug(pid)
+        if only_missing and not overwrite and get_blog_post(slug):
+            skipped += 1
+            continue
+        try:
+            ok = publish_product_launch_blog_post(
+                pid,
+                capture_screenshot=capture_screenshots,
+                base_url=base_url,
+                overwrite=overwrite,
+            )
+            if ok:
+                published += 1
+            else:
+                skipped += 1
+        except Exception as exc:
+            errors.append(f"{pid}: {exc}")
+
+    return {"published": published, "skipped": skipped, "errors": errors}

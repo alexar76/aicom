@@ -20,6 +20,7 @@ export { MonitorTab } from './tabs/MonitorTab';
 export { FactoryFloorTab } from './tabs/FactoryFloorTab';
 export { TimeTravelReplayTab } from './tabs/TimeTravelReplayTab';
 export { ProductShowcaseTab } from './tabs/ProductShowcaseTab';
+export { BlogPostsTab } from './tabs/BlogPostsTab';
 export { PromptImprovementTab } from './tabs/PromptImprovementTab';
 export { DirectorTab } from './tabs/DirectorTab';
 export { DiscoveryTab } from './tabs/DiscoveryTab';

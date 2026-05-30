@@ -1140,6 +1140,54 @@ class ApiClient {
     });
   }
 
+  // ── Blog posts (Marketing launch articles) ───────────────────────────────
+
+  async getAdminBlogPosts(): Promise<{ posts: any[]; count: number }> {
+    return this.request('/admin/blog/posts');
+  }
+
+  async getAdminBlogPost(slug: string): Promise<any> {
+    return this.request(`/admin/blog/posts/${encodeURIComponent(slug)}`);
+  }
+
+  async updateAdminBlogPost(
+    slug: string,
+    body: {
+      title?: string;
+      excerpt?: string;
+      readTime?: string;
+      tags?: string[];
+      body?: unknown[];
+      status?: 'published' | 'draft';
+      publishedAt?: string;
+      author?: string;
+    },
+  ): Promise<any> {
+    return this.request(`/admin/blog/posts/${encodeURIComponent(slug)}`, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+    });
+  }
+
+  async backfillAdminBlogPosts(body?: {
+    only_missing?: boolean;
+    capture_screenshots?: boolean;
+    overwrite?: boolean;
+    base_url?: string;
+  }): Promise<{ published: number; skipped: number; errors: string[] }> {
+    return this.request('/admin/blog/posts/backfill', {
+      method: 'POST',
+      body: JSON.stringify(body || {}),
+    });
+  }
+
+  async captureAdminBlogScreenshot(slug: string, baseUrl?: string): Promise<any> {
+    return this.request(`/admin/blog/posts/${encodeURIComponent(slug)}/screenshot`, {
+      method: 'POST',
+      body: JSON.stringify(baseUrl ? { base_url: baseUrl } : {}),
+    });
+  }
+
   async getProviders(): Promise<ProviderStatus[]> {
     const result = await this.request<{ providers: Record<string, any> }>('/admin/providers');
     const providers = result.providers || {};
