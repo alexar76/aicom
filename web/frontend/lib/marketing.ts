@@ -42,6 +42,9 @@ export type MarketingStrings = {
   heroPhrasePlaceholder: string;
   heroSloganLineLabel: string;
   heroSloganLinePlaceholder: string;
+  heroStylePresetLabel: string;
+  heroStylePresetAuto: string;
+  heroStylePresetHint: string;
   heroPricingLine: string;
   heroGuestBuildCta: string;
   heroGuestHelp: string;
@@ -152,6 +155,9 @@ const EN: MarketingStrings = {
   heroSloganLineLabel: 'Slogan or one-line business brief',
   heroSloganLinePlaceholder:
     'e.g. Luxury leather wallets D2C — hero, craftsmanship story, 3 reasons to buy, email capture, footer',
+  heroStylePresetLabel: 'Visual style preset',
+  heroStylePresetAuto: 'Auto — pick from your brief',
+  heroStylePresetHint: '20 curated directions (glassmorphism, editorial, cyberpunk HUD, …). Fast path: mini-spec → architect → developer → QA.',
   heroPricingLine:
     'One click queues a page you can track · sandbox after QA · optional checkout — or switch to Admin when you need a full application instead.',
   heroGuestBuildCta: 'Build business landing',

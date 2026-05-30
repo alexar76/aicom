@@ -22,6 +22,8 @@ type NewProductTabState = {
   categoryChoice: string;
   mode: ProductMode;
   contentLocale: ContentLocaleChoice;
+  stylePresetId: string;
+  landingFastPath: boolean;
   submitting: boolean;
   result: string | null;
   createdId: string | null;
@@ -43,6 +45,8 @@ type NewProductTabState = {
   setCategoryChoice: (v: string) => void;
   setMode: (v: ProductMode) => void;
   setContentLocale: (v: ContentLocaleChoice) => void;
+  setStylePresetId: (v: string) => void;
+  setLandingFastPath: (v: boolean) => void;
   setSubmitting: (v: boolean) => void;
   setResult: (v: string | null) => void;
   setCreatedId: (v: string | null) => void;
@@ -67,6 +71,8 @@ export const useNewProductTabStore = create<NewProductTabState>((set) => ({
   categoryChoice: 'saas',
   mode: 'prototype',
   contentLocale: 'auto',
+  stylePresetId: '',
+  landingFastPath: true,
   submitting: false,
   result: null,
   createdId: null,
@@ -88,6 +94,8 @@ export const useNewProductTabStore = create<NewProductTabState>((set) => ({
   setCategoryChoice: (v) => set({ categoryChoice: v }),
   setMode: (v) => set({ mode: v }),
   setContentLocale: (v) => set({ contentLocale: v }),
+  setStylePresetId: (v) => set({ stylePresetId: v }),
+  setLandingFastPath: (v) => set({ landingFastPath: v }),
   setSubmitting: (v) => set({ submitting: v }),
   setResult: (v) => set({ result: v }),
   setCreatedId: (v) => set({ createdId: v }),

@@ -1060,7 +1060,7 @@ async def admin_create_product(
     if not request.idea or not request.idea.strip():
         raise HTTPException(status_code=400, detail="Product idea is required")
 
-    from agents.product_profile import infer_delivery_profile, normalize_delivery_profile
+    from agents.product_profile import MARKETING_LANDING, infer_delivery_profile, normalize_delivery_profile
     from marketplace_taxonomy import slug_to_marketplace_category
     from web.backend.services.desktop_product import infer_category_for_new_product
 
@@ -1109,6 +1109,13 @@ async def admin_create_product(
         "pricing": None,
         "evolution_history": [],
     }
+
+    if request.style_preset_id and str(request.style_preset_id).strip():
+        product["style_preset_id"] = str(request.style_preset_id).strip()
+    if request.landing_fast_path is not None:
+        product["landing_fast_path"] = bool(request.landing_fast_path)
+    elif dprof == MARKETING_LANDING:
+        product["landing_fast_path"] = True
 
     try:
         _append_product_to_pipeline(product)
@@ -1233,6 +1240,20 @@ async def admin_retry_batch_failed(batch_id: str, _admin: dict = Depends(require
     return {"ok": True, **retry, "summary": summarize_batch(batch_id)}
 
 
+@app.get("/api/public/landing-presets")
+async def public_landing_presets():
+    """Public catalog of bundled landing style presets (id + title only)."""
+    from web.backend.services.reference_templates import load_style_presets
+
+    presets = load_style_presets()
+    items = [
+        {"id": str(p.get("id") or ""), "title": str(p.get("title") or p.get("id") or "")}
+        for p in presets
+        if p.get("id")
+    ]
+    return {"presets": items, "count": len(items)}
+
+
 @app.post("/api/public/generate-landing")
 async def public_generate_landing(request: Request, body: GuestLandingRequest):
     """
@@ -1277,12 +1298,16 @@ async def public_generate_landing(request: Request, body: GuestLandingRequest):
     admin_block = charter + "\n\n" + wrap_untrusted_for_llm_embedding(phrase_raw, max_len=2000)
 
     guest_tags = ["guest-landing", "marketing-landing", "b2b"]
+    if body.preset_id:
+        guest_tags.append(f"preset:{body.preset_id.strip()}")
 
     product = {
         "id": product_id,
         "idea": phrase_clean,
         "admin_instructions": admin_block,
         "delivery_profile": dprof,
+        "landing_fast_path": bool(body.fast_path),
+        "style_preset_id": (body.preset_id or "").strip() or None,
         "production_mode": False,
         "category": "saas",
         "tags": guest_tags,
@@ -1317,7 +1342,12 @@ async def public_generate_landing(request: Request, body: GuestLandingRequest):
             len(phrase_clean),
             ip,
         )
-        msg_landing = "Landing build queued. Open the product page to track progress and preview in sandbox when ready."
+        msg_landing = (
+            "Landing build queued (fast path: architect → developer → QA). "
+            "Open the product page to track progress and preview in sandbox when ready."
+            if body.fast_path
+            else "Landing build queued. Open the product page to track progress and preview in sandbox when ready."
+        )
         msg_full = (
             "Full-stack MVP build queued (browser demo + backend scaffold where relevant). "
             "Track progress on the product page; sandbox previews resolve relative links automatically."

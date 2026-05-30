@@ -133,7 +133,7 @@ async def run_agent_task(
                     products[pid]["delivery_profile"] = dp
                     products[pid]["updated_at"] = time.time()
 
-            if agent_type == "architect" and pid in products:
+            if agent_type in ("architect", "landing_architect") and pid in products:
                 arch_ok, arch_issues = host._architecture_gate(
                     pid, delivery_profile=delivery_profile_from_product_dict(products[pid])
                 )
@@ -185,7 +185,7 @@ async def run_agent_task(
                     logger.warning("Architecture gate blocked developer stage for %s: %s", pid, arch_issues)
                     return
 
-            if agent_type == "developer" and pid in products:
+            if agent_type in ("developer", "landing_developer") and pid in products:
                 try:
                     host._apply_watermark_policy(pid, products[pid])
                 except Exception as wm_exc:

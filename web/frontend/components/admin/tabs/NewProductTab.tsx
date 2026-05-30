@@ -40,6 +40,7 @@ import {
 } from '@/lib/contentLanguages';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
 import { useNewProductTabStore } from '@/lib/newProductTabStore';
+import { LandingStylePresetPicker } from '@/components/landing/LandingStylePresetPicker';
 
 function getStepLabels(locale: AdminLocale): readonly [string, string, string] {
   return [
@@ -158,6 +159,10 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
     setMode,
     contentLocale,
     setContentLocale,
+    stylePresetId,
+    setStylePresetId,
+    landingFastPath,
+    setLandingFastPath,
     submitting,
     setSubmitting,
     result,
@@ -368,6 +373,10 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
         content_locale: contentLocale,
         ...(deliveryChoice !== 'infer' ? { delivery_profile: deliveryChoice } : {}),
         ...(categoryChoice ? { category: categoryChoice } : {}),
+        ...(deliveryChoice === 'marketing_landing' && stylePresetId
+          ? { style_preset_id: stylePresetId }
+          : {}),
+        ...(deliveryChoice === 'marketing_landing' ? { landing_fast_path: landingFastPath } : {}),
       });
       const pid = typeof data.product_id === 'string' ? data.product_id : null;
       setCreatedId(pid);
@@ -635,11 +644,11 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                     </label>
                     <select
                       value={deliveryChoice}
-                      onChange={(e) =>
-                        setDeliveryChoice(
-                          e.target.value as 'full_software' | 'marketing_landing' | 'desktop_app' | 'infer',
-                        )
-                      }
+                      onChange={(e) => {
+                        const next = e.target.value as 'full_software' | 'marketing_landing' | 'desktop_app' | 'infer';
+                        setDeliveryChoice(next);
+                        if (next === 'marketing_landing') setLandingFastPath(true);
+                      }}
                       className="input-glass"
                     >
                       <option value="full_software">{t(locale, 'newProduct.delivery.full')}</option>
@@ -648,6 +657,29 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                       <option value="infer">{t(locale, 'newProduct.delivery.infer')}</option>
                     </select>
                   </div>
+                  {deliveryChoice === 'marketing_landing' ? (
+                    <div className="rounded-xl border border-fuchsia-500/25 bg-fuchsia-500/5 p-3 space-y-4">
+                      <LandingStylePresetPicker
+                        value={stylePresetId}
+                        onChange={setStylePresetId}
+                        autoLabel={t(locale, 'newProduct.stylePresetAuto')}
+                        label={t(locale, 'newProduct.stylePreset')}
+                        hint={t(locale, 'newProduct.stylePresetHint')}
+                      />
+                      <label className="flex items-start gap-3 text-sm text-gray-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={landingFastPath}
+                          onChange={(e) => setLandingFastPath(e.target.checked)}
+                          className="mt-1 rounded border-white/20 bg-black/40 text-fuchsia-500 focus:ring-fuchsia-500/40"
+                        />
+                        <span>
+                          <span className="font-medium text-white">{t(locale, 'newProduct.landingFastPath')}</span>
+                          <span className="mt-1 block text-xs text-gray-500">{t(locale, 'newProduct.landingFastPathHint')}</span>
+                        </span>
+                      </label>
+                    </div>
+                  ) : null}
                   <div>
                     <label className="mb-2 block text-sm font-medium text-gray-300">
                       {t(locale, 'newProduct.deliveryMode')}
@@ -807,6 +839,17 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                     <ul className="list-inside list-disc space-y-1 text-gray-400">
                       <li>Idea length: {idea.trim().length} chars</li>
                       <li>Delivery: {deliveryChoice}</li>
+                      {deliveryChoice === 'marketing_landing' ? (
+                        <>
+                          <li>
+                            {t(locale, 'newProduct.stylePreset')}:{' '}
+                            {stylePresetId || t(locale, 'newProduct.stylePresetAuto')}
+                          </li>
+                          <li>
+                            {t(locale, 'newProduct.landingFastPath')}: {landingFastPath ? 'yes' : 'no'}
+                          </li>
+                        </>
+                      ) : null}
                       <li>Mode: {mode}</li>
                       <li>
                         {t(locale, 'newProduct.contentLanguage')}: {contentLocaleLabel(contentLocale, locale)}

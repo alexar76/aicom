@@ -73,14 +73,26 @@ def test_policy_audit_passing_product_no_task(tmp_path, monkeypatch):
     root = tmp_path
     pid = "prod-audit-good"
     code_dir = root / "data" / "code" / pid
-    _write_manifest(code_dir, ["index.html", "style.css"])
-    html = """<!DOCTYPE html><html><head><title>G</title><link href="./style.css" rel="stylesheet"/></head>
+    _write_manifest(code_dir, ["index.html", "style.css", "main.py"])
+    html = """<!DOCTYPE html><html lang="en"><head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>G</title><link href="./style.css" rel="stylesheet"/></head>
 <body><main><h1>Hello world Feature A</h1>
 <p>Does something useful for teams every day. Task management for teams who need reliability.</p>
 <section><h2>Dashboard</h2><p>Analytics dashboard with live metrics for Feature A workflows.</p></section>
-<footer><p>Contact and onboarding for new users.</p></footer></main></body></html>"""
+<footer><p>Contact and onboarding for new users.</p></footer>
+<button type="button">Get started</button></main></body></html>"""
     (code_dir / "index.html").write_text(html, encoding="utf-8")
-    (code_dir / "style.css").write_text("body{}", encoding="utf-8")
+    (code_dir / "style.css").write_text(
+        """:root{--bg:#020617;--fg:#e2e8f0;--accent:#38bdf8}
+        body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif}
+        button:focus-visible{outline:3px solid var(--accent)}@media(max-width:720px){main{padding:16px}}""",
+        encoding="utf-8",
+    )
+    (code_dir / "main.py").write_text(
+        "from fastapi import FastAPI\napp = FastAPI()\n",
+        encoding="utf-8",
+    )
 
     spec_inner = {
         "product_name": "Good",

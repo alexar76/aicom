@@ -36,6 +36,9 @@ export const MARKETING_RU: MarketingStrings = {
   heroSloganLineLabel: 'Слоган или однострочный бриф бизнеса',
   heroSloganLinePlaceholder:
     'напр. Люксовые кожаные кошельки D2C — hero, история мастерства, 3 причины купить, email, футер',
+  heroStylePresetLabel: 'Стилевой пресет',
+  heroStylePresetAuto: 'Авто — по смыслу брифа',
+  heroStylePresetHint: '20 направлений (glassmorphism, editorial, cyberpunk HUD, …). Быстрый путь: mini-spec → architect → developer → QA.',
   heroPricingLine:
     'Один клик — страница в очереди · песочница после QA · опциональная оплата — или админка для полноценного приложения.',
   heroGuestBuildCta: 'Собрать бизнес-лендинг',

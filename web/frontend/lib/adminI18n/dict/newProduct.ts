@@ -111,6 +111,19 @@ export const NEW_PRODUCT_DICT: I18nDict = {
   'newProduct.preset.internal.short': { en: 'Full product · production-minded', ru: 'Полный продукт · прод', es: 'Producto completo · producción' },
   'newProduct.preset.desktop.label': { en: 'Desktop app (Tauri)', ru: 'Desktop-приложение (Tauri)', es: 'App de escritorio (Tauri)' },
   'newProduct.preset.desktop.short': { en: 'desktop_app · installable SKU', ru: 'desktop_app · установка', es: 'desktop_app · instalable' },
+  'newProduct.stylePreset': { en: 'Landing style preset', ru: 'Стилевой пресет лендинга', es: 'Preset visual del landing' },
+  'newProduct.stylePresetAuto': { en: 'Auto — match brief', ru: 'Авто — по брифу', es: 'Auto — según brief' },
+  'newProduct.stylePresetHint': {
+    en: '20 bundled directions from reference_templates/style_presets.json. Used by the fast landing pipeline.',
+    ru: '20 направлений из reference_templates/style_presets.json. Используются быстрым landing-пайплайном.',
+    es: '20 direcciones de reference_templates/style_presets.json. Las usa el pipeline rápido de landing.',
+  },
+  'newProduct.landingFastPath': { en: 'Fast landing pipeline', ru: 'Быстрый landing-пайплайн', es: 'Pipeline rápido de landing' },
+  'newProduct.landingFastPathHint': {
+    en: 'Mini-spec → landing architect → landing developer → QA (skips analyst/PM/marketing/devops).',
+    ru: 'Mini-spec → landing architect → landing developer → QA (без analyst/PM/marketing/devops).',
+    es: 'Mini-spec → landing architect → landing developer → QA (sin analyst/PM/marketing/devops).',
+  },
   'newProduct.delivery.desktop': {
     en: 'Desktop app (Tauri / Flutter / Electron)',
     ru: 'Desktop-приложение (Tauri / Flutter / Electron)',

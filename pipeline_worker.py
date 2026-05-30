@@ -32,6 +32,7 @@ from core.throughput_limits import (
 )
 from agents.product_profile import post_devops_human_gate_required
 from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW
+from orchestrator.landing_fast_flow import agent_flow_for_product
 from orchestrator.pipeline_worker_persistence import PipelineStatePersistence
 from orchestrator.pipeline_worker_sidecars import PipelineWorkerSidecarMixin
 from orchestrator.worker_components import PeerReviewEngine, QualityManager, TaskOrchestrator
@@ -266,13 +267,17 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             from agents.evolution_analyst import EvolutionAnalystAgent
             from agents.analyst import MarketResearchAgent
             from agents.methodologist import MethodologyAgent
+            from agents.landing_architect import LandingArchitectAgent
+            from agents.landing_developer import LandingDeveloperAgent
 
             self._agents = {
                 "pm": PMAgent(self._llm_router),
                 "architect": ArchitectAgent(self._llm_router),
+                "landing_architect": LandingArchitectAgent(self._llm_router),
                 "design_critic": DesignCriticAgent(self._llm_router),
                 "methodologist": MethodologyAgent(self._llm_router),
                 "developer": DeveloperAgent(self._llm_router),
+                "landing_developer": LandingDeveloperAgent(self._llm_router),
                 "hardening": HardeningAgent(self._llm_router),
                 "qa": QAAgent(self._llm_router),
                 "security": SecurityAgent(self._llm_router),
@@ -761,7 +766,7 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                 "priority": self._get_priority("__complete__"),
             }
 
-        next_info = PIPELINE_AGENT_FLOW.get(current_state)
+        next_info = agent_flow_for_product(product).get(current_state)
         if not next_info:
             return None
 
@@ -798,7 +803,7 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             "created_at": time.time(),
             "priority": self._get_priority(agent_type),
         }
-        if current_state == "BUG_FOUND" and agent_type == "developer":
+        if current_state == "BUG_FOUND" and agent_type in ("developer", "landing_developer"):
             bug_context = self._latest_bug_context(product)
             if bug_context:
                 task["input_data"]["bug_context"] = bug_context
@@ -820,7 +825,9 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             "marketing": 3,
             "methodologist": 4,
             "architect": 5,
+            "landing_architect": 5,
             "developer": 6,
+            "landing_developer": 6,
             "design_critic": 6,
             "hardening": 6,
             "qa": 7,

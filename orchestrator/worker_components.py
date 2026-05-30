@@ -160,6 +160,12 @@ class TaskOrchestrator:
                     for t in task_queue
                 )
                 if not has_task:
+                    from orchestrator.landing_fast_flow import is_landing_fast_product
+
+                    if is_landing_fast_product(product):
+                        first_agent, first_state = "__landing_spec__", "SPEC_WRITTEN"
+                    else:
+                        first_agent, first_state = "analyst", "MARKET_RESEARCHED"
                     # Prepend so new products are not starved behind a huge historical backlog
                     # (task_queue is scanned in list order; SQLite loads tasks by created_at ASC).
                     task_queue.insert(
@@ -167,8 +173,8 @@ class TaskOrchestrator:
                         {
                             "id": f"task-{uuid.uuid4().hex[:12]}",
                             "product_id": pid,
-                            "agent_type": "analyst",
-                            "state": "MARKET_RESEARCHED",
+                            "agent_type": first_agent,
+                            "state": first_state,
                             "status": "pending",
                             "retry_count": 0,
                             "max_retries": 3,

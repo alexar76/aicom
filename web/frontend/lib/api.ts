@@ -2137,6 +2137,8 @@ class ApiClient {
     category?: string;
     interface_locale?: string;
     content_locale?: string;
+    style_preset_id?: string;
+    landing_fast_path?: boolean;
   }): Promise<{ product_id: string; state: string; message: string }> {
     return this.request('/admin/products/create', {
       method: 'POST',

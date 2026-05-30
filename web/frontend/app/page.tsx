@@ -59,6 +59,7 @@ import {
 import { HeroVisualShowcase } from '@/components/marketing/HeroVisualShowcase';
 import { getGuestPhraseBlockReason } from '@/lib/promptSafety';
 import { ArchitectureOrbit } from '@/components/landing/ArchitectureOrbit';
+import { LandingStylePresetPicker } from '@/components/landing/LandingStylePresetPicker';
 import { formatBenchmarkRate, formatBenchmarkTrend } from '@/lib/formatBenchmark';
 
 const FEATURE_ICONS = {
@@ -295,6 +296,7 @@ async function readApiErrorMessage(res: Response): Promise<string> {
 function HeroSection({ copy }: { copy: MarketingStrings }) {
   const router = useRouter();
   const [slogan, setSlogan] = useState('');
+  const [stylePresetId, setStylePresetId] = useState('');
   const [guestLoading, setGuestLoading] = useState(false);
   const [guestError, setGuestError] = useState<string | null>(null);
 
@@ -325,7 +327,11 @@ function HeroSection({ copy }: { copy: MarketingStrings }) {
       const res = await fetch('/api/public/generate-landing', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phrase: t }),
+        body: JSON.stringify({
+          phrase: t,
+          fast_path: true,
+          ...(stylePresetId ? { preset_id: stylePresetId } : {}),
+        }),
       });
       if (!res.ok) {
         setGuestError(await readApiErrorMessage(res));
@@ -409,6 +415,15 @@ function HeroSection({ copy }: { copy: MarketingStrings }) {
                 {copy.heroGuestBuildCta}
               </Button>
             </div>
+            <LandingStylePresetPicker
+              value={stylePresetId}
+              onChange={setStylePresetId}
+              autoLabel={copy.heroStylePresetAuto}
+              label={copy.heroStylePresetLabel}
+              hint={copy.heroStylePresetHint}
+              className="relative mt-4"
+              selectClassName="relative w-full rounded-xl bg-black/50 border border-fuchsia-500/20 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40"
+            />
             <p className="relative text-xs text-gray-400 mt-3 leading-relaxed">{copy.heroGuestHelp}</p>
             <p className="relative text-xs text-gray-400 mt-2 mb-4 leading-relaxed">{copy.heroPricingLine}</p>
             {guestError && (

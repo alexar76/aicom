@@ -37,6 +37,51 @@ async def run_builtin_task(
         logger.info(f"Product {pid} pipeline completed!")
         return True
 
+    if agent_type == "__landing_spec__":
+        from core.paths import resolve_data_root
+        from orchestrator.landing_fast_flow import resolve_style_preset, write_landing_mini_spec
+
+        preset_id = str(product.get("style_preset_id") or "").strip() or None
+        preset = resolve_style_preset(
+            preset_id,
+            product_id=pid,
+            idea=str(product.get("idea") or ""),
+        )
+        spec_inner = write_landing_mini_spec(
+            pid,
+            idea=str(product.get("idea") or ""),
+            preset=preset,
+            data_root=resolve_data_root(host.data_root),
+            admin_instructions=str(product.get("admin_instructions") or ""),
+        )
+        product["spec"] = spec_inner
+        product["style_preset_id"] = preset.get("id", "")
+        product["state"] = "SPEC_WRITTEN"
+        product["updated_at"] = time.time()
+        task["status"] = "completed"
+        task["completed_at"] = time.time()
+        task["output_data"] = {"specification": spec_inner, "style_preset": preset}
+        task["output_summary"] = f"Landing mini-spec written ({preset.get('id', 'preset')})"
+        next_task = host._create_next_task(product)
+        if next_task and not any(
+            t.get("product_id") == pid
+            and t.get("agent_type") == next_task["agent_type"]
+            and t.get("state") == next_task["state"]
+            and t.get("status") in ("pending", "running")
+            for t in task_queue
+        ):
+            task_queue.append(next_task)
+            host._audit_agent_handoff(
+                product_id=pid,
+                from_agent="__landing_spec__",
+                from_state="IDEA_RECEIVED",
+                next_task=next_task,
+                task_id=task_id,
+                reason="landing_mini_spec_ready",
+            )
+        logger.info("Landing mini-spec ready for %s (preset=%s)", pid, preset.get("id"))
+        return True
+
     # Runtime test stage between developer and hardening.
     if agent_type == "__runtime_test__":
         runtime_result = host._run_runtime_tests(pid, task_queue)

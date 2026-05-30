@@ -116,6 +116,11 @@ def test_marketplace_rejects_methodology_failures(tmp_path, monkeypatch) -> None
         @media(max-width:720px){main{padding:18px}section{border-radius:12px}}""",
         encoding="utf-8",
     )
+    # Default delivery profile is full_software — need an app stack signal before methodology gate runs.
+    (code / "main.py").write_text(
+        "from fastapi import FastAPI\napp = FastAPI()\n",
+        encoding="utf-8",
+    )
 
     ev = evaluate_marketplace_quality(pid, specification=_helpdesk_spec(), data_root=str(tmp_path))
     assert ev["eligible"] is False

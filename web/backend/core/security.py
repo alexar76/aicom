@@ -326,13 +326,6 @@ async def get_current_admin(
     Dependency for protecting admin routes.
     Validates JWT token from Authorization header or cookie.
     """
-    security_manager = getattr(request.app.state, "security_manager", None)
-    if not security_manager:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Security manager not initialized",
-        )
-
     token = None
 
     # Trusted reverse-proxy SSO (Authelia / oauth2-proxy / Keycloak gate)
@@ -346,11 +339,11 @@ async def get_current_admin(
             "role": (os.environ.get("AIFACTORY_SSO_TRUSTED_DEFAULT_ROLE") or "admin"),
             "sso": "trusted-header",
         }
-    
+
     # Try Authorization header first
     if credentials:
         token = credentials.credentials
-    
+
     # Try cookie
     if not token:
         token = request.cookies.get("access_token")
@@ -360,6 +353,13 @@ async def get_current_admin(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Not authenticated",
             headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    security_manager = getattr(request.app.state, "security_manager", None)
+    if not security_manager:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Security manager not initialized",
         )
 
     payload = security_manager.decode_token(token)

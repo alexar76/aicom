@@ -28,6 +28,11 @@ class CreateProductRequest(BaseModel):
     production_mode: bool = False
     interface_locale: Optional[str] = Field(None, max_length=16, pattern=_LOCALE_RE)
     content_locale: Optional[str] = Field(None, max_length=16)
+    style_preset_id: Optional[str] = Field(None, max_length=64)
+    landing_fast_path: Optional[bool] = Field(
+        None,
+        description="Slim landing-only pipeline; defaults to true for marketing_landing",
+    )
 
     @field_validator("content_locale")
     @classmethod
@@ -73,6 +78,15 @@ class RunDiscoveryRequest(BaseModel):
 
 class GuestLandingRequest(BaseModel):
     phrase: str = Field(..., min_length=8, max_length=2000)
+    preset_id: str | None = Field(
+        default=None,
+        max_length=64,
+        description="Optional style preset id from reference_templates/style_presets.json",
+    )
+    fast_path: bool = Field(
+        default=True,
+        description="Use slim landing-only pipeline (mini-spec → architect → developer → QA)",
+    )
 
 
 # ── Customer portal ─────────────────────────────────────────────────────────

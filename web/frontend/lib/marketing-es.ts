@@ -36,6 +36,9 @@ export const MARKETING_ES: MarketingStrings = {
   heroSloganLineLabel: 'Eslogan o brief de negocio en una línea',
   heroSloganLinePlaceholder:
     'ej. Carteras de cuero D2C — hero, historia artesanal, 3 razones, email, footer',
+  heroStylePresetLabel: 'Preset visual',
+  heroStylePresetAuto: 'Auto — según el brief',
+  heroStylePresetHint: '20 direcciones (glassmorphism, editorial, cyberpunk HUD, …). Ruta rápida: mini-spec → architect → developer → QA.',
   heroPricingLine:
     'Un clic encola la página · sandbox tras QA · checkout opcional — o Admin para app completa.',
   heroGuestBuildCta: 'Crear landing de negocio',
