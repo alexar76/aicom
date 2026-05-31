@@ -408,6 +408,17 @@ export_plugins() {
     echo "  ✓ plugins/aimarket-provenance (from aimarket-hub)"
   fi
 
+  # Glama / Docker: root Dockerfile + glama.json (MCP stdio server for registry checks)
+  local mcp_packager="$ROOT/plugins/aimarket-mcp-packager"
+  if [[ -f "$mcp_packager/Dockerfile.root-context" ]]; then
+    cp "$mcp_packager/Dockerfile.root-context" "$clone/Dockerfile"
+    echo "  ✓ Dockerfile (from aimarket-mcp-packager/Dockerfile.root-context)"
+  fi
+  if [[ -f "$mcp_packager/glama.json" ]]; then
+    cp "$mcp_packager/glama.json" "$clone/glama.json"
+    echo "  ✓ glama.json"
+  fi
+
   _copy_governance "$clone" "mit" "aimarket-plugins"
   _inject_mirror_banner "$clone" "$sat_id" "$repo"
 
