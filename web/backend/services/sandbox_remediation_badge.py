@@ -9,7 +9,7 @@ import os
 import re
 import time
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Any, Mapping, Optional
 
 from web.backend.services.product_followup import (
     STOREFRONT_ESTABLISHED_LISTING_KEY,
@@ -20,6 +20,65 @@ from web.backend.services.storefront_visibility import REPAIR_LISTABLE_STATES
 DEFAULT_REWORK_ETA_HOURS = max(1, int(os.getenv("AIFACTORY_SANDBOX_REWORK_ETA_HOURS", "24") or "24"))
 REMEDIATION_ETA_KEY = "remediation_eta_at"
 REMEDIATION_STARTED_KEY = "remediation_started_at"
+
+BadgeLocale = str
+
+_BADGE_COPY: dict[BadgeLocale, dict[str, str]] = {
+    "en": {
+        "title": "Sent for rework",
+        "eta": "Expected return: {eta}",
+        "status": "Status: {state} · preview available",
+        "state": "REWORK",
+    },
+    "ru": {
+        "title": "Отправлен на доработку",
+        "eta": "Ожидаемый возврат: {eta}",
+        "status": "Статус: {state} · превью доступно",
+        "state": "ДОРАБОТКА",
+    },
+    "es": {
+        "title": "Enviado a rework",
+        "eta": "Regreso esperado: {eta}",
+        "status": "Estado: {state} · vista previa disponible",
+        "state": "REWORK",
+    },
+}
+
+
+def normalize_remediation_badge_locale(raw: str | None) -> BadgeLocale:
+    if not raw:
+        return "en"
+    value = raw.strip().lower()
+    if value in ("ru", "es", "en"):
+        return value
+    if value.startswith("ru"):
+        return "ru"
+    if value.startswith("es"):
+        return "es"
+    return "en"
+
+
+def resolve_remediation_badge_locale(request: Any | None) -> BadgeLocale:
+    """Resolve badge language from ?lang= / ?locale= or Accept-Language (default en)."""
+    if request is None:
+        return "en"
+    query = getattr(request, "query_params", None)
+    if query is not None:
+        for key in ("lang", "locale"):
+            raw = query.get(key)
+            if raw:
+                return normalize_remediation_badge_locale(str(raw))
+    headers = getattr(request, "headers", None)
+    if headers is not None:
+        accept = headers.get("accept-language") or headers.get("Accept-Language")
+        if accept:
+            first = str(accept).split(",")[0].strip()
+            return normalize_remediation_badge_locale(first)
+    return "en"
+
+
+def _badge_copy(locale: BadgeLocale) -> Mapping[str, str]:
+    return _BADGE_COPY.get(locale) or _BADGE_COPY["en"]
 
 
 def _product_state(product_id: str) -> tuple[str, float]:
@@ -71,7 +130,7 @@ def remediation_badge_active(product_id: str) -> bool:
     return False
 
 
-def get_remediation_badge_context(product_id: str) -> Optional[dict[str, Any]]:
+def get_remediation_badge_context(product_id: str, *, locale: BadgeLocale = "en") -> Optional[dict[str, Any]]:
     if not remediation_badge_active(product_id):
         return None
 
@@ -84,20 +143,28 @@ def get_remediation_badge_context(product_id: str) -> Optional[dict[str, Any]]:
         base = float(raw.get(REMEDIATION_STARTED_KEY) or raw.get("followup_updated_at") or time.time())
         eta_ts = base + DEFAULT_REWORK_ETA_HOURS * 3600
 
+    copy = _badge_copy(locale)
     return {
-        "state": "ДОРАБОТКА",
+        "state": copy["state"],
         "eta_ts": eta_ts,
         "eta_label": _format_eta_local(eta_ts),
         "repair_round": raw.get("quality_repair_round"),
     }
 
 
-def remediation_badge_markup(product_id: str) -> str:
-    ctx = get_remediation_badge_context(product_id)
+def remediation_badge_markup(product_id: str, *, locale: BadgeLocale = "en") -> str:
+    ctx = get_remediation_badge_context(product_id, locale=locale)
     if not ctx:
         return ""
+    copy = _badge_copy(locale)
     eta_label = html.escape(str(ctx["eta_label"]))
-    state = html.escape(str(ctx.get("state") or ""))
+    state = html.escape(str(ctx.get("state") or copy["state"]))
+    title = html.escape(copy["title"])
+    eta_line = (
+        html.escape(copy["eta"].format(eta="__ETA__"))
+        .replace("__ETA__", f"<strong>{eta_label}</strong>")
+    )
+    status_line = html.escape(copy["status"].format(state=ctx.get("state") or copy["state"]))
     return (
         '<div id="aicom-rework-badge" role="status" aria-live="polite" style="'
         "position:fixed;bottom:1rem;right:1rem;z-index:2147483646;"
@@ -106,16 +173,19 @@ def remediation_badge_markup(product_id: str) -> str:
         "color:#1a1200;font-family:system-ui,sans-serif;font-size:0.8125rem;"
         'box-shadow:0 8px 32px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.35);'
         'pointer-events:none;line-height:1.35;">'
-        '<div style="font-weight:700;font-size:0.875rem;margin-bottom:0.25rem">'
-        "Отправлен на доработку</div>"
-        f'<div style="opacity:0.9">Ожидаемый возврат: <strong>{eta_label}</strong></div>'
-        f'<div style="opacity:0.75;font-size:0.7rem;margin-top:0.35rem">'
-        f"Статус: {state} · превью доступно</div></div>"
+        f'<div style="font-weight:700;font-size:0.875rem;margin-bottom:0.25rem">{title}</div>'
+        f'<div style="opacity:0.9">{eta_line}</div>'
+        f'<div style="opacity:0.75;font-size:0.7rem;margin-top:0.35rem">{status_line}</div></div>'
     )
 
 
-def inject_remediation_badge(html_content: str, product_id: str) -> str:
-    badge = remediation_badge_markup(product_id)
+def inject_remediation_badge(
+    html_content: str,
+    product_id: str,
+    *,
+    locale: BadgeLocale = "en",
+) -> str:
+    badge = remediation_badge_markup(product_id, locale=locale)
     if not badge:
         return html_content
     lower = html_content.lower()

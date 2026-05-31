@@ -716,9 +716,13 @@ async def view_sandbox(request: Request, sandbox_id: str):
 
     product_id = sandbox.get("product_id", "unknown")
     preview_token = (sandbox.get("preview_token") or "").strip()
-    from web.backend.services.sandbox_remediation_badge import remediation_badge_markup
+    from web.backend.services.sandbox_remediation_badge import (
+        remediation_badge_markup,
+        resolve_remediation_badge_locale,
+    )
 
-    rework_badge_html = remediation_badge_markup(product_id)
+    badge_locale = resolve_remediation_badge_locale(request)
+    rework_badge_html = remediation_badge_markup(product_id, locale=badge_locale)
     product_code_dir = _get_product_code_dir(product_id)
     sb_state = _active_sandboxes.get(sandbox_id) or sandbox
     compose_ok = sb_state.get("compose_proxy_port") is not None
@@ -822,6 +826,9 @@ async def view_sandbox(request: Request, sandbox_id: str):
         else:
             iframe_src = sandbox_public_url(request, f"/api/sandbox/file/{sandbox_id}/index.html")
             preview_label = "index.html"
+
+        lang_sep = "&" if "?" in iframe_src else "?"
+        iframe_src = f"{iframe_src}{lang_sep}lang={badge_locale}"
 
         if static_preview_rel or compose_ok or backend_preview_port:
             # Show the demo in an iframe with a file browser panel
@@ -981,7 +988,10 @@ async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
         return Response(content=content, media_type="application/octet-stream")
     if isinstance(content, str) and norm_path.lower().endswith((".html", ".htm")):
         if norm_path in ("index.html", "index.htm") or norm_path.endswith("/index.html") or norm_path.endswith("/index.htm"):
-            content = resolve_sandbox_index_html(product_id, content)
+            from web.backend.services.sandbox_remediation_badge import resolve_remediation_badge_locale
+
+            badge_locale = resolve_remediation_badge_locale(request)
+            content = resolve_sandbox_index_html(product_id, content, locale=badge_locale)
 
     # Determine content type
     ext = full_path.suffix.lower()

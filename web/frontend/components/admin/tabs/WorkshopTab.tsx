@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/Input';
 import { ActionableFailurePanel } from '@/components/ui/ActionableFailurePanel';
 import api from '@/lib/api';
 import { type AdminLocale, t, tVars } from '@/lib/adminI18n';
+import { withSandboxLocale } from '@/lib/sandboxViewUrl';
 import { resolveActionableFailure } from '@/lib/actionableErrors';
 import { fetchPipelineCatalogPageSingleMode } from '@/lib/pipelineCatalogFetch';
 import toast from 'react-hot-toast';
@@ -275,9 +276,12 @@ export function WorkshopTab({ locale }: { locale: AdminLocale }) {
 
   const labPreviewSrc = useMemo(() => {
     if (typeof window === 'undefined' || !labSandboxId.trim()) return '';
-    const base = `${window.location.origin}/api/sandbox/view/${encodeURIComponent(labSandboxId.trim())}`;
-    return `${base}?t=${labTick}&pid=${encodeURIComponent(labPid.trim())}`;
-  }, [labSandboxId, labPid, labTick]);
+    const base = withSandboxLocale(
+      `/api/sandbox/view/${encodeURIComponent(labSandboxId.trim())}`,
+      locale,
+    );
+    return `${base}&t=${labTick}&pid=${encodeURIComponent(labPid.trim())}`;
+  }, [labSandboxId, labPid, labTick, locale]);
 
   const subscribePush = async () => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {

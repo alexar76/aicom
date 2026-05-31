@@ -86,6 +86,7 @@ import toast from 'react-hot-toast';
 import { launchSandboxWithProgress } from '@/lib/sandboxLaunch';
 import { SandboxLaunchOverlay } from '@/components/SandboxLaunchOverlay';
 import { sandboxLaunchLabel } from '@/lib/sandboxLaunchI18n';
+import { withSandboxLocale } from '@/lib/sandboxViewUrl';
 
 export function SandboxTab({ locale }: { locale: AdminLocale }) {
   const [products, setProducts] = useState<any[]>([]);
@@ -279,7 +280,7 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
                     variant="secondary"
                     size="sm"
                     onClick={() => {
-                      window.location.href = `/api/sandbox/view/${sb.id}`;
+                      window.location.href = withSandboxLocale(`/api/sandbox/view/${sb.id}`, locale);
                     }}
                   >
                     <ExternalLink className="w-3 h-3 mr-1" /> View

@@ -563,7 +563,12 @@ def materialize_spec_landing_on_disk(product_id: str, *, code_root: Path | None 
         return False
 
 
-def resolve_sandbox_index_html(product_id: str, on_disk_html: str) -> str:
+def resolve_sandbox_index_html(
+    product_id: str,
+    on_disk_html: str,
+    *,
+    locale: str = "en",
+) -> str:
     """Serve spec-built landing when index on disk is still the generic factory stub."""
     from web.backend.services.sandbox_remediation_badge import inject_remediation_badge
 
@@ -572,4 +577,4 @@ def resolve_sandbox_index_html(product_id: str, on_disk_html: str) -> str:
         html_out = built if built else on_disk_html
     else:
         html_out = on_disk_html
-    return inject_remediation_badge(html_out, product_id)
+    return inject_remediation_badge(html_out, product_id, locale=locale)

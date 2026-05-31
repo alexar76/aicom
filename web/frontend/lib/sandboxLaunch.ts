@@ -4,6 +4,7 @@ import {
   sandboxLaunchLabel,
   type SandboxLaunchLocale,
 } from '@/lib/sandboxLaunchI18n';
+import { withSandboxLocale } from '@/lib/sandboxViewUrl';
 
 export type SandboxLaunchProgress = {
   percent: number;
@@ -31,9 +32,12 @@ export async function launchSandboxWithProgress(
   onProgress({ percent: 8, label: L('startingSandbox') });
   const result = await api.startSandbox(productId, options);
   const sandboxId = result.sandbox_id;
-  const viewUrl = result.url?.startsWith('http')
-    ? result.url
-    : `${typeof window !== 'undefined' ? window.location.origin : ''}${result.url || `/api/sandbox/view/${sandboxId}`}`;
+  const viewUrl = withSandboxLocale(
+    result.url?.startsWith('http')
+      ? result.url
+      : `${typeof window !== 'undefined' ? window.location.origin : ''}${result.url || `/api/sandbox/view/${sandboxId}`}`,
+    locale,
+  );
 
   const startupWarning =
     typeof (result as { startup_warning?: string }).startup_warning === 'string'
