@@ -163,6 +163,10 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
     setStylePresetId,
     landingFastPath,
     setLandingFastPath,
+    agentToWebsite,
+    setAgentToWebsite,
+    aimarketWidget,
+    setAimarketWidget,
     submitting,
     setSubmitting,
     result,
@@ -377,6 +381,10 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
           ? { style_preset_id: stylePresetId }
           : {}),
         ...(deliveryChoice === 'marketing_landing' ? { landing_fast_path: landingFastPath } : {}),
+        ...(deliveryChoice === 'marketing_landing' && agentToWebsite ? { agent_to_website: true } : {}),
+        ...((deliveryChoice === 'full_software' || deliveryChoice === 'desktop_app') && aimarketWidget
+          ? { aimarket_widget: true }
+          : {}),
       });
       const pid = typeof data.product_id === 'string' ? data.product_id : null;
       setCreatedId(pid);
@@ -678,6 +686,34 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                           <span className="mt-1 block text-xs text-gray-500">{t(locale, 'newProduct.landingFastPathHint')}</span>
                         </span>
                       </label>
+                      <label className="flex items-start gap-3 text-sm text-gray-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={agentToWebsite}
+                          onChange={(e) => setAgentToWebsite(e.target.checked)}
+                          className="mt-1 rounded border-white/20 bg-black/40 text-fuchsia-500 focus:ring-fuchsia-500/40"
+                        />
+                        <span>
+                          <span className="font-medium text-white">{t(locale, 'newProduct.agentToWebsite')}</span>
+                          <span className="mt-1 block text-xs text-gray-500">{t(locale, 'newProduct.agentToWebsiteHint')}</span>
+                        </span>
+                      </label>
+                    </div>
+                  ) : null}
+                  {(deliveryChoice === 'full_software' || deliveryChoice === 'desktop_app') ? (
+                    <div className="rounded-xl border border-cyan-500/25 bg-cyan-500/5 p-3 space-y-4">
+                      <label className="flex items-start gap-3 text-sm text-gray-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={aimarketWidget}
+                          onChange={(e) => setAimarketWidget(e.target.checked)}
+                          className="mt-1 rounded border-white/20 bg-black/40 text-cyan-500 focus:ring-cyan-500/40"
+                        />
+                        <span>
+                          <span className="font-medium text-white">{t(locale, 'newProduct.aimarketWidget')}</span>
+                          <span className="mt-1 block text-xs text-gray-500">{t(locale, 'newProduct.aimarketWidgetHint')}</span>
+                        </span>
+                      </label>
                     </div>
                   ) : null}
                   <div>
@@ -848,7 +884,15 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                           <li>
                             {t(locale, 'newProduct.landingFastPath')}: {landingFastPath ? 'yes' : 'no'}
                           </li>
+                          <li>
+                            {t(locale, 'newProduct.agentToWebsite')}: {agentToWebsite ? 'yes' : 'no'}
+                          </li>
                         </>
+                      ) : null}
+                      {(deliveryChoice === 'full_software' || deliveryChoice === 'desktop_app') ? (
+                        <li>
+                          {t(locale, 'newProduct.aimarketWidget')}: {aimarketWidget ? 'yes' : 'no'}
+                        </li>
                       ) : null}
                       <li>Mode: {mode}</li>
                       <li>

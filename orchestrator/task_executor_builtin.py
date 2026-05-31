@@ -53,6 +53,7 @@ async def run_builtin_task(
             preset=preset,
             data_root=resolve_data_root(host.data_root),
             admin_instructions=str(product.get("admin_instructions") or ""),
+            agent_to_website=bool(product.get("agent_to_website")),
         )
         product["spec"] = spec_inner
         product["style_preset_id"] = preset.get("id", "")

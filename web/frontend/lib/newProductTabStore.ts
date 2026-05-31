@@ -24,6 +24,8 @@ type NewProductTabState = {
   contentLocale: ContentLocaleChoice;
   stylePresetId: string;
   landingFastPath: boolean;
+  agentToWebsite: boolean;
+  aimarketWidget: boolean;
   submitting: boolean;
   result: string | null;
   createdId: string | null;
@@ -47,6 +49,8 @@ type NewProductTabState = {
   setContentLocale: (v: ContentLocaleChoice) => void;
   setStylePresetId: (v: string) => void;
   setLandingFastPath: (v: boolean) => void;
+  setAgentToWebsite: (v: boolean) => void;
+  setAimarketWidget: (v: boolean) => void;
   setSubmitting: (v: boolean) => void;
   setResult: (v: string | null) => void;
   setCreatedId: (v: string | null) => void;
@@ -73,6 +77,8 @@ export const useNewProductTabStore = create<NewProductTabState>((set) => ({
   contentLocale: 'auto',
   stylePresetId: '',
   landingFastPath: true,
+  agentToWebsite: false,
+  aimarketWidget: false,
   submitting: false,
   result: null,
   createdId: null,
@@ -96,6 +102,8 @@ export const useNewProductTabStore = create<NewProductTabState>((set) => ({
   setContentLocale: (v) => set({ contentLocale: v }),
   setStylePresetId: (v) => set({ stylePresetId: v }),
   setLandingFastPath: (v) => set({ landingFastPath: v }),
+  setAgentToWebsite: (v) => set({ agentToWebsite: v }),
+  setAimarketWidget: (v) => set({ aimarketWidget: v }),
   setSubmitting: (v) => set({ submitting: v }),
   setResult: (v) => set({ result: v }),
   setCreatedId: (v) => set({ createdId: v }),

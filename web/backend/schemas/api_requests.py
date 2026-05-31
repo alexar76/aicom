@@ -33,6 +33,14 @@ class CreateProductRequest(BaseModel):
         None,
         description="Slim landing-only pipeline; defaults to true for marketing_landing",
     )
+    agent_to_website: Optional[bool] = Field(
+        None,
+        description="Embed demo Agent-To-Website chat on generated marketing landing HTML",
+    )
+    aimarket_widget: Optional[bool] = Field(
+        None,
+        description="Embed AIMarket hub search/invoke widget on generated product HTML",
+    )
 
     @field_validator("content_locale")
     @classmethod

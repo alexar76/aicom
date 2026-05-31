@@ -124,6 +124,26 @@ export const NEW_PRODUCT_DICT: I18nDict = {
     ru: 'Mini-spec → landing architect → landing developer → QA (без analyst/PM/marketing/devops).',
     es: 'Mini-spec → landing architect → landing developer → QA (sin analyst/PM/marketing/devops).',
   },
+  'newProduct.agentToWebsite': {
+    en: 'Agent-To-Website (demo chat)',
+    ru: 'Agent-To-Website (демо-чат)',
+    es: 'Agent-To-Website (chat demo)',
+  },
+  'newProduct.agentToWebsiteHint': {
+    en: 'Floating #aicom-agent widget with browser-side keyword replies (no LLM per message). Injected after Developer if missing.',
+    ru: 'Плавающий виджет #aicom-agent с ответами по ключевым словам в браузере (без LLM на каждое сообщение). Добавляется после Developer, если его нет.',
+    es: 'Widget flotante #aicom-agent con respuestas por palabras clave en el navegador (sin LLM por mensaje). Se inyecta tras Developer si falta.',
+  },
+  'newProduct.aimarketWidget': {
+    en: 'AIMarket widget (hub invoke)',
+    ru: 'AIMarket widget (вызов через hub)',
+    es: 'Widget AIMarket (invoke vía hub)',
+  },
+  'newProduct.aimarketWidgetHint': {
+    en: 'Embeds aimarket.js on generated HTML — search and invoke capabilities on modelmarket.dev (affiliate id = product id).',
+    ru: 'Встраивает aimarket.js в HTML — поиск и вызов возможностей на modelmarket.dev (affiliate id = id продукта).',
+    es: 'Inserta aimarket.js en el HTML — buscar e invocar capacidades en modelmarket.dev (affiliate id = id del producto).',
+  },
   'newProduct.delivery.desktop': {
     en: 'Desktop app (Tauri / Flutter / Electron)',
     ru: 'Desktop-приложение (Tauri / Flutter / Electron)',

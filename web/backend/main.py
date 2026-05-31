@@ -1125,6 +1125,10 @@ async def admin_create_product(
         product["landing_fast_path"] = bool(request.landing_fast_path)
     elif dprof == MARKETING_LANDING:
         product["landing_fast_path"] = True
+    if request.agent_to_website:
+        product["agent_to_website"] = True
+    if request.aimarket_widget:
+        product["aimarket_widget"] = True
 
     try:
         _append_product_to_pipeline(product)

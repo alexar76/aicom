@@ -2139,6 +2139,8 @@ class ApiClient {
     content_locale?: string;
     style_preset_id?: string;
     landing_fast_path?: boolean;
+    agent_to_website?: boolean;
+    aimarket_widget?: boolean;
   }): Promise<{ product_id: string; state: string; message: string }> {
     return this.request('/admin/products/create', {
       method: 'POST',

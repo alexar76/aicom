@@ -204,6 +204,20 @@ async def run_agent_task(
                     inject_site_badge_if_enabled(host.data_root, pid)
                 except Exception as badge_exc:
                     logger.warning("Site badge inject failed for %s: %s", pid, badge_exc)
+                try:
+                    from web.backend.services.landing_embeds import inject_landing_embeds_for_product
+
+                    inject_landing_embeds_for_product(host.data_root, pid, products[pid])
+                except Exception as embed_exc:
+                    logger.warning("Landing embed inject failed for %s: %s", pid, embed_exc)
+
+            if agent_type == "marketing" and pid in products:
+                try:
+                    from web.backend.services.landing_embeds import inject_landing_embeds_for_product
+
+                    inject_landing_embeds_for_product(host.data_root, pid, products[pid])
+                except Exception as embed_exc:
+                    logger.warning("Landing embed inject after marketing failed for %s: %s", pid, embed_exc)
 
             if agent_type == "devops" and output.success and pid in products:
                 try:

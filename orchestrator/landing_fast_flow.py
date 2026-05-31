@@ -72,6 +72,7 @@ def write_landing_mini_spec(
     preset: dict[str, str],
     data_root: Path,
     admin_instructions: str = "",
+    agent_to_website: bool = False,
 ) -> dict[str, Any]:
     """Programmatic marketing landing spec — no LLM round-trip."""
     from agents.product_profile import MARKETING_LANDING
@@ -103,6 +104,13 @@ def write_landing_mini_spec(
             "layout": "single-page marketing landing",
         },
     }
+    if agent_to_website:
+        spec_inner["ui_experience"]["agent_widget"] = {
+            "enabled": True,
+            "note": (
+                "Optional floating #aicom-agent demo chat; pipeline injects audited widget before </body> if missing."
+            ),
+        }
     if admin_instructions.strip():
         spec_inner["admin_instructions"] = admin_instructions.strip()
 
