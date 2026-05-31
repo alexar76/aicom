@@ -28,12 +28,13 @@ API: `PATCH /api/admin/pipeline/products/{id}/followup` with `{ "improvement_on_
 
 | State | Effect |
 |-------|--------|
-| **ON HOLD** | Pipeline worker skips new work; Director does not auto-enqueue products. Queued ideas and in-flight state stay on disk. |
+| **ON HOLD** (soft / config) | Director does not auto-enqueue, batch drain pauses, and **autonomous + post-ship improvement** work stops. **On-demand** products still build — anything explicitly requested by a human: admin **New product** and the public **guest fast-path landing** generator. Held (autonomous) products and their in-flight state stay on disk untouched and resume on **RUNNING**. |
 | **RUNNING** | Normal operation. |
 
+- **On-demand vs autonomous:** products created through the web API (admin / guest) are tagged `on_demand` at creation ([`_append_product_to_pipeline`](../web/backend/main.py)); the worker keeps advancing only those during a soft hold. Classification: [`core/product_origin.py`](../core/product_origin.py).
 - Persists in **`{DATA_ROOT}/config/`** merged config as **`general.factory_on_hold`** (auto-save on toggle).
-- **Works in public demo mode** (`AIFACTORY_DEMO_READONLY=1`) — the only Settings control allowed on the shared demo host.
-- Emergency env override: **`AIFACTORY_FACTORY_ON_HOLD=1`** (see `core/factory_hold.py`).
+- **Works in public demo mode** (`AIFACTORY_DEMO_READONLY=1`) — the only Settings control allowed on the shared demo host. (Guests can still generate a landing while the factory is on a soft hold.)
+- **Emergency HARD stop:** env **`AIFACTORY_FACTORY_ON_HOLD=1`** pauses **everything**, including on-demand work — a true kill switch, distinct from the UI/config soft hold. See [`core/factory_hold.py`](../core/factory_hold.py) (`is_factory_hard_stopped` vs `is_factory_on_hold`).
 - When hold is active, a **banner** appears on other admin tabs linking back to Settings.
 
 ## Discovery (pre-pipeline opportunity phase)

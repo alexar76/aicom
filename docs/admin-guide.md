@@ -301,7 +301,7 @@ Director generates reports on an interval (shown in UI); extra analysis can be t
 
 | Section | Settings |
 |---------|----------|
-| **Factory hold** | **First card** — large toggle **RUNNING / ON HOLD**. Pauses pipeline worker + Director auto-enqueue; saves automatically. Visible on all admin tabs via banner when on hold. **Allowed in public demo mode.** See **[pipeline-operations.md](pipeline-operations.md)** (Factory hold). |
+| **Factory hold** | **First card** — large toggle **RUNNING / ON HOLD**. Soft hold pauses Director auto-enqueue + autonomous/post-ship work, but **on-demand builds (admin New product, guest fast-path landings) still run**; saves automatically. Visible on all admin tabs via banner when on hold. **Allowed in public demo mode.** Env `AIFACTORY_FACTORY_ON_HOLD=1` is a hard kill switch that pauses everything. See **[pipeline-operations.md](pipeline-operations.md)** (Factory hold). |
 | **Demo replay** | Same embedded-video controls as **Live Monitor** → Demo replay (enable, title, URL or upload). Persisted with admin settings; secrets/adjacent config elsewhere unchanged. |
 | **Theme** | Theme selection for storefront and admin; CSS variables |
 | **AI Director & pipeline mode** | **Autonomous development** (timer-driven pipeline), interval in minutes, manual **Trigger Director**. **Local high-throughput mode** (powerful local host): raises pipeline parallelism; see **[pipeline-operations.md](pipeline-operations.md)** (“Local high-throughput preset”). The UI shows an **effective throughput** readout (config + env on this host) and **Refresh** without saving other fields. |

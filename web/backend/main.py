@@ -49,6 +49,7 @@ from .core.websocket_admin import require_admin_websocket, selected_admin_subpro
 from .core.telemetry import TelemetryCollector
 from .api import products, sandbox, payment, feedback, customer, marketing, support_chat, telemetry_events, ai_market
 from .api import pipeline_demo_replay_public
+from .api import build_replay_public
 from .api.admin import auth as admin_auth
 from .api.admin import oidc_auth as admin_oidc_auth
 from .api.admin import dashboard as admin_dashboard
@@ -425,6 +426,7 @@ async def get_theme():
 
 # Include routers
 app.include_router(pipeline_demo_replay_public.router, prefix="/api")
+app.include_router(build_replay_public.router, prefix="/api")
 app.include_router(products.router)
 app.include_router(sandbox.router)
 app.include_router(marketing.router)
@@ -871,6 +873,13 @@ def _sync_sqlite_from_pipeline_json() -> None:
 
 def _append_product_to_pipeline(product: dict) -> None:
     from core.pipeline_state_writer import append_product_to_pipeline_state
+
+    # Everything entering through the web API is an explicit human request (admin
+    # "New product", guest fast-path landing). Mark it on-demand so the pipeline
+    # worker keeps advancing it during a factory *soft* hold (autonomous /
+    # Director-created products use a different path and stay paused). See
+    # core.product_origin / core.factory_hold.
+    product.setdefault("on_demand", True)
 
     if not append_product_to_pipeline_state(product, pipeline_path=_PIPELINE_JSON):
         raise RuntimeError(f"Failed to append product {product.get('id')} to pipeline store")

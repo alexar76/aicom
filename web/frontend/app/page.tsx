@@ -1106,6 +1106,18 @@ function ProductsSection({ copy }: { copy: MarketingStrings }) {
         {/* Product grids — landings vs full stacks */}
         {!loading && !error && filteredProducts.length > 0 && (
           <div className="space-y-16">
+            <div className="flex items-center justify-between gap-3 rounded-2xl border border-cyan-500/20 bg-gradient-to-r from-cyan-500/5 to-indigo-500/5 px-5 py-4">
+              <p className="text-sm text-gray-300">
+                Curious <em>how</em> these were made?{' '}
+                <span className="text-gray-400">Replay the agents that built each one.</span>
+              </p>
+              <Link
+                href="/builds"
+                className="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-300 hover:text-cyan-200"
+              >
+                Watch build replays →
+              </Link>
+            </div>
             <div>
               <div className="flex flex-wrap items-baseline justify-between gap-3 mb-2">
                 <h3 className="text-2xl md:text-3xl font-bold text-white">{copy.productsLandingsTitle}</h3>

@@ -38,7 +38,7 @@ from orchestrator.pipeline_worker_sidecars import PipelineWorkerSidecarMixin
 from orchestrator.worker_components import PeerReviewEngine, QualityManager, TaskOrchestrator
 from orchestrator.runtime_guards import RuntimeGuards
 from orchestrator.task_executor import PipelineTaskExecutor
-from core.factory_hold import is_factory_on_hold
+from core.factory_hold import is_factory_hard_stopped, is_factory_on_hold
 from orchestrator.worker_utils import delivery_profile_from_product_dict, env_truthy
 
 logging.basicConfig(
@@ -470,9 +470,43 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             t.get("status") in ("pending", "running") for t in task_queue
         )
 
-        if is_factory_on_hold():
-            logger.info("Factory on hold — skipping pipeline processing cycle")
+        # Factory hold semantics:
+        #   • env AIFACTORY_FACTORY_ON_HOLD=1 → HARD stop: pause everything (kill switch).
+        #   • config general.factory_on_hold  → SOFT hold: pause autonomous + post-ship
+        #     improvement work, but keep advancing explicitly-requested ON-DEMAND products
+        #     (admin "New product", guest fast-path landings).
+        # Director auto-enqueue is already gated by is_factory_on_hold(), so no NEW
+        # autonomous ideas enter during either hold.
+        held_products: dict = {}
+        held_tasks: list = []
+        if is_factory_hard_stopped():
+            logger.info("Factory hard-stopped (env) — skipping pipeline processing cycle")
             return
+        soft_hold = is_factory_on_hold()
+        if soft_hold:
+            from core.product_origin import is_on_demand_product
+
+            on_demand = {pid: p for pid, p in products.items() if is_on_demand_product(p)}
+            held_products = {pid: p for pid, p in products.items() if pid not in on_demand}
+            held_ids = set(held_products)
+            active_q: list = []
+            for t in task_queue:
+                (held_tasks if str(t.get("product_id") or "") in held_ids else active_q).append(t)
+            products = on_demand
+            task_queue = active_q
+            logger.info(
+                "Factory on hold (config) — advancing %d on-demand product(s); %d held until resume",
+                len(products),
+                len(held_products),
+            )
+
+        def _merge_held(prods: dict, tq: list) -> tuple[dict, list]:
+            """Re-attach paused (held) products/tasks before persisting, so a soft hold
+            never drops them from the store. No-op when not on soft hold."""
+            if not held_products and not held_tasks:
+                return prods, tq
+            return {**prods, **held_products}, [*tq, *held_tasks]
+
         changed = False
         now = time.time()
         dirty_products: set[str] = set()
@@ -499,21 +533,24 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             sql_full_save = True
 
         # Phase 0.1: Drain batch idea queue with controlled concurrency.
-        try:
-            from orchestrator.batch_pipeline import drain_batch_queue_into_state
+        # Skipped on soft hold — batch is a bulk operation, paused alongside
+        # autonomous work; explicit single on-demand products still advance.
+        if not soft_hold:
+            try:
+                from orchestrator.batch_pipeline import drain_batch_queue_into_state
 
-            max_to_start = effective_batch_pipeline_max_start_per_cycle()
-            active_limit = effective_batch_pipeline_active_limit()
-            batch_res = drain_batch_queue_into_state(
-                state={"products": products, "task_queue": task_queue},
-                max_to_start=max(1, max_to_start),
-                active_limit=max(1, active_limit),
-            )
-            if int(batch_res.get("started", 0)) > 0:
-                changed = True
-                sql_full_save = True
-        except Exception as e:
-            logger.warning("Batch queue drain skipped: %s", e)
+                max_to_start = effective_batch_pipeline_max_start_per_cycle()
+                active_limit = effective_batch_pipeline_active_limit()
+                batch_res = drain_batch_queue_into_state(
+                    state={"products": products, "task_queue": task_queue},
+                    max_to_start=max(1, max_to_start),
+                    active_limit=max(1, active_limit),
+                )
+                if int(batch_res.get("started", 0)) > 0:
+                    changed = True
+                    sql_full_save = True
+            except Exception as e:
+                logger.warning("Batch queue drain skipped: %s", e)
 
         # Phase 1: Create initial tasks for products in IDEA_RECEIVED with no tasks
         if self.task_orchestrator.create_initial_tasks(products, task_queue, now):
@@ -528,11 +565,12 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
         # Checkpoint: Phase 3 may await many agents for a long time; without an early save,
         # bootstrap tasks from Phase 1–2 never reach SQLite until all runners finish (starvation).
         if changed:
-            state["products"] = products
-            state["task_queue"] = task_queue
+            cp_products, cp_tasks = _merge_held(products, task_queue)
+            state["products"] = cp_products
+            state["task_queue"] = cp_tasks
             await self._save_state_async(state, sql_full_save=True)
             self._has_active_pipeline_work = any(
-                t.get("status") in ("pending", "running") for t in task_queue
+                t.get("status") in ("pending", "running") for t in cp_tasks
             )
 
         # Phase 3: Process running tasks via real agents (bounded concurrency)
@@ -613,19 +651,23 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
                     next_task.get("state"),
                 )
 
-        # Phase 5: Periodic market monitoring for COMPLETED products (interval from env; 0 = off)
-        if self.task_orchestrator.enqueue_market_monitoring(products, task_queue, now):
-            changed = True
-            sql_full_save = True
-        if self.task_orchestrator.enqueue_refactor_sprint(products, task_queue, now):
-            changed = True
-            sql_full_save = True
+        # Phases 5 & 6 are post-ship *improvement* work (re-opening already-shipped
+        # products). They stay paused during a soft hold — only fresh on-demand
+        # builds advance.
+        if not soft_hold:
+            # Phase 5: Periodic market monitoring for COMPLETED products (interval from env; 0 = off)
+            if self.task_orchestrator.enqueue_market_monitoring(products, task_queue, now):
+                changed = True
+                sql_full_save = True
+            if self.task_orchestrator.enqueue_refactor_sprint(products, task_queue, now):
+                changed = True
+                sql_full_save = True
 
-        # Phase 6: Ensure COMPLETED products are truly storefront-ready.
-        # Reopen hidden/non-eligible products for developer remediation.
-        if self._enforce_marketplace_readiness(products, task_queue, now):
-            changed = True
-            sql_full_save = True
+            # Phase 6: Ensure COMPLETED products are truly storefront-ready.
+            # Reopen hidden/non-eligible products for developer remediation.
+            if self._enforce_marketplace_readiness(products, task_queue, now):
+                changed = True
+                sql_full_save = True
 
         # Phase 6b: Heal product.state when JSON sync or partial writes left IDEA_RECEIVED.
         try:
@@ -638,9 +680,10 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             logger.debug("product state reconcile skipped: %s", exc)
 
         # Save if changed
+        final_products, final_tasks = _merge_held(products, task_queue)
         if changed:
-            state["products"] = products
-            state["task_queue"] = task_queue
+            state["products"] = final_products
+            state["task_queue"] = final_tasks
             await self._save_state_async(
                 state,
                 sql_full_save=sql_full_save,
@@ -649,7 +692,7 @@ class PipelineWorker(PipelineWorkerSidecarMixin):
             )
 
         self._has_active_pipeline_work = any(
-            t.get("status") in ("pending", "running") for t in task_queue
+            t.get("status") in ("pending", "running") for t in final_tasks
         )
 
     def _load_spec(self, product_id: str) -> dict:

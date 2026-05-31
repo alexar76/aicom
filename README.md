@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>MIT · self-hosted · idea → shippable web product</strong><br/>
-  <a href="https://alexar76.github.io/aicom/">Ecosystem landing</a> · <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> · <a href="#demo-video">Demo video</a> · <a href="#gallery">Gallery</a> · <a href="#alien-monitor">Alien Monitor</a> · <a href="#quick-start">Quick start</a>
+  <a href="https://alexar76.github.io/aicom/">Ecosystem landing</a> · <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> · <a href="#demo-video">Demo video</a> · <a href="#build-replays">Build Replays</a> · <a href="#factory-hold">Factory hold</a> · <a href="#gallery">Gallery</a> · <a href="#alien-monitor">Alien Monitor</a> · <a href="#quick-start">Quick start</a>
 </p>
 
 <p align="center">
@@ -158,6 +158,35 @@ AI-Factory is built around a **ship-then-keep-improving** loop — not “one sh
 The public homepage shows live counts via **`GET /api/public/pipeline-status`** (products in pipeline vs shipped) — same operational truth as Admin → Pipeline.
 
 Details: **[docs/pipeline-operations.md](docs/pipeline-operations.md)** (policy audit, storefront remediation, QA E2E).
+
+<h2 id="factory-hold">⏸️ Factory hold — soft pause vs hard stop</h2>
+
+**Admin → Settings → Factory hold** lets you pause the factory without shutting anything down. There are **two distinct levels**, and they behave differently on purpose:
+
+| Level | How to set | What pauses | What keeps running |
+|-------|-----------|-------------|--------------------|
+| **Soft hold** | UI toggle / config **`general.factory_on_hold`** | Director auto-enqueue (new autonomous ideas), batch-queue drain, and **post-ship improvement** work (market monitoring, refactor sprints, storefront re-remediation). In-flight autonomous products freeze on disk and **resume** when you switch back to RUNNING. | ✅ **On-demand builds** — anything a human explicitly requested: **admin “New product”** and the **public guest fast-path landing** generator. These keep building so the “type an idea → watch it build” experience (and the live demo) never silently stalls. |
+| **Hard stop** | env **`AIFACTORY_FACTORY_ON_HOLD=1`** | **Everything**, including on-demand work. A true emergency kill switch — the pipeline worker bails out of every cycle. | — |
+
+**Why fast generation works under a soft hold:** the soft hold is, by design, a pause on *autonomous* and *post-ship* work — not on work you explicitly asked for. Products created through the web API are tagged **`on_demand`** at creation ([`web/backend/main.py` → `_append_product_to_pipeline`](web/backend/main.py)); the worker partitions each cycle and advances only those while a soft hold is active, re-attaching the paused (held) products before every save so **nothing is lost**. Classification lives in [`core/product_origin.py`](core/product_origin.py); the soft-vs-hard distinction in [`core/factory_hold.py`](core/factory_hold.py) (`is_factory_on_hold` vs `is_factory_hard_stopped`); the worker logic in [`pipeline_worker.py`](pipeline_worker.py) (`_process_cycle`).
+
+> **Operator note:** if you need to stop *all* spend/work immediately (incident, runaway cost), use the **env hard stop** — the UI soft hold intentionally still serves explicit on-demand requests. Soft hold is allowed in public demo mode (`AIFACTORY_DEMO_READONLY=1`), so guests can still generate a landing while autonomous work is paused.
+
+Full table, persistence, and admin banner behavior: **[docs/pipeline-operations.md](docs/pipeline-operations.md#factory-hold-pause--resume)**.
+
+<h2 id="build-replays">🎬 Build Replays — shareable, public</h2>
+
+Every build gets a **public, shareable replay** of *how the agents made it* — research → design → code → QA → security → deploy — as a step-by-step timeline you can scrub and play. No login.
+
+| | |
+|---|---|
+| **One build** | `https://magic-ai-factory.com/build/{id}` — playable agent timeline + social card |
+| **Gallery feed** | `https://magic-ai-factory.com/builds` — recent builds, one card each |
+| **JSON (one)** | `GET /api/public/build/{id}` — sanitized stage timeline (no prompts/secrets/raw output) |
+| **JSON (feed)** | `GET /api/public/builds?limit=24` — slim cards for the gallery |
+| **Social card** | auto-generated `opengraph-image` (1200×630 PNG) per build — link previews on X/Telegram/Slack |
+
+The replay surface is a **hard public boundary**: it only ever emits a whitelist of safe scalar highlights (`verdict`, `score`, `files`, `stack`, `findings`, …) plus durations, gate/retry badges, and pass/fail — never agent prompts, raw output, error text, paths, or keys. Boundary lives in [`web/backend/services/build_replay.py`](web/backend/services/build_replay.py); coverage in [`tests/test_build_replay_public.py`](tests/test_build_replay_public.py).
 
 ## Gallery
 

@@ -225,3 +225,79 @@ export async function getProductsByCategory(category: string): Promise<Product[]
     return local;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Public build replay (shareable `/build/{id}` permalink + `/builds` gallery)
+// ---------------------------------------------------------------------------
+
+export type BuildStage = {
+  agent: string;
+  label: string;
+  emoji: string;
+  blurb: string;
+  state: string | null;
+  status: 'completed' | 'running' | 'failed' | 'pending' | string;
+  is_gate: boolean;
+  had_error: boolean;
+  retry_count: number;
+  started_at: number | null;
+  completed_at: number | null;
+  created_at: number | null;
+  duration_sec: number | null;
+  highlights: Record<string, string | number | boolean>;
+};
+
+export type BuildSummary = {
+  id: string;
+  title: string;
+  idea: string;
+  state: string | null;
+  category: string | null;
+  shipped: boolean;
+  created_at: number | null;
+  updated_at: number | null;
+  stage_count: number;
+  completed_stage_count: number;
+  total_build_seconds: number | null;
+  repair_rounds: number;
+  product_url: string;
+};
+
+export type BuildReplay = { build: BuildSummary; stages: BuildStage[] };
+
+export type BuildCard = {
+  id: string;
+  title: string;
+  state: string | null;
+  category: string | null;
+  shipped: boolean;
+  created_at: number | null;
+  stage_count: number;
+  replay_url: string;
+  product_url: string;
+};
+
+export async function getBuildReplay(id: string): Promise<BuildReplay | null> {
+  try {
+    const res = await fetch(`${apiBase()}/api/public/build/${encodeURIComponent(id)}`, {
+      next: { revalidate: 30 },
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as BuildReplay;
+  } catch {
+    return null;
+  }
+}
+
+export async function listBuilds(limit = 24): Promise<BuildCard[]> {
+  try {
+    const res = await fetch(`${apiBase()}/api/public/builds?limit=${encodeURIComponent(String(limit))}`, {
+      next: { revalidate: 30 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data?.builds as BuildCard[]) || [];
+  } catch {
+    return [];
+  }
+}
