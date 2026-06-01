@@ -34,9 +34,9 @@ point the domain's DNS at GitHub Pages, then enable HTTPS in Settings → Pages.
 
 ## Notes
 
-- Sub-project links point at **monorepo subdirectories**
-  (`github.com/alexar76/aicom/tree/main/<dir>`) so they never 404, even before
-  the standalone satellite repos are published.
+- Sub-project links point at **standalone satellite repos**
+  (`github.com/alexar76/<repo>`); payment contracts remain under
+  `github.com/alexar76/aicom/tree/main/contracts`.
 - Both primary CTAs (Star on GitHub + Try live demo) appear in the hero and the
   closing section.
 - No external JS/CSS except the Google Fonts (Orbitron / Rajdhani) and the
