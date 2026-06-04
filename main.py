@@ -261,7 +261,7 @@ class AIFactory:
         """Periodically update Prometheus gauges."""
         while self._running:
             try:
-                self._update_pipeline_metrics()
+                await self._update_pipeline_metrics()
             except asyncio.CancelledError:
                 raise
             except Exception as e:

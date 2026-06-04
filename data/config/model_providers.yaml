@@ -141,7 +141,17 @@ routing_rules:
   task_type: evolution_analysis
   timeout_sec: 60
 - fallback_provider: null
-  model_role: light
+  model_role: heavy
   preferred_provider: auto
   task_type: security_scan
+  timeout_sec: 120
+- fallback_provider: null
+  model_role: light
+  preferred_provider: auto
+  task_type: design_critic
+  timeout_sec: 60
+- fallback_provider: null
+  model_role: light
+  preferred_provider: auto
+  task_type: methodology_review
   timeout_sec: 60

@@ -14,6 +14,7 @@ from core.config_merge import load_merged_config
 from core.logging_utils import log_suppressed
 from core.paths import config_path
 from core.throughput_limits import (
+    effective_llm_critical_escalation_enabled,
     effective_llm_daily_cost_cap_usd,
     effective_llm_max_requests_per_minute,
     effective_llm_monthly_cost_cap_usd,
@@ -91,6 +92,18 @@ def llm_limits_yaml_slice() -> dict[str, Any]:
     return out
 
 
+def llm_critical_escalation_saved() -> bool:
+    """Saved ``llm.critical_escalation_enabled`` from layered config (not env-overridden)."""
+    try:
+        raw = load_merged_config(_CONFIG_PATH)
+        llm = raw.get("llm") if isinstance(raw, dict) else None
+        if isinstance(llm, dict):
+            return bool(llm.get("critical_escalation_enabled", False))
+    except Exception as _suppressed_exc:
+        log_suppressed(logger, "non-fatal (core/llm_limits.py)", exc_info=_suppressed_exc)
+    return False
+
+
 def bump_llm_limits_cache_after_config_write() -> None:
     global _CACHE_MTIME, _CACHE_SLICE
     _CACHE_MTIME = None
@@ -138,13 +151,22 @@ def admin_llm_limits_panel_dict() -> dict[str, Any]:
     saved = llm_limits_yaml_slice()
     usage = get_usage_guard().snapshot()
     return {
-        "limits_saved": saved,
+        "limits_saved": {
+            **saved,
+            "critical_escalation_enabled": llm_critical_escalation_saved(),
+        },
         "limits_effective": {
             "max_requests_per_minute": effective_llm_max_requests_per_minute(),
             "daily_cost_cap_usd": effective_llm_daily_cost_cap_usd(),
             "monthly_cost_cap_usd": effective_llm_monthly_cost_cap_usd(),
             "pre_call_reserve_usd": effective_llm_pre_call_reserve_usd(),
+            "critical_escalation_enabled": effective_llm_critical_escalation_enabled(),
         },
         "usage": usage,
-        "env_overrides": _env_override_flags(),
+        "env_overrides": {
+            **_env_override_flags(),
+            "critical_escalation_enabled": bool(
+                os.environ.get("AIFACTORY_LLM_CRITICAL_ESCALATION_ENABLED", "").strip()
+            ),
+        },
     }

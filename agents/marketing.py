@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import time
 
+from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from llm import GenerationConfig, LLMRouter
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
@@ -53,13 +54,13 @@ class MarketingAgent(BaseAgent):
             try:
                 with open(research_file) as f:
                     research_data = json.load(f)
-                research_context = json.dumps(research_data, indent=2)
+                research_context = prompt_json(research_data)
                 self._log("INFO", f"Loaded market research for {product_id}")
             except (OSError, json.JSONDecodeError) as e:
                 self._log("WARNING", f"Could not load market research: {e}")
 
         try:
-            spec_str = json.dumps(spec, indent=2) if spec else idea
+            spec_str = prompt_json(spec) if spec else idea
 
             if research_context:
                 prompt = f"""{MARKETING_SYSTEM_PROMPT}

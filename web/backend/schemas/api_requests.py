@@ -217,12 +217,14 @@ class CreatePaymentRequest(BaseModel):
 
     @model_validator(mode="after")
     def validate_chain_token(self) -> "CreatePaymentRequest":
+        # Only stablecoins settle 1:1 against the USD catalog price; native ETH/SOL
+        # have no USD→native conversion and are not accepted.
         tok = str(self.token or "USDT").strip().upper()
         if self.chain == "solana":
-            if tok not in ("SOL", "USDC"):
-                raise ValueError("Solana payments support SOL or USDC")
-        elif tok not in ("USDT", "USDC", "ETH"):
-            raise ValueError("EVM payments support USDT, USDC, or ETH")
+            if tok != "USDC":
+                raise ValueError("Solana payments support USDC only")
+        elif tok not in ("USDT", "USDC"):
+            raise ValueError("EVM payments support USDT or USDC")
         object.__setattr__(self, "token", tok)
         return self
 

@@ -7,7 +7,10 @@ from web.backend.services.feedback_guardrail import apply_feedback_guardrail
 
 def test_feedback_guardrail_enqueues_pm_for_shipped_product(tmp_path: Path, monkeypatch):
     now = time.time()
-    fb_dir = Path("/app/data/feedback")
+    # apply_feedback_guardrail reads feedback_dir() == data_root()/"feedback"; redirect the
+    # data root into tmp instead of writing to a hardcoded /app/data/feedback.
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path / "data"))
+    fb_dir = tmp_path / "data" / "feedback"
     fb_dir.mkdir(parents=True, exist_ok=True)
     # Seed enough negative journey + bug signals
     for i in range(3):

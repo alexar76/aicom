@@ -151,31 +151,12 @@ def _reopen_sqlite(
         rec_agent, rec_state = _recovery_plan(product, tasks, agent_type=agent_type, target_state=target_state)
 
         now = time.time()
-        try:
-            from orchestrator.task_queue_hygiene import is_likely_false_failed_product, recovery_state_after_false_failed
-
-            if is_likely_false_failed_product(product, tasks):
-                product["state"] = recovery_state_after_false_failed(product, tasks)
-                _clear_failure_fields(product)
-                product["updated_at"] = now
-                sm.upsert_product(product)
-                active = [
-                    t
-                    for t in tasks
-                    if str(t.get("status") or "").lower() in ("pending", "running")
-                ]
-                if active:
-                    return {
-                        "ok": True,
-                        "product_state": product["state"],
-                        "agent_type": str(active[0].get("agent_type") or rec_agent),
-                        "target_state": str(active[0].get("state") or rec_state),
-                        "cancelled_tasks": 0,
-                        "recovered_in_place": True,
-                        "message": "False FAILED cleared; existing repair task will continue.",
-                    }
-        except Exception:
-            logger.debug("reopen_failed_product: false-FAILED in-place recovery check failed", exc_info=True)
+        # NOTE: false-FAILED *in-place* recovery (resume the existing repair task without
+        # cancelling) belongs to the automatic background path (recover_false_failed_products).
+        # An explicit operator reopen always carries rework notes (min. 8 chars) and must honour
+        # them by cancelling stale tasks and queueing a fresh task — otherwise the notes are
+        # silently dropped and the product is left in a state/task mismatch. This also keeps the
+        # SQLite path consistent with _reopen_json (which never short-circuits in place).
 
         if any(
             str(t.get("agent_type") or "") == rec_agent

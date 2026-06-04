@@ -16,6 +16,7 @@ from pathlib import Path
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _SKIP_DIRS = {
     ".git",
+    ".claude",  # agent worktrees / transient checkouts, not first-party source
     ".venv",
     ".test-venv",
     "venv",

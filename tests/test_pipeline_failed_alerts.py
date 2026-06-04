@@ -5,7 +5,9 @@ from __future__ import annotations
 import time
 from unittest.mock import patch
 
-from web.backend.api.admin import dashboard as dash_mod
+# Patch the helpers module where these functions are defined and resolved at call
+# time (the dashboard package only re-exports them).
+from web.backend.api.admin.dashboard import helpers as dash_mod
 from web.backend.services.pipeline_failure_report import build_failure_report
 from web.backend.services.pipeline_failed_notify import (
     failure_reason_from_product,

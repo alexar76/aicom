@@ -14,6 +14,7 @@ import time
 import uuid
 from pathlib import Path
 
+from core.agent_roles import is_developer_agent
 from core.paths import resolve_data_root
 from typing import Any
 
@@ -82,7 +83,7 @@ def _persist_name(data_root: str | Path | None, product_id: str, name: str) -> t
 def _active_dev_fixing(task_queue: list[dict[str, Any]], product_id: str) -> bool:
     return any(
         t.get("product_id") == product_id
-        and t.get("agent_type") == "developer"
+        and is_developer_agent(t.get("agent_type"))
         and t.get("status") in ("pending", "running")
         and t.get("state") == "DEV_FIXING"
         for t in task_queue

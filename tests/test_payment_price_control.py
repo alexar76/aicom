@@ -74,7 +74,7 @@ def test_confirm_payment_revalidates_catalog_price(pay_client, monkeypatch):
     create = client.post(
         "/api/payment/create",
         headers=auth,
-        json={"product_id": "prod-9388c62f0666", "chain": "base", "token": "ETH"},
+        json={"product_id": "prod-9388c62f0666", "chain": "base", "token": "USDT"},
     )
     assert create.status_code == 200
     payment_id = create.json()["payment_id"]

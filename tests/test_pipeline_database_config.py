@@ -50,8 +50,10 @@ def test_apply_config_sqlite(monkeypatch):
     assert os.environ.get("USE_SQLITE") == "true"
 
 
-def test_pipeline_uses_sql_store():
-    os.environ["PIPELINE_DB_BACKEND"] = "postgres"
-    os.environ["USE_SQLITE"] = "false"
+def test_pipeline_uses_sql_store(monkeypatch):
+    # Use monkeypatch so these env mutations are rolled back after the test
+    # (a bare os.environ[...] = ... here leaks into every later test in the run).
+    monkeypatch.setenv("PIPELINE_DB_BACKEND", "postgres")
+    monkeypatch.setenv("USE_SQLITE", "false")
     assert pipeline_uses_sql_store() is True
     assert pipeline_db_backend() == "postgres"

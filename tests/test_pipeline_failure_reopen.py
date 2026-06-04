@@ -31,7 +31,8 @@ def test_build_failure_report_false_failed_no_code():
     report = build_failure_report(product, tasks)
     assert report.get("false_failed") is True
     assert "queue" in report["cause_plain"].lower() or "restart" in report["cause_plain"].lower()
-    assert report["suggested_recovery"]["agent_type"] == "developer"
+    # No code on disk → a developer repair cannot run; recovery regenerates from PM/spec.
+    assert report["suggested_recovery"]["agent_type"] == "pm"
     assert report.get("failed_stage") is None
 
 

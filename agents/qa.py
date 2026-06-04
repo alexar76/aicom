@@ -25,6 +25,7 @@ import time
 import traceback
 from pathlib import Path
 
+from agents.prompt_utils import prompt_json
 from agents.product_profile import infer_delivery_profile
 from agents.prompts.load_prompt import load_prompt
 from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
@@ -150,10 +151,10 @@ class QAAgent(BaseAgent):
         prompt = f"""You are a senior QA engineer reviewing a **generated browser demo** against a product specification.
 
 SPEC excerpt (JSON):
-{json.dumps(excerpt, ensure_ascii=False, indent=2)[:16000]}
+{prompt_json(excerpt, limit=16000)}
 
 Browser deep-crawl summary (visited URLs, HTTP status, text snippets cut from each page; screenshot paths are on-disk artifacts):
-{json.dumps(crawl_slim, ensure_ascii=False, indent=2)[:24000]}
+{prompt_json(crawl_slim, limit=24000)}
 
 Task:
 1. Judge whether the **observable UI and navigable pages** plausibly reflect the spec (features, flows, copy themes).
@@ -1322,7 +1323,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
             for file_info in code_files[:10]:
                 code_samples[file_info["path"]] = file_info["content"][:2000]
 
-            code_str = json.dumps(code_samples, indent=2) if code_samples else "No code files found"
+            code_str = prompt_json(code_samples) if code_samples else "No code files found"
             bug_context = agent_input.data.get("bug_context", "")
             try:
                 from web.backend.services.owner_chat_routing import format_owner_product_feedback_for_prompt

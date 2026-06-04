@@ -56,6 +56,13 @@ def _env_float(name: str, default: float) -> float:
         return default
 
 
+def is_critical_task(task_type: str | None) -> bool:
+    """True for build/security/quality task types that must keep heavy models
+    and are eligible for cross-provider escalation. Single source of truth for
+    'critical' across cost_guard and the router."""
+    return (task_type or "").strip().lower() in _CRITICAL_TASK_TYPES
+
+
 def cost_guard_enabled() -> bool:
     """True when budget caps are configured and the feature is not explicitly disabled."""
     if os.environ.get("AIFACTORY_COST_GUARD_ENABLED", "").strip().lower() in {"0", "false", "no", "off"}:

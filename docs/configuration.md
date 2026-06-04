@@ -106,6 +106,56 @@ Provider ids in `model_providers.yaml` (`default_provider`, `providers` keys, ro
 
 Treat those as separate documents unless explicitly wired to `load_merged_config`.
 
+## LLM routing & critical-task escalation
+
+The router (`llm/router.py`) always tries `default_provider` first when it is set
+and healthy. Per-rule `preferred_provider` only applies when **no** default is
+configured; `fallback_provider` only applies on **failover** (after the current
+provider errors or its circuit is open) and only to *enabled* providers. So with
+a default provider configured, normal routing switches only between that
+provider's **heavy** (strong) and **light** models — never across providers.
+
+The "strong model" for any task is therefore `model_role: heavy` **of the
+default provider** — the one provider a user is guaranteed to have a key for.
+Do **not** hardcode specific providers (e.g. `anthropic_cloud`) in routing rules
+as a quality lever; a user may have no key for them.
+
+### `llm.critical_escalation_enabled` (opt-in, default `false`)
+
+Set in `config/fragments/50-llm.yaml` (Admin → Settings), or override with the
+env var `AIFACTORY_LLM_CRITICAL_ESCALATION_ENABLED=1`. Reader:
+`core.throughput_limits.effective_llm_critical_escalation_enabled()` (env wins
+over config; surfaced in `throughput_snapshot()`).
+
+When **enabled**, a **critical** task may fail over **across providers** — not
+just between strong/weak models of the default. Escalation fires only when all
+of the following hold:
+
+1. **A stronger provider has a key.** The escalation target must have
+   credentials wired — a literal `api_key`, a populated `api_key_env`, or be a
+   local provider (Ollama, which needs none). Keyless cloud providers are never
+   targeted.
+2. **The default could not cope.** Escalation happens on the failover path only
+   — after the default provider errored or its circuit breaker is open. The
+   default is always tried first, so cost stays low in the happy path.
+3. **The task is critical.** `security_scan`, `code_generation`,
+   `architecture_design`, `qa_testing`, `hardening` — single source of truth is
+   `llm.cost_guard._CRITICAL_TASK_TYPES` (`is_critical_task()`).
+4. **Opt-in & documented.** Off by default. Enabling it intentionally widens
+   routing from "model tier within one provider" to "between providers", which
+   is why it is a distinct, clearly-labelled setting.
+
+**Target selection:** among untried providers that are available *and*
+credentialed, the router picks the highest `priority` (operator-declared
+ranking in `model_providers.yaml`). On a cross-provider failover the model id is
+**re-bound** to the new provider's role-appropriate model — a model id is
+provider-specific, so the default's model is never carried onto another
+provider. A caller-pinned `model_override` (e.g. the gate-failing repair model)
+is always honored as-is.
+
+When **disabled** (default), critical tasks behave exactly as before: default
+provider first, then only a rule's explicit `fallback_provider` (if any).
+
 ## Security-related environment variables
 
 See **[security.md](./security.md)** for narrative and production checklist. Quick reference:

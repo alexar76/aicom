@@ -30,6 +30,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
+from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
 
@@ -342,9 +343,9 @@ class MethodologyAgent(BaseAgent):
             f"{_METHODOLOGIST_SYSTEM}\n\n"
             f"Product idea:\n{agent_input.data.get('idea','')}\n\n"
             f"Domain pack (full schema):\n"
-            f"{json.dumps(pack.to_payload(full=True), ensure_ascii=False, indent=2)[:8000]}\n\n"
+            f"{prompt_json(pack.to_payload(full=True), limit=8000)}\n\n"
             f"Heuristic report:\n"
-            f"{json.dumps(heuristic_report, ensure_ascii=False, indent=2)[:6000]}\n"
+            f"{prompt_json(heuristic_report, limit=6000)}\n"
         )
         try:
             cfg = GenerationConfig(

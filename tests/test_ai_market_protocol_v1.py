@@ -24,6 +24,10 @@ def client(tmp_path, monkeypatch):
     monkeypatch.setenv("JWT_SECRET_KEY", "test-jwt-secret-ci-only-32chars-minimum!!")
     monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path / "data"))
     monkeypatch.setenv("AIFACTORY_AI_MARKET_DEMO_PAYMENT", "1")
+    # These tests cover the AI-market protocol (402 → channel → invoke), not the UNI
+    # credit bus. UNI settlement is on by default and would fail here because the demo
+    # buyer wallet is unfunded; the ledger has its own dedicated tests.
+    monkeypatch.setenv("AIFACTORY_UNI_ENABLED", "0")
     pipeline = tmp_path / "data" / "state" / "pipeline.json"
     pipeline.parent.mkdir(parents=True, exist_ok=True)
     pipeline.write_text(

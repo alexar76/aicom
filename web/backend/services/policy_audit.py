@@ -15,6 +15,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
+from core.agent_roles import is_developer_agent
 from core.paths import resolve_data_root
 from core.quality_settings import max_pipeline_repair_rounds_for_delivery_profile
 from web.backend.services.marketplace_quality import evaluate_marketplace_quality
@@ -63,7 +64,7 @@ def _load_spec_inner(pid: str, data_root: str | Path | None = None) -> dict | No
 def _dev_fixing_pending(task_queue: list, pid: str) -> bool:
     return any(
         t.get("product_id") == pid
-        and t.get("agent_type") == "developer"
+        and is_developer_agent(t.get("agent_type"))
         and t.get("state") == "DEV_FIXING"
         and t.get("status") in ("pending", "running")
         for t in task_queue

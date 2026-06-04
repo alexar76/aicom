@@ -16,6 +16,7 @@ from typing import Any
 
 from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW
 
+from core.agent_roles import is_developer_agent
 from core.quality_settings import max_pipeline_repair_rounds
 
 logger = logging.getLogger(__name__)
@@ -60,7 +61,7 @@ def _dev_fixing_pending_sqlite(pid: str) -> bool:
         try:
             for t in sm.get_tasks_by_product(pid):
                 if (
-                    str(t.get("agent_type") or "") == "developer"
+                    is_developer_agent(t.get("agent_type"))
                     and str(t.get("state") or "").upper() == "DEV_FIXING"
                     and str(t.get("status") or "").lower() in ("pending", "running")
                 ):
@@ -173,7 +174,7 @@ def _inject_via_pipeline_json(product_id: str, notes: str) -> dict[str, Any]:
     def _pending_json() -> bool:
         return any(
             t.get("product_id") == pid
-            and t.get("agent_type") == "developer"
+            and is_developer_agent(t.get("agent_type"))
             and str(t.get("state") or "").upper() == "DEV_FIXING"
             and str(t.get("status") or "").lower() in ("pending", "running")
             for t in task_queue
@@ -605,7 +606,7 @@ def _reject_via_pipeline_json(product_id: str, notes: str) -> dict[str, Any]:
     def _pending_json() -> bool:
         return any(
             t.get("product_id") == pid
-            and t.get("agent_type") == "developer"
+            and is_developer_agent(t.get("agent_type"))
             and str(t.get("state") or "").upper() == "DEV_FIXING"
             and str(t.get("status") or "").lower() in ("pending", "running")
             for t in task_queue

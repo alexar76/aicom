@@ -61,6 +61,29 @@ class AnthropicProvider(LLMProvider):
             limits=httpx.Limits(max_keepalive_connections=5, max_connections=10),
         )
 
+    @staticmethod
+    def _build_user_content(prompt: str, cfg: GenerationConfig) -> list[dict] | str:
+        """Split the prompt at the stable/variable boundary for prompt caching.
+
+        When ``cfg.cache_prefix_len`` marks a non-trivial leading prefix (the
+        agent role / domain guide / style block that repeats across calls), emit
+        two content blocks and tag the prefix with ``cache_control: ephemeral``
+        so Anthropic caches it (≈90% input discount on hits). Anthropic ignores
+        the breakpoint silently if the prefix is below the model's minimum
+        cacheable size, so this is always safe. Falls back to a plain string
+        when there is no known stable prefix.
+        """
+        n = int(getattr(cfg, "cache_prefix_len", 0) or 0)
+        if n <= 0 or n >= len(prompt):
+            return prompt
+        prefix, rest = prompt[:n], prompt[n:]
+        if not prefix.strip() or not rest.strip():
+            return prompt
+        return [
+            {"type": "text", "text": prefix, "cache_control": {"type": "ephemeral"}},
+            {"type": "text", "text": rest},
+        ]
+
     async def generate(self, prompt: str, config: GenerationConfig | None = None) -> str:
         cfg = config or GenerationConfig()
         start = time.time()
@@ -70,7 +93,7 @@ class AnthropicProvider(LLMProvider):
                 "model": active_model,
                 "max_tokens": int(min(max(cfg.max_tokens, 1), 8192)),
                 "temperature": cfg.temperature,
-                "messages": [{"role": "user", "content": prompt}],
+                "messages": [{"role": "user", "content": self._build_user_content(prompt, cfg)}],
             }
             if cfg.stop_sequences:
                 payload["stop_sequences"] = cfg.stop_sequences
@@ -81,7 +104,15 @@ class AnthropicProvider(LLMProvider):
             text = self._extract_text(result)
             latency = (time.time() - start) * 1000
             usage = result.get("usage", {}) if isinstance(result, dict) else {}
-            tokens = int((usage.get("input_tokens") or 0) + (usage.get("output_tokens") or 0))
+            # With prompt caching, ``input_tokens`` excludes cached reads, which
+            # are reported separately. Sum all input flavours + output for an
+            # accurate total-token count.
+            tokens = int(
+                (usage.get("input_tokens") or 0)
+                + (usage.get("cache_read_input_tokens") or 0)
+                + (usage.get("cache_creation_input_tokens") or 0)
+                + (usage.get("output_tokens") or 0)
+            )
             self._update_metrics(tokens, latency)
             self._record_success()
             return text
@@ -100,7 +131,7 @@ class AnthropicProvider(LLMProvider):
             "model": active_model,
             "max_tokens": int(min(max(cfg.max_tokens, 1), 8192)),
             "temperature": cfg.temperature,
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": [{"role": "user", "content": self._build_user_content(prompt, cfg)}],
             "stream": True,
         }
         if cfg.stop_sequences:

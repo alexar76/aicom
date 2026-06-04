@@ -5,6 +5,8 @@ from __future__ import annotations
 import os
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from llm.cost_guard import (
     CostGuard,
     cost_guard_enabled,
@@ -12,6 +14,16 @@ from llm.cost_guard import (
     reset_cost_guard_for_tests,
 )
 from llm.usage_guard import reset_usage_guard_for_tests
+
+
+@pytest.fixture(autouse=True)
+def _reset_global_guards():
+    """_setup_cost_guard installs a MagicMock usage guard into the process-global
+    singleton; without this teardown it leaks into every later test (e.g. a real
+    LLMRouter would then `await mock.acquire()` and crash)."""
+    yield
+    reset_usage_guard_for_tests(None)
+    reset_cost_guard_for_tests(None)
 
 
 def _make_guard_snapshot(day_spend=0.0, month_spend=0.0,

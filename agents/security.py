@@ -587,7 +587,7 @@ class SecurityAgent(BaseAgent):
             for file_info in code_files[:10]:
                 code_samples[file_info["path"]] = file_info["content"][:2000]
 
-            code_str = json.dumps(code_samples, indent=2) if code_samples else "No code files found"
+            code_str = prompt_json(code_samples) if code_samples else "No code files found"
 
             prompt = f"""{SECURITY_SYSTEM_PROMPT}
 

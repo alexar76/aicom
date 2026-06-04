@@ -13,6 +13,7 @@ import uuid
 from pathlib import Path
 from typing import Any, Optional
 
+from core.agent_roles import is_developer_agent
 from core.quality_settings import max_pipeline_repair_rounds
 
 logger = logging.getLogger(__name__)
@@ -39,7 +40,7 @@ def _truthy(name: str, default: str = "0") -> bool:
 def _dev_fixing_pending(task_queue: list, pid: str) -> bool:
     return any(
         t.get("product_id") == pid
-        and t.get("agent_type") == "developer"
+        and is_developer_agent(t.get("agent_type"))
         and t.get("state") == "DEV_FIXING"
         and t.get("status") in ("pending", "running")
         for t in task_queue

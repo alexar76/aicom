@@ -8,22 +8,20 @@ from web.backend.services.feedback_digest import build_feedback_digest
 
 
 def test_feedback_digest_empty_when_no_feedback(tmp_path: Path, monkeypatch):
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path / "data"))
     monkeypatch.setenv("AIFACTORY_SUPPORT_SESSIONS_DIR", str(tmp_path / "support" / "sessions"))
-    # feedback_digest reads /app/data/feedback directly; simulate empty by patching path via cwd mount:
-    # Instead, just ensure it doesn't crash and returns minimal shape.
     d = build_feedback_digest(window_hours=1)
     assert d["source"] == "feedback_digest_v1"
     assert "by_classification" in d
 
 
 def test_feedback_digest_counts_recent_feedback(tmp_path: Path, monkeypatch):
-    fb_dir = tmp_path / "feedback"
+    # feedback_digest reads feedback_dir() == data_root()/"feedback"; redirect the data
+    # root into tmp instead of writing to a hardcoded /app/data/feedback.
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path / "data"))
+    fb_dir = tmp_path / "data" / "feedback"
     fb_dir.mkdir(parents=True, exist_ok=True)
-    # Monkeypatch by creating a fake /app/data/feedback via env isn't supported; instead write to real path used by service.
-    # So we patch Path in module by writing into /app/data/feedback when available in test environment.
-    real_dir = Path("/app/data/feedback")
-    real_dir.mkdir(parents=True, exist_ok=True)
-    p = real_dir / "fb-test.json"
+    p = fb_dir / "fb-test.json"
     p.write_text(
         json.dumps(
             {

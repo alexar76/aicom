@@ -23,6 +23,37 @@ from llm import GenerationConfig, LLMRouter
 logger = logging.getLogger(__name__)
 
 
+# Cross-product "lessons learned" are engineering corrections — most valuable to
+# build/quality/planning agents. Pure outward-content agents (marketing, sales)
+# and infra (devops) gain little from them. Because lessons rotate as the
+# learning memory grows, they sit *outside* the cacheable prompt prefix, so not
+# injecting them where they add no signal is a direct, repeated input-token
+# saving on every product. Override the recipient set with
+# AIFACTORY_LESSON_AGENTS (comma-separated agent types) and the per-call count
+# with AIFACTORY_LESSON_LIMIT (0 disables lessons everywhere).
+_DEFAULT_LESSON_AGENTS = frozenset({
+    "analyst", "pm", "architect", "design_critic", "developer",
+    "hardening", "qa", "security", "methodologist", "evolution_analyst",
+})
+
+
+def _lesson_recipients() -> frozenset[str]:
+    raw = os.environ.get("AIFACTORY_LESSON_AGENTS", "").strip()
+    if not raw:
+        return _DEFAULT_LESSON_AGENTS
+    return frozenset(p.strip().lower() for p in raw.split(",") if p.strip())
+
+
+def _lesson_limit() -> int:
+    raw = os.environ.get("AIFACTORY_LESSON_LIMIT", "").strip()
+    if raw:
+        try:
+            return max(0, int(raw))
+        except ValueError:
+            pass
+    return 8
+
+
 @dataclass
 class AgentInput:
     """Standardized input for all agents."""
@@ -135,19 +166,25 @@ class BaseAgent(ABC):
         Falls back to rule-based generation if the LLM is unavailable.
         """
         try:
-            try:
-                from web.backend.services.learning_memory import load_recent_lessons
+            lessons: list[dict] = []
+            limit = _lesson_limit()
+            if limit > 0 and self.agent_type in _lesson_recipients():
+                try:
+                    from web.backend.services.learning_memory import load_recent_lessons
 
-                lessons = load_recent_lessons(str(self.data_root), limit=8)
-            except Exception:
-                lessons = []
-            user_part = self._augment_prompt_with_context(prompt, agent_input, lessons)
+                    lessons = load_recent_lessons(str(self.data_root), limit=limit)
+                except Exception:
+                    lessons = []
+            user_part, stable_user_len = self._augment_prompt_with_context(prompt, agent_input, lessons)
             if system_prompt and system_prompt.strip():
-                final_prompt = f"{system_prompt.strip()}\n\n{user_part}"
+                prefix = f"{system_prompt.strip()}\n\n"
+                final_prompt = f"{prefix}{user_part}"
+                cache_prefix_len = len(prefix) + stable_user_len
             else:
                 final_prompt = user_part
+                cache_prefix_len = stable_user_len
             base_cfg = config if config is not None else GenerationConfig()
-            cfg = replace(base_cfg, agent_type=self.agent_type)
+            cfg = replace(base_cfg, agent_type=self.agent_type, cache_prefix_len=cache_prefix_len)
             if agent_input and agent_input.product_id:
                 cfg = replace(cfg, product_id=agent_input.product_id)
             # Stronger model for gate-failing repair rounds (AIFACTORY_GATE_FAILING_MODEL)
@@ -164,13 +201,14 @@ class BaseAgent(ABC):
             logger.warning(f"LLM unavailable for {self.agent_type}: {e}. Using fallback generation.")
             return await self._fallback_generate(prompt, task_type, agent_input)
 
-    def _augment_prompt_with_context(self, prompt: str, agent_input: AgentInput | None, lessons: list[dict]) -> str:
-        blocks: list[str] = []
-        if lessons:
-            blocks.append(
-                "Cross-product lessons learned (apply when relevant, avoid repeating mistakes):\n"
-                + json.dumps(lessons, ensure_ascii=False)
-            )
+    def _augment_prompt_with_context(self, prompt: str, agent_input: AgentInput | None, lessons: list[dict]) -> tuple[str, int]:
+        # Ordering matters for provider prefix caching (DeepSeek auto-cache,
+        # Anthropic cache_control): emit the *stable* context first (domain
+        # guide + style are constant per agent/domain across calls), then the
+        # *rotating* context (lessons change as the learning memory grows) and
+        # finally the per-product prompt. This keeps the leading bytes identical
+        # across calls so the cacheable prefix actually hits.
+        stable_blocks: list[str] = []
         if agent_input:
             domain = ""
             if isinstance(agent_input.data, dict):
@@ -181,13 +219,31 @@ class BaseAgent(ABC):
                         domain = str(spec.get("domain") or "").strip().lower()
             guide = self._load_domain_guide(domain)
             if guide:
-                blocks.append(f"Domain guidelines ({domain}):\n{guide}")
+                stable_blocks.append(f"Domain guidelines ({domain}):\n{guide}")
         style_cfg = self._load_code_style_config()
         if style_cfg:
-            blocks.append("Code style and engineering conventions:\n" + json.dumps(style_cfg, ensure_ascii=False))
-        if not blocks:
-            return prompt
-        return "\n\n".join(blocks + [prompt])
+            stable_blocks.append("Code style and engineering conventions:\n" + json.dumps(style_cfg, ensure_ascii=False))
+
+        rotating_blocks: list[str] = []
+        if lessons:
+            rotating_blocks.append(
+                "Cross-product lessons learned (apply when relevant, avoid repeating mistakes):\n"
+                + json.dumps(lessons, ensure_ascii=False)
+            )
+
+        # Assemble: stable prefix (cacheable) → rotating → prompt. Return the
+        # character length of the stable prefix so callers can set a cache
+        # breakpoint exactly at the stable/variable boundary.
+        sep = "\n\n"
+        stable_text = sep.join(stable_blocks)
+        tail_parts = rotating_blocks + [prompt]
+        tail_text = sep.join(tail_parts)
+        if not stable_text:
+            return tail_text, 0
+        full = f"{stable_text}{sep}{tail_text}"
+        # Stable prefix includes the trailing separator so the variable part
+        # starts on a clean boundary.
+        return full, len(stable_text) + len(sep)
 
     def _load_domain_guide(self, domain: str) -> str:
         if not domain:

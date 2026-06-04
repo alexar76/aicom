@@ -5,6 +5,7 @@ import os
 import time
 import uuid
 
+from core.agent_roles import is_developer_agent
 from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
@@ -556,6 +557,6 @@ class PeerReviewEngine:
                 )
             except Exception:
                 logger.debug("agent_handoff_audit skipped (peer_review_block)", exc_info=True)
-        product_state["state"] = "BUG_FOUND" if tgt_agent in ("developer", "hardening") else product_state.get("state", "")
+        product_state["state"] = "BUG_FOUND" if (is_developer_agent(tgt_agent) or tgt_agent == "hardening") else product_state.get("state", "")
         product_state["updated_at"] = time.time()
         return True

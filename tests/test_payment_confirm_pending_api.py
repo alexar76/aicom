@@ -53,7 +53,7 @@ def test_confirm_pending_then_license_once(pay_client):
         json={
             "product_id": "prod-9388c62f0666",
             "chain": "base",
-            "token": "ETH",
+            "token": "USDT",
         },
     )
     assert create.status_code == 200

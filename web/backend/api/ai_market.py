@@ -213,7 +213,7 @@ async def get_embed_config(product_id: str):
             checkout_usdt_from_sales_file(product_id)
         ),
         "script_path": "/aimarket.js",
-        "settlement_path": "/api/ai-market/pilot/settlement/confirm",
+        "settlement_path": "/ai-market/pilot/settlement/confirm",
         "protocol_version": "v0",
     }
 

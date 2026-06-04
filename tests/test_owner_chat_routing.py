@@ -8,7 +8,6 @@ from pathlib import Path
 import pytest
 
 from web.backend.services import owner_chat_routing as ocr
-from web.backend.services import pipeline_enqueue as pe
 
 
 def test_extract_json_object_raw_and_fence():
@@ -20,7 +19,8 @@ def test_apply_routing_new_idea(tmp_path: Path, monkeypatch: pytest.MonkeyPatch)
     pipe = tmp_path / "pipeline.json"
     pipe.write_text(json.dumps({"products": {}, "task_queue": []}), encoding="utf-8")
     monkeypatch.setattr(ocr, "PIPELINE_FILE", pipe)
-    monkeypatch.setattr(pe, "DEFAULT_PIPELINE", pipe)
+    monkeypatch.setattr("core.pipeline_state_writer.pipeline_uses_sql_store", lambda: False)
+    monkeypatch.setattr("core.pipeline_state_writer.pipeline_json_path", lambda: pipe)
     fb_base = tmp_path / "feedback"
     monkeypatch.setattr(ocr, "FEEDBACK_BASE", fb_base)
     dirs_f = tmp_path / "owner_general_directives.json"
@@ -54,7 +54,8 @@ def test_apply_routing_product_feedback(tmp_path: Path, monkeypatch: pytest.Monk
         encoding="utf-8",
     )
     monkeypatch.setattr(ocr, "PIPELINE_FILE", pipe)
-    monkeypatch.setattr(pe, "DEFAULT_PIPELINE", pipe)
+    monkeypatch.setattr("core.pipeline_state_writer.pipeline_uses_sql_store", lambda: False)
+    monkeypatch.setattr("core.pipeline_state_writer.pipeline_json_path", lambda: pipe)
     fb_base = tmp_path / "feedback"
     monkeypatch.setattr(ocr, "FEEDBACK_BASE", fb_base)
 
@@ -83,7 +84,8 @@ def test_orphan_product_feedback_heuristic_new_idea(tmp_path: Path, monkeypatch:
     pipe = tmp_path / "pipeline.json"
     pipe.write_text(json.dumps({"products": {}, "task_queue": []}), encoding="utf-8")
     monkeypatch.setattr(ocr, "PIPELINE_FILE", pipe)
-    monkeypatch.setattr(pe, "DEFAULT_PIPELINE", pipe)
+    monkeypatch.setattr("core.pipeline_state_writer.pipeline_uses_sql_store", lambda: False)
+    monkeypatch.setattr("core.pipeline_state_writer.pipeline_json_path", lambda: pipe)
     dirs_f = tmp_path / "owner_general_directives.json"
     monkeypatch.setattr(ocr, "DIRECTIVES_FILE", dirs_f)
 
@@ -109,7 +111,8 @@ def test_orphan_product_feedback_heuristic_directive(tmp_path: Path, monkeypatch
     pipe = tmp_path / "pipeline.json"
     pipe.write_text(json.dumps({"products": {}, "task_queue": []}), encoding="utf-8")
     monkeypatch.setattr(ocr, "PIPELINE_FILE", pipe)
-    monkeypatch.setattr(pe, "DEFAULT_PIPELINE", pipe)
+    monkeypatch.setattr("core.pipeline_state_writer.pipeline_uses_sql_store", lambda: False)
+    monkeypatch.setattr("core.pipeline_state_writer.pipeline_json_path", lambda: pipe)
     dirs_f = tmp_path / "owner_general_directives.json"
     dirs_f.write_text(json.dumps({"directives": []}), encoding="utf-8")
     monkeypatch.setattr(ocr, "DIRECTIVES_FILE", dirs_f)

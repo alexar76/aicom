@@ -61,6 +61,13 @@ class GenerationConfig:
     model_role: str | None = None
     #: Pipeline product id for per-product LLM spend caps (llm_calls.jsonl)
     product_id: str | None = None
+    #: Length (in characters) of the leading *stable* prefix of the prompt —
+    #: the agent role / domain guide / style block that is identical across
+    #: calls. Providers that support explicit prompt caching (Anthropic
+    #: cache_control) place the cache breakpoint here; DeepSeek-style automatic
+    #: prefix caching benefits from the stable-first ordering without using it.
+    #: 0 means "no known stable boundary" (cache the whole prompt as usual).
+    cache_prefix_len: int = 0
 
 
 @dataclass

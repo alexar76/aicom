@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from core.agent_roles import is_developer_agent
+
 
 def _latest_failed_task(
     product: dict[str, Any],
@@ -214,7 +216,7 @@ def build_failure_report(product: dict[str, Any], tasks: list[dict[str, Any]] | 
         suggested_agent, suggested_state = "architect", "METHODOLOGY_REVIEWED"
     elif any(k in low for k in ("import error", "syntaxerror", "traceback", "test failure", "browser e2e")):
         suggested_agent, suggested_state = "developer", "BUG_FOUND"
-    elif agent in ("developer", "hardening", "qa"):
+    elif is_developer_agent(agent) or agent in ("hardening", "qa"):
         suggested_agent, suggested_state = "developer", "BUG_FOUND"
 
     return {

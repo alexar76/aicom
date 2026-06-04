@@ -30,6 +30,7 @@ from .base_agent import AgentInput, AgentOutput, BaseAgent
 
 logger = logging.getLogger(__name__)
 
+from agents.prompt_utils import prompt_json
 from agents.prompts.architect_role import ARCHITECT_SYSTEM_PROMPT
 
 
@@ -857,7 +858,7 @@ class ArchitectAgent(BaseAgent):
         self._log("INFO", f"Designing architecture for {product_id}")
 
         try:
-            spec_str = json.dumps(spec, indent=2) if spec else idea
+            spec_str = prompt_json(spec) if spec else idea
             admin_raw = (agent_input.data.get("admin_instructions") or "").strip()
             admin_l = admin_raw.lower()
             blob_l = spec_str.lower()
@@ -867,9 +868,7 @@ class ArchitectAgent(BaseAgent):
             if research_path.is_file():
                 try:
                     raw_mr = json.loads(research_path.read_text(encoding="utf-8"))
-                    research_context = json.dumps(raw_mr, indent=2, ensure_ascii=False)
-                    if len(research_context) > 28_000:
-                        research_context = research_context[:28_000] + "\n…[truncated]"
+                    research_context = prompt_json(raw_mr, limit=28_000)
                     self._log("INFO", "Architect loaded market_research.json for context")
                 except (json.JSONDecodeError, OSError) as e:
                     self._log("WARNING", f"Architect could not read market research: {e}")
@@ -927,9 +926,7 @@ class ArchitectAgent(BaseAgent):
             if meth_path.is_file():
                 try:
                     mr = json.loads(meth_path.read_text(encoding="utf-8"))
-                    blob = json.dumps(mr, ensure_ascii=False, indent=2)
-                    if len(blob) > 28_000:
-                        blob = blob[:28_000] + "\n…[truncated]"
+                    blob = prompt_json(mr, limit=28_000)
                     methodology_block = (
                         "\n=== DOMAIN METHODOLOGY REVIEW (pre-architecture; treat as TZ backlog) ===\n"
                         "Resolve `findings` in components, data_models, api_endpoints, and acceptance-oriented notes. "

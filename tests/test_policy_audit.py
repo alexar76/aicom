@@ -115,7 +115,11 @@ def test_policy_audit_passing_product_no_task(tmp_path, monkeypatch):
     }
     task_queue: list = []
 
-    changed = apply_policy_audit(products, task_queue, 1_700_000_000.0, data_root=str(root / "data"))
+    apply_policy_audit(products, task_queue, 1_700_000_000.0, data_root=str(root / "data"))
+    # A passing product must never be sent to rework: no dev task, stays terminal,
+    # and is marked compliant. (It may flip `changed` the first time only because the
+    # storefront listing gets marked "established" — not because of a quality regression.)
     assert len(task_queue) == 0
     assert products[pid]["state"] == "COMPLETED"
-    assert changed is False
+    assert products[pid].get("policy_audit_eligible") is True
+    assert int(products[pid].get("quality_repair_round") or 0) == 0

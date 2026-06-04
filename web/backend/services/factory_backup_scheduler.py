@@ -31,7 +31,7 @@ DEFAULT_RETENTION = 7
 
 def normalize_hhmm(value: str | None) -> str:
     raw = (value or DEFAULT_TIME).strip()
-    if not re.match(r"^\d{1,2}:\d{2}$", raw):
+    if not re.match(r"^\d{1,2}:\d{1,2}$", raw):
         return DEFAULT_TIME
     parts = raw.split(":")
     h, m = int(parts[0]), int(parts[1])

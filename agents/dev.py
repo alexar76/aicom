@@ -17,6 +17,7 @@ import logging
 import shutil
 import time
 
+from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
 
@@ -123,7 +124,7 @@ class DeveloperAgent(BaseAgent):
                 polyglot_block = (
                     "\n=== ARCHITECT IMPLEMENTATION CONTRACT — BINDING ===\n"
                     "These runtimes and paths are **mandatory**. Implement them as real source trees — not comments.\n"
-                    f"{json.dumps(ic, indent=2, ensure_ascii=False)}\n"
+                    f"{prompt_json(ic)}\n"
                     "- Match **tech_stack** + **runnable_services**: Python→`.py` trees + requirements/pyproject; "
                     "Node→package.json + TS sources; .NET→csproj/sln.\n"
                     "- If both **api** and **web** services exist, **do not** collapse everything into one static HTML file.\n"

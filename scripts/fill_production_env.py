@@ -27,6 +27,13 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Allow `python3 scripts/fill_production_env.py` (documented usage): when run as a
+# script, sys.path[0] is the scripts/ dir, so `from core...` below would fail.
+# Put the repository root on sys.path so first-party packages import cleanly.
+_REPO_ROOT = str(Path(__file__).resolve().parents[1])
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+
 
 def _active_keys(env_text: str) -> set[str]:
     """Keys that have a non-comment assignment."""

@@ -13,6 +13,8 @@ import time
 from pathlib import Path
 from typing import Any, Literal, Optional
 
+from core.agent_roles import is_architect_agent
+
 logger = logging.getLogger(__name__)
 
 PIPELINE_STAGE_ORDER: tuple[str, ...] = (
@@ -78,7 +80,7 @@ def _review_passed(review: Any) -> Optional[bool]:
 def find_task_for_stage(task_list: list[dict], stage: str) -> Optional[dict]:
     """Match ``PipelineTab.findTaskForStage`` (designer→architect, dev aliases, methodologist virtual)."""
     if stage == "designer":
-        return next((x for x in task_list if x.get("agent_type") == "architect"), None)
+        return next((x for x in task_list if is_architect_agent(x.get("agent_type"))), None)
     if stage == "methodologist":
         direct = next((x for x in task_list if x.get("agent_type") == "methodologist"), None)
         if direct:
@@ -107,9 +109,9 @@ def find_task_for_stage(task_list: list[dict], stage: str) -> Optional[dict]:
     if hit:
         return hit
     if stage == "developer":
-        return next((x for x in task_list if x.get("agent_type") == "dev"), None)
+        return next((x for x in task_list if x.get("agent_type") in ("dev", "landing_developer")), None)
     if stage == "dev":
-        return next((x for x in task_list if x.get("agent_type") == "developer"), None)
+        return next((x for x in task_list if x.get("agent_type") in ("developer", "landing_developer")), None)
     return None
 
 

@@ -71,7 +71,9 @@ def test_full_software_tree_has_compose_and_detects_fastapi(full_software_produc
     assert (code / "railway.json").is_file()
     info = detect_fastapi_backend(code)
     assert info is not None
-    assert info.get("module") == "main:app"
+    # main.py lives at app/main.py and is launched from the code root, so the uvicorn
+    # target is app.main:app — matching the Procfile/Dockerfile/nixpacks templates.
+    assert info.get("module") == "app.main:app"
     assert (code / "app" / "main.py").is_file()
 
 

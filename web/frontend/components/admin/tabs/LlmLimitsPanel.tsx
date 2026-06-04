@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { Gauge, Loader2, RefreshCw, Save, Shield } from 'lucide-react';
+import { Gauge, Loader2, Network, RefreshCw, Save, Shield } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -22,6 +22,7 @@ export function LlmLimitsPanel() {
     daily_cost_cap_usd: '0',
     monthly_cost_cap_usd: '0',
     pre_call_reserve_usd: '0.05',
+    critical_escalation_enabled: false,
   });
 
   const applyPanel = useCallback((panel: LlmLimitsPanelData) => {
@@ -32,6 +33,7 @@ export function LlmLimitsPanel() {
       daily_cost_cap_usd: String(saved.daily_cost_cap_usd ?? 0),
       monthly_cost_cap_usd: String(saved.monthly_cost_cap_usd ?? 0),
       pre_call_reserve_usd: String(saved.pre_call_reserve_usd ?? 0.05),
+      critical_escalation_enabled: Boolean(saved.critical_escalation_enabled),
     });
   }, []);
 
@@ -60,6 +62,7 @@ export function LlmLimitsPanel() {
           daily_cost_cap_usd: parseFloat(draft.daily_cost_cap_usd) || 0,
           monthly_cost_cap_usd: parseFloat(draft.monthly_cost_cap_usd) || 0,
           pre_call_reserve_usd: parseFloat(draft.pre_call_reserve_usd) || 0,
+          critical_escalation_enabled: draft.critical_escalation_enabled,
         })
       );
       toast.success('LLM limits saved');
@@ -140,6 +143,12 @@ export function LlmLimitsPanel() {
               />
             </div>
 
+            <EscalationToggle
+              enabled={draft.critical_escalation_enabled}
+              envLocked={envOverrides.critical_escalation_enabled}
+              onChange={(v) => setDraft((d) => ({ ...d, critical_escalation_enabled: v }))}
+            />
+
             <div className="flex flex-wrap gap-2">
               <Button size="sm" onClick={() => void handleSave()} disabled={saving || loading}>
                 {saving ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : <Save className="mr-1 h-4 w-4" />}
@@ -188,6 +197,62 @@ function UsageStat({ label, spent, cap }: { label: string; spent: number; cap: n
           />
         </div>
       ) : null}
+    </div>
+  );
+}
+
+function EscalationToggle({
+  enabled,
+  envLocked,
+  onChange,
+}: {
+  enabled: boolean;
+  envLocked?: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <div className="rounded-lg border border-indigo-500/20 bg-black/20 p-3">
+      <div className="flex items-start justify-between gap-3">
+        <label className="flex items-center gap-1.5 text-xs font-medium text-gray-200">
+          <Network className="h-3.5 w-3.5 text-indigo-400" />
+          Cross-provider escalation for critical tasks
+          {envLocked ? (
+            <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">env</span>
+          ) : null}
+        </label>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={enabled}
+          disabled={envLocked}
+          onClick={() => onChange(!enabled)}
+          className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
+            enabled ? 'bg-indigo-500' : 'bg-white/15'
+          } ${envLocked ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              enabled ? 'translate-x-4' : 'translate-x-0.5'
+            }`}
+          />
+        </button>
+      </div>
+      <p className="mt-2 text-[11px] leading-relaxed text-gray-400">
+        <strong className="font-medium text-gray-300">Off (default):</strong> all routing stays within your{' '}
+        <code className="text-[10px] text-gray-500">default_provider</code> — switching only between its strong (heavy)
+        and light models. A failing default only falls over to a routing rule&apos;s explicit{' '}
+        <code className="text-[10px] text-gray-500">fallback_provider</code>, if any.
+      </p>
+      <p className="mt-1.5 text-[11px] leading-relaxed text-gray-400">
+        <strong className="font-medium text-gray-300">On:</strong> when the default provider <em>cannot cope</em>{' '}
+        (errors / unhealthy / circuit open) on a <strong className="text-gray-300">critical</strong> task
+        (security&nbsp;scan, code generation, architecture, QA, hardening), the router additionally fails over{' '}
+        <strong className="text-gray-300">to another provider</strong> — the highest-priority one that actually has a
+        key configured. This widens routing from &ldquo;model tier within one provider&rdquo; to{' '}
+        <strong className="text-gray-300">between providers</strong>, so it is opt-in. Keyless providers are never
+        targeted; the model is re-bound to the new provider automatically. Env{' '}
+        <code className="text-[10px] text-gray-500">AIFACTORY_LLM_CRITICAL_ESCALATION_ENABLED</code> overrides this.
+      </p>
     </div>
   );
 }

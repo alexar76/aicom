@@ -8,6 +8,8 @@ output budget the active model supports (never the legacy 32k factory cap alone)
 from __future__ import annotations
 
 import contextlib
+import json
+import os
 
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_MAX_OUTPUT_TOKENS_LIGHT
 
@@ -27,6 +29,63 @@ _MODEL_OUTPUT_CEILINGS: dict[str, int] = {
 }
 
 _DEFAULT_CEILING = FACTORY_MAX_OUTPUT_TOKENS_HEAVY
+
+
+# Per-task soft caps on requested output tokens. Agents uniformly request the
+# 128k heavy budget, but most stages emit a few-k JSON document — the oversized
+# ceiling only lets a misbehaving model ramble (cost + latency) without adding
+# signal. These caps sit comfortably above the largest healthy output for each
+# stage, so they are quality-neutral while bounding the worst case. Only code
+# generation keeps a large budget (real multi-file source trees).
+# Override per deploy with AIFACTORY_TASK_OUTPUT_CAPS_JSON (task_type -> int).
+_TASK_OUTPUT_SOFT_CAPS: dict[str, int] = {
+    "code_generation": 64_000,
+    "architecture_design": 32_000,
+    "qa_testing": 16_000,
+    "security_scan": 16_000,
+    "pm_analysis": 12_000,
+    "market_research": 12_000,
+    "methodology_review": 12_000,
+    "marketing_copy": 8_000,
+    "evolution_analysis": 8_000,
+    "devops_setup": 8_000,
+    "design_critic": 6_000,
+    "sales_response": 6_000,
+}
+
+
+def _task_output_cap_overrides() -> dict[str, int]:
+    raw = os.environ.get("AIFACTORY_TASK_OUTPUT_CAPS_JSON", "").strip()
+    if not raw:
+        return {}
+    try:
+        obj = json.loads(raw)
+    except (json.JSONDecodeError, ValueError):
+        return {}
+    if not isinstance(obj, dict):
+        return {}
+    out: dict[str, int] = {}
+    for k, v in obj.items():
+        with contextlib.suppress(TypeError, ValueError):
+            out[str(k).strip().lower()] = int(v)
+    return out
+
+
+def task_output_soft_cap(task_type: str | None) -> int | None:
+    """Soft ceiling (tokens) on requested output for ``task_type``, or None.
+
+    Disabled wholesale by AIFACTORY_TASK_OUTPUT_CAPS_ENABLED in {0,false,no,off}.
+    """
+    if os.environ.get("AIFACTORY_TASK_OUTPUT_CAPS_ENABLED", "").strip().lower() in {"0", "false", "no", "off"}:
+        return None
+    if not task_type:
+        return None
+    key = str(task_type).strip().lower()
+    overrides = _task_output_cap_overrides()
+    if key in overrides:
+        cap = overrides[key]
+        return cap if cap > 0 else None
+    return _TASK_OUTPUT_SOFT_CAPS.get(key)
 
 
 def model_output_ceiling(model: str | None) -> int:

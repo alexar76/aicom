@@ -61,6 +61,7 @@ const ADMIN_TAB_IDS = new Set([
   'factory-floor',
   'time-travel',
   'showcase',
+  'blog',
   'prompt-loop',
   'pipeline',
   'new-product',

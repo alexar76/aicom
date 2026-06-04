@@ -25,6 +25,7 @@ import json
 import logging
 import time
 
+from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
 from core.telemetry_signals import extract_evolution_signals_from_jsonl_dir
@@ -276,8 +277,8 @@ Be specific about competitors, pricing, and market trends found in the search.
                 "saved_evolution_json": telemetry_data[-5:] if telemetry_data else [],
                 "evolution_signals_jsonl": evolution_signals[-80:] if evolution_signals else [],
             }
-            telemetry_str = json.dumps(telemetry_bundle, indent=2)
-            initial_research_str = json.dumps(initial_research, indent=2)[:3000]
+            telemetry_str = prompt_json(telemetry_bundle)
+            initial_research_str = prompt_json(initial_research, limit=3000)
 
             prompt = f"""{ANALYST_MONITOR_PROMPT}
 

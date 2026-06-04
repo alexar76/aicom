@@ -385,6 +385,11 @@ def preview_restore(token: str) -> dict[str, Any]:
     backup = inspect_backup_zip(path)
     current = scan_current_factory_state()
     warnings: list[str] = []
+    # Baseline warning intrinsic to the mode: a full snapshot replaces the entire data/
+    # directory (not a merge), even when the current data dir looks empty.
+    warnings.append(
+        "Full snapshot restore will REPLACE the entire data/ directory — this is not a merge."
+    )
     if current.get("products_total", 0) > 0:
         warnings.append(
             f"Current pipeline has {current['products_total']} product(s) — restore will REPLACE them."

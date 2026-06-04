@@ -143,29 +143,27 @@ class TestAdminAuthAPI:
         response = client.get("/api/admin/dashboard")
         assert response.status_code == 401
 
-    def test_login_invalid_credentials(self, client, tmp_path):
-        """Test login with invalid password (admin.json mocked — no /app/data needed)."""
+    def test_login_invalid_credentials(self, client, tmp_path, monkeypatch):
+        """Login with a wrong password returns 401 (multi-user admin_users store)."""
+        from web.backend.services import admin_users_store as aus
+
         audit = tmp_path / "audit.jsonl"
         sm = SecurityManager(
             secret_key="test-secret-key-12345-for-testing-only",
             audit_log_path=str(audit),
         )
-        admin_path = tmp_path / "admin.json"
-        admin_path.write_text(
-            json.dumps({"password_hash": sm.hash_password("the_real_password")}),
-            encoding="utf-8",
+        # Seed the admin_users store the login handler actually reads.
+        monkeypatch.setattr(aus, "USERS_PATH", tmp_path / "admin_users.json")
+        aus.create_user(
+            username="admin",
+            password_hash=sm.hash_password("the_real_password"),
+            role="super_admin",
         )
 
-        def _path(arg):
-            if arg == "/app/data/config/admin.json":
-                return admin_path
-            return RealPath(arg)
-
-        with patch("web.backend.api.admin.auth.Path", side_effect=_path):
-            response = client.post(
-                "/api/admin/auth/login",
-                json={"username": "admin", "password": "wrong_password"},
-            )
+        response = client.post(
+            "/api/admin/auth/login",
+            json={"username": "admin", "password": "wrong_password"},
+        )
         assert response.status_code == 401
 
     def test_theme_config(self, client):

@@ -10,6 +10,7 @@ import os
 import time
 import uuid
 
+from core.agent_roles import is_architect_agent, is_developer_agent
 from core.logging_utils import log_suppressed
 from core.quality_settings import gate_failing_model, max_pipeline_repair_rounds_for_delivery_profile
 from orchestrator.task_executor_helpers import (
@@ -145,7 +146,7 @@ async def run_agent_task(
                     products[pid]["updated_at"] = time.time()
                     existing = any(
                         t.get("product_id") == pid
-                        and t.get("agent_type") == "architect"
+                        and is_architect_agent(t.get("agent_type"))
                         and t.get("status") in ("pending", "running")
                         for t in task_queue
                     )
@@ -587,7 +588,7 @@ async def run_agent_task(
                 }
                 exists = any(
                     t.get("product_id") == pid
-                    and t.get("agent_type") == "developer"
+                    and is_developer_agent(t.get("agent_type"))
                     and t.get("state") == "DEV_FIXING"
                     and t.get("status") in ("pending", "running")
                     for t in task_queue
@@ -638,7 +639,7 @@ async def run_agent_task(
                 }
                 exists = any(
                     t.get("product_id") == pid
-                    and t.get("agent_type") == "developer"
+                    and is_developer_agent(t.get("agent_type"))
                     and t.get("state") == "DEV_FIXING"
                     and t.get("status") in ("pending", "running")
                     for t in task_queue

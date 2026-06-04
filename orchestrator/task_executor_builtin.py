@@ -6,6 +6,8 @@ from __future__ import annotations
 
 import logging
 import time
+
+from core.agent_roles import is_developer_agent
 import uuid
 from typing import TYPE_CHECKING
 
@@ -120,7 +122,7 @@ async def run_builtin_task(
             }
             exists = any(
                 t.get("product_id") == pid
-                and t.get("agent_type") == "developer"
+                and is_developer_agent(t.get("agent_type"))
                 and t.get("state") == "DEV_FIXING"
                 and t.get("status") in ("pending", "running")
                 for t in task_queue

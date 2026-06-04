@@ -13,6 +13,7 @@ import json
 import time
 from pathlib import Path
 
+from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from llm import GenerationConfig, LLMRouter
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ARCHITECTURE_SEC
@@ -86,8 +87,8 @@ class DesignCriticAgent(BaseAgent):
         prompt = (
             f"{DESIGN_CRITIC_SYSTEM}\n\n"
             f"Product idea:\n{agent_input.data.get('idea','')}\n\n"
-            f"Architecture.ui_experience:\n{json.dumps(arch.get('ui_experience', {}), ensure_ascii=False, indent=2)}\n\n"
-            f"Selected design variant:\n{json.dumps(selected, ensure_ascii=False, indent=2)}\n\n"
+            f"Architecture.ui_experience:\n{prompt_json(arch.get('ui_experience', {}))}\n\n"
+            f"Selected design variant:\n{prompt_json(selected)}\n\n"
             f"Heuristic pre-score={heuristic_score} issues={heuristic_issues}\n"
         )
 

@@ -104,8 +104,9 @@ def test_state_from_sqlite_snapshot_maps_products(monkeypatch, tmp_path):
     )
     mgr.close()
 
-    w = PipelineWorker()
-    snap = w._persistence.state_from_sqlite_snapshot()
+    from core.pipeline_state_writer import read_pipeline_state_from_sql
+
+    snap = read_pipeline_state_from_sql()
     assert snap is not None
     assert snap["products"]["snap-prod"]["id"] == "snap-prod"
     assert snap["task_queue"] == []
@@ -122,6 +123,9 @@ def test_load_state_with_recovery_rebuilds_from_sqlite(monkeypatch, tmp_path):
     monkeypatch.setenv("SQLITE_PATH", str(db))
     monkeypatch.setenv("AICOM_PIPELINE_JSON", str(pj))
     monkeypatch.setenv("USE_SQLITE", "false")
+    # JSON→SQLite recovery is opt-in (avoids silently overwriting a hand-edited
+    # pipeline.json); enable it explicitly for this recovery test.
+    monkeypatch.setenv("AIFACTORY_PIPELINE_JSON_RECOVER_FROM_SQLITE", "1")
 
     mgr = SQLiteManager(str(db))
     mgr.connect()

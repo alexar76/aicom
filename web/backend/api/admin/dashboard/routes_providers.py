@@ -649,12 +649,14 @@ class PutProviderLlmPricingBody(BaseModel):
 
 
 class PutLlmLimitsBody(BaseModel):
-    """Router RPM + USD spend caps (persisted under ``llm.limits`` in platform YAML)."""
+    """Router RPM + USD spend caps (persisted under ``llm.limits`` in platform YAML)
+    plus ``llm.critical_escalation_enabled`` (cross-provider routing toggle)."""
 
     max_requests_per_minute: int = Field(0, ge=0, le=10_000)
     daily_cost_cap_usd: float = Field(0.0, ge=0.0, le=1_000_000.0)
     monthly_cost_cap_usd: float = Field(0.0, ge=0.0, le=1_000_000.0)
     pre_call_reserve_usd: float = Field(0.05, ge=0.0, le=100.0)
+    critical_escalation_enabled: bool = False
 
 
 @router.get("/llm-limits")
@@ -685,6 +687,10 @@ async def put_llm_limits(body: PutLlmLimitsBody, request: Request):
         llm_block = {}
     llm_block = dict(llm_block)
     llm_block["limits"] = limits
+    # Routing toggle persisted as a top-level llm key (not under limits) — see
+    # config/fragments/50-llm.yaml. Env AIFACTORY_LLM_CRITICAL_ESCALATION_ENABLED
+    # still wins at runtime.
+    llm_block["critical_escalation_enabled"] = bool(body.critical_escalation_enabled)
     cfg.set("llm", llm_block)
     bump_llm_limits_cache_after_config_write()
     return {"ok": True, **admin_llm_limits_panel_dict()}

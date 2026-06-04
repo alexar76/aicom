@@ -343,12 +343,14 @@ export interface LlmLimitsPanelData {
     daily_cost_cap_usd: number;
     monthly_cost_cap_usd: number;
     pre_call_reserve_usd: number;
+    critical_escalation_enabled: boolean;
   };
   limits_effective: {
     max_requests_per_minute: number;
     daily_cost_cap_usd: number;
     monthly_cost_cap_usd: number;
     pre_call_reserve_usd: number;
+    critical_escalation_enabled: boolean;
   };
   usage: {
     day: string;
@@ -362,6 +364,7 @@ export interface LlmLimitsPanelData {
     daily_cost_cap_usd?: boolean;
     monthly_cost_cap_usd?: boolean;
     pre_call_reserve_usd?: boolean;
+    critical_escalation_enabled?: boolean;
   };
 }
 

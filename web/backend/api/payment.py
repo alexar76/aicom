@@ -69,16 +69,36 @@ def _load_crypto_config() -> dict:
 
 
 def _reload_addresses_from_config():
-    """Reload wallet addresses from config.yaml into module-level constants."""
+    """Reload wallet addresses from config (authoritative) with a shared env fallback.
+
+    The factory's recipient is the merged config ``crypto.wallet_addresses.evm``.
+    Config wins when set — we never let a possibly-stale env var silently redirect
+    funds. When config is empty (its default), fall back to ``AIMARKET_PAYMENT_RECIPIENT``,
+    the same env var the alien-monitor reads, so the factory and the monitor resolve
+    the same recipient in env-only deployments. Divergence is logged loudly.
+    """
     global RECIPIENT_ADDRESS_EVM, RECIPIENT_ADDRESS_SOLANA
     crypto = _load_crypto_config()
     wallets = crypto.get("wallet_addresses", {})
-    if wallets.get("evm"):
-        RECIPIENT_ADDRESS_EVM = wallets["evm"]
+    cfg_evm = str(wallets.get("evm") or "").strip()
+    env_evm = (os.environ.get("AIMARKET_PAYMENT_RECIPIENT") or "").strip()
+    if cfg_evm:
+        RECIPIENT_ADDRESS_EVM = cfg_evm
+        if env_evm and env_evm.lower() != cfg_evm.lower():
+            logger.warning(
+                "Payment recipient mismatch: config crypto.wallet_addresses.evm=%s wins over "
+                "AIMARKET_PAYMENT_RECIPIENT=%s (alien-monitor reads the env). Set both to the "
+                "same address to keep the monitor and the factory in sync.",
+                cfg_evm,
+                env_evm,
+            )
+    elif env_evm:
+        RECIPIENT_ADDRESS_EVM = env_evm
+        logger.info("Payment recipient (EVM) taken from AIMARKET_PAYMENT_RECIPIENT env (config empty)")
     if wallets.get("solana"):
         RECIPIENT_ADDRESS_SOLANA = wallets["solana"]
     logger.info(
-        f"Wallet addresses loaded from config: evm={RECIPIENT_ADDRESS_EVM}, "
+        f"Wallet addresses loaded: evm={RECIPIENT_ADDRESS_EVM}, "
         f"solana={RECIPIENT_ADDRESS_SOLANA[:8]}..."
     )
 
@@ -180,18 +200,19 @@ if payment_testnet_enabled():
     }
 
 # ── Supported chains ────────────────────────────────────────────────────────
+# Only stablecoin settlement is offered: native ETH/SOL have no USD→native conversion.
 SUPPORTED_CHAINS = [
     {"id": "base", "name": "Base", "icon": "🔵", "tokens": ["USDT", "USDC"]},
     {"id": "arbitrum", "name": "Arbitrum", "icon": "🔴", "tokens": ["USDT", "USDC"]},
-    {"id": "ethereum", "name": "Ethereum", "icon": "💎", "tokens": ["ETH", "USDT", "USDC"]},
-    {"id": "solana", "name": "Solana", "icon": "🟣", "tokens": ["USDC", "SOL"]},
+    {"id": "ethereum", "name": "Ethereum", "icon": "💎", "tokens": ["USDT", "USDC"]},
+    {"id": "solana", "name": "Solana", "icon": "🟣", "tokens": ["USDC"]},
 ]
 if payment_testnet_enabled():
     SUPPORTED_CHAINS = [
-        {"id": "base", "name": "Base Sepolia", "icon": "🔵", "tokens": ["ETH", "USDC"]},
-        {"id": "arbitrum", "name": "Arbitrum Sepolia", "icon": "🔴", "tokens": ["ETH", "USDC"]},
-        {"id": "ethereum", "name": "Sepolia", "icon": "💎", "tokens": ["ETH", "USDC"]},
-        {"id": "solana", "name": "Solana Devnet", "icon": "🟣", "tokens": ["USDC", "SOL"]},
+        {"id": "base", "name": "Base Sepolia", "icon": "🔵", "tokens": ["USDC"]},
+        {"id": "arbitrum", "name": "Arbitrum Sepolia", "icon": "🔴", "tokens": ["USDC"]},
+        {"id": "ethereum", "name": "Sepolia", "icon": "💎", "tokens": ["USDC"]},
+        {"id": "solana", "name": "Solana Devnet", "icon": "🟣", "tokens": ["USDC"]},
     ]
 
 MIN_CONFIRMATIONS = max(
@@ -204,6 +225,12 @@ SOLANA_USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
 
 # Allow tiny float/rounding slack (0.1%) on token amounts.
 _AMOUNT_TOLERANCE_RATIO = 0.001
+
+# Settlement currencies. The catalog price is denominated in USD (USDT), and there is
+# NO price oracle to convert that USD amount into a native-token quantity. Stablecoins
+# (USDT/USDC ≈ $1) settle 1:1 against the catalog price; native tokens (ETH/SOL) cannot
+# be compared to a USD amount directly, so they are not accepted until conversion exists.
+STABLECOINS = frozenset({"USDT", "USDC"})
 
 # ── Token decimals (6 for USDC everywhere; USDT: 18 on Base, 6 on Arbitrum) ─
 TOKEN_DECIMALS = {
@@ -629,6 +656,18 @@ async def create_payment(body: CreatePaymentRequest, authorization: Optional[str
     if not customer_id or not customer_email:
         raise HTTPException(status_code=401, detail="Customer authentication required")
 
+    # Settlement currency must be a stablecoin: the catalog price is USD-denominated
+    # and there is no oracle to convert it into a native-token (ETH/SOL) amount.
+    currency = (body.token or ("USDC" if body.chain == "solana" else "USDT")).upper()
+    if currency not in STABLECOINS:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                f"Unsupported settlement currency '{currency}'. "
+                f"Only stablecoins are accepted: {', '.join(sorted(STABLECOINS))}."
+            ),
+        )
+
     # Authoritative catalog price — ignore any client-supplied amount.
     price = _catalog_checkout_usdt(body.product_id)
 
@@ -640,7 +679,7 @@ async def create_payment(body: CreatePaymentRequest, authorization: Optional[str
         "payment_id": payment_id,
         "product_id": body.product_id,
         "amount": price,
-        "currency": body.token or ("SOL" if body.chain == "solana" else "USDT"),
+        "currency": currency,
         "chain": body.chain,
         "wallet_address": wallet_address,
         "status": "pending",

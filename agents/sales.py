@@ -14,9 +14,9 @@ Platform-wide audience broadcasts (email, webhooks, Telegram) live in **Admin â†
 
 from __future__ import annotations
 
-import json
 import time
 
+from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from llm import GenerationConfig, LLMRouter
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
@@ -45,8 +45,8 @@ class SalesAgent(BaseAgent):
         self._log("INFO", f"Setting up sales for {product_id}")
 
         try:
-            marketing_str = json.dumps(marketing, indent=2) if marketing else "{}"
-            spec_str = json.dumps(spec, indent=2) if spec else "{}"
+            marketing_str = prompt_json(marketing) if marketing else "{}"
+            spec_str = prompt_json(spec) if spec else "{}"
 
             prompt = f"""{SALES_SYSTEM_PROMPT}
 

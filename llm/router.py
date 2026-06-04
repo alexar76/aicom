@@ -272,6 +272,13 @@ class LLMRouter:
         if pid:
             assert_product_within_budget(str(pid))
 
+        # A caller-pinned model (explicit config.model_override, e.g. the
+        # gate-failing repair model) is honored on every provider. When the
+        # router itself picks the model, it must be re-bound per provider on
+        # failover — a model id is provider-specific, so carrying the default
+        # provider's model onto an escalation target would 404.
+        caller_override = config.model_override
+
         if rule and config.model_override is None:
             model_role = rule.get("model_role", "heavy")
             model_name = self._get_model_for_role(provider_name, model_role)
@@ -304,6 +311,8 @@ class LLMRouter:
                 last_error = CircuitOpenError(current)
                 current = self._next_failover(task_type, current, tried)
                 continue
+
+            self._rebind_model_for_provider(current, config, task_type, caller_override)
 
             start_time = time.time()
             try:
@@ -372,9 +381,40 @@ class LLMRouter:
             raise last_error
         raise RuntimeError(f"No available provider for task type: {task_type}")
 
+    def _rebind_model_for_provider(
+        self,
+        provider_name: str,
+        config: GenerationConfig,
+        task_type: str,
+        caller_override: str | None,
+    ) -> None:
+        """Bind ``config.model_override`` to ``provider_name``'s role-appropriate
+        model (re-applying budget downgrades). Honors a caller-pinned model.
+
+        Idempotent for the originally selected provider; on cross-provider
+        failover it replaces the previous provider's (now invalid) model id.
+        """
+        if caller_override:
+            config.model_override = caller_override
+            return
+        role = config.model_role or "heavy"
+        model = self._get_model_for_role(provider_name, role)
+        config.model_override = get_cost_guard().resolve_model(
+            provider_name, task_type, model,
+            available_models=self._provider_configs.get(provider_name, {}).get("models"),
+        )
+
     def _apply_output_token_budget(self, provider_name: str, config: GenerationConfig) -> None:
-        """Clamp or raise ``max_tokens`` to the active model/provider ceiling."""
-        from llm.token_budget import resolve_max_output_tokens_for_generation
+        """Clamp or raise ``max_tokens`` to the active model/provider ceiling.
+
+        A per-task soft cap is then applied on top so stages that emit small
+        JSON documents don't carry the full 128k heavy budget (bounds runaway
+        generation; quality-neutral because caps sit above healthy outputs).
+        """
+        from llm.token_budget import (
+            resolve_max_output_tokens_for_generation,
+            task_output_soft_cap,
+        )
 
         pconf = self._provider_configs.get(provider_name) or {}
         model = config.model_override
@@ -387,6 +427,9 @@ class LLMRouter:
             model=model,
             provider_config=pconf,
         )
+        soft_cap = task_output_soft_cap(config.task_type)
+        if soft_cap and soft_cap > 0:
+            config.max_tokens = min(config.max_tokens, soft_cap)
 
     async def _generate_via_provider(
         self,
@@ -409,13 +452,68 @@ class LLMRouter:
         current: str,
         tried: set[str],
     ) -> str | None:
-        """After the current provider fails, only try an explicit routing fallback (if configured)."""
+        """Pick the next provider after ``current`` failed.
+
+        1. An explicit routing ``fallback_provider`` (if configured & loaded).
+        2. Otherwise, for CRITICAL tasks with cross-provider escalation enabled,
+           the strongest other provider that has credentials (opt-in).
+        """
         fb = self._get_fallback(task_type, current)
-        if not fb or fb in tried or fb == current:
+        if fb and fb not in tried and fb != current and fb in self.providers:
+            return fb
+        return self._critical_escalation_target(task_type, tried)
+
+    def _provider_has_credentials(self, name: str) -> bool:
+        """True if provider ``name`` has an API key wired (or needs none).
+
+        Local providers (Ollama) require no key. For everyone else we require a
+        literal ``api_key`` or a populated ``api_key_env`` — so escalation never
+        targets a keyless cloud provider the user hasn't actually configured.
+        """
+        pconf = self._provider_configs.get(name) or {}
+        ptype = str(pconf.get("provider_type", "openai_compatible"))
+        if ptype in ("local_ollama", "ollama"):
+            return True
+        if pconf.get("api_key"):
+            return True
+        env = pconf.get("api_key_env")
+        return bool(env and os.environ.get(env))
+
+    def _critical_escalation_target(self, task_type: str, tried: set[str]) -> str | None:
+        """Strongest untried, healthy, credentialed provider for a critical task.
+
+        Returns None unless (a) ``llm.critical_escalation_enabled`` is on,
+        (b) ``task_type`` is critical, and (c) some other provider both has
+        credentials and is currently available. "Strongest" = highest provider
+        ``priority`` in config (operator-declared ranking).
+        """
+        from core.throughput_limits import effective_llm_critical_escalation_enabled
+        from llm.cost_guard import is_critical_task
+
+        if not effective_llm_critical_escalation_enabled():
             return None
-        if fb not in self.providers:
+        if not is_critical_task(task_type):
             return None
-        return fb
+
+        candidates: list[tuple[str, int]] = []
+        for name in self.providers:
+            if name in tried:
+                continue
+            if not self._provider_is_available(name):
+                continue
+            if not self._provider_has_credentials(name):
+                continue
+            prio = self._provider_configs.get(name, {}).get("priority", 0) or 0
+            candidates.append((name, int(prio)))
+        if not candidates:
+            return None
+        candidates.sort(key=lambda x: x[1], reverse=True)
+        target = candidates[0][0]
+        logger.warning(
+            "Critical-task escalation: task '%s' failing over across providers to '%s' (priority=%s)",
+            task_type, target, candidates[0][1],
+        )
+        return target
 
     def _build_cache_key(self, prompt: str, task_type: str, config: GenerationConfig) -> str:
         raw = "|".join(
@@ -504,6 +602,8 @@ class LLMRouter:
             config = GenerationConfig(timeout_sec=timeout, stream=True)
         config.task_type = task_type
 
+        caller_override = config.model_override
+
         if rule and config.model_override is None:
             model_role = rule.get("model_role", "heavy")
             model_name = self._get_model_for_role(provider_name, model_role)
@@ -533,6 +633,7 @@ class LLMRouter:
                 last_error = CircuitOpenError(current, reason)
                 current = self._next_failover(task_type, current, tried)
                 continue
+            self._rebind_model_for_provider(current, config, task_type, caller_override)
             try:
                 start_time = time.time()
                 await self._usage_guard.acquire()

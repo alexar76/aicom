@@ -21,6 +21,23 @@ os.environ.setdefault("JWT_SECRET_KEY", "0" * 48)
 # Fixtures
 # ---------------------------------------------------------------------------
 
+@pytest.fixture(autouse=True)
+def _restore_environ():
+    """Isolate process env per test.
+
+    Several tests (and the code they exercise) mutate ``os.environ`` directly
+    rather than via ``monkeypatch`` — e.g. ``apply_pipeline_db_config_from_app_config``
+    writes ``PIPELINE_DB_BACKEND``/``USE_SQLITE``. Without this guard those writes
+    leak into later tests and make outcomes order-dependent (a JSON-backend test
+    silently switches to SQLite, etc.). Snapshot and restore around every test.
+    """
+    snapshot = dict(os.environ)
+    try:
+        yield
+    finally:
+        os.environ.clear()
+        os.environ.update(snapshot)
+
 @pytest.fixture
 def temp_data_dir() -> Generator[Path, None, None]:
     """Create a temporary data directory for testing."""

@@ -222,7 +222,9 @@ export function findTaskForStage(
   stage: string,
 ): Record<string, unknown> | undefined {
   if (stage === 'designer') {
-    return taskList.find((x) => x.agent_type === 'architect');
+    return taskList.find(
+      (x) => x.agent_type === 'architect' || x.agent_type === 'landing_architect',
+    );
   }
   if (stage === 'methodologist') {
     const direct = taskList.find((x) => x.agent_type === 'methodologist');
@@ -249,10 +251,14 @@ export function findTaskForStage(
   const t = taskList.find((x) => x.agent_type === stage);
   if (t) return t;
   if (stage === 'developer') {
-    return taskList.find((x) => x.agent_type === 'dev');
+    return taskList.find(
+      (x) => x.agent_type === 'dev' || x.agent_type === 'landing_developer',
+    );
   }
   if (stage === 'dev') {
-    return taskList.find((x) => x.agent_type === 'developer');
+    return taskList.find(
+      (x) => x.agent_type === 'developer' || x.agent_type === 'landing_developer',
+    );
   }
   return undefined;
 }

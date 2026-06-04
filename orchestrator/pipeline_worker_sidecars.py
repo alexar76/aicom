@@ -21,6 +21,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
+from core.agent_roles import is_developer_agent
 from core.quality_settings import gate_failing_model, max_pipeline_repair_rounds_for_delivery_profile
 from orchestrator.worker_utils import env_truthy
 from web.backend.services.marketplace_quality import evaluate_marketplace_quality
@@ -146,7 +147,7 @@ class PipelineWorkerSidecarMixin:
 
             has_dev_fix = any(
                 t.get("product_id") == pid
-                and t.get("agent_type") == "developer"
+                and is_developer_agent(t.get("agent_type"))
                 and t.get("state") == "DEV_FIXING"
                 and t.get("status") in ("pending", "running")
                 for t in task_queue

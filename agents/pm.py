@@ -86,6 +86,7 @@ def _format_repair_issues_block(issues: list[str]) -> str:
             continue
         parts.append(f"### {title}\n" + "\n".join(f"- {r}" for r in rows))
     return "\n\n".join(parts) if parts else "\n".join(f"- {x}" for x in issues)
+from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
 from llm import GenerationConfig, LLMRouter
@@ -287,7 +288,7 @@ class PMAgent(BaseAgent):
             try:
                 with open(research_file, encoding="utf-8") as f:
                     research_data = json.load(f)
-                research_context = json.dumps(research_data, indent=2)
+                research_context = prompt_json(research_data)
                 self._log("INFO", f"Loaded market research for {product_id}")
             except (json.JSONDecodeError, OSError) as e:
                 self._log("WARNING", f"Could not load market research: {e}")
@@ -327,7 +328,7 @@ class PMAgent(BaseAgent):
                 )
                 prompt += (
                     "\n=== SPEC COMPILER BRIEF (structured intake) ===\n"
-                    f"{json.dumps(compiled_brief, ensure_ascii=False, indent=2)}\n"
+                    f"{prompt_json(compiled_brief)}\n"
                     "Use this as additional grounding while preserving hard validation schema.\n"
                 )
                 prompt += (

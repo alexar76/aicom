@@ -11,10 +11,10 @@ Responsible for:
 
 from __future__ import annotations
 
-import json
 import time
 from pathlib import Path
 
+from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from core.telemetry_signals import extract_evolution_signals_from_jsonl_dir
 from llm import GenerationConfig, LLMRouter
@@ -52,15 +52,15 @@ class EvolutionAnalystAgent(BaseAgent):
                 if data:
                     telemetry_data[fname] = data
 
-            telemetry_str = json.dumps(telemetry_data, indent=2) if telemetry_data else "No telemetry data available"
+            telemetry_str = prompt_json(telemetry_data) if telemetry_data else "No telemetry data available"
             tel_dir = Path(self.data_root) / "telemetry" / product_id
             evolution_signals = extract_evolution_signals_from_jsonl_dir(tel_dir, limit=200)
             signals_str = (
-                json.dumps(evolution_signals[-120:], indent=2)
+                prompt_json(evolution_signals[-120:])
                 if evolution_signals
                 else "No evolution_signal JSONL events recorded yet."
             )
-            spec_str = json.dumps(spec, indent=2) if spec else "{}"
+            spec_str = prompt_json(spec) if spec else "{}"
 
             try:
                 from web.backend.services.owner_chat_routing import format_owner_product_feedback_for_prompt
@@ -81,7 +81,7 @@ Evolution signals from telemetry JSONL (API `/api/telemetry/evolution-signal` an
 {signals_str}
 
 Inline telemetry payload from task (if any):
-{json.dumps(telemetry, indent=2) if telemetry else "{{}}"}
+{prompt_json(telemetry) if telemetry else "{{}}"}
 
 Product Specification:
 {spec_str}

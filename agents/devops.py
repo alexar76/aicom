@@ -15,6 +15,7 @@ import json
 import logging
 import time
 
+from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
 from llm import GenerationConfig, LLMRouter
@@ -49,7 +50,7 @@ class DevOpsAgent(BaseAgent):
             manifest = self._load_artifact(product_id, "code", "code_manifest.json")
             code_files = manifest.get("files", []) if manifest else []
 
-            code_str = json.dumps({"file_count": len(code_files), "files": code_files[:20]}, indent=2)
+            code_str = prompt_json({"file_count": len(code_files), "files": code_files[:20]})
 
             spec_hint = ""
             from core.paths import specification_path

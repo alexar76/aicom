@@ -70,6 +70,13 @@ def _env_float(name: str) -> float | None:
         return None
 
 
+def _env_bool(name: str) -> bool | None:
+    raw = os.environ.get(name)
+    if raw is None or str(raw).strip() == "":
+        return None
+    return str(raw).strip().lower() in {"1", "true", "yes", "on"}
+
+
 def effective_max_running_tasks() -> int:
     v = _env_int("AIFACTORY_MAX_RUNNING_TASKS")
     if v is not None:
@@ -134,6 +141,38 @@ def _limit_float_from_config(key: str) -> float | None:
     return None
 
 
+def _llm_section_from_config() -> dict[str, Any]:
+    try:
+        raw = load_merged_config(_CONFIG_PATH)
+        if not isinstance(raw, dict):
+            return {}
+        llm = raw.get("llm")
+        return llm if isinstance(llm, dict) else {}
+    except Exception:
+        return {}
+
+
+def effective_llm_critical_escalation_enabled() -> bool:
+    """Whether critical tasks may escalate ACROSS providers when the default fails.
+
+    When False (default), a failing default provider only fails over to a rule's
+    explicit ``fallback_provider`` — routing stays within the configured default
+    unless an operator wired an alternative per task. When True, a critical task
+    (see ``llm.cost_guard._CRITICAL_TASK_TYPES``) whose default provider is
+    unhealthy / erroring will additionally fail over to the highest-priority
+    *other* provider that has credentials configured. This intentionally widens
+    routing from "strong vs light model within the default provider" to
+    "across providers", so it is opt-in.
+
+    Env ``AIFACTORY_LLM_CRITICAL_ESCALATION_ENABLED`` overrides the
+    ``llm.critical_escalation_enabled`` platform-config value.
+    """
+    v = _env_bool("AIFACTORY_LLM_CRITICAL_ESCALATION_ENABLED")
+    if v is not None:
+        return v
+    return bool(_llm_section_from_config().get("critical_escalation_enabled", False))
+
+
 def effective_llm_max_requests_per_minute() -> int:
     v = _env_int("AIFACTORY_LLM_MAX_REQUESTS_PER_MINUTE")
     if v is not None:
@@ -191,4 +230,5 @@ def throughput_snapshot() -> dict[str, Any]:
         "effective_llm_daily_cost_cap_usd": effective_llm_daily_cost_cap_usd(),
         "effective_llm_monthly_cost_cap_usd": effective_llm_monthly_cost_cap_usd(),
         "effective_llm_pre_call_reserve_usd": effective_llm_pre_call_reserve_usd(),
+        "effective_llm_critical_escalation_enabled": effective_llm_critical_escalation_enabled(),
     }
