@@ -211,7 +211,7 @@ function AdminPageInner() {
       case 'agents':
         return <AgentsTab locale={locale} />;
       case 'providers':
-        return <ProvidersTab locale={locale} />;
+        return <ProvidersTab key={locale} locale={locale} />;
       case 'llm-logs':
         return <LLMLogsTab locale={locale} />;
       case 'agent-logs':

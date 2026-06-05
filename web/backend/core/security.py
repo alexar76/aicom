@@ -197,9 +197,12 @@ class SecurityManager:
 
     def record_login_attempt(self, ip_address: str, success: bool, username: str = ""):
         """Record a login attempt for rate limiting and audit."""
-        if ip_address not in self._login_attempts:
-            self._login_attempts[ip_address] = []
-        self._login_attempts[ip_address].append(time.time())
+        if success:
+            self.reset_login_attempts(ip_address)
+        else:
+            if ip_address not in self._login_attempts:
+                self._login_attempts[ip_address] = []
+            self._login_attempts[ip_address].append(time.time())
 
         # Audit log
         self._audit_log({

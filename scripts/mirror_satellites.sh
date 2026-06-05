@@ -420,7 +420,18 @@ export_plugins() {
   fi
 
   _copy_governance "$clone" "mit" "aimarket-plugins"
-  _inject_mirror_banner "$clone" "$sat_id" "$repo"
+  # Glama registry reads repo-root README; Dockerfile + glama.json target the MCP server.
+  local mcp_readme=0
+  if [[ -f "$mcp_packager/README.md" ]]; then
+    cp "$mcp_packager/README.md" "$clone/README.md"
+    mcp_readme=1
+    echo "  ✓ README.md (from aimarket-mcp-packager — MCP server for Glama)"
+  fi
+  if [[ "$mcp_readme" -eq 0 ]]; then
+    _inject_mirror_banner "$clone" "$sat_id" "$repo"
+  else
+    echo "  ✓ Skipping mirror banner on root README (Glama MCP listing)"
+  fi
 
   _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "mit"
 }

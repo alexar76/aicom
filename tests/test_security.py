@@ -464,6 +464,18 @@ class TestSecurityManager:
         # With ban_minutes=0, the window is 0 seconds, so old attempts are cleaned
         assert sm.check_login_attempts("10.0.0.3") is True
 
+    def test_successful_login_clears_rate_limit(self, sm):
+        """Successful login must not count toward the brute-force window."""
+        sm.max_login_attempts = 5
+        ip = "10.0.0.50"
+        for _ in range(4):
+            sm.record_login_attempt(ip, True, "admin")
+        assert sm.check_login_attempts(ip) is True
+        sm.record_login_attempt(ip, False, "admin")
+        assert sm.check_login_attempts(ip) is True
+        sm.record_login_attempt(ip, True, "admin")
+        assert sm.check_login_attempts(ip) is True
+
     # ------------------------------------------------------------------
     # Audit log integration
     # ------------------------------------------------------------------

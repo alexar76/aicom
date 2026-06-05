@@ -152,7 +152,6 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
         )
 
     if not security.check_login_attempts(peer_ip):
-        security.record_login_attempt(peer_ip, False, login_data.username)
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
             detail="Too many login attempts. Please try again later.",
