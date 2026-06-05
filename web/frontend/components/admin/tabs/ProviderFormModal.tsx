@@ -162,8 +162,8 @@ export function ProviderFormModal({
   };
 
   const handleSubmit = async () => {
-    if (!form.name.trim()) { setError('Provider name is required'); return; }
-    if (!form.base_url?.trim()) { setError('Base URL is required'); return; }
+    if (!form.name.trim()) { setError(t(locale, 'providers.form.error.nameRequired')); return; }
+    if (!form.base_url?.trim()) { setError(t(locale, 'providers.form.error.baseUrlRequired')); return; }
     setSaving(true);
     setError('');
     try {
@@ -187,7 +187,7 @@ export function ProviderFormModal({
       onSaved();
       onClose();
     } catch (e: any) {
-      setError(e?.message || 'Failed to save provider');
+      setError(e?.message || t(locale, 'providers.form.error.saveFailed'));
     } finally {
       setSaving(false);
     }
@@ -198,51 +198,60 @@ export function ProviderFormModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={initial ? 'Edit Provider' : 'Add Provider'} size="xl">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={initial ? t(locale, 'providers.form.titleEdit') : t(locale, 'providers.form.titleAdd')}
+      size="xl"
+    >
       <div className="space-y-4">
         {error && <div className="text-red-400 text-sm bg-red-500/10 rounded p-2">{error}</div>}
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Name *</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.name')}</label>
             <Input
               value={form.name}
               onChange={(e) => updateField('name', e.target.value)}
-              placeholder="e.g. deepseek_api"
+              placeholder={t(locale, 'providers.form.field.namePlaceholder')}
               disabled={!!initial}
             />
           </div>
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Type</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.type')}</label>
             <select
               className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
               value={form.provider_type || 'openai_compatible'}
               onChange={(e) => updateField('provider_type', e.target.value)}
             >
-              <option value="openai_compatible" className="bg-gray-900">OpenAI Compatible</option>
-              <option value="anthropic" className="bg-gray-900">Anthropic Cloud</option>
-              <option value="ollama" className="bg-gray-900">Ollama</option>
+              <option value="openai_compatible" className="bg-gray-900">{t(locale, 'providers.form.type.openai')}</option>
+              <option value="anthropic" className="bg-gray-900">{t(locale, 'providers.form.type.anthropic')}</option>
+              <option value="ollama" className="bg-gray-900">{t(locale, 'providers.form.type.ollama')}</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label className="block text-gray-400 text-xs mb-1">Base URL *</label>
+          <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.baseUrl')}</label>
           <Input
             value={form.base_url || ''}
             onChange={(e) => updateField('base_url', e.target.value)}
-            placeholder="e.g. https://api.deepseek.com/v1"
+            placeholder={t(locale, 'providers.form.field.baseUrlPlaceholder')}
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-gray-400 text-xs mb-1">API Key</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.apiKey')}</label>
             <Input
               type="password"
               value={form.api_key || ''}
               onChange={(e) => updateField('api_key', e.target.value || null)}
-              placeholder={initial ? '•••••••••• (unchanged if empty)' : 'sk-...'}
+              placeholder={
+                initial
+                  ? t(locale, 'providers.form.field.apiKeyPlaceholderEdit')
+                  : t(locale, 'providers.form.field.apiKeyPlaceholderNew')
+              }
             />
             <p className="text-[11px] text-gray-500 mt-1">
               {keyConfigured ? (
@@ -253,7 +262,7 @@ export function ProviderFormModal({
             </p>
           </div>
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Health Check Endpoint</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.healthCheck')}</label>
             <Input
               value={form.health_check_endpoint || '/v1/models'}
               onChange={(e) => updateField('health_check_endpoint', e.target.value)}
@@ -263,26 +272,26 @@ export function ProviderFormModal({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Heavy Model</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.heavyModel')}</label>
             <Input
               value={form.models?.heavy || ''}
               onChange={(e) => updateField('models', { ...form.models, heavy: e.target.value })}
-              placeholder="e.g. deepseek-reasoner"
+              placeholder={t(locale, 'providers.form.field.heavyModelPlaceholder')}
             />
           </div>
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Light Model</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.lightModel')}</label>
             <Input
               value={form.models?.light || ''}
               onChange={(e) => updateField('models', { ...form.models, light: e.target.value })}
-              placeholder="e.g. deepseek-chat"
+              placeholder={t(locale, 'providers.form.field.lightModelPlaceholder')}
             />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Context Window (heavy)</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.contextHeavy')}</label>
             <Input
               type="number"
               min={1}
@@ -296,7 +305,7 @@ export function ProviderFormModal({
             />
           </div>
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Context Window (light)</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.contextLight')}</label>
             <Input
               type="number"
               min={1}
@@ -316,7 +325,7 @@ export function ProviderFormModal({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Max Tokens</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.maxTokens')}</label>
             <Input
               type="number"
               min={1}
@@ -330,7 +339,7 @@ export function ProviderFormModal({
             />
           </div>
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Priority</label>
+            <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.priority')}</label>
             <Input
               type="number"
               value={form.priority ?? 10}
@@ -347,7 +356,7 @@ export function ProviderFormModal({
               onChange={(e) => updateField('enabled', e.target.checked)}
               className="rounded bg-white/5 border-white/10"
             />
-            Enabled
+            {t(locale, 'providers.form.enabled')}
           </label>
           <label className="flex items-center gap-2 text-sm text-gray-400 cursor-pointer">
             <input
@@ -356,14 +365,18 @@ export function ProviderFormModal({
               onChange={(e) => updateField('capabilities', { ...form.capabilities, supports_streaming: e.target.checked })}
               className="rounded bg-white/5 border-white/10"
             />
-            Streaming
+            {t(locale, 'providers.form.streaming')}
           </label>
         </div>
 
         <div className="flex justify-end gap-3 pt-2">
-          <Button variant="secondary" onClick={onClose}>Cancel</Button>
+          <Button variant="secondary" onClick={onClose}>{t(locale, 'providers.btn.cancel')}</Button>
           <Button onClick={handleSubmit} disabled={saving}>
-            {saving ? 'Saving...' : initial ? 'Update Provider' : 'Add Provider'}
+            {saving
+              ? t(locale, 'providers.form.btn.saving')
+              : initial
+                ? t(locale, 'providers.form.btn.update')
+                : t(locale, 'providers.form.btn.add')}
           </Button>
         </div>
       </div>

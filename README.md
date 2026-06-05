@@ -54,7 +54,7 @@ GitHub’s README viewer **does not embed YouTube iframes** — use the thumbnai
 
 <h2 id="alien-monitor">👽 Alien Monitor</h2>
 
-**Live 3D pulse of the AIMarket ecosystem** — Hub, Factory, contracts, agents, and on-chain metrics in one cosmic graph.
+**Live 3D visualization of the AIMarket ecosystem** — Hub, Factory, contracts, agents, and on-chain metrics in one interactive cosmic graph.
 
 | | |
 |---|---|
@@ -576,7 +576,8 @@ flowchart TB
 | **Protocol v2** | [`aimarket-protocol/`](aimarket-protocol/) | [spec.md](aimarket-protocol/spec.md) |
 | **Hub plugins** | [`plugins/`](plugins/) | README + `docs/` per plugin |
 | **Desktop SKUs** | [`desktop-integrations/`](desktop-integrations/) | 8 apps · [value.md](desktop-integrations/interview-prep-coach/docs/value.md) pattern |
-| **LinkedIn Profile Coach** | [`coach/`](coach/) (git submodule) | Flutter desktop/mobile · [alexar76/linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) |
+| **Orchestration course** | [`course-app/`](course-app/) | **Educational material** (EN / RU / ES) — modules, labs, Colab · [orchestration-course](https://github.com/alexar76/orchestration-course) |
+| **LinkedIn Profile Coach** | [`coach/`](coach/) (git submodule) | **Example integrated app** — same class as desktop SKUs (Flutter + AIMarket SDK), focused on **LinkedIn profile improvement** · [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) |
 | **Dart SDK** | [`aimarket-sdks/dart/`](aimarket-sdks/dart/) | Consumer SDK for desktop apps |
 | **Widget** | [`aimarket-widget/`](aimarket-widget/) | Drop-in search + invoke |
 | **ACEX** | [`acex/`](acex/) | Agent Listing Protocol · CapShares · **Proof-of-Audit** · Pulse Terminal |

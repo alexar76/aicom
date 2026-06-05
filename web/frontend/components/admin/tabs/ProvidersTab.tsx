@@ -86,6 +86,7 @@ import { formatRelativeTime, getStateColor, getStateLabel, getAgentIcon, applyTh
 import { AdminLocale, detectAdminLocale, saveAdminLocale, t, tVars } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
 
+import { circuitStateLabel } from '@/lib/adminI18n/dict/providers';
 import { ProviderFormModal } from './ProviderFormModal';
 import { RoutingRulesEditor } from './RoutingRulesEditor';
 import { LlmLimitsPanel } from './LlmLimitsPanel';
@@ -156,15 +157,29 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
   const pricingSourceLabel = (source: string) => {
     switch (source) {
       case 'override':
-        return 'YAML override';
+        return t(locale, 'providers.pricing.source.override');
       case 'builtin':
-        return 'Built-in';
+        return t(locale, 'providers.pricing.source.builtin');
       case 'default_yaml':
-        return 'Global default (YAML)';
+        return t(locale, 'providers.pricing.source.defaultYaml');
       case 'default_builtin':
-        return 'Global default';
+        return t(locale, 'providers.pricing.source.defaultBuiltin');
       default:
         return source;
+    }
+  };
+
+  const providerStatusLabel = (enabled: boolean | undefined, status: string) => {
+    if (enabled === false) return t(locale, 'providers.status.disabled');
+    switch (status) {
+      case 'online':
+        return t(locale, 'providers.status.online');
+      case 'degraded':
+        return t(locale, 'providers.status.degraded');
+      case 'offline':
+        return t(locale, 'providers.status.offline');
+      default:
+        return status;
     }
   };
 
@@ -172,16 +187,16 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
     const raw = pricingDraft[providerName];
     const v = parseFloat(String(raw).replace(',', '.'));
     if (Number.isNaN(v) || v < 0) {
-      toast.error('Enter a valid non-negative number ($/1M tokens)');
+      toast.error(t(locale, 'providers.pricing.toast.invalidNumber'));
       return;
     }
     setSavingPricing(providerName);
     try {
       await api.putLlmPricingProvider(providerName, v);
-      toast.success(`Saved cost estimate for ${providerName}`);
+      toast.success(tVars(locale, 'providers.pricing.toast.saved', { provider: providerName }));
       await loadProviders();
     } catch (e: any) {
-      toast.error(e?.message || 'Failed to save pricing');
+      toast.error(e?.message || t(locale, 'providers.pricing.toast.saveFailed'));
     } finally {
       setSavingPricing(null);
     }
@@ -191,10 +206,10 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
     setSavingPricing(providerName);
     try {
       await api.deleteLlmPricingProviderOverride(providerName);
-      toast.success(`Cleared override for ${providerName}`);
+      toast.success(tVars(locale, 'providers.pricing.toast.cleared', { provider: providerName }));
       await loadProviders();
     } catch (e: any) {
-      toast.error(e?.message || 'Failed to clear override');
+      toast.error(e?.message || t(locale, 'providers.pricing.toast.clearFailed'));
     } finally {
       setSavingPricing(null);
     }
@@ -211,7 +226,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
     } catch (e: any) {
       setTestResults((prev) => ({
         ...prev,
-        [name]: { success: false, latency_ms: 0, model: '', error: e?.message || 'Request failed', testing: false },
+        [name]: { success: false, latency_ms: 0, model: '', error: e?.message || t(locale, 'providers.test.requestFailed'), testing: false },
       }));
     }
   };
@@ -250,7 +265,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
   };
 
   const handleDelete = async (name: string) => {
-    if (!window.confirm(`Delete provider "${name}"? This cannot be undone.`)) return;
+    if (!window.confirm(tVars(locale, 'providers.confirm.delete', { name }))) return;
     try {
       await api.deleteProvider(name);
       await loadProviders();
@@ -278,7 +293,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
   return (
     <motion.div className="space-y-6">
       <CircuitBreakerPanel locale={locale} />
-      <LlmLimitsPanel />
+      <LlmLimitsPanel locale={locale} />
 
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -291,11 +306,11 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
             className="w-full sm:w-auto"
           >
             <List className="w-4 h-4 mr-1" />
-            Routing Rules
+            {t(locale, 'providers.routingRules')}
           </Button>
           <Button size="sm" onClick={() => { setEditingProvider(null); setShowAddModal(true); }} className="w-full sm:w-auto">
             <Plus className="w-4 h-4 mr-1" />
-            Add Provider
+            {t(locale, 'providers.addProvider')}
           </Button>
         </div>
       </div>
@@ -344,12 +359,14 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                             ? 'bg-amber-400 animate-pulse'
                             : 'bg-emerald-500'
                       }`}
-                      title={`Circuit: ${provider.circuit.state}`}
+                      title={tVars(locale, 'providers.tooltip.circuitState', {
+                        state: circuitStateLabel(locale, provider.circuit.state),
+                      })}
                     />
                   )}
                   {provider.is_default && (
                     <span className="text-xs text-amber-400 font-medium bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
-                      ⭐ Default
+                      ⭐ {t(locale, 'providers.defaultBadge')}
                     </span>
                   )}
                   {provider.api_key_configured ? (
@@ -367,7 +384,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                     onClick={() => handleTest(provider.name, 'heavy')}
                     disabled={testResults[provider.name]?.testing}
                     className="p-1.5 rounded-lg hover:bg-indigo-500/20 transition-colors text-gray-400 hover:text-indigo-400"
-                    title="Test heavy model"
+                    title={t(locale, 'providers.tooltip.testHeavy')}
                   >
                     {testResults[provider.name]?.testing ? (
                       <span className="text-xs animate-pulse">...</span>
@@ -378,14 +395,14 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                   <button
                     onClick={() => handleEdit(provider)}
                     className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-gray-400 hover:text-white"
-                    title="Edit provider"
+                    title={t(locale, 'providers.tooltip.editProvider')}
                   >
                     <Edit3 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleToggle(provider.name, provider.enabled ?? true)}
                     className="p-1.5 rounded-lg hover:bg-white/10 transition-colors"
-                    title={provider.enabled ? 'Disable' : 'Enable'}
+                    title={provider.enabled ? t(locale, 'providers.tooltip.disable') : t(locale, 'providers.tooltip.enable')}
                   >
                     {provider.enabled ? (
                       <ToggleRight className="w-4 h-4 text-green-400" />
@@ -396,7 +413,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                   <button
                     onClick={() => handleDelete(provider.name)}
                     className="p-1.5 rounded-lg hover:bg-red-500/20 transition-colors text-gray-400 hover:text-red-400"
-                    title="Delete provider"
+                    title={t(locale, 'providers.tooltip.delete')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -405,7 +422,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                       onClick={() => handleSetDefault(provider.name)}
                       disabled={settingDefault === provider.name}
                       className="p-1.5 rounded-lg hover:bg-amber-500/20 transition-colors text-gray-400 hover:text-amber-400"
-                      title="Set as default provider"
+                      title={t(locale, 'providers.tooltip.setDefault')}
                     >
                       {settingDefault === provider.name ? (
                         <span className="text-xs animate-pulse">...</span>
@@ -423,7 +440,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                         : 'error'
                     }
                   >
-                    {provider.enabled === false ? 'disabled' : provider.status}
+                    {providerStatusLabel(provider.enabled, provider.status)}
                   </Badge>
                 </div>
               </div>
@@ -439,7 +456,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="w-3 h-3 text-green-400" />
-                        <span className="text-green-400 font-medium">OK</span>
+                        <span className="text-green-400 font-medium">{t(locale, 'providers.test.ok')}</span>
                         <span className="text-gray-500">—</span>
                         <span className="text-gray-400">{testResults[provider.name]?.model}</span>
                         <span className="text-gray-500">·</span>
@@ -452,9 +469,9 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                   ) : (
                     <div className="flex items-center gap-2">
                       <AlertTriangle className="w-3 h-3 text-red-400" />
-                      <span className="text-red-400 font-medium">Failed</span>
+                      <span className="text-red-400 font-medium">{t(locale, 'providers.test.failed')}</span>
                       <span className="text-gray-500">—</span>
-                      <span className="text-gray-400">{testResults[provider.name]?.error || 'Unknown error'}</span>
+                      <span className="text-gray-400">{testResults[provider.name]?.error || t(locale, 'providers.test.unknownError')}</span>
                     </div>
                   )}
                 </div>
@@ -470,9 +487,9 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                 )}
 
                 <div className="flex items-center gap-2 text-gray-500">
-                  <span className="text-xs">Latency:</span>
+                  <span className="text-xs">{t(locale, 'providers.card.latency')}</span>
                   <span className="text-gray-400">
-                    {provider.latency_ms > 0 ? `${provider.latency_ms}ms` : 'N/A'}
+                    {provider.latency_ms > 0 ? `${provider.latency_ms}ms` : t(locale, 'providers.card.na')}
                   </span>
                 </div>
 
@@ -481,7 +498,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                     <div className="flex items-center gap-2 text-gray-400 text-xs">
                       <DollarSign className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       <span>
-                        Log cost estimate (blended $/1M tok){' '}
+                        {t(locale, 'providers.pricing.label')}{' '}
                         <span className="text-gray-500">
                           · {pricingSourceLabel(llmPricing[provider.name].source)}
                         </span>
@@ -497,7 +514,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                           setPricingDraft((prev) => ({ ...prev, [provider.name]: e.target.value }))
                         }
                         disabled={savingPricing === provider.name}
-                        title="Stored in data/config/llm_pricing.yaml (provider fallback when model id is unknown)"
+                        title={t(locale, 'providers.pricing.inputTitle')}
                       />
                       <Button
                         variant="secondary"
@@ -511,7 +528,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                         ) : (
                           <>
                             <Save className="w-3 h-3 mr-1" />
-                            Save
+                            {t(locale, 'providers.btn.save')}
                           </>
                         )}
                       </Button>
@@ -522,15 +539,15 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                           disabled={savingPricing === provider.name}
                           onClick={() => handleClearPricingOverride(provider.name)}
                         >
-                          Clear override
+                          {t(locale, 'providers.pricing.clearOverride')}
                         </button>
                       )}
                     </div>
                     {llmPricing[provider.name].builtin_usd_per_mtok != null && (
                       <p className="text-[10px] text-gray-500 leading-snug">
-                        Built-in default for this provider id:{' '}
-                        {llmPricing[provider.name].builtin_usd_per_mtok}. Model-specific rates in YAML
-                        still override this for known model ids.
+                        {tVars(locale, 'providers.pricing.builtinHint', {
+                          value: String(llmPricing[provider.name].builtin_usd_per_mtok),
+                        })}
                       </p>
                     )}
                   </div>
@@ -539,7 +556,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                 {/* Heavy model selector */}
                 {provider.available_models && provider.available_models.length > 0 && (
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-500 text-xs w-14 shrink-0">Heavy:</span>
+                    <span className="text-gray-500 text-xs w-14 shrink-0">{t(locale, 'providers.card.heavy')}</span>
                     <select
                       className="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
                       value={provider.models?.heavy || provider.model || ''}
@@ -559,7 +576,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                 {/* Light model selector */}
                 {provider.available_models && provider.available_models.length > 0 && (
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-500 text-xs w-14 shrink-0">Light:</span>
+                    <span className="text-gray-500 text-xs w-14 shrink-0">{t(locale, 'providers.card.light')}</span>
                     <select
                       className="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
                       value={provider.models?.light || provider.model || ''}
@@ -579,7 +596,10 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                 {/* Fallback */}
                 {(!provider.available_models || provider.available_models.length === 0) && (
                   <div className="text-gray-500 text-xs">
-                    Heavy: {provider.models?.heavy || '-'} | Light: {provider.models?.light || '-'}
+                    {tVars(locale, 'providers.card.modelsFallback', {
+                      heavy: provider.models?.heavy || '-',
+                      light: provider.models?.light || '-',
+                    })}
                   </div>
                 )}
               </div>
@@ -592,7 +612,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
       {/* Routing Rules Section */}
       {showRoutingRules && (
         <GlassCard className="p-4">
-          <RoutingRulesEditor providers={providers} />
+          <RoutingRulesEditor providers={providers} locale={locale} />
         </GlassCard>
       )}
 

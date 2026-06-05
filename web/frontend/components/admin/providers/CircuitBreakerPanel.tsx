@@ -26,10 +26,12 @@ function stateLabel(locale: AdminLocale, state: string): string {
   return t(locale, 'providers.circuit.stateClosed');
 }
 
-function formatSec(v: number | null | undefined): string {
+function formatSec(locale: AdminLocale, v: number | null | undefined): string {
   if (v == null || Number.isNaN(v)) return '—';
-  if (v < 60) return `${v.toFixed(1)}s`;
-  return `${Math.floor(v / 60)}m ${Math.round(v % 60)}s`;
+  if (v < 60) return tVars(locale, 'providers.time.sec', { n: v.toFixed(1) });
+  const min = Math.floor(v / 60);
+  const sec = Math.round(v % 60);
+  return tVars(locale, 'providers.time.minSec', { min, sec });
 }
 
 export function CircuitBreakerPanel({ locale }: { locale: AdminLocale }) {
@@ -95,7 +97,12 @@ export function CircuitBreakerPanel({ locale }: { locale: AdminLocale }) {
     setActing(`${name}:${action}`);
     try {
       await fn(name);
-      toast.success(tVars(locale, 'providers.circuit.actionDone', { provider: name, action }));
+      toast.success(
+        tVars(locale, 'providers.circuit.actionDone', {
+          provider: name,
+          action: t(locale, `providers.circuit.action.${action}`),
+        }),
+      );
       await load();
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -221,7 +228,7 @@ function CircuitCard({
         </motion.div>
         {row.manual_override && (
           <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/25">
-            {row.manual_override}
+            {tVars(locale, 'providers.circuit.manualOverride', { state: row.manual_override })}
           </span>
         )}
       </div>
@@ -235,12 +242,12 @@ function CircuitCard({
         </div>
         <div>
           <dt className="text-gray-500">{t(locale, 'providers.circuit.recovery')}</dt>
-          <dd className="text-gray-200 tabular-nums">{formatSec(row.last_recovery_duration_sec)}</dd>
+          <dd className="text-gray-200 tabular-nums">{formatSec(locale, row.last_recovery_duration_sec)}</dd>
         </div>
         {st === 'open' && row.seconds_until_half_open != null && (
           <div className="col-span-2">
             <dt className="text-gray-500">{t(locale, 'providers.circuit.untilHalfOpen')}</dt>
-            <dd className="text-amber-200/90 tabular-nums">{formatSec(row.seconds_until_half_open)}</dd>
+            <dd className="text-amber-200/90 tabular-nums">{formatSec(locale, row.seconds_until_half_open)}</dd>
           </div>
         )}
         <div className="col-span-2">
@@ -260,7 +267,7 @@ function CircuitCard({
           title={t(locale, 'providers.circuit.forceOpen')}
         >
           <PowerOff className="w-3 h-3" />
-          OPEN
+          {t(locale, 'providers.circuit.btnOpen')}
         </button>
         <button
           type="button"
@@ -270,7 +277,7 @@ function CircuitCard({
           title={t(locale, 'providers.circuit.forceClose')}
         >
           <Power className="w-3 h-3" />
-          CLOSE
+          {t(locale, 'providers.circuit.btnClose')}
         </button>
         <button
           type="button"
@@ -280,7 +287,7 @@ function CircuitCard({
           title={t(locale, 'providers.circuit.reset')}
         >
           <RotateCcw className="w-3 h-3" />
-          RESET
+          {t(locale, 'providers.circuit.btnReset')}
         </button>
       </div>
     </motion.div>

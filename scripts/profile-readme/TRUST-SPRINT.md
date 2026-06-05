@@ -21,7 +21,7 @@ Goal: fix the two trust leaks before awesome-list PRs or outbound posts.
 
 - [ ] https://github.com/alexar76/alexar76 exists and is public
 - [ ] Profile shows **Start here** table (factory, monitor, hub, pip, YouTube)
-- [ ] `orchestration-course` listed under Eyes on the system
+- [ ] `orchestration-course` listed under 3D visualization, learning & sample apps
 
 ---
 

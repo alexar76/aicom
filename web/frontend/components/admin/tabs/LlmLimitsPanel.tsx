@@ -6,6 +6,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import api, { LlmLimitsPanelData } from '@/lib/api';
+import { AdminLocale, t } from '@/lib/adminI18n';
 import toast from 'react-hot-toast';
 
 function capPct(spent: number, cap: number): number {
@@ -13,7 +14,7 @@ function capPct(spent: number, cap: number): number {
   return Math.min(100, (spent / cap) * 100);
 }
 
-export function LlmLimitsPanel() {
+export function LlmLimitsPanel({ locale }: { locale: AdminLocale }) {
   const [data, setData] = useState<LlmLimitsPanelData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -43,11 +44,11 @@ export function LlmLimitsPanel() {
       applyPanel(await api.getLlmLimits());
     } catch (e) {
       console.error(e);
-      toast.error('Failed to load LLM limits');
+      toast.error(t(locale, 'providers.limits.toast.loadFailed'));
     } finally {
       setLoading(false);
     }
-  }, [applyPanel]);
+  }, [applyPanel, locale]);
 
   useEffect(() => {
     void load();
@@ -65,10 +66,10 @@ export function LlmLimitsPanel() {
           critical_escalation_enabled: draft.critical_escalation_enabled,
         })
       );
-      toast.success('LLM limits saved');
+      toast.success(t(locale, 'providers.limits.toast.saved'));
     } catch (e) {
       console.error(e);
-      toast.error('Failed to save LLM limits');
+      toast.error(t(locale, 'providers.limits.toast.saveFailed'));
     } finally {
       setSaving(false);
     }
@@ -82,61 +83,80 @@ export function LlmLimitsPanel() {
     <GlassCard className="border border-indigo-500/20">
       <div className="mb-4 flex items-center gap-2">
         <Shield className="h-5 w-5 text-amber-400" />
-        <h3 className="text-base font-semibold text-white">Cost caps &amp; rate limits</h3>
+        <h3 className="text-base font-semibold text-white">{t(locale, 'providers.limits.title')}</h3>
       </div>
 
       <div className="space-y-4">
         <p className="text-xs leading-relaxed text-gray-400">
-          Enforced in the LLM router before each call. <strong className="font-medium text-gray-300">0</strong> disables a
-          cap. Non-empty <code className="text-[10px] text-gray-500">AIFACTORY_LLM_*</code> env vars override saved YAML.
+          {t(locale, 'providers.limits.intro.beforeZero')}{' '}
+          <strong className="font-medium text-gray-300">0</strong>
+          {t(locale, 'providers.limits.intro.afterZero')}
+          <code className="text-[10px] text-gray-500">AIFACTORY_LLM_*</code>
+          {t(locale, 'providers.limits.intro.afterEnv')}
         </p>
 
         {loading && !data ? (
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <Loader2 className="h-4 w-4 animate-spin" />
-            Loading…
+            {t(locale, 'providers.limits.loading')}
           </div>
         ) : (
           <>
             {usage && effective ? (
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                <UsageStat label="Today (UTC)" spent={usage.day_spend_usd} cap={effective.daily_cost_cap_usd} />
-                <UsageStat label="This month (UTC)" spent={usage.month_spend_usd} cap={effective.monthly_cost_cap_usd} />
-                <StatBox title="Requests / last 60s">
+                <UsageStat
+                  locale={locale}
+                  label={t(locale, 'providers.limits.stat.today')}
+                  spent={usage.day_spend_usd}
+                  cap={effective.daily_cost_cap_usd}
+                />
+                <UsageStat
+                  locale={locale}
+                  label={t(locale, 'providers.limits.stat.month')}
+                  spent={usage.month_spend_usd}
+                  cap={effective.monthly_cost_cap_usd}
+                />
+                <StatBox title={t(locale, 'providers.limits.stat.requests')}>
                   {usage.requests_last_minute}
                   {effective.max_requests_per_minute > 0 ? (
                     <span className="text-gray-500"> / {effective.max_requests_per_minute}</span>
                   ) : null}
                 </StatBox>
-                <StatBox title="Pre-call reserve">${effective.pre_call_reserve_usd.toFixed(4)}</StatBox>
+                <StatBox title={t(locale, 'providers.limits.stat.preCallReserve')}>
+                  ${effective.pre_call_reserve_usd.toFixed(4)}
+                </StatBox>
               </div>
             ) : null}
 
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <LimitField
-                label="Max requests / minute"
-                hint="Rolling 60s window; router waits when full"
+                locale={locale}
+                label={t(locale, 'providers.limits.field.maxRpm.label')}
+                hint={t(locale, 'providers.limits.field.maxRpm.hint')}
                 value={draft.max_requests_per_minute}
                 envLocked={envOverrides.max_requests_per_minute}
                 onChange={(v) => setDraft((d) => ({ ...d, max_requests_per_minute: v }))}
               />
               <LimitField
-                label="Daily cost cap (USD)"
-                hint="Estimated spend from llm_calls.jsonl"
+                locale={locale}
+                label={t(locale, 'providers.limits.field.dailyCap.label')}
+                hint={t(locale, 'providers.limits.field.dailyCap.hint')}
                 value={draft.daily_cost_cap_usd}
                 envLocked={envOverrides.daily_cost_cap_usd}
                 onChange={(v) => setDraft((d) => ({ ...d, daily_cost_cap_usd: v }))}
               />
               <LimitField
-                label="Monthly cost cap (USD)"
-                hint="Resets on UTC month boundary"
+                locale={locale}
+                label={t(locale, 'providers.limits.field.monthlyCap.label')}
+                hint={t(locale, 'providers.limits.field.monthlyCap.hint')}
                 value={draft.monthly_cost_cap_usd}
                 envLocked={envOverrides.monthly_cost_cap_usd}
                 onChange={(v) => setDraft((d) => ({ ...d, monthly_cost_cap_usd: v }))}
               />
               <LimitField
-                label="Pre-call reserve (USD)"
-                hint="Pessimistic hold before token usage is known"
+                locale={locale}
+                label={t(locale, 'providers.limits.field.preCallReserve.label')}
+                hint={t(locale, 'providers.limits.field.preCallReserve.hint')}
                 value={draft.pre_call_reserve_usd}
                 envLocked={envOverrides.pre_call_reserve_usd}
                 onChange={(v) => setDraft((d) => ({ ...d, pre_call_reserve_usd: v }))}
@@ -144,6 +164,7 @@ export function LlmLimitsPanel() {
             </div>
 
             <EscalationToggle
+              locale={locale}
               enabled={draft.critical_escalation_enabled}
               envLocked={envOverrides.critical_escalation_enabled}
               onChange={(v) => setDraft((d) => ({ ...d, critical_escalation_enabled: v }))}
@@ -152,11 +173,11 @@ export function LlmLimitsPanel() {
             <div className="flex flex-wrap gap-2">
               <Button size="sm" onClick={() => void handleSave()} disabled={saving || loading}>
                 {saving ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : <Save className="mr-1 h-4 w-4" />}
-                Save limits
+                {t(locale, 'providers.limits.btn.save')}
               </Button>
               <Button variant="secondary" size="sm" onClick={() => void load()} disabled={loading || saving}>
                 <RefreshCw className="mr-1 h-4 w-4" />
-                Refresh usage
+                {t(locale, 'providers.limits.btn.refreshUsage')}
               </Button>
             </div>
           </>
@@ -175,7 +196,17 @@ function StatBox({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function UsageStat({ label, spent, cap }: { label: string; spent: number; cap: number }) {
+function UsageStat({
+  locale,
+  label,
+  spent,
+  cap,
+}: {
+  locale: AdminLocale;
+  label: string;
+  spent: number;
+  cap: number;
+}) {
   const pct = capPct(spent, cap);
   const over = cap > 0 && spent >= cap;
   return (
@@ -186,7 +217,7 @@ function UsageStat({ label, spent, cap }: { label: string; spent: number; cap: n
         {cap > 0 ? (
           <span className="text-gray-500">/ ${cap.toFixed(2)}</span>
         ) : (
-          <span className="text-gray-600">(no cap)</span>
+          <span className="text-gray-600">{t(locale, 'providers.limits.noCap')}</span>
         )}
       </div>
       {cap > 0 ? (
@@ -202,10 +233,12 @@ function UsageStat({ label, spent, cap }: { label: string; spent: number; cap: n
 }
 
 function EscalationToggle({
+  locale,
   enabled,
   envLocked,
   onChange,
 }: {
+  locale: AdminLocale;
   enabled: boolean;
   envLocked?: boolean;
   onChange: (v: boolean) => void;
@@ -215,9 +248,11 @@ function EscalationToggle({
       <div className="flex items-start justify-between gap-3">
         <label className="flex items-center gap-1.5 text-xs font-medium text-gray-200">
           <Network className="h-3.5 w-3.5 text-indigo-400" />
-          Cross-provider escalation for critical tasks
+          {t(locale, 'providers.limits.escalation.title')}
           {envLocked ? (
-            <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">env</span>
+            <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">
+              {t(locale, 'providers.limits.envBadge')}
+            </span>
           ) : null}
         </label>
         <button
@@ -238,32 +273,37 @@ function EscalationToggle({
         </button>
       </div>
       <p className="mt-2 text-[11px] leading-relaxed text-gray-400">
-        <strong className="font-medium text-gray-300">Off (default):</strong> all routing stays within your{' '}
-        <code className="text-[10px] text-gray-500">default_provider</code> — switching only between its strong (heavy)
-        and light models. A failing default only falls over to a routing rule&apos;s explicit{' '}
-        <code className="text-[10px] text-gray-500">fallback_provider</code>, if any.
+        <strong className="font-medium text-gray-300">{t(locale, 'providers.limits.escalation.offLabel')}</strong>{' '}
+        {t(locale, 'providers.limits.escalation.offBeforeDefault')}{' '}
+        <code className="text-[10px] text-gray-500">default_provider</code>{' '}
+        {t(locale, 'providers.limits.escalation.offAfterDefault')}{' '}
+        <code className="text-[10px] text-gray-500">fallback_provider</code>,{' '}
+        {t(locale, 'providers.limits.escalation.offAfterFallback')}
       </p>
       <p className="mt-1.5 text-[11px] leading-relaxed text-gray-400">
-        <strong className="font-medium text-gray-300">On:</strong> when the default provider <em>cannot cope</em>{' '}
-        (errors / unhealthy / circuit open) on a <strong className="text-gray-300">critical</strong> task
-        (security&nbsp;scan, code generation, architecture, QA, hardening), the router additionally fails over{' '}
-        <strong className="text-gray-300">to another provider</strong> — the highest-priority one that actually has a
-        key configured. This widens routing from &ldquo;model tier within one provider&rdquo; to{' '}
-        <strong className="text-gray-300">between providers</strong>, so it is opt-in. Keyless providers are never
-        targeted; the model is re-bound to the new provider automatically. Env{' '}
-        <code className="text-[10px] text-gray-500">AIFACTORY_LLM_CRITICAL_ESCALATION_ENABLED</code> overrides this.
+        <strong className="font-medium text-gray-300">{t(locale, 'providers.limits.escalation.onLabel')}</strong>{' '}
+        {t(locale, 'providers.limits.escalation.onBeforeCritical')}{' '}
+        {t(locale, 'providers.limits.escalation.criticalTasks')}{' '}
+        <strong className="text-gray-300">{t(locale, 'providers.limits.escalation.onToAnother')}</strong>{' '}
+        {t(locale, 'providers.limits.escalation.onAfterAnother')}{' '}
+        <strong className="text-gray-300">{t(locale, 'providers.limits.escalation.betweenProviders')}</strong>
+        {t(locale, 'providers.limits.escalation.onTailBeforeEnv')}
+        <code className="text-[10px] text-gray-500">{t(locale, 'providers.limits.escalation.envVar')}</code>
+        {t(locale, 'providers.limits.escalation.onTailAfterEnv')}
       </p>
     </div>
   );
 }
 
 function LimitField({
+  locale,
   label,
   hint,
   value,
   envLocked,
   onChange,
 }: {
+  locale: AdminLocale;
   label: string;
   hint: string;
   value: string;
@@ -276,7 +316,9 @@ function LimitField({
         <Gauge className="h-3 w-3 text-gray-500" />
         {label}
         {envLocked ? (
-          <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">env</span>
+          <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">
+            {t(locale, 'providers.limits.envBadge')}
+          </span>
         ) : null}
       </label>
       <Input
