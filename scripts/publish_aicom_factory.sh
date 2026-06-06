@@ -156,6 +156,13 @@ for p in "${LOCAL_EXCLUDES[@]}"; do
   rm -rf "$CLONE/$p"
 done
 
+# Pages workflow is the only .github asset on the public factory remote.
+PAGES_WORKFLOW="$ROOT/.github/workflows/pages-ecosystem.yml"
+if [[ -f "$PAGES_WORKFLOW" ]]; then
+  mkdir -p "$CLONE/.github/workflows"
+  cp -f "$PAGES_WORKFLOW" "$CLONE/.github/workflows/pages-ecosystem.yml"
+fi
+
 cd "$CLONE"
 git add -A
 

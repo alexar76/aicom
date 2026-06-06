@@ -55,13 +55,16 @@ elif cmd == "get":
 elif cmd == "org":
     print(MAP.get("org", "alexar76"))
 elif cmd == "desktop-skus":
+    di = Path("desktop-integrations")
+    if not di.is_dir():
+        print("", end="")
+        raise SystemExit(0)
     # SKU slugs from desktop_sku_manifest.py
     try:
+        sys.path.insert(0, str(Path("scripts").resolve()))
         from desktop_sku_manifest import MANIFEST
         print(" ".join(MANIFEST.keys()))
     except ImportError:
-        # Fallback to listing desktop-integrations dirs
-        di = Path("desktop-integrations")
         skus = [
             d.name for d in sorted(di.iterdir())
             if d.is_dir() and d.name not in ("packages",)
@@ -266,6 +269,11 @@ export_desktop_monorepo() {
   echo "  Layout:  desktop-integrations/{app} → apps/{app}"
   echo "           desktop-integrations/packages → packages/"
   echo "  Remote:  ${GITHUB_HOST}/${GITHUB_ORG}/${repo}"
+
+  if [[ ! -d "$ROOT/desktop-integrations" ]]; then
+    echo "  ⚠️  SKIP: desktop-integrations missing (full monorepo required)"
+    return 1
+  fi
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "  [dry-run] would build desktop monorepo layout → $repo/"
@@ -899,6 +907,10 @@ export_satellite() {
       export_simple "$sat_id" "alien-monitor" "alien-monitor" "mit"
       ;;
     course)
+      if [[ ! -d "$ROOT/course-app" ]]; then
+        echo "  ⚠️  SKIP: course-app missing (full monorepo required)"
+        return 1
+      fi
       echo "  Building course site + Colab notebooks …"
       python3 "$ROOT/course-app/scripts/build_course_assets.py"
       export_simple "$sat_id" "course-app" "orchestration-course" "mit"
