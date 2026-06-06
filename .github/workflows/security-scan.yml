@@ -1,0 +1,57 @@
+# Dependency + SAST scan (KI-5). Bandit High blocks; pip-audit report uploaded.
+name: Security scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt bandit pip-audit
+
+      - name: Bandit (fail on High)
+        run: |
+          python -m bandit -r web/backend security llm orchestrator agents \
+            -x '*/tests/*' -lll -q
+
+      - name: pip-audit
+        continue-on-error: true
+        run: |
+          python -m pip_audit -r requirements.txt --format json -o pip-audit-report.json
+          python -m pip_audit -r requirements.txt --desc on
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pip-audit-report
+          path: pip-audit-report.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: web/frontend/package-lock.json
+
+      - name: npm audit (frontend)
+        working-directory: web/frontend
+        continue-on-error: true
+        run: |
+          npm ci --ignore-scripts
+          npm audit --audit-level=high

@@ -168,13 +168,20 @@ for p in "${LOCAL_EXCLUDES[@]}"; do
 done
 git rm -rf --ignore-unmatch data/state 2>/dev/null || true
 
-# Pages workflow is the only .github asset on the public factory remote.
-PAGES_WORKFLOW="$ROOT/.github/workflows/pages-ecosystem.yml"
-if [[ -f "$PAGES_WORKFLOW" ]]; then
-  mkdir -p "$CLONE/.github/workflows"
-  cp -f "$PAGES_WORKFLOW" "$CLONE/.github/workflows/pages-ecosystem.yml"
-  git add .github/workflows/pages-ecosystem.yml
-fi
+# Factory GitHub Actions (trimmed remote keeps CI + Pages, not mirror-satellites).
+FACTORY_GITHUB_WORKFLOWS=(
+  pages-ecosystem.yml
+  ci.yml
+  security-scan.yml
+)
+for wf in "${FACTORY_GITHUB_WORKFLOWS[@]}"; do
+  src="$ROOT/.github/workflows/$wf"
+  if [[ -f "$src" ]]; then
+    mkdir -p "$CLONE/.github/workflows"
+    cp -f "$src" "$CLONE/.github/workflows/$wf"
+    git add ".github/workflows/$wf"
+  fi
+done
 
 if git diff --cached --quiet && git diff --quiet; then
   echo "Nothing to commit — factory remote already matches trimmed tree."

@@ -122,12 +122,14 @@ production environment with realistic traffic.
 
 **Mitigation in place:**
 - Default `UVICORN_WORKERS=1` (single worker = no shared-state issue).
+- **`USE_SQLITE=true` forces `UVICORN_WORKERS=1`** even if the operator overrides (2026-06).
 - Cap at `UVICORN_WORKERS=4` even if operator overrides (was 2 before
   Wave 2; raised after supervisor improvements).
 - Exponential backoff 5s → 60s prevents busy-loop.
 - `BACKEND_MAX_RESTARTS=20` in `BACKEND_RESTART_WINDOW_SECS=1800`
   triggers fail-fast (exit 1) instead of infinite restart.
-- Crash diagnostics persisted to `/app/data/logs/uvicorn-last-crash.log`.
+- Crash diagnostics persisted to `/app/data/logs/uvicorn-last-crash.log`
+  **with structured telemetry** (workers, SQLite flag, Prometheus multiproc file count, log tail).
 
 **Required action (dev/ops):**
 1. Deploy a staging instance with realistic load (e.g. 10 concurrent
@@ -198,7 +200,7 @@ $10k TVL on a single channel or > $100k cumulative.**
 |---------|--------|
 | `starlette` / `fastapi` | Upgrade FastAPI stack when E2E green |
 | `langchain-core` / `langgraph-checkpoint` | Upgrade in isolated PR |
-| `python-multipart` | Bump to ≥ 0.0.18 |
+| `python-multipart` | Bump to ≥ 0.0.18 — **done in requirements.txt (2026-06)** |
 | `cryptography` / `pyopenssl` | Bump to patched releases |
 
 **Why it can't be fixed inline:** Each upgrade has risk of breaking

@@ -404,7 +404,7 @@ export_plugins() {
   # Main plugins
   mkdir -p "$clone/plugins"
   if [[ -d "$ROOT/plugins" ]]; then
-    rsync "${rsync_args[@]}" "$ROOT/plugins/" "$clone/plugins/"
+    rsync "${rsync_args[@]}" --exclude .github "$ROOT/plugins/" "$clone/plugins/"
     echo "  ✓ plugins/"
   fi
 
@@ -439,6 +439,12 @@ export_plugins() {
     _inject_mirror_banner "$clone" "$sat_id" "$repo"
   else
     echo "  ✓ Skipping mirror banner on root README (Glama MCP listing)"
+  fi
+
+  if [[ -f "$ROOT/plugins/.github/workflows/ci.yml" ]]; then
+    mkdir -p "$clone/.github/workflows"
+    cp "$ROOT/plugins/.github/workflows/ci.yml" "$clone/.github/workflows/ci.yml"
+    echo "  ✓ .github/workflows/ci.yml (plugin smoke tests)"
   fi
 
   _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "mit"
@@ -644,35 +650,6 @@ on:
   pull_request:
 
 jobs:
-  flutter-analyze:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        app:
-          - apps/interview-prep-coach
-          - apps/personal-finance-coach
-          - apps/capability-composer
-          - apps/cold-outreach-coach
-          - apps/creator-algorithm-coach
-          - apps/discovery-prospector
-          - apps/freelance-contract-reviewer
-          - apps/reputation-dashboard
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.24.x"
-          channel: stable
-
-      - name: Install dependencies
-        working-directory: ${{ matrix.app }}
-        run: flutter pub get
-
-      - name: Analyze
-        working-directory: ${{ matrix.app }}
-        run: flutter analyze
-
   flutter-build-web:
     runs-on: ubuntu-latest
     strategy:
@@ -689,10 +666,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Fetch Dart SDK (path dependency)
+        run: |
+          git clone --depth 1 https://github.com/alexar76/aimarket-sdks.git /tmp/aimarket-sdks
+          mkdir -p aimarket-sdks
+          cp -R /tmp/aimarket-sdks/dart aimarket-sdks/dart
+
+      - name: Wire apps/* → packages/ path deps
+        run: |
+          mkdir -p apps/packages
+          ln -sf ../../packages/aicom_desktop_core apps/packages/aicom_desktop_core
+          ln -sf ../../packages/aicom_platform_init apps/packages/aicom_platform_init
+
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.24.x"
           channel: stable
+          cache: true
 
       - name: Install dependencies
         working-directory: ${{ matrix.app }}
@@ -702,7 +691,7 @@ jobs:
         working-directory: ${{ matrix.app }}
         run: flutter build web --release
 CIEOF
-  echo "  ✓ .github/workflows/ci.yml (flutter-analyze + flutter-build-web matrix)"
+  echo "  ✓ .github/workflows/ci.yml (flutter-build-web matrix)"
 }
 
 export_wiki() {

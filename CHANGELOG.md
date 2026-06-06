@@ -11,52 +11,29 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 
 ## [Unreleased]
 
+## [2.1.0] — 2026-06-06
+
+Public trust & reproducibility release for the factory line.
+
 ### Added
-- Public `ROADMAP.md` summarising the path to mainnet.
-- Pre-mainnet banner and `status: pre-mainnet` badge in `README.md` linking
-  to `docs/known-issues.md`.
-- `web/frontend` ESLint config (`eslint-config-next`) and `typecheck` /
-  `lint` npm scripts.
-- CI: frontend `tsc --noEmit` and `next lint` steps in `frontend-build`
-  (`continue-on-error` on lint until the initial backlog is cleared).
+- **Honest factory CI** (`.github/workflows/ci.yml`): backend pytest + coverage badge
+  generated in Actions, strict frontend `typecheck` / `lint` / `build` (no
+  `continue-on-error`), security benchmark, customer API smoke.
+- **Security scan workflow** (`.github/workflows/security-scan.yml`): Bandit High
+  blocks; pip-audit + npm audit reports uploaded as artifacts.
+- **`scripts/quickstart.sh`** — clone → one command → Docker + demo enqueue.
+- **`docs/sample-output/`** — static build replay JSON (see without running Docker).
+- **`scripts/export_sample_build_replay.py`** — regenerate sample replay from code.
 
 ### Changed
-- `SECURITY.md` no longer promises a live Immunefi program before mainnet; bug
-  bounty table is marked as a target structure.
-- CI `backend-tests` now commits the regenerated coverage badge back to
-  `main` (`[skip ci]`) so the README badge stays fresh between releases.
+- Coverage badge (`docs/badges/coverage.svg`) refreshed by CI on `main`, not
+  hand-edited locally.
+- `python-multipart` bumped to ≥ 0.0.18 (KI-5 partial).
+- KI-3: `USE_SQLITE=true` forces `UVICORN_WORKERS=1`; crash telemetry appended to
+  `uvicorn-last-crash.log`.
 
 ### Removed
-- Internal audit/strategy notes (`plans/`, `EXTRACTION_REPORT.md`) moved out of
-  the public tree to `.internal/` (gitignored). No code paths reference them.
-
-### Security
-- Removed a stray hardcoded production host IP from
-  `tests/test_sandbox_localhost_rewrite.py` (test-only, never executed against
-  the real host, but visible in clone).
-- Dropped the embedded access token from the local `origin` remote URL.
-
-## [2.1.0] — 2026-05
-
-First public-facing release of the v2.1 line. Snapshot of the platform state
-prior to the cleanup above. Highlights from the git history:
-
-- Multi-agent pipeline (Analyst → PM → Architect → Developer → QA → Security
-  → DevOps → Marketing → Sales → Evolution) with conditional Design-critic
-  and Hardening gates.
-- Discovery pre-pipeline (`director/discovery_pipeline.py`) and ranked-ideas
-  ingestion.
-- Storefront, admin panel, Prometheus/Grafana, sandbox previews.
-- ZK Groth16 backend skeleton, EVM/Solana payment-channel contracts,
-  multisig ownership transfer tooling (`scripts/transfer_contract_ownership`).
-- Audit remediation pass: Vault integration, OIDC/SSO, ZK ceremony scripts,
-  security CI (Bandit, pip-audit, Slither, Dependabot).
-- Risk mitigation: PostgreSQL CI path, scoped ruff/mypy, EventBus queues,
-  real LLM token accounting, CostGuard.
-- Alien Monitor 3D ecosystem visualiser deployed at `/monitor/`.
-
-Known operator-side items that remain open and block a mainnet launch are
-tracked in [`docs/known-issues.md`](docs/known-issues.md) (KI-1…KI-5).
+- CI lint `continue-on-error` escape hatch (ROADMAP “Now”).
 
 [Unreleased]: https://github.com/alexar76/aicom/compare/v2.1.0...HEAD
 [2.1.0]: https://github.com/alexar76/aicom/releases/tag/v2.1.0

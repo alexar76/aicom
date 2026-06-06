@@ -6,11 +6,14 @@ truth for what currently blocks a mainnet launch is
 
 ## Now — hardening & public-launch readiness
 
-- Cut a tagged `v2.1.0` GitHub release with `CHANGELOG.md` as the body.
-- Clear the initial `next lint` backlog and drop `continue-on-error` from the
-  frontend lint step in `.github/workflows/ci.yml`.
-- Commit a refreshed `web/frontend/package-lock.json` so the CI frontend job
-  can return to `npm ci`.
+- ~~Cut a tagged `v2.1.0` GitHub release with `CHANGELOG.md` as the body.~~ **Done** (see Releases).
+- ~~Clear the initial `next lint` backlog and drop `continue-on-error` from the
+  frontend lint step in `.github/workflows/ci.yml`.~~ **Done** — strict lint in CI.
+- ~~Commit a refreshed `web/frontend/package-lock.json` so the CI frontend job
+  can return to `npm ci`.~~ **Done**
+- CI coverage badge regenerated in GitHub Actions (not hand-edited).
+- Sample build replay committed under `docs/sample-output/`.
+- One-command quickstart: `./scripts/quickstart.sh`.
 
 ## Next — close the operator-side KI tracker
 

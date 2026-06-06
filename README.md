@@ -188,6 +188,8 @@ Every build gets a **public, shareable replay** of *how the agents made it* — 
 
 The replay surface is a **hard public boundary**: it only ever emits a whitelist of safe scalar highlights (`verdict`, `score`, `files`, `stack`, `findings`, …) plus durations, gate/retry badges, and pass/fail — never agent prompts, raw output, error text, paths, or keys. Boundary lives in [`web/backend/services/build_replay.py`](web/backend/services/build_replay.py); coverage in [`tests/test_build_replay_public.py`](tests/test_build_replay_public.py).
 
+**Try without Docker:** [`docs/sample-output/build-replay-spliteasy.json`](docs/sample-output/build-replay-spliteasy.json) (static example). **One command:** [`./scripts/quickstart.sh`](scripts/quickstart.sh) after clone.
+
 ## Gallery
 
 Built pages only (1440×900 WebP): screenshots are **`/api/sandbox/file/…/index.html`** — refresh with **`python scripts/capture_gallery_landings.py`** (stack on **http://127.0.0.1:9080**). Details: **[docs/gallery/README.md](docs/gallery/README.md)**.

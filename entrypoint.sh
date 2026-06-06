@@ -234,6 +234,25 @@ if [ "${UVICORN_WORKERS}" -gt 4 ] 2>/dev/null; then
   echo "⚠ UVICORN_WORKERS=${UVICORN_WORKERS} > 4 — capping at 4 (see docs/known-issues.md KI-3)."
   UVICORN_WORKERS=4
 fi
+if [ "${USE_SQLITE:-false}" = "true" ] && [ "${UVICORN_WORKERS}" -gt 1 ] 2>/dev/null; then
+  echo "⚠ USE_SQLITE=true — forcing UVICORN_WORKERS=1 (SQLite single-writer; KI-3)."
+  UVICORN_WORKERS=1
+fi
+
+write_crash_telemetry() {
+  local reason="$1"
+  {
+    echo "=== uvicorn crash $(date -u +%Y-%m-%dT%H:%M:%SZ) reason=${reason} ==="
+    echo "UVICORN_WORKERS=${UVICORN_WORKERS} USE_SQLITE=${USE_SQLITE:-false}"
+    echo "PROMETHEUS_MULTIPROC_DIR=${PROMETHEUS_MULTIPROC_DIR:-<unset>}"
+    if [ -n "${PROMETHEUS_MULTIPROC_DIR:-}" ] && [ -d "${PROMETHEUS_MULTIPROC_DIR}" ]; then
+      echo "prometheus_multiproc_files=$(find "${PROMETHEUS_MULTIPROC_DIR}" -type f 2>/dev/null | wc -l | tr -d ' ')"
+    fi
+    echo "--- log tail ---"
+    tail -n 30 "$BACKEND_LOG_FILE" 2>/dev/null || true
+    echo ""
+  } >>"$BACKEND_DIAG_FILE" 2>/dev/null || true
+}
 
 BACKEND_LOG_DIR="/app/data/logs"
 mkdir -p "$BACKEND_LOG_DIR"
@@ -331,6 +350,7 @@ echo "Backend started (PID: $(cat $BACKEND_PID_FILE))"
       fi
 
       echo "FastAPI backend down ($crash_reason). Last 20 log lines:"
+      write_crash_telemetry "$crash_reason"
       tail -n 20 "$BACKEND_LOG_FILE" 2>/dev/null || echo "  (no log)"
       echo "Restart ${restart_count}/${MAX_RESTARTS} (window ${WINDOW_SECS}s); backoff ${backoff}s."
       sleep "$backoff"

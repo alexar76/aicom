@@ -1,0 +1,121 @@
+# Factory CI — honest green signal (no continue-on-error escape hatches).
+# Published to alexar76/aicom via scripts/publish_aicom_factory.sh
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend-tests:
+    name: Backend tests + coverage badge
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      USE_SQLITE: "true"
+      JWT_SECRET_KEY: "012345678901234567890123456789012345678901234567890"
+      AIMARKET_TEE_SOFTWARE_OK: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt pytest pytest-cov
+
+      - name: Pytest with coverage
+        run: |
+          pytest -q --cov=web --cov=agents --cov=orchestrator --cov=director --cov=pipeline_worker \
+            --cov-report=term-missing:skip-covered \
+            --cov-report=json:coverage.json
+
+      - name: Generate coverage badge
+        run: python scripts/generate_coverage_badge.py coverage.json docs/badges/coverage.svg
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: |
+            coverage.json
+            docs/badges/coverage.svg
+
+      - name: Commit coverage badge on main
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/badges/coverage.svg
+          git diff --cached --quiet && exit 0
+          git commit -m "chore(ci): refresh coverage badge [skip ci]"
+          git push
+
+  security-benchmark:
+    name: Security benchmark
+    runs-on: ubuntu-latest
+    env:
+      USE_SQLITE: "true"
+      JWT_SECRET_KEY: "012345678901234567890123456789012345678901234567890"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt pytest
+      - run: bash scripts/run_security_benchmark.sh
+
+  frontend-build:
+    name: Frontend typecheck, lint, build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web/frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: web/frontend/package-lock.json
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
+
+  customer-api-smoke:
+    name: Customer API smoke
+    runs-on: ubuntu-latest
+    env:
+      USE_SQLITE: "true"
+      JWT_SECRET_KEY: "012345678901234567890123456789012345678901234567890"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt pytest httpx
+
+      - name: Smoke customer journey
+        run: pytest tests/test_customer_journey_e2e.py -q --tb=short

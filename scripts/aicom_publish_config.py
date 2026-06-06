@@ -41,7 +41,7 @@ FACTORY_LOCAL_EXCLUDES = [
     ".cursor",
     ".claude",
     ".gitea",
-    ".github",  # CI workflows/dependabot — never rsync; pages-ecosystem.yml copied in publish_aicom_factory.sh
+    ".github",  # monorepo-only mirror workflow; factory gets ci + pages + security-scan via publish_aicom_factory.sh
 ]
 
 # Submodule: publish gitlink only — never rsync expanded coach/ tree to public factory.
