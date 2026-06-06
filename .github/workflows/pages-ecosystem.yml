@@ -1,0 +1,40 @@
+# Publish ecosystem-landing/ to GitHub Pages (e.g. https://alexar76.github.io/aicom/).
+# One-time: repo Settings → Pages → Source: GitHub Actions.
+name: Pages — ecosystem landing
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ecosystem-landing/**
+      - .github/workflows/pages-ecosystem.yml
+  workflow_dispatch:
+
+# Requires: repo Settings → Pages → Source: GitHub Actions (one-time).
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-ecosystem
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ecosystem-landing
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

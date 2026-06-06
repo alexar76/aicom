@@ -156,13 +156,6 @@ for p in "${LOCAL_EXCLUDES[@]}"; do
   rm -rf "$CLONE/$p"
 done
 
-# Pages workflow is the only .github asset on the public factory remote.
-PAGES_WORKFLOW="$ROOT/.github/workflows/pages-ecosystem.yml"
-if [[ -f "$PAGES_WORKFLOW" ]]; then
-  mkdir -p "$CLONE/.github/workflows"
-  cp -f "$PAGES_WORKFLOW" "$CLONE/.github/workflows/pages-ecosystem.yml"
-fi
-
 cd "$CLONE"
 git add -A
 
@@ -174,6 +167,14 @@ for p in "${LOCAL_EXCLUDES[@]}"; do
   git rm -rf --ignore-unmatch "$p" 2>/dev/null || true
 done
 git rm -rf --ignore-unmatch data/state 2>/dev/null || true
+
+# Pages workflow is the only .github asset on the public factory remote.
+PAGES_WORKFLOW="$ROOT/.github/workflows/pages-ecosystem.yml"
+if [[ -f "$PAGES_WORKFLOW" ]]; then
+  mkdir -p "$CLONE/.github/workflows"
+  cp -f "$PAGES_WORKFLOW" "$CLONE/.github/workflows/pages-ecosystem.yml"
+  git add .github/workflows/pages-ecosystem.yml
+fi
 
 if git diff --cached --quiet && git diff --quiet; then
   echo "Nothing to commit — factory remote already matches trimmed tree."
