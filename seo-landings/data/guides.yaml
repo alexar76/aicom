@@ -1,0 +1,90 @@
+# Guide landing pages — body loaded from monorepo markdown at build time.
+guides:
+  - slug: call-verifiable-oracle
+    title: Call a Verifiable Oracle from Your AI Agent
+    description: >-
+      Discover, invoke, and independently verify Platon VRF, Chronos VDF, and LUMEN
+      reputation in ~5 lines — via MCP (Cursor, Claude) or raw HTTP on AIMarket Hub.
+    keywords:
+      - verifiable randomness
+      - MCP oracle
+      - VRF API
+      - AI agent oracle
+      - model context protocol
+    source: docs/specs/quickstart-call-an-oracle.md
+    related_oracles: [platon, chronos, lumen]
+    related_courses: [verifiable-randomness-course, mcp-security-course]
+
+  - slug: verifiable-randomness-and-time
+    title: Verifiable Randomness & Cryptographic Time for Agents
+    description: >-
+      Product spec for Platon chaos-VRF and Chronos Wesolowski VDF — bias-resistant
+      randomness and proof-of-elapsed-time any agent can verify offline.
+    keywords:
+      - verifiable randomness
+      - VDF
+      - chaos VRF
+      - Wesolowski proof
+      - agent lottery
+    source: docs/specs/01-verifiable-randomness-and-time.md
+    related_oracles: [platon, chronos, sortes, aestus]
+    related_courses: [verifiable-randomness-course, smart-contracts-course]
+
+  - slug: reputation-and-trust
+    title: Agent Reputation & Trust Scores (LUMEN / EigenTrust)
+    description: >-
+      Sybil-resistant reputation over an interaction graph — how LUMEN scores MCP
+      servers and capabilities for safe agent-to-agent commerce.
+    keywords:
+      - agent reputation
+      - EigenTrust
+      - PageRank MCP
+      - LUMEN oracle
+      - trust score
+    source: docs/specs/02-reputation-and-trust.md
+    related_oracles: [lumen]
+    related_courses: [mathematics-of-trust-course, mcp-security-course]
+
+  - slug: mcp-payment-and-security
+    title: MCP Payment Channels & Agent Security Model
+    description: >-
+      HTTP 402 micropayment channels, spend caps, fail-closed WARDEN firewall, and
+      threat model for third-party MCP tools in autonomous agents.
+    keywords:
+      - MCP security
+      - HTTP 402 payment
+      - agent payment channel
+      - WARDEN firewall
+      - tool poisoning
+    source: docs/specs/03-mcp-payment-and-security.md
+    related_oracles: [lumen]
+    related_courses: [mcp-security-course, agent-economy-course]
+
+  - slug: external-argus-operator
+    title: Run Your Own ARGUS on the Public AICOM Economy
+    description: >-
+      Deploy ARGUS on your server as a Hub consumer and/or capability supplier —
+      wallet, crypto switch, oracle family, and Mesh registration checklist.
+    keywords:
+      - ARGUS agent
+      - external operator
+      - agent economy
+      - AIMarket consumer
+      - sell capabilities
+    source: argus/docs/use-case-external-operator.md
+    related_courses: [agent-economy-course, orchestration-course]
+
+  - slug: agent-economy-overview
+    title: Build an Agent Economy — Protocol v2 Overview
+    description: >-
+      Capabilities, signed receipts, federated discovery, USDC channels, and escrow —
+      the AIMarket Protocol v2 stack for autonomous agent commerce.
+    keywords:
+      - agent economy
+      - AIMarket protocol
+      - USDC micropayments
+      - capability marketplace
+      - federated hub
+    source: docs/ecosystem/knowledge-base.md
+    excerpt_chars: 12000
+    related_courses: [agent-economy-course, ai-factory-course]

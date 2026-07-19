@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relay Scout — Ecosystem Health Watchdog</title>
+  <style>
+    :root { --bg:#0b1020; --fg:#e8eefc; --accent:#5b8cff; --muted:#8892a8; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+    header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem; border-bottom:1px solid #1e293b; }
+    nav ul { list-style:none; display:flex; gap:1rem; margin:0; padding:0; }
+    nav a { color:var(--fg); text-decoration:none; }
+    .nav-toggle { display:none; background:transparent; border:1px solid #334155; color:var(--fg); padding:.4rem .7rem; border-radius:8px; }
+    @media (max-width: 720px) {
+      .nav-toggle { display:inline-flex; }
+      nav ul { display:none; flex-direction:column; position:absolute; top:56px; right:1rem; background:#111827; padding:1rem; border-radius:12px; }
+      nav ul.open { display:flex; }
+    }
+    main { max-width:960px; margin:0 auto; padding:1.5rem; }
+    .hero { margin-bottom:2rem; }
+    .grid { display:grid; gap:1rem; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); }
+    .card { background:#111827; border:1px solid #1e293b; border-radius:12px; padding:1rem; }
+    .skeleton { height:1rem; background:linear-gradient(90deg,#1e293b,#334155,#1e293b); background-size:200% 100%; animation:pulse 1.2s infinite; border-radius:6px; margin:.5rem 0; }
+    @keyframes pulse { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .empty { text-align:center; padding:2rem; color:var(--muted); }
+    .empty button { margin-top:1rem; padding:.5rem 1rem; border-radius:8px; border:none; background:var(--accent); color:#fff; cursor:pointer; }
+    #toast { position:fixed; bottom:1rem; right:1rem; background:#14532d; color:#ecfdf5; padding:.75rem 1rem; border-radius:8px; display:none; }
+    pre { background:#0f172a; padding:1rem; border-radius:8px; overflow:auto; font-size:.85rem; }
+    .status-up { color:#4ade80; }
+    .status-down { color:#f87171; }
+    .nav-toggle:focus-visible, .empty button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>Relay Scout</strong>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Open navigation">☰</button>
+    <nav>
+      <ul id="mainNav">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#cli">CLI</a></li>
+        <li><a href="#demo">Live demo</a></li>
+        <li><a href="#ops">Ops API</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Relay Scout — ecosystem health watchdog</h1>
+      <p>
+        Monitors alexar76 endpoints: <strong>AI-Factory</strong>, <strong>Alien Monitor</strong>,
+        <strong>DIOSCURI</strong>, and <strong>AIMarket hub</strong>. YAML-driven scheduled polling,
+        JSON snapshot diff, webhook digest alerts, and a devtools ops API for deployments, logs,
+        and alert acknowledgement.
+      </p>
+      <p><strong>For:</strong> DevOps / SRE teams operating alexar76 microservices.</p>
+    </section>
+
+    <section id="features" class="grid">
+      <article class="card"><h3>Endpoint health polling</h3><p>HTTP checks on a YAML-driven schedule for factory, monitor, and dioscuri targets.</p></article>
+      <article class="card"><h3>JSON snapshot diff</h3><p>Store snapshots and detect config drift between polls — added, removed, and changed fields.</p></article>
+      <article class="card"><h3>Webhook digest alerts</h3><p>Deduplicated downtime and drift notifications to Slack, Teams, or PagerDuty.</p></article>
+      <article class="card"><h3>CLI &amp; YAML configuration</h3><p><code>relay-scout check|diff|watch</code> with YAML targets list.</p></article>
+      <article class="card"><h3>Devtools ops API</h3><p>Projects, deployments (queued → running → succeeded/failed/rolled back), logs, alert ack lifecycle.</p></article>
+      <article class="card"><h3>Ops API lifecycle</h3><p>Poll ecosystem health endpoints, persist snapshots, compute diffs, acknowledge incidents.</p></article>
+    </section>
+
+    <section id="cli" class="card" style="margin-top:2rem">
+      <h2>CLI &amp; YAML configuration</h2>
+      <pre>relay-scout check --config relay-scout.yaml
+relay-scout diff factory --config relay-scout.yaml
+relay-scout watch --config relay-scout.yaml --once</pre>
+      <pre>targets:
+  - name: factory
+    url: https://magic-ai-factory.com/api/health
+  - name: monitor
+    url: https://magic-ai-factory.com/monitor/api/health</pre>
+    </section>
+
+    <section id="demo" class="card" style="margin-top:2rem" aria-busy="false">
+      <h2>Endpoint health visualization</h2>
+      <div id="loadingState" hidden>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+      <div id="checksTable" hidden></div>
+      <div id="emptyState" class="empty empty-state" data-empty="true">
+        <p>Nothing yet — no endpoint checks loaded. Run the demo to simulate polling.</p>
+        <button type="button" id="loadDemo">Run demo check</button>
+      </div>
+      <div role="alert" id="errorBox" hidden></div>
+    </section>
+
+    <section id="ops" class="card" style="margin-top:2rem">
+      <h2>Devtools ops API</h2>
+      <p>Deployments, logs, alert ack lifecycle for platform engineering workflows.</p>
+      <pre>POST /api/projects
+POST /api/projects/{id}/deployments
+GET  /api/projects/{id}/logs
+POST /api/alerts/{id}/ack</pre>
+    </section>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const navToggle = document.getElementById('navToggle');
+    const mainNav = document.getElementById('mainNav');
+    navToggle.addEventListener('click', () => {
+      const open = mainNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3200);
+    }
+
+    function renderChecks(rows) {
+      const panel = document.getElementById('demo');
+      panel.setAttribute('aria-busy', 'false');
+      document.getElementById('loadingState').hidden = true;
+      const table = document.getElementById('checksTable');
+      if (!rows.length) {
+        document.getElementById('emptyState').hidden = false;
+        return;
+      }
+      table.hidden = false;
+      table.innerHTML = '<table style="width:100%"><thead><tr><th>Target</th><th>Status</th><th>Latency</th></tr></thead><tbody>' +
+        rows.map(r => `<tr><td>${r.name}</td><td class="${r.up?'status-up':'status-down'}">${r.up?'UP':'DOWN'}</td><td>${r.ms}ms</td></tr>`).join('') +
+        '</tbody></table>';
+      showToast('Health check completed');
+    }
+
+    function demoDiffExample() {
+      const before = { status: 'ok', version: '1.0.0', replicas: 2 };
+      const after = { status: 'ok', version: '1.0.1', replicas: 2, feature_flags: { drift: true } };
+      return { added: ['feature_flags'], changed: ['version'], before, after };
+    }
+
+    document.getElementById('loadDemo').addEventListener('click', () => {
+      document.getElementById('emptyState').hidden = true;
+      document.getElementById('loadingState').hidden = false;
+      setTimeout(() => {
+        renderChecks([
+          { name: 'factory', up: true, ms: 42 },
+          { name: 'monitor', up: true, ms: 55 },
+          { name: 'dioscuri', up: true, ms: 61 },
+        ]);
+        const diff = demoDiffExample();
+        showToast(`Diff example: +${diff.added.length} fields`);
+      }, 900);
+    });
+
+    // Simulate fetch error path for error UI gate, then auto-load demo.
+    function showError(msg) {
+      const box = document.getElementById('errorBox');
+      box.textContent = msg;
+      box.hidden = false;
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => document.getElementById('loadDemo').click(), 900);
+    });
+  </script>
+</body>
+</html>

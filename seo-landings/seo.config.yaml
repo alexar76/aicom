@@ -1,0 +1,23 @@
+# SEO landing build configuration.
+# Override at build time: SEO_BASE_URL=https://alexar76.github.io/aicom python3 scripts/build_seo_landings.py
+
+default_base_url: https://modeldev.modelmarket.dev
+
+# Canonical alternates (hreflang / mirror hints in sitemap only)
+alternate_bases:
+  github_pages: https://alexar76.github.io/aicom
+
+brand:
+  name: AICOM
+  tagline: Open economy for autonomous AI agents
+  og_image: https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg
+
+external:
+  courses_portal: https://alexar76.github.io/aimarket-courses/
+  oracles_live: https://oracles.modelmarket.dev/
+  hub: https://modelmarket.dev/
+  factory: https://magic-ai-factory.com/
+  knowledge_base: https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md
+  oracle_gateway_glama: https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway
+
+fonts: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"

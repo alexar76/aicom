@@ -1,0 +1,197 @@
+# AI-Factory production overlay — PostgreSQL + split services + prod guards.
+#
+# Combines docker-compose.pg.yml + docker-compose.split.yml with production
+# pipeline DB settings (Postgres pinned; Admin Settings cannot revert to SQLite).
+#
+# Prerequisites (.env):
+#   POSTGRES_PASSWORD=<openssl rand -base64 24>
+#   GRAFANA_ADMIN_PASSWORD=<strong password>
+#   At least one LLM key (e.g. DEEPSEEK_API_KEY)
+#
+# Bootstrap:
+#   python3 scripts/fill_production_env.py --env-file .env --public-url https://your-host
+#
+# Run:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+#
+# Or:
+#   ./scripts/run_prod_compose.sh up -d --build
+#
+# Load / soak test (after healthy):
+#   ./scripts/load_test_factory.sh --base-url http://127.0.0.1:9081 --duration 600
+#
+# See docs/architecture/scaling.md and docs/known-issues.md (KI-3).
+
+x-prod-db-env: &prod-db-env
+  USE_SQLITE: "false"
+  PIPELINE_DB_BACKEND: postgres
+  PIPELINE_USE_POSTGRES: "true"
+  PIPELINE_DB_ENV_PINNED: "1"
+  DATABASE_URL: "postgresql://${POSTGRES_USER:-aicom}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-aicom}"
+  PIPELINE_DATABASE_URL: "postgresql://${POSTGRES_USER:-aicom}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-aicom}"
+
+x-prod-common-env: &prod-common-env
+  <<: *prod-db-env
+  AIFACTORY_PROD: "1"
+  AIFACTORY_PAYMENT_VERIFY_STUB: "0"
+  UVICORN_WORKERS: ${UVICORN_WORKERS:-1}
+  AIFACTORY_PIPELINE_QUEUE_BACKEND: ${AIFACTORY_PIPELINE_QUEUE_BACKEND:-redis}
+  AIFACTORY_REDIS_URL: redis://redis:6379/0
+  AIFACTORY_MAX_RUNNING_TASKS: ${AIFACTORY_MAX_RUNNING_TASKS:-8}
+  AIFACTORY_TASK_EXECUTOR_CONCURRENCY: ${AIFACTORY_TASK_EXECUTOR_CONCURRENCY:-4}
+  AIFACTORY_BATCH_PIPELINE_MAX_START_PER_CYCLE: ${AIFACTORY_BATCH_PIPELINE_MAX_START_PER_CYCLE:-2}
+  BACKEND_MAX_RESTARTS: ${BACKEND_MAX_RESTARTS:-20}
+  BACKEND_RESTART_WINDOW_SECS: ${BACKEND_RESTART_WINDOW_SECS:-1800}
+
+services:
+  app:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      <<: *prod-common-env
+      AICOM_ROLE: api
+    command: ["bash", "-lc", "exec /app/entrypoint.sh"]
+    ports:
+      - "${AICOM_PORT_API:-9081}:8081"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8081/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 90s
+
+  frontend:
+    image: ai-factory:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:9080}
+        NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
+    user: "10001:10001"
+    depends_on:
+      app:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      AICOM_ROLE: frontend
+      INTERNAL_API_URL: http://app:8081
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
+      NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
+    command:
+      - bash
+      - -lc
+      - "cd /app/web/frontend && exec npx next start -p 8080"
+    ports:
+      - "${AICOM_PORT_FRONTEND:-9080}:8080"
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 45s
+
+  pipeline-worker:
+    image: ai-factory:${AICOM_IMAGE_TAG:-local}
+    user: "10001:10001"
+    depends_on:
+      app:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      <<: *prod-common-env
+      AICOM_ROLE: pipeline-worker
+      INTERNAL_API_URL: http://app:8081
+    command:
+      - bash
+      - -lc
+      - "source /app/venv/bin/activate && cd /app && exec python3 -m pipeline_worker"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - aicom_net
+
+  director-worker:
+    image: ai-factory:${AICOM_IMAGE_TAG:-local}
+    user: "10001:10001"
+    depends_on:
+      app:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      <<: *prod-common-env
+      AICOM_ROLE: director-worker
+      INTERNAL_API_URL: http://app:8081
+    command:
+      - bash
+      - -lc
+      - "source /app/venv/bin/activate && cd /app && exec python3 -m director.worker"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - aicom_net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: aicom-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aicom}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-aicom}
+      PGUSER: ${POSTGRES_USER:-aicom}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aicom} -d ${POSTGRES_DB:-aicom}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - aicom_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: aicom-redis
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+    # SECURITY: require a password in production (set REDIS_PASSWORD in .env).
+    # Without it, any process on the Docker network can read/write Redis.
+    command: >
+      redis-server
+      ${REDIS_PASSWORD:+--requirepass ${REDIS_PASSWORD}}
+      --save ""
+    healthcheck:
+      test: ["CMD", "redis-cli", ${REDIS_PASSWORD:+-a ${REDIS_PASSWORD}}, "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - aicom_net
+
+volumes:
+  pgdata:
+    driver: local

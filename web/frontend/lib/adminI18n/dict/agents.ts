@@ -1,0 +1,153 @@
+import type { I18nDict } from '../types';
+
+export const AGENTS_DICT: I18nDict = {
+  'agents.title': {
+    en: 'AI Agents',
+    ru: 'ИИ‑агенты',
+    es: 'Agentes de IA',
+  },
+  'agents.intro.boldDesigner': {
+    en: 'Designer',
+    ru: 'Designer',
+    es: 'Diseñador',
+  },
+  'agents.intro.beforeCode': {
+    en: ' is not a separate worker process: UX direction lives in the Architect output (',
+    ru: ' — не отдельный рабочий процесс: направление UX задаётся в выходе Architect (',
+    es: ' no es un proceso de trabajo aparte: la dirección de UX está en la salida del Architect (',
+  },
+  'agents.intro.afterCode': {
+    en: ') and is implemented by Developer. The card mirrors Architect status and task counts for visibility. Intermediate stages ',
+    ru: '), а реализует Developer. Карточка показывает статус Architect и число задач для наглядности. Промежуточные этапы ',
+    es: ') y lo implementa Developer. La tarjeta replica el estado del Architect y los conteos. Las etapas intermedias ',
+  },
+  'agents.intro.boldDesignCritic': {
+    en: 'design critic',
+    ru: 'design critic',
+    es: 'crítico de diseño',
+  },
+  'agents.intro.and': {
+    en: ' and ',
+    ru: ' и ',
+    es: ' y ',
+  },
+  'agents.intro.boldHardening': {
+    en: 'hardening',
+    ru: 'hardening',
+    es: 'endurecimiento',
+  },
+  'agents.intro.afterStages': {
+    en: ' run inside the pipeline worker but do not appear as separate cards here. Marketplace chat uses ',
+    ru: ' выполняются внутри воркера пайплайна, но отдельными карточками здесь не показаны. Чат маркетплейса использует ',
+    es: ' corren dentro del worker del pipeline pero no aparecen como tarjetas separadas aquí. El chat del marketplace usa ',
+  },
+  'agents.intro.boldLumen': {
+    en: 'Lumen',
+    ru: 'Lumen',
+    es: 'Lumen',
+  },
+  'agents.intro.afterLumen': {
+    en: ' (buyer chat via Support API, not Microsoft Copilot), not this roster.',
+    ru: ' (чат покупателя через Support API, не Microsoft Copilot), а не этот список.',
+    es: ' (chat comprador por Support API, no Microsoft Copilot), no esta lista.',
+  },
+  'agents.intro.clickHint': {
+    en: 'Click a card for details, recent execution log lines, and shortcuts to LLM Logs / Agent Logs / Pipeline.',
+    ru: 'Нажмите карточку, чтобы открыть детали, последние строки журнала и быстрые ссылки на LLM Logs / Agent Logs / Pipeline.',
+    es: 'Pulsa una tarjeta para ver detalles, líneas recientes del registro y accesos a LLM Logs / Agent Logs / Pipeline.',
+  },
+  'agents.modal.tasksCompleted': {
+    en: 'Tasks completed',
+    ru: 'Задач выполнено',
+    es: 'Tareas completadas',
+  },
+  'agents.modal.timeout': { en: 'Timeout (s)', ru: 'Тайм‑аут (с)', es: 'Tiempo máx. (s)' },
+  'agents.modal.lastActivity': {
+    en: 'Last activity (log tail / metrics max)',
+    ru: 'Последняя активность (хвост лога / макс. по метрикам)',
+    es: 'Última actividad (cola del log / máx. métricas)',
+  },
+  'agents.modal.noTimestampsYet': {
+    en: 'No log timestamps yet',
+    ru: 'Пока нет временных меток в логе',
+    es: 'Aún no hay marcas de tiempo en el log',
+  },
+  'agents.modal.currentTask': { en: 'Current task', ru: 'Текущая задача', es: 'Tarea actual' },
+  'agents.modal.metricsTitle': {
+    en: 'Log metrics (~1h window, same source as Live Monitor)',
+    ru: 'Метрики лога (~1 ч, тот же источник, что у Live Monitor)',
+    es: 'Métricas de log (~1 h, misma fuente que Live Monitor)',
+  },
+  'agents.modal.metricTotalLines': { en: 'Total lines', ru: 'Всего строк', es: 'Líneas totales' },
+  'agents.modal.metricRecent1h': { en: 'Recent (1h)', ru: 'Недавние (1 ч)', es: 'Recientes (1 h)' },
+  'agents.modal.metricErrors1h': { en: 'Errors (1h)', ru: 'Ошибки (1 ч)', es: 'Errores (1 h)' },
+  'agents.modal.metricDerivedStatus': {
+    en: 'Derived status',
+    ru: 'Производный статус',
+    es: 'Estado derivado',
+  },
+  'agents.btn.llmLogs': { en: 'LLM logs', ru: 'LLM‑логи', es: 'Logs LLM' },
+  'agents.btn.agentLogs': { en: 'Agent logs', ru: 'Логи агентов', es: 'Logs de agentes' },
+  'agents.btn.pipeline': { en: 'Pipeline', ru: 'Пайплайн', es: 'Pipeline' },
+  'agents.btn.refreshData': { en: 'Refresh data', ru: 'Обновить данные', es: 'Actualizar datos' },
+  'agents.btn.refreshDataTitle': {
+    en: 'Refresh roster from server',
+    ru: 'Обновить список с сервера',
+    es: 'Actualizar lista desde el servidor',
+  },
+  'agents.pipelineSearchHint': {
+    en: 'Pipeline opens with this agent id in the product search box (matches id or idea text when present).',
+    ru: 'Пайплайн открывается с id этого агента в поле поиска продукта (совпадает с id или текстом идеи, если есть).',
+    es: 'Pipeline se abre con el id del agente en la búsqueda de producto (coincide con id o texto de idea si existe).',
+  },
+  'agents.recentExecutionLog': {
+    en: 'Recent execution log',
+    ru: 'Недавний журнал выполнения',
+    es: 'Registro de ejecución reciente',
+  },
+  'agents.loadingDots': {
+    en: 'Loading…',
+    ru: 'Загрузка…',
+    es: 'Cargando…',
+  },
+  'agents.noLogEntries': {
+    en: 'No log file entries for this agent (or empty file).',
+    ru: 'Нет записей файла журнала для этого агента (или файл пуст).',
+    es: 'No hay entradas de log para este agente (o el archivo está vacío).',
+  },
+  'agents.role.analyst': { en: 'Analyst', ru: 'Аналитик', es: 'Analista' },
+  'agents.role.pm': { en: 'Product manager', ru: 'Продакт-менеджер', es: 'Product manager' },
+  'agents.role.marketing': { en: 'Marketing', ru: 'Маркетинг', es: 'Marketing' },
+  'agents.role.methodologist': {
+    en: 'Methodologist',
+    ru: 'Методолог',
+    es: 'Metodólogo',
+  },
+  'agents.role.architect': { en: 'Architect', ru: 'Архитектор', es: 'Arquitecto' },
+  'agents.role.designer': { en: 'Designer', ru: 'Дизайнер', es: 'Diseñador' },
+  'agents.role.designerUx': {
+    en: 'Designer (UX)',
+    ru: 'Дизайнер (UX)',
+    es: 'Diseñador (UX)',
+  },
+  'agents.role.developer': { en: 'Developer', ru: 'Разработчик', es: 'Desarrollador' },
+  'agents.role.qa': { en: 'QA', ru: 'Тестирование', es: 'QA' },
+  'agents.role.security': { en: 'Security', ru: 'Безопасность', es: 'Seguridad' },
+  'agents.role.devops': { en: 'DevOps', ru: 'DevOps', es: 'DevOps' },
+  'agents.role.sales': { en: 'Sales', ru: 'Продажи', es: 'Ventas' },
+  'agents.role.evolution_analyst': {
+    en: 'Evolution analyst',
+    ru: 'Аналитик эволюции',
+    es: 'Analista de evolución',
+  },
+  'agents.status.idle': { en: 'Idle', ru: 'Ожидание', es: 'Inactivo' },
+  'agents.status.running': { en: 'Running', ru: 'В работе', es: 'En curso' },
+  'agents.status.error': { en: 'Error', ru: 'Ошибка', es: 'Error' },
+  'agents.status.offline': { en: 'Offline', ru: 'Не в сети', es: 'Desconectado' },
+  'agents.status.thinking': { en: 'Thinking', ru: 'Обработка', es: 'Procesando' },
+  'agents.card.tasksCompleted': {
+    en: '{count} tasks completed',
+    ru: 'Выполнено задач: {count}',
+    es: '{count} tareas completadas',
+  },
+};

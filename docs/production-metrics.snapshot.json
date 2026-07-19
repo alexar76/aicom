@@ -1,0 +1,62 @@
+{
+  "collected_at": "2026-06-25T09:05:11Z",
+  "errors": [
+    "pipeline: No module named 'aiosqlite'",
+    "hub health: HTTP 404"
+  ],
+  "hub": {
+    "avg_latency_ms": 34.7,
+    "avg_price_usd": 0.7765,
+    "capabilities_count": 23,
+    "federated_capabilities_count": 11,
+    "open_channels": 0,
+    "peers_count": 3,
+    "revenue_per_hour_usd": 0,
+    "settled_volume_usd": 105758.25,
+    "success_rate": 1.0,
+    "successful_invocations": 136197,
+    "total_invocations": 136197
+  },
+  "incidents": [
+    {
+      "id": "2026-06-07-hub-demo-traffic",
+      "resolved_at": "2026-06-07T16:00:00Z",
+      "services": [
+        "hub"
+      ],
+      "severity": "low",
+      "started_at": "2026-06-07T15:00:00Z",
+      "status": "resolved",
+      "summary": "Demo seeder burst inflated hub invocation counters; no customer impact."
+    }
+  ],
+  "pipeline": {
+    "products_in_pipeline": 19,
+    "products_shipped": 2,
+    "products_total": 21
+  },
+  "services": {
+    "factory": {
+      "status": "ok",
+      "uptime_seconds": 0,
+      "url": "https://magic-ai-factory.com"
+    },
+    "hub": {
+      "status": "ok",
+      "uptime_seconds": null,
+      "url": "https://modelmarket.dev"
+    }
+  },
+  "slo": {
+    "open_incidents": 0,
+    "p50_latency_ms_24h": null,
+    "p95_latency_ms_24h": null,
+    "rps_1h": null,
+    "success_rate_24h": null
+  },
+  "snapshot_generated_at": "2026-06-25T09:05:12Z",
+  "sources": {
+    "factory": "local",
+    "hub": "https://modelmarket.dev"
+  }
+}

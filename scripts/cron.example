@@ -1,0 +1,16 @@
+# Example crontab entries for AI-Factory / AIMarket ops (adjust paths).
+# Install: crontab -e  → paste relevant lines.
+#
+# Requires: TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID for alerts (optional).
+
+# Ecosystem HTTP watchdog — every 5 minutes
+*/5 * * * * cd /path/to/aicom && python3 scripts/ecosystem_watchdog.py >> /var/log/aicom-watchdog.log 2>&1
+
+# Channels DB backup + integrity check — every 5 minutes
+*/5 * * * * cd /path/to/aicom && BACKUP_DIR=data/backups BACKUP_RCLONE_REMOTE=b2:aicom-backups/channels ./scripts/backup_channels.sh >> /var/log/aicom-backup.log 2>&1
+
+# Mirror pipeline + hub catalog (factory host with SQLite mirror)
+15 * * * * cd /path/to/aicom && PYTHONPATH=.:aimarket-hub python3 scripts/sync_pipeline_mirror_and_hub.py --hub-import-only >> /var/log/aicom-hub-sync.log 2>&1
+
+# Federated oracle-family caps (Sortes, Platon, …) into hub DB
+30 * * * * cd /path/to/aicom && PYTHONPATH=.:aimarket-hub python3 scripts/sync_oracle_family_to_hub.py >> /var/log/aicom-oracle-sync.log 2>&1

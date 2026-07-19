@@ -1,0 +1,16 @@
+# snarkjs build outputs (regenerable via setup.sh)
+build/
+node_modules/
+
+# Local circom binary cache — install via docs.circom.io, do not vendor
+.tools/
+
+# Operator-private proving keys — NEVER commit
+*_0001.zkey
+*_final.zkey
+
+# Powers-of-tau cache (large, downloaded from public source)
+*.ptau
+
+# Witness generation artifacts
+*.wtns

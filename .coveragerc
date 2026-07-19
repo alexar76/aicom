@@ -1,0 +1,22 @@
+[run]
+source =
+    web
+    agents
+    orchestrator
+    director
+    pipeline_worker
+omit =
+    */tests/*
+    */test_*
+    */__pycache__/*
+    */.venv/*
+    */node_modules/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
+    raise NotImplementedError
+    @abstractmethod
+precision = 1
+skip_covered = True

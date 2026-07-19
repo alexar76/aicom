@@ -1,0 +1,20 @@
+{
+  "name": "@aimarket/sdk",
+  "version": "0.0.1",
+  "description": "AI Market SDK umbrella — re-exports @aimarket/agent",
+  "license": "MIT",
+  "main": "index.js",
+  "files": ["index.js", "README.md"],
+  "homepage": "https://www.npmjs.com/package/@aimarket/agent",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexar76/aimarket-sdks.git"
+  },
+  "dependencies": {
+    "@aimarket/agent": "^0.1.1"
+  },
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "test": "node -e \"require('@aimarket/agent'); require('./index.js')\""
+  }
+}
