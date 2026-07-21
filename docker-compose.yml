@@ -1,0 +1,261 @@
+# AI-Factory v2.1 — Docker Compose
+# Use Docker Compose V2 (`docker compose`). Ubuntu: docker-compose-plugin
+#
+# Architecture: Single-container "batteries-included" design. FastAPI (API),
+# pipeline worker, and Next.js (SSR/storefront) run in one container for
+# zero-config self-hosting. The broader ecosystem (Hub, ACEX, Service Mesh) are
+# separate containers/products deployed independently. See docs/ecosystem-architecture.md.
+# Project `.env` is auto-loaded for variable substitution (copy from .env.example).
+#
+# ⚠️  Non-root container note:
+# The `app` container runs as UID/GID 10001 (`aifactory`) — see Dockerfile.
+# The bind-mounted ./data directory MUST be writable by this UID. The
+# `data-init` sidecar below chowns it on first start (it runs as root
+# briefly, exits, and never touches network — minimal attack surface).
+# If you prefer to skip the sidecar, pre-create the directories yourself:
+#   sudo install -d -o 10001 -g 10001 -m 0750 ./data ./data/secrets
+
+services:
+  data-init:
+    image: alpine:3.19
+    user: "0:0"
+    # Ensure bind-mount ownership matches the non-root UID inside `app`.
+    # `chown` is a no-op when already correct; runs once and exits.
+    # No network — pulls only the alpine base, which the operator already
+    # has from prior pulls (or can pin via `image: alpine:3.19@sha256:...`).
+    command: >
+      sh -c "set -e;
+             install -d -o 10001 -g 10001 -m 0750 /data /data/secrets /data/logs /data/state /data/config /data/funnel /data/logs/marketing;
+             for d in /data/secrets /data/logs /data/state /data/config /data/funnel /data/store /data/specs /data/arch /data/code /data/bugs /data/telemetry /data/reports /data/sandboxes /data/public; do
+               [ -d \"$$d\" ] && chown -R 10001:10001 \"$$d\" 2>/dev/null || true;
+             done;
+             [ -d /data/prometheus ] && chown -R 65534:65534 /data/prometheus 2>/dev/null || true;
+             [ -d /data/grafana ] && chown -R 472:472 /data/grafana 2>/dev/null || true;
+             echo 'data-init: ownership normalized (app=10001, prometheus=65534, grafana=472)'"
+    volumes:
+      - ./data:/data
+    network_mode: none
+    restart: "no"
+
+  app:
+    image: ai-factory:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:9080}
+        NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
+    # Defense in depth — Dockerfile already sets USER aifactory, but make it
+    # explicit at the compose layer too. Operators sometimes layer custom
+    # Dockerfiles on top; this guarantees non-root regardless.
+    user: "10001:10001"
+    # ── Kernel hardening ──────────────────────────────────────────────────────
+    security_opt:
+      - "no-new-privileges:true"
+    cap_drop:
+      - ALL
+    # ── Resource limits (prevents runaway OOM / CPU exhaustion) ───────────────
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4g
+    depends_on:
+      data-init:
+        condition: service_completed_successfully
+    ports:
+      - "${AICOM_PORT_FRONTEND:-9080}:8080"
+      - "${AICOM_PORT_API:-9081}:8081"
+    volumes:
+      - ./data:/app/data
+      # Docker API: default DinD sidecar (docker-compose.dind.yml). Host socket only with
+      # AIFACTORY_USE_HOST_DOCKER=1 + docker-compose.host-docker.yml (escape risk).
+    # Optional: LLM keys and other secrets in `.env` (chmod 600). Prefer file secrets:
+    #   data/secrets/llm/<provider>_api_key  or  docker-compose.secrets.yml overlay.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # ═══════════════════════════════════════════════════════════════════
+      #  Env-flag taxonomy (35+ AIFACTORY_* vars grouped by subsystem):
+      #    [config]    — filesystem paths, DB backend
+      #    [network]   — CORS, CSP, HSTS, firewall
+      #    [payment]   — on-chain checkout, escrow, testnet/stub guards
+      #    [pipeline]  — quality loops, concurrency, SLO targets
+      #    [sandbox]   — preview isolation, compose generation
+      #    [discovery] — AI market federation, webhooks
+      #    [demo]      — public-demo read-only lockdown
+      #  Each flag is a temporary escape hatch until the default graduates.
+      #  See docs/architecture/module-boundaries.md for the long-term plan.
+      # ═══════════════════════════════════════════════════════════════════
+
+      # [config] Admin → Settings (YAML overlay) must live under the ./data volume or it is lost on container recreate.
+      AIFACTORY_CONFIG_YAML: /app/data/config/admin_config_overlay.yaml
+      AIFACTORY_CONFIG_FRAGMENTS_DIR: /app/config/fragments
+      # [config] JWT: entrypoint sets JWT_SECRET_KEY from data/secrets/jwt_secret.key (never use an empty default here).
+      USE_SQLITE: "true"
+      SQLITE_PATH: /app/data/state/pipeline.db
+      # [config] Optional: switch pipeline store to PostgreSQL (Admin → Settings → Pipeline database)
+      PIPELINE_DB_BACKEND: ${PIPELINE_DB_BACKEND:-sqlite}
+      PIPELINE_DATABASE_URL: ${PIPELINE_DATABASE_URL:-}
+      # [network] Same container: Next.js SSR & explore pages call the API on loopback
+      INTERNAL_API_URL: http://127.0.0.1:8081
+      AICOM_BACKEND_INTERNAL_URL: http://127.0.0.1:8081
+      UVICORN_WORKERS: ${UVICORN_WORKERS:-1}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
+      NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
+      # [network] Comma-separated browser origins for API CORS; unset = dev defaults + NEXT_PUBLIC_SITE_URL
+      AIFACTORY_CORS_ORIGINS: ${AIFACTORY_CORS_ORIGINS:-}
+      # [network] Fernet key (urlsafe base64) encrypts ``data/config/firewall_rules.json`` at rest; unset = plain JSON (dev)
+      AIFACTORY_FIREWALL_RULES_FERNET_KEY: ${AIFACTORY_FIREWALL_RULES_FERNET_KEY:-}
+      # [sandbox] Compose sandbox previews: internal Docker bridge (no internet egress); 0 if stacks need outbound calls
+      AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION: ${AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION:-1}
+      # [sandbox] Pipeline SandboxIsolation: fail instead of subprocess fallback when docker is unavailable.
+      AIFACTORY_SANDBOX_REQUIRE_CONTAINER: ${AIFACTORY_SANDBOX_REQUIRE_CONTAINER:-1}
+      # [network] API CSP (strict JSON default in main.py when ENABLE_DEFAULT_CSP=1). Override with AIFACTORY_CSP.
+      AIFACTORY_CSP: ${AIFACTORY_CSP:-}
+      # [network] Next.js storefront/admin CSP (see web/frontend/middleware.ts). Override with AIFACTORY_FRONTEND_CSP.
+      AIFACTORY_FRONTEND_CSP: ${AIFACTORY_FRONTEND_CSP:-}
+      AIFACTORY_ENABLE_DEFAULT_CSP: ${AIFACTORY_ENABLE_DEFAULT_CSP:-1}
+      # [payment] Crypto checkout: testnet RPC for dev; set to 0 for mainnet. Guarded by prod_startup_guard.
+      AIFACTORY_PAYMENT_TESTNET: ${AIFACTORY_PAYMENT_TESTNET:-0}
+      AIFACTORY_PAYMENT_VERIFY_STUB: ${AIFACTORY_PAYMENT_VERIFY_STUB:-0}
+      # [network] HSTS
+      AIFACTORY_ENABLE_HSTS: ${AIFACTORY_ENABLE_HSTS:-}
+      AIFACTORY_HSTS_PRELOAD: ${AIFACTORY_HSTS_PRELOAD:-}
+      # [network] Firewall full default-deny ACL (off by default — set to 1 only after whitelisting operator IPs in
+      # data/config/firewall_rules.json, otherwise you lock yourself out of the Admin panel).
+      AIFACTORY_FIREWALL_ENFORCE: ${AIFACTORY_FIREWALL_ENFORCE:-0}
+      # [demo] Public demo (magic-ai-factory.com): 1 = block backup/restore, settings save, password change,
+      # admin user CRUD. Set in .env — survives rebuilds.
+      AIFACTORY_DEMO_READONLY: ${AIFACTORY_DEMO_READONLY:-0}
+      PROMETHEUS_MULTIPROC_DIR: /tmp/prometheus_multiproc
+      # [pipeline] First-run only: 1 = autonomous pipeline, 0 = ideas only (default; see entrypoint wizard)
+      AIFACTORY_AUTONOMOUS_PIPELINE: ${AIFACTORY_AUTONOMOUS_PIPELINE:-}
+      # [discovery] Discovery must not silently enqueue ranked ideas unless you opt in (1).
+      AIFACTORY_DISCOVERY_AUTO_ENQUEUE: ${AIFACTORY_DISCOVERY_AUTO_ENQUEUE:-0}
+      # [pipeline] SLO targets
+      AIFACTORY_PIPELINE_SLO_TARGET_PASS_RATE: ${AIFACTORY_PIPELINE_SLO_TARGET_PASS_RATE:-0.75}
+      AIFACTORY_PIPELINE_SLO_MAX_REGRESSION: ${AIFACTORY_PIPELINE_SLO_MAX_REGRESSION:-0.05}
+      AIFACTORY_PIPELINE_SLO_MAX_MTTR_HOURS: ${AIFACTORY_PIPELINE_SLO_MAX_MTTR_HOURS:-12}
+      # [discovery] AI Market federation
+      AIFACTORY_AI_MARKET_CHAIN: ${AIFACTORY_AI_MARKET_CHAIN:-base}
+      AIFACTORY_AI_MARKET_TOKEN: ${AIFACTORY_AI_MARKET_TOKEN:-USDT}
+      AIFACTORY_AI_MARKET_CONTRACT: ${AIFACTORY_AI_MARKET_CONTRACT:-}
+      AIFACTORY_AI_MARKET_ENTITLEMENT_DAYS: ${AIFACTORY_AI_MARKET_ENTITLEMENT_DAYS:-30}
+      AIFACTORY_AI_MARKET_WEBHOOK_1: ${AIFACTORY_AI_MARKET_WEBHOOK_1:-}
+      AIFACTORY_AI_MARKET_WEBHOOK_2: ${AIFACTORY_AI_MARKET_WEBHOOK_2:-}
+      # [pipeline] Pipeline remediation and throughput controls
+      # Empty default: repair caps come from Admin quality settings / pipeline_cost_optimized preset.
+      AIFACTORY_MAX_QUALITY_LOOPS: ${AIFACTORY_MAX_QUALITY_LOOPS:-}
+      AIFACTORY_QA_REPAIR_EXTENSIONS: ${AIFACTORY_QA_REPAIR_EXTENSIONS:-}
+      AIFACTORY_GATE_FAILING_MODEL: ${AIFACTORY_GATE_FAILING_MODEL:-deepseek-v4-pro}
+      AIFACTORY_MAX_RUNNING_TASKS: ${AIFACTORY_MAX_RUNNING_TASKS:-12}
+      AIFACTORY_TASK_EXECUTOR_CONCURRENCY: ${AIFACTORY_TASK_EXECUTOR_CONCURRENCY:-6}
+      # [sandbox] Generated FastAPI live preview in sandbox iframe + QA-style uvicorn (sessions/cookies)
+      AIFACTORY_SANDBOX_PREVIEW_API: ${AIFACTORY_SANDBOX_PREVIEW_API:-1}
+      # [sandbox] Run product docker-compose.yml in sandbox (DB + API + web); set 0 to disable
+      AIFACTORY_SANDBOX_COMPOSE_PREVIEW: ${AIFACTORY_SANDBOX_COMPOSE_PREVIEW:-1}
+      AIFACTORY_SANDBOX_DEMO_EMAIL: ${AIFACTORY_SANDBOX_DEMO_EMAIL:-sandbox.demo@aicom.local}
+      # [sandbox] Set in `.env` or let entrypoint generate data/secrets/sandbox_demo_password on first start.
+      AIFACTORY_SANDBOX_DEMO_PASSWORD: ${AIFACTORY_SANDBOX_DEMO_PASSWORD:-}
+      # [pipeline] Playwright deep crawl budget (see docs/pipeline-operations.md)
+      AIFACTORY_BROWSER_MAX_PAGES: ${AIFACTORY_BROWSER_MAX_PAGES:-100}
+      AIFACTORY_BROWSER_E2E_SERVE_MODE: ${AIFACTORY_BROWSER_E2E_SERVE_MODE:-auto}
+      # [pipeline] Admin Live Monitor demo replay uploads (see docs/pipeline-operations.md)
+      AIFACTORY_PIPELINE_DEMO_MAX_MB: ${AIFACTORY_PIPELINE_DEMO_MAX_MB:-120}
+      # [analytics] Public /iq mirror — whitelisted scalars only (see tests/test_public_factory_iq.py)
+      AIFACTORY_PUBLIC_IQ: ${AIFACTORY_PUBLIC_IQ:-0}
+      # [learning] Live-vs-frozen A/B proof — FROZEN=1 enables 50/50 split (not all-frozen)
+      AIFACTORY_LEARNING_FROZEN: ${AIFACTORY_LEARNING_FROZEN:-0}
+      AIFACTORY_LEARNING_FROZEN_FRACTION: ${AIFACTORY_LEARNING_FROZEN_FRACTION:-0.5}
+      # [metis] Optional cognition gate — HTTP-only, fail-open (see docs/metis-integration.md)
+      AIFACTORY_METIS_GATE: ${AIFACTORY_METIS_GATE:-auto}
+      AIFACTORY_METIS_URL: ${AIFACTORY_METIS_URL:-}
+      AIFACTORY_METIS_GATE_STAGES: ${AIFACTORY_METIS_GATE_STAGES:-architect,methodologist}
+      AIFACTORY_METIS_GATE_ROUTE: ${AIFACTORY_METIS_GATE_ROUTE:-fast}
+      # Metis /v1/verify — full-product gate; allow up to 300s server + client.
+      AIFACTORY_METIS_GATE_TIMEOUT: ${AIFACTORY_METIS_GATE_TIMEOUT:-300}
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    # host-gateway removed by default (sandbox escape risk). For host Ollama/LLM use:
+    #   docker compose -f docker-compose.yml -f docker-compose.host-gateway.yml up -d
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8081/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 120s
+
+  prometheus:
+    image: prom/prometheus:v3.11.3
+    user: "65534:65534"
+    # Harden: immutable root FS — TSDB writes go to the ./data/prometheus
+    # bind mount, scratch space to the tmpfs below.
+    read_only: true
+    tmpfs:
+      - /tmp
+    ports:
+      - "${AICOM_PORT_PROMETHEUS:-9090}:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./data/prometheus:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+      - "--web.route-prefix=/prometheus/"
+      - "--web.external-url=${PROMETHEUS_EXTERNAL_URL:-https://magic-ai-factory.com/prometheus/}"
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    depends_on:
+      app:
+        condition: service_healthy
+
+  grafana:
+    image: grafana/grafana:13.0.1
+    user: "472:472"
+    # Harden: immutable root FS — persistent state (DB, plugins, sessions)
+    # lives in the ./data/grafana bind mount; /tmp and /var/run are tmpfs so
+    # Grafana can still write PID/socket and scratch files.
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/run
+    # Bind mount must be owned by UID/GID 472 on the host, or SQLite logs
+    # "attempt to write a readonly database". Fix: chown -R 472:472 ./data/grafana
+    ports:
+      - "${AICOM_PORT_GRAFANA:-9082}:3000"
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+      # NOTE: Grafana 13 provisioning is currently unstable in our container image
+      # (it crashes with "Datasource provisioning error: data source not found").
+      # Keep Grafana running; configure datasources/dashboards via UI until we
+      # rework provisioning for the new unified storage model.
+      # - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      # - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      # - ./grafana/alerting:/etc/grafana/provisioning/alerting:ro
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      # Required — no default. ./scripts/fill_production_env.py appends GRAFANA_ADMIN_PASSWORD when missing.
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?Set GRAFANA_ADMIN_PASSWORD in .env (see .env.example)}
+      GF_INSTALL_PLUGINS: ""
+      GF_SERVER_ROOT_URL: ${GRAFANA_ROOT_URL:-https://magic-ai-factory.com/grafana/}
+      GF_SERVER_SERVE_FROM_SUB_PATH: "false"
+      GF_SERVER_DOMAIN: ${GRAFANA_DOMAIN:-magic-ai-factory.com}
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    depends_on:
+      prometheus:
+        condition: service_started
+
+networks:
+  aicom_net:
+    driver: bridge

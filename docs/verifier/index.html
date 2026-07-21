@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Provenance Verifier — verify.aimarket.org</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js" integrity="sha256-AqA2dG4gVqM1sY74xHHeKnyPJr9OHAIZKZMG+3AHuDE=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>AI Provenance Verifier</h1>
+      <p class="subtitle">Cryptographic receipts for AI outputs — verify origin without trust.</p>
+      <nav>
+        <a href="#verify">Verify</a>
+        <a href="https://hub.aimarket.org/ai-market/v2/p/provenance/attest" target="_blank" rel="noopener noreferrer">API Docs</a>
+        <a href="https://github.com/alexar76/aicom" target="_blank" rel="noopener noreferrer">Source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="input-section">
+      <div class="card">
+        <h2>Verify an AI Provenance Receipt</h2>
+        <p>Paste a receipt ID or the full JSON receipt below. No server needed — verification runs entirely in your browser.</p>
+
+        <div class="input-group">
+          <textarea
+            id="receipt-input"
+            placeholder="Paste your receipt JSON here, or enter a receipt ID (e.g., 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f) to load it..."
+            rows="8"
+            spellcheck="false"
+          ></textarea>
+          <div class="button-row">
+            <button id="verify-btn" class="btn-primary">Verify Receipt</button>
+            <button id="clear-btn" class="btn-secondary">Clear</button>
+            <button id="load-example-btn" class="btn-secondary">Load Example</button>
+          </div>
+        </div>
+
+        <div id="error-msg" class="error hidden"></div>
+        <div id="loading-msg" class="loading hidden">Verifying...</div>
+      </div>
+    </section>
+
+    <section id="result-section" class="hidden">
+      <div class="card receipt-summary">
+        <div id="verdict-banner"></div>
+        <div id="receipt-meta"></div>
+      </div>
+
+      <div class="card-row">
+        <div class="card">
+          <h3>Verification Checks</h3>
+          <div id="checks-list"></div>
+        </div>
+
+        <div class="card">
+          <h3>Attestations</h3>
+          <div id="attestation-badges"></div>
+        </div>
+      </div>
+
+      <div class="card" id="provenance-chain-section">
+        <h3>Provenance Chain</h3>
+        <div id="provenance-chain"></div>
+      </div>
+
+      <details class="card">
+        <summary><h3 style="display:inline">Raw Receipt JSON</h3></summary>
+        <pre id="raw-json"></pre>
+      </details>
+    </section>
+
+    <section id="about-section" class="card">
+      <h2>How It Works</h2>
+      <div class="how-it-works">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h4>Capture</h4>
+          <p>Every AI output gets a cryptographic receipt with input/output hashes, model ID, provider, and timestamp.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h4>Sign</h4>
+          <p>The receipt is Ed25519-signed by the issuing hub. The public key is embedded in the receipt itself (JWK).</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h4>Verify</h4>
+          <p>Anyone can verify the receipt's authenticity without trusting any server — all verification material is self-contained.</p>
+        </div>
+      </div>
+      <p class="spec-note">
+        Receipts follow the <strong>W3C Verifiable Credential</strong> Data Model (JSON-LD).
+        Signatures use <strong>Ed25519</strong>. Optional <strong>TEE attestation</strong> proves execution in a trusted enclave.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      <strong>AI Provenance Layer</strong> — MIT Licensed.
+      Built on the <a href="https://hub.aimarket.org">AI Market Protocol</a>.
+    </p>
+  </footer>
+
+  <script src="js/verifier.js"></script>
+  <script src="js/renderer.js"></script>
+</body>
+</html>

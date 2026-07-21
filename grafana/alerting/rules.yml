@@ -1,0 +1,98 @@
+# Grafana alerting — AI-Factory
+# Provisioned via docker-compose volume mount:
+#   ./grafana/alerting → /etc/grafana/provisioning/alerting
+
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: ai-factory
+    folder: AI Factory
+    interval: 1m
+    rules:
+      - uid: aicom_api_down
+        title: API health endpoint down
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: up{job="aicom"} == 0
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: C
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [0]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: [C]
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              expression: A
+              refId: C
+              type: threshold
+        for: 2m
+        noDataState: Alerting
+        execErrState: Alerting
+        annotations:
+          summary: AI-Factory Prometheus target `aicom` is down
+          description: Check `docker compose ps app` and `/api/health on port 8081.
+
+      - uid: aicom_high_error_rate
+        title: High HTTP 5xx rate
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: |
+                sum(rate(http_requests_total{status=~"5.."}[5m]))
+                /
+                clamp_min(sum(rate(http_requests_total[5m])), 0.001)
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: C
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [0.05]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: [C]
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              expression: A
+              refId: C
+              type: threshold
+        for: 5m
+        noDataState: OK
+        execErrState: Alerting
+        annotations:
+          summary: HTTP 5xx rate above 5% (5m window)
+          description: Inspect API logs and recent deploys.

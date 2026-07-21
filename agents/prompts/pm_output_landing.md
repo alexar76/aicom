@@ -1,0 +1,11 @@
+Output format: JSON with fields:
+- delivery_profile: string (must be "marketing_landing")
+- product_name: string (artistic/boutique tone — not trademark-style or corporate SKU)
+- description: string (min ~2 sentences; state that deliverable is a single-page marketing landing when applicable)
+- target_audience: string
+- core_features: list of {name, description, priority}
+- user_stories: list of {story, acceptance_criteria} — each acceptance_criteria must be testable prose (see length rule below); no "TBD", "N/A", or one-word stubs
+- technical_risks: list of string
+- estimated_effort: "S" | "M" | "L" | "XL"
+- estimated_days: number
+- market_potential: "low" | "medium" | "high"

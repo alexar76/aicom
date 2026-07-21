@@ -1,0 +1,275 @@
+{
+  "meta": {
+    "title": "Enciclopedia Cósmica AICOM",
+    "subtitle": "Un cuento para niños-geeks del futuro lejano — donde las fábricas orbitan ideas, los oráculos susurran matemática verificable y los agentes comercian bajo las estrellas en Base.",
+    "edition": "Volumen I · Economía federada de agentes autónomos · 2026",
+    "scrollHint": "Pasar página",
+    "tocTitle": "Índice de capítulos",
+    "epilogue": "Más allá de ARGUS, los humanos configuran las estrellas. Las máquinas navegan entre ellas. **Bienvenido a la economía que ya llegó.**",
+    "version": "Fuentes canónicas: docs/ecosystem/knowledge-base-es.md · config/deployments/base-mainnet.json · Junio 2026"
+  },
+  "chapters": [
+    {
+      "title": "Prólogo — La tesis cósmica",
+      "lead": "Érase una vez, en un futuro no tan lejano, el software aprendió a construirse — y venderse — sin pedir permiso a una plataforma central.",
+      "paragraphs": [
+        "AICOM es una **economía federada de agentes autónomos**. Seis fuerzas celestes sostienen la galaxia:",
+        "**Factory** produce productos listos y capabilities firmadas. **Hub** federa catálogos, enruta invoke, ejecuta plugins. **Mesh** registra identidades, verifica, deja en garantía el trabajo agente-a-agente. **Oráculos** (×17) venden matemática verificable. **Chain** liquida micropagos USDC vía canales prepago + garantía en **Base mainnet**. **ARGUS** es el **único punto de contacto humano**.",
+        "El principio de diseño es directo: **más allá de ARGUS-3, los humanos son consumidores, no operadores.** Pipeline Factory, federación Hub, orquestador Mesh, relayers de oráculos, rondas de lotería y débitos escrow son procesos máquina."
+      ],
+      "cards": [
+        { "icon": "🏭", "title": "Bucle de oferta", "body": "Ideas → Factory → 13 agentes → manifiestos firmados → listado en Hub.", "color": "purple", "tag": "Factory → Hub" },
+        { "icon": "🛒", "title": "Bucle de demanda", "body": "Agentes, escritorio, widget, ARGUS → discover → canal → invoke → settle.", "color": "cyan", "tag": "Discover → Settle" },
+        { "icon": "👁️", "title": "Capa humana", "body": "ARGUS-3: super-agente personal. Cripto desactivada por defecto. WARDEN controla MCP.", "color": "pink", "tag": "demand-side reference" }
+      ]
+    },
+    {
+      "title": "Capítulo I — El mapa galáctico",
+      "lead": "Contempla el grafo vivo — cada planeta, cada cable, cada canal de micropago.",
+      "diagram": "ecosystem",
+      "diagramCaption": "Fig. 1.1 — Topología del ecosistema AICOM: Factory provee, Hub enruta, Oráculos verifican, Base liquida.",
+      "table": {
+        "headers": ["Superficie", "URL", "Rol"],
+        "rows": [
+          ["AI-Factory", "[magic-ai-factory.com](https://magic-ai-factory.com)", "Pipeline, admin, vitrina"],
+          ["Factory IQ", "[magic-ai-factory.com/iq](https://magic-ai-factory.com/iq)", "Métricas EV auto-aprendizaje + playbook"],
+          ["AIMarket Hub", "[modelmarket.dev](https://modelmarket.dev)", "Catálogo federado, invoke, plugins"],
+          ["Portal oráculos", "[oracles.modelmarket.dev](https://oracles.modelmarket.dev)", "17 capabilities de matemática verificable"],
+          ["Agent Lottery", "[lottery.modelmarket.dev](https://lottery.modelmarket.dev)", "Consumidor canónico de oráculos + UBI de máquinas"],
+          ["Demos ecosistema", "[modeldev.modelmarket.dev](https://modeldev.modelmarket.dev)", "Vista del stack en vivo"],
+          ["Alien Monitor", "[magic-ai-factory.com/monitor/](https://magic-ai-factory.com/monitor/)", "Visualizador 3D del ecosistema"],
+          ["Pulse Terminal", "[magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)", "Dashboard ACEX mercados de capital"],
+          ["ARGUS", "[magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/)", "Instalación + landing humano"],
+          ["DIOSCURI", "[alexar76.github.io/dioscuri](https://alexar76.github.io/dioscuri/)", "Gemelos comunitarios — CASTOR + POLLUX"]
+        ]
+      },
+      "shots": [
+        { "file": "public-home.png", "caption": "Vitrina Factory — la cara pública de productos enviados" },
+        { "file": "admin-dashboard.png", "caption": "Dashboard admin — puente de mando del operador (UI localizada)" }
+      ]
+    },
+    {
+      "title": "Capítulo II — Planeta Factory",
+      "lead": "La gran forja donde trece especialistas IA convierten un brief en lenguaje natural en un producto web listo.",
+      "paragraphs": [
+        "**AI-Factory** es un pipeline MIT autoalojado: un prompt → spec → código → QA/E2E → seguridad → deploy → vitrina opcional. Trece agentes: Analyst, PM, Methodologist, Architect, Design Critic, Developer, Hardening, QA, Security, DevOps, Marketing, Sales, Evolution Analyst.",
+        "Operadores usan el **Panel Admin** `/admin`. Vitrina (`/`) muestra catálogo filtrado; **Pipeline** es la fuente de verdad para cada `prod-…`. Discovery encuentra señales de mercado autónomamente.",
+        "**Killer feature — Auto-Mesh Pipeline:** Factory descubre agentes del marketplace, financia canal USDT, invoca en secuencia y envía producto conectado."
+      ],
+      "cards": [
+        { "icon": "⚙️", "title": "Pipeline SSOT", "body": "`config/pipeline_flow.json` — flujo de agentes + estados. Quality gates: Methodologist, Design Critic, Hardening, browser E2E.", "color": "purple" },
+        { "icon": "📡", "title": "Discovery", "body": "Director rankea ideas de señales de mercado. `AIFACTORY_DISCOVERY_INTERVAL_HOURS` controla cadencia.", "color": "cyan" },
+        { "icon": "🧠", "title": "Factory IQ", "body": "Métricas EV auto-aprendizaje, destilación playbook en `/iq`. Prometheus + Grafana.", "color": "gold" },
+        { "icon": "🚀", "title": "Auto-publicación", "body": "Vercel/Netlify/Cloudflare tras DevOps. Stripe + atribución referidos.", "color": "green" }
+      ],
+      "shots": [
+        { "file": "admin-pipeline.png", "caption": "Pipeline Monitor — catálogo completo con tareas y errores" },
+        { "file": "admin-live-monitor.png", "caption": "Monitor en vivo — métricas streaming y actividad de agentes" },
+        { "file": "admin-discovery.png", "caption": "Discovery — generación autónoma de ideas desde señales de mercado" }
+      ],
+      "pre": "docker compose up -d          # Factory :9080 UI, :9081 API\n./scripts/deploy_ecosystem.sh # Despliegue completo del flota"
+    },
+    {
+      "title": "Capítulo III — El gran bazar (AIMarket Hub)",
+      "lead": "Un marketplace nativo de protocolo donde ninguna plataforma central posee el catálogo ni el flujo de dinero.",
+      "paragraphs": [
+        "**AIMarket Hub** federa catálogos de capabilities, enruta invoke y ejecuta 15 plugins: safety, TEE, reputation, provenance, channels, auction, orchestrator, data-cap, dataset, MCP packager, NFT, personas, promo, streaming, ZK.",
+        "**Protocol v2:** Discover → Open channel (USDC en Base) → Invoke con `X-Payment-Channel` → Plugin hooks → Close/settle.",
+        "Cuatro SDKs: Python, TypeScript, Rust, Dart. Widget — discover + pay + invoke con un `<script>`."
+      ],
+      "diagram": "invoke",
+      "diagramCaption": "Fig. 3.1 — Ciclo de vida invoke: discover, canal, invoke, receipt Ed25519, settle USDC.",
+      "table": {
+        "headers": ["Plugin", "Propósito"],
+        "rows": [
+          ["aimarket-safety", "Política de contenido + control de invoke"],
+          ["aimarket-tee", "Atestación TEE + garantía"],
+          ["aimarket-channels", "Canales prepago USDC de micropago"],
+          ["aimarket-reputation", "Reputación con fianza + disputas"],
+          ["aimarket-oracle-gateway", "Puente MCP a los 17 oráculos (35 herramientas)"],
+          ["aimarket-zk", "Verificación ZK vía PlonkVerifier"]
+        ]
+      },
+      "pre": "pip install aimarket-hub\n./scripts/deploy_hub.sh    # Hub en :9083"
+    },
+    {
+      "title": "Capítulo IV — La constelación de oráculos",
+      "lead": "Diecisiete oráculos maravillosos orbitan el Hub — cada uno vende matemática verificable, no opiniones.",
+      "paragraphs": [
+        "Runtime compartido: **oracle-core**. Portal: [oracles.modelmarket.dev](https://oracles.modelmarket.dev). Llamada vía MCP, ARGUS o Hub invoke.",
+        "**Chronos × Platon** — beacon imparcial para sorteos de lotería. **Lumen** — reputación EigenTrust para WARDEN y lotería."
+      ],
+      "oracles": [
+        { "name": "Platon", "skill": "Aleatoriedad verificable · beacon · commit-reveal" },
+        { "name": "Chronos", "skill": "Verifiable delay (VDF)" },
+        { "name": "Lattice", "skill": "Secuencias low-discrepancy" },
+        { "name": "Murmuration", "skill": "Consenso robusto" },
+        { "name": "Lumen", "skill": "Reputación / EigenTrust" },
+        { "name": "Colony", "skill": "Optimización TSP + certificado" },
+        { "name": "Turing", "skill": "Muestreo blue-noise" },
+        { "name": "Percola", "skill": "Umbral de percolación de red" },
+        { "name": "Fermat", "skill": "Enrutamiento óptimo" },
+        { "name": "Ablation", "skill": "Riesgo en cascada (SOC)" },
+        { "name": "Landauer", "skill": "Auditoría termodinámica" },
+        { "name": "Sortes", "skill": "VRF no reiterable (ECVRF)" },
+        { "name": "Gauss", "skill": "Regresión Gaussian-process" },
+        { "name": "Aestus", "skill": "Puzzles time-lock (RSW)" },
+        { "name": "Betti", "skill": "Homología persistente" },
+        { "name": "Kantor", "skill": "Transporte óptimo (Wasserstein)" },
+        { "name": "Fourier", "skill": "Análisis grafo-espectral" }
+      ]
+    },
+    {
+      "title": "Capítulo V — ARGUS, el ojo humano",
+      "lead": "Entre mil agentes autónomos, una estrella brilla para humanos — ARGUS-3, el cliente de referencia del lado de la demanda.",
+      "paragraphs": [
+        "**ARGUS-3** es el super-agente personal: cualquier LLM, local o en la nube, con cortafuegos MCP **WARDEN**. Cripto **desactivada por defecto**.",
+        "Instalar: `curl -fsSL https://magic-ai-factory.com/install | bash`. Vender capabilities: `argus economy register` + `argus serve` → listado Hub → USDC.",
+        "Guías de usuario en **20 idiomas**. Guías de desarrollador en **20 idiomas**."
+      ],
+      "cards": [
+        { "icon": "🛡️", "title": "WARDEN", "body": "Cadena de gates para cada herramienta MCP. Los gates de seguridad estrictos nunca se aprueban automáticamente.", "color": "pink" },
+        { "icon": "💰", "title": "Economía", "body": "Wallet opcional. Discover → channel → invoke → settle. Llamadas nativas a oráculos sin wallet.", "color": "gold" },
+        { "icon": "🔌", "title": "MCP Server", "body": "`argus mcp` — `argus_ask`, `argus_status`. Vende tus capabilities en el Hub.", "color": "cyan" }
+      ]
+    },
+    {
+      "title": "Capítulo VI — Nebulosa de capital (ACEX, Lottery, Chain)",
+      "lead": "Donde los IPO de agentes encuentran oráculos de lotería y USDC fluye por contratos inteligentes verificados en Base.",
+      "paragraphs": [
+        "**ACEX**: Agent Listing Protocol, CapShares, lending pool, PulseAMM, Proof-of-Audit, PulseDistributor. UI: Pulse Terminal `/pulse/`.",
+        "**Agent Lottery** — Platon + Chronos + Lumen para sorteos on-chain cinematográficos. UBI de máquinas: diezmo del Hub → fondo de lotería.",
+        "**Base MAINNET en vivo** (chainId 8453) — USDC Circle real. Registro: `config/deployments/base-mainnet.json`. Diario: `docs/onchain-journal.md`."
+      ],
+      "table": {
+        "headers": ["Contrato", "Dirección (Base mainnet)"],
+        "rows": [
+          ["USDC (Circle)", "`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`"],
+          ["AIMarketEscrow", "`0x3Df85a639EAB8B50DD14f09bdeB46D5FeF163017`"],
+          ["AIMarketCapabilityNFT", "`0xA9Af496fD4A1Dc594029Aa8Ea2dbd236Fd255033`"],
+          ["AIAgentLottery", "`0xbda3e32331822d525d5e7c7b51ed76132e84db61`"],
+          ["AgentListingRegistry", "`0xcF28770416294358af286a2E4a2e88d6c1f436C3`"],
+          ["AgentLendingPool", "`0xB0BE904642EDE39135A0F1c5e5A811925b1c2F48`"],
+          ["PulseAMM", "`0x049B839BD5B30797c27f1806E06172014c5d4337`"],
+          ["PlonkVerifier", "`0xb11af6f387aCD57E6AECDa222D0108e6380ACf65`"]
+        ]
+      }
+    },
+    {
+      "title": "Capítulo VII — Naves exploradoras (Desktop, Widget, SDKs)",
+      "lead": "Diez aplicaciones de escritorio locales y un widget embebible — envoltorios de consumo sobre el mismo protocolo.",
+      "paragraphs": [
+        "**Integraciones de escritorio** (Flutter): Interview Prep Coach, Personal Finance Coach, Capability Composer, Cold Outreach Coach, Creator Algorithm Coach, Discovery Prospector, Freelance Contract Reviewer, Reputation Dashboard, AI Stack Migration Assistant (VS Code), Local Security Audit (Tauri/Rust).",
+        "**LinkedIn Profile Coach** (`coach/`). **Landing rápida** (`aicom-landing/`) — HTML en 30–60s. **AIMarket Courses** ([GitHub](https://github.com/alexar76/aimarket-courses) · [portal](https://alexar76.github.io/aimarket-courses/)) — **10** academias prácticas (EN/RU/ES, Colab + Pages): orquestación, aleatoriedad verificable, seguridad MCP, economía de agentes, matemática de confianza, optimización con pruebas, loterías con smart-contracts, pipeline de AI Factory, visualización 3D, computación inspirada en física.",
+        "Todas las apps de escritorio usan el Dart SDK `aimarket_agent` para discover → channel → invoke contra el Hub."
+      ],
+      "cards": [
+        { "icon": "📱", "title": "Widget", "body": "Un `<script>` — search + invoke + pay. Probar antes de comprar: 3 invokes gratis en el sandbox.", "color": "cyan" },
+        { "icon": "🐍", "title": "Python SDK", "body": "`pip install aimarket-agent`", "color": "green" },
+        { "icon": "📘", "title": "TypeScript SDK", "body": "`npm i @aimarket/agent` — ARGUS Layer 5", "color": "purple" },
+        { "icon": "🦀", "title": "Rust / Dart", "body": "Rendimiento nativo para agentes malla y apps Flutter", "color": "gold" }
+      ]
+    },
+    {
+      "title": "Capítulo VIII — La malla neural (Mesh)",
+      "lead": "Descubrimiento, verificación y garantía agente-a-agente — el sistema nervioso invisible.",
+      "paragraphs": [
+        "**AI Service Mesh** (puerto 8090): registra identidades, verifica capabilities, deja en garantía trabajo agente-a-agente. Incluido en `deploy_ecosystem.sh`.",
+        "Demo: `python scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083`.",
+        "Modelo de confianza: hubs/agentes bizantinos tolerados vía manifiestos firmados federados, reputación con fianza, canales sin custodia y artefactos Ed25519 de oráculos."
+      ]
+    },
+    {
+      "title": "Capítulo IX — Alien Monitor y Pulse Terminal",
+      "lead": "Dos observatorios donde los mortales observan respirar la economía máquina.",
+      "paragraphs": [
+        "**Alien Monitor** — grafo 3D del ecosistema + asistente IA. Modo LIVE: Hub, contratos, agentes, apps de escritorio, plugins. Modo UNI: simulación Anvil. `./scripts/deploy_alien_monitor.sh` → `/monitor/`.",
+        "**Pulse Terminal** — dashboard ACEX: CapShares, lending, AMM, audit pool. Dev: `npm run dev` → :5199.",
+        "**Factory IQ** en `/iq` — métricas EV auto-aprendizaje."
+      ]
+    },
+    {
+      "title": "Capítulo X — Telas de conexión (vistas de arquitectura)",
+      "lead": "Tres lentes sobre la misma galaxia — oferta, demanda y dinero.",
+      "paragraphs": [
+        "**Oferta:** Discovery → pipeline de 13 agentes → manifiestos firmados → auto-listado en Hub → IPO ACEX opcional.",
+        "**Demanda:** ARGUS / escritorio / widget / malla → búsqueda en Hub → canal USDC → invoke → recibo → settle.",
+        "**Integraciones:** Probar antes de comprar. Agent IPO: `python scripts/demo_agent_ipo.py`. UNI: `./scripts/verify_uni_ecosystem.sh`."
+      ],
+      "table": {
+        "headers": ["Servicio", "Puerto", "Propósito"],
+        "rows": [
+          ["Factory frontend", "9080", "Admin + vitrina"],
+          ["Factory API", "9081", "REST, métricas, OpenAPI"],
+          ["Grafana", "9082", "Dashboards"],
+          ["AIMarket Hub", "9083", "Federation API"],
+          ["Service Mesh", "8090", "Malla de agentes"],
+          ["Prometheus", "9090", "Scrape métricas"]
+        ]
+      }
+    },
+    {
+      "title": "Capítulo XI — Guía de despliegue en Base",
+      "lead": "Qué desplegar en Base como demo en vivo — USDC real, contratos reales, pruebas reales.",
+      "paragraphs": [
+        "Demo AICOM en **Base mainnet** (chainId 8453) con **USDC Circle real**. `AIFACTORY_CRYPTO_ENABLED=1`, direcciones de `config/deployments/base-mainnet.json`.",
+        "**Orden de despliegue:** Factory → Hub → Mesh → Alien Monitor. Oráculos: `./scripts/setup-oracles-platon-on-host.sh`.",
+        "**E2E completado:** escrow channel, agent payment, lottery round (~2 USDC + ETH devueltos). ACEX deployed + verified; value-testing gated en KI-2…KI-5.",
+        "**Honestidad:** las cifras UNI/Anvil son dinero de juguete, no Base mainnet."
+      ],
+      "pre": "./scripts/deploy_ecosystem.sh\npython scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083\npython scripts/demo_agent_ipo.py"
+    },
+    {
+      "title": "Capítulo XII — El oráculo de preguntas y respuestas",
+      "lead": "Respuestas para operadores, desarrolladores, usuarios finales y todos los tocados por la constelación.",
+      "faq": [
+        {
+          "title": "Para todos",
+          "items": [
+            { "q": "¿Qué es AICOM en una frase?", "a": "Economía federada de agentes autónomos: Factory produce, Hub enruta, Mesh registra, 17 oráculos venden matemática verificable, Base liquida USDC, ARGUS es el punto de contacto humano." },
+            { "q": "¿Qué es AI-Factory?", "a": "Pipeline multi-agente autoalojado: idea en texto → spec → código → QA/E2E → seguridad → deploy → vitrina opcional." },
+            { "q": "¿Vitrina vs Admin?", "a": "Vitrina (`/`) muestra catálogo filtrado. Admin → Pipeline es la fuente de verdad para cada prod-…, tareas y errores." },
+            { "q": "¿El demo en Base es dinero real?", "a": "Sí — Base mainnet con USDC Circle real (chainId 8453). Ver docs/onchain-journal.md. UNI/Anvil es dinero de juguete." }
+          ]
+        },
+        {
+          "title": "Para operadores",
+          "items": [
+            { "q": "¿Contraseña admin por defecto?", "a": "Ninguna fija. Bootstrap vía TTY o data/secrets/bootstrap_admin.txt. Demo público: sin contraseña — admin, botón Enter admin demo." },
+            { "q": "¿Cuánto dura un ciclo de pipeline?", "a": "marketing_landing: ~20–25 min. full_software: ~25–45 min; horas con iteraciones de gate." },
+            { "q": "¿Coste LLM por ciclo?", "a": "Aproximadamente $0.30–$2 landing; $3–$15+ full_software con QA. Trae tus API keys." },
+            { "q": "¿Producto atascado en repair?", "a": "Fallo de gate (demo/TZ, browser crawl, security). Estado BUG_FOUND → DEV_FIXING. Pipeline + LLM Logs." },
+            { "q": "¿Discovery no crea productos?", "a": "Director scheduler, AIFACTORY_DISCOVERY_INTERVAL_HOURS, data/discovery/source_health.json." },
+            { "q": "¿Dónde se almacenan los datos?", "a": "Bind mount ./data (o ~/aicom-data). No volúmenes Docker anónimos para producción." },
+            { "q": "¿Cómo desplegar toda la flota?", "a": "./scripts/deploy_ecosystem.sh. Ver docs/deploy-ecosystem.md." },
+            { "q": "¿Modo readonly del demo?", "a": "AIFACTORY_DEMO_READONLY=1 bloquea operaciones destructivas en admin." }
+          ]
+        },
+        {
+          "title": "Para desarrolladores",
+          "items": [
+            { "q": "¿Cómo invocar una capability?", "a": "Protocol v2: search → channel/open → invoke con X-Payment-Channel → channel/close. Los SDK lo envuelven." },
+            { "q": "¿Qué SDK usar?", "a": "Python: pip install aimarket-agent. TypeScript: npm i @aimarket/agent. Rust: cargo add aimarket-agent. Dart: dart pub add aimarket_agent." },
+            { "q": "¿Cómo llamar un oráculo?", "a": "MCP: pip install aimarket-oracle-gateway. ARGUS: argus oracle list. Hub invoke: platon.random@v1 etc." },
+            { "q": "¿Cómo listar mi capability en el Hub?", "a": "aimarket publish + stake. ARGUS: argus economy register + argus serve." },
+            { "q": "¿Qué es Auto-Mesh Pipeline?", "a": "Factory descubre agentes del marketplace, financia canal, invoke en cadena, envía producto conectado." },
+            { "q": "¿Desarrollo de plugins Hub?", "a": "15 plugins de referencia en plugins/. pip install aimarket-hub para desarrollo local." },
+            { "q": "¿Direcciones de contratos en Base?", "a": "config/deployments/base-mainnet.json — sincronizado con networks.ts y chain_net.py." }
+          ]
+        },
+        {
+          "title": "Para usuarios finales",
+          "items": [
+            { "q": "¿Cómo instalar ARGUS?", "a": "curl -fsSL https://magic-ai-factory.com/install | bash. macOS, Linux, WSL. 20 idiomas en argus/docs/user-guide/." },
+            { "q": "¿Necesito cripto para ARGUS?", "a": "No. Cripto desactivada por defecto. Wallet solo para capabilities pagadas del Hub." },
+            { "q": "¿Qué es WARDEN?", "a": "Cortafuegos MCP de ARGUS — controla cada llamada a herramienta. Los gates de seguridad estrictos nunca se aprueban automáticamente." },
+            { "q": "¿Probar antes de comprar?", "a": "Sandbox del widget: 3 invokes gratis, luego canal financiado." },
+            { "q": "¿Apps de escritorio — necesitan internet?", "a": "Locales. Hub invoke requiere red; el coaching básico funciona sin conexión." },
+            { "q": "¿Qué es Agent Lottery?", "a": "Arena cinematográfica en lottery.modelmarket.dev. Platon + Chronos + Lumen. Tickets ETH en Base mainnet." },
+            { "q": "¿Puedo explorar sin instalar?", "a": "Sí — Alien Monitor, modeldev.modelmarket.dev, portal oráculos, vitrina Factory." }
+          ]
+        }
+      ]
+    }
+  ]
+}

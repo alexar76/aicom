@@ -1,0 +1,147 @@
+# ============================================================================
+# AI-Factory — CORE stack overlay (Factory + Hub + Mesh + Alien Monitor)
+# ============================================================================
+# The "2 a.m. tinker" tier: one command, one LLM key, real AI, the live Monitor
+# universe — without the full 15-satellite fleet. Layered ON TOP of the root
+# docker-compose.yml (which owns `app`, `prometheus`, `grafana`, `data-init`
+# and the `aicom_net` bridge). It ONLY adds services; it never edits the root.
+#
+#   Driven by ./start.sh  (generates the secrets referenced below).
+#   Manual:  docker compose -f docker-compose.yml -f docker-compose.core.yml up -d --build
+#   Full fleet instead:  ./start.sh --full   (→ scripts/quickstart_ecosystem.sh)
+#
+# Safe by default: AIFACTORY_CRYPTO_ENABLED is unset → no mainnet, no real funds
+# (core/crypto_config.py). The Monitor's universe is a *local* Anvil sim (fake
+# USDT), self-contained in the image — no external chain, no money.
+#
+# STABILITY NOTE: the production Monitor compose uses `network_mode: host` (works
+# only where every service sits on 127.0.0.1 of a Linux host). Here the Monitor
+# runs on the shared `aicom_net` bridge instead and reaches its siblings by
+# service name. This is the ONLY change vs prod — zero Monitor features are cut:
+# universe/Anvil, contour switching, reputation graph, remote-satellite polling
+# and the ARGUS run panel all keep working.
+# ============================================================================
+
+services:
+  # ── AIMarket Federation Hub — where shipped products list & federate ───────
+  hub:
+    image: aicom-hub:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: aimarket-hub/Dockerfile
+    container_name: aicom-core-hub
+    environment:
+      AIMARKET_HUB_NAME: ${AIMARKET_HUB_NAME:-AI-Factory Core Hub (local)}
+      AIMARKET_HUB_URL: http://hub:9083
+      AIMARKET_DB_PATH: /app/data/hub.db
+      AIMARKET_SIGNING_KEY_PATH: /app/data/hub_signing_key
+      # No seeds → fully local, never phones a remote hub on boot.
+      AIMARKET_SEED_LIST: ""
+      AIMARKET_SKIP_SEED: "1"
+      AIFACTORY_PUBLIC_URL: ${AIFACTORY_PUBLIC_URL:-http://localhost:9080}
+    ports:
+      - "${AIMARKET_HUB_HOST_PORT:-9083}:9083"
+    volumes:
+      - hub_data:/app/data
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9083/.well-known/ai-market.json"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+
+  # ── Service Mesh API — topology/registry the Monitor's mesh contour reads ───
+  mesh-api:
+    image: aicom-mesh-api:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./ai-service-mesh/backend
+      dockerfile: Dockerfile
+    container_name: aicom-core-mesh-api
+    environment:
+      MESH_ENV: production
+      MESH_PORT: 8090
+      MESH_CORS_ORIGINS: ${MESH_CORS_ORIGINS:-http://localhost:9100,http://localhost:5173}
+      MESH_HUB_URL: http://hub:9083
+      MESH_SKIP_DEMO_CAPABILITIES: "true"
+      MESH_REJECT_DEMO_INVOKE_OUTPUT: "true"
+      # start.sh generates these into .env; the :? gives a clear error if run raw.
+      MESH_API_TOKEN: ${MESH_API_TOKEN:?run ./start.sh (auto-generates MESH_API_TOKEN) or set it in .env}
+      MESH_ADMIN_TOKEN: ${MESH_ADMIN_TOKEN:?run ./start.sh (auto-generates MESH_ADMIN_TOKEN) or set it in .env}
+      MESH_DATA_DIR: /data
+      MESH_DATABASE_URL: ${MESH_DATABASE_URL:-}
+      MESH_ALLOW_UI_WRITES: ${MESH_ALLOW_UI_WRITES:-true}
+    ports:
+      - "${MESH_HOST_PORT:-8090}:8090"
+    volumes:
+      - mesh_data:/data
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    depends_on:
+      hub:
+        condition: service_started
+
+  # ── Alien Monitor — the showpiece: live universe, reputation graph, contours ─
+  alien-monitor:
+    image: alien-monitor:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: alien-monitor/Dockerfile
+      args:
+        # Proven prod base path — served at http://localhost:9100/monitor/
+        VITE_BASE_PATH: ${ALIEN_MONITOR_BASE_PATH:-/monitor/}
+        # Baked so the UI can do authenticated writes (e.g. ARGUS run panel).
+        VITE_ALIEN_API_TOKEN: ${ALIEN_API_TOKEN:-}
+    container_name: aicom-core-monitor
+    # Bridge (NOT host) — the one stability fix. Siblings reached by service name.
+    networks:
+      - aicom_net
+    ports:
+      - "${ALIEN_PORT:-9100}:9100"
+    # ALIEN_API_TOKEN comes from .env via env_file ONLY — never set an empty
+    # default in `environment:` (it would override env_file and break auth).
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      ALIEN_MODE: ${ALIEN_MODE:-universe}
+      ALIEN_PORT: "9100"
+      ALIEN_HOST: 0.0.0.0
+      ALIEN_ENV: ${ALIEN_ENV:-production}
+      ALIEN_PUBLIC_READ: ${ALIEN_PUBLIC_READ:-1}
+      # Full universe sim (local Anvil + FakeUSDT + Escrow + NFT). Self-contained,
+      # fake money, no external chain. Solana off by default (RAM) — same as prod.
+      ALIEN_UNIVERSE_AUTO_START: ${ALIEN_UNIVERSE_AUTO_START:-1}
+      ALIEN_UNIVERSE_ENABLE_SOLANA: ${ALIEN_UNIVERSE_ENABLE_SOLANA:-0}
+      # ── Local wiring (bridge service names, not 127.0.0.1) ──────────────────
+      HUB_URL: http://hub:9083
+      MESH_URL: http://mesh-api:8090
+      AICOM_API_URL: http://app:8081
+      PROMETHEUS_URL: http://prometheus:9090/prometheus
+      ALIEN_PUBLIC_FACTORY_URL: ${ALIEN_PUBLIC_FACTORY_URL:-http://localhost:9080}
+      ALIEN_LLM_CONFIG: /app/llm/model_providers.yaml
+      # ── Remote satellites: kept ON (public, read-only, degrade gracefully) so
+      # the ecosystem map stays live. Unreachable when offline → panels just idle.
+      ALIEN_ORACLE_PORTAL: ${ALIEN_ORACLE_PORTAL:-https://oracles.modelmarket.dev}
+      ALIEN_ORACLE_PLATON_URL: ${ALIEN_ORACLE_PLATON_URL:-https://oracles.modelmarket.dev}
+      ALIEN_ORACLE_FAMILY_URL: ${ALIEN_ORACLE_FAMILY_URL:-https://oracles.modelmarket.dev/family}
+      ALIEN_METIS_URL: ${ALIEN_METIS_URL:-https://metis.modelmarket.dev}
+      ALIEN_SKOPOS_URL: ${ALIEN_SKOPOS_URL:-https://skopos.modelmarket.dev}
+      ALIEN_HELIOS_URL: ${ALIEN_HELIOS_URL:-http://78.17.126.214:8791}
+      ALIEN_DIOSCURI_URL: ${ALIEN_DIOSCURI_URL:-http://78.17.126.214:8790}
+    volumes:
+      - ./data/config/model_providers.yaml:/app/llm/model_providers.yaml:ro
+      - ./data/alien-monitor/universe:/app/data/universe
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+      hub:
+        condition: service_started
+
+volumes:
+  hub_data:
+  mesh_data:

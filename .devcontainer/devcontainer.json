@@ -1,0 +1,38 @@
+{
+  // AI-Factory — core stack in one click (GitHub Codespaces / VS Code Dev Containers).
+  // Opens a Linux box with Docker, forwards the core ports, and prepares your .env.
+  // Then run:  ./start.sh   (brings up Factory + Hub + Mesh + Alien Monitor).
+  "name": "AI-Factory · core",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+  // Docker-in-Docker so ./start.sh can build & run the compose stack inside the box.
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.11" }
+  },
+
+  "forwardPorts": [9080, 9081, 9083, 9100, 8090, 9090],
+  "portsAttributes": {
+    "9080": { "label": "Factory (idea → build)",  "onAutoForward": "openBrowser" },
+    "9100": { "label": "Alien Monitor (universe)", "onAutoForward": "notify" },
+    "9083": { "label": "Hub (federation)",         "onAutoForward": "silent" },
+    "8090": { "label": "Service Mesh API",         "onAutoForward": "silent" },
+    "9081": { "label": "Factory API",              "onAutoForward": "silent" },
+    "9090": { "label": "Prometheus",               "onAutoForward": "silent" }
+  },
+
+  // Prepare .env and pull in an LLM key from a Codespaces secret if one is set
+  // (Settings → Codespaces → Secrets: DEEPSEEK_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY).
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-azuretools.vscode-docker", "ms-python.python"]
+    }
+  },
+
+  // The stack builds heavy images and runs a local Anvil universe — give it room.
+  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "32gb" },
+
+  "remoteUser": "vscode"
+}

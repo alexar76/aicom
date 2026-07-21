@@ -1,0 +1,23 @@
+{
+  "_comment": "CANONICAL registry of the AICOM live demo deployment on Base mainnet. Single source of truth for deployed contract addresses, mirrored by chain_net.py (_BASE_ADDRESSES, Python) and argus/src/ecosystem/networks.ts (BASE_MAINNET_ADDRESSES, TS). The human-readable record (with every deployment transaction) is docs/onchain-journal.md. A test (test_base_deployment_registry.py) asserts this file, the journal, and the ARGUS constant stay in sync — so docs and code cannot diverge. Addresses are PUBLIC (on-chain, verified on Basescan); committing them is safe. They auto-load as the default for chain=base when AIFACTORY_CRYPTO_ENABLED=1; any AIMARKET_ADDR_BASE_<NAME> env var overrides. The payment RECIPIENT wallet is deliberately NOT defaulted here — it must be set explicitly per deployment so funds never silently route to the demo owner.",
+  "network": "base",
+  "kind": "evm",
+  "chain_id": 8453,
+  "display_name": "Base",
+  "explorer": "https://basescan.org",
+  "source_of_record": "docs/onchain-journal.md",
+  "owner_wallet": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "contracts": {
+    "USDC": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "AIAgentLottery": "0xbda3e32331822d525d5e7c7b51ed76132e84db61",
+    "AIMarketEscrow": "0x3Df85a639EAB8B50DD14f09bdeB46D5FeF163017",
+    "AIMarketCapabilityNFT": "0xA9Af496fD4A1Dc594029Aa8Ea2dbd236Fd255033",
+    "AgentCollateralVault": "0xF9A387c4e81DE49dB303CE9Bd2489AF54821667E",
+    "AgentListingRegistry": "0xcF28770416294358af286a2E4a2e88d6c1f436C3",
+    "AgentLendingPool": "0xB0BE904642EDE39135A0F1c5e5A811925b1c2F48",
+    "PulseAMM": "0x049B839BD5B30797c27f1806E06172014c5d4337",
+    "AgentAuditPool": "0x86a4A9A85895AA10B5a8A680a7c95F4a2C060Cee",
+    "PulseDistributor": "0x37F17f2B733d9D801C7f03f6A6D1E5cA8898775e",
+    "PlonkVerifier": "0xb11af6f387aCD57E6AECDa222D0108e6380ACf65"
+  }
+}
