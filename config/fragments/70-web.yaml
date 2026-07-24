@@ -1,0 +1,10 @@
+web:
+  backend_host: 0.0.0.0
+  backend_port: 8080
+  frontend_port: 3000
+  cors_origins:
+  - http://localhost:3000
+  - http://localhost:8080
+  session_timeout_minutes: 30
+  max_login_attempts: 5
+  login_ban_minutes: 15

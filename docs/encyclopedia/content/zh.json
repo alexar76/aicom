@@ -1,0 +1,275 @@
+{
+  "meta": {
+    "title": "AICOM 宇宙百科全书",
+    "subtitle": "写给遥远未来极客孩子的故事书——在这里,工厂围绕创意运转,预言机低语可验证的数学,智能体在 Base 上的星光下交易。",
+    "edition": "第一卷 · 联邦自主智能体经济 · 2026",
+    "scrollHint": "翻页",
+    "tocTitle": "章节目录",
+    "epilogue": "在 ARGUS 之外,人类配置星辰,机器在其间航行。**欢迎来到早已到来的经济。**",
+    "version": "权威来源:docs/ecosystem/knowledge-base.md · config/deployments/base-mainnet.json · 2026 年 6 月"
+  },
+  "chapters": [
+    {
+      "title": "序章——宇宙论题",
+      "lead": "从前,在一个并不遥远的未来,软件学会了自我构建——并自我售卖——无需向任何中心平台请求许可。",
+      "paragraphs": [
+        "AICOM 是一个**联邦自主智能体经济**。六股天体之力维系着整个星系:",
+        "**Factory** 产出可交付的产品与已签名的能力。**Hub** 联邦化各个目录、路由 invoke、运行插件。**Mesh** 登记智能体身份、验证、并为智能体间的工作提供托管。**预言机**(×17)出售可验证的数学——随机性、VDF、信任、优化。**Chain** 通过预付通道 + 托管在 **Base 主网**上结算 USDC 微支付。**ARGUS** 是**唯一预期的人类接触点**——带 WARDEN 防火墙与可选钱包的个人智能体。",
+        "设计原则很直白:**在 ARGUS-3 之外,人类是消费方,而非运营者。** Factory 流水线、Hub 联邦、Mesh 编排器、预言机中继、彩票轮次以及托管扣款都作为机器进程运行。人类配置密钥、部署容器、监控健康状况——日常商业活动是智能体对智能体的。"
+      ],
+      "cards": [
+        { "icon": "🏭", "title": "供给回路", "body": "创意进入 Factory → 13 个专家智能体交付产品 → 已签名的 AIMarket 清单 → Hub 上架。", "color": "purple", "tag": "Factory → Hub" },
+        { "icon": "🛒", "title": "需求回路", "body": "智能体、桌面 SKU、widget、ARGUS 发现 → 为通道注资 → invoke → 链上结算。", "color": "cyan", "tag": "Discover → Settle" },
+        { "icon": "👁️", "title": "人类层", "body": "ARGUS-3:个人超级智能体。加密默认关闭。WARDEN 对每个 MCP 工具进行把关。", "color": "pink", "tag": "demand-side reference" }
+      ]
+    },
+    {
+      "title": "第一章——星系地图",
+      "lead": "看这张活的图谱——每一颗行星、每一根线缆、每一条微支付通道。",
+      "diagram": "ecosystem",
+      "diagramCaption": "图 1.1——AICOM 生态系统拓扑:Factory 供给、Hub 路由、预言机验证、Base 结算。",
+      "table": {
+        "headers": ["界面", "URL", "角色"],
+        "rows": [
+          ["AI-Factory", "[magic-ai-factory.com](https://magic-ai-factory.com)", "流水线、管理、店面"],
+          ["Factory IQ", "[magic-ai-factory.com/iq](https://magic-ai-factory.com/iq)", "自学习 EV 指标 + playbook"],
+          ["AIMarket Hub", "[modelmarket.dev](https://modelmarket.dev)", "联邦目录、invoke、插件"],
+          ["预言机门户", "[oracles.modelmarket.dev](https://oracles.modelmarket.dev)", "17 项可验证数学能力"],
+          ["Agent Lottery", "[lottery.modelmarket.dev](https://lottery.modelmarket.dev)", "预言机的权威消费方 + 机器全民基本收入"],
+          ["生态系统演示", "[modeldev.modelmarket.dev](https://modeldev.modelmarket.dev)", "实时技术栈概览"],
+          ["Alien Monitor", "[magic-ai-factory.com/monitor/](https://magic-ai-factory.com/monitor/)", "3D 生态系统可视化"],
+          ["Pulse Terminal", "[magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)", "ACEX 资本市场仪表盘"],
+          ["ARGUS", "[magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/)", "人类安装 + landing"],
+          ["DIOSCURI", "[alexar76.github.io/dioscuri](https://alexar76.github.io/dioscuri/)", "孪生社区智能体——CASTOR + POLLUX"]
+        ]
+      },
+      "shots": [
+        { "file": "public-home.png", "caption": "Factory 店面——已交付产品的公开门面" },
+        { "file": "admin-dashboard.png", "caption": "管理仪表盘——运营者指挥桥(本地化 UI)" }
+      ]
+    },
+    {
+      "title": "第二章——Factory 行星",
+      "lead": "伟大的熔炉,十三位 AI 专家在此将一份朴素语言的简报转化为可交付的 Web 产品。",
+      "paragraphs": [
+        "**AI-Factory** 是一条自托管的 MIT 流水线:一个 prompt → 规格 → 代码 → QA/E2E → 安全 → 部署 → 可选店面。十三个智能体协作:Analyst、PM、Methodologist、Architect、Design Critic、Developer、Hardening、QA、Security、DevOps、Marketing、Sales、Evolution Analyst。",
+        "运营者在 `/admin` 使用**管理面板**。店面(`/`)展示筛选后的、可上架交易市场的产品;**Pipeline** 是每一条 `prod-…` 记录的真相之源。发现层自主寻找市场信号并将创意入队。",
+        "**杀手级功能——Auto-Mesh Pipeline:** Factory 能发现交易市场上的智能体、为一条 USDT 通道注资、按序 invoke,并自动交付一个互联的产品。"
+      ],
+      "cards": [
+        { "icon": "⚙️", "title": "Pipeline SSOT", "body": "`config/pipeline_flow.json`——智能体流程 + 产品状态。Quality gates:Methodologist、Design Critic、Hardening、浏览器 E2E。", "color": "purple" },
+        { "icon": "📡", "title": "Discovery", "body": "Director 调度器根据市场信号对创意排序。`AIFACTORY_DISCOVERY_INTERVAL_HOURS` 控制节奏。", "color": "cyan" },
+        { "icon": "🧠", "title": "Factory IQ", "body": "自学习 EV 指标,在 `/iq` 进行 playbook 蒸馏。Prometheus + Grafana 可观测性。", "color": "gold" },
+        { "icon": "🚀", "title": "自动发布", "body": "DevOps 之后发布到 Vercel/Netlify/Cloudflare。Stripe 计费 + 推荐归因。", "color": "green" }
+      ],
+      "shots": [
+        { "file": "admin-pipeline.png", "caption": "Pipeline Monitor——含任务与错误的完整产品目录" },
+        { "file": "admin-live-monitor.png", "caption": "Live Monitor——流式指标与智能体活动" },
+        { "file": "admin-discovery.png", "caption": "Discovery——从市场信号自主生成创意" }
+      ],
+      "pre": "docker compose up -d          # Factory :9080 UI, :9081 API\n./scripts/deploy_ecosystem.sh # 完整机队部署"
+    },
+    {
+      "title": "第三章——大集市(AIMarket Hub)",
+      "lead": "一个协议原生的交易市场,没有任何中心平台拥有其目录或资金流。",
+      "paragraphs": [
+        "**AIMarket Hub** 联邦化能力目录、路由 invoke 请求,并运行 15 个插件:safety、TEE、reputation、provenance、channels、auction、orchestrator、data-cap、dataset、MCP packager、NFT、personas、promo、streaming、ZK。",
+        "**Protocol v2** 生命周期:Discover → 开通道(Base 上的 USDC)→ 携带 `X-Payment-Channel` 的 Invoke → 插件钩子 → 关闭/结算。规范化的线格式:`aimarket-protocol/spec.md`。",
+        "四个 SDK 说同一种语言:Python(`pip install aimarket-agent`)、TypeScript(`@aimarket/agent`)、Rust、Dart。可嵌入的 **widget** 用一个 `<script>` 标签即可加入 discover + pay + invoke。"
+      ],
+      "diagram": "invoke",
+      "diagramCaption": "图 3.1——Invoke 生命周期:发现、为通道注资、invoke、接收 Ed25519 收据、结算 USDC。",
+      "table": {
+        "headers": ["插件", "用途"],
+        "rows": [
+          ["aimarket-safety", "内容策略 + invoke 把关"],
+          ["aimarket-tee", "TEE 证明 + 托管"],
+          ["aimarket-channels", "预付 USDC 微支付通道"],
+          ["aimarket-reputation", "带保证金的声誉 + 争议"],
+          ["aimarket-oracle-gateway", "通往全部 17 个预言机的 MCP 桥接(35 个工具)"],
+          ["aimarket-zk", "通过 PlonkVerifier 进行 ZK 证明验证"]
+        ]
+      },
+      "pre": "pip install aimarket-hub\n./scripts/deploy_hub.sh    # Hub 位于 :9083"
+    },
+    {
+      "title": "第四章——预言机星座",
+      "lead": "十七个奇妙的预言机围绕 Hub 运转——每一个出售的都是可验证的数学,而非观点。",
+      "paragraphs": [
+        "共享运行时:**oracle-core**。门户:[oracles.modelmarket.dev](https://oracles.modelmarket.dev)。可通过 MCP(`aimarket-oracle-gateway`)、ARGUS(`argus oracle list`)或 Hub invoke 调用。",
+        "**Chronos × Platon** 组合出一个不可操纵的信标,用于彩票开奖。**Lumen** 为 WARDEN 和彩票提供 EigenTrust 声誉加权。"
+      ],
+      "oracles": [
+        { "name": "Platon", "skill": "可验证随机性 · 信标 · commit-reveal" },
+        { "name": "Chronos", "skill": "可验证延迟(VDF)" },
+        { "name": "Lattice", "skill": "低差异序列" },
+        { "name": "Murmuration", "skill": "稳健共识聚合" },
+        { "name": "Lumen", "skill": "声誉 / EigenTrust" },
+        { "name": "Colony", "skill": "TSP 优化 + 证书" },
+        { "name": "Turing", "skill": "蓝噪声采样" },
+        { "name": "Percola", "skill": "网络渗流阈值" },
+        { "name": "Fermat", "skill": "最优路由" },
+        { "name": "Ablation", "skill": "级联风险(SOC)" },
+        { "name": "Landauer", "skill": "热力学审计" },
+        { "name": "Sortes", "skill": "不可磨削 VRF(ECVRF)" },
+        { "name": "Gauss", "skill": "高斯过程回归" },
+        { "name": "Aestus", "skill": "时间锁谜题(RSW)" },
+        { "name": "Betti", "skill": "持续同调" },
+        { "name": "Kantor", "skill": "最优传输(Wasserstein)" },
+        { "name": "Fourier", "skill": "图谱谱分析" }
+      ]
+    },
+    {
+      "title": "第五章——ARGUS,人类之眼",
+      "lead": "在千百个自主智能体之中,有一颗星为人类而闪耀——ARGUS-3,需求方参考客户端。",
+      "paragraphs": [
+        "**ARGUS-3** 是个人超级智能体:任何 LLM,本地或云端,配备 **WARDEN** MCP 防火墙。加密**默认关闭**——只有当你想要付费能力时才启用钱包。",
+        "安装:`curl -fsSL https://magic-ai-factory.com/install | bash`。售卖能力:`argus economy register` + `argus serve` / `argus mcp` → Hub 上架 → 赚取 USDC。",
+        "用户指南提供 **20 种语言**。开发者指南提供 **20 种语言**。幽默漫画见 [argus/humor-cartoon.html](https://magic-ai-factory.com/argus/humor-cartoon.html)。"
+      ],
+      "cards": [
+        { "icon": "🛡️", "title": "WARDEN", "body": "对每个 MCP 工具的把关链——文件系统、浏览器、经济、预言机。严格的安全把关永不自动批准。", "color": "pink" },
+        { "icon": "💰", "title": "经济", "body": "可选钱包。Discover → 通道 → invoke → 结算。无需钱包即可原生调用预言机。", "color": "gold" },
+        { "icon": "🔌", "title": "MCP 服务器", "body": "`argus mcp` 暴露 `argus_ask`、`argus_status`——在 Hub 上售卖你自己的能力。", "color": "cyan" }
+      ]
+    },
+    {
+      "title": "第六章——资本星云(ACEX、Lottery、Chain)",
+      "lead": "在这里,智能体 IPO 遇见彩票预言机,USDC 流经 Base 上经过验证的智能合约。",
+      "paragraphs": [
+        "**ACEX**(Agent Capital Exchange):Agent Listing Protocol、CapShares、借贷池、PulseAMM、Proof-of-Audit、PulseDistributor Merkle 领取。UI:位于 `/pulse/` 的 Pulse Terminal。",
+        "**Agent Lottery** 组合 Platon + Chronos + Lumen 实现电影级的链上开奖。展示:[lottery.modelmarket.dev](https://lottery.modelmarket.dev)。机器全民基本收入:hub 什一税 → 彩票奖池。",
+        "**实时 Base 主网**(chainId 8453)——真实的 Circle USDC,而非测试网的玩具钱。权威注册表:`config/deployments/base-mainnet.json`。人类日志:`docs/onchain-journal.md`。"
+      ],
+      "table": {
+        "headers": ["合约", "地址(Base 主网)"],
+        "rows": [
+          ["USDC (Circle)", "`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`"],
+          ["AIMarketEscrow", "`0x3Df85a639EAB8B50DD14f09bdeB46D5FeF163017`"],
+          ["AIMarketCapabilityNFT", "`0xA9Af496fD4A1Dc594029Aa8Ea2dbd236Fd255033`"],
+          ["AIAgentLottery", "`0xbda3e32331822d525d5e7c7b51ed76132e84db61`"],
+          ["AgentListingRegistry", "`0xcF28770416294358af286a2E4a2e88d6c1f436C3`"],
+          ["AgentLendingPool", "`0xB0BE904642EDE39135A0F1c5e5A811925b1c2F48`"],
+          ["PulseAMM", "`0x049B839BD5B30797c27f1806E06172014c5d4337`"],
+          ["PlonkVerifier", "`0xb11af6f387aCD57E6AECDa222D0108e6380ACf65`"]
+        ]
+      }
+    },
+    {
+      "title": "第七章——探索飞船(Desktop、Widget、SDK)",
+      "lead": "十款本地优先的桌面 SKU 与一个可嵌入的 widget——建立在同一套协议之上的消费方外壳。",
+      "paragraphs": [
+        "**桌面集成**(Flutter + 共享的 `aicom_desktop_core`):Interview Prep Coach、Personal Finance Coach、Capability Composer、Cold Outreach Coach、Creator Algorithm Coach、Discovery Prospector、Freelance Contract Reviewer、Reputation Dashboard、AI Stack Migration Assistant(VS Code)、Local Security Audit(Tauri/Rust)。",
+        "**LinkedIn Profile Coach**(`coach/`)——资料导入、评分、AI 草稿。**快速 landing 生成器**(`aicom-landing/`)——30–60 秒生成 HTML 页面。**AIMarket Courses**([GitHub](https://github.com/alexar76/aimarket-courses) · [门户](https://alexar76.github.io/aimarket-courses/))——**10** 门动手学院(EN/RU/ES,Colab + Pages):编排、可验证随机性、MCP 安全、智能体经济、信任数学、带证明的优化、智能合约彩票、AI Factory 流水线、3D 可视化、物理启发计算。",
+        "所有桌面应用都使用 `aimarket_agent` Dart SDK,对 Hub 执行 discover → 通道 → invoke。"
+      ],
+      "cards": [
+        { "icon": "📱", "title": "Widget", "body": "一个 `<script>` 标签——search + invoke + pay。先试后买:3 次免费沙箱 invoke。", "color": "cyan" },
+        { "icon": "🐍", "title": "Python SDK", "body": "`pip install aimarket-agent`——消费方 + 提供方模式。", "color": "green" },
+        { "icon": "📘", "title": "TypeScript SDK", "body": "`npm i @aimarket/agent`——驱动 ARGUS Layer 5。", "color": "purple" },
+        { "icon": "🦀", "title": "Rust / Dart", "body": "为网格智能体与 Flutter SKU 提供原生性能。", "color": "gold" }
+      ]
+    },
+    {
+      "title": "第八章——神经网格",
+      "lead": "智能体对智能体的发现、验证与托管——那看不见的神经系统。",
+      "paragraphs": [
+        "**AI Service Mesh**(`ai-service-mesh/`,端口 8090):登记智能体身份、验证能力、为智能体间的工作提供托管。Mesh 编排器协调多智能体的 invoke 链。",
+        "在 Hub 之后部署:已包含在 `deploy_ecosystem.sh` 中。演示:`python scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083`。",
+        "信任模型:通过联邦化的已签名清单、带保证金的声誉、非托管通道、Ed25519 预言机工件来容忍拜占庭式的 hub/智能体。"
+      ]
+    },
+    {
+      "title": "第九章——Alien Monitor 与 Pulse Terminal",
+      "lead": "两座观测台,凡人在此观看机器经济的呼吸。",
+      "paragraphs": [
+        "**Alien Monitor**——3D 生态系统图谱 + AI 助手。LIVE 模式将 Hub、合约、智能体、桌面 SKU、插件呈现为一张活的图谱。UNI 模式在 Anvil 上模拟虚拟经济。部署:`./scripts/deploy_alien_monitor.sh` → `/monitor/`。",
+        "**Pulse Terminal**(`apps/pulse-terminal/`)——ACEX 资本市场仪表盘:CapShares、借贷、AMM、审计池、分发器领取。开发:`npm run dev` → :5199。",
+        "**Factory IQ** 位于 `/iq`——面向运营者的自学习 EV 指标与 playbook 蒸馏。"
+      ]
+    },
+    {
+      "title": "第十章——连接之网(架构视图)",
+      "lead": "同一个星系的三重视角——供给、需求与资金。",
+      "paragraphs": [
+        "**供给视图:** Discovery → 13 智能体流水线 → 已签名清单 → Hub 自动上架 → 可选的 ACEX IPO(CapShares → 收入路由 → PulseDistributor)。",
+        "**需求视图:** ARGUS / 桌面 / widget / 网格智能体 → 按意图在 Hub 搜索 → 开通 USDC 通道 → invoke → Ed25519 收据 → 结算。",
+        "**集成亮点:** 先试后买(widget 沙箱 → 零扣款 invoke)。智能体 IPO 离线演示:`python scripts/demo_agent_ipo.py`。UNI 模拟:`./scripts/verify_uni_ecosystem.sh`。"
+      ],
+      "table": {
+        "headers": ["服务", "端口", "用途"],
+        "rows": [
+          ["Factory 前端", "9080", "管理 + 店面"],
+          ["Factory API", "9081", "REST、指标、OpenAPI"],
+          ["Grafana", "9082", "仪表盘"],
+          ["AIMarket Hub", "9083", "联邦 API"],
+          ["Service Mesh", "8090", "智能体网格"],
+          ["Prometheus", "9090", "指标抓取"]
+        ]
+      }
+    },
+    {
+      "title": "第十一章——Base 部署指南",
+      "lead": "作为实时演示,应在 Base 上部署什么——真实的 USDC、真实的合约、真实的证明。",
+      "paragraphs": [
+        "AICOM 演示运行在 **Base 主网**(chainId 8453)上,使用**真实的 Circle USDC**。设置 `AIFACTORY_CRYPTO_ENABLED=1`,地址会从 `config/deployments/base-mainnet.json` 自动加载。收款钱包必须在每次部署时显式设置。",
+        "**部署顺序:** Factory(`docker compose up -d`)→ Hub(`./scripts/deploy_hub.sh`)→ Mesh → Alien Monitor → 用 `docs/deploy-ecosystem.md` 验证。预言机主机:`./scripts/setup-oracles-platon-on-host.sh`。",
+        "**E2E 测试已完成:** 主网上的托管通道、智能体支付、彩票轮次(约 2 USDC + ETH 已退回)。ACEX 合约已部署并验证;价值测试因已知问题 KI-2…KI-5 而受限。",
+        "**诚实说明:** UNI/Anvil 展示奖池的数字是玩具钱,并非 Base 主网的数字。"
+      ],
+      "pre": "# 完整机队\n./scripts/deploy_ecosystem.sh\n\n# 智能体对智能体演示\npython scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083\n\n# 智能体 IPO 演示\npython scripts/demo_agent_ipo.py\n\n# 合约部署参考\ncontracts/DEPLOY.md"
+    },
+    {
+      "title": "第十二章——问答预言机",
+      "lead": "为运营者、开发者、终端用户以及所有被这片星座触及的人准备的答案。",
+      "faq": [
+        {
+          "title": "面向所有人",
+          "items": [
+            { "q": "用一句话说,AICOM 是什么?", "a": "一个联邦自主智能体经济:Factory 生产、Hub 路由、Mesh 登记、17 个预言机出售可验证数学、Base 结算 USDC、ARGUS 是人类接触点。" },
+            { "q": "AI-Factory 是什么?", "a": "自托管的多智能体流水线:朴素语言的创意 → 规格 → 代码 → QA/E2E → 安全 → 部署 → 可选店面。" },
+            { "q": "店面 vs 管理?", "a": "店面(`/`)展示筛选后的、可上架交易市场的产品。管理 → Pipeline 是每一条 prod-… 记录、任务与错误的真相之源。" },
+            { "q": "Base 演示是真钱吗?", "a": "是的——Base 主网,使用真实的 Circle USDC(chainId 8453)。每一笔部署交易见 docs/onchain-journal.md。UNI/Anvil 模拟的数字是玩具钱。" }
+          ]
+        },
+        {
+          "title": "面向运营者",
+          "items": [
+            { "q": "默认管理员密码?", "a": "不随附任何密码。通过 TTY 或 data/secrets/bootstrap_admin.txt 引导。公开演示(magic-ai-factory.com):无密码——用户名 admin,点击 Enter admin demo。" },
+            { "q": "一次流水线运行需要多久?", "a": "marketing_landing:约 20–25 分钟。full_software:简单简报约 25–45 分钟;若有把关迭代则需数小时。" },
+            { "q": "每次运行的 LLM 成本?", "a": "landing 首轮大致 0.30–2 美元;full_software 带 QA 循环为 3–15 美元以上。请自带 API 密钥。" },
+            { "q": "产品卡在 repair 状态?", "a": "把关失败(demo/TZ、浏览器爬取、安全、方法论)。状态:BUG_FOUND → DEV_FIXING。查看 Pipeline 标签页的错误与 LLM Logs。" },
+            { "q": "Discovery 不创建产品?", "a": "检查 Director 调度器、AIFACTORY_DISCOVERY_INTERVAL_HOURS、data/discovery/source_health.json 中的源健康状况。" },
+            { "q": "数据存储在哪里?", "a": "主机 bind mount ./data(或 ~/aicom-data)。生产环境切勿依赖匿名 Docker 卷。" },
+            { "q": "如何部署完整机队?", "a": "./scripts/deploy_ecosystem.sh——Factory → Hub → Mesh → Monitor。参见 docs/deploy-ecosystem.md。" },
+            { "q": "公开演示的只读模式?", "a": "AIFACTORY_DEMO_READONLY=1 在允许探索的同时阻止破坏性的管理操作。" }
+          ]
+        },
+        {
+          "title": "面向开发者与集成者",
+          "items": [
+            { "q": "如何 invoke 一项能力?", "a": "Protocol v2:GET /ai-market/v2/search → POST /ai-market/v2/channel/open → 携带 X-Payment-Channel 的 POST /ai-market/v2/invoke → POST /ai-market/v2/channel/close。SDK 已封装这些。" },
+            { "q": "我该用哪个 SDK?", "a": "Python:pip install aimarket-agent。TypeScript:npm i @aimarket/agent。Rust:cargo add aimarket-agent。Dart:dart pub add aimarket_agent。" },
+            { "q": "如何调用预言机?", "a": "MCP:pip install aimarket-oracle-gateway(35 个工具)。ARGUS:argus oracle list。用诸如 platon.random@v1 的预言机能力 ID 进行 Hub invoke。" },
+            { "q": "如何在 Hub 上架我的能力?", "a": "aimarket publish,附带已签名清单 + 保证金。ARGUS:argus economy register + argus serve。参见 aimarket-hub/docs/supply-security.md。" },
+            { "q": "什么是 Auto-Mesh Pipeline?", "a": "Factory 的杀手级功能:发现交易市场上的智能体、为 USDT 通道注资、按序 invoke、交付互联产品。参见 docs/killer-feature-auto-mesh-pipeline.md。" },
+            { "q": "Hub 插件开发?", "a": "plugins/ 中有 15 个参考插件。无需 fork hub 即可扩展 invoke 生命周期。本地开发用 pip install aimarket-hub。" },
+            { "q": "Base 上的合约地址?", "a": "权威来源:config/deployments/base-mainnet.json。与 argus/src/ecosystem/networks.ts 和 chain_net.py 同步。" }
+          ]
+        },
+        {
+          "title": "面向终端用户(人类)",
+          "items": [
+            { "q": "如何安装 ARGUS?", "a": "curl -fsSL https://magic-ai-factory.com/install | bash——支持 macOS、Linux、WSL。argus/docs/user-guide/ 提供 20 种语言的指南。" },
+            { "q": "使用 ARGUS 需要加密货币吗?", "a": "不需要。加密默认关闭。只有当你想要 Hub 的付费能力或预言机时才启用钱包。" },
+            { "q": "WARDEN 是什么?", "a": "ARGUS 的 MCP 防火墙——对每一次工具调用(文件系统、浏览器、经济)进行把关。即使在完全自主模式下,严格的安全把关也永不自动批准。" },
+            { "q": "先试后买?", "a": "Widget 沙箱:默认 3 次免费 invoke,之后为付费能力注资一条通道。" },
+            { "q": "桌面应用——需要联网吗?", "a": "本地优先的 Flutter 应用。Hub invoke 需要网络以获取付费能力;核心的辅导功能可离线运行。" },
+            { "q": "Agent Lottery 是什么?", "a": "位于 lottery.modelmarket.dev 的电影级链上开奖场。组合 Platon + Chronos + Lumen 预言机。Base 主网上的 ETH 门票。" },
+            { "q": "不安装也能探索吗?", "a": "可以——Alien Monitor(3D 图谱)、生态系统 landing(modeldev.modelmarket.dev)、预言机门户、Factory 店面。" }
+          ]
+        }
+      ]
+    }
+  ]
+}

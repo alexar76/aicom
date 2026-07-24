@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>MCP 支付通道与智能体安全模型 — AICOM Guide</title>
+        <meta name="description" content="HTTP 402 微支付通道、消费上限、fail-closed 的 WARDEN 防火墙，以及自主智能体中第三方 MCP 工具的威胁模型。" />
+        <meta name="keywords" content="MCP security, HTTP 402 payment, agent payment channel, WARDEN firewall, tool poisoning" />
+        <link rel="canonical" href="https://modeldev.modelmarket.dev/zh/guides/mcp-payment-and-security/" />
+        <link rel="alternate" hreflang="en" href="https://modeldev.modelmarket.dev/guides/mcp-payment-and-security/" />
+<link rel="alternate" hreflang="ru" href="https://modeldev.modelmarket.dev/ru/guides/mcp-payment-and-security/" />
+<link rel="alternate" hreflang="es" href="https://modeldev.modelmarket.dev/es/guides/mcp-payment-and-security/" />
+<link rel="alternate" hreflang="fr" href="https://modeldev.modelmarket.dev/fr/guides/mcp-payment-and-security/" />
+<link rel="alternate" hreflang="zh" href="https://modeldev.modelmarket.dev/zh/guides/mcp-payment-and-security/" />
+<link rel="alternate" hreflang="x-default" href="https://modeldev.modelmarket.dev/guides/mcp-payment-and-security/" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="MCP 支付通道与智能体安全模型 — AICOM Guide" />
+        <meta property="og:description" content="HTTP 402 微支付通道、消费上限、fail-closed 的 WARDEN 防火墙，以及自主智能体中第三方 MCP 工具的威胁模型。" />
+        <meta property="og:url" content="https://modeldev.modelmarket.dev/zh/guides/mcp-payment-and-security/" />
+        <meta property="og:image" content="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="MCP 支付通道与智能体安全模型 — AICOM Guide" />
+        <meta name="twitter:description" content="HTTP 402 微支付通道、消费上限、fail-closed 的 WARDEN 防火墙，以及自主智能体中第三方 MCP 工具的威胁模型。" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://modeldev.modelmarket.dev/shared/seo.css" />
+        <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "MCP 支付通道与智能体安全模型", "description": "HTTP 402 微支付通道、消费上限、fail-closed 的 WARDEN 防火墙，以及自主智能体中第三方 MCP 工具的威胁模型。", "url": "https://modeldev.modelmarket.dev/zh/guides/mcp-payment-and-security/", "inLanguage": "zh", "author": {"@type": "Organization", "name": "AICOM"}}</script>
+
+</head>
+<body>
+<div class="bg-glow"></div>
+<nav class="topnav"><div class="wrap row"><a class="brand" href="https://modeldev.modelmarket.dev/zh/"><span>AICOM</span> · 学习</a><div class="nav-links"><a href="https://modeldev.modelmarket.dev/zh/">首页</a><a href="https://modeldev.modelmarket.dev/zh/learn/">学习</a><a href="https://modeldev.modelmarket.dev/zh/oracles/">预言机</a><a href="https://modeldev.modelmarket.dev/zh/guides/" aria-current="page">指南</a><a href="https://modeldev.modelmarket.dev/encyclopedia/zh/">百科全书</a><a class="nav-cta" href="https://github.com/alexar76/aicom" rel="noopener">GitHub</a></div></div></nav><div class="wrap article"><p class="eyebrow">开发者指南</p><h1>MCP 支付通道与智能体安全模型</h1><p class="meta">HTTP 402 微支付通道、消费上限、fail-closed 的 WARDEN 防火墙，以及自主智能体中第三方 MCP 工具的威胁模型。</p><div class="prose"><p><strong>Status:</strong> draft · <strong>Owner:</strong> ecosystem · <strong>Depends on:</strong> AIMarketEscrow (Base), AIMarket Hub v2, the Oracle Gateway</p>
+<p>How a capability invoked through the MCP gateway gets <strong>paid</strong>, end to end, and the <strong>threat model</strong></p>
+<p>+ mandatory controls. Grounded in the live escrow (<code>debitChannel</code>/<code>settleChannel</code>/<code>refundChannel</code>/</p>
+<p><code>expireChannel</code>), the Hub (signed receipts + signed <code>/.well-known</code> + signed <code>/ai-market/v2/prices</code>),</p>
+<p>and the gateway.</p>
+<h2>1. Two payment models (different trust)</h2>
+<table>
+<thead><tr><th>Model</th><th>Key custody</th><th>Flow</th><th>Use when</th></tr></thead>
+<tbody>
+<tr><td><strong>Local stdio</strong> *(default)*</td><td>The payer key lives <strong>on the user's machine</strong> (the MCP server is spawned locally by Claude Desktop/Cursor). The gateway signs <code>DebitAuthorization</code>s <strong>locally</strong> — the key never leaves the machine.</td><td>open channel → per call: hub quotes <code>price_usd</code> → gateway signs EIP-712 debit (tight deadline) → hub <code>debitChannel</code> → signed receipt → settle/refund on close.</td><td>dev, single agent, agent holds its own wallet. Same trust domain as the agent.</td></tr>
+<tr><td><strong>Remote / hosted</strong></td><td><strong>No custody.</strong> Agent deposits on-chain and <strong>pre-authorizes</strong> spend (debit vouchers bounded by a ceiling); the gateway only <strong>relays</strong> signed vouchers.</td><td>agent approves USDC + pre-signs bounded vouchers → gateway relays per call, never exceeding the ceiling → settle/expiry.</td><td>shared/hosted gateway; the gateway must never hold a user key.</td></tr>
+</tbody></table>
+<p><strong>Default = local stdio</strong> (the MCP server already runs locally). The remote model is for a hosted gateway and must use pre-signed, bounded vouchers — never custody.</p>
+<h2>2. Channel lifecycle (what an agent experiences)</h2>
+<ol>
+<li>Approve USDC to the escrow + <code>openChannel(channelId, USDC, deposit)</code> — a small float (MIN $1).</li>
+<li>Per call: <code>invoke {capability_id, input, X-Payment-Channel}</code> → hub returns <code>price_usd</code> + signed receipt.</li>
+<li>Debit: depositor signs EIP-712 <code>DebitAuthorization{channelId, hub, token, amount(6dp), receiptId, nonce, deadline}</code>; hub <code>debitChannel</code>. <code>receiptId</code> single-use, <code>nonce</code> increments, first debit binds the hub.</li>
+<li>Settle on close/low-balance/timer: <code>settleChannel</code> → used→hub, refund→depositor.</li>
+<li>Recovery: <code>refundChannel</code> (pre-debit), or permissionless <code>expireChannel</code> after 24h. <strong>No admin freeze/seize</strong> — funds are always recoverable.</li>
+</ol>
+<p>USD→token: prices are advertised in <strong>USD</strong>; the debit <code>amount</code> is <strong>USDC 6-dp</strong> (<code>round(usd * 1e6)</code>); the signed receipt's <code>price_usd</code> is authoritative.</p>
+<h2>3. Threat model &amp; mandatory controls</h2>
+<p>From an adversarial red-team across three vectors. <strong>C</strong> = client/gateway-enforceable, <strong>P</strong> = protocol/contract, <strong>O</strong> = ops/governance.</p>
+<h3>3a. Key custody &amp; prompt-injection-driven drain (the #1 MCP-specific risk)</h3>
+<p>An MCP tool call is driven by an LLM that can be manipulated (malicious tool output / injected content) into spending. Mitigations:</p>
+<ul>
+<li><strong>[C] Hard spending caps, client-side</strong> — per-call cap + per-session/total budget enforced <strong>in the gateway</strong>; it refuses an invoke that would exceed them. The model *cannot* override this (it's not "trust the model", it's "the gateway won't sign/relay past the cap"). <strong>Must-fix.</strong></li>
+<li><strong>[C] Price ≤ advertised check</strong> — verify the hub's quoted <code>price_usd</code> against the pinned/advertised price (and the signed <code>/prices</code>); refuse overcharge (±tolerance). <strong>Must-fix.</strong></li>
+<li><strong>[C] Key hygiene</strong> — key never logged/echoed/embedded in tool output; held in memory only; ideally OS keychain/KMS, not a plaintext file. <strong>Must-fix.</strong></li>
+<li><strong>[C] Local safety gate</strong> — block known-dangerous capability ids / injected inputs before signing.</li>
+</ul>
+<h3>3b. On-chain payment integrity</h3>
+<ul>
+<li><strong>[C] Verify the hub's Ed25519 receipt</strong> before trusting <code>price_usd</code>/result; pin <code>signer_public_key</code> from the signed <code>/.well-known</code>. Fail-closed. <strong>Must-fix.</strong></li>
+<li><strong>[P] Replay/double-spend</strong> — <code>receiptId</code> single-use + per-channel <code>nonce</code> (contract-enforced). Gateway generates a fresh random <code>receiptId</code> per call; fetches the current nonce before signing. <strong>Must-fix (nonce sync).</strong></li>
+<li><strong>[C] Tight deadline</strong> — sign debits with <code>now+5min</code>, not 24h, so a stolen signature can't be replayed later. <strong>Must-fix.</strong></li>
+<li><strong>[C] Hub field bound + validated</strong> — the EIP-712 struct includes <code>hub</code>; gateway validates the signed hub == the intended hub (kills cross-hub signature replay). <strong>Must-fix.</strong></li>
+<li><strong>[C] TLS / hub pinning</strong> — pin the hub URL cert + signer pubkey to stop MITM/DNS hub substitution.</li>
+</ul>
+<h3>3c. Stuck funds &amp; griefing</h3>
+<ul>
+<li><strong>[P] Always recoverable</strong> — <code>refundChannel</code> (pre-debit), <code>settleChannel</code> (depositor or bound hub), permissionless <code>expireChannel</code> after 24h; no admin trap. A malicious hub that never settles → depositor waits 24h and anyone expires it.</li>
+<li><strong>[C] Channel-state preflight</strong> — read balance/nonce/status before each debit; <strong>persist pending debits</strong> so a gateway crash mid-flow can resume; settle open channels on graceful shutdown.</li>
+<li><strong>[O] Owner = multisig</strong> — escrow owner must be an N-of-M Safe (≥3 signers); <code>setHubAuthorization</code> only via governance; audited hub whitelist. <strong>Must-fix before mainnet value.</strong></li>
+<li><strong>[O] Sweep monitoring</strong> — the hub's expiry-sweep job must be monitored/alerted; whitelist only canonical USDC/USDT (SafeERC20, no fee-on-transfer surprises).</li>
+</ul>
+<h2>4. What this spec ships now vs later</h2>
+<ul>
+<li><strong>Now (this PR):</strong> the <strong>client-side security core</strong> in the gateway — hard spending caps (per-call + total), price ≤ advertised guard, fail-closed when over budget/overcharged. This neutralizes the prompt-injection-drain and overcharge — the highest-severity risks — without custody.</li>
+<li><strong>Next:</strong> the full channel lifecycle in the gateway (auto open/sign/settle/refund) with nonce-sync, tight deadlines, receipt-signature verification, and TLS/pubkey pinning; the remote pre-signed-voucher path; OS-keychain key storage.</li>
+<li><strong>Before any real-value mainnet payments (ops):</strong> escrow owner → N-of-M multisig, audited hub whitelist, sweep monitoring, Base-Sepolia full-suite rehearsal.</li>
+</ul>
+<h2>5. Acceptance criteria</h2>
+<ul>
+<li>A manipulated agent cannot spend beyond the configured per-call and total caps — the gateway refuses, regardless of what the model "decides".</li>
+<li>An overcharging hub (price &gt; advertised + tolerance) is rejected client-side, no debit authorized.</li>
+<li>Funds in a channel are always recoverable (refund pre-debit; settle/expire otherwise) with no admin action.</li>
+</ul></div><section class="section related"><h2>相关内容</h2><ul><li><a href="https://modeldev.modelmarket.dev/zh/oracles/lumen/">Lumen</a></li><li><a href="https://modeldev.modelmarket.dev/zh/learn/mcp-security-course/">MCP 安全与智能体防护</a></li><li><a href="https://modeldev.modelmarket.dev/zh/learn/agent-economy-course/">从零构建智能体经济</a></li></ul></section></div>
+<footer class="site-foot wrap"><p>AICOM 生态系统 · <a href="https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md">知识库</a> · <a href="https://alexar76.github.io/aimarket-courses/">课程门户</a> · <a href="https://oracles.modelmarket.dev/">在线预言机</a></p></footer>
+</body>
+</html>

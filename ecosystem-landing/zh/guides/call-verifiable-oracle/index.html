@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>从你的 AI 智能体调用可验证预言机 — AICOM Guide</title>
+        <meta name="description" content="用约 5 行代码发现、调用并独立验证 Platon VRF、Chronos VDF 和 LUMEN 声誉——通过 MCP（Cursor、Claude）或在 AIMarket Hub 上使用原始 HTTP。" />
+        <meta name="keywords" content="verifiable randomness, MCP oracle, VRF API, AI agent oracle, model context protocol" />
+        <link rel="canonical" href="https://modeldev.modelmarket.dev/zh/guides/call-verifiable-oracle/" />
+        <link rel="alternate" hreflang="en" href="https://modeldev.modelmarket.dev/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="ru" href="https://modeldev.modelmarket.dev/ru/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="es" href="https://modeldev.modelmarket.dev/es/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="fr" href="https://modeldev.modelmarket.dev/fr/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="zh" href="https://modeldev.modelmarket.dev/zh/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="x-default" href="https://modeldev.modelmarket.dev/guides/call-verifiable-oracle/" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="从你的 AI 智能体调用可验证预言机 — AICOM Guide" />
+        <meta property="og:description" content="用约 5 行代码发现、调用并独立验证 Platon VRF、Chronos VDF 和 LUMEN 声誉——通过 MCP（Cursor、Claude）或在 AIMarket Hub 上使用原始 HTTP。" />
+        <meta property="og:url" content="https://modeldev.modelmarket.dev/zh/guides/call-verifiable-oracle/" />
+        <meta property="og:image" content="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="从你的 AI 智能体调用可验证预言机 — AICOM Guide" />
+        <meta name="twitter:description" content="用约 5 行代码发现、调用并独立验证 Platon VRF、Chronos VDF 和 LUMEN 声誉——通过 MCP（Cursor、Claude）或在 AIMarket Hub 上使用原始 HTTP。" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://modeldev.modelmarket.dev/shared/seo.css" />
+        <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "从你的 AI 智能体调用可验证预言机", "description": "用约 5 行代码发现、调用并独立验证 Platon VRF、Chronos VDF 和 LUMEN 声誉——通过 MCP（Cursor、Claude）或在 AIMarket Hub 上使用原始 HTTP。", "url": "https://modeldev.modelmarket.dev/zh/guides/call-verifiable-oracle/", "inLanguage": "zh", "author": {"@type": "Organization", "name": "AICOM"}}</script>
+
+</head>
+<body>
+<div class="bg-glow"></div>
+<nav class="topnav"><div class="wrap row"><a class="brand" href="https://modeldev.modelmarket.dev/zh/"><span>AICOM</span> · 学习</a><div class="nav-links"><a href="https://modeldev.modelmarket.dev/zh/">首页</a><a href="https://modeldev.modelmarket.dev/zh/learn/">学习</a><a href="https://modeldev.modelmarket.dev/zh/oracles/">预言机</a><a href="https://modeldev.modelmarket.dev/zh/guides/" aria-current="page">指南</a><a href="https://modeldev.modelmarket.dev/encyclopedia/zh/">百科全书</a><a class="nav-cta" href="https://github.com/alexar76/aicom" rel="noopener">GitHub</a></div></div></nav><div class="wrap article"><p class="eyebrow">开发者指南</p><h1>从你的 AI 智能体调用可验证预言机</h1><p class="meta">用约 5 行代码发现、调用并独立验证 Platon VRF、Chronos VDF 和 LUMEN 声誉——通过 MCP（Cursor、Claude）或在 AIMarket Hub 上使用原始 HTTP。</p><div class="prose"><p>Get <strong>verifiable randomness</strong> (or any oracle capability) into your agent in ~5 lines. Three steps:</p>
+<p><strong>discover → call → verify</strong>. Pay-per-call over the AIMarket protocol; every result is checkable.</p>
+<h2>1. Discover (any one)</h2>
+<ul>
+<li><strong>Glama</strong> — browse <code>glama.ai</code> for <code>aimarket-oracle-gateway</code>, add it to your MCP client.</li>
+<li><strong>Hub well-known</strong> (signed) — <code>GET https://modelmarket.dev/.well-known/ai-market.json</code> → read</li>
+</ul>
+<p><code>mcp_servers</code> (the gateway + its tools) and <code>prices_url</code>.</p>
+<ul>
+<li><strong>Prices</strong> — <code>GET https://modelmarket.dev/ai-market/v2/prices</code> → signed list of `{capability_id,</li>
+</ul>
+<p>price_usd}`.</p>
+<h2>2. Call</h2>
+<h3>Via MCP (the 5-line path — for an agent host like Claude Desktop / Cursor)</h3>
+<p>Add the gateway to your MCP config, then just ask the agent ("give me verifiable randomness"):</p>
+<pre><code>{ &quot;mcpServers&quot;: { &quot;aimarket-oracle-gateway&quot;: {
+  &quot;command&quot;: &quot;python&quot;, &quot;args&quot;: [&quot;mcp_stdio_server.py&quot;],
+  &quot;env&quot;: { &quot;AIMARKET_HUB_URL&quot;: &quot;https://modelmarket.dev&quot;,
+           &quot;AIMARKET_MAX_SPEND_USD&quot;: &quot;1.0&quot; } } } }</code></pre>
+<p>The agent now sees tools <code>get_random</code>, <code>compute_vdf</code>, <code>verify_vdf</code>, <code>get_reputation_scores</code>, … and</p>
+<p>calls them directly. Spend is hard-capped by <code>AIMARKET_MAX_SPEND_USD</code> (the gateway refuses past it).</p>
+<h3>Via raw HTTP (any language)</h3>
+<pre><code>curl -s https://modelmarket.dev/ai-market/v2/invoke \
+  -H &#x27;content-type: application/json&#x27; \
+  -d &#x27;{&quot;capability_id&quot;:&quot;platon.random@v1&quot;,&quot;input&quot;:{&quot;num_bytes&quot;:32}}&#x27;
+# → { &quot;output&quot;: { &quot;random_hex&quot;: &quot;...&quot;, &quot;proof&quot;: {...}, &quot;signature&quot;: {...} }, &quot;price_usd&quot;: 0.004, &quot;receipt&quot;: {...} }</code></pre>
+<h2>3. Verify (trust the math, not the service)</h2>
+<ul>
+<li><strong>Randomness</strong> — call <code>verify_random</code> (MCP) or <code>platon.verify@v1</code> (HTTP) with the</li>
+</ul>
+<p><code>{random_hex, proof, signature}</code>; it checks the Ed25519 signature against the signer key in the</p>
+<p>signed <code>/.well-known</code>.</p>
+<ul>
+<li><strong>VDF</strong> — <code>verify_vdf</code> / <code>chronos.verify@v1</code> confirms <code>y = g^(2^T) mod N</code> in one exponentiation</li>
+</ul>
+<p>(the result also carries <code>modulus_hex</code> for a fully explicit check).</p>
+<ul>
+<li><strong>Reputation</strong> — <code>verify_reputation</code> / <code>lumen.verify@v1</code> re-derives PageRank over your graph and</li>
+</ul>
+<p>confirms the scores (+ <code>graph_commitment</code>).</p>
+<h2>4. Pay &amp; stay safe</h2>
+<ul>
+<li>Open a USDC payment channel (escrow on Base) and the hub debits per call; settle/refund on close.</li>
+</ul>
+<p>See <a href="03-mcp-payment-and-security.md">03-mcp-payment-and-security.md</a>.</p>
+<ul>
+<li>The gateway enforces <strong>hard spending caps</strong> (<code>AIMARKET_MAX_PER_CALL_USD</code>, <code>AIMARKET_MAX_SPEND_USD</code>)</li>
+</ul>
+<p>and <strong>rejects overcharge</strong> vs the advertised price — a prompt-injected agent can't drain you.</p>
+<h2>Catalog</h2>
+<table>
+<thead><tr><th>Capability</th><th>Tool</th><th>Price</th></tr></thead>
+<tbody>
+<tr><td><code>platon.random@v1</code> / <code>platon.beacon@v1</code></td><td><code>get_random</code> / <code>get_randomness_beacon</code></td><td>~$0.004</td></tr>
+<tr><td><code>platon.ask@v1</code></td><td><code>ask_oracle</code></td><td>~$0.003</td></tr>
+<tr><td><code>platon.verify@v1</code></td><td><code>verify_random</code></td><td>~$0.001</td></tr>
+<tr><td><code>chronos.eval@v1</code> / <code>chronos.verify@v1</code></td><td><code>compute_vdf</code> / <code>verify_vdf</code></td><td>~$0.01 / $0.001</td></tr>
+<tr><td><code>lumen.reputation@v1</code> / <code>lumen.score@v1</code> / <code>lumen.verify@v1</code></td><td><code>get_reputation_scores</code> / <code>get_agent_trust</code> / <code>verify_reputation</code></td><td>~$0.005 / $0.003 / $0.002</td></tr>
+</tbody></table>
+<p>Full program + per-oracle specs: <a href="README.md">docs/specs/README.md</a>.</p></div><section class="section related"><h2>相关内容</h2><ul><li><a href="https://modeldev.modelmarket.dev/zh/oracles/platon/">Platon</a></li><li><a href="https://modeldev.modelmarket.dev/zh/oracles/chronos/">Chronos</a></li><li><a href="https://modeldev.modelmarket.dev/zh/oracles/lumen/">Lumen</a></li><li><a href="https://modeldev.modelmarket.dev/zh/learn/verifiable-randomness-course/">可验证随机性与密码学时间</a></li><li><a href="https://modeldev.modelmarket.dev/zh/learn/mcp-security-course/">MCP 安全与智能体防护</a></li></ul></section></div>
+<footer class="site-foot wrap"><p>AICOM 生态系统 · <a href="https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md">知识库</a> · <a href="https://alexar76.github.io/aimarket-courses/">课程门户</a> · <a href="https://oracles.modelmarket.dev/">在线预言机</a></p></footer>
+</body>
+</html>

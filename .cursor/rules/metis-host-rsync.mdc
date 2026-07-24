@@ -1,0 +1,31 @@
+---
+description: Safe Metis host sync — never rsync --delete without excludes
+alwaysApply: true
+---
+
+# Metis host rsync (mandatory)
+
+When syncing monorepo `metis/` to the Metis host (`root@31.77.67.99:/opt/metis`):
+
+- **Never** run bare `rsync --delete metis/ …:/opt/metis/` — it wiped TLS certs and `prod.yaml` before.
+- Prefer **landing-only** `scp`/`rsync` of `docs/landing/index.html` → `/var/www/metis-landing/` when only the UI changed.
+- If a full tree sync is required, **always** use the excludes from [`metis/deploy/README.md`](metis/deploy/README.md):
+
+```bash
+rsync -az --delete \
+  --exclude '.git' --exclude '__pycache__' --exclude '.venv' --exclude 'node_modules' \
+  --exclude '.env' --exclude 'data/' \
+  --exclude 'deploy/prod.yaml' --exclude 'deploy/letsencrypt' \
+  metis/ root@31.77.67.99:/opt/metis/
+```
+
+Host-only (must survive sync):
+
+| Path | Role |
+|------|------|
+| `/var/lib/metis/letsencrypt` | TLS for `metis-nginx` (not under `/opt/metis`) |
+| `/opt/metis/deploy/prod.yaml` | Runtime secrets config |
+| `/opt/metis/.env` | Provider keys |
+| `/opt/metis/data/` | Knowledge / memory |
+
+After nginx/TLS changes: do **not** recreate `metis-nginx` until certs exist under `/var/lib/metis/letsencrypt/live/`.

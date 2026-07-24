@@ -1,0 +1,24 @@
+---
+description: Keep GitHub CI/Pages badges green when publishing factory or satellites. Use for badge failures, publish_all_repos, factory CI, gitleaks, coverage drift.
+globs: .github/workflows/**/*,scripts/publish*.sh,scripts/mirror_satellites.sh,scripts/push_gitea*.sh,docs/green-badges-runbook.md
+alwaysApply: false
+---
+
+# Green badges (publish)
+
+Canonical runbook: [`docs/green-badges-runbook.md`](docs/green-badges-runbook.md).
+
+## Rules
+
+1. **Factory mirror** (`alexar76/aicom`) is trimmed — satellites are absent. Edit CI/Security under `.github/workflows/factory/`; `publish_aicom_factory.sh` copies them to `ci.yml` / `security-scan.yml`. Never assume monorepo `.github/workflows/ci.yml` works on the public factory remote.
+2. **Publish order:** commit monorepo → `GITEA_FACTORY_HOST=root@5.129.212.122 ./scripts/push_gitea_monorepo.sh` → `./scripts/publish_all_repos.sh --factory-only` and/or `--satellite <id>` → wait for Actions → verify badge SVG says `passing`.
+3. **Gitleaks:** pre-publish scan is on the **trimmed** critical paths only. Do not full-tree `--no-git` the monorepo. Prefer `# gitleaks:allow` for known demo literals over `ALLOW_PUBLISH_WITHOUT_GITLEAKS=1`.
+4. **Coverage / version pins:** if CI enforces badge sync or package version pins, update monorepo files first, then re-mirror.
+5. **Do not commit** `argus/.argus-warden-scan-memory/`, `.env`, or secrets.
+
+## Verify
+
+```bash
+gh run list --repo alexar76/aicom --workflow=ci.yml --limit 1
+curl -fsSL https://github.com/alexar76/aicom/actions/workflows/ci.yml/badge.svg | grep -i passing
+```

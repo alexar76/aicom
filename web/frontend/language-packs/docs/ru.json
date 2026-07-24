@@ -1,0 +1,726 @@
+{
+  "locale": "ru",
+  "localeNames": {
+    "en": "English",
+    "ru": "Русский",
+    "es": "Español",
+    "fr": "Français",
+    "zh": "中文"
+  },
+  "localeLabels": {
+    "en": "EN",
+    "ru": "RU",
+    "es": "ES",
+    "fr": "FR",
+    "zh": "ZH"
+  },
+  "nav": {
+    "home": "Главная",
+    "docs": "Документация",
+    "admin": "Админ",
+    "toggle": "Меню"
+  },
+  "hero": {
+    "backToHome": "На главную",
+    "title": "Документация",
+    "subtitle": "Архитектура, быстрый старт, плейбук владельца с визуалами, справочник API, таблица истинности CLI и ссылки на Markdown-справочники в docs/."
+  },
+  "footer": {
+    "tagline": "AI-Factory v2.1 — Документация",
+    "home": "Главная",
+    "admin": "Админ",
+    "apiDocs": "API Docs",
+    "github": "GitHub"
+  },
+  "ui": {
+    "copyCode": "Копировать код",
+    "screenshotNotBundled": "Скриншот не включён",
+    "screenshotHintPrefix": "Из",
+    "screenshotHintRun": "выполните",
+    "screenshotHintMiddle": " при доступном приложении (",
+    "screenshotHintEnv": "DOCS_SCREENSHOT_BASE_URL",
+    "screenshotHintAnd": ", ",
+    "screenshotHintPassword": "ADMIN_PASSWORD"
+  },
+  "sectionTitles": {
+    "overview": "Обзор",
+    "userGuide": "Руководство пользователя",
+    "ownerGuide": "Плейбук владельца",
+    "architecture": "Архитектура",
+    "quickstart": "Быстрый старт",
+    "adminPanel": "Админ-панель",
+    "apiReference": "Справочник API",
+    "cli": "Команды CLI",
+    "agents": "ИИ-агенты",
+    "pipeline": "Конвейер",
+    "crypto": "Криптоплатежи",
+    "uniCredit": "Шина UNI",
+    "security": "Безопасность",
+    "director": "Director AI",
+    "configuration": "Конфигурация"
+  },
+  "overview": {
+    "title": "AI-Factory v2.1",
+    "badge": "Платформа AI Company · один Docker-стек",
+    "intro": "Промышленный стек в одном контейнере (FastAPI + Next.js).",
+    "introPipeline": "Один мультиагентный конвейер",
+    "introPipelineSuffix": " для всего:",
+    "introAutonomous": "автономный",
+    "introAutonomousSuffix": " режим питает исследование рынка и сгенерированные идеи;",
+    "introOnDemand": "по запросу",
+    "introOnDemandSuffix": " режим стартует с формулировки заказчика — те же этапы и те же QA-ворота.",
+    "introMiddle": "",
+    "introEnd": "Типичный результат — готовые к публикации лендинги; крипто-оплата и превью в песочнице входят в поставку.",
+    "coreCapabilities": "Ключевые возможности",
+    "capabilities": [
+      "Специализированные роли конвейера в админ-ростере: Analyst, PM, Methodologist, Architect, Designer (UX), Developer, QA, Security, DevOps, Marketing, Sales, Evolution Analyst — плюс Director как мета-агент. `agents/` в репозитории — источник истины; `ui_experience` в архитектуре — обязательный UX-бриф для Developer.",
+      "Маршрутизация нескольких LLM с failover — локальный Ollama, DeepSeek, Together, Groq",
+      "Director AI — плановый анализ, очередь решений, отчёты",
+      "Крипто-витрина — USDT/USDC (Base, Arbitrum, Ethereum, Solana); цена по умолчанию ~$4.99 USDT, если артефакты sales не задают цену",
+      "Стеклянная витрина и админка — анимации, адаптивная вёрстка",
+      "Операции enterprise-уровня — пути секретов, аудит, изоляция песочниц",
+      "CLI-компаньон для операторов (`ai-company` при установке)",
+      "Цикл эволюции — улучшения на основе телеметрии"
+    ],
+    "atAGlance": "Кратко",
+    "stats": [
+      {
+        "label": "Модель деплоя",
+        "value": "Compose"
+      },
+      {
+        "label": "QA-ворота",
+        "value": "Demo + QA"
+      },
+      {
+        "label": "Цена по умолчанию",
+        "value": "~$5"
+      },
+      {
+        "label": "Глубина стека",
+        "value": "Full"
+      }
+    ],
+    "singleContainerTitle": "Один контейнер",
+    "singleContainerBody": "Всё работает в одном Docker-контейнере (Ubuntu 24.04, Python 3.12, Node.js 20). Внешние зависимости не требуются.",
+    "handbookTitle": "Канонический справочник (Markdown)",
+    "handbookBodyPrefix": "Печатные диаграммы (Mermaid), полные таблицы сценариев и подводные камни — в ",
+    "handbookBodyPath": "docs/owner-guide.md",
+    "handbookBodySuffix": " в репозитории — синхронизирован с этой вкладкой.",
+    "userGuideBoxTitle": "Иллюстрированное руководство",
+    "userGuideBoxPrefix": "Пошаговое использование «для чайников» со скриншотами: ",
+    "userGuideBoxPath": "docs/USER_GUIDE.md",
+    "userGuideBoxTab": "Руководство пользователя",
+    "userGuideBoxSuffix": " здесь на ",
+    "userGuideBoxDocsPath": "/docs"
+  },
+  "userGuide": {
+    "titlePrefix": "Иллюстрированное ",
+    "titleGradient": "руководство пользователя",
+    "badge": "Для начинающих · Витрина + Админ · Скриншоты с вашего работающего стека",
+    "intro": "Канонический Markdown — docs/USER_GUIDE.md в репозитории. Для операторов, которым нужен мягкий вход перед docs/admin-guide.md (каждая вкладка, каждый API touchpoint).",
+    "whatYouWillLearnTitle": "Чему вы научитесь",
+    "whatYouWillLearnItems": [
+      "Как связаны витрина, `/docs` и `/admin`.",
+      "Чеклист первого дня: вход → мастер New product → Pipeline.",
+      "New Product: progress bar, quick-start templates, local vs cloud templates, AI prefill consent, actionable errors.",
+      "Workshop: board, spec/architecture diff, iteration canvas, multi-device lab, pattern library, Web Push.",
+      "Куда нажимать при ошибках LLM или сети (ссылки в красных панелях live UI)."
+    ],
+    "screenshotsTitle": "Скриншоты (последний захват)",
+    "screenshotsRegenerate": "Пересоздать: cd web/frontend && npm run capture-docs-screenshots",
+    "captions": {
+      "publicHome": "Главная витрины — публичный вход.",
+      "publicDocs": "Встроенная документация — этот сайт.",
+      "adminNewProduct": "New product — мастер + шаблоны.",
+      "adminWorkshop": "Workshop — board, diffs, canvas, patterns, push.",
+      "adminPipeline": "Pipeline — операционная правда для каждого prod-… id."
+    },
+    "offlineTitle": "Офлайн / PDF",
+    "offlineBodyPrefix": "Откройте ",
+    "offlineBodyPath1": "docs/USER_GUIDE.md",
+    "offlineBodyMiddle": " в редакторе или GitHub и экспортируйте в PDF. Контент владельца с Mermaid — в ",
+    "offlineBodyPath2": "docs/owner-guide.md"
+  },
+  "ownerGuide": {
+    "titlePrefix": "Платформенный ",
+    "titleGradient": "плейбук владельца",
+    "badge": "Сценарии оператора · Политика витрины · Support vs pipeline",
+    "intro": "Для того, кто эксплуатирует инстанс: LLM, pipeline, маркетплейс, поддержка покупателей. Подробности вкладок — docs/admin-guide.md; REST — docs/api-integration-guide.md.",
+    "visualMapTitle": "Визуальная карта",
+    "operatorControlPlane": "Плоскость управления оператора",
+    "firstDayTitle": "Пошагово — первый день",
+    "firstDayItems": [
+      "Подтвердите bind mount /app/data на хосте (см. README — без anonymous Docker volumes).",
+      "Войдите на /admin/login и смените пароль admin; включите TOTP при необходимости.",
+      "Откройте LLM Providers — подключите backend и проверьте routing rules.",
+      "Отправьте идею из New Product или CLI discover / create-idea в контейнере.",
+      "Следите за Pipeline — раскройте карточку, кликайте этапы для payload и ошибок.",
+      "Опционально: README full_pipeline_smoke.py для завершённого product ID."
+    ],
+    "marketplaceTitle": "Пошагово — курация маркетплейса",
+    "marketplaceItems": [
+      "Найдите строку COMPLETED → панель Storefront.",
+      "Редактируйте Marketplace copy (сохраняется в marketing_content.json).",
+      "Если quality gates блокируют листинг, но риск приемлем: Force public storefront + justification.",
+      "Снять SKU: Not pursuing (с причиной) или Hide from public storefront — покупатели теряют listing + detail 404.",
+      "Помните: Dashboard «Completed» — lifecycle; видимость витрины добавляет code + quality + hide rules."
+    ],
+    "useCaseCards": [
+      {
+        "title": "Burst intake",
+        "body": "CLI create-ideas-batch или POST /api/admin/products/create-batch после проверки LLM quota."
+      },
+      {
+        "title": "Stuck stage",
+        "body": "Pipeline modal → failing agent → LLM Logs + provider routing → optional human rework."
+      },
+      {
+        "title": "Buyer confusion",
+        "body": "Lumen (/api/support) — чат; настройте RAG baseline markdown в backend services при смене брендинга."
+      },
+      {
+        "title": "Discovery backlog",
+        "body": "Director discovery ranking → enqueue winners — в README + pipeline-operations.md."
+      }
+    ],
+    "listingFlowTitle": "Поток решения о листинге",
+    "listingShippedQuestion": "Shipped + code on disk?",
+    "listingShippedNo": "No → never listed",
+    "listingHiddenQuestion": "Hidden / Not pursuing?",
+    "listingHiddenYes": "Yes → 404 on public catalog + detail",
+    "listingQualityQuestion": "Passes marketplace quality OR admin force-list?",
+    "listingQualityYes": "Yes → visible on storefront",
+    "screenshotsTitle": "Скриншоты",
+    "screenshotsIntro": "Сохранены в репозитории и зеркалированы в /docs-screenshots/ для этой страницы.",
+    "captions": {
+      "adminLogin": "Admin login — смените учётные данные в первый день.",
+      "adminDashboard": "Dashboard — отличается от счётчиков видимых на витрине.",
+      "adminPipeline": "Pipeline — управление витриной внутри раскрытых completed cards.",
+      "adminNewProduct": "New product — мастер, quick-start chips, cloud templates.",
+      "adminWorkshop": "Workshop — material diff, iteration canvas, pattern library, Web Push.",
+      "adminProviders": "LLM Providers — keys, routing, health probes.",
+      "adminSettings": "Settings — конфигурация всей фабрики."
+    },
+    "mermaidTitle": "Диаграммы Mermaid и PDF",
+    "mermaidBodyPrefix": "GitHub рендерит блок-схемы в ",
+    "mermaidBodyPath": "docs/owner-guide.md",
+    "mermaidBodySuffix": ". Скопируйте в Notion, Confluence или print-to-PDF для инвесторов/операторов."
+  },
+  "architecture": {
+    "titleGradient": "архитектура",
+    "intro": "AI-Factory — модульная архитектура с чётким разделением ответственности. Все компоненты в одном Docker-контейнере, связь через internal HTTP и filesystem.",
+    "componentDiagramTitle": "Диаграмма компонентов",
+    "requestFlow": "Поток запросов",
+    "requestFlowBody": "Запросы пользователей идут в Next.js на порту 8080. Вызовы /api/* проксируются Next.js rewrites на FastAPI backend на 8081. Admin panel тоже обслуживает Next.js."
+  },
+  "quickstart": {
+    "titleGradient": "старт",
+    "intro": "Разверните и запустите AI-Factory одной Docker-командой.",
+    "step1": "1. Сборка образа",
+    "step2": "2. Запуск контейнера",
+    "step3": "3. Доступ к платформе",
+    "accessLinks": [
+      {
+        "label": "Витрина",
+        "url": "http://localhost:8080",
+        "note": ""
+      },
+      {
+        "label": "Админ-панель",
+        "url": "http://localhost:8080/admin",
+        "note": ""
+      },
+      {
+        "label": "API Docs",
+        "url": "http://localhost:8080/api/docs",
+        "note": "(FastAPI Swagger)"
+      }
+    ],
+    "step4": "4. Вход в Admin",
+    "loginIntro": "Нет пароля admin123 по умолчанию. При первом старте с пустым data volume entrypoint запрашивает пароль в консоли при TTY; иначе пишет one-time password в data/secrets/bootstrap_admin.txt. См. docs/security.md.",
+    "loginItems": [
+      "Username: admin",
+      "Password: задаётся при первом bootstrap (консоль или bootstrap file)",
+      "Перейдите на /admin/login и войдите",
+      "Dev only: AIFACTORY_DEV_BOOTSTRAP_PASSWORD в .env"
+    ],
+    "step5": "5. Создайте первый продукт",
+    "dockerSandboxTitle": "Docker sandbox",
+    "dockerSandboxBody": "Образ фабрики может запускать изолированные preview containers (network none, dropped capabilities). Host-gateway для Ollama на хосте — opt-in через docker-compose.host-gateway.yml — не включено по умолчанию."
+  },
+  "adminPanel": {
+    "titleGradient": "панель",
+    "intro": "Admin panel на /admin — полный контроль над AI-Factory. Защита JWT-аутентификацией с опциональной 2FA (TOTP).",
+    "authTitle": "Аутентификация",
+    "authIntro": "",
+    "authItems": [
+      "JWT tokens с HTTP-only cookies",
+      "Auto-logout через 30 минут неактивности",
+      "Защита brute-force: макс. 5 неудачных попыток за 15 минут",
+      "Опциональная 2FA через Google Authenticator (TOTP)"
+    ],
+    "dashboardTitle": "Вкладка Dashboard",
+    "dashboardIntro": "Обзор метрик в реальном времени:",
+    "dashboardItems": [
+      "Pipeline metrics — total/active/completed/failed products, pending/running/timed-out tasks",
+      "Resource usage — CPU, memory, disk utilization",
+      "Revenue — earnings over last 24h, 7d, 30d",
+      "P&L по продуктам — живая unit-экономика: доход против LLM-затрат, валовая маржа, ROI и окупаемость разработки",
+      "Security status — system health indicator, recent failed logins"
+    ],
+    "providersTitle": "Вкладка Model Providers",
+    "providersIntro": "Настройка и управление LLM providers:",
+    "providersItems": [
+      "Все providers со статусом (online/offline/degraded)",
+      "Включение/отключение providers",
+      "Мониторинг latency и доступности моделей",
+      "Routing rules по типу задачи"
+    ],
+    "agentsTitle": "Вкладка Agents",
+    "agentsIntro": "Мониторинг и настройка AI agents:",
+    "agentsItems": [
+      "Статус всех 11 pipeline roles (включая Designer)",
+      "Timeouts, retry limits и priorities",
+      "Логи agents с фильтрацией",
+      "Перезапуск отдельных agents при необходимости"
+    ],
+    "securityTitle": "Вкладка Security",
+    "securityIntro": "Мониторинг и настройка безопасности:",
+    "securityItems": [
+      "Audit logs с фильтрами date/action/user",
+      "Экспорт logs в JSON",
+      "Смена пароля admin",
+      "Настройка 2FA"
+    ],
+    "directorTitle": "Вкладка Director",
+    "directorIntro": "Управление Director AI:",
+    "directorItems": [
+      "Последние отчёты Director с метриками и рекомендациями",
+      "Частота анализа (1/2/4/12 hours)",
+      "Включение/отключение automatic actions",
+      "Ручной запуск анализа для тестов"
+    ],
+    "settingsTitle": "Вкладка Settings",
+    "settingsIntro": "Настройка темы витрины:",
+    "settingsItems": [
+      "5 тем: Cyberpunk, Minimal, Glass, Neon, Corporate",
+      "Тема применяется без перезагрузки страницы"
+    ]
+  },
+  "apiReference": {
+    "titleGradient": "справочник",
+    "intro": "FastAPI backend предоставляет REST API. Все endpoints доступны через /api/* прокси Next.js. Интерактивная документация: /api/docs (Swagger UI). Схема: backend /openapi.json.",
+    "introSwagger": "/api/docs",
+    "handbookTitle": "Справочник интеграции",
+    "handbookBodyPrefix": "Authentication flows (cookie + Bearer), router map, curl snippets, support-chat headers — см. ",
+    "handbookBodyPath": "docs/api-integration-guide.md",
+    "handbookBodySuffix": ". Swagger остаётся авторитетным после обновлений.",
+    "publicEndpoints": "Публичные endpoints",
+    "adminEndpoints": "Admin endpoints (JWT Required)",
+    "endpoints": {
+      "health": {
+        "method": "GET",
+        "path": "/api/health",
+        "description": "Проверка здоровья системы. Возвращает status, version и service name.",
+        "code": "Response:\n{\n  \"status\": \"ok\",\n  \"version\": \"2.1.0\",\n  \"service\": \"ai-factory-backend\"\n}",
+        "codeLanguage": "json"
+      },
+      "products": {
+        "method": "GET",
+        "path": "/api/products",
+        "description": "Листинг витрины для shipped builds — фильтрует incomplete sandboxes, marketplace quality, admin hide / not pursuing."
+      },
+      "productById": {
+        "method": "GET",
+        "path": "/api/products/{id}",
+        "description": "Детали продукта для публичной витрины — hidden SKUs возвращают 404."
+      },
+      "support": {
+        "method": "MIXED",
+        "path": "/api/support/*",
+        "description": "Lumen support sessions & messages — часто требует X-AIF-Support-Token после выдачи (см. env AIFACTORY_SUPPORT_REQUIRE_TOKEN)."
+      },
+      "sandboxRouter": {
+        "method": "ROUTER",
+        "path": "/api/sandbox · /api/payment · /api/customer …",
+        "description": "Sandbox previews, payments, feedback, marketing helpers — смотрите Swagger для verbs."
+      },
+      "aiMarket": {
+        "method": "PROTOCOL",
+        "path": "/.well-known/ai-market.json · /ai-market/*",
+        "description": "AI Market Protocol v1 — MCP manifest, HTTP 402 payments, channels, pipelines. Не под /api. Reference: cli/ai_market_agent.py, docs ai-market-protocol-v1.md."
+      },
+      "theme": {
+        "method": "GET",
+        "path": "/api/config/theme",
+        "description": "Текущая конфигурация темы витрины."
+      },
+      "adminLogin": {
+        "method": "POST",
+        "path": "/api/admin/auth/login",
+        "description": "Admin login. Устанавливает HTTP-only cookie access_token; скрипты могут отправлять Authorization: Bearer ….",
+        "code": "Request:\n{\n  \"username\": \"admin\",\n  \"password\": \"your_password\",\n  \"totp_code\": \"123456\"  // optional, if 2FA enabled\n}\n\nResponse:\n{\n  \"access_token\": \"eyJhbG...\",\n  \"token_type\": \"bearer\",\n  \"requires_2fa\": false\n}",
+        "codeLanguage": "json"
+      },
+      "adminDashboard": {
+        "method": "GET",
+        "path": "/api/admin/dashboard",
+        "description": "Метрики Dashboard: pipeline stats, resources, revenue, security."
+      },
+      "adminProviders": {
+        "method": "GET",
+        "path": "/api/admin/providers",
+        "description": "Список LLM providers со status, latency и model info."
+      },
+      "adminAgents": {
+        "method": "GET",
+        "path": "/api/admin/agents",
+        "description": "Список AI agents со status, tasks и uptime."
+      },
+      "adminSecurityLogs": {
+        "method": "GET",
+        "path": "/api/admin/security/logs?limit=100",
+        "description": "Audit logs с опциональным limit."
+      },
+      "adminDirectorReports": {
+        "method": "GET",
+        "path": "/api/admin/director/reports",
+        "description": "Список отчётов Director AI."
+      },
+      "adminProductsCreate": {
+        "method": "POST",
+        "path": "/api/admin/products/create",
+        "description": "Создать новый продукт из идеи.",
+        "code": "Request:\n{\n  \"idea\": \"Description of your product idea\",\n  \"target_audience\": \"developers\"  // optional\n}",
+        "codeLanguage": "json"
+      },
+      "adminMarketplaceCopy": {
+        "method": "PATCH",
+        "path": "/api/admin/pipeline/products/{id}/marketplace-copy",
+        "description": "Объединить marketing strings витрины для shipped product."
+      },
+      "adminStorefrontAdmin": {
+        "method": "PATCH",
+        "path": "/api/admin/pipeline/products/{id}/storefront-admin",
+        "description": "Human score, force-list override, admin hide-from-storefront flags."
+      }
+    }
+  },
+  "cli": {
+    "titleGradient": "команды",
+    "intro": "Команды в cli/ai_company_cli.py. В README часто ai-company — предпочитайте явный путь интерпретатора, если образ не создаёт alias.",
+    "truthTableTitle": "Таблица истинности",
+    "truthTableBodyPrefix": "Некоторые команды — демонстрации (wallet withdraw flow, части security scan). Читайте ",
+    "truthTableBodyPath": "docs/cli-reference.md",
+    "invocationTitle": "Вызов",
+    "highValueTitle": "Ключевые операции",
+    "notImplementedTitle": "Что не реализовано",
+    "notImplementedItems": [
+      "`director report --last` — Admin Director tab или /app/data/reports/director/*.md",
+      "`storefront preview` — deployed Next.js или npm run dev в web/frontend",
+      "`restart web|orchestrator|director` — stub only; restart via Compose/systemd"
+    ],
+    "preferAdminTitle": "Предпочитайте Admin UI когда…",
+    "preferAdminBody": "Редактирование LLM providers с hot reload, storefront hide/marketing panels и Live Monitor безопаснее через /admin, чем правка YAML без знания reload semantics."
+  },
+  "agents": {
+    "titleGradient": "агенты",
+    "intro": "Платформа использует десять core agents плюс Methodologist gate и Evolution Analyst meta-agent, каждый со строгой ролью. Director AI над циклом. Агенты общаются через filesystem — агент не может менять работу другого. Для web deliverables Architect также создаёт ui_experience (tokens, typography, motion), Developer выпускает осмысленный UI — отдельный ",
+    "introDesigner": "Designer",
+    "introSuffix": " шаг на публичной диаграмме pipeline.",
+    "cards": [
+      {
+        "name": "Analyst",
+        "role": "Исследование рынка, анализ возможностей, research briefs"
+      },
+      {
+        "name": "PM (Product Manager)",
+        "role": "Валидация идей, исследование рынка, spec generation"
+      },
+      {
+        "name": "Methodologist",
+        "role": "Domain process gate — проверяет, что spec и код следуют методологии домена (CRM, helpdesk, e-commerce, …) через domain packs и learning store уроков операторов"
+      },
+      {
+        "name": "Architect",
+        "role": "Проектирование системы, выбор стека, architecture docs"
+      },
+      {
+        "name": "Designer (UX layer)",
+        "role": "Не отдельная queue task: structured ui_experience (mood, CSS variables, fonts, motion, signature moment) вместе с architecture, реализует Developer"
+      },
+      {
+        "name": "Developer",
+        "role": "Реализация кода по architecture specs"
+      },
+      {
+        "name": "QA",
+        "role": "Автотесты, обнаружение багов, анализ качества кода"
+      },
+      {
+        "name": "Security",
+        "role": "Сканирование уязвимостей, secret detection, dependency audit"
+      },
+      {
+        "name": "DevOps",
+        "role": "Dockerization, deployment config, sandbox setup"
+      },
+      {
+        "name": "Marketing",
+        "role": "Описания продуктов, landing pages, SEO content"
+      },
+      {
+        "name": "Sales",
+        "role": "Pricing, payment integration, customer interaction"
+      },
+      {
+        "name": "Evolution Analyst",
+        "role": "Анализ telemetry, auto-improvements, A/B testing"
+      }
+    ],
+    "safety": "Безопасность агентов",
+    "safetyItems": [
+      "Строгие границы ролей — агент не выполняет задачи другого",
+      "Timeout protection — лимит выполнения 30 секунд (настраивается)",
+      "Output validation — все выходы проверяются по schemas",
+      "Escalation — при повторных сбоях уведомляется Director AI",
+      "Filesystem-based memory — без context hallucination, состояние на диске"
+    ]
+  },
+  "pipeline": {
+    "titleGradient": "конвейер",
+    "intro": "Жизненный цикл продукта следует детерминированному state machine из 13 состояний. Каждое состояние обрабатывает конкретный агент — чёткая ответственность.",
+    "introOnDemand": "Автономные продукты всё ещё используют analyst/marketing idea flows; on-demand продукты привязывают все downstream-агенты к brief заказчика — not a separate lightweight conveyor for orders.",
+    "standardPipeline": "Стандартный pipeline",
+    "featuresTitle": "Возможности pipeline",
+    "featuresItems": [
+      "Детерминированный FSM — каждый продукт следует той же state machine",
+      "Восстановление после ошибок — если QA находит баги, продукт возвращается в DEV_FIXING",
+      "Управление таймаутами — каждый шаг с настраиваемым timeout (по умолчанию 30s)",
+      "Параллельное выполнение — несколько продуктов на разных этапах pipeline",
+      "Сохранение состояния — JSON (по умолчанию) или опциональный SQLite3 backend с CLI migration",
+      "Director override — Director AI может менять timeouts и приоритеты",
+      "Лимит LLM на продукт (USD) — Admin → Настройки → Качество пайплайна (0 = без лимита); env AIFACTORY_MAX_PIPELINE_COST_USD имеет приоритет",
+      "Карточки продуктов в Pipeline: диаграммы затрат LLM, срока и качества"
+    ],
+    "directorCycleTitle": "Цикл Director AI (каждые 4 часа)",
+    "directorCycleIntro": "Параллельно product pipeline Director AI запускается каждые 4 часа:",
+    "directorCycleItems": [
+      "1. Сбор метрик из всех источников (state files, telemetry, logs, database)",
+      "2. Анализ метрик относительно целей, аномалии и тренды",
+      "3. Генерация решений — auto-apply разрешённых действий, рекомендации в очередь admin",
+      "4. Markdown-отчёт в /data/reports/director/",
+      "5. Уведомление admin panel о готовом отчёте"
+    ],
+    "pipelineStates": [
+      "IDEA_RECEIVED",
+      "SPEC_WRITTEN",
+      "MARKET_CONTENT_READY",
+      "METHODOLOGY_REVIEWED",
+      "ARCH_DESIGNED",
+      "CODE_COMMITTED",
+      "QA_TESTING",
+      "SECURITY_SCANNED",
+      "SALES_ACTIVE",
+      "SANDBOX_RUNNING",
+      "TELEMETRY_COLLECTING",
+      "EVOLUTION_ANALYZING"
+    ]
+  },
+  "crypto": {
+    "titleGradient": "платежи",
+    "intro": "AI-Factory поддерживает мультичейн криптоплатежи за сгенерированные продукты. Покупатели могут платить USDT или USDC.",
+    "economicsTitle": "Экономика",
+    "economicsBody": "Витрина и checkout по умолчанию ~$4.99 USDT, если marketing/sales не задают другую цену — для импульсных покупок лендингов, операторы переопределяют per SKU.",
+    "supportedNetworks": "Поддерживаемые сети",
+    "paymentFlowTitle": "Поток оплаты",
+    "paymentFlowItems": [
+      "Покупатель выбирает продукт и сеть (Base/Solana/Arbitrum)",
+      "Система генерирует уникальный адрес и сумму",
+      "Покупатель отправляет USDT/USDC на указанный адрес",
+      "Система отслеживает подтверждения блокчейна (опрос каждые 15s)",
+      "При достаточных подтверждениях — активируется лицензия продукта",
+      "Покупатель получает доступ к sandbox demo и полному продукту"
+    ],
+    "walletTitle": "Управление кошельками",
+    "walletBody": "Кошельки платформы настраиваются через CLI. Адреса отображаются в admin panel в Crypto Settings. Вывод требует multi-signature approval.",
+    "chains": [
+      {
+        "name": "Base",
+        "tokens": "USDT, USDC"
+      },
+      {
+        "name": "Solana",
+        "tokens": "USDT, USDC"
+      },
+      {
+        "name": "Arbitrum",
+        "tokens": "USDT, USDC"
+      }
+    ]
+  },
+  "uniCredit": {
+    "titleGradient": "шина UNI",
+    "intro": "UNI — внутренний store credit с фиксированным курсом к USDT, не торгуемый токен. Все операции внутри платформы — в целых UNI; USDT только на входе и выходе через treasury.",
+    "pegTitle": "Фиксированный курс",
+    "pegBody": "1 UNI = $0.01 USDT (100 UNI за $1). Поддерживает микротранзакции за LLM без float USDT. AIFACTORY_UNI_USD_CENTS_PER_UNI=1 (legacy: AIFACTORY_UNI_USDT_RATE=100).",
+    "feesTitle": "Комиссии (по умолчанию)",
+    "feesItems": [
+      "Top-up: 0% (AIFACTORY_UNI_TOPUP_SPREAD_BPS=0)",
+      "Invoke / channel spend: 5% платформе (AIFACTORY_UNI_PLATFORM_FEE_BPS=500)",
+      "Вывод: 1% + минимум $20 (AIFACTORY_UNI_WITHDRAW_FEE_BPS=100, AIFACTORY_UNI_MIN_WITHDRAW_UNI=2000)",
+      "Комиссии платформы — кошелёк PLATFORM_FEES, вывод как у продавца"
+    ],
+    "treasuryTitle": "Инвариант treasury",
+    "treasuryBody": "USDT в treasury ≥ все outstanding UNI × $0.01. Джоб uni_treasury_audit; алерт при reserve_ratio < 0.999. AIFACTORY_UNI_TREASURY_USDT_OBSERVED — ручной ввод для аудита.",
+    "flowTitle": "Типовой поток",
+    "flowItems": [
+      "Top-up USDT → POST /api/uni/topup/confirm → зачисление UNI",
+      "Открытие channel → hold; invoke → spend_hold: 95% продавцу, 5% платформе",
+      "Покупка capability → charge() атомарно списывает покупателя",
+      "Вывод продавца → POST /api/uni/withdraw → очередь on-chain"
+    ],
+    "apiTitle": "HTTP API",
+    "apiItems": [
+      "GET /api/uni/config — курс и bps комиссий",
+      "GET /api/uni/wallet — balance_uni, available_uni",
+      "GET /api/uni/receipts — подписанные квитанции",
+      "POST /api/uni/topup/intent — адрес treasury",
+      "POST /api/uni/grant — funding из Monitor (X-Uni-Grant-Secret)"
+    ],
+    "settingsTitle": "Связанные настройки Admin",
+    "settingsBody": "Лимит LLM на продукт (USD): Admin → Настройки → Качество пайплайна → Макс. стоимость LLM (quality.max_pipeline_cost_usd). Дополняет, а не заменяет UNI.",
+    "docsMarkdown": "См. docs/uni-economics.md и docs/postgres-production-runbook.md в репозитории."
+  },
+  "security": {
+    "titleGradient": "безопасность",
+    "intro": "AI-Factory реализует меры безопасности enterprise-уровня на всех слоях.",
+    "authTitle": "Аутентификация и авторизация",
+    "authItems": [
+      "JWT-аутентификация с HTTP-only cookies",
+      "Хеширование паролей SHA-256 + salt (fallback)",
+      "2FA через Google Authenticator (TOTP)",
+      "Защита brute-force: макс. 5 неудачных попыток за 15 минут",
+      "Таймаут сессии 30 минут неактивности",
+      "Все действия admin в tamper-evident audit log"
+    ],
+    "sandboxTitle": "Изоляция sandbox",
+    "sandboxItems": [
+      "Docker-in-Docker для product sandboxes",
+      "Нет сетевого доступа из sandboxes (по умолчанию)",
+      "Лимиты ресурсов (CPU/memory) на sandbox",
+      "Изоляция filesystem — нет доступа к файлам хоста",
+      "Автоочистка sandbox по timeout"
+    ],
+    "dataProtectionTitle": "Защита данных",
+    "dataProtectionItems": [
+      "Секреты шифруются at rest через Fernet (symmetric encryption)",
+      "Audit logs append-only с обнаружением подмены",
+      "Rate limiting на всех API endpoints",
+      "Чувствительные данные не возвращаются в API responses",
+      "Правила firewall в контейнере (nftables)"
+    ],
+    "monitoringTitle": "Мониторинг безопасности",
+    "monitoringItems": [
+      "Dashboard безопасности в реальном времени в admin panel",
+      "Отслеживание неудачных входов с IP logging",
+      "Экспорт audit log в JSON",
+      "Автооповещения о подозрительной активности"
+    ],
+    "firstPasswordTitle": "Первый пароль admin",
+    "firstPasswordBodyPrefix": "Нет фиксированного пароля по умолчанию. Используйте консольный prompt при первом TTY start, читайте ",
+    "firstPasswordPath": "data/secrets/bootstrap_admin.txt",
+    "firstPasswordBodySuffix": " для detached Compose или смените через Admin → Users. CSRF protection для cookie-based admin sessions (заголовок X-CSRF-Token)."
+  },
+  "director": {
+    "titleGradient": "AI",
+    "intro": "Director AI — мета-агент, надзирающий за всей платформой. Не участвует в разработке продуктов, но оценивает производительность системы и принимает решения по оптимизации.",
+    "analysisCycleTitle": "Цикл анализа (каждые 4 часа)",
+    "cycleItems": [
+      "1. Metrics Collection — данные из pipeline state, telemetry, logs и financial records",
+      "2. Analysis — сравнение метрик с целями, аномалии и тренды",
+      "3. Decision Making — автоматические действия (если включены) и рекомендации",
+      "4. Report Generation — подробный markdown-отчёт",
+      "5. Notification — обновление admin panel новым отчётом"
+    ],
+    "metricsTitle": "Отслеживаемые метрики",
+    "metricCards": [
+      {
+        "title": "Эффективность pipeline",
+        "items": [
+          "Idea → MVP time (цель: <4h)",
+          "Auto-completion rate (цель: >95%)",
+          "Agent timeout/error rates",
+          "Auto-fix success rate (цель: >85%)"
+        ]
+      },
+      {
+        "title": "Бизнес-метрики",
+        "items": [
+          "Sandbox → purchase conversion (цель: >12%)",
+          "Средний чек в крипто",
+          "Top/bottom products by revenue",
+          "Эффективность marketing content"
+        ]
+      },
+      {
+        "title": "Техническое здоровье",
+        "items": [
+          "Алерты CPU/RAM/disk usage",
+          "Доступность LLM provider",
+          "Количество security incident",
+          "Model inference latency (P95)"
+        ]
+      },
+      {
+        "title": "Качество продукта",
+        "items": [
+          "Средний рейтинг продукта (из reviews)",
+          "Bugs на 1000 строк кода",
+          "Critical bug response time (P0)",
+          "Применённые evolution improvements"
+        ]
+      }
+    ],
+    "autoActionsTitle": "Автоматические действия",
+    "autoActionsIntro": "Если включено, Director AI может автоматически:",
+    "autoActionsItems": [
+      "Увеличить agent timeouts, если timeout rate >15%",
+      "Запустить marketing reviews, если conversion <8%",
+      "Рекомендовать local models при недогрузке GPU",
+      "Корректировать resource limits по паттернам использования"
+    ],
+    "reportFormatTitle": "Формат отчёта",
+    "reportFormatIntro": "Отчёты Director сохраняются как Markdown в /data/reports/director/ и отображаются в admin panel. Каждый отчёт включает:",
+    "reportFormatItems": [
+      "Сравнение ключевых метрик (actual vs target)",
+      "Применённые автоматические действия",
+      "Рекомендации, требующие одобрения admin",
+      "Прогноз на 24 часа с оценкой рисков"
+    ]
+  },
+  "configuration": {
+    "titleGradient": "конфигурация",
+    "intro": "Платформа настраивается через YAML и JSON в /data/config/. Изменения через admin panel или прямое редактирование файлов.",
+    "modelProvidersTitle": "Model Providers (model_providers.yaml)",
+    "routingRulesTitle": "Правила маршрутизации",
+    "globalConfigTitle": "Global Config (config.yaml)",
+    "qualityBlockTitle": "Блок quality: (качество пайплайна)",
+    "qualityBlockItems": [
+      "max_pipeline_repair_rounds — лимит циклов QA-repair до FAILED",
+      "max_pipeline_cost_usd — лимит LLM на продукт в USD (0 = без лимита); отображается на диаграммах в Pipeline",
+      "demo / visual / browser / marketplace — те же поля, что Admin → Настройки → Качество пайплайна",
+      "Переменные AIFACTORY_* переопределяют YAML при задании в Docker"
+    ],
+    "themesTitle": "Темы",
+    "themesIntro": "Доступны пять предустановленных тем:",
+    "themeItems": [
+      "Cyberpunk — neon cyan, фиолетовые акценты, тёмный gradient background",
+      "Minimal — чистый white/gray с лёгкими тенями",
+      "Glass — прозрачные панели с сильным blur",
+      "Neon — яркие neon colors на тёмном фоне",
+      "Corporate — профессиональная blue/white схема"
+    ]
+  }
+}

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Provenance Verifier — verify.modelmarket.dev</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Language switcher (matches header dark palette) ─────────────── */
+    header nav { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.25rem 0.5rem; }
+    .langsw { display: inline-flex; gap: 2px; margin-left: 0.5rem; border: 1px solid rgba(255,255,255,0.25); border-radius: 999px; padding: 2px; vertical-align: middle; }
+    .langsw button { background: none; border: 0; color: #cfd8e3; font: 600 0.8rem/1 inherit; letter-spacing: 0.04em; padding: 4px 8px; border-radius: 999px; cursor: pointer; transition: color 0.15s, background 0.15s; }
+    .langsw button:hover { color: #fff; }
+    .langsw button.on { background: rgba(126,200,227,0.25); color: #fff; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js" integrity="sha256-AqA2dG4gVqM1sY74xHHeKnyPJr9OHAIZKZMG+3AHuDE=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1 data-i18n="h1">AI Provenance Verifier</h1>
+      <p class="subtitle" data-i18n="subtitle">Cryptographic receipts for AI outputs — verify origin without trust.</p>
+      <nav>
+        <a href="#verify" data-i18n="nav_verify">Verify</a>
+        <a href="https://hub.aimarket.org/ai-market/v2/p/provenance/attest" target="_blank" rel="noopener noreferrer" data-i18n="nav_api">API Docs</a>
+        <a href="https://github.com/alexar76/aicom" target="_blank" rel="noopener noreferrer" data-i18n="nav_source">Source</a>
+        <span class="langsw" aria-label="Language">
+          <button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="zh">ZH</button>
+        </span>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="input-section">
+      <div class="card">
+        <h2 data-i18n="in_h2">Verify an AI Provenance Receipt</h2>
+        <p data-i18n="in_desc">Paste a receipt ID or the full JSON receipt below. No server needed — verification runs entirely in your browser.</p>
+
+        <div class="input-group">
+          <textarea
+            id="receipt-input"
+            data-i18n-ph="ph"
+            placeholder="Paste your receipt JSON here, or enter a receipt ID (e.g., 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f) to load it..."
+            rows="8"
+            spellcheck="false"
+          ></textarea>
+          <div class="button-row">
+            <button id="verify-btn" class="btn-primary" data-i18n="btn_verify">Verify Receipt</button>
+            <button id="clear-btn" class="btn-secondary" data-i18n="btn_clear">Clear</button>
+            <button id="load-example-btn" class="btn-secondary" data-i18n="btn_example">Load Example</button>
+          </div>
+        </div>
+
+        <div id="error-msg" class="error hidden"></div>
+        <div id="loading-msg" class="loading hidden" data-i18n="loading">Verifying...</div>
+      </div>
+    </section>
+
+    <section id="result-section" class="hidden">
+      <div class="card receipt-summary">
+        <div id="verdict-banner"></div>
+        <div id="receipt-meta"></div>
+      </div>
+
+      <div class="card-row">
+        <div class="card">
+          <h3 data-i18n="checks_h">Verification Checks</h3>
+          <div id="checks-list"></div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="attest_h">Attestations</h3>
+          <div id="attestation-badges"></div>
+        </div>
+      </div>
+
+      <div class="card" id="provenance-chain-section">
+        <h3 data-i18n="chain_h">Provenance Chain</h3>
+        <div id="provenance-chain"></div>
+      </div>
+
+      <details class="card">
+        <summary><h3 style="display:inline" data-i18n="raw_h">Raw Receipt JSON</h3></summary>
+        <pre id="raw-json"></pre>
+      </details>
+    </section>
+
+    <section id="about-section" class="card">
+      <h2 data-i18n="how_h">How It Works</h2>
+      <div class="how-it-works">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h4 data-i18n="step1_t">Capture</h4>
+          <p data-i18n="step1_d">Every AI output gets a cryptographic receipt with input/output hashes, model ID, provider, and timestamp.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h4 data-i18n="step2_t">Sign</h4>
+          <p data-i18n="step2_d">The receipt is Ed25519-signed by the issuing hub. The public key is embedded in the receipt itself (JWK).</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h4 data-i18n="step3_t">Verify</h4>
+          <p data-i18n="step3_d">Anyone can verify the receipt's authenticity without trusting any server — all verification material is self-contained.</p>
+        </div>
+      </div>
+      <p class="spec-note" data-i18n-html="spec_note">
+        Receipts follow the <strong>W3C Verifiable Credential</strong> Data Model (JSON-LD).
+        Signatures use <strong>Ed25519</strong>. Optional <strong>TEE attestation</strong> proves execution in a trusted enclave.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p data-i18n-html="footer">
+      <strong>AI Provenance Layer</strong> — MIT Licensed.
+      Built on the <a href="https://hub.aimarket.org">AI Market Protocol</a>.
+    </p>
+  </footer>
+
+  <script>
+  // ── i18n dictionary + machinery (shared with js/verifier.js + js/renderer.js) ──
+  const I18N = {
+    en: {
+      h1:"AI Provenance Verifier",
+      subtitle:"Cryptographic receipts for AI outputs — verify origin without trust.",
+      nav_verify:"Verify", nav_api:"API Docs", nav_source:"Source",
+      in_h2:"Verify an AI Provenance Receipt",
+      in_desc:"Paste a receipt ID or the full JSON receipt below. No server needed — verification runs entirely in your browser.",
+      ph:"Paste your receipt JSON here, or enter a receipt ID (e.g., 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f) to load it...",
+      btn_verify:"Verify Receipt", btn_clear:"Clear", btn_example:"Load Example",
+      loading:"Verifying...",
+      checks_h:"Verification Checks", attest_h:"Attestations", chain_h:"Provenance Chain", raw_h:"Raw Receipt JSON",
+      how_h:"How It Works",
+      step1_t:"Capture", step1_d:"Every AI output gets a cryptographic receipt with input/output hashes, model ID, provider, and timestamp.",
+      step2_t:"Sign", step2_d:"The receipt is Ed25519-signed by the issuing hub. The public key is embedded in the receipt itself (JWK).",
+      step3_t:"Verify", step3_d:"Anyone can verify the receipt's authenticity without trusting any server — all verification material is self-contained.",
+      spec_note:"Receipts follow the <strong>W3C Verifiable Credential</strong> Data Model (JSON-LD). Signatures use <strong>Ed25519</strong>. Optional <strong>TEE attestation</strong> proves execution in a trusted enclave.",
+      footer:"<strong>AI Provenance Layer</strong> — MIT Licensed. Built on the <a href='https://hub.aimarket.org'>AI Market Protocol</a>.",
+      err_empty:"Please paste a receipt JSON or enter a receipt ID.",
+      err_notfound:"Invalid JSON and receipt not found. Paste a valid receipt or check the ID.",
+      verdict_pass_t:"Verified", verdict_pass_d:"All checks passed — this AI output's origin is cryptographically verified.",
+      verdict_fail_t:"Verification Failed", verdict_fail_d:"{n} check(s) failed. See details below.",
+      m_model:"Model", m_provider:"Provider", m_issued:"Issued", m_latency:"Latency", m_price:"Price", m_receipt_id:"Receipt ID", m_issuer:"Issuer",
+      input_hash:"Input Hash (SHA-256)", output_hash:"Output Hash (SHA-256)",
+      errors_label:"Errors:", lbl_platform:"Platform:", lbl_parents:"parent(s)",
+      tee_verified_t:"TEE Verified", tee_none_t:"No TEE Attestation", tee_none_d:"Execution was not attested by a trusted enclave.", tee_code:"Code:",
+      rep_t:"Reputation: {pct}%", rep_d:"Provider trust score",
+      chain_step:"Step {n}",
+      check_structure:"structure", check_signature:"signature", check_timestamp:"timestamp", check_hash_format:"hash format", check_parent_receipts:"parent receipts", check_tee_attestation:"tee attestation",
+      e_not_object:"Invalid receipt: not a JSON object",
+      e_no_subject:"Missing credentialSubject", e_no_proof:"Missing proof block", e_no_issuer:"Missing issuer block",
+      e_no_jwk:"Missing issuer.publicKeyJwk", e_bad_jwk:"Invalid JWK: must be OKP Ed25519",
+      e_sig_failed:"Ed25519 signature verification failed", e_sig_error:"Signature verification error: ",
+      e_ts_format:"Invalid timestamp format", e_ts_future:"Timestamp is in the future (clock skew > 5 min)", e_ts_old:"Timestamp is too old (> 90 days)", e_ts_missing:"Missing timestamp",
+      e_input_hash_fmt:"Invalid input hash format (expected 64-char hex)", e_input_hash_missing:"Missing inputHash",
+      e_output_hash_fmt:"Invalid output hash format (expected 64-char hex)", e_output_hash_missing:"Missing outputHash",
+      e_parent_fmt:"Invalid parent receipt format: ",
+      e_tee_sig_failed:"TEE attestation signature verification failed", e_tee_error:"TEE attestation verification error", e_tee_incomplete:"TEE attestation is invalid or incomplete",
+    },
+    ru: {
+      h1:"Верификатор происхождения ИИ",
+      subtitle:"Криптографические квитанции для выводов ИИ — проверяйте происхождение без доверия.",
+      nav_verify:"Верификация", nav_api:"Документация API", nav_source:"Исходный код",
+      in_h2:"Верифицировать квитанцию происхождения ИИ",
+      in_desc:"Вставьте ID квитанции или полную JSON-квитанцию ниже. Сервер не нужен — верификация выполняется полностью в вашем браузере.",
+      ph:"Вставьте сюда JSON квитанции или введите ID квитанции (например, 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f), чтобы загрузить её...",
+      btn_verify:"Верифицировать квитанцию", btn_clear:"Очистить", btn_example:"Загрузить пример",
+      loading:"Верификация...",
+      checks_h:"Проверки верификации", attest_h:"Аттестации", chain_h:"Цепочка происхождения", raw_h:"Исходный JSON квитанции",
+      how_h:"Как это работает",
+      step1_t:"Захват", step1_d:"Каждый вывод ИИ получает криптографическую квитанцию с хешами ввода/вывода, ID модели, поставщиком и меткой времени.",
+      step2_t:"Подпись", step2_d:"Квитанция подписывается по Ed25519 выпускающим хабом. Открытый ключ встроен в саму квитанцию (JWK).",
+      step3_t:"Верификация", step3_d:"Любой может проверить подлинность квитанции, не доверяя никакому серверу — все материалы для верификации самодостаточны.",
+      spec_note:"Квитанции следуют модели данных <strong>W3C Verifiable Credential</strong> (JSON-LD). Подписи используют <strong>Ed25519</strong>. Опциональная <strong>аттестация TEE</strong> доказывает выполнение в доверенном анклаве.",
+      footer:"<strong>Слой происхождения ИИ</strong> — под лицензией MIT. Построено на <a href='https://hub.aimarket.org'>AI Market Protocol</a>.",
+      err_empty:"Пожалуйста, вставьте JSON квитанции или введите ID квитанции.",
+      err_notfound:"Некорректный JSON, и квитанция не найдена. Вставьте корректную квитанцию или проверьте ID.",
+      verdict_pass_t:"Верифицировано", verdict_pass_d:"Все проверки пройдены — происхождение этого вывода ИИ криптографически подтверждено.",
+      verdict_fail_t:"Верификация не пройдена", verdict_fail_d:"Не пройдено проверок: {n}. См. детали ниже.",
+      m_model:"Модель", m_provider:"Поставщик", m_issued:"Выпущено", m_latency:"Задержка", m_price:"Цена", m_receipt_id:"ID квитанции", m_issuer:"Издатель",
+      input_hash:"Хеш ввода (SHA-256)", output_hash:"Хеш вывода (SHA-256)",
+      errors_label:"Ошибки:", lbl_platform:"Платформа:", lbl_parents:"родит. квитанций",
+      tee_verified_t:"TEE подтверждён", tee_none_t:"Нет аттестации TEE", tee_none_d:"Выполнение не было аттестовано доверенным анклавом.", tee_code:"Код:",
+      rep_t:"Репутация: {pct}%", rep_d:"Оценка доверия поставщика",
+      chain_step:"Шаг {n}",
+      check_structure:"структура", check_signature:"подпись", check_timestamp:"метка времени", check_hash_format:"формат хеша", check_parent_receipts:"родительские квитанции", check_tee_attestation:"аттестация TEE",
+      e_not_object:"Некорректная квитанция: не JSON-объект",
+      e_no_subject:"Отсутствует credentialSubject", e_no_proof:"Отсутствует блок proof", e_no_issuer:"Отсутствует блок issuer",
+      e_no_jwk:"Отсутствует issuer.publicKeyJwk", e_bad_jwk:"Некорректный JWK: требуется OKP Ed25519",
+      e_sig_failed:"Проверка подписи Ed25519 не пройдена", e_sig_error:"Ошибка проверки подписи: ",
+      e_ts_format:"Некорректный формат метки времени", e_ts_future:"Метка времени в будущем (расхождение часов > 5 мин)", e_ts_old:"Метка времени слишком старая (> 90 дней)", e_ts_missing:"Отсутствует метка времени",
+      e_input_hash_fmt:"Некорректный формат хеша ввода (ожидается 64 hex-символа)", e_input_hash_missing:"Отсутствует inputHash",
+      e_output_hash_fmt:"Некорректный формат хеша вывода (ожидается 64 hex-символа)", e_output_hash_missing:"Отсутствует outputHash",
+      e_parent_fmt:"Некорректный формат родительской квитанции: ",
+      e_tee_sig_failed:"Проверка подписи аттестации TEE не пройдена", e_tee_error:"Ошибка проверки аттестации TEE", e_tee_incomplete:"Аттестация TEE недействительна или неполна",
+    },
+    es: {
+      h1:"Verificador de procedencia de IA",
+      subtitle:"Recibos criptográficos para salidas de IA — verifica el origen sin confianza.",
+      nav_verify:"Verificar", nav_api:"Docs de API", nav_source:"Código fuente",
+      in_h2:"Verificar un recibo de procedencia de IA",
+      in_desc:"Pega un ID de recibo o el recibo JSON completo abajo. No se necesita servidor — la verificación se ejecuta enteramente en tu navegador.",
+      ph:"Pega aquí tu recibo JSON, o introduce un ID de recibo (p. ej., 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f) para cargarlo...",
+      btn_verify:"Verificar recibo", btn_clear:"Limpiar", btn_example:"Cargar ejemplo",
+      loading:"Verificando...",
+      checks_h:"Comprobaciones de verificación", attest_h:"Atestaciones", chain_h:"Cadena de procedencia", raw_h:"Recibo JSON en bruto",
+      how_h:"Cómo funciona",
+      step1_t:"Captura", step1_d:"Cada salida de IA recibe un recibo criptográfico con hashes de entrada/salida, ID de modelo, proveedor y marca de tiempo.",
+      step2_t:"Firma", step2_d:"El recibo se firma con Ed25519 por el hub emisor. La clave pública está incrustada en el propio recibo (JWK).",
+      step3_t:"Verificar", step3_d:"Cualquiera puede verificar la autenticidad del recibo sin confiar en ningún servidor — todo el material de verificación es autocontenido.",
+      spec_note:"Los recibos siguen el modelo de datos <strong>W3C Verifiable Credential</strong> (JSON-LD). Las firmas usan <strong>Ed25519</strong>. La <strong>atestación TEE</strong> opcional prueba la ejecución en un enclave de confianza.",
+      footer:"<strong>Capa de procedencia de IA</strong> — Licencia MIT. Construido sobre el <a href='https://hub.aimarket.org'>AI Market Protocol</a>.",
+      err_empty:"Por favor pega un recibo JSON o introduce un ID de recibo.",
+      err_notfound:"JSON inválido y recibo no encontrado. Pega un recibo válido o comprueba el ID.",
+      verdict_pass_t:"Verificado", verdict_pass_d:"Todas las comprobaciones pasaron — el origen de esta salida de IA está verificado criptográficamente.",
+      verdict_fail_t:"Verificación fallida", verdict_fail_d:"{n} comprobación(es) fallaron. Ver detalles abajo.",
+      m_model:"Modelo", m_provider:"Proveedor", m_issued:"Emitido", m_latency:"Latencia", m_price:"Precio", m_receipt_id:"ID de recibo", m_issuer:"Emisor",
+      input_hash:"Hash de entrada (SHA-256)", output_hash:"Hash de salida (SHA-256)",
+      errors_label:"Errores:", lbl_platform:"Plataforma:", lbl_parents:"recibo(s) padre",
+      tee_verified_t:"TEE verificado", tee_none_t:"Sin atestación TEE", tee_none_d:"La ejecución no fue atestada por un enclave de confianza.", tee_code:"Código:",
+      rep_t:"Reputación: {pct}%", rep_d:"Puntuación de confianza del proveedor",
+      chain_step:"Paso {n}",
+      check_structure:"estructura", check_signature:"firma", check_timestamp:"marca de tiempo", check_hash_format:"formato de hash", check_parent_receipts:"recibos padre", check_tee_attestation:"atestación TEE",
+      e_not_object:"Recibo inválido: no es un objeto JSON",
+      e_no_subject:"Falta credentialSubject", e_no_proof:"Falta el bloque proof", e_no_issuer:"Falta el bloque issuer",
+      e_no_jwk:"Falta issuer.publicKeyJwk", e_bad_jwk:"JWK inválido: debe ser OKP Ed25519",
+      e_sig_failed:"La verificación de la firma Ed25519 falló", e_sig_error:"Error de verificación de firma: ",
+      e_ts_format:"Formato de marca de tiempo inválido", e_ts_future:"La marca de tiempo está en el futuro (desfase de reloj > 5 min)", e_ts_old:"La marca de tiempo es demasiado antigua (> 90 días)", e_ts_missing:"Falta la marca de tiempo",
+      e_input_hash_fmt:"Formato de hash de entrada inválido (se esperan 64 caracteres hex)", e_input_hash_missing:"Falta inputHash",
+      e_output_hash_fmt:"Formato de hash de salida inválido (se esperan 64 caracteres hex)", e_output_hash_missing:"Falta outputHash",
+      e_parent_fmt:"Formato de recibo padre inválido: ",
+      e_tee_sig_failed:"La verificación de la firma de atestación TEE falló", e_tee_error:"Error de verificación de atestación TEE", e_tee_incomplete:"La atestación TEE es inválida o incompleta",
+    },
+    fr: {
+      h1:"Vérificateur de provenance de l'IA",
+      subtitle:"Reçus cryptographiques pour les sorties d'IA — vérifiez l'origine sans confiance.",
+      nav_verify:"Vérifier", nav_api:"Docs API", nav_source:"Code source",
+      in_h2:"Vérifier un reçu de provenance d'IA",
+      in_desc:"Collez un ID de reçu ou le reçu JSON complet ci-dessous. Aucun serveur requis — la vérification s'exécute entièrement dans votre navigateur.",
+      ph:"Collez ici votre reçu JSON, ou saisissez un ID de reçu (p. ex. 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f) pour le charger...",
+      btn_verify:"Vérifier le reçu", btn_clear:"Effacer", btn_example:"Charger un exemple",
+      loading:"Vérification...",
+      checks_h:"Contrôles de vérification", attest_h:"Attestations", chain_h:"Chaîne de provenance", raw_h:"Reçu JSON brut",
+      how_h:"Comment ça marche",
+      step1_t:"Capture", step1_d:"Chaque sortie d'IA reçoit un reçu cryptographique avec les hachages d'entrée/sortie, l'ID du modèle, le fournisseur et l'horodatage.",
+      step2_t:"Signature", step2_d:"Le reçu est signé en Ed25519 par le hub émetteur. La clé publique est intégrée dans le reçu lui-même (JWK).",
+      step3_t:"Vérifier", step3_d:"N'importe qui peut vérifier l'authenticité du reçu sans faire confiance à aucun serveur — tout le matériel de vérification est autonome.",
+      spec_note:"Les reçus suivent le modèle de données <strong>W3C Verifiable Credential</strong> (JSON-LD). Les signatures utilisent <strong>Ed25519</strong>. L'<strong>attestation TEE</strong> optionnelle prouve l'exécution dans une enclave de confiance.",
+      footer:"<strong>Couche de provenance de l'IA</strong> — Sous licence MIT. Construit sur le <a href='https://hub.aimarket.org'>AI Market Protocol</a>.",
+      err_empty:"Veuillez coller un reçu JSON ou saisir un ID de reçu.",
+      err_notfound:"JSON invalide et reçu introuvable. Collez un reçu valide ou vérifiez l'ID.",
+      verdict_pass_t:"Vérifié", verdict_pass_d:"Tous les contrôles ont réussi — l'origine de cette sortie d'IA est vérifiée cryptographiquement.",
+      verdict_fail_t:"Échec de la vérification", verdict_fail_d:"{n} contrôle(s) ont échoué. Voir les détails ci-dessous.",
+      m_model:"Modèle", m_provider:"Fournisseur", m_issued:"Émis", m_latency:"Latence", m_price:"Prix", m_receipt_id:"ID de reçu", m_issuer:"Émetteur",
+      input_hash:"Hachage d'entrée (SHA-256)", output_hash:"Hachage de sortie (SHA-256)",
+      errors_label:"Erreurs :", lbl_platform:"Plateforme :", lbl_parents:"reçu(s) parent(s)",
+      tee_verified_t:"TEE vérifié", tee_none_t:"Aucune attestation TEE", tee_none_d:"L'exécution n'a pas été attestée par une enclave de confiance.", tee_code:"Code :",
+      rep_t:"Réputation : {pct}%", rep_d:"Score de confiance du fournisseur",
+      chain_step:"Étape {n}",
+      check_structure:"structure", check_signature:"signature", check_timestamp:"horodatage", check_hash_format:"format de hachage", check_parent_receipts:"reçus parents", check_tee_attestation:"attestation TEE",
+      e_not_object:"Reçu invalide : pas un objet JSON",
+      e_no_subject:"credentialSubject manquant", e_no_proof:"Bloc proof manquant", e_no_issuer:"Bloc issuer manquant",
+      e_no_jwk:"issuer.publicKeyJwk manquant", e_bad_jwk:"JWK invalide : doit être OKP Ed25519",
+      e_sig_failed:"Échec de la vérification de la signature Ed25519", e_sig_error:"Erreur de vérification de signature : ",
+      e_ts_format:"Format d'horodatage invalide", e_ts_future:"L'horodatage est dans le futur (décalage d'horloge > 5 min)", e_ts_old:"L'horodatage est trop ancien (> 90 jours)", e_ts_missing:"Horodatage manquant",
+      e_input_hash_fmt:"Format de hachage d'entrée invalide (64 caractères hex attendus)", e_input_hash_missing:"inputHash manquant",
+      e_output_hash_fmt:"Format de hachage de sortie invalide (64 caractères hex attendus)", e_output_hash_missing:"outputHash manquant",
+      e_parent_fmt:"Format de reçu parent invalide : ",
+      e_tee_sig_failed:"Échec de la vérification de la signature d'attestation TEE", e_tee_error:"Erreur de vérification d'attestation TEE", e_tee_incomplete:"L'attestation TEE est invalide ou incomplète",
+    },
+    zh: {
+      h1:"AI 溯源验证器",
+      subtitle:"面向 AI 输出的加密收据——无需信任即可验证来源。",
+      nav_verify:"验证", nav_api:"API 文档", nav_source:"源代码",
+      in_h2:"验证 AI 溯源收据",
+      in_desc:"在下方粘贴收据 ID 或完整的 JSON 收据。无需服务器——验证完全在你的浏览器中运行。",
+      ph:"在此粘贴你的 JSON 收据，或输入收据 ID（例如 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f）以加载它……",
+      btn_verify:"验证收据", btn_clear:"清除", btn_example:"加载示例",
+      loading:"验证中……",
+      checks_h:"验证检查项", attest_h:"证明", chain_h:"溯源链", raw_h:"原始 JSON 收据",
+      how_h:"工作原理",
+      step1_t:"捕获", step1_d:"每个 AI 输出都会获得一份加密收据，包含输入/输出哈希、模型 ID、提供方和时间戳。",
+      step2_t:"签名", step2_d:"收据由签发枢纽以 Ed25519 签名。公钥内嵌在收据本身（JWK）。",
+      step3_t:"验证", step3_d:"任何人都可以在不信任任何服务器的情况下验证收据的真实性——所有验证材料都是自包含的。",
+      spec_note:"收据遵循 <strong>W3C Verifiable Credential</strong> 数据模型（JSON-LD）。签名使用 <strong>Ed25519</strong>。可选的 <strong>TEE 证明</strong> 可证明在可信飞地中执行。",
+      footer:"<strong>AI 溯源层</strong>——MIT 许可。构建于 <a href='https://hub.aimarket.org'>AI Market Protocol</a> 之上。",
+      err_empty:"请粘贴 JSON 收据或输入收据 ID。",
+      err_notfound:"JSON 无效且未找到收据。请粘贴有效的收据或检查 ID。",
+      verdict_pass_t:"已验证", verdict_pass_d:"所有检查项均已通过——此 AI 输出的来源已通过加密验证。",
+      verdict_fail_t:"验证失败", verdict_fail_d:"{n} 项检查失败。详见下方。",
+      m_model:"模型", m_provider:"提供方", m_issued:"签发时间", m_latency:"延迟", m_price:"价格", m_receipt_id:"收据 ID", m_issuer:"签发者",
+      input_hash:"输入哈希（SHA-256）", output_hash:"输出哈希（SHA-256）",
+      errors_label:"错误：", lbl_platform:"平台：", lbl_parents:"个父收据",
+      tee_verified_t:"TEE 已验证", tee_none_t:"无 TEE 证明", tee_none_d:"执行未经过可信飞地证明。", tee_code:"代码：",
+      rep_t:"声誉：{pct}%", rep_d:"提供方信任分数",
+      chain_step:"第 {n} 步",
+      check_structure:"结构", check_signature:"签名", check_timestamp:"时间戳", check_hash_format:"哈希格式", check_parent_receipts:"父收据", check_tee_attestation:"TEE 证明",
+      e_not_object:"收据无效：不是 JSON 对象",
+      e_no_subject:"缺少 credentialSubject", e_no_proof:"缺少 proof 块", e_no_issuer:"缺少 issuer 块",
+      e_no_jwk:"缺少 issuer.publicKeyJwk", e_bad_jwk:"JWK 无效：必须为 OKP Ed25519",
+      e_sig_failed:"Ed25519 签名验证失败", e_sig_error:"签名验证错误： ",
+      e_ts_format:"时间戳格式无效", e_ts_future:"时间戳在未来（时钟偏移 > 5 分钟）", e_ts_old:"时间戳过旧（> 90 天）", e_ts_missing:"缺少时间戳",
+      e_input_hash_fmt:"输入哈希格式无效（应为 64 个十六进制字符）", e_input_hash_missing:"缺少 inputHash",
+      e_output_hash_fmt:"输出哈希格式无效（应为 64 个十六进制字符）", e_output_hash_missing:"缺少 outputHash",
+      e_parent_fmt:"父收据格式无效： ",
+      e_tee_sig_failed:"TEE 证明签名验证失败", e_tee_error:"TEE 证明验证错误", e_tee_incomplete:"TEE 证明无效或不完整",
+    },
+  };
+  const SUP = ["en", "ru", "es", "fr", "zh"];
+  let lang = "en";
+  try {
+    const saved = localStorage.getItem("verifier-lang");
+    if (saved && SUP.includes(saved)) lang = saved;
+    else { const n = (navigator.language || "en").slice(0, 2).toLowerCase(); if (SUP.includes(n)) lang = n; }
+  } catch (_) {}
+  const t = k => (I18N[lang] && I18N[lang][k]) || I18N.en[k] || k;
+
+  // Expose to the external JS modules (verifier.js / renderer.js).
+  window.I18N = I18N;
+  window.__t = t;
+  window.__lang = lang;
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    window.__lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(el => { const v = t(el.getAttribute("data-i18n")); if (v) el.textContent = v; });
+    document.querySelectorAll("[data-i18n-html]").forEach(el => { const v = t(el.getAttribute("data-i18n-html")); if (v) el.innerHTML = v; });
+    document.querySelectorAll("[data-i18n-ph]").forEach(el => { const v = t(el.getAttribute("data-i18n-ph")); if (v) el.setAttribute("placeholder", v); });
+    document.querySelectorAll(".langsw button").forEach(b => b.classList.toggle("on", b.dataset.lang === lang));
+    // Re-render an already-shown verification result in the new language.
+    if (typeof window.__rerender === "function") window.__rerender();
+  }
+
+  function setLang(l) {
+    if (!SUP.includes(l)) return;
+    lang = l;
+    try { localStorage.setItem("verifier-lang", l); } catch (_) {}
+    applyLang();
+  }
+  window.__setLang = setLang;
+
+  document.querySelectorAll(".langsw button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  applyLang();
+  </script>
+  <script src="js/verifier.js"></script>
+  <script src="js/renderer.js"></script>
+</body>
+</html>

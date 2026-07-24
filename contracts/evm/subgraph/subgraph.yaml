@@ -1,0 +1,40 @@
+specVersion: 1.0.0
+description: AIMarketEscrow — on-chain payment channel events
+repository: https://github.com/alexar76/aicom
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AIMarketEscrow
+    network: base
+    source:
+      abi: AIMarketEscrow
+      address: "{{AIMARKET_ESCROW_EVM_ADDRESS}}"
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Channel
+        - Debit
+        - Settlement
+      abis:
+        - name: AIMarketEscrow
+          file: ../AIMarketEscrow.sol
+      eventHandlers:
+        - event: ChannelOpened(indexed bytes32,indexed address,address,uint256,uint256)
+          handler: handleChannelOpened
+        - event: ChannelDebited(indexed bytes32,uint256,bytes32,uint256)
+          handler: handleChannelDebited
+        - event: ChannelSettled(indexed bytes32,uint256,uint256,address)
+          handler: handleChannelSettled
+        - event: ChannelRefunded(indexed bytes32,uint256,string)
+          handler: handleChannelRefunded
+        - event: ChannelExpired(indexed bytes32,uint256)
+          handler: handleChannelExpired
+        - event: HubAuthorized(indexed address,bool)
+          handler: handleHubAuthorized
+        - event: TokenWhitelisted(indexed address,bool)
+          handler: handleTokenWhitelisted
+      file: ./src/mapping.ts
