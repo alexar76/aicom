@@ -120,6 +120,8 @@ calibration. The number should climb.
 | 🌉 **aimarket-bridges** | LangGraph / CrewAI / AutoGen adapters — Hub capabilities as native tools | [landing](https://modeldev.modelmarket.dev/bridges/) · [`aimarket-bridges`](https://github.com/alexar76/aimarket-bridges) · `pip install "aimarket-bridges[langgraph]"` |
 | 📈 **Pulse (ACEX)** | CapShare NAV · Proof-of-Audit · live pricing | [live](https://magic-ai-factory.com/pulse/) · [`pulse-terminal`](https://github.com/alexar76/pulse-terminal) |
 
+- **Try MCP in Cursor:** [paste-ready `aimarket-mcp` and oracle-gateway setup](docs/quickstart-mcp-cursor.md).
+
 *Monorepo operators:* `./scripts/deploy_ecosystem.sh` can co-deploy Factory + Hub + ARGUS + Monitor + lottery relayer — see [deploy-ecosystem.md](docs/deploy-ecosystem.md). **You do not need any of this to run AI-Factory alone.**
 
 </td>
