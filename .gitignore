@@ -1,0 +1,209 @@
+# ── Environment ──────────────────────────────────────────────────────────────
+.env
+.env.local
+.env.production
+argus/.env
+data/state/config.json
+
+# ── Lottery / Foundry / Solana (local UNI builds) ────────────────────────────
+# solana-test-validator ledger (e.g. from manual `solana-test-validator` runs)
+**/test-ledger/
+lottery/contracts/test-ledger/
+lottery/contracts/cache/
+lottery/contracts/broadcast/
+lottery/contracts/out/
+contracts/solana/target/
+contracts/solana/.anchor/
+# Prebuilt SBF artifacts (rebuild via cargo-build-sbf on host / redeploy_uni)
+contracts/solana/target/deploy/*.so
+# Program/deploy keypairs — generated per-environment, NEVER committed (a committed
+# program keypair lets anyone hijack the program id; it also leaks via the public mirror)
+contracts/solana/keys/
+
+# Runtime LLM / admin files (created or edited by the app; never commit secrets)
+data/config/admin_config_overlay.yaml
+data/config/model_providers.yaml
+data/config/admin.json
+data/config/admin_users.json
+data/config/first_run_pipeline_mode.done
+
+# ── SEO landings (generated — run scripts/build_ecosystem_landing.sh) ────────
+ecosystem-landing/learn/
+ecosystem-landing/oracles/
+ecosystem-landing/guides/
+ecosystem-landing/encyclopedia/
+ecosystem-landing/shared/
+ecosystem-landing/sitemap.xml
+ecosystem-landing/robots.txt
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+# Next.js app route for public build replays — NOT a build-output dir.
+!web/frontend/app/build/
+!web/frontend/app/build/**
+*.egg
+.venv/
+venv/
+venv-local-image/
+.test-venv/
+.hypothesis/
+.pytest_cache/
+.pytest-data/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.json
+htmlcov/
+
+# ── Node.js / Next.js ────────────────────────────────────────────────────────
+# Use ** so nested node_modules (web/frontend, etc.) never enter git.
+**/node_modules/
+**/.package-lock.json
+.next/
+out/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+.npm/
+.pnpm-store/
+.yarn/
+.turbo/
+# Playwright browsers / test artifacts
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/
+
+# ── macOS ────────────────────────────────────────────────────────────────────
+.DS_Store
+**/.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# ── Generated / Runtime Data ─────────────────────────────────────────────────
+data/secrets/
+data/prometheus/
+data/grafana/
+data/store/
+data/logs/
+# SQLite WAL/SHM files and generated keys/salts (never commit — operator-local)
+data/*.db-shm
+data/*.db-wal
+data/dataset_salt
+data/hub_signing_key
+data/provenance_signing_key
+data/platon_signing_key
+data/provenance.db
+data/hub.db
+data/channels.db
+data/state/
+data/telemetry/
+data/feedback/
+data/reports/
+data/analyst/
+data/developer/
+data/devops/
+data/hardening/
+data/qa/
+data/sales/
+data/hub/
+data/methodology/cases/
+data/*.db
+data/users.json
+data/factory_wallet.json
+# AIMarket Hub signing keypair (Ed25519) — generated per-instance, never commit
+data/hub_signing_key
+data/hub_signing_key.pub
+aimarket-hub/data/
+# Factory output (bind-mounted ./data — huge churn; keeps IDE/git fast)
+data/bugs/
+data/code/
+data/security/
+data/arch/
+data/specs/
+data/discussions/
+data/outreach/
+data/support/
+data/discovery/
+data/alien-monitor/
+data/pipeline.db
+# Agent / pipeline JSON reports (also under ignored dirs; explicit = clarity)
+data/**/qa_report.json
+data/**/security_report.json
+data/**/evolution_report.json
+data/**/market_research.json
+data/**/marketing_content.json
+
+# ── Local dev scratch (never commit) ─────────────────────────────────────────
+# Stale orchestration-course venv/build output from ad-hoc runs in repo root.
+course-app/
+# hello-capability demo signing key (generated locally for aimarket-hub quickstart)
+aimarket-hub/examples/hello-capability/provider_key
+# Local CPU text-to-image: venv + HF weights (downloaded on first run; not in git)
+data/local-image-test/
+data/.cache/huggingface/
+
+# ── IDE / Editor ─────────────────────────────────────────────────────────────
+.claude/
+# Keep project Cursor rules in git (team shared); ignore other .cursor junk.
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.iml
+
+# ── Docker ───────────────────────────────────────────────────────────────────
+.docker/
+
+# ── Local dev logs ───────────────────────────────────────────────────────────
+.uvicorn8081.log
+.DS_Store
+desktop-products/
+
+# ── Flutter desktop-integrations (generated) ─────────────────────────────────
+desktop-integrations/**/.dart_tool/
+desktop-integrations/**/build/
+desktop-integrations/**/.flutter-plugins-dependencies
+*.bak
+wiki/
+
+# ── Optional sibling checkouts (track when present; mirror via publish_all_repos.sh) ──
+# aicom-landing/ and coach/ — canonical monorepo paths (mirrored to GitHub satellites).
+
+# ── Internal (audit reports, monetization plans, extraction reports) ─────────
+# Kept locally for the maintainer; never published to a public mirror.
+.internal/
+
+# Local sandbox / vitrine screenshot captures (manual QA)
+test-screens/
+
+# Local ZK tooling (never commit / never factory-publish)
+contracts/zk/.tools/
+# Local runtime / dev artifacts (copy-safe)
+data/funnel/
+data/signups.json
+web/frontend/test-results/
+web/frontend/tsconfig.tsbuildinfo
+data/landauer_signing_key
+# Oracle/VRF runtime signing secrets — never commit (Ed25519 keys, VRF secret keys)
+data/*_signing_key
+data/*_vrf_sk
+plugins/aimarket-oracle-gateway/data/
+
+# Untracked private-host list for mirror secret scanner
+scripts/.mirror-forbidden-hosts
+
+# ARGUS WARDEN local scan cache
+argus/.argus-warden-scan-memory/
+contracts/zk/verifier/cache/

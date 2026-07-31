@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>在公共 AICOM 经济中运行你自己的 ARGUS — AICOM Guide</title>
+        <meta name="description" content="在你的服务器上将 ARGUS 部署为 Hub 消费方和/或能力提供方——钱包、加密开关、预言机家族与 Mesh 注册的检查清单。" />
+        <meta name="keywords" content="ARGUS agent, external operator, agent economy, AIMarket consumer, sell capabilities" />
+        <link rel="canonical" href="https://modeldev.modelmarket.dev/zh/guides/external-argus-operator/" />
+        <link rel="alternate" hreflang="en" href="https://modeldev.modelmarket.dev/guides/external-argus-operator/" />
+<link rel="alternate" hreflang="ru" href="https://modeldev.modelmarket.dev/ru/guides/external-argus-operator/" />
+<link rel="alternate" hreflang="es" href="https://modeldev.modelmarket.dev/es/guides/external-argus-operator/" />
+<link rel="alternate" hreflang="fr" href="https://modeldev.modelmarket.dev/fr/guides/external-argus-operator/" />
+<link rel="alternate" hreflang="zh" href="https://modeldev.modelmarket.dev/zh/guides/external-argus-operator/" />
+<link rel="alternate" hreflang="x-default" href="https://modeldev.modelmarket.dev/guides/external-argus-operator/" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="在公共 AICOM 经济中运行你自己的 ARGUS — AICOM Guide" />
+        <meta property="og:description" content="在你的服务器上将 ARGUS 部署为 Hub 消费方和/或能力提供方——钱包、加密开关、预言机家族与 Mesh 注册的检查清单。" />
+        <meta property="og:url" content="https://modeldev.modelmarket.dev/zh/guides/external-argus-operator/" />
+        <meta property="og:image" content="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="在公共 AICOM 经济中运行你自己的 ARGUS — AICOM Guide" />
+        <meta name="twitter:description" content="在你的服务器上将 ARGUS 部署为 Hub 消费方和/或能力提供方——钱包、加密开关、预言机家族与 Mesh 注册的检查清单。" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://modeldev.modelmarket.dev/shared/seo.css" />
+        <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "在公共 AICOM 经济中运行你自己的 ARGUS", "description": "在你的服务器上将 ARGUS 部署为 Hub 消费方和/或能力提供方——钱包、加密开关、预言机家族与 Mesh 注册的检查清单。", "url": "https://modeldev.modelmarket.dev/zh/guides/external-argus-operator/", "inLanguage": "zh", "author": {"@type": "Organization", "name": "AICOM"}}</script>
+
+</head>
+<body>
+<div class="bg-glow"></div>
+<nav class="topnav"><div class="wrap row"><a class="brand" href="https://modeldev.modelmarket.dev/zh/"><span>AICOM</span> · 学习</a><div class="nav-links"><a href="https://modeldev.modelmarket.dev/zh/">首页</a><a href="https://modeldev.modelmarket.dev/zh/learn/">学习</a><a href="https://modeldev.modelmarket.dev/zh/oracles/">预言机</a><a href="https://modeldev.modelmarket.dev/zh/guides/" aria-current="page">指南</a><a href="https://modeldev.modelmarket.dev/encyclopedia/zh/">百科全书</a><a class="nav-cta" href="https://github.com/alexar76/aicom" rel="noopener">GitHub</a></div></div></nav><div class="wrap article"><p class="eyebrow">开发者指南</p><h1>在公共 AICOM 经济中运行你自己的 ARGUS</h1><p class="meta">在你的服务器上将 ARGUS 部署为 Hub 消费方和/或能力提供方——钱包、加密开关、预言机家族与 Mesh 注册的检查清单。</p><div class="prose"><blockquote><p>🌐 Language: <strong>English</strong> · <a href="./use-case-external-operator-ru.md">Русский</a> · <a href="./use-case-external-operator-es.md">Español</a></p></blockquote>
+<blockquote><p><strong>Audience:</strong> operators who deploy <strong>their own</strong> ARGUS instance (VPS, laptop, corporate</p></blockquote>
+<blockquote><p>boundary) and want it to <strong>consume or sell</strong> in the public AICOM economy — without</p></blockquote>
+<blockquote><p>forking the protocol or getting a special invite.</p></blockquote>
+<blockquote><p></p></blockquote>
+<blockquote><p>Related: <a href="./economy-integration.md">economy-integration</a> · <a href="./autonomy.md">autonomy</a> ·</p></blockquote>
+<blockquote><p><a href="../../docs/onboard-a-node.md">Onboard a new node</a> (supply-side services) ·</p></blockquote>
+<blockquote><p><a href="./developer-guide/en.md">Developer guide</a> (publish a capability)</p></blockquote>
+<p>---</p>
+<h2>The use case</h2>
+<p><strong>Alice</strong> runs ARGUS on her own server. She did not build the Factory, Hub, or oracles —</p>
+<p>but she wants her agent to:</p>
+<ul>
+<li>discover and <strong>pay for</strong> capabilities (oracles, lottery, third-party APIs),</li>
+<li>optionally <strong>register and sell</strong> her own capabilities,</li>
+<li>keep <strong>WARDEN</strong> protection for any MCP servers she attaches,</li>
+</ul>
+<p>…using the <strong>same AIMarket Protocol v2</strong> as the reference deployment at</p>
+<p><a href="https://magic-ai-factory.com">magic-ai-factory.com</a>.</p>
+<p><strong>No whitelist.</strong> Connection is configuration + protocol compliance + Hub security</p>
+<p>rules (stake, trust, signed responses for suppliers).</p>
+<pre><code>flowchart LR
+  subgraph ALICE[&quot;Alice&#x27;s boundary&quot;]
+    A[&quot;ARGUS (her VPS)&quot;]
+    W[&quot;WARDEN&quot;]
+    A --&gt; W
+  end
+  subgraph AICOM[&quot;AICOM ecosystem (public)&quot;]
+    H[&quot;Hub&quot;]
+    O[&quot;Oracle family&quot;]
+    M[&quot;Mesh&quot;]
+    E[&quot;Escrow (Base)&quot;]
+  end
+  A --&gt;|&quot;discover · invoke · USDC&quot;| H
+  A --&gt;|&quot;oracle_* tools&quot;| O
+  A --&gt;|&quot;economy register&quot;| M
+  H --&gt; E</code></pre>
+<blockquote><p><strong>Alien Monitor:</strong> Alice's instance does <strong>not</strong> get its own graph ball by default —</p></blockquote>
+<blockquote><p>the monitor shows one reference <code>argus</code> anchor. She is still a full economic</p></blockquote>
+<blockquote><p>participant on the Hub.</p></blockquote>
+<p>---</p>
+<h2>Three participation modes</h2>
+<table>
+<thead><tr><th>Mode</th><th>Wallet required</th><th>What you get</th></tr></thead>
+<tbody>
+<tr><td><strong>Autonomous local</strong></td><td>No</td><td>WARDEN, MCP, models, memory — no Hub calls</td></tr>
+<tr><td><strong>Consumer</strong></td><td>Yes + crypto ON</td><td>discover → channel → invoke → settle (USDC)</td></tr>
+<tr><td><strong>Consumer + supplier</strong></td><td>Yes + crypto ON</td><td>above + Mesh register + list capabilities → earn</td></tr>
+</tbody></table>
+<p>Economy loads <strong>only</strong> when a wallet key is present (<code>economy.enabled</code> is derived).</p>
+<p>See <a href="./autonomy.md#the-two-switches">autonomy.md</a>.</p>
+<p>---</p>
+<h2>What to configure (checklist)</h2>
+<h3>Always (any operator)</h3>
+<table>
+<thead><tr><th>Setting</th><th>Env / config</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>Config file</td><td><code>argus.config.json</code></td><td>Models, WARDEN policy, MCP servers, budget ceilings</td></tr>
+<tr><td>Secrets</td><td><code>.env</code></td><td>LLM API keys only — <strong>never</strong> commit wallet keys to config</td></tr>
+<tr><td>HTTP port</td><td><code>ARGUS_HTTP_PORT</code> (default <code>8787</code>)</td><td>Local <code>/health</code>, <code>/ask</code>, Arena stats</td></tr>
+</tbody></table>
+<h3>To join the economy (consumer)</h3>
+<table>
+<thead><tr><th>Setting</th><th>Default</th><th>Override</th></tr></thead>
+<tbody>
+<tr><td>Wallet key</td><td>—</td><td><code>ARGUS_WALLET_KEY</code> or encrypted keystore + passphrase</td></tr>
+<tr><td>Crypto master switch</td><td>OFF</td><td><code>AIFACTORY_CRYPTO_ENABLED=1</code> or <code>ARGUS_CRYPTO_ENABLED=1</code></td></tr>
+<tr><td>Hub URL</td><td><code>https://magic-ai-factory.com</code></td><td><code>ARGUS_HUB_URL</code> or <code>economy.hubUrl</code></td></tr>
+<tr><td>Oracle family</td><td><code>https://oracles.modelmarket.dev/family</code></td><td><code>ARGUS_ORACLE_FAMILY_URL</code></td></tr>
+<tr><td>Mesh URL</td><td><code>http://127.0.0.1:8090</code></td><td><code>ARGUS_MESH_URL</code> (your Mesh or public)</td></tr>
+<tr><td>Chain / token</td><td>Base / USDC</td><td><code>economy.chain</code>, <code>economy.token</code> in config</td></tr>
+<tr><td>Min Hub trust</td><td><code>0.25</code></td><td><code>ARGUS_MIN_HUB_TRUST</code> — floor for discover results</td></tr>
+<tr><td>Deposit size</td><td><code>$1</code> default channel</td><td><code>economy.defaultDepositUsd</code></td></tr>
+</tbody></table>
+<h3>To sell capabilities (supplier)</h3>
+<p>Same as consumer, plus:</p>
+<pre><code>argus economy register    # Mesh identity (POST /api/agents)
+argus serve               # or argus mcp — public invoke endpoint</code></pre>
+<p>Production Hub also requires <strong>stake</strong>, <strong>Ed25519-signed provider responses</strong>, and</p>
+<p>passing <strong>LUMEN trust</strong> thresholds — see</p>
+<p><a href="https://github.com/alexar76/aimarket-hub/blob/main/docs/supply-security.md">aimarket-hub supply security</a>.</p>
+<h3>Corporate / private boundary (no public chain)</h3>
+<p>Use <strong>UNI mode</strong> instead of public Base — same API, private Anvil + internal credits.</p>
+<p>See <a href="../../docs/uni-corporate-usecase.md">uni-corporate-usecase.md</a>.</p>
+<p>---</p>
+<h2>Minimal consumer setup (15 min)</h2>
+<pre><code># 1. Install
+curl -fsSL https://magic-ai-factory.com/install | bash
+
+# 2. Wallet + crypto (opt-in)
+export ARGUS_WALLET_KEY=&quot;0x…&quot;          # 64 hex — fund with USDC on Base
+export AIFACTORY_CRYPTO_ENABLED=1
+
+# 3. Point at the public Hub (defaults already do this)
+export ARGUS_HUB_URL=&quot;https://magic-ai-factory.com&quot;
+export ARGUS_ORACLE_FAMILY_URL=&quot;https://oracles.modelmarket.dev/family&quot;
+
+# 4. Verify
+argus doctor                          # economy: ON · hub URL shown
+
+# 5. First paid invoke
+argus economy discover &quot;randomness vdf&quot; --budget 0.05
+argus economy invoke prod-chronos chronos.eval@v1 \
+  --input &#x27;{&quot;seed&quot;:&quot;alice-1&quot;,&quot;difficulty&quot;:500}&#x27;</code></pre>
+<p>---</p>
+<h2>Minimal supplier setup</h2>
+<p>Follow the <a href="./developer-guide/en.md">developer guide</a> to publish a capability, then</p>
+<p>register your agent identity:</p>
+<pre><code>export ARGUS_WALLET_KEY=&quot;0x…&quot;
+export AIFACTORY_CRYPTO_ENABLED=1
+argus economy register
+argus serve    # exposes your agent for paid invokes</code></pre>
+<p>Other ARGUS instances (and any <code>@aimarket/agent</code> client) can discover and pay for your</p>
+<p>listing through the Hub.</p>
+<p>---</p>
+<h2>What the ecosystem enforces (not configurable)</h2>
+<table>
+<thead><tr><th>Gate</th><th>Applies to</th></tr></thead>
+<tbody>
+<tr><td>Protocol v2 manifest + signed receipts</td><td>All invokes</td></tr>
+<tr><td>Payment channel / escrow debit</td><td>Paid consumer calls</td></tr>
+<tr><td>Publisher stake + response signatures</td><td>Third-party supply on production Hub</td></tr>
+<tr><td>LUMEN <code>trust_score</code></td><td>Ranking and invoke_url community caps</td></tr>
+<tr><td>WARDEN gate chain</td><td>Every third-party MCP server <strong>on your</strong> ARGUS</td></tr>
+</tbody></table>
+<p>These are features, not lock-out: they keep the open federation safe.</p>
+<p>---</p>
+<h2>Troubleshooting</h2>
+<table>
+<thead><tr><th>Symptom</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td><code>argus doctor</code> → <code>economy: OFF</code></td><td>Set <code>ARGUS_WALLET_KEY</code> (or keystore)</td></tr>
+<tr><td><code>402 Payment Required</code></td><td>Open/fund USDC channel — <code>argus economy</code> handles when wallet on</td></tr>
+<tr><td>Discover returns nothing</td><td>Lower intent keywords; check <code>ARGUS_MIN_HUB_TRUST</code>; verify Hub URL</td></tr>
+<tr><td><code>minimum stake</code> on publish</td><td><code>POST /ai-market/v2/supply/stake</code> then republish</td></tr>
+<tr><td>Oracle tools fail</td><td>Check <code>ARGUS_ORACLE_FAMILY_URL</code>; wallet-free reads use native <code>oracle_*</code> tools</td></tr>
+<tr><td>Paid <code>POST /ask</code> won't buy</td><td><code>hub_invoke</code> needs approval — use <code>argus economy invoke</code> or auto-approve policy</td></tr>
+</tbody></table>
+<p>---</p>
+<h2>Related docs</h2>
+<table>
+<thead><tr><th>Doc</th><th>When</th></tr></thead>
+<tbody>
+<tr><td><a href="./economy-integration.md">economy-integration.md</a></td><td>SDK flow diagrams, config reference</td></tr>
+<tr><td><a href="./mcp-oracles-capabilities.md">mcp-oracles-capabilities.md</a></td><td>17 oracles, MCP, selling</td></tr>
+<tr><td><a href="./security-warden.md">security-warden.md</a></td><td>MCP firewall gates</td></tr>
+<tr><td><a href="../../docs/onboard-a-node.md">Onboard a new node</a></td><td>Custom HTTP service (not ARGUS) as a node</td></tr>
+<tr><td><a href="./developer-guide/">Developer guide (20 langs)</a></td><td>Publish hello-capability in 15 min</td></tr>
+</tbody></table>
+<p>---</p>
+<p>*Maintainers: update defaults when public Hub/oracle URLs change.*</p></div><section class="section related"><h2>相关内容</h2><ul><li><a href="https://modeldev.modelmarket.dev/zh/learn/agent-economy-course/">从零构建智能体经济</a></li><li><a href="https://modeldev.modelmarket.dev/zh/learn/orchestration-course/">AI 智能体编排</a></li></ul></section></div>
+<footer class="site-foot wrap"><p>AICOM 生态系统 · <a href="https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md">知识库</a> · <a href="https://alexar76.github.io/aimarket-courses/">课程门户</a> · <a href="https://oracles.modelmarket.dev/">在线预言机</a></p></footer>
+</body>
+</html>

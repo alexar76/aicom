@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Gauss — Verifiable Oracle for AI Agents</title>
+        <meta name="description" content="Gauss: 高斯过程后验 + 主动学习建议. 把稀疏、含噪的观测转化为对函数的校准后验——处处给出均值和诚实的不确定性——并指出下一个最值得采样的点。它是手工 UCB / 老虎机探索的有原则替代品：不确定性是计算出来的，而非调出来的。" />
+        <meta name="keywords" content="gauss, gauss, verifiable oracle, AIMarket, agent oracle, gaussian, process, posterior, active, learning, suggestions" />
+        <link rel="canonical" href="https://modeldev.modelmarket.dev/zh/oracles/gauss/" />
+        <link rel="alternate" hreflang="en" href="https://modeldev.modelmarket.dev/oracles/gauss/" />
+<link rel="alternate" hreflang="ru" href="https://modeldev.modelmarket.dev/ru/oracles/gauss/" />
+<link rel="alternate" hreflang="es" href="https://modeldev.modelmarket.dev/es/oracles/gauss/" />
+<link rel="alternate" hreflang="fr" href="https://modeldev.modelmarket.dev/fr/oracles/gauss/" />
+<link rel="alternate" hreflang="zh" href="https://modeldev.modelmarket.dev/zh/oracles/gauss/" />
+<link rel="alternate" hreflang="x-default" href="https://modeldev.modelmarket.dev/oracles/gauss/" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Gauss — Verifiable Oracle for AI Agents" />
+        <meta property="og:description" content="Gauss: 高斯过程后验 + 主动学习建议. 把稀疏、含噪的观测转化为对函数的校准后验——处处给出均值和诚实的不确定性——并指出下一个最值得采样的点。它是手工 UCB / 老虎机探索的有原则替代品：不确定性是计算出来的，而非调出来的。" />
+        <meta property="og:url" content="https://modeldev.modelmarket.dev/zh/oracles/gauss/" />
+        <meta property="og:image" content="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Gauss — Verifiable Oracle for AI Agents" />
+        <meta name="twitter:description" content="Gauss: 高斯过程后验 + 主动学习建议. 把稀疏、含噪的观测转化为对函数的校准后验——处处给出均值和诚实的不确定性——并指出下一个最值得采样的点。它是手工 UCB / 老虎机探索的有原则替代品：不确定性是计算出来的，而非调出来的。" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://modeldev.modelmarket.dev/shared/seo.css" />
+        <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Gauss Oracle", "applicationCategory": "DeveloperApplication", "description": "把稀疏、含噪的观测转化为对函数的校准后验——处处给出均值和诚实的不确定性——并指出下一个最值得采样的点。它是手工 UCB / 老虎机探索的有原则替代品：不确定性是计算出来的，而非调出来的。", "url": "https://modeldev.modelmarket.dev/zh/oracles/gauss/", "inLanguage": "zh", "offers": {"@type": "Offer", "price": "0.001", "priceCurrency": "USD"}}</script>
+
+</head>
+<body>
+<div class="bg-glow"></div>
+<nav class="topnav"><div class="wrap row"><a class="brand" href="https://modeldev.modelmarket.dev/zh/"><span>AICOM</span> · 学习</a><div class="nav-links"><a href="https://modeldev.modelmarket.dev/zh/">首页</a><a href="https://modeldev.modelmarket.dev/zh/learn/">学习</a><a href="https://modeldev.modelmarket.dev/zh/oracles/" aria-current="page">预言机</a><a href="https://modeldev.modelmarket.dev/zh/guides/">指南</a><a href="https://modeldev.modelmarket.dev/encyclopedia/zh/">百科全书</a><a class="nav-cta" href="https://github.com/alexar76/aicom" rel="noopener">GitHub</a></div></div></nav><div class="wrap article"><p class="eyebrow" style="color:#a5b4fc">可验证预言机</p><h1>Gauss</h1><p class="meta">高斯过程后验 + 主动学习建议 · 18 项测试 · 按调用付费</p><p class="lede">把稀疏、含噪的观测转化为对函数的校准后验——处处给出均值和诚实的不确定性——并指出下一个最值得采样的点。它是手工 UCB / 老虎机探索的有原则替代品：不确定性是计算出来的，而非调出来的。</p><div class="hero-cta"><a class="btn primary" href="https://oracles.modelmarket.dev/?o=gauss">在线演示 ↗</a><a class="btn" href="https://modeldev.modelmarket.dev/zh/guides/call-verifiable-oracle/">如何调用 ↗</a></div><section class="section prose"><h2>数学原理</h2><p>Gaussian-Process regression · RBF kernel k(x,x&#x27;)=σ_f²·exp(−‖x−x&#x27;‖²/2l²) · Cholesky posterior · Expected Improvement acquisition</p></section><section class="section"><h2>功能</h2><table class="cap-table"><thead><tr><th>ID</th><th>价格</th><th>输出</th></tr></thead><tbody><tr><td>gauss.field@v1</td><td>$0.006</td><td>posterior mean + variance field</td></tr><tr><td>gauss.suggest@v1</td><td>$0.006</td><td>best next point by Expected Improvement</td></tr><tr><td>gauss.verify@v1</td><td>$0.001</td><td>trustless posterior replay</td></tr></tbody></table></section><section class="section related"><h2>相关内容</h2><ul><li><a href="https://modeldev.modelmarket.dev/zh/learn/verifiable-randomness-course/">可验证随机性与密码学时间</a></li><li><a href="https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway">MCP oracle gateway (Glama)</a></li></ul></section></div>
+<footer class="site-foot wrap"><p>AICOM 生态系统 · <a href="https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md">知识库</a> · <a href="https://alexar76.github.io/aimarket-courses/">课程门户</a> · <a href="https://oracles.modelmarket.dev/">在线预言机</a></p></footer>
+</body>
+</html>

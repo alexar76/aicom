@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>AIMarket Bridges — LangGraph, CrewAI &amp; AutoGen Tools — AICOM Guide</title>
+        <meta name="description" content="Turn live AIMarket capabilities into native framework tools in two lines — signed receipts, budget caps, free trial, no invented results on 402." />
+        <meta name="keywords" content="langchain tools, langgraph, crewai, autogen, aimarket bridges, agent tools" />
+        <link rel="canonical" href="https://modeldev.modelmarket.dev/es/guides/aimarket-bridges/" />
+        <link rel="alternate" hreflang="en" href="https://modeldev.modelmarket.dev/guides/aimarket-bridges/" />
+<link rel="alternate" hreflang="ru" href="https://modeldev.modelmarket.dev/ru/guides/aimarket-bridges/" />
+<link rel="alternate" hreflang="es" href="https://modeldev.modelmarket.dev/es/guides/aimarket-bridges/" />
+<link rel="alternate" hreflang="fr" href="https://modeldev.modelmarket.dev/fr/guides/aimarket-bridges/" />
+<link rel="alternate" hreflang="zh" href="https://modeldev.modelmarket.dev/zh/guides/aimarket-bridges/" />
+<link rel="alternate" hreflang="x-default" href="https://modeldev.modelmarket.dev/guides/aimarket-bridges/" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="AIMarket Bridges — LangGraph, CrewAI &amp; AutoGen Tools — AICOM Guide" />
+        <meta property="og:description" content="Turn live AIMarket capabilities into native framework tools in two lines — signed receipts, budget caps, free trial, no invented results on 402." />
+        <meta property="og:url" content="https://modeldev.modelmarket.dev/es/guides/aimarket-bridges/" />
+        <meta property="og:image" content="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="AIMarket Bridges — LangGraph, CrewAI &amp; AutoGen Tools — AICOM Guide" />
+        <meta name="twitter:description" content="Turn live AIMarket capabilities into native framework tools in two lines — signed receipts, budget caps, free trial, no invented results on 402." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://modeldev.modelmarket.dev/shared/seo.css" />
+        <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "AIMarket Bridges — LangGraph, CrewAI & AutoGen Tools", "description": "Turn live AIMarket capabilities into native framework tools in two lines — signed receipts, budget caps, free trial, no invented results on 402.", "url": "https://modeldev.modelmarket.dev/es/guides/aimarket-bridges/", "inLanguage": "es", "author": {"@type": "Organization", "name": "AICOM"}}</script>
+
+</head>
+<body>
+<div class="bg-glow"></div>
+<nav class="topnav"><div class="wrap row"><a class="brand" href="https://modeldev.modelmarket.dev/es/"><span>AICOM</span> · Aprender</a><div class="nav-links"><a href="https://modeldev.modelmarket.dev/es/">Inicio</a><a href="https://modeldev.modelmarket.dev/es/learn/">Aprender</a><a href="https://modeldev.modelmarket.dev/es/oracles/">Oráculos</a><a href="https://modeldev.modelmarket.dev/es/guides/" aria-current="page">Guías</a><a href="https://modeldev.modelmarket.dev/encyclopedia/es/">Enciclopedia</a><a class="nav-cta" href="https://github.com/alexar76/aicom" rel="noopener">GitHub</a></div></div></nav><div class="wrap article"><p class="eyebrow">Guía para desarrolladores</p><h1>AIMarket Bridges — LangGraph, CrewAI &amp; AutoGen Tools</h1><p class="meta">Turn live AIMarket capabilities into native framework tools in two lines — signed receipts, budget caps, free trial, no invented results on 402.</p><div class="prose"><p><strong>What it is.</strong> A thin layer that makes the capabilities on an AIMarket hub appear as native</p>
+<p>tools inside LangChain/LangGraph, CrewAI and AutoGen.</p>
+<p><strong>Why it exists.</strong> Before it, a developer wanting to buy a verifiable random draw from their</p>
+<p>LangGraph agent had to read the protocol spec, write an HTTP client, and handle payment</p>
+<p>channels, signed receipts and verification — a day of work before the first useful call. Now:</p>
+<pre><code>from aimarket_bridges.langchain import aimarket_tools
+
+tools = aimarket_tools(&quot;https://modelmarket.dev&quot;, intent=&quot;verifiable randomness&quot;)</code></pre>
+<p>The marketplace has 47 capabilities and, at the time of writing, one paying external</p>
+<p>consumer. The bottleneck is demand, not supply, and this is the only piece of work that</p>
+<p>addresses it: it turns "learn a protocol" into "install a package".</p>
+<p>---</p>
+<h2>1. Shape of the thing</h2>
+<pre><code>flowchart TB
+    subgraph consumer[&quot;Consumer process&quot;]
+        agent[&quot;Agent&lt;br/&gt;(LangGraph · CrewAI · AutoGen)&quot;]
+        subgraph bridge[&quot;aimarket-bridges&quot;]
+            adapter[&quot;Framework adapter&lt;br/&gt;langchain.py · crewai.py · autogen.py&quot;]
+            core[&quot;Shared core&lt;br/&gt;catalog · schema · client · receipts&quot;]
+        end
+    end
+
+    hub[(&quot;AIMarket Hub&lt;br/&gt;modelmarket.dev&quot;)]
+    p1[&quot;Oracle family&lt;br/&gt;42 federated capabilities&quot;]
+    p2[&quot;Local capabilities&lt;br/&gt;5&quot;]
+
+    agent --&gt;|&quot;tool call&quot;| adapter
+    adapter --&gt;|&quot;Capability + args&quot;| core
+    core --&gt;|&quot;GET /manifest, /search&quot;| hub
+    core --&gt;|&quot;POST /invoke&quot;| hub
+    hub --&gt;|&quot;routes&quot;| p1
+    hub --&gt;|&quot;serves&quot;| p2
+    p1 -.-&gt;|&quot;GET /.well-known&lt;br/&gt;(signing key)&quot;| core
+
+    style bridge fill:#1f2937,stroke:#60a5fa,color:#e5e7eb
+    style hub fill:#0f766e,stroke:#5eead4,color:#ecfeff</code></pre>
+<p>The dotted arrow is the part most easily got wrong, and section 4 is about it.</p>
+<p>Each framework declares a tool differently; nothing else about a tool call differs. So the</p>
+<p>money, the refusals and the receipt live in the core, once, and each adapter is a thin</p>
+<p>translation of one interface into another.</p>
+<table>
+<thead><tr><th>Layer</th><th>File</th><th>Responsibility</th></tr></thead>
+<tbody>
+<tr><td>Catalogue</td><td><code>catalog.py</code></td><td>manifest → <code>Capability</code> records, framework-safe names</td></tr>
+<tr><td>Schema</td><td><code>schema.py</code></td><td>JSON Schema → pydantic model, for frameworks that demand one</td></tr>
+<tr><td>Invoke</td><td><code>client.py</code></td><td>one call: budget, refusal, receipt</td></tr>
+<tr><td>Trust</td><td><code>receipts.py</code></td><td>resolve the signing key of a capability's <strong>origin</strong></td></tr>
+<tr><td>Adapters</td><td><code>langchain.py</code>, <code>crewai.py</code>, <code>autogen.py</code></td><td>one framework each</td></tr>
+</tbody></table>
+<p>---</p>
+<h2>2. Where the catalogue comes from</h2>
+<pre><code>sequenceDiagram
+    autonumber
+    participant U as Your code
+    participant C as catalog.fetch_catalog
+    participant H as Hub
+
+    U-&gt;&gt;C: fetch_catalog(url, intent=&quot;consensus&quot;, max_price_usd=0.01)
+    C-&gt;&gt;H: GET /ai-market/v2/manifest
+    H--&gt;&gt;C: 47 tools, each with input_schema
+    opt intent given
+        C-&gt;&gt;H: GET /ai-market/v2/search?intent=consensus
+        H--&gt;&gt;C: ranked capability_ids (no schemas)
+        Note over C: join on capability_id —&lt;br/&gt;search ranks, the manifest describes
+    end
+    C-&gt;&gt;C: derive tool names, filter by price
+    C--&gt;&gt;U: list[Capability]</code></pre>
+<p>Two measured facts shaped this.</p>
+<p><strong><code>/search</code> does not return <code>input_schema</code>.</strong> Only the manifest does. A tool without an</p>
+<p>argument schema is a tool no model can call correctly, so the manifest is the only viable</p>
+<p>source; search contributes ranking, joined back on <code>capability_id</code>. The search parameter is</p>
+<p>named <code>intent</code>, not <code>q</code> — a hub given anything else answers with an unfiltered top-N, which</p>
+<p>reads like broken search when it is a different parameter name.</p>
+<p><strong>Not one of the 47 manifest names is usable as a tool name.</strong> They contain dots and <code>@</code>, and</p>
+<p>several contain spaces (<code>prod-skopos.Security posture@v1</code>), while tool names must generally</p>
+<p>match <code>^[A-Za-z0-9_-]{1,64}$</code>. Names are therefore derived from <code>capability_id</code></p>
+<p>(<code>sortes.draw@v1</code> → <code>sortes_draw_v1</code>) and de-duplicated deterministically: a saved agent</p>
+<p>graph stops matching its tools if names shuffle between runs.</p>
+<p><strong><code>fetch_catalog</code> raises when the hub is unreachable.</strong> It does not return an empty list. An</p>
+<p>agent that boots believing it has no capabilities is a far worse failure than one that</p>
+<p>refuses to boot — and the reference SDK's <code>discover()</code> swallows every exception and answers</p>
+<p><code>[]</code>, which is exactly the failure being avoided here.</p>
+<p>---</p>
+<h2>3. Money</h2>
+<pre><code>sequenceDiagram
+    autonumber
+    participant M as Model
+    participant T as Tool
+    participant C as HubClient
+    participant H as Hub
+
+    M-&gt;&gt;T: call(args)
+    T-&gt;&gt;C: invoke(capability, args)
+    C-&gt;&gt;C: reserve price under a lock
+    alt ceiling would be exceeded
+        C--xT: BudgetExceeded — the hub is never contacted
+    else within ceiling
+        C-&gt;&gt;H: POST /invoke
+        alt success
+            H--&gt;&gt;C: output + signed receipt
+            C--&gt;&gt;T: InvokeResult(ok=True)
+        else capability refuses
+            H--&gt;&gt;C: {ok: false, error: &quot;&#x27;count&#x27; must be an integer, got str&quot;}
+            C-&gt;&gt;C: release the reservation if nothing was billed
+            C--&gt;&gt;T: InvokeResult(ok=False) — readable text
+        else transport fails
+            H--xC: timeout / reset
+            C-&gt;&gt;C: release the reservation
+            C--xT: HubUnavailable
+        end
+    end</code></pre>
+<p><strong>The reservation happens before the call</strong>, under a lock. Reserving afterwards would let two</p>
+<p>concurrent calls both pass the same check — and LangGraph and CrewAI both run tool calls from</p>
+<p>worker threads, which is exactly when a spend counter matters. A 40-thread test proves a</p>
+<p>$0.10 ceiling permits exactly ten $0.01 calls.</p>
+<p><strong><code>budget_usd=0</code> means spend nothing. <code>None</code> means no ceiling.</strong> This is worth stating because</p>
+<p>it was wrong: <code>_reserve</code> tested <code>if self.budget_usd and …</code>, so a falsy budget skipped the</p>
+<p>check entirely. An operator writing <code>0</code> to mean "spend nothing" got unlimited spend, while</p>
+<p><code>remaining_usd</code> reported <code>$0.00</code> for the whole run. All three adapters had independently grown</p>
+<p>a guard against it, which is the clearest possible sign the defect was one level down.</p>
+<p><strong><code>max_price_usd</code> and <code>free_only</code> filter at build time</strong>, which is the only honest place for a</p>
+<p>limit: once a tool is in the agent's registry the agent decides when to call it, so a</p>
+<p>capability the operator cannot afford must never be handed over.</p>
+<p>A refused call releases its reservation <strong>only if nothing was billed</strong>. When a refusal comes</p>
+<p>back with a receipt, the call *was* metered, and pretending otherwise would let a loop of</p>
+<p>refusals spend invisibly.</p>
+<h3>What is actually charged today</h3>
+<p>Nothing, for 42 of the 47 capabilities. <code>price_per_call_usd</code> in the manifest is a **list</p>
+<p>price**, and the hub only collects it for a federated capability when the operator has</p>
+<p>declared <code>AIMARKET_SELLS_FOR</code> for that peer — which is unset on <code>modelmarket.dev</code>. So the</p>
+<p><code>$0.006</code> a tool description quotes for <code>aestus.seal@v1</code> is what the call *would* cost, not</p>
+<p>what left anyone's balance. <code>remaining_usd</code> moving in a bridge run is this client's own</p>
+<p>bookkeeping against <code>budget_usd</code>, not a debit.</p>
+<p>Two things follow for a bridge author:</p>
+<ul>
+<li><strong>Do not treat a successful call as proof of a working payment path.</strong> It is not; it is</li>
+</ul>
+<p>proof of a working free tier. The paid path is exercised by the escrow tests, not by this.</p>
+<ul>
+<li><strong>A free call can still be refused, with <code>402</code>.</strong> The two capabilities that sell</li>
+</ul>
+<p>computation cap what an unpaid caller may ask for — <code>chronos.eval@v1</code> at</p>
+<p><code>difficulty=100000</code>, <code>aestus.seal@v1</code> at <code>T=1000000</code> — and answer <code>402 payment_required</code></p>
+<p>above it, carrying the ceiling in <code>free_tier</code>. <code>InvokeResult</code> surfaces this as</p>
+<p><code>payment_required</code> and, specifically, <strong>as a refusal about the input</strong> rather than as "the</p>
+<p>operator has to fund a channel": lowering the field is the fix, and the model can do that</p>
+<p>itself. Collapsing the two would tell a model to give up on a call it could have made. The</p>
+<p>ceilings are published in the manifest, so <code>max_price_usd</code>/<code>free_only</code> filtering can read</p>
+<p>them at build time. Full detail: <a href="https://github.com/alexar76/aicom/blob/main/docs/free-and-paid-tiers.md">free-and-paid-tiers</a>.</p>
+<p>If <code>AIMARKET_SELLS_FOR</code> is ever set, every one of those 42 starts answering <code>402</code> to an</p>
+<p>invoke with no <code>X-Payment-Channel</code>, in the same minute, with no grace period. A bridge that</p>
+<p>handles <code>payment_required</code> today keeps working; one that treats it as fatal stops.</p>
+<p>---</p>
+<h2>4. Receipts, and what a signature actually proves</h2>
+<pre><code>sequenceDiagram
+    autonumber
+    participant C as HubClient
+    participant H as Hub
+    participant O as Origin&lt;br/&gt;(oracle family)
+    participant R as OriginKeyResolver
+
+    C-&gt;&gt;H: POST /invoke (capability_id, source_hub)
+    H-&gt;&gt;O: routes the call
+    O--&gt;&gt;H: output + receipt signed with O&#x27;s key
+    H--&gt;&gt;C: relays it unchanged
+    C-&gt;&gt;R: check(receipt, source_hub=O)
+    R-&gt;&gt;O: GET {source_hub}/.well-known/ai-market.json
+    O--&gt;&gt;R: signer_public_key = YkAOwWNb…
+    R-&gt;&gt;R: Ed25519 verify over the 7-field canonical
+    R--&gt;&gt;C: verified=True</code></pre>
+<p>A hub is a <strong>broker</strong>. When it routes an invoke to a federated provider, what comes back</p>
+<p>carries the *provider's* signature, not the hub's — that is the design, and it is what lets a</p>
+<p>buyer check the work without trusting the middleman.</p>
+<p>So the key depends on where the capability lives. Measured on <code>modelmarket.dev</code>:</p>
+<table>
+<thead><tr><th>Origin</th><th><code>signer_public_key</code></th></tr></thead>
+<tbody>
+<tr><td>hub <code>modelmarket.dev</code></td><td><code>sVjlCo52rBsmBH69iSXQ3oIB3LbWo4BgXT3iBhabDeM=</code></td></tr>
+<tr><td><code>oracles.modelmarket.dev/family</code></td><td><code>YkAOwWNbRFti2cqEzD6zfuI4OTLsGUoObpCmlwZqaTQ=</code></td></tr>
+</tbody></table>
+<p>42 of 47 capabilities are federated, so verifying everything against the hub's key reports</p>
+<p><code>invalid-signature</code> for <strong>89% of the catalogue</strong> — on receipts that are perfectly valid. The</p>
+<p>reference SDK did exactly that up to and including 2.1.2; <code>aimarket-agent</code> 2.2.0 fixes it, and</p>
+<p>this package fixes it independently because its floor is <code>&gt;=2.1</code> and 2.1.x is what is</p>
+<p>installed on any machine that has not upgraded.</p>
+<p><strong>What a verified receipt does and does not prove.</strong> It proves that *the party publishing a</p>
+<p>key at that URL* signed this exact 7-field record: nonce, product, capability, price,</p>
+<p>timestamp, success, latency. It does <strong>not</strong> prove the party is honest, that the computation</p>
+<p>was correct, or that the price matches what any ledger charged. A federated provider can</p>
+<p>publish any key and sign with the matching secret. The signature establishes attribution and</p>
+<p>non-repudiation, not virtue — and for the mathematical claims, several oracles ship a separate</p>
+<p><code>verify</code> capability precisely so the *answer* can be checked independently of the receipt.</p>
+<p><strong>Three states, not two.</strong> <code>ReceiptCheck.verified</code> is <code>True</code>, <code>False</code>, or <code>None</code> for "not</p>
+<p>checked". Collapsing <code>None</code> into <code>False</code> is how the SDK's false alarm stayed invisible: "we</p>
+<p>could not look" and "the signature is wrong" call for opposite reactions.</p>
+<p><strong>The receipt is kept out of the tool's text result.</strong> Pushing it into the content would spend</p>
+<p>model context on a blob no model reads. It travels through each framework's own metadata</p>
+<p>channel and through <code>HubClient.last_receipt</code>.</p>
+<p>---</p>
+<h2>5. Refusals are results; failures are exceptions</h2>
+<pre><code>flowchart LR
+    call[&quot;Tool call&quot;] --&gt; q{&quot;What happened?&quot;}
+    q --&gt;|&quot;capability rejected&lt;br/&gt;the input&quot;| refuse[&quot;Readable text to the model&lt;br/&gt;&#x27;…must be an integer, got str&#x27;&quot;]
+    q --&gt;|&quot;hub blocked it&lt;br/&gt;(safety gate)&quot;| refuse
+    q --&gt;|&quot;budget ceiling&quot;| exc1[&quot;BudgetExceeded&quot;]
+    q --&gt;|&quot;transport / config&quot;| exc2[&quot;HubUnavailable&quot;]
+
+    refuse --&gt; retry[&quot;Model corrects the argument&lt;br/&gt;and calls again&quot;]
+    exc1 --&gt; stop[&quot;The graph sees it&quot;]
+    exc2 --&gt; stop
+
+    style refuse fill:#065f46,stroke:#6ee7b7,color:#ecfdf5
+    style exc1 fill:#7c2d12,stroke:#fdba74,color:#fff7ed
+    style exc2 fill:#7c2d12,stroke:#fdba74,color:#fff7ed</code></pre>
+<p>A model told <code>'count' must be an integer, got str</code> fixes the argument on the next turn.</p>
+<p>Raising instead aborts the surrounding graph or crew over something the model could have</p>
+<p>repaired itself. Transport and configuration failures *do* raise: those the model cannot fix,</p>
+<p>and swallowing them yields an agent that reports success having called nothing.</p>
+<p>---</p>
+<h2>6. The three frameworks disagree about tools</h2>
+<pre><code>flowchart TB
+    cap[&quot;Capability.input_schema&lt;br/&gt;(JSON Schema from the hub)&quot;]
+
+    cap --&gt;|&quot;straight through&quot;| lc[&quot;langchain-core 1.5.2&lt;br/&gt;StructuredTool(args_schema=dict)&quot;]
+    cap --&gt;|&quot;model_from_schema()&quot;| cw[&quot;crewai 1.15.8&lt;br/&gt;BaseTool(args_schema=Model)&quot;]
+    cap --&gt;|&quot;model_from_schema()&quot;| ag[&quot;autogen-core 0.7.5&lt;br/&gt;BaseTool(args_type=Model)&lt;br/&gt;async run()&quot;]
+
+    style lc fill:#1e3a8a,stroke:#93c5fd,color:#eff6ff
+    style cw fill:#7c2d12,stroke:#fdba74,color:#fff7ed
+    style ag fill:#4c1d95,stroke:#c4b5fd,color:#f5f3ff</code></pre>
+<p>Every statement below was measured by introspection against the installed version, not taken</p>
+<p>from documentation — all three had moved past what the docs implied.</p>
+<p><strong>langchain-core 1.5.2</strong> accepts a raw JSON Schema dict as <code>args_schema</code>. Nothing to convert.</p>
+<p><strong>crewai 1.15.8</strong> accepts a dict too — and converts it with its own</p>
+<p><code>create_model_from_schema</code>, which <strong>refuses union types</strong>: `Unsupported JSON schema type:</p>
+<p>['string', 'integer']`. Ten of the 47 live capabilities die there (percola, fermat, ablation,</p>
+<p>landauer and fourier, each producer and its verifier). <code>schema.py</code> builds all ten. Even on the</p>
+<p>37 that survive, crewai's converter knows nothing of the alias inversion below.</p>
+<p><strong>autogen-core 0.7.5</strong> derives a schema from a function's *type annotations*, so <code>FunctionTool</code></p>
+<p>cannot express a capability whose shape arrives at runtime; <code>BaseTool</code> with an explicit</p>
+<p><code>args_type</code> is the right door, and its <code>run()</code> is async.</p>
+<h3>Keyword-named properties</h3>
+<p>The trap that would have cost the most:</p>
+<table>
+<thead><tr><th>Capability</th><th>Property</th><th>Problem</th></tr></thead>
+<tbody>
+<tr><td><code>fourier.verify@v1</code></td><td><code>lambda</code> — <strong>required</strong></td><td>a Python keyword</td></tr>
+<tr><td><code>fermat.route@v1</code></td><td><code>from</code>, nested in an edge</td><td>a Python keyword</td></tr>
+<tr><td><code>fermat.verify@v1</code></td><td><code>from</code>, nested in an edge</td><td>a Python keyword</td></tr>
+</tbody></table>
+<p>A pydantic field cannot be called <code>lambda</code>, so it becomes <code>lambda_</code>. Stopping there produces</p>
+<p>a tool that advertises an argument no capability accepts and sends one no capability reads —</p>
+<p>a refusal on a call that was <strong>already billed</strong>. <code>schema.py</code> attaches a pydantic <code>alias</code>, so</p>
+<p>the rewrite round-trips: <code>model_json_schema()</code> shows <code>lambda</code> and</p>
+<p><code>model_dump(by_alias=True)</code> emits <code>lambda</code>.</p>
+<p>Proven end to end over the live network, not in a stub: <code>fourier.spectrum@v1</code> →</p>
+<p><code>fourier.verify@v1</code>, keys on the wire <code>['edges', 'lambda', 'laplacian', 'tol', 'vector']</code>,</p>
+<p>verifier answering <code>valid: True</code>, residual 2.3e-16, both receipts verified against their</p>
+<p>origin's key.</p>
+<h3>langchain reserves two argument names</h3>
+<p><code>BaseTool.run</code> merges <code>run_manager</code> and its <code>RunnableConfig</code> <strong>over</strong> the model's arguments,</p>
+<p>keyed on what it finds on <code>_run</code>'s signature — and <code>StructuredTool._run</code> declares both. A</p>
+<p>capability property named <code>config</code> or <code>run_manager</code> therefore never reached the hub. With an</p>
+<p>*optional* colliding property the paid call goes out silently missing an argument the model</p>
+<p>supplied: billed, wrong answer, nothing raised, because a dict <code>args_schema</code> validates</p>
+<p>nothing. With a *required* one the capability is uncallable. The adapter subclasses</p>
+<p><code>StructuredTool</code> with a <code>_run</code> that declares neither name.</p>
+<h3>crewai turns one exception into six paid calls</h3>
+<p><code>tool_usage.py</code> wraps the invoke in `try: tool.invoke(...) except Exception:</p>
+<p>tool.invoke(...)`, and the ReAct loop retries three times. A hub that times out *after* the</p>
+<p>provider already ran is indistinguishable from one that never answered, so a single tool call</p>
+<p>could bill the hub six times while the bridge's own counter showed nothing spent. The adapter</p>
+<p>catches <code>HubUnavailable</code> inside <code>_run</code>.</p>
+<h3>Caching</h3>
+<p>A cache keyed on arguments would sell the same <code>sortes.draw@v1</code> draw twice. Per framework, as</p>
+<p>measured on the installed versions: crewai's <code>cache_function</code> is disabled for every tool;</p>
+<p>langgraph 1.2.10 *does* have a cache layer (<code>StateGraph.compile(cache=…)</code> plus a per-node</p>
+<p><code>cache_policy</code>) but <code>create_react_agent</code> reaches neither; autogen's tool results are not</p>
+<p>cached by the agent loop.</p>
+<p>---</p>
+<h2>7. Trust boundaries</h2>
+<pre><code>flowchart TB
+    subgraph trusted[&quot;You chose to trust&quot;]
+        yourcode[&quot;Your code&quot;]
+        hubchoice[&quot;The hub URL you passed&quot;]
+    end
+    subgraph untrusted[&quot;Authored by third parties, relayed by the hub&quot;]
+        srchub[&quot;source_hub URL&lt;br/&gt;→ your process FETCHES it&quot;]
+        schema[&quot;input_schema&lt;br/&gt;→ becomes a runtime pydantic model&quot;]
+        desc[&quot;description&lt;br/&gt;→ goes into your model&#x27;s prompt&quot;]
+        output[&quot;output&lt;br/&gt;→ goes into your model&#x27;s context&quot;]
+    end
+
+    hubchoice --&gt; untrusted
+    untrusted --&gt; yourcode
+
+    style untrusted fill:#7f1d1d,stroke:#fca5a5,color:#fef2f2
+    style trusted fill:#064e3b,stroke:#6ee7b7,color:#ecfdf5</code></pre>
+<p>42 of the 47 capabilities are federated: a third party writes their metadata and the hub</p>
+<p>relays it. Four fields cross that boundary into your process, and it is worth naming them</p>
+<p>plainly rather than discovering them later.</p>
+<ul>
+<li><strong><code>source_hub</code></strong> is a URL your process fetches to resolve a signing key. Federation with</li>
+</ul>
+<p>strangers is the product, so fetching peer URLs is inherent, but the request is constrained:</p>
+<p>the fragment and query are dropped so the path cannot be steered (a <code>#</code> used to suppress the</p>
+<p>appended suffix entirely and give exact path control), only <code>http</code>/<code>https</code> are fetched, and</p>
+<p>redirects are not followed. It is deliberately <strong>not</strong> an address filter — refusing loopback</p>
+<p>and private ranges would refuse this project's own documented deployments and silently</p>
+<p>downgrade every receipt in a self-hosted stack from verified to "unchecked". <code>source_hub</code> is</p>
+<p>also hub-authored: the crawler overwrites whatever a peer claims with the URL it actually</p>
+<p>crawled, and screens that against its own SSRF guard before indexing.</p>
+<ul>
+<li><strong><code>input_schema</code></strong> becomes a pydantic model at tool-build time. <code>schema.py</code> reports anything</li>
+</ul>
+<p>it cannot model (<code>unsupported_keywords</code>) rather than dropping it silently, because a tool</p>
+<p>advertising an interface it does not honour fails far from the cause.</p>
+<ul>
+<li><strong><code>description</code></strong> reaches your model's prompt. Nothing sanitises it, and nothing can, in</li>
+</ul>
+<p>general: it is prose whose purpose is to persuade a model to call the tool. Treat a hub's</p>
+<p>catalogue with the same care as any other prompt content you did not write.</p>
+<ul>
+<li><strong><code>output</code></strong> reaches your model's context whole.</li>
+</ul>
+<p>The bridge's own guards against a hostile *peer* are: price ceilings at build time, a spend</p>
+<p>ceiling enforced before each call, a refusal path that cannot abort your graph, and</p>
+<p>verification bound to the origin that signed. What it deliberately does <strong>not</strong> do is decide</p>
+<p>which peers deserve trust — that is the hub operator's job, and the hub exposes trust scores</p>
+<p>and stake for it.</p>
+<p>---</p>
+<h2>8. The shared signature</h2>
+<p>All three adapters take the same arguments, so moving a graph from one framework to another</p>
+<p>changes the import and nothing else:</p>
+<pre><code>aimarket_tools(
+    base_url,               # &quot;https://modelmarket.dev&quot;
+    intent=&quot;&quot;,              # rank by relevance instead of taking the whole catalogue
+    limit=0,                # cap how many tools the agent sees
+    max_price_usd=None,     # never hand over a tool you cannot afford
+    free_only=False,
+    budget_usd=1.0,         # 0 = spend nothing · None = no ceiling
+)</code></pre>
+<p><code>intent</code>, <code>limit</code>, <code>max_price_usd</code> and <code>free_only</code> filter at build time, which is the only</p>
+<p>honest place: once a tool is in the agent's registry the agent decides when to call it.</p>
+<p><code>budget_usd</code> is a ceiling across every tool in the returned list — they share one <code>HubClient</code> —</p>
+<p>enforced before each call and safe across threads.</p>
+<p>Install instructions and a worked example per framework are in §9.</p>
+<p>---</p>
+<h2>9. How to call it</h2>
+<h3>Install, and why the order matters</h3>
+<pre><code>pip install &quot;aimarket-bridges[langgraph]&quot;</code></pre>
+<pre><code>pip install &quot;aimarket-bridges[crewai]&quot;</code></pre>
+<pre><code>pip install &quot;aimarket-bridges[autogen]&quot;</code></pre>
+<p>Install only the extra you use. CrewAI and AutoGen do not agree on a pydantic version and</p>
+<p>cannot share an environment — this package keeps no framework in its own dependencies for</p>
+<p>that reason.</p>
+<p>The bridge requires <code>aimarket-agent&gt;=2.2</code>, because 2.1.x verifies every receipt against the</p>
+<p>hub's key and knows nothing of the v2 canonical, so it answers <code>invalid-signature</code> for all 42</p>
+<p>federated capabilities and for every rejection receipt. Until 2.2.0 is on PyPI, install both</p>
+<p>from a checkout, SDK first:</p>
+<pre><code>pip install ./aimarket-agent ./aimarket-bridges</code></pre>
+<h3>LangChain / LangGraph</h3>
+<pre><code>from aimarket_bridges.langchain import aimarket_tools
+
+tools = aimarket_tools(
+    &quot;https://modelmarket.dev&quot;,
+    intent=&quot;verifiable randomness&quot;,   # rank by relevance; omit for the whole catalogue
+    budget_usd=0.50,                  # shared ceiling across every call these tools make
+    max_price_usd=0.01,               # never hand over a tool dearer than this
+)</code></pre>
+<p>Hand them to an agent the ordinary way:</p>
+<pre><code>from langgraph.prebuilt import create_react_agent
+
+agent = create_react_agent(your_model, tools)
+result = agent.invoke({&quot;messages&quot;: [(&quot;user&quot;, &quot;draw a verifiable random number&quot;)]})</code></pre>
+<p>That emits a deprecation warning on LangGraph 1.x — it moved to</p>
+<p><code>from langchain.agents import create_agent</code>, which needs the umbrella <code>langchain</code> package that</p>
+<p><code>langgraph</code> alone does not pull in. It is still the shorter path if you have only</p>
+<p><code>langchain-core</code> and <code>langgraph</code> installed, and it is what the live run in §11 used; switch to</p>
+<p><code>create_agent</code> when you add <code>langchain</code> for other reasons. Either accepts these tools</p>
+<p>unchanged — nothing in the bridge depends on which one builds the graph.</p>
+<p>Or call one directly, which is what the model does:</p>
+<pre><code>tool = {t.name: t for t in tools}[&quot;sortes_draw_v1&quot;]
+output = tool.invoke({&quot;alpha&quot;: &quot;my-seed&quot;})</code></pre>
+<p>The receipt travels as the tool's <strong>artifact</strong>, so it never costs the model context:</p>
+<pre><code>message = tool.invoke(
+    {&quot;args&quot;: {&quot;alpha&quot;: &quot;my-seed&quot;}, &quot;id&quot;: &quot;call_1&quot;, &quot;name&quot;: tool.name, &quot;type&quot;: &quot;tool_call&quot;}
+)
+message.artifact[&quot;receipt_verified&quot;]   # True
+message.artifact[&quot;price_usd&quot;]          # 0.006
+message.artifact[&quot;receipt&quot;][&quot;nonce&quot;]</code></pre>
+<p><code>tool.metadata</code> carries <code>capability_id</code>, <code>price_usd</code>, <code>source_hub</code> and <code>product_id</code>, so a</p>
+<p>graph can route or filter on them without parsing the description.</p>
+<h3>CrewAI</h3>
+<pre><code>from aimarket_bridges.crewai import aimarket_tools
+from crewai import Agent
+
+tools = aimarket_tools(&quot;https://modelmarket.dev&quot;, budget_usd=0.50)
+
+researcher = Agent(
+    role=&quot;Researcher&quot;,
+    goal=&quot;Draw randomness nobody can grind&quot;,
+    backstory=&quot;Buys verifiable capabilities rather than trusting a coin flip.&quot;,
+    tools=tools,
+    llm=your_llm,
+)</code></pre>
+<p>Calling one directly, and reading the provenance afterwards:</p>
+<pre><code>tool = next(t for t in tools if t.capability.capability_id == &quot;sortes.draw@v1&quot;)
+output = tool.run(alpha=&quot;my-seed&quot;)
+
+tool.last_result.receipt_verified   # True
+tool.last_result.price_usd          # 0.006
+tool.client.spent_usd               # running total across every tool in this list</code></pre>
+<p>Caching is disabled on every tool (<code>cache_function=never_cache</code>) and that is deliberate:</p>
+<p><code>sortes.draw@v1</code> and <code>platon.random@v1</code> return fresh randomness, so a cache keyed on</p>
+<p>arguments would sell the same draw twice.</p>
+<h3>AutoGen</h3>
+<pre><code>from aimarket_bridges.autogen import aimarket_tools
+from autogen_agentchat.agents import AssistantAgent
+
+tools = aimarket_tools(&quot;https://modelmarket.dev&quot;, budget_usd=0.50)
+assistant = AssistantAgent(&quot;buyer&quot;, model_client=your_client, tools=tools)</code></pre>
+<p>Calling one directly — use <code>run_json</code>, which is the entry point AutoGen itself uses:</p>
+<pre><code>import asyncio
+from autogen_core import CancellationToken
+
+tool = next(t for t in tools if t.capability.capability_id == &quot;sortes.draw@v1&quot;)
+result = asyncio.run(tool.run_json({&quot;alpha&quot;: &quot;my-seed&quot;}, CancellationToken()))
+
+result.output              # the capability&#x27;s own answer
+result.receipt_verified    # True
+tool.return_value_as_string(result)   # what the model reads</code></pre>
+<p><code>run(args, token)</code> takes an <strong>instance</strong> of the args model. <code>tool.args_type()</code> returns the</p>
+<p>class, not an instance — it is a method in autogen-core — so build it with</p>
+<p><code>tool.args_type()(**kwargs)</code> or use <code>run_json</code>, which does that for you.</p>
+<h3>Without a framework</h3>
+<pre><code>from aimarket_bridges import fetch_catalog, HubClient
+
+caps = fetch_catalog(&quot;https://modelmarket.dev&quot;, intent=&quot;consensus&quot;)
+with HubClient(&quot;https://modelmarket.dev&quot;, budget_usd=0.50) as hub:
+    result = hub.invoke(caps[0], {&quot;values&quot;: [1.0, 2.0, 3.0, 100.0]})
+    print(result.output, result.receipt_verified)</code></pre>
+<h3>What a refusal looks like</h3>
+<p>Nothing raises when a capability rejects its input. The tool returns a sentence the model</p>
+<p>acts on:</p>
+<pre><code>sortes.draw@v1 refused this input: &#x27;num_bytes&#x27; must be an integer, got str</code></pre>
+<p><code>BudgetExceeded</code> and <code>HubUnavailable</code> <strong>do</strong> raise — a spend ceiling and an unreachable hub</p>
+<p>are not things a model can fix by rewriting an argument.</p>
+<p>---</p>
+<h2>10. Tests</h2>
+<p>530 tests in this package, and 734 across everything the bridge touches. The core suite is</p>
+<p>parametrized over the 47 real capabilities captured in <code>tests/live_manifest.json</code> — the actual</p>
+<p>manifest of <code>modelmarket.dev</code> — rather than hand-written fixtures, because every interesting</p>
+<p>problem here came from what the real catalogue contains: names with spaces, union types,</p>
+<p><code>oneOf</code> nested inside <code>items</code>, keyword property names, two properties that sanitise to the</p>
+<p>same identifier, and 42 of 47 entries signed by somebody other than the hub. No unit test</p>
+<p>touches the network.</p>
+<table>
+<thead><tr><th>Suite</th><th>Tests</th></tr></thead>
+<tbody>
+<tr><td>core (<code>schema</code>, <code>catalog</code>, <code>client</code>, <code>receipts</code>)</td><td>234</td></tr>
+<tr><td>langchain / langgraph</td><td>172</td></tr>
+<tr><td>crewai</td><td>58</td></tr>
+<tr><td>autogen</td><td>66</td></tr>
+</tbody></table>
+<p>Four more suites guard the contracts this package shares with the rest of the ecosystem, and</p>
+<p>all of them now run in CI — they were executed only by hand until 2026-07-30:</p>
+<table>
+<thead><tr><th>Suite</th><th>Tests</th><th>What it would catch</th></tr></thead>
+<tbody>
+<tr><td><code>aimarket-agent</code></td><td>43</td><td>origin-key resolution, the v1 and v2 canonicals</td></tr>
+<tr><td>protocol vectors ↔ 4 implementations</td><td>23</td><td>a canonical string drifting in any of them</td></tr>
+<tr><td>hub escrow bridge</td><td>119</td><td>spend ceilings, the replay guard, key handling</td></tr>
+<tr><td>oracle distribution names</td><td>19</td><td>a dependency name a stranger owns on PyPI</td></tr>
+</tbody></table>
+<p>---</p>
+<h2>11. Live verification</h2>
+<p>Everything below was run against the production hub <code>https://modelmarket.dev</code> on 2026-07-29</p>
+<p>and 2026-07-30. It is recorded because a passing unit suite proves the adapters agree with a</p>
+<p>stub, and what a buyer needs to know is whether they agree with the network.</p>
+<p>The capability prices quoted are list prices, and on the federated catalogue nothing collected</p>
+<p>them — see "What \"$0.006 billed\" actually means" below, which is the part most easily</p>
+<p>misread.</p>
+<h3>What the live catalogue actually is</h3>
+<pre><code>47 capabilities   5 local · 42 federated, all from https://oracles.modelmarket.dev/family
+hub signing key        sVjlCo52rBsmBH69iSXQ3oIB3LbWo4BgXT3iBhabDeM=
+origin signing key     YkAOwWNbRFti2cqEzD6zfuI4OTLsGUoObpCmlwZqaTQ=</code></pre>
+<p>Two distinct keys, which is the whole reason §4 exists. Note also that the 42 "federated"</p>
+<p>capabilities all come from the operator's own satellite: today there is no third-party-authored</p>
+<p><code>source_hub</code>, <code>input_schema</code> or <code>description</code> in production. The trust boundary in §7 is real</p>
+<p>but currently unexercised.</p>
+<h3>The three adapters, each making a real paid call</h3>
+<p>All three built 47 tools from the live manifest and invoked <code>platon.state@v1</code> at $0.001.</p>
+<table>
+<thead><tr><th>Adapter</th><th>Entry point used</th><th>Result</th><th>Receipt</th></tr></thead>
+<tbody>
+<tr><td>LangChain</td><td><code>tool.invoke({})</code></td><td><code>dict</code> output</td><td><code>artifact.receipt_verified = True</code></td></tr>
+<tr><td>CrewAI</td><td><code>tool.run()</code></td><td><code>dict</code> output</td><td><code>last_result.receipt_verified = True</code></td></tr>
+<tr><td>AutoGen</td><td><code>tool.run_json({}, token)</code></td><td><code>CapabilityResult</code></td><td><code>receipt_verified = True</code></td></tr>
+</tbody></table>
+<p>The description each model would see, identical across the three:</p>
+<pre><code>[$0.0010 per call · via https://oracles.modelmarket.dev/family] Snapshot of the 32D universe
+— telemetry, oscillators, projection…</code></pre>
+<p>LangChain's metadata, for a graph that wants to route rather than read prose:</p>
+<pre><code>{&#x27;capability_id&#x27;: &#x27;platon.state@v1&#x27;, &#x27;price_usd&#x27;: 0.001,
+ &#x27;source_hub&#x27;: &#x27;https://oracles.modelmarket.dev/family&#x27;, &#x27;product_id&#x27;: &#x27;prod-platon&#x27;}</code></pre>
+<p>CrewAI reported <code>cache_function = never_cache</code> and a running total of <code>$0.0010</code> against a</p>
+<p><code>$0.02</code> ceiling. AutoGen used its dedicated 8-thread pool, built on first use.</p>
+<h3>A producer → verifier round trip, which is the harder proof</h3>
+<p><code>fourier.spectrum@v1</code> computes a graph's Fiedler pair; <code>fourier.verify@v1</code> checks it. The</p>
+<p>second has a <strong>required property named <code>lambda</code></strong> — a Python keyword — so a pydantic field</p>
+<p>cannot carry that name and the alias has to invert on the way out. If it does not, every call</p>
+<p>to that capability is a billed, guaranteed refusal.</p>
+<p>Input for the verifier was built through the generated args model, the way an agent would:</p>
+<pre><code>keys on the wire:  [&#x27;edges&#x27;, &#x27;lambda&#x27;, &#x27;laplacian&#x27;, &#x27;tol&#x27;, &#x27;vector&#x27;]</code></pre>
+<p><code>lambda</code>, not <code>lambda_</code>. The verifier's answer:</p>
+<pre><code>{&quot;valid&quot;: true, &quot;residual&quot;: 2.2887833992611197e-16,
+ &quot;orthogonality&quot;: 1.719950113979704e-16, &quot;is_eigenpair&quot;: true}</code></pre>
+<p>Both receipts verified against the origin's key. $0.0060 for the pair.</p>
+<h3>The SDK, before and after</h3>
+<p>The same federated invoke through <code>aimarket-agent</code> directly:</p>
+<pre><code>2.1.2   receipt_verified = False   invalid-signature
+2.2.0   receipt_verified = True    ok</code></pre>
+<p>Nothing about the call changed. 2.1.2 verified against the hub's key, and the signer was the</p>
+<p>oracle — so it reported a forgery on 42 of 47 capabilities. The same run also resolved both</p>
+<p>origins to their own distinct keys, which is the check that could not have passed before.</p>
+<h3>Two things the live runs taught that no stub would have</h3>
+<p><strong>Local capabilities require payment; federated ones went through on the free trial.</strong> Both</p>
+<p><code>skopos.fleet.status@v1</code> and <code>security-rules.sec-feed@v1</code> answered:</p>
+<pre><code>{&quot;success&quot;: false, &quot;error&quot;: &quot;payment_required&quot;,
+ &quot;detail&quot;: &quot;X-Payment-Channel required for paid capability invoke&quot;, &quot;needed&quot;: 0.01}</code></pre>
+<p>while <code>platon.state@v1</code> — federated, also paid — completed. So the trial tier covers the 42</p>
+<p>federated capabilities and not the 5 local ones. Whether that asymmetry is intended is a</p>
+<p>question for the hub operator; it is recorded here because it changes what a new consumer</p>
+<p>experiences on their first call.</p>
+<p><strong><code>tool.args_type()</code> in autogen-core is a method returning the class, not a constructor.</strong></p>
+<p>Passing its result to <code>run()</code> produced `TypeError: BaseModel.model_dump() missing 1 required</p>
+<p>positional argument: 'self'` from deep inside the adapter, pointing at the wrong place</p>
+<p>entirely. Found by driving the adapter by hand, which is exactly who hits it; the adapter now</p>
+<p>answers with a message naming <code>run_json</code>.</p>
+<h3>A real model driving each bridge</h3>
+<p>The runs above call the tools directly, the way a framework does. What they do not prove is</p>
+<p>that a *model* can pick the right tool out of a catalogue and fill its arguments — so that was</p>
+<p>run too, with <code>minimax/minimax-m3</code> over OpenRouter, temperature 0, against the same production</p>
+<p>hub. Each framework was handed the five tools that <code>intent="verifiable randomness"</code> ranks</p>
+<p>highest and asked for a draw with a specific seed.</p>
+<p><strong>LangGraph</strong> (<code>create_react_agent</code>, 5 tools):</p>
+<pre><code>tools offered   sortes_draw_v1 · platon_random_v1 · platon_beacon_v1 · platon_commit_v1 · platon_reveal_v1
+AIMessage       CALL sortes_draw_v1({&#x27;alpha&#x27;: &#x27;aicom-live-test&#x27;})
+ToolMessage     {&quot;suite&quot;: &quot;ECVRF-EDWARDS25519-SHA512-TAI&quot;, &quot;public_key&quot;: &quot;3c813559787c5cda…
+                receipt verified: True | $0.006
+AIMessage       8da29499522bdb49b8802fab3e2ccd8e0b596f5cf101cea51140ef965dba5640…</code></pre>
+<p><strong>CrewAI</strong> (<code>Agent</code> + <code>Task</code> + <code>Crew.kickoff()</code>, 4 tools): the agent selected</p>
+<p><code>sortes_draw_v1</code>, the receipt verified (<code>ok</code>), $0.0060 of a $0.05 ceiling spent, and the crew</p>
+<p>returned the beta hex.</p>
+<p><strong>AutoGen</strong> (<code>AssistantAgent</code> with <code>reflect_on_tool_use=True</code>, 4 tools):</p>
+<pre><code>ToolCallRequestEvent    sortes_draw_v1({&quot;alpha&quot;:&quot;aicom-autogen-test&quot;})
+ToolCallExecutionEvent  {&quot;suite&quot;: &quot;ECVRF-EDWARDS25519-SHA512-TAI&quot;, …
+TextMessage             **Beta value:** 20d23772153ba0f1b2fefc1e24f41fb53d2a3b85…
+receipt                 verified=True (ok) $0.006</code></pre>
+<p>Three different frameworks, three different agent loops, one model, and in every case: the</p>
+<p>right tool chosen out of several, the argument named correctly (<code>alpha</code>), a real ECVRF draw</p>
+<p>from the oracle, and a receipt that verified against the <strong>origin's</strong> key rather than the</p>
+<p>hub's.</p>
+<h3>What "$0.006 billed" actually means</h3>
+<p>Nothing was charged to anybody, and the figure needs saying carefully because the bridge</p>
+<p>prints it as if it were a charge.</p>
+<p><code>$0.006</code> is the capability's <strong>list price</strong> from the catalogue. The bridge subtracts it from</p>
+<p>its own <code>budget_usd</code> ceiling and reports it as <code>price_usd</code>, and the oracle states it inside the</p>
+<p>signed receipt. None of that moves money. Verified on the hub after the runs: the escrow</p>
+<p>authorisation store still held exactly the same three <code>pending</code> rows and 240000 units as</p>
+<p>before, and the channel ledger the same 4 channels and 2 debited receipts — no channel was</p>
+<p>opened, no debit authorisation stored, no ledger entry made, no USDC anywhere.</p>
+<p>The reason is in the hub's invoke path. Its payment gate — 402 <code>payment_required</code> without an</p>
+<p><code>X-Payment-Channel</code> — sits <strong>inside</strong> the <code>source_hub == "local"</code> branch. On the federated</p>
+<p>branch the hub only *passes through* a 402 that the peer itself returns; it does not charge on</p>
+<p>the peer's behalf. The oracle family does not return one. So the five local capabilities are</p>
+<p>gated (measured: <code>skopos.fleet.status@v1</code> and <code>security-rules.sec-feed@v1</code> both answer</p>
+<p><code>payment_required</code>) and the 42 federated ones are, today, free to call while advertising a</p>
+<p>price.</p>
+<p>For a consumer that is simply the current state of the network. For an operator it is worth</p>
+<p>knowing that <code>budget_usd</code> bounds what the catalogue *says* the calls cost, not what leaves a</p>
+<p>wallet — the two coincide only once the provider enforces payment.</p>
+<p>Worth noting what these runs do *not* show, either. One model, one temperature, one prompt</p>
+<p>shape, and a capability whose argument is a single string. A capability with a nested <code>oneOf</code></p>
+<p>argument — a <code>fermat.route@v1</code> edge, say — asks considerably more of a model, and nothing here</p>
+<p>measures how often it gets that right. What is settled is that the bridge is not the obstacle.</p>
+<h3>Framework versions the suites actually resolved</h3>
+<pre><code>langchain-core 1.5.2 · langgraph 1.2.10 · crewai 1.15.9 · autogen-core 0.7.5
+pydantic 2.12.5 (with crewai) · 2.13.4 (with autogen)
+for the live model runs: langchain-openai 1.4.1 · autogen-ext 0.7.5 · minimax/minimax-m3</code></pre>
+<p>The adapters were written against crewai <strong>1.15.8</strong> and pass on 1.15.9, which is the useful</p>
+<p>fact — and the two pydantic versions are why the CI job builds two virtualenvs rather than one.</p>
+<p>Apache-2.0.</p></div><section class="section related"><h2>Relacionado</h2><ul><li><a href="https://modeldev.modelmarket.dev/es/learn/agent-economy-course/">Construye una economía de agentes desde cero</a></li><li><a href="https://modeldev.modelmarket.dev/es/learn/orchestration-course/">Orquestación de agentes de IA</a></li></ul></section></div>
+<footer class="site-foot wrap"><p>Ecosistema AICOM · <a href="https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md">Base de conocimiento</a> · <a href="https://alexar76.github.io/aimarket-courses/">Portal de cursos</a> · <a href="https://oracles.modelmarket.dev/">Oráculos en vivo</a></p></footer>
+</body>
+</html>

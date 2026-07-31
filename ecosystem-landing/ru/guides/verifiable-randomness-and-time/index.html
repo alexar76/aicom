@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Верифицируемая случайность и криптографическое время для агентов — AICOM Guide</title>
+        <meta name="description" content="Спецификация продукта для хаос-VRF Platon и Wesolowski VDF Chronos — устойчивая к смещению случайность и доказательство прошедшего времени, которое любой агент может проверить офлайн." />
+        <meta name="keywords" content="verifiable randomness, VDF, chaos VRF, Wesolowski proof, agent lottery" />
+        <link rel="canonical" href="https://modeldev.modelmarket.dev/ru/guides/verifiable-randomness-and-time/" />
+        <link rel="alternate" hreflang="en" href="https://modeldev.modelmarket.dev/guides/verifiable-randomness-and-time/" />
+<link rel="alternate" hreflang="ru" href="https://modeldev.modelmarket.dev/ru/guides/verifiable-randomness-and-time/" />
+<link rel="alternate" hreflang="es" href="https://modeldev.modelmarket.dev/es/guides/verifiable-randomness-and-time/" />
+<link rel="alternate" hreflang="fr" href="https://modeldev.modelmarket.dev/fr/guides/verifiable-randomness-and-time/" />
+<link rel="alternate" hreflang="zh" href="https://modeldev.modelmarket.dev/zh/guides/verifiable-randomness-and-time/" />
+<link rel="alternate" hreflang="x-default" href="https://modeldev.modelmarket.dev/guides/verifiable-randomness-and-time/" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Верифицируемая случайность и криптографическое время для агентов — AICOM Guide" />
+        <meta property="og:description" content="Спецификация продукта для хаос-VRF Platon и Wesolowski VDF Chronos — устойчивая к смещению случайность и доказательство прошедшего времени, которое любой агент может проверить офлайн." />
+        <meta property="og:url" content="https://modeldev.modelmarket.dev/ru/guides/verifiable-randomness-and-time/" />
+        <meta property="og:image" content="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Верифицируемая случайность и криптографическое время для агентов — AICOM Guide" />
+        <meta name="twitter:description" content="Спецификация продукта для хаос-VRF Platon и Wesolowski VDF Chronos — устойчивая к смещению случайность и доказательство прошедшего времени, которое любой агент может проверить офлайн." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://modeldev.modelmarket.dev/shared/seo.css" />
+        <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Верифицируемая случайность и криптографическое время для агентов", "description": "Спецификация продукта для хаос-VRF Platon и Wesolowski VDF Chronos — устойчивая к смещению случайность и доказательство прошедшего времени, которое любой агент может проверить офлайн.", "url": "https://modeldev.modelmarket.dev/ru/guides/verifiable-randomness-and-time/", "inLanguage": "ru", "author": {"@type": "Organization", "name": "AICOM"}}</script>
+
+</head>
+<body>
+<div class="bg-glow"></div>
+<nav class="topnav"><div class="wrap row"><a class="brand" href="https://modeldev.modelmarket.dev/ru/"><span>AICOM</span> · Обучение</a><div class="nav-links"><a href="https://modeldev.modelmarket.dev/ru/">Главная</a><a href="https://modeldev.modelmarket.dev/ru/learn/">Обучение</a><a href="https://modeldev.modelmarket.dev/ru/oracles/">Оракулы</a><a href="https://modeldev.modelmarket.dev/ru/guides/" aria-current="page">Руководства</a><a href="https://modeldev.modelmarket.dev/encyclopedia/ru/">Энциклопедия</a><a class="nav-cta" href="https://github.com/alexar76/aicom" rel="noopener">GitHub</a></div></div></nav><div class="wrap article"><p class="eyebrow">Руководство разработчика</p><h1>Верифицируемая случайность и криптографическое время для агентов</h1><p class="meta">Спецификация продукта для хаос-VRF Platon и Wesolowski VDF Chronos — устойчивая к смещению случайность и доказательство прошедшего времени, которое любой агент может проверить офлайн.</p><div class="prose"><p><strong>Status:</strong> draft · <strong>Owner:</strong> ecosystem · <strong>Depends on:</strong> oracle-core, AIMarket Hub v2, AIMarketEscrow (Base)</p>
+<h2>0. Positioning — focus area</h2>
+<p>Sell two things autonomous agents constantly need and <strong>cannot fake themselves</strong>:</p>
+<ul>
+<li><strong>Verifiable randomness</strong> (Platon) — unbiasable, signed entropy for fair selection, commit-reveal,</li>
+</ul>
+<p>leader election, sampling, raffles, anti-MEV ordering.</p>
+<ul>
+<li><strong>Verifiable time / delay</strong> (Chronos) — a Verifiable Delay Function (VDF): a proof that real</li>
+</ul>
+<p>sequential work (≈ wall-clock time) elapsed, for fair ordering, timed reveals, proof-of-elapsed-time.</p>
+<p><strong>Wedge vs incumbents (e.g. Chainlink VRF):</strong> *agent-native* — pay-per-call in USDC, **no signup, no</p>
+<p>KYC, no dashboard<strong>, discovered + called over </strong>MCP<strong> by an autonomous agent, and </strong>cheaper** (L2</p>
+<p>gas). The output is <strong>independently verifiable</strong>, so the pitch is "verify it yourself," not "trust us."</p>
+<h2>1. Capabilities (grounded in the live oracles)</h2>
+<table>
+<thead><tr><th>capabilityId</th><th>price (USD)</th><th>input</th><th>output</th><th>status</th></tr></thead>
+<tbody>
+<tr><td><code>platon.random@v1</code></td><td>0.004</td><td><code>{num_bytes, client_seed?}</code></td><td><code>{random_hex, proof{state_hash,tick,timestamp,entropy_commitment}, signature}</code> (Ed25519)</td><td><strong>live</strong></td></tr>
+<tr><td><code>platon.beacon@v1</code></td><td>0.004</td><td><code>{}</code></td><td>public round beacon (same proof/sig shape)</td><td><strong>live</strong></td></tr>
+<tr><td><code>platon.commit@v1</code></td><td>0.004</td><td><code>{}</code></td><td>commit half of a commit-reveal</td><td><strong>live</strong></td></tr>
+<tr><td><code>platon.ask@v1</code></td><td>0.003</td><td><code>{question}</code></td><td>entropy-derived answer</td><td><strong>live</strong></td></tr>
+<tr><td><code>chronos.eval@v1</code></td><td>0.010</td><td><code>{seed, difficulty T (1..1e6)}</code></td><td><code>{scheme, g, y=g^(2^T), proof{pi,l}, modulus}</code> (Wesolowski VDF, RSA-2048)</td><td><strong>live</strong></td></tr>
+<tr><td><code>chronos.verify@v1</code></td><td>0.001</td><td><code>{g, y, T, proof}</code></td><td><code>{valid}</code></td><td><strong>live</strong></td></tr>
+<tr><td><strong><code>platon.verify@v1</code></strong></td><td>~0.001</td><td><code>{random_hex, proof, signature}</code></td><td><code>{valid}</code></td><td><strong>TO BUILD</strong> (gap §6)</td></tr>
+</tbody></table>
+<p>Source of truth: <code>oracles/oracles/platon</code>, <code>oracles/oracles/chronos</code>, declared via</p>
+<p><code>oracle-core</code> <code>OracleSpec</code>/<code>Capability</code>; invoked today by the relayer</p>
+<p>(<code>lottery/relayer/ailottery_relayer/oracles.py</code>).</p>
+<h2>2. Verifiability — the actual differentiator</h2>
+<p><strong>Platon randomness</strong> is authenticated by an <strong>Ed25519 signature</strong> over <code>(random_hex ‖ proof)</code> by the</p>
+<p>oracle signer; the consumer verifies it against the **signer public key published in the signed Hub</p>
+<p>manifest**. The <code>entropy_commitment</code> + <code>state_hash</code> bind the value to the oracle's chaotic state at</p>
+<p><code>tick</code>/<code>timestamp</code> (commit-reveal-safe).</p>
+<p><strong>Chronos VDF</strong> output satisfies <code>y = g^(2^T) mod N</code> with a Wesolowski proof <code>(π, l)</code> checkable in **one</p>
+<p>exponentiation<strong> — via <code>chronos.verify@v1</code> (off-chain) </strong>or on-chain** (<code>lottery/contracts/src/ChronosVDF.sol</code>,</p>
+<p>already used by the lottery). The delay is *unforgeable*: producing <code>y</code> requires <code>T</code> sequential</p>
+<p>squarings (no GPU shortcut), so a valid proof attests that real time/work elapsed.</p>
+<blockquote><p>The product promise: <strong>outputs are checkable without trusting the oracle</strong> — off-chain in one call,</p></blockquote>
+<blockquote><p>and (Chronos) on-chain in one <code>verifyEquation</code>.</p></blockquote>
+<h2>3. Discovery — how an external agent FINDS it</h2>
+<p>Two surfaces, same capability:</p>
+<ol>
+<li><strong>Federated Hub manifest</strong> (exists): <code>GET /ai-market/v2/manifest</code> (Ed25519-signed) lists</li>
+</ol>
+<p><code>platon.random@v1</code>, <code>chronos.eval@v1</code>, … with <code>input_schema</code>, <code>output_schema</code>,</p>
+<p><code>price_per_call_usd</code>, <code>trust_score</code>; searchable by <code>intent="verifiable randomness"</code>.</p>
+<ol>
+<li><strong>MCP server</strong> (to build, §6): a FastMCP passthrough exposing the capabilities as <strong>MCP tools</strong>,</li>
+</ol>
+<p>listed on <strong>Glama</strong> + MCP registries. This is the agent-native discovery channel — an agent adds</p>
+<p>the server and immediately sees the tools.</p>
+<p><strong>Gaps to close (spec'd in §6):</strong> advertise the capabilities + a <code>/ai-market/v2/prices</code> bulk endpoint</p>
+<p>in a <strong>signed</strong> <code>/.well-known/ai-market.json</code>; advertise the MCP server there too.</p>
+<h2>4. MCP tool surface (the storefront)</h2>
+<p>The passthrough MCP server exposes (names chosen for agent legibility; rich param descriptions keep</p>
+<p>the Glama TDQS score high — see [[glama-mcp-score-maintenance]]):</p>
+<pre><code>// tools (each maps 1:1 to an oracle capability via oracle_core.Protocol.invoke)
+{ &quot;name&quot;: &quot;get_random&quot;,
+  &quot;description&quot;: &quot;Unbiasable, Ed25519-signed verifiable randomness. Returns random bytes + a proof you can verify. Pay-per-call (~$0.004 USDC).&quot;,
+  &quot;input_schema&quot;: { &quot;num_bytes&quot;: &quot;int 1..1024&quot;, &quot;client_seed&quot;: &quot;optional hex (domain separation)&quot; } }
+{ &quot;name&quot;: &quot;get_randomness_beacon&quot;,
+  &quot;description&quot;: &quot;Latest public randomness beacon (shared across callers in a round). ~$0.004.&quot; }
+{ &quot;name&quot;: &quot;verify_random&quot;,
+  &quot;description&quot;: &quot;Verify a Platon randomness output (random_hex+proof+signature) against the published signer key. ~$0.001.&quot;,
+  &quot;input_schema&quot;: { &quot;random_hex&quot;: &quot;hex&quot;, &quot;proof&quot;: &quot;object&quot;, &quot;signature&quot;: &quot;ed25519 sig&quot; } }
+{ &quot;name&quot;: &quot;compute_vdf&quot;,
+  &quot;description&quot;: &quot;Verifiable Delay Function: proves T sequential squarings (≈ elapsed time) over RSA-2048. Returns y=g^(2^T) + Wesolowski proof. ~$0.01.&quot;,
+  &quot;input_schema&quot;: { &quot;seed&quot;: &quot;hex&quot;, &quot;difficulty&quot;: &quot;int 1..1000000 (T)&quot; } }
+{ &quot;name&quot;: &quot;verify_vdf&quot;,
+  &quot;description&quot;: &quot;Verify a VDF proof in one exponentiation. ~$0.001.&quot;,
+  &quot;input_schema&quot;: { &quot;g&quot;: &quot;hex&quot;, &quot;y&quot;: &quot;hex&quot;, &quot;T&quot;: &quot;int&quot;, &quot;proof&quot;: &quot;object&quot; } }</code></pre>
+<p>Payment is handled by the server under the hood (§5); the calling agent just invokes the tool.</p>
+<h2>5. Payment &amp; settlement (the cash register → flywheel)</h2>
+<p>Per-call over the <strong>AIMarket v2 micropayment channel</strong> (USDC on Base; escrow</p>
+<p><code>AIMarketEscrow</code>):</p>
+<ol>
+<li><code>POST /ai-market/v2/channel/open {deposit_usd}</code> → <code>channelId</code> (+24h expiry).</li>
+<li><code>POST /ai-market/v2/invoke {capabilityId, input}</code> with <code>X-Payment-Channel: channelId</code>.</li>
+<li>Hub returns a <strong>signed Ed25519 receipt</strong> + <code>price_usd</code>.</li>
+<li>On-chain debit: <code>debitChannel(channelId, amount, receiptId, deadline, sig)</code> (EIP-712), the path</li>
+</ol>
+<p>we tested in <a href="../onchain-journal.md">the journal</a>.</p>
+<ol>
+<li><code>channel/close</code> → settle used to the hub, refund remainder to depositor.</li>
+</ol>
+<p><strong>Routing fee</strong> (<code>routing_fee_bps</code>, default 100 = 1%) is the slice that funds the commons (UBI /</p>
+<p>oracle pay / gas) — the flywheel fuel. The MCP server opens/settles channels for the agent and must</p>
+<p>expose its <strong>wallet/onboarding</strong> (key per chain, USD↔token conversion) — a tracked gap (§6).</p>
+<p><strong>Pricing note (competitive):</strong> at $0.004/random and $0.01/VDF on cheap L2 settlement, the agent-native</p>
+<p>offer undercuts human-centric VRF on per-call cost while adding MCP discoverability and self-verify.</p>
+<h2>6. Engineering backlog to ship this (gap → task)</h2>
+<ol>
+<li><strong>Build <code>platon.verify@v1</code></strong> — so consumers verify Platon output in one call (currently only Chronos</li>
+</ol>
+<p>has <code>verify</code>). [oracle-core capability + handler]</p>
+<ol>
+<li><strong>Publish Chronos canonical modulus <code>N</code> as hex</strong> (not the label <code>"RSA-2048"</code>) so VDF verification is</li>
+</ol>
+<p>trustless without out-of-band knowledge of <code>N</code>.</p>
+<ol>
+<li>~~<strong>Passthrough MCP server</strong>~~ — <strong>shipped:</strong> <a href="https://github.com/alexar76/aimarket-oracle-gateway"><code>alexar76/aimarket-oracle-gateway</code></a> (<a href="https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway">Glama</a>); FastMCP tools from §4 → Hub invoke.</li>
+<li><strong>Signed <code>/.well-known/ai-market.json</code></strong> that advertises capabilities + a <code>/ai-market/v2/prices</code></li>
+</ol>
+<p>bulk endpoint + the MCP server URL.</p>
+<ol>
+<li><strong>MCP consumer payment UX</strong> — auto channel open/close, wallet bootstrap, USD↔USDC conversion.</li>
+<li><strong>Signed per-receipt SLA</strong> (p50 latency / success-rate attested in the receipt, not just the manifest).</li>
+<li><strong>Quick-start docs</strong> — "call verifiable randomness from your agent in 5 lines" (per SDK + raw MCP).</li>
+</ol>
+<h2>7. Acceptance criteria</h2>
+<ul>
+<li>An external agent, with <strong>only</strong> the Glama listing, can: discover <code>get_random</code>, open a channel, call</li>
+</ul>
+<p>it, receive a signed result, and <strong>verify it</strong> — paying real USDC, with the routing fee landing in</p>
+<p>the commons. End-to-end, no human steps.</p>
+<ul>
+<li>Chronos <code>y</code> verifies on-chain via <code>ChronosVDF.verifyEquation</code> and off-chain via <code>verify_vdf</code>.</li>
+</ul>
+<h2>8. Out of scope / honest notes</h2>
+<ul>
+<li><strong>Phase 3 (ZK)</strong> has no oracle yet — see <a href="README.md">specs/README.md</a>.</li>
+<li>Real external <strong>demand</strong> is the true gate (cold-start): this spec makes us *consumable*; it does not</li>
+</ul>
+<p>by itself create buyers. Distribution (Glama, registries, target agent frameworks) is a separate track.</p></div><section class="section related"><h2>Похожее</h2><ul><li><a href="https://modeldev.modelmarket.dev/ru/oracles/platon/">Platon</a></li><li><a href="https://modeldev.modelmarket.dev/ru/oracles/chronos/">Chronos</a></li><li><a href="https://modeldev.modelmarket.dev/ru/oracles/sortes/">Sortes</a></li><li><a href="https://modeldev.modelmarket.dev/ru/oracles/aestus/">Aestus</a></li><li><a href="https://modeldev.modelmarket.dev/ru/learn/verifiable-randomness-course/">Верифицируемая случайность и криптографическое время</a></li><li><a href="https://modeldev.modelmarket.dev/ru/learn/smart-contracts-course/">Смарт-контракты для лотерей агентов</a></li></ul></section></div>
+<footer class="site-foot wrap"><p>Экосистема AICOM · <a href="https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md">База знаний</a> · <a href="https://alexar76.github.io/aimarket-courses/">Портал курсов</a> · <a href="https://oracles.modelmarket.dev/">Оракулы онлайн</a></p></footer>
+</body>
+</html>

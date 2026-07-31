@@ -1,0 +1,47 @@
+---
+description: Mandatory monorepo publish order — Gitea canon then GitHub mirrors. Never plain git push to GitHub.
+alwaysApply: true
+---
+
+# Publish / push (mandatory)
+
+Canonical docs: [`docs/publish-runbook.md`](docs/publish-runbook.md), [`docs/agent-github-factory-publish.md`](docs/agent-github-factory-publish.md). Badges: [`.cursor/rules/green-badges.mdc`](green-badges.mdc).
+
+## Order
+
+1. **Commit** (stage only intended files — never `git add -A`; leave `lottery/alien-monitor`, warden scan memory alone).
+2. **Gitea** (full monorepo, both servers): `./scripts/push_gitea_monorepo.sh`
+3. **GitHub** (trimmed factory and/or satellites) via publish scripts only.
+
+## Never
+
+- `git push gh`, `git push origin` (or any plain `git push`) to **GitHub** for this monorepo / factory.
+- Factory publish **without** `AICOM_FACTORY_REMOTE=https://github.com/alexar76/aicom.git` (guard aborts; do not work around it).
+- Pointing `publish_aicom_factory.sh` / `--factory-only` at Gitea `origin` (would wipe canon).
+- Pushing the **full** monorepo (with satellites) to `alexar76/aicom`.
+
+## GitHub factory
+
+```bash
+GH_PAT=<token> \
+AICOM_FACTORY_REMOTE=https://github.com/alexar76/aicom.git \
+./scripts/publish_all_repos.sh --factory-only
+# or: ./scripts/publish_aicom_factory.sh --message "…"
+```
+
+Auth: `GH_PAT` / `GITHUB_TOKEN` for **alexar76** (not `alexart2025` gh-cli session alone).
+
+## GitHub satellite
+
+```bash
+GH_PAT=<token> ./scripts/publish_all_repos.sh --satellite <id>
+# or: ./scripts/mirror_satellites.sh --satellite <id>
+```
+
+## Mental model
+
+| Path | Script | Target |
+|------|--------|--------|
+| Full monorepo | `push_gitea_monorepo.sh` | Gitea only |
+| Trimmed `aicom` | `publish_aicom_factory.sh` / `--factory-only` | `github.com/alexar76/aicom` |
+| One satellite | `mirror_satellites.sh` / `--satellite` | that GitHub repo |

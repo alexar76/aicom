@@ -1,0 +1,18 @@
+# Bind-mount host cognition data (admin-vps: /root/ecosystem-data).
+# Usage:
+#   Ecosystem_DATA_DIR=/root/ecosystem-data ./scripts/deploy_cognition.sh
+
+services:
+  dioscuri:
+    volumes:
+      - ${ECOSYSTEM_DATA_DIR:-/root/ecosystem-data}:/data
+
+  helios:
+    volumes:
+      - ${ECOSYSTEM_DATA_DIR:-/root/ecosystem-data}:/data
+
+  helios-worker:
+    volumes:
+      - ${ECOSYSTEM_DATA_DIR:-/root/ecosystem-data}:/data
+    healthcheck:
+      disable: true

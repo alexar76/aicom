@@ -1,0 +1,756 @@
+# SEO landing i18n — translations for the 5-language build (en / ru / es / fr / zh).
+#
+# English is the source of truth and lives in the build script (_EN_UI) plus the
+# upstream data (oracles.ts / catalog.yaml / guides.yaml). This file supplies the
+# ru/es/fr/zh renderings. ANY missing key/field falls back to English so the build
+# never breaks — partial translation is safe.
+#
+# Rules (see docs/localization-glossary.md):
+#   - Never translate brands / product names / code / CLI / env vars / URLs /
+#     identifiers / prices / math with symbols. They stay in English everywhere.
+#   - Oracle NAME stays English/brand. Capability table (id/price/output) stays
+#     English (it is code). Oracle `math` is math-with-symbols → kept English
+#     (intentionally not translated here; it falls back to the English source).
+#   - Course titles are descriptive (not brand) so they are translated; product
+#     acronyms inside them (MCP, USDC, AI-Factory, R3F, …) stay Latin.
+
+# ---------------------------------------------------------------------------
+# Fixed chrome strings. English keys are documented for reference; the loader
+# falls back to the in-code _EN_UI table for any key/lang omitted below.
+# ---------------------------------------------------------------------------
+ui:
+  en:
+    nav_home: Home
+    nav_learn: Learn
+    nav_oracles: Oracles
+    nav_guides: Guides
+    nav_encyclopedia: Encyclopedia
+    foot_ecosystem: AICOM ecosystem
+    foot_knowledge_base: Knowledge base
+    foot_courses_portal: Courses portal
+    foot_oracles_live: Live oracles
+    oracle_eyebrow: Verifiable oracle
+    oracle_tests: tests
+    oracle_ppc: pay-per-call
+    oracle_live_demo: "Live demo ↗"
+    oracle_how_to_call: "How to call ↗"
+    oracle_umbral: "UMBRAL cockpit ↗"
+    oracle_mathematics: Mathematics
+    oracle_capabilities: Capabilities
+    oracle_related: Related
+    th_id: ID
+    th_price: Price
+    th_output: Output
+    oracle_hub_eyebrow: "×17 · signed · verify offline"
+    oracle_hub_h1: The oracle constellation
+    oracle_hub_lede: "Each oracle sells a specific verifiable computation — not trust-me APIs. Discover via Hub or MCP, pay in USDC micropayments, verify every proof yourself."
+    oracle_hub_live_portal: "Live portal ↗"
+    oracle_hub_quickstart: Quick-start guide
+    oracle_hub_all: All oracles
+    course_academy: AIMarket Academy
+    course_open_full: "Open full course ↗"
+    course_source_github: Source on GitHub
+    course_what_you_build: What you build
+    course_labs_para: "Hands-on Python labs wired to the live AIMarket ecosystem — oracles, Hub, WARDEN, or factory APIs. Includes graded exercises, Colab notebooks, and a certificate."
+    course_also_explore: Also explore
+    course_dev_guides: Developer guides
+    course_verifiable_oracles: Verifiable oracles
+    chip_modules: modules
+    chip_labs: labs
+    course_hub_eyebrow: "10 academies · EN / RU / ES / FR / ZH · Colab"
+    course_hub_h1: Learn the agent economy hands-on
+    course_hub_lede: "Python courses with live labs on real AIMarket infrastructure — oracles, MCP security, USDC channels, factory pipeline, and 3D visualization."
+    course_hub_full_portal: "Full course portal ↗"
+    course_hub_all: All courses
+    langs_chip: EN / RU / ES / FR / ZH
+    guide_eyebrow: Developer guide
+    guide_related: Related
+    guide_hub_eyebrow: "Specs · quickstarts · checklists"
+    guide_hub_h1: Developer guides
+    guide_hub_lede: "Answer pages for the queries agents and integrators actually search — discover, call, verify, and monetize capabilities on the open protocol."
+
+  ru:
+    nav_home: Главная
+    nav_learn: Обучение
+    nav_oracles: Оракулы
+    nav_guides: Руководства
+    nav_encyclopedia: Энциклопедия
+    foot_ecosystem: Экосистема AICOM
+    foot_knowledge_base: База знаний
+    foot_courses_portal: Портал курсов
+    foot_oracles_live: Оракулы онлайн
+    oracle_eyebrow: Верифицируемый оракул
+    oracle_tests: тестов
+    oracle_ppc: оплата за вызов
+    oracle_live_demo: "Демо онлайн ↗"
+    oracle_how_to_call: "Как вызвать ↗"
+    oracle_umbral: "Кокпит UMBRAL ↗"
+    oracle_mathematics: Математика
+    oracle_capabilities: Возможности
+    oracle_related: Похожее
+    th_id: ID
+    th_price: Цена
+    th_output: Результат
+    oracle_hub_eyebrow: "×17 · с подписью · проверка офлайн"
+    oracle_hub_h1: Созвездие оракулов
+    oracle_hub_lede: "Каждый оракул продаёт конкретное верифицируемое вычисление — а не API «доверься мне». Находите их через Hub или MCP, платите микроплатежами в USDC и проверяйте каждое доказательство сами."
+    oracle_hub_live_portal: "Портал онлайн ↗"
+    oracle_hub_quickstart: Руководство по быстрому старту
+    oracle_hub_all: Все оракулы
+    course_academy: Академия AIMarket
+    course_open_full: "Открыть полный курс ↗"
+    course_source_github: Исходники на GitHub
+    course_what_you_build: Что вы создадите
+    course_labs_para: "Практические лабораторные на Python, подключённые к живой экосистеме AIMarket — оракулы, Hub, WARDEN или API фабрики. Включает оцениваемые задания, ноутбуки Colab и сертификат."
+    course_also_explore: Смотрите также
+    course_dev_guides: Руководства для разработчиков
+    course_verifiable_oracles: Верифицируемые оракулы
+    chip_modules: модулей
+    chip_labs: лабораторных
+    course_hub_eyebrow: "10 академий · EN / RU / ES / FR / ZH · Colab"
+    course_hub_h1: Изучайте экономику агентов на практике
+    course_hub_lede: "Курсы на Python с живыми лабораторными на реальной инфраструктуре AIMarket — оракулы, безопасность MCP, каналы USDC, конвейер фабрики и 3D-визуализация."
+    course_hub_full_portal: "Полный портал курсов ↗"
+    course_hub_all: Все курсы
+    langs_chip: EN / RU / ES / FR / ZH
+    guide_eyebrow: Руководство разработчика
+    guide_related: Похожее
+    guide_hub_eyebrow: "Спецификации · быстрый старт · чек-листы"
+    guide_hub_h1: Руководства для разработчиков
+    guide_hub_lede: "Страницы-ответы на запросы, которые действительно ищут агенты и интеграторы — находите, вызывайте, проверяйте и монетизируйте возможности в открытом протоколе."
+
+  es:
+    nav_home: Inicio
+    nav_learn: Aprender
+    nav_oracles: Oráculos
+    nav_guides: Guías
+    nav_encyclopedia: Enciclopedia
+    foot_ecosystem: Ecosistema AICOM
+    foot_knowledge_base: Base de conocimiento
+    foot_courses_portal: Portal de cursos
+    foot_oracles_live: Oráculos en vivo
+    oracle_eyebrow: Oráculo verificable
+    oracle_tests: pruebas
+    oracle_ppc: pago por llamada
+    oracle_live_demo: "Demo en vivo ↗"
+    oracle_how_to_call: "Cómo llamar ↗"
+    oracle_umbral: "Cabina UMBRAL ↗"
+    oracle_mathematics: Matemáticas
+    oracle_capabilities: Capacidades
+    oracle_related: Relacionado
+    th_id: ID
+    th_price: Precio
+    th_output: Salida
+    oracle_hub_eyebrow: "×17 · firmados · verificación offline"
+    oracle_hub_h1: La constelación de oráculos
+    oracle_hub_lede: "Cada oráculo vende un cálculo verificable concreto, no API de «confía en mí». Descúbrelos vía Hub o MCP, paga con micropagos en USDC y verifica cada prueba tú mismo."
+    oracle_hub_live_portal: "Portal en vivo ↗"
+    oracle_hub_quickstart: Guía de inicio rápido
+    oracle_hub_all: Todos los oráculos
+    course_academy: Academia AIMarket
+    course_open_full: "Abrir el curso completo ↗"
+    course_source_github: Código en GitHub
+    course_what_you_build: Lo que construirás
+    course_labs_para: "Laboratorios prácticos en Python conectados al ecosistema AIMarket en vivo: oráculos, Hub, WARDEN o las API de la factory. Incluye ejercicios calificados, cuadernos de Colab y un certificado."
+    course_also_explore: Explora también
+    course_dev_guides: Guías para desarrolladores
+    course_verifiable_oracles: Oráculos verificables
+    chip_modules: módulos
+    chip_labs: laboratorios
+    course_hub_eyebrow: "10 academias · EN / RU / ES / FR / ZH · Colab"
+    course_hub_h1: Aprende la economía de agentes de forma práctica
+    course_hub_lede: "Cursos de Python con laboratorios en vivo sobre infraestructura real de AIMarket: oráculos, seguridad de MCP, canales de USDC, pipeline de la factory y visualización 3D."
+    course_hub_full_portal: "Portal completo de cursos ↗"
+    course_hub_all: Todos los cursos
+    langs_chip: EN / RU / ES / FR / ZH
+    guide_eyebrow: Guía para desarrolladores
+    guide_related: Relacionado
+    guide_hub_eyebrow: "Especificaciones · inicios rápidos · listas de verificación"
+    guide_hub_h1: Guías para desarrolladores
+    guide_hub_lede: "Páginas de respuesta a las consultas que realmente buscan los agentes e integradores: descubre, llama, verifica y monetiza capacidades en el protocolo abierto."
+
+  fr:
+    nav_home: Accueil
+    nav_learn: Apprendre
+    nav_oracles: Oracles
+    nav_guides: Guides
+    nav_encyclopedia: Encyclopédie
+    foot_ecosystem: Écosystème AICOM
+    foot_knowledge_base: Base de connaissances
+    foot_courses_portal: Portail des cours
+    foot_oracles_live: Oracles en direct
+    oracle_eyebrow: Oracle vérifiable
+    oracle_tests: tests
+    oracle_ppc: paiement à l'appel
+    oracle_live_demo: "Démo en direct ↗"
+    oracle_how_to_call: "Comment appeler ↗"
+    oracle_umbral: "Cockpit UMBRAL ↗"
+    oracle_mathematics: Mathématiques
+    oracle_capabilities: Capacités
+    oracle_related: Associés
+    th_id: ID
+    th_price: Prix
+    th_output: Sortie
+    oracle_hub_eyebrow: "×17 · signés · vérification hors ligne"
+    oracle_hub_h1: La constellation d'oracles
+    oracle_hub_lede: "Chaque oracle vend un calcul vérifiable précis, pas des API « faites-moi confiance ». Découvrez-les via le Hub ou MCP, payez en micropaiements USDC et vérifiez chaque preuve vous-même."
+    oracle_hub_live_portal: "Portail en direct ↗"
+    oracle_hub_quickstart: Guide de démarrage rapide
+    oracle_hub_all: Tous les oracles
+    course_academy: Académie AIMarket
+    course_open_full: "Ouvrir le cours complet ↗"
+    course_source_github: Sources sur GitHub
+    course_what_you_build: Ce que vous allez construire
+    course_labs_para: "Ateliers pratiques en Python reliés à l'écosystème AIMarket en direct — oracles, Hub, WARDEN ou API de la factory. Comprend des exercices notés, des notebooks Colab et un certificat."
+    course_also_explore: À explorer aussi
+    course_dev_guides: Guides pour développeurs
+    course_verifiable_oracles: Oracles vérifiables
+    chip_modules: modules
+    chip_labs: ateliers
+    course_hub_eyebrow: "10 académies · EN / RU / ES / FR / ZH · Colab"
+    course_hub_h1: Apprenez l'économie des agents en pratique
+    course_hub_lede: "Cours Python avec ateliers en direct sur l'infrastructure réelle d'AIMarket — oracles, sécurité MCP, canaux USDC, pipeline de la factory et visualisation 3D."
+    course_hub_full_portal: "Portail complet des cours ↗"
+    course_hub_all: Tous les cours
+    langs_chip: EN / RU / ES / FR / ZH
+    guide_eyebrow: Guide développeur
+    guide_related: Associés
+    guide_hub_eyebrow: "Spécifications · démarrages rapides · check-lists"
+    guide_hub_h1: Guides pour développeurs
+    guide_hub_lede: "Des pages de réponse aux requêtes que recherchent réellement les agents et intégrateurs — découvrez, appelez, vérifiez et monétisez des capacités sur le protocole ouvert."
+
+  zh:
+    nav_home: 首页
+    nav_learn: 学习
+    nav_oracles: 预言机
+    nav_guides: 指南
+    nav_encyclopedia: 百科全书
+    foot_ecosystem: AICOM 生态系统
+    foot_knowledge_base: 知识库
+    foot_courses_portal: 课程门户
+    foot_oracles_live: 在线预言机
+    oracle_eyebrow: 可验证预言机
+    oracle_tests: 项测试
+    oracle_ppc: 按调用付费
+    oracle_live_demo: "在线演示 ↗"
+    oracle_how_to_call: "如何调用 ↗"
+    oracle_umbral: "UMBRAL 控制台 ↗"
+    oracle_mathematics: 数学原理
+    oracle_capabilities: 功能
+    oracle_related: 相关内容
+    th_id: ID
+    th_price: 价格
+    th_output: 输出
+    oracle_hub_eyebrow: "×17 · 已签名 · 离线验证"
+    oracle_hub_h1: 预言机星座
+    oracle_hub_lede: "每个预言机出售的是具体的可验证计算，而非“请相信我”式的 API。通过 Hub 或 MCP 发现它们，用 USDC 微支付付费，并自行验证每一个证明。"
+    oracle_hub_live_portal: "在线门户 ↗"
+    oracle_hub_quickstart: 快速上手指南
+    oracle_hub_all: 全部预言机
+    course_academy: AIMarket 学院
+    course_open_full: "打开完整课程 ↗"
+    course_source_github: GitHub 源码
+    course_what_you_build: 你将构建什么
+    course_labs_para: "与实时 AIMarket 生态系统对接的 Python 实操实验——预言机、Hub、WARDEN 或 factory API。包含评分练习、Colab 笔记本和结业证书。"
+    course_also_explore: 继续探索
+    course_dev_guides: 开发者指南
+    course_verifiable_oracles: 可验证预言机
+    chip_modules: 个模块
+    chip_labs: 个实验
+    course_hub_eyebrow: "10 门学院 · EN / RU / ES / FR / ZH · Colab"
+    course_hub_h1: 亲手学习智能体经济
+    course_hub_lede: "基于真实 AIMarket 基础设施、配备实时实验的 Python 课程——预言机、MCP 安全、USDC 通道、factory 流水线以及 3D 可视化。"
+    course_hub_full_portal: "完整课程门户 ↗"
+    course_hub_all: 全部课程
+    langs_chip: EN / RU / ES / FR / ZH
+    guide_eyebrow: 开发者指南
+    guide_related: 相关内容
+    guide_hub_eyebrow: "规范 · 快速上手 · 检查清单"
+    guide_hub_h1: 开发者指南
+    guide_hub_lede: "针对智能体和集成方真正会搜索的问题的解答页面——在开放协议上发现、调用、验证并将能力变现。"
+
+# ---------------------------------------------------------------------------
+# Oracles — per-slug per-lang {skill, blurb}. NAME stays English/brand.
+# `math` is math-with-symbols → intentionally NOT translated (English fallback).
+# ---------------------------------------------------------------------------
+oracles:
+  platon:
+    ru:
+      skill: "Верифицируемая случайность + динамический оракул"
+      blurb: "32-мерная хаотическая среда, которая выдаёт подписанную, проверяемую энтропию и сигналы — случайность, нужная агентам для сэмплирования, нонсов, разрешения ничьих, лотерей и выбора лидера."
+    es:
+      skill: "Aleatoriedad verificable + oráculo dinámico"
+      blurb: "Un sustrato caótico de 32 dimensiones que emite entropía y señales firmadas y auditables — la aleatoriedad que los agentes necesitan para muestreo, nonces, desempates, loterías y elección de líder."
+    fr:
+      skill: "Aléa vérifiable + oracle dynamique"
+      blurb: "Un substrat chaotique à 32 dimensions qui émet une entropie et des signaux signés et auditables — l'aléa dont les agents ont besoin pour l'échantillonnage, les nonces, les départages, les loteries et l'élection de leader."
+    zh:
+      skill: "可验证随机性 + 动力学预言机"
+      blurb: "一个 32 维混沌基底，输出已签名、可审计的熵与信号——智能体在采样、nonce、平局裁决、抽奖和领导者选举中所需的随机性。"
+  chronos:
+    ru:
+      skill: "Верифицируемая задержка — доказательство прошедшего последовательного времени"
+      blurb: "Доказывает, что прошло реальное, непараллелизуемое время. Честный порядок, анти-MEV, тайм-ауты — и несмещаемый маяк случайности при обёртке поверх Platon."
+    es:
+      skill: "Retardo verificable — prueba de tiempo secuencial transcurrido"
+      blurb: "Demuestra que ha transcurrido tiempo real y no paralelizable. Orden justo, anti-MEV, tiempos de espera — y un faro de aleatoriedad insesgable cuando se envuelve sobre Platon."
+    fr:
+      skill: "Délai vérifiable — preuve de temps séquentiel écoulé"
+      blurb: "Prouve qu'un temps réel et non parallélisable s'est écoulé. Ordonnancement équitable, anti-MEV, délais d'expiration — et une balise d'aléa impartiale lorsqu'elle enveloppe Platon."
+    zh:
+      skill: "可验证延迟——已流逝顺序时间的证明"
+      blurb: "证明真实的、不可并行的时间已经流逝。公平排序、抗 MEV、超时——在包裹 Platon 之上时还提供不可偏置的随机性信标。"
+  lattice:
+    ru:
+      skill: "Последовательности с низким расхождением (квазислучайные)"
+      blurb: "Когда агентам нужно РАВНОМЕРНОЕ покрытие, а не случайные сгустки: квази-Монте-Карло интегрирование, сэмплирование, тестирование покрытия, инициализация оптимизации."
+    es:
+      skill: "Secuencias de baja discrepancia (cuasi-aleatorias)"
+      blurb: "Cuando los agentes necesitan cobertura UNIFORME, no cúmulos aleatorios: integración cuasi-Monte-Carlo, muestreo, pruebas de cobertura y siembra de optimización."
+    fr:
+      skill: "Séquences à faible discrépance (quasi-aléatoires)"
+      blurb: "Quand les agents ont besoin d'une couverture UNIFORME, pas d'amas aléatoires : intégration quasi-Monte-Carlo, échantillonnage, tests de couverture, amorçage d'optimisation."
+    zh:
+      skill: "低差异（准随机）序列"
+      blurb: "当智能体需要均匀覆盖而非随机聚簇时：准蒙特卡洛积分、采样、覆盖测试、优化初始化。"
+  murmuration:
+    ru:
+      skill: "Устойчивая агрегация консенсуса"
+      blurb: "Превращает шумную толпу оценок агентов в одно число, устойчивое к сбоям — выбросы не могут его сдвинуть. Ценовые фиды, сортиция, федеративные решения."
+    es:
+      skill: "Agregación robusta de consenso"
+      blurb: "Convierte una multitud ruidosa de estimaciones de agentes en un único número resistente a fallos — los valores atípicos no pueden moverlo. Feeds de precios, sorteo, decisiones federadas."
+    fr:
+      skill: "Agrégation robuste de consensus"
+      blurb: "Transforme une foule bruitée d'estimations d'agents en un seul nombre résistant aux défaillances — les valeurs aberrantes ne peuvent pas le déplacer. Flux de prix, sortition, décisions fédérées."
+    zh:
+      skill: "稳健的共识聚合"
+      blurb: "把嘈杂的一群智能体估计值汇聚成一个抗崩溃的数值——离群值无法撼动它。价格喂价、抽签、联邦决策。"
+  lumen:
+    ru:
+      skill: "Оценки репутации и доверия"
+      blurb: "Кому агент должен доверять при вызове? Устойчивая к сивилле репутация над графом взаимодействий — базовая потребность любой экономики агентов."
+    es:
+      skill: "Puntuaciones de reputación y confianza"
+      blurb: "¿En quién debería confiar un agente para invocar? Reputación resistente a Sybil sobre un grafo de interacciones — la necesidad básica de cualquier economía de agentes."
+    fr:
+      skill: "Scores de réputation et de confiance"
+      blurb: "À qui un agent doit-il faire confiance pour invoquer ? Une réputation résistante aux attaques Sybil sur un graphe d'interactions — le besoin fondamental de toute économie d'agents."
+    zh:
+      skill: "声誉与信任评分"
+      blurb: "智能体在调用时该信任谁？在交互图上抗女巫攻击的声誉——任何智能体经济的基本需求。"
+  colony:
+    ru:
+      skill: "Оптимизация с сертификатом качества"
+      blurb: "Агенты выгружают NP-трудные подзадачи (маршрутизация, назначение, планирование) и получают почти оптимальный ответ ВМЕСТЕ с доказательством того, насколько он хорош."
+    es:
+      skill: "Optimización con un certificado de calidad"
+      blurb: "Los agentes descargan subproblemas NP-difíciles (enrutamiento, asignación, planificación) y obtienen una respuesta casi óptima JUNTO con una prueba de lo buena que es."
+    fr:
+      skill: "Optimisation avec certificat de qualité"
+      blurb: "Les agents délèguent des sous-problèmes NP-difficiles (routage, affectation, ordonnancement) et obtiennent une réponse quasi optimale AVEC une preuve de sa qualité."
+    zh:
+      skill: "带质量证书的优化"
+      blurb: "智能体卸载 NP 难子问题（路由、分配、调度），获得近似最优解，并附带其优劣程度的证明。"
+  turing:
+    ru:
+      skill: "Структурированное сэмплирование синим шумом"
+      blurb: "Равномерные, органичные, никогда не слипающиеся наборы точек — лучше белого шума для сэмплирования, дизеринга, стипплинга и процедурных масок."
+    es:
+      skill: "Muestreo estructurado con ruido azul"
+      blurb: "Conjuntos de puntos uniformes, orgánicos y nunca agrupados — superiores al ruido blanco para muestreo, tramado, punteado y máscaras procedurales."
+    fr:
+      skill: "Échantillonnage structuré par bruit bleu"
+      blurb: "Des ensembles de points uniformes, organiques et jamais agglomérés — supérieurs au bruit blanc pour l'échantillonnage, le tramage, le pointillé et les masques procéduraux."
+    zh:
+      skill: "蓝噪声结构化采样"
+      blurb: "均匀、自然、绝不聚簇的点集——在采样、抖动、点画和程序化蒙版方面优于白噪声。"
+  percola:
+    ru:
+      skill: "Порог сетевой устойчивости"
+      blurb: "Когда весь граф доверия разваливается? Вычисляет критическую долю атаки f_c, кривую коллапса, пик восприимчивости и ключевые узлы — глобальный фазовый переход, который не выразить ни одной поузловой оценкой."
+    es:
+      skill: "Umbral de resiliencia de red"
+      blurb: "¿Cuándo se desmorona todo el grafo de confianza? Calcula la fracción crítica de ataque f_c, la curva de colapso, el pico de susceptibilidad y los nodos clave — una transición de fase global que ninguna puntuación por nodo puede expresar."
+    fr:
+      skill: "Seuil de résilience du réseau"
+      blurb: "Quand tout le graphe de confiance s'effondre-t-il ? Calcule la fraction d'attaque critique f_c, la courbe d'effondrement, le pic de susceptibilité et les nœuds clés — une transition de phase globale qu'aucun score par nœud ne peut exprimer."
+    zh:
+      skill: "网络韧性阈值"
+      blurb: "整个信任图何时崩溃？计算临界攻击比例 f_c、崩溃曲线、易感性峰值以及关键节点——这是任何单节点评分都无法表达的全局相变。"
+  fermat:
+    ru:
+      skill: "Маршрутизация по наименьшему времени с двойственным сертификатом"
+      blurb: "Доказуемо оптимальная композиция возможностей над взвешенным сервисным графом — возвращает путь наименьшего времени плюс эйкональные потенциалы T(v), которые любой клиент может проверить за O(E) без повторного запуска поиска."
+    es:
+      skill: "Enrutamiento de tiempo mínimo con certificado dual"
+      blurb: "Composición de capacidades demostrablemente óptima sobre un grafo de servicios ponderado — devuelve la ruta de tiempo mínimo más los potenciales eikonales T(v) que cualquier cliente puede verificar en O(E) sin volver a ejecutar la búsqueda."
+    fr:
+      skill: "Routage au temps minimal avec certificat dual"
+      blurb: "Composition de capacités prouvablement optimale sur un graphe de services pondéré — renvoie le chemin de temps minimal plus les potentiels eikonals T(v) que tout client peut vérifier en O(E) sans relancer la recherche."
+    zh:
+      skill: "带对偶证书的最短时间路由"
+      blurb: "在加权服务图上可证明最优的能力组合——返回最短时间路径以及程函势 T(v)，任何客户端都能在 O(E) 内验证，无需重跑搜索。"
+  ablation:
+    ru:
+      skill: "Системный каскадный риск (SOC-песочная куча)"
+      blurb: "Хвостовой риск сети зависимостей: прогоняет нагрузку через песочную кучу, подгоняет степенной закон лавин τ, хвосты VaR/CVaR и триггерные узлы, которые запускают рыночные каскады."
+    es:
+      skill: "Riesgo sistémico de cascada (montón de arena SOC)"
+      blurb: "El riesgo de cola de una red de dependencias: propaga estrés por un montón de arena, ajusta la ley de potencias de avalanchas τ, las colas VaR/CVaR y los nodos disparadores que encienden cascadas en todo el mercado."
+    fr:
+      skill: "Risque systémique de cascade (tas de sable SOC)"
+      blurb: "Le risque de queue d'un réseau de dépendances : propage le stress à travers un tas de sable, ajuste la loi de puissance des avalanches τ, les queues VaR/CVaR et les nœuds déclencheurs qui allument des cascades à l'échelle du marché."
+    zh:
+      skill: "系统性级联风险（SOC 沙堆）"
+      blurb: "依赖网络的尾部风险：把压力驱动通过沙堆，拟合雪崩幂律 τ、VaR/CVaR 尾部，以及点燃全市场级联的触发节点。"
+  landauer:
+    ru:
+      skill: "Термодинамический аудит стоимости вычислений"
+      blurb: "Физическая цена необратимых вычислений: подсчитывает логически стёртые биты, выводит энергетический предел kT·ln2 в джоулях, обратимую границу Беннетта и термодинамическую эффективность."
+    es:
+      skill: "Auditoría termodinámica del coste de cómputo"
+      blurb: "El precio físico del cómputo irreversible: cuenta los bits borrados lógicamente, deriva el piso energético kT·ln2 en julios, el límite reversible de Bennett y la eficiencia termodinámica."
+    fr:
+      skill: "Audit thermodynamique du coût de calcul"
+      blurb: "Le prix physique du calcul irréversible : compte les bits effacés logiquement, dérive le plancher énergétique kT·ln2 en joules, la borne réversible de Bennett et l'efficacité thermodynamique."
+    zh:
+      skill: "计算成本的热力学审计"
+      blurb: "不可逆计算的物理代价：统计逻辑上被擦除的比特，推导以焦耳计的 kT·ln2 能量下限、Bennett 可逆下界以及热力学效率。"
+  sortes:
+    ru:
+      skill: "Настоящий ECVRF — неподкручиваемая верифицируемая случайность"
+      blurb: "Тянет жребий, который можно проверить. Для фиксированной пары (ключ, вход) существует ровно ОДИН корректный выход — оракул не может его подкрутить или сместить, а любой может проверить розыгрыш офлайн по 80-байтному доказательству. Лотереи, сортиция, выбор лидера, честные нонсы."
+    es:
+      skill: "ECVRF real — aleatoriedad verificable no manipulable"
+      blurb: "Echa suertes que puedes verificar. Para un par fijo (clave, entrada) existe exactamente UNA salida válida — el oráculo no puede manipularla ni sesgarla, y cualquiera puede verificar el sorteo offline con una prueba de 80 bytes. Loterías, sorteo, elección de líder, nonces justos."
+    fr:
+      skill: "Véritable ECVRF — aléa vérifiable non manipulable"
+      blurb: "Tire au sort de façon vérifiable. Pour un couple fixe (clé, entrée) il existe exactement UNE sortie valide — l'oracle ne peut ni la manipuler ni la biaiser, et quiconque peut vérifier le tirage hors ligne à partir d'une preuve de 80 octets. Loteries, sortition, élection de leader, nonces équitables."
+    zh:
+      skill: "真正的 ECVRF——不可操纵的可验证随机性"
+      blurb: "抽出可验证的签。对于固定的（密钥、输入）对，恰好只有一个有效输出——预言机无法研磨或偏置它，任何人都能用 80 字节的证明离线验证抽取结果。抽奖、抽签、领导者选举、公平 nonce。"
+  gauss:
+    ru:
+      skill: "Апостериор гауссовского процесса + подсказки активного обучения"
+      blurb: "Превращает разреженные, зашумлённые наблюдения в калиброванный апостериор над функциями — среднее и честную неопределённость повсюду — и называет единственную лучшую следующую точку для сэмплирования. Принципиальная замена самодельным UCB / бандитам: неопределённость вычисляется, а не подбирается."
+    es:
+      skill: "Posterior de proceso gaussiano + sugerencias de aprendizaje activo"
+      blurb: "Convierte observaciones escasas y ruidosas en un posterior calibrado sobre funciones — una media y una incertidumbre honesta en todas partes — y nombra el mejor punto siguiente para muestrear. El reemplazo con fundamento de los UCB / bandidos hechos a mano: la incertidumbre se calcula, no se ajusta a mano."
+    fr:
+      skill: "Postérieur de processus gaussien + suggestions d'apprentissage actif"
+      blurb: "Transforme des observations rares et bruitées en un postérieur calibré sur des fonctions — une moyenne et une incertitude honnête partout — et désigne le meilleur point suivant à échantillonner. Le remplaçant rigoureux des UCB / bandits bricolés : l'incertitude est calculée, pas réglée à la main."
+    zh:
+      skill: "高斯过程后验 + 主动学习建议"
+      blurb: "把稀疏、含噪的观测转化为对函数的校准后验——处处给出均值和诚实的不确定性——并指出下一个最值得采样的点。它是手工 UCB / 老虎机探索的有原则替代品：不确定性是计算出来的，而非调出来的。"
+  aestus:
+    ru:
+      skill: "Головоломки с временной блокировкой — запечатать сейчас, открыть позже"
+      blurb: "Запечатывает данные так, что НИКТО не может открыть их раньше, чем пройдёт ~T последовательных возведений в квадрат реального времени — а затем это может ЛЮБОЙ, без держателя лазейки. Аукционы с закрытыми ставками, «выключатели мертвеца», отложенное раскрытие, честные согласованные раскрытия. Там, где Chronos доказывает, что прошлое истекло, Aestus запирает будущее."
+    es:
+      skill: "Rompecabezas con bloqueo temporal — sellar ahora, abrir después"
+      blurb: "Sella datos de modo que NADIE pueda abrirlos antes de que transcurran ~T elevaciones al cuadrado secuenciales de tiempo real — y luego CUALQUIERA puede, sin poseedor de trampa. Subastas de sobre cerrado, interruptores de hombre muerto, divulgación temporizada, revelaciones coordinadas justas. Donde Chronos prueba que el pasado transcurrió, Aestus bloquea el futuro."
+    fr:
+      skill: "Casse-têtes à verrou temporel — sceller maintenant, ouvrir plus tard"
+      blurb: "Scelle les données de sorte que PERSONNE ne puisse les ouvrir avant l'écoulement d'environ T élévations au carré séquentielles en temps réel — puis N'IMPORTE QUI le peut, sans détenteur de trappe. Enchères sous pli scellé, dispositifs d'homme mort, divulgation temporisée, révélations coordonnées équitables. Là où Chronos prouve que le passé s'est écoulé, Aestus verrouille l'avenir."
+    zh:
+      skill: "时间锁谜题——现在封存，之后开启"
+      blurb: "封存数据，使得在约 T 次顺序平方运算的真实时间流逝之前，任何人都无法打开——而之后任何人都可以，且无需陷门持有者。密封投标拍卖、死人开关、定时披露、公平的协调揭示。Chronos 证明过去已流逝，而 Aestus 锁住未来。"
+  betti:
+    ru:
+      skill: "Топологическая форма — устойчивые гомологии"
+      blurb: "Какую ФОРМУ имеют данные? Строит фильтрацию Вьеториса-Рипса и считывает числа Бетти b0 (кластеры), b1 (петли), b2 (пустоты) по масштабу, плюс тревога дрейфа по бутылочному расстоянию — структура, которую не выразить ни одной скалярной сводкой."
+    es:
+      skill: "Forma topológica — homología persistente"
+      blurb: "¿Qué FORMA tienen los datos? Construye una filtración de Vietoris-Rips y lee los números de Betti b0 (clústeres), b1 (bucles), b2 (huecos) a lo largo de la escala, más una alarma de deriva por distancia de cuello de botella — estructura que ningún resumen escalar puede expresar."
+    fr:
+      skill: "Forme topologique — homologie persistante"
+      blurb: "Quelle FORME ont les données ? Construit une filtration de Vietoris-Rips et lit les nombres de Betti b0 (amas), b1 (boucles), b2 (cavités) à travers l'échelle, plus une alarme de dérive par distance de goulot — une structure qu'aucun résumé scalaire ne peut exprimer."
+    zh:
+      skill: "拓扑形状——持续同调"
+      blurb: "数据具有什么形状？构建 Vietoris-Rips 过滤，读取跨尺度的 Betti 数 b0（聚簇）、b1（环路）、b2（空洞），以及瓶颈距离漂移告警——这是任何标量摘要都无法表达的结构。"
+  kantor:
+    ru:
+      skill: "Точный оптимальный транспорт с двойственным сертификатом"
+      blurb: "Насколько дёшево одно распределение может стать другим — и доказуемо ли это самое дешёвое? Решает точную задачу Вассерштейна / землекопа и возвращает план транспортировки плюс потенциалы Канторовича, которые любой клиент может проверить за O(m·n) без повторного решения."
+    es:
+      skill: "Transporte óptimo exacto con certificado dual"
+      blurb: "¿Cuán barato puede una distribución convertirse en otra — y es demostrablemente la más barata? Resuelve el problema exacto de Wasserstein / del transportista de tierra y devuelve el plan de transporte más los potenciales de Kantorovich que cualquier cliente puede verificar en O(m·n) sin volver a resolver."
+    fr:
+      skill: "Transport optimal exact avec certificat dual"
+      blurb: "À quel point une distribution peut-elle devenir une autre à moindre coût — et est-ce prouvablement le moins cher ? Résout le problème exact de Wasserstein / du terrassier et renvoie le plan de transport plus les potentiels de Kantorovich que tout client peut vérifier en O(m·n) sans re-résoudre."
+    zh:
+      skill: "带对偶证书的精确最优传输"
+      blurb: "一个分布变成另一个分布能有多便宜——而且可证明这是最便宜的吗？求解精确的 Wasserstein / 推土机问题，返回传输方案以及 Kantorovich 势，任何客户端都能在 O(m·n) 内验证，无需重解。"
+  fourier:
+    ru:
+      skill: "Спектральный анализ графа — спектр лапласиана и число Фидлера"
+      blurb: "Преобразование Фурье на графе. Считывает алгебраическую связность λ₂ (насколько сеть близка к расколу), вектор Фидлера и его спектральное разбиение, а также спектральное вложение — глобальную структуру, которую не улавливает ни одна поузловая метрика."
+    es:
+      skill: "Análisis espectral de grafos — espectro laplaciano y valor de Fiedler"
+      blurb: "La transformada de Fourier sobre un grafo. Lee la conectividad algebraica λ₂ (cuán cerca está una red de dividirse), el vector de Fiedler y su bisección espectral, y una incrustación espectral — la estructura global que ninguna métrica por nodo captura."
+    fr:
+      skill: "Analyse spectrale de graphe — spectre du laplacien et valeur de Fiedler"
+      blurb: "La transformée de Fourier sur un graphe. Lit la connectivité algébrique λ₂ (à quel point un réseau est proche de se scinder), le vecteur de Fiedler et sa bissection spectrale, ainsi qu'un plongement spectral — la structure globale qu'aucune métrique par nœud ne capture."
+    zh:
+      skill: "图谱分析——拉普拉斯谱与 Fiedler 值"
+      blurb: "图上的傅里叶变换。读取代数连通度 λ₂（网络离分裂有多近）、Fiedler 向量及其谱二分，以及谱嵌入——这是任何单节点度量都捕捉不到的全局结构。"
+
+# ---------------------------------------------------------------------------
+# Courses — per-folder per-lang {title, tagline, description}.
+# Descriptive titles are translated; acronyms/product names stay Latin.
+# ---------------------------------------------------------------------------
+courses:
+  verifiable-randomness-course:
+    ru:
+      title: "Верифицируемая случайность и криптографическое время"
+      tagline: "Соберите и сломайте смещённые лотереи — затем проверьте доказательства офлайн из 80 байт."
+      description: "Практический курс по верифицируемой случайности, VDF, ECVRF и головоломкам с временной блокировкой на живых оракулах AIMarket."
+    es:
+      title: "Aleatoriedad verificable y tiempo criptográfico"
+      tagline: "Construye y rompe loterías sesgadas — luego verifica pruebas offline desde 80 bytes."
+      description: "Curso práctico sobre aleatoriedad verificable, VDF, ECVRF y rompecabezas de bloqueo temporal usando oráculos AIMarket en vivo."
+    fr:
+      title: "Aléa vérifiable et temps cryptographique"
+      tagline: "Construisez et cassez des loteries biaisées — puis vérifiez les preuves hors ligne à partir de 80 octets."
+      description: "Cours pratique sur l'aléa vérifiable, les VDF, l'ECVRF et les casse-têtes à verrou temporel avec les oracles AIMarket en direct."
+    zh:
+      title: "可验证随机性与密码学时间"
+      tagline: "构建并攻破有偏抽奖——然后从 80 字节离线验证证明。"
+      description: "关于可验证随机性、VDF、ECVRF 与时间锁谜题的实操课程，使用实时 AIMarket 预言机。"
+  mcp-security-course:
+    ru:
+      title: "Безопасность MCP и защита агентов"
+      tagline: "Смоделируйте угрозы MCP, ловите отравление инструментов с WARDEN, укрепляйте агентов через оценку LUMEN."
+      description: "Практический курс по моделям угроз MCP, статическому сканированию и файрволу WARDEN для безопасности агентов."
+    es:
+      title: "Seguridad de MCP y protección de agentes"
+      tagline: "Modela amenazas de MCP, detecta el envenenamiento de herramientas con WARDEN y refuerza agentes con la puntuación LUMEN."
+      description: "Curso práctico sobre modelos de amenazas de MCP, escaneo estático y el firewall WARDEN para la seguridad de agentes."
+    fr:
+      title: "Sécurité MCP et protection des agents"
+      tagline: "Modélisez les menaces MCP, détectez l'empoisonnement d'outils avec WARDEN, renforcez les agents avec le score LUMEN."
+      description: "Cours pratique sur les modèles de menaces MCP, l'analyse statique et le pare-feu WARDEN pour la sécurité des agents."
+    zh:
+      title: "MCP 安全与智能体防护"
+      tagline: "对 MCP 建立威胁模型，用 WARDEN 捕捉工具投毒，用 LUMEN 评分加固智能体。"
+      description: "关于 MCP 威胁模型、静态扫描以及用于智能体安全的 WARDEN 防火墙的实操课程。"
+  agent-economy-course:
+    ru:
+      title: "Постройте экономику агентов с нуля"
+      tagline: "Опубликуйте платную возможность, соберите USDC через эскроу и отправьте агента-потребителя."
+      description: "Практический курс по AIMarket Protocol v2, SDK, Hub, эскроу, каналам и монетизации возможностей агентов."
+    es:
+      title: "Construye una economía de agentes desde cero"
+      tagline: "Publica una capacidad de pago, cobra USDC mediante depósito en garantía y despliega un agente consumidor."
+      description: "Curso práctico sobre AIMarket Protocol v2, SDK, Hub, depósito en garantía, canales y monetización de capacidades de agentes."
+    fr:
+      title: "Construisez une économie d'agents à partir de zéro"
+      tagline: "Publiez une capacité payante, encaissez de l'USDC via séquestre et livrez un agent consommateur."
+      description: "Cours pratique sur AIMarket Protocol v2, le SDK, le Hub, le séquestre, les canaux et la monétisation des capacités d'agents."
+    zh:
+      title: "从零构建智能体经济"
+      tagline: "发布付费能力，通过托管收取 USDC，并交付一个消费方智能体。"
+      description: "关于 AIMarket Protocol v2、SDK、Hub、托管、通道以及智能体能力变现的实操课程。"
+  3d-data-viz-course:
+    ru:
+      title: "3D-визуализация данных с Alien Monitor"
+      tagline: "Проверяйте здоровье API alien-monitor, топологию и репутацию LUMEN — затем отобразите сцены оракулов в R3F."
+      description: "Практический курс по визуализатору экосистемы alien-monitor — REST-зонды, графовые модели и отображение сцен в React Three Fiber."
+    es:
+      title: "Visualización de datos 3D con Alien Monitor"
+      tagline: "Sondea la salud de la API de alien-monitor, la topología y la reputación LUMEN — luego mapea escenas de oráculos a R3F."
+      description: "Curso práctico sobre el visualizador del ecosistema alien-monitor — sondas REST, modelos de grafos y mapeo de escenas en React Three Fiber."
+    fr:
+      title: "Visualisation de données 3D avec Alien Monitor"
+      tagline: "Sondez la santé de l'API alien-monitor, la topologie et la réputation LUMEN — puis mappez les scènes d'oracles vers R3F."
+      description: "Cours pratique sur le visualiseur de l'écosystème alien-monitor — sondes REST, modèles de graphes et mappage de scènes en React Three Fiber."
+    zh:
+      title: "用 Alien Monitor 进行 3D 数据可视化"
+      tagline: "探测 alien-monitor 的 API 健康、拓扑与 LUMEN 声誉——然后把预言机场景映射到 R3F。"
+      description: "关于 alien-monitor 生态可视化器的实操课程——REST 探测、图模型以及 React Three Fiber 场景映射。"
+  physics-inspired-computing-course:
+    ru:
+      title: "Вычисления, вдохновлённые физикой, для инженеров"
+      tagline: "Консенсусные рои, сертификаты TSP, сэмплирование синим шумом, каскадный риск и термодинамика Ландауэра."
+      description: "Практический курс по оракулам AIMarket, вдохновлённым физикой — Murmuration, Colony, Turing, Ablation и Landauer с живыми вызовами."
+    es:
+      title: "Computación inspirada en la física para ingenieros"
+      tagline: "Enjambres de consenso, certificados de TSP, muestreo de ruido azul, riesgo de cascada y termodinámica de Landauer."
+      description: "Curso práctico sobre oráculos AIMarket inspirados en la física — Murmuration, Colony, Turing, Ablation y Landauer con llamadas en vivo."
+    fr:
+      title: "Calcul inspiré de la physique pour ingénieurs"
+      tagline: "Essaims de consensus, certificats TSP, échantillonnage par bruit bleu, risque de cascade et thermodynamique de Landauer."
+      description: "Cours pratique sur les oracles AIMarket inspirés de la physique — Murmuration, Colony, Turing, Ablation et Landauer avec des appels en direct."
+    zh:
+      title: "面向工程师的物理启发式计算"
+      tagline: "共识群集、TSP 证书、蓝噪声采样、级联风险以及 Landauer 热力学。"
+      description: "关于物理启发式 AIMarket 预言机的实操课程——Murmuration、Colony、Turing、Ablation 和 Landauer，配合实时调用。"
+  mathematics-of-trust-course:
+    ru:
+      title: "Математика доверия"
+      tagline: "PageRank, перколяция, спектральные разрезы, консенсус и каскадный риск — с живыми оракулами AIMarket."
+      description: "Практический курс по доверию на основе графов: EigenTrust, пороги перколяции, связность Фидлера, устойчивый консенсус и песочные каскады."
+    es:
+      title: "Matemáticas de la confianza"
+      tagline: "PageRank, percolación, cortes espectrales, consenso y riesgo de cascada — con oráculos AIMarket en vivo."
+      description: "Curso práctico sobre confianza basada en grafos: EigenTrust, umbrales de percolación, conectividad de Fiedler, consenso robusto y cascadas de montón de arena."
+    fr:
+      title: "Mathématiques de la confiance"
+      tagline: "PageRank, percolation, coupes spectrales, consensus et risque de cascade — avec les oracles AIMarket en direct."
+      description: "Cours pratique sur la confiance fondée sur les graphes : EigenTrust, seuils de percolation, connectivité de Fiedler, consensus robuste et cascades de tas de sable."
+    zh:
+      title: "信任的数学"
+      tagline: "PageRank、渗流、谱切割、共识与级联风险——配合实时 AIMarket 预言机。"
+      description: "关于基于图的信任的实操课程：EigenTrust、渗流阈值、Fiedler 连通性、稳健共识以及沙堆级联。"
+  optimization-with-proofs-course:
+    ru:
+      title: "Оптимизация с доказательствами"
+      tagline: "Зазоры TSP, двойственные для транспорта, эйкональные сертификаты и неопределённость GP — каждый ответ с доказательством."
+      description: "Практический курс по комбинаторной и непрерывной оптимизации с верифицируемыми сертификатами качества от живых оракулов AIMarket."
+    es:
+      title: "Optimización con pruebas"
+      tagline: "Brechas de TSP, duales de transporte, certificados eikonales e incertidumbre de GP — cada respuesta trae una prueba."
+      description: "Curso práctico sobre optimización combinatoria y continua con certificados de calidad verificables de oráculos AIMarket en vivo."
+    fr:
+      title: "Optimisation avec preuves"
+      tagline: "Écarts TSP, duaux de transport, certificats eikonals et incertitude GP — chaque réponse livre une preuve."
+      description: "Cours pratique sur l'optimisation combinatoire et continue avec des certificats de qualité vérifiables issus des oracles AIMarket en direct."
+    zh:
+      title: "带证明的优化"
+      tagline: "TSP 间隙、传输对偶、程函证书以及 GP 不确定性——每个答案都附带证明。"
+      description: "关于组合与连续优化的实操课程，配备来自实时 AIMarket 预言机的可验证质量证书。"
+  smart-contracts-course:
+    ru:
+      title: "Смарт-контракты для лотерей агентов"
+      tagline: "Несмещаемые розыгрыши, проверка VDF и эскроу — паттерны lottery/ на Python с векторами Foundry."
+      description: "Практический курс по концепциям смарт-контрактов лотерей: честные розыгрыши, проверка Chronos VDF, раунды релеера и каналы эскроу."
+    es:
+      title: "Contratos inteligentes para loterías de agentes"
+      tagline: "Sorteos insesgables, verificación de VDF y depósito en garantía — patrones de lottery/ en Python con vectores de Foundry."
+      description: "Curso práctico sobre conceptos de contratos inteligentes de lotería: sorteos justos, verificación de Chronos VDF, rondas de relayer y canales de depósito en garantía."
+    fr:
+      title: "Contrats intelligents pour loteries d'agents"
+      tagline: "Tirages impartiaux, vérification VDF et séquestre — motifs lottery/ en Python avec vecteurs Foundry."
+      description: "Cours pratique sur les concepts de contrats intelligents de loterie : tirages équitables, vérification Chronos VDF, tours de relayeur et canaux de séquestre."
+    zh:
+      title: "面向智能体抽奖的智能合约"
+      tagline: "不可偏置的抽取、VDF 验证与托管——用 Python 实现 lottery/ 模式，配合 Foundry 向量。"
+      description: "关于抽奖智能合约概念的实操课程：公平抽取、Chronos VDF 验证、中继轮次以及托管通道。"
+  ai-factory-course:
+    ru:
+      title: "Конвейер и оркестрация AI-Factory"
+      tagline: "Исследование→проектирование→сборка→тест→выпуск — зондируйте API фабрики и стадии оркестратора."
+      description: "Практический курс по конвейеру AI-Factory: публичные эндпоинты статуса, выпущенные продукты, поток стадий и встроенная мок-фабрика."
+    es:
+      title: "Pipeline y orquestación de AI-Factory"
+      tagline: "Investigar→diseñar→construir→probar→publicar — sondea las API de la factory y las etapas del orquestador."
+      description: "Curso práctico sobre el pipeline de AI-Factory: endpoints públicos de estado, productos publicados, flujo de etapas y una factory simulada integrada."
+    fr:
+      title: "Pipeline et orchestration d'AI-Factory"
+      tagline: "Recherche→conception→build→test→livraison — sondez les API de la factory et les étapes de l'orchestrateur."
+      description: "Cours pratique sur le pipeline AI-Factory : endpoints publics de statut, produits livrés, flux d'étapes et une factory simulée intégrée."
+    zh:
+      title: "AI-Factory 流水线与编排"
+      tagline: "研究→设计→构建→测试→发布——探测 factory API 与编排器各阶段。"
+      description: "关于 AI-Factory 流水线的实操课程：公开状态端点、已发布产品、阶段流转以及内置的模拟 factory。"
+  orchestration-course:
+    ru:
+      title: "Оркестрация AI-агентов"
+      tagline: "Координируйте многоагентные конвейеры на живой инфраструктуре AIMarket."
+      description: "Практический курс на Python по паттернам оркестрации AI-агентов и экономике агентов."
+    es:
+      title: "Orquestación de agentes de IA"
+      tagline: "Coordina pipelines multiagente sobre infraestructura AIMarket en vivo."
+      description: "Curso práctico de Python sobre patrones de orquestación de agentes de IA y la economía de agentes."
+    fr:
+      title: "Orchestration d'agents IA"
+      tagline: "Coordonnez des pipelines multi-agents sur l'infrastructure AIMarket en direct."
+      description: "Cours pratique en Python sur les motifs d'orchestration d'agents IA et l'économie des agents."
+    zh:
+      title: "AI 智能体编排"
+      tagline: "在实时 AIMarket 基础设施上协调多智能体流水线。"
+      description: "关于 AI 智能体编排模式与智能体经济的 Python 实操课程。"
+
+# ---------------------------------------------------------------------------
+# Guides — per-slug per-lang {title, description}. Guide BODY prose stays English.
+# ---------------------------------------------------------------------------
+guides:
+  call-verifiable-oracle:
+    ru:
+      title: "Вызовите верифицируемый оракул из вашего AI-агента"
+      description: "Находите, вызывайте и независимо проверяйте Platon VRF, Chronos VDF и репутацию LUMEN примерно в 5 строк — через MCP (Cursor, Claude) или сырой HTTP на AIMarket Hub."
+    es:
+      title: "Llama a un oráculo verificable desde tu agente de IA"
+      description: "Descubre, invoca y verifica de forma independiente Platon VRF, Chronos VDF y la reputación LUMEN en ~5 líneas — vía MCP (Cursor, Claude) o HTTP en crudo sobre AIMarket Hub."
+    fr:
+      title: "Appelez un oracle vérifiable depuis votre agent IA"
+      description: "Découvrez, invoquez et vérifiez de manière indépendante Platon VRF, Chronos VDF et la réputation LUMEN en ~5 lignes — via MCP (Cursor, Claude) ou HTTP brut sur AIMarket Hub."
+    zh:
+      title: "从你的 AI 智能体调用可验证预言机"
+      description: "用约 5 行代码发现、调用并独立验证 Platon VRF、Chronos VDF 和 LUMEN 声誉——通过 MCP（Cursor、Claude）或在 AIMarket Hub 上使用原始 HTTP。"
+  verifiable-randomness-and-time:
+    ru:
+      title: "Верифицируемая случайность и криптографическое время для агентов"
+      description: "Спецификация продукта для хаос-VRF Platon и Wesolowski VDF Chronos — устойчивая к смещению случайность и доказательство прошедшего времени, которое любой агент может проверить офлайн."
+    es:
+      title: "Aleatoriedad verificable y tiempo criptográfico para agentes"
+      description: "Especificación de producto para el chaos-VRF de Platon y el VDF Wesolowski de Chronos — aleatoriedad resistente al sesgo y prueba de tiempo transcurrido que cualquier agente puede verificar offline."
+    fr:
+      title: "Aléa vérifiable et temps cryptographique pour agents"
+      description: "Spécification produit pour le chaos-VRF de Platon et le VDF Wesolowski de Chronos — un aléa résistant au biais et une preuve de temps écoulé que tout agent peut vérifier hors ligne."
+    zh:
+      title: "面向智能体的可验证随机性与密码学时间"
+      description: "Platon 混沌 VRF 与 Chronos Wesolowski VDF 的产品规范——抗偏置的随机性以及任何智能体都能离线验证的已流逝时间证明。"
+  reputation-and-trust:
+    ru:
+      title: "Репутация и оценки доверия агентов (LUMEN / EigenTrust)"
+      description: "Устойчивая к сивилле репутация над графом взаимодействий — как LUMEN оценивает MCP-серверы и возможности для безопасной коммерции между агентами."
+    es:
+      title: "Reputación y puntuaciones de confianza de agentes (LUMEN / EigenTrust)"
+      description: "Reputación resistente a Sybil sobre un grafo de interacciones — cómo LUMEN puntúa servidores MCP y capacidades para un comercio seguro entre agentes."
+    fr:
+      title: "Réputation et scores de confiance des agents (LUMEN / EigenTrust)"
+      description: "Une réputation résistante aux attaques Sybil sur un graphe d'interactions — comment LUMEN note les serveurs MCP et les capacités pour un commerce sûr entre agents."
+    zh:
+      title: "智能体声誉与信任评分（LUMEN / EigenTrust）"
+      description: "在交互图上抗女巫攻击的声誉——LUMEN 如何为 MCP 服务器和能力评分，以实现安全的智能体间商务。"
+  mcp-payment-and-security:
+    ru:
+      title: "Платёжные каналы MCP и модель безопасности агентов"
+      description: "Микроплатёжные каналы HTTP 402, лимиты трат, файрвол WARDEN с fail-closed и модель угроз для сторонних MCP-инструментов в автономных агентах."
+    es:
+      title: "Canales de pago de MCP y modelo de seguridad de agentes"
+      description: "Canales de micropago HTTP 402, límites de gasto, firewall WARDEN fail-closed y modelo de amenazas para herramientas MCP de terceros en agentes autónomos."
+    fr:
+      title: "Canaux de paiement MCP et modèle de sécurité des agents"
+      description: "Canaux de micropaiement HTTP 402, plafonds de dépense, pare-feu WARDEN fail-closed et modèle de menaces pour les outils MCP tiers dans les agents autonomes."
+    zh:
+      title: "MCP 支付通道与智能体安全模型"
+      description: "HTTP 402 微支付通道、消费上限、fail-closed 的 WARDEN 防火墙，以及自主智能体中第三方 MCP 工具的威胁模型。"
+  external-argus-operator:
+    ru:
+      title: "Запустите собственный ARGUS в публичной экономике AICOM"
+      description: "Разверните ARGUS на своём сервере как потребителя Hub и/или поставщика возможностей — чек-лист по кошельку, переключателю крипто, семейству оракулов и регистрации в Mesh."
+    es:
+      title: "Ejecuta tu propio ARGUS en la economía pública de AICOM"
+      description: "Despliega ARGUS en tu servidor como consumidor del Hub y/o proveedor de capacidades — lista de verificación de cartera, interruptor de cripto, familia de oráculos y registro en Mesh."
+    fr:
+      title: "Faites tourner votre propre ARGUS sur l'économie publique AICOM"
+      description: "Déployez ARGUS sur votre serveur en tant que consommateur du Hub et/ou fournisseur de capacités — check-list du portefeuille, interrupteur crypto, famille d'oracles et enregistrement au Mesh."
+    zh:
+      title: "在公共 AICOM 经济中运行你自己的 ARGUS"
+      description: "在你的服务器上将 ARGUS 部署为 Hub 消费方和/或能力提供方——钱包、加密开关、预言机家族与 Mesh 注册的检查清单。"
+  agent-economy-overview:
+    ru:
+      title: "Постройте экономику агентов — обзор Protocol v2"
+      description: "Возможности, подписанные квитанции, федеративное обнаружение, каналы USDC и эскроу — стек AIMarket Protocol v2 для коммерции автономных агентов."
+    es:
+      title: "Construye una economía de agentes — resumen del Protocol v2"
+      description: "Capacidades, recibos firmados, descubrimiento federado, canales de USDC y depósito en garantía — la pila de AIMarket Protocol v2 para el comercio de agentes autónomos."
+    fr:
+      title: "Construisez une économie d'agents — aperçu du Protocol v2"
+      description: "Capacités, reçus signés, découverte fédérée, canaux USDC et séquestre — la pile AIMarket Protocol v2 pour le commerce d'agents autonomes."
+    zh:
+      title: "构建智能体经济——Protocol v2 概览"
+      description: "能力、已签名收据、联邦发现、USDC 通道与托管——面向自主智能体商务的 AIMarket Protocol v2 技术栈。"

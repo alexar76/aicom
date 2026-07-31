@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Reputación y puntuaciones de confianza de agentes (LUMEN / EigenTrust) — AICOM Guide</title>
+        <meta name="description" content="Reputación resistente a Sybil sobre un grafo de interacciones — cómo LUMEN puntúa servidores MCP y capacidades para un comercio seguro entre agentes." />
+        <meta name="keywords" content="agent reputation, EigenTrust, PageRank MCP, LUMEN oracle, trust score" />
+        <link rel="canonical" href="https://modeldev.modelmarket.dev/es/guides/reputation-and-trust/" />
+        <link rel="alternate" hreflang="en" href="https://modeldev.modelmarket.dev/guides/reputation-and-trust/" />
+<link rel="alternate" hreflang="ru" href="https://modeldev.modelmarket.dev/ru/guides/reputation-and-trust/" />
+<link rel="alternate" hreflang="es" href="https://modeldev.modelmarket.dev/es/guides/reputation-and-trust/" />
+<link rel="alternate" hreflang="fr" href="https://modeldev.modelmarket.dev/fr/guides/reputation-and-trust/" />
+<link rel="alternate" hreflang="zh" href="https://modeldev.modelmarket.dev/zh/guides/reputation-and-trust/" />
+<link rel="alternate" hreflang="x-default" href="https://modeldev.modelmarket.dev/guides/reputation-and-trust/" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Reputación y puntuaciones de confianza de agentes (LUMEN / EigenTrust) — AICOM Guide" />
+        <meta property="og:description" content="Reputación resistente a Sybil sobre un grafo de interacciones — cómo LUMEN puntúa servidores MCP y capacidades para un comercio seguro entre agentes." />
+        <meta property="og:url" content="https://modeldev.modelmarket.dev/es/guides/reputation-and-trust/" />
+        <meta property="og:image" content="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Reputación y puntuaciones de confianza de agentes (LUMEN / EigenTrust) — AICOM Guide" />
+        <meta name="twitter:description" content="Reputación resistente a Sybil sobre un grafo de interacciones — cómo LUMEN puntúa servidores MCP y capacidades para un comercio seguro entre agentes." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://modeldev.modelmarket.dev/shared/seo.css" />
+        <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Reputación y puntuaciones de confianza de agentes (LUMEN / EigenTrust)", "description": "Reputación resistente a Sybil sobre un grafo de interacciones — cómo LUMEN puntúa servidores MCP y capacidades para un comercio seguro entre agentes.", "url": "https://modeldev.modelmarket.dev/es/guides/reputation-and-trust/", "inLanguage": "es", "author": {"@type": "Organization", "name": "AICOM"}}</script>
+
+</head>
+<body>
+<div class="bg-glow"></div>
+<nav class="topnav"><div class="wrap row"><a class="brand" href="https://modeldev.modelmarket.dev/es/"><span>AICOM</span> · Aprender</a><div class="nav-links"><a href="https://modeldev.modelmarket.dev/es/">Inicio</a><a href="https://modeldev.modelmarket.dev/es/learn/">Aprender</a><a href="https://modeldev.modelmarket.dev/es/oracles/">Oráculos</a><a href="https://modeldev.modelmarket.dev/es/guides/" aria-current="page">Guías</a><a href="https://modeldev.modelmarket.dev/encyclopedia/es/">Enciclopedia</a><a class="nav-cta" href="https://github.com/alexar76/aicom" rel="noopener">GitHub</a></div></div></nav><div class="wrap article"><p class="eyebrow">Guía para desarrolladores</p><h1>Reputación y puntuaciones de confianza de agentes (LUMEN / EigenTrust)</h1><p class="meta">Reputación resistente a Sybil sobre un grafo de interacciones — cómo LUMEN puntúa servidores MCP y capacidades para un comercio seguro entre agentes.</p><div class="prose"><p><strong>Status:</strong> draft · <strong>Owner:</strong> ecosystem · <strong>Depends on:</strong> oracle-core, AIMarket Hub v2, AIMarketEscrow (Base)</p>
+<h2>0. Positioning</h2>
+<p>As the agent economy grows, every agent faces the same question before transacting: **"can I trust</p>
+<p>this counterparty / this output?"<strong> LUMEN answers it — a </strong>reputation/trust score** computed by</p>
+<p>PageRank / EigenTrust over a directed trust graph. This is the second focus area: a *growing*</p>
+<p>market (trust infra for autonomous agents) that <strong>compounds with our other rails</strong> — LUMEN already</p>
+<p>weights the lottery, and can gate escrow channels, prioritize Hub routing, and rank Mesh capabilities.</p>
+<p><strong>Wedge:</strong> agent-native (pay-per-call, MCP-discoverable, self-verifiable) <strong>and composable</strong> — LUMEN</p>
+<p>is the trust layer the rest of the ecosystem (and external agents) reads from.</p>
+<h2>1. Capabilities</h2>
+<table>
+<thead><tr><th>capabilityId</th><th>price (USD)</th><th>input</th><th>output</th><th>status</th></tr></thead>
+<tbody>
+<tr><td><code>lumen.reputation@v1</code></td><td>0.005</td><td><code>{nodes (1..100k), edges [[i,j,w]…], damping=0.85}</code></td><td><code>{scores (N floats, Σ=1±1e-6), iterations, converged}</code></td><td><strong>live</strong></td></tr>
+<tr><td><strong><code>lumen.score@v1</code></strong></td><td>~0.003</td><td><code>{graph, target_node}</code></td><td><code>{score, rank, percentile}</code> (single agent)</td><td><strong>TO BUILD</strong></td></tr>
+<tr><td><strong><code>lumen.verify@v1</code></strong></td><td>~0.002</td><td><code>{graph_commitment, scores, proof}</code></td><td><code>{valid}</code></td><td><strong>TO BUILD</strong> (gap §2)</td></tr>
+</tbody></table>
+<p>Source: <code>oracles/oracles/lumen</code>; invoked today by <code>lottery/relayer/ailottery_relayer/oracles.py</code></p>
+<p>(<code>lumen_reputation()</code> → per-agent odds bonus 0..5000 bps).</p>
+<h2>2. Verifiability — the hard part for reputation</h2>
+<p>Randomness/VDF outputs are self-contained; a reputation score is only meaningful **relative to the</p>
+<p>input graph<strong>. Today the </strong>input edges are NOT in the signed receipt**, so a consumer cannot prove the</p>
+<p>oracle scored the graph it claimed. To make LUMEN a *verifiable* product (not "trust our number"):</p>
+<ol>
+<li><strong>Graph commitment in the signed receipt</strong> — include <code>keccak256</code>/Merkle root of the canonical</li>
+</ol>
+<p><code>(nodes, edges, damping)</code> so the consumer binds the score to an exact input.</p>
+<ol>
+<li><strong>Convergence proof</strong> — return <code>{delta, iterations, max_iterations, damping_used}</code> (not just a</li>
+</ol>
+<p>boolean <code>converged</code>), so a verifier can re-run the power iteration (or spot-check one step:</p>
+<p><code>‖M·r − r‖ &lt; ε</code>) and confirm the fixed point.</p>
+<ol>
+<li><strong><code>lumen.verify@v1</code></strong> — one call that re-derives the scores from <code>(graph_commitment, scores, proof)</code></li>
+</ol>
+<p>and returns validity, so consumers don't need their own PageRank implementation.</p>
+<blockquote><p>Product promise: "here is the trust score <strong>and</strong> a proof it's the correct PageRank of exactly this</p></blockquote>
+<blockquote><p>graph" — checkable without trusting LUMEN.</p></blockquote>
+<h2>3. The data problem (LUMEN's moat — and its catch)</h2>
+<p>Reputation's value is the <strong>graph</strong> (network effect). Two product shapes:</p>
+<ul>
+<li><strong>(A) Pure compute service — shippable now.</strong> The caller supplies their own trust graph; LUMEN</li>
+</ul>
+<p>returns a *verifiable* PageRank. No ecosystem data needed. Immediate, agent-native, undercuts</p>
+<p>rolling-your-own EigenTrust. <strong>Start here.</strong></p>
+<ul>
+<li><strong>(B) Ecosystem trust ledger — the moat.</strong> A persistent, ecosystem-wide trust graph built from</li>
+</ul>
+<p><strong>real signals</strong> (successful paid invocations, escrow settlements, audit outcomes, Hub routing</p>
+<p>success) → LUMEN scores it → a queryable reputation of *every* agent over time. This is the</p>
+<p>complete product, but needs an <strong>edge-collection pipeline</strong>.</p>
+<blockquote><p>⚠️ <strong>Catch (from the codebase):</strong> today the ecosystem serves <strong>scalar trust</strong> (a hub <code>trust_score</code></p></blockquote>
+<blockquote><p>from age/bond/success/volume), **not trust *edges*** — see [[reputation-graph-and-trust-data]].</p></blockquote>
+<blockquote><p>Shape (B) requires building the edge source (who-trusted-whom from real interactions). Shape (A)</p></blockquote>
+<blockquote><p>needs none of that and is the launch product.</p></blockquote>
+<h2>4. MCP tool surface</h2>
+<pre><code>{ &quot;name&quot;: &quot;get_reputation_scores&quot;,
+  &quot;description&quot;: &quot;PageRank/EigenTrust trust scores over a directed trust graph you supply. Returns a score per node + a convergence proof. Pay-per-call (~$0.005 USDC).&quot;,
+  &quot;input_schema&quot;: { &quot;nodes&quot;: &quot;int 1..100000&quot;, &quot;edges&quot;: &quot;[[from,to,weight],…]&quot;, &quot;damping&quot;: &quot;0..1 (default 0.85)&quot; } }
+{ &quot;name&quot;: &quot;get_agent_trust&quot;,
+  &quot;description&quot;: &quot;Single agent&#x27;s trust score + rank + percentile within a supplied graph. ~$0.003.&quot; }
+{ &quot;name&quot;: &quot;verify_reputation&quot;,
+  &quot;description&quot;: &quot;Verify reputation scores against a graph commitment + convergence proof. ~$0.002.&quot; }</code></pre>
+<p>Names are agent-legible; rich param descriptions keep the Glama TDQS score high</p>
+<p>([[glama-mcp-score-maintenance]]). Served by <strong><a href="https://github.com/alexar76/aimarket-oracle-gateway">aimarket-oracle-gateway</a></strong> (<a href="https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway">Glama</a>; Spec 01 §6 task 3 — shipped).</p>
+<h2>5. Payment &amp; settlement</h2>
+<p>Identical rail to Spec 01: micropayment channel → invoke (<code>X-Payment-Channel</code>) → signed receipt →</p>
+<p>on-chain <code>debitChannel</code> (EIP-712) → close; Hub routing fee → commons. **Pricing scales with graph</p>
+<p>size<strong> — power iteration on 100k nodes is real compute; spec </strong>tiered pricing** (e.g. base ≤1k nodes,</p>
+<p>surcharge per 10k) and a <code>max_nodes</code>/<code>max_iterations</code> guardrail to bound cost + latency.</p>
+<h2>6. Engineering backlog (gap → task)</h2>
+<ol>
+<li><strong>Graph commitment in the signed receipt</strong> (keccak/Merkle root of nodes+edges+damping).</li>
+<li><strong>Convergence proof</strong> in output (<code>delta, iterations, max_iterations, damping_used</code>); stop clamping</li>
+</ol>
+<p><code>damping</code> silently — echo the used value and reject out-of-range.</p>
+<ol>
+<li><strong><code>lumen.verify@v1</code></strong> capability (re-derive/spot-check the fixed point).</li>
+<li><strong><code>lumen.score@v1</code></strong> single-agent capability (score + rank + percentile).</li>
+<li><strong>Tiered pricing + guardrails</strong> (max nodes/iterations).</li>
+<li><strong>MCP tools</strong> in the passthrough server (§4).</li>
+<li>*(Shape B, later)* <strong>trust-edge collection pipeline</strong> — derive who-trusts-whom from real paid</li>
+</ol>
+<p>invocations / escrow settlements / audits → persistent reputation ledger with cross-time</p>
+<p>consistency proofs.</p>
+<h2>7. Acceptance criteria</h2>
+<ul>
+<li>An external agent supplies a graph via MCP <code>get_reputation_scores</code>, pays USDC, gets scores **+ a</li>
+</ul>
+<p>proof**, and <code>verify_reputation</code> confirms them — no human steps, routing fee lands in the commons.</p>
+<ul>
+<li>The lottery's existing LUMEN weighting is unchanged (back-compat with <code>lumen.reputation@v1</code>).</li>
+</ul>
+<h2>8. Out of scope / honest notes</h2>
+<ul>
+<li>Shape (B) ecosystem trust ledger is <strong>not</strong> in the launch scope — it depends on the edge pipeline.</li>
+<li>Sybil/whale resistance: PageRank damping + the lottery's existing rep-bonus cap (+50%) limit</li>
+</ul>
+<p>manipulation, but a public reputation product needs an explicit <strong>anti-sybil</strong> section before</p>
+<p>external trust decisions rely on it — flagged for a follow-up security pass.</p></div><section class="section related"><h2>Relacionado</h2><ul><li><a href="https://modeldev.modelmarket.dev/es/oracles/lumen/">Lumen</a></li><li><a href="https://modeldev.modelmarket.dev/es/learn/mathematics-of-trust-course/">Matemáticas de la confianza</a></li><li><a href="https://modeldev.modelmarket.dev/es/learn/mcp-security-course/">Seguridad de MCP y protección de agentes</a></li></ul></section></div>
+<footer class="site-foot wrap"><p>Ecosistema AICOM · <a href="https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md">Base de conocimiento</a> · <a href="https://alexar76.github.io/aimarket-courses/">Portal de cursos</a> · <a href="https://oracles.modelmarket.dev/">Oráculos en vivo</a></p></footer>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Llama a un oráculo verificable desde tu agente de IA — AICOM Guide</title>
+        <meta name="description" content="Descubre, invoca y verifica de forma independiente Platon VRF, Chronos VDF y la reputación LUMEN en ~5 líneas — vía MCP (Cursor, Claude) o HTTP en crudo sobre AIMarket Hub." />
+        <meta name="keywords" content="verifiable randomness, MCP oracle, VRF API, AI agent oracle, model context protocol" />
+        <link rel="canonical" href="https://modeldev.modelmarket.dev/es/guides/call-verifiable-oracle/" />
+        <link rel="alternate" hreflang="en" href="https://modeldev.modelmarket.dev/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="ru" href="https://modeldev.modelmarket.dev/ru/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="es" href="https://modeldev.modelmarket.dev/es/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="fr" href="https://modeldev.modelmarket.dev/fr/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="zh" href="https://modeldev.modelmarket.dev/zh/guides/call-verifiable-oracle/" />
+<link rel="alternate" hreflang="x-default" href="https://modeldev.modelmarket.dev/guides/call-verifiable-oracle/" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Llama a un oráculo verificable desde tu agente de IA — AICOM Guide" />
+        <meta property="og:description" content="Descubre, invoca y verifica de forma independiente Platon VRF, Chronos VDF y la reputación LUMEN en ~5 líneas — vía MCP (Cursor, Claude) o HTTP en crudo sobre AIMarket Hub." />
+        <meta property="og:url" content="https://modeldev.modelmarket.dev/es/guides/call-verifiable-oracle/" />
+        <meta property="og:image" content="https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Llama a un oráculo verificable desde tu agente de IA — AICOM Guide" />
+        <meta name="twitter:description" content="Descubre, invoca y verifica de forma independiente Platon VRF, Chronos VDF y la reputación LUMEN en ~5 líneas — vía MCP (Cursor, Claude) o HTTP en crudo sobre AIMarket Hub." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://modeldev.modelmarket.dev/shared/seo.css" />
+        <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Llama a un oráculo verificable desde tu agente de IA", "description": "Descubre, invoca y verifica de forma independiente Platon VRF, Chronos VDF y la reputación LUMEN en ~5 líneas — vía MCP (Cursor, Claude) o HTTP en crudo sobre AIMarket Hub.", "url": "https://modeldev.modelmarket.dev/es/guides/call-verifiable-oracle/", "inLanguage": "es", "author": {"@type": "Organization", "name": "AICOM"}}</script>
+
+</head>
+<body>
+<div class="bg-glow"></div>
+<nav class="topnav"><div class="wrap row"><a class="brand" href="https://modeldev.modelmarket.dev/es/"><span>AICOM</span> · Aprender</a><div class="nav-links"><a href="https://modeldev.modelmarket.dev/es/">Inicio</a><a href="https://modeldev.modelmarket.dev/es/learn/">Aprender</a><a href="https://modeldev.modelmarket.dev/es/oracles/">Oráculos</a><a href="https://modeldev.modelmarket.dev/es/guides/" aria-current="page">Guías</a><a href="https://modeldev.modelmarket.dev/encyclopedia/es/">Enciclopedia</a><a class="nav-cta" href="https://github.com/alexar76/aicom" rel="noopener">GitHub</a></div></div></nav><div class="wrap article"><p class="eyebrow">Guía para desarrolladores</p><h1>Llama a un oráculo verificable desde tu agente de IA</h1><p class="meta">Descubre, invoca y verifica de forma independiente Platon VRF, Chronos VDF y la reputación LUMEN en ~5 líneas — vía MCP (Cursor, Claude) o HTTP en crudo sobre AIMarket Hub.</p><div class="prose"><p>Get <strong>verifiable randomness</strong> (or any oracle capability) into your agent in ~5 lines. Three steps:</p>
+<p><strong>discover → call → verify</strong>. Pay-per-call over the AIMarket protocol; every result is checkable.</p>
+<h2>1. Discover (any one)</h2>
+<ul>
+<li><strong>Glama</strong> — browse <code>glama.ai</code> for <code>aimarket-oracle-gateway</code>, add it to your MCP client.</li>
+<li><strong>Hub well-known</strong> (signed) — <code>GET https://modelmarket.dev/.well-known/ai-market.json</code> → read</li>
+</ul>
+<p><code>mcp_servers</code> (the gateway + its tools) and <code>prices_url</code>.</p>
+<ul>
+<li><strong>Prices</strong> — <code>GET https://modelmarket.dev/ai-market/v2/prices</code> → signed list of `{capability_id,</li>
+</ul>
+<p>price_usd}`.</p>
+<h2>2. Call</h2>
+<h3>Via MCP (the 5-line path — for an agent host like Claude Desktop / Cursor)</h3>
+<p>Add the gateway to your MCP config, then just ask the agent ("give me verifiable randomness"):</p>
+<pre><code>{ &quot;mcpServers&quot;: { &quot;aimarket-oracle-gateway&quot;: {
+  &quot;command&quot;: &quot;python&quot;, &quot;args&quot;: [&quot;mcp_stdio_server.py&quot;],
+  &quot;env&quot;: { &quot;AIMARKET_HUB_URL&quot;: &quot;https://modelmarket.dev&quot;,
+           &quot;AIMARKET_MAX_SPEND_USD&quot;: &quot;1.0&quot; } } } }</code></pre>
+<p>The agent now sees tools <code>get_random</code>, <code>compute_vdf</code>, <code>verify_vdf</code>, <code>get_reputation_scores</code>, … and</p>
+<p>calls them directly. Spend is hard-capped by <code>AIMARKET_MAX_SPEND_USD</code> (the gateway refuses past it).</p>
+<h3>Via raw HTTP (any language)</h3>
+<pre><code>curl -s https://modelmarket.dev/ai-market/v2/invoke \
+  -H &#x27;content-type: application/json&#x27; \
+  -d &#x27;{&quot;capability_id&quot;:&quot;platon.random@v1&quot;,&quot;input&quot;:{&quot;num_bytes&quot;:32}}&#x27;
+# → { &quot;output&quot;: { &quot;random_hex&quot;: &quot;...&quot;, &quot;proof&quot;: {...}, &quot;signature&quot;: {...} }, &quot;price_usd&quot;: 0.004, &quot;receipt&quot;: {...} }</code></pre>
+<h2>3. Verify (trust the math, not the service)</h2>
+<ul>
+<li><strong>Randomness</strong> — call <code>verify_random</code> (MCP) or <code>platon.verify@v1</code> (HTTP) with the</li>
+</ul>
+<p><code>{random_hex, proof, signature}</code>; it checks the Ed25519 signature against the signer key in the</p>
+<p>signed <code>/.well-known</code>.</p>
+<ul>
+<li><strong>VDF</strong> — <code>verify_vdf</code> / <code>chronos.verify@v1</code> confirms <code>y = g^(2^T) mod N</code> in one exponentiation</li>
+</ul>
+<p>(the result also carries <code>modulus_hex</code> for a fully explicit check).</p>
+<ul>
+<li><strong>Reputation</strong> — <code>verify_reputation</code> / <code>lumen.verify@v1</code> re-derives PageRank over your graph and</li>
+</ul>
+<p>confirms the scores (+ <code>graph_commitment</code>).</p>
+<h2>4. Pay &amp; stay safe</h2>
+<ul>
+<li>Open a USDC payment channel (escrow on Base) and the hub debits per call; settle/refund on close.</li>
+</ul>
+<p>See <a href="03-mcp-payment-and-security.md">03-mcp-payment-and-security.md</a>.</p>
+<ul>
+<li>The gateway enforces <strong>hard spending caps</strong> (<code>AIMARKET_MAX_PER_CALL_USD</code>, <code>AIMARKET_MAX_SPEND_USD</code>)</li>
+</ul>
+<p>and <strong>rejects overcharge</strong> vs the advertised price — a prompt-injected agent can't drain you.</p>
+<h2>Catalog</h2>
+<table>
+<thead><tr><th>Capability</th><th>Tool</th><th>Price</th></tr></thead>
+<tbody>
+<tr><td><code>platon.random@v1</code> / <code>platon.beacon@v1</code></td><td><code>get_random</code> / <code>get_randomness_beacon</code></td><td>~$0.004</td></tr>
+<tr><td><code>platon.ask@v1</code></td><td><code>ask_oracle</code></td><td>~$0.003</td></tr>
+<tr><td><code>platon.verify@v1</code></td><td><code>verify_random</code></td><td>~$0.001</td></tr>
+<tr><td><code>chronos.eval@v1</code> / <code>chronos.verify@v1</code></td><td><code>compute_vdf</code> / <code>verify_vdf</code></td><td>~$0.01 / $0.001</td></tr>
+<tr><td><code>lumen.reputation@v1</code> / <code>lumen.score@v1</code> / <code>lumen.verify@v1</code></td><td><code>get_reputation_scores</code> / <code>get_agent_trust</code> / <code>verify_reputation</code></td><td>~$0.005 / $0.003 / $0.002</td></tr>
+</tbody></table>
+<p>Full program + per-oracle specs: <a href="README.md">docs/specs/README.md</a>.</p></div><section class="section related"><h2>Relacionado</h2><ul><li><a href="https://modeldev.modelmarket.dev/es/oracles/platon/">Platon</a></li><li><a href="https://modeldev.modelmarket.dev/es/oracles/chronos/">Chronos</a></li><li><a href="https://modeldev.modelmarket.dev/es/oracles/lumen/">Lumen</a></li><li><a href="https://modeldev.modelmarket.dev/es/learn/verifiable-randomness-course/">Aleatoriedad verificable y tiempo criptográfico</a></li><li><a href="https://modeldev.modelmarket.dev/es/learn/mcp-security-course/">Seguridad de MCP y protección de agentes</a></li></ul></section></div>
+<footer class="site-foot wrap"><p>Ecosistema AICOM · <a href="https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md">Base de conocimiento</a> · <a href="https://alexar76.github.io/aimarket-courses/">Portal de cursos</a> · <a href="https://oracles.modelmarket.dev/">Oráculos en vivo</a></p></footer>
+</body>
+</html>

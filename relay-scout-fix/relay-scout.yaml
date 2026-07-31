@@ -1,0 +1,10 @@
+targets:
+  - name: factory
+    url: https://magic-ai-factory.com/api/health
+    kind: json
+  - name: monitor
+    url: https://magic-ai-factory.com/monitor/api/health
+    kind: json
+  - name: dioscuri
+    url: http://78.17.126.214:8790/health
+    kind: json

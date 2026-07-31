@@ -1,0 +1,11 @@
+security:
+  admin_password_min_length: 12
+  jwt_algorithm: HS256
+  jwt_expiry_minutes: 30
+  bcrypt_rounds: 12
+  enable_2fa: true
+  enable_fail2ban: true
+  audit_log_retention_days: 90
+  sandbox_network_access: false
+  sandbox_memory_limit_mb: 512
+  sandbox_cpu_limit: 0.5
