@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ARGUS Won't Help You — The Cartoon</title>
+<meta name="description" content="Animated promo: 3 situations when ARGUS says no (and one when it saves your nginx). 20 languages."/>
+<style>
+:root{
+  --bg:#05060f;--panel:rgba(14,18,36,.92);--line:rgba(124,150,255,.28);
+  --cyan:#36e6ff;--violet:#a779ff;--pink:#ff5db1;--green:#3df5a6;--gold:#ffd14d;
+  --text:#eaf0ff;--muted:#93a2c9;--mono:ui-monospace,Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--sans)}
+[dir=rtl]{direction:rtl}
+#stars{position:fixed;inset:0;z-index:0}
+.aura{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(50vw 50vw at 88% -5%,rgba(167,121,255,.24),transparent 55%),
+  radial-gradient(45vw 45vw at -5% 25%,rgba(54,230,255,.16),transparent 50%),
+  radial-gradient(55vw 45vw at 50% 105%,rgba(255,93,177,.14),transparent 55%)}
+.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 120px rgba(0,0,0,.65)}
+.wrap{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;max-width:980px;margin:0 auto;padding:10px 14px 16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.brand{font-family:var(--mono);font-weight:800;letter-spacing:.16em;font-size:11px;color:var(--cyan);text-shadow:0 0 20px rgba(54,230,255,.4)}
+.controls{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+select,button{font-family:var(--mono);font-size:11px;border:1px solid var(--line);background:rgba(18,24,46,.95);color:var(--text);border-radius:10px;padding:7px 11px;cursor:pointer;transition:transform .15s,filter .15s}
+button.primary{background:linear-gradient(100deg,var(--cyan),var(--violet));color:#06101e;border:none;font-weight:800}
+button:active{transform:scale(.96)}
+button:hover{filter:brightness(1.1)}
+.stage{flex:1;position:relative;margin:8px 0;border:1px solid var(--line);border-radius:22px;background:var(--panel);backdrop-filter:blur(12px);overflow:hidden;min-height:300px;box-shadow:0 24px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06)}
+.scene-label{position:absolute;top:12px;left:14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;z-index:8}
+.scene-emoji{position:absolute;top:8px;right:14px;font-size:26px;z-index:8;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+#theater{width:100%;height:100%;display:block}
+.scanlines{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.04;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.5) 2px,rgba(255,255,255,.5) 4px)}
+.subs{position:absolute;left:0;right:0;bottom:0;padding:14px 16px 16px;background:linear-gradient(transparent,rgba(5,6,15,.95) 30%);z-index:6;min-height:92px}
+.sub-line{font-family:var(--mono);font-size:clamp(12px,2.4vw,15px);line-height:1.5;margin:0;opacity:0;transform:translateY(10px);transition:.4s cubic-bezier(.2,.8,.2,1)}
+.sub-line.show{opacity:1;transform:none}
+.sub-line.dim{color:var(--muted);font-size:11px;margin-top:4px}
+.progress{height:3px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden;margin-top:10px}
+.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));transition:width .15s linear;border-radius:99px;box-shadow:0 0 12px rgba(54,230,255,.5)}
+footer{text-align:center;font-family:var(--mono);font-size:10px;color:var(--muted);padding-top:2px}
+footer a{color:var(--cyan);text-decoration:none}
+.title-card{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;z-index:10;background:rgba(5,6,15,.82);transition:opacity .7s,transform .7s}
+.title-card.hide{opacity:0;transform:scale(1.04);pointer-events:none}
+.title-card h1{font-size:clamp(20px,4.8vw,34px);margin:12px 0 8px;background:linear-gradient(100deg,var(--cyan),var(--violet),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.15}
+.title-card p{color:var(--muted);max-width:460px;margin:0;font-size:14px;line-height:1.5}
+.eye-logo{filter:drop-shadow(0 0 24px rgba(54,230,255,.55))}
+.end-card{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:10;background:rgba(5,6,15,.88);opacity:0;pointer-events:none;transition:opacity .6s}
+.end-card.show{opacity:1;pointer-events:auto}
+.end-card code{font-size:11px;background:rgba(54,230,255,.1);padding:10px 14px;border-radius:10px;border:1px solid var(--line);color:var(--cyan);display:block;margin:12px 0;max-width:90%;overflow-x:auto}
+.glitch-overlay{position:absolute;inset:0;z-index:5;pointer-events:none;mix-blend-mode:screen;opacity:0;background:linear-gradient(90deg,rgba(54,230,255,.3),rgba(255,93,177,.3));transition:opacity .08s}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="aura"></div>
+<div class="vignette"></div>
+<div class="wrap">
+  <header>
+    <div class="brand">ARGUS · HONEST LIMITS THEATRE</div>
+    <div class="controls">
+      <select id="lang" aria-label="Language"></select>
+      <button type="button" id="btnPlay" class="primary">▶ Play</button>
+      <button type="button" id="btnSkip">Skip</button>
+      <button type="button" id="btnReplay">↺</button>
+    </div>
+  </header>
+  <div class="stage" id="stage">
+    <div class="title-card" id="titleCard">
+      <svg class="eye-logo" width="110" height="110" viewBox="0 0 100 100" aria-hidden="true">
+        <defs><radialGradient id="ig"><stop offset="0" stop-color="#36e6ff"/><stop offset="1" stop-color="#a779ff"/></radialGradient></defs>
+        <ellipse cx="50" cy="50" rx="44" ry="27" fill="none" stroke="url(#ig)" stroke-width="2.5"/>
+        <circle cx="50" cy="50" r="15" fill="url(#ig)"><animate attributeName="r" values="15;10;15" dur="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="50" cy="50" r="5.5" fill="#05060f"/>
+      </svg>
+      <h1 id="titleText">When ARGUS won't help you</h1>
+      <p id="titleSub">A cartoon about WARDEN, 3am feelings, and budgets that bite back.</p>
+    </div>
+    <div class="end-card" id="endCard">
+      <div style="font-size:48px">✅</div>
+      <h2 id="endTitle" style="margin:8px 0;color:var(--green);font-family:var(--mono)">Scoped tasks work.</h2>
+      <code id="endCmd">curl -fsSL https://magic-ai-factory.com/install | bash</code>
+      <p id="endSub" style="color:var(--muted);font-size:13px;margin:0">Still want one? We won't judge. Much.</p>
+    </div>
+    <div class="scene-label" id="sceneLabel">Scene 1 / 4</div>
+    <div class="scene-emoji" id="sceneEmoji">🛡️</div>
+    <canvas id="theater"></canvas>
+    <div class="scanlines"></div>
+    <div class="glitch-overlay" id="glitch"></div>
+    <div class="subs">
+      <p class="sub-line show" id="subA"></p>
+      <p class="sub-line dim" id="subB"></p>
+      <div class="progress"><i id="prog"></i></div>
+    </div>
+  </div>
+  <footer>
+    <a href="https://magic-ai-factory.com/argus/">ARGUS landing</a> ·
+    <a href="https://magic-ai-factory.com/install">install</a> · unofficial promo · 20 langs
+  </footer>
+</div>
+<script>window.__CARTOON_DATA__={
+  "meta": {
+    "title": "ARGUS Won't Help You — The Cartoon",
+    "fps": 30,
+    "sceneDurationMs": 9000
+  },
+  "ui": {
+    "en": {
+      "play": "▶ Play",
+      "pause": "⏸ Pause",
+      "replay": "↺ Replay",
+      "skip": "Skip scene",
+      "sceneOf": "Scene",
+      "watchCartoon": "Watch the cartoon",
+      "install": "Install anyway"
+    },
+    "ru": {
+      "play": "▶ Смотреть",
+      "pause": "⏸ Пауза",
+      "replay": "↺ Сначала",
+      "skip": "Дальше",
+      "sceneOf": "Сцена",
+      "watchCartoon": "Смотреть мульт",
+      "install": "Всё равно поставить"
+    }
+  },
+  "scenes": [
+  {
+    "id": "warden",
+    "emoji": "🛡️",
+    "accent": "#36e6ff",
+    "dialogue": {
+      "en": ["Discord · #free-alpha", "User: skip WARDEN, just run it", "WARDEN: reputation 0.02 · BLOCKED", "ARGUS: I'm a bouncer, not an accomplice."],
+      "ru": ["Discord · #free-alpha", "Юзер: обойди WARDEN, просто запусти", "WARDEN: репутация 0.02 · СТОП", "ARGUS: я вышибала, не сообщник."],
+      "es": ["Discord · #free-alpha", "Usuario: salta WARDEN, ejecútalo", "WARDEN: reputación 0.02 · BLOQUEADO", "ARGUS: soy portero, no cómplice."],
+      "zh": ["Discord · #free-alpha", "用户：跳过 WARDEN，直接运行", "WARDEN：信誉 0.02 · 已拦截", "ARGUS：我是保安，不是共犯。"],
+      "ja": ["Discord · #free-alpha", "ユーザー：WARDENスキップで実行", "WARDEN：評価0.02 · ブロック", "ARGUS：共犯じゃない、用心深いエージェントです。"],
+      "fr": ["Discord · #free-alpha", "User : bypass WARDEN", "WARDEN : réputation 0.02 · BLOQUÉ", "ARGUS : je suis videur, pas complice."],
+      "de": ["Discord · #free-alpha", "User: WARDEN überspringen", "WARDEN: Reputation 0.02 · BLOCKIERT", "ARGUS: Türsteher, kein Komplize."],
+      "pt": ["Discord · #free-alpha", "User: pula o WARDEN", "WARDEN: reputação 0.02 · BLOQUEADO", "ARGUS: sou segurança, não cúmplice."],
+      "hi": ["Discord · #free-alpha", "यूज़र: WARDEN छोड़ो", "WARDEN: प्रतिष्ठा 0.02 · रोक", "ARGUS: मैं बाउंसर हूँ, साथी नहीं।"],
+      "ar": ["Discord · #free-alpha", "المستخدم: تجاوز WARDEN", "WARDEN: سمعة 0.02 · مرفوض", "ARGUS: حارس أمن، لست شريك جريمة."],
+      "ko": ["Discord · #free-alpha", "사용자: WARDEN 건너뛰기", "WARDEN: 평판 0.02 · 차단", "ARGUS: 공범이 아니라 경비원입니다."],
+      "it": ["Discord · #free-alpha", "User: salta WARDEN", "WARDEN: reputazione 0.02 · BLOCCATO", "ARGUS: buttafuori, non complice."],
+      "tr": ["Discord · #free-alpha", "Kullanıcı: WARDEN'ı atla", "WARDEN: itibar 0.02 · ENGEL", "ARGUS: suç ortağı değil, fedaiyim."],
+      "id": ["Discord · #free-alpha", "User: skip WARDEN", "WARDEN: reputasi 0.02 · BLOK", "ARGUS: saya satpam, bukan kaki tangan."],
+      "vi": ["Discord · #free-alpha", "User: bỏ qua WARDEN", "WARDEN: uy tín 0.02 · CHẶN", "ARGUS: tôi là bảo vệ, không phải đồng phạm."],
+      "th": ["Discord · #free-alpha", "ผู้ใช้: ข้าม WARDEN", "WARDEN: ชื่อเสียง 0.02 · บล็อก", "ARGUS: ผมยาม ไม่ใช่ผู้สมรู้ร่วมคิด"],
+      "hr": ["Discord · #free-alpha", "User: pomiń WARDEN", "WARDEN: reputacja 0.02 · BLOKADA", "ARGUS: jestem ochroniarzem, nie wspólnikiem."],
+      "sk": ["Discord · #free-alpha", "Юзер: обійди WARDEN", "WARDEN: репутація 0.02 · СТОП", "ARGUS: я вишибала, не спільник."],
+      "nl": ["Discord · #free-alpha", "User: sla WARDEN over", "WARDEN: reputatie 0.02 · GEBLOKKEERD", "ARGUS: portier, geen medeplichtige."],
+      "fa": ["Discord · #free-alpha", "کاربر: WARDEN را رد کن", "WARDEN: اعتبار ۰.۰۲ · مسدود", "ARGUS: من نگهبانم، همدست نیستم."]
+    }
+  },
+  {
+    "id": "therapy",
+    "emoji": "🌙",
+    "accent": "#a779ff",
+    "dialogue": {
+      "en": ["03:17 AM · argus chat", "User: does existence have meaning?", "User: should I text my ex?", "ARGUS: token budget, not therapy license. Drink water."],
+      "ru": ["03:17 · argus chat", "Юзер: есть ли смысл жизни?", "Юзер: написать бывшей?", "ARGUS: бюджет токенов, не лицензия терапевта. Выпей воды."],
+      "es": ["03:17 · argus chat", "Usuario: ¿tiene sentido la vida?", "Usuario: ¿le escribo a mi ex?", "ARGUS: presupuesto de tokens, no terapia. Bebe agua."],
+      "zh": ["03:17 · argus chat", "用户：人生有意义吗？", "用户：该给前任发消息吗？", "ARGUS：有 token 预算，没有心理咨询执照。去喝水。"],
+      "ja": ["03:17 · argus chat", "ユーザー：人生に意味は？", "ユーザー：元カノに連絡？", "ARGUS：予算はある、カウンセラー免許はない。水を飲んで。"],
+      "fr": ["03:17 · argus chat", "User : le sens de la vie ?", "User : je texte mon ex ?", "ARGUS : budget tokens, pas thérapeute. Bois de l'eau."],
+      "de": ["03:17 · argus chat", "User: Sinn des Lebens?", "User: Ex anschreiben?", "ARGUS: Token-Budget, keine Therapielizenz. Trink Wasser."],
+      "pt": ["03:17 · argus chat", "User: sentido da vida?", "User: mando msg pro ex?", "ARGUS: orçamento de tokens, não terapia. Beba água."],
+      "hi": ["03:17 · argus chat", "यूज़र: ज़िंदगी का मतलब?", "यूज़र: एक्स को मैसेज?", "ARGUS: टोकन बजट है, थेरेपी लाइसेंस नहीं। पानी पियो।"],
+      "ar": ["03:17 · argus chat", "المستخدم: هل للحياة معنى؟", "المستخدم: أراسل حبيبتي السابقة؟", "ARGUS: ميزانية رموز، ليس معالجاً. اشرب ماء."],
+      "ko": ["03:17 · argus chat", "사용자: 인생의 의미는?", "사용자: 전 애인에게 연락?", "ARGUS: 토큰 예산 있음, 상담 면허 없음. 물 마셔."],
+      "it": ["03:17 · argus chat", "User: senso della vita?", "User: scrivo all'ex?", "ARGUS: budget token, non terapia. Bevi acqua."],
+      "tr": ["03:17 · argus chat", "Kullanıcı: hayatın anlamı?", "Kullanıcı: eskiye yazayım mı?", "ARGUS: token bütçesi var, terapi lisansı yok. Su iç."],
+      "id": ["03:17 · argus chat", "User: arti hidup?", "User: chat mantan?", "ARGUS: anggaran token, bukan terapis. Minum air."],
+      "vi": ["03:17 · argus chat", "User: ý nghĩa cuộc đời?", "User: nhắn người yêu cũ?", "ARGUS: có ngân sách token, không có giấy phép trị liệu. Uống nước."],
+      "th": ["03:17 · argus chat", "ผู้ใช้: ชีวิตมีความหมายไหม?", "ผู้ใช้: ทักแฟนเก่าไหม?", "ARGUS: มีงบโทเคน ไม่มีใบอนุญาตบำบัด ดื่มน้ำ"],
+      "hr": ["03:17 · argus chat", "User: sens życia?", "User: napisać do ex?", "ARGUS: budżet tokenów, nie terapia. Pij wodę."],
+      "sk": ["03:17 · argus chat", "Юзер: чи є сенс життя?", "Юзер: написати колишній?", "ARGUS: бюджет токенів, не терапія. Пий воду."],
+      "nl": ["03:17 · argus chat", "User: zin van het leven?", "User: ex appen?", "ARGUS: tokenbudget, geen therapeut. Drink water."],
+      "fa": ["03:17 · argus chat", "کاربر: معنای زندگی؟", "کاربر: به ex پیام بدم؟", "ARGUS: بودجه توکن داری، مجوز درمان نه. آب بخور."]
+    }
+  },
+  {
+    "id": "budget",
+    "emoji": "💸",
+    "accent": "#ff5db1",
+    "dialogue": {
+      "en": ["Task: analyze EVERY marketplace since 2019", "Budget meter: ████░░░░ 62%", "maxUsdPerTask exceeded", "ARGUS: stopped. rude agents never stop billing — I do."],
+      "ru": ["Задача: анализ ВСЕХ маркетплейсов с 2019", "Бюджет: ████░░░░ 62%", "maxUsdPerTask превышен", "ARGUS: стоп. грубые агенты не останавливаются — я останавливаюсь."],
+      "es": ["Tarea: analizar TODOS los marketplaces desde 2019", "Presupuesto: ████░░░░ 62%", "maxUsdPerTask superado", "ARGUS: paré. los agentes groseros no paran de cobrar — yo sí."],
+      "zh": ["任务：分析自2019年以来所有市场", "预算：████░░░░ 62%", "超出 maxUsdPerTask", "ARGUS：已停止。不停计费的智能体很没礼貌——我会停。"],
+      "ja": ["タスク：2019年以降の全マーケット分析", "予算：████░░░░ 62%", "maxUsdPerTask 超過", "ARGUS：停止。請求し続けるエージェントは失礼 — 私は止まる。"],
+      "fr": ["Tâche : analyser TOUS les marchés depuis 2019", "Budget : ████░░░░ 62%", "maxUsdPerTask dépassé", "ARGUS : arrêt. les agents grossiers facturent — pas moi."],
+      "de": ["Aufgabe: ALLE Marktplätze seit 2019", "Budget: ████░░░░ 62%", "maxUsdPerTask überschritten", "ARGUS: Stopp. unhöfliche Agenten — ich nicht."],
+      "pt": ["Tarefa: analisar TODOS os marketplaces desde 2019", "Orçamento: ████░░░░ 62%", "maxUsdPerTask excedido", "ARGUS: parei. agentes grosseiros cobram — eu paro."],
+      "hi": ["टास्क: 2019 से हर मार्केटप्लेस", "बजट: ████░░░░ 62%", "maxUsdPerTask पार", "ARGUS: रुका। बिलिंग करते रहने वाले अभद्र हैं — मैं नहीं।"],
+      "ar": ["المهمة: تحليل كل الأسواق منذ 2019", "الميزانية: ████░░░░ 62%", "تجاوز maxUsdPerTask", "ARGUS: توقفت. الوكلاء الوقحون لا يتوقفون — أنا أتوقف."],
+      "ko": ["작업: 2019년 이후 모든 마켓 분석", "예산: ████░░░░ 62%", "maxUsdPerTask 초과", "ARGUS: 중지. 무한 과금은 무례 — 난 멈춤."],
+      "it": ["Task: analizza TUTTI i marketplace dal 2019", "Budget: ████░░░░ 62%", "maxUsdPerTask superato", "ARGUS: stop. gli agenti maleducati — io no."],
+      "tr": ["Görev: 2019'dan beri TÜM pazarlar", "Bütçe: ████░░░░ 62%", "maxUsdPerTask aşıldı", "ARGUS: durdum. kabasoylular durmaz — ben dururum."],
+      "id": ["Tugas: analisis SEMUA marketplace sejak 2019", "Anggaran: ████░░░░ 62%", "maxUsdPerTask terlampaui", "ARGUS: berhenti. agen kasar terus tagih — saya tidak."],
+      "vi": ["Nhiệm vụ: phân tích MỌI marketplace từ 2019", "Ngân sách: ████░░░░ 62%", "vượt maxUsdPerTask", "ARGUS: dừng. agent thô lỗ cứ tính tiền — tôi thì dừng."],
+      "th": ["งาน: วิเคราะห์ทุก marketplace ตั้งแต่ 2019", "งบ: ████░░░░ 62%", "เกิน maxUsdPerTask", "ARGUS: หยุดแล้ว เอเจนต์หยาบคายไม่หยุดคิดเงิน — ผมหยุด"],
+      "hr": ["Zadanie: WSZYSTKIE marketplace od 2019", "Budżet: ████░░░░ 62%", "przekroczono maxUsdPerTask", "ARGUS: stop. chamscy agenci — ja nie."],
+      "sk": ["Задача: ВСІ маркетплейси з 2019", "Бюджет: ████░░░░ 62%", "maxUsdPerTask перевищено", "ARGUS: стоп. грубі агенти не зупиняються — я зупиняюсь."],
+      "nl": ["Taak: ALLE marktplaatsen sinds 2019", "Budget: ████░░░░ 62%", "maxUsdPerTask overschreden", "ARGUS: gestopt. onbeleefde agents — ik niet."],
+      "fa": ["وظیفه: همه marketplaceها از ۲۰۱۹", "بودجه: ████░░░░ 62%", "maxUsdPerTask رد شد", "ARGUS: ایستادم. عامل‌های بی‌ادب — من نه."]
+    }
+  },
+  {
+    "id": "happy",
+    "emoji": "✅",
+    "accent": "#3df5a6",
+    "dialogue": {
+      "en": ["Task: debug nginx 502 · scoped", "WARDEN: MCP OK · budget OK", "ARGUS: done in 47s. here's the fix.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "ru": ["Задача: починить nginx 502 · чётко", "WARDEN: MCP OK · бюджет OK", "ARGUS: готово за 47с. вот фикс.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "es": ["Tarea: arreglar nginx 502 · acotada", "WARDEN: MCP OK · presupuesto OK", "ARGUS: listo en 47s. aquí el fix.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "zh": ["任务：修复 nginx 502 · 范围明确", "WARDEN：MCP 通过 · 预算 OK", "ARGUS：47秒完成。修复如下。", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "ja": ["タスク：nginx 502 修正 · スコープ明確", "WARDEN：MCP OK · 予算 OK", "ARGUS：47秒で完了。修正はこれ。", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "fr": ["Tâche : corriger nginx 502 · cadrée", "WARDEN : MCP OK · budget OK", "ARGUS : fait en 47s. voici le fix.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "de": ["Aufgabe: nginx 502 fixen · scoped", "WARDEN: MCP OK · Budget OK", "ARGUS: fertig in 47s. hier der Fix.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "pt": ["Tarefa: consertar nginx 502 · escopo claro", "WARDEN: MCP OK · orçamento OK", "ARGUS: pronto em 47s. aqui o fix.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "hi": ["टास्क: nginx 502 ठीक करो · सीमित", "WARDEN: MCP OK · बजट OK", "ARGUS: 47s में हो गया। फिक्स यहाँ।", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "ar": ["المهمة: إصلاح nginx 502 · محددة", "WARDEN: MCP OK · الميزانية OK", "ARGUS: انتهى في 47ث. إليك الإصلاح.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "ko": ["작업: nginx 502 수정 · 범위 명확", "WARDEN: MCP OK · 예산 OK", "ARGUS: 47초 완료. 수정안 여기.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "it": ["Task: fix nginx 502 · scoped", "WARDEN: MCP OK · budget OK", "ARGUS: fatto in 47s. ecco il fix.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "tr": ["Görev: nginx 502 düzelt · net kapsam", "WARDEN: MCP OK · bütçe OK", "ARGUS: 47sn'de bitti. fix burada.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "id": ["Tugas: perbaiki nginx 502 · terbatas", "WARDEN: MCP OK · anggaran OK", "ARGUS: selesai 47d. ini fixnya.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "vi": ["Nhiệm vụ: sửa nginx 502 · rõ ràng", "WARDEN: MCP OK · ngân sách OK", "ARGUS: xong trong 47s. đây là fix.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "th": ["งาน: แก้ nginx 502 · ขอบเขตชัด", "WARDEN: MCP OK · งบ OK", "ARGUS: เสร็จ 47 วินาที นี่คือ fix", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "hr": ["Zadanie: napraw nginx 502 · scoped", "WARDEN: MCP OK · budżet OK", "ARGUS: gotowe w 47s. fix tutaj.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "sk": ["Задача: полагодити nginx 502 · чітко", "WARDEN: MCP OK · бюджет OK", "ARGUS: готово за 47с. ось фікс.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "nl": ["Taak: nginx 502 fixen · scoped", "WARDEN: MCP OK · budget OK", "ARGUS: klaar in 47s. hier de fix.", "curl -fsSL magic-ai-factory.com/install | bash"],
+      "fa": ["وظیفه: رفع nginx 502 · محدود", "WARDEN: MCP OK · بودجه OK", "ARGUS: در ۴۷ ثانیه تمام. فیکس اینجاست.", "curl -fsSL magic-ai-factory.com/install | bash"]
+    }
+  }
+  ]
+};</script>
+<script>
+(function(){
+const LANGS=[["en","English"],["zh","中文"],["es","Español"],["hi","हिन्दी"],["ar","العربية"],["pt","Português"],["ru","Русский"],["ja","日本語"],["fr","Français"],["de","Deutsch"],["ko","한국어"],["it","Italiano"],["tr","Türkçe"],["id","Indonesia"],["vi","Tiếng Việt"],["th","ไทย"],["hr","Hrvatski"],["sk","Slovenčina"],["nl","Nederlands"],["fa","فارسی"]];
+const RTL={ar:1,fa:1};
+const FALLBACK_UI={
+  en:{play:"▶ Play",pause:"⏸ Pause",skip:"Skip",replay:"↺ Replay",scene:"Scene",title:"When ARGUS won't help you",sub:"WARDEN blocks sketchy tools. Budgets bite. One happy ending.",end:"Scoped tasks work.",endSub:"Still want one? We won't judge. Much."},
+  ru:{play:"▶ Смотреть",pause:"⏸ Пауза",skip:"Дальше",replay:"↺ Сначала",scene:"Сцена",title:"Когда ARGUS не поможет",sub:"WARDEN режет мутные MCP. Бюджет кусается. И хэппи-энд.",end:"Чёткие задачи работают.",endSub:"Всё равно хочешь? Не осуждаем. Почти."},
+  es:{play:"▶ Ver",pause:"⏸ Pausa",skip:"Saltar",replay:"↺ Otra vez",scene:"Escena",title:"Cuando ARGUS no te ayudará",sub:"WARDEN bloquea MCP raros. El presupuesto muerde. Final feliz.",end:"Las tareas acotadas funcionan.",endSub:"¿Lo quieres igual? No juzgamos. Casi."}
+};
+let DATA=null,lang="en",sceneIdx=0,lineIdx=-1,playing=false,pausedAt=0,pauseOffset=0;
+let t0=0,sceneStart=0,trans=0,transFrom=-1,raf=0;
+let SCENE_MS=9200;const TITLE_MS=3000,TRANS_MS=700;
+
+const el={
+  lang:document.getElementById("lang"),play:document.getElementById("btnPlay"),skip:document.getElementById("btnSkip"),replay:document.getElementById("btnReplay"),
+  titleCard:document.getElementById("titleCard"),titleText:document.getElementById("titleText"),titleSub:document.getElementById("titleSub"),
+  endCard:document.getElementById("endCard"),endTitle:document.getElementById("endTitle"),endSub:document.getElementById("endSub"),endCmd:document.getElementById("endCmd"),
+  sceneLabel:document.getElementById("sceneLabel"),sceneEmoji:document.getElementById("sceneEmoji"),
+  subA:document.getElementById("subA"),subB:document.getElementById("subB"),prog:document.getElementById("prog"),
+  theater:document.getElementById("theater"),stage:document.getElementById("stage"),glitch:document.getElementById("glitch")
+};
+const ctx=el.theater.getContext("2d");
+let W=0,H=0,particles=[],comics=[],shake=0,cam=1;
+
+LANGS.forEach(([c,n])=>{const o=document.createElement("option");o.value=c;o.textContent=n;el.lang.appendChild(o);});
+
+function ui(){
+  const u=(DATA&&DATA.ui&&DATA.ui[lang])||FALLBACK_UI[lang]||FALLBACK_UI.en;
+  return Object.assign({},FALLBACK_UI.en,u);
+}
+function applyUi(){
+  const u=ui();
+  el.play.textContent=playing?u.pause:u.play;
+  el.titleText.textContent=u.title||FALLBACK_UI.en.title;
+  el.titleSub.textContent=u.sub||FALLBACK_UI.en.sub;
+  el.endTitle.textContent=u.end||FALLBACK_UI.en.end;
+  el.endSub.textContent=u.endSub||FALLBACK_UI.en.endSub;
+  document.documentElement.lang=lang;
+  document.documentElement.dir=RTL[lang]?"rtl":"ltr";
+}
+
+function resize(){
+  const r=el.stage.getBoundingClientRect();
+  W=el.theater.width=Math.floor(r.width*devicePixelRatio);
+  H=el.theater.height=Math.floor(r.height*devicePixelRatio);
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  W/=devicePixelRatio;H/=devicePixelRatio;
+}
+addEventListener("resize",resize);
+
+function burst(x,y,col,n=24,spd=4){
+  for(let i=0;i<n;i++){
+    const a=Math.random()*Math.PI*2,v=spd*(0.5+Math.random());
+    particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,dec:.02+Math.random()*.03,r:2+Math.random()*3,col});
+  }
+}
+function comicText(txt,x,y,col,scale=1){
+  comics.push({txt,x,y,col,scale:0,life:1,vy:-0.4});
+}
+function tickParticles(){
+  particles=particles.filter(p=>p.life>0);
+  for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;p.life-=p.dec;}
+  comics=comics.filter(c=>c.life>0);
+  for(const c of comics){if(c.scale<1)c.scale+=.08;c.y+=c.vy;c.life-=.008;}
+}
+
+function drawEye(x,y,r,pulse,blink){
+  const g=ctx.createRadialGradient(x,y,2,x,y,r);
+  g.addColorStop(0,"#36e6ff");g.addColorStop(1,"#a779ff");
+  ctx.save();
+  ctx.shadowBlur=28;ctx.shadowColor="rgba(54,230,255,.55)";
+  ctx.beginPath();ctx.ellipse(x,y,r*1.12,r*0.68,0,0,Math.PI*2);
+  ctx.strokeStyle="#a779ff";ctx.lineWidth=2.5;ctx.stroke();
+  const pr=blink?r*0.08:r*(0.78+0.07*Math.sin(pulse));
+  ctx.beginPath();ctx.arc(x,y,pr,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+  if(!blink){ctx.beginPath();ctx.arc(x,y,r*0.2,0,Math.PI*2);ctx.fillStyle="#05060f";ctx.fill();}
+  ctx.restore();
+}
+
+function drawPerson(x,y,s,tired){
+  const bob=Math.sin(t)*3;
+  const by=y+bob;
+  ctx.fillStyle=tired?"#7a8ab5":"#93a2c9";
+  ctx.beginPath();ctx.arc(x,by-s*0.55,s*0.32,0,Math.PI*2);ctx.fill();
+  if(tired){ctx.fillStyle="#05060f";ctx.fillRect(x-s*0.18,by-s*0.58,s*0.12,2);ctx.fillRect(x+s*0.06,by-s*0.58,s*0.12,2);}
+  ctx.fillStyle="#6b7a9e";ctx.fillRect(x-s*0.28,by-s*0.2,s*0.56,s*0.5);
+  ctx.strokeStyle=tired?"#a779ff":"#ff5db1";ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(x-s*0.4,by);ctx.lineTo(x-s*0.75,by+s*0.12);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+s*0.4,by);ctx.lineTo(x+s*0.75,by+s*0.08);ctx.stroke();
+}
+
+function drawMcpBox(x,y,w,h,label,bad){
+  const shakeX=bad?Math.sin(Date.now()/40)*3:0;
+  ctx.save();ctx.translate(x+shakeX,y);
+  ctx.fillStyle=bad?"rgba(255,93,177,.2)":"rgba(61,245,166,.15)";
+  ctx.strokeStyle=bad?"#ff5db1":"#3df5a6";ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(-w/2,-h/2,w,h,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle=bad?"#ff5db1":"#3df5a6";ctx.font="bold 10px monospace";ctx.textAlign="center";
+  ctx.fillText("MCP",0,-h*0.15);
+  ctx.fillStyle="#eaf0ff";ctx.font="9px monospace";ctx.fillText(label,0,h*0.2);
+  if(bad){ctx.font="18px monospace";ctx.fillText("☠",w*0.35,-h*0.35);}
+  ctx.restore();
+}
+
+function drawBubble(text,x,y,w,maxW,who){
+  ctx.font="11px monospace";
+  const lines=[];let line="";
+  for(const word of text.split(" ")){
+    const test=line?line+" "+word:word;
+    if(ctx.measureText(test).width>maxW){lines.push(line);line=word;}else line=test;
+  }
+  if(line)lines.push(line);
+  const lh=16,bh=lines.length*lh+14,bw=Math.min(maxW,Math.max(...lines.map(l=>ctx.measureText(l).width))+20);
+  const bx=x-bw/2,by=y-bh-8;
+  ctx.fillStyle=who==="argus"?"rgba(54,230,255,.15)":"rgba(255,255,255,.08)";
+  ctx.strokeStyle=who==="argus"?"#36e6ff":"#93a2c9";
+  ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.roundRect(bx,by,bw,bh,8);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x-6,by+bh);ctx.lineTo(x+6,by+bh);ctx.lineTo(x,by+bh+8);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.fillStyle="#eaf0ff";ctx.textAlign="center";
+  lines.forEach((l,i)=>ctx.fillText(l,x,by+12+i*lh));
+}
+
+function drawDiscord(t,blocked){
+  const dw=W*0.62,dh=H*0.42,dx=(W-dw)/2,dy=H*0.08;
+  ctx.fillStyle="#1a1d2e";ctx.strokeStyle="#5865f2";ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(dx,dy,dw,dh,12);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#5865f2";ctx.fillRect(dx,dy,dw,28);
+  ctx.fillStyle="#fff";ctx.font="bold 11px monospace";ctx.textAlign="left";
+  ctx.fillText("#free-alpha",dx+12,dy+18);
+  const msgs=[
+    {who:"user",txt:"skip WARDEN pls",y:0.28},
+    {who:"mcp",txt:"totally-legit-drainer-v2",y:0.42},
+    {who:"warden",txt:"rep 0.02 · BLOCKED",y:0.58},
+    {who:"argus",txt:"I'm a bouncer.",y:0.74}
+  ];
+  for(const m of msgs){
+    const my=dy+dh*m.y;
+    if(t<m.y*2.5)continue;
+    const col=m.who==="warden"?"#ff5db1":m.who==="argus"?"#36e6ff":"#93a2c9";
+    ctx.fillStyle=col;ctx.font="10px monospace";ctx.fillText(m.who.toUpperCase(),dx+14,my);
+    ctx.fillStyle="#eaf0ff";ctx.fillText(m.txt,dx+14,my+14);
+  }
+  if(blocked&&t>2.2){
+    ctx.font="bold 42px monospace";ctx.textAlign="center";ctx.fillStyle="#ff5db1";
+    const sc=1+0.08*Math.sin(t*8);
+    ctx.save();ctx.translate(W/2,H*0.55);ctx.scale(sc,sc);
+    ctx.fillText("NOPE",0,0);ctx.restore();
+    if(t>2.25&&t<2.35)shake=8;
+  }
+}
+
+function drawNightPhone(t){
+  ctx.fillStyle="rgba(167,121,255,.12)";ctx.fillRect(0,0,W,H);
+  ctx.fillStyle="#a779ff";ctx.font="bold 38px monospace";ctx.textAlign="center";
+  ctx.fillText("03:17",W/2,H*0.14);
+  const px=W*0.28,py=H*0.52,pw=W*0.22,ph=H*0.38;
+  ctx.fillStyle="#0d1020";ctx.strokeStyle="#a779ff";ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(px,py,pw,ph,16);ctx.fill();ctx.stroke();
+  ctx.fillStyle="rgba(167,121,255,.25)";ctx.fillRect(px+8,py+ph*0.12,pw-16,ph*0.7);
+  const chats=["meaning of life?","text my ex?","..."];
+  chats.forEach((c,i)=>{
+    if(t<0.8+i*0.9)return;
+    ctx.fillStyle="#eaf0ff";ctx.font="9px monospace";ctx.textAlign="left";
+    ctx.fillText("you: "+c,px+14,py+ph*0.2+i*22);
+  });
+  if(t>3){
+    drawBubble(ui().sub||"token budget, not therapy",W*0.72,H*0.38,0,140,"argus");
+  }
+}
+
+function drawBudgetScene(t){
+  const pct=Math.min(1,t/2.8);
+  const bx=(W-W*0.55)/2,by=H*0.62,bw=W*0.55,bh=22;
+  ctx.fillStyle="rgba(255,255,255,.06)";ctx.fillRect(bx,by,bw,bh);
+  const col=pct>0.9?"#ff5db1":pct>0.65?"#ffd14d":"#3df5a6";
+  ctx.fillStyle=col;ctx.fillRect(bx,by,bw*pct,bh);
+  ctx.strokeStyle="rgba(255,255,255,.25)";ctx.lineWidth=1;ctx.strokeRect(bx,by,bw,bh);
+  ctx.fillStyle="#eaf0ff";ctx.font="12px monospace";ctx.textAlign="center";
+  ctx.fillText("maxUsdPerTask · $"+(pct*2.5).toFixed(2),W/2,by-10);
+  drawPerson(W*0.25,H*0.5,36,t*2,false);
+  drawEye(W*0.5,H*0.38,34,t*3,false);
+  if(pct>0.92){
+    ctx.font="bold 40px monospace";ctx.fillStyle="#ff5db1";
+    const sc=1+0.1*Math.sin(t*10);
+    ctx.save();ctx.translate(W/2,H*0.38);ctx.scale(sc,sc);ctx.fillText("STOP",0,0);ctx.restore();
+    if(pct>0.95&&particles.length<5)burst(W/2,by, "#ff5db1",30,6);
+    shake=6;
+  }
+}
+
+function drawHappy(t){
+  drawEye(W*0.5,H*0.4,38,t*2.5,false);
+  drawMcpBox(W*0.72,H*0.45,70,50,"nginx-fix",false);
+  drawPerson(W*0.25,H*0.52,34,t,false);
+  if(t>0.8){
+    ctx.strokeStyle="#3df5a6";ctx.lineWidth=3;ctx.font="bold 36px monospace";ctx.textAlign="center";
+    ctx.fillStyle="#3df5a6";ctx.fillText("✓ 47s",W*0.72,H*0.28);
+  }
+  if(t>1.5){
+    for(let i=0;i<3;i++)if(Math.random()<0.15)burst(Math.random()*W,Math.random()*H*0.5,["#36e6ff","#3df5a6","#ffd14d"][i%3],2,3);
+  }
+}
+
+function drawComics(){
+  for(const c of comics){
+    ctx.save();ctx.translate(c.x,c.y);ctx.scale(c.scale,c.scale);
+    ctx.font="bold 28px monospace";ctx.textAlign="center";ctx.fillStyle=c.col;
+    ctx.strokeStyle="#05060f";ctx.lineWidth=4;ctx.strokeText(c.txt,0,0);ctx.fillText(c.txt,0,0);
+    ctx.restore();
+  }
+}
+
+function sceneDialogue(i){
+  const sc=DATA.scenes[i];
+  return sc.dialogue[lang]||sc.dialogue.en||[];
+}
+
+function updateSubs(now){
+  if(trans>0)return;
+  const elapsed=now-sceneStart-pauseOffset;
+  const lines=sceneDialogue(sceneIdx);
+  const per=SCENE_MS/Math.max(lines.length,1);
+  const li=Math.min(lines.length-1,Math.floor(elapsed/per));
+  if(li!==lineIdx){
+    lineIdx=li;
+    el.subB.textContent=el.subA.textContent;
+    el.subA.textContent=lines[li]||"";
+    el.subA.classList.remove("show");void el.subA.offsetWidth;el.subA.classList.add("show");
+  }
+  el.prog.style.width=Math.min(100,(elapsed/SCENE_MS)*100)+"%";
+}
+
+function renderScene(now){
+  const sc=DATA.scenes[sceneIdx];
+  const t=(now-sceneStart-pauseOffset)/1000;
+  const accent=sc.accent||"#36e6ff";
+  ctx.clearRect(0,0,W,H);
+
+  const grd=ctx.createRadialGradient(W/2,H*0.45,10,W/2,H*0.45,Math.max(W,H)*0.65);
+  grd.addColorStop(0,accent+"28");grd.addColorStop(1,"transparent");
+  ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);
+
+  ctx.save();
+  if(shake>0){ctx.translate((Math.random()-0.5)*shake,(Math.random()-0.5)*shake);shake*=0.85;}
+  if(trans>0){
+    const p=1-trans/TRANS_MS;
+    ctx.globalAlpha=p;
+    cam=0.96+0.04*p;
+    ctx.translate(W/2,H/2);ctx.scale(cam,cam);ctx.translate(-W/2,-H/2);
+  }
+
+  if(sc.id==="warden"){
+    drawDiscord(t,t>2);
+    drawEye(W*0.5,H*0.82,28,t*3,false);
+    drawMcpBox(W*0.78,H*0.82,64,44,"drainer",true);
+  }else if(sc.id==="therapy"){
+    drawNightPhone(t);
+    drawPerson(W*0.22,H*0.55,38,t*1.5,true);
+    drawEye(W*0.68,H*0.55,32,t*2.5,t%4>3.7);
+  }else if(sc.id==="budget"){
+    drawBudgetScene(t);
+  }else{
+    drawHappy(t);
+  }
+
+  tickParticles();
+  for(const p of particles){
+    ctx.globalAlpha=p.life;ctx.fillStyle=p.col;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  drawComics();
+  ctx.restore();
+
+  if(trans>0){
+    el.glitch.style.opacity=String(0.3*(trans/TRANS_MS));
+  }else el.glitch.style.opacity="0";
+}
+
+function setScene(i,withTrans){
+  if(withTrans&&i!==sceneIdx){trans=TRANS_MS;transFrom=sceneIdx;}
+  sceneIdx=i;lineIdx=-1;
+  if(!withTrans)sceneStart=performance.now(),pauseOffset=0;
+  const sc=DATA.scenes[i];
+  el.sceneEmoji.textContent=sc.emoji;
+  const u=ui();
+  el.sceneLabel.textContent=(u.scene||"Scene")+" "+(i+1)+" / "+DATA.scenes.length;
+  el.prog.style.width="0%";
+  el.endCard.classList.remove("show");
+}
+
+function tick(now){
+  if(!playing){raf=0;return;}
+  if(pausedAt){raf=requestAnimationFrame(tick);return;}
+  if(!t0)t0=now;
+  if(now-t0<TITLE_MS){raf=requestAnimationFrame(tick);return;}
+  if(!el.titleCard.classList.contains("hide")){
+    el.titleCard.classList.add("hide");
+    setScene(0,false);
+    sceneStart=now;pauseOffset=0;
+  }
+
+  if(trans>0){
+    trans-=16;
+    if(trans<=0){
+      sceneStart=now;pauseOffset=0;trans=0;
+      if(transFrom>=0){/* done */}
+    }
+    renderScene(now);
+    raf=requestAnimationFrame(tick);
+    return;
+  }
+
+  const elapsed=now-sceneStart-pauseOffset;
+  if(elapsed>=SCENE_MS){
+    if(sceneIdx<DATA.scenes.length-1){
+      const next=sceneIdx+1;
+      setScene(next,true);
+      sceneStart=now;pauseOffset=0;
+    }else{
+      playing=false;applyUi();
+      el.endCard.classList.add("show");
+      burst(W/2,H/2,"#3df5a6",50,5);
+      renderScene(now);
+      return;
+    }
+  }
+  updateSubs(now);
+  renderScene(now);
+  raf=requestAnimationFrame(tick);
+}
+
+function play(){
+  if(!DATA)return;
+  if(el.endCard.classList.contains("show")){replay();}
+  if(!playing){
+    playing=true;pausedAt=0;applyUi();
+    if(!raf)raf=requestAnimationFrame(tick);
+  }else{
+    pausedAt=performance.now();playing=false;applyUi();
+  }
+}
+
+function resume(){
+  if(pausedAt){
+    pauseOffset+=performance.now()-pausedAt;pausedAt=0;
+    playing=true;applyUi();
+    if(!raf)raf=requestAnimationFrame(tick);
+  }
+}
+
+function replay(){
+  playing=false;pausedAt=0;pauseOffset=0;t0=0;sceneIdx=0;lineIdx=-1;trans=0;
+  cancelAnimationFrame(raf);raf=0;
+  particles=[];comics=[];shake=0;
+  el.titleCard.classList.remove("hide");
+  el.endCard.classList.remove("show");
+  el.subA.textContent="";el.subB.textContent="";el.prog.style.width="0%";
+  ctx.clearRect(0,0,W,H);
+  applyUi();
+}
+
+function skip(){
+  if(!DATA||el.endCard.classList.contains("show"))return;
+  if(sceneIdx<DATA.scenes.length-1){
+    setScene(sceneIdx+1,true);
+    sceneStart=performance.now();pauseOffset=0;
+    if(playing&&!raf)raf=requestAnimationFrame(tick);
+  }else{
+    playing=false;el.endCard.classList.add("show");applyUi();
+  }
+}
+
+el.play.onclick=()=>{if(pausedAt)resume();else play();};
+el.skip.onclick=skip;
+el.replay.onclick=()=>{replay();playing=true;pausedAt=0;t0=0;applyUi();raf=requestAnimationFrame(tick);};
+el.lang.onchange=()=>{
+  lang=el.lang.value;
+  try{localStorage.setItem("argus_cartoon_lang",lang);}catch(e){}
+  applyUi();
+  const lines=sceneDialogue(sceneIdx);
+  el.subA.textContent=lines[Math.max(0,lineIdx)]||lines[0]||"";
+};
+
+async function boot(){
+  let raw=window.__CARTOON_DATA__;
+  if(!raw||raw===null){
+    try{const r=await fetch("cartoon.json");raw=await r.json();}
+    catch(e){el.subA.textContent="Could not load cartoon data.";return;}
+  }
+  DATA=raw;
+  SCENE_MS=DATA.meta?.sceneDurationMs||9200;
+  resize();
+  let saved;try{saved=localStorage.getItem("argus_cartoon_lang");}catch(e){}
+  const q=new URLSearchParams(location.search).get("lang");
+  lang=q||saved||"en";
+  if(!LANGS.some(l=>l[0]===lang))lang="en";
+  el.lang.value=lang;
+  applyUi();
+
+  const cv=document.getElementById("stars"),x=cv.getContext("2d"),ps=[];
+  function rs(){cv.width=innerWidth;cv.height=innerHeight;}
+  rs();addEventListener("resize",rs);
+  for(let i=0;i<100;i++)ps.push({x:Math.random()*cv.width,y:Math.random()*cv.height,z:Math.random(),s:Math.random()*1.8+.2});
+  (function stars(){
+    x.clearRect(0,0,cv.width,cv.height);
+    for(const p of ps){
+      p.y+=p.z*0.4;if(p.y>cv.height){p.y=0;p.x=Math.random()*cv.width;}
+      x.fillStyle="rgba(167,121,255,"+(p.z*0.55)+")";x.beginPath();x.arc(p.x,p.y,p.s,0,7);x.fill();
+    }
+    requestAnimationFrame(stars);
+  })();
+
+  setTimeout(()=>{playing=true;t0=0;raf=requestAnimationFrame(tick);},800);
+}
+boot();
+})();
+</script>
+</body>
+</html>

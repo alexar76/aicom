@@ -1,0 +1,96 @@
+# ============================================================================
+# AUTONOMOUS AI-FACTORY v2.1 — Python Dependencies
+# ============================================================================
+# Grouped by component for clarity
+# ============================================================================
+
+# ── Core ───────────────────────────────────────────────────────────────────
+fastapi==0.116.1
+uvicorn[standard]==0.30.6
+watchfiles==0.24.0
+pydantic==2.9.0
+pydantic-settings==2.5.0
+pyyaml==6.0.2
+# 1.2.2 clears GHSA-mf9w-mj56-hr94.
+python-dotenv==1.2.2
+structlog==24.4.0
+httpx==0.27.2
+# 3.11.6 clears PYSEC-2026-107 / GHSA-hx9q-6w63-j58v.
+orjson==3.11.6
+# 5.29.6 clears PYSEC-2026-1805 (ParseDict recursion DoS in protobuf 4.x).
+protobuf>=5.29.6,<7
+
+# ── Async & Task Management ────────────────────────────────────────────────
+# NOTE: do NOT add an `asyncio` package here — asyncio is part of the Python
+# stdlib. The PyPI `asyncio` project is a stale 3.4.3 backport and a
+# name-squat risk; installing it shadows the stdlib module.
+redis==5.1.1
+
+# ── Generated-product runtime E2E (factory boots product backends in-process) ─
+sqlalchemy==2.0.35
+
+# ── LLM Providers ──────────────────────────────────────────────────────────
+openai==1.51.0
+ollama==0.3.3
+# 3.14.0 clears 25 advisories (CVE backlog GHSA-*/PYSEC-* on 3.10.5).
+aiohttp==3.14.3
+
+# ── Authentication & Security ──────────────────────────────────────────────
+# PyJWT replaces python-jose (unmaintained; CVE-2024-33663 / CVE-2024-33664 on old jose).
+# 2.13.0 clears PYSEC-2025-183 / PYSEC-2026-{120,175,176,177,178,179}.
+PyJWT[crypto]==2.13.0
+# passlib-fork: maintained successor to abandoned passlib 1.7.4 (import name stays ``passlib``).
+passlib-fork[bcrypt]==1.7.4.post1
+pyotp==2.9.0
+# Pinned exact (was >=2.2.0) — security-sensitive WebAuthn verification; pin so
+# CI/pip-audit gate against a known version, not a moving floor.
+webauthn==2.7.1
+qrcode[pil]==7.4.2
+# 48.0.1 clears GHSA-537c-gmf6-5ccf on statically linked OpenSSL wheels.
+cryptography==50.0.0
+python-multipart>=0.0.18
+pywebpush==1.14.1
+
+# ── Database ───────────────────────────────────────────────────────────────
+aiosqlite==0.20.0
+# Pinned exact (was >=3.2.0) — DB driver; reproducible builds + auditable pin.
+psycopg[binary,pool]==3.3.4
+qdrant-client==1.11.2
+
+# ── Crypto ─────────────────────────────────────────────────────────────────
+# web3 7.3.0 / eth-account 0.13.3 are behind current releases. Do NOT bump
+# blindly — newer web3/eth-account have churned eth-* transitive pins and the
+# on-chain payment + escrow paths (web3 / eth-account / solders) need a
+# controlled upgrade with contract-integration tests. Tracked as a followup:
+# review advisories and bump in a dedicated PR (see docs/CVE-ACCEPTANCE-MATRIX.md).
+web3==7.3.0
+eth-account==0.13.3
+solana==0.34.0
+solders==0.21.0
+
+# ── Docker SDK ─────────────────────────────────────────────────────────────
+docker==7.1.0
+
+# ── CLI ────────────────────────────────────────────────────────────────────
+# Pinned exact (was >=8.1.8) — reproducible CLI builds + auditable pin.
+click==8.4.1
+rich==13.8.1
+tabulate==0.9.0
+
+# ── Testing ────────────────────────────────────────────────────────────────
+pytest==9.0.3
+pytest-asyncio==1.3.0
+pytest-cov==5.0.0
+pytest-timeout==2.4.0
+hypothesis==6.112.0
+playwright==1.47.0
+
+# ── Monitoring ─────────────────────────────────────────────────────────────
+prometheus-client==0.20.0
+psutil==6.0.0
+opentelemetry-api==1.28.0
+opentelemetry-sdk==1.28.0
+opentelemetry-exporter-otlp-proto-http==1.28.0
+
+# ── Market Research ──────────────────────────────────────────────────────────
+duckduckgo_search==7.5.1

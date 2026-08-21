@@ -1,0 +1,53 @@
+---
+description: Mandatory monorepo publish — Gitea then GitHub via scripts only, as alexar76. Never invent remotes.
+alwaysApply: true
+---
+
+# Publish / push (mandatory)
+
+Canonical docs: [`docs/publish-runbook.md`](docs/publish-runbook.md), [`docs/agent-github-factory-publish.md`](docs/agent-github-factory-publish.md). Badges: [`.cursor/rules/green-badges.mdc`](green-badges.mdc). Org: [`.cursor/rules/github-org-alexar76.mdc`](github-org-alexar76.mdc).
+
+## Order
+
+1. **Commit** (stage only intended files — never `git add -A`; leave warden scan memory alone).
+2. **Gitea** (full monorepo): `./scripts/push_gitea_monorepo.sh`
+3. **GitHub**: `./scripts/publish_all_repos.sh` (or `--factory-only` / `--satellite <id>`) — **scripts only**.
+
+## Identity: alexar76 — do not freestyle
+
+- All public GitHub pushes go to **`alexar76`** via the publish scripts + `GH_PAT` / `GITHUB_TOKEN`.
+- **Do not invent remotes.** Do not invent `AICOM_FACTORY_REMOTE` variants (`git@…`, `gh` remote name, other orgs, Gitea URLs).
+- **Do not** “work around” a failed publish by guessing remotes. Scripts already know the org. If env is missing, use **exactly** the documented factory URL below — nothing else.
+- Local `gh` may be another account — that is **not** the publish identity. Use `GH_PAT` for alexar76.
+
+## Never
+
+- Plain `git push` / `git push origin` / `git push gh` to GitHub for this monorepo.
+- Pointing factory publish at Gitea `origin` (would wipe canon).
+- Pushing the **full** monorepo (with satellites) to `alexar76/aicom`.
+- Ad-hoc remote URLs, SSH host aliases as publish targets, or “helpful” remote overrides.
+
+## GitHub factory (only when env unset)
+
+Guard refuses Gitea `origin`. If `AICOM_FACTORY_REMOTE` is **already set** in the shell — use it, do not override. If unset, only this value:
+
+```bash
+GH_PAT=<token> \
+AICOM_FACTORY_REMOTE=https://github.com/alexar76/aicom.git \
+./scripts/publish_all_repos.sh --factory-only
+```
+
+## GitHub satellite
+
+```bash
+GH_PAT=<token> ./scripts/publish_all_repos.sh --satellite <id>
+# or: ./scripts/mirror_satellites.sh --satellite <id>
+```
+
+## Mental model
+
+| Path | Script | Target |
+|------|--------|--------|
+| Full monorepo | `push_gitea_monorepo.sh` | Gitea only |
+| Trimmed `aicom` | `publish_all_repos.sh --factory-only` | `github.com/alexar76/aicom` |
+| One satellite | `publish_all_repos.sh --satellite` | that GitHub repo under alexar76 |

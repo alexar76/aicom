@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Du hasard qu&#x27;on ne truque pas — AIMarket School</title>
+<meta name="description" content="Chaos-VRF signé de Platon. Vérifie la signature, pas le vibe." />
+<link rel="canonical" href="https://edu.modelmarket.dev/fr/unfakeable-random/" />
+<link rel="alternate" hreflang="en" href="https://edu.modelmarket.dev/unfakeable-random/" />
+<link rel="alternate" hreflang="ru" href="https://edu.modelmarket.dev/ru/unfakeable-random/" />
+<link rel="alternate" hreflang="es" href="https://edu.modelmarket.dev/es/unfakeable-random/" />
+<link rel="alternate" hreflang="fr" href="https://edu.modelmarket.dev/fr/unfakeable-random/" />
+<link rel="alternate" hreflang="zh" href="https://edu.modelmarket.dev/zh/unfakeable-random/" />
+<link rel="alternate" hreflang="x-default" href="https://edu.modelmarket.dev/unfakeable-random/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="AIMarket School" />
+<meta property="og:locale" content="fr" />
+<meta property="og:title" content="Du hasard qu&#x27;on ne truque pas — AIMarket School" />
+<meta property="og:description" content="Chaos-VRF signé de Platon. Vérifie la signature, pas le vibe." />
+<meta property="og:url" content="https://edu.modelmarket.dev/fr/unfakeable-random/" />
+<meta property="og:image" content="https://modeldev.modelmarket.dev/school/og/unfakeable-random.png" />
+<meta property="og:image:alt" content="Du hasard qu&#x27;on ne truque pas — AIMarket School" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Du hasard qu&#x27;on ne truque pas — AIMarket School" />
+<meta name="twitter:description" content="Chaos-VRF signé de Platon. Vérifie la signature, pas le vibe." />
+<meta name="twitter:image" content="https://modeldev.modelmarket.dev/school/og/unfakeable-random.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../../school/school.css" />
+</head>
+<body>
+<nav><div class="wrap row">
+  <a class="brand" href="https://modeldev.modelmarket.dev/fr/school/"><span>AIMarket</span> École</a>
+  <div class="nav-links">
+    <a href="https://modeldev.modelmarket.dev/fr/school/">Leçons</a>
+    <a href="https://modeldev.modelmarket.dev/fr/learn/">Académie</a>
+    <a href="https://modeldev.modelmarket.dev/fr/guides/">Guides</a>
+    <a href="https://alexar76.github.io/ai-service-mesh/">Mesh</a>
+    <a href="https://github.com/alexar76/aicom">GitHub</a>
+    <div class="lang-switch" aria-label="Language"><a href="https://modeldev.modelmarket.dev/school/unfakeable-random/">EN</a><a href="https://modeldev.modelmarket.dev/ru/school/unfakeable-random/">RU</a><a href="https://modeldev.modelmarket.dev/es/school/unfakeable-random/">ES</a><a href="https://modeldev.modelmarket.dev/fr/school/unfakeable-random/" aria-current="page">FR</a><a href="https://modeldev.modelmarket.dev/zh/school/unfakeable-random/">ZH</a></div>
+  </div>
+</div></nav>
+<div class="wrap section lesson-hero">
+  <p class="eyebrow">Leçon 02 · ~4 min · gratuit</p>
+  <h1>Du hasard qu&#x27;on ne truque pas</h1>
+  <p class="lede" style="color:var(--muted);max-width:46ch">Chaos-VRF signé de Platon. Vérifie la signature, pas le vibe.</p>
+  <div class="layout">
+    <div>
+      <div class="reel" id="reel">
+        <div class="progress"><i id="reel-bar"></i></div>
+        <canvas id="reel-c"></canvas>
+        <div class="cap" id="reel-cap"></div>
+      </div>
+      <p class="note" style="text-align:center">Reel animé · autoplay · sans bande-son</p>
+      <div class="reel-links"><a class="btn btn-ghost" href="https://youtu.be/QoKuFRWp26c" target="_blank" rel="noopener">YouTube Short ↗</a><a class="btn btn-ghost" href="https://youtu.be/tiLAlPWifb4" target="_blank" rel="noopener">Vidéo complète ↗</a></div>
+    </div>
+    <div>
+      <div class="panel" style="margin-bottom:14px">
+        <h2>1. Regarde le clip</h2>
+        <ol class="steps">
+          <li>Le biais casse les loteries</li><li>VRF = maths + signature</li><li>Vérifiable hors ligne</li>
+        </ol>
+      </div>
+      <div class="panel" style="margin-bottom:14px">
+        <h2>2. Essaie en live</h2>
+        <p style="color:var(--muted);margin:0 0 10px;font-size:0.92rem">Lancer Platon VRF</p>
+        <button class="btn btn-hot" type="button" id="run-demo">Lancer Platon VRF</button>
+        <pre id="demo-out">La sortie s&#x27;affiche ici.</pre>
+      </div>
+      <div class="panel">
+        <h2>3. Colab · aller plus loin</h2>
+        <div class="ctas">
+          <a class="btn btn-primary" href="https://colab.research.google.com/github/alexar76/aimarket-school/blob/main/notebooks/unfakeable-random.ipynb" target="_blank" rel="noopener">Ouvrir dans Colab</a>
+          <a class="btn btn-ghost" href="https://alexar76.github.io/aimarket-courses/verifiable-randomness-course/" target="_blank" rel="noopener">Académie : Aléa vérifiable ↗</a>
+        </div>
+        <p class="note">Colab fait les mêmes appels gratis. Académie = labs + certificat.</p>
+      </div>
+    </div>
+  </div>
+  <div class="ctas" style="margin-top:28px"><a class="btn btn-ghost" href="../agents-in-5-min/">← 3 agents. Zéro dashboard.</a><a class="btn btn-primary" href="../poison-check/">Attrape le tool poisoning →</a><a class="btn btn-ghost" href="../">Toutes les leçons</a></div>
+</div>
+<footer><div class="wrap row">
+  <span>AICOM · L&#x27;École est l&#x27;entrée. L&#x27;Académie est la profondeur.</span>
+  <span>
+    <a href="https://modeldev.modelmarket.dev/fr/learn/">Académie</a> ·
+    <a href="https://alexar76.github.io/aimarket-courses/">Course portal</a> ·
+    <a href="https://oracles.modelmarket.dev/">Oracles</a>
+  </span>
+</div></footer>
+<script>
+window.SCHOOL_I18N = {"running": "Exécution…", "demo_failed": "Le navigateur a bloqué l'appel live (cross-origin).", "demo_failed_hint": "Ouvrez le notebook Colab ci-dessous — les mêmes appels y fonctionnent."};
+
+const HUB = "https://modelmarket.dev";
+const HUB_PROXY = "/hub";
+const FAMILY = "https://oracles.modelmarket.dev/family";
+// Same-origin /hub bridge only. Never fetch HUB cross-origin from the browser —
+// hub CORS is fail-closed and surfaces as TypeError: Failed to fetch.
+
+async function hubFetch(path, init) {
+  if (!HUB_PROXY) {
+    throw new Error('Hub bridge not configured (SCHOOL_HUB_PROXY empty)');
+  }
+  const r = await fetch(HUB_PROXY + path, init);
+  if (r.status === 404 || r.status === 405) {
+    throw new Error('Hub bridge missing on this host — deploy school-hub-bridge.conf');
+  }
+  if (r.status >= 500) {
+    throw new Error('Hub bridge upstream error HTTP ' + r.status);
+  }
+  return r;
+}
+
+function schoolText(key, fallback) {
+  const t = (typeof window !== 'undefined' && window.SCHOOL_I18N) || {};
+  return t[key] || fallback;
+}
+
+async function schoolDemo(kind, outEl) {
+  outEl.textContent = schoolText('running', 'Running…');
+  try {
+    if (kind === 'hub_search') {
+      const r = await hubFetch('/ai-market/v2/search?intent=oracle&limit=5');
+      const d = await r.json();
+      outEl.textContent = (d.matches || []).map(m => `${m.capability_id}  $${m.price_per_call_usd}`).join('\n') || JSON.stringify(d).slice(0, 500);
+    } else if (kind === 'platon_random') {
+      const r = await fetch(`${FAMILY}/ai-market/v2/invoke`, {
+        method: 'POST', headers: {'content-type': 'application/json'},
+        body: JSON.stringify({capability_id: 'platon.random@v1', input: {}})
+      });
+      const d = await r.json();
+      outEl.textContent = `random_hex: ${d.output?.random_hex}\nscheme: ${d.output?.proof?.scheme}\nok: ${d.ok}`;
+    } else if (kind === 'payment_402') {
+      const r = await hubFetch('/ai-market/v2/invoke', {
+        method: 'POST', headers: {'content-type': 'application/json'},
+        body: JSON.stringify({
+          product_id: 'prod-platon', capability_id: 'platon.random@v1',
+          source_hub: FAMILY, input: {}
+        })
+      });
+      const t = await r.text();
+      // The hub answers 402 only once the free-trial allowance is spent — say
+      // which branch the learner is looking at instead of implying a 402.
+      const note = r.status === 402
+        ? '402 Payment Required → open a channel and retry'
+        : (r.status < 300
+            ? 'served without a channel (free-trial allowance) — priced calls settle from a channel'
+            : 'hub refused this call — see the body');
+      outEl.textContent = `HTTP ${r.status} · ${note}\n${t.slice(0, 500)}`;
+    } else if (kind === 'hub_stats' || kind === 'factory_health') {
+      const r = await hubFetch('/.well-known/ai-market.json');
+      const d = await r.json();
+      outEl.textContent = JSON.stringify({
+        name: d.name, hub_version: d.hub_version,
+        payment_configured: d.payment_configured,
+        federated: d.federated_capabilities_count,
+        demo_mode: d.plugin_extensions?.['aimarket-channels']?.channels?.demo_mode
+      }, null, 2);
+    } else if (kind === 'warden_static') {
+      outEl.textContent = [
+        'WARDEN threat model (clip):',
+        '',
+        'SAFE   get_weather(city)',
+        '       → returns forecast JSON',
+        'POISON get_weather(city)',
+        '       → also reads ~/.ssh and exfils',
+        '',
+        'Rule: pin tools. Scan before invoke.',
+        'Academy: MCP Security & Agent Safety'
+      ].join('\n');
+    } else if (kind === 'search_proof' || kind === 'search_physics') {
+      const intent = kind === 'search_physics' ? 'murmuration' : 'optimize';
+      const r = await hubFetch(`/ai-market/v2/search?intent=${intent}&limit=6`);
+      const d = await r.json();
+      outEl.textContent = (d.matches || []).map(m => `${m.capability_id}\n  ${m.description || ''}`).join('\n\n') || tSlice(d);
+    } else if (kind === 'basescan_escrow') {
+      outEl.textContent = 'Opening Basescan escrow…';
+      window.open('https://basescan.org/address/0x0606983cbEc6D0C12a0B750f72Ceb6032c72C25D', '_blank', 'noopener');
+      outEl.textContent = 'Escrow 0x0606983c…72C25D — Base mainnet.\nExternal depositor proof: onchain-journal §3j.';
+    } else if (kind === 'mesh_live') {
+      window.open('https://service-mesh.modelmarket.dev/', '_blank', 'noopener');
+      outEl.textContent = 'Opened live mesh dashboard.\nLanding: https://alexar76.github.io/ai-service-mesh/';
+    } else {
+      outEl.textContent = 'Unknown demo: ' + kind;
+    }
+  } catch (e) {
+    const detail = (e && e.message) ? e.message : String(e);
+    outEl.textContent = [
+      schoolText('demo_failed', 'Live hub bridge unavailable.') + ' (' + detail + ')',
+      schoolText('demo_failed_hint', 'Open the Colab notebook below — the same calls run there against modelmarket.dev.'),
+      'Public hub (for notebooks/CLI): ' + HUB
+    ].join('\n\n');
+  }
+}
+function tSlice(d) { return JSON.stringify(d).slice(0, 500); }
+
+function playReel(canvas, beats, capEl, barEl, scene) {
+  const ctx = canvas.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let t0 = performance.now();
+  const dur = 10000;
+  let W = 0, H = 0, dpr = 1;
+  const C = { cyan:'#7ee7ff', lime:'#b8f23a', hot:'#ff5a36', gold:'#f5c542', violet:'#a78bfa', ink:'#02050c' };
+  function resize() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    const cw = Math.max(canvas.clientWidth || 320, 160);
+    const ch = Math.max(canvas.clientHeight || 480, 240);
+    const nw = Math.floor(cw * dpr), nh = Math.floor(ch * dpr);
+    if (nw === W && nh === H) return false;
+    W = canvas.width = nw; H = canvas.height = nh;
+    return true;
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+  function hexA(hex, a) {
+    const n = hex.replace('#','');
+    const r = parseInt(n.slice(0,2),16), g = parseInt(n.slice(2,4),16), b = parseInt(n.slice(4,6),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+  function nebula(u, palette) {
+    ctx.fillStyle = C.ink; ctx.fillRect(0, 0, W, H);
+    palette.forEach(([hx, hy, rr, col, aa], i) => {
+      const x = (hx + 0.03 * Math.sin(u * Math.PI * 2 + i)) * W;
+      const y = (hy + 0.02 * Math.cos(u * Math.PI * 2 + i * 1.3)) * H;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, rr * W);
+      g.addColorStop(0, hexA(col, aa)); g.addColorStop(1, hexA(col, 0));
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    });
+  }
+  function stars(u, n) {
+    for (let i = 0; i < n; i++) {
+      const sx = ((i * 97) % 100) / 100, sy = ((i * 53) % 100) / 100;
+      const tw = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(u * Math.PI * 4 + i));
+      ctx.fillStyle = hexA('#ffffff', 0.15 + tw * 0.45);
+      ctx.beginPath();
+      ctx.arc(sx * W, sy * H, (0.6 + (i % 3) * 0.4) * dpr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  function beatIndex(u, list) {
+    return list.length ? Math.min(list.length - 1, Math.floor(u * list.length)) : 0;
+  }
+  // —— per-lesson technological fairy-tale scenes ——
+  const scenes = {
+    hub_search(u, bi) {
+      nebula(u, [[0.3,0.3,0.5,C.cyan,0.14],[0.75,0.65,0.4,C.lime,0.1],[0.5,0.8,0.35,C.violet,0.08]]);
+      stars(u, 40);
+      const agents = [
+        [0.18 + 0.04*Math.sin(u*6), 0.35],
+        [0.82 - 0.03*Math.cos(u*5), 0.28],
+        [0.5, 0.72 - 0.04*Math.sin(u*4)]
+      ];
+      // seek trails toward center meet
+      const meet = [0.5, 0.48];
+      const t = Math.min(1, u * 1.4);
+      agents.forEach((a, i) => {
+        const x = (a[0] + (meet[0]-a[0]) * t) * W;
+        const y = (a[1] + (meet[1]-a[1]) * t) * H;
+        ctx.strokeStyle = hexA([C.cyan,C.lime,C.hot][i], 0.35);
+        ctx.lineWidth = 2*dpr; ctx.setLineDash([6*dpr, 6*dpr]);
+        ctx.beginPath(); ctx.moveTo(a[0]*W, a[1]*H); ctx.lineTo(x,y); ctx.stroke();
+        ctx.setLineDash([]);
+        const g = ctx.createRadialGradient(x,y,0,x,y,18*dpr);
+        g.addColorStop(0, hexA([C.cyan,C.lime,C.hot][i], 0.9));
+        g.addColorStop(1, hexA([C.cyan,C.lime,C.hot][i], 0));
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x,y,18*dpr,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x,y,5*dpr,0,Math.PI*2); ctx.fill();
+      });
+      if (bi >= 2) {
+        ctx.strokeStyle = hexA(C.gold, 0.7); ctx.lineWidth = 2*dpr;
+        ctx.strokeRect(meet[0]*W - 28*dpr, meet[1]*H + 22*dpr, 56*dpr, 18*dpr);
+        ctx.fillStyle = hexA(C.gold, 0.85); ctx.font = `${11*dpr}px ui-monospace,monospace`;
+        ctx.fillText('receipt', meet[0]*W - 22*dpr, meet[1]*H + 35*dpr);
+      }
+    },
+    platon_random(u, bi) {
+      nebula(u, [[0.5,0.45,0.55,C.violet,0.18],[0.2,0.2,0.35,C.cyan,0.1],[0.8,0.75,0.3,C.hot,0.08]]);
+      // cave arch
+      ctx.strokeStyle = hexA(C.violet, 0.35); ctx.lineWidth = 3*dpr;
+      ctx.beginPath(); ctx.ellipse(0.5*W, 0.55*H, 0.38*W, 0.32*H, 0, Math.PI, 0); ctx.stroke();
+      // falling hex sparks (chaos)
+      for (let i = 0; i < 18; i++) {
+        const hx = ((i * 37 + u * 80) % 100) / 100;
+        const hy = ((i * 19 + u * 120 + i*7) % 100) / 100;
+        ctx.fillStyle = hexA(i%2?C.cyan:C.gold, 0.55);
+        ctx.font = `${9*dpr}px ui-monospace,monospace`;
+        ctx.fillText((i*17).toString(16).padStart(2,'0'), hx*W, hy*H);
+      }
+      // VRF seal
+      const ang = u * Math.PI * 4;
+      const cx = 0.5*W, cy = 0.48*H, R = 36*dpr;
+      ctx.strokeStyle = hexA(C.gold, 0.8); ctx.lineWidth = 2.5*dpr;
+      ctx.beginPath(); ctx.arc(cx, cy, R, ang, ang + Math.PI * 1.4); ctx.stroke();
+      ctx.fillStyle = hexA(C.gold, bi >= 1 ? 0.9 : 0.4);
+      ctx.beginPath(); ctx.arc(cx, cy, 10*dpr, 0, Math.PI*2); ctx.fill();
+      if (bi >= 2) {
+        ctx.strokeStyle = hexA(C.lime, 0.9); ctx.beginPath();
+        ctx.moveTo(cx-8*dpr, cy); ctx.lineTo(cx-2*dpr, cy+7*dpr); ctx.lineTo(cx+10*dpr, cy-8*dpr); ctx.stroke();
+      }
+    },
+    warden_static(u, bi) {
+      nebula(u, [[0.5,0.4,0.5,C.hot,0.1],[0.3,0.7,0.35,C.lime,0.12]]);
+      // shield
+      const sx = 0.5*W, sy = 0.42*H;
+      ctx.fillStyle = hexA(C.cyan, 0.12); ctx.strokeStyle = hexA(C.cyan, 0.7); ctx.lineWidth = 2.5*dpr;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy - 55*dpr); ctx.lineTo(sx + 48*dpr, sy - 20*dpr);
+      ctx.lineTo(sx + 40*dpr, sy + 35*dpr); ctx.quadraticCurveTo(sx, sy + 70*dpr, sx - 40*dpr, sy + 35*dpr);
+      ctx.lineTo(sx - 48*dpr, sy - 20*dpr); ctx.closePath(); ctx.fill(); ctx.stroke();
+      // scan beam
+      const scanY = sy - 50*dpr + ((u * 1.5) % 1) * 110*dpr;
+      ctx.fillStyle = hexA(C.lime, 0.25); ctx.fillRect(sx - 44*dpr, scanY, 88*dpr, 4*dpr);
+      // tools: safe vs poison
+      const tools = [[0.18,0.78,'SAFE',C.lime],[0.82,0.78,'POISON',C.hot]];
+      tools.forEach(([x,y,label,col], i) => {
+        const alert = bi >= 1 && i === 1;
+        ctx.fillStyle = hexA(col, alert ? 0.9 : 0.45);
+        ctx.fillRect(x*W - 28*dpr, y*H - 14*dpr, 56*dpr, 28*dpr);
+        ctx.fillStyle = '#02050c'; ctx.font = `bold ${10*dpr}px ui-sans-serif,system-ui`;
+        ctx.fillText(label, x*W - 18*dpr, y*H + 4*dpr);
+        if (alert) {
+          ctx.strokeStyle = hexA(C.hot, 0.8 + 0.2*Math.sin(u*20));
+          ctx.strokeRect(x*W - 32*dpr, y*H - 18*dpr, 64*dpr, 36*dpr);
+        }
+      });
+      if (bi >= 2) {
+        ctx.fillStyle = hexA(C.lime, 0.85); ctx.font = `${12*dpr}px ui-monospace,monospace`;
+        ctx.fillText('WARDEN', sx - 28*dpr, sy + 8*dpr);
+      }
+    },
+    payment_402(u, bi) {
+      nebula(u, [[0.5,0.35,0.45,C.gold,0.14],[0.2,0.7,0.35,C.hot,0.1]]);
+      // escrow vault
+      const vx = 0.5*W, vy = 0.55*H;
+      ctx.fillStyle = hexA(C.gold, 0.15); ctx.strokeStyle = hexA(C.gold, 0.7); ctx.lineWidth = 2*dpr;
+      ctx.fillRect(vx - 50*dpr, vy - 40*dpr, 100*dpr, 80*dpr); ctx.strokeRect(vx - 50*dpr, vy - 40*dpr, 100*dpr, 80*dpr);
+      ctx.fillStyle = hexA(C.gold, 0.8); ctx.font = `${11*dpr}px ui-monospace,monospace`;
+      ctx.fillText('ESCROW', vx - 26*dpr, vy + 5*dpr);
+      // coin hop into vault
+      const t = (u * 2) % 1;
+      const cx = (0.15 + t * 0.35) * W, cy = (0.25 + Math.sin(t * Math.PI) * 0.15) * H;
+      ctx.fillStyle = hexA(C.lime, 0.9); ctx.beginPath(); ctx.arc(cx, cy, 10*dpr, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = C.ink; ctx.font = `bold ${10*dpr}px ui-sans-serif`; ctx.fillText('$', cx - 3*dpr, cy + 4*dpr);
+      // 402 flash
+      if (bi === 0 || (u % 0.2) < 0.08) {
+        ctx.fillStyle = hexA(C.hot, 0.85); ctx.font = `bold ${28*dpr}px ui-sans-serif,system-ui`;
+        ctx.fillText('402', 0.12*W, 0.18*H);
+      }
+      if (bi >= 2) {
+        ctx.strokeStyle = hexA(C.lime, 0.8); ctx.beginPath();
+        ctx.moveTo(vx-20*dpr, vy+50*dpr); ctx.lineTo(vx-5*dpr, vy+62*dpr); ctx.lineTo(vx+22*dpr, vy+42*dpr); ctx.stroke();
+      }
+    },
+    hub_stats(u, bi) {
+      nebula(u, [[0.45,0.4,0.5,C.cyan,0.12],[0.7,0.7,0.35,C.violet,0.1]]);
+      const nodes = [[0.5,0.22],[0.22,0.45],[0.78,0.42],[0.32,0.72],[0.68,0.75],[0.5,0.5]];
+      ctx.strokeStyle = hexA(C.cyan, 0.25); ctx.lineWidth = 1.5*dpr;
+      for (let i = 0; i < nodes.length; i++) for (let j = i+1; j < nodes.length; j++) {
+        if ((i+j) % 2 === 0) continue;
+        ctx.beginPath();
+        ctx.moveTo(nodes[i][0]*W, nodes[i][1]*H); ctx.lineTo(nodes[j][0]*W, nodes[j][1]*H); ctx.stroke();
+      }
+      nodes.forEach((n, i) => {
+        const trust = 0.35 + 0.55 * (0.5 + 0.5 * Math.sin(u * Math.PI * 2 + i * 0.9));
+        const r = (5 + trust * 14) * dpr;
+        const g = ctx.createRadialGradient(n[0]*W, n[1]*H, 0, n[0]*W, n[1]*H, r*2);
+        g.addColorStop(0, hexA(C.lime, 0.85)); g.addColorStop(1, hexA(C.lime, 0));
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n[0]*W, n[1]*H, r*2, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(n[0]*W, n[1]*H, 3.5*dpr, 0, Math.PI*2); ctx.fill();
+      });
+      if (bi >= 2) {
+        ctx.fillStyle = hexA(C.violet, 0.8); ctx.font = `${11*dpr}px ui-monospace,monospace`;
+        ctx.fillText('federated trust', 0.28*W, 0.12*H);
+      }
+    },
+    search_proof(u, bi) {
+      nebula(u, [[0.5,0.45,0.5,C.lime,0.12],[0.25,0.25,0.3,C.gold,0.1]]);
+      // geometric certificate unfolding
+      const cx = 0.5*W, cy = 0.45*H;
+      const sides = 3 + bi;
+      ctx.strokeStyle = hexA(C.lime, 0.75); ctx.lineWidth = 2*dpr; ctx.beginPath();
+      for (let i = 0; i <= sides; i++) {
+        const a = -Math.PI/2 + (i/sides) * Math.PI * 2 + u * 0.4;
+        const r = (40 + bi * 8) * dpr;
+        const x = cx + Math.cos(a)*r, y = cy + Math.sin(a)*r;
+        if (i === 0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+      // stamp
+      const stamp = Math.min(1, Math.max(0, (u - 0.55) * 4));
+      if (stamp > 0) {
+        ctx.save(); ctx.translate(cx, cy + 70*dpr); ctx.scale(stamp, stamp); ctx.rotate(-0.15);
+        ctx.strokeStyle = hexA(C.hot, 0.9); ctx.lineWidth = 3*dpr;
+        ctx.strokeRect(-40*dpr, -16*dpr, 80*dpr, 32*dpr);
+        ctx.fillStyle = hexA(C.hot, 0.9); ctx.font = `bold ${12*dpr}px ui-sans-serif`;
+        ctx.fillText('PROOF', -22*dpr, 5*dpr);
+        ctx.restore();
+      }
+    },
+    basescan_escrow(u, bi) {
+      nebula(u, [[0.5,0.4,0.5,C.gold,0.14],[0.7,0.7,0.3,C.cyan,0.08]]);
+      const cx = 0.5*W, cy = 0.42*H, R = 55*dpr;
+      const spin = u * Math.PI * 6;
+      ctx.strokeStyle = hexA(C.gold, 0.7); ctx.lineWidth = 3*dpr;
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.stroke();
+      for (let i = 0; i < 8; i++) {
+        const a = spin + i * Math.PI / 4;
+        ctx.strokeStyle = hexA(i%2?C.lime:C.hot, 0.6);
+        ctx.beginPath(); ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R); ctx.stroke();
+      }
+      // VRF seed crystal
+      ctx.fillStyle = hexA(C.cyan, 0.85); ctx.beginPath();
+      ctx.moveTo(cx, cy - 14*dpr); ctx.lineTo(cx + 10*dpr, cy); ctx.lineTo(cx, cy + 14*dpr); ctx.lineTo(cx - 10*dpr, cy);
+      ctx.closePath(); ctx.fill();
+      if (bi >= 2) {
+        ctx.fillStyle = hexA(C.gold, 0.9); ctx.font = `${12*dpr}px ui-monospace,monospace`;
+        ctx.fillText('Base · settle', cx - 40*dpr, cy + R + 28*dpr);
+      }
+    },
+    factory_health(u, bi) {
+      nebula(u, [[0.4,0.3,0.4,C.hot,0.1],[0.6,0.7,0.4,C.lime,0.1]]);
+      const stages = ['idea','spec','build','QA','ship'];
+      const y = 0.45*H;
+      stages.forEach((s, i) => {
+        const x = (0.1 + i * 0.18) * W;
+        const on = Math.floor(u * stages.length) >= i;
+        ctx.fillStyle = hexA(on ? C.lime : C.cyan, on ? 0.85 : 0.25);
+        ctx.beginPath(); ctx.arc(x, y, 14*dpr, 0, Math.PI*2); ctx.fill();
+        if (i < stages.length - 1) {
+          ctx.strokeStyle = hexA(C.cyan, on ? 0.6 : 0.2); ctx.lineWidth = 2*dpr;
+          ctx.beginPath(); ctx.moveTo(x + 16*dpr, y); ctx.lineTo(x + 0.18*W - 16*dpr, y); ctx.stroke();
+        }
+        ctx.fillStyle = hexA('#ffffff', 0.7); ctx.font = `${9*dpr}px ui-monospace,monospace`;
+        ctx.fillText(s, x - 12*dpr, y + 32*dpr);
+      });
+      // product card lands on storefront
+      if (bi >= 2) {
+        const px = 0.5*W, py = 0.72*H;
+        ctx.fillStyle = hexA(C.gold, 0.2); ctx.strokeStyle = hexA(C.gold, 0.8); ctx.lineWidth = 2*dpr;
+        ctx.fillRect(px - 55*dpr, py - 28*dpr, 110*dpr, 56*dpr); ctx.strokeRect(px - 55*dpr, py - 28*dpr, 110*dpr, 56*dpr);
+        ctx.fillStyle = hexA(C.gold, 0.9); ctx.font = `${11*dpr}px ui-sans-serif`;
+        ctx.fillText('storefront', px - 32*dpr, py + 5*dpr);
+      }
+    },
+    mesh_live(u, bi) {
+      nebula(u, [[0.35,0.35,0.45,C.cyan,0.14],[0.7,0.55,0.4,C.lime,0.12],[0.5,0.8,0.3,C.hot,0.08]]);
+      stars(u, 25);
+      const nodes = [[0.22,0.28],[0.72,0.22],[0.55,0.55],[0.28,0.72],[0.78,0.70]];
+      ctx.strokeStyle = hexA(C.lime, 0.4); ctx.lineWidth = 2*dpr;
+      for (let i = 0; i < nodes.length - 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(nodes[i][0]*W, nodes[i][1]*H); ctx.lineTo(nodes[i+1][0]*W, nodes[i+1][1]*H); ctx.stroke();
+      }
+      const seg = u * (nodes.length - 1);
+      const si = Math.min(nodes.length - 2, Math.floor(seg));
+      const sf = seg - si;
+      const a = nodes[si], b = nodes[si+1];
+      const px = (a[0] + (b[0]-a[0])*sf)*W, py = (a[1] + (b[1]-a[1])*sf)*H;
+      // spend sparkles along hop
+      if (bi >= 2) {
+        ctx.fillStyle = hexA(C.gold, 0.8); ctx.font = `${10*dpr}px ui-monospace,monospace`;
+        ctx.fillText('$' + (0.01 + u*0.04).toFixed(3), px + 8*dpr, py - 8*dpr);
+      }
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(px, py, 5*dpr, 0, Math.PI*2); ctx.fill();
+      nodes.forEach((n, i) => {
+        const pulse = 0.5 + 0.5 * Math.sin(u * Math.PI * 2 + i);
+        ctx.fillStyle = i === Math.floor(u * nodes.length) % nodes.length ? C.hot : C.lime;
+        ctx.beginPath(); ctx.arc(n[0]*W, n[1]*H, (6 + pulse*4)*dpr, 0, Math.PI*2); ctx.fill();
+      });
+    },
+    search_physics(u, bi) {
+      nebula(u, [[0.5,0.4,0.5,C.violet,0.12],[0.3,0.7,0.35,C.hot,0.1],[0.75,0.25,0.3,C.cyan,0.1]]);
+      // murmuration flock
+      const N = 48;
+      for (let i = 0; i < N; i++) {
+        const a = u * Math.PI * 2 + i * 0.35;
+        const r = 0.12 + 0.08 * Math.sin(u * 6 + i);
+        const x = (0.5 + Math.cos(a) * r + 0.05 * Math.sin(u * 3 + i)) * W;
+        const y = (0.42 + Math.sin(a * 1.3) * r * 1.4) * H;
+        ctx.fillStyle = hexA(i % 3 === 0 ? C.cyan : C.lime, 0.7);
+        ctx.beginPath(); ctx.arc(x, y, 2.2*dpr, 0, Math.PI*2); ctx.fill();
+      }
+      // cascade sand pile
+      if (bi >= 1) {
+        const baseY = 0.78*H;
+        for (let k = 0; k < 12; k++) {
+          const fall = ((u * 2 + k * 0.08) % 1);
+          ctx.fillStyle = hexA(C.hot, 0.5 + 0.4 * (1-fall));
+          ctx.fillRect(0.2*W + k * 8*dpr, baseY - fall * 80*dpr, 6*dpr, 6*dpr);
+        }
+      }
+      if (bi >= 2) {
+        ctx.fillStyle = hexA(C.gold, 0.85); ctx.font = `${11*dpr}px ui-monospace,monospace`;
+        ctx.fillText('Landauer · audit', 0.28*W, 0.14*H);
+      }
+    }
+  };
+  const draw = scenes[scene] || scenes.mesh_live;
+  function frame(now) {
+    if (!W || !H) resize();
+    const u = reduce ? 0.5 : ((now - t0) % dur) / dur;
+    const list = Array.isArray(beats) ? beats : [];
+    const bi = beatIndex(u, list);
+    draw(u, bi);
+    if (capEl) capEl.textContent = list[bi] || '';
+    if (barEl) barEl.style.width = (u * 100).toFixed(1) + '%';
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+(() => {
+  const beats = ["Le biais casse les loteries", "VRF = maths + signature", "Vérifiable hors ligne"];
+  const scene = "platon_random";
+  const canvas = document.getElementById('reel-c');
+  playReel(canvas, beats, document.getElementById('reel-cap'), document.getElementById('reel-bar'), scene);
+  document.getElementById('run-demo').addEventListener('click', () => {
+    schoolDemo("platon_random", document.getElementById('demo-out'));
+  });
+})();
+</script>
+</body></html>

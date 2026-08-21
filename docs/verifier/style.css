@@ -1,0 +1,199 @@
+/* ── Reset & Base ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background: #f8f9fa;
+  color: #212529;
+  line-height: 1.6;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+header {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.header-content { max-width: 800px; margin: 0 auto; }
+header h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+header .subtitle { opacity: 0.8; font-size: 1.05rem; margin-bottom: 1rem; }
+header nav a {
+  color: #7ec8e3;
+  text-decoration: none;
+  margin: 0 0.75rem;
+  font-size: 0.95rem;
+}
+header nav a:hover { text-decoration: underline; }
+
+/* ── Layout ──────────────────────────────────────────────────────────── */
+main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+.card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+@media (max-width: 640px) { .card-row { grid-template-columns: 1fr; } }
+.card h2 { font-size: 1.35rem; margin-bottom: 0.5rem; }
+.card h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+
+/* ── Input ───────────────────────────────────────────────────────────── */
+textarea {
+  width: 100%;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  resize: vertical;
+}
+textarea:focus { outline: none; border-color: #4a90d9; box-shadow: 0 0 0 3px rgba(74,144,217,0.15); }
+.button-row { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.btn-primary, .btn-secondary {
+  padding: 0.55rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-primary { background: #1a1a2e; color: #fff; }
+.btn-primary:hover { background: #16213e; }
+.btn-secondary { background: #e9ecef; color: #212529; }
+.btn-secondary:hover { background: #dee2e6; }
+
+/* ── Status messages ─────────────────────────────────────────────────── */
+.error { color: #c92a2a; background: #fff5f5; padding: 0.75rem; border-radius: 6px; border: 1px solid #ffc9c9; margin-top: 0.75rem; }
+.loading { color: #1864ab; padding: 0.75rem; }
+.hidden { display: none; }
+
+/* ── Verdict ─────────────────────────────────────────────────────────── */
+.verdict { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 6px; }
+.verdict.pass { background: #ebfbee; border: 1px solid #8ce99a; }
+.verdict.fail { background: #fff5f5; border: 1px solid #ffc9c9; }
+.verdict-icon { font-size: 2rem; line-height: 1; }
+.verdict.pass .verdict-icon { color: #2b8a3e; }
+.verdict.fail .verdict-icon { color: #c92a2a; }
+
+/* ── Meta grid ───────────────────────────────────────────────────────── */
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+.meta-item.full-width { grid-column: 1 / -1; margin-top: 0.5rem; }
+.meta-label { font-size: 0.8rem; color: #868e96; text-transform: uppercase; letter-spacing: 0.03em; }
+.meta-value {
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+}
+.mono { font-family: monospace; font-size: 0.85rem; word-break: break-all; overflow-wrap: anywhere; }
+.hash-section { margin-top: 0.5rem; }
+.hash-section summary { font-size: 0.85rem; color: #495057; cursor: pointer; }
+.hash-section code { font-size: 0.78rem; word-break: break-all; }
+
+/* ── Checks list ─────────────────────────────────────────────────────── */
+.check-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0; border-bottom: 1px solid #f1f3f5; }
+.check-pass .check-icon { color: #2b8a3e; }
+.check-fail .check-icon { color: #c92a2a; }
+.check-label { font-weight: 500; text-transform: capitalize; }
+.check-detail { font-size: 0.82rem; color: #868e96; }
+.errors-list { margin-top: 0.75rem; padding: 0.75rem; background: #fff5f5; border-radius: 6px; }
+.errors-list ul { margin: 0.25rem 0 0 1.25rem; }
+
+/* ── AWR/2 findings: reason codes stay visible next to the localized text ── */
+.profile-line { margin-top: 0.75rem; font-size: 0.9rem; }
+.profile-line .meta-label { display: inline; }
+.findings { margin-top: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 6px; }
+.findings ul { list-style: none; margin: 0.4rem 0 0; padding: 0; }
+.findings li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem;
+               padding: 0.3rem 0; border-top: 1px solid rgba(0, 0, 0, 0.06); }
+.findings li:first-child { border-top: 0; }
+.reason-code { font-family: monospace; font-size: 0.76rem; font-weight: 700; white-space: nowrap;
+               padding: 0.1rem 0.35rem; border-radius: 4px; background: #e9ecef; color: #212529; }
+.reason-meaning { font-size: 0.88rem; }
+.reason-detail { flex: 1 1 100%; font-size: 0.78rem; color: #868e96; word-break: break-word; }
+.reason-error .reason-code { background: #ffe3e3; color: #c92a2a; }
+.reason-warning .reason-code { background: #fff3bf; color: #a06400; }
+.findings:has(.reason-error) { background: #fff5f5; }
+.findings:has(.reason-warning) { background: #fff9db; }
+.no-issues { margin-top: 0.6rem; font-size: 0.88rem; color: #2b8a3e; }
+.legacy-note { margin-top: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 6px;
+               background: #fff4e6; border: 1px solid #ffd8a8; }
+.legacy-note p { font-size: 0.85rem; margin-top: 0.2rem; }
+.meaning-note { margin-top: 0.75rem; font-size: 0.85rem; color: #495057; }
+.meaning-note summary { cursor: pointer; }
+.chain-summary { font-size: 0.85rem; margin-bottom: 0.5rem; }
+.chain-summary .meta-label { display: inline; }
+.chain-role { font-size: 0.78rem; color: #1864ab; }
+.chain-digest { font-size: 0.72rem; color: #868e96; word-break: break-all; }
+
+/* ── Attestation badges ──────────────────────────────────────────────── */
+.badge { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.75rem; border-radius: 6px; margin-bottom: 0.5rem; }
+.badge-icon { font-size: 1.5rem; }
+.tee-badge { background: #e7f5ff; border: 1px solid #a5d8ff; }
+.tee-badge.absent { background: #f8f9fa; border: 1px solid #dee2e6; opacity: 0.7; }
+/* An attestation is carried, not checked (SPEC.md §7.3) — so it is never green. */
+.tee-badge.unverified { background: #fff9db; border: 1px solid #ffd43b; }
+.rep-badge { background: #fff9db; border: 1px solid #ffd43b; }
+.badge-detail { font-size: 0.8rem; color: #868e96; margin-top: 0.15rem; }
+.badge p { font-size: 0.85rem; margin-top: 0.15rem; }
+
+/* ── Provenance chain ────────────────────────────────────────────────── */
+.chain-node { display: flex; flex-direction: column; padding: 0.5rem; background: #f8f9fa; border-radius: 6px; margin-bottom: 0.25rem; }
+.chain-step { font-size: 0.78rem; color: #868e96; }
+.chain-arrow { text-align: center; font-size: 1.2rem; color: #adb5bd; padding: 0.15rem 0; }
+
+/* ── Raw JSON ────────────────────────────────────────────────────────── */
+pre#raw-json {
+  font-size: 0.8rem;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  max-height: 400px;
+  margin-top: 0.75rem;
+}
+
+/* ── How it works ────────────────────────────────────────────────────── */
+.how-it-works { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0; }
+@media (max-width: 640px) { .how-it-works { grid-template-columns: 1fr; } }
+.step { text-align: center; }
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: #1a1a2e;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+.spec-note { font-size: 0.9rem; color: #495057; margin-top: 1rem; }
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.85rem;
+  color: #868e96;
+  border-top: 1px solid #dee2e6;
+  margin-top: 2rem;
+}
+footer a { color: #4a90d9; }

@@ -1,0 +1,44 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://verify.modelmarket.dev/ns/awr/v2"
+  ],
+  "id": "urn:uuid:00000fed-1e6a-4c11-8f00-000000000001",
+  "type": [
+    "VerifiableCredential",
+    "WorkReceipt"
+  ],
+  "issuer": {
+    "id": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+    "name": "example-hub",
+    "publicKeyJwk": {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "PUAXw-hDiVqStwqnTRt-vJyYLM8uxJaMwM1V8Sr0Zgw"
+    }
+  },
+  "issuanceDate": "2026-07-31T12:00:05Z",
+  "awrVersion": "2.0.0",
+  "credentialSubject": {
+    "work": {
+      "modelId": "victim-flagship@v3",
+      "startedAt": "2026-07-31T11:59:58Z",
+      "completedAt": "2026-07-31T12:00:00Z",
+      "latencyMs": 2340,
+      "status": "succeeded"
+    },
+    "inputDigest": "sha256-ntYicspG8WqhUyawUlC4dTFMnG08+B5Wol6Kci8rnNo=",
+    "outputDigest": "sha256-z3ZSXO7HDKRUMIrd+zvSig+hNUcug/XPmO+faJPgJak=",
+    "price": {
+      "currency": "USD",
+      "amount": "999.00"
+    }
+  },
+  "proof": {
+    "type": "Ed25519Signature2018",
+    "created": "2026-07-31T12:00:05Z",
+    "verificationMethod": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw#z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "xZPRoDxAruEzA61H9G9JeQ7zSmn/q97aSZDzba0WKnLXN90OvsMRBopmM2sZIV4XBLR35gEwJz2a6ijvqM6CAA=="
+  }
+}

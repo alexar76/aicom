@@ -1,0 +1,194 @@
+{
+ "id": "urn:awr:mtl:1:patternset:argus-warden-static-scan",
+ "source": "argus/src/warden/static-scan.ts",
+ "note": "GENERATED from the shipping ARGUS WARDEN static-scan gate by calling staticScanRuleset(); do not hand-edit. This file exists so that a pattern-set digest is reproducible: two MTL labels are comparable only when they name the same pattern set. Ruleset v2 gave every rule a TIER: a `block` rule can refuse a connection, an `advise` rule is reported and never blocks at any blockAtSeverity and never affects the score. A label that presents an advisory hit as a blocking finding misrepresents the scan. The `severity` values are the gate own and MTL/1 attaches no safety meaning to them.",
+ "version": "2",
+ "digest": "sha256-gWC14PR4kUylkJaAGMnIYYX6tPhZTJ60cSB61UZxuWc=",
+ "digestNote": "sha256 over the RFC 8785 canonical form of {version, rules}, rules sorted by code-unit comparison. Recompute with: node -e \"import('./argus/dist/warden/index.js').then(m=>console.log(m.staticScanRuleset().digest))\"",
+ "scannedFields": [
+  "description",
+  "inputSchema"
+ ],
+ "ruleCount": 25,
+ "tierCounts": {
+  "block": 18,
+  "advise": 7
+ },
+ "rules": [
+  {
+   "code": "TOOL_DEF_BASE64_BLOB",
+   "severity": "high",
+   "tier": "block",
+   "source": "[A-Za-z0-9+/_-]{120,}={0,2}",
+   "flags": ""
+  },
+  {
+   "code": "TOOL_DEF_CREDENTIAL_PARAM",
+   "severity": "low",
+   "tier": "advise",
+   "source": "\\bapi[_\\s-]?key\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_CREDENTIAL_PARAM",
+   "severity": "low",
+   "tier": "advise",
+   "source": "\\bcredentials?\\b|\\baccess[_\\s-]?token\\b|\\bbearer\\s+token\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_CREDENTIAL_PARAM",
+   "severity": "medium",
+   "tier": "advise",
+   "source": "\\bpassword\\b|\\bpasswd\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_CREDENTIAL_PARAM",
+   "severity": "low",
+   "tier": "advise",
+   "source": "\\bsecret(?:s)?\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_DATA_URL",
+   "severity": "high",
+   "tier": "block",
+   "source": "\\bdata:[\\w/+.-]+;base64,",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_DATA_URL",
+   "severity": "high",
+   "tier": "block",
+   "source": "\\bjavascript:",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_ENV_REFERENCE",
+   "severity": "medium",
+   "tier": "advise",
+   "source": "(?:^|[^.\\w])\\.env\\b|\\benvironment\\s+variables?\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_EXFIL",
+   "severity": "critical",
+   "tier": "block",
+   "source": "\\b(?:post|send|put)\\s+to\\s+https?:\\/\\/",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_EXFIL",
+   "severity": "high",
+   "tier": "block",
+   "source": "\\b(?:send|post|forward|relay)\\s+(?:it|them|this|the\\s+\\w+|all|results?|output|data|contents?)\\s+to\\s+(?:https?:\\/\\/|\\b[\\w-]+(?:\\.[\\w-]+)*\\.[a-z]{2,}\\b)",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_EXFIL",
+   "severity": "critical",
+   "tier": "block",
+   "source": "\\bexfiltrat\\w*",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_EXFIL",
+   "severity": "high",
+   "tier": "block",
+   "source": "\\bupload\\b[\\s\\S]{0,40}\\bto\\s+(?:https?:\\/\\/|[\\w.-]+\\.[a-z]{2,})",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_HIDDEN_UNICODE",
+   "severity": "high",
+   "tier": "block",
+   "source": "[\\u200B-\\u200F\\u202A-\\u202E\\u2060\\uFEFF]",
+   "flags": ""
+  },
+  {
+   "code": "TOOL_DEF_IMPERATIVE",
+   "severity": "info",
+   "tier": "advise",
+   "source": "\\binstead\\s+of\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_IMPERATIVE",
+   "severity": "low",
+   "tier": "advise",
+   "source": "\\byou\\s+must\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_INJECTION",
+   "severity": "high",
+   "tier": "block",
+   "source": "<\\s*\\/?\\s*(?:system|instructions?|important)\\s*>",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_INJECTION",
+   "severity": "high",
+   "tier": "block",
+   "source": "\\b(?:system\\s+prompt|developer\\s+(?:message|prompt))\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_INJECTION",
+   "severity": "critical",
+   "tier": "block",
+   "source": "\\bdisregard\\s+(?:all\\s+|the\\s+|any\\s+)?(?:previous|prior|above|instructions?|rules?)\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_INJECTION",
+   "severity": "critical",
+   "tier": "block",
+   "source": "\\bdo\\s+not\\s+(?:tell|inform|mention|reveal\\s+to|notify)\\s+(?:the\\s+)?user\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_INJECTION",
+   "severity": "critical",
+   "tier": "block",
+   "source": "\\bignore\\s+(?:all\\s+|the\\s+)?(?:previous|prior|above|preceding)\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_INJECTION",
+   "severity": "high",
+   "tier": "block",
+   "source": "\\bwithout\\s+(?:telling|informing|asking)\\s+(?:the\\s+)?user\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_SECRET_HARVEST",
+   "severity": "critical",
+   "tier": "block",
+   "source": "\\b(?:read|extract|retrieve|fetch|obtain|dump|reveal|collect|harvest|grab|copy|print)\\s[\\s\\S]{0,30}?\\b(?:api[_\\s-]?key|access[_\\s-]?token|bearer\\s+token|credential|password|passwd|secret|\\.env\\b|environment\\s+variable)",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_SECRET_REQUEST",
+   "severity": "critical",
+   "tier": "block",
+   "source": "\\bprivate[_\\s-]?key\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_SECRET_REQUEST",
+   "severity": "critical",
+   "tier": "block",
+   "source": "\\bseed[_\\s-]?phrase\\b|\\bmnemonic\\b",
+   "flags": "i"
+  },
+  {
+   "code": "TOOL_DEF_SECRET_REQUEST",
+   "severity": "critical",
+   "tier": "block",
+   "source": "~\\/\\.ssh|\\bid_rsa\\b|\\.ssh\\/[\\w.-]+",
+   "flags": "i"
+  }
+ ]
+}

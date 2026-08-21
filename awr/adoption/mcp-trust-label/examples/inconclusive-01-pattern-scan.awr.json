@@ -1,0 +1,102 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://verify.modelmarket.dev/ns/awr/v2",
+    "https://verify.modelmarket.dev/ns/awr/mtl/v1"
+  ],
+  "id": "urn:uuid:3d7be015-84c2-4f9a-b1e6-77c0af2d5839",
+  "type": [
+    "VerifiableCredential",
+    "VerificationVerdict",
+    "MCPTrustLabel"
+  ],
+  "issuer": {
+    "id": "did:key:z6MkehRgf7yJbgaGfYsdoAsKdBPE3dj2CYhowQdcjqSJgvVd",
+    "name": "mtl-demo-scanner (DEMONSTRATION KEY — SEED PUBLISHED, NOT AN ADOPTER)"
+  },
+  "validFrom": "2026-07-30T09:15:00Z",
+  "awrVersion": "2.0.0",
+  "credentialSubject": {
+    "verifiedWork": {
+      "id": "urn:awr:mtl:1:subject:sha256:344dd98b3183da3afaaa4d39c3708001a67c1be97ce42f777f1a7a9a2698bfd5",
+      "digestSRI": "sha256-NE3ZizGD2jr6qk05w3CAAaZ8G+l85C93fxp6miaYv9U="
+    },
+    "verdict": "inconclusive",
+    "method": {
+      "id": "urn:awr:mtl:1:method:tool-def-pattern-scan",
+      "name": "MTL/1 tool-definition pattern scan (ARGUS WARDEN static-scan pattern set)"
+    },
+    "evidence": [
+      {
+        "kind": "mtl-subject-descriptor",
+        "digestSRI": "sha256-NE3ZizGD2jr6qk05w3CAAaZ8G+l85C93fxp6miaYv9U="
+      },
+      {
+        "kind": "mtl-tool-set",
+        "digestSRI": "sha256-Ei6TrbxC30M3swU6D97xRgWdfw3sN7XuAI+fKx776mc="
+      },
+      {
+        "kind": "mtl-pattern-set",
+        "digestSRI": "sha256-rC2uyFv8eVaiPwlZSzIfWfSVtDPijZ/uf6TKl8nCSDw="
+      }
+    ],
+    "mcpTrustLabel": {
+      "profile": "MTL/1",
+      "observedAt": "2026-07-30T09:00:00Z",
+      "reproducibility": "deterministic",
+      "server": {
+        "name": "com.example/tracker",
+        "registry": "urn:awr:mtl:1:registry:example"
+      },
+      "toolSet": {
+        "count": 2,
+        "digestSRI": "sha256-Ei6TrbxC30M3swU6D97xRgWdfw3sN7XuAI+fKx776mc="
+      },
+      "patternSet": {
+        "id": "urn:awr:mtl:1:patternset:argus-warden-static-scan",
+        "digestSRI": "sha256-rC2uyFv8eVaiPwlZSzIfWfSVtDPijZ/uf6TKl8nCSDw="
+      },
+      "patternMatches": [
+        {
+          "code": "TOOL_DEF_SECRET_REQUEST",
+          "severity": "high",
+          "tool": "create_issue",
+          "where": "description"
+        },
+        {
+          "code": "TOOL_DEF_SECRET_REQUEST",
+          "severity": "high",
+          "tool": "create_issue",
+          "where": "inputSchema"
+        },
+        {
+          "code": "TOOL_DEF_INJECTION",
+          "severity": "low",
+          "tool": "list_files",
+          "where": "description"
+        }
+      ],
+      "scope": "Pattern match over the tool names, descriptions and JSON schemas this server advertised at observedAt. No source code was read, no package was inspected, and no tool was invoked.",
+      "note": "A pattern match is a reason to read the definition, not a finding of fact. All three matches here are on benign text: a tool that legitimately takes an API key, and a description containing the words 'instead of'. MTL/1 therefore reports inconclusive and never fail for this method.",
+      "demonstration": {
+        "isDemonstration": true,
+        "issuerPrivateKeyIsPublic": true,
+        "issuerKeySeed": "bytes(range(32)), published in awr/adoption/mcp-trust-label/examples/generate.py",
+        "warning": "DEMONSTRATION DOCUMENT. The private key of this issuer is published, so anyone can mint documents under this DID and none of them means anything. This label is a format sample: it is not evidence of adoption, not evidence that any scan was performed, and not a statement about any real MCP server. The servers named in it are invented. MUST NOT be displayed as a trust signal or counted as adoption."
+      }
+    }
+  },
+  "proof": {
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://verify.modelmarket.dev/ns/awr/v2",
+      "https://verify.modelmarket.dev/ns/awr/mtl/v1"
+    ],
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "created": "2026-07-30T09:15:00Z",
+    "verificationMethod": "did:key:z6MkehRgf7yJbgaGfYsdoAsKdBPE3dj2CYhowQdcjqSJgvVd#z6MkehRgf7yJbgaGfYsdoAsKdBPE3dj2CYhowQdcjqSJgvVd",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "z53iMTvCzC7FeZHpR3GMbt4r2WXb5gfs4vsAhRKiJf8h9HYxiZxJB5r1knmYiwReKLuUVJLEb9oQYjixYDamYn3gq"
+  }
+}

@@ -1,0 +1,68 @@
+storefront:
+  active_theme: cyberpunk
+  themes:
+    cyberpunk:
+      name: Cyberpunk
+      primary: '#00f5ff'
+      secondary: '#9d4edd'
+      accent: '#00ff9d'
+      bg_start: '#0f0f1b'
+      bg_end: '#1a1a2e'
+      text: '#ffffff'
+      text_secondary: rgba(255,255,255,0.7)
+      font_heading: Orbitron
+      font_body: Inter
+      animations_enabled: true
+      animation_speed: normal
+    minimal:
+      name: Minimal
+      primary: '#2563eb'
+      secondary: '#7c3aed'
+      accent: '#059669'
+      bg_start: '#ffffff'
+      bg_end: '#f1f5f9'
+      text: '#000000'
+      text_secondary: '#444444'
+      font_heading: Inter
+      font_body: Inter
+      animations_enabled: false
+      animation_speed: normal
+    glass:
+      name: Glass
+      primary: '#6366f1'
+      secondary: '#ec4899'
+      accent: '#14b8a6'
+      bg_start: '#0a0a1a'
+      bg_end: '#1a1a2e'
+      text: '#ffffff'
+      text_secondary: rgba(255,255,255,0.7)
+      font_heading: Space Grotesk
+      font_body: Inter
+      animations_enabled: true
+      animation_speed: normal
+    neon:
+      name: Neon
+      primary: '#ff00ff'
+      secondary: '#00ffff'
+      accent: '#ffff00'
+      bg_start: '#000000'
+      bg_end: '#0a0a0a'
+      text: '#ffffff'
+      text_secondary: rgba(255,255,255,0.7)
+      font_heading: Press Start 2P
+      font_body: Inter
+      animations_enabled: true
+      animation_speed: fast
+    corporate:
+      name: Corporate
+      primary: '#1e3a5f'
+      secondary: '#5b21b6'
+      accent: '#0f766e'
+      bg_start: '#d6dee7'
+      bg_end: '#b8c5d4'
+      text: '#0b1a2e'
+      text_secondary: '#3a4a5c'
+      font_heading: Plus Jakarta Sans
+      font_body: Inter
+      animations_enabled: false
+      animation_speed: normal

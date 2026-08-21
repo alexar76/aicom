@@ -1,0 +1,98 @@
+# Live-surface overlay for the ecosystem fact table.
+#
+# scripts/satellite-map.yaml describes REPOSITORIES (what is mirrored where). This file adds the
+# facts an agent needs to answer "what is it and where does it run": the public URL, the port, the
+# load-bearing one-line role, and which rail it belongs to.
+#
+# Editing rules
+#   * PUBLIC hostnames only. Never a bare server IP — these facts are injected into knowledge bases
+#     that ship in published docs and landings, and infra addresses have leaked that way before.
+#     scripts/ecosystem_knowledge.py refuses to load a bare IP.
+#   * `role` overrides the map's `description` in the generated block. Use it when the repo blurb is
+#     marketing-shaped and an agent needs the precise role instead — especially where a wrong answer
+#     would be actively misleading (MOMUS vs Treasury, WARDEN vs ARGUS).
+#   * Every id must exist in satellite-map.yaml; tests/test_knowledge_sync.py enforces that.
+#
+# After editing: python3 scripts/sync_knowledge_base.py --write
+
+components:
+  # ── security: the red team and its separately-keyed payer ───────────────────
+  momus:
+    group: security
+    url: https://momus.modelmarket.dev
+    port: 9410
+    role: >-
+      Adversarial-audit red team. Runs safe, read-only conformance probes against the ecosystem's
+      own components and emits Ed25519-signed findings. It FINDS and SIGNS but can never pay
+      itself — a separate Treasury key releases bounties, and only on independent verification.
+      Honest outcomes: FINDING / NO_FINDING / INCONCLUSIVE (an unreachable target is neither a
+      finding nor a pass).
+  treasury:
+    group: security
+    url: https://momus.modelmarket.dev/treasury
+    port: 9411
+    role: >-
+      The only key that can pay a red-team bounty. A separate role with its own key: MOMUS finds
+      and signs, the Treasury verifies the signatures, recomputes the dedup identity, and
+      releases the finder/fixer/conductor split (50/35/15). Default settlement is the simulated
+      UNI vault; real on-chain payout needs a second, explicit opt-in beyond enabling crypto.
+
+  # ── physical layer ─────────────────────────────────────────────────────────
+  atlas:
+    group: physical
+    url: https://alexar76.github.io/atlas/
+    role: >-
+      Planetary sensor map over GAIA (weather, air, fire, flood, lightning, alerts, EFFIS,
+      volcano, GNSS jamming, and other LIVE/SIM layers) plus Hub-sold composites
+      atlas.situation.brief@v1 (defaults to map layers), atlas.fire.weather@v1
+      (FIRMS and/or EFFIS), atlas.nearest.read@v1, atlas.watchbox.check@v1.
+      ATLAS maps and sells geo artifacts; GAIA attests raw reads.
+  gaia:
+    group: physical
+    url: https://iot.modelmarket.dev
+    port: 9320
+    role: >-
+      Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM,
+      flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify.
+      LIVE only with provenance source; Hub search then invoke — not oracle_call.
+
+  # ── tooling / integration ──────────────────────────────────────────────────
+  aimarket-bridges:
+    group: tooling
+    url: https://modeldev.modelmarket.dev/bridges/
+    role: >-
+      AIMarket capabilities as native tools for LangChain/LangGraph, CrewAI and AutoGen —
+      signed receipts, per-task budget caps, free trial. The adapter layer for agents built on
+      someone else's framework.
+
+  # ── ops / verification satellites that the audit loop depends on ───────────
+  skopos:
+    group: ops
+    url: https://skopos.modelmarket.dev
+    role: >-
+      Fleet observability dashboard, and the CONDUCTOR of the remediation loop: it receives
+      MOMUS's signed ticket over A2A, drives the AI-Factory to author a patch, asks MOMUS to
+      re-test as the deploy gate, then signs a DeployOrder and publishes it for the addressed
+      node agent to claim. It orders deploys; it never executes one.
+  metis:
+    group: verification
+    url: https://metis.modelmarket.dev
+    role: >-
+      Cognitive verification tier: Understanding Council, fail-closed confidence gate, layered
+      MoA, grounded verifier. Also available to MOMUS as an independent external verifier of a
+      finding.
+  logos:
+    group: ops
+    url: https://logos.modelmarket.dev
+    port: 9460
+    role: >-
+      Read-only federation intelligence: periodic source snapshots across Hub, MOMUS, Treasury,
+      SKOPOS and Metis, rolling z-score anomaly detection over them, and cross-system
+      correlation. It observes and explains; it never acts on what it finds.
+  signal-hunt:
+    group: ops
+    url: https://hunt.modelmarket.dev
+    role: >-
+      Federation-native investigation game and educational laboratory over real Hub telemetry:
+      observe measured symptoms, commit a diagnosis, prove it with a reproducible Brier-score
+      verdict. Live data only — no seeded anomalies.

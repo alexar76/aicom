@@ -1,0 +1,324 @@
+# Course hub metadata for SEO landings when courses/ is absent from the
+# factory tree (aimarket-courses satellite). Keep in sync with courses/
+# (titles/taglines/labs). Used by scripts/build_seo_landings.py.
+courses:
+- folder: 3d-data-viz-course
+  title: 3D Data Visualization with Alien Monitor
+  tagline: Probe alien-monitor API health, topology, and LUMEN reputation — then map oracle scenes to
+    R3F.
+  description: Hands-on course on the alien-monitor ecosystem visualizer — REST probes, graph models,
+    and React Three Fiber scene mapping.
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+  labs:
+  - stem: lab01_health_probe
+    module: m1
+    track: basic
+  - stem: lab02_topology_graph
+    module: m2
+    track: basic
+  - stem: lab03_reputation_peers
+    module: m3
+    track: basic
+  - stem: lab04_lumen_scores
+    module: m4
+    track: basic
+  - stem: lab05_r3f_scenes
+    module: m5
+    track: advanced
+- folder: agent-economy-course
+  title: Build an Agent Economy from Scratch
+  tagline: Publish a paid capability, collect USDC via escrow, and ship a consumer agent.
+  description: Hands-on course on AIMarket Protocol v2, SDK, Hub, escrow, channels, and monetizing agent
+    capabilities.
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+    m6: {}
+  labs:
+  - stem: lab01_protocol_overview
+    module: m1
+    track: basic
+    sandbox: hub-lite
+  - stem: lab02_hub_discover
+    module: m2
+    track: economy
+    sandbox: hub-lite
+  - stem: lab03_escrow_channel
+    module: m3
+    track: economy
+    sandbox: hub-lite
+  - stem: lab04_reputation_trust
+    module: m4
+    track: economy
+    sandbox: hub-lite
+  - stem: lab05_publish_capability
+    module: m5
+    track: economy
+    sandbox: hub-lite
+  - stem: lab06_paid_capability_capstone
+    module: m6
+    track: advanced
+    sandbox: true
+- folder: ai-factory-course
+  title: AI Factory Pipeline & Orchestration
+  tagline: Research→design→build→test→ship — probe factory APIs and orchestrator stages.
+  description: 'Hands-on course on the AI-Factory pipeline: public status endpoints, shipped products,
+    stage flow, and embedded mock factory.'
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+  labs:
+  - stem: lab01_pipeline_overview
+    module: m1
+    track: basic
+    sandbox: mock-factory
+  - stem: lab02_pipeline_status
+    module: m2
+    track: basic
+    sandbox: mock-factory
+  - stem: lab03_products_catalog
+    module: m3
+    track: basic
+    sandbox: mock-factory
+  - stem: lab04_orchestrator_stages
+    module: m4
+    track: basic
+  - stem: lab05_factory_capstone
+    module: m5
+    track: advanced
+    sandbox: mock-factory
+- folder: mathematics-of-trust-course
+  title: Mathematics of Trust
+  tagline: PageRank, percolation, spectral cuts, consensus, and cascade risk — with live AIMarket oracles.
+  description: 'Hands-on course on graph-based trust: EigenTrust, percolation thresholds, Fiedler connectivity,
+    robust consensus, and sandpile cascades.'
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+    m6: {}
+  labs:
+  - stem: lab01_keystone_nodes
+    module: m2
+    track: basic
+  - stem: lab02_trust_pagerank
+    module: m1
+    track: basic
+  - stem: lab03_spectral_cut
+    module: m3
+    track: basic
+  - stem: lab04_consensus_aggregate
+    module: m4
+    track: basic
+  - stem: lab05_sandpile_cascade
+    module: m5
+    track: advanced
+  - stem: lab06_trust_audit
+    module: m6
+    track: advanced
+- folder: mcp-security-course
+  title: MCP Security & Agent Safety
+  tagline: Threat-model MCP, catch tool poisoning with WARDEN, harden agents with LUMEN scoring.
+  description: Hands-on course on MCP threat models, static scanning, and the WARDEN firewall for agent
+    safety.
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+  labs:
+  - stem: lab01_threat_model
+    module: m1
+    track: basic
+  - stem: lab02_static_scan
+    module: m2
+    track: basic
+  - stem: lab03_lumen_score
+    module: m3
+    track: basic
+  - stem: lab04_owner_lock
+    module: m4
+    track: basic
+  - stem: lab05_warden_capstone
+    module: m5
+    track: advanced
+- folder: optimization-with-proofs-course
+  title: Optimization with Proofs
+  tagline: TSP gaps, transport duals, eikonal certificates, and GP uncertainty — every answer ships a
+    proof.
+  description: Hands-on course on combinatorial and continuous optimization with verifiable quality certificates
+    from live AIMarket oracles.
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+  labs:
+  - stem: lab01_colony_tsp
+    module: m1
+    track: basic
+  - stem: lab02_kantor_transport
+    module: m2
+    track: basic
+  - stem: lab03_fermat_route
+    module: m3
+    track: basic
+  - stem: lab04_gauss_gp
+    module: m4
+    track: basic
+  - stem: lab05_proof_capstone
+    module: m5
+    track: advanced
+- folder: orchestration-course
+  title: AI Agent Orchestration
+  tagline: Hands-on Python course on AI agent orchestration patterns and agent economy.
+  description: Hands-on Python course on AI agent orchestration patterns and agent economy.
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+    m6: {}
+    m7: {}
+    m8: {}
+    m9: {}
+  labs:
+  - stem: lab01_agent_and_tool
+    module: m1
+    track: basic
+    sandbox: false
+  - stem: lab02_topologies
+    module: m2
+    track: basic
+    sandbox: false
+  - stem: lab03_handoff
+    module: m3
+    track: basic
+    sandbox: false
+  - stem: lab04_discover_invoke
+    module: m4
+    track: economy
+    sandbox: hub-lite
+  - stem: lab05_state_context
+    module: m5
+    track: basic
+    sandbox: false
+  - stem: lab06_guardrails
+    module: m6
+    track: basic
+    sandbox: false
+  - stem: lab07_receipt_verify
+    module: m7
+    track: economy
+    sandbox: hub-lite
+  - stem: lab08_metered_economy
+    module: m8
+    track: advanced
+    sandbox: true
+- folder: physics-inspired-computing-course
+  title: Physics-Inspired Computing for Engineers
+  tagline: Consensus swarms, TSP certificates, blue-noise sampling, cascade risk, and Landauer thermodynamics.
+  description: Hands-on course on physics-inspired AIMarket oracles — Murmuration, Colony, Turing, Ablation,
+    and Landauer with live calls.
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+  labs:
+  - stem: lab01_murmuration_consensus
+    module: m1
+    track: basic
+  - stem: lab02_colony_tsp
+    module: m2
+    track: basic
+  - stem: lab03_turing_bluenoise
+    module: m3
+    track: basic
+  - stem: lab04_ablation_cascade
+    module: m4
+    track: basic
+  - stem: lab05_landauer_audit
+    module: m5
+    track: advanced
+- folder: smart-contracts-course
+  title: Smart Contracts for Agent Lotteries
+  tagline: Unbiasable draws, VDF verify, and escrow — lottery/ patterns in Python with Foundry vectors.
+  description: 'Hands-on course on lottery smart-contract concepts: fair draws, Chronos VDF verification,
+    relayer rounds, and escrow channels.'
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+  labs:
+  - stem: lab01_unbiasable_draw
+    module: m1
+    track: basic
+  - stem: lab02_vdf_verify
+    module: m2
+    track: basic
+  - stem: lab03_escrow_channel
+    module: m3
+    track: basic
+  - stem: lab04_relayer_round
+    module: m4
+    track: basic
+  - stem: lab05_lottery_capstone
+    module: m5
+    track: advanced
+- folder: verifiable-randomness-course
+  title: Verifiable Randomness & Cryptographic Time
+  tagline: Build and break biased lotteries — then verify proofs offline from 80 bytes.
+  description: Hands-on course on verifiable randomness, VDFs, ECVRF, and time-lock puzzles using live
+    AIMarket oracles.
+  modules:
+    m1: {}
+    m2: {}
+    m3: {}
+    m4: {}
+    m5: {}
+    m6: {}
+  labs:
+  - stem: lab01_platon_chaos
+    module: m1
+    track: basic
+    sandbox: false
+  - stem: lab02_chronos_vdf
+    module: m2
+    track: basic
+    sandbox: false
+  - stem: lab03_sortes_ecvrf
+    module: m3
+    track: basic
+    sandbox: false
+  - stem: lab04_aestus_timelock
+    module: m4
+    track: basic
+    sandbox: false
+  - stem: lab05_commit_reveal
+    module: m5
+    track: economy
+    sandbox: false
+  - stem: lab06_onchain_consumer
+    module: m6
+    track: advanced
+    sandbox: false

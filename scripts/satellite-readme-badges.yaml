@@ -1,0 +1,352 @@
+# CI + coverage badge blocks for satellite READMEs (inject_readme_badges.py).
+org: alexar76
+
+satellites:
+  aimarket-playground:
+    repo: aimarket-playground
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    ci_badge: github
+    include_coverage: false
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/aimarket-playground/actions/workflows/pages.yml"><img src="https://github.com/alexar76/aimarket-playground/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<img src="https://img.shields.io/badge/python-%3E%3D3.11-3776AB" alt="Python >=3.11" />'
+      - '<img src="https://img.shields.io/badge/tests-97%20passing-4c1" alt="97 tests passing" />'
+      - '<img src="https://img.shields.io/badge/branch%20coverage-100%25-4c1" alt="100% branch coverage" />'
+      - '<img src="https://img.shields.io/badge/i18n-EN%20RU%20ES%20FR%20ZH-9c70ff" alt="5 languages" />'
+      - '<img src="https://img.shields.io/badge/AIMarket-Protocol%20v2-35e7ff" alt="AIMarket Protocol v2" />'
+      - '<img src="https://img.shields.io/badge/Docker-ready-2496ED" alt="Docker ready" />'
+  create-aimarket-agent:
+    repo: create-aimarket-agent
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    ci_badge: github
+    include_coverage: false
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/create-aimarket-agent/actions/workflows/pages.yml"><img src="https://github.com/alexar76/create-aimarket-agent/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<img src="https://img.shields.io/badge/python-%3E%3D3.11-3776AB" alt="Python >=3.11" />'
+      - '<img src="https://img.shields.io/badge/tests-47%20passing-4c1" alt="47 tests passing" />'
+      - '<img src="https://img.shields.io/badge/branch%20coverage-100%25-4c1" alt="100% branch coverage" />'
+      - '<img src="https://img.shields.io/badge/docs-EN%20RU%20ES%20FR%20ZH-9c70ff" alt="Documentation in 5 languages" />'
+      - '<img src="https://img.shields.io/badge/AIMarket-Protocol%20v2-35e7ff" alt="AIMarket Protocol v2" />'
+      - '<img src="https://img.shields.io/badge/signing-Ed25519-8d83ff" alt="Ed25519 signing" />'
+  themis:
+    repo: themis
+    workflow: test.yml
+    ci_badge: github
+    include_coverage: false
+    license: MIT
+    extra_badges:
+      - '<img src="https://img.shields.io/badge/python-%3E%3D3.11-3776AB" alt="Python >=3.11" />'
+      - '<img src="https://img.shields.io/badge/tests-84%20passing-4c1" alt="84 tests passing" />'
+      - '<img src="https://img.shields.io/badge/coverage-98%25%2B-4c1" alt="Coverage above 98%" />'
+      - '<img src="https://img.shields.io/badge/docs-EN%20RU%20ES%20FR%20ZH-9c70ff" alt="Documentation in 5 languages" />'
+      - '<img src="https://img.shields.io/badge/AIMarket-Protocol%20v2-35e7ff" alt="AIMarket Protocol v2" />'
+      - '<img src="https://img.shields.io/badge/OWASP-Agentic%20Top%2010-ff5577" alt="OWASP Agentic Top 10 mapped" />'
+      - '<img src="https://img.shields.io/badge/signing-Ed25519-8d83ff" alt="Ed25519 signing" />'
+  skopos:
+    repo: skopos
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/skopos/actions/workflows/pages.yml"><img src="https://github.com/alexar76/skopos/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<a href="https://skopos.modelmarket.dev/"><img src="docs/badges/demo.svg" alt="Live demo status" /></a>'
+      - '<a href="https://alexar76.github.io/skopos/"><img src="docs/badges/landing.svg" alt="Cosmic landing" /></a>'
+      - '<img src="docs/badges/python.svg" alt="Python >=3.11" />'
+      - '<img src="docs/badges/tests.svg" alt="tests" />'
+      - '<img src="docs/badges/stack.svg" alt="Streamlit + PostgreSQL" />'
+  gaia:
+    repo: gaia
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/gaia/actions/workflows/pages.yml"><img src="https://github.com/alexar76/gaia/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<a href="https://iot.modelmarket.dev/"><img src="docs/badges/demo.svg" alt="Live demo status" /></a>'
+      - '<a href="https://alexar76.github.io/gaia/"><img src="docs/badges/landing.svg" alt="Landing" /></a>'
+      - '<a href="https://github.com/alexar76/gaia/pkgs/container/gaia"><img src="docs/badges/ghcr.svg" alt="GHCR package" /></a>'
+      - '<img src="docs/badges/python.svg" alt="Python >=3.11" />'
+      - '<img src="docs/badges/tests.svg" alt="tests" />'
+      - '<img src="docs/badges/aimarket.svg" alt="AIMarket v2" />'
+      - '<img src="docs/badges/signing.svg" alt="Ed25519 signing" />'
+  atlas:
+    repo: atlas
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    coverage_kind: python
+    license: MIT
+    # atlas/docs/badges/ has no coverage.svg — the injected "Test coverage"
+    # badge was a broken image AND a claim nothing measures.
+    include_coverage: false
+    extra_badges:
+      - '<a href="https://github.com/alexar76/atlas/actions/workflows/pages.yml"><img src="https://github.com/alexar76/atlas/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<a href="https://atlas.modelmarket.dev/"><img src="docs/badges/demo.svg" alt="Live demo status" /></a>'
+      - '<a href="https://alexar76.github.io/atlas/"><img src="docs/badges/landing.svg" alt="Landing" /></a>'
+      - '<a href="https://pypi.org/project/aimarket-atlas/"><img src="docs/badges/pypi.svg" alt="PyPI" /></a>'
+      - '<a href="https://iot.modelmarket.dev/"><img src="docs/badges/gaia.svg" alt="GAIA relays" /></a>'
+      - '<img src="docs/badges/python.svg" alt="Python >=3.11" />'
+      - '<img src="docs/badges/tests.svg" alt="101 tests passed" />'
+      - '<img src="docs/badges/docker.svg" alt="Docker ready" />'
+      - '<img src="docs/badges/maplibre.svg" alt="MapLibre SPA" />'
+      - '<img src="docs/badges/deepseek.svg" alt="DeepSeek default" />'
+  metis:
+    repo: metis
+    workflow: ci.yml
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '<a href="https://pypi.org/project/aimarket-metis/"><img src="docs/badges/pypi.svg" alt="PyPI" /></a>'
+      - '<img src="docs/badges/python.svg" alt="Python 3.11 | 3.12" />'
+      - '<img src="docs/badges/tests.svg" alt="238 tests passing" />'
+      - '<img src="docs/badges/docker.svg" alt="Docker ready" />'
+      - '<a href="https://metis.modelmarket.dev/"><img src="docs/badges/demo.svg" alt="Live demo" /></a>'
+  aimarket-mcp:
+    repo: aimarket-mcp
+    workflow: ci.yml
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '[![aimarket-mcp MCP server](https://glama.ai/mcp/servers/alexar76/aimarket-mcp/badges/score.svg)](https://glama.ai/mcp/servers/alexar76/aimarket-mcp)'
+      - '<img src="docs/badges/mcp.svg" alt="MCP gateway" />'
+      - '<img src="docs/badges/transport.svg" alt="stdio + HTTP" />'
+      - '<img src="docs/badges/tests.svg" alt="14 tests passing" />'
+  aimarket-school:
+    repo: aimarket-school
+    workflow: ci.yml
+    coverage_kind: smoke
+    license: MIT
+    # No coverage badge: the suite is a build/i18n/SEO contract, not % of lines.
+    # Advertising "Test coverage" for it would be the dishonest kind of badge.
+    include_coverage: false
+    extra_badges:
+      - '<img src="docs/badges/tests.svg" alt="20 build-contract tests" />'
+      - '<img src="docs/badges/lessons.svg" alt="10 lessons" />'
+      - '<img src="docs/badges/languages.svg" alt="EN RU ES FR ZH" />'
+      - '<a href="https://edu.modelmarket.dev/"><img src="docs/badges/edu.svg" alt="Live portal edu.modelmarket.dev" /></a>'
+      - '<img src="docs/badges/colab.svg" alt="Colab ready" />'
+  aimarket-courses:
+    repo: aimarket-courses
+    workflow: ci.yml
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '<img src="docs/badges/courses.svg" alt="10 courses" />'
+      - '<img src="docs/badges/languages.svg" alt="EN RU ES" />'
+      - '<a href="https://alexar76.github.io/aimarket-courses/"><img src="docs/badges/pages.svg" alt="Course portal" /></a>'
+  aimarket-desktop:
+    repo: aimarket-desktop
+    workflow: ci.yml
+    coverage_kind: flutter-build
+    license: MIT
+  aimarket-sdks:
+    repo: aimarket-sdks
+    workflow: ci.yml
+    coverage_kind: multi
+    license: Apache-2.0
+    extra_badges:
+      - '<a href="https://github.com/alexar76/aimarket-sdks/releases"><img src="docs/badges/release.svg" alt="Release" /></a>'
+  pulse-terminal:
+    repo: pulse-terminal
+    workflow: ci.yml
+    coverage_kind: npm
+    license: MIT
+  acex:
+    repo: acex
+    workflow: ci.yml
+    coverage_kind: forge
+    license: MIT
+  ai-service-mesh:
+    repo: ai-service-mesh
+    workflow: ci.yml
+    coverage_kind: python
+    license: MIT
+  aimarket-hub:
+    repo: aimarket-hub
+    workflow: ci.yml
+    coverage_kind: python
+    license: Apache-2.0
+    extra_badges:
+      - '<a href="https://github.com/alexar76/aimarket-hub/releases"><img src="docs/badges/release.svg" alt="Release" /></a>'
+      - '<a href="https://github.com/alexar76/aimarket-protocol"><img src="docs/badges/aimarket.svg" alt="Protocol" /></a>'
+  aimarket-widget:
+    repo: aimarket-widget
+    workflow: ci.yml
+    coverage_kind: smoke
+    license: MIT
+  linkedin-profile-coach:
+    repo: linked-in-profile-coach
+    workflow: ci.yml
+    coverage_kind: flutter
+    license: MIT
+  aicom-landing:
+    repo: aicom-landing
+    workflow: ci.yml
+    coverage_kind: npm
+    license: MIT
+  aimarket-protocol:
+    repo: aimarket-protocol
+    workflow: ci.yml
+    coverage_kind: validation
+    license: Apache-2.0
+  aimarket-agent:
+    repo: aimarket-agent
+    workflow: ci.yml
+    coverage_kind: python
+    license: Apache-2.0
+  aimarket-plugins:
+    repo: aimarket-plugins
+    workflow: ci.yml
+    coverage_kind: smoke
+    license: Apache-2.0
+    extra_badges:
+      - '[![aimarket-plugins MCP server](https://glama.ai/mcp/servers/alexar76/aimarket-plugins/badges/score.svg)](https://glama.ai/mcp/servers/alexar76/aimarket-plugins)'
+  aimarket-oracle-gateway:
+    repo: aimarket-oracle-gateway
+    workflow: ci.yml
+    coverage_kind: smoke
+    license: MIT
+    extra_badges:
+      - '[![aimarket-oracle-gateway MCP server](https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway/badges/score.svg)](https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway)'
+  alien-monitor:
+    repo: alien-monitor
+    workflow: ci.yml
+    coverage_kind: python
+    license: MIT
+  platon:
+    repo: platon
+    workflow: ci.yml
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '<img src="docs/badges/tests.svg" alt="65 tests passing" />'
+      - '<img src="docs/badges/aimarket.svg" alt="AIMarket v2" />'
+      - '<img src="docs/badges/umbral.svg" alt="UMBRAL cave" />'
+  oracles:
+    repo: oracles
+    workflow: ci.yml
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '<img src="docs/badges/tests.svg" alt="153 tests passing" />'
+      - '<img src="docs/badges/aimarket.svg" alt="AIMarket v2" />'
+      - '<img src="docs/badges/signing.svg" alt="Ed25519 + ML-DSA signing" />'
+  lottery:
+    repo: lottery
+    workflow: ci.yml
+    coverage_kind: forge
+    license: Apache-2.0
+    extra_badges:
+      - '<a href="https://lottery.modelmarket.dev/"><img src="docs/badges/demo.svg" alt="Live showcase" /></a>'
+      - '<img src="docs/badges/foundry.svg" alt="Foundry + Solidity" />'
+      - '<img src="docs/badges/oracles.svg" alt="Oracle-powered draw" />'
+  argus:
+    repo: argus
+    workflow: ci.yml
+    coverage_kind: npm
+    license: MIT
+    extra_badges:
+      - '[![argus MCP server](https://glama.ai/mcp/servers/alexar76/argus/badges/score.svg)](https://glama.ai/mcp/servers/alexar76/argus)'
+      - '<img src="docs/badges/warden.svg" alt="WARDEN MCP firewall" />'
+      - '<img src="docs/badges/crypto.svg" alt="Crypto off by default" />'
+      - '<img src="docs/badges/tests.svg" alt="290 tests passing" />'
+  dioscuri:
+    repo: dioscuri
+    workflow: ci.yml
+    coverage_kind: npm
+    license: MIT
+    extra_badges:
+      - '<a href="https://www.npmjs.com/package/@alexar76/dioscuri"><img src="docs/badges/npm.svg" alt="npm" /></a>'
+      - '<a href="https://github.com/alexar76/dioscuri/releases"><img src="docs/badges/release.svg" alt="Release" /></a>'
+      - '<a href="https://alexar76.github.io/dioscuri/"><img src="docs/badges/pages.svg" alt="Landing" /></a>'
+      - '<img src="docs/badges/node.svg" alt="node >=20" />'
+      - '<img src="docs/badges/typescript.svg" alt="TypeScript strict" />'
+  theoros:
+    repo: theoros
+    workflow: pages.yml
+    pages_workflow: pages.yml
+    include_coverage: false
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/theoros/actions/workflows/pages.yml"><img src="https://github.com/alexar76/theoros/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<a href="https://alexar76.github.io/theoros/"><img src="docs/badges/landing.svg" alt="Granite landing" /></a>'
+      - '<img src="docs/badges/runtime.svg" alt="DIOSCURI canon slot" />'
+  helios:
+    repo: helios
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/helios/actions/workflows/pages.yml"><img src="https://github.com/alexar76/helios/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<a href="https://alexar76.github.io/helios/"><img src="docs/badges/landing.svg" alt="Landing gallery" /></a>'
+      - '<a href="https://www.youtube.com/@My-AI-Factory"><img src="docs/badges/youtube.svg" alt="YouTube channel" /></a>'
+      - '<img src="docs/badges/python.svg" alt="Python >=3.11" />'
+      - '<img src="docs/badges/tests.svg" alt="45 tests passed" />'
+  aicom:
+    repo: aicom
+    workflow: ci.yml
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '<img src="docs/badges/status.svg" alt="Pre-mainnet" />'
+  momus:
+    repo: momus
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    coverage_kind: python
+    license: MIT
+    include_coverage: false
+    extra_badges:
+      - '<a href="https://momus.modelmarket.dev/"><img src="docs/badges/live.svg" alt="Live panel" /></a>'
+      - '<a href="https://alexar76.github.io/momus/"><img src="docs/badges/landing.svg" alt="Landing" /></a>'
+      - '<a href="https://pypi.org/project/aimarket-momus/"><img src="docs/badges/pypi.svg" alt="PyPI" /></a>'
+      - '<img src="docs/badges/tests.svg" alt="171 tests passed" />'
+      - '<img src="docs/badges/python.svg" alt="Python >=3.11" />'
+      - '<img src="docs/badges/docker.svg" alt="Docker ready" />'
+      - '<img src="docs/badges/deepseek.svg" alt="DeepSeek default" />'
+      - '<img src="docs/badges/signed.svg" alt="Ed25519-signed findings" />'
+      - '<img src="docs/badges/a2a.svg" alt="A2A peer" />'
+      - '<a href="https://github.com/alexar76/treasury"><img src="docs/badges/treasury.svg" alt="Separate payer key" /></a>'
+  logos:
+    repo: logos
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    coverage_kind: python
+    license: MIT
+    include_coverage: false
+    extra_badges:
+      - '<a href="https://alexar76.github.io/logos/"><img src="docs/badges/landing.svg" alt="Landing" /></a>'
+      - '<img src="docs/badges/tests.svg" alt="76 tests passed" />'
+      - '<img src="docs/badges/python.svg" alt="Python >=3.11" />'
+      - '<img src="docs/badges/docker.svg" alt="Docker ready" />'
+      - '<img src="docs/badges/postgres.svg" alt="SQLite / Postgres" />'
+      - '<img src="docs/badges/i18n.svg" alt="5 languages" />'
+  treasury:
+    repo: treasury
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    coverage_kind: python
+    license: MIT
+    include_coverage: false
+    extra_badges:
+      - '<a href="https://alexar76.github.io/treasury/"><img src="docs/badges/landing.svg" alt="Landing" /></a>'
+      - '<a href="https://github.com/alexar76/momus"><img src="docs/badges/momus.svg" alt="Pays MOMUS findings" /></a>'
+      - '<img src="docs/badges/python.svg" alt="Python >=3.11" />'
+      - '<img src="docs/badges/docker.svg" alt="Docker ready" />'
+      - '<img src="docs/badges/separation.svg" alt="Separation of duties" />'
+  use-cases-portal:
+    repo: use-cases-portal
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    include_coverage: false
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/use-cases-portal/actions/workflows/pages.yml"><img src="https://github.com/alexar76/use-cases-portal/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<a href="https://alexar76.github.io/use-cases-portal/"><img src="docs/badges/landing.svg" alt="Landing" /></a>'
+      - '<img src="docs/badges/i18n.svg" alt="5 languages" />'
+      - '<img src="docs/badges/static.svg" alt="Static site" />'

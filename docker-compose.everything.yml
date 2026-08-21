@@ -1,0 +1,1665 @@
+# ============================================================================
+# AI-Factory — EVERYTHING overlay.  The whole three-host fleet, on ONE machine.
+# ============================================================================
+# Production runs this ecosystem across THREE servers behind an nginx TLS edge.
+# This file collapses it onto a single box with no edge, no TLS and no domains:
+# every service publishes its own port and is reached at http://<host-ip>:<port>.
+#
+#   Driven by ./start.sh --everything   (generates every secret referenced below,
+#                                        seeds the mounts, verifies health)
+#   Manual:
+#     docker compose -f docker-compose.yml -f docker-compose.everything.yml \
+#       --profile everything up -d --build
+#   Validate only:
+#     docker compose -f docker-compose.yml -f docker-compose.everything.yml config -q
+#
+# ── How this layers ─────────────────────────────────────────────────────────
+# Exactly like docker-compose.core.yml: an overlay ON TOP of the root
+# docker-compose.yml, which owns `data-init`, `app`, `prometheus`, `grafana` and
+# the `aicom_net` bridge. This file adds ~30 services and overrides only the
+# root's three published-port blocks (see "BIND" below).
+#
+# It is a SIBLING of docker-compose.core.yml, not a child of it: the core tier
+#   docker compose -f docker-compose.yml -f docker-compose.core.yml up -d
+# keeps working byte-for-byte, and does not load this file at all. The price is
+# that `hub`, `mesh-api` and `alien-monitor` are declared in BOTH files. That is
+# deliberate — it means `-f docker-compose.yml -f docker-compose.everything.yml`
+# is self-sufficient and validates on its own. They use the same compose service
+# names and the same project, so switching tiers RECREATES those containers
+# rather than running a second copy. Never `-f` both overlays at once.
+#
+# ── PROFILES ────────────────────────────────────────────────────────────────
+# Every service here carries `profiles: ["everything"]`, so loading this file
+# without `--profile everything` starts nothing extra. Sub-slices are done by
+# naming services (`up -d momus-backend momus-frontend`), not by more profiles —
+# a second profile tag would silently drop depends_on targets.
+# One exception: `lottery-relayer-uni` sits on its own `lottery-uni` profile
+# because it cannot start until a Monitor UNI bootstrap has produced a lottery
+# address (see its comment).
+#
+# ── BINDING (the security decision, made explicitly) ────────────────────────
+# ${ECO_BIND} prefixes EVERY published port and defaults to 127.0.0.1. Several
+# of these are control planes (MOMUS /scan /remediate, the SKOPOS conductor, a
+# funded local chain, Grafana, the Factory admin). `./start.sh --everything
+# --bind 0.0.0.0` is the only supported way to expose them and it prints a named
+# warning first. Note this is not cosmetic on Linux: a Docker publish inserts a
+# DNAT rule AHEAD of UFW, so a host firewall does not save you.
+# Nothing here binds a privileged port; prod's 80/443 belonged to the edge.
+#
+# ── ADDRESSING ──────────────────────────────────────────────────────────────
+# INSIDE the stack, services address each other by compose service name on the
+# shared `aicom_net` bridge — never by a domain, never by the host IP (a
+# container reaching its neighbour through the host is a hairpin that breaks
+# behind NAT). ${ECO_PUBLIC_BASE} (default http://127.0.0.1) is used ONLY for
+# values a browser will see: *_PUBLIC_URL, CORS origins, ALIEN_PUBLIC_*.
+#
+# Every prod default that pointed at *.modelmarket.dev or magic-ai-factory.com
+# is overridden below and marked `# [domain-override]`. Left alone, a user's
+# laptop would be talking to OUR servers.
+#
+# ── NETWORK RECONCILIATION ──────────────────────────────────────────────────
+# The satellite compose files name six different networks for what has to be one
+# bridge here: `ecosystem` (momus/gaia/atlas/oracles, external), `ecosystem`
+# (platon, created), `ecosystem_ecosystem` (lottery, external), `aicom_net`
+# (core), `metis-net` (metis), `metisnet` (metis-skopos). All of it is `aicom_net`
+# in this file. Metis is the one that cares about names — its cluster config
+# hard-codes http://coordinator:8080 / http://node-a:8443 / http://node-b:8444 —
+# so those three services carry network ALIASES instead of being renamed.
+#
+# ── CRYPTO IS OFF ───────────────────────────────────────────────────────────
+# AIFACTORY_CRYPTO_ENABLED=0 on every service that reads it, set in
+# `environment:` so it beats anything in .env. No mainnet RPC, no real key, no
+# settlement. The only chain in the stack is `lottery-chain` — an ephemeral
+# Anvil funded from the well-known "test test … junk" mnemonic — and every
+# on-chain reader points at it by service name. `start.sh` additionally refuses
+# to start when a mainnet-looking key is present in the environment.
+# ============================================================================
+
+x-eco: &eco
+  restart: unless-stopped
+  profiles: ["everything"]
+  networks: [aicom_net]
+  # Only 4 of ~40 upstream services capped their logs; the rest inherit the
+  # daemon's unlimited json-file driver. On a long-running evaluation that is
+  # the second silent disk sink after Anvil. Capped here for all of them.
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+x-eco-oneshot: &eco-oneshot
+  restart: "no"
+  profiles: ["everything"]
+  networks: [aicom_net]
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  ROOT-COMPOSE OVERRIDES — the three services that publish on 0.0.0.0 or
+  #  point at our production domains. `!override` replaces the whole ports list
+  #  (the root hard-codes a 127.0.0.1 prefix that --bind could not otherwise
+  #  reach). These are NOT profiled: they are corrections to services the root
+  #  file always starts.
+  # ══════════════════════════════════════════════════════════════════════════
+  app:
+    ports: !override
+      - "${ECO_BIND:-127.0.0.1}:${AICOM_PORT_FRONTEND:-9080}:8080"   # storefront + admin
+      - "${ECO_BIND:-127.0.0.1}:${AICOM_PORT_API:-9081}:8081"        # Factory API
+    environment:
+      # Baked at build time by `next build` — see NEXT_PUBLIC_SITE_URL in the root
+      # compose's build args. start.sh only rebuilds this (10+ min) when --host-ip
+      # or --bind is actually passed; otherwise the 127.0.0.1 default stands.
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://127.0.0.1:9080}
+      AIFACTORY_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:${AICOM_PORT_FRONTEND:-9080}
+      # Crypto master switch, forced off here so a stale .env cannot turn it on.
+      AIFACTORY_CRYPTO_ENABLED: "0"
+      AIFACTORY_PAYMENT_TESTNET: "1"
+      # Metis cognition gate — prod pointed this at metis.modelmarket.dev.
+      AIFACTORY_METIS_URL: http://metis-coordinator:8080                # [domain-override]
+      AIFACTORY_METIS_API_KEY: ${METIS_API_KEY:-}
+      # Webhooks need a public https receiver; unavailable in IP mode, left empty.
+      AIFACTORY_AI_MARKET_WEBHOOK_1: ""
+      AIFACTORY_AI_MARKET_WEBHOOK_2: ""
+      # Neither of these is read by the Factory — but `env_file: .env` hands this
+      # container EVERY key in the file, and an operator .env left over from a prod
+      # deploy (or copied from .env.vps.example) carries them pointing at our arena.
+      # Pinned so the resolved config holds no address of ours whatever .env says.
+      # The launcher enforces that as a rule; this is the fix it stops needing to catch.
+      ALIEN_PUBLIC_ARGUS_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8787    # [domain-override]
+      ARGUS_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8787          # [domain-override]
+
+  prometheus:
+    ports: !override
+      - "${ECO_BIND:-127.0.0.1}:${AICOM_PORT_PROMETHEUS:-9090}:9090"
+    # The root command list is replaced wholesale, so all six args are restated;
+    # only --web.external-url changes (prod: https://magic-ai-factory.com/...).
+    command:                                                           # [domain-override]
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+      - "--web.route-prefix=/prometheus/"
+      - "--web.external-url=${ECO_PUBLIC_BASE:-http://127.0.0.1}:${AICOM_PORT_PROMETHEUS:-9090}/prometheus/"
+    volumes: !override
+      # Tier-specific scrape config. The root prometheus.yml targets the hub at
+      # `modelmarket-hub:9083` — the container_name from the standalone prod hub
+      # compose, which this project does not load. Here the compose SERVICE is
+      # `hub`, so that job would resolve to nothing and sit permanently DOWN
+      # while Prometheus itself reported healthy. Root file left untouched: the
+      # core tier and prod deploys still need it as written.
+      - ./scripts/everything/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./data/prometheus:/prometheus
+    healthcheck:
+      # prom/prometheus is busybox-based: no curl, wget is there.
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:9090/prometheus/-/healthy || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  grafana:
+    ports: !override
+      - "${ECO_BIND:-127.0.0.1}:${AICOM_PORT_GRAFANA:-9082}:3000"
+    environment:                                                       # [domain-override]
+      GF_SERVER_ROOT_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:${AICOM_PORT_GRAFANA:-9082}/
+      GF_SERVER_DOMAIN: ${ECO_GRAFANA_DOMAIN:-localhost}
+      # Same reason as `app`: grafana takes env_file: .env wholesale and inherits
+      # these even though it never reads them. See the note there. NEXT_PUBLIC_SITE_URL
+      # and AIFACTORY_PUBLIC_URL are pinned because .env.vps.example sets both to
+      # magic-ai-factory.com — an operator who started from that template would trip
+      # the launcher's self-containment refusal on a variable grafana never reads.
+      ALIEN_PUBLIC_ARGUS_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8787    # [domain-override]
+      ARGUS_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8787          # [domain-override]
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://127.0.0.1:9080} # [domain-override]
+      AIFACTORY_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:${AICOM_PORT_FRONTEND:-9080}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:3000/api/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  LAYER 1 — the federation hub. Everything that federates waits on this.
+  #  Prod runs THREE definitions of the same build (docker-compose.core.yml#hub,
+  #  aimarket-hub/docker-compose.yml#hub, ai-service-mesh/…#aimarket-hub), all on
+  #  :9083. Three hubs would mean three signing keys and three databases, so
+  #  exactly one is started: this one, matching core.yml's.
+  # ══════════════════════════════════════════════════════════════════════════
+  hub:
+    <<: *eco
+    image: aicom-hub:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: aimarket-hub/Dockerfile
+    container_name: aicom-hub
+    environment:
+      AIMARKET_HUB_NAME: ${AIMARKET_HUB_NAME:-AI-Factory Ecosystem Hub (single box)}
+      AIMARKET_HUB_URL: http://hub:9083
+      AIMARKET_DB_PATH: /app/data/hub.db
+      AIMARKET_SIGNING_KEY_PATH: /app/data/hub_signing_key
+      # No seeds → fully local, never phones a remote hub on boot. Also correct
+      # for IP mode: no remote peer can crawl a NAT'd machine anyway.
+      AIMARKET_SEED_LIST: ""
+      AIMARKET_SKIP_SEED: "1"
+      AIFACTORY_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:${AICOM_PORT_FRONTEND:-9080}
+      AIFACTORY_CRYPTO_ENABLED: "0"
+    # `!override` on all three re-declared core services. Compose APPENDS port
+    # lists on merge, so without it `-f core -f everything` publishes 9083 twice:
+    # once from core (no host_ip → 0.0.0.0, the exposure this file exists to
+    # prevent) and once loopback-bound from here. That is both a duplicate
+    # allocation and a silent hole, and it only appears in the three-file
+    # invocation — the worst kind of bug to find later.
+    ports: !override
+      - "${ECO_BIND:-127.0.0.1}:${AIMARKET_HUB_PORT:-9083}:9083"
+    volumes:
+      # The hub's Ed25519 identity. Must stay on a volume or every rebuild mints
+      # a new key and pinned peers reject it as a takeover.
+      - hub_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9083/.well-known/ai-market.json"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  LAYER 2/3 — Service Mesh (API + dashboard)
+  # ══════════════════════════════════════════════════════════════════════════
+  mesh-api:
+    <<: *eco
+    image: aicom-mesh-api:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./ai-service-mesh/backend
+      dockerfile: Dockerfile
+    container_name: aicom-mesh-api
+    environment:
+      MESH_ENV: production
+      MESH_PORT: "8090"
+      MESH_CORS_ORIGINS: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8091,${ECO_PUBLIC_BASE:-http://127.0.0.1}:9100
+      MESH_HUB_URL: http://hub:9083
+      MESH_SKIP_DEMO_CAPABILITIES: "true"
+      MESH_REJECT_DEMO_INVOKE_OUTPUT: "true"
+      # start.sh generates these into .env; :? gives a clear error if run raw.
+      MESH_API_TOKEN: ${MESH_API_TOKEN:?run ./start.sh --everything (auto-generates MESH_API_TOKEN) or set it in .env}
+      MESH_ADMIN_TOKEN: ${MESH_ADMIN_TOKEN:?run ./start.sh --everything (auto-generates MESH_ADMIN_TOKEN) or set it in .env}
+      MESH_DATA_DIR: /data
+      MESH_DATABASE_URL: ""
+      MESH_ALLOW_UI_WRITES: ${MESH_ALLOW_UI_WRITES:-true}
+    # `!override` — see the note on `hub` above.
+    ports: !override
+      # WINNER of the :8090 collision with the lottery relayer (which prod had
+      # already moved to :8390 in lottery/docker-compose.override.yml).
+      - "${ECO_BIND:-127.0.0.1}:${MESH_HOST_PORT:-8090}:8090"
+    volumes:
+      - mesh_data:/data
+    depends_on:
+      hub:
+        condition: service_healthy
+    healthcheck:
+      # python:3.12-slim — no curl in this image.
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8090/health',timeout=4)"]
+      interval: 15s
+      timeout: 6s
+      retries: 6
+      start_period: 20s
+
+  mesh-dashboard:
+    <<: *eco
+    image: aicom-mesh-dashboard:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./ai-service-mesh/frontend
+      dockerfile: Dockerfile
+    container_name: aicom-mesh-dashboard
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:8091:80"
+    volumes:
+      # Without this the dashboard renders an empty shell: the baked config
+      # proxies to its own 127.0.0.1:8090. See the file's header for the full
+      # three-way reason it cannot be fixed with a build arg.
+      - ./scripts/everything/mesh-dashboard.nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      mesh-api:
+        condition: service_healthy
+    healthcheck:
+      # Goes through the proxy, so a green check means the dashboard can really
+      # reach the mesh API — not merely that nginx is up.
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  LAYER 4 — Alien Monitor: the showpiece map, and the slowest thing to boot.
+  #  It deploys Anvil + FakeUSDT + Escrow + NFT INSIDE the container, so its
+  #  healthcheck (baked into the image, requires blockchain_ready) stays red for
+  #  2-4 minutes on a cold start. Nothing is gated on `service_healthy` for it:
+  #  every consumer polls and idles, which is the documented design.
+  #  Prod uses network_mode: host; here it is on the bridge, which cuts zero
+  #  features (see the header of docker-compose.core.yml).
+  # ══════════════════════════════════════════════════════════════════════════
+  alien-monitor:
+    <<: *eco
+    image: alien-monitor:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: alien-monitor/Dockerfile
+      args:
+        VITE_BASE_PATH: ${ALIEN_MONITOR_BASE_PATH:-/monitor/}
+        VITE_ALIEN_API_TOKEN: ${ALIEN_API_TOKEN:-}
+    container_name: aicom-monitor
+    # `!override` — see the note on `hub` above.
+    ports: !override
+      - "${ECO_BIND:-127.0.0.1}:${ALIEN_PORT:-9100}:9100"
+    # ALIEN_API_TOKEN must arrive via env_file ONLY. Setting ${ALIEN_API_TOKEN:-}
+    # in `environment:` below would override env_file with an empty string and
+    # silently break /api/argus/run auth. Do not "tidy" this into environment:.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      ALIEN_MODE: ${ALIEN_MODE:-universe}
+      ALIEN_PORT: "9100"
+      ALIEN_HOST: 0.0.0.0
+      ALIEN_ENV: ${ALIEN_ENV:-production}
+      ALIEN_PUBLIC_READ: "1"
+      ALIEN_UNIVERSE_AUTO_START: "1"
+      # Solana off, like prod. The toolchain install in the Dockerfile is
+      # `|| echo`-guarded, so a proxied build silently produces an image without
+      # it and =1 would then fail at RUNTIME instead of at build. Also saves
+      # ~1.5 GB RAM. This is a decision, not a lurking flag.
+      ALIEN_UNIVERSE_ENABLE_SOLANA: "0"
+      AIFACTORY_CRYPTO_ENABLED: "0"
+      # ── in-stack wiring: service names, never the host, never a domain ──────
+      HUB_URL: http://hub:9083
+      MESH_URL: http://mesh-api:8090
+      AICOM_API_URL: http://app:8081
+      PROMETHEUS_URL: http://prometheus:9090/prometheus
+      ALIEN_LLM_CONFIG: /app/llm/model_providers.yaml
+      # ── satellite polling (all 13 were *.modelmarket.dev) ──────────────────
+      ALIEN_ORACLE_PORTAL: http://oracles-landing:80                   # [domain-override]
+      ALIEN_ORACLE_PLATON_URL: http://platon-backend:9200              # [domain-override]
+      ALIEN_ORACLE_CHRONOS_URL: http://chronos:9300                    # [domain-override]
+      ALIEN_ORACLE_FAMILY_URL: http://oracle-family:9400               # [domain-override]
+      ALIEN_METIS_URL: http://metis-coordinator:8080                   # [domain-override]
+      ALIEN_METIS_API_KEY: ${METIS_API_KEY:-}
+      ALIEN_SKOPOS_URL: http://skopos:8502                             # [domain-override]
+      ALIEN_HELIOS_URL: http://helios:8791                             # [domain-override]
+      ALIEN_DIOSCURI_URL: http://dioscuri:8790                         # [domain-override]
+      ALIEN_ATLAS_URL: http://atlas:9330                               # [domain-override]
+      ALIEN_MOMUS_URL: http://momus-backend:9400                       # [domain-override]
+      ALIEN_TREASURY_URL: http://momus-treasury:9401                   # [domain-override]
+      # These four are NOT in any compose file — the defaults live in the
+      # Monitor's own code (gaia_status.py:31 https://iot.modelmarket.dev,
+      # lottery_layers.py:8 https://lottery.modelmarket.dev,
+      # treasury_status.py:100 and argus_status.py:12 hard-code 127.0.0.1, which
+      # on a bridge means the Monitor's OWN container). Grepping the compose
+      # files alone would have missed them and the map would poll our servers.
+      ALIEN_GAIA_URL: http://gaia-backend:9320                         # [domain-override]
+      ALIEN_LOTTERY_URL: http://lottery-relayer:8090                   # [domain-override]
+      ALIEN_TREASURY_VAULT_URL: http://momus-treasury:9401
+      ALIEN_ARGUS_URL: http://argus:8787
+      ALIEN_ARGUS_UNI_URL: http://argus-uni:8787
+      ALIEN_ARGUS_HTTP_TOKEN: ${ARGUS_HTTP_TOKEN:-}
+      # No aimarket-bridges container exists in this fleet, so there is nothing
+      # to poll; empty means the panel reports "not configured" instead of
+      # reaching modeldev.modelmarket.dev (bridges_status.py:61).
+      ALIEN_BRIDGES_URL: ""                                            # [domain-override]
+      ALIEN_PUBLIC_BRIDGES_URL: https://pypi.org/project/aimarket-bridges/   # [domain-override]
+      # ── browser-facing links (host IP, not service names) ──────────────────
+      ALIEN_PUBLIC_FACTORY_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:${AICOM_PORT_FRONTEND:-9080}
+      ALIEN_CAVE_PLATON_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9201/platon/     # [domain-override]
+      ALIEN_PUBLIC_METIS_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9111            # [domain-override]
+      ALIEN_PUBLIC_SKOPOS_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8501           # [domain-override]
+      ALIEN_PUBLIC_ATLAS_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9330            # [domain-override]
+      ALIEN_PUBLIC_MOMUS_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:5186            # [domain-override]
+      ALIEN_PUBLIC_TREASURY_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9411         # [domain-override]
+      ALIEN_PUBLIC_HELIOS_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8791           # [domain-override]
+      ALIEN_PUBLIC_DIOSCURI_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8790         # [domain-override]
+      ALIEN_PUBLIC_GAIA_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:5185             # [domain-override]
+      # This one must be set in `environment:`, not left to env_file: an operator
+      # .env in this repo carries ALIEN_PUBLIC_ARGUS_URL/ARGUS_PUBLIC_URL pointing
+      # at magic-ai-factory.com, and env_file would otherwise supply it.
+      ALIEN_PUBLIC_ARGUS_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8787            # [domain-override]
+      ALIEN_PUBLIC_ARGUS_UNI_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8788        # [domain-override]
+      ALIEN_PUBLIC_LOTTERY_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:5182
+      # The legacy fallback ALIEN_PUBLIC_ARGUS_URL reads when unset. Pinned too,
+      # so the production URL never appears in this container's environment.
+      ARGUS_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8787                  # [domain-override]
+      ALIEN_DIOSCURI_TELEGRAM_URL: ""
+      ALIEN_DIOSCURI_DISCORD_URL: ""
+    volumes:
+      - ./data/config/model_providers.yaml:/app/llm/model_providers.yaml:ro
+      # Anvil state. Grows without bound — `./start.sh --everything --reset-chain`
+      # clears it; --down deliberately does not.
+      - ./data/alien-monitor/universe:/app/data/universe
+      # Mounted rather than baked so adding a satellite needs a restart, not a rebuild.
+      - ./scripts/satellite-map.yaml:/app/scripts/satellite-map.yaml:ro
+    depends_on:
+      app:
+        condition: service_healthy
+      hub:
+        condition: service_started
+
+  # ── Pulse Terminal — prod ran it network_mode: host, and its baked config is
+  #    written for exactly that. Verified against apps/pulse-terminal/nginx.prod.conf
+  #    (which the Dockerfile copies to conf.d/default.conf), it is wrong here twice:
+  #      line 4   `listen 127.0.0.1:5199;`  — the CONTAINER's loopback. A published
+  #               port maps to the container's external interface, so no `-p` of any
+  #               kind can reach it; the SPA would 502 on every request while the
+  #               container looked fine.
+  #      lines 20/30/51/66  proxy_pass http://127.0.0.1:9100 and :9081 — on a host
+  #               network those are the Monitor and the Factory API; inside a
+  #               bridged container they are the container itself.
+  #    So a corrected conf is mounted: same routes, same SSE buffering rules,
+  #    listening on 0.0.0.0:5199 and proxying to alien-monitor / app by name.
+  pulse-terminal:
+    <<: *eco
+    image: pulse-terminal:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./apps/pulse-terminal
+      dockerfile: Dockerfile
+      args:
+        VITE_BASE_PATH: ${PULSE_TERMINAL_BASE_PATH:-/pulse/}
+        VITE_PULSE_DEFAULT_CONTOUR: ${PULSE_DEFAULT_CONTOUR:-live}
+        VITE_PULSE_MONITOR_API: ${PULSE_MONITOR_API:-api/monitor}
+    container_name: aicom-pulse-terminal
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:5199:5199"
+    volumes:
+      - ./scripts/everything/pulse-terminal.nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      # The mounted conf re-resolves upstreams per request, so this is about the
+      # first page being useful rather than about nginx starting.
+      app:
+        condition: service_healthy
+    healthcheck:
+      # Probes through its own /api/ proxy: proves the SPA is served AND that the
+      # Factory API is reachable from it.
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:5199/api/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ── Marketing landing (node, serves itself; no API dependency) ─────────────
+  aicom-landing:
+    <<: *eco
+    image: aicom-landing:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./aicom-landing
+      dockerfile: Dockerfile
+    container_name: aicom-landing
+    # Upstream aicom-landing/docker-compose.yml uses `env_file: .env` with no
+    # `required: false`, which aborts the whole project on a clean clone.
+    env_file:
+      - path: ./aicom-landing/.env
+        required: false
+    environment:
+      AICOM_LANDING_HOST: "0.0.0.0"
+      AICOM_LANDING_PORT: "3847"
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:3847:3847"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3847/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  LAYER 5 — satellites. Mutually independent; safe fully in parallel.
+  # ══════════════════════════════════════════════════════════════════════════
+
+  # ── GAIA — physical-world oracle gateway ───────────────────────────────────
+  gaia-backend:
+    <<: *eco
+    image: gaia-backend:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: gaia/Dockerfile
+    container_name: aicom-gaia-backend
+    environment:
+      GAIA_PORT: "9320"
+      GAIA_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9320        # [domain-override]
+      GAIA_CORS_ORIGINS: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:5185      # [domain-override]
+      AIFACTORY_CRYPTO_ENABLED: "0"
+      AIFACTORY_PROD: "1"
+      # /sim/* stays unmounted; the token is minted anyway (defence in depth,
+      # per the upstream compose comment) so flipping CONTROL=1 is not a hole.
+      GAIA_SIM_CONTROL: ${GAIA_SIM_CONTROL:-0}
+      GAIA_SIM_TOKEN: ${GAIA_SIM_TOKEN:-}
+      # Live relays call PUBLIC third-party APIs (NWS, Open-Meteo, USGS, NOAA,
+      # openSenseMap …), never our servers. Set GAIA_ENABLE_LIVE=0 for a fully
+      # offline run — the simulated devices keep working.
+      GAIA_ENABLE_LIVE: ${GAIA_ENABLE_LIVE:-1}
+      GAIA_OPENAQ_API_KEY: ${GAIA_OPENAQ_API_KEY:-}
+      GAIA_KEY_DIR: /data/devices
+      GAIA_SIGNING_KEY_PATH: /data/gaia_signing_key
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:9320:9320"
+    volumes:
+      - gaia_keys:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9320/health',timeout=4)"]
+      interval: 20s
+      timeout: 6s
+      retries: 5
+      start_period: 20s
+
+  gaia-frontend:
+    <<: *eco
+    image: gaia-frontend:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./gaia/frontend
+      dockerfile: Dockerfile
+    container_name: aicom-gaia-frontend
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:5185:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # ── ATLAS — sensor map. Its GAIA URL is the single most dangerous default in
+  #    the repo: atlas/docker-compose.local.yml (a file literally titled
+  #    "Local / CI compose") ships ATLAS_GAIA_URL=https://iot.modelmarket.dev
+  #    with a 30s poll at concurrency 4, so an untouched local ATLAS hammers our
+  #    production GAIA from every user's machine, forever.
+  atlas:
+    <<: *eco
+    image: atlas:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: atlas/Dockerfile
+    container_name: aicom-atlas
+    environment:
+      ATLAS_PORT: "9330"
+      ATLAS_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9330       # [domain-override]
+      ATLAS_GAIA_URL: http://gaia-backend:9320                          # [domain-override]
+      ATLAS_CORS_ORIGINS: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9330     # [domain-override]
+      ATLAS_POLL_INTERVAL_S: "30"
+      ATLAS_LLM_PROVIDER: ${ATLAS_LLM_PROVIDER:-deepseek_api}
+      ATLAS_LLM_MODEL: ${ATLAS_LLM_MODEL:-deepseek-v4-pro}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      TOGETHER_API_KEY: ${TOGETHER_API_KEY:-}
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:9330:9330"
+    depends_on:
+      # service_started, not _healthy: ATLAS degrades to an empty map rather
+      # than hanging, and gating it would stall the tier on a GAIA hiccup.
+      gaia-backend:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9330/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+
+  # ── Oracle family + Chronos + the oracle landing ───────────────────────────
+  chronos:
+    <<: *eco
+    image: oracles-chronos:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./oracles
+      dockerfile: oracles/chronos/Dockerfile
+    container_name: aicom-chronos
+    environment:
+      CHRONOS_PORT: "9300"
+      CHRONOS_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9300     # [domain-override]
+      AIFACTORY_CRYPTO_ENABLED: "0"
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:9300:9300"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9300/api/health',timeout=4)"]
+      interval: 20s
+      timeout: 6s
+      retries: 5
+      start_period: 15s
+
+  oracle-family:
+    <<: *eco
+    image: oracles-oracle-family:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./oracles
+      dockerfile: oracles/oracle-family/Dockerfile
+    container_name: aicom-oracle-family
+    environment:
+      ORACLE_FAMILY_PORT: "9400"
+      ORACLE_FAMILY_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9400   # [domain-override]
+      ORACLE_FAMILY_PLATON_URL: http://platon-backend:9200
+      AIFACTORY_CRYPTO_ENABLED: "0"
+    ports:
+      # WINNER of the :9400 collision with MOMUS — prod already resolved this the
+      # same way by moving MOMUS to :9410 on the oracle host.
+      - "${ECO_BIND:-127.0.0.1}:9400:9400"
+    volumes:
+      # First-hand warning from oracles/docker-compose.yml: without this volume
+      # `up --build` mints a new signing key and every hub that pinned the old
+      # one answers "public key changed! Rejecting (possible takeover)" and drops
+      # all 22 capabilities. Keep it.
+      - oracle_family_data:/app/data
+    depends_on:
+      platon-backend:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9400/api/health',timeout=4)"]
+      interval: 20s
+      timeout: 6s
+      retries: 5
+      start_period: 25s
+
+  oracles-landing:
+    <<: *eco
+    image: oracles-landing:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./oracles/frontend
+      dockerfile: Dockerfile
+    container_name: aicom-oracles-landing
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:5180:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # ── Platon (oracle #1 + the UMBRAL cave) ───────────────────────────────────
+  #    Upstream platon/docker-compose.yml has
+  #        env_file: ${PLATON_ENV_FILE:-/root/.hermes/platon.env}
+  #    with no `required: false` — an absolute host path that aborts `up` before
+  #    anything builds on any machine that is not the oracle host. Replaced here
+  #    by an optional repo-local file plus the keys passed explicitly.
+  platon-backend:
+    <<: *eco
+    image: platon-backend:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./platon/backend
+      dockerfile: Dockerfile
+    container_name: aicom-platon-backend
+    env_file:
+      - path: ./platon/platon.env
+        required: false
+    environment:
+      PLATON_HOST: "0.0.0.0"
+      PLATON_PORT: "9200"
+      PLATON_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9201/platon/   # [domain-override]
+      PLATON_SIGNING_KEY_PATH: /data/platon_signing_key
+      PLATON_ORACLE_PROVIDER: ${PLATON_ORACLE_PROVIDER:-auto}
+      PLATON_ALIEN_MONITOR_WEBHOOK: http://alien-monitor:9100/api/integrations/platon/event
+      PLATON_IDLE_TICK_HZ: ${PLATON_IDLE_TICK_HZ:-2}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      AIFACTORY_CRYPTO_ENABLED: "0"
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:9200:9200"
+    volumes:
+      - platon_signing_key:/data
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512m
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9200/api/health',timeout=4)"]
+      interval: 20s
+      timeout: 6s
+      retries: 5
+      start_period: 20s
+
+  platon-frontend:
+    <<: *eco
+    image: platon-frontend:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./platon/frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_BASE_PATH: /platon/
+    container_name: aicom-platon-frontend
+    ports:
+      # MOVED: prod publishes 127.0.0.1:8080:80 on the oracle host. A collision
+      # the brief did not list — metis/docker-compose.yml#coordinator also wants
+      # :8080, and on three hosts they never met. 9201 sits next to its own
+      # backend on 9200 (self-documenting) and gets the stack off 8080, the most
+      # contended port on a developer laptop.
+      - "${ECO_BIND:-127.0.0.1}:9201:80"
+    depends_on:
+      # Its nginx resolves platon-backend at config load; it must be up first.
+      platon-backend:
+        condition: service_healthy
+    healthcheck:
+      # Through the /api/ proxy, so this proves the cave's API path, not just nginx.
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/api/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  MOMUS — adversarial audit, its separate Treasury payer, and the canary.
+  #  The key split is load-bearing: momus-backend holds ONLY the scanner key,
+  #  momus-treasury ONLY the payout key, in two volumes the other never mounts.
+  # ══════════════════════════════════════════════════════════════════════════
+  momus-backend:
+    <<: *eco
+    image: momus-backend:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: momus/Dockerfile
+    container_name: aicom-momus-backend
+    environment:
+      MOMUS_PORT: "9400"
+      MOMUS_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9410       # [domain-override]
+      MOMUS_CORS_ORIGINS: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:5186     # [domain-override]
+      MOMUS_LLM_PROVIDER: ${MOMUS_LLM_PROVIDER:-deepseek}
+      MOMUS_LLM_MODEL: ${MOMUS_LLM_MODEL:-deepseek-v4-pro}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      MOMUS_TREASURY_URL: http://momus-treasury:9401
+      # FIXED: momus/docker-compose.yml defaults this to http://metis:9100 —
+      # there is no service called `metis` (it is `coordinator`) and it listens
+      # on 8080, not 9100. Left alone, high/critical bounty verification never
+      # resolves and the Treasury holds intents forever with no visible error.
+      AIMARKET_VERIFY_METIS_URL: http://metis-coordinator:8080
+      MOMUS_EXTERNAL_VERIFIERS: ${MOMUS_EXTERNAL_VERIFIERS:-}
+      MOMUS_THREAT_INTEL: ${MOMUS_THREAT_INTEL:-0}
+      # The ONLY thing in front of /scan /selfaudit /retest /remediate
+      # /intel/refresh /a2a/tasks. start.sh mints it and names it in the
+      # --bind 0.0.0.0 warning.
+      MOMUS_OPERATOR_TOKEN: ${MOMUS_OPERATOR_TOKEN:-}
+      MOMUS_SELF_ATTACK: ${MOMUS_SELF_ATTACK:-0}
+      AIFACTORY_PROD: "1"
+      AIFACTORY_CRYPTO_ENABLED: "0"
+      MOMUS_SIGNING_KEY_PATH: /data/momus_signing_key
+      MOMUS_DATA_DIR: /data
+    ports:
+      # LOSER of the :9400 collision with the oracle family — and this is already
+      # prod's value: MOMUS runs on 9410 on the oracle host for the same reason.
+      - "${ECO_BIND:-127.0.0.1}:9410:9400"
+    volumes:
+      - momus_scanner_keys:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9400/health',timeout=4)"]
+      interval: 20s
+      timeout: 6s
+      retries: 5
+      start_period: 20s
+
+  momus-treasury:
+    <<: *eco
+    image: momus-treasury:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: treasury/Dockerfile
+    container_name: aicom-momus-treasury
+    environment:
+      TREASURY_PORT: "9401"
+      TREASURY_KEY_PATH: /data/treasury_signing_key
+      TREASURY_LEDGER_PATH: /data/bounty_ledger.jsonl
+      TREASURY_CORS_ORIGINS: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:5186
+      MOMUS_EXTERNAL_VERIFIERS: ${MOMUS_EXTERNAL_VERIFIERS:-}
+      TREASURY_LLM_PROVIDER: ${TREASURY_LLM_PROVIDER:-deepseek}
+      MOMUS_LLM_MODEL: ${MOMUS_LLM_MODEL:-deepseek-v4-pro}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      AIFACTORY_PROD: "1"
+      # Settlement stays UNI (intents, no chain). Never flip this on a laptop.
+      AIFACTORY_CRYPTO_ENABLED: "0"
+    ports:
+      # LOSER of the :9401 collision; again already prod's value.
+      - "${ECO_BIND:-127.0.0.1}:9411:9401"
+    volumes:
+      # A SEPARATE volume momus-backend never mounts — the payout key is
+      # physically out of the scanner's reach. Do not merge these.
+      - momus_treasury_keys:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9401/health',timeout=4)"]
+      interval: 20s
+      timeout: 6s
+      retries: 5
+      start_period: 20s
+
+  momus-frontend:
+    <<: *eco
+    image: momus-frontend:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./momus/frontend
+      dockerfile: Dockerfile
+    container_name: aicom-momus-frontend
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:5186:80"
+    depends_on:
+      momus-backend:
+        condition: service_started
+    healthcheck:
+      # /health is proxied to momus-backend by the baked nginx (which re-resolves
+      # per request), so a green check means the panel's API bridge works too.
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ── The canary: a deliberately non-conforming fixture. NO compose service for
+  #    it exists anywhere in the repo (docker build/run only), so it is defined
+  #    here. Dropping it is tempting and wrong — it is the only target that makes
+  #    MOMUS demonstrably fire against a REAL contract violation, so without it
+  #    the red-team demo has nothing to find.
+  momus-canary:
+    <<: *eco
+    image: momus-canary:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: momus/canary/Dockerfile
+    container_name: aicom-momus-canary
+    environment:
+      CANARY_PORT: "9450"
+      # Binds 0.0.0.0 in-container BY DESIGN (canary.py:117-122) so MOMUS can
+      # reach it; the loopback publish below is what keeps it off the network.
+      CANARY_HOST: "0.0.0.0"
+      # /canary/fix and /canary/break are token-gated so a passer-by cannot flip
+      # the fixture mid-demo.
+      CANARY_TOKEN: ${CANARY_TOKEN:-}
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:9450:9450"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9450/health',timeout=4)"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ── SKOPOS remediation conductor. Also has NO compose service in the repo.
+  #    Both dry-run switches default to 1 upstream and are pinned to 1 here: on
+  #    an evaluation box the conductor must never actually redeploy anything.
+  skopos-remediation:
+    <<: *eco
+    image: skopos-remediation:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: skopos/Dockerfile.remediation
+    container_name: aicom-skopos-remediation
+    environment:
+      SKOPOS_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9402      # [domain-override]
+      SKOPOS_MOMUS_URL: http://momus-backend:9400
+      SKOPOS_FACTORY_URL: http://app:8081
+      SKOPOS_A2A_TOKEN: ${SKOPOS_A2A_TOKEN:-}
+      SKOPOS_AGENT_TOKEN: ${SKOPOS_AGENT_TOKEN:-}
+      MOMUS_OPERATOR_TOKEN: ${MOMUS_OPERATOR_TOKEN:-}
+      SKOPOS_A2A_CORS: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:5186
+      SKOPOS_REMEDIATION_DIR: /data/remediation
+      SKOPOS_REMEDIATION_DRY_RUN: "1"
+      SKOPOS_AGENT_DRY_RUN: "1"
+      AIFACTORY_CRYPTO_ENABLED: "0"
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:9402:9402"
+    volumes:
+      - skopos_remediation_data:/data
+    depends_on:
+      momus-backend:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9402/health',timeout=4)"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  LAYER 6 — Metis. Node-a and node-b first; the coordinator depends on both.
+  #  metis/config/docker-cluster.yaml hard-codes http://coordinator:8080,
+  #  http://node-a:8443 and http://node-b:8444, so rather than take those three
+  #  generic names in a 35-service compose, each service keeps a descriptive
+  #  name and carries the expected hostname as a NETWORK ALIAS.
+  # ══════════════════════════════════════════════════════════════════════════
+  metis-node-a:
+    <<: *eco
+    image: metis:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./metis
+      dockerfile: Dockerfile
+    container_name: aicom-metis-node-a
+    entrypoint: ["/app/scripts/docker-entrypoint-node.sh"]
+    networks:
+      aicom_net:
+        aliases: [node-a]
+    environment:
+      NODE_ID: node-a
+      METIS_NODE_CONFIG: /app/config/docker-node-a.yaml
+      METIS_NODE_HOST: "0.0.0.0"
+      METIS_NODE_PORT: "8443"
+      METIS_PRODUCTION: "true"
+      METIS_API_KEY: ${METIS_API_KEY:-}
+      METIS_NODE_A_KEY: ${METIS_NODE_A_KEY:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    expose: ["8443"]
+    volumes:
+      - ./metis/config/docker-node-a.yaml:/app/config/docker-node-a.yaml:ro
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:size=64M,mode=1777
+    healthcheck:
+      # NOTE the $$ — metis/docker-compose.yml writes a single $, which compose
+      # interpolates at PARSE time (to empty), so the node authenticated with no
+      # token and reported unhealthy while working fine. $$ reaches the shell.
+      test: ["CMD-SHELL", "curl -sf -H \"Authorization: Bearer $$METIS_NODE_A_KEY\" http://127.0.0.1:8443/metis/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+
+  metis-node-b:
+    <<: *eco
+    image: metis:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./metis
+      dockerfile: Dockerfile
+    container_name: aicom-metis-node-b
+    entrypoint: ["/app/scripts/docker-entrypoint-node.sh"]
+    networks:
+      aicom_net:
+        aliases: [node-b]
+    environment:
+      NODE_ID: node-b
+      METIS_NODE_CONFIG: /app/config/docker-node-b.yaml
+      METIS_NODE_HOST: "0.0.0.0"
+      METIS_NODE_PORT: "8444"
+      METIS_PRODUCTION: "true"
+      METIS_API_KEY: ${METIS_API_KEY:-}
+      METIS_NODE_B_KEY: ${METIS_NODE_B_KEY:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    expose: ["8444"]
+    volumes:
+      - ./metis/config/docker-node-b.yaml:/app/config/docker-node-b.yaml:ro
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:size=64M,mode=1777
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf -H \"Authorization: Bearer $$METIS_NODE_B_KEY\" http://127.0.0.1:8444/metis/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+
+  metis-coordinator:
+    <<: *eco
+    image: metis:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./metis
+      dockerfile: Dockerfile
+    container_name: aicom-metis-coordinator
+    entrypoint: ["/app/scripts/docker-entrypoint-coordinator.sh"]
+    networks:
+      aicom_net:
+        aliases: [coordinator]
+    environment:
+      METIS_CONFIG: /app/config/docker-runtime.yaml
+      METIS_CLUSTER_CONFIG: /app/config/docker-cluster.yaml
+      METIS_COORDINATOR_HOST: "0.0.0.0"
+      METIS_COORDINATOR_PORT: "8080"
+      METIS_PRODUCTION: "true"
+      METIS_API_KEY: ${METIS_API_KEY:-}
+      METIS_NODE_A_KEY: ${METIS_NODE_A_KEY:-}
+      METIS_NODE_B_KEY: ${METIS_NODE_B_KEY:-}
+      METIS_LOG_LEVEL: ${METIS_LOG_LEVEL:-INFO}
+      METIS_LOG_FORMAT: ${METIS_LOG_FORMAT:-json}
+      METIS_LOG_CONTENT: ${METIS_LOG_CONTENT:-redacted}
+      METIS_AUDIT_LOG_FILE: /data/logs/audit.jsonl
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      # MOVED: prod publishes :8080 (behind metis-nginx on the skopos host). Here
+      # 8080 is taken by platon-frontend's prod value, and the usual +10 trick
+      # lands on 8090 = mesh-api, so the precedent breaks. 9111 is free and sits
+      # in the 91xx control band next to the Monitor on 9100.
+      - "${ECO_BIND:-127.0.0.1}:${METIS_COORDINATOR_HOST_PORT:-9111}:8080"
+    volumes:
+      - metis_memory:/data/memory
+      - metis_config:/data/config
+      - metis_logs:/data/logs
+      - ./metis/config/docker-cluster.yaml:/app/config/docker-cluster.yaml:ro
+      - ./metis/config/docker-runtime.yaml:/app/config/docker-runtime.yaml:ro
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:size=64M,mode=1777
+    depends_on:
+      # service_started, matching upstream: a bad node key must not wedge the
+      # coordinator, which fails over to whatever nodes answer.
+      metis-node-a:
+        condition: service_started
+      metis-node-b:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://127.0.0.1:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 4
+      start_period: 40s
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  LAYER 7 — SKOPOS fleet observability. Postgres genuinely blocks here.
+  #  Built from skopos/ in-repo; metis/deploy/skopos-test/docker-compose.yml (the
+  #  file prod actually uses) builds from the absolute host path
+  #  ${SKOPOS_APP_DIR:-/opt/skopos-test/app} and cannot run on a clean machine.
+  # ══════════════════════════════════════════════════════════════════════════
+  skopos-postgres:
+    <<: *eco
+    image: postgres:16-alpine
+    container_name: aicom-skopos-postgres
+    environment:
+      POSTGRES_USER: ${SKOPOS_POSTGRES_USER:-skopos}
+      # skopos/docker-compose.postgres.yml defaults this to the literal string
+      # "skopos" — a shared, guessable password on a stack that --bind 0.0.0.0
+      # can expose. start.sh regenerates it rather than inheriting that.
+      # No `:?` guard here on purpose: it would make `docker compose config`
+      # unusable on a clean checkout. The empty default is still fail-closed —
+      # the postgres entrypoint refuses to initialize a database without a
+      # superuser password and says so in one clear line.
+      POSTGRES_PASSWORD: ${SKOPOS_POSTGRES_PASSWORD:-}
+      POSTGRES_DB: ${SKOPOS_POSTGRES_DB:-skopos}
+    # No host port: nothing outside the stack has any business reaching it.
+    volumes:
+      - skopos_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${SKOPOS_POSTGRES_USER:-skopos} -d ${SKOPOS_POSTGRES_DB:-skopos}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  skopos:
+    <<: *eco
+    image: skopos:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./skopos
+      dockerfile: Dockerfile
+    container_name: aicom-skopos
+    environment:
+      SKOPOS_DATABASE_URL: postgresql://${SKOPOS_POSTGRES_USER:-skopos}:${SKOPOS_POSTGRES_PASSWORD:-}@skopos-postgres:5432/${SKOPOS_POSTGRES_DB:-skopos}
+      # SKOPOS_REQUIRE_DASHBOARD_AUTH defaults to 1 with a 12-char minimum, so
+      # this is effectively fail-closed. start.sh mints it.
+      SKOPOS_DASHBOARD_PASSWORD: ${SKOPOS_DASHBOARD_PASSWORD:-}
+      SKOPOS_AGENT_TOKEN_SECRET: ${SKOPOS_AGENT_TOKEN_SECRET:-}
+      SKOPOS_NODE_SECRET_KEY: ${SKOPOS_NODE_SECRET_KEY:-}
+      SKOPOS_SSH_STRICT_HOST_KEYS: "1"
+      SKOPOS_KNOWN_HOSTS: /root/.ssh/known_hosts
+      SKOPOS_AGENT_CORS_ORIGINS: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8501   # [domain-override]
+      SKOPOS_GEOIP_API_FALLBACK: ${SKOPOS_GEOIP_API_FALLBACK:-1}
+      MAXMIND_LICENSE_KEY: ${MAXMIND_LICENSE_KEY:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:8501:8501"   # Streamlit dashboard
+      - "${ECO_BIND:-127.0.0.1}:8502:8502"   # healthz + agent ingest API
+    volumes:
+      # The EXAMPLE inventories, not servers.yaml / agent.yaml. Two reasons, both
+      # concrete: (1) both real files are gitignored (skopos/.gitignore:17-18) and
+      # absent on a clean clone, and a missing bind source makes Docker create an
+      # empty DIRECTORY where a file is expected — SKOPOS then dies on a confusing
+      # parse error; (2) on a machine that HAS them they are a working operator
+      # inventory of our own fleet, which has no business inside an evaluator's
+      # container. Point these at your own files if you have a fleet to watch.
+      - ./skopos/servers.example.yaml:/app/servers.yaml:ro
+      - ./skopos/agent.example.yaml:/app/agent.yaml:ro
+      # Collector keys live in a volume, NOT a bind of ~/.ssh — that would hand
+      # the container every key you own. Empty on a laptop: there is no fleet,
+      # and collection is a push-agent design now, so SKOPOS holds no fleet key.
+      # skopos/docker-compose.yml also binds ./skopos.sqlite3, which is a real
+      # operator database in this repo; with Postgres it is not needed, so it is
+      # deliberately not mounted.
+      - skopos_ssh:/root/.ssh
+    depends_on:
+      skopos-postgres:
+        condition: service_healthy
+    healthcheck:
+      # Both processes: the API server on 8502 AND Streamlit on 8501. The
+      # entrypoint backgrounds api_server.py, so checking only one would call a
+      # half-dead container healthy.
+      test: ["CMD-SHELL", "python -c \"import urllib.request;urllib.request.urlopen('http://127.0.0.1:8502/healthz',timeout=4)\" && python -c \"import urllib.request;urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health',timeout=4)\""]
+      interval: 20s
+      timeout: 8s
+      retries: 6
+      start_period: 40s
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  Demand-side and community agents
+  # ══════════════════════════════════════════════════════════════════════════
+  argus:
+    <<: *eco
+    image: aicom/argus:0.1
+    build:
+      context: ./argus
+      dockerfile: Dockerfile
+    container_name: aicom-argus
+    env_file:
+      - path: ./argus/.env
+        required: false
+    environment:
+      ARGUS_HTTP_PORT: "8787"
+      ALIEN_MONITOR_URL: http://alien-monitor:9100                      # [domain-override]
+      # Same story as the Monitor's ALIEN_PUBLIC_ARGUS_URL: an operator .env may
+      # still hold the prod https://magic-ai-factory.com/arena, and argus loads
+      # .env via env_file. environment: wins over env_file.
+      ARGUS_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:8787       # [domain-override]
+      ARGUS_HUB_URL: http://hub:9083                                    # [domain-override]
+      ARGUS_MESH_URL: http://mesh-api:8090                              # [domain-override]
+      ARGUS_ORACLE_FAMILY_URL: http://oracle-family:9400                # [domain-override]
+      ARGUS_HTTP_TOKEN: ${ARGUS_HTTP_TOKEN:-}
+      # No wallet, no economy. Leave both empty.
+      ARGUS_CRYPTO_ENABLED: ""
+      AIFACTORY_CRYPTO_ENABLED: "0"
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:8787:8787"
+    volumes:
+      # The example config, mounted read-only. Using the example avoids creating
+      # files inside the satellite tree; drop your own argus.config.json in and
+      # change this line if you want to tune it.
+      - ./argus/argus.config.example.json:/app/argus.config.json:ro
+      - argus_state:/root/.argus
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8787/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  argus-uni:
+    <<: *eco
+    image: aicom/argus:0.1
+    # No build: — bake cannot export two targets to the same tag, so this reuses
+    # the image `argus` produces. Hence the depends_on below is not optional.
+    container_name: aicom-argus-uni
+    env_file:
+      - path: ./argus/.env
+        required: false
+    environment:
+      ARGUS_HTTP_PORT: "8787"
+      ARGUS_MODE: "uni"
+      # FIXED: upstream points at http://host.docker.internal:8545, and nothing
+      # on a single-box bridge publishes 8545 (the lottery chain is expose-only,
+      # the Monitor's Anvil is internal to its container). Dead on arrival. The
+      # lottery's ephemeral fake-funded chain is the right target and is on the
+      # same network.
+      ARGUS_UNI_RPC: http://lottery-chain:8545
+      ARGUS_UNI_CHAIN_ID: "31337"
+      ALIEN_MONITOR_URL: http://alien-monitor:9100                      # [domain-override]
+      # Restated (not inherited): argus/.env sets all three to
+      # https://magic-ai-factory.com, and env_file values would otherwise stand.
+      ARGUS_HUB_URL: http://hub:9083                                    # [domain-override]
+      ARGUS_MESH_URL: http://mesh-api:8090                              # [domain-override]
+      ARGUS_ORACLE_FAMILY_URL: http://oracle-family:9400                # [domain-override]
+      ARGUS_HTTP_TOKEN: ${ARGUS_HTTP_TOKEN:-}
+      # Only ONE container may long-poll a given Telegram token.
+      ARGUS_TELEGRAM_DISABLED: "1"
+      AIFACTORY_CRYPTO_ENABLED: "0"
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:8788:8787"
+    volumes:
+      - ./argus/argus.config.example.json:/app/argus.config.json:ro
+      - argus_uni_state:/root/.argus
+    depends_on:
+      argus:
+        condition: service_started
+      lottery-chain:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8787/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  dioscuri:
+    <<: *eco
+    image: aicom/dioscuri:0.1
+    build:
+      context: ./dioscuri
+      dockerfile: Dockerfile
+    container_name: aicom-dioscuri
+    init: true
+    stop_grace_period: 30s
+    # Upstream uses `env_file: .env` with no `required: false`, and dioscuri/.env
+    # does not exist on a clean checkout — the whole project aborts before build.
+    env_file:
+      - path: ./dioscuri/.env
+        required: false
+    environment:
+      DIOSCURI_DATA_DIR: /data
+      DIOSCURI_HTTP_PORT: "8790"
+      # Both platform tokens may be empty — the matching twin just sleeps. With
+      # DRY_RUN=1 neither is needed and nothing is ever posted to a real
+      # community, which is the right default for an evaluation box.
+      DIOSCURI_DRY_RUN: ${DIOSCURI_DRY_RUN:-1}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN:-}
+      DISCORD_GUILD_ID: ${DISCORD_GUILD_ID:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:8790:8790"
+    volumes:
+      # Example config, read-only — see the note on argus above.
+      - ./dioscuri/dioscuri.config.example.json:/app/dioscuri.config.json:ro
+      # NOT shared with HELIOS. The two images run as different UIDs (dioscuri =
+      # node/1000, helios = 10001) and a single named volume leaves one of them
+      # unable to write. Cost: the DIOSCURI → HELIOS syndication queue and the
+      # shared MNEMOSYNE cache are not wired in this tier. Stated, not hidden.
+      - dioscuri_data:/data
+    read_only: true
+    tmpfs: ["/tmp"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 384m
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8790/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  helios:
+    <<: *eco
+    image: aicom/helios:0.1
+    build:
+      context: ./helios
+      dockerfile: Dockerfile
+    container_name: aicom-helios
+    init: true
+    stop_grace_period: 30s
+    env_file:
+      - path: ./helios/.env
+        required: false
+    environment:
+      HELIOS_DATA_DIR: /data
+      HELIOS_CONFIG: /app/helios.config.yaml
+      HELIOS_QUEUE_PATH: /data/helios-queue.jsonl
+      HELIOS_MNEMOSYNE_PATH: /data/mnemosyne.json
+      # UNAVAILABLE IN IP MODE: the YouTube upload path needs a Google OAuth
+      # consent flow against a registered https redirect URI, which cannot exist
+      # on http://<ip>:8791. Rendering works; publishing does not. Forced to
+      # dry-run rather than shipping a half-working uploader.
+      HELIOS_DRY_RUN: "1"
+      HELIOS_AUTO_APPROVE: ${HELIOS_AUTO_APPROVE:-0}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:8791:8791"
+    volumes:
+      # Example config read-only; helios/helios.config.yaml is absent on a clean
+      # checkout and Docker would create a DIRECTORY there, which fails as a
+      # confusing YAML parse error rather than a missing-file error.
+      - ./helios/helios.config.example.yaml:/app/helios.config.yaml:ro
+      - ./helios/templates:/app/templates:ro
+      - ./helios/assets:/app/assets:ro
+      # A named volume, NOT helios/docker-compose.isolated.yml's bind of the
+      # absolute /root/ecosystem-data — Docker silently creates that empty and
+      # root-owned, and MNEMOSYNE plus the queue then vanish without an error.
+      - helios_data:/data
+    read_only: true
+    tmpfs: ["/tmp"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 2048m
+    command: ["helios", "serve", "--port", "8791"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8791/health',timeout=4)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+
+  helios-worker:
+    <<: *eco
+    image: aicom/helios:0.1
+    container_name: aicom-helios-worker
+    init: true
+    stop_grace_period: 120s
+    env_file:
+      - path: ./helios/.env
+        required: false
+    environment:
+      HELIOS_DATA_DIR: /data
+      HELIOS_CONFIG: /app/helios.config.yaml
+      HELIOS_QUEUE_PATH: /data/helios-queue.jsonl
+      HELIOS_MNEMOSYNE_PATH: /data/mnemosyne.json
+      HELIOS_WORKER_INTERVAL_SEC: ${HELIOS_WORKER_INTERVAL_SEC:-300}
+      HELIOS_DRY_RUN: "1"
+      HELIOS_AUTO_APPROVE: ${HELIOS_AUTO_APPROVE:-0}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+    volumes:
+      - ./helios/helios.config.example.yaml:/app/helios.config.yaml:ro
+      - ./helios/templates:/app/templates:ro
+      - ./helios/assets:/app/assets:ro
+      - helios_data:/data
+    read_only: true
+    tmpfs: ["/tmp"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 2048m
+    depends_on:
+      helios:
+        condition: service_healthy
+    # HONEST GAP: this sidecar binds no port, so there is nothing to probe. The
+    # image HEALTHCHECK hits :8791 and would mark a perfectly good renderer
+    # unhealthy forever (docs/ecosystem/docker-compose.cognition.yml has exactly
+    # that bug). Disabled rather than replaced with a check that always passes —
+    # start.sh reports it as "running, no health probe".
+    healthcheck:
+      disable: true
+    command:
+      - sh
+      - -c
+      - |
+        while true; do
+          helios worker || echo "[helios-worker] exit $$?" >&2
+          sleep "$${HELIOS_WORKER_INTERVAL_SEC:-300}"
+        done
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  LAYER 8 — the lottery. Last, and strictly serial:
+  #    chain healthy -> deploy completes -> relayer healthy -> agent.
+  #  The chain is an EPHEMERAL Anvil funded from the well-known
+  #  "test test … junk" mnemonic. The keys below are those public test accounts:
+  #  fake money on a throwaway chain. Never substitute real ones.
+  # ══════════════════════════════════════════════════════════════════════════
+  lottery-chain:
+    <<: *eco
+    image: ailottery-contracts:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./lottery/contracts
+      dockerfile: Dockerfile
+    container_name: aicom-lottery-chain
+    entrypoint: ["anvil"]
+    command: ["--host", "0.0.0.0", "--chain-id", "31337", "--block-time", "1",
+              "--accounts", "12", "--balance", "100000",
+              "--mnemonic", "test test test test test test test test test test test junk",
+              "--silent"]
+    # Internal only. Reachable as lottery-chain:8545; not published, so it never
+    # clashes with a developer's own anvil and is not a control plane on the LAN.
+    expose: ["8545"]
+    healthcheck:
+      test: ["CMD", "cast", "block-number", "--rpc-url", "http://127.0.0.1:8545"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+  lottery-deploy:
+    <<: *eco-oneshot
+    image: ailottery-contracts:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./lottery/contracts
+      dockerfile: Dockerfile
+    container_name: aicom-lottery-deploy
+    depends_on:
+      lottery-chain:
+        condition: service_healthy
+    environment:
+      RPC_URL: http://lottery-chain:8545
+      LOTTERY_ADDRESS_FILE: /shared/lottery.address
+      PRIVATE_KEY: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"  # anvil acct[0]
+      TICKET_PRICE: "1000000000000000"
+      ENTRY_WINDOW: "120"
+      MIN_DRAW_DELAY: "2"
+      PRIZE_BPS: "8000"
+      OPEX_BPS: "2000"
+      OPERATOR_BPS: "0"
+      ONCHAIN_VDF: "false"
+      ADMIN_TRANSFER_DELAY: "0"
+    volumes:
+      - lottery_shared:/shared
+      # Vendored OZ 5.6.1 from the monorepo, so the build does not `forge install`
+      # from GitHub at deploy time.
+      - ./contracts/evm/lib:/libs:ro
+
+  lottery-relayer:
+    <<: *eco
+    image: ailottery-relayer:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./lottery/relayer
+      dockerfile: Dockerfile
+    container_name: aicom-lottery-relayer
+    depends_on:
+      lottery-deploy:
+        condition: service_completed_successfully
+    environment:
+      LOTTERY_MODE: demo
+      RPC_URL: http://lottery-chain:8545
+      CHAIN_ID: "31337"
+      LOTTERY_ADDRESS_FILE: /shared/lottery.address
+      OPERATOR_KEY: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"   # anvil acct[0]
+      SPONSOR_KEY: "0xdbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97"    # acct[8] "the Hub"
+      BENEFACTOR_KEY: "0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6"  # acct[9]
+      AGENT_KEYS: "0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a,0x7c852118294e51e653712a81e05800f419141751be58f605c371e15141b007a6,0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a,0x8b3a350cf5c34c9194ca85829a2df0ec3153be0318b5e2d3348e872092edffba,0x92db14e403b83dfe3df233f83dfa3a0d7096f21ca9b0d6d6b8d88b2b4ec1564e"
+      SPONSOR_YAML: /app/config/sponsor.yaml
+      ECONOMICS_YAML: /app/config/economics.yaml
+      AIMARKET_CHARITY_ENABLED: "1"
+      AIMARKET_CHARITY_TITHE_BPS: "2000"
+      AIMARKET_CHARITY_INTERVAL_HOURS: "24"
+      DEMO_TITHE_INTERVAL_S: "15"
+      TREASURER_ENABLED: "1"
+      TREASURER_MODE: policy
+      RESERVE_TARGET_USD: "5"
+      WEI_PER_USD: "1000000000000000"
+      HUB_ROUTING_REVENUE_USD: "5"
+      UNI_WEEKLY_USD: "100"
+      SELL_WINDOW: "4"
+      ROUND_INTERVAL: "5"
+      # Service names, not host.docker.internal — lottery/docker-compose.override.yml
+      # introduces those hairpins (and hard-codes a mesh admin token, which is
+      # replaced here by the generated one).
+      MONITOR_URL: http://alien-monitor:9100
+      MONITOR_TOKEN: ${ALIEN_API_TOKEN:-}
+      MESH_URL: http://mesh-api:8090
+      MESH_ADMIN_TOKEN: ${MESH_ADMIN_TOKEN:-}
+    ports:
+      # LOSER of the :8090 collision with mesh-api — already prod's value, set by
+      # lottery/docker-compose.override.yml.
+      - "${ECO_BIND:-127.0.0.1}:8390:8090"
+    volumes:
+      - lottery_shared:/shared:ro
+      - ./lottery/config:/app/config:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8090/healthz"]
+      interval: 15s
+      timeout: 4s
+      retries: 5
+      start_period: 30s
+
+  lottery-agent:
+    <<: *eco
+    image: ailottery-agent:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./lottery/agent
+      dockerfile: Dockerfile
+    container_name: aicom-lottery-agent
+    depends_on:
+      lottery-relayer:
+        condition: service_healthy
+    environment:
+      RPC_URL: http://lottery-chain:8545
+      CHAIN_ID: "31337"
+      AGENT_KEY: "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d"  # anvil acct[1]
+      LOTTERY_ADDRESS_FILE: /shared/lottery.address
+      RELAYER_URL: http://lottery-relayer:8090
+      TICKETS: "2"
+      POLL: "3"
+    volumes:
+      - lottery_shared:/shared:ro
+    # HONEST GAP: a headless participant with no listening port and nothing to
+    # probe. No healthcheck rather than a fake one; start.sh reports it as
+    # "running, no health probe".
+    healthcheck:
+      disable: true
+
+  lottery-showcase:
+    <<: *eco
+    image: node:20-alpine
+    container_name: aicom-lottery-showcase
+    working_dir: /app
+    command: ["node", "serve.mjs"]
+    environment:
+      PORT: "5182"
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:5182:5182"
+    volumes:
+      - ./lottery/frontend:/app:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5182/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ── UNI relayer — DEFINED BUT NOT STARTED by the everything tier, on its own
+  #    `lottery-uni` profile. Two hard preconditions it cannot satisfy here:
+  #
+  #      1. LOTTERY_ADDRESS comes from a Monitor UNI bootstrap that has already
+  #         completed (GET :9100/api/health -> evm_lottery). There is no default.
+  #      2. It needs an RPC to the chain that address lives on — the Monitor's
+  #         EMBEDDED Anvil. That Anvil is started with `--host 127.0.0.1`
+  #         (alien-monitor/backend/universe.py:230), so it is reachable only from
+  #         inside the Monitor container. Prod papered over this with
+  #         network_mode: host; on a bridge there is no path to it, and this
+  #         satellite is off-limits to edit in this change.
+  #
+  #    So it is opt-in with both values supplied by hand rather than shipped
+  #    looking alive. `lottery-chain:8545` is NOT a substitute: that is a
+  #    different chain and the address would not resolve.
+  #
+  #      LOTTERY_ADDRESS=0x… LOTTERY_UNI_RPC=http://<reachable-anvil>:8545 \
+  #      docker compose -f docker-compose.yml -f docker-compose.everything.yml \
+  #        --profile lottery-uni up -d lottery-relayer-uni
+  lottery-relayer-uni:
+    image: ailottery-relayer:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: ./lottery/relayer
+      dockerfile: Dockerfile
+    container_name: aicom-lottery-relayer-uni
+    profiles: ["lottery-uni"]
+    networks: [aicom_net]
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      LOTTERY_MODE: uni
+      RPC_URL: ${LOTTERY_UNI_RPC:-}
+      CHAIN_ID: "31337"
+      LOTTERY_ADDRESS: ${LOTTERY_ADDRESS:-}
+      # The inner `:-` matters: without it `docker compose config` warns on every
+      # run about an unset LOTTERY_ADDRESS, and a launcher that cries wolf on a
+      # clean validation trains people to ignore its warnings.
+      HUB_LOTTERY_ADDRESS: ${HUB_LOTTERY_ADDRESS:-${LOTTERY_ADDRESS:-}}
+      OPERATOR_KEY: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+      ORACLE_SIGNER_KEY: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+      TREASURY_KEY: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+      SPONSOR_KEY: "0xdbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97"
+      BENEFACTOR_KEY: "0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6"
+      SPONSOR_YAML: /app/config/sponsor.yaml
+      ECONOMICS_YAML: /app/config/economics.yaml
+      TREASURER_ENABLED: "1"
+      TREASURER_MODE: policy
+      WEI_PER_USD: "1000000000000000"
+      SELL_WINDOW: "3"
+      ROUND_INTERVAL: "4"
+      FAST_FORWARD: "true"
+      ONCHAIN_VDF: "false"
+      MONITOR_URL: http://alien-monitor:9100
+      MONITOR_TOKEN: ${ALIEN_API_TOKEN:-}
+      SERVE_HOST: 0.0.0.0
+      SERVE_PORT: "9195"
+    ports:
+      - "${ECO_BIND:-127.0.0.1}:9195:9195"
+    volumes:
+      - ./lottery/config:/app/config:ro
+    healthcheck:
+      # The image HEALTHCHECK probes :8090 (demo default); UNI serves SERVE_PORT.
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:$${SERVE_PORT:-9195}/healthz || exit 1"]
+      interval: 15s
+      timeout: 4s
+      retries: 5
+      start_period: 30s
+
+  # ── LOGOS — federation analytics engine ────────────────────────────────
+  logos:
+    <<: *eco
+    image: logos:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: logos/Dockerfile
+    container_name: aicom-logos
+    environment:
+      LOGOS_PORT: "9460"
+      LOGOS_PUBLIC_URL: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9460
+      LOGOS_CORS_ORIGINS: ${ECO_PUBLIC_BASE:-http://127.0.0.1}:9460
+      LOGOS_HUB_URL: http://hub:9083
+      LOGOS_METIS_URL: ${METIS_URL:-}
+      LOGOS_MOMUS_URL: http://momus-backend:9400
+      LOGOS_SKOPOS_URL: http://skopos:8502
+      LOGOS_TREASURY_URL: http://momus-treasury:9401
+      LOGOS_DATABASE_URL: postgresql://${LOGOS_POSTGRES_USER:-logos}:${LOGOS_POSTGRES_PASSWORD:-logos}@logos-postgres:5432/${LOGOS_POSTGRES_DB:-logos}
+      LOGOS_API_TOKEN: ${LOGOS_API_TOKEN:-}
+      AIFACTORY_PROD: "1"
+      AIFACTORY_CRYPTO_ENABLED: "0"
+    ports:
+      # 5199 belongs to pulse-terminal; LOGOS listens on LOGOS_PORT (9460), so the old
+      # 5199:5199 both collided on the host and pointed at a dead container port.
+      - "${ECO_BIND:-127.0.0.1}:9460:9460"
+    volumes:
+      - logos_data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9460/health',timeout=4)"]
+      interval: 20s
+      timeout: 6s
+      retries: 5
+      start_period: 20s
+    depends_on:
+      hub:
+        condition: service_started
+
+  logos-postgres:
+    <<: *eco
+    image: postgres:16-alpine
+    container_name: aicom-logos-postgres
+    environment:
+      POSTGRES_USER: ${LOGOS_POSTGRES_USER:-logos}
+      POSTGRES_PASSWORD: ${LOGOS_POSTGRES_PASSWORD:-logos}
+      POSTGRES_DB: ${LOGOS_POSTGRES_DB:-logos}
+    volumes:
+      - logos_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${LOGOS_POSTGRES_USER:-logos} -d ${LOGOS_POSTGRES_DB:-logos}"]
+      interval: 10s
+      timeout: 4s
+      retries: 5
+
+volumes:
+  logos_data:
+  logos_postgres_data:
+  hub_data:
+  mesh_data:
+  gaia_keys:
+  oracle_family_data:
+  platon_signing_key:
+  momus_scanner_keys:
+  momus_treasury_keys:
+  skopos_remediation_data:
+  skopos_pg_data:
+  skopos_ssh:
+  metis_memory:
+  metis_config:
+  metis_logs:
+  argus_state:
+  argus_uni_state:
+  dioscuri_data:
+  helios_data:
+  lottery_shared:
+
+networks:
+  # ONE bridge for the whole fleet — the reconciliation described in the header.
+  # Declared identically to the root docker-compose.yml so the merge is a no-op;
+  # it is repeated here only so this file validates on its own.
+  aicom_net:
+    driver: bridge

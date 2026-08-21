@@ -1,0 +1,59 @@
+specVersion: 1.0.0
+description: AIMarketEscrow — on-chain payment channel events
+repository: https://github.com/alexar76/aicom
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AIMarketEscrow
+    network: base
+    source:
+      abi: AIMarketEscrow
+      address: "{{AIMARKET_ESCROW_EVM_ADDRESS}}"
+      # SET THIS to the escrow's own deploy block before deploying the subgraph.
+      # At 0 the indexer replays the whole of Base before the first channel can
+      # possibly exist — hours of sync for zero additional data.
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Channel
+        - Debit
+        - Settlement
+        - Refund
+        - Hub
+        - Token
+      abis:
+        # The Foundry artifact, NOT the .sol source: graph-cli needs a JSON ABI,
+        # and taking it from `forge build` output means the manifest can never
+        # bind an ABI that disagrees with the deployed bytecode.
+        - name: AIMarketEscrow
+          file: ../out/AIMarketEscrow.sol/AIMarketEscrow.json
+      # Every signature below is topic0 input. A parameter list that no longer
+      # matches src/AIMarketEscrow.sol hashes to a different topic0, and the
+      # data source then indexes NOTHING while reporting a healthy sync — the
+      # exact failure `tests/test_manifest_matches_sources.py` now pins shut.
+      eventHandlers:
+        - event: ChannelOpened(indexed bytes32,indexed address,address,uint256,uint256)
+          handler: handleChannelOpened
+        - event: ChannelDebited(indexed bytes32,uint256,bytes32,uint256)
+          handler: handleChannelDebited
+        # 5 parameters since the settlement rework: `recipient` split into
+        # usedRecipient (the bound hub) + refundRecipient (the depositor),
+        # because a single field attributed the hub's revenue to the depositor.
+        - event: ChannelSettled(indexed bytes32,uint256,uint256,address,address)
+          handler: handleChannelSettled
+        - event: ChannelRefunded(indexed bytes32,uint256,string)
+          handler: handleChannelRefunded
+        # Renamed from `ChannelExpired` (which collided with the error of the
+        # same name in log decoders) and now carries the used/refund split,
+        # because expiry pays the hub instead of returning the full deposit.
+        - event: ChannelExpiredAndSettled(indexed bytes32,uint256,uint256)
+          handler: handleChannelExpiredAndSettled
+        - event: HubAuthorized(indexed address,bool)
+          handler: handleHubAuthorized
+        - event: TokenWhitelisted(indexed address,bool)
+          handler: handleTokenWhitelisted
+      file: ./src/mapping.ts

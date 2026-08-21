@@ -1,0 +1,38 @@
+# ============================================================================
+# AI-Factory v2.1 — Prometheus Scrape Configuration
+# ============================================================================
+# Scrapes factory app metrics plus hub (same Docker network) and optionally Metis.
+# Hub container must be on `aicom_aicom_net` (deploy_hub.sh connects it).
+# Metis /metrics is internal-only (not on public nginx) — enable the job only when
+# a tunnel/VPN exposes metis:8080 (example: host.docker.internal:18080).
+# ============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'aicom'
+    scrape_interval: 10s
+    metrics_path: /metrics/
+    static_configs:
+      - targets: ['app:8081']
+        labels:
+          service: 'ai-factory'
+
+  - job_name: 'aimarket-hub'
+    scrape_interval: 10s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['modelmarket-hub:9083']
+        labels:
+          service: 'aimarket-hub'
+
+  # Uncomment when Metis metrics are reachable from this Prometheus:
+  # - job_name: 'metis'
+  #   scrape_interval: 15s
+  #   metrics_path: /metrics
+  #   static_configs:
+  #     - targets: ['host.docker.internal:18080']
+  #       labels:
+  #         service: 'metis'

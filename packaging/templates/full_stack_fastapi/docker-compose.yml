@@ -1,0 +1,9 @@
+# Reference compose for local preview / marketplace sandbox.
+# Maps host port ${WEB_HOST_PORT:-9088} → app :8000 (factory injects WEB_HOST_PORT).
+services:
+  api:
+    build: .
+    ports:
+      - "${WEB_HOST_PORT:-9088}:8000"
+    environment:
+      PORT: "8000"
