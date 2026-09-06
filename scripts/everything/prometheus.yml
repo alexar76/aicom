@@ -1,0 +1,63 @@
+# ============================================================================
+# Prometheus scrape config for the EVERYTHING tier (single box, one network).
+# ============================================================================
+# WHY THIS FILE EXISTS
+# The repo's root prometheus.yml scrapes the hub at `modelmarket-hub:9083` —
+# the container_name used by aimarket-hub/docker-compose.yml on the prod factory
+# host. In this tier (and in the core tier) the hub's compose SERVICE name is
+# `hub`, and Docker's embedded DNS resolves service names, not the container
+# names of a compose file we do not load. So that job resolves to nothing and
+# sits permanently DOWN — quiet, because Prometheus itself stays healthy and
+# only the target list shows it.
+#
+# Root prometheus.yml is deliberately left alone: it is shared with the core
+# tier and with prod deploys that DO run the standalone hub compose, and
+# changing it there would break the case it was written for. This file is
+# mounted over it only for the everything tier.
+#
+# Everything below is reachable by compose service name on aicom_net. No
+# host.docker.internal, no domain: a scrape through the host would be a hairpin
+# that breaks the moment the machine is behind NAT.
+# ============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'aicom'
+    scrape_interval: 10s
+    metrics_path: /metrics/
+    static_configs:
+      - targets: ['app:8081']
+        labels:
+          service: 'ai-factory'
+
+  - job_name: 'aimarket-hub'
+    scrape_interval: 10s
+    metrics_path: /metrics
+    static_configs:
+      # `hub`, not `modelmarket-hub` — see the header.
+      - targets: ['hub:9083']
+        labels:
+          service: 'aimarket-hub'
+
+  - job_name: 'service-mesh'
+    scrape_interval: 15s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['mesh-api:8090']
+        labels:
+          service: 'ai-service-mesh'
+
+  # Metis exposes /metrics on the coordinator. On the prod skopos host this was
+  # unreachable from Prometheus (different machine, internal-only port) and the
+  # job shipped commented out with a host.docker.internal placeholder. On one box
+  # it is simply a neighbour on the same bridge.
+  - job_name: 'metis'
+    scrape_interval: 15s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['metis-coordinator:8080']
+        labels:
+          service: 'metis'

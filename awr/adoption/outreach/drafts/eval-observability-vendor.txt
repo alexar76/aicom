@@ -1,0 +1,31 @@
+DRAFT — NOT SENT. Requires the maintainer to review and send.
+PRE-SEND: substitute the published awr/conformance/ URL for <CONFORMANCE-MATRIX-URL>.
+PRE-SEND: we have examined no vendor's product. The opening sentence is conditional on purpose —
+  do not make it an assertion about the recipient's system.
+
+Subject: giving your judge output an identity — one question about VerificationVerdict
+
+Hello,
+
+If your judge output is unsigned JSON, it cannot show a customer's auditor which service produced
+the score, and it cannot be compared with another judge's claim about the same output. If you
+already sign it, this note is not for you — we have not examined your product and are not
+asserting anything about it.
+
+AWR/2 addresses that gap. A VerificationVerdict is a W3C VC 2.0 credential signed with your own
+did:key. It references the work it judged by digest as well as identifier, so a consumer that
+recomputes the digest can detect a favourable verdict re-attached to different work; without that
+recomputation the substitution is undetectable and every signature still checks. It names its
+method by an opaque id, so two verdicts are comparable only when they claim the same method.
+"inconclusive" is a first-class outcome that must not be reported as failure. Verification needs
+no network.
+
+The ask: sign the verdicts you already produce, with your own key, and show the issuer identity
+next to the score.
+
+The strongest objection is yours: signing makes your judgements quotable against you in a
+dispute. That is the point, and a real cost.
+
+Conformance matrix: <CONFORMANCE-MATRIX-URL>
+
+MIT. No adopters, no endorsements; the matrix says what fails.

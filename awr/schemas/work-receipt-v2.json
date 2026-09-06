@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verify.modelmarket.dev/ns/awr/v2/schemas/work-receipt-v2.json",
+  "title": "AWR/2 WorkReceipt",
+  "description": "NON-NORMATIVE. JSON Schema is a convenience for tooling and is not the normative definition of AWR/2; awr/SPEC.md is (Appendix B). Where this schema and the specification disagree, the schema is the bug. A WorkReceipt answers what happened: which model, over which input, producing which output, at what cost (SPEC.md §3.3). Passing this schema is necessary but far from sufficient for validity — see the $comment below.",
+  "$comment": "This schema checks structure only. It cannot check the Ed25519 proof (AWR-PROOF-006), the did:key/verificationMethod agreement (AWR-PROOF-007), parent digests (AWR-CHAIN-003), timestamp ordering (AWR-RCPT-003), duplicate property names (AWR-CANON-004), or SPEC.md §4.3's global prohibition on non-integer JSON numbers — the last is unenforceable in JSON Schema both because §3.1 allows unknown properties at any level (a float under an unknown property is unreachable from any subschema) and because \"type\": \"integer\" tests the mathematical value, so `\"latencyMs\": 2340.0` passes it. Where a number-valued member IS named, this schema pins \"type\": \"integer\" with the §4.3 bounds of [-(2^53-1), 2^53-1], and the validator must still do the rest. The full list of non-expressible requirements is in common-v2.json's file-level $comment. Never set additionalProperties:false on any object here: §3.1 requires unknown properties to be preserved, and stripping them invalidates the signature.",
+  "type": "object",
+  "allOf": [
+    { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/envelopeCommon" }
+  ],
+  "properties": {
+    "type": {
+      "$comment": "SPEC.md §3.1: `type` MUST be an array containing `VerifiableCredential` (AWR-DOC-004) and exactly one AWR type from {WorkReceipt, VerificationVerdict, BlameAttestation} (AWR-DOC-005). Further types MAY be present, so the array is not closed and no positional constraint is imposed. \"Exactly one\" is expressed as: contains WorkReceipt, and contains neither of the other two.",
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string" },
+      "allOf": [
+        { "contains": { "const": "VerifiableCredential" } },
+        { "contains": { "const": "WorkReceipt" } },
+        { "not": { "contains": { "const": "VerificationVerdict" } } },
+        { "not": { "contains": { "const": "BlameAttestation" } } }
+      ]
+    },
+    "credentialSubject": {
+      "$comment": "SPEC.md §3.3.",
+      "type": "object",
+      "properties": {
+        "work": {
+          "type": "object",
+          "properties": {
+            "modelId": {
+              "$comment": "SPEC.md §3.3: MUST be present and non-empty (AWR-RCPT-005). The form <model>@<vendor> is RECOMMENDED but explicitly not constrained — it is an opaque label chosen by the issuer — so no pattern is imposed. §14: a voluntary disclosure that SHOULD be omitted where it leaks vendor relationships.",
+              "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/nonEmptyString"
+            },
+            "capability": {
+              "$comment": "Appears in the SPEC.md §3.3 example but is described nowhere in the prose, has no reason code, and is in no required list. Typed as a string here and left OPTIONAL and unconstrained — see the report finding: §3.3 does not define this member.",
+              "type": "string"
+            },
+            "startedAt": {
+              "$comment": "SPEC.md §3.3: OPTIONAL — the ordering rule is written for \"when both are present\". MUST NOT be later than `work.completedAt` (AWR-RCPT-003), which is a cross-field comparison and not expressible here.",
+              "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/dateTimeUtc"
+            },
+            "completedAt": {
+              "$comment": "SPEC.md §3.3: MUST be present and MUST be an RFC 3339 UTC date-time (AWR-RCPT-003).",
+              "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/dateTimeUtc"
+            },
+            "latencyMs": {
+              "$comment": "SPEC.md §3.3: MUST, if present, be a non-negative integer (§4.3, AWR-RCPT-004). Upper bound is §4.3's 2^53-1.",
+              "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/nonNegativeSafeInteger"
+            },
+            "status": {
+              "$comment": "SPEC.md §3.3: MUST be one of these five values (AWR-RCPT-006). A receipt for work that did not succeed is a first-class document — an unverifiable failure is the case a dispute most often turns on — so nothing here privileges `succeeded`.",
+              "enum": ["succeeded", "failed", "refused", "timeout", "partial"]
+            }
+          },
+          "required": ["modelId", "completedAt", "status"]
+        },
+        "inputDigest": {
+          "$comment": "SPEC.md §3.3: MUST be present and MUST be an SRI string as in §3.2 (AWR-RCPT-001). This digests APPLICATION PAYLOAD bytes, not an AWR document: the issuer chooses the payload serialization and SHOULD document it. §14: for a low-entropy payload the digest is a confirmation oracle, and the issuer SHOULD salt the hashed bytes.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/sriDigest"
+        },
+        "outputDigest": {
+          "$comment": "SPEC.md §3.3: MUST be present, same rules as inputDigest. A receipt for status \"failed\" MUST still carry an outputDigest; the digest of the empty byte string is permitted.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/sriDigest"
+        },
+        "parents": {
+          "$comment": "SPEC.md §3.3 and §8: OPTIONAL; when present MUST be an array of digest references, each of which MAY carry a `role`. No minItems: §3.3 does not forbid an empty array. Chain rules — DAG, cycle detection (AWR-CHAIN-004), depth/node limits defaulting to 64 and 1024 (AWR-CHAIN-005), conflicting digests for the same id (AWR-CHAIN-006), parent outputDigest vs child inputDigest (AWR-CHAIN-007, warning) — are graph properties over other documents and none of them is expressible in JSON Schema. §8.2: a verifier MUST NOT fetch a parent from the network.",
+          "type": "array",
+          "items": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/parentReference" }
+        },
+        "price": {
+          "$comment": "SPEC.md §3.3: OPTIONAL (AWR-RCPT-002). `amount` MUST NOT be a JSON number (§4.3).",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/monetaryAmount"
+        },
+        "nonce": {
+          "$comment": "SPEC.md §3.3: OPTIONAL but RECOMMENDED — it is what makes two receipts over identical input and output distinguishable, and what a replay check keys on. The §3.3 example is a ULID, but no syntax is specified, so only \"type\": \"string\" is asserted.",
+          "type": "string"
+        },
+        "environment": {
+          "$comment": "SPEC.md §3.3 and §7: OPTIONAL, members opaque. Presence of an unverified attestation is AWR-ENV-001 (warning) and MUST NOT make the document count as more trustworthy (§7.3).",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/environment"
+        },
+        "settlement": {
+          "$comment": "SPEC.md §3.3 and §10.3: OPTIONAL; one of the two accountability bindings profile L2 accepts (AWR-PROFILE-004). Presence is never on-chain-checked during verification (AWR-L2-001, warning).",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/settlement"
+        },
+        "awrProfile": {
+          "$comment": "SPEC.md §3.3: OPTIONAL, a non-binding hint. A verifier MUST NOT grant a level because a document claims it.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/awrProfileHint"
+        }
+      },
+      "required": ["work", "inputDigest", "outputDigest"]
+    }
+  },
+  "required": ["type", "credentialSubject"]
+}

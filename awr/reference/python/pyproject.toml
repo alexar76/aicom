@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "awr"
+version = "2.0.0"
+description = "AWR/2 reference implementation: Agent Work Receipts as W3C VCs with eddsa-jcs-2022 over RFC 8785"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = [
+    "awr",
+    "verifiable-credentials",
+    "data-integrity",
+    "eddsa-jcs-2022",
+    "rfc8785",
+    "jcs",
+    "did-key",
+    "provenance",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security :: Cryptography",
+]
+dependencies = [
+    # Ed25519 only.  Everything else -- JCS, base58btc, multibase, SRI, did:key -- is
+    # implemented here against the standard library so that the reference implementation
+    # has no opinion it did not write down.
+    "cryptography>=41",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+awr = "awr.cli:main"
+
+[project.urls]
+Specification = "https://verify.modelmarket.dev/ns/awr/v2"
+
+[tool.setuptools]
+packages = ["awr"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

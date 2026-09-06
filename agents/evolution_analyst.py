@@ -1,0 +1,163 @@
+"""
+Evolution Analyst Agent (KILLER FEATURE)
+=========================================
+Responsible for:
+- Analyzing product telemetry
+- Identifying improvement opportunities
+- Suggesting auto-improvements
+- Tracking product evolution metrics
+- Generating evolution reports
+"""
+
+from __future__ import annotations
+
+import time
+from pathlib import Path
+
+from agents.prompt_utils import prompt_json
+from agents.prompts.load_prompt import load_prompt
+from core.telemetry_signals import extract_evolution_signals_from_jsonl_dir
+from llm import GenerationConfig, LLMRouter
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
+
+from .base_agent import AgentInput, AgentOutput, BaseAgent
+
+EVOLUTION_SYSTEM_PROMPT = load_prompt("evolution_analyst_system_prompt.md")
+
+
+class EvolutionAnalystAgent(BaseAgent):
+    """Evolution Analyst Agent - analyzes telemetry and suggests improvements."""
+
+    def __init__(self, llm_router: LLMRouter):
+        super().__init__(
+            agent_type="evolution_analyst",
+            llm_router=llm_router,
+            task_type="evolution_analysis",
+        )
+
+    async def execute(self, agent_input: AgentInput) -> AgentOutput:
+        start_time = time.time()
+        product_id = agent_input.product_id
+        telemetry = agent_input.data.get("telemetry", {})
+        spec = agent_input.data.get("specification", {})
+
+        self._log("INFO", f"Analyzing evolution for {product_id}")
+
+        try:
+            # Load telemetry data
+            telemetry_files = self._list_artifacts(product_id, "telemetry")
+            telemetry_data = {}
+            for fname in telemetry_files[-5:]:  # Last 5 telemetry files
+                data = self._load_artifact(product_id, "telemetry", fname)
+                if data:
+                    telemetry_data[fname] = data
+
+            telemetry_str = prompt_json(telemetry_data) if telemetry_data else "No telemetry data available"
+            tel_dir = Path(self.data_root) / "telemetry" / product_id
+            evolution_signals = extract_evolution_signals_from_jsonl_dir(tel_dir, limit=200)
+            signals_str = (
+                prompt_json(evolution_signals[-120:])
+                if evolution_signals
+                else "No evolution_signal JSONL events recorded yet."
+            )
+            spec_str = prompt_json(spec) if spec else "{}"
+
+            try:
+                from web.backend.services.owner_chat_routing import format_owner_product_feedback_for_prompt
+
+                owner_fb = format_owner_product_feedback_for_prompt(product_id)
+            except Exception:
+                owner_fb = ""
+            owner_block = (owner_fb + "\n\n") if owner_fb else ""
+
+            prompt = f"""{EVOLUTION_SYSTEM_PROMPT}
+
+Product ID: {product_id}
+
+{owner_block}Telemetry JSON artifacts (saved evolution reports / bundles):
+{telemetry_str}
+
+Evolution signals from telemetry JSONL (API `/api/telemetry/evolution-signal` and related):
+{signals_str}
+
+Inline telemetry payload from task (if any):
+{prompt_json(telemetry) if telemetry else "{{}}"}
+
+Product Specification:
+{spec_str}
+
+Please analyze the product telemetry and suggest improvements.
+Focus on data-driven decisions and measurable impact.
+"""
+
+            config = GenerationConfig(
+                temperature=0.7,
+                max_tokens=FACTORY_MAX_OUTPUT_TOKENS_HEAVY,
+                timeout_sec=FACTORY_TIMEOUT_DEFAULT_AGENT_SEC,
+                json_mode=True,  # openai_compatible skips response_format for reasoning models
+            )
+
+            response = await self._generate(prompt, config=config, agent_input=agent_input)
+
+            evolution = self._extract_json(response)
+            if evolution is None:
+                elapsed = time.time() - start_time
+                self._log("WARNING", f"Evolution analysis failed: LLM returned non-JSON response for {product_id}")
+                return AgentOutput(
+                    task_id=agent_input.task_id,
+                    product_id=product_id,
+                    agent_type=self.agent_type,
+                    success=False,
+                    error="LLM returned invalid/non-JSON response — evolution analysis failed",
+                    timestamp=time.time(),
+                    metrics={"elapsed_seconds": elapsed},
+                )
+
+            # Save evolution report
+            self._save_artifact(product_id, "telemetry", {
+                "product_id": product_id,
+                "evolution": evolution,
+                "created_at": time.time(),
+                "agent": "evolution_analyst",
+            }, f"evolution_{int(time.time())}.json")
+
+            improvements = evolution.get("improvements", [])
+            auto_fixes = evolution.get("auto_fixes_applied", [])
+
+            elapsed = time.time() - start_time
+            self._log("INFO", f"Evolution analysis complete: {len(improvements)} improvements, {len(auto_fixes)} auto-fixes ({elapsed:.1f}s)")
+
+            return AgentOutput(
+                task_id=agent_input.task_id,
+                product_id=product_id,
+                agent_type=self.agent_type,
+                success=True,
+                data={
+                    "evolution": evolution,
+                    "health_score": evolution.get("product_health_score", 70),
+                    "improvements": improvements,
+                    "auto_fixes": auto_fixes,
+                    "improvement_count": len(improvements),
+                    "auto_fix_count": len(auto_fixes),
+                },
+                timestamp=time.time(),
+                metrics={
+                    "elapsed_seconds": elapsed,
+                    "health_score": evolution.get("product_health_score", 70),
+                    "improvements_suggested": len(improvements),
+                    "auto_fixes_applied": len(auto_fixes),
+                },
+            )
+
+        except Exception as e:
+            elapsed = time.time() - start_time
+            self._log("ERROR", f"Evolution analysis failed: {e}")
+            return AgentOutput(
+                task_id=agent_input.task_id,
+                product_id=product_id,
+                agent_type=self.agent_type,
+                success=False,
+                error=str(e),
+                timestamp=time.time(),
+                metrics={"elapsed_seconds": elapsed},
+            )

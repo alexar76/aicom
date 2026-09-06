@@ -1,0 +1,34 @@
+[Unit]
+# Turns signed debit authorizations into transactions. Runs on the HUB host, because it
+# reaches the bridge through `docker exec` — the hub holds no key, so the signing still
+# happens on the other host inside HORKOS, behind its policy.
+Description=AIMarket escrow settlement sweep (submit signed authorizations)
+Documentation=https://github.com/alexar76/aicom
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/aicom-settlement/escrow_settlement_sweep.py \
+    --collect --publish /var/www/verify.modelmarket.dev/settlement.json
+# The script exits 1 when money is left unsubmitted, and that has to reach the alerter
+# rather than only systemd — which it does through the published report. Treating it as a
+# unit failure too would leave a red unit needing a human `reset-failed` before the next
+# run could report recovery.
+SuccessExitStatus=1 2
+TimeoutStartSec=600
+Nice=5
+# Hub `docker exec submit` has been OOM-killed (exit 137) under memory pressure; the sweep
+# now confirms first, submits with --limit 5, and retries confirm — see escrow_settlement_sweep.py.
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+# Deliberately NOT ProtectHome=yes: see docs/operations-traps.md T-8. Nothing this unit
+# needs lives under /root, but the next person to move a file there should not be debugging
+# a bare ENOENT.
+ProtectSystem=full
+ReadWritePaths=/var/www/verify.modelmarket.dev
+
+[Install]
+WantedBy=multi-user.target

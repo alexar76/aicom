@@ -1,0 +1,14 @@
+[Unit]
+Description=Competing-lab nginx edge watchdog (restart if :443 down)
+Documentation=file:///opt/aicom-scripts/competing_lab_nginx_watch.py
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/aicom-scripts/competing_lab_nginx_watch.py
+# apt-daily-upgrade can stop nginx and leave it failed; this is a cheap safety net.
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,163 @@
+"""
+Split Architect / Developer LLM prompts: system (role + VISUAL_QUALITY_SYSTEM) vs user (JSON data only).
+"""
+
+from __future__ import annotations
+
+import json
+from typing import Any
+
+from llm.content_languages import LANGUAGE_SYSTEM, content_language_meta, normalize_content_language
+from llm.visual_quality_system import USER_DATA_JSON_MARKER, VISUAL_QUALITY_SYSTEM
+
+
+def _style_preset_from_spec(spec: dict, idea: str, landing_charter: bool) -> dict[str, Any]:
+    """Compact style hints for Architect user payload (full rules stay in VISUAL_QUALITY_SYSTEM)."""
+    preset: dict[str, Any] = {
+        "delivery_profile": spec.get("delivery_profile") if isinstance(spec, dict) else None,
+        "landing_charter": landing_charter,
+    }
+    if isinstance(spec, dict):
+        for key in ("product_name", "category", "tags", "target_audience"):
+            if spec.get(key) is not None:
+                preset[key] = spec.get(key)
+    if idea:
+        preset["idea_excerpt"] = idea[:500]
+    return preset
+
+
+def build_architect_user_data(
+    *,
+    idea: str,
+    spec: dict,
+    admin_instructions: str,
+    landing_charter: bool,
+    peer_feedback: Any,
+    research_context: str,
+    methodology_block: str,
+    landing_note: str,
+    full_note: str,
+    ux_note: str,
+    interface_locale: str | None = None,
+    content_locale: str | None = None,
+) -> dict[str, Any]:
+    iface = normalize_content_language(interface_locale)
+    explicit = normalize_content_language(content_locale)
+    content_locale_payload = explicit if explicit else "auto"
+    return {
+        "content_locale": content_locale_payload,
+        "interface_locale": iface or "en",
+        "content_language_meta": content_language_meta(explicit or iface or "en"),
+        "user_brief": {
+            "idea": idea,
+            "admin_instructions": admin_instructions or None,
+            "specification": spec if isinstance(spec, dict) else {},
+            "peer_review_feedback": peer_feedback if isinstance(peer_feedback, dict) else None,
+            "market_research": research_context.strip() or None,
+            "methodology_spec_review": methodology_block.strip() or None,
+            "factory_notes": {
+                "landing_note": landing_note.strip() or None,
+                "full_software_note": full_note.strip() or None,
+                "ui_experience_note": ux_note.strip() or None,
+            },
+        },
+        "style_preset": _style_preset_from_spec(spec if isinstance(spec, dict) else {}, idea, landing_charter),
+    }
+
+
+def build_architect_system_prompt(
+    role_prompt: str,
+    *,
+    github_house_contract: str = "",
+) -> str:
+    parts = [
+        role_prompt.strip(),
+        VISUAL_QUALITY_SYSTEM,
+        LANGUAGE_SYSTEM,
+        github_house_contract.strip(),
+        "Respond with a single JSON object matching the role schema. "
+        "No markdown fences or commentary outside JSON.",
+    ]
+    return "\n\n".join(p for p in parts if p)
+
+
+def format_user_data_message(user_data: dict[str, Any]) -> str:
+    return f"{USER_DATA_JSON_MARKER}\n{json.dumps(user_data, ensure_ascii=False, indent=2)}"
+
+
+def build_developer_user_data(
+    *,
+    idea: str,
+    category: str,
+    tags: list,
+    admin_instructions: str,
+    architecture: dict,
+    specification: dict,
+    delivery_mode: str,
+    delivery_profile: str,
+    implementation_plan: dict,
+    analyst_brief: str | None,
+    remediation: dict[str, Any] | None = None,
+    interface_locale: str | None = None,
+    content_locale: str | None = None,
+) -> dict[str, Any]:
+    brief: dict[str, Any] = {
+        "idea": idea or None,
+        "category": category or None,
+        "tags": tags[:16] if tags else [],
+        "admin_instructions": admin_instructions or None,
+        "delivery_mode": delivery_mode,
+        "delivery_profile": delivery_profile,
+        "specification": specification if isinstance(specification, dict) else {},
+        "implementation_plan": implementation_plan,
+    }
+    if analyst_brief:
+        brief["analyst_developer_investigation_brief"] = analyst_brief
+    if remediation:
+        brief["remediation"] = remediation
+
+    arch = architecture if isinstance(architecture, dict) else {}
+    code = normalize_content_language(arch.get("content_language"))
+    if not code:
+        code = normalize_content_language(content_locale) or normalize_content_language(interface_locale) or "en"
+    meta = arch.get("content_language_meta")
+    if not isinstance(meta, dict):
+        meta = content_language_meta(code)
+
+    return {
+        "content_locale": normalize_content_language(content_locale) or "auto",
+        "interface_locale": normalize_content_language(interface_locale) or "en",
+        "content_language_meta": meta,
+        "user_brief": brief,
+        "architecture": arch,
+    }
+
+
+def build_developer_system_prompt(
+    *,
+    core_prompt: str,
+    stack_rules: str,
+    reference_shell_block: str,
+    fs_appendix: str,
+    polyglot_block: str,
+    patch_mode_note: str,
+    correction_note: str = "",
+    github_house_contract: str = "",
+    aimarket_native_agent: str = "",
+) -> str:
+    parts = [
+        core_prompt.strip(),
+        VISUAL_QUALITY_SYSTEM,
+        LANGUAGE_SYSTEM,
+        github_house_contract.strip(),
+        aimarket_native_agent.strip(),
+        stack_rules.strip(),
+        reference_shell_block.strip(),
+        fs_appendix.strip(),
+        polyglot_block.strip(),
+        patch_mode_note.strip(),
+        correction_note.strip(),
+        "Output contract: return one JSON object with keys files, dependencies, setup_instructions, "
+        "test_commands, documentation. No markdown fences.",
+    ]
+    return "\n\n".join(p for p in parts if p)

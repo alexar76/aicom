@@ -1,0 +1,108 @@
+# AI-Factory v2.1 — Split-services overlay (opt-in).
+#
+# The default `docker-compose.yml` runs FastAPI + Next.js + pipeline worker +
+# Director worker as a single supervised process tree (entrypoint.sh). That
+# is the easiest deployment, but it hides root-cause crashes (uvicorn
+# supervisor masks the loop) and gives Next.js and the workers shared fate.
+#
+# This overlay splits the same image into four roles via the `AICOM_ROLE`
+# env var (read by `entrypoint.sh`). Each service runs the same container
+# image — only the entrypoint command differs — so a single `docker compose
+# build` covers all four.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.split.yml up -d --build
+#
+# The base `app` service is overridden to act as the **API only**; three new
+# services run the frontend, pipeline worker, and Director worker.
+#
+# Volumes / networks are intentionally shared with the base file so SQLite,
+# bind-mounted data, and the aicom_net are still single-instance. For the
+# next step (PostgreSQL + Redis), switch SQLITE → Postgres so the four
+# services don't fight over a SQLite single-writer lock.
+
+services:
+  app:
+    environment:
+      AICOM_ROLE: api
+    command: ["bash", "-lc", "exec /app/entrypoint.sh"]
+    # Frontend port no longer published from the API container; see `frontend` below.
+    ports:
+      - "${AICOM_PORT_API:-9081}:8081"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8081/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
+
+  frontend:
+    image: ai-factory:${AICOM_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:9080}
+        NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
+    user: "10001:10001"
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      AICOM_ROLE: frontend
+      INTERNAL_API_URL: http://app:8081
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${AICOM_PORT_FRONTEND:-9080}}
+      NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
+    command:
+      - bash
+      - -lc
+      - "cd /app/web/frontend && exec npx next start -p 8080"
+    ports:
+      - "${AICOM_PORT_FRONTEND:-9080}:8080"
+    restart: unless-stopped
+    networks:
+      - aicom_net
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+
+  pipeline-worker:
+    image: ai-factory:${AICOM_IMAGE_TAG:-local}
+    user: "10001:10001"
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      AICOM_ROLE: pipeline-worker
+      INTERNAL_API_URL: http://app:8081
+    command:
+      - bash
+      - -lc
+      - "source /app/venv/bin/activate && cd /app && exec python3 -m pipeline_worker"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - aicom_net
+
+  director-worker:
+    image: ai-factory:${AICOM_IMAGE_TAG:-local}
+    user: "10001:10001"
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      AICOM_ROLE: director-worker
+      INTERNAL_API_URL: http://app:8081
+    command:
+      - bash
+      - -lc
+      - "source /app/venv/bin/activate && cd /app && exec python3 -m director.worker"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - aicom_net

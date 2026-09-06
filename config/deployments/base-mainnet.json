@@ -1,0 +1,69 @@
+{
+  "_comment": "CANONICAL registry of the AICOM live demo deployment on Base mainnet, and the ONLY file where a deployed address is written by hand. Every consumer is GENERATED from it by scripts/sync_deployment_addresses.py: aimarket-hub/aimarket_hub/deployments/ and alien-monitor/backend/deployments/ (Python package data, read by chain_net.py, which no longer carries an inline address table) and argus/src/ecosystem/deployments.base.json (imported by networks.ts). The addresses used to be MIRRORED into those three places by hand, so a redeploy was a six-file edit and the drift test only noticed afterwards; tests/test_base_deployment_registry.py now fails if any consumer hard-codes an address or if a generated file is stale. The human-readable record (with every deployment transaction) is docs/onchain-journal.md. Addresses are PUBLIC (on-chain, verifiable on Basescan); committing them is safe. They auto-load as the default for chain=base when AIFACTORY_CRYPTO_ENABLED=1; any AIMARKET_ADDR_BASE_<NAME> env var overrides. The payment RECIPIENT wallet is deliberately NOT defaulted here — it must be set explicitly per deployment so funds never silently route to the demo owner.",
+  "network": "base",
+  "kind": "evm",
+  "chain_id": 8453,
+  "display_name": "Base",
+  "explorer": "https://basescan.org",
+  "source_of_record": "docs/onchain-journal.md",
+  "owner_wallet": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "redeployed_at": "2026-09-04",
+  "contracts": {
+    "USDC": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "AIAgentLottery": "0x291b6eCB45121fEDE86BF769aC0eaa6AdED38350",
+    "AIMarketEscrow": "0x12Db8FAC81E5999D2f2087B79e38951571562CF2",
+    "AIMarketCapabilityNFT": "0x544dcdd8B01A7ee1444bf89A5381aA981735a281",
+    "AgentCollateralVault": "0x1BF39f659bd47bf0a15294B9e4760C327113AbD9",
+    "AgentListingRegistry": "0xab6E20aE29A4c7C10C6131Da9721aE98201B6600",
+    "AgentLendingPool": "0x36446D8393a39027D1242C1C277FdD9227232298",
+    "PulseAMM": "0xED2792499757dd6d40504b2522f2E99559fc5D22",
+    "AgentAuditPool": "0x96005B0E70ce1F1E0C0977067216aC45043e689b",
+    "PulseDistributor": "0x325aC681FDd14c23DE074c15ac2Ed07702e38596",
+    "PlonkVerifier": "0x1914D8a04dd65c6d8C888B98A31757F79B8e85c5"
+  },
+  "acex_redeploy_2026_08_22": {
+    "reason": "security audit: collateral double-pledge + self-triggerable default",
+    "superseded": {
+      "AgentCollateralVault": "0xA29d019F3B706B83C19f36E9BaCD83d22100fF45",
+      "AgentListingRegistry": "0x04B8Ed69768b567F66c7473f1Ad53748D78a627D",
+      "AgentLendingPool": "0x0ee6599bE35F9AbaFAB4c2182301a15016265B32",
+      "PulseAMM": "0x96201B1A9eFC563293A1579dAaaDb038f728BFc9",
+      "AgentAuditPool": "0x84991b78d3874e080aeDe1A4F7746c60eBe4039c"
+    },
+    "unchanged": [
+      "PulseDistributor",
+      "AIAgentLottery",
+      "AIMarketEscrow",
+      "AIMarketCapabilityNFT",
+      "PlonkVerifier",
+      "USDC"
+    ],
+    "note": "The superseded contracts held no funds (verified 0 ETH / 0 USDC before the redeploy) and are immutable, so they are abandoned rather than migrated."
+  },
+  "escrow_lottery_redeploy_2026_09_04": {
+    "reason": "security audit 2026-09-04: AIMarketEscrow credited the GROSS deposit instead of the measured delta (a fee-taking or rebasing whitelisted token made the per-channel books exceed real holdings, and payouts came out of other channels' principal); AIAgentLottery derived its onchainVdf random word from the RAW caller-supplied y while ChronosVDF only ever compared y as a residue (the beacon signer could grind the winner by submitting y + k*N), and fund() accepted Status.Drawing so the unclaimed-prize roll-in cap could be raised after entries had closed.",
+    "superseded": {
+      "AIAgentLottery": "0x701A7bd8487cd4d2EcE0E252Dbc0E67dF70a9554",
+      "AIMarketEscrow": "0x0606983cbEc6D0C12a0B750f72Ceb6032c72C25D"
+    },
+    "superseded_held_funds": "none — both read 0 USDC and 0 ETH immediately before the redeploy, so the old set was abandoned rather than migrated (same precedent as acex_redeploy_2026_08_22)",
+    "latent_under_current_config": "Both headline fixes were LATENT on the old deployment and remain so on this one: onchainVdf is false (so the grinding path is not reachable) and only USDC is whitelisted (and USDC takes no transfer fee). The fund() window fix is live.",
+    "txs": {
+      "AIAgentLottery": "0x5c63f169a8026b5c0baf961f7586c83b3ab3a25ae2f97c56948711ed1739f4bc",
+      "AIMarketEscrow": "0x259e4aa451ca947b4ad42553251ffaf4471a8c9386b756d2949c42fc39f6af62"
+    },
+    "blocks": {
+      "AIAgentLottery": 50856720,
+      "AIMarketEscrow": 50856731
+    },
+    "switchover_done": {
+      "at": "2026-09-04T09:15Z",
+      "what": "HORKOS (escrow-signer, escrow_signer/config.py pin) and the hub (AIMARKET_ESCROW_EVM_ADDRESS / AIMARKET_ESCROW_CONTRACT / AIFACTORY_AI_MARKET_CONTRACT in its container environment) were moved together; the hub does NOT read the escrow from this registry at runtime.",
+      "preconditions": "superseded escrow held 0 USDC and 0 ETH; hub channels/holds/payout_obligations all 0 rows; 113 debit_authorizations all terminal; HORKOS booted with live_rows=0",
+      "verified": "HORKOS fail-closed boot check re-derived the EIP-712 separator for the new address and matched the escrow's own domainSeparator(), confirmed the hub key in authorizedHubs, and reported ready; hub healthy, payment_configured true, 133 priced capabilities, unpaid invoke returns a well-formed 402 x402 challenge; hub reaches HORKOS over the tunnel and both report the same escrow",
+      "not_proven": "no debit has been signed and mined against the new escrow yet — that needs a real USDC deposit to open a channel",
+      "rollback": "docker rm modelmarket-hub && docker rename hub-rollback-20260904-091402 modelmarket-hub && docker start modelmarket-hub (the parked container keeps the original environment); HORKOS: restore escrow_signer/config.py.bak-20260904-121240 and rebuild",
+      "deploy_sources_patched": "hub-runtime.env, hub-runargs.txt, three deploy/hub-payment.env copies and two product participant envs still named the superseded escrow; all backed up and repointed, or the next routine redeploy would have reverted the rail"
+    }
+  }
+}

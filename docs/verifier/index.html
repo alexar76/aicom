@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Provenance Verifier — verify.modelmarket.dev</title>
+  <link rel="stylesheet" href="style.css?v=20260812b">
+  <style>
+    /* ── Language switcher (matches header dark palette) ─────────────── */
+    header nav { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.25rem 0.5rem; }
+    .langsw { display: inline-flex; gap: 2px; margin-left: 0.5rem; border: 1px solid rgba(255,255,255,0.25); border-radius: 999px; padding: 2px; vertical-align: middle; }
+    .langsw button { background: none; border: 0; color: #cfd8e3; font: 600 0.8rem/1 inherit; letter-spacing: 0.04em; padding: 4px 8px; border-radius: 999px; cursor: pointer; transition: color 0.15s, background 0.15s; }
+    .langsw button:hover { color: #fff; }
+    .langsw button.on { background: rgba(126,200,227,0.25); color: #fff; }
+  </style>
+  <!--
+    No external script is loaded. Ed25519 verification lives inside
+    js/verifier.js: it uses crypto.subtle when the browser implements the
+    Ed25519 algorithm and its own BigInt implementation otherwise, so the page
+    verifies offline, from a file:// URL, and with no CDN in the trust path.
+    (Until 2026-07 this element pulled tweetnacl from cdn.jsdelivr.net, which
+    made a document's verifiability depend on a third party being reachable —
+    the opposite of the offline guarantee in SPEC.md §1.2 and §13.5.)
+  -->
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1 data-i18n="h1">AI Provenance Verifier</h1>
+      <p class="subtitle" data-i18n="subtitle">Cryptographic receipts for digital work — verify origin without trust.</p>
+      <nav>
+        <a href="#verify" data-i18n="nav_verify">Verify</a>
+        <a href="https://modelmarket.dev/ai-market/v2/p/provenance/attest" target="_blank" rel="noopener noreferrer" data-i18n="nav_api">API Docs</a>
+        <a href="https://github.com/alexar76/aicom" target="_blank" rel="noopener noreferrer" data-i18n="nav_source">Source</a>
+        <span class="langsw" aria-label="Language">
+          <button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="zh">ZH</button>
+        </span>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="input-section">
+      <div class="card">
+        <h2 data-i18n="in_h2">Verify an AI Provenance Receipt</h2>
+        <p data-i18n="in_desc">Paste a receipt ID or the full JSON receipt below. No server needed — verification runs entirely in your browser.</p>
+
+        <div class="input-group">
+          <textarea
+            id="receipt-input"
+            data-i18n-ph="ph"
+            placeholder="Paste your receipt JSON here, or enter a receipt ID (e.g., 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f) to load it..."
+            rows="8"
+            spellcheck="false"
+          ></textarea>
+          <div class="button-row">
+            <button id="verify-btn" class="btn-primary" data-i18n="btn_verify">Verify Receipt</button>
+            <button id="clear-btn" class="btn-secondary" data-i18n="btn_clear">Clear</button>
+            <button id="load-example-btn" class="btn-secondary" data-i18n="btn_example">Load Example</button>
+          </div>
+        </div>
+
+        <div id="error-msg" class="error hidden"></div>
+        <div id="loading-msg" class="loading hidden" data-i18n="loading">Verifying...</div>
+      </div>
+    </section>
+
+    <section id="result-section" class="hidden">
+      <div class="card receipt-summary">
+        <div id="verdict-banner"></div>
+        <div id="receipt-meta"></div>
+      </div>
+
+      <div class="card-row">
+        <div class="card">
+          <h3 data-i18n="checks_h">Verification Checks</h3>
+          <div id="checks-list"></div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="attest_h">Attestations</h3>
+          <div id="attestation-badges"></div>
+        </div>
+      </div>
+
+      <div class="card" id="provenance-chain-section">
+        <h3 data-i18n="chain_h">Provenance Chain</h3>
+        <div id="provenance-chain"></div>
+      </div>
+
+      <details class="card">
+        <summary><h3 style="display:inline" data-i18n="raw_h">Raw Receipt JSON</h3></summary>
+        <pre id="raw-json"></pre>
+      </details>
+    </section>
+
+    <section id="about-section" class="card">
+      <h2 data-i18n="how_h">How It Works</h2>
+      <div class="how-it-works">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h4 data-i18n="step1_t">Capture</h4>
+          <p data-i18n="step1_d">Every work result gets a cryptographic receipt with input/output hashes, model or capability ID, provider, and timestamp.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h4 data-i18n="step2_t">Sign</h4>
+          <p data-i18n="step2_d">The whole document is Ed25519-signed by its issuer over RFC 8785 canonical bytes. The public key IS the issuer&#39;s did:key identifier, so no key has to be looked up anywhere.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h4 data-i18n="step3_t">Verify</h4>
+          <p data-i18n="step3_d">Anyone can verify the receipt's authenticity without trusting any server — all verification material is self-contained.</p>
+        </div>
+      </div>
+      <p class="spec-note" data-i18n-html="spec_note">
+        Documents are <strong>W3C Verifiable Credentials</strong> carrying an <strong>eddsa-jcs-2022</strong>
+        Data Integrity proof over <strong>RFC 8785</strong> canonical bytes (AWR/2). A
+        <strong>TEE or zk attestation</strong>, when present, is inside the signature but is <em>not</em>
+        verified here: that needs the hardware vendor's certificate chain, which an offline verifier must not fetch.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p data-i18n-html="footer">
+      <strong>AI Provenance Layer</strong> — MIT Licensed.
+      Built on the <a href="https://modelmarket.dev">AI Market Protocol</a>.
+    </p>
+  </footer>
+
+  <script>
+  // ── i18n dictionary + machinery (shared with js/verifier.js + js/renderer.js) ──
+  const I18N = {
+    en: {
+      h1:"AI Provenance Verifier",
+      subtitle:"Cryptographic receipts for digital work — verify origin without trust.",
+      nav_verify:"Verify", nav_api:"API Docs", nav_source:"Source",
+      in_h2:"Verify an AI Provenance Receipt",
+      in_desc:"Paste a receipt ID or the full JSON receipt below. No server needed — verification runs entirely in your browser.",
+      ph:"Paste your receipt JSON here, or enter a receipt ID (e.g., 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f) to load it...",
+      btn_verify:"Verify Receipt", btn_clear:"Clear", btn_example:"Load Example",
+      loading:"Verifying...", loading_url:"Loading the canonical receipt…",
+      checks_h:"Verification Checks", attest_h:"Attestations", chain_h:"Provenance Chain", raw_h:"Raw Receipt JSON",
+      how_h:"How It Works",
+      step1_t:"Capture", step1_d:"Every work result gets a cryptographic receipt with input/output hashes, model or capability ID, provider, and timestamp.",
+      step2_t:"Sign", step2_d:"The whole document is Ed25519-signed by its issuer over RFC 8785 canonical bytes. The public key IS the issuer&#39;s did:key identifier, so no key has to be looked up anywhere.",
+      step3_t:"Verify", step3_d:"Anyone can verify the receipt's authenticity without trusting any server — all verification material is self-contained.",
+      spec_note:"Documents are <strong>W3C Verifiable Credentials</strong> carrying an <strong>eddsa-jcs-2022</strong> Data Integrity proof over <strong>RFC 8785</strong> canonical bytes (AWR/2). A <strong>TEE or zk attestation</strong>, when present, is inside the signature but is <em>not</em> verified here: that needs the hardware vendor&#39;s certificate chain, which an offline verifier must not fetch.",
+      footer:"<strong>AI Provenance Layer</strong> — MIT Licensed. Built on the <a href='https://modelmarket.dev'>AI Market Protocol</a>.",
+      err_empty:"Please paste a receipt JSON or enter a receipt ID.",
+      err_url_invalid:"This proof link does not contain a valid receipt URL.",
+      err_url_host:"For safety, proof links may load receipts only from modelmarket.dev.",
+      err_url_fetch:"The canonical receipt could not be loaded. You can still paste its JSON below.",
+      err_url_size:"The receipt is larger than the verifier's 1 MB safety limit.",
+      err_url_type:"The receipt endpoint did not return an AWR JSON document.",
+      err_notfound:"Invalid JSON and receipt not found. Paste a valid receipt or check the ID.",
+      verdict_pass_t:"Verified", verdict_pass_d:"All checks passed — this work result's origin is cryptographically verified.",
+      verdict_fail_t:"Verification Failed", verdict_fail_d:"{n} check(s) failed. See details below.",
+      m_model:"Model", m_provider:"Provider", m_issued:"Issued", m_latency:"Latency", m_price:"Price", m_receipt_id:"Receipt ID", m_issuer:"Issuer",
+      input_hash:"Input Hash (SHA-256)", output_hash:"Output Hash (SHA-256)",
+      errors_label:"Errors:", lbl_platform:"Platform:", lbl_parents:"parent(s)",
+      tee_verified_t:"TEE Verified", tee_none_t:"No TEE Attestation", tee_none_d:"Execution was not attested by a trusted enclave.", tee_code:"Code:",
+      rep_t:"Reputation: {pct}%", rep_d:"Provider trust score",
+      chain_step:"Step {n}",
+      check_structure:"structure", check_signature:"signature", check_timestamp:"timestamp", check_hash_format:"hash format", check_parent_receipts:"parent receipts", check_tee_attestation:"tee attestation",
+      e_not_object:"Invalid receipt: not a JSON object",
+      e_no_subject:"Missing credentialSubject", e_no_proof:"Missing proof block", e_no_issuer:"Missing issuer block",
+      e_no_jwk:"Missing issuer.publicKeyJwk", e_bad_jwk:"Invalid JWK: must be OKP Ed25519",
+      e_sig_failed:"Ed25519 signature verification failed", e_sig_error:"Signature verification error: ",
+      e_ts_format:"Invalid timestamp format", e_ts_future:"Timestamp is in the future (clock skew > 5 min)", e_ts_old:"Timestamp is too old (> 90 days)", e_ts_missing:"Missing timestamp",
+      e_input_hash_fmt:"Invalid input hash format (expected 64-char hex)", e_input_hash_missing:"Missing inputHash",
+      e_output_hash_fmt:"Invalid output hash format (expected 64-char hex)", e_output_hash_missing:"Missing outputHash",
+      e_parent_fmt:"Invalid parent receipt format: ",
+      e_tee_sig_failed:"TEE attestation signature verification failed", e_tee_error:"TEE attestation verification error", e_tee_incomplete:"TEE attestation is invalid or incomplete",
+      // ── AWR/2 result UI ────────────────────────────────────────────────
+      reasons_h:"Errors", warnings_h:"Warnings", no_issues:"No errors, no warnings.",
+      check_canonical:"canonical form", check_key:"issuer key", check_semantics:"document semantics",
+      check_chain:"work chain", check_profile:"assurance profile",
+      prof_label:"Assurance profile",
+      prof_L0:"L0 — Receipt: signed by its issuer, and nothing more.",
+      prof_L1:"L1 — Verified: an independent party signed a verdict on this work.",
+      prof_L2:"L2 — Accountable: two independent verdicts plus a settlement or stake binding.",
+      prof_none:"None — the document did not verify.",
+      prof_legacy:"Not applicable — an AWR/1 document has no AWR/2 profile.",
+      legacy_t:"AWR/1 legacy document",
+      legacy_d:"The signature covers credentialSubject only. Everything else — id, type, issuer, hubInfo — is unsigned and attested by nobody.",
+      dialect_label:"Legacy dialect:", unsigned_label:"Outside the signature:",
+      chain_label:"Parent hops:", chain_resolved:"{n} resolved",
+      chain_unresolved:"{n} not checked (parent document not supplied)",
+      chain_none:"No parent hops declared.",
+      tee_unverified_t:"Attestation present — NOT verified",
+      tee_unverified_d:"AWR/2 treats TEE and zk attestations as opaque. Checking one needs the platform's certificate chain, which this offline verifier deliberately never fetches.",
+      m_status:"Status", m_doctype:"Document type", m_capability:"Capability",
+      meaning_h:"What a valid document means",
+      meaning_d:"This issuer signed these claims and the bytes are intact. It does not mean the model ran, that the digests correspond to real payloads, that the price was paid, or that the output is correct.",
+      // ── §11.2 reason-code registry ─────────────────────────────────────
+      "c_AWR-DOC-001":"Not a JSON object",
+      "c_AWR-DOC-002":"@context missing, not an array, or its first entry is not the VC 2.0 context",
+      "c_AWR-DOC-003":"the AWR namespace is absent from @context",
+      "c_AWR-DOC-004":"type does not contain VerifiableCredential",
+      "c_AWR-DOC-005":"no AWR document type, or more than one, in type",
+      "c_AWR-DOC-006":"id missing or not an absolute URI",
+      "c_AWR-DOC-007":"validFrom missing or malformed, or validUntil not later than validFrom",
+      "c_AWR-DOC-008":"credentialSubject missing or not a single object",
+      "c_AWR-DOC-009":"awrVersion missing, malformed, or a major version this verifier does not implement",
+      "c_AWR-DOC-010":"issuer missing, not an object, or without id",
+      "c_AWR-CANON-001":"a JSON number is not an integer",
+      "c_AWR-CANON-002":"an integer is outside ±(2^53−1)",
+      "c_AWR-CANON-003":"invalid Unicode (lone surrogate) in string data",
+      "c_AWR-CANON-004":"duplicate object property name",
+      "c_AWR-CANON-005":"input is not well-formed JSON",
+      "c_AWR-CANON-006":"canonical form mismatch — the verifier's self-check failed",
+      "c_AWR-KEY-001":"issuer.id is not a did:key",
+      "c_AWR-KEY-002":"malformed did:key — multibase, multicodec or key length",
+      "c_AWR-KEY-003":"publicKeyJwk disagrees with did:key",
+      "c_AWR-KEY-004":"unsupported key type",
+      "c_AWR-PROOF-001":"proof missing",
+      "c_AWR-PROOF-002":"proof.type is not DataIntegrityProof",
+      "c_AWR-PROOF-003":"unsupported cryptosuite",
+      "c_AWR-PROOF-004":"proofPurpose is not assertionMethod",
+      "c_AWR-PROOF-005":"proofValue is not base58btc multibase of 64 bytes",
+      "c_AWR-PROOF-006":"Ed25519 signature verification failed",
+      "c_AWR-PROOF-007":"verificationMethod does not match issuer.id",
+      "c_AWR-PROOF-008":"proof.@context is inconsistent with the document @context",
+      "c_AWR-PROOF-009":"proof.created missing or malformed",
+      "c_AWR-RCPT-001":"inputDigest or outputDigest missing or not a valid SRI string",
+      "c_AWR-RCPT-002":"price malformed (currency, or amount not a decimal string)",
+      "c_AWR-RCPT-003":"work timestamps missing or inconsistent",
+      "c_AWR-RCPT-004":"work.latencyMs negative or not an integer",
+      "c_AWR-RCPT-005":"work.modelId missing or empty",
+      "c_AWR-RCPT-006":"work.status missing or outside the enumeration",
+      "c_AWR-VDCT-001":"verifiedWork missing, or without id / digestSRI",
+      "c_AWR-VDCT-002":"score is not a decimal string in [0,1]",
+      "c_AWR-VDCT-003":"method missing or method.id empty",
+      "c_AWR-VDCT-004":"verdict outside the enumeration",
+      "c_AWR-VDCT-005":"verifiedWork.digestSRI does not match the supplied receipt",
+      "c_AWR-VDCT-006":"verdict inconsistent with score / threshold",
+      "c_AWR-VDCT-007":"an evidence entry has no digestSRI",
+      "c_AWR-BLAME-001":"blamedWork is not reachable from chain through the available receipts",
+      "c_AWR-BLAME-002":"failureClass outside the enumeration",
+      "c_AWR-BLAME-003":"chain or blamedWork missing or malformed",
+      "c_AWR-BLAME-004":"confidence is not a decimal string in [0,1]",
+      "c_AWR-CHAIN-001":"a parents entry has no digestSRI",
+      "c_AWR-CHAIN-002":"digest reference format or algorithm invalid",
+      "c_AWR-CHAIN-003":"parent digest mismatch against the supplied parent",
+      "c_AWR-CHAIN-004":"cycle detected",
+      "c_AWR-CHAIN-005":"depth or node limit exceeded",
+      "c_AWR-CHAIN-006":"the same parent id appears with conflicting digests",
+      "c_AWR-CHAIN-007":"parent outputDigest differs from child inputDigest",
+      "c_AWR-BUNDLE-001":"awrBundle missing or unsupported, or documents empty",
+      "c_AWR-BUNDLE-002":"duplicate document id with differing content",
+      "c_AWR-BUNDLE-003":"the subject document is ambiguous",
+      "c_AWR-PROFILE-001":"L1: no valid verdict for this receipt",
+      "c_AWR-PROFILE-002":"L1: the verdict issuer is the receipt issuer (self-verification)",
+      "c_AWR-PROFILE-003":"L2: fewer than two distinct verdict issuers",
+      "c_AWR-PROFILE-004":"L2: no settlement or stake binding present",
+      "c_AWR-L2-001":"accountability binding present but not checked on-chain",
+      "c_AWR-ENV-001":"attestation present and not verified",
+      "c_AWR-TIME-001":"validFrom is in the future, beyond the clock-skew allowance",
+      "c_AWR-TIME-002":"validUntil is in the past, or the document is older than your policy window",
+      "c_AWR-LEGACY-001":"verified under the AWR/1 legacy rules",
+      "c_AWR-LEGACY-002":"AWR/1 document failed under both legacy dialects",
+      "c_AWR-LEGACY-003":"version signals disagree: an AWR/2 document carrying an AWR/1 proof suite, verified under neither",
+      "c_AWR-LEGACY-004":"the AWR/1 key came from the document itself, so no issuer identity is attested",
+      "c_AWR-LEGACY-005":"AWR/1 verification was declined by the caller",
+    },
+    ru: {
+      h1:"Верификатор происхождения ИИ",
+      subtitle:"Криптографические квитанции результатов работы — проверяйте происхождение без доверия.",
+      nav_verify:"Верификация", nav_api:"Документация API", nav_source:"Исходный код",
+      in_h2:"Верифицировать квитанцию происхождения ИИ",
+      in_desc:"Вставьте ID квитанции или полную JSON-квитанцию ниже. Сервер не нужен — верификация выполняется полностью в вашем браузере.",
+      ph:"Вставьте сюда JSON квитанции или введите ID квитанции (например, 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f), чтобы загрузить её...",
+      btn_verify:"Верифицировать квитанцию", btn_clear:"Очистить", btn_example:"Загрузить пример",
+      loading:"Верификация...", loading_url:"Загружаем каноническую квитанцию…",
+      checks_h:"Проверки верификации", attest_h:"Аттестации", chain_h:"Цепочка происхождения", raw_h:"Исходный JSON квитанции",
+      how_h:"Как это работает",
+      step1_t:"Захват", step1_d:"Каждый результат получает криптографическую квитанцию с хешами ввода/вывода, ID модели или capability, поставщиком и меткой времени.",
+      step2_t:"Подпись", step2_d:"Весь документ подписывается по Ed25519 его издателем над каноническими байтами RFC 8785. Открытый ключ — это и есть идентификатор издателя did:key, поэтому ключ не нужно нигде искать.",
+      step3_t:"Верификация", step3_d:"Любой может проверить подлинность квитанции, не доверяя никакому серверу — все материалы для верификации самодостаточны.",
+      spec_note:"Документы — это <strong>W3C Verifiable Credentials</strong> с доказательством целостности <strong>eddsa-jcs-2022</strong> над каноническими байтами <strong>RFC 8785</strong> (AWR/2). <strong>Аттестация TEE или zk</strong>, если она есть, находится внутри подписи, но здесь <em>не</em> проверяется: для этого нужна цепочка сертификатов производителя, которую офлайн-верификатор не имеет права загружать.",
+      footer:"<strong>Слой происхождения ИИ</strong> — под лицензией MIT. Построено на <a href='https://modelmarket.dev'>AI Market Protocol</a>.",
+      err_empty:"Пожалуйста, вставьте JSON квитанции или введите ID квитанции.",
+      err_url_invalid:"В ссылке нет корректного URL квитанции.",
+      err_url_host:"Для безопасности verifier загружает квитанции только с modelmarket.dev.",
+      err_url_fetch:"Не удалось загрузить каноническую квитанцию. Её JSON всё ещё можно вставить вручную.",
+      err_url_size:"Размер квитанции превышает безопасный лимит verifier — 1 МБ.",
+      err_url_type:"Endpoint вернул не AWR-документ в формате JSON.",
+      err_notfound:"Некорректный JSON, и квитанция не найдена. Вставьте корректную квитанцию или проверьте ID.",
+      verdict_pass_t:"Верифицировано", verdict_pass_d:"Все проверки пройдены — происхождение этого результата криптографически подтверждено.",
+      verdict_fail_t:"Верификация не пройдена", verdict_fail_d:"Не пройдено проверок: {n}. См. детали ниже.",
+      m_model:"Модель", m_provider:"Поставщик", m_issued:"Выпущено", m_latency:"Задержка", m_price:"Цена", m_receipt_id:"ID квитанции", m_issuer:"Издатель",
+      input_hash:"Хеш ввода (SHA-256)", output_hash:"Хеш вывода (SHA-256)",
+      errors_label:"Ошибки:", lbl_platform:"Платформа:", lbl_parents:"родит. квитанций",
+      tee_verified_t:"TEE подтверждён", tee_none_t:"Нет аттестации TEE", tee_none_d:"Выполнение не было аттестовано доверенным анклавом.", tee_code:"Код:",
+      rep_t:"Репутация: {pct}%", rep_d:"Оценка доверия поставщика",
+      chain_step:"Шаг {n}",
+      check_structure:"структура", check_signature:"подпись", check_timestamp:"метка времени", check_hash_format:"формат хеша", check_parent_receipts:"родительские квитанции", check_tee_attestation:"аттестация TEE",
+      e_not_object:"Некорректная квитанция: не JSON-объект",
+      e_no_subject:"Отсутствует credentialSubject", e_no_proof:"Отсутствует блок proof", e_no_issuer:"Отсутствует блок issuer",
+      e_no_jwk:"Отсутствует issuer.publicKeyJwk", e_bad_jwk:"Некорректный JWK: требуется OKP Ed25519",
+      e_sig_failed:"Проверка подписи Ed25519 не пройдена", e_sig_error:"Ошибка проверки подписи: ",
+      e_ts_format:"Некорректный формат метки времени", e_ts_future:"Метка времени в будущем (расхождение часов > 5 мин)", e_ts_old:"Метка времени слишком старая (> 90 дней)", e_ts_missing:"Отсутствует метка времени",
+      e_input_hash_fmt:"Некорректный формат хеша ввода (ожидается 64 hex-символа)", e_input_hash_missing:"Отсутствует inputHash",
+      e_output_hash_fmt:"Некорректный формат хеша вывода (ожидается 64 hex-символа)", e_output_hash_missing:"Отсутствует outputHash",
+      e_parent_fmt:"Некорректный формат родительской квитанции: ",
+      e_tee_sig_failed:"Проверка подписи аттестации TEE не пройдена", e_tee_error:"Ошибка проверки аттестации TEE", e_tee_incomplete:"Аттестация TEE недействительна или неполна",
+      // ── Интерфейс результата AWR/2 ─────────────────────────────────────
+      reasons_h:"Ошибки", warnings_h:"Предупреждения", no_issues:"Ни ошибок, ни предупреждений.",
+      check_canonical:"каноническая форма", check_key:"ключ издателя", check_semantics:"семантика документа",
+      check_chain:"цепочка работ", check_profile:"профиль доверия",
+      prof_label:"Профиль доверия",
+      prof_L0:"L0 — Квитанция: подписана своим издателем, и не более того.",
+      prof_L1:"L1 — Проверено: независимая сторона подписала вердикт об этой работе.",
+      prof_L2:"L2 — Подотчётно: два независимых вердикта плюс привязка расчёта или стейка.",
+      prof_none:"Нет — документ не прошёл верификацию.",
+      prof_legacy:"Неприменимо — у документа AWR/1 нет профиля AWR/2.",
+      legacy_t:"Устаревший документ AWR/1",
+      legacy_d:"Подпись покрывает только credentialSubject. Всё остальное — id, type, issuer, hubInfo — не подписано и никем не засвидетельствовано.",
+      dialect_label:"Устаревший диалект:", unsigned_label:"Вне подписи:",
+      chain_label:"Родительские шаги:", chain_resolved:"разрешено: {n}",
+      chain_unresolved:"не проверено: {n} (родительский документ не предоставлен)",
+      chain_none:"Родительские шаги не заявлены.",
+      tee_unverified_t:"Аттестация есть — НЕ проверена",
+      tee_unverified_d:"AWR/2 считает аттестации TEE и zk непрозрачными объектами. Их проверка требует цепочки сертификатов платформы, которую этот офлайн-верификатор сознательно никогда не запрашивает.",
+      m_status:"Статус", m_doctype:"Тип документа", m_capability:"Возможность",
+      meaning_h:"Что означает действительный документ",
+      meaning_d:"Этот издатель подписал эти утверждения, и байты не изменены. Это не значит, что модель действительно запускалась, что хеши соответствуют реальным данным, что цена была уплачена или что вывод верен.",
+      // ── Реестр кодов причин (§11.2) ────────────────────────────────────
+      "c_AWR-DOC-001":"Не является объектом JSON",
+      "c_AWR-DOC-002":"@context отсутствует, не массив, или его первый элемент — не контекст VC 2.0",
+      "c_AWR-DOC-003":"пространство имён AWR отсутствует в @context",
+      "c_AWR-DOC-004":"type не содержит VerifiableCredential",
+      "c_AWR-DOC-005":"в type нет типа документа AWR либо их больше одного",
+      "c_AWR-DOC-006":"id отсутствует или не является абсолютным URI",
+      "c_AWR-DOC-007":"validFrom отсутствует или некорректен, либо validUntil не позже validFrom",
+      "c_AWR-DOC-008":"credentialSubject отсутствует или не является одним объектом",
+      "c_AWR-DOC-009":"awrVersion отсутствует, некорректен, или мажорная версия не поддерживается этим верификатором",
+      "c_AWR-DOC-010":"issuer отсутствует, не объект или без id",
+      "c_AWR-CANON-001":"число JSON не является целым",
+      "c_AWR-CANON-002":"целое число вне диапазона ±(2^53−1)",
+      "c_AWR-CANON-003":"некорректный Unicode (одиночный суррогат) в строковых данных",
+      "c_AWR-CANON-004":"повторяющееся имя свойства объекта",
+      "c_AWR-CANON-005":"ввод не является корректным JSON",
+      "c_AWR-CANON-006":"несовпадение канонической формы — самопроверка верификатора не пройдена",
+      "c_AWR-KEY-001":"issuer.id не является did:key",
+      "c_AWR-KEY-002":"некорректный did:key — multibase, multicodec или длина ключа",
+      "c_AWR-KEY-003":"publicKeyJwk противоречит did:key",
+      "c_AWR-KEY-004":"неподдерживаемый тип ключа",
+      "c_AWR-PROOF-001":"отсутствует proof",
+      "c_AWR-PROOF-002":"proof.type не DataIntegrityProof",
+      "c_AWR-PROOF-003":"неподдерживаемый cryptosuite",
+      "c_AWR-PROOF-004":"proofPurpose не assertionMethod",
+      "c_AWR-PROOF-005":"proofValue не является multibase base58btc из 64 байт",
+      "c_AWR-PROOF-006":"проверка подписи Ed25519 не пройдена",
+      "c_AWR-PROOF-007":"verificationMethod не соответствует issuer.id",
+      "c_AWR-PROOF-008":"proof.@context не согласуется с @context документа",
+      "c_AWR-PROOF-009":"proof.created отсутствует или некорректен",
+      "c_AWR-RCPT-001":"inputDigest или outputDigest отсутствует либо не является корректной строкой SRI",
+      "c_AWR-RCPT-002":"price некорректен (валюта или сумма не десятичной строкой)",
+      "c_AWR-RCPT-003":"метки времени work отсутствуют или противоречивы",
+      "c_AWR-RCPT-004":"work.latencyMs отрицателен или не целое число",
+      "c_AWR-RCPT-005":"work.modelId отсутствует или пуст",
+      "c_AWR-RCPT-006":"work.status отсутствует или вне перечисления",
+      "c_AWR-VDCT-001":"verifiedWork отсутствует либо без id / digestSRI",
+      "c_AWR-VDCT-002":"score не десятичная строка в [0,1]",
+      "c_AWR-VDCT-003":"method отсутствует или method.id пуст",
+      "c_AWR-VDCT-004":"verdict вне перечисления",
+      "c_AWR-VDCT-005":"verifiedWork.digestSRI не совпадает с предоставленной квитанцией",
+      "c_AWR-VDCT-006":"verdict не согласуется с score / threshold",
+      "c_AWR-VDCT-007":"запись evidence без digestSRI",
+      "c_AWR-BLAME-001":"blamedWork недостижим из chain по доступным квитанциям",
+      "c_AWR-BLAME-002":"failureClass вне перечисления",
+      "c_AWR-BLAME-003":"chain или blamedWork отсутствует либо некорректен",
+      "c_AWR-BLAME-004":"confidence не десятичная строка в [0,1]",
+      "c_AWR-CHAIN-001":"запись parents без digestSRI",
+      "c_AWR-CHAIN-002":"некорректный формат или алгоритм ссылки-хеша",
+      "c_AWR-CHAIN-003":"хеш родителя не совпадает с предоставленным родительским документом",
+      "c_AWR-CHAIN-004":"обнаружен цикл",
+      "c_AWR-CHAIN-005":"превышен предел глубины или числа узлов",
+      "c_AWR-CHAIN-006":"один и тот же id родителя с противоречащими хешами",
+      "c_AWR-CHAIN-007":"outputDigest родителя отличается от inputDigest потомка",
+      "c_AWR-BUNDLE-001":"awrBundle отсутствует или не поддерживается, либо documents пуст",
+      "c_AWR-BUNDLE-002":"повторяющийся id документа с иным содержимым",
+      "c_AWR-BUNDLE-003":"документ-субъект неоднозначен",
+      "c_AWR-PROFILE-001":"L1: нет действительного вердикта для этой квитанции",
+      "c_AWR-PROFILE-002":"L1: издатель вердикта совпадает с издателем квитанции (самопроверка)",
+      "c_AWR-PROFILE-003":"L2: менее двух различных издателей вердиктов",
+      "c_AWR-PROFILE-004":"L2: нет привязки settlement или stake",
+      "c_AWR-L2-001":"привязка подотчётности присутствует, но в блокчейне не проверялась",
+      "c_AWR-ENV-001":"аттестация присутствует и не проверена",
+      "c_AWR-TIME-001":"validFrom в будущем за пределами допуска расхождения часов",
+      "c_AWR-TIME-002":"validUntil в прошлом, либо документ старше вашего окна политики",
+      "c_AWR-LEGACY-001":"верифицировано по устаревшим правилам AWR/1",
+      "c_AWR-LEGACY-002":"документ AWR/1 не прошёл ни в одном из устаревших диалектов",
+      "c_AWR-LEGACY-003":"признаки версии противоречат друг другу: документ AWR/2 с набором подписи AWR/1, не проверяется ни по одним правилам",
+      "c_AWR-LEGACY-004":"ключ AWR/1 взят из самого документа, поэтому личность издателя ничем не засвидетельствована",
+      "c_AWR-LEGACY-005":"вызывающая сторона отказалась от проверки по правилам AWR/1",
+    },
+    es: {
+      h1:"Verificador de procedencia de IA",
+      subtitle:"Recibos criptográficos para resultados digitales — verifica el origen sin confianza.",
+      nav_verify:"Verificar", nav_api:"Docs de API", nav_source:"Código fuente",
+      in_h2:"Verificar un recibo de procedencia de IA",
+      in_desc:"Pega un ID de recibo o el recibo JSON completo abajo. No se necesita servidor — la verificación se ejecuta enteramente en tu navegador.",
+      ph:"Pega aquí tu recibo JSON, o introduce un ID de recibo (p. ej., 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f) para cargarlo...",
+      btn_verify:"Verificar recibo", btn_clear:"Limpiar", btn_example:"Cargar ejemplo",
+      loading:"Verificando...", loading_url:"Cargando el recibo canónico…",
+      checks_h:"Comprobaciones de verificación", attest_h:"Atestaciones", chain_h:"Cadena de procedencia", raw_h:"Recibo JSON en bruto",
+      how_h:"Cómo funciona",
+      step1_t:"Captura", step1_d:"Cada resultado recibe un recibo criptográfico con hashes de entrada/salida, ID de modelo o capability, proveedor y marca de tiempo.",
+      step2_t:"Firma", step2_d:"El documento completo se firma con Ed25519 por su emisor sobre los bytes canónicos RFC 8785. La clave pública ES el identificador did:key del emisor, así que no hay que buscar ninguna clave.",
+      step3_t:"Verificar", step3_d:"Cualquiera puede verificar la autenticidad del recibo sin confiar en ningún servidor — todo el material de verificación es autocontenido.",
+      spec_note:"Los documentos son <strong>W3C Verifiable Credentials</strong> con una prueba de integridad <strong>eddsa-jcs-2022</strong> sobre bytes canónicos <strong>RFC 8785</strong> (AWR/2). Una <strong>atestación TEE o zk</strong>, si está presente, queda dentro de la firma pero <em>no</em> se verifica aquí: eso exige la cadena de certificados del fabricante, que un verificador offline no debe descargar.",
+      footer:"<strong>Capa de procedencia de IA</strong> — Licencia MIT. Construido sobre el <a href='https://modelmarket.dev'>AI Market Protocol</a>.",
+      err_empty:"Por favor pega un recibo JSON o introduce un ID de recibo.",
+      err_url_invalid:"Este enlace no contiene una URL de recibo válida.",
+      err_url_host:"Por seguridad, solo se cargan recibos desde modelmarket.dev.",
+      err_url_fetch:"No se pudo cargar el recibo canónico. Aún puedes pegar su JSON.",
+      err_url_size:"El recibo supera el límite de seguridad de 1 MB.",
+      err_url_type:"El endpoint no devolvió un documento AWR JSON.",
+      err_notfound:"JSON inválido y recibo no encontrado. Pega un recibo válido o comprueba el ID.",
+      verdict_pass_t:"Verificado", verdict_pass_d:"Todas las comprobaciones pasaron — el origen de este resultado está verificado criptográficamente.",
+      verdict_fail_t:"Verificación fallida", verdict_fail_d:"{n} comprobación(es) fallaron. Ver detalles abajo.",
+      m_model:"Modelo", m_provider:"Proveedor", m_issued:"Emitido", m_latency:"Latencia", m_price:"Precio", m_receipt_id:"ID de recibo", m_issuer:"Emisor",
+      input_hash:"Hash de entrada (SHA-256)", output_hash:"Hash de salida (SHA-256)",
+      errors_label:"Errores:", lbl_platform:"Plataforma:", lbl_parents:"recibo(s) padre",
+      tee_verified_t:"TEE verificado", tee_none_t:"Sin atestación TEE", tee_none_d:"La ejecución no fue atestada por un enclave de confianza.", tee_code:"Código:",
+      rep_t:"Reputación: {pct}%", rep_d:"Puntuación de confianza del proveedor",
+      chain_step:"Paso {n}",
+      check_structure:"estructura", check_signature:"firma", check_timestamp:"marca de tiempo", check_hash_format:"formato de hash", check_parent_receipts:"recibos padre", check_tee_attestation:"atestación TEE",
+      e_not_object:"Recibo inválido: no es un objeto JSON",
+      e_no_subject:"Falta credentialSubject", e_no_proof:"Falta el bloque proof", e_no_issuer:"Falta el bloque issuer",
+      e_no_jwk:"Falta issuer.publicKeyJwk", e_bad_jwk:"JWK inválido: debe ser OKP Ed25519",
+      e_sig_failed:"La verificación de la firma Ed25519 falló", e_sig_error:"Error de verificación de firma: ",
+      e_ts_format:"Formato de marca de tiempo inválido", e_ts_future:"La marca de tiempo está en el futuro (desfase de reloj > 5 min)", e_ts_old:"La marca de tiempo es demasiado antigua (> 90 días)", e_ts_missing:"Falta la marca de tiempo",
+      e_input_hash_fmt:"Formato de hash de entrada inválido (se esperan 64 caracteres hex)", e_input_hash_missing:"Falta inputHash",
+      e_output_hash_fmt:"Formato de hash de salida inválido (se esperan 64 caracteres hex)", e_output_hash_missing:"Falta outputHash",
+      e_parent_fmt:"Formato de recibo padre inválido: ",
+      e_tee_sig_failed:"La verificación de la firma de atestación TEE falló", e_tee_error:"Error de verificación de atestación TEE", e_tee_incomplete:"La atestación TEE es inválida o incompleta",
+      // ── Interfaz de resultado AWR/2 ────────────────────────────────────
+      reasons_h:"Errores", warnings_h:"Advertencias", no_issues:"Ni errores ni advertencias.",
+      check_canonical:"forma canónica", check_key:"clave del emisor", check_semantics:"semántica del documento",
+      check_chain:"cadena de trabajo", check_profile:"perfil de garantía",
+      prof_label:"Perfil de garantía",
+      prof_L0:"L0 — Recibo: firmado por su emisor, y nada más.",
+      prof_L1:"L1 — Verificado: una parte independiente firmó un veredicto sobre este trabajo.",
+      prof_L2:"L2 — Responsable: dos veredictos independientes más una vinculación de liquidación o garantía.",
+      prof_none:"Ninguno — el documento no se verificó.",
+      prof_legacy:"No aplicable — un documento AWR/1 no tiene perfil AWR/2.",
+      legacy_t:"Documento heredado AWR/1",
+      legacy_d:"La firma cubre solo credentialSubject. Todo lo demás — id, type, issuer, hubInfo — no está firmado y nadie lo atestigua.",
+      dialect_label:"Dialecto heredado:", unsigned_label:"Fuera de la firma:",
+      chain_label:"Saltos padre:", chain_resolved:"{n} resueltos",
+      chain_unresolved:"{n} sin comprobar (documento padre no aportado)",
+      chain_none:"No se declaran saltos padre.",
+      tee_unverified_t:"Atestación presente — NO verificada",
+      tee_unverified_d:"AWR/2 trata las atestaciones TEE y zk como objetos opacos. Comprobar una exige la cadena de certificados de la plataforma, que este verificador offline deliberadamente nunca descarga.",
+      m_status:"Estado", m_doctype:"Tipo de documento", m_capability:"Capacidad",
+      meaning_h:"Qué significa un documento válido",
+      meaning_d:"Este emisor firmó estas afirmaciones y los bytes están intactos. No significa que el modelo se ejecutara, que los hashes correspondan a datos reales, que se pagara el precio ni que la salida sea correcta.",
+      // ── Registro de códigos de razón (§11.2) ───────────────────────────
+      "c_AWR-DOC-001":"No es un objeto JSON",
+      "c_AWR-DOC-002":"@context ausente, no es un array, o su primer elemento no es el contexto VC 2.0",
+      "c_AWR-DOC-003":"el espacio de nombres AWR no está en @context",
+      "c_AWR-DOC-004":"type no contiene VerifiableCredential",
+      "c_AWR-DOC-005":"no hay tipo de documento AWR en type, o hay más de uno",
+      "c_AWR-DOC-006":"id ausente o no es un URI absoluto",
+      "c_AWR-DOC-007":"validFrom ausente o mal formado, o validUntil no es posterior a validFrom",
+      "c_AWR-DOC-008":"credentialSubject ausente o no es un único objeto",
+      "c_AWR-DOC-009":"awrVersion ausente, mal formado, o versión mayor no implementada por este verificador",
+      "c_AWR-DOC-010":"issuer ausente, no es un objeto, o sin id",
+      "c_AWR-CANON-001":"un número JSON no es entero",
+      "c_AWR-CANON-002":"un entero está fuera de ±(2^53−1)",
+      "c_AWR-CANON-003":"Unicode inválido (surrogate solitario) en datos de cadena",
+      "c_AWR-CANON-004":"nombre de propiedad duplicado",
+      "c_AWR-CANON-005":"la entrada no es JSON bien formado",
+      "c_AWR-CANON-006":"discrepancia de forma canónica — falló la autocomprobación del verificador",
+      "c_AWR-KEY-001":"issuer.id no es un did:key",
+      "c_AWR-KEY-002":"did:key mal formado — multibase, multicodec o longitud de clave",
+      "c_AWR-KEY-003":"publicKeyJwk contradice a did:key",
+      "c_AWR-KEY-004":"tipo de clave no soportado",
+      "c_AWR-PROOF-001":"falta proof",
+      "c_AWR-PROOF-002":"proof.type no es DataIntegrityProof",
+      "c_AWR-PROOF-003":"cryptosuite no soportado",
+      "c_AWR-PROOF-004":"proofPurpose no es assertionMethod",
+      "c_AWR-PROOF-005":"proofValue no es multibase base58btc de 64 bytes",
+      "c_AWR-PROOF-006":"falló la verificación de la firma Ed25519",
+      "c_AWR-PROOF-007":"verificationMethod no coincide con issuer.id",
+      "c_AWR-PROOF-008":"proof.@context es incoherente con el @context del documento",
+      "c_AWR-PROOF-009":"proof.created ausente o mal formado",
+      "c_AWR-RCPT-001":"inputDigest u outputDigest ausente o no es una cadena SRI válida",
+      "c_AWR-RCPT-002":"price mal formado (moneda, o importe que no es cadena decimal)",
+      "c_AWR-RCPT-003":"marcas de tiempo de work ausentes o incoherentes",
+      "c_AWR-RCPT-004":"work.latencyMs negativo o no entero",
+      "c_AWR-RCPT-005":"work.modelId ausente o vacío",
+      "c_AWR-RCPT-006":"work.status ausente o fuera de la enumeración",
+      "c_AWR-VDCT-001":"verifiedWork ausente, o sin id / digestSRI",
+      "c_AWR-VDCT-002":"score no es una cadena decimal en [0,1]",
+      "c_AWR-VDCT-003":"method ausente o method.id vacío",
+      "c_AWR-VDCT-004":"verdict fuera de la enumeración",
+      "c_AWR-VDCT-005":"verifiedWork.digestSRI no coincide con el recibo aportado",
+      "c_AWR-VDCT-006":"verdict incoherente con score / threshold",
+      "c_AWR-VDCT-007":"una entrada de evidence no tiene digestSRI",
+      "c_AWR-BLAME-001":"blamedWork no es alcanzable desde chain con los recibos disponibles",
+      "c_AWR-BLAME-002":"failureClass fuera de la enumeración",
+      "c_AWR-BLAME-003":"chain o blamedWork ausente o mal formado",
+      "c_AWR-BLAME-004":"confidence no es una cadena decimal en [0,1]",
+      "c_AWR-CHAIN-001":"una entrada de parents no tiene digestSRI",
+      "c_AWR-CHAIN-002":"formato o algoritmo de referencia por hash inválido",
+      "c_AWR-CHAIN-003":"el hash del padre no coincide con el padre aportado",
+      "c_AWR-CHAIN-004":"ciclo detectado",
+      "c_AWR-CHAIN-005":"límite de profundidad o de nodos excedido",
+      "c_AWR-CHAIN-006":"el mismo id de padre con hashes contradictorios",
+      "c_AWR-CHAIN-007":"el outputDigest del padre difiere del inputDigest del hijo",
+      "c_AWR-BUNDLE-001":"awrBundle ausente o no soportado, o documents vacío",
+      "c_AWR-BUNDLE-002":"id de documento duplicado con contenido distinto",
+      "c_AWR-BUNDLE-003":"el documento sujeto es ambiguo",
+      "c_AWR-PROFILE-001":"L1: no hay veredicto válido para este recibo",
+      "c_AWR-PROFILE-002":"L1: el emisor del veredicto es el emisor del recibo (autoverificación)",
+      "c_AWR-PROFILE-003":"L2: menos de dos emisores de veredicto distintos",
+      "c_AWR-PROFILE-004":"L2: no hay vinculación settlement ni stake",
+      "c_AWR-L2-001":"vinculación de responsabilidad presente pero no comprobada en cadena",
+      "c_AWR-ENV-001":"atestación presente y no verificada",
+      "c_AWR-TIME-001":"validFrom está en el futuro, más allá del margen de desfase de reloj",
+      "c_AWR-TIME-002":"validUntil está en el pasado, o el documento es más antiguo que tu ventana de política",
+      "c_AWR-LEGACY-001":"verificado con las reglas heredadas AWR/1",
+      "c_AWR-LEGACY-002":"el documento AWR/1 falló en ambos dialectos heredados",
+      "c_AWR-LEGACY-003":"las señales de versión no concuerdan: un documento AWR/2 con una suite de prueba AWR/1; no se verifica con ninguna de las dos reglas",
+      "c_AWR-LEGACY-004":"la clave AWR/1 proviene del propio documento, por lo que no se atestigua ninguna identidad del emisor",
+      "c_AWR-LEGACY-005":"quien llama rechazó la verificación AWR/1",
+    },
+    fr: {
+      h1:"Vérificateur de provenance de l'IA",
+      subtitle:"Reçus cryptographiques pour les résultats numériques — vérifiez l'origine sans confiance.",
+      nav_verify:"Vérifier", nav_api:"Docs API", nav_source:"Code source",
+      in_h2:"Vérifier un reçu de provenance d'IA",
+      in_desc:"Collez un ID de reçu ou le reçu JSON complet ci-dessous. Aucun serveur requis — la vérification s'exécute entièrement dans votre navigateur.",
+      ph:"Collez ici votre reçu JSON, ou saisissez un ID de reçu (p. ex. 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f) pour le charger...",
+      btn_verify:"Vérifier le reçu", btn_clear:"Effacer", btn_example:"Charger un exemple",
+      loading:"Vérification...", loading_url:"Chargement du reçu canonique…",
+      checks_h:"Contrôles de vérification", attest_h:"Attestations", chain_h:"Chaîne de provenance", raw_h:"Reçu JSON brut",
+      how_h:"Comment ça marche",
+      step1_t:"Capture", step1_d:"Chaque résultat reçoit un reçu cryptographique avec les hachages d'entrée/sortie, l'ID du modèle ou de la capability, le fournisseur et l'horodatage.",
+      step2_t:"Signature", step2_d:"Le document entier est signé en Ed25519 par son émetteur sur les octets canoniques RFC 8785. La clé publique EST l&#39;identifiant did:key de l&#39;émetteur : aucune clé n&#39;est à rechercher.",
+      step3_t:"Vérifier", step3_d:"N'importe qui peut vérifier l'authenticité du reçu sans faire confiance à aucun serveur — tout le matériel de vérification est autonome.",
+      spec_note:"Les documents sont des <strong>W3C Verifiable Credentials</strong> portant une preuve d&#39;intégrité <strong>eddsa-jcs-2022</strong> sur des octets canoniques <strong>RFC 8785</strong> (AWR/2). Une <strong>attestation TEE ou zk</strong>, si elle est présente, est incluse dans la signature mais n&#39;est <em>pas</em> vérifiée ici : cela exige la chaîne de certificats du fabricant, qu&#39;un vérificateur hors ligne ne doit pas télécharger.",
+      footer:"<strong>Couche de provenance de l'IA</strong> — Sous licence MIT. Construit sur le <a href='https://modelmarket.dev'>AI Market Protocol</a>.",
+      err_empty:"Veuillez coller un reçu JSON ou saisir un ID de reçu.",
+      err_url_invalid:"Ce lien ne contient pas une URL de reçu valide.",
+      err_url_host:"Par sécurité, seuls les reçus de modelmarket.dev sont chargés.",
+      err_url_fetch:"Le reçu canonique n’a pas pu être chargé. Vous pouvez toujours coller son JSON.",
+      err_url_size:"Le reçu dépasse la limite de sécurité de 1 Mo.",
+      err_url_type:"Le endpoint n’a pas renvoyé un document AWR JSON.",
+      err_notfound:"JSON invalide et reçu introuvable. Collez un reçu valide ou vérifiez l'ID.",
+      verdict_pass_t:"Vérifié", verdict_pass_d:"Tous les contrôles ont réussi — l'origine de ce résultat est vérifiée cryptographiquement.",
+      verdict_fail_t:"Échec de la vérification", verdict_fail_d:"{n} contrôle(s) ont échoué. Voir les détails ci-dessous.",
+      m_model:"Modèle", m_provider:"Fournisseur", m_issued:"Émis", m_latency:"Latence", m_price:"Prix", m_receipt_id:"ID de reçu", m_issuer:"Émetteur",
+      input_hash:"Hachage d'entrée (SHA-256)", output_hash:"Hachage de sortie (SHA-256)",
+      errors_label:"Erreurs :", lbl_platform:"Plateforme :", lbl_parents:"reçu(s) parent(s)",
+      tee_verified_t:"TEE vérifié", tee_none_t:"Aucune attestation TEE", tee_none_d:"L'exécution n'a pas été attestée par une enclave de confiance.", tee_code:"Code :",
+      rep_t:"Réputation : {pct}%", rep_d:"Score de confiance du fournisseur",
+      chain_step:"Étape {n}",
+      check_structure:"structure", check_signature:"signature", check_timestamp:"horodatage", check_hash_format:"format de hachage", check_parent_receipts:"reçus parents", check_tee_attestation:"attestation TEE",
+      e_not_object:"Reçu invalide : pas un objet JSON",
+      e_no_subject:"credentialSubject manquant", e_no_proof:"Bloc proof manquant", e_no_issuer:"Bloc issuer manquant",
+      e_no_jwk:"issuer.publicKeyJwk manquant", e_bad_jwk:"JWK invalide : doit être OKP Ed25519",
+      e_sig_failed:"Échec de la vérification de la signature Ed25519", e_sig_error:"Erreur de vérification de signature : ",
+      e_ts_format:"Format d'horodatage invalide", e_ts_future:"L'horodatage est dans le futur (décalage d'horloge > 5 min)", e_ts_old:"L'horodatage est trop ancien (> 90 jours)", e_ts_missing:"Horodatage manquant",
+      e_input_hash_fmt:"Format de hachage d'entrée invalide (64 caractères hex attendus)", e_input_hash_missing:"inputHash manquant",
+      e_output_hash_fmt:"Format de hachage de sortie invalide (64 caractères hex attendus)", e_output_hash_missing:"outputHash manquant",
+      e_parent_fmt:"Format de reçu parent invalide : ",
+      e_tee_sig_failed:"Échec de la vérification de la signature d'attestation TEE", e_tee_error:"Erreur de vérification d'attestation TEE", e_tee_incomplete:"L'attestation TEE est invalide ou incomplète",
+      // ── Interface de résultat AWR/2 ────────────────────────────────────
+      reasons_h:"Erreurs", warnings_h:"Avertissements", no_issues:"Ni erreur ni avertissement.",
+      check_canonical:"forme canonique", check_key:"clé de l'émetteur", check_semantics:"sémantique du document",
+      check_chain:"chaîne de travail", check_profile:"profil d'assurance",
+      prof_label:"Profil d'assurance",
+      prof_L0:"L0 — Reçu : signé par son émetteur, rien de plus.",
+      prof_L1:"L1 — Vérifié : une partie indépendante a signé un verdict sur ce travail.",
+      prof_L2:"L2 — Redevable : deux verdicts indépendants plus un engagement de règlement ou de mise.",
+      prof_none:"Aucun — le document n'a pas été vérifié.",
+      prof_legacy:"Sans objet — un document AWR/1 n'a pas de profil AWR/2.",
+      legacy_t:"Document AWR/1 (héritage)",
+      legacy_d:"La signature ne couvre que credentialSubject. Tout le reste — id, type, issuer, hubInfo — n'est pas signé et n'est attesté par personne.",
+      dialect_label:"Dialecte héritée :", unsigned_label:"Hors de la signature :",
+      chain_label:"Sauts parents :", chain_resolved:"{n} résolus",
+      chain_unresolved:"{n} non vérifiés (document parent non fourni)",
+      chain_none:"Aucun saut parent déclaré.",
+      tee_unverified_t:"Attestation présente — NON vérifiée",
+      tee_unverified_d:"AWR/2 traite les attestations TEE et zk comme des objets opaques. Les vérifier exige la chaîne de certificats de la plateforme, que ce vérificateur hors ligne ne télécharge délibérément jamais.",
+      m_status:"Statut", m_doctype:"Type de document", m_capability:"Capacité",
+      meaning_h:"Ce que signifie un document valide",
+      meaning_d:"Cet émetteur a signé ces affirmations et les octets sont intacts. Cela ne signifie pas que le modèle a tourné, que les hachages correspondent à de vraies données, que le prix a été payé, ni que la sortie est correcte.",
+      // ── Registre des codes de raison (§11.2) ───────────────────────────
+      "c_AWR-DOC-001":"Ce n'est pas un objet JSON",
+      "c_AWR-DOC-002":"@context absent, non tableau, ou premier élément différent du contexte VC 2.0",
+      "c_AWR-DOC-003":"l'espace de noms AWR est absent de @context",
+      "c_AWR-DOC-004":"type ne contient pas VerifiableCredential",
+      "c_AWR-DOC-005":"aucun type de document AWR dans type, ou plus d'un",
+      "c_AWR-DOC-006":"id absent ou n'est pas un URI absolu",
+      "c_AWR-DOC-007":"validFrom absent ou mal formé, ou validUntil pas postérieur à validFrom",
+      "c_AWR-DOC-008":"credentialSubject absent ou n'est pas un objet unique",
+      "c_AWR-DOC-009":"awrVersion absent, mal formé, ou version majeure non implémentée par ce vérificateur",
+      "c_AWR-DOC-010":"issuer absent, non objet, ou sans id",
+      "c_AWR-CANON-001":"un nombre JSON n'est pas entier",
+      "c_AWR-CANON-002":"un entier est hors de ±(2^53−1)",
+      "c_AWR-CANON-003":"Unicode invalide (surrogate isolé) dans une chaîne",
+      "c_AWR-CANON-004":"nom de propriété dupliqué",
+      "c_AWR-CANON-005":"l'entrée n'est pas du JSON bien formé",
+      "c_AWR-CANON-006":"forme canonique divergente — l'autocontrôle du vérificateur a échoué",
+      "c_AWR-KEY-001":"issuer.id n'est pas un did:key",
+      "c_AWR-KEY-002":"did:key mal formé — multibase, multicodec ou longueur de clé",
+      "c_AWR-KEY-003":"publicKeyJwk contredit did:key",
+      "c_AWR-KEY-004":"type de clé non pris en charge",
+      "c_AWR-PROOF-001":"proof manquant",
+      "c_AWR-PROOF-002":"proof.type n'est pas DataIntegrityProof",
+      "c_AWR-PROOF-003":"cryptosuite non pris en charge",
+      "c_AWR-PROOF-004":"proofPurpose n'est pas assertionMethod",
+      "c_AWR-PROOF-005":"proofValue n'est pas un multibase base58btc de 64 octets",
+      "c_AWR-PROOF-006":"échec de la vérification de la signature Ed25519",
+      "c_AWR-PROOF-007":"verificationMethod ne correspond pas à issuer.id",
+      "c_AWR-PROOF-008":"proof.@context est incohérent avec le @context du document",
+      "c_AWR-PROOF-009":"proof.created absent ou mal formé",
+      "c_AWR-RCPT-001":"inputDigest ou outputDigest absent ou chaîne SRI invalide",
+      "c_AWR-RCPT-002":"price mal formé (devise, ou montant qui n'est pas une chaîne décimale)",
+      "c_AWR-RCPT-003":"horodatages de work absents ou incohérents",
+      "c_AWR-RCPT-004":"work.latencyMs négatif ou non entier",
+      "c_AWR-RCPT-005":"work.modelId absent ou vide",
+      "c_AWR-RCPT-006":"work.status absent ou hors énumération",
+      "c_AWR-VDCT-001":"verifiedWork absent, ou sans id / digestSRI",
+      "c_AWR-VDCT-002":"score n'est pas une chaîne décimale dans [0,1]",
+      "c_AWR-VDCT-003":"method absent ou method.id vide",
+      "c_AWR-VDCT-004":"verdict hors énumération",
+      "c_AWR-VDCT-005":"verifiedWork.digestSRI ne correspond pas au reçu fourni",
+      "c_AWR-VDCT-006":"verdict incohérent avec score / threshold",
+      "c_AWR-VDCT-007":"une entrée evidence n'a pas de digestSRI",
+      "c_AWR-BLAME-001":"blamedWork n'est pas atteignable depuis chain avec les reçus disponibles",
+      "c_AWR-BLAME-002":"failureClass hors énumération",
+      "c_AWR-BLAME-003":"chain ou blamedWork absent ou mal formé",
+      "c_AWR-BLAME-004":"confidence n'est pas une chaîne décimale dans [0,1]",
+      "c_AWR-CHAIN-001":"une entrée parents n'a pas de digestSRI",
+      "c_AWR-CHAIN-002":"format ou algorithme de référence par hachage invalide",
+      "c_AWR-CHAIN-003":"le hachage du parent ne correspond pas au parent fourni",
+      "c_AWR-CHAIN-004":"cycle détecté",
+      "c_AWR-CHAIN-005":"limite de profondeur ou de nœuds dépassée",
+      "c_AWR-CHAIN-006":"même id de parent avec des hachages contradictoires",
+      "c_AWR-CHAIN-007":"l'outputDigest du parent diffère de l'inputDigest de l'enfant",
+      "c_AWR-BUNDLE-001":"awrBundle absent ou non pris en charge, ou documents vide",
+      "c_AWR-BUNDLE-002":"id de document dupliqué avec un contenu différent",
+      "c_AWR-BUNDLE-003":"le document sujet est ambigu",
+      "c_AWR-PROFILE-001":"L1 : aucun verdict valide pour ce reçu",
+      "c_AWR-PROFILE-002":"L1 : l'émetteur du verdict est l'émetteur du reçu (auto-vérification)",
+      "c_AWR-PROFILE-003":"L2 : moins de deux émetteurs de verdict distincts",
+      "c_AWR-PROFILE-004":"L2 : aucun engagement settlement ni stake",
+      "c_AWR-L2-001":"engagement de responsabilité présent mais non vérifié sur la chaîne",
+      "c_AWR-ENV-001":"attestation présente et non vérifiée",
+      "c_AWR-TIME-001":"validFrom est dans le futur, au-delà de la tolérance de décalage d'horloge",
+      "c_AWR-TIME-002":"validUntil est dans le passé, ou le document est plus ancien que votre fenêtre de politique",
+      "c_AWR-LEGACY-001":"vérifié selon les règles héritées AWR/1",
+      "c_AWR-LEGACY-002":"le document AWR/1 a échoué dans les deux dialectes hérités",
+      "c_AWR-LEGACY-003":"les signaux de version se contredisent : un document AWR/2 portant une suite de preuve AWR/1, vérifié selon aucune des deux règles",
+      "c_AWR-LEGACY-004":"la clé AWR/1 provient du document lui-même, donc aucune identité d'émetteur n'est attestée",
+      "c_AWR-LEGACY-005":"l'appelant a refusé la vérification AWR/1",
+    },
+    zh: {
+      h1:"AI 溯源验证器",
+      subtitle:"面向数字工作结果的加密收据——无需信任即可验证来源。",
+      nav_verify:"验证", nav_api:"API 文档", nav_source:"源代码",
+      in_h2:"验证 AI 溯源收据",
+      in_desc:"在下方粘贴收据 ID 或完整的 JSON 收据。无需服务器——验证完全在你的浏览器中运行。",
+      ph:"在此粘贴你的 JSON 收据，或输入收据 ID（例如 5c4f90b4-2c8a-4c7f-8f2a-3b1a9e8c7d6f）以加载它……",
+      btn_verify:"验证收据", btn_clear:"清除", btn_example:"加载示例",
+      loading:"验证中……", loading_url:"正在加载规范收据……",
+      checks_h:"验证检查项", attest_h:"证明", chain_h:"溯源链", raw_h:"原始 JSON 收据",
+      how_h:"工作原理",
+      step1_t:"捕获", step1_d:"每个工作结果都会获得一份加密收据，包含输入/输出哈希、模型或 capability ID、提供方和时间戳。",
+      step2_t:"签名", step2_d:"整个文档由其签发者对 RFC 8785 规范字节以 Ed25519 签名。公钥就是签发者的 did:key 标识符，因此无需到任何地方查找密钥。",
+      step3_t:"验证", step3_d:"任何人都可以在不信任任何服务器的情况下验证收据的真实性——所有验证材料都是自包含的。",
+      spec_note:"文档是 <strong>W3C Verifiable Credentials</strong>，携带对 <strong>RFC 8785</strong> 规范字节的 <strong>eddsa-jcs-2022</strong> 数据完整性证明（AWR/2）。若存在 <strong>TEE 或 zk 证明</strong>，它位于签名内部，但此处<em>不会</em>被验证：那需要硬件厂商的证书链，而离线验证器不应去获取。",
+      footer:"<strong>AI 溯源层</strong>——MIT 许可。构建于 <a href='https://modelmarket.dev'>AI Market Protocol</a> 之上。",
+      err_empty:"请粘贴 JSON 收据或输入收据 ID。",
+      err_url_invalid:"此证明链接不包含有效的收据 URL。",
+      err_url_host:"为确保安全，仅从 modelmarket.dev 加载收据。",
+      err_url_fetch:"无法加载规范收据；你仍可在下方粘贴其 JSON。",
+      err_url_size:"收据超过验证器 1 MB 的安全限制。",
+      err_url_type:"该端点未返回 AWR JSON 文档。",
+      err_notfound:"JSON 无效且未找到收据。请粘贴有效的收据或检查 ID。",
+      verdict_pass_t:"已验证", verdict_pass_d:"所有检查项均已通过——此工作结果的来源已通过加密验证。",
+      verdict_fail_t:"验证失败", verdict_fail_d:"{n} 项检查失败。详见下方。",
+      m_model:"模型", m_provider:"提供方", m_issued:"签发时间", m_latency:"延迟", m_price:"价格", m_receipt_id:"收据 ID", m_issuer:"签发者",
+      input_hash:"输入哈希（SHA-256）", output_hash:"输出哈希（SHA-256）",
+      errors_label:"错误：", lbl_platform:"平台：", lbl_parents:"个父收据",
+      tee_verified_t:"TEE 已验证", tee_none_t:"无 TEE 证明", tee_none_d:"执行未经过可信飞地证明。", tee_code:"代码：",
+      rep_t:"声誉：{pct}%", rep_d:"提供方信任分数",
+      chain_step:"第 {n} 步",
+      check_structure:"结构", check_signature:"签名", check_timestamp:"时间戳", check_hash_format:"哈希格式", check_parent_receipts:"父收据", check_tee_attestation:"TEE 证明",
+      e_not_object:"收据无效：不是 JSON 对象",
+      e_no_subject:"缺少 credentialSubject", e_no_proof:"缺少 proof 块", e_no_issuer:"缺少 issuer 块",
+      e_no_jwk:"缺少 issuer.publicKeyJwk", e_bad_jwk:"JWK 无效：必须为 OKP Ed25519",
+      e_sig_failed:"Ed25519 签名验证失败", e_sig_error:"签名验证错误： ",
+      e_ts_format:"时间戳格式无效", e_ts_future:"时间戳在未来（时钟偏移 > 5 分钟）", e_ts_old:"时间戳过旧（> 90 天）", e_ts_missing:"缺少时间戳",
+      e_input_hash_fmt:"输入哈希格式无效（应为 64 个十六进制字符）", e_input_hash_missing:"缺少 inputHash",
+      e_output_hash_fmt:"输出哈希格式无效（应为 64 个十六进制字符）", e_output_hash_missing:"缺少 outputHash",
+      e_parent_fmt:"父收据格式无效： ",
+      e_tee_sig_failed:"TEE 证明签名验证失败", e_tee_error:"TEE 证明验证错误", e_tee_incomplete:"TEE 证明无效或不完整",
+      // ── AWR/2 结果界面 ────────────────────────────────────────────────
+      reasons_h:"错误", warnings_h:"警告", no_issues:"没有错误，也没有警告。",
+      check_canonical:"规范形式", check_key:"签发者密钥", check_semantics:"文档语义",
+      check_chain:"工作链", check_profile:"保障等级",
+      prof_label:"保障等级",
+      prof_L0:"L0 — 收据：仅由其签发者签名，别无其他。",
+      prof_L1:"L1 — 已核验：有独立方对该工作签署了裁定。",
+      prof_L2:"L2 — 可追责：两份独立裁定，外加结算或质押绑定。",
+      prof_none:"无 — 该文档未通过验证。",
+      prof_legacy:"不适用 — AWR/1 文档没有 AWR/2 等级。",
+      legacy_t:"AWR/1 旧版文档",
+      legacy_d:"签名只覆盖 credentialSubject。其余一切——id、type、issuer、hubInfo——都未被签名，无人为其作证。",
+      dialect_label:"旧版方言：", unsigned_label:"签名之外：",
+      chain_label:"父级跳数：", chain_resolved:"已解析 {n} 个",
+      chain_unresolved:"未检查 {n} 个（未提供父文档）",
+      chain_none:"未声明父级跳数。",
+      tee_unverified_t:"存在证明 — 未经验证",
+      tee_unverified_d:"AWR/2 将 TEE 与 zk 证明视为不透明对象。验证它需要平台的证书链，而这个离线验证器有意从不去获取。",
+      m_status:"状态", m_doctype:"文档类型", m_capability:"能力",
+      meaning_h:"“有效”意味着什么",
+      meaning_d:"该签发者签署了这些声明，且字节未被改动。这并不意味着模型确实运行过、哈希对应真实数据、价格已支付，或输出正确。",
+      // ── 原因代码登记表（§11.2）────────────────────────────────────────
+      "c_AWR-DOC-001":"不是 JSON 对象",
+      "c_AWR-DOC-002":"@context 缺失、不是数组，或首项不是 VC 2.0 上下文",
+      "c_AWR-DOC-003":"@context 中缺少 AWR 命名空间",
+      "c_AWR-DOC-004":"type 不含 VerifiableCredential",
+      "c_AWR-DOC-005":"type 中没有 AWR 文档类型，或多于一个",
+      "c_AWR-DOC-006":"id 缺失或不是绝对 URI",
+      "c_AWR-DOC-007":"validFrom 缺失或格式错误，或 validUntil 不晚于 validFrom",
+      "c_AWR-DOC-008":"credentialSubject 缺失或不是单个对象",
+      "c_AWR-DOC-009":"awrVersion 缺失、格式错误，或主版本号本验证器未实现",
+      "c_AWR-DOC-010":"issuer 缺失、不是对象，或缺少 id",
+      "c_AWR-CANON-001":"某个 JSON 数字不是整数",
+      "c_AWR-CANON-002":"某个整数超出 ±(2^53−1)",
+      "c_AWR-CANON-003":"字符串数据中含无效 Unicode（孤立代理项）",
+      "c_AWR-CANON-004":"对象属性名重复",
+      "c_AWR-CANON-005":"输入不是格式正确的 JSON",
+      "c_AWR-CANON-006":"规范形式不一致 — 验证器自检失败",
+      "c_AWR-KEY-001":"issuer.id 不是 did:key",
+      "c_AWR-KEY-002":"did:key 格式错误 — multibase、multicodec 或密钥长度",
+      "c_AWR-KEY-003":"publicKeyJwk 与 did:key 不一致",
+      "c_AWR-KEY-004":"不支持的密钥类型",
+      "c_AWR-PROOF-001":"缺少 proof",
+      "c_AWR-PROOF-002":"proof.type 不是 DataIntegrityProof",
+      "c_AWR-PROOF-003":"不支持的 cryptosuite",
+      "c_AWR-PROOF-004":"proofPurpose 不是 assertionMethod",
+      "c_AWR-PROOF-005":"proofValue 不是 64 字节的 base58btc multibase",
+      "c_AWR-PROOF-006":"Ed25519 签名验证失败",
+      "c_AWR-PROOF-007":"verificationMethod 与 issuer.id 不匹配",
+      "c_AWR-PROOF-008":"proof.@context 与文档 @context 不一致",
+      "c_AWR-PROOF-009":"proof.created 缺失或格式错误",
+      "c_AWR-RCPT-001":"inputDigest 或 outputDigest 缺失，或不是有效的 SRI 字符串",
+      "c_AWR-RCPT-002":"price 格式错误（货币，或金额不是十进制字符串）",
+      "c_AWR-RCPT-003":"work 时间戳缺失或互相矛盾",
+      "c_AWR-RCPT-004":"work.latencyMs 为负或不是整数",
+      "c_AWR-RCPT-005":"work.modelId 缺失或为空",
+      "c_AWR-RCPT-006":"work.status 缺失或不在枚举内",
+      "c_AWR-VDCT-001":"verifiedWork 缺失，或缺少 id / digestSRI",
+      "c_AWR-VDCT-002":"score 不是 [0,1] 区间的十进制字符串",
+      "c_AWR-VDCT-003":"method 缺失或 method.id 为空",
+      "c_AWR-VDCT-004":"verdict 不在枚举内",
+      "c_AWR-VDCT-005":"verifiedWork.digestSRI 与所提供的收据不匹配",
+      "c_AWR-VDCT-006":"verdict 与 score / threshold 不一致",
+      "c_AWR-VDCT-007":"某条 evidence 缺少 digestSRI",
+      "c_AWR-BLAME-001":"以现有收据无法从 chain 到达 blamedWork",
+      "c_AWR-BLAME-002":"failureClass 不在枚举内",
+      "c_AWR-BLAME-003":"chain 或 blamedWork 缺失或格式错误",
+      "c_AWR-BLAME-004":"confidence 不是 [0,1] 区间的十进制字符串",
+      "c_AWR-CHAIN-001":"某条 parents 缺少 digestSRI",
+      "c_AWR-CHAIN-002":"摘要引用的格式或算法无效",
+      "c_AWR-CHAIN-003":"父摘要与所提供的父文档不匹配",
+      "c_AWR-CHAIN-004":"检测到环",
+      "c_AWR-CHAIN-005":"超出深度或节点数上限",
+      "c_AWR-CHAIN-006":"同一父 id 出现相互矛盾的摘要",
+      "c_AWR-CHAIN-007":"父的 outputDigest 与子的 inputDigest 不同",
+      "c_AWR-BUNDLE-001":"awrBundle 缺失或不受支持，或 documents 为空",
+      "c_AWR-BUNDLE-002":"文档 id 重复但内容不同",
+      "c_AWR-BUNDLE-003":"主体文档不明确",
+      "c_AWR-PROFILE-001":"L1：该收据没有有效裁定",
+      "c_AWR-PROFILE-002":"L1：裁定签发者与收据签发者相同（自我核验）",
+      "c_AWR-PROFILE-003":"L2：不同裁定签发者少于两个",
+      "c_AWR-PROFILE-004":"L2：没有 settlement 或 stake 绑定",
+      "c_AWR-L2-001":"存在追责绑定，但未在链上核查",
+      "c_AWR-ENV-001":"存在证明且未经验证",
+      "c_AWR-TIME-001":"validFrom 在未来，超出时钟偏移容差",
+      "c_AWR-TIME-002":"validUntil 已过期，或文档早于你的策略窗口",
+      "c_AWR-LEGACY-001":"按 AWR/1 旧版规则验证通过",
+      "c_AWR-LEGACY-002":"AWR/1 文档在两种旧版方言下均失败",
+      "c_AWR-LEGACY-003":"版本信号相互矛盾：文档声称是 AWR/2 却携带 AWR/1 证明套件，两套规则均不适用",
+      "c_AWR-LEGACY-004":"AWR/1 密钥取自文档本身，因此未证实任何签发者身份",
+      "c_AWR-LEGACY-005":"调用方拒绝执行 AWR/1 验证",
+    },
+  };
+  const SUP = ["en", "ru", "es", "fr", "zh"];
+  let lang = "en";
+  try {
+    const requested = new URLSearchParams(location.search).get("lang");
+    const saved = localStorage.getItem("verifier-lang");
+    if (requested && SUP.includes(requested)) lang = requested;
+    else if (saved && SUP.includes(saved)) lang = saved;
+    else { const n = (navigator.language || "en").slice(0, 2).toLowerCase(); if (SUP.includes(n)) lang = n; }
+  } catch (_) {}
+  const t = k => (I18N[lang] && I18N[lang][k]) || I18N.en[k] || k;
+
+  // Expose to the external JS modules (verifier.js / renderer.js).
+  window.I18N = I18N;
+  window.__t = t;
+  window.__lang = lang;
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    window.__lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(el => { const v = t(el.getAttribute("data-i18n")); if (v) el.textContent = v; });
+    document.querySelectorAll("[data-i18n-html]").forEach(el => { const v = t(el.getAttribute("data-i18n-html")); if (v) el.innerHTML = v; });
+    document.querySelectorAll("[data-i18n-ph]").forEach(el => { const v = t(el.getAttribute("data-i18n-ph")); if (v) el.setAttribute("placeholder", v); });
+    document.querySelectorAll(".langsw button").forEach(b => b.classList.toggle("on", b.dataset.lang === lang));
+    // Re-render an already-shown verification result in the new language.
+    if (typeof window.__rerender === "function") window.__rerender();
+  }
+
+  function setLang(l) {
+    if (!SUP.includes(l)) return;
+    lang = l;
+    try { localStorage.setItem("verifier-lang", l); } catch (_) {}
+    applyLang();
+  }
+  window.__setLang = setLang;
+
+  document.querySelectorAll(".langsw button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  applyLang();
+  </script>
+  <script src="js/verifier.js?v=20260812b"></script>
+  <script src="js/receipt-url.js?v=20260812b"></script>
+  <script src="js/renderer.js?v=20260812b"></script>
+</body>
+</html>

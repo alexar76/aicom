@@ -1,0 +1,46 @@
+# The PRIVATE patch-authoring service — the AI-Factory reduced to the one route SKOPOS calls.
+#
+# Small on purpose. The full factory needs redis, a database, a worker, an admin surface and a
+# storefront; none of that turns a signed MOMUS ticket into a diff, and the host this belongs on had
+# 772MB free when it was measured. Only `core`, `llm` and `web` are imported by this route — verified
+# by walking sys.modules after building the app, not guessed.
+#
+# The monorepo SOURCE is NOT baked in. It is mounted read-only at runtime (AIFACTORY_APP_ROOT), so the
+# file contents the model is shown are the host's current ones rather than whatever was true when this
+# image was built. See momus/docs/self-healing-operations.md.
+FROM python:3.11-slim
+
+# git: the diff is computed by git in a throwaway tree, because /app is not a repository and asking a
+# model to write a unified diff produces hunks that apply to the wrong lines.
+RUN apt-get update && apt-get install -y --no-install-recommends git \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Pinned to the same majors the factory runs. cryptography is needed to verify MOMUS's Ed25519
+# signature on the ticket: `momus.findings` cannot be imported here (it needs oracle_core, which is
+# not a factory dependency), so the check is reimplemented and pinned against the real one by
+# tests/test_remediation_fix_route.py.
+RUN pip install --no-cache-dir \
+    "fastapi>=0.115" "uvicorn[standard]>=0.30" "pydantic>=2.7" "httpx>=0.27" \
+    "pyyaml>=6" "cryptography>=42" "orjson>=3.9" \
+    # prometheus_client and opentelemetry are imported INSIDE functions on the cost-guard path
+    # (core/outcome_memory.py, core/surrogate_review.py), so a sys.modules walk at import time does
+    # not reveal them — a live ticket did, with ModuleNotFoundError as the "refusal".
+    "prometheus_client>=0.20" "opentelemetry-api>=1.25"
+
+COPY core /app/core
+COPY llm /app/llm
+COPY web/backend /app/web/backend
+COPY config /app/config
+
+# `web` and `web.backend` must be importable as packages.
+RUN test -f /app/web/__init__.py || touch /app/web/__init__.py
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    REMEDIATION_PORT=9086
+
+EXPOSE 9086
+CMD ["python", "-m", "uvicorn", "web.backend.remediation_service:app", \
+     "--host", "0.0.0.0", "--port", "9086", "--workers", "1"]

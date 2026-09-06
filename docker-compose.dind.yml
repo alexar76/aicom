@@ -1,0 +1,68 @@
+# Docker-in-Docker sidecar — isolates sandbox/compose from the host daemon.
+# Enabled by default via run-compose.sh / deploy.sh (merged with docker-compose.yml).
+#
+# ⚠️  HOST-ESCAPE RISK — `privileged: true` (below) ⚠️
+# A privileged DinD container shares the host kernel with near-root
+# capabilities: a sandbox break-out, a malicious generated product, or a
+# kernel bug can pivot from this container to the HOST. This is strictly
+# safer than mounting the host docker.sock (which is direct host root), but it
+# is NOT a hard security boundary.
+#
+# Recommended hardening for untrusted / multi-tenant workloads:
+#   • Run the WHOLE stack on a dedicated, disposable VM or a separate Docker
+#     host — never on a box that also runs production or holds secrets.
+#   • Prefer rootless DinD (`docker-compose.dind-rootless.yml`) so a break-out
+#     lands as an unprivileged host user instead of root. (Rootless needs
+#     cgroup v2 delegation + /etc/subuid+subgid — not the zero-config default.)
+#   • Keep AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION=1 (default) so preview
+#     stacks have no outbound internet egress.
+#   • Resource caps below shrink crypto-mining / fork-bomb blast radius (I1).
+#
+# Emergency fallback to host socket (even riskier — direct host root, NOT
+# recommended): AIFACTORY_USE_HOST_DOCKER=1 ./run-compose.sh
+
+services:
+  docker-dind:
+    image: docker:27.4.0-dind
+    # ⚠️  privileged grants near-root host access — see the file header above
+    # for the host-escape risk and rootless/separate-host mitigations.
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    # Blast-radius caps (I1): DinD still privileged, but a runaway sandbox
+    # cannot eat the whole host CPU/RAM/PIDs.
+    mem_limit: 4g
+    cpus: 2.0
+    pids_limit: 2048
+    volumes:
+      - docker-dind-certs-ca:/certs/ca
+      - docker-dind-certs-client:/certs/client
+      - docker-dind-data:/var/lib/docker
+    networks:
+      aicom_net:
+        aliases:
+          - docker
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "docker", "info"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 15s
+
+  app:
+    depends_on:
+      docker-dind:
+        condition: service_healthy
+    environment:
+      DOCKER_HOST: tcp://docker:2376
+      DOCKER_TLS_VERIFY: "1"
+      DOCKER_CERT_PATH: /certs/client
+      AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION: ${AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION:-1}
+    volumes:
+      - docker-dind-certs-client:/certs/client:ro
+
+volumes:
+  docker-dind-certs-ca:
+  docker-dind-certs-client:
+  docker-dind-data:

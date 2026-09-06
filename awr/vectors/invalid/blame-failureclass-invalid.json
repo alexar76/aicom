@@ -1,0 +1,43 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://verify.modelmarket.dev/ns/awr/v2"
+  ],
+  "id": "urn:uuid:00000086-a11c-4f38-9b8a-1c2d3e4f5a6b",
+  "type": [
+    "VerifiableCredential",
+    "BlameAttestation"
+  ],
+  "issuer": {
+    "id": "did:key:z6Mkh7U7jBwoMro3UeHmXes4tKtFbZhMRWejbtunbU4hhvjP",
+    "name": "example-attributor"
+  },
+  "validFrom": "2026-07-31T10:15:30Z",
+  "awrVersion": "2.0.0",
+  "credentialSubject": {
+    "chain": {
+      "digestSRI": "sha256-ITS2NGzFGGV0DtPc+kEjinu/PlvBpBs4N/8KTJneXb8=",
+      "id": "urn:uuid:00000012-a11c-4f38-9b8a-1c2d3e4f5a6b"
+    },
+    "blamedWork": {
+      "digestSRI": "sha256-X5EEx+sPpYiBS0ieSoeCWO7GTPTBu4EbGMkzwQdVZGc=",
+      "id": "urn:uuid:00000010-a11c-4f38-9b8a-1c2d3e4f5a6b"
+    },
+    "failureClass": "hallucination",
+    "method": {
+      "id": "urn:example:method:hop-bisect-v1"
+    }
+  },
+  "proof": {
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://verify.modelmarket.dev/ns/awr/v2"
+    ],
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "created": "2026-07-31T10:15:30Z",
+    "verificationMethod": "did:key:z6Mkh7U7jBwoMro3UeHmXes4tKtFbZhMRWejbtunbU4hhvjP#z6Mkh7U7jBwoMro3UeHmXes4tKtFbZhMRWejbtunbU4hhvjP",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "z4uZa3skZzuJiG2gw7SvWtMYFyrR1XawTYjuykzTY7P123GL3RdaiVPx8qPXWkMwWKY6ux7Afpr9DrwHsypZYv2bx"
+  }
+}

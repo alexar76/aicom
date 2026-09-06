@@ -1,0 +1,105 @@
+# Slim build context — compose bind-mounts ./data at runtime over /app/data.
+# Keep small bootstrap files under data/config/ (see Dockerfile RUN cp …).
+
+.git
+.gitignore
+.github
+.cursor
+.hypothesis
+**/.cursor
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+**/*.egg-info
+**/.coverage
+**/htmlcov
+**/*.md.bak
+
+# Docs / dev assets (not needed in runtime image)
+docs/
+*.md
+!README.md
+
+# Tests and local tooling (run pytest on host/CI, not inside app image)
+tests/
+.test-venv
+**/.test-venv
+**/.venv
+scripts/record_pipeline_demo_video.py
+scripts/capture_gallery_full_software.py
+
+web/frontend/node_modules
+web/frontend/.next
+web/frontend/coverage
+alien-monitor/node_modules
+alien-monitor/frontend/node_modules
+**/node_modules
+
+# Foundry / Solana lottery build artifacts (not needed in alien-monitor image)
+lottery/contracts/test-ledger/
+lottery/contracts/cache/
+lottery/contracts/broadcast/
+lottery/contracts/out/
+
+# Heavy or host-owned tree (not needed inside the image layer)
+data/
+!data/config/
+!data/config/admin.json
+!data/config/admin_users.json
+!data/config/model_providers.example.yaml
+
+# Root lockfile is for host tooling (playwright); confuses Next workspace root in Docker builds.
+package-lock.json
+
+# Env and secrets must never be baked into layers
+.env
+.env.*
+!.env.example
+docker-compose*.yml
+!docker-compose.yml
+
+# MOMUS / Treasury: both images build from the REPO ROOT, so momus/.dockerignore and
+# treasury/.dockerignore are inert — the rules have to live here. Without them a build host where
+# either service was ever run locally would bake data/momus_signing_key (the scanner identity) or
+# data/treasury_signing_key (the payout key) straight into the image layers.
+momus/data/
+treasury/data/
+**/data/
+**/*_signing_key
+**/*.key
+**/.env
+
+# ── Build artefacts and databases: 4.3 GB of the 5.18 GB `COPY . .` layer ────────────────
+# Measured 2026-08-27, from `docker history ai-factory:prod-20260827-nogit`: the source copy was
+# the single largest layer in a 13.1 GB image, and almost none of it was source. The factory
+# image carries the WHOLE monorepo, so every satellite's regenerable output rode along:
+#
+#   skopos/skopos.sqlite3        1.3 GB   a live database, shipped inside an image
+#   aimarket-sdks/rust/target    910 MB
+#   contracts/solana/target      798 MB
+#   awr/rust/target              481 MB
+#   .claude/                     451 MB   session state and git worktrees
+#   acex/contracts/solana        365 MB
+#
+# This is not only size. With 11 GB free the rebuild failed at the `chown -R` step (Dockerfile
+# line 155, whose own comment predicts exactly that), and a second attempt drained the disk from
+# 16 GB to 4.2 GB in minutes while production containers and pipeline.db were being written to.
+# Shipping a satellite's SQLite database in an image is also its own problem, separate from disk.
+#
+# Excluding these does NOT delete them from the host — that is `cargo clean` / `anchor clean`,
+# a separate decision. This only keeps them out of the build.
+**/target/
+**/test-ledger/
+*.sqlite3
+**/*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+.claude/
+
+# ZK build inputs — the hub image needs only the proving key and the witness
+# generator; the powers-of-tau cache and the r1cs are 19MB+ of build scratch.
+contracts/zk/build/*.ptau
+contracts/zk/build/*.r1cs
+contracts/zk/build/*.wtns

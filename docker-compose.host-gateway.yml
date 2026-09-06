@@ -1,0 +1,6 @@
+# Optional overlay: reach services on the Docker host (e.g. Ollama on :11434).
+# Usage: docker compose -f docker-compose.yml -f docker-compose.host-gateway.yml up -d
+services:
+  app:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -1,0 +1,24 @@
+---
+description: No mocks/stubs/fake data in production or live demos — mocks only in tests.
+alwaysApply: true
+---
+
+# No mocks in reality
+
+Production, public demos, and live operator UIs must use **real** backends, keys, sensors, scans, and LLM providers.
+
+## Allowed
+
+- `unittest.mock` / fixtures / `ProviderKind.MOCK` / `AIMARKET_SANDBOX_STUB_INVOKE` **only inside tests** (or explicit offline CI with the stub env var set by the test harness).
+- Clearly labeled **SIM** / demo-simulators when the product model already distinguishes LIVE vs SIM (e.g. GAIA/ATLAS pins) — never present SIM as LIVE.
+
+## Forbidden in prod / live paths
+
+- Returning canned, stub, or invented API/LLM results when a real provider/key is configured (or should be).
+- Baking secrets or stale `.env` into images so they override live compose/host env.
+- Enabling `allow_test_provider`, mock LLM providers, or sandbox stub invoke on production hosts.
+- Silently falling back to fake success when the real call failed — fail loudly or show a clear non-AI / error state sourced from real metrics only.
+
+## When fixing prod
+
+Prefer copying a **known-good live key/config** from another prod service on the same fleet; verify with a real HTTP/LLM call before declaring done.

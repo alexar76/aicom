@@ -1,0 +1,1589 @@
+# Monorepo → GitHub satellite mapping (source of truth for mirror + release scripts).
+# Org defaults to alexar76; override with SATELLITE_GITHUB_ORG env.
+#
+# Per-satellite `history:` controls how mirror_satellites.sh publishes:
+#   mirror (default, may be omitted) — read-only: squashed orphan commit, force-pushed.
+#                                      PRs are overwritten on the next sync.
+#   live                             — append-only real history: normal commit + push
+#                                      (never --force, never orphan). PRs are accepted;
+#                                      merged PRs must be reverse-imported into the
+#                                      monorepo (scripts/import_satellite_pr.sh) before
+#                                      the next outbound sync, or the sync aborts.
+
+org: alexar76
+
+satellites:
+  - id: aimarket-courses
+    repo: aimarket-courses
+    description: "10 hands-on AIMarket academy courses — orchestration, oracles, MCP security, agent economy (en/ru/es/fr/zh)."
+    homepage: https://alexar76.github.io/aimarket-courses/
+    topics:
+      - aimarket
+      - ai-agents
+      - courses
+      - education
+      - mcp
+      - oracles
+      - agent-economy
+    license: mit
+    paths:
+      - courses
+    export_layout:
+      monorepo_from: courses
+    registries: []
+    ci:
+      - pytest-course-matrix
+      - pages-portal
+    notes: >
+      Monorepo mirror (like aimarket-desktop): root README + one folder per course,
+      each with its own README, labs, Colab notebooks, and Pages subpath.
+      Portal: alexar76.github.io/aimarket-courses/
+      Source of truth: courses/ in the monorepo. Replaces per-course satellite repos.
+      Clip on-ramp is alexar76/aimarket-school (school/) → edu.modelmarket.dev.
+
+  - id: aimarket-school
+    repo: aimarket-school
+    description: "AIMarket School — 10 free clip lessons (Try-it + Colab) that on-ramp into the academies. Live portal: edu.modelmarket.dev"
+    homepage: https://edu.modelmarket.dev/
+    topics:
+      - aimarket
+      - ai-agents
+      - education
+      - colab
+      - oracles
+      - agent-economy
+      - tutorials
+    license: mit
+    paths:
+      - school
+    export_layout:
+      monorepo_from: school
+    registries: []
+    ci:
+      - pytest-school
+    notes: >
+      Clip-length on-ramp (EN/RU/ES/FR/ZH). Source: school/ in the monorepo (Gitea).
+      Live portal: edu.modelmarket.dev (deploy_edu_school.sh).
+      GitHub: alexar76/aimarket-school only — not duplicated on alexar76/aicom.
+      Colab notebooks: github.com/alexar76/aimarket-school/blob/main/notebooks/….
+
+  - id: profile
+    repo: alexar76
+    optional: true
+    description: "GitHub profile README — ecosystem map for alexar76."
+    homepage: https://github.com/alexar76
+    topics:
+      - github-profile
+      - aimarket
+      - ai-agents
+      - open-source
+      - agent-economy
+      - developer
+    license: mit
+    paths:
+      - scripts/profile-readme/README.md
+      - scripts/profile-readme/assets/
+    registries: []
+    ci: []
+    notes: >
+      Special satellite: target repo is the GitHub PROFILE repo
+      (org/username == alexar76/alexar76). Only README.md + assets/ are
+      published — no LICENSE / SECURITY.md / mirror banner / governance.
+      Canonical source: scripts/profile-readme/README.md. Handled by the
+      dedicated export_profile() function in mirror_satellites.sh.
+      Optional: skipped in bulk publish until alexar76/alexar76 profile repo exists.
+
+  - id: aimarket-desktop
+    homepage: "https://alexar76.github.io/aicom/"
+    repo: aimarket-desktop
+    description: "10 desktop & IDE apps for AIMarket — Flutter, Tauri, and VS Code in one Melos monorepo."
+    license: mit
+    paths:
+      - desktop-integrations
+    export_layout:
+      apps_from: desktop-integrations
+      packages_from: desktop-integrations/packages
+      # Per-app language packs — colocated with SKU
+      language_packs:
+        source: desktop-integrations/{app}/language-packs
+        target: apps/{app}/language-packs
+    registries:
+      - github-releases
+    ci:
+      - flutter-analyze
+      - flutter-build-web-matrix
+    notes: >
+      Depends on aimarket-sdks (Dart) via pub git/path — not vendored in this repo.
+      Do NOT embed aimarket-sdks/dart here; use separate aimarket-sdks satellite.
+
+  - id: aimarket-sdks
+    homepage: "https://alexar76.github.io/aicom/"
+    repo: aimarket-sdks
+    description: "Official AIMarket client SDKs — Dart, TypeScript, and Rust."
+    license: mit
+    paths:
+      - aimarket-sdks
+    export_layout:
+      root_from: aimarket-sdks
+      preserve:
+        - dart
+        - typescript
+        - rust
+    registries:
+      - pub.dev:aimarket_agent
+      - npm:@aimarket/agent
+      - crates.io:aimarket-agent
+    ci:
+      - dart-test
+      - typescript-build
+      - cargo-test
+
+  - id: pulse-terminal
+    homepage: "https://magic-ai-factory.com/pulse/"
+    repo: pulse-terminal
+    description: "Pulse Terminal — ACEX capital markets dashboard with live agent pricing."
+    license: mit
+    paths:
+      - apps/pulse-terminal
+    export_layout:
+      root_from: apps/pulse-terminal
+    registries:
+      - ghcr:pulse-terminal
+      - github-releases
+    ci:
+      - npm-build
+    notes: >
+      ACEX capital markets UI. Consumes GET/WS /api/v2/capital/pricing from factory or hub.
+      Part of acex ecosystem; ships as standalone repo for Electron/web distribution.
+
+  - id: acex
+    homepage: "https://alexar76.github.io/aicom/"
+    repo: acex
+    description: "ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents."
+    license: apache-2.0
+    paths:
+      - acex
+    export_layout:
+      root_from: acex
+    exclude_paths:
+      - contracts/evm/broadcast
+      - "**/broadcast"
+      - contracts/evm/cache
+      - contracts/evm/out
+      - contracts/evm/lib
+    registries:
+      - github-releases
+    ci:
+      - forge-test
+      - pytest-acex-docs
+    notes: >
+      Pulse Terminal is a separate satellite (pulse-terminal), not a subfolder export.
+      Foundry broadcast/cache/out must not ship (verify_mirror_secrets).
+
+  - id: ai-service-mesh
+    repo: ai-service-mesh
+    description: "AI Service Mesh — autonomous agent discovery, verification, escrow, and payments."
+    homepage: https://service-mesh.modelmarket.dev/
+    license: mit
+    paths:
+      - ai-service-mesh
+    export_layout:
+      root_from: ai-service-mesh
+    registries:
+      - pypi:ai-service-mesh
+      - ghcr:mesh-api
+      - ghcr:mesh-dashboard
+    ci:
+      - pytest-backend
+      - npm-build-frontend
+
+  - id: aimarket-hub
+    homepage: "https://modelmarket.dev/"
+    repo: aimarket-hub
+    description: "AIMarket Hub — federated capability catalog, channels, invoke API, and plugins."
+    license: apache-2.0
+    paths:
+      - aimarket-hub
+    export_layout:
+      root_from: aimarket-hub
+    registries:
+      - pypi:aimarket-hub
+      - ghcr:aimarket-hub
+    ci:
+      - pytest-hub
+
+  - id: aimarket-widget
+    homepage: "https://modelmarket.dev/widget/demo"
+    repo: aimarket-widget
+    description: "Embeddable AIMarket storefront widget — drop-in JS/CSS for any website."
+    license: mit
+    paths:
+      - aimarket-widget
+    export_layout:
+      root_from: aimarket-widget
+    registries:
+      - npm:@aimarket/widget
+      - github-releases
+    ci:
+      - static-smoke
+
+  - id: aimarket-oracle-gateway
+    repo: aimarket-oracle-gateway
+    description: "MCP server: verifiable oracle services (Platon VRF, Chronos VDF, LUMEN reputation) for AI agents — pay-per-call over the AIMarket protocol, every result independently verifiable."
+    homepage: https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway
+    topics:
+      - mcp
+      - model-context-protocol
+      - oracle
+      - aimarket
+      - verifiable-randomness
+      - vdf
+      - platon
+      - chronos
+    license: mit
+    paths:
+      - plugins/aimarket-oracle-gateway
+    export_layout:
+      root_from: plugins/aimarket-oracle-gateway
+    registries:
+      - mcp-registry:io.github.alexar76/aimarket-oracle-gateway
+      - glama:aimarket-oracle-gateway
+      - pypi:aimarket-oracle-gateway
+      - github-releases   # Glama indexes the repo-root glama.json + Dockerfile + (MCP-forward) README
+    ci:
+      - static-smoke
+
+  - id: linkedin-profile-coach
+    repo: linked-in-profile-coach
+    description: "LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support."
+    homepage: https://alexar76.github.io/linked-in-profile-coach/
+    topics:
+      - flutter
+      - linkedin
+      - career
+      - ai
+      - desktop-app
+      - aimarket
+    license: mit
+    paths:
+      - coach
+    export_layout:
+      root_from: coach
+    registries:
+      - github-releases
+    ci:
+      - flutter-analyze
+
+  - id: aicom-landing
+    homepage: "https://magic-ai-factory.com/landing-page-generation/"
+    repo: aicom-landing
+    description: "AI landing generator — one prompt → self-contained HTML in ~30-60s (MIT, 20 style presets)."
+    license: mit
+    paths:
+      - aicom-landing
+    export_layout:
+      root_from: aicom-landing
+    registries:
+      - npm:aicom-landing
+      - github-releases
+    ci:
+      - node-smoke
+
+  - id: aimarket-protocol
+    homepage: "https://alexar76.github.io/aicom/"
+    repo: aimarket-protocol
+    description: "AIMarket Protocol v2 — open specs, JSON schemas, and test vectors."
+    # Dual-licensed: MIT is what implementers have already cleared, Apache-2.0 carries the
+    # express patent grant a specification needs. The mirror must not overwrite the pointer
+    # LICENSE with the monorepo's plain MIT — see mirror_satellites.sh.
+    license: "Apache-2.0 OR MIT"
+    paths:
+      - aimarket-protocol
+    export_layout:
+      root_from: aimarket-protocol
+    registries:
+      - github-releases
+    ci: []
+
+  - id: aimarket-agent
+    homepage: "https://alexar76.github.io/aicom/"
+    repo: aimarket-agent
+    description: "Python client for discovering and invoking AIMarket hub capabilities."
+    license: mit
+    paths:
+      - aimarket-agent
+    export_layout:
+      root_from: aimarket-agent
+    registries:
+      - pypi:aimarket-agent
+    ci:
+      - pytest-agent
+
+  - id: aimarket-bridges
+    repo: aimarket-bridges
+    description: "AIMarket capabilities as native tools for LangChain/LangGraph, CrewAI, and AutoGen — signed receipts, budget caps, free trial."
+    homepage: https://modeldev.modelmarket.dev/bridges/
+    topics:
+      - aimarket
+      - langchain
+      - langgraph
+      - crewai
+      - autogen
+      - agents
+      - tools
+      - python
+      - agent-economy
+      - mcp
+    license: apache-2.0
+    paths:
+      - aimarket-bridges
+    export_layout:
+      root_from: aimarket-bridges
+    exclude_paths:
+      - .pytest_cache
+      - .venv
+      - venv
+      - __pycache__
+      - dist
+      - "*.egg-info"
+    registries:
+      - pypi:aimarket-bridges
+      - github-releases
+    ci:
+      - pytest-bridges
+    notes: >
+      Framework bridges (analogous packaging to oracles/aimarket-agent satellites):
+      monorepo path aimarket-bridges/ is source of truth on Gitea; GitHub gets
+      alexar76/aimarket-bridges via mirror_satellites.sh. Docs live at
+      modeldev.modelmarket.dev/bridges/ (same host as the public ecosystem landing).
+
+  - id: aimarket-plugins
+    homepage: "https://alexar76.github.io/aicom/"
+    repo: aimarket-plugins
+    description: "15 AIMarket hub plugins — TEE escrow, channels, reputation, safety, and more."
+    license: mit
+    paths:
+      - plugins:plugins
+      - aimarket-hub/plugins/aimarket-provenance
+    export_layout:
+      plugins_from: plugins
+      extra:
+        - from: aimarket-hub/plugins/aimarket-provenance
+          to: plugins/aimarket-provenance
+    registries:
+      - mcp-registry:io.github.alexar76/aimarket-plugins
+      - glama:aimarket-plugins
+      - pypi:aimarket-mcp-packager
+      - pypi:per-plugin
+    ci:
+      - pytest-plugins
+
+  - id: aicom-wiki
+    repo: aicom.wiki
+    description: "Documentation wiki for AI-Factory and the AIMarket ecosystem."
+    license: mit
+    paths:
+      - scripts/wiki-gitea
+    export_layout:
+      root_from: scripts/wiki-gitea
+      wiki_pages:
+        include: "*.md"
+        exclude:
+          - README.md
+    registries: []
+    ci: []
+    notes: >
+      GitHub wiki repo (alexar76/aicom.wiki). Canonical markdown source: scripts/wiki-gitea/.
+      Gitea wiki: scripts/push-gitea-wiki.sh. Local clone folder wiki/ is dev-only (not published).
+
+  - id: argus-wiki
+    repo: argus.wiki
+    description: "Documentation wiki for ARGUS-3 — install, WARDEN, channels, economy, Arena."
+    license: mit
+    paths:
+      - scripts/wiki-argus
+    export_layout:
+      root_from: scripts/wiki-argus
+      wiki_pages:
+        include: "*.md"
+        exclude:
+          - README.md
+    registries: []
+    ci: []
+    notes: >
+      GitHub wiki repo (alexar76/argus.wiki). Canonical markdown source: scripts/wiki-argus/.
+      Publish: ./scripts/publish_all_repos.sh --satellite argus-wiki
+
+  - id: alien-monitor
+    homepage: "https://monitor.modelmarket.dev/"
+    repo: alien-monitor
+    description: "Alien Monitor — real-time 3D ecosystem pulse visualizer with AI assistant."
+    license: mit
+    paths:
+      # Only this monorepo folder — NOT linked-in-profile-coach / aicom-landing (separate repos).
+      - alien-monitor
+    export_layout:
+      root_from: alien-monitor
+    exclude_paths:
+      - data
+      - coverage.json
+      - .coverage
+    registries:
+      - github-releases
+    ci: []
+
+  - id: platon
+    repo: platon
+    description: "Platon UMBRAL — educational cave app for oracle #1: 32D dynamical shadow oracle with live AIMarket backend and holographic cockpit."
+    homepage: https://oracles.modelmarket.dev/platon/umbral/
+    topics:
+      - platon
+      - oracle
+      - umbral
+      - verifiable-randomness
+      - chaos-theory
+      - aimarket
+      - python
+      - react
+      - threejs
+      - agent-economy
+    license: mit
+    paths:
+      - platon
+    export_layout:
+      root_from: platon
+    registries: []
+    ci:
+      - pytest-platon
+    notes: >
+      Standalone UMBRAL product at oracles.modelmarket.dev/platon/umbral — separate
+      from alexar76/oracles (seven-oracle family portal). Local data/ and ecosystem/
+      are dev-only — not mirrored.
+
+  - id: oracles
+    repo: oracles
+    description: "Verifiable AI-economy oracles — Platon, Chronos, Lattice, Murmuration, Lumen, Colony, and Turing on shared oracle-core."
+    homepage: https://oracles.modelmarket.dev/
+    topics:
+      - oracles
+      - aimarket
+      - verifiable-randomness
+      - agent-economy
+      - python
+      - fastapi
+      - cryptography
+      - 3d-visualization
+      - randomness-beacon
+      - consensus
+    license: mit
+    paths:
+      - oracles
+    export_layout:
+      root_from: oracles
+    registries: []
+    ci:
+      - pytest-oracles
+    notes: >
+      Monorepo of 17 mathematical oracles (analogous to aimarket-desktop).
+      Gitea CI in .gitea/ for self-hosted dev; GitHub Actions in .github/workflows/
+      for alexar76/oracles. Nested oracles/.git is dev-only — not mirrored.
+
+  - id: aicom-products
+    repo: aicom-products
+    history: live
+    description: "Selective catalog of full AI-Factory products (prod-*) — shell from monorepo, trees published on demand."
+    homepage: https://github.com/alexar76/aicom-products
+    topics:
+      - aicom
+      - ai-factory
+      - aimarket
+      - product-catalog
+      - monorepo
+    license: mit
+    paths:
+      - aicom-products
+    export_layout:
+      root_from: aicom-products
+      preserve:
+        - products
+    registries: []
+    ci: []
+    notes: >
+      Like oracles: satellite under alexar76 via mirror_satellites / publish_all_repos.
+      history:live — append-only; never wipe products/ on shell sync.
+      Full product trees: scripts/publish_factory_product_catalog.sh (selective).
+      Source shell: aicom-products/ in the monorepo (Gitea). Not on trimmed alexar76/aicom.
+
+  - id: lottery
+    repo: lottery
+    description: "AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner."
+    homepage: https://lottery.modelmarket.dev/
+    topics:
+      - lottery
+      - aimarket
+      - oracle
+      - verifiable-randomness
+      - vdf
+      - ethereum
+      - solidity
+      - agent-economy
+      - foundry
+    license: apache-2.0
+    paths:
+      - lottery
+    export_layout:
+      root_from: lottery
+    registries: []
+    ci: []
+    notes: >
+      Standalone deployable lottery dApp on Gitea#2 (alexar76/lottery) — the
+      consumer side of the oracle family (it pays for Platon/Chronos/Lumen calls).
+      Contracts (Foundry) + relayer + agent + showcase/admin + docker-compose.
+      Source of truth: lottery/ in the monorepo; bidirectional via git subtree
+      (push/pull --prefix=lottery to the gitea-lottery remote).
+
+  - id: argus
+    repo: argus
+    description: "ARGUS-3 — wallet-native, security-hardened personal agent; demand-side reference client and the reference host for the WARDEN MCP firewall (@aimarket/warden, a separate package) plus native AIMarket consumer/provider. Owner-locked Telegram, multi-provider, autonomous offline."
+    homepage: https://magic-ai-factory.com/argus/
+    topics:
+      - argus
+      - ai-agent
+      - mcp
+      - mcp-security
+      - aimarket
+      - agent-economy
+      - telegram-bot
+      - warden
+      - typescript
+      - nodejs
+      - security
+    license: mit
+    paths:
+      - argus
+    export_layout:
+      root_from: argus
+    exclude_paths:
+      - .env
+      - argus.config.json
+      - .argus
+      - .argus-warden-scan-memory
+      - argus-telegram.log
+      - data
+    registries:
+      - mcp-registry:io.github.alexar76/argus3
+      - npm:argus-warden
+      - npm:argus-3
+      - npm:@alexar76/argus3
+      - ghcr:argus
+      - github-releases
+    ci:
+      - npm-build
+    notes: >
+      Node/TypeScript satellite (alexar76/argus). Source of truth: argus/ in the
+      monorepo; reuses @aimarket/agent (TS SDK) for the economy and runs fully
+      autonomously without a wallet. SECRETS: .env / argus.config.json hold the
+      Telegram bot token, wallet key, and provider keys — they are git-ignored
+      and listed in exclude_paths above; confirm they are excluded before any
+      mirror run (this pipeline rsyncs and does NOT honor .gitignore).
+      GHCR: ghcr.io/alexar76/argus. DEPENDS ON the `warden` satellite (@aimarket/warden, pinned
+      exactly): WARDEN was extracted from argus/src/warden at 0.3.0, so that package must be
+      published before this one is.
+
+  - id: warden
+    repo: warden
+    description: "WARDEN — MCP security firewall: vets an MCP server's tool definitions against static-scan rules, a signed threat feed, origin and tool-def pinning before any tool reaches the model. Zero-dependency TypeScript library."
+    homepage: https://warden.modelmarket.dev
+    topics:
+      - mcp
+      - mcp-security
+      - model-context-protocol
+      - prompt-injection
+      - tool-poisoning
+      - warden
+      - firewall
+      - security
+      - typescript
+      - zero-dependencies
+    license: mit
+    history: live
+    paths:
+      - warden
+    export_layout:
+      root_from: warden
+    exclude_paths:
+      - node_modules
+      - dist
+      - coverage
+      # GH_PAT lacks `workflow` scope — drop until token can write Actions YAML.
+      - .github/workflows/publish-mcp-registry.yml
+    registries:
+      - npm:@aimarket/warden
+      - mcp-registry:io.github.alexar76/warden
+      - glama:warden
+      - github-releases
+    ci:
+      - npm-build
+    notes: >
+      TypeScript library satellite (alexar76/warden). Source of truth: warden/ in the monorepo.
+      Extracted from argus/src/warden at 0.3.0 — same code, same ruleset v2 digest. ARGUS now
+      depends on the published package and pins it EXACTLY, so RELEASE ORDER MATTERS: publish
+      @aimarket/warden (scripts/publish_warden.sh) BEFORE publishing or mirroring argus, or npm ci
+      there cannot resolve the dependency. For monorepo work, scripts/link_warden_local.sh symlinks
+      the built package into argus/node_modules. history: live — this repo accepts PRs; reverse-import
+      merged ones with scripts/import_satellite_pr.sh before the next outbound sync. Docs ship in five
+      languages (en/ru/es/fr/zh); badges are generated by scripts/make-badges.mjs, and the test count
+      in every README is asserted against the runner by test/docs.test.ts.
+      MCP registries: Official Registry via server.json + .github/workflows/publish-mcp-registry.yml
+      (./scripts/publish_mcp_registry.sh); Glama via glama.json; Smithery via smithery.yaml (connect
+      repo in Smithery UI). mcp.so / PulseMCP are form submissions (docs/growth/seeding-playbook.md).
+      LANDING: docs/landing/index.html — one self-contained file, five languages, no external
+      assets. Live at https://warden.modelmarket.dev (nginx on the host that serves
+      use.modelmarket.dev; deploy with scripts/deploy_warden_landing.sh, which verifies the CSP
+      arrives on the wire). GitHub Pages is wired but NOT enabled: .github/workflows/pages.yml
+      publishes docs/landing as the site root and needs the repo created plus Settings → Pages →
+      Source: GitHub Actions — see docs/landing/README.md for the handoff. Every figure on the
+      page is asserted against the code and the survey by test/landing.test.ts.
+
+  - id: theoros
+    repo: theoros
+    description: "THEOROS — Agent Sovereignty Canon. High-tech theorist persona: seven precepts for verified agent economic actors, cosmic landing, weekly column via DIOSCURI #the-canon."
+    homepage: https://alexar76.github.io/theoros/
+    topics:
+      - agent-economy
+      - agent-sovereignty
+      - ai-agent
+      - aimarket
+      - aicom
+      - community
+      - constitution
+      - devrel
+      - dioscuri
+      - metis
+      - philosophy
+    license: mit
+    paths:
+      - theoros
+    export_layout:
+      root_from: theoros
+    registries: []
+    ci: []
+    notes: >
+      Ideology corpus + landing + persona spec. Runtime lives in dioscuri (canon
+      ContentKind). MNEMOSYNE syncs README, CANON.md, chapters for grounding.
+
+  - id: dioscuri
+    repo: dioscuri
+    description: "DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS)."
+    homepage: https://alexar76.github.io/dioscuri/
+    topics:
+      - discord-bot
+      - telegram-bot
+      - community
+      - moderation
+      - prompt-injection
+      - ai-agent
+      - llm
+      - knowledge-base
+      - aicom
+      - aimarket
+      - typescript
+      - nodejs
+    license: mit
+    paths:
+      - dioscuri
+    export_layout:
+      root_from: dioscuri
+    exclude_paths:
+      - .env
+      - .env.local
+      - .env.production
+      - dioscuri.config.json
+      - data
+      - node_modules
+      - dist
+      - coverage
+      - .playwright-browsers
+      - venv-screenshot
+      - venv
+      - .venv
+      - acex
+      - web
+      - agents
+      - "**/broadcast"
+    registries:
+      - npm:@alexar76/dioscuri
+      - ghcr:dioscuri
+      - github-releases
+    ci:
+      - npm-build
+    notes: >
+      Node/TypeScript satellite (alexar76/dioscuri). Source of truth: dioscuri/
+      in the monorepo. Single container runs both platform adapters; DRY-RUN
+      mode needs no tokens. SECRETS: .env / dioscuri.config.json hold the
+      Discord/Telegram bot tokens and LLM provider keys — git-ignored and
+      listed in exclude_paths above; confirm exclusion before any mirror run
+      (this pipeline rsyncs and does NOT honor .gitignore).
+      GHCR: ghcr.io/alexar76/dioscuri.
+
+  - id: hephaestus
+    repo: hephaestus
+    description: "HEPHAESTUS — the forge: compose capability chains from the live signed AIMarket catalogue, price the graph before you spend, run it, and keep a signed bill of materials with hop-level blame."
+    homepage: https://forge.modelmarket.dev/
+    topics:
+      - aimarket
+      - aicom
+      - devtools
+      - pipelines
+      - typescript
+      - react
+      - self-hosted
+      - agent-economy
+    license: mit
+    paths:
+      - hephaestus
+    export_layout:
+      root_from: hephaestus
+    exclude_paths:
+      - node_modules
+      - studio/node_modules
+      - studio/dist
+      - .pytest_cache
+      - .coverage
+    registries:
+      - github-releases
+    ci:
+      - vitest-hephaestus
+    notes: >
+      Ecosystem utility satellite alexar76/hephaestus (source hephaestus/ in Gitea monorepo).
+      README, docs/ (5 langs), studio/, CI under hephaestus/.github/. Factory trim excludes
+      hephaestus/; summary copies also ship at docs/hephaestus-*.md on alexar76/aicom.
+      Deploy: studio via hub rebuild (modelmarket.dev/studio); prod landing forge.modelmarket.dev
+      (scripts/deploy_forge_landing.sh); GitHub Pages alexar76.github.io/hephaestus/ from
+      docs/landing/. Alien Monitor node `hephaestus`.
+
+  - id: helios
+    repo: helios
+    description: "HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve."
+    homepage: https://alexar76.github.io/helios/
+    topics:
+      - youtube
+      - broadcast
+      - devrel
+      - aimarket
+      - aicom
+      - ffmpeg
+      - python
+      - video-automation
+      - tts
+      - self-hosted
+    license: mit
+    paths:
+      - helios
+    export_layout:
+      root_from: helios
+    exclude_paths:
+      - .env
+      - helios.config.yaml
+      - data
+      - .venv
+      - venv
+      - client_secret.json
+      - youtube_token.json
+      - "**/client_secret*.json"
+    registries:
+      - pypi:helios-broadcast
+      - ghcr:helios
+      - github-releases
+    ci:
+      - pytest-helios
+    notes: >
+      Python satellite (alexar76/helios). Source of truth: helios/ in the
+      monorepo. Ports PromoMaterials render+upload pipeline. SECRETS:
+      YOUTUBE_CLIENT_SECRET, YOUTUBE_TOKEN, LLM API keys — git-ignored and
+      listed in exclude_paths above.
+      GHCR: ghcr.io/alexar76/helios.
+
+  # metis — distributed cognitive layer (multi-agent reasoning) over any LLM.
+  - id: aimarket-mcp
+    repo: aimarket-mcp
+    description: "Ecosystem MCP gateway — web fetch/search + Metis verify behind one SSRF-hardened MCP endpoint (Streamable-HTTP). Consumed by Metis and ARGUS via the aimarket-web preset."
+    homepage: https://glama.ai/mcp/servers/alexar76/aimarket-mcp
+    topics:
+      - mcp
+      - fetch
+      - web-search
+      - aimarket
+      - aicom
+      - python
+    license: mit
+    paths:
+      - aimarket-mcp
+    export_layout:
+      root_from: aimarket-mcp
+    exclude_paths:
+      - .env
+      - data
+      - .venv
+      - venv
+      - __pycache__
+      - .coverage
+      - coverage.json
+    registries:
+      - mcp-registry:io.github.alexar76/aimarket-mcp
+      - glama:aimarket-mcp
+      - pypi:aimarket-mcp
+      - github-releases
+
+  # charon-liquidator lives under independent/ — Gitea monorepo only, never GitHub.
+  # pantheon/ (art portal, pantheon.modelmarket.dev) — Gitea monorepo only, never GitHub.
+  - id: metis
+    repo: metis
+    description: "Metis (μῆτις) — distributed cognitive layer over any LLM. Understanding Council → confidence gate (fail-closed) → layered MoA → verifier-with-retry, with DGPD depth gating, memory, economy metering, and an OpenAI-compatible API. A loosely-coupled ecosystem peer: runs fully standalone; every ecosystem hook is optional."
+    homepage: https://alexar76.github.io/metis/
+    topics:
+      - llm
+      - multi-agent
+      - reasoning
+      - mixture-of-agents
+      - verification
+      - openai-compatible
+      - aimarket
+      - aicom
+      - mcp
+      - python
+    license: mit
+    history: live   # first satellite to accept PRs — append-only history, reverse-synced
+    paths:
+      - metis
+    export_layout:
+      root_from: metis
+    exclude_paths:
+      - .env
+      - .env.local
+      - .env.production
+      - data
+      - reports
+      - .coverage
+      - .hypothesis
+      - coverage.json
+      - .venv
+      - venv
+    registries:
+      - github-releases
+      - pypi:aimarket-metis
+      - ghcr:metis
+    ci:
+      - pytest-metis
+    notes: >
+      Python satellite (alexar76/metis). Source of truth: metis/ in the monorepo.
+      Standalone service (metis-serve, OpenAI-compatible API); ecosystem hooks —
+      hub-invoke adapter, economy webhook, alien-monitor polling — are all optional
+      and config-gated, so Metis runs with no ecosystem present (and the factory
+      runs with no Metis present). SECRETS: metis/.env holds LLM provider keys
+      (DEEPSEEK_API_KEY etc.) — git-ignored and listed in exclude_paths above;
+      this pipeline rsyncs and does NOT honor .gitignore.
+      GHCR: ghcr.io/alexar76/metis.
+
+  - id: skopos
+    repo: skopos
+    description: "SKOPOS (Σκοπός) — self-hosted nginx analytics and fleet security for the AICOM ecosystem. SSH log collection, Security Center with 3D threat map, scan history, and an AI agent with voice input."
+    topics:
+      - nginx
+      - analytics
+      - security
+      - streamlit
+      - aimarket
+      - aicom
+      - fleet-monitoring
+      - ssh
+      - self-hosted
+    license: mit
+    paths:
+      - skopos
+    export_layout:
+      root_from: skopos
+    exclude_paths:
+      - .env
+      - servers.yaml
+      - agent.yaml
+      - skopos.sqlite3
+      - skopos.sqlite3-wal
+      - skopos.sqlite3-shm
+      # Quoted: bare `:memory:` is a YAML MAPPING, not a string. Unquoted it
+      # parsed as {':memory': None}, which stringified into two junk rsync
+      # excludes ("{':memory':" and "None}") and dropped the real one. The
+      # sibling `-wal`/`-shm` forms happen to parse as strings; quoted anyway so
+      # the three read as one thing.
+      - ":memory:"
+      - ":memory:-wal"
+      - ":memory:-shm"
+      - .skopos_wizard.json
+      - .venv
+      - venv
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+    registries:
+      - github-releases
+      - ghcr:skopos
+    ci:
+      - pytest-skopos
+    notes: >
+      Python satellite (alexar76/skopos). Source of truth: skopos/ in the monorepo.
+      Monitors factory / metis / oracle fleet over SSH. SECRETS: .env holds LLM keys,
+      SKOPOS_DASHBOARD_PASSWORD, SKOPOS_SSH_KEY_PASSPHRASE — git-ignored and listed
+      in exclude_paths above.
+      GHCR: ghcr.io/alexar76/skopos.
+
+  - id: atlas
+    repo: atlas
+    description: "ATLAS — planetary physical-sensor map over GAIA (LIVE/SIM layers including fire, flood, lightning, alerts, EFFIS, volcano) with Hub composites situation.brief / fire.weather / nearest / watchbox, DeepSeek Analyst, and Alien Monitor embed."
+    homepage: https://alexar76.github.io/atlas/
+    topics:
+      - atlas
+      - sensors
+      - maplibre
+      - gaia
+      - physical-data
+      - aimarket
+      - aicom
+      - deepseek
+      - docker
+      - self-hosted
+    license: mit
+    paths:
+      - atlas
+    export_layout:
+      root_from: atlas
+    exclude_paths:
+      - .venv
+      - backend/.venv
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+    registries:
+      - github-releases
+    ci:
+      - pytest-atlas
+    notes: >
+      Python + MapLibre satellite (alexar76/atlas). Source of truth: atlas/ in the monorepo.
+      Physical sensor map over GAIA relays; Alien Monitor node `atlas`; landing on GitHub Pages.
+      Live demo: https://atlas.modelmarket.dev/ · Pages: https://alexar76.github.io/atlas/.
+
+  - id: gaia
+    repo: gaia
+    description: "GAIA — physical-world oracle gateway: Ed25519-attested gaia.*.read@v1 relays (weather, FIRMS, GLM lightning, NWS flood/alerts, EFFIS, volcano, EONET, SWPC, GNSS jamming) plus window/verify. LIVE only with provenance."
+    homepage: https://alexar76.github.io/gaia/
+    topics:
+      - iot
+      - sensors
+      - physical-data
+      - oracle
+      - aimarket
+      - aicom
+      - verification
+      - ed25519
+      - self-hosted
+    license: mit
+    paths:
+      - gaia
+    export_layout:
+      root_from: gaia
+    exclude_paths:
+      - data
+      - .venv
+      - __pycache__
+      - frontend/node_modules
+      - .pytest_cache
+      - .coverage
+    registries:
+      - github-releases
+      - ghcr:gaia
+    ci:
+      - pytest-gaia
+    notes: >
+      Python satellite (alexar76/gaia). Source of truth: gaia/ in the monorepo.
+      Third oracle class — physical/sensor oracles (alongside the mathematical
+      oracles/ family ×17 and the cognitive Metis tier): virtual IoT devices sold
+      as Ed25519-attested, statistically plausibility-verified AIMarket
+      capabilities on port :9320. Loosely-coupled ecosystem peer; runs standalone.
+      Live demo: https://iot.modelmarket.dev/ · GHCR: ghcr.io/alexar76/gaia.
+      Mirror vendors oracles/core → vendor/oracle-core for Dockerfile.standalone.
+
+  - id: momus
+    repo: momus
+    description: "MOMUS — autonomous adversarial-audit (red team) satellite: safe, read-only conformance probes against the ecosystem's own components, emitted as Ed25519-signed findings; a separate Treasury role pays bounties only on independent verification."
+    homepage: https://alexar76.github.io/momus/
+    topics:
+      - security
+      - red-team
+      - audit
+      - adversarial
+      - aimarket
+      - aicom
+      - ed25519
+      - self-hosted
+    license: mit
+    paths:
+      - momus
+    export_layout:
+      root_from: momus
+    exclude_paths:
+      - data
+      - .venv
+      - __pycache__
+      - frontend/node_modules
+      - .pytest_cache
+      - .coverage
+    registries:
+      - github-releases
+      - ghcr:momus
+    ci:
+      - pytest-momus
+    notes: >
+      Python satellite (alexar76/momus). Source of truth: momus/ in the monorepo. Offensive
+      complement to ARGUS's defensive WARDEN, on port :9400. Finds and signs; CANNOT pay itself —
+      the separate Treasury (alexar76/treasury) holds the only payout key. Self-learning (UCB
+      bandit + threat intel from CISA/OSV/GHSA incl. own repos). Remediation loop: MOMUS re-tests
+      fixes as a deploy gate; SKOPOS conducts, the Factory patches, node agents deploy (A2A).
+      Default LLM: DeepSeek V4 Pro. Mirror vendors oracles/core -> vendor/oracle-core.
+
+  - id: treasury
+    repo: treasury
+    description: "MOMUS Treasury — the separate payer role that releases red-team bounties only on independent verification; MOMUS finds and signs, the Treasury (its own key) pays."
+    homepage: https://alexar76.github.io/treasury/
+    topics:
+      - security
+      - bounty
+      - escrow
+      - ed25519
+      - aimarket
+      - aicom
+      - self-hosted
+    license: mit
+    paths:
+      - treasury
+    export_layout:
+      root_from: treasury
+    exclude_paths:
+      - data
+      - .venv
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+    registries:
+      - github-releases
+      - ghcr:treasury
+    ci:
+      - pytest-treasury
+    notes: >
+      Python satellite (alexar76/treasury). Source of truth: treasury/ in the monorepo. The
+      SEPARATE payer for MOMUS bounties on port :9401 — holds the one key that can release a
+      bounty, a key MOMUS never sees. Depends on aimarket-momus for the document types + PayoutGate.
+      Mirror vendors BOTH oracles/core AND momus -> vendor/ for the standalone Docker build.
+
+  - id: logos
+    repo: logos
+    description: >
+      LOGOS — federation analytics engine. Cross-hub query, anomaly detection,
+      NL insights via Metis council. The analytical brain of the AIMarket federation.
+      One node, every insight.
+    homepage: https://alexar76.github.io/logos/
+    topics:
+      - analytics
+      - federation
+      - ai
+      - anomaly-detection
+      - aimarket
+      - aicom
+      - self-hosted
+      - dashboard
+    license: mit
+    paths:
+      - logos
+      - oracles/core
+    export_layout:
+      root_from: logos
+    vendor_deps:
+      - from: oracles/core
+        to: vendor/oracle-core
+    exclude_paths:
+      - frontend/node_modules
+      - frontend/dist
+      - .pytest_cache
+      - .coverage
+      - __pycache__
+      - data
+      - '*.db'
+    docker_image: ghcr:logos
+    test_prefix: pytest-logos
+    notes: >
+      Python satellite (alexar76/logos). Source of truth: logos/ in the monorepo.
+      Federation analytics — queries hub, MOMUS, Skopos, Treasury through hub.invoke().
+      No local oracles needed. Mirror vendors oracles/core -> vendor/ for standalone build.
+
+  - id: signal-hunt
+    repo: signal-hunt
+    description: >
+      Signal Hunt — federation-native investigation game and educational laboratory
+      over real AIMarket Hub telemetry. Observe measured symptoms, commit a diagnosis,
+      prove it with a reproducible Brier-score verdict. Each round is a live lab on
+      federation literacy. Live data only; no seeded anomalies.
+    homepage: https://alexar76.github.io/signal-hunt/
+    topics:
+      - game
+      - education
+      - laboratory
+      - federation
+      - aimarket
+      - aicom
+      - telemetry
+      - brier-score
+      - investigation
+      - self-hosted
+      - dashboard
+      - live-data
+    license: mit
+    paths:
+      - signal-hunt
+    export_layout:
+      root_from: signal-hunt
+    exclude_paths:
+      - frontend/node_modules
+      - frontend/dist
+      - .pytest_cache
+      - .coverage
+      - __pycache__
+      - data
+      - '*.db'
+      - .env
+    docker_image: ghcr:signal-hunt
+    test_prefix: pytest-signal-hunt
+    notes: >
+      Python + React satellite (alexar76/signal-hunt). Source of truth: signal-hunt/
+      in the monorepo. Deploys its own ordinary AIMarket Hub + game engine behind
+      Caddy. Landing at docs/landing/ → GitHub Pages.
+
+  - id: aimarket-playground
+    repo: aimarket-playground
+    description: "Zero-setup guided AIMarket golden path: GAIA invoke, Metis verification, signed Hub receipt, and Alien Monitor handoff."
+    description_i18n:
+      ru: "Онбординг AIMarket без настройки: показание GAIA, верификация Metis, подписанная квитанция Hub и переход в Alien Monitor."
+      es: "Incorporación AIMarket sin configuración: lectura GAIA, verificación de Metis, recibo firmado del Hub y acceso a Alien Monitor."
+      fr: "Intégration AIMarket sans configuration : lecture GAIA, vérification Metis, reçu signé du Hub et passage vers Alien Monitor."
+      zh: "零配置 AIMarket 入门路径：GAIA 读数、Metis 验证、已签名 Hub 收据以及 Alien Monitor 跳转。"
+    homepage: https://play.modelmarket.dev/
+    topics:
+      - aimarket
+      - ai-agents
+      - playground
+      - developer-tools
+      - metis
+      - gaia
+      - github-pages
+    license: mit
+    paths:
+      - aimarket-playground
+    export_layout:
+      root_from: aimarket-playground
+    exclude_paths:
+      - .env
+      - .venv
+      - .pytest_cache
+      - dist
+      - "**/__pycache__"
+    registries:
+      - ghcr:aimarket-playground
+    ci:
+      - pytest-playground
+      - docker-build
+    notes: >
+      Python satellite (alexar76/aimarket-playground). Source of truth is
+      aimarket-playground/ in the monorepo. The public MVP runs one allow-listed
+      workflow and deliberately does not execute arbitrary user code.
+
+  - id: create-aimarket-agent
+    repo: create-aimarket-agent
+    description: "Standalone CLI that scaffolds tested AIMarket Protocol v2 capability providers with manifests and Docker packaging."
+    description_i18n:
+      ru: "Автономный CLI, создающий протестированных поставщиков возможностей AIMarket Protocol v2 с манифестами, подписью Ed25519 и Docker-упаковкой."
+      es: "CLI autónoma que genera proveedores de capacidades AIMarket Protocol v2 probados, con manifiestos, firma Ed25519 y empaquetado Docker."
+      fr: "CLI autonome qui génère des fournisseurs de capacités AIMarket Protocol v2 testés, avec manifestes, signature Ed25519 et packaging Docker."
+      zh: "独立 CLI，用于生成经过测试的 AIMarket Protocol v2 能力提供方，并包含清单、Ed25519 签名和 Docker 打包。"
+    homepage: https://alexar76.github.io/create-aimarket-agent/
+    topics:
+      - aimarket
+      - ai-agents
+      - cli
+      - scaffolding
+      - developer-tools
+      - github-pages
+    license: mit
+    paths:
+      - create-aimarket-agent
+    export_layout:
+      root_from: create-aimarket-agent
+    exclude_paths:
+      - .venv
+      - .pytest_cache
+      - dist
+      - "**/__pycache__"
+    registries:
+      - pypi:create-aimarket-agent
+    ci:
+      - pytest-cli
+      - package-build
+    notes: >
+      Python satellite (alexar76/create-aimarket-agent). Source of truth is
+      create-aimarket-agent/ in the monorepo. Publishing generated capabilities is
+      deliberately separate from project creation.
+
+  - id: themis
+    repo: themis
+    description: "THEMIS — publish-time admission gate for AIMarket: signed approve/review/reject for AI-agent supply-chain procurement (not Metis, not WARDEN)."
+    description_i18n:
+      ru: "THEMIS — шлюз допуска публикации AIMarket: подписанные approve/review/reject по цепочке поставок AI-агентов (не Metis, не WARDEN)."
+      es: "THEMIS — puerta de admisión al publicar en AIMarket: approve/review/reject firmados para la cadena de suministro de agentes de IA (no Metis, no WARDEN)."
+      fr: "THEMIS — porte d’admission à la publication AIMarket : approve/review/reject signés pour la chaîne d’approvisionnement des agents IA (pas Metis, pas WARDEN)."
+      zh: "THEMIS — AIMarket 发布准入门控：对 AI 智能体供应链采购给出签名 approve/review/reject（不是 Metis，不是 WARDEN）。"
+    homepage: https://alexar76.github.io/themis/
+    # Static console published beside the landing: real signed receipts,
+    # signatures re-checked in the browser.
+    console: https://alexar76.github.io/themis/console/
+    topics:
+      - aimarket
+      - ai-agents
+      - agentic-security
+      - supply-chain-security
+      - admission
+      - procurement
+      - owasp
+      - tutorial
+    license: mit
+    paths:
+      - themis
+    export_layout:
+      root_from: themis
+    exclude_paths:
+      - .env
+      - .venv
+      - .pytest_cache
+      - dist
+      - "**/__pycache__"
+    registries: []
+    ci:
+      - pytest
+      - docker-build
+    notes: >
+      Finished reference repository for the five-language create-aimarket-agent
+      tutorial and Hub publish-admission overlay (THEMIS). Hub publication remains
+      an explicit operator action. README ships hero + gallery under docs/screenshots/.
+
+  - id: escrow-signer
+    repo: escrow-signer
+    description: "HORKOS holds the only key authorized in AIMarketEscrow.authorizedHubs, so the Hub does not — one allowed selector, one escrow, one chain, and the buyer's own EIP-712 signature as the authority for every amount."
+    description_i18n:
+      ru: "HORKOS держит единственный ключ, авторизованный в AIMarketEscrow.authorizedHubs, чтобы его не держал Hub — один разрешённый селектор, один эскроу, одна сеть, а полномочие на сумму даёт EIP-712 подпись покупателя."
+      es: "HORKOS guarda la única clave autorizada en AIMarketEscrow.authorizedHubs para que no la guarde el Hub — un selector permitido, un depósito en garantía, una red, y la firma EIP-712 del comprador como autoridad sobre cada importe."
+      fr: "HORKOS détient la seule clé autorisée dans AIMarketEscrow.authorizedHubs pour que le Hub ne la détienne pas — un sélecteur autorisé, un séquestre, une chaîne, et la signature EIP-712 de l'acheteur comme autorité sur chaque montant."
+      zh: "HORKOS 持有唯一在 AIMarketEscrow.authorizedHubs 中获授权的私钥，好让枢纽不必持有 —— 一个允许的选择器、一个托管合约、一条链，每笔金额的授权来自买方自己的 EIP-712 签名。"
+    homepage: https://alexar76.github.io/escrow-signer/
+    topics:
+      - aimarket
+      - aicom
+      - escrow
+      - eip712
+      - base
+      - security
+      - transaction-signing
+    license: mit
+    paths:
+      - escrow-signer
+    export_layout:
+      root_from: escrow-signer
+    exclude_paths:
+      - .env
+      - data
+      - .venv
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+    registries: []
+
+  - id: basanos
+    repo: basanos
+    description: "BASANOS checks ecosystem Solidity at a pinned commit — Ed25519-signed PASS/REVIEW/FAIL verdicts with evidence and an operator playbook. (Assurance, not insurance or admission.)"
+    description_i18n:
+      ru: "BASANOS проверяет смарт-контракты экосистемы на закреплённом commit — подписанные вердикты PASS/REVIEW/FAIL с доказательствами и playbook. (Техническая гарантия, не страховка и не допуск.)"
+      es: "BASANOS comprueba los contratos inteligentes del ecosistema en un commit fijado — veredictos PASS/REVIEW/FAIL firmados con evidencia y playbook. (Garantía técnica, no seguro ni admisión.)"
+      fr: "BASANOS vérifie les smart contracts de l’écosystème sur un commit épinglé — verdicts PASS/REVIEW/FAIL signés avec preuves et playbook. (Garantie technique, pas assurance ni admission.)"
+      zh: "BASANOS 在钉死的 commit 上检查生态智能合约 — 签发带证据与操作手册的 Ed25519 PASS/REVIEW/FAIL 裁定。（技术保证，非承保或准入。）"
+    homepage: https://basanos.modelmarket.dev/
+    topics:
+      - aimarket
+      - aicom
+      - solidity
+      - assurance
+      - ed25519
+      - security
+      - smart-contracts
+    license: mit
+    paths:
+      - basanos
+    export_layout:
+      root_from: basanos
+    exclude_paths:
+      - data
+      - .venv
+      - .aimarket
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+    registries: []
+    ci:
+      - pytest
+      - docker-build
+    notes: >
+      Python satellite (alexar76/basanos). Technical assurance only: scans ACEX / lottery /
+      core EVM sources, learns detector order from allowlisted OSV/GHSA, never emits scoreBps
+      and never calls coverListing. Live (when DNS is up): basanos.modelmarket.dev · port 9470.
+      forge.modelmarket.dev is the HEPHAESTUS landing, not this node.
+
+  - id: dolos
+    repo: dolos
+    description: "DOLOS — dynamic EVM red team for the UNI bubble: fork-isolated exploit txs, Ed25519 findings, sandbox fix-loop only."
+    description_i18n:
+      ru: "DOLOS — динамическая red-team по EVM для пузыря UNI: форкает Anvil пузыря и бросает реальные эксплойт-транзакции в задеплоенные контракты, доказывая, какие изъяны реальны, а какие — шум статики; подписанные Ed25519 находки; только на песочной цепочке гоняет полный цикл атака->фикс->forge-test->редеплой->повторная атака. Никогда не трогает цепь, которую нельзя выбросить; находка mainnet — рекомендательная."
+      es: "DOLOS — red team dinámico de EVM para la burbuja UNI: forkea el Anvil de la burbuja y lanza transacciones de exploit reales contra los contratos desplegados para probar qué fallos son reales frente al ruido del análisis estático; hallazgos firmados con Ed25519; solo en la cadena sandbox ejecuta el ciclo completo ataque->corrección->forge-test->redespliegue->reataque. Nunca toca una cadena que no pueda desechar; un hallazgo de mainnet es consultivo."
+      fr: "DOLOS — red team dynamique EVM pour la bulle UNI : forke l'Anvil de la bulle et lance de vraies transactions d'exploit contre les contrats déployés pour prouver quels défauts sont réels face au bruit de l'analyse statique ; découvertes signées Ed25519 ; uniquement sur la chaîne sandbox il exécute le cycle complet attaque->correction->forge-test->redéploiement->réattaque. Ne touche jamais une chaîne qu'il ne peut jeter ; une découverte mainnet est consultative."
+      zh: "DOLOS — 面向 UNI 气泡的动态 EVM 红队：分叉气泡的 Anvil，向已部署合约发起真实的漏洞利用交易，以证明哪些缺陷是真实的、哪些只是静态分析噪声；发现以 Ed25519 签名；仅在沙盒链上运行完整的 攻击->修复->forge-test->重新部署->再攻击 闭环。绝不触碰无法丢弃的链；主网发现仅供参考。"
+    homepage: https://dolos.modelmarket.dev/
+    topics:
+      - aimarket
+      - aicom
+      - evm
+      - red-team
+      - exploit
+      - foundry
+      - anvil
+      - security
+      - smart-contracts
+    license: mit
+    paths:
+      - dolos
+    export_layout:
+      root_from: dolos
+    exclude_paths:
+      - data
+      - .venv
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+      - canary/out
+      - canary/broadcast
+      - canary/cache
+      # GH_PAT lacks `workflow` scope — drop until token can write Actions YAML.
+      - .github/workflows
+    registries:
+      - github-releases
+    ci:
+      - pytest
+    notes: >
+      Dynamic EVM attack harness (alexar76/dolos). Source of truth: dolos/ in the monorepo
+      (Gitea full push via push_gitea_monorepo.sh). GitHub mirror: publish_all_repos.sh
+      --satellite dolos → mirror_satellites.sh export_simple (same path as momus/basanos;
+      _commit_and_push runs sanitize_git_commit_meta.py — strips AI/bot Co-authored-by /
+      Assisted-by; keeps human aicom-coauthors). Fork-isolated attacks on the UNI bubble's
+      contracts; Alien Monitor node `dolos` in the security tier beside BASANOS (static).
+      Not a live service — runs on demand (CLI). Offensive dual-use: sandbox only, NOT for
+      use against systems you do not own. `data/` (the scanner key) and canary build
+      artifacts are excluded from the mirror.
+
+  - id: attested-memory-hub
+    # NOT on GitHub yet: https://github.com/alexar76/attested-memory-hub is 404. The knowledge
+    # bases follow PUBLICATION, not intent — a component an agent cannot open is a component it
+    # should not be told about. Flip this to true (or drop the key) after the first mirror.
+    github_published: false
+    repo: attested-memory-hub
+    description: >
+      Attested Memory Hub — independent Memory Market, Truth Layer and Provenance Ledger
+      with hybrid Ed25519+ML-DSA-65 receipts and twelve AIMarket capabilities.
+    description_i18n:
+      ru: "Attested Memory Hub — независимый Memory Market, Truth Layer и Provenance Ledger с гибридными Ed25519+ML-DSA-65 квитанциями и двенадцатью AIMarket capabilities."
+      es: "Attested Memory Hub — Memory Market, Truth Layer y Provenance Ledger independientes con recibos híbridos Ed25519+ML-DSA-65 y doce capabilities de AIMarket."
+      fr: "Attested Memory Hub — Memory Market, Truth Layer et Provenance Ledger indépendants avec reçus hybrides Ed25519+ML-DSA-65 et douze capabilities AIMarket."
+      zh: "Attested Memory Hub — 独立的 Memory Market、Truth Layer 与 Provenance Ledger，混合 Ed25519+ML-DSA-65 回执，十二项 AIMarket capability。"
+    homepage: https://github.com/alexar76/attested-memory-hub
+    topics:
+      - aimarket
+      - aicom
+      - memory
+      - provenance
+      - post-quantum
+      - ml-dsa
+      - ed25519
+      - self-hosted
+      - agent-memory
+    license: apache-2.0
+    paths:
+      - attested-memory-hub
+    export_layout:
+      root_from: attested-memory-hub
+    exclude_paths:
+      - .upstreams
+      - data
+      - .venv
+      - .env
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+      - '*.sqlite3'
+      - '*.sqlite3-wal'
+      - '*.sqlite3-shm'
+    registries: []
+    ci:
+      - pytest
+    notes: >
+      Independent Attested Memory infrastructure (alexar76/attested-memory-hub). Source of
+      truth: attested-memory-hub/ in the monorepo. Gitea: push_gitea_monorepo.sh. GitHub:
+      publish_all_repos.sh --satellite attested-memory-hub. .upstreams/ (pinned Hub runtime)
+      is fetched by bootstrap-upstreams.sh and excluded from the mirror. Secrets stay in
+      host .env via ensure_env.sh / deploy_attested_memory.sh.
+
+  - id: attested-saas-gateway
+    # NOT on GitHub yet: https://github.com/alexar76/attested-saas-gateway is 404. The knowledge
+    # bases follow PUBLICATION, not intent — a component an agent cannot open is a component it
+    # should not be told about. Flip this to true (or drop the key) after the first mirror.
+    github_published: false
+    repo: attested-saas-gateway
+    description: >
+      Attested SaaS Gateway — public billing and entitlement plane for Personal / Team /
+      Expert Memory, settling exact USDC invoices through KOVA without custody.
+    description_i18n:
+      ru: "Attested SaaS Gateway — публичный биллинг и entitlements для Personal / Team / Expert Memory; точные USDC-инвойсы через KOVA без кастодиала."
+      es: "Attested SaaS Gateway — plano público de billing y entitlements para Personal / Team / Expert Memory; facturas USDC exactas vía KOVA sin custodia."
+      fr: "Attested SaaS Gateway — plan de facturation et d’entitlements public pour Personal / Team / Expert Memory ; factures USDC exactes via KOVA sans garde."
+      zh: "Attested SaaS Gateway — Personal / Team / Expert Memory 的公共计费与权益面；经 KOVA 结算精确 USDC 发票，无托管。"
+    homepage: https://github.com/alexar76/attested-saas-gateway
+    topics:
+      - aimarket
+      - aicom
+      - saas
+      - billing
+      - usdc
+      - base
+      - kova
+      - entitlements
+      - self-hosted
+    license: mit
+    paths:
+      - attested-saas-gateway
+    export_layout:
+      root_from: attested-saas-gateway
+    exclude_paths:
+      - data
+      - .venv
+      - .env
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+      - '*.sqlite3'
+    registries: []
+    ci:
+      - pytest
+    notes: >
+      SaaS control plane (alexar76/attested-saas-gateway). Source: attested-saas-gateway/
+      in the monorepo. Pairs with attested-memory-hub; product shells and saas-compose.yml
+      live beside it in the monorepo. GitHub: publish_all_repos.sh --satellite
+      attested-saas-gateway.
+
+  - id: use-cases-portal
+    repo: use-cases-portal
+    description: >
+      AIMarket use-cases portal — public wow, onboarding (See·Buy·Publish·Build·Invest),
+      live rails, and 7 direction boards with 12 idea pages (3D previews). Static site,
+      five languages, honest LIVE vs SIM. Live host use.modelmarket.dev; Pages landing
+      (docs/landing/) at alexar76.github.io/use-cases-portal.
+    homepage: https://use.modelmarket.dev/
+    topics:
+      - aimarket
+      - aicom
+      - onboarding
+      - use-cases
+      - gtm
+      - iot
+      - agent-economy
+      - static-site
+      - github-pages
+      - i18n
+    license: mit
+    paths:
+      - use-cases-portal
+    export_layout:
+      root_from: use-cases-portal
+    exclude_paths:
+      - _pages
+      - _site
+    registries: []
+    ci:
+      - validate-static
+    notes: >
+      Static GTM/onboarding portal (alexar76/use-cases-portal). Source of truth:
+      use-cases-portal/ in the monorepo. No backend. Live deploy → use.modelmarket.dev;
+      Pages workflow publishes docs/landing/ only (CTA → live). CI runs scripts/validate.py.
+
+  # Standalone sibling repos (not mirrored from monorepo paths — maintain in their own checkouts).
+  - id: aicom
+    homepage: "https://magic-ai-factory.com/"
+    repo: aicom
+    description: "AI-Factory — autonomous pipeline that designs, builds, tests, and publishes products."
+    license: mit
+    optional: true
+    paths:
+      - .
+    exclude_paths:
+      - desktop-integrations
+      - acex
+      - ai-service-mesh
+      - aimarket-hub
+      - aimarket-widget
+      - aimarket-protocol
+      - aimarket-agent
+      - aimarket-bridges
+      - aimarket-playground
+      - create-aimarket-agent
+      - themis
+      - plugins
+      - aimarket-sdks
+      - apps/pulse-terminal
+      - wiki
+      - scripts/wiki-gitea
+      - alien-monitor
+      - oracles
+      - platon
+      - lottery
+      - argus
+      - dioscuri
+      - helios
+      - metis
+      - aimarket-mcp
+      - skopos
+      - gaia
+      - hephaestus
+      - basanos
+      - momus
+      - dolos
+      - attested-memory-hub
+      - attested-saas-gateway
+      - independent
+      - pantheon
+    registries:
+      - ghcr:aicom-factory
+    ci:
+      - pytest-core
+
+# Gitea publishing targets live in scripts/gitea-targets.yaml (internal infra:
+# hosts/IPs) — kept OUT of this file because satellite-map.yaml is mirrored to
+# the PUBLIC GitHub factory repo. See scripts/mirror_to_gitea.sh and
+# docs/gitea-publishing.md.
