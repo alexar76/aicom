@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verify.modelmarket.dev/ns/awr/v2/schemas/bundle-v2.json",
+  "title": "AWR/2 bundle",
+  "description": "NON-NORMATIVE. JSON Schema is a convenience for tooling and is not the normative definition of AWR/2; awr/SPEC.md is (Appendix B). Where this schema and the specification disagree, the schema is the bug. A bundle is the transport container that profiles L1 and L2 and chain resolution need, because those require more than one document (SPEC.md §9).",
+  "$comment": "SPEC.md §9: a bundle is NOT signed and carries no claims of its own; every claim inside it is verified individually, so passing this schema says nothing about any contained document beyond its shape. Two §9 rules are not expressible here: duplicate `id` values with differing content (AWR-BUNDLE-002), and identification of the subject document — a verifier MUST NOT depend on order and MUST identify the subject either by explicit caller argument or as the single WorkReceipt not referenced as anyone's parent, reporting AWR-BUNDLE-003 on ambiguity rather than guessing. Media type is application/json (§15), file extension .awrb.json (non-normative). §13.4: bundle processing is attacker-influenced work; implementations SHOULD bound total input size and nesting depth before canonicalizing.",
+  "type": "object",
+  "properties": {
+    "awrBundle": {
+      "$comment": "SPEC.md §9: MUST be \"2.0\" (AWR-BUNDLE-001). Note that this is \"2.0\", not the documents' `awrVersion` of \"2.0.0\"; the two version strings are deliberately different lengths in the specification and are not interchangeable.",
+      "const": "2.0"
+    },
+    "documents": {
+      "$comment": "SPEC.md §9: MUST be a non-empty array of AWR documents (AWR-BUNDLE-001). `oneOf` over the three document schemas is exact rather than merely convenient: each document schema requires its own AWR type and forbids the other two (§3.1, AWR-DOC-005), so no valid document can satisfy two branches, and a document with no AWR type or with two satisfies none.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/work-receipt-v2.json" },
+          { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/verification-verdict-v2.json" },
+          { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/blame-attestation-v2.json" }
+        ]
+      }
+    }
+  },
+  "required": ["awrBundle", "documents"]
+}

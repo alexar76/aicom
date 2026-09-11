@@ -1,0 +1,63 @@
+# ── PostgreSQL overlay for AI-Factory ───────────────────────────────────────
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.pg.yml up -d
+#
+# This overlay adds a PostgreSQL 16 service and wires it into the app
+# via the DATABASE_URL environment variable. All hub data (capabilities,
+# peers, channels, provenance receipts) is stored in PostgreSQL.
+#
+# Without this overlay, the app defaults to SQLite (zero-config).
+#
+# Environment variables:
+#   POSTGRES_USER     — default: aicom
+#   POSTGRES_PASSWORD — REQUIRED, no default. Compose refuses to start if unset
+#                       (the old `aicom:aicom` default shipped a known DB
+#                       password). Generate one: openssl rand -base64 24
+#   POSTGRES_DB       — default: aicom
+#   POSTGRES_PORT     — default: 5432
+
+version: "3.9"
+
+services:
+  app:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-aicom}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env (no default — old aicom:aicom was insecure)}@postgres:5432/${POSTGRES_DB:-aicom}"
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: aicom-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aicom}
+      # No default — `${VAR:?msg}` makes `docker compose up` fail fast when the
+      # password is unset, instead of silently booting with a public default.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env (no default — old aicom:aicom was insecure)}
+      POSTGRES_DB: ${POSTGRES_DB:-aicom}
+      PGUSER: ${POSTGRES_USER:-aicom}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env (no default — old aicom:aicom was insecure)}
+    ports:
+      # Localhost-only, matching docker-compose.prod.yml, which already published this same
+      # service as 127.0.0.1. The two overlays disagreed on one decision, and following this
+      # file's own documented usage on a public VPS put the factory/hub database on
+      # 0.0.0.0:5432 — a Docker DNAT rule, so UFW does not stop it. The app reaches postgres
+      # by service name over aicom_net and needs no host publish at all; this stays only for
+      # the operator's own psql.
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aicom} -d ${POSTGRES_DB:-aicom}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - aicom_net
+
+volumes:
+  pgdata:
+    driver: local

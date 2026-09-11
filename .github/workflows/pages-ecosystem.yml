@@ -1,0 +1,109 @@
+name: Deploy ecosystem landing to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "ecosystem-landing/**"
+      - "seo-landings/**"
+      - "scripts/build_seo_landings.py"
+      - "scripts/build_ecosystem_landing.sh"
+      - "docs/encyclopedia/**"
+      - "docs/specs/**"
+      - "argus/docs/use-case-external-operator.md"
+      - "oracles/frontend/src/oracles.ts"
+      - "courses/**"
+      - ".github/workflows/pages-ecosystem.yml"
+  workflow_dispatch:
+
+# Allow one concurrent deploy; don't cancel an in-progress run.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Pin third-party/floating tags to full commit SHAs (supply-chain
+      # hardening — a moved tag can't slip a malicious action into the deploy).
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build deps
+        run: pip install pyyaml
+
+      # oracles/ is a satellite — fetch the catalog TS so /oracles/ SEO pages build.
+      - name: Fetch oracles catalog for SEO
+        run: |
+          mkdir -p oracles/frontend/src
+          curl -fsSL \
+            "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/src/oracles.ts" \
+            -o oracles/frontend/src/oracles.ts
+          test -s oracles/frontend/src/oracles.ts
+
+      # The encyclopedia's rendered HTML + PDFs used to be COMMITTED (133 MB, five 13 MB
+      # HTML files carrying base64 screenshots). They are build output: generated here from
+      # docs/encyclopedia/content/*.json and assets/, which stay in git. Run before the SEO
+      # build, which copies docs/encyclopedia/ into the published tree.
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Render encyclopedia HTML
+        working-directory: docs/encyclopedia
+        run: |
+          node scripts/generate-encyclopedia.mjs all
+          for l in en ru es fr zh; do test -s "$l/index.html"; done
+
+      - name: Render encyclopedia PDFs
+        working-directory: docs/encyclopedia
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+          node scripts/generate-pdf.mjs all
+
+      # The portal links all three PDFs, so a silently skipped render would publish dead
+      # links. Fail the deploy instead.
+      - name: Assert encyclopedia artifacts exist
+        run: |
+          for l in en ru es; do test -s "docs/encyclopedia/pdf/aicom-encyclopedia-$l.pdf"; done
+
+      - name: Build SEO landings (GitHub Pages canonical)
+        env:
+          SEO_BASE_URL: https://alexar76.github.io/aicom
+        run: ./scripts/build_ecosystem_landing.sh
+
+      - name: Assert learn + oracles hubs exist
+        run: |
+          test -f ecosystem-landing/learn/index.html
+          test -f ecosystem-landing/oracles/index.html
+          test -f ecosystem-landing/learn/orchestration-course/index.html
+
+      # NOTE: the three GitHub-owned Pages actions below are still on their
+      # major tags. They could not be SHA-pinned offline; see followup
+      # "SHA-pin GitHub Pages actions" to resolve and pin each to a digest.
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload landing as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ecosystem-landing
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

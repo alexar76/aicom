@@ -1,0 +1,14 @@
+Output format: JSON with fields:
+- delivery_profile: string (must be "full_software")
+- product_name: string (evocative but implementable product identity; no ™/®/(TM))
+- description: string (what we build, for whom, success definition)
+- target_audience: string
+- core_features: list of {name, description, priority} (at least 3; may map to epics/FRs)
+- functional_requirements: list of {id, title, description, priority, acceptance_criteria} — **at least 3**; ids like FR-01
+- personas: list of {name, context, jobs_to_be_done: list of string} — **at least 1 persona**, each with ≥1 job
+- non_functional_requirements: list of {category, requirement, measurable_criteria} — **at least 2**; one row MUST be OSS/GitHub-house (bilingual docs, CI + coverage floor, tagged Release, README badges + hero/gallery when UI)
+- user_stories: list of {story, acceptance_criteria} — **at least 2**; each acceptance_criteria testable and tied to audience (see length rule below); no stubs
+- technical_risks: list of string
+- estimated_effort: "S" | "M" | "L" | "XL"
+- estimated_days: number
+- market_potential: "low" | "medium" | "high"

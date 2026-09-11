@@ -1,0 +1,78 @@
+# Four-host fleet — LLM routing targets (AI assistants / provider env).
+#
+# SSH aliases from ~/.ssh/config (factory key: id_ed25519_factory).
+# Run: python3 scripts/llm_routing.py scan
+
+hosts:
+  factory:
+    label: "Factory + core satellites"
+    ssh: my-vps
+    repo: /root/claudecode/aicom
+    env_file: /root/claudecode/aicom/.env
+    containers:
+      - aicom-app-1          # Factory pipeline + admin LLM router
+      - alien-monitor        # AI assistant (model_providers.yaml)
+      - atlas-atlas-1        # ATLAS Analyst
+      - argus
+      - argus-uni
+      - modelmarket-hub      # calls Metis for verify (no own LLM)
+      - themis
+      - pulse-terminal
+
+  metis:
+    label: "Metis cognition + SKOPOS"
+    ssh: root@skopos.modelmarket.dev
+    repo: /opt/metis
+    env_file: /opt/metis/.env
+    prod_yaml: /opt/metis/deploy/prod.yaml
+    containers:
+      - metis                # council / verify API
+      - metis-skopos         # fleet AI agent (OpenRouter in agent.yaml)
+
+  oracles:
+    label: "MOMUS / HELIOS / DIOSCURI / GAIA / Platon"
+    ssh: admin-vps
+    repo: /root/aicom
+    env_files:
+      - /root/momus-deploy/.env
+      - /root/helios/.env
+      - /root/dioscuri/.env
+      - /root/aicom/.env
+    env_file: /root/aicom/.env
+    containers:
+      - momus-backend        # MOMUS_LLM_*
+      - momus-treasury       # advisory explainer
+      - helios               # HELIOS_LLM_*
+      - helios-worker
+      - dioscuri             # DIOSCURI_LLM_*
+      - argus                # second argus instance
+      - alien-monitor
+      - platon-platon-backend
+      - logos
+      - skopos-remediation
+
+  hub_lab:
+    label: "Competing lab Hub + hunt"
+    ssh: competing-lab
+    repo: /opt/aicom
+    env_file: /opt/aicom/.env
+    containers:
+      - modelmarket-hub      # verify via remote Metis
+      # signal-hunt-game: no ecosystem LLM router
+
+profiles:
+  deepseek-all:
+    description: "All services → DeepSeek native API (deepseek-v4-pro / flash)."
+    factory_default: deepseek_api
+    metis_mode: deepseek_all
+
+  hybrid-metis:
+    description: "Canonical prod — DeepSeek everywhere; Metis adds MiniMax-M3 on OpenRouter for skeptic seats."
+    factory_default: deepseek_api
+    metis_mode: hybrid
+
+  openrouter-all:
+    description: "Emergency — OpenRouter MiniMax everywhere; Metis adds Kimi-K3 diversifier."
+    factory_default: openrouter_api
+    metis_mode: openrouter_all
+    factory_hold: true

@@ -1,0 +1,13 @@
+[
+  {
+    "name": "login",
+    "steps": [
+      { "goto": "/login" },
+      { "fill": { "selector": "#email", "value": "${AIFACTORY_E2E_EMAIL}" } },
+      { "fill": { "selector": "#password", "value": "${AIFACTORY_E2E_PASSWORD}" } },
+      { "click": "button[type='submit']" },
+      { "wait_ms": 400 },
+      { "expect_visible": "text=Dashboard" }
+    ]
+  }
+]

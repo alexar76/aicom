@@ -1,0 +1,14 @@
+{
+    "detectors_to_exclude": [],
+    "exclude_informational": false,
+    "exclude_low": false,
+    "exclude_medium": false,
+    "exclude_high": false,
+    "filter_paths": "(lib/|test/|script/)",
+    "solc_remaps": [
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"
+    ],
+    "solc_args": "--optimize --optimize-runs 200",
+    "disable_color": false,
+    "json": "slither-report.json"
+}

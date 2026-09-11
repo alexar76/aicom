@@ -1,0 +1,95 @@
+{
+  "build": {
+    "category": "saas",
+    "completed_stage_count": 4,
+    "created_at": 1749196800.0,
+    "id": "sample-spliteasy",
+    "idea": "A tool to split bills with friends",
+    "product_url": "/product/sample-spliteasy",
+    "repair_rounds": 1,
+    "shipped": true,
+    "stage_count": 4,
+    "state": "COMPLETED",
+    "title": "SplitEasy",
+    "total_build_seconds": 1800.0,
+    "updated_at": 1749199800.0
+  },
+  "stages": [
+    {
+      "agent": "analyst",
+      "blurb": "Researched the market and validated demand",
+      "completed_at": 1749197900.0,
+      "created_at": 1749196800.0,
+      "duration_sec": 100.0,
+      "emoji": "🔍",
+      "had_error": false,
+      "highlights": {
+        "category": "saas",
+        "score": 0.91,
+        "verdict": "go"
+      },
+      "is_gate": false,
+      "label": "Analyst",
+      "retry_count": 0,
+      "started_at": 1749196810.0,
+      "state": "MARKET_RESEARCHED",
+      "status": "completed"
+    },
+    {
+      "agent": "developer",
+      "blurb": "Built the product",
+      "completed_at": 1749198900.0,
+      "created_at": 1749197000.0,
+      "duration_sec": 900.0,
+      "emoji": "👨‍💻",
+      "had_error": false,
+      "highlights": {
+        "files": 7,
+        "stack": "Next.js + FastAPI"
+      },
+      "is_gate": false,
+      "label": "Developer",
+      "retry_count": 1,
+      "started_at": 1749198000.0,
+      "state": "CODE_COMMITTED",
+      "status": "completed"
+    },
+    {
+      "agent": "landing_developer",
+      "blurb": "Built the landing page",
+      "completed_at": 1749199100.0,
+      "created_at": 1749198100.0,
+      "duration_sec": 100.0,
+      "emoji": "👨‍💻",
+      "had_error": false,
+      "highlights": {
+        "files": 3
+      },
+      "is_gate": false,
+      "label": "Landing Developer",
+      "retry_count": 0,
+      "started_at": 1749198100.0,
+      "state": "CODE_COMMITTED",
+      "status": "completed"
+    },
+    {
+      "agent": "security",
+      "blurb": "Scanned for vulnerabilities",
+      "completed_at": 1749199500.0,
+      "created_at": 1749199200.0,
+      "duration_sec": 200.0,
+      "emoji": "🔒",
+      "had_error": false,
+      "highlights": {
+        "findings": 0,
+        "passed": true
+      },
+      "is_gate": false,
+      "label": "Security",
+      "retry_count": 0,
+      "started_at": 1749199300.0,
+      "state": "SECURITY_SCANNED",
+      "status": "completed"
+    }
+  ]
+}

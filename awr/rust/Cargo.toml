@@ -1,0 +1,26 @@
+[package]
+name = "awr"
+version = "2.0.0"
+edition = "2021"
+description = "Independent Rust implementation of AWR/2 (Agent Work Receipt), written from awr/SPEC.md alone"
+license = "MIT"
+publish = false
+
+[lib]
+name = "awr"
+path = "src/lib.rs"
+
+[[bin]]
+name = "awr"
+path = "src/main.rs"
+
+[dependencies]
+# Only ed25519-dalek and sha2 are used. JSON is parsed/serialized by src/json.rs
+# because AWR requires duplicate-key rejection, an integer/non-integer
+# distinction and order/unknown-field preservation (SPEC 3.1, 4.1, 4.2), which a
+# generic serde_json Value cannot express.
+ed25519-dalek = { version = "2.2", default-features = false, features = ["std", "fast", "zeroize"] }
+sha2 = "0.10"
+
+[profile.release]
+panic = "abort"

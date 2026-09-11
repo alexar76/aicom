@@ -1,0 +1,8 @@
+[Unit]
+Description=Restart watched containers Docker has marked unhealthy
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/aicom-autoheal/aicom-autoheal.sh

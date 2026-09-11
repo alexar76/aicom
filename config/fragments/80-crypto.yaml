@@ -1,0 +1,24 @@
+crypto:
+  # MASTER SWITCH — crypto / blockchain / on-chain payments are OFF by default
+  # across the whole ecosystem. The env var AIFACTORY_CRYPTO_ENABLED is
+  # authoritative (truthy: 1/true/yes/on); this YAML only documents the bundled
+  # default. When off: no wallet, no RPC, no 402, no channels, no on-chain
+  # verification, no UNI/lottery settlement — every component runs on a free
+  # tier. Set AIFACTORY_CRYPTO_ENABLED=1 (deployment-wide) to enable.
+  enabled: false
+  supported_chains:
+  - base
+  - solana
+  - arbitrum
+  - ethereum
+  default_chain: base
+  wallet_addresses:
+    evm: ''
+    solana: ''
+  min_confirmation_amounts:
+    base: 10.0
+    solana: 10.0
+    arbitrum: 10.0
+    ethereum: 10.0
+  payment_timeout_sec: 3600
+  confirmation_poll_interval_sec: 15

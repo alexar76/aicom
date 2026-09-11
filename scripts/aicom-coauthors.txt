@@ -1,0 +1,11 @@
+# External human contributors credited on the public aicom snapshot.
+# publish_aicom_factory.sh appends each as a `Co-authored-by:` trailer to the
+# single-commit snapshot message, so they appear in the GitHub contributor graph
+# even though the public mirror carries no accumulated history.
+#
+# Format: one "Name <email>" per line. Blank lines and #-comments are ignored.
+# HUMANS ONLY — never add AI/CI tooling here (that is exactly what the mirror
+# sanitizer strips elsewhere). Use the account's GitHub noreply so the credit
+# links to the account: <numeric-id>+<login>@users.noreply.github.com
+#
+Benjamin Ayivoh <218328228+BenjaminAyivoh1@users.noreply.github.com>

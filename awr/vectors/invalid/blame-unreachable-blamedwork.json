@@ -1,0 +1,44 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://verify.modelmarket.dev/ns/awr/v2"
+  ],
+  "id": "urn:uuid:00000085-a11c-4f38-9b8a-1c2d3e4f5a6b",
+  "type": [
+    "VerifiableCredential",
+    "BlameAttestation"
+  ],
+  "issuer": {
+    "id": "did:key:z6Mkh7U7jBwoMro3UeHmXes4tKtFbZhMRWejbtunbU4hhvjP",
+    "name": "example-attributor"
+  },
+  "validFrom": "2026-07-31T10:15:30Z",
+  "awrVersion": "2.0.0",
+  "credentialSubject": {
+    "chain": {
+      "digestSRI": "sha256-ITS2NGzFGGV0DtPc+kEjinu/PlvBpBs4N/8KTJneXb8=",
+      "id": "urn:uuid:00000012-a11c-4f38-9b8a-1c2d3e4f5a6b"
+    },
+    "blamedWork": {
+      "digestSRI": "sha256-1ITjfoe65hfzgCPtWfVlQDzGwyF4Yimge7pv+f+tnFY=",
+      "id": "urn:uuid:00000084-a11c-4f38-9b8a-1c2d3e4f5a6b"
+    },
+    "failureClass": "wrong-output",
+    "confidence": "0.75",
+    "method": {
+      "id": "urn:example:method:hop-bisect-v1"
+    }
+  },
+  "proof": {
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://verify.modelmarket.dev/ns/awr/v2"
+    ],
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "created": "2026-07-31T10:15:30Z",
+    "verificationMethod": "did:key:z6Mkh7U7jBwoMro3UeHmXes4tKtFbZhMRWejbtunbU4hhvjP#z6Mkh7U7jBwoMro3UeHmXes4tKtFbZhMRWejbtunbU4hhvjP",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "z3oQsK41zCTtzmW5yfpGZyj8dquyjR3A2jsmTPzJSDPEMWev3eRX87P4upWD1FLDEJch3Yd9vwBSzKcFaAHRcJ2C7"
+  }
+}

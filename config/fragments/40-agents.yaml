@@ -1,0 +1,13 @@
+agents:
+  default_timeout_sec: 30
+  default_max_retries: 3
+  log_level: INFO
+  priorities:
+    pm: 1
+    architect: 2
+    developer: 3
+    qa: 4
+    devops: 5
+    marketing: 6
+    sales: 7
+    evolution_analyst: 8

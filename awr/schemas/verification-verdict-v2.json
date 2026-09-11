@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verify.modelmarket.dev/ns/awr/v2/schemas/verification-verdict-v2.json",
+  "title": "AWR/2 VerificationVerdict",
+  "description": "NON-NORMATIVE. JSON Schema is a convenience for tooling and is not the normative definition of AWR/2; awr/SPEC.md is (Appendix B). Where this schema and the specification disagree, the schema is the bug. A VerificationVerdict answers whether the work was right and who says so: an independent verifier's signed judgement about a WorkReceipt (SPEC.md §3.4).",
+  "$comment": "This schema checks structure only. In particular it cannot check that `verifiedWork.digestSRI` matches the receipt actually supplied (AWR-VDCT-005), that `verdict` is consistent with `score`/`policy.threshold` (AWR-VDCT-006, a warning), or — decisively — that the verdict's issuer differs from the receipt's issuer, which is the whole point of profile L1 (§10.2, AWR-PROFILE-002) and needs two documents at once. §13.3: a verdict signed by the receipt's issuer proves only self-consistency. See common-v2.json's file-level $comment for the full list of non-expressible requirements, including §4.3's global no-float rule. Never set additionalProperties:false on any object here (§3.1).",
+  "type": "object",
+  "allOf": [
+    { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/envelopeCommon" }
+  ],
+  "properties": {
+    "type": {
+      "$comment": "SPEC.md §3.1: MUST contain `VerifiableCredential` (AWR-DOC-004) and exactly one AWR type (AWR-DOC-005). Further types MAY be present.",
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string" },
+      "allOf": [
+        { "contains": { "const": "VerifiableCredential" } },
+        { "contains": { "const": "VerificationVerdict" } },
+        { "not": { "contains": { "const": "WorkReceipt" } } },
+        { "not": { "contains": { "const": "BlameAttestation" } } }
+      ]
+    },
+    "credentialSubject": {
+      "$comment": "SPEC.md §3.4.",
+      "type": "object",
+      "properties": {
+        "verifiedWork": {
+          "$comment": "SPEC.md §3.4: MUST be a digest reference with BOTH `id` and `digestSRI` present (AWR-VDCT-001), digesting the SECURED WorkReceipt. Referencing a receipt by identifier alone would let the same verdict be re-pointed at a different receipt (§13.2).",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/digestReferenceWithId"
+        },
+        "verdict": {
+          "$comment": "SPEC.md §3.4: MUST be one of these three (AWR-VDCT-004). `inconclusive` is NOT a failure and MUST NOT be treated as one — it is the honest outcome when a verifier could not reach a judgement, and suppressing it is what turns verifiers into rubber stamps. §10.2: `fail` and `inconclusive` still satisfy L1 structurally, because L1 asserts that an independent party judged the work, not that the judgement was favourable.",
+          "enum": ["pass", "fail", "inconclusive"]
+        },
+        "score": {
+          "$comment": "SPEC.md §3.4: OPTIONAL; when present MUST be a decimal string in the closed unit interval [0,1] (AWR-VDCT-002) and MUST NOT be a JSON number (§4.3). Comparison MUST be decimal arithmetic, never a parse to binary float.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/unitIntervalDecimalString"
+        },
+        "method": {
+          "$comment": "SPEC.md §3.4: MUST be present with a non-empty `id` (AWR-VDCT-003). Two verdicts are comparable only if they name the same method.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/method"
+        },
+        "policy": {
+          "$comment": "SPEC.md §3.4: `policy.threshold`, if present, MUST be a decimal string in [0,1]. A verifier SHOULD report AWR-VDCT-006 (warning) when `verdict` and the score/threshold relation disagree; the issuer's stated verdict is authoritative, but the inconsistency is evidence in itself. Not expressible here.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/policy"
+        },
+        "evidence": {
+          "$comment": "SPEC.md §3.4: entries MUST each carry `digestSRI` (AWR-VDCT-007); `kind` is a free-form label. Evidence bytes are not carried in the document and need not be available for verification to succeed; the digest makes them producible on demand and non-substitutable. §13.5: a verifier MUST NOT fetch evidence bytes.",
+          "type": "array",
+          "items": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/evidenceEntry" }
+        },
+        "stake": {
+          "$comment": "SPEC.md §3.4 and §10.3: OPTIONAL; one of the two accountability bindings profile L2 accepts (AWR-PROFILE-004). A verifier MUST NOT contact a chain to check it and MUST report AWR-L2-001 (warning).",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/stake"
+        }
+      },
+      "required": ["verifiedWork", "verdict", "method"]
+    }
+  },
+  "required": ["type", "credentialSubject"]
+}

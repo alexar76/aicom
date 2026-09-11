@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security policy
+    url: https://github.com/alexar76/aicom/blob/main/SECURITY.md
+    about: Report vulnerabilities responsibly (see SECURITY.md)
+  - name: Ecosystem docs
+    url: https://alexar76.github.io/aicom/
+    about: AI-Factory + AIMarket overview and live demos
+issue_templates:
+  - name: Bug report
+    description: Something is broken or incorrect
+    labels: ["bug"]
+    filename: bug_report.yml
+  - name: Feature request
+    description: Propose an improvement
+    labels: ["enhancement"]
+    filename: feature_request.yml

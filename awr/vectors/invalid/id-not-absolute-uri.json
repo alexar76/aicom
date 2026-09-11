@@ -1,0 +1,38 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://verify.modelmarket.dev/ns/awr/v2"
+  ],
+  "id": "receipt-42",
+  "type": [
+    "VerifiableCredential",
+    "WorkReceipt"
+  ],
+  "issuer": {
+    "id": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+    "name": "example-hub"
+  },
+  "validFrom": "2026-07-31T10:15:30Z",
+  "awrVersion": "2.0.0",
+  "credentialSubject": {
+    "work": {
+      "modelId": "claude-sonnet-5@anthropic",
+      "completedAt": "2026-07-31T10:15:30Z",
+      "status": "succeeded"
+    },
+    "inputDigest": "sha256-ntYicspG8WqhUyawUlC4dTFMnG08+B5Wol6Kci8rnNo=",
+    "outputDigest": "sha256-z3ZSXO7HDKRUMIrd+zvSig+hNUcug/XPmO+faJPgJak="
+  },
+  "proof": {
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://verify.modelmarket.dev/ns/awr/v2"
+    ],
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "created": "2026-07-31T10:15:30Z",
+    "verificationMethod": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw#z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "z5GHZ7Ut4XvDwzwSf2SHBNB96P4SWoNGWPkSstY7mAToD2osnNwMYmzUeueMYi5aWDixc5WQ2McVXZbwyC1RgpiJV"
+  }
+}

@@ -1,0 +1,283 @@
+#!/usr/bin/env bash
+# Keep ecosystem-landing/install in sync after edits:
+#   cp scripts/install_argus.sh ecosystem-landing/install
+#   cp scripts/install_argus.sh ecosystem-landing/argus/install
+#
+#   curl -fsSL https://magic-ai-factory.com/install | bash
+#
+# Options (env):
+#   ARGUS_HOME          install dir (default: ~/.argus/agent)
+#   ARGUS_SKIP_SETUP=1  skip interactive `argus setup`
+#   ARGUS_SKIP_DOCTOR=1 skip health check
+#   ARGUS_NPM_TAG       npm dist-tag (default: latest)
+#   ARGUS_INSTALL_NODE=1  try to install Node 20+ via fnm if missing
+set -euo pipefail
+
+ARGUS_VERSION="${ARGUS_VERSION:-0.1.0}"
+ARGUS_HOME="${ARGUS_HOME:-${HOME}/.argus/agent}"
+ARGUS_NPM_TAG="${ARGUS_NPM_TAG:-latest}"
+ARGUS_MIN_NODE="${ARGUS_MIN_NODE:-20}"
+INSTALL_URL="${ARGUS_INSTALL_URL:-https://magic-ai-factory.com/install}"
+DOCS_URL="${ARGUS_DOCS_URL:-https://magic-ai-factory.com/argus/}"
+HUB_URL="${ARGUS_HUB_URL:-https://modelmarket.dev}"
+
+bold()  { printf '\033[1m%s\033[0m\n' "$*"; }
+info()  { printf '\033[36m→\033[0m %s\n' "$*"; }
+ok()    { printf '\033[32m✓\033[0m %s\n' "$*"; }
+warn()  { printf '\033[33m!\033[0m %s\n' "$*" >&2; }
+die()   { printf '\033[31m✗ %s\033[0m\n' "$*" >&2; exit 1; }
+
+step() {
+  bold ""
+  bold "[$1/5] $2"
+}
+
+node_major() {
+  node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0
+}
+
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1 || die "Missing '$1'. Install it and re-run: curl -fsSL ${INSTALL_URL} | bash"
+}
+
+npm_global_bin_dir() {
+  local prefix
+  prefix="$(npm prefix -g 2>/dev/null || true)"
+  [[ -n "$prefix" ]] && printf '%s/bin' "$prefix"
+}
+
+ensure_npm_global_on_path() {
+  local bin
+  bin="$(npm_global_bin_dir)"
+  [[ -z "$bin" || ! -d "$bin" ]] && return 0
+  case ":${PATH}:" in
+    *":${bin}:"*) ;;
+    *)
+      export PATH="${bin}:${PATH}"
+      NPM_GLOBAL_BIN_ADDED=1
+      ;;
+  esac
+}
+
+resolve_argus_bin() {
+  ensure_npm_global_on_path
+  if command -v argus >/dev/null 2>&1; then
+    command -v argus
+    return 0
+  fi
+  local bin candidate
+  bin="$(npm_global_bin_dir)"
+  candidate="${bin}/argus"
+  if [[ -n "$candidate" && -x "$candidate" ]]; then
+    printf '%s\n' "$candidate"
+    return 0
+  fi
+  return 1
+}
+
+maybe_install_node() {
+  local major
+  major="$(node_major)"
+  if [[ "$major" -ge "$ARGUS_MIN_NODE" ]]; then
+    return 0
+  fi
+  if [[ "${ARGUS_INSTALL_NODE:-0}" != "1" ]]; then
+    die "Node.js >= ${ARGUS_MIN_NODE} required (found: $(command -v node >/dev/null && node -v || echo 'none')). Install from https://nodejs.org or re-run with ARGUS_INSTALL_NODE=1"
+  fi
+  info "Node ${ARGUS_MIN_NODE}+ not found — installing via fnm..."
+  need_cmd curl
+  export PATH="${HOME}/.local/share/fnm:${HOME}/.fnm:${PATH}"
+  if ! command -v fnm >/dev/null 2>&1; then
+    curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+  fi
+  # shellcheck disable=SC1090
+  eval "$(fnm env --shell bash 2>/dev/null || fnm env 2>/dev/null || true)"
+  fnm install 22
+  fnm use 22
+  major="$(node_major)"
+  [[ "$major" -ge "$ARGUS_MIN_NODE" ]] || die "Node install failed. Install Node ${ARGUS_MIN_NODE}+ manually."
+  ok "Node $(node -v)"
+}
+
+install_argus_cli() {
+  for candidate in "argus-warden" "@alexar76/argus3" "argus-3" "@aimarket/argus"; do
+    if npm view "${candidate}@${ARGUS_NPM_TAG}" version >/dev/null 2>&1; then
+      info "Installing ${candidate}@${ARGUS_NPM_TAG} from npm..."
+      npm install -g "${candidate}@${ARGUS_NPM_TAG}"
+      return 0
+    fi
+  done
+  warn "No ARGUS npm package found — trying local monorepo / git fallback..."
+  local src=""
+  if [[ -f "${PWD}/argus/package.json" ]]; then
+    src="${PWD}/argus"
+  elif [[ -f "${HOME}/aicom/argus/package.json" ]]; then
+    src="${HOME}/aicom/argus"
+  fi
+  if [[ -n "$src" ]]; then
+    info "Building from ${src}..."
+    (cd "$src" && npm install && npm run build && npm link)
+    return 0
+  fi
+  die "Could not install ARGUS. Publish argus-warden to npm or clone github.com/alexar76/argus"
+}
+
+write_default_config() {
+  if [[ ! -f argus.config.json ]]; then
+    cat >argus.config.json <<'EOF'
+{
+  "mode": "live",
+  "providers": [
+    { "id": "deepseek", "kind": "openai", "baseUrl": "https://api.deepseek.com/v1", "apiKeyEnv": "DEEPSEEK_API_KEY" },
+    { "id": "anthropic", "kind": "anthropic", "apiKeyEnv": "ANTHROPIC_API_KEY" },
+    { "id": "ollama", "kind": "local", "baseUrl": "http://127.0.0.1:11434/v1" }
+  ],
+  "models": {
+    "triage": { "ref": "deepseek/deepseek-chat", "pricing": { "inputPerM": 0.27, "outputPerM": 1.1 }, "maxTokens": 1024 },
+    "core":   { "ref": "deepseek/deepseek-chat", "pricing": { "inputPerM": 0.27, "outputPerM": 1.1 }, "maxTokens": 4096 },
+    "heavy":  { "ref": "anthropic/claude-sonnet-4-6", "pricing": { "inputPerM": 3, "outputPerM": 15, "cachedInputPerM": 0.3 }, "maxTokens": 8192 }
+  },
+  "budget": { "maxUsdPerTask": 0.5, "maxTokensPerTask": 200000, "maxSteps": 24, "maxToolCalls": 40 },
+  "warden": {
+    "minReputation": 0.25,
+    "blockAtSeverity": "high",
+    "allowUnknownServers": true,
+    "pinToolDefs": true,
+    "oracleFamilyUrl": "https://oracles.modelmarket.dev/family"
+  },
+  "economy": {
+    "hubUrl": "https://modelmarket.dev",
+    "meshUrl": "https://magic-ai-factory.com",
+    "oracleFamilyUrl": "https://oracles.modelmarket.dev/family",
+    "affiliate": "argus",
+    "defaultDepositUsd": 1.0,
+    "chain": "base",
+    "token": "USDC",
+    "verifyTee": true
+  },
+  "mcp": { "catalogs": [], "servers": [] },
+  "memory": { "dir": "~/.argus/memory" }
+}
+EOF
+    ok "Created argus.config.json"
+  else
+    ok "argus.config.json already exists"
+  fi
+
+  if [[ ! -f .env ]]; then
+    cat >.env <<EOF
+# ARGUS secrets — chmod 600. Crypto is OFF by default.
+ARGUS_CRYPTO_ENABLED=0
+ARGUS_HUB_URL=${HUB_URL}
+ARGUS_MESH_URL=https://magic-ai-factory.com
+ARGUS_ORACLE_FAMILY_URL=https://oracles.modelmarket.dev/family
+ARGUS_HTTP_PORT=8787
+DEEPSEEK_API_KEY=
+ANTHROPIC_API_KEY=
+ARGUS_LOCAL_BASE_URL=http://127.0.0.1:11434/v1
+EOF
+    chmod 600 .env
+    ok "Created .env (add your LLM API key)"
+  else
+    ok ".env already exists"
+  fi
+}
+
+offer_cursor_mcp() {
+  [[ -t 0 ]] || return 0
+  local ans
+  read -r -p "Add ARGUS to Cursor MCP config? [y/N] " ans || return 0
+  # `${ans,,}` is bash 4+; macOS ships bash 3.2, where it is a runtime
+  # `bad substitution` — and with `set -e` that aborted the installer right
+  # after it had already written ~/.argus. Fold the case the portable way.
+  ans="$(printf '%s' "$ans" | tr '[:upper:]' '[:lower:]')"
+  [[ "$ans" == "y" || "$ans" == "yes" ]] || return 0
+  local mcp="${HOME}/.cursor/mcp.json"
+  mkdir -p "$(dirname "$mcp")"
+  if [[ -f "$mcp" ]] && grep -q '"argus"' "$mcp" 2>/dev/null; then
+    ok "Cursor MCP already has an 'argus' entry"
+    return 0
+  fi
+  cat <<EOF
+
+Paste this into ${mcp} (merge with existing mcpServers):
+
+  "argus": {
+    "command": "argus",
+    "args": ["mcp"]
+  }
+
+Or run: argus mcp   (stdio MCP server — WARDEN-vetted tools)
+EOF
+}
+
+main() {
+  bold "🛡️  ARGUS-3 installer"
+  info "One command · interactive wizard · ready in ~2 minutes"
+  info "Docs: ${DOCS_URL}"
+
+  step 1 "System check"
+  need_cmd bash
+  need_cmd curl
+  maybe_install_node
+  need_cmd npm
+  ensure_npm_global_on_path
+  ok "Node $(node -v) · npm $(npm -v)"
+
+  step 2 "Install ARGUS CLI"
+  install_argus_cli
+  ensure_npm_global_on_path
+  if ! resolve_argus_bin >/dev/null; then
+    local gbin
+    gbin="$(npm_global_bin_dir)"
+    die "'argus' not on PATH after install. Run: export PATH=\"${gbin}:\$PATH\" && hash -r"
+  fi
+  ok "argus CLI installed ($(resolve_argus_bin))"
+
+  step 3 "Prepare workspace"
+  mkdir -p "$ARGUS_HOME"
+  cd "$ARGUS_HOME"
+  ok "Working directory: $ARGUS_HOME"
+  write_default_config
+
+  step 4 "Interactive setup"
+  if [[ "${ARGUS_SKIP_SETUP:-0}" == "1" ]]; then
+    warn "Skipped argus setup (ARGUS_SKIP_SETUP=1)"
+  elif [[ -t 0 ]]; then
+    info "Launching setup wizard (LLM key, Telegram, wallet seed)..."
+    argus setup
+  else
+    warn "No TTY — interactive setup skipped."
+    bold "Run this in your SSH/terminal session:"
+    printf '  cd %s && argus setup\n' "$ARGUS_HOME"
+    info "The wizard asks for: LLM API key · Telegram bot token · wallet (generate seed or import)"
+  fi
+
+  step 5 "Health check"
+  if [[ "${ARGUS_SKIP_DOCTOR:-0}" != "1" ]]; then
+    argus doctor || warn "doctor reported issues — fix .env / provider keys, then: argus doctor"
+  fi
+
+  offer_cursor_mcp
+
+  bold ""
+  bold "✅ ARGUS is ready"
+  gbin="$(npm_global_bin_dir)"
+  cat <<EOF
+
+  cd ${ARGUS_HOME}
+  argus chat              # talk to your agent
+  argus serve             # HTTP + optional Telegram + Arena
+  argus ask "hello"       # one-shot task
+  argus doctor            # re-check wiring
+
+  Economy (optional): argus keystore create && set ARGUS_CRYPTO_ENABLED=1 in .env
+  Landing: ${DOCS_URL}
+EOF
+  if [[ -n "${NPM_GLOBAL_BIN_ADDED:-}" ]] && [[ -n "$gbin" ]]; then
+    warn "npm global bin was added for this session only. For new shells, add to ~/.bashrc:"
+    printf '  export PATH="%s:$PATH"\n' "$gbin"
+  fi
+}
+
+main "$@"

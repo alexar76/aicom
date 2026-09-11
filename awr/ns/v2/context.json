@@ -1,0 +1,136 @@
+{
+  "$comment": [
+    "The JSON-LD context for the AWR/2 namespace, served at",
+    "https://verify.modelmarket.dev/ns/awr/v2 (see SPEC.md 3.1).",
+    "",
+    "WHAT IT IS FOR, AND WHAT IT IS NOT. The eddsa-jcs-2022 proof canonicalizes JSON with",
+    "RFC 8785 and never expands JSON-LD, so NO verifier needs this document and SPEC.md",
+    "13.5 forbids fetching it during verification. It exists for the other kind of",
+    "consumer -- one that expands the JSON-LD, for example to load AWR documents into a",
+    "graph store alongside other Verifiable Credentials. Until this file was written the",
+    "namespace URI returned the verifier's HTML page from an SPA fallback, so such a",
+    "consumer got text/html where it asked for a context: worse than a 404, because it",
+    "looks like success.",
+    "",
+    "Every term is @protected: a document cannot redefine `outputDigest` to mean something",
+    "else and still expand under this context. Terms are typed where the type is fixed by",
+    "the specification -- @id for identifiers, xsd:dateTime for timestamps, xsd:integer",
+    "for latencyMs -- and left as plain strings where SPEC.md 4.3 deliberately carries a",
+    "decimal as a string rather than a number.",
+    "Five terms are deliberately NOT defined here — `digestSRI`, `evidence`, `status`, `nonce` and `name`. The VC 2.0 context already defines and @protects all five, and redefining a protected term makes expansion fail outright rather than degrade. Ours carry the same meaning in every case, so they are reused rather than shadowed. The list was computed by diffing our term set against the VC 2.0 context, not guessed: three of the five were found only after expansion failed on 12 of 15 valid vectors."
+  ],
+  "@context": {
+    "@version": 1.1,
+    "@protected": true,
+    "awr": "https://verify.modelmarket.dev/ns/awr/v2#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "WorkReceipt": "awr:WorkReceipt",
+    "VerificationVerdict": "awr:VerificationVerdict",
+    "BlameAttestation": "awr:BlameAttestation",
+    "awrVersion": "awr:awrVersion",
+    "awrProfile": "awr:awrProfile",
+    "role": "awr:role",
+    "work": {
+      "@id": "awr:work",
+      "@context": {
+        "@protected": true,
+        "modelId": "awr:modelId",
+        "capability": {
+          "@id": "awr:capability",
+          "@type": "@id"
+        },
+        "startedAt": {
+          "@id": "awr:startedAt",
+          "@type": "xsd:dateTime"
+        },
+        "completedAt": {
+          "@id": "awr:completedAt",
+          "@type": "xsd:dateTime"
+        },
+        "latencyMs": {
+          "@id": "awr:latencyMs",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+    "inputDigest": "awr:inputDigest",
+    "outputDigest": "awr:outputDigest",
+    "parents": {
+      "@id": "awr:parents",
+      "@container": "@set",
+      "@context": {
+        "@protected": true,
+        "role": "awr:role"
+      }
+    },
+    "price": {
+      "@id": "awr:price",
+      "@context": {
+        "@protected": true,
+        "currency": "awr:currency",
+        "amount": "awr:amount"
+      }
+    },
+    "environment": {
+      "@id": "awr:environment",
+      "@context": {
+        "@protected": true,
+        "teeAttestation": {
+          "@id": "awr:teeAttestation",
+          "@type": "@json"
+        },
+        "zkProof": {
+          "@id": "awr:zkProof",
+          "@type": "@json"
+        }
+      }
+    },
+    "settlement": {
+      "@id": "awr:settlement",
+      "@type": "@json"
+    },
+    "stake": {
+      "@id": "awr:stake",
+      "@type": "@json"
+    },
+    "verifiedWork": {
+      "@id": "awr:verifiedWork",
+      "@context": {
+        "@protected": true
+      }
+    },
+    "verdict": "awr:verdict",
+    "score": "awr:score",
+    "policy": {
+      "@id": "awr:policy",
+      "@context": {
+        "@protected": true,
+        "threshold": "awr:threshold"
+      }
+    },
+    "method": {
+      "@id": "awr:method",
+      "@context": {
+        "@protected": true,
+        "modelIds": {
+          "@id": "awr:modelIds",
+          "@container": "@set"
+        }
+      }
+    },
+    "chain": {
+      "@id": "awr:chain",
+      "@context": {
+        "@protected": true
+      }
+    },
+    "blamedWork": {
+      "@id": "awr:blamedWork",
+      "@context": {
+        "@protected": true
+      }
+    },
+    "failureClass": "awr:failureClass",
+    "confidence": "awr:confidence"
+  }
+}

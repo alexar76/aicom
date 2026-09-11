@@ -1,0 +1,7 @@
+services:
+  api:
+    build: .
+    ports:
+      - "${WEB_HOST_PORT:-3000}:3000"
+    environment:
+      PORT: "3000"

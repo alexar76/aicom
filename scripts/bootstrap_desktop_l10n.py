@@ -1,0 +1,454 @@
+#!/usr/bin/env python3
+"""Generate lib/l10n/app_strings.dart (en/ru/es) for each desktop SKU."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+DESKTOP = ROOT / "desktop-integrations"
+
+# Shared keys + per-app nav/titles. Extend by editing this table or adding JSON packs.
+CATALOG: dict[str, dict[str, dict[str, str]]] = {
+    "interview-prep-coach": {
+        "en": {
+            "appTitle": "Interview Prep Coach",
+            "navPrep": "Prep",
+            "navMarket": "Market",
+            "navHistory": "History",
+            "navCommunity": "Community",
+            "settings": "Settings",
+            "backupTitle": "Backup & restore",
+            "exportBackup": "Export user data to file",
+            "importBackup": "Import user data from file",
+            "backupExported": "Backup saved",
+            "backupImported": "Backup restored",
+            "backupFailed": "Backup failed",
+            "todaysPrep": "Today's Prep",
+            "discoverBanks": "Discover Question Banks",
+            "mockInterview": "Mock Interview",
+        },
+        "ru": {
+            "appTitle": "Interview Prep Coach",
+            "navPrep": "Подготовка",
+            "navMarket": "Маркет",
+            "navHistory": "История",
+            "navCommunity": "Сообщество",
+            "settings": "Настройки",
+            "backupTitle": "Резервное копирование",
+            "exportBackup": "Экспорт данных в файл",
+            "importBackup": "Импорт данных из файла",
+            "backupExported": "Копия сохранена",
+            "backupImported": "Данные восстановлены",
+            "backupFailed": "Ошибка копирования",
+            "todaysPrep": "Подготовка сегодня",
+            "discoverBanks": "Найти банки вопросов",
+            "mockInterview": "Mock-собеседование",
+        },
+        "es": {
+            "appTitle": "Interview Prep Coach",
+            "navPrep": "Prep",
+            "navMarket": "Mercado",
+            "navHistory": "Historial",
+            "navCommunity": "Comunidad",
+            "settings": "Ajustes",
+            "backupTitle": "Copia de seguridad",
+            "exportBackup": "Exportar datos",
+            "importBackup": "Importar datos",
+            "backupExported": "Copia guardada",
+            "backupImported": "Datos restaurados",
+            "backupFailed": "Error de copia",
+            "todaysPrep": "Prep de hoy",
+            "discoverBanks": "Descubrir bancos de preguntas",
+            "mockInterview": "Entrevista simulada",
+        },
+    },
+    "personal-finance-coach": {
+        "en": {
+            "appTitle": "Finance Coach",
+            "navOverview": "Overview",
+            "navImport": "Import",
+            "navMarketplace": "Marketplace",
+            "navPrivacy": "Privacy",
+            "settings": "Settings",
+            "backupTitle": "Backup & restore",
+            "exportBackup": "Export user data to file",
+            "importBackup": "Import user data from file",
+            "backupExported": "Backup saved",
+            "backupImported": "Backup restored",
+            "backupFailed": "Backup failed",
+            "financialOverview": "Financial Overview",
+            "privacyNeverLeaves": "Your bank data never leaves this device.",
+        },
+        "ru": {
+            "appTitle": "Finance Coach",
+            "navOverview": "Обзор",
+            "navImport": "Импорт",
+            "navMarketplace": "Маркетплейс",
+            "navPrivacy": "Приватность",
+            "settings": "Настройки",
+            "backupTitle": "Резервное копирование",
+            "exportBackup": "Экспорт данных",
+            "importBackup": "Импорт данных",
+            "backupExported": "Копия сохранена",
+            "backupImported": "Данные восстановлены",
+            "backupFailed": "Ошибка",
+            "financialOverview": "Финансовый обзор",
+            "privacyNeverLeaves": "Банковские данные не покидают устройство.",
+        },
+        "es": {
+            "appTitle": "Finance Coach",
+            "navOverview": "Resumen",
+            "navImport": "Importar",
+            "navMarketplace": "Mercado",
+            "navPrivacy": "Privacidad",
+            "settings": "Ajustes",
+            "backupTitle": "Copia de seguridad",
+            "exportBackup": "Exportar datos",
+            "importBackup": "Importar datos",
+            "backupExported": "Copia guardada",
+            "backupImported": "Restaurado",
+            "backupFailed": "Error",
+            "financialOverview": "Resumen financiero",
+            "privacyNeverLeaves": "Tus datos bancarios no salen del dispositivo.",
+        },
+    },
+    "capability-composer": {
+        "en": {
+            "appTitle": "Capability Composer",
+            "navCanvas": "Canvas",
+            "navDiscover": "Discover",
+            "navTemplates": "Templates",
+            "settings": "Settings",
+            "backupTitle": "Backup & restore",
+            "exportBackup": "Export pipelines to file",
+            "importBackup": "Import pipelines from file",
+            "backupExported": "Backup saved",
+            "backupImported": "Backup restored",
+            "backupFailed": "Backup failed",
+        },
+        "ru": {
+            "appTitle": "Capability Composer",
+            "navCanvas": "Холст",
+            "navDiscover": "Поиск",
+            "navTemplates": "Шаблоны",
+            "settings": "Настройки",
+            "backupTitle": "Резервное копирование",
+            "exportBackup": "Экспорт пайплайнов",
+            "importBackup": "Импорт пайплайнов",
+            "backupExported": "Сохранено",
+            "backupImported": "Восстановлено",
+            "backupFailed": "Ошибка",
+        },
+        "es": {
+            "appTitle": "Capability Composer",
+            "navCanvas": "Lienzo",
+            "navDiscover": "Descubrir",
+            "navTemplates": "Plantillas",
+            "settings": "Ajustes",
+            "backupTitle": "Copia de seguridad",
+            "exportBackup": "Exportar pipelines",
+            "importBackup": "Importar pipelines",
+            "backupExported": "Guardado",
+            "backupImported": "Restaurado",
+            "backupFailed": "Error",
+        },
+    },
+    "cold-outreach-coach": {
+        "en": {
+            "appTitle": "Cold Outreach Coach",
+            "navDashboard": "Dashboard",
+            "navComposer": "Composer",
+            "navDeliverability": "Deliverability",
+            "navAnalytics": "Analytics",
+            "navMarketplace": "Marketplace",
+            "settings": "Settings",
+            "backupTitle": "Backup & restore",
+            "exportBackup": "Export campaigns to file",
+            "importBackup": "Import campaigns from file",
+            "backupExported": "Backup saved",
+            "backupImported": "Backup restored",
+            "backupFailed": "Backup failed",
+        },
+        "ru": {
+            "appTitle": "Cold Outreach Coach",
+            "navDashboard": "Дашборд",
+            "navComposer": "Редактор",
+            "navDeliverability": "Доставляемость",
+            "navAnalytics": "Аналитика",
+            "navMarketplace": "Маркетплейс",
+            "settings": "Настройки",
+            "backupTitle": "Резервное копирование",
+            "exportBackup": "Экспорт кампаний",
+            "importBackup": "Импорт кампаний",
+            "backupExported": "Сохранено",
+            "backupImported": "Восстановлено",
+            "backupFailed": "Ошибка",
+        },
+        "es": {
+            "appTitle": "Cold Outreach Coach",
+            "navDashboard": "Panel",
+            "navComposer": "Compositor",
+            "navDeliverability": "Entregabilidad",
+            "navAnalytics": "Analítica",
+            "navMarketplace": "Mercado",
+            "settings": "Ajustes",
+            "backupTitle": "Copia de seguridad",
+            "exportBackup": "Exportar campañas",
+            "importBackup": "Importar campañas",
+            "backupExported": "Guardado",
+            "backupImported": "Restaurado",
+            "backupFailed": "Error",
+        },
+    },
+    "creator-algorithm-coach": {
+        "en": {
+            "appTitle": "Creator Algorithm Coach",
+            "navDashboard": "Dashboard",
+            "navDiscover": "Discover",
+            "navPublish": "Publish",
+            "navInsights": "Insights",
+            "navSettings": "Settings",
+            "settings": "Settings",
+            "backupTitle": "Backup & restore",
+            "exportBackup": "Export signals & prefs",
+            "importBackup": "Import signals & prefs",
+            "backupExported": "Backup saved",
+            "backupImported": "Backup restored",
+            "backupFailed": "Backup failed",
+        },
+        "ru": {
+            "appTitle": "Creator Algorithm Coach",
+            "navDashboard": "Дашборд",
+            "navDiscover": "Поиск",
+            "navPublish": "Публикация",
+            "navInsights": "Инсайты",
+            "navSettings": "Настройки",
+            "settings": "Настройки",
+            "backupTitle": "Резервное копирование",
+            "exportBackup": "Экспорт сигналов",
+            "importBackup": "Импорт сигналов",
+            "backupExported": "Сохранено",
+            "backupImported": "Восстановлено",
+            "backupFailed": "Ошибка",
+        },
+        "es": {
+            "appTitle": "Creator Algorithm Coach",
+            "navDashboard": "Panel",
+            "navDiscover": "Descubrir",
+            "navPublish": "Publicar",
+            "navInsights": "Insights",
+            "navSettings": "Ajustes",
+            "settings": "Ajustes",
+            "backupTitle": "Copia de seguridad",
+            "exportBackup": "Exportar señales",
+            "importBackup": "Importar señales",
+            "backupExported": "Guardado",
+            "backupImported": "Restaurado",
+            "backupFailed": "Error",
+        },
+    },
+    "discovery-prospector": {
+        "en": {
+            "appTitle": "Discovery Prospector",
+            "settings": "Settings",
+            "backupTitle": "Backup & restore",
+            "exportBackup": "Export gap insights",
+            "importBackup": "Import gap insights",
+            "backupExported": "Backup saved",
+            "backupImported": "Backup restored",
+            "backupFailed": "Backup failed",
+            "refreshTelemetry": "Refresh Telemetry",
+            "gapsFound": "gaps found",
+        },
+        "ru": {
+            "appTitle": "Discovery Prospector",
+            "settings": "Настройки",
+            "backupTitle": "Резервное копирование",
+            "exportBackup": "Экспорт инсайтов",
+            "importBackup": "Импорт инсайтов",
+            "backupExported": "Сохранено",
+            "backupImported": "Восстановлено",
+            "backupFailed": "Ошибка",
+            "refreshTelemetry": "Обновить телеметрию",
+            "gapsFound": "ниш найдено",
+        },
+        "es": {
+            "appTitle": "Discovery Prospector",
+            "settings": "Ajustes",
+            "backupTitle": "Copia de seguridad",
+            "exportBackup": "Exportar insights",
+            "importBackup": "Importar insights",
+            "backupExported": "Guardado",
+            "backupImported": "Restaurado",
+            "backupFailed": "Error",
+            "refreshTelemetry": "Actualizar telemetría",
+            "gapsFound": "nichos encontrados",
+        },
+    },
+    "freelance-contract-reviewer": {
+        "en": {
+            "appTitle": "Freelance Contract Reviewer",
+            "navDashboard": "Dashboard",
+            "navUpload": "Upload",
+            "navMarketplace": "Marketplace",
+            "navSettings": "Settings",
+            "settings": "Settings",
+            "backupTitle": "Backup & restore",
+            "exportBackup": "Export contracts & reviews",
+            "importBackup": "Import contracts & reviews",
+            "backupExported": "Backup saved",
+            "backupImported": "Backup restored",
+            "backupFailed": "Backup failed",
+            "uploadContract": "Upload a Contract",
+        },
+        "ru": {
+            "appTitle": "Freelance Contract Reviewer",
+            "navDashboard": "Дашборд",
+            "navUpload": "Загрузка",
+            "navMarketplace": "Маркетплейс",
+            "navSettings": "Настройки",
+            "settings": "Настройки",
+            "backupTitle": "Резервное копирование",
+            "exportBackup": "Экспорт контрактов",
+            "importBackup": "Импорт контрактов",
+            "backupExported": "Сохранено",
+            "backupImported": "Восстановлено",
+            "backupFailed": "Ошибка",
+            "uploadContract": "Загрузить контракт",
+        },
+        "es": {
+            "appTitle": "Freelance Contract Reviewer",
+            "navDashboard": "Panel",
+            "navUpload": "Subir",
+            "navMarketplace": "Mercado",
+            "navSettings": "Ajustes",
+            "settings": "Ajustes",
+            "backupTitle": "Copia de seguridad",
+            "exportBackup": "Exportar contratos",
+            "importBackup": "Importar contratos",
+            "backupExported": "Guardado",
+            "backupImported": "Restaurado",
+            "backupFailed": "Error",
+            "uploadContract": "Subir contrato",
+        },
+    },
+    "reputation-dashboard": {
+        "en": {
+            "appTitle": "Reputation Dashboard",
+            "navTop": "Top",
+            "navReviews": "Reviews",
+            "navSeller": "Seller",
+            "navCurator": "Curator",
+            "titleTop": "Top Capabilities",
+            "titleReviews": "My Reviews",
+            "titleSeller": "Seller Console",
+            "titleCurator": "Curator Console",
+            "settings": "Settings",
+            "backupTitle": "Backup & restore",
+            "exportBackup": "Export reviews & prefs",
+            "importBackup": "Import reviews & prefs",
+            "backupExported": "Backup saved",
+            "backupImported": "Backup restored",
+            "backupFailed": "Backup failed",
+            "moderationQueue": "Moderation queue",
+        },
+        "ru": {
+            "appTitle": "Reputation Dashboard",
+            "navTop": "Топ",
+            "navReviews": "Отзывы",
+            "navSeller": "Продавец",
+            "navCurator": "Куратор",
+            "titleTop": "Топ возможностей",
+            "titleReviews": "Мои отзывы",
+            "titleSeller": "Консоль продавца",
+            "titleCurator": "Консоль куратора",
+            "settings": "Настройки",
+            "backupTitle": "Резервное копирование",
+            "exportBackup": "Экспорт отзывов",
+            "importBackup": "Импорт отзывов",
+            "backupExported": "Сохранено",
+            "backupImported": "Восстановлено",
+            "backupFailed": "Ошибка",
+            "moderationQueue": "Очередь модерации",
+        },
+        "es": {
+            "appTitle": "Reputation Dashboard",
+            "navTop": "Top",
+            "navReviews": "Reseñas",
+            "navSeller": "Vendedor",
+            "navCurator": "Curador",
+            "titleTop": "Top capacidades",
+            "titleReviews": "Mis reseñas",
+            "titleSeller": "Consola vendedor",
+            "titleCurator": "Consola curador",
+            "settings": "Ajustes",
+            "backupTitle": "Copia de seguridad",
+            "exportBackup": "Exportar reseñas",
+            "importBackup": "Importar reseñas",
+            "backupExported": "Guardado",
+            "backupImported": "Restaurado",
+            "backupFailed": "Error",
+            "moderationQueue": "Cola de moderación",
+        },
+    },
+}
+
+
+def emit(slug: str, locales: dict[str, dict[str, str]]) -> None:
+    class_name = "".join(p.title() for p in slug.replace("-", "_").split("_"))
+    if slug.endswith("-coach"):
+        class_name = class_name.replace("Coach", "") + "Strings"
+    elif slug.endswith("-dashboard"):
+        class_name = "ReputationStrings"
+    elif slug == "discovery-prospector":
+        class_name = "DiscoveryStrings"
+    elif slug == "capability-composer":
+        class_name = "ComposerStrings"
+    elif slug == "freelance-contract-reviewer":
+        class_name = "ContractStrings"
+    else:
+        class_name = class_name + "Strings"
+
+    lines = [
+        "// GENERATED — edit scripts/bootstrap_desktop_l10n.py and re-run.",
+        "",
+        "abstract final class AppStrings {",
+        "  AppStrings._();",
+        "",
+        "  static const catalog = <String, Map<String, String>>{",
+    ]
+    for loc in ("en", "ru", "es"):
+        lines.append(f"    '{loc}': {{")
+        for k, v in locales[loc].items():
+            lines.append(f"      '{k}': {v!r},")
+        lines.append("    },")
+    lines.extend(["  };", "}", ""])
+    out = DESKTOP / slug / "lib" / "l10n" / "app_strings.dart"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("\n".join(lines), encoding="utf-8")
+    print(f"OK {out}")
+
+
+def emit_language_packs(slug: str, locales: dict[str, dict[str, str]]) -> None:
+    pack_dir = DESKTOP / slug / "language-packs"
+    pack_dir.mkdir(parents=True, exist_ok=True)
+    for loc in ("en", "ru", "es"):
+        payload = {"@@locale": loc, **locales[loc]}
+        out = pack_dir / f"{loc}.json"
+        out.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        print(f"OK {out}")
+
+
+def main() -> None:
+    for slug, locales in CATALOG.items():
+        emit(slug, locales)
+        emit_language_packs(slug, locales)
+
+
+if __name__ == "__main__":
+    main()

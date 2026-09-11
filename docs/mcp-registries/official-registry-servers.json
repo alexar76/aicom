@@ -1,0 +1,42 @@
+{
+  "$comment": "Index of alexar76 MCP servers on registry.modelcontextprotocol.io. Canonical manifests live in each satellite repo (server.json). Publish via scripts/publish_mcp_registry.sh or satellite GHA publish-mcp-registry.yml.",
+  "registry": "https://registry.modelcontextprotocol.io",
+  "publisher_cli": "https://github.com/modelcontextprotocol/registry/releases/latest",
+  "servers": [
+    {
+      "name": "io.github.alexar76/aimarket-mcp",
+      "monorepo_path": "aimarket-mcp/server.json",
+      "github_repo": "alexar76/aimarket-mcp",
+      "package": "pypi:aimarket-mcp",
+      "verification": "README mcp-name HTML comment"
+    },
+    {
+      "name": "io.github.alexar76/aimarket-oracle-gateway",
+      "monorepo_path": "plugins/aimarket-oracle-gateway/server.json",
+      "github_repo": "alexar76/aimarket-oracle-gateway",
+      "package": "pypi:aimarket-oracle-gateway",
+      "verification": "README mcp-name HTML comment"
+    },
+    {
+      "name": "io.github.alexar76/aimarket-plugins",
+      "monorepo_path": "plugins/aimarket-mcp-packager/server.json",
+      "github_repo": "alexar76/aimarket-plugins",
+      "package": "pypi:aimarket-mcp-packager",
+      "verification": "README mcp-name HTML comment (repo root after mirror)"
+    },
+    {
+      "name": "io.github.alexar76/argus3",
+      "monorepo_path": "argus/server.json",
+      "github_repo": "alexar76/argus",
+      "package": "npm:@alexar76/argus3",
+      "verification": "package.json mcpName + README mcp-name comment"
+    },
+    {
+      "name": "io.github.alexar76/warden",
+      "monorepo_path": "warden/server.json",
+      "github_repo": "alexar76/warden",
+      "package": "npm:@aimarket/warden",
+      "verification": "package.json mcpName + README mcp-name comment"
+    }
+  ]
+}

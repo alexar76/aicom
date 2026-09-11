@@ -1,0 +1,19 @@
+# snarkjs build outputs (regenerable via setup.sh). The DIRECTORY is kept: the hub
+# image copies it, and a COPY of a path that does not exist fails the whole build —
+# which is how `docker compose up` came to be impossible from a clean clone.
+build/*
+!build/.gitkeep
+node_modules/
+
+# Local circom binary cache — install via docs.circom.io, do not vendor
+.tools/
+
+# Operator-private proving keys — NEVER commit
+*_0001.zkey
+*_final.zkey
+
+# Powers-of-tau cache (large, downloaded from public source)
+*.ptau
+
+# Witness generation artifacts
+*.wtns

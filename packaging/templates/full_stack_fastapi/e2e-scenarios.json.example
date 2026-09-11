@@ -1,0 +1,13 @@
+[
+  {
+    "name": "smoke_login_optional",
+    "steps": [
+      {"goto": "/login"},
+      {"fill": {"selector": "input[name='email'], input#email, #username", "value": "${AIFACTORY_E2E_EMAIL}"}},
+      {"fill": {"selector": "input[type='password']", "value": "${AIFACTORY_E2E_PASSWORD}"}},
+      {"click": "button[type='submit'], input[type='submit']"},
+      {"wait_ms": 1200},
+      {"expect_visible": "body"}
+    ]
+  }
+]

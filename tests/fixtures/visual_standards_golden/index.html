@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="style.css"/>
+  <title>Visual standards golden fixture</title>
+</head>
+<body>
+  <header>
+    <button type="button" id="nav-toggle" aria-expanded="false" aria-label="Open navigation menu">☰</button>
+    <nav id="site-nav" aria-label="Primary">
+      <a href="./">Home</a>
+    </nav>
+  </header>
+  <main id="main">
+    <div class="skeleton skeleton-pulse" aria-busy="true">Loading…</div>
+    <section class="empty-state" data-empty="true">
+      <p>No items yet — add your first one.</p>
+      <button type="button">Create</button>
+    </section>
+    <div id="toast-root" role="status" aria-live="polite" class="toast"></div>
+    <p role="alert" class="error-demo" hidden>Validation failed</p>
+    <form id="demo-form">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" aria-invalid="false"/>
+    </form>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

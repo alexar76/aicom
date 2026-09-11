@@ -1,0 +1,17 @@
+[Unit]
+Description=AIMarket escrow settlement sweep — every 15 minutes
+Documentation=https://github.com/alexar76/aicom
+
+[Timer]
+Unit=aicom-settlement-sweep.service
+OnBootSec=5min
+OnUnitActiveSec=15min
+# Fifteen minutes is a choice about the buyer, not the operator: an authorization sitting
+# unsubmitted is revenue the chain has not recorded yet, and the channel it belongs to
+# expires in 24h. Sweeping far more often would only mean poking the signer with an empty
+# queue, which the script already declines to do.
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
