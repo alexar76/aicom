@@ -1,0 +1,107 @@
+"Mirrors AIMarketEscrow.ChannelStatus."
+enum ChannelStatus {
+  Open
+  Settled
+  Refunded
+  Expired
+}
+
+"""
+One payment channel. Reconstructed purely from logs — the subgraph never guesses
+a value the chain did not report.
+"""
+type Channel @entity {
+  "channelId (bytes32, hex)"
+  id: ID!
+  depositor: Bytes!
+  token: Bytes!
+
+  """
+  The hub that was paid. The contract binds it on the first debit, but no debit
+  log carries it, so it is only knowable once a ChannelSettled log names
+  `usedRecipient`. Null means 'not revealed by any log yet', NOT 'no hub'.
+  """
+  hub: Bytes
+
+  depositAmount: BigInt!
+  "Escrowed funds still unspent (from ChannelDebited.remainingBalance)."
+  balance: BigInt!
+  "Cumulative debits — what the hub is owed at settlement."
+  usedAmount: BigInt!
+  expiresAt: BigInt!
+  status: ChannelStatus!
+  debitCount: Int!
+
+  openedAt: BigInt!
+  openedTx: Bytes!
+  "Set when the channel leaves Open (settle / refund / expiry)."
+  closedAt: BigInt
+  closedTx: Bytes
+
+  debits: [Debit!]! @derivedFrom(field: "channel")
+  settlements: [Settlement!]! @derivedFrom(field: "channel")
+  refunds: [Refund!]! @derivedFrom(field: "channel")
+}
+
+"A receipt-gated debit by the bound hub."
+type Debit @entity(immutable: true) {
+  id: ID!
+  channel: Channel!
+  amount: BigInt!
+  receiptId: Bytes!
+  remainingBalance: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  tx: Bytes!
+}
+
+"""
+A settlement — the two-legged payout. `usedRecipient` and `refundRecipient` are
+separate because they are genuinely different parties: attributing both legs to
+one address (as the pre-rework single-`recipient` event did) credited the hub's
+revenue to the depositor.
+"""
+type Settlement @entity(immutable: true) {
+  id: ID!
+  channel: Channel!
+  usedAmount: BigInt!
+  refundAmount: BigInt!
+  "Where usedAmount went (the bound hub). Null when usedAmount is 0."
+  usedRecipient: Bytes
+  "Where refundAmount went (always the depositor)."
+  refundRecipient: Bytes
+  """
+  True for the permissionless post-expiry close. ChannelExpiredAndSettled does
+  not name its recipients, so they are filled from the channel's known hub /
+  depositor and `usedRecipient` stays null while the hub is unrevealed.
+  """
+  viaExpiry: Boolean!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  tx: Bytes!
+}
+
+"A pre-debit refund (safety gate, provider error, user cancel, batch sweep)."
+type Refund @entity(immutable: true) {
+  id: ID!
+  channel: Channel!
+  amount: BigInt!
+  reason: String!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  tx: Bytes!
+}
+
+type Hub @entity {
+  "hub address"
+  id: ID!
+  authorized: Boolean!
+  updatedAt: BigInt!
+}
+
+type Token @entity {
+  "token address"
+  id: ID!
+  whitelisted: Boolean!
+  updatedAt: BigInt!
+}

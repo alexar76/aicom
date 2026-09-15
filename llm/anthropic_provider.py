@@ -1,0 +1,299 @@
+"""
+Anthropic Cloud Provider
+========================
+Native provider for Anthropic Messages API (Claude models).
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+import os
+import time
+from typing import TYPE_CHECKING
+
+import httpx
+
+from .provider import (
+    GenerationConfig,
+    LLMProvider,
+    ModelCapabilities,
+    ProviderHealth,
+    ProviderStatus,
+)
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator
+
+logger = logging.getLogger(__name__)
+
+
+class AnthropicProvider(LLMProvider):
+    def __init__(
+        self,
+        name: str = "anthropic_cloud",
+        config: dict | None = None,
+        base_url: str = "https://api.anthropic.com/v1",
+        api_key: str | None = None,
+        api_key_env: str | None = "ANTHROPIC_API_KEY",
+        model: str = "claude-3-5-sonnet-latest",
+    ):
+        super().__init__(name, config or {})
+        self.base_url = base_url.rstrip("/")
+        if api_key_env and not api_key:
+            api_key = os.environ.get(api_key_env, "")
+        self.api_key = api_key or ""
+        self.model = model
+
+        headers = {
+            "Content-Type": "application/json",
+            "anthropic-version": "2023-06-01",
+        }
+        if self.api_key:
+            headers["x-api-key"] = self.api_key
+        else:
+            logger.warning("Anthropic provider '%s' has no API key configured", name)
+
+        self._client = httpx.AsyncClient(
+            base_url=self.base_url,
+            headers=headers,
+            timeout=httpx.Timeout(120.0),
+            limits=httpx.Limits(max_keepalive_connections=5, max_connections=10),
+        )
+
+    @staticmethod
+    def _build_user_content(prompt: str, cfg: GenerationConfig) -> list[dict] | str:
+        """Split the prompt at the stable/variable boundary for prompt caching.
+
+        When ``cfg.cache_prefix_len`` marks a non-trivial leading prefix (the
+        agent role / domain guide / style block that repeats across calls), emit
+        two content blocks and tag the prefix with ``cache_control: ephemeral``
+        so Anthropic caches it (≈90% input discount on hits). Anthropic ignores
+        the breakpoint silently if the prefix is below the model's minimum
+        cacheable size, so this is always safe. Falls back to a plain string
+        when there is no known stable prefix.
+        """
+        n = int(getattr(cfg, "cache_prefix_len", 0) or 0)
+        if n <= 0 or n >= len(prompt):
+            return prompt
+        prefix, rest = prompt[:n], prompt[n:]
+        if not prefix.strip() or not rest.strip():
+            return prompt
+        return [
+            {"type": "text", "text": prefix, "cache_control": {"type": "ephemeral"}},
+            {"type": "text", "text": rest},
+        ]
+
+    async def generate(self, prompt: str, config: GenerationConfig | None = None) -> str:
+        cfg = config or GenerationConfig()
+        start = time.time()
+        active_model = cfg.model_override or self.model
+        try:
+            payload = {
+                "model": active_model,
+                "max_tokens": int(min(max(cfg.max_tokens, 1), 8192)),
+                "temperature": cfg.temperature,
+                "messages": [{"role": "user", "content": self._build_user_content(prompt, cfg)}],
+            }
+            if cfg.stop_sequences:
+                payload["stop_sequences"] = cfg.stop_sequences
+
+            response = await self._client.post("/messages", json=payload, timeout=cfg.timeout_sec)
+            response.raise_for_status()
+            result = response.json()
+            text = self._extract_text(result)
+            # Same signal, this API's spelling. A reply that stopped at `max_tokens` is cut off,
+            # and returning it as a finished answer is how a half-written file reaches a build.
+            cfg.finish_reason = str((result or {}).get("stop_reason") or "") if isinstance(result, dict) else ""
+            if not text:
+                cfg.finish_reason = self._no_text_reason(result)
+                logger.warning("%s: returned no text (%s)",
+                               cfg.model_override or self.model, cfg.finish_reason)
+            if cfg.was_truncated:
+                logger.warning(
+                    "%s: completion stopped at the output limit (stop_reason=%s) — the reply is "
+                    "CUT OFF, not finished", cfg.model_override or self.model, cfg.finish_reason)
+            latency = (time.time() - start) * 1000
+            usage = result.get("usage", {}) if isinstance(result, dict) else {}
+            # With prompt caching, ``input_tokens`` excludes cached reads, which
+            # are reported separately. Sum all input flavours + output for an
+            # accurate total-token count.
+            prompt_tokens = int(
+                (usage.get("input_tokens") or 0)
+                + (usage.get("cache_read_input_tokens") or 0)
+                + (usage.get("cache_creation_input_tokens") or 0)
+            )
+            completion_tokens = int(usage.get("output_tokens") or 0)
+            tokens = prompt_tokens + completion_tokens
+            self._update_metrics(tokens, latency)
+            self._record_success()
+            # Book spend so Anthropic calls count against the daily/monthly USD
+            # cost caps and budget-tier downgrade (previously unrecorded).
+            self._log_llm_call(
+                prompt, text, latency, True,
+                tokens_used=tokens,
+                prompt_tokens=prompt_tokens,
+                completion_tokens=completion_tokens,
+                model=active_model,
+                task_type=cfg.task_type,
+                agent_type=cfg.agent_type,
+                model_role=getattr(cfg, "model_role", None),
+                product_id=getattr(cfg, "product_id", None),
+            )
+            return text
+        except Exception as e:
+            latency = (time.time() - start) * 1000
+            self._update_metrics(0, latency)
+            self._record_failure(str(e))
+            self._log_llm_call(
+                prompt, str(e), latency, False, error=str(e),
+                model=active_model,
+                task_type=cfg.task_type,
+                agent_type=cfg.agent_type,
+                model_role=getattr(cfg, "model_role", None),
+                product_id=getattr(cfg, "product_id", None),
+            )
+            raise RuntimeError(f"Generation failed for {self.name}: {e}") from e
+
+    async def stream(self, prompt: str, config: GenerationConfig | None = None) -> AsyncGenerator[str, None]:
+        cfg = config or GenerationConfig(stream=True)
+        active_model = cfg.model_override or self.model
+        start = time.time()
+        out_tokens = 0
+        payload = {
+            "model": active_model,
+            "max_tokens": int(min(max(cfg.max_tokens, 1), 8192)),
+            "temperature": cfg.temperature,
+            "messages": [{"role": "user", "content": self._build_user_content(prompt, cfg)}],
+            "stream": True,
+        }
+        if cfg.stop_sequences:
+            payload["stop_sequences"] = cfg.stop_sequences
+
+        try:
+            async with self._client.stream("POST", "/messages", json=payload, timeout=cfg.timeout_sec) as response:
+                response.raise_for_status()
+                async for line in response.aiter_lines():
+                    if not line.startswith("data: "):
+                        continue
+                    chunk = line[6:].strip()
+                    if not chunk or chunk == "[DONE]":
+                        continue
+                    try:
+                        data = json.loads(chunk)
+                    except json.JSONDecodeError:
+                        continue
+                    kind = data.get("type")
+                    if kind == "message_delta":
+                        # Where this API says how it ended. Handling only content_block_delta
+                        # dropped it, so a stream that hit max_tokens ended exactly like one
+                        # that finished.
+                        reason = (data.get("delta") or {}).get("stop_reason")
+                        if reason:
+                            cfg.finish_reason = str(reason)
+                        continue
+                    if kind == "error":
+                        # An error FRAME mid-stream is not an exception: the response is a 200
+                        # and the loop simply ran out of lines, so the partial text was
+                        # reported as a complete answer.
+                        err = (data.get("error") or {}).get("message") or "stream error"
+                        cfg.finish_reason = "error"
+                        raise RuntimeError(f"{self.name} stream error: {err}")
+                    if kind == "content_block_delta":
+                        delta = data.get("delta") or {}
+                        text = delta.get("text", "")
+                        if text:
+                            out_tokens += 1
+                            yield text
+        except Exception as e:
+            latency = (time.time() - start) * 1000
+            self._update_metrics(out_tokens, latency)
+            self._record_failure(str(e))
+            self._log_llm_call(
+                prompt, str(e), latency, False, error=str(e),
+                tokens_used=out_tokens, model=active_model,
+                task_type=cfg.task_type, agent_type=cfg.agent_type,
+                model_role=getattr(cfg, "model_role", None),
+                product_id=getattr(cfg, "product_id", None),
+            )
+            raise RuntimeError(f"Streaming failed for {self.name}: {e}") from e
+
+        latency = (time.time() - start) * 1000
+        self._update_metrics(out_tokens, latency)
+        self._record_success()
+        self._log_llm_call(
+            prompt, "", latency, True,
+            tokens_used=out_tokens,
+            completion_tokens=out_tokens,
+            model=active_model,
+            task_type=cfg.task_type,
+            agent_type=cfg.agent_type,
+            model_role=getattr(cfg, "model_role", None),
+            product_id=getattr(cfg, "product_id", None),
+        )
+
+    async def check_health(self) -> ProviderHealth:
+        start = time.time()
+        try:
+            # Lightweight endpoint that validates auth/base URL quickly.
+            response = await self._client.get("/models", timeout=5.0)
+            latency = (time.time() - start) * 1000
+            if response.status_code in (200, 401, 403):
+                # 401/403 means endpoint is reachable but key invalid; still degraded, not dead.
+                self.health.status = ProviderStatus.ONLINE if response.status_code == 200 else ProviderStatus.DEGRADED
+                self.health.error_message = "" if response.status_code == 200 else f"Auth status {response.status_code}"
+                self.health.latency_ms = latency
+                self.health.consecutive_failures = 0
+            else:
+                self.health.status = ProviderStatus.DEGRADED
+                self.health.error_message = f"Unexpected status: {response.status_code}"
+        except httpx.HTTPError as e:
+            self.health.status = ProviderStatus.UNAVAILABLE
+            self.health.error_message = str(e)
+            self.health.consecutive_failures += 1
+        self.health.last_check = time.time()
+        return self.health
+
+    def get_capabilities(self) -> ModelCapabilities:
+        return ModelCapabilities(
+            context_window=200_000,
+            max_tokens=8192,
+            supports_vision=True,
+            supports_streaming=True,
+            supports_functions=False,
+            supports_json_mode=True,
+        )
+
+    async def close(self):
+        await self._client.aclose()
+
+    @staticmethod
+    def _extract_text(result: dict) -> str:
+        """Text blocks only. Empty means the model produced NO text — see `_no_text_reason`."""
+        content = result.get("content", []) if isinstance(result, dict) else []
+        if not isinstance(content, list):
+            return ""
+        chunks: list[str] = []
+        for part in content:
+            if isinstance(part, dict) and part.get("type") == "text":
+                t = part.get("text")
+                if isinstance(t, str):
+                    chunks.append(t)
+        return "".join(chunks).strip()
+
+    @staticmethod
+    def _no_text_reason(result: dict) -> str:
+        """Why an empty answer is empty, when it is.
+
+        A refusal, a thinking-only turn or a tool_use-only turn all yield "" from
+        `_extract_text`, and the call was then recorded as a SUCCESS — an empty string that a
+        caller cannot tell from "the model had nothing to add".
+        """
+        if not isinstance(result, dict):
+            return "no_content"
+        kinds = {p.get("type") for p in (result.get("content") or []) if isinstance(p, dict)}
+        if "refusal" in kinds:
+            return "refusal"
+        if kinds and "text" not in kinds:
+            return "no_text:" + ",".join(sorted(str(k) for k in kinds if k))
+        return "no_content"

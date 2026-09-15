@@ -1,0 +1,99 @@
+{
+  "collected_at": "2026-08-27T19:34:23Z",
+  "errors": [],
+  "hub": {
+    "avg_latency_ms": 1243.1,
+    "avg_price_usd": 0.0033,
+    "capabilities_count": 106,
+    "demo_capabilities_count": 12,
+    "expired_volume_usd": 1.34,
+    "external_events_in_page": 200,
+    "failed_invocations_24h": 1,
+    "federated_capabilities_count": 94,
+    "hub_url": "https://modelmarket.dev",
+    "invocations_1h": 0,
+    "invocations_24h": 108,
+    "offerable_capabilities_count": 94,
+    "open_channels": 0,
+    "operator_self_events_in_page": 0,
+    "outstanding_obligations": 0,
+    "outstanding_obligations_usd": 0.0,
+    "p50_latency_ms_24h": 2817.0,
+    "p95_latency_ms_24h": 8817.0,
+    "peers_count": 9,
+    "real_local_capabilities_count": 0,
+    "revenue_per_hour_usd": 0,
+    "rps_1h": 0.0,
+    "settled_only_volume_usd": 0.04,
+    "settled_volume_usd": 1.38,
+    "success_rate": 0.9356984478935698,
+    "successful_invocations": 422,
+    "supply_chain_admission": {
+      "approved": 0,
+      "capability_id": "agent.security.supply-chain.audit@v1",
+      "configured": true,
+      "enforce_readiness": {
+        "auditor_pinned": false,
+        "blockers": [
+          "auditor_pubkey_not_pinned",
+          "mode_off_no_verdicts_observed"
+        ],
+        "endpoint_valid": true,
+        "mode": "off",
+        "ready_for_enforce": false,
+        "recent_audits": 1,
+        "recent_completed": 1
+      },
+      "latest": {
+        "capability_id": "themis.selftest@v1",
+        "created_at": "2026-08-21 11:46:49",
+        "decision": "reject",
+        "metis_status": "unavailable",
+        "product_id": "themis-selftest",
+        "risk_tier": "critical",
+        "score": 0
+      },
+      "metis_pending": 0,
+      "mode": "off",
+      "rejected": 1,
+      "review": 0,
+      "total": 1,
+      "unavailable": 0
+    },
+    "total_invocations": 451
+  },
+  "incidents": [],
+  "pipeline": {
+    "pending_tasks": 7,
+    "products_failed": 0,
+    "products_in_pipeline": 16,
+    "products_shipped": 4,
+    "products_total": 20,
+    "running_tasks": 1,
+    "timeout_tasks": 0
+  },
+  "services": {
+    "factory": {
+      "status": "ok",
+      "uptime_seconds": 98,
+      "url": "https://magic-ai-factory.com"
+    },
+    "hub": {
+      "status": "ok",
+      "uptime_seconds": 12194,
+      "url": "https://modelmarket.dev"
+    }
+  },
+  "slo": {
+    "open_incidents": 0,
+    "p50_latency_ms_24h": 2817.0,
+    "p95_latency_ms_24h": 8817.0,
+    "rps_1h": 0.0,
+    "success_rate_24h": 0.990741
+  },
+  "snapshot_generated_at": "2026-08-27T19:34:23Z",
+  "sources": {
+    "factory": "local",
+    "hub": "https://modelmarket.dev"
+  }
+}

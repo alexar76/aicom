@@ -1,0 +1,19 @@
+[package]
+name = "aimarket-lottery"
+version = "0.1.0"
+description = "AI Agent Oracle Lottery on Solana — UNI / localnet"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "aimarket_lottery"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+
+[dependencies]
+anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }

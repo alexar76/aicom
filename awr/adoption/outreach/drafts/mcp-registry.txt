@@ -1,0 +1,34 @@
+DRAFT — NOT SENT. Requires the maintainer to review and send.
+PRE-SEND: substitute the published awr/conformance/ URL for <CONFORMANCE-MATRIX-URL>.
+
+To: <RECIPIENT — glama.ai or registry.modelcontextprotocol.io ONLY>
+
+If you are reading this template and the target is not one of those two, the opening sentence
+below is FALSE — rewrite it or do not send. Verified in this repository: we have manifests and
+listings for glama.ai and the official MCP registry only. There is no mcp.so, Smithery or
+PulseMCP presence (no such string anywhere in aimarket-mcp/ or argus/). See registries.md.
+
+Subject: optional signing-identity field in your server manifest — worth it or not?
+
+Hello,
+
+I maintain MCP servers listed on your directory. This is a schema question, not a placement
+request.
+
+We have drafted AWR/2: signed claims about AI work. A WorkReceipt records what its issuer says
+ran; a VerificationVerdict is a verifier signing its own judgement about one specific receipt, so
+the verdict is attributable to a named key. Neither establishes that the work happened — the
+signature makes the claim attributable and tamper-evident, and that is all. Both are W3C VC 2.0
+with an eddsa-jcs-2022 proof over RFC 8785. Verification is offline by specification — no fetch,
+not even for @context.
+
+The question: would an optional manifest field declaring the did:key a server signs receipts
+with be useful to you, or a field nobody reads?
+
+Today the honest answer may be the second. AWR/2 has no production emitters, and a key no
+client verifies is decoration. "Come back when something emits" is a useful answer.
+
+Conformance matrix, with per-implementation reason-code status:
+<CONFORMANCE-MATRIX-URL>
+
+MIT. No adopters, no endorsements — the matrix states what does not pass.

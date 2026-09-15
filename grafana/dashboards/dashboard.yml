@@ -1,0 +1,19 @@
+# ============================================================================
+# AI-Factory v2.1 — Grafana Dashboard Provisioning
+# ============================================================================
+# Auto-provisioning config that tells Grafana to load all dashboard JSON
+# files from the /etc/grafana/provisioning/dashboards directory.
+# ============================================================================
+
+apiVersion: 1
+
+providers:
+  - name: 'AI Factory'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 10
+    options:
+      path: /etc/grafana/provisioning/dashboards

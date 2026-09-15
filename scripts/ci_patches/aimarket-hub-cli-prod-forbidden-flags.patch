@@ -1,0 +1,82 @@
+--- a/aimarket_hub/cli.py
++++ b/aimarket_hub/cli.py
+@@ -27,7 +27,49 @@
+ from aimarket_hub.crawler import Crawler
+ from aimarket_hub.database import HubDatabase
+ from aimarket_hub.trust import TrustScorer
++
++# Env flags that must never be on in production. The standalone hub image (independent/,
++# and every hub wheel installed from PyPI) ships WITHOUT the repo's `security` package, so
++# `security.prod_startup_guard` is unreachable there and this list is the only gate that
++# runs. Anything added to one must be added to the other; tests/test_prod_startup_guard.py
++# asserts that parity by BEHAVIOUR (setting each flag and checking both gates refuse),
++# not by reading this source, so a rename here cannot quietly detach the check.
++#
++#   PAYMENT_VERIFY_STUB          every tx hash accepted with no on-chain check
++#   PAYMENT_TESTNET              demo tx hashes settle against a testnet RPC
++#   ZK_SIMULATED                 "privacy-preserving" proofs are simulated
++#   TEE_SOFTWARE_OK              attestation with no hardware behind it
++#   SUPPLY_SECURITY_RELAXED      no publisher collateral — anyone may list on a hub that
++#                                advertises itself as stake-gated
++#   CHANNEL_ALLOW_UNPROVEN_PAYER deposits credited with no proof of control over the paying
++#                                wallet, so the channel_secret goes to whoever calls open()
++#                                first (channels._allow_unproven_payer)
++#   SANDBOX_STUB_INVOKE          trials answer with canned output and nothing executes
++PROD_FORBIDDEN_FLAGS: tuple[str, ...] = (
++    "AIFACTORY_PAYMENT_VERIFY_STUB",
++    "AIFACTORY_PAYMENT_TESTNET",
++    "AIMARKET_ZK_SIMULATED",
++    "AIMARKET_TEE_SOFTWARE_OK",
++    "AIMARKET_SUPPLY_SECURITY_RELAXED",
++    "AIMARKET_CHANNEL_ALLOW_UNPROVEN_PAYER",
++    "AIMARKET_SANDBOX_STUB_INVOKE",
++)
++
++
++def prod_forbidden_flags_active() -> list[str]:
++    """Which of PROD_FORBIDDEN_FLAGS the environment currently has switched on.
+ 
++    Truthy, not ``== "1"``. ``RELAXED=true`` does not actually relax anything — the
++    runtime that reads it tests ``== "1"`` — but the operator plainly meant it to, and
++    refusing to boot is the right answer to that intent either way.
++    """
++    return [
++        name
++        for name in PROD_FORBIDDEN_FLAGS
++        if os.environ.get(name, "").strip().lower() in ("1", "true", "yes", "on")
++    ]
++
++
+ BOLD = "\033[1m"
+ DIM = "\033[2m"
+ GREEN = "\033[32m"
+@@ -182,6 +224,12 @@
+         stub_flags.append("AIFACTORY_PAYMENT_TESTNET=1 (testnet mode — demo tx hashes accepted)")
+     if os.environ.get("AIMARKET_TEE_SOFTWARE_OK", "").strip() == "1":
+         stub_flags.append("AIMARKET_TEE_SOFTWARE_OK=1 (software TEE attestation — no hardware guarantee)")
++    if os.environ.get("AIMARKET_SUPPLY_SECURITY_RELAXED", "").strip() == "1":
++        stub_flags.append("AIMARKET_SUPPLY_SECURITY_RELAXED=1 (no publisher collateral — anyone may list)")
++    if os.environ.get("AIMARKET_CHANNEL_ALLOW_UNPROVEN_PAYER", "").strip() == "1":
++        stub_flags.append("AIMARKET_CHANNEL_ALLOW_UNPROVEN_PAYER=1 (deposits credited without payer proof)")
++    if os.environ.get("AIMARKET_SANDBOX_STUB_INVOKE", "").strip() == "1":
++        stub_flags.append("AIMARKET_SANDBOX_STUB_INVOKE=1 (sandbox trials return canned demo output)")
+     prod = os.environ.get("AIFACTORY_PROD", "").strip() == "1"
+     if prod:
+         stub_flags.append("AIFACTORY_PROD=1 (production mode — stub flags will HARD-BLOCK startup)")
+@@ -200,13 +248,9 @@
+ 
+             assert_production_startup_safe(exit_on_failure=True)
+         except ImportError:
+-            dangerous = {
+-                "AIFACTORY_PAYMENT_VERIFY_STUB": "1",
+-                "AIFACTORY_PAYMENT_TESTNET": "1",
+-                "AIMARKET_ZK_SIMULATED": "1",
+-                "AIMARKET_TEE_SOFTWARE_OK": "1",
+-            }
+-            active = [k for k, v in dangerous.items() if os.environ.get(k, "").strip() == v]
++            # The standalone image has no `security` package — PROD_FORBIDDEN_FLAGS is
++            # the whole gate here. See its comment for what each flag does.
++            active = prod_forbidden_flags_active()
+             if active:
+                 print(
+                     f"{RED}Production startup refused: AIFACTORY_PROD=1 with unsafe stub "

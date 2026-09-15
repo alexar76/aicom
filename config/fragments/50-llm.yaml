@@ -1,0 +1,58 @@
+llm:
+  default_provider: deepseek_api
+  health_check_interval_sec: 60
+  max_failures_before_unavailable: 3
+  # Critical-task escalation across providers (opt-in; default off).
+  # OFF: a failing default provider only fails over to a rule's explicit
+  #      fallback_provider — all routing stays within your default provider,
+  #      switching only between its strong (heavy) and light models.
+  # ON:  when the DEFAULT provider cannot cope (errors / unhealthy / circuit
+  #      open) on a CRITICAL task (security_scan, code_generation,
+  #      architecture_design, qa_testing, hardening — see
+  #      llm.cost_guard._CRITICAL_TASK_TYPES), the router ADDITIONALLY fails
+  #      over to the highest-priority OTHER provider that has credentials
+  #      configured. Enabling this widens routing from "model tier within one
+  #      provider" to "between providers" — so it only fires when (1) a
+  #      stronger provider actually has a key and (2) the default failed.
+  # Env override: AIFACTORY_LLM_CRITICAL_ESCALATION_ENABLED=1
+  critical_escalation_enabled: false
+  routing_rules:
+  - task_type: architecture_design
+    preferred_provider: local_ollama
+    model_role: heavy
+    timeout_sec: 240
+  - task_type: marketing_copy
+    preferred_provider: auto
+    model_role: light
+    timeout_sec: 30
+  - task_type: code_generation
+    preferred_provider: local_ollama
+    model_role: heavy
+    fallback_provider: deepseek_api
+    timeout_sec: 300
+  - task_type: qa_testing
+    preferred_provider: auto
+    model_role: light
+    timeout_sec: 180
+  - task_type: pm_analysis
+    preferred_provider: auto
+    model_role: light
+    timeout_sec: 180
+  - task_type: market_research
+    preferred_provider: auto
+    model_role: light
+    timeout_sec: 120
+  - task_type: sales_response
+    preferred_provider: auto
+    model_role: light
+    timeout_sec: 15
+  - task_type: evolution_analysis
+    preferred_provider: local_ollama
+    model_role: heavy
+    timeout_sec: 90
+  limits:
+    # 0 = disabled. Env AIFACTORY_LLM_* overrides these values.
+    max_requests_per_minute: 0
+    daily_cost_cap_usd: 0
+    monthly_cost_cap_usd: 0
+    pre_call_reserve_usd: 0.05

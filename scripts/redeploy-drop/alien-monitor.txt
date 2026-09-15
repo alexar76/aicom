@@ -1,0 +1,44 @@
+# Variables scripts/redeploy_in_place.sh must NOT carry into a rebuilt Alien Monitor.
+#
+# Both monitor containers were created by a bare `docker run` whose environment came from
+# `env_file: ../.env` — the entire monorepo .env. That line is gone from
+# alien-monitor/docker-compose.prod.yml, but nothing rebuilds these containers from compose:
+# the redeploy script captures the environment the running container already has, so
+# without this list the inherited variables would survive every future rebuild.
+#
+# Measured on 2026-09-11 against the running `alien-monitor` by diffing its environment
+# against EVERY uppercase literal in alien-monitor/backend/*.py: the names below appear
+# nowhere in the monitor's source. It reads its LLM keys through the provider config's
+# `api_key_env`, so DEEPSEEK_API_KEY and OPENROUTER_API_KEY are deliberately NOT here.
+#
+# One name per line; `#` comments and blanks ignored. A name in
+# /root/.<container>.extra.env still wins — that file is an operator saying "yes, really".
+
+# Secrets for OTHER services. A public dashboard that executes an LLM prompt for anyone
+# on the internet had the factory's, the mesh's and ATLAS's keys sitting in its environ.
+AIFACTORY_DEV_BOOTSTRAP_PASSWORD
+AIFACTORY_FIREWALL_RULES_FERNET_KEY
+AIFACTORY_RESELLER_KEYS
+AIFACTORY_SANDBOX_DEMO_PASSWORD
+ATLAS_OPERATOR_TOKEN
+ATLAS_SIGNING_SEED_B64
+GRAFANA_ADMIN_PASSWORD
+MESH_ADMIN_TOKEN
+MESH_API_TOKEN
+POSTGRES_PASSWORD
+REDIS_PASSWORD
+
+# Policy flags belonging to the factory, the hub and ATLAS. Not secret, but the monitor
+# never reads them, and a variable nobody reads is a variable nobody audits.
+AIFACTORY_CORS_ORIGINS
+AIFACTORY_DEMO_READONLY
+AIFACTORY_SANDBOX_PREVIEW_ALLOW_SAME_ORIGIN
+AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION
+AIFACTORY_SANDBOX_REQUIRE_CONTAINER
+AIMARKET_FEDERATION_OPEN
+ATLAS_TRIAL_MAX_PER_CALLER
+MESH_HUB_URL
+MESH_PUBLIC_READ
+
+# Analytics id for the storefronts, stripped from public pages in 03c3c2b4d.
+NEXT_PUBLIC_GA_MEASUREMENT_ID

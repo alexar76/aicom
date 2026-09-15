@@ -1,0 +1,75 @@
+{
+  "agent_result": {
+    "accepted": true,
+    "note": "signed order published for host 'canary'; the node agent will claim it on its next poll and verify the chain locally",
+    "order_id": "deploy-mom-c43e16fa60dc4e7f-1786203474",
+    "queued": true
+  },
+  "attempts": 1,
+  "blame_ticket": {
+    "component": "canary",
+    "created_at": "2026-08-08T15:37:54Z",
+    "finding_id": "mom-c43e16fa60dc4e7f",
+    "hop": "canary:free_tier_ceiling_bypass",
+    "issuer_pubkey": "TmeHyNcvEC6/NKo4X8AvZEXFPXL+rJESvmii9iFvklA=",
+    "severity": "high",
+    "signature": {
+      "algorithm": "ed25519",
+      "public_key": "TmeHyNcvEC6/NKo4X8AvZEXFPXL+rJESvmii9iFvklA=",
+      "value": "s0ly4Hdrx/KcZmSvuoA9sSf/…(truncated)"
+    },
+    "summary": "canary/canary.compute@v1: free-tier ceiling not enforced — auto remediation"
+  },
+  "code_change": null,
+  "code_change_note": "No autonomously authored patch: the AI-Factory client runs in dry-run on this host, so the fix step of this cycle was a fixture flip on the canary. This file records the chain that was really signed and really verified; it does not claim a patch that nobody wrote.",
+  "component": "canary",
+  "conductor_pubkey": "NxPpVFSnaPETjui1HjqY8Hq4zfiSV73aQsMlRv1+nvI=",
+  "deploy_order_id": "deploy-mom-c43e16fa60dc4e7f-1786203474",
+  "finding_id": "mom-c43e16fa60dc4e7f",
+  "gate_verdict": {
+    "checked_at": "2026-08-08T15:37:54Z",
+    "detail": "finding no longer reproduces — fix verified, deploy may proceed",
+    "finding_id": "mom-c43e16fa60dc4e7f",
+    "fixed": true,
+    "outcome": "no_finding",
+    "probe": "free_tier_ceiling_bypass",
+    "signature": {
+      "algorithm": "ed25519",
+      "public_key": "TmeHyNcvEC6/NKo4X8AvZEXFPXL+rJESvmii9iFvklA=",
+      "value": "uwGbYY9bobiVUti6EeKjqScK…(truncated)"
+    },
+    "target": "canary",
+    "verifier_pubkey": "TmeHyNcvEC6/NKo4X8AvZEXFPXL+rJESvmii9iFvklA="
+  },
+  "history": [
+    {
+      "note": "attempt 1: requesting fix from AI-Factory",
+      "state": "fixing",
+      "ts": "2026-08-08T15:37:54Z"
+    },
+    {
+      "note": "asking MOMUS to re-test the patched build",
+      "state": "retesting",
+      "ts": "2026-08-08T15:37:54Z"
+    },
+    {
+      "note": "MOMUS confirms fixed; signing deploy order for the node agent",
+      "state": "deploying",
+      "ts": "2026-08-08T15:37:54Z"
+    },
+    {
+      "note": "deploy accepted; final in-place MOMUS retest",
+      "state": "verifying",
+      "ts": "2026-08-08T15:37:54Z"
+    },
+    {
+      "note": "fixed, deployed and verified in place",
+      "state": "done",
+      "ts": "2026-08-08T15:37:54Z"
+    }
+  ],
+  "probe": "free_tier_ceiling_bypass",
+  "recorded_at": "2026-08-08T19:32:25Z",
+  "route": "auto",
+  "severity": "high"
+}

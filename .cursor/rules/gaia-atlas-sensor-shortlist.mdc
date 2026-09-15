@@ -1,0 +1,65 @@
+---
+description: GAIA/ATLAS candidate sensor shortlist and commercial licence bar
+alwaysApply: true
+---
+
+# Sensor candidates — commercial rail (GAIA/ATLAS)
+
+Canonical gates: [`gaia/docs/LIVE-RELAYS.md`](gaia/docs/LIVE-RELAYS.md),
+[`atlas/docs/OPERATOR-USE-CASES.md`](atlas/docs/OPERATOR-USE-CASES.md),
+[`docs/add-gaia-atlas-sensor.md`](docs/add-gaia-atlas-sensor.md),
+[`docs/specs/05a-gnss-pnt-source-quarantine.md`](docs/specs/05a-gnss-pnt-source-quarantine.md).
+
+## Pass bar (all must clear)
+
+1. **Licence** — CC0 / CC BY / OGL / NLOD / U.S. PD / Copernicus CC BY already used in-repo. Fail: NC, BY-NC, “indicative only”, helpdesk-only ToS, raw-data resale ban that blocks Hub SKUs, exchange guidelines that require programme notification / forbid decision-support without a recorded operator assent.
+2. **Embed** — HTTPS host on GAIA allowlist; empty/fail → offline; Hub must not debit.
+3. **Meaning** — new question **or** new licensed geography (not USGS-as-global under a new name).
+4. **Honesty** — warning ≠ in-situ; public AIS ≠ own-edge; Open-Meteo ≠ station; HMS smoke = NA only; etc.
+
+## Remembered shortlist — re-checked 2026-09-10 · ship status
+
+| # | Candidate | Verdict | Status |
+|---|-----------|---------|--------|
+| 1 | **EPA AirNow** | **Hold → conditional** | Not shipped — Data Exchange Guidelines assent required |
+| 2 | **OpenAQ on prod key** | **Do (ops)** | **Shipped 2026-09-07** — free key from explore.openaq.org on admin-vps `.env`; `openaq-01` in fleet (+1 pin). Docs: LIVE-RELAYS + README. |
+| 3 | **Denser NOAA/USGS mesh** | **Do** | **Shipped 2026-09-07** — +20 pins (NWS/USGS river/NDBC/tide); GAIA fleet ~421; ATLAS catalog synced |
+| 4 | **Own-edge ADS-B / AIS** | **Do (ops)** | **Shipped 2026-09-07** — `GAIA_FEEDER_ENABLED=1` + token on host; `feeder-adsb-01` / `feeder-ais-01` / `feeder-iot-01` registered; offline until real receiver ingest |
+| 5 | **CelesTrak TLE** | **Hold** | Not shipped |
+| 6 | **MET Norway Frost + DMI** | **Do** | **Shipped 2026-09-08** — `frost-*-01` (needs `GAIA_FROST_CLIENT_ID`) + `dmi-*-01` (no key); reuse `gaia.weather.read@v1` |
+| 7 | **SEPA + NRW rivers** | **Do** | **Shipped 2026-09-08** — `sepa-*-01` (Scotland OGL) + `nrw-*-01` (Wales OGL, needs `GAIA_NRW_API_KEY`); reuse `gaia.river.read@v1` |
+| 8 | **INGV FDSN** | **Do** | **Shipped 2026-09-08** — `ingv-01` / `gaia.quake.read@v1` · CC BY 4.0 cite INGV |
+| 9 | **CDIP West Coast waves** | **Do** | **Shipped 2026-09-08** — `cdip-*-01` / `gaia.marine.read@v1` · unrestricted + CDIP acknowledgement |
+| 10 | **ICOS ATC NRT CO₂** | **Do (ops)** | **Shipped 2026-09-08** — `icos-*-01` / **new** `gaia.ghg.read@v1` · CC BY 4.0; needs `GAIA_ICOS_CPAUTH_TOKEN` |
+| 11 | **ENTSO-E Transparency** | **Hold** | Not shipped — no clear commercial redistributability for paid Hub SKU |
+| 12 | **Hub'Eau FR rivers** | **Do** | **Shipped 2026-09-10** — `hubeau-*-01` (20) / `gaia.river.read@v1` · Etalab OL 2.0 |
+| 13 | **eHYD AT rivers** | **Do** | **Shipped 2026-09-10** — `ehyd-*-01` (24) / `gaia.river.read@v1` · CC BY 4.0 |
+| 14 | **SMHI MetObs weather** | **Do** | **Shipped 2026-09-10** — `smhi-wx-*-01` (15) / `gaia.weather.read@v1` · CC BY 4.0 |
+| 15 | **Densify EA/ECCC/PEGEL/UHSLC/AURN/FMI/Frost/DMI** | **Do** | **Shipped 2026-09-10** — mesh expansion; reuse existing SKUs |
+| 16 | **Singapore NEA / data.gov.sg** | **Do** | **Shipped 2026-09-10** — `sg-wx-*-01` (12) + `sg-psi-*-01` (5) / weather+air · Singapore Open Data Licence |
+| 17 | **Hong Kong HKO (DATA.GOV.HK)** | **Do** | **Shipped 2026-09-10** — `hko-wx-*-01` (15) / `gaia.weather.read@v1` · DATA.GOV.HK attribution |
+| 18 | **IRCELINE Belgium air** | **Do** | **Shipped 2026-09-10** — `be-aq-*-01` (12) / `gaia.air.read@v1` · CC BY 4.0 |
+| 19 | **IMGW-PIB Poland synop** | **Hold → conditional** | Live JSON exists; commercial reuse may require fee / HVD carve-out — legal pass before Hub SKU |
+| 20 | **Swiss BAFU / FOEN hydro** | **Do** | **Shipped 2026-09-10 (P11)** — `bafu-*-01` (15) / `gaia.river.read@v1` · OGD-CH Open-Use; geodetic water level |
+| 21 | **AEMET ES open data** | **Do (ops)** | **Shipped 2026-09-10 (P11)** — `aemet-wx-*-01` (15) / `gaia.weather.read@v1` · PSI reuse «Fuente: AEMET»; needs `GAIA_AEMET_API_KEY` |
+| 22 | **IOC / GLOSS sea-level portal** | **Hard no** | Disclaimer: not for commercial use — use UHSLC / NOAA CO-OPS instead |
+| 23 | **BOM Australia anonymous FTP/XML** | **Hard no** | Bureau: anonymous feeds **not for commercial use** |
+| 24 | **MeteoSwiss OGD weather** | **Do** | **Shipped 2026-09-10 (P11)** — `ch-wx-*-01` (15) / `gaia.weather.read@v1` · CC BY 4.0 |
+| 25 | **Taiwan CWA OpenData** | **Do (ops)** | **Shipped 2026-09-10 (P11)** — `cwa-wx-*-01` (12) / weather · OGDL 1.0; needs `GAIA_CWA_API_KEY` |
+| 26 | **Météo-France DPObs** | **Do (ops)** | **Shipped 2026-09-10 (P11)** — `mf-wx-*-01` (12) / weather · Etalab OL 2.0; needs `GAIA_METEOFRANCE_APPLICATION_ID` |
+| 27 | **Estonia EWS XML** | **Do** | **Shipped 2026-09-10 (P11)** — `ee-wx-*-01` (12) / weather · CC BY 4.0 |
+| 28 | **Iceland IMO AWS** | **Do** | **Shipped 2026-09-10 (P11)** — `is-wx-*-01` (12) / weather · ODC-By |
+| 29 | **Hong Kong EPD AQHI** | **Do** | **Shipped 2026-09-10 (P11)** — `hk-aqhi-*-01` (18, full EPD network) / `gaia.air.read@v1` · DATA.GOV.HK; AQHI ≠ PM2.5 |
+
+## Ship-now set
+
+**P11 shipped 2026-09-10** (AEMET + MeteoSwiss + BAFU + CWA + DPObs + Estonia + Iceland + HK AQHI; +111 catalog points, of which 72 register without keys). Ops: set `GAIA_AEMET_API_KEY`, `GAIA_CWA_API_KEY`, `GAIA_METEOFRANCE_APPLICATION_ID` on admin-vps for Spain/Taiwan/France pins. Still restore `GAIA_FROST_CLIENT_ID` + `GAIA_NRW_API_KEY` (empty → frost/nrw unregistered).
+
+
+## Already present (do not re-pitch as new)
+
+Open-Meteo (self-host/paid for commercial), NOAA/NWS/NDBC/CO-OPS/HMS/SWPC/GLM, USGS quake/river/geomag/volcano, Sensor.Community, openSenseMap, Safecast, FIRMS, EMSC/Seismic Portal, ADSB.lol (ODbL), Fintraffic/Kystverket AIS, EPA UV (Envirofacts), EPA RadNet, EarthScope **UNLIMITED** only, MET Norway Frost, DMI metObs, SEPA KiWIS, NRW River Levels, INGV FDSN, CDIP ERDDAP, ICOS ATC NRT, **Hub'Eau FR**, **eHYD AT**, **SMHI MetObs**, **Singapore NEA**, **HKO**, **IRCELINE**, **AEMET ES**, **MeteoSwiss**, **BAFU/FOEN hydro**, **CWA Taiwan**, **Météo-France DPObs**, **Estonia EWS**, **Iceland IMO**, **HK EPD AQHI**.
+
+## Hard no / Hold (unless licence flips)
+
+OpenSky, ADS-B Exchange, INTERMAGNET / Kyoto Dst, Blitzortung, GFW, Stanford CC BY-NC, aisstream-as-sole-SKU, PurpleAir, IQAir/AirVisual free, OpenWeatherMap & commercial weather SaaS free tiers, ThingSpeak/Blynk/Adafruit free (own ingest, not Hub upstream), Weather Underground PWS API, MarineTraffic free, Google Android Earthquake (no public crowd API — use USGS/EMSC), CML research dumps, **CelesTrak** as paid SKU, **AirNow** until Data Exchange Guidelines assent, **ENTSO-E** until clear commercial redistributability, **IOC/GLOSS sea-level portal** (non-commercial disclaimer), **BOM Australia anonymous feeds** (not for commercial use), **IMGW-PIB** until HVD/commercial fee carve-out is confirmed.

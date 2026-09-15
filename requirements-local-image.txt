@@ -1,0 +1,12 @@
+# Optional CPU text-to-image for Dioscuri / factory (install torch CPU wheel first).
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements-local-image.txt
+# Default model: stabilityai/sd-turbo (~2GB HF download on first run, 4 steps on CPU).
+# Fast/low-quality fallback: AICOM_LOCAL_IMAGE_MODEL=segmind/tiny-sd
+diffusers>=0.32.0
+transformers>=4.46.0
+accelerate>=1.2.0
+safetensors>=0.4.0
+pillow>=10.0.0
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0

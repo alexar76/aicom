@@ -1,0 +1,114 @@
+# AWR own-keys file — FORMAT DOCUMENTATION AND SYNTAX EXAMPLES ONLY.
+#
+#   >>> THE REAL FILE IS ./own-keys.txt, AND IT IS COMMITTED. <<<
+#
+# own-keys.txt is the live list the tool reads by default: it holds only public DIDs,
+# there is nothing secret to withhold, and an uncommitted own-keys file makes every
+# quoted metric unauditable. Read it, not this one, to find out which keys we declare.
+# This file exists to explain the format and the discipline. Nothing here is a real DID.
+#
+# THIS FILE IS A DRAFT ON DISK. Nothing in this directory is sent, published, or
+# uploaded anywhere by any tool here.
+#
+# ---------------------------------------------------------------------------
+# WHAT THIS FILE IS
+# ---------------------------------------------------------------------------
+#
+# The complete list of did:key identifiers whose private keys THIS PROJECT
+# CONTROLS. adoption_metric.py subtracts these from the set of issuers it finds:
+#
+#     adoption = distinct issuer DIDs found  MINUS  the DIDs listed here
+#
+# ---------------------------------------------------------------------------
+# WHY THIS FILE IS THE THING TO KEEP HONEST
+# ---------------------------------------------------------------------------
+#
+# The metric has exactly one failure mode, and it is this file.
+#
+#   * A DID that is MISSING from this file is counted as a foreign adopter.
+#     Every key we forget to declare INFLATES the number by one — and it inflates
+#     it in the flattering direction, which is why nobody will notice.
+#   * A DID that is listed here but that we do NOT control DEFLATES the number:
+#     a real adopter is silently subtracted. Less tempting, equally wrong.
+#
+# So: when any component of ours starts issuing AWR documents — hub, a satellite,
+# a course, a CI job, a demo script, a laptop, a one-off debugging key — its DID
+# goes in here IN THE SAME CHANGE. A commit that adds an AWR issuer and does not
+# touch this file is an incomplete commit.
+#
+# Rotated and retired keys STAY in this file forever. Their documents still exist,
+# and a retired key of ours never becomes an adopter.
+#
+# ---------------------------------------------------------------------------
+# FORMAT
+# ---------------------------------------------------------------------------
+#
+#   * One did:key per line, exactly as it appears in the document's issuer.id.
+#   * Everything from a '#' to end of line is a comment. Annotate every entry:
+#     an undocumented DID cannot be audited, and an unauditable own-keys file is
+#     just a number we are asking people to trust.
+#   * Blank lines are ignored.
+#   * A full verificationMethod (did:key:z…#z…) is accepted and reduced to its
+#     DID, so pasting a proof.verificationMethod straight from a document works.
+#   * Comparison is EXACT and CASE-SENSITIVE. base58btc is case-sensitive; a
+#     lowercased DID matches nothing and silently stops excluding one of our keys.
+#   * Only did:key is meaningful here — it is the only issuer identity AWR/2
+#     defines (SPEC.md §5.1). There is no hostname, no domain, no organisation
+#     name and no trust level in this file, and there must never be one: see the
+#     README on why exclusion is by DID and by nothing else.
+#
+# ---------------------------------------------------------------------------
+# ENTRIES
+# ---------------------------------------------------------------------------
+#
+# The lines below are SYNTAX EXAMPLES with placeholder key material. They are NOT
+# our DIDs. The real entries are in ./own-keys.txt, which today declares:
+#
+#   * the MTL example generator (awr/adoption/mcp-trust-label/examples/generate.py) —
+#     a real AWR/2 issuer in this repository, signing from the published seed
+#     bytes(range(32)). Undeclared, it made the metric report one "adopter", and the
+#     adopter was us. This is what this whole file is warning about, and it happened.
+#   * the six synthetic issuers demo_corpus.py mints, also from published seeds;
+#   * the test-vector and reference-test-suite fixture keys.
+#
+# No component of ours issues AWR/2 documents in production yet. When one does, its DID
+# goes into own-keys.txt in the same change.
+#
+# Format of an entry, for whoever adds the first real one:
+#
+#   did:key:z6Mk<44 base58btc chars>   # <component> / <environment> / <added YYYY-MM-DD> / <key location>
+#
+# A real file would read something like:
+#
+#   # hub, production — issues WorkReceipt on paid invoke
+#   did:key:z6Mk…                                             # hub / prod / added 2026-08-01 / key in hub secret store
+#   # verification tier — issues VerificationVerdict
+#   did:key:z6Mk…                                             # metis / prod / added 2026-08-01 / key in metis secret store
+#   # CI: signs receipts in the conformance run. NEVER an adopter.
+#   did:key:z6Mk…                                             # ci / github-actions / added 2026-08-01 / ephemeral, seed in CI secret
+#   # retired, kept forever: its documents still exist
+#   did:key:z6Mk…                                             # hub / prod / retired 2026-09-01 / rotated
+#
+# ---------------------------------------------------------------------------
+# HOW TO GET A DID FOR A KEY WE ALREADY HAVE
+# ---------------------------------------------------------------------------
+#
+#   python3 -c "import sys; sys.path.insert(0, 'awr/reference/python'); \
+#     from awr import load_key_file; print(load_key_file('KEYFILE').did)"
+#
+# ---------------------------------------------------------------------------
+# USAGE
+# ---------------------------------------------------------------------------
+#
+#   python3 adoption_metric.py CORPUS_DIR    # picks up the committed ./own-keys.txt
+#   python3 adoption_metric.py CORPUS_DIR --own-keys /path/to/own-keys.txt
+#   AWR_OWN_KEYS=/path/to/own-keys.txt python3 adoption_metric.py CORPUS_DIR
+#
+# To add an entry, edit own-keys.txt directly — do not copy this file over it, and do
+# not remove an entry to make a number look better: test_adoption_metric.py asserts
+# that the example generator's DID and every demo-corpus DID are present, and one of
+# those tests exists specifically to fail if the generator entry disappears.
+#
+# An own-keys.txt with zero entries would be a valid file and an honest starting state.
+# It is not the same as no file at all: the tool warns in both cases, but a
+# committed empty file is a statement that we checked, and a missing file is not.

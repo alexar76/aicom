@@ -1,0 +1,43 @@
+# The PRIVATE patch-authoring service. Joins the conductor's existing network so it is reachable as
+# remediation-fixer:9086 and needs no cross-host tunnel: MOMUS, Gitea, the canary and the conductor
+# are all on that host already.
+services:
+  remediation-fixer:
+    build:
+      context: .
+      dockerfile: Dockerfile.remediation-fix
+    container_name: remediation-fixer
+    # Bounded from the start, unlike the two containers on this host that had no limit and took it
+    # to swap. This service holds one diff at a time.
+    mem_limit: 1g
+    pids_limit: 256
+    environment:
+      AIFACTORY_APP_ROOT: /app-src
+      AIFACTORY_DATA_ROOT: /data
+      # This service exists to serve the route, so the capability is on here and nowhere else.
+      AIFACTORY_REMEDIATION_FIX_ENABLED: "1"
+      # Fail-closed: with AIFACTORY_PROD=1 an unset key makes the route answer 503, never open.
+      AIFACTORY_PROD: "1"
+      AIFACTORY_REMEDIATION_KEY: ${AIFACTORY_REMEDIATION_KEY:-}
+      AIFACTORY_REMEDIATION_MOMUS_PUBKEY: ${AIFACTORY_REMEDIATION_MOMUS_PUBKEY:-}
+      AIFACTORY_REMEDIATION_SCOPE: ${AIFACTORY_REMEDIATION_SCOPE:-}
+      # Whichever provider actually has credit. A live ticket found DeepSeek answering
+      # 402 Payment Required while MOMUS itself was happily using OpenRouter.
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+    volumes:
+      # READ-ONLY. The service reads the current contents of the files in scope to give the model
+      # context and to compute the diff; it must never be able to write the tree it is patching.
+      - /root/aicom:/app-src:ro
+      - remediation-fix-data:/data
+    ports: [ "127.0.0.1:9086:9086" ]
+    restart: unless-stopped
+    networks: [ momus ]
+
+volumes:
+  remediation-fix-data:
+
+networks:
+  momus:
+    name: momus-deploy_default
+    external: true

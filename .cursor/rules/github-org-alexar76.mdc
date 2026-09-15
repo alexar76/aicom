@@ -1,0 +1,12 @@
+---
+description: GitHub org for this monorepo is alexar76 (not alexart2025)
+alwaysApply: true
+---
+
+# GitHub identity: alexar76
+
+- Public GitHub org/user for this ecosystem is **`alexar76`**.
+- Satellites, factory (`aicom`), profile README, Pages, releases, and tags all live under **`github.com/alexar76/…`**.
+- Local `gh` may be logged in as another account (e.g. `alexart2025`) — that is **not** the publish identity.
+- For GitHub writes (mirror, metadata, tags, releases, `gh` API): use **`GH_PAT` / `GITHUB_TOKEN`** scoped to `alexar76`, or the publish scripts (`mirror_satellites.sh`, `apply_github_metadata.sh`, `publish_aicom_factory.sh`, etc.). Do not assume `gh auth` equals `alexar76`.
+- Never publish satellites or factory under a different GitHub user/org unless the user explicitly says so.

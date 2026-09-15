@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json",
+  "title": "AWR/2 shared definitions",
+  "description": "NON-NORMATIVE. JSON Schema is a convenience for tooling and is not the normative definition of AWR/2; awr/SPEC.md is (Appendix B). Where this schema and the specification disagree, the schema is the bug. This file carries no document schema of its own: it is the shared $defs library referenced by work-receipt-v2.json, verification-verdict-v2.json, blame-attestation-v2.json and bundle-v2.json.",
+  "$comment": "Three whole classes of AWR/2 requirement are OUTSIDE what JSON Schema can express, and a validator that only runs these schemas is not a conforming AWR/2 verifier (SPEC.md §17). (1) SPEC.md §4.3: JSON numbers in a signed document MUST be integers in [-(2^53-1), 2^53-1]; non-integer numbers MUST be rejected with AWR-CANON-001 and out-of-range integers with AWR-CANON-002. This schema pins \"type\": \"integer\" plus those bounds on every number-valued member it knows about, but that is strictly weaker than §4.3 for two reasons. (a) SPEC.md §3.1 permits unknown properties at any level, and a number appearing under an unknown property is unreachable from any schema. (b) JSON Schema's \"integer\" type is defined by mathematical value, not by lexical form, so the token 2340.0 satisfies \"type\": \"integer\" — a fact confirmed here against a real validator, not assumed. The no-float rule is therefore global, structural and lexical, and only the validator implementation can enforce it — it must walk the parsed JSON (with raw-token access) and reject non-integer numbers wherever they occur. (2) SPEC.md §4.1 item 5: duplicate object property names MUST be rejected (AWR-CANON-004). JSON Schema operates on already-parsed JSON and cannot see a duplicate the parser collapsed. (3) All cross-field and cryptographic checks: validUntil later than validFrom (AWR-DOC-007), completedAt not earlier than startedAt (AWR-RCPT-003), proof.verificationMethod equal to issuer.id + '#' + its method-specific id (AWR-PROOF-007), publicKeyJwk.x decoding to the same 32 bytes as the did:key (AWR-KEY-003), digest recomputation (AWR-CHAIN-003, AWR-VDCT-005) and the Ed25519 signature itself (AWR-PROOF-006).",
+  "$defs": {
+    "noLineBreak": {
+      "$comment": "A portability guard, not an AWR/2 requirement of its own. Under ECMA-262 — the dialect JSON Schema specifies — `$` matches only at the very end of the string. Several regex engines behind real JSON Schema validators additionally let `$` match immediately before a single trailing newline: Python's `re` (which the Python `jsonschema` library uses) and PCRE without the D modifier both do. This was observed, not theorised: without this guard the §3.4 unit-interval pattern accepts \"0.5\\n\" under jsonschema 4.25.1, and so does every other anchored pattern in this file. Every string form AWR/2 defines is whitespace-free, so forbidding CR and LF cannot exclude a value the specification admits — it only makes these patterns mean under Python what §3.3/§3.4 already mean under ECMA-262. `\\r` and `\\n` are supported by RE2, so this stays portable to Go- and C++-based validators. The specification would be better off anchoring its patterns explicitly; see the report finding.",
+      "not": { "pattern": "[\\r\\n]" }
+    },
+
+    "absoluteUri": {
+      "$comment": "SPEC.md §3.1: `id` MUST be an absolute URI. This pattern checks the necessary conditions a regex can check — a scheme, a colon, a non-empty scheme-specific part, no whitespace — and is not a full RFC 3986 grammar. Full syntax checking, and the AWR-DOC-006 outcome, belong to the validator. No fragment restriction is imposed: SPEC.md says \"absolute URI\" without citing the RFC 3986 `absolute-URI` production, which would exclude fragments.",
+      "type": "string",
+      "format": "uri",
+      "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:[^\\s]+$",
+      "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+    },
+
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "safeInteger": {
+      "$comment": "SPEC.md §4.3: JSON numbers MUST be integers in the closed range [-(2^53-1), 2^53-1]. 2^53-1 = 9007199254740991, so out-of-range values are AWR-CANON-002. Two limitations, both verified against a real validator rather than assumed. First, per the file-level $comment, JSON Schema reaches only the number-valued members it names, and §3.1 allows a number under any unknown property. Second and sharper: JSON Schema's \"integer\" type matches any number with a ZERO FRACTIONAL PART, so the JSON token 2340.0 satisfies this definition while 2340.5 does not. A document written with 2340.0 therefore passes this schema even though §4.3 forbids non-integer JSON numbers, and `multipleOf` cannot fix it because 2340.0 is a multiple of 1. Detecting the spelling requires access to the raw JSON token, which JSON Schema never has — only the validator implementation can enforce §4.3, and see the report finding on what §4.3 should say about the X.0 spelling.",
+      "type": "integer",
+      "minimum": -9007199254740991,
+      "maximum": 9007199254740991
+    },
+
+    "nonNegativeSafeInteger": {
+      "$comment": "SPEC.md §4.3 range, restricted to non-negative values for counts and durations (AWR-RCPT-004). Same two limitations as safeInteger: unknown properties are out of reach, and the 2340.0 spelling satisfies \"type\": \"integer\".",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+
+    "dateTimeUtc": {
+      "$comment": "SPEC.md §3.1: an RFC 3339 `date-time` in UTC with a `Z` offset and second precision or finer; §6.1 requires the same of `proof.created`. Only the literal uppercase `Z` offset is accepted, matching every example in the specification, even though the RFC 3339 ABNF makes the offset letter case-insensitive — see the interoperability note in the accompanying report. `:60` is accepted because RFC 3339 §5.7 permits a leap second. Calendar validity (day-of-month against month and leap year) is not expressible here and is left to the validator; `format` is annotation-only in most validators, so the pattern carries the constraint.",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?Z$",
+      "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+    },
+
+    "sriDigest": {
+      "$comment": "SPEC.md §3.2: a W3C SRI string, `sha256-` followed by the standard base64 (with padding, `+/` alphabet) encoding of the 32-byte digest. `sha256` is the only algorithm defined in AWR/2; any other prefix is AWR-CHAIN-002, so no other prefix is accepted here. The length is exact: base64 of 32 bytes is 43 characters plus one `=`. The final data character is restricted to [AEIMQUYcgkosw048] because 32 bytes is not a multiple of 3, so the last base64 character encodes 4 significant bits and 2 zero padding bits; every value in that class has its low 2 bits clear. This class was not guessed — it is the exact set observed over 20000 real SHA-256 digests, and the specification's own §3.2 example value (the digest of the empty byte string) satisfies it. A string with non-zero padding bits is not \"the standard base64 encoding of the 32-byte digest\" that §3.2 requires, though lenient decoders would still accept it; see the report finding on this point.",
+      "type": "string",
+      "pattern": "^sha256-[A-Za-z0-9+/]{42}[AEIMQUYcgkosw048]=$",
+      "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+    },
+
+    "digestReference": {
+      "$comment": "SPEC.md §3.2. `digestSRI` is always REQUIRED; `id` MAY be omitted only when the reference is to a non-document artefact with no identifier of its own (a prompt payload, a trace file). Not closed to additional properties: §3.1 permits unknown properties at any level, and `parents` entries demonstrate the pattern by adding `role`.",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/absoluteUri" },
+        "digestSRI": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/sriDigest" }
+      },
+      "required": ["digestSRI"]
+    },
+
+    "digestReferenceWithId": {
+      "$comment": "A digest reference to another AWR document, where `id` is also REQUIRED. Stated explicitly for `verifiedWork` in SPEC.md §3.4 (AWR-VDCT-001), and implied for `chain`/`blamedWork` by §3.2 (which licenses omitting `id` only for non-document artefacts) together with §13.2 (references carry \"digest as well as identifier\" so a favourable judgement cannot be re-pointed).",
+      "allOf": [
+        { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/digestReference" },
+        { "required": ["id"] }
+      ]
+    },
+
+    "parentReference": {
+      "$comment": "SPEC.md §3.3 and §8.1: a `parents` entry is a digest reference over the UTF-8 canonical form of the SECURED parent WorkReceipt, including its proof. A missing `digestSRI` is AWR-CHAIN-001. `role` is an OPTIONAL free label; §3.3 offers retrieval / tool / subagent / input as examples and does not constrain the value, so no enum is imposed here.",
+      "allOf": [
+        { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/digestReference" },
+        {
+          "properties": {
+            "role": { "type": "string" }
+          }
+        }
+      ]
+    },
+
+    "evidenceEntry": {
+      "$comment": "SPEC.md §3.4 and §3.5: every `evidence` entry MUST carry `digestSRI` (AWR-VDCT-007); `kind` is a free-form label, so no enum. Evidence bytes are not carried in the document and need not be available for verification to succeed.",
+      "type": "object",
+      "properties": {
+        "kind": { "type": "string" },
+        "digestSRI": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/sriDigest" },
+        "id": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/absoluteUri" }
+      },
+      "required": ["digestSRI"]
+    },
+
+    "unitIntervalDecimalString": {
+      "$comment": "SPEC.md §3.4: a decimal string in the closed unit interval [0,1]. The pattern is transcribed verbatim from §3.4 (AWR-VDCT-002) and reused for `policy.threshold` (§3.4) and `confidence` (§3.5, AWR-BLAME-004). It admits \"0\", \"1\", \"0.93\", \"1.0\", \"1.000\" and rejects \".5\", \"0.\", \"1.5\", \"01\", \"+0.5\", \"-0\" and any JSON number. §4.3: these values MUST NOT be JSON numbers, and comparison MUST be decimal arithmetic, never a parse to binary float.",
+      "type": "string",
+      "pattern": "^(0(\\.[0-9]+)?|1(\\.0+)?)$",
+      "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+    },
+
+    "decimalAmountString": {
+      "$comment": "SPEC.md §3.3: `amount` MUST be a decimal string matching this pattern and MUST NOT be a JSON number (§4.3, AWR-RCPT-002). Pattern transcribed verbatim from §3.3. Signed values are permitted by that pattern; AWR/2 states no non-negativity requirement for a monetary amount, so none is added here.",
+      "type": "string",
+      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$",
+      "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+    },
+
+    "currencyUnit": {
+      "$comment": "SPEC.md §3.3: an ISO 4217 alphabetic code, or a `urn:`-prefixed URI for non-fiat units. The ISO 4217 code list is not enumerated on purpose — it changes, and a stale enum in a non-normative helper would reject valid documents. The URN branch approximates RFC 8141 (NID of 2 to 32 characters, then a non-empty NSS).",
+      "type": "string",
+      "anyOf": [
+        { "pattern": "^[A-Z]{3}$" },
+        { "pattern": "^urn:[A-Za-z0-9][A-Za-z0-9-]{0,30}[A-Za-z0-9]:[^\\s]+$" }
+      ],
+      "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+    },
+
+    "monetaryAmount": {
+      "$comment": "SPEC.md §3.3 `price`, and the `amount` member of §10.3 `settlement`/`stake`. Both members are required: AWR-RCPT-002 covers a malformed currency or a malformed decimal-string amount, and neither half is meaningful alone. Left open to additional properties per §3.1.",
+      "type": "object",
+      "properties": {
+        "currency": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/currencyUnit" },
+        "amount": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/decimalAmountString" }
+      },
+      "required": ["currency", "amount"]
+    },
+
+    "didKey": {
+      "$comment": "SPEC.md §5.1: `issuer.id` MUST be a did:key for an Ed25519 public key, `did:key:z<base58btc(0xed 0x01 || publicKey)>`, whose method-specific identifier is 48 characters and begins `z6Mk`. The character class [1-9A-HJ-NP-Za-km-z] is exactly the Bitcoin base58 alphabet quoted in §5.1 (0, I, O and l excluded) — verified by expanding the class and comparing it character for character with the alphabet in the specification. `z6Mk` plus 44 further characters gives the 48 that §5.1 states; this was confirmed against 3002 did:key values derived from real Ed25519 keys, all of which were 48 characters and began `z6Mk`, and against the §3.1 example issuer id. The regex cannot decode the multibase payload, so a validator MUST still decode it and check the 0xed 0x01 multicodec prefix and the 32-byte key length (AWR-KEY-002). Other DID methods and HTTPS issuer identifiers are NOT supported in AWR/2 (§5.1), hence no alternative branch.",
+      "type": "string",
+      "pattern": "^did:key:z6Mk[1-9A-HJ-NP-Za-km-z]{44}$",
+      "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+    },
+
+    "publicKeyJwkEd25519": {
+      "$comment": "SPEC.md §5.2: OPTIONAL, and if present MUST be an RFC 8037 OKP/Ed25519 JWK whose `x` decodes to exactly the same 32 bytes as the did:key. `x` is unpadded base64url of 32 bytes: 43 characters, with the final character restricted for the same zero-padding-bits reason as sriDigest (class confirmed over 5000 real Ed25519 public keys). A private key member (`d`) must never appear in a published document; that is not expressible as a requirement of AWR/2 and is not asserted here. Not closed: JWKs legitimately carry `alg`, `kid`, `use` and registered extensions. The did:key/JWK agreement itself is AWR-KEY-003 and is the validator's job.",
+      "type": "object",
+      "properties": {
+        "kty": { "const": "OKP" },
+        "crv": { "const": "Ed25519" },
+        "x": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$",
+          "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+        }
+      },
+      "required": ["kty", "crv", "x"]
+    },
+
+    "issuer": {
+      "$comment": "SPEC.md §3.1: `issuer` MUST be an object with `id` (§5); a bare-string issuer MUST be rejected in AWR/2 even though VC 2.0 allows it, so \"type\": \"object\" here is a real constraint, not a formality (AWR-DOC-010). `name` is OPTIONAL and carries no trust weight (§3.1) and is a voluntary disclosure (§14).",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/didKey" },
+        "name": { "type": "string" },
+        "publicKeyJwk": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/publicKeyJwkEd25519" }
+      },
+      "required": ["id"]
+    },
+
+    "context": {
+      "$comment": "SPEC.md §3.1: `@context` MUST be an array whose first element is exactly the VC 2.0 context and which contains the AWR/2 namespace URI; additional context URIs MAY follow (AWR-DOC-002, AWR-DOC-003). Under draft 2020-12, `prefixItems` pins position 0 and `items` applies from position 1 onward. Entries after position 0 are restricted to strings because §3.1 calls them \"context URIs\"; JSON-LD and VC 2.0 would also permit an inline context object there, so this is the stricter of two readings — see the report finding. A verifier MUST NOT dereference any context URI (§13.5), which is why this schema never uses $ref to fetch one.",
+      "type": "array",
+      "minItems": 2,
+      "prefixItems": [
+        { "const": "https://www.w3.org/ns/credentials/v2" }
+      ],
+      "items": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/absoluteUri" },
+      "contains": { "const": "https://verify.modelmarket.dev/ns/awr/v2" }
+    },
+
+    "awrVersion": {
+      "$comment": "SPEC.md §3.1: MUST be \"2.0.0\" for documents conforming to this specification. A verifier MUST reject a document whose major version it does not implement (AWR-DOC-009); a `const` is used rather than a major-version pattern because these schema files describe exactly 2.0.0.",
+      "const": "2.0.0"
+    },
+
+    "multibaseEd25519Signature": {
+      "$comment": "SPEC.md §6.1: `proofValue` MUST be multibase base58btc (`z` prefix) of exactly 64 bytes (AWR-PROOF-005). Base64, hex and unprefixed values MUST be rejected, including the legacy base64 form of AWR/1 (§12); this pattern rejects all three — base64 of 64 bytes is 88 characters and contains `=` (and may contain `+` or `/`), hex is 128 characters, and an unprefixed value lacks the `z`. The 64..88 body bound is computed, not assumed: base58btc of a 64-byte value is at most 88 characters (0xff * 64 encodes to exactly 88), and at least 64 in the structural limit where every byte is zero and each encodes to a single `1`. Over 200000 random 64-byte signatures the observed body lengths were 86, 87 and 88, so the bound is deliberately wider than the practical distribution rather than risk rejecting a valid signature with leading zero bytes. Length in characters cannot prove a 64-byte decode: the validator MUST decode and check the byte length.",
+      "type": "string",
+      "pattern": "^z[1-9A-HJ-NP-Za-km-z]{64,88}$",
+      "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+    },
+
+    "proof": {
+      "$comment": "SPEC.md §6.1. `verificationMethod` MUST be `<issuer.id>#<method-specific-id>`, i.e. the did:key followed by `#` and the same multibase string that follows `did:key:` (§5.3, AWR-PROOF-007). The pattern below checks that shape but cannot check that the two halves are identical or that the DID equals `issuer.id`: an ECMA-262 backreference could express the first half of that, but JSON Schema implementations built on RE2 cannot compile backreferences, so this schema stays portable and leaves the equality to the validator. Not closed to additional properties: §3.1 permits unknown properties at any level, `proof.@context` is explicitly contemplated by AWR-PROOF-008, and W3C Data Integrity defines further optional members (`expires`, `domain`, `challenge`, `previousProof`). `cryptosuite` is a const because §6.4 makes it the only agility point and registers exactly one value; a verifier MUST reject unknown cryptosuites rather than skipping the proof (AWR-PROOF-003).",
+      "type": "object",
+      "properties": {
+        "type": { "const": "DataIntegrityProof" },
+        "cryptosuite": { "const": "eddsa-jcs-2022" },
+        "created": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/dateTimeUtc" },
+        "verificationMethod": {
+          "type": "string",
+          "pattern": "^did:key:z6Mk[1-9A-HJ-NP-Za-km-z]{44}#z6Mk[1-9A-HJ-NP-Za-km-z]{44}$",
+          "allOf": [ { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/noLineBreak" } ]
+        },
+        "proofPurpose": { "const": "assertionMethod" },
+        "proofValue": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/multibaseEd25519Signature" },
+        "@context": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/context" }
+      },
+      "required": ["type", "cryptosuite", "created", "verificationMethod", "proofPurpose", "proofValue"]
+    },
+
+    "proofOrProofSet": {
+      "$comment": "SPEC.md §6.1: exactly one proof object is defined for AWR/2, and an array of proofs MAY be present, in which case at least one proof MUST verify under these rules and every proof present MUST be either valid or reported. Because §6.1 contemplates a present-but-not-valid proof that is merely reported, the array branch requires only that the array CONTAINS one §6.1-shaped proof rather than that every element is one. §6.4 pulls the other way (\"verifiers MUST reject unknown cryptosuites rather than skipping the proof\") — see the report finding on this tension. A missing `proof` is AWR-PROOF-001.",
+      "oneOf": [
+        { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/proof" },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "object" },
+          "contains": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/proof" }
+        }
+      ]
+    },
+
+    "method": {
+      "$comment": "SPEC.md §3.4 and §3.5: `method` MUST be present with a non-empty `id` (AWR-VDCT-003). The identifier is explicitly opaque — two verdicts are comparable only if they name the same method — so no URI syntax is imposed even though the specification's examples are URNs. `modelIds` is OPTIONAL and is a voluntary disclosure (§14); §3.4 places no constraint on its entries beyond their being model identifiers.",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/nonEmptyString" },
+        "name": { "type": "string" },
+        "modelIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["id"]
+    },
+
+    "policy": {
+      "$comment": "SPEC.md §3.4: `policy.threshold`, if present, MUST be a decimal string in [0,1]. Whether `verdict` agrees with the score/threshold relation is AWR-VDCT-006, a warning, and is not expressible here.",
+      "type": "object",
+      "properties": {
+        "threshold": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/unitIntervalDecimalString" }
+      }
+    },
+
+    "opaqueAttestation": {
+      "$comment": "SPEC.md §7.3: AWR/2 deliberately treats `teeAttestation` and `zkProof` as opaque objects. \"type\": \"object\" is the only constraint the specification supports; a verifier MUST include them in canonicalization, MUST NOT claim to have verified them without implementing the relevant platform's attestation verification, MUST report AWR-ENV-001 (warning) when one is present and unverified, and MUST NOT report a document as more trustworthy because an unverified attestation is present. Adding member constraints here would invite exactly the false confidence §7.3 warns about.",
+      "type": "object"
+    },
+
+    "environment": {
+      "$comment": "SPEC.md §3.3 and §7: OPTIONAL, members opaque (§7.3). Both members are inside credentialSubject and therefore inside the AWR signature (§7.2), but their internal signatures are separate artefacts with separate trust roots.",
+      "type": "object",
+      "properties": {
+        "teeAttestation": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/opaqueAttestation" },
+        "zkProof": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/opaqueAttestation" }
+      }
+    },
+
+    "settlement": {
+      "$comment": "SPEC.md §10.3, carried by the WorkReceipt as one of the two accountability bindings that L2 accepts (AWR-PROFILE-004). §10.3 states that `scheme` is an opaque label and that AWR/2 defines no scheme semantics, but it never says which members are REQUIRED, so this schema requires none and only types the members the example shows — see the report finding on \"present, well-formed and signed\" being undefined. `contract` is NOT constrained to an EVM address: the scheme is opaque and `escrow-evm-v1` is only an example. `chainId` is the one number here, so §4.3's integer range applies. A verifier MUST NOT contact a chain or any network service to check a binding, and MUST report AWR-L2-001 (warning) stating that on-chain existence was not checked.",
+      "type": "object",
+      "properties": {
+        "scheme": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/nonEmptyString" },
+        "chainId": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/safeInteger" },
+        "contract": { "type": "string" },
+        "holdId": { "type": "string" },
+        "amount": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/monetaryAmount" }
+      }
+    },
+
+    "stake": {
+      "$comment": "SPEC.md §10.3, carried by a VerificationVerdict as the other accountability binding L2 accepts. Same absence of a REQUIRED-member list as `settlement`. `slashingPolicy` is a digest reference precisely so that the policy a verifier staked under cannot be rewritten after the fact, so `digestSRI` is required inside it by §3.2.",
+      "type": "object",
+      "properties": {
+        "scheme": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/nonEmptyString" },
+        "chainId": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/safeInteger" },
+        "contract": { "type": "string" },
+        "amount": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/monetaryAmount" },
+        "slashingPolicy": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/digestReference" }
+      }
+    },
+
+    "awrProfileHint": {
+      "$comment": "SPEC.md §3.3: `awrProfile` is OPTIONAL and is a non-binding hint about the level the issuer intended. A verifier MUST NOT grant a level because a document claims it (§3.3, §10). The enumeration is the three profiles defined in §2 and §10 and used by the §17 CLI contract.",
+      "enum": ["L0", "L1", "L2"]
+    },
+
+    "envelopeCommon": {
+      "$comment": "SPEC.md §3.1, the part of the common envelope that is identical for all three document types. `type` and `credentialSubject` are NOT here: each document schema constrains them itself. Deliberately not closed to additional properties — §3.1: unknown properties MAY appear at any level, a verifier MUST ignore them semantically, MUST include them in canonicalization, and MUST NOT strip them when storing or forwarding, because stripping invalidates the signature. `proof` is required because these schemas describe the SECURED document (§2); the unsecured form used in §6.2 step 3 is the same object with `proof` removed, and a missing proof is AWR-PROOF-001.",
+      "type": "object",
+      "properties": {
+        "@context": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/context" },
+        "id": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/absoluteUri" },
+        "issuer": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/issuer" },
+        "validFrom": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/dateTimeUtc" },
+        "validUntil": {
+          "$comment": "SPEC.md §3.1: OPTIONAL, same format, and MUST be later than `validFrom` if present (AWR-DOC-007). The ordering is a cross-field comparison and is not expressible in JSON Schema. §11.3: age is not a validity property — AWR-TIME-001/002 are warnings and any age threshold is caller policy.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/dateTimeUtc"
+        },
+        "awrVersion": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/awrVersion" },
+        "credentialSubject": {
+          "$comment": "SPEC.md §3.1: MUST be a single object; arrays of subjects are not used in AWR/2 (AWR-DOC-008). Each document schema narrows this further.",
+          "type": "object"
+        },
+        "proof": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/proofOrProofSet" }
+      },
+      "required": ["@context", "id", "type", "issuer", "validFrom", "awrVersion", "credentialSubject", "proof"]
+    }
+  }
+}

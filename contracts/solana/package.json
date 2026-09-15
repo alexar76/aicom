@@ -1,0 +1,22 @@
+{
+  "name": "aimarket-escrow-tests",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Anchor integration tests for the AIMarketEscrow Solana program.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+  },
+  "devDependencies": {
+    "@coral-xyz/anchor": "^0.30.1",
+    "@solana/spl-token": "^0.4.6",
+    "@solana/web3.js": "^1.95.0",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^20.0.0",
+    "chai": "^4.3.4",
+    "mocha": "^10.0.0",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.4.0"
+  }
+}

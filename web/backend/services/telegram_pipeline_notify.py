@@ -1,0 +1,231 @@
+"""
+Optional Telegram alerts for pipeline progress and new products.
+
+Credentials: :mod:`web.backend.services.telegram_credentials` (env, ``data/secrets/telegram.yaml``,
+legacy keys in config). Notify toggles still live under ``general.*`` in ``config.yaml``.
+"""
+
+from __future__ import annotations
+
+import logging
+import threading
+from pathlib import Path
+from typing import Any
+
+from core.paths import config_path
+from core.config_merge import load_merged_config
+
+logger = logging.getLogger(__name__)
+
+CONFIG_PATH = config_path()
+
+AGENT_LABELS: dict[str, str] = {
+    "pm": "PM",
+    "architect": "Architect",
+    "developer": "Developer",
+    "dev": "Developer",
+    "qa": "QA",
+    "security": "Security",
+    "devops": "DevOps",
+    "marketing": "Marketing",
+    "sales": "Sales",
+    "analyst": "Analyst",
+    "evolution_analyst": "Evolution",
+    "design_critic": "Design critic",
+    "hardening": "Hardening",
+    "methodologist": "Methodologist",
+}
+
+
+def _maybe_broadcast_web_push_after_telegram(text: str) -> None:
+    """Best-effort Web Push to subscribed admins (does not block Telegram)."""
+    body = (text or "").strip()
+    if not body:
+        return
+    first_line = body.split("\n", 1)[0].strip()[:220]
+
+    def run() -> None:
+        try:
+            from web.backend.services.web_push_service import broadcast_payload
+
+            broadcast_payload(title="AI Factory · Telegram", body=first_line, url="/admin")
+        except Exception as e:
+            logger.debug("web push after telegram: %s", e)
+
+    threading.Thread(target=run, daemon=True).start()
+
+
+def _read_general() -> dict[str, Any]:
+    try:
+        raw = load_merged_config(CONFIG_PATH)
+        if not isinstance(raw, dict):
+            return {}
+        g = raw.get("general")
+        return g if isinstance(g, dict) else {}
+    except Exception as e:
+        logger.debug("telegram notify: could not read config: %s", e)
+        return {}
+
+
+def telegram_pipeline_config() -> dict[str, Any]:
+    """Flattened settings for notification helpers."""
+    from web.backend.services.telegram_credentials import resolve_telegram_token_chat_id
+
+    g = _read_general()
+    token, chat_id = resolve_telegram_token_chat_id()
+    notify_pipeline = bool(g.get("telegram_notify_pipeline_stages", True))
+    notify_failed = g.get("telegram_notify_pipeline_failed")
+    if notify_failed is None:
+        notify_failed = notify_pipeline
+    return {
+        "enabled": bool(g.get("telegram_notify_enabled")),
+        "notify_pipeline": notify_pipeline,
+        "notify_pipeline_failed": bool(notify_failed),
+        "notify_new_product": bool(g.get("telegram_notify_new_products", True)),
+        "token": token,
+        "chat_id": chat_id,
+    }
+
+
+def send_telegram_message_sync(text: str) -> tuple[bool, str]:
+    """
+    Send plain text using configured bot token and chat id.
+    Returns (ok, detail).
+    """
+    cfg = telegram_pipeline_config()
+    token = cfg["token"]
+    chat_id = cfg["chat_id"]
+    if not token or not chat_id:
+        return False, "telegram_bot_token or telegram_chat_id missing in Settings"
+    body = text.strip()
+    if not body:
+        return False, "empty message"
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    payload = {"chat_id": chat_id, "text": body[:4000], "disable_web_page_preview": True}
+    try:
+        import httpx
+
+        with httpx.Client(timeout=25.0) as client:
+            r = client.post(url, json=payload)
+            data = r.json() if r.headers.get("content-type", "").startswith("application/json") else {}
+            if not data.get("ok"):
+                return False, str(data.get("description") or r.text)[:500]
+            return True, "ok"
+    except Exception as e:
+        logger.warning("Telegram send failed: %s", e)
+        return False, str(e)[:500]
+
+
+def notify_telegram_pipeline_stage(
+    *,
+    agent_type: str,
+    product_id: str,
+    target_state: str,
+    idea_snippet: str = "",
+) -> None:
+    cfg = telegram_pipeline_config()
+    if not cfg["enabled"] or not cfg["notify_pipeline"]:
+        return
+    if not cfg["token"] or not cfg["chat_id"]:
+        return
+
+    at = (agent_type or "").lower()
+    label = AGENT_LABELS.get(at, (agent_type or "Agent").title() or "Agent")
+    short_id = f"{product_id[:12]}…" if len(product_id) > 12 else product_id
+    lines = [
+        f"AI-Factory · Pipeline stage",
+        f"{label} finished → state `{target_state}`",
+        f"Product `{short_id}`",
+    ]
+    if idea_snippet.strip():
+        clip = idea_snippet.strip()[:280]
+        if len(idea_snippet.strip()) > 280:
+            clip += "…"
+        lines.append(f"Idea: {clip}")
+
+    ok, detail = send_telegram_message_sync("\n".join(lines))
+    if not ok:
+        logger.debug("telegram pipeline notify skipped: %s", detail)
+        return
+    _maybe_broadcast_web_push_after_telegram("\n".join(lines))
+
+
+def notify_telegram_new_product(
+    *,
+    product_id: str,
+    idea_snippet: str = "",
+    source: str = "pipeline",
+) -> None:
+    cfg = telegram_pipeline_config()
+    if not cfg["enabled"] or not cfg["notify_new_product"]:
+        return
+    if not cfg["token"] or not cfg["chat_id"]:
+        return
+
+    short_id = f"{product_id[:12]}…" if len(product_id) > 12 else product_id
+    lines = [
+        "AI-Factory · New product",
+        f"Source: {source}",
+        f"ID `{short_id}`",
+    ]
+    if idea_snippet.strip():
+        clip = idea_snippet.strip()[:400]
+        if len(idea_snippet.strip()) > 400:
+            clip += "…"
+        lines.append(f"Idea: {clip}")
+
+    ok, detail = send_telegram_message_sync("\n".join(lines))
+    if not ok:
+        logger.debug("telegram new-product notify skipped: %s", detail)
+        return
+    _maybe_broadcast_web_push_after_telegram("\n".join(lines))
+
+
+def notify_telegram_pipeline_failed(
+    *,
+    product_id: str,
+    headline: str,
+    cause_plain: str,
+    failure_reason: str = "",
+    failed_agent: str | None = None,
+    idea_snippet: str = "",
+) -> None:
+    """Alert when a product hits FAILED (includes human-readable cause)."""
+    cfg = telegram_pipeline_config()
+    if not cfg["enabled"] or not cfg.get("notify_pipeline_failed", True):
+        return
+    if not cfg["token"] or not cfg["chat_id"]:
+        return
+
+    short_id = f"{product_id[:12]}…" if len(product_id) > 12 else product_id
+    lines = [
+        "AI-Factory · Pipeline FAILED",
+        f"Product `{short_id}`",
+        headline.strip() or "Pipeline stopped",
+        "",
+        "Cause:",
+        (cause_plain or failure_reason or "No reason stored.")[:1200],
+    ]
+    if failed_agent:
+        lines.append(f"Agent: {failed_agent}")
+    tech = (failure_reason or "").strip()
+    if tech and tech not in (cause_plain or ""):
+        clip = tech[:600]
+        if len(tech) > 600:
+            clip += "…"
+        lines.extend(["", "Technical:", clip])
+
+    if idea_snippet.strip():
+        clip = idea_snippet.strip()[:220]
+        if len(idea_snippet.strip()) > 220:
+            clip += "…"
+        lines.extend(["", f"Idea: {clip}"])
+
+    lines.append("")
+    lines.append("Admin: Pipeline Monitor → Send to rework")
+
+    ok, detail = send_telegram_message_sync("\n".join(lines))
+    if not ok:
+        logger.debug("telegram pipeline FAILED notify skipped: %s", detail)
+        return
+    _maybe_broadcast_web_push_after_telegram("\n".join(lines))

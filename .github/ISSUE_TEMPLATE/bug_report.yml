@@ -1,0 +1,55 @@
+name: Bug report
+description: Something is broken or incorrect
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Include enough detail for a maintainer to reproduce.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong in one or two sentences?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: v1.2.3 or main@abc1234
+  - type: dropdown
+    id: component
+    attributes:
+      label: Area
+      options:
+        - CI / build
+        - Documentation
+        - Hub / protocol
+        - SDK / client
+        - UI / frontend
+        - Other
+    validations:
+      required: true

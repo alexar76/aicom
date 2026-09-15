@@ -1,0 +1,73 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://verify.modelmarket.dev/ns/awr/v2"
+  ],
+  "id": "urn:uuid:00000005-a11c-4f38-9b8a-1c2d3e4f5a6b",
+  "type": [
+    "VerifiableCredential",
+    "WorkReceipt"
+  ],
+  "issuer": {
+    "id": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+    "name": "example-hub",
+    "x-vendor-issuer": {
+      "tenant": "acme"
+    }
+  },
+  "validFrom": "2026-07-31T10:15:30Z",
+  "awrVersion": "2.0.0",
+  "credentialSubject": {
+    "work": {
+      "modelId": "claude-sonnet-5@anthropic",
+      "completedAt": "2026-07-31T10:15:30Z",
+      "status": "succeeded",
+      "x-vendor-region": "eu-central-1"
+    },
+    "inputDigest": "sha256-ntYicspG8WqhUyawUlC4dTFMnG08+B5Wol6Kci8rnNo=",
+    "outputDigest": "sha256-z3ZSXO7HDKRUMIrd+zvSig+hNUcug/XPmO+faJPgJak=",
+    "parents": [
+      {
+        "id": "urn:uuid:00000004-a11c-4f38-9b8a-1c2d3e4f5a6b",
+        "digestSRI": "sha256-d7J4PoGXWrGX2/x0oP8IIHiW33h2vqZbT3tSvApd/CI=",
+        "role": "retrieval",
+        "x-vendor-edge-note": "cached"
+      }
+    ],
+    "x-vendor-subject": {
+      "nested": {
+        "deeper": [
+          "a",
+          "b",
+          {
+            "deepest": true
+          }
+        ]
+      },
+      "count": 3
+    }
+  },
+  "x-vendor-top-level": {
+    "trace": "urn:example:trace:9f2c",
+    "sampled": false
+  },
+  "credentialSchema": {
+    "id": "https://verify.modelmarket.dev/ns/awr/v2/work-receipt",
+    "type": "JsonSchema"
+  },
+  "proof": {
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://verify.modelmarket.dev/ns/awr/v2"
+    ],
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "created": "2026-07-31T10:15:30Z",
+    "verificationMethod": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw#z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+    "proofPurpose": "assertionMethod",
+    "x-vendor-proof": {
+      "hsmSlot": 2
+    },
+    "proofValue": "z61mrYiBKf4mmEt7HGn2xnpBPbVMFSGCX2Y2keuwHBcssftSXurwaZkjLQr4xF6vB9jAW3CkkWUSQzveKJq1ifK7d"
+  }
+}

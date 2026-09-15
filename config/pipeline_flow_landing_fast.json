@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "description": "Slim landing-only pipeline: mini-spec → architect → developer → QA → complete. Used when product.landing_fast_path is true.",
+  "agent_flow": {
+    "IDEA_RECEIVED": ["__landing_spec__", "SPEC_WRITTEN"],
+    "SPEC_WRITTEN": ["landing_architect", "ARCH_DESIGNED"],
+    "ARCH_DESIGNED": ["landing_developer", "CODE_COMMITTED"],
+    "CODE_COMMITTED": ["qa", "QA_TESTING"],
+    "QA_TESTING": ["__complete__", "COMPLETED"],
+    "BUG_FOUND": ["landing_developer", "DEV_FIXING"],
+    "DEV_FIXING": ["qa", "QA_TESTING"]
+  }
+}

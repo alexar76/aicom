@@ -1,0 +1,726 @@
+{
+  "locale": "zh",
+  "localeNames": {
+    "en": "English",
+    "ru": "Русский",
+    "es": "Español",
+    "fr": "Français",
+    "zh": "中文"
+  },
+  "localeLabels": {
+    "en": "EN",
+    "ru": "RU",
+    "es": "ES",
+    "fr": "FR",
+    "zh": "ZH"
+  },
+  "nav": {
+    "home": "首页",
+    "docs": "文档",
+    "admin": "管理",
+    "toggle": "切换菜单"
+  },
+  "hero": {
+    "backToHome": "返回首页",
+    "title": "文档",
+    "subtitle": "架构、快速开始、带图示的所有者手册、API 参考、CLI 真值表，以及指向 docs/ 中 Markdown 手册的链接。"
+  },
+  "footer": {
+    "tagline": "AI-Factory v2.1 — 文档",
+    "home": "首页",
+    "admin": "管理",
+    "apiDocs": "API Docs",
+    "github": "GitHub"
+  },
+  "ui": {
+    "copyCode": "复制代码",
+    "screenshotNotBundled": "未包含截图",
+    "screenshotHintPrefix": "从",
+    "screenshotHintRun": "运行",
+    "screenshotHintMiddle": "，在应用可访问时（",
+    "screenshotHintEnv": "DOCS_SCREENSHOT_BASE_URL",
+    "screenshotHintAnd": "，",
+    "screenshotHintPassword": "ADMIN_PASSWORD"
+  },
+  "sectionTitles": {
+    "overview": "概览",
+    "userGuide": "用户指南",
+    "ownerGuide": "所有者手册",
+    "architecture": "架构",
+    "quickstart": "快速开始",
+    "adminPanel": "管理面板",
+    "apiReference": "API 参考",
+    "cli": "CLI 命令",
+    "agents": "AI 智能体",
+    "pipeline": "流水线流程",
+    "crypto": "加密支付",
+    "uniCredit": "UNI 额度总线",
+    "security": "安全",
+    "director": "Director AI",
+    "configuration": "配置"
+  },
+  "overview": {
+    "title": "AI-Factory v2.1",
+    "badge": "AI Company 平台 · 单一 Docker 栈",
+    "intro": "单容器内的生产级栈（FastAPI + Next.js）。",
+    "introPipeline": "一条多智能体流水线",
+    "introPipelineSuffix": " 用于一切：",
+    "introAutonomous": "自主",
+    "introAutonomousSuffix": " 模式驱动市场调研与生成的创意；",
+    "introOnDemand": "按需",
+    "introOnDemandSuffix": " 模式从客户的一句话起步 — 相同的阶段、相同的 QA 关卡。",
+    "introMiddle": "",
+    "introEnd": "典型交付物是可直接分享的落地页；加密结账与沙盒预览随捆绑包一同提供。",
+    "coreCapabilities": "核心能力",
+    "capabilities": [
+      "管理名册中的专业流水线角色：Analyst、PM、Methodologist、Architect、Designer (UX)、Developer、QA、Security、DevOps、Marketing、Sales、Evolution Analyst — 外加作为元智能体的 Director。仓库中的 `agents/` 是事实来源；架构中的 `ui_experience` 是对 Developer 具有约束力的 UX 简报。",
+      "带 failover 的多 LLM 路由 — 本地 Ollama、DeepSeek、Together、Groq",
+      "Director AI — 计划分析、决策队列、报告",
+      "加密商店 — USDT/USDC（Base、Arbitrum、Ethereum、Solana）；当销售工件未标价时默认约 $4.99 USDT",
+      "玻璃风商店与管理端 — 动画、响应式布局",
+      "面向企业的运维 — 密钥路径、审计钩子、沙盒隔离",
+      "面向操作员的 CLI 伴侣（安装处为 `ai-company`）",
+      "演进循环 — 由遥测驱动的改进"
+    ],
+    "atAGlance": "一览",
+    "stats": [
+      {
+        "label": "部署模型",
+        "value": "Compose"
+      },
+      {
+        "label": "质量关卡",
+        "value": "Demo + QA"
+      },
+      {
+        "label": "默认定价",
+        "value": "~$5"
+      },
+      {
+        "label": "栈深度",
+        "value": "Full"
+      }
+    ],
+    "singleContainerTitle": "单一容器",
+    "singleContainerBody": "一切都在一个 Docker 容器内运行（Ubuntu 24.04、Python 3.12、Node.js 20）。无需外部依赖。",
+    "handbookTitle": "权威手册（Markdown）",
+    "handbookBodyPrefix": "可打印的图表（Mermaid）、完整的场景表以及注意事项，请参见 ",
+    "handbookBodyPath": "docs/owner-guide.md",
+    "handbookBodySuffix": "（在仓库中）— 与本标签页保持同步。",
+    "userGuideBoxTitle": "图解用户指南",
+    "userGuideBoxPrefix": "带截图的分步「傻瓜式」用法：",
+    "userGuideBoxPath": "docs/USER_GUIDE.md",
+    "userGuideBoxTab": "用户指南",
+    "userGuideBoxSuffix": " 就在这里的 ",
+    "userGuideBoxDocsPath": "/docs"
+  },
+  "userGuide": {
+    "titlePrefix": "图解 ",
+    "titleGradient": "用户指南",
+    "badge": "傻瓜式 · 商店 + 管理端 · 截图从你运行中的栈刷新",
+    "intro": "权威 Markdown 位于仓库中的 docs/USER_GUIDE.md。它面向需要在深入 docs/admin-guide.md（每个标签页、每个 API 触点）之前先平缓上手的操作员。",
+    "whatYouWillLearnTitle": "你将学到什么",
+    "whatYouWillLearnItems": [
+      "商店、`/docs` 与 `/admin` 之间的关系。",
+      "第一天清单：登录 → New product 向导 → Pipeline。",
+      "New Product：进度条、quick-start templates、local vs cloud templates、AI prefill consent、可操作的错误。",
+      "Workshop：board、spec/architecture diff、iteration canvas、multi-device lab、pattern library、Web Push。",
+      "出现 LLM 或网络错误时点击何处（链接嵌在实时 UI 的红色面板中）。"
+    ],
+    "screenshotsTitle": "截图（最新捕获）",
+    "screenshotsRegenerate": "随时重新生成：cd web/frontend && npm run capture-docs-screenshots",
+    "captions": {
+      "publicHome": "商店首页 — 公开入口。",
+      "publicDocs": "应用内文档 — 本站点。",
+      "adminNewProduct": "New product — 引导式向导 + 模板。",
+      "adminWorkshop": "Workshop — board、diffs、canvas、patterns、push。",
+      "adminPipeline": "Pipeline — 每个 prod-… id 的运营事实。"
+    },
+    "offlineTitle": "离线 / PDF",
+    "offlineBodyPrefix": "打开 ",
+    "offlineBodyPath1": "docs/USER_GUIDE.md",
+    "offlineBodyMiddle": "，在你的编辑器或 GitHub 中打开，若管理层需要纸质材料则打印为 PDF。Mermaid 密集的所有者内容保留在 ",
+    "offlineBodyPath2": "docs/owner-guide.md"
+  },
+  "ownerGuide": {
+    "titlePrefix": "平台 ",
+    "titleGradient": "所有者手册",
+    "badge": "操作员场景 · 商店策略 · Support vs pipeline",
+    "intro": "本节面向运行已部署实例的人员：配置 LLM、观察流水线、策展 marketplace，以及帮助买家。详细的标签页参考见 docs/admin-guide.md；REST 模式见 docs/api-integration-guide.md。",
+    "visualMapTitle": "可视化地图",
+    "operatorControlPlane": "操作员控制平面",
+    "firstDayTitle": "分步 — 第一天",
+    "firstDayItems": [
+      "为 /app/data 确认一个宿主机 bind mount（见根 README — 避免匿名 Docker 卷）。",
+      "在 /admin/login 登录并轮换 admin 密码；如需可启用 TOTP。",
+      "打开 LLM Providers — 至少接入一个模型后端并验证 routing rules。",
+      "从 New Product 提交一个创意，或在容器内运行 CLI discover / create-idea。",
+      "观察 Pipeline — 展开一张卡片，点击阶段磁贴查看任务负载与错误。",
+      "可选：对已完成的 product ID 运行 README full_pipeline_smoke.py。"
+    ],
+    "marketplaceTitle": "分步 — marketplace 策展",
+    "marketplaceItems": [
+      "定位一行 COMPLETED → Storefront 面板。",
+      "编辑 Marketplace copy 以调整卡片/详情文案（持久化到 marketing_content.json）。",
+      "若自动 quality gates 阻止上架但你接受该风险：Force public storefront + justification。",
+      "下架某个 SKU：Not pursuing（附原因）或 Hide from public storefront — 购物者会遇到 listing + detail 404。",
+      "记住：Dashboard 的「Completed」统计的是 lifecycle；商店可见性还叠加 code + quality + hide rules。"
+    ],
+    "useCaseCards": [
+      {
+        "title": "Burst intake",
+        "body": "在验证 LLM quota 后使用 CLI create-ideas-batch 或 POST /api/admin/products/create-batch。"
+      },
+      {
+        "title": "Stuck stage",
+        "body": "Pipeline modal → 检查失败的 agent → LLM Logs + provider routing → 可选的人工返工。"
+      },
+      {
+        "title": "Buyer confusion",
+        "body": "Lumen (/api/support) 处理聊天；若品牌变更，在 backend services 下调整 RAG baseline markdown。"
+      },
+      {
+        "title": "Discovery backlog",
+        "body": "Director discovery ranking → enqueue winners — 记录在 README + pipeline-operations.md。"
+      }
+    ],
+    "listingFlowTitle": "上架决策流程",
+    "listingShippedQuestion": "Shipped + code on disk?",
+    "listingShippedNo": "No → never listed",
+    "listingHiddenQuestion": "Hidden / Not pursuing?",
+    "listingHiddenYes": "Yes → 404 on public catalog + detail",
+    "listingQualityQuestion": "Passes marketplace quality OR admin force-list?",
+    "listingQualityYes": "Yes → visible on storefront",
+    "screenshotsTitle": "截图",
+    "screenshotsIntro": "捕获到仓库中，并镜像到 /docs-screenshots/ 供本页使用。",
+    "captions": {
+      "adminLogin": "Admin login — 第一天就轮换凭据。",
+      "adminDashboard": "Dashboard 快照 — 与商店可见的计数不同。",
+      "adminPipeline": "Pipeline 监控 — 商店控件位于展开的 completed 卡片内。",
+      "adminNewProduct": "New product — 引导式向导、quick-start chips、cloud templates。",
+      "adminWorkshop": "Workshop — material diff、iteration canvas、pattern library、Web Push。",
+      "adminProviders": "LLM Providers — keys、routing、health probes。",
+      "adminSettings": "Settings — 全工厂范围的配置界面。"
+    },
+    "mermaidTitle": "Mermaid 图表与可打印 PDF",
+    "mermaidBodyPrefix": "GitHub 会渲染 ",
+    "mermaidBodyPath": "docs/owner-guide.md",
+    "mermaidBodySuffix": " 中的流程图。将该文件复制到 Notion、Confluence，或打印为 PDF 用于投资人/操作员材料包。"
+  },
+  "architecture": {
+    "titleGradient": "架构",
+    "intro": "AI-Factory 采用模块化架构，职责边界清晰。所有组件都在单个 Docker 容器内运行，通过内部 HTTP 与文件系统通信。",
+    "componentDiagramTitle": "组件图",
+    "requestFlow": "请求流",
+    "requestFlowBody": "用户请求进入 8080 端口上的 Next.js。对 /api/* 的调用由 Next.js rewrites 代理到 8081 端口上的 FastAPI 后端。管理面板同样由 Next.js 提供。"
+  },
+  "quickstart": {
+    "titleGradient": "开始",
+    "intro": "用一条 Docker 命令部署并运行 AI-Factory 平台。",
+    "step1": "1. 构建镜像",
+    "step2": "2. 运行容器",
+    "step3": "3. 访问平台",
+    "accessLinks": [
+      {
+        "label": "商店",
+        "url": "http://localhost:8080",
+        "note": ""
+      },
+      {
+        "label": "管理面板",
+        "url": "http://localhost:8080/admin",
+        "note": ""
+      },
+      {
+        "label": "API Docs",
+        "url": "http://localhost:8080/api/docs",
+        "note": "(FastAPI Swagger)"
+      }
+    ],
+    "step4": "4. 登录 Admin",
+    "loginIntro": "没有默认的 admin123 密码。在 data 卷为空的首次启动时，若 stdin 是 TTY，entrypoint 会在控制台请求密码；否则会将一次性密码写入 data/secrets/bootstrap_admin.txt。参见仓库中的 docs/security.md。",
+    "loginItems": [
+      "Username: admin",
+      "Password：在首次 bootstrap 时设置（控制台提示或 bootstrap file）",
+      "前往 /admin/login 并登录",
+      "Dev only：.env 中的 AIFACTORY_DEV_BOOTSTRAP_PASSWORD"
+    ],
+    "step5": "5. 创建你的第一个产品",
+    "dockerSandboxTitle": "Docker sandbox",
+    "dockerSandboxBody": "工厂镜像可运行隔离的 preview containers（network none、dropped capabilities）。用于访问宿主机上 Ollama 的 host-gateway 是可选项，通过 docker-compose.host-gateway.yml 启用 — 默认不开启。"
+  },
+  "adminPanel": {
+    "titleGradient": "面板",
+    "intro": "/admin 处的管理面板提供对 AI-Factory 平台的完整控制。它受基于 JWT 的认证保护，并支持可选的 2FA（TOTP）。",
+    "authTitle": "认证",
+    "authIntro": "",
+    "authItems": [
+      "带 HTTP-only cookies 的 JWT tokens",
+      "30 分钟无活动自动登出",
+      "暴力破解防护：每 15 分钟最多 5 次失败尝试",
+      "可选 2FA，通过 Google Authenticator（TOTP）"
+    ],
+    "dashboardTitle": "Dashboard 标签页",
+    "dashboardIntro": "实时指标概览，包括：",
+    "dashboardItems": [
+      "Pipeline metrics — total/active/completed/failed products, pending/running/timed-out tasks",
+      "Resource usage — CPU, memory, disk utilization",
+      "Revenue — earnings over last 24h, 7d, 30d",
+      "产品 P&L — 实时的每产品单位经济：收入对比 LLM 成本、毛利、ROI 与成本回收",
+      "Security status — system health indicator, recent failed logins"
+    ],
+    "providersTitle": "Model Providers 标签页",
+    "providersIntro": "配置并管理 LLM providers：",
+    "providersItems": [
+      "查看所有已配置的 providers 及其状态（online/offline/degraded）",
+      "启用/停用 providers",
+      "监控延迟与模型可用性",
+      "按任务类型配置 routing rules"
+    ],
+    "agentsTitle": "Agents 标签页",
+    "agentsIntro": "监控并配置 AI agents：",
+    "agentsItems": [
+      "查看全部 11 个 pipeline roles 的状态（含 Designer）",
+      "配置 timeouts、retry limits 与 priorities",
+      "带过滤地查看 agent 日志",
+      "必要时重启单个 agents"
+    ],
+    "securityTitle": "Security 标签页",
+    "securityIntro": "安全监控与配置：",
+    "securityItems": [
+      "带 date/action/user 过滤器地查看 audit logs",
+      "以 JSON 格式导出日志",
+      "更改 admin 密码",
+      "配置 2FA"
+    ],
+    "directorTitle": "Director 标签页",
+    "directorIntro": "Director AI 管理：",
+    "directorItems": [
+      "查看带指标与建议的最新 Director 报告",
+      "配置分析频率（1/2/4/12 hours）",
+      "开启/关闭 automatic actions",
+      "触发手动分析以进行测试"
+    ],
+    "settingsTitle": "Settings 标签页",
+    "settingsIntro": "商店主题自定义：",
+    "settingsItems": [
+      "从 5 个主题中选择：Cyberpunk、Minimal、Glass、Neon、Corporate",
+      "主题动态生效，无需重新加载页面"
+    ]
+  },
+  "apiReference": {
+    "titleGradient": "参考",
+    "intro": "FastAPI 后端暴露一套完整的 REST API。所有 endpoints 都通过 Next.js 代理经 /api/* 访问。交互式文档位于 /api/docs（Swagger UI）。原始 schema：后端 /openapi.json。",
+    "introSwagger": "/api/docs",
+    "handbookTitle": "集成手册",
+    "handbookBodyPrefix": "关于认证流程（cookie + Bearer）、分组的 router map、curl 片段以及 support-chat headers，请参见 ",
+    "handbookBodyPath": "docs/api-integration-guide.md",
+    "handbookBodySuffix": "。升级后 Swagger 仍为权威。",
+    "publicEndpoints": "公开 endpoints",
+    "adminEndpoints": "Admin endpoints (JWT Required)",
+    "endpoints": {
+      "health": {
+        "method": "GET",
+        "path": "/api/health",
+        "description": "系统健康检查。返回 status、version 与 service name。",
+        "code": "Response:\n{\n  \"status\": \"ok\",\n  \"version\": \"2.1.0\",\n  \"service\": \"ai-factory-backend\"\n}",
+        "codeLanguage": "json"
+      },
+      "products": {
+        "method": "GET",
+        "path": "/api/products",
+        "description": "针对 shipped builds 的商店列表 — 过滤 incomplete sandboxes、marketplace quality、admin hide / not pursuing。"
+      },
+      "productById": {
+        "method": "GET",
+        "path": "/api/products/{id}",
+        "description": "面向公开商店的产品详情 — hidden SKUs 返回 404。"
+      },
+      "support": {
+        "method": "MIXED",
+        "path": "/api/support/*",
+        "description": "Lumen support sessions & messages — 一旦签发通常需要 X-AIF-Support-Token（见 env AIFACTORY_SUPPORT_REQUIRE_TOKEN）。"
+      },
+      "sandboxRouter": {
+        "method": "ROUTER",
+        "path": "/api/sandbox · /api/payment · /api/customer …",
+        "description": "Sandbox previews、payments、feedback、marketing helpers — 查看 Swagger 了解 verbs。"
+      },
+      "aiMarket": {
+        "method": "PROTOCOL",
+        "path": "/.well-known/ai-market.json · /ai-market/*",
+        "description": "AI Market Protocol v1 — MCP manifest、HTTP 402 payments、channels、pipelines。不在 /api 之下。Reference：cli/ai_market_agent.py、docs ai-market-protocol-v1.md。"
+      },
+      "theme": {
+        "method": "GET",
+        "path": "/api/config/theme",
+        "description": "获取当前商店主题配置。"
+      },
+      "adminLogin": {
+        "method": "POST",
+        "path": "/api/admin/auth/login",
+        "description": "Admin login。设置 HTTP-only cookie access_token；脚本也可发送 Authorization: Bearer …。",
+        "code": "Request:\n{\n  \"username\": \"admin\",\n  \"password\": \"your_password\",\n  \"totp_code\": \"123456\"  // optional, if 2FA enabled\n}\n\nResponse:\n{\n  \"access_token\": \"eyJhbG...\",\n  \"token_type\": \"bearer\",\n  \"requires_2fa\": false\n}",
+        "codeLanguage": "json"
+      },
+      "adminDashboard": {
+        "method": "GET",
+        "path": "/api/admin/dashboard",
+        "description": "Dashboard 指标：pipeline stats、resources、revenue、security。"
+      },
+      "adminProviders": {
+        "method": "GET",
+        "path": "/api/admin/providers",
+        "description": "列出 LLM providers 及其 status、latency 与 model info。"
+      },
+      "adminAgents": {
+        "method": "GET",
+        "path": "/api/admin/agents",
+        "description": "列出 AI agents 及其 status、tasks 与 uptime。"
+      },
+      "adminSecurityLogs": {
+        "method": "GET",
+        "path": "/api/admin/security/logs?limit=100",
+        "description": "获取 audit logs，limit 参数可选。"
+      },
+      "adminDirectorReports": {
+        "method": "GET",
+        "path": "/api/admin/director/reports",
+        "description": "列出 Director AI 生成的报告。"
+      },
+      "adminProductsCreate": {
+        "method": "POST",
+        "path": "/api/admin/products/create",
+        "description": "从一个创意创建新产品。",
+        "code": "Request:\n{\n  \"idea\": \"Description of your product idea\",\n  \"target_audience\": \"developers\"  // optional\n}",
+        "codeLanguage": "json"
+      },
+      "adminMarketplaceCopy": {
+        "method": "PATCH",
+        "path": "/api/admin/pipeline/products/{id}/marketplace-copy",
+        "description": "为 shipped product 合并面向商店的 marketing strings。"
+      },
+      "adminStorefrontAdmin": {
+        "method": "PATCH",
+        "path": "/api/admin/pipeline/products/{id}/storefront-admin",
+        "description": "Human score、force-list override、admin hide-from-storefront flags。"
+      }
+    }
+  },
+  "cli": {
+    "titleGradient": "命令",
+    "intro": "命令随仓库提供，位于 cli/ai_company_cli.py。许多 README 片段使用 ai-company — 除非你的镜像为其设置别名，否则优先使用显式的解释器路径。",
+    "truthTableTitle": "真值表",
+    "truthTableBodyPrefix": "某些命令是演示（wallet withdraw flow、security scan 的部分）。请阅读 ",
+    "truthTableBodyPath": "docs/cli-reference.md",
+    "invocationTitle": "调用",
+    "highValueTitle": "高价值操作",
+    "notImplementedTitle": "尚未实现的内容",
+    "notImplementedItems": [
+      "`director report --last` — 打开 Admin Director 标签页或读取 /app/data/reports/director/*.md",
+      "`storefront preview` — 使用已部署的 Next.js 或在 web/frontend 中 npm run dev",
+      "`restart web|orchestrator|director` — stub only；通过 Compose/systemd 重启"
+    ],
+    "preferAdminTitle": "何时优先使用 Admin UI…",
+    "preferAdminBody": "带热重载地编辑 LLM providers、storefront hide/marketing 面板以及 Live Monitor，通过 /admin 比手工编辑 YAML 更安全，除非你了解 reload semantics。"
+  },
+  "agents": {
+    "titleGradient": "智能体",
+    "intro": "平台使用十个核心 agents，外加一个 Methodologist 关卡和 Evolution Analyst 元智能体，每个都有严格的角色。Director AI 位于循环之上。智能体通过文件系统通信 — 没有 agent 能修改另一个 agent 的成果。对于 web deliverables，Architect 还会产出 ui_experience（tokens、typography、motion），以便 Developer 交付有意图的 UI — 在公开的流水线图上显示为一个专门的 ",
+    "introDesigner": "Designer",
+    "introSuffix": " 步骤。",
+    "cards": [
+      {
+        "name": "Analyst",
+        "role": "市场调研、机会分析、research briefs"
+      },
+      {
+        "name": "PM (Product Manager)",
+        "role": "创意验证、市场调研、spec generation"
+      },
+      {
+        "name": "Methodologist",
+        "role": "Domain process gate — 通过可插拔的 domain packs 和操作员经验的 learning store，验证 spec 与生成的代码遵循该产品领域（CRM、helpdesk、e-commerce…）被认可的方法论"
+      },
+      {
+        "name": "Architect",
+        "role": "系统设计、技术栈决策、architecture docs"
+      },
+      {
+        "name": "Designer (UX layer)",
+        "role": "并非独立的 queue task：与架构一同撰写、由 Developer 实现的结构化 ui_experience（mood、CSS variables、fonts、motion、signature moment）"
+      },
+      {
+        "name": "Developer",
+        "role": "按 architecture specs 实现代码"
+      },
+      {
+        "name": "QA",
+        "role": "自动化测试、缺陷检测、代码质量分析"
+      },
+      {
+        "name": "Security",
+        "role": "漏洞扫描、secret detection、dependency audit"
+      },
+      {
+        "name": "DevOps",
+        "role": "Dockerization、deployment config、sandbox setup"
+      },
+      {
+        "name": "Marketing",
+        "role": "产品描述、landing pages、SEO content"
+      },
+      {
+        "name": "Sales",
+        "role": "Pricing、payment integration、customer interaction"
+      },
+      {
+        "name": "Evolution Analyst",
+        "role": "遥测分析、auto-improvements、A/B testing"
+      }
+    ],
+    "safety": "智能体安全",
+    "safetyItems": [
+      "严格的角色边界 — 没有 agent 能执行另一个 agent 的任务",
+      "Timeout protection — agents 有 30 秒执行上限（可配置）",
+      "Output validation — 所有 agent 输出都对照 schemas 校验",
+      "Escalation — 若某个 agent 反复失败，会通知 Director AI",
+      "基于文件系统的记忆 — 无 context hallucination，所有状态都在磁盘上"
+    ]
+  },
+  "pipeline": {
+    "titleGradient": "流程",
+    "intro": "产品生命周期遵循一个含 13 个状态的确定性状态机。每个状态由特定 agent 处理，确保清晰的归属与问责。",
+    "introOnDemand": "自主产品仍会消费 analyst/marketing idea flows；按需产品将每个下游 agent 锚定在客户简报上 — not a separate lightweight conveyor for orders。",
+    "standardPipeline": "标准 pipeline",
+    "featuresTitle": "Pipeline 特性",
+    "featuresItems": [
+      "确定性 FSM — 每个产品遵循同一状态机",
+      "错误恢复 — 若 QA 发现缺陷，产品回环到 DEV_FIXING",
+      "超时管理 — 每一步都有可配置的 timeout（default 30s）",
+      "并行执行 — 多个产品可处于不同的 pipeline 阶段",
+      "状态持久化 — JSON（default）或可选的 SQLite3 后端，带 CLI migration",
+      "Director override — Director AI 可调整 timeouts 与优先级",
+      "每产品 LLM 花费上限（USD）— 在 Admin → Settings → Pipeline & product quality 中设置（0 = 无限）；env AIFACTORY_MAX_PIPELINE_COST_USD 覆盖之",
+      "Pipeline 产品卡片显示内联图表：按 agent 的 LLM 花费、时间线进度、质量分"
+    ],
+    "directorCycleTitle": "Director AI 循环（每 4 小时）",
+    "directorCycleIntro": "与产品 pipeline 并行，Director AI 每 4 小时运行一次：",
+    "directorCycleItems": [
+      "1. 从所有来源收集指标（state files、telemetry、logs、database）",
+      "2. 对照目标值分析指标，识别异常与趋势",
+      "3. 生成决策 — 自动应用允许的动作，将建议排入 admin 队列",
+      "4. 生成 markdown 报告并保存到 /data/reports/director/",
+      "5. 以就绪报告通知 admin 面板"
+    ],
+    "pipelineStates": [
+      "IDEA_RECEIVED",
+      "SPEC_WRITTEN",
+      "MARKET_CONTENT_READY",
+      "METHODOLOGY_REVIEWED",
+      "ARCH_DESIGNED",
+      "CODE_COMMITTED",
+      "QA_TESTING",
+      "SECURITY_SCANNED",
+      "SALES_ACTIVE",
+      "SANDBOX_RUNNING",
+      "TELEMETRY_COLLECTING",
+      "EVOLUTION_ANALYZING"
+    ]
+  },
+  "crypto": {
+    "titleGradient": "支付",
+    "intro": "AI-Factory 为生成的产品支持多链加密支付。客户可使用 USDT 或 USDC 稳定币购买产品。",
+    "economicsTitle": "经济模型",
+    "economicsBody": "当 marketing/sales 文件未指定其他价格时，商店与结账默认约 $4.99 USDT — 为落地页的冲动购买而调校，操作员可按 SKU 覆盖。",
+    "supportedNetworks": "支持的网络",
+    "paymentFlowTitle": "支付流程",
+    "paymentFlowItems": [
+      "客户选择产品并选择网络（Base/Solana/Arbitrum）",
+      "系统生成唯一的支付地址与金额",
+      "客户将 USDT/USDC 发送到所提供的地址",
+      "系统监控区块链确认（每 15s 轮询）",
+      "确认数足够时 — 激活产品许可证",
+      "客户获得对 sandbox demo 与完整产品的访问权"
+    ],
+    "walletTitle": "钱包管理",
+    "walletBody": "平台钱包通过 CLI 配置。钱包地址在 admin 面板的 Crypto Settings 下显示。提现需要多签批准。",
+    "chains": [
+      {
+        "name": "Base",
+        "tokens": "USDT, USDC"
+      },
+      {
+        "name": "Solana",
+        "tokens": "USDT, USDC"
+      },
+      {
+        "name": "Arbitrum",
+        "tokens": "USDT, USDC"
+      }
+    ]
+  },
+  "uniCredit": {
+    "titleGradient": "额度总线",
+    "intro": "UNI 是锚定 USDT 的内部商店额度 — 并非可交易的代币。平台内所有借记与贷记都以固定汇率使用整数 UNI；USDT 仅是通过平台金库钱包的入金与出金通道。",
+    "pegTitle": "固定锚定",
+    "pegBody": "1 UNI = $0.01 USDT（每 $1 兑 100 UNI）。这支持对 LLM 调用进行微计费，而无需浮点 USDT 账本。通过 AIFACTORY_UNI_USD_CENTS_PER_UNI=1 配置（legacy 别名 AIFACTORY_UNI_USDT_RATE=100）。",
+    "feesTitle": "费率表（默认）",
+    "feesItems": [
+      "充值点差：0%（AIFACTORY_UNI_TOPUP_SPREAD_BPS=0）— 心理友好的上手体验",
+      "每次 invoke / channel 花费：5% 平台费（AIFACTORY_UNI_PLATFORM_FEE_BPS=500）",
+      "提现：1% + 最低等值 $20（AIFACTORY_UNI_WITHDRAW_FEE_BPS=100、AIFACTORY_UNI_MIN_WITHDRAW_UNI=2000）",
+      "平台费累积到 owner_id=PLATFORM_FEES 的钱包 — 像任何卖家一样提现"
+    ],
+    "treasuryTitle": "金库不变式",
+    "treasuryBody": "金库中的链上 USDT 必须按锚定价覆盖所有未结的用户 UNI。后台任务 uni_treasury_audit 记录 reserve_ratio；低于 0.999 时告警。在链索引器接入之前，设置 AIFACTORY_UNI_TREASURY_USDT_OBSERVED 以进行手动审计。",
+    "flowTitle": "典型流程",
+    "flowItems": [
+      "客户充值 USDT → POST /api/uni/topup/confirm → 记入 UNI（receipt kind=topup）",
+      "AI Market channel 开启 → hold 预留 UNI；invoke → spend_hold 按 95% 卖家 / 5% 平台拆分",
+      "直接购买 capability → charge() 原子性地借记买家并贷记卖家 + 平台",
+      "卖家提现 → POST /api/uni/withdraw → 排队的链上派付（dispatcher 集成）"
+    ],
+    "apiTitle": "HTTP API",
+    "apiItems": [
+      "GET /api/uni/config — 锚定价与费率 bps",
+      "GET /api/uni/wallet — balance_uni、available_uni",
+      "GET /api/uni/receipts — 已签名的收据历史",
+      "POST /api/uni/topup/intent — 金库存款说明",
+      "POST /api/uni/grant — monitor 拨款（X-Uni-Grant-Secret）"
+    ],
+    "settingsTitle": "相关的 admin 设置",
+    "settingsBody": "Pipeline 的每产品 LLM 上限（USD）位于 Admin → Settings → Pipeline & product quality → Max LLM cost per product（quality.max_pipeline_cost_usd）。UNI 经济不替代该上限 — 它补充链上商业。",
+    "docsMarkdown": "另见仓库中的 docs/uni-economics.md 与 docs/postgres-production-runbook.md。"
+  },
+  "security": {
+    "titleGradient": "安全",
+    "intro": "AI-Factory 在所有层面实施企业级安全措施。",
+    "authTitle": "认证与授权",
+    "authItems": [
+      "基于 JWT 的认证，带 HTTP-only cookies",
+      "使用 SHA-256 + salt 的密码哈希（fallback）",
+      "通过 Google Authenticator 支持 2FA（TOTP）",
+      "暴力破解防护：每 15 分钟最多 5 次失败尝试",
+      "30 分钟会话无活动超时",
+      "所有 admin 操作都记入防篡改的 audit log"
+    ],
+    "sandboxTitle": "Sandbox 隔离",
+    "sandboxItems": [
+      "为 product sandboxes 使用 Docker-in-Docker",
+      "sandboxes 无网络访问（default）",
+      "每个 sandbox 的资源限额（CPU/memory）",
+      "文件系统隔离 — 无法访问宿主机文件",
+      "超时后自动清理 sandbox"
+    ],
+    "dataProtectionTitle": "数据保护",
+    "dataProtectionItems": [
+      "使用 Fernet 对静态密钥加密（symmetric encryption）",
+      "Audit logs 为 append-only 并带篡改检测",
+      "在所有 API endpoints 上进行 rate limiting",
+      "API responses 中不返回敏感数据",
+      "容器内的防火墙规则（nftables）"
+    ],
+    "monitoringTitle": "安全监控",
+    "monitoringItems": [
+      "admin 面板中的实时安全 dashboard",
+      "带 IP logging 的失败登录尝试跟踪",
+      "以 JSON 格式导出 audit log",
+      "对可疑活动的自动告警"
+    ],
+    "firstPasswordTitle": "首个 admin 密码",
+    "firstPasswordBodyPrefix": "没有固定的默认密码。首次 TTY 启动时使用控制台提示，读取 ",
+    "firstPasswordPath": "data/secrets/bootstrap_admin.txt",
+    "firstPasswordBodySuffix": "（用于分离式 Compose），或通过 Admin → Users 轮换。CSRF 保护适用于基于 cookie 的 admin 会话（X-CSRF-Token header）。"
+  },
+  "director": {
+    "titleGradient": "AI",
+    "intro": "Director AI 是一个监督整个平台的元智能体。它不参与产品开发，而是评估系统表现并做出优化决策。",
+    "analysisCycleTitle": "分析循环（每 4 小时）",
+    "cycleItems": [
+      "1. Metrics Collection — 从 pipeline state、telemetry、logs 与 financial records 收集数据",
+      "2. Analysis — 对照目标比较指标，识别异常与趋势",
+      "3. Decision Making — 生成自动动作（若启用）与建议",
+      "4. Report Generation — 创建详细的 markdown 报告",
+      "5. Notification — 用新报告更新 admin 面板"
+    ],
+    "metricsTitle": "被跟踪的指标",
+    "metricCards": [
+      {
+        "title": "Pipeline 效率",
+        "items": [
+          "Idea → MVP time（目标：<4h）",
+          "Auto-completion rate（目标：>95%）",
+          "Agent timeout/error rates",
+          "Auto-fix success rate（目标：>85%）"
+        ]
+      },
+      {
+        "title": "业务指标",
+        "items": [
+          "Sandbox → purchase conversion（目标：>12%）",
+          "加密支付的平均订单额",
+          "Top/bottom products by revenue",
+          "Marketing content 有效性"
+        ]
+      },
+      {
+        "title": "技术健康",
+        "items": [
+          "CPU/RAM/disk usage 告警",
+          "LLM provider 可用性",
+          "security incident 计数",
+          "Model inference latency (P95)"
+        ]
+      },
+      {
+        "title": "产品质量",
+        "items": [
+          "产品平均评分（来自 reviews）",
+          "每 1000 行代码的 bugs 数",
+          "Critical bug response time (P0)",
+          "已应用的 evolution improvements"
+        ]
+      }
+    ],
+    "autoActionsTitle": "自动动作",
+    "autoActionsIntro": "启用时，Director AI 可以自动：",
+    "autoActionsItems": [
+      "若 timeout rate 超过 15%，增加 agent timeouts",
+      "若 conversion 跌破 8%，触发 marketing reviews",
+      "若 GPU 利用不足，建议切换到 local models",
+      "根据使用模式调整 resource limits"
+    ],
+    "reportFormatTitle": "报告格式",
+    "reportFormatIntro": "Director 报告以 Markdown 文件保存在 /data/reports/director/ 并在 admin 面板中显示。每份报告包括：",
+    "reportFormatItems": [
+      "关键指标对比（actual vs target）",
+      "已应用的自动动作",
+      "需要 admin 批准的建议",
+      "带风险评估的 24 小时预测"
+    ]
+  },
+  "configuration": {
+    "titleGradient": "配置",
+    "intro": "平台通过 /data/config/ 中的 YAML 与 JSON 文件配置。可通过 admin 面板或直接编辑这些文件进行更改。",
+    "modelProvidersTitle": "Model Providers (model_providers.yaml)",
+    "routingRulesTitle": "路由规则",
+    "globalConfigTitle": "Global Config (config.yaml)",
+    "qualityBlockTitle": "Pipeline quality 块（quality:）",
+    "qualityBlockItems": [
+      "max_pipeline_repair_rounds — 进入 FAILED 前的 QA repair 循环预算",
+      "max_pipeline_cost_usd — 每产品 LLM 花费上限（USD，0 = 无限）；显示在 Pipeline 产品 vitals 图表上",
+      "demo / visual / browser / marketplace gates — 与 Admin → Settings → Pipeline & product quality 相同的字段",
+      "设置时环境变量 AIFACTORY_* 会覆盖已保存的 YAML（Docker 硬覆盖）"
+    ],
+    "themesTitle": "主题",
+    "themesIntro": "提供五个预装主题：",
+    "themeItems": [
+      "Cyberpunk — 霓虹青、紫色点缀、深色渐变背景",
+      "Minimal — 干净的白/灰配以微妙阴影",
+      "Glass — 带强烈模糊效果的透明面板",
+      "Neon — 深色背景上的明亮霓虹色",
+      "Corporate — 专业的蓝/白配色方案"
+    ]
+  }
+}

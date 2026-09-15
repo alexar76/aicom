@@ -1,0 +1,92 @@
+{
+  "dashboard": {
+    "title": "AI Market — Business Metrics",
+    "description": "Payment volume, channel lifecycle, revenue, and affiliate metrics",
+    "panels": [
+      {
+        "title": "Volume (24h USD)",
+        "type": "stat",
+        "targets": [{"expr": "sum(increase(aimarket_debit_cents_total[24h])) / 100"}],
+        "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+      },
+      {
+        "title": "Channels Opened (24h)",
+        "type": "stat",
+        "targets": [{"expr": "sum(increase(aimarket_channels_opened_total[24h]))"}]
+      },
+      {
+        "title": "Active Channels",
+        "type": "stat",
+        "targets": [{"expr": "aimarket_open_channels"}]
+      },
+      {
+        "title": "Avg Channel Size (USD)",
+        "type": "stat",
+        "targets": [{"expr": "avg(aimarket_channel_deposit_cents) / 100"}],
+        "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+      },
+      {
+        "title": "Volume Over Time",
+        "type": "timeseries",
+        "targets": [
+          {"expr": "sum(increase(aimarket_debit_cents_total[5m])) / 100", "legendFormat": "Spent (USD)"},
+          {"expr": "sum(increase(aimarket_refund_cents_total[5m])) / 100", "legendFormat": "Refunded (USD)"}
+        ],
+        "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+      },
+      {
+        "title": "Channels Lifecycle",
+        "type": "timeseries",
+        "targets": [
+          {"expr": "sum(rate(aimarket_channels_opened_total[5m])) * 3600", "legendFormat": "Opened/h"},
+          {"expr": "sum(rate(aimarket_channels_settled_total[5m])) * 3600", "legendFormat": "Settled/h"},
+          {"expr": "sum(rate(aimarket_channels_expired_total[5m])) * 3600", "legendFormat": "Expired/h"}
+        ]
+      },
+      {
+        "title": "Revenue (24h)",
+        "type": "stat",
+        "targets": [{"expr": "sum(increase(aimarket_revenue_cents_total[24h])) / 100"}],
+        "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+      },
+      {
+        "title": "Affiliate Payouts (24h)",
+        "type": "stat",
+        "targets": [{"expr": "sum(increase(aimarket_affiliate_payout_cents_total[24h])) / 100"}],
+        "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+      },
+      {
+        "title": "Error Rate (5min)",
+        "type": "timeseries",
+        "targets": [
+          {"expr": "sum(rate(aimarket_errors_total[5m]))", "legendFormat": "Errors/s"},
+          {"expr": "sum(rate(aimarket_http_4xx_total[5m]))", "legendFormat": "4xx/s"},
+          {"expr": "sum(rate(aimarket_http_5xx_total[5m]))", "legendFormat": "5xx/s"}
+        ]
+      },
+      {
+        "title": "Top Affiliates (24h)",
+        "type": "table",
+        "targets": [{"expr": "topk(10, sum by(affiliate) (increase(aimarket_debit_cents_total[24h])) / 100)"}]
+      },
+      {
+        "title": "Top Capabilities (24h)",
+        "type": "table",
+        "targets": [{"expr": "topk(10, sum by(capability_id) (increase(aimarket_debit_cents_total[24h])) / 100)"}]
+      },
+      {
+        "title": "Channels DB Size",
+        "type": "stat",
+        "targets": [{"expr": "aimarket_channels_db_size_bytes"}],
+        "fieldConfig": {"defaults": {"unit": "bytes"}}
+      },
+      {
+        "title": "Rate Limit Hits (5min)",
+        "type": "timeseries",
+        "targets": [{"expr": "sum(rate(aimarket_rate_limit_hits_total[5m]))"}]
+      }
+    ],
+    "refresh": "30s",
+    "tags": ["aimarket", "business", "payments"]
+  }
+}

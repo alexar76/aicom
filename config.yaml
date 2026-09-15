@@ -1,0 +1,10 @@
+# =============================================================================
+# AI-Factory — deployment overlay (optional)
+# =============================================================================
+# Platform defaults are loaded from config/fragments/*.yaml (bundled in the image).
+# This file is merged on top when non-empty (Admin → Settings persists here).
+# This file stays in the image for local/dev defaults. Docker Compose and ./run.sh
+# set AIFACTORY_CONFIG_YAML to ./data/config/admin_config_overlay.yaml (bind-mounted)
+# so Admin → Settings (head snippet, git, etc.) persist across container rebuilds.
+# See docs/configuration.md
+# =============================================================================

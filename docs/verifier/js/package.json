@@ -1,0 +1,45 @@
+{
+  "name": "@alexar76/awr-verify",
+  "version": "2.0.0",
+  "description": "Verify an AWR/2 work receipt in Node or the browser with zero dependencies — W3C Verifiable Credential, eddsa-jcs-2022 over RFC 8785, did:key. One of three implementations passing the AWR/2 conformance suite.",
+  "keywords": [
+    "awr",
+    "work-receipt",
+    "provenance",
+    "verifiable-credentials",
+    "w3c-vc",
+    "data-integrity",
+    "eddsa-jcs-2022",
+    "rfc8785",
+    "jcs",
+    "did-key",
+    "ed25519",
+    "verifier",
+    "audit",
+    "zero-dependency"
+  ],
+  "main": "verifier.js",
+  "bin": {
+    "awr-verify": "cli.js"
+  },
+  "exports": {
+    ".": "./verifier.js"
+  },
+  "files": ["verifier.js", "cli.js", "README.md", "LICENSE"],
+  "engines": { "node": ">=20" },
+  "author": "AICOM (alexar76)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexar76/aicom.git",
+    "directory": "docs/verifier/js"
+  },
+  "homepage": "https://verify.modelmarket.dev",
+  "bugs": { "url": "https://github.com/alexar76/aicom/issues" },
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "test": "node test-receipt-url.js"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verify.modelmarket.dev/ns/awr/v2/schemas/blame-attestation-v2.json",
+  "title": "AWR/2 BlameAttestation",
+  "description": "NON-NORMATIVE. JSON Schema is a convenience for tooling and is not the normative definition of AWR/2; awr/SPEC.md is (Appendix B). Where this schema and the specification disagree, the schema is the bug. A BlameAttestation answers which hop failed: attribution of a failure to one node of a multi-step work chain (SPEC.md §3.5).",
+  "$comment": "This schema checks structure only. It cannot check the one substantive rule of §3.5 — that `blamedWork` is reachable from `chain` through `parents` edges (AWR-BLAME-001) — because that is a graph walk over other documents, nor can it check the digests themselves. See common-v2.json's file-level $comment for the full list of non-expressible requirements, including §4.3's global no-float rule. Never set additionalProperties:false on any object here (§3.1).",
+  "type": "object",
+  "allOf": [
+    { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/envelopeCommon" }
+  ],
+  "properties": {
+    "type": {
+      "$comment": "SPEC.md §3.1: MUST contain `VerifiableCredential` (AWR-DOC-004) and exactly one AWR type (AWR-DOC-005). Further types MAY be present.",
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string" },
+      "allOf": [
+        { "contains": { "const": "VerifiableCredential" } },
+        { "contains": { "const": "BlameAttestation" } },
+        { "not": { "contains": { "const": "WorkReceipt" } } },
+        { "not": { "contains": { "const": "VerificationVerdict" } } }
+      ]
+    },
+    "credentialSubject": {
+      "$comment": "SPEC.md §3.5.",
+      "type": "object",
+      "properties": {
+        "chain": {
+          "$comment": "SPEC.md §3.5: MUST be a digest reference to the receipt of the work whose RESULT was unacceptable — the chain's terminal hop, the observable failure (AWR-BLAME-003). `id` is required here because §3.2 licenses omitting it only for a non-document artefact and this references a receipt; §3.5 does not restate that explicitly, so see the report finding.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/digestReferenceWithId"
+        },
+        "blamedWork": {
+          "$comment": "SPEC.md §3.5: MUST be a digest reference to the receipt of the hop held responsible (AWR-BLAME-003). It MAY equal `chain`. It SHOULD be reachable from `chain` through `parents` edges, and a verifier that has the intermediate receipts MUST report AWR-BLAME-001 when it is not — neither the equality nor the reachability is expressible in JSON Schema.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/digestReferenceWithId"
+        },
+        "failureClass": {
+          "$comment": "SPEC.md §3.5: MUST be one of these eight (AWR-BLAME-002). `upstream-input` is how a hop is exonerated: the blame is recorded against it while stating that its input was already wrong.",
+          "enum": [
+            "wrong-output",
+            "malformed-output",
+            "unavailable",
+            "timeout",
+            "policy-violation",
+            "upstream-input",
+            "cost-overrun",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "$comment": "SPEC.md §3.5: OPTIONAL, decimal string in [0,1], same rule as `score` (AWR-BLAME-004). MUST NOT be a JSON number (§4.3).",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/unitIntervalDecimalString"
+        },
+        "method": {
+          "$comment": "SPEC.md §3.5: MUST be present with a non-empty `id`. §3.5 states no reason code of its own for a missing/empty blame method; AWR-VDCT-003 is registered for the verdict's `method` — see the report finding.",
+          "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/method"
+        },
+        "evidence": {
+          "$comment": "SPEC.md §3.5 shows `evidence` with the same shape as §3.4's, so the same definition is used: every entry carries `digestSRI`, `kind` is a free-form label, and the bytes are never fetched (§13.5).",
+          "type": "array",
+          "items": { "$ref": "https://verify.modelmarket.dev/ns/awr/v2/schemas/common-v2.json#/$defs/evidenceEntry" }
+        }
+      },
+      "required": ["chain", "blamedWork", "failureClass", "method"]
+    }
+  },
+  "required": ["type", "credentialSubject"]
+}

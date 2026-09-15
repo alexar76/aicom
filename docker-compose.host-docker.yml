@@ -1,0 +1,18 @@
+# Optional overlay: mount host Docker socket (bypasses the DinD sidecar).
+#
+# ⚠️  DANGER — DIRECT HOST ROOT ⚠️
+# Mounting /var/run/docker.sock gives this container full control of the host
+# Docker daemon, which is equivalent to UNCONFINED ROOT ON THE HOST: any code
+# in the container (or any sandboxed product it runs) can launch a privileged
+# container, bind-mount `/`, and own the machine. There is NO isolation here.
+# Use ONLY as an emergency fallback on a throwaway host where DinD genuinely
+# cannot run, never in production or on a box holding secrets. Prefer the
+# default DinD sidecar (docker-compose.dind.yml).
+#
+# Usage: AIFACTORY_USE_HOST_DOCKER=1 ./run-compose.sh
+
+services:
+  app:
+    volumes:
+      # Direct host root — see the file header above before enabling.
+      - /var/run/docker.sock:/var/run/docker.sock

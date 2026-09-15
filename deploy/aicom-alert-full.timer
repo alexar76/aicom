@@ -1,0 +1,16 @@
+[Unit]
+Description=AIMarket alert — paywall probes hourly
+Documentation=https://github.com/alexar76/aicom
+
+[Timer]
+Unit=aicom-alert@full.service
+OnBootSec=8min
+OnUnitActiveSec=1h
+# Hourly rather than with the quick timer: each full run makes one unpaid invoke per
+# priced provider, and those land in the hub's own live feed. Watching the shop should not
+# be most of the shop's traffic.
+AccuracySec=2min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
