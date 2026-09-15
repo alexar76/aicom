@@ -140,6 +140,24 @@ Open an issue with:
 3. **Logs** or screenshots (redact secrets)  
 4. **Version** — commit hash or image tag  
 
+## Good First Issues
+
+New here? Start with issues labeled [`good first issue`](https://github.com/alexar76/aicom/labels/good%20first%20issue).
+
+**Quickstart:**
+
+```bash
+git clone https://github.com/<you>/aicom.git && cd aicom
+pip install -r requirements.txt
+USE_SQLITE=true .venv/bin/pytest tests/test_metis_gate.py -q
+```
+
+**Explore these first:**
+
+- [Metis](https://github.com/alexar76/metis) — confidence gate
+- [aimarket-mcp](https://github.com/alexar76/aimarket-mcp) — shared MCP tools
+- [Try it](README.md#try-it--prompts-demosh-packaging) — prompts and demo
+
 ## Good first contributions
 
 - Clarify docs ([`docs/README.md`](docs/README.md) index).
