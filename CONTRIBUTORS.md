@@ -7,6 +7,7 @@
 ## Community contributors
 
 - [**BenjaminAyivoh1**](https://github.com/BenjaminAyivoh1) — Discussions links in the root README ([#6](https://github.com/alexar76/aicom/issues/6))
+- [**ayeshanazneen1**](https://github.com/ayeshanazneen1) — good-first-issue contributor path in CONTRIBUTING ([#12](https://github.com/alexar76/aicom/pull/12), [#2](https://github.com/alexar76/aicom/issues/2))
 
 ## Contributing
 
