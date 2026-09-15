@@ -2,15 +2,20 @@
 """First CapShare listing — AI auditor is the ALP gate, not a human score.
 
 Default is dry-run: fetch live Hub evidence + MOMUS findings, print the pack.
-``--float`` writes a local IPO ledger (set ACEX_IPO_DB_PATH). It does not
-broadcast Base txs and does not POST to the public Hub admin IPO endpoint.
+
+``--float`` writes a local IPO ledger (set ACEX_IPO_DB_PATH). Dev/SQLite only.
+
+``--hub-float`` POSTs to the live Hub admin IPO endpoint. The Hub runs
+``ai-auditor:acex-v1`` itself — do **not** send ``audit_score_bps``.
+Requires ``AIMARKET_ADMIN_TOKEN``.
 
 On-chain PulseAMM still needs ≥ 1_000 USDC seed + owner ``setMarketMaker`` /
-``createPool`` from the deployer key. That is a separate operator step.
+``createPool`` from the deployer key. See ``acex/docs/first-market-launch.md``.
 
 Usage:
   python scripts/launch_first_capshare.py
   python scripts/launch_first_capshare.py --product atlas.products --float
+  python scripts/launch_first_capshare.py --product atlas.products --hub-float
 """
 
 from __future__ import annotations
@@ -19,6 +24,7 @@ import argparse
 import json
 import os
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -38,6 +44,10 @@ HUB_SEARCH = os.environ.get(
     "ACEX_HUB_SEARCH_URL",
     "https://modelmarket.dev/ai-market/v2/search",
 )
+HUB_IPO = os.environ.get(
+    "ACEX_HUB_IPO_URL",
+    "https://modelmarket.dev/ai-market/v2/capital/ipo",
+)
 MOMUS_URL = os.environ.get(
     "ACEX_MOMUS_FINDINGS_URL",
     "https://momus.modelmarket.dev/findings",
@@ -50,11 +60,46 @@ def _get_json(url: str, timeout: float = 12.0) -> dict:
         return json.loads(resp.read().decode("utf-8"))
 
 
+def _post_json(url: str, body: dict, *, token: str, timeout: float = 60.0) -> tuple[int, dict]:
+    data = json.dumps(body).encode("utf-8")
+    req = urllib.request.Request(
+        url,
+        data=data,
+        method="POST",
+        headers={
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            raw = resp.read().decode("utf-8")
+            return resp.status, json.loads(raw) if raw else {}
+    except urllib.error.HTTPError as exc:
+        raw = exc.read().decode("utf-8") if exc.fp else ""
+        try:
+            payload = json.loads(raw) if raw else {"error": exc.reason}
+        except json.JSONDecodeError:
+            payload = {"error": raw or str(exc.reason)}
+        return int(exc.code), payload
+
+
 def fetch_hub_caps(product_id: str) -> list[dict]:
     q = urllib.parse.urlencode({"intent": product_id, "budget": "5"})
     payload = _get_json(f"{HUB_SEARCH}?{q}")
     matches = payload.get("matches") or []
     return [m for m in matches if str(m.get("product_id") or "") == product_id]
+
+
+def _admin_token() -> str:
+    token = (os.environ.get("AIMARKET_ADMIN_TOKEN") or "").strip()
+    if token:
+        return token
+    secret = ROOT / "data" / "secrets" / "aimarket_admin_token.txt"
+    if secret.is_file():
+        return secret.read_text(encoding="utf-8").strip()
+    return ""
 
 
 def main() -> int:
@@ -63,9 +108,17 @@ def main() -> int:
     p.add_argument(
         "--float",
         action="store_true",
-        help="Write local ACEX IPO + audit ledgers if the AI pack approves",
+        help="Write local ACEX IPO + audit ledgers if the AI pack approves (dev SQLite)",
+    )
+    p.add_argument(
+        "--hub-float",
+        action="store_true",
+        help="POST /capital/ipo on the live Hub (AI auditor runs on the Hub; no human score)",
     )
     args = p.parse_args()
+    if args.float and args.hub_float:
+        print("pass only one of --float or --hub-float", file=sys.stderr)
+        return 2
     pid = args.product.strip()
 
     print(f"── ACEX AI auditor ({pid}) ──")
@@ -92,8 +145,30 @@ def main() -> int:
         )
         return 2
 
+    if args.hub_float:
+        token = _admin_token()
+        if not token:
+            print(
+                "AIMARKET_ADMIN_TOKEN missing (env or data/secrets/aimarket_admin_token.txt)",
+                file=sys.stderr,
+            )
+            return 1
+        # Hub re-runs AI audit; omit audit_score_bps or it returns human_audit_override_forbidden.
+        body = {"product_id": pid, "name": pid}
+        status, payload = _post_json(HUB_IPO, body, token=token)
+        print(f"── Hub IPO POST {HUB_IPO} → HTTP {status} ──")
+        print(json.dumps(payload, indent=2, default=str))
+        if status >= 400 or payload.get("error"):
+            return 1
+        print(
+            "Off-chain CapShares floated on Hub. "
+            "PulseAMM createPool is still a separate operator step "
+            "(see acex/docs/first-market-launch.md)."
+        )
+        return 0
+
     if not args.float:
-        print("dry-run: pass --float to mint CapShares on the local IPO ledger.")
+        print("dry-run: pass --float (local) or --hub-float (prod Hub admin IPO).")
         return 0
 
     os.environ.setdefault("ACEX_REQUIRE_AI_AUDIT", "1")
@@ -122,7 +197,13 @@ def main() -> int:
     print("── local CapShares minted ──")
     print(f"  IPO ledger: {os.environ.get('ACEX_IPO_DB_PATH')}")
     print(f"  audit ledger: {os.environ.get('ACEX_AUDIT_DB_PATH')}")
-    print(json.dumps({**floated, "coverage": covered, "ai_audit": pack}, indent=2, default=str))
+    print(
+        json.dumps(
+            {**floated, "coverage": covered, "ai_audit": pack},
+            indent=2,
+            default=str,
+        )
+    )
     print(
         "On-chain PulseAMM is NOT seeded by this script. "
         "MIN_INITIAL_USDC=1000; deployer must createPool after approveListing."
