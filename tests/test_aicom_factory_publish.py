@@ -70,6 +70,17 @@ def test_publish_scripts_exist():
     assert (ROOT / "scripts" / "aicom_publish_config.py").is_file()
 
 
+def test_factory_publish_is_live_append_only():
+    """GitHub factory matches metis live mode: append, never orphan/--force."""
+    text = (ROOT / "scripts" / "publish_aicom_factory.sh").read_text()
+    assert "git_auth push --force" not in text
+    assert 'rm -rf "$CLONE/.git"' not in text
+    assert "chore(factory): sync" in text
+    assert "import_factory_pr.sh" in text
+    assert "_inject_factory_live_banner" in text
+    assert (ROOT / "scripts" / "import_factory_pr.sh").is_file()
+
+
 def test_factory_rsync_excludes_cursor_and_github():
     """Factory publish uses rsync; .gitignore does not apply."""
     assert "independent" in DEFAULT_RSYNC_EXCLUDES

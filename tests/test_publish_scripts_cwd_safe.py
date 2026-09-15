@@ -55,6 +55,7 @@ PUBLISH_SCRIPTS = (
     "scripts/mirror_to_gitea.sh",
     "scripts/push_gitea_monorepo.sh",
     "scripts/import_satellite_pr.sh",
+    "scripts/import_factory_pr.sh",
     "scripts/tag_satellite_release.sh",
 )
 

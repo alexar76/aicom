@@ -10,10 +10,10 @@ these scripts never auto-push from an agent.
 |--------|-----------|--------|-------|
 | [`push_gitea_monorepo.sh`](../scripts/push_gitea_monorepo.sh) | **full** monorepo (history + satellites) | **Gitea#2** `alexar76/aicom` | refuses any `github.com` target |
 | [`mirror_satellites.sh`](../scripts/mirror_satellites.sh) | one folder per satellite | **GitHub** | refuses any non-GitHub target |
-| [`publish_aicom_factory.sh`](../scripts/publish_aicom_factory.sh) | trimmed single-commit `aicom` snapshot | **GitHub** `<org>/aicom` | refuses anything that isn't `github.com/<org>/aicom` |
+| [`publish_aicom_factory.sh`](../scripts/publish_aicom_factory.sh) | trimmed factory `aicom` (**live** history, PRs accepted) | **GitHub** `<org>/aicom` | refuses anything that isn't `github.com/<org>/aicom` |
 
-The guards make it impossible to accidentally force-push the full monorepo to GitHub
-(leak) or overwrite the Gitea canon with a trimmed snapshot (data loss).
+The guards make it impossible to accidentally push the full monorepo to GitHub
+(leak) or publish a trimmed tree onto the Gitea canon.
 
 **Gitea-only trees** (in the full monorepo push, stripped from the public factory):
 `independent/` (e.g. Charon / KOVA / AEGIS ops) and `pantheon/` (art portal →
@@ -52,7 +52,7 @@ Then commit the specific files (one or several logical commits — your call).
 Gitea#1 (`Superowner/aicom`) is not in this pipeline. The guard only *rejects* an
 accidental GitHub target; the normal Gitea#2 path is transparent.
 
-## 3. Publish the `aicom` snapshot to GitHub (public showcase)
+## 3. Publish `aicom` to GitHub (public factory, live history)
 
 Always pass the GitHub target explicitly and a token:
 
@@ -64,12 +64,25 @@ AICOM_FACTORY_REMOTE=https://github.com/alexar76/aicom.git \
 
 Run without `--dry-run` only once the output shows **github.com/alexar76/aicom**.
 If `AICOM_FACTORY_REMOTE` is omitted the script now **aborts** (the guard) instead of
-falling back to the Gitea `origin` — so it can no longer overwrite the canon.
+falling back to the Gitea `origin`.
 
-**Contributor credit:** external human contributors are listed in
-[`scripts/aicom-coauthors.txt`](../scripts/aicom-coauthors.txt) and appended as
-`Co-authored-by:` trailers to the snapshot commit, so they appear in the GitHub
-contributor graph. The publish output prints `Crediting co-authors …`.
+Factory GitHub is **live** (same as `metis`): append-only, **no `--force`**, **PRs accepted**.
+Before each factory publish, import any merged PRs:
+
+```bash
+./scripts/import_factory_pr.sh      # emits a reviewable patch
+# review → git apply → commit → re-sync:
+ALLOW_DIVERGENCE=1 ./scripts/publish_aicom_factory.sh
+```
+
+A divergence guard aborts the sync if an un-imported PR sits on the factory tip.
+
+**Contributor credit:** external human contributors listed in
+[`scripts/aicom-coauthors.txt`](../scripts/aicom-coauthors.txt) are appended as
+`Co-authored-by:` trailers on the factory sync commit. Merged PR authors also stay
+in git history now that the mirror is append-only. The publish output prints
+`Crediting co-authors …`. The sanitizer (`scripts/sanitize_git_commit_meta.py`)
+keeps those human trailers and strips AI/CI ones.
 
 ## 4. (Optional) Publish a satellite to GitHub
 
@@ -89,6 +102,8 @@ Per-satellite mode comes from `history:` in [`scripts/satellite-map.yaml`](../sc
   ALLOW_DIVERGENCE=1 ./scripts/mirror_satellites.sh --satellite <id>
   ```
   A divergence guard aborts the sync if an un-imported PR sits on the satellite tip.
+
+Factory GitHub (`alexar76/aicom`) is **live** as well — see §3 and `./scripts/import_factory_pr.sh`.
 
 ---
 

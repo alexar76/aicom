@@ -1,7 +1,7 @@
-# External human contributors credited on the public aicom snapshot.
-# publish_aicom_factory.sh appends each as a `Co-authored-by:` trailer to the
-# single-commit snapshot message, so they appear in the GitHub contributor graph
-# even though the public mirror carries no accumulated history.
+# External human contributors credited on factory GitHub sync commits.
+# publish_aicom_factory.sh appends each as a `Co-authored-by:` trailer.
+# Live history also keeps merged PR authors in git log; this list is extra
+# credit so humans landed via the old snapshot still appear on sync commits.
 #
 # Format: one "Name <email>" per line. Blank lines and #-comments are ignored.
 # HUMANS ONLY — never add AI/CI tooling here (that is exactly what the mirror

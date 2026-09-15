@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Publish trimmed AI-Factory (aicom) tree to remote — WITHOUT satellite subtrees.
+# Publish trimmed AI-Factory (aicom) tree to GitHub — WITHOUT satellite subtrees.
+# Live history (append-only, PRs accepted — same as metis). Never --force / orphan.
+# Reverse-import merged PRs first: ./scripts/import_factory_pr.sh
 #
 # Satellites (separate repos): acex, ai-service-mesh, aimarket-hub, aimarket-widget,
 # aimarket-protocol, aimarket-sdks, aimarket-agent, aimarket-bridges, desktop-integrations,
@@ -81,11 +83,12 @@ if [[ -n "$TOKEN" && "$REMOTE" =~ github\.com[:/]+([^/]+/[^/.]+)(\.git)? ]]; the
 fi
 
 # ── SAFETY GUARD ───────────────────────────────────────────────────────────
-# This script force-pushes a TRIMMED, SINGLE-COMMIT, history-less snapshot to
-# $REMOTE. If $REMOTE ever resolved to the canonical monorepo (origin / Gitea),
-# that push would OVERWRITE it and destroy all history + satellites. $REMOTE
-# falls back to `git remote get-url origin` when unset — and here origin is
-# Gitea — so refuse anything that is not the public GitHub factory remote.
+# This script publishes a TRIMMED factory tree (satellites excluded) to GitHub
+# `aicom` with **live** append-only history (same as metis `history: live`):
+# never --force, never orphan. If $REMOTE ever resolved to the canonical
+# monorepo (origin / Gitea), that push would still pollute canon with a trimmed
+# tree. $REMOTE falls back to `git remote get-url origin` when unset — and here
+# origin is Gitea — so refuse anything that is not the public GitHub factory remote.
 _remote_display="${REMOTE#*@}"   # strip any user:token@ prefix before showing
 if [[ -z "$REMOTE" ]]; then
   echo "ERROR: no publish target." >&2
@@ -95,15 +98,14 @@ fi
 if [[ "$REMOTE" != *github.com/* && "$REMOTE" != *github.com:* ]]; then
   echo "ERROR: refusing to publish — target is NOT a GitHub remote:" >&2
   echo "         ${_remote_display}" >&2
-  echo "  This publishes a trimmed single-commit snapshot with --force. Pointing it" >&2
-  echo "  at origin/Gitea would OVERWRITE the canonical monorepo and wipe its history." >&2
-  echo "  Set AICOM_FACTORY_REMOTE=https://github.com/<org>/aicom.git (or pass --remote)." >&2
+  echo "  This publishes a trimmed factory tree. Pointing it at origin/Gitea would" >&2
+  echo "  pollute the canonical monorepo. Set AICOM_FACTORY_REMOTE=https://github.com/<org>/aicom.git." >&2
   exit 1
 fi
 if [[ ! "$REMOTE" =~ github\.com[:/]+[^/]+/aicom(\.git)?/?$ ]]; then
   echo "ERROR: refusing to publish — GitHub target is not a '<org>/aicom' repo:" >&2
   echo "         ${_remote_display}" >&2
-  echo "  The factory snapshot must go to the aicom repo. Fix AICOM_FACTORY_REMOTE." >&2
+  echo "  The factory tree must go to the aicom repo. Fix AICOM_FACTORY_REMOTE." >&2
   exit 1
 fi
 # ───────────────────────────────────────────────────────────────────────────
@@ -184,6 +186,34 @@ copy_factory_cursor_rules() {
       cp -f "$f" "$target/.cursor/rules/"
     done < <(find "$ROOT/.cursor/rules" -maxdepth 1 -type f -name '*.mdc')
   fi
+}
+
+# Live-history README banner (same idea as metis in mirror_satellites.sh).
+# Injected only into the GitHub clone — not committed in the monorepo README.
+# Idempotent: marker short-circuits a second prepend.
+_inject_factory_live_banner() {
+  local target="$1"
+  local readme="$target/README.md"
+  local banner_marker="<!-- aicom-mirror-notice -->"
+  [[ -f "$readme" ]] || return 0
+  if grep -qF "$banner_marker" "$readme" 2>/dev/null; then
+    return 0
+  fi
+  local tmp
+  tmp="$(mktemp)"
+  {
+    printf '%s\n' "$banner_marker"
+    printf '> **🔄 Synced from the canonical monorepo — live history.** `alexar76/aicom` is a\n'
+    printf '> trimmed public mirror of AI-Factory (satellites live in their own repos). History\n'
+    printf '> here is append-only (no force-push).\n'
+    printf '> **Pull requests are welcome** — merged PRs are imported back into the monorepo\n'
+    printf '> (`scripts/import_factory_pr.sh`) and re-synced here, so your contribution becomes canonical.\n'
+    printf '> 💬 **[Issues](https://github.com/alexar76/aicom/issues)** · **[Pull requests](https://github.com/alexar76/aicom/pulls)** both welcome.\n'
+    printf '\n'
+    cat "$readme"
+  } > "$tmp"
+  mv "$tmp" "$readme"
+  echo "LIVE banner injected into README.md"
 }
 
 # Unpublished map entries stay in the monorepo for Gitea/ops. Drop them from
@@ -319,6 +349,7 @@ if [[ -n "$EXPORT_DIR" ]]; then
   strip_unpublished_from_factory_map "$TARGET"
   copy_factory_github_assets "$TARGET"
   copy_factory_cursor_rules "$TARGET"
+  _inject_factory_live_banner "$TARGET"
   run_factory_mirror_secrets "$TARGET"
   check_repo_roots
   run_factory_gitleaks "$TARGET"
@@ -332,8 +363,9 @@ if [[ -z "$REMOTE" ]]; then
 fi
 
 echo "Cloning $(redact_remote "$REMOTE") (branch $BRANCH) …"
-git_auth clone --depth 1 --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null || {
-  git_auth clone --depth 1 "$REMOTE" "$WORKDIR/clone"
+# Full clone: live mode needs the tip + parents so we can append (never orphan).
+git_auth clone --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null || {
+  git_auth clone "$REMOTE" "$WORKDIR/clone"
   cd "$WORKDIR/clone"
   git checkout -B "$BRANCH" 2>/dev/null || git checkout -b "$BRANCH"
   cd "$ROOT"
@@ -407,26 +439,55 @@ git rm -rf --ignore-unmatch data/state 2>/dev/null || true
 
 copy_factory_github_assets "$CLONE"
 copy_factory_cursor_rules "$CLONE"
+_inject_factory_live_banner "$CLONE"
 run_factory_mirror_secrets "$CLONE"
 check_repo_roots
 run_factory_gitleaks "$CLONE"
+git add -A
 for wf in pages-ecosystem.yml ci.yml security-scan.yml; do
   [[ -f "$CLONE/.github/workflows/$wf" ]] && git add ".github/workflows/$wf"
 done
 [[ -d "$CLONE/.github/ISSUE_TEMPLATE" ]] && git add ".github/ISSUE_TEMPLATE/"
 [[ -f "$CLONE/.github/pull_request_template.md" ]] && git add ".github/pull_request_template.md"
+[[ -f "$CLONE/README.md" ]] && git add "README.md"
+
+# ── Divergence guard (live mode, same as metis) ───────────────────────────
+# Outbound sync leaves a "chore(factory): sync …" commit at the tip.
+# The previous snapshot-era tip is also allowed so the first live publish
+# can append on top of the last orphan commit (forks then share ancestry).
+# If the tip is anything else, a PR was merged — refuse rather than revert it.
+head_subj="$(git log -1 --format=%s 2>/dev/null || true)"
+case "$head_subj" in
+  "chore(factory): sync"* | "aicom — AI-Factory monorepo (public mirror, single-commit snapshot)"* | "")
+    : ;;
+  *)
+    if [[ "${ALLOW_DIVERGENCE:-0}" != "1" ]]; then
+      echo "ERROR: factory tip is NOT a monorepo-sync commit — a PR was likely merged:" >&2
+      echo "         \"$head_subj\"" >&2
+      echo "  Refusing to sync (an overwrite would revert it). Import it first:" >&2
+      echo "         ./scripts/import_factory_pr.sh" >&2
+      echo "  …review + commit into the monorepo, then re-run with ALLOW_DIVERGENCE=1." >&2
+      exit 1
+    fi
+    echo "WARNING: proceeding over external tip (ALLOW_DIVERGENCE=1): \"$head_subj\""
+    ;;
+esac
 
 if git diff --cached --quiet && git diff --quiet; then
   echo "Nothing to commit — factory remote already matches trimmed tree."
   exit 0
 fi
 
-MSG="${COMMIT_MSG:-aicom — AI-Factory monorepo (public mirror, single-commit snapshot)}"
+MSG="${COMMIT_MSG:-}"
+if [[ -z "$MSG" ]]; then
+  MSG="chore(factory): sync from monorepo"
+elif [[ "$MSG" != "chore(factory): sync"* ]]; then
+  MSG="chore(factory): sync from monorepo"$'\n\n'"$MSG"
+fi
 
-# Credit external human contributors as co-authors of the snapshot commit so they
-# appear in the GitHub contributor graph (the mirror has no accumulated history,
-# so a Co-authored-by trailer on the single commit is the only durable credit).
-# Curated, humans-only list — see scripts/aicom-coauthors.txt.
+# Credit curated human contributors on the sync commit (scripts/aicom-coauthors.txt).
+# Live history also keeps merged PR authors in git log; this list is extra credit
+# so humans already landed via the old snapshot still appear on sync commits.
 COAUTHORS_FILE="${ROOT}/scripts/aicom-coauthors.txt"
 if [[ -f "$COAUTHORS_FILE" ]]; then
   _coauthor_block=""
@@ -448,27 +509,28 @@ fi
 # Signed-off-by tooling trailers; keep humans from aicom-coauthors.txt.
 MSG="$(printf '%s\n' "$MSG" | python3 "$ROOT/scripts/sanitize_git_commit_meta.py")"
 
-# Publish as a SINGLE-COMMIT snapshot. The public factory mirror carries NO
-# accumulated git history: we drop the cloned .git, re-init a fresh repo from the
-# trimmed working tree, and force-push. This keeps the private monorepo's commit
-# history (and anything ever removed in earlier commits) off the public GitHub
-# remote. The no-op check above already exited when the tree was unchanged, so we
-# only reach here when there is something new to publish.
-rm -rf "$CLONE/.git"
-git init -q -b "$BRANCH" "$CLONE"
-cd "$CLONE"
-git add -A
-git -c user.name="AI Factory" -c user.email="factory@users.noreply.github.com" \
-  commit -q -m "$MSG"
+# LIVE mode — commit ON TOP of existing GitHub history. Never orphan, never --force.
+# (The previous snapshot path dropped .git and force-pushed; that broke contributor
+# forks — GitHub then refused PRs as unrelated histories.)
+GIT_AUTHOR_NAME="${AICOM_MIRROR_GIT_AUTHOR_NAME:-Aleksandr Artamokhov}"
+GIT_AUTHOR_EMAIL="${AICOM_MIRROR_GIT_AUTHOR_EMAIL:-86793359+alexar76@users.noreply.github.com}"
+python3 "$ROOT/scripts/sanitize_git_commit_meta.py" --check-author "$GIT_AUTHOR_NAME" "$GIT_AUTHOR_EMAIL"
+git -c user.name="$GIT_AUTHOR_NAME" -c user.email="$GIT_AUTHOR_EMAIL" \
+  commit --author="$GIT_AUTHOR_NAME <$GIT_AUTHOR_EMAIL>" -m "$MSG"
 
 if [[ "$NO_PUSH" -eq 1 ]]; then
-  echo "OK committed (squashed single commit) in $CLONE (not pushed)"
+  echo "OK committed (live, append-only) in $CLONE (not pushed)"
   echo "Review: cd $CLONE && git log -1 --stat"
   trap - EXIT
   echo "Temp clone kept at $CLONE (not deleted due to --no-push)"
   exit 0
 fi
 
-echo "Force-pushing single-commit snapshot to $(redact_remote "$REMOTE") ($BRANCH) …"
-git_auth push --force "$REMOTE" "HEAD:$BRANCH"
-echo "OK factory remote updated as single-commit mirror (no history) — satellites excluded"
+echo "Pushing (append-only, no --force) to $(redact_remote "$REMOTE") ($BRANCH) …"
+git_auth push "$REMOTE" "HEAD:$BRANCH" || {
+  echo "ERROR: push rejected (non-fast-forward means the remote advanced —" >&2
+  echo "       likely a just-merged PR). Do NOT --force. Reverse-import, then retry:" >&2
+  echo "         ./scripts/import_factory_pr.sh" >&2
+  exit 1
+}
+echo "OK factory remote updated (live history, satellites excluded)"

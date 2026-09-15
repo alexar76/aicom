@@ -14,7 +14,7 @@
 2. Open a PR with tests and documentation updates
 3. Sign off commits (`Signed-off-by:`) for DCO traceability
 
-> **Note:** `alexar76/aicom` on GitHub is a **public mirror** (single-commit snapshot). Merged PRs on the mirror alone are overwritten on the next publish. Canonical changes land in the AI-Factory monorepo, then get re-published. If GitHub says histories are unrelated, paste a patch / README snippet in the issue — we will port it.
+> **Note:** `alexar76/aicom` on GitHub is a **trimmed public mirror with live history** (same as `metis`): append-only, **PRs welcome**. Merged PRs are reverse-imported into the canonical monorepo (`scripts/import_factory_pr.sh`) before the next publish. Canonical source remains this monorepo.
 
 ## Recognition
 

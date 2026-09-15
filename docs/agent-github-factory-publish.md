@@ -7,8 +7,7 @@
 
 ## What the trimmed repo is
 
-`publish_aicom_factory.sh` rsyncs the monorepo **minus satellites** (`acex/`, `aimarket-hub/`, `plugins/`, `ai-service-mesh/`, etc.) to `alexar76/aicom`.  
-Ecosystem deploy on a VPS needs those folders — they are separate GitHub repos.
+`publish_aicom_factory.sh` rsyncs the monorepo **minus satellites** (`acex/`, `aimarket-hub/`, `plugins/`, `ai-service-mesh/`, etc.) to `alexar76/aicom` with **live append-only history** (PRs accepted; never `--force`). Reverse-import merged PRs with `./scripts/import_factory_pr.sh` before the next factory publish.
 
 | Need | Script / action |
 |------|-----------------|
@@ -29,9 +28,9 @@ git pull origin main
 # 2. Optional: export-only sanity check
 ./scripts/publish_aicom_factory.sh --dry-run
 
-# 3. Push trimmed tree to GitHub
+# 3. Push trimmed tree to GitHub (live history — PRs accepted)
 AICOM_FACTORY_REMOTE=https://github.com/alexar76/aicom.git \
-  ./scripts/publish_aicom_factory.sh --message "sync factory from monorepo"
+  ./scripts/publish_aicom_factory.sh
 
 # 4. Satellites that changed in the same session (examples)
 ./scripts/mirror_satellites.sh aimarket-hub

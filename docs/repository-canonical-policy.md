@@ -93,3 +93,18 @@ requests** via a per-satellite `history:` field in
 - **README banner** flips to "PRs welcome; merged PRs are imported back into the monorepo."
 
 `mirror`-mode satellites are unchanged by this amendment.
+
+## Amendment 2026-09-15 — factory GitHub is `live` too
+
+[`scripts/publish_aicom_factory.sh`](../scripts/publish_aicom_factory.sh) now uses the
+same **append-only** path as a `history: live` satellite (first: `metis`):
+
+- **Out:** trimmed factory tree is committed **on top** of `alexar76/aicom` `main` and
+  pushed **without** `--force` / orphan (`chore(factory): sync …`).
+- **In:** pull requests on `alexar76/aicom` are **accepted**.
+- **Reverse-import:** [`scripts/import_factory_pr.sh`](../scripts/import_factory_pr.sh)
+  before the next outbound factory publish, or the divergence guard aborts.
+
+The GitHub factory tree stays **trimmed** (satellites excluded). Canonical source is
+still this monorepo on Gitea. The old single-commit snapshot + `--force` path is gone
+so contributor forks keep a common ancestor and GitHub will open PRs.

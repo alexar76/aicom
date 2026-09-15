@@ -46,15 +46,15 @@ git_t() {
 }
 
 # SAFETY: this pushes the FULL monorepo (complete history + all satellites) to
-# Gitea. It must NEVER go to GitHub — the public GitHub mirror is the trimmed,
-# single-commit publish_aicom_factory.sh snapshot. Pushing the full tree/history
+# Gitea. It must NEVER go to GitHub — the public GitHub factory is a trimmed
+# live-history tree from publish_aicom_factory.sh. Pushing the full tree/history
 # to GitHub would leak satellites and anything ever committed.
 _assert_gitea_target() {
   case "$1" in
     *github.com*)
       echo "ERROR: refusing to push — '$1' looks like GitHub, not Gitea." >&2
-      echo "  The full monorepo goes to Gitea only; GitHub gets the trimmed snapshot" >&2
-      echo "  via publish_aicom_factory.sh. Aborting." >&2
+      echo "  The full monorepo goes to Gitea only; GitHub gets the trimmed factory tree" >&2
+      echo "  via publish_aicom_factory.sh (live history). Aborting." >&2
       exit 1
       ;;
   esac

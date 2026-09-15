@@ -1,3 +1,11 @@
+<!-- aicom-mirror-notice -->
+> **🔄 Synced from the canonical monorepo — live history.** `alexar76/aicom` is a
+> trimmed public mirror of AI-Factory (satellites live in their own repos). History
+> here is append-only (no force-push).
+> **Pull requests are welcome** — merged PRs are imported back into the monorepo
+> (`scripts/import_factory_pr.sh`) and re-synced here, so your contribution becomes canonical.
+> 💬 **[Issues](https://github.com/alexar76/aicom/issues)** · **[Pull requests](https://github.com/alexar76/aicom/pulls)** both welcome.
+
 # AI-Factory
 
 <p align="center">
