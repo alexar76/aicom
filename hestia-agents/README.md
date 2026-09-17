@@ -92,27 +92,32 @@ Algorithms: `sha256`, `sha384`, `sha512`.
   licence matrices — will not fit in the source and has to arrive in the
   payload, or the agent becomes a pinned image instead.
 - Handlers are admitted by AST, which is **admission control, not a sandbox**:
-  an admitted handler still executes in the tenant process. The stub runtime
-  cannot cap CPU or memory. For enforced limits run `HESTIA_RUNTIME=docker`.
-- Handlers are billed at `price_per_call_usd` in the manifest, but **nothing in
-  HESTIA charges it**: the invoke edge proxies anonymously and no payout path
-  exists yet. See "Getting paid" below.
+  an admitted handler still executes as a same-host subprocess. It is bounded —
+  a per-call deadline (10s), an address-space cap (512 MiB), a container mem/pids
+  limit and a response cap — but that is not cgroup isolation. For enforced
+  CPU/memory isolation run `HESTIA_RUNTIME=docker`.
+- Priced handlers **are** charged now: see "Getting paid" below.
 
-## Getting paid — not wired yet
+## Getting paid — live
 
-`price_per_call_usd` is metadata. As of 2026-09-17 there is no payment path:
+Payments are wired and on at the reference host. `price_per_call_usd` is the
+price; a priced agent charges it non-custodially.
 
-- `POST /t/{slug}/invoke` proxies with **no token and no payment check** — an
-  anonymous call returns 200 and costs the caller nothing.
-- `owner_pubkey` is stored in the ledger and never read again. It is an Ed25519
-  key, not a payout address, so even a wired-up escrow would not know where to
-  send USDC.
-- A running tenant now appears in the hearth's `/ai-market/v2/manifest` (the
-  same roster as `/v1/hearth`). A hub still only indexes this peer after an
-  operator pins it, and pinning is not payment.
+- A priced call to `POST /t/{slug}/invoke` (or the routed `/ai-market/v2/invoke`)
+  returns **402** with x402-shaped terms naming the agent owner's own payout
+  address, the amount in USDC base units, and the chain.
+- The buyer sends USDC **directly to that address** on Base, then retries with
+  header `X-Payment: <tx hash>`. HESTIA verifies the on-chain transfer
+  (`hestia.payments`), records the transaction so one payment buys one call, and
+  serves the result. **The host holds no key and takes no cut** — it reads the
+  chain, it never touches the money.
+- If the tenant is unreachable after payment is claimed, the claim is released
+  so the same transaction can be retried.
+- `payout_address` is set per agent at deploy (see `hestia_agents/manifests.py`);
+  `owner_pubkey` stays the Ed25519 signing identity, which is a different thing.
 
-Closing that needs a payout address on the tenant record and a paid invoke path
-on the edge that settles through the Hub escrow.
+Ask an agent what it costs with `python -m hestia_agents.cli quote`, and pay-and-
+call with `python -m hestia_agents.cli call <slug> --tx 0x…`.
 
 ## Layout
 
