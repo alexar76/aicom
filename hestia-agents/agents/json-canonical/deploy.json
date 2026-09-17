@@ -1,0 +1,25 @@
+{
+  "slug": "json-canonical",
+  "capability": {
+    "product_id": "hestia-agents",
+    "capability_id": "json.canonical@v1",
+    "name": "Canonical JSON (RFC 8785) and digest",
+    "description": "Canonicalises a JSON value per RFC 8785 and returns the bytes plus SHA-256 and SHA-384. Refuses floats and integers past 2^53-1 rather than emit bytes another language would canonicalise differently.",
+    "price_per_call_usd": 0.001,
+    "input_schema": {
+      "type": "object"
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "publisher_id": "aicom",
+    "provider_pubkey": ""
+  },
+  "source": {
+    "kind": "template",
+    "handler": "\"\"\"RFC 8785 (JCS) canonical JSON + SHA-256, for anything that signs JSON.\n\nTwo documents that mean the same thing must serialise to the same bytes, or the\nsame signature verifies here and fails there. That is the whole job.\n\nNumbers are the part every implementation gets wrong. JCS serialises them with\nECMAScript rules, so a float can canonicalise differently in Python and in a\nJavaScript verifier, and an integer above 2^53-1 cannot survive a JavaScript\nverifier at all. Rather than emit bytes that might not reproduce, this refuses\nboth and says why. AWR receipts are integers-only for exactly this reason.\n\"\"\"\n\nimport hashlib\n\nMAX_SAFE_INTEGER = 9007199254740991  # 2**53 - 1\n\n_SHORT_ESCAPES = {\n    0x08: \"\\\\b\",\n    0x09: \"\\\\t\",\n    0x0A: \"\\\\n\",\n    0x0C: \"\\\\f\",\n    0x0D: \"\\\\r\",\n    0x22: '\\\\\"',\n    0x5C: \"\\\\\\\\\",\n}\n\n\ndef _escape(text):\n    \"\"\"RFC 8785 3.2.2.2: escape only what must be escaped, leave the rest literal.\"\"\"\n    out = ['\"']\n    for char in text:\n        point = ord(char)\n        short = _SHORT_ESCAPES.get(point)\n        if short is not None:\n            out.append(short)\n        elif point < 0x20:\n            out.append(\"\\\\u\" + format(point, \"04x\"))\n        else:\n            out.append(char)\n    out.append('\"')\n    return \"\".join(out)\n\n\ndef _sort_key(name):\n    \"\"\"JCS sorts keys by UTF-16 code unit, not by Unicode code point.\n\n    The two orders disagree for anything outside the BMP, so an emoji key can\n    sort one way in a naive implementation and another way in a correct one.\n    \"\"\"\n    return name.encode(\"utf-16-be\")\n\n\ndef _serialise(value, path):\n    where = path or \"$\"\n    if value is None:\n        return \"null\"\n    if value is True:\n        return \"true\"\n    if value is False:\n        return \"false\"\n    if isinstance(value, int):\n        if value > MAX_SAFE_INTEGER or value < -MAX_SAFE_INTEGER:\n            raise ValueError(\n                \"integer at \" + where + \" is outside the range a JavaScript verifier \"\n                \"can represent exactly (2^53-1); send it as a string\"\n            )\n        return str(value)\n    if isinstance(value, float):\n        raise ValueError(\n            \"number at \" + where + \" is not an integer. JCS serialises numbers with \"\n            \"ECMAScript rules, so a float can canonicalise differently in another \"\n            \"language and break the signature; send a string or a scaled integer\"\n        )\n    if isinstance(value, str):\n        return _escape(value)\n    if isinstance(value, list):\n        parts = []\n        for index, item in enumerate(value):\n            parts.append(_serialise(item, where + \"[\" + str(index) + \"]\"))\n        return \"[\" + \",\".join(parts) + \"]\"\n    if isinstance(value, dict):\n        names = []\n        for name in value:\n            if not isinstance(name, str):\n                raise ValueError(\"object key at \" + where + \" must be a string\")\n            names.append(name)\n        names.sort(key=_sort_key)\n        parts = []\n        for name in names:\n            child = _serialise(value[name], where + \".\" + name)\n            parts.append(_escape(name) + \":\" + child)\n        return \"{\" + \",\".join(parts) + \"}\"\n    raise ValueError(\"unsupported value at \" + where)\n\n\ndef handle(payload):\n    if \"document\" not in payload:\n        raise ValueError(\"send the value to canonicalise as 'document'\")\n    document = payload.get(\"document\")\n    canonical = _serialise(document, \"\")\n    raw = canonical.encode(\"utf-8\")\n    return {\n        \"canonical\": canonical,\n        \"sha256\": hashlib.sha256(raw).hexdigest(),\n        \"sha384\": hashlib.sha384(raw).hexdigest(),\n        \"byte_length\": len(raw),\n        \"algorithm\": \"JCS (RFC 8785), integer-only numbers\",\n    }\n"
+  },
+  "owner_pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "announce": false,
+  "note": "signing helper for AWR receipts and W3C verifiable credentials"
+}

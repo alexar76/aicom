@@ -221,6 +221,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'finance_schemas.py',
     'finance_stats.py',
     'grafana',
+    'hestia-agents',
     'llm',
     'main.py',
     'marketplace_taxonomy.py',
