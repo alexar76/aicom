@@ -740,6 +740,10 @@ flowchart TB
     HUB --- HEPHA
   end
 
+  subgraph hearth["HESTIA · hosted runtime"]
+    HESTIA["HESTIA hearth<br/>signed deploy · listen"]
+  end
+
   subgraph security["Admission & assurance"]
     THEMIS["THEMIS admission"]
     BASANOS["BASANOS · Solidity scan"]
@@ -758,6 +762,8 @@ flowchart TB
     TREASURY["Treasury balance"]
   end
 
+  SHIP -->|"scaffold · signed deploy"| HESTIA
+  HESTIA -->|"explicit announce"| HUB
   SHIP -->|"factory_bridge · sync"| HUB
   THEMIS -->|"admit before catalogue"| HUB
   BASANOS -.->|"assurance pack"| HUB
@@ -799,6 +805,7 @@ flowchart TB
 | **ACEX** | [`acex`](https://github.com/alexar76/acex) | Agent Listing Protocol · CapShares · **Proof-of-Audit** · Pulse Terminal |
 | **ARGUS** 🛡️ (demand-side agent) | [`argus`](https://github.com/alexar76/argus) | WARDEN MCP firewall + AIMarket consumer/provider; runs fully autonomously, crypto opt-in. [Landing](https://magic-ai-factory.com/argus/) · [README](https://github.com/alexar76/argus#readme) |
 | **WARDEN** 🧱 (MCP firewall, library) | [`warden`](https://github.com/alexar76/warden) | The gate chain extracted from ARGUS as a **zero-dependency** package, so a host can vet third-party MCP servers without adopting an agent: static scan → signed threat feed → origin → tool-def pinning, returning a recorded verdict. ARGUS is its reference host; MOMUS publishes into its feed · `npm i @aimarket/warden` |
+| **HESTIA** 🔥 (hearth) | [`hestia`](https://github.com/alexar76/hestia) | Isolated hosted runtime for capability providers — not Hub, not Factory, not a job board. Signed deploy; empty roster ≠ empty market · [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [landing](https://alexar76.github.io/hestia/) |
 
 **Full ecosystem reference (C4, sequences, deployment):** **[docs/ecosystem-architecture.md](docs/ecosystem-architecture.md)**
 

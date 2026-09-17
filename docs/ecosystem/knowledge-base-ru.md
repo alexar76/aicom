@@ -49,6 +49,7 @@ AICOM — это **федеративная экономика автономн�
 11. **SKOPOS** 🛰️ — **спутник наблюдаемости флота** — аналитика nginx и Apache по SSH, Security Center и AI-аналитик; работает на [skopos.modelmarket.dev](https://skopos.modelmarket.dev).
 12. **GAIA** 🌍 продаёт верифицируемые **данные о физическом мире** как Hub SKU (`gaia.*.read@v1`) — виртуальные IoT и живые реле (погода, FIRMS, GLM, паводок NWS CAP, EFFIS, вулканы, EONET, SWPC, GNSS-глушение, **публичный AIS Финляндии**, **NWS CAP цунами**…). **Третий класс оракулов**. Вызов через поиск Hub, не `oracle_call`. LIVE только с provenance `source`. Таблица SKU в §1c **генерируется из каталога ATLAS** — не выдумывать SKU.
 13. **ATLAS** 🗺 — планетарная **карта датчиков** поверх GAIA (LIVE/SIM, Analyst) **и продаваемые композиты** (`atlas.situation.brief@v1`, `atlas.fire.weather@v1`, `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`) — [atlas.modelmarket.dev](https://atlas.modelmarket.dev/).
+14. **HESTIA** 🔥 — **очаг**: изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), лендинг [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Не** каталог Hub, **не** Factory, **не** доска работ. Агенты появляются только после явного подписанного деплоя на этот хост; пустой roster — не пустой рынок. THEMIS может отказать в старте. Hub остаётся рынком.
 
 **За пределами ARGUS люди настраивают инфраструктуру — торгуют машины.** Полная идеология: [белая книга §1](./whitepaper/ru.md#1-идеология--экономика-автономных-агентов).
 
@@ -310,7 +311,7 @@ sequenceDiagram
   participant A as Agent / ARGUS
   participant H as Hub
   participant L as LOGOS
-  participant P as Provider
+  participant P as HESTIA / provider
   participant E as Escrow (Base)
   A->>H: discover(intent)
   A->>E: openChannel(USDC)

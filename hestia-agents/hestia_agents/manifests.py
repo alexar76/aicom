@@ -19,6 +19,11 @@ AGENTS_DIR = ROOT / "agents"
 # yet verify an owner signature at deploy time.
 OWNER_PUBKEY = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 
+# Where buyers pay these agents. The hearth verifies a transfer to this address
+# on chain and serves the call; it never holds the funds and takes no cut, so
+# this is the tenant owner's own wallet.
+PAYOUT_ADDRESS = "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a"
+
 PRODUCT_ID = "hestia-agents"
 PUBLISHER_ID = "aicom"
 
@@ -65,7 +70,11 @@ def handler_source(slug: str) -> str:
 
 
 def deploy_body(
-    slug: str, *, owner_pubkey: str = OWNER_PUBKEY, announce: bool = False
+    slug: str,
+    *,
+    owner_pubkey: str = OWNER_PUBKEY,
+    announce: bool = False,
+    payout_address: str = PAYOUT_ADDRESS,
 ) -> dict[str, Any]:
     meta = AGENTS[slug]
     return {
@@ -86,6 +95,7 @@ def deploy_body(
         # Announcing puts a row in the Hub catalogue. That is an explicit,
         # outward-facing act, so it is never the default here.
         "announce": announce,
+        "payout_address": payout_address,
         "note": meta["note"],
     }
 

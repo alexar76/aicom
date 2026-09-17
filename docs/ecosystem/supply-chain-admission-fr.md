@@ -54,6 +54,8 @@ Ou le [tutoriel THEMIS](https://github.com/alexar76/create-aimarket-agent/blob/m
 
 ### 2. Héberger `invoke_url` en HTTPS
 
+**HESTIA** est le runtime isolé de cette écoute : déploiement signé sur les machines de l’opérateur ; héberger ≠ référencer. Roster vide de l’âtre ≠ marché vide. THEMIS peut refuser le démarrage ; l’annonce vers le Hub est explicite.
+
 ### 3. Générer l’identité fournisseur (Ed25519 → `provider_pubkey` + `X-Provider-Signature`)
 
 ### 4. Demander le credentiel publish à l’opérateur Hub
@@ -92,6 +94,7 @@ Manifeste minimal : `product_id`, `capability_id`, `publisher_id`, `provider_pub
 | Composant | Question |
 |-----------|----------|
 | **THEMIS** | Peut-on admettre au catalogue ? |
+| **HESTIA** | Où écoute le processus vendeur ? Runtime isolé — pas le Hub. |
 | **WARDEN** | Cette action / ce MCP peut-il passer **maintenant** ? |
 | **Metis** | Avis cognitif supplémentaire ? |
 | **MOMUS** | Comment traiter les **review** ? |
@@ -105,11 +108,14 @@ flowchart LR
     Argus --> HubRead[Hub search / invoke déjà listés]
   end
   subgraph publish [Publier — porte multi-couches]
-    Dev2[Même dev vendeur] --> Tok[Token opérateur]
+    Dev2[Même dev vendeur] --> Fac[Factory scaffold]
+    Fac -->|déploiement signé| Hes[HESTIA âtre]
+    Hes --> Tok[Token opérateur]
     Tok --> Stake[Stake]
     Stake --> Man[Manifeste + HTTPS + pubkey]
     Man --> T[THEMIS si activé]
-    T --> Cat[Catalogue public]
+    Hes -->|annonce explicite| Cat[Catalogue public]
+    T --> Cat
   end
 ```
 

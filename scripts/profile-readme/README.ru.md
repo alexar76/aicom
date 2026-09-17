@@ -39,7 +39,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory, Oracles и METIS снабжают Hub; ARGUS потребляет; ACEX финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory деплоит на HESTIA; HESTIA анонсирует в Hub; Oracles и METIS снабжают Hub; ARGUS потребляет; ACEX финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию" width="900">
   </a>
 </p>
 
@@ -66,10 +66,10 @@
 | **Открыть Factory в браузере** | [magic-ai-factory.com](https://magic-ai-factory.com) — гостевой режим + [демо администратора](https://magic-ai-factory.com/admin/login) (без пароля: `admin`, затем **Enter admin demo**) |
 | **Изучить архитектуру** | [База знаний экосистемы](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-ru.md) · [whitepaper](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/ru.md) · [сценарии использования](https://use.modelmarket.dev/) |
 | **Запустить флот** | `./start.sh --everything` ниже или [быстрый старт на VPS](https://github.com/alexar76/aicom/blob/main/docs/quickstart-ecosystem-deploy.ru.md) |
-| **Опубликовать поставщика** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [полное руководство по агенту безопасности](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.ru.md) · [готовый агент](https://github.com/alexar76/themis) |
+| **Опубликовать поставщика** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [полное руководство по агенту безопасности](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.ru.md) · [готовый агент](https://github.com/alexar76/themis) · процесс хостится на **[HESTIA](https://github.com/alexar76/hestia)** (очаг, не Hub) |
 | **Внести вклад** | [Discussions](https://github.com/alexar76/aicom/discussions) · [good first issues](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
-Каталог репозиториев находится **ниже** и сгруппирован по роли каждого репозитория: Factory, ядро AIMarket, разработка и подключение, шлюзы MCP, верифицируемые вычисления, физический мир, доверие и безопасность, запускаемый вами клиент, ACEX, наблюдаемость, сообщество и вещание, обучение и исследование. Каждый репозиторий входит ровно в одну группу, а в его строке указана живая страница. Найти репозиторий с другой стороны поможет [указатель A–Z](#az) — второй карты сайта здесь нет.
+Каталог репозиториев находится **ниже** и сгруппирован по роли каждого репозитория: Factory, Очаг, ядро AIMarket, разработка и подключение, шлюзы MCP, верифицируемые вычисления, физический мир, доверие и безопасность, запускаемый вами клиент, ACEX, наблюдаемость, сообщество и вещание, обучение и исследование. Каждый репозиторий входит ровно в одну группу, а в его строке указана живая страница. Найти репозиторий с другой стороны поможет [указатель A–Z](#az) — второй карты сайта здесь нет.
 
 Также доступны без входа: [Agent Arena](https://magic-ai-factory.com/arena/) · [Factory IQ](https://magic-ai-factory.com/iq) · [Pulse Terminal](https://magic-ai-factory.com/pulse/) · [Signal Hunt](https://hunt.modelmarket.dev/) · [Lottery](https://lottery.modelmarket.dev/)
 
@@ -160,14 +160,15 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | # | Этап | Кто выполняет |
 | --- | --- | --- |
 | 1 | **Сборка** | [`aicom`](https://github.com/alexar76/aicom) проектирует, собирает, тестирует и публикует продукты |
-| 2 | **Допуск** | **THEMIS** принимает решение во время публикации — подписанные `approve` / `review` / `reject` |
-| 3 | **Размещение и вызов (invoke)** | [Протокол](https://github.com/alexar76/aimarket-protocol) **AIMarket** + [Hub](https://github.com/alexar76/aimarket-hub) передают каталог, каналы и вызовы |
-| 4 | **Поставка** | 17 **оракулов** (случайность, задержка, консенсус, математика доверия) · аттестованные физические показания **GAIA** · когнитивный слой **METIS** |
-| 5 | **Верификация** | когнитивный слой **METIS** · Solidity в закреплённом коммите от **BASANOS** · живые EVM-эксплойты от **DOLOS** · HTTP/федерация от **MOMUS** · сторонний MCP от **WARDEN** |
-| 6 | **Потребление** | **ARGUS** — клиент на стороне спроса, который действительно запускают люди и агенты |
-| 7 | **Расчёт** | эскроу, платёжные каналы и вознаграждения **Treasury**, выплачиваемые только после независимой верификации |
-| 8 | **Финансирование** | **ACEX** оценивает агентов, размещает их и выдаёт займы под них |
-| 9 | **Наблюдение** | **SKOPOS** наблюдает за флотом · **LOGOS** — за федерацией · **Alien Monitor** показывает всё в живом 3D |
+| 2 | **Хостинг** | **HESTIA** — очаг: изолированный hosted-runtime; подписанный деплой на этот хост. Пустой roster ≠ пустой рынок |
+| 3 | **Допуск** | **THEMIS** принимает решение во время публикации — подписанные `approve` / `review` / `reject` (опционально) |
+| 4 | **Размещение и вызов (invoke)** | [Протокол](https://github.com/alexar76/aimarket-protocol) **AIMarket** + [Hub](https://github.com/alexar76/aimarket-hub) передают каталог, каналы и вызовы |
+| 5 | **Поставка** | 17 **оракулов** (случайность, задержка, консенсус, математика доверия) · аттестованные физические показания **GAIA** · когнитивный слой **METIS** |
+| 6 | **Верификация** | когнитивный слой **METIS** · Solidity в закреплённом коммите от **BASANOS** · живые EVM-эксплойты от **DOLOS** · HTTP/федерация от **MOMUS** · сторонний MCP от **WARDEN** |
+| 7 | **Потребление** | **ARGUS** — клиент на стороне спроса, который действительно запускают люди и агенты |
+| 8 | **Расчёт** | эскроу, платёжные каналы и вознаграждения **Treasury**, выплачиваемые только после независимой верификации |
+| 9 | **Финансирование** | **ACEX** оценивает агентов, размещает их и выдаёт займы под них |
+| 10 | **Наблюдение** | **SKOPOS** наблюдает за флотом · **LOGOS** — за федерацией · **Alien Monitor** показывает всё в живом 3D |
 
 Ниже каждый репозиторий находится **ровно в одной** группе — соответствующей его роли в конвейере. Если
 вам известно только название, перейдите к [указателю A–Z](#az).
@@ -181,7 +182,8 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 
 | Откуда | Куда | Поток |
 | --- | --- | --- |
-| Factory / aicom | Hub | публикация возможностей |
+| Factory / aicom | HESTIA | scaffold · подписанный деплой на очаг |
+| HESTIA | Hub | явный announce (хостинг ≠ листинг) |
 | THEMIS | Hub | допуск публикации · approve / review / reject |
 | BASANOS | ACEX / contracts | сканирование Solidity · подписанный пакет гарантий |
 | DOLOS | UNI Anvil (fork) | динамическая красная команда EVM · находки Ed25519 |
@@ -212,8 +214,15 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**aicom**](https://github.com/alexar76/aicom) | AI-Factory — автономный конвейер, который проектирует, собирает, тестирует и публикует продукты |
 | [**aicom-landing**](https://github.com/alexar76/aicom-landing) | Быстрый генератор маркетинговых лендингов, выделенный из полного конвейера |
 
+### 🔥 Очаг — где крутится процесс продавца
+<sub>Между scaffold и каталогом. Хостинг — не листинг. Пустой roster ≠ пустой рынок.</sub>
+
+| Репозиторий | Что это |
+| --- | --- |
+| [**hestia**](https://github.com/alexar76/hestia) | **HESTIA** (Ἑστία) — изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора. **Не** каталог Hub, **не** Factory, **не** доска работ. Агенты появляются только после явного подписанного деплоя на этот хост. THEMIS — опциональный допуск; announce явный; Hub остаётся рынком. · [лендинг](https://alexar76.github.io/hestia/) · [очаг](https://hestia.modelmarket.dev) |
+
 ### 🛒 Ядро AIMarket — протокол и рынок
-<sub>Этап 3. Стандарт, эталонный сервер и меш, который выполняет обнаружение и расчёты.</sub>
+<sub>Этап 4. Стандарт, эталонный сервер и меш, который выполняет обнаружение и расчёты.</sub>
 
 | Репозиторий | Что это |
 | --- | --- |
@@ -364,6 +373,8 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [dolos](https://github.com/alexar76/dolos) | Доверие и безопасность | динамическая красная команда EVM (изолирована в форке) |
 | [gaia](https://github.com/alexar76/gaia) | Физический мир | аттестованные показания IoT |
 | [helios](https://github.com/alexar76/helios) | Сообщество и вещание | yaml → озвученное видео → YouTube |
+| [hestia](https://github.com/alexar76/hestia) | Очаг | изолированный hosted-runtime · не Hub, не Factory |
+| [hestia](https://github.com/alexar76/hestia) | Очаг | изолированный hosted-runtime · не Hub, не Factory |
 | [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) | Пример приложения | Flutter + SDK, реальный продукт |
 | [logos](https://github.com/alexar76/logos) | Наблюдаемость | аналитика федерации только для чтения |
 | [lottery](https://github.com/alexar76/lottery) | Верифицируемые вычисления | неподдающиеся манипуляции ончейн-розыгрыши · machine UBI |

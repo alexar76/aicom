@@ -22,6 +22,7 @@ C4Context
 
   System(aicom, "AICOM monorepo", "Factory pipeline + hub + LOGOS intelligence + SDKs + desktop apps")
   System(themis, "THEMIS", "Publish-time admission gate · approve/review/reject")
+  System(hestia, "HESTIA", "Hearth · isolated hosted runtime · not Hub, not Factory")
   System(basanos, "BASANOS", "Solidity touchstone · signed PASS/REVIEW/FAIL packs")
   System(hephaestus, "HEPHAESTUS", "Capability-chain forge · studio on Hub")
   System_Ext(llm, "LLM providers", "OpenAI-compatible APIs, Ollama")
@@ -30,6 +31,8 @@ C4Context
   Rel(operator, aicom, "Admin, CLI, deploy")
   Rel(builder, themis, "Declare agent for admission")
   Rel(themis, aicom, "Signed admit / review / reject before catalogue")
+  Rel(builder, hestia, "Signed deploy onto the hearth")
+  Rel(hestia, aicom, "Explicit announce · hosting is not listing")
   Rel(aicom, basanos, "Solidity trees at pinned commit")
   Rel(basanos, aicom, "Assurance pack · advisory")
   Rel(enduser, hephaestus, "Compose chains in studio")
@@ -50,6 +53,7 @@ C4Context
 | [`agents/`](../agents/) · [`orchestrator/`](../orchestrator/) · [`pipeline_worker.py`](../pipeline_worker.py) | Multi-agent product pipeline | `aicom` |
 | [`aimarket-hub/`](https://github.com/alexar76/aimarket-hub/tree/main/) | Federation hub (search, invoke, plugins) | `aimarket-hub` |
 | [`themis/`](https://github.com/alexar76/themis) | Publish-time admission gate (`approve` / `review` / `reject`) | `themis` |
+| [`hestia/`](https://github.com/alexar76/hestia) | Hearth — isolated hosted runtime (not Hub, not Factory) | `hestia` |
 | [`basanos/`](https://github.com/alexar76/basanos) | Solidity touchstone — signed assurance at pinned commit | `basanos` |
 | [`hephaestus/`](https://github.com/alexar76/hephaestus) | Capability-chain forge · Hub studio | `hephaestus` |
 | [`aimarket-protocol/`](https://github.com/alexar76/aimarket-protocol/tree/main/) | Protocol v2 spec + schemas | `aimarket-protocol` |
@@ -100,6 +104,10 @@ flowchart TB
     IDX --> WELL2
   end
 
+  subgraph hearth["HESTIA · hosted runtime"]
+    HS["signed deploy · isolated tenant · listen"]
+  end
+
   subgraph admission["THEMIS · publish-time admission"]
     TH["approve · review · reject · signed receipt"]
   end
@@ -133,6 +141,8 @@ flowchart TB
 
   WELL -.->|"federation seed · 0 factory caps today"| BRIDGE
   ART -.->|"sync_pipeline_mirror_and_hub.py"| BRIDGE
+  ART -->|"scaffold · signed deploy"| HS
+  HS -->|"explicit announce"| IDX
   TH -->|"admit before catalogue write"| IDX
   HF -->|"search · invoke graph"| INV
   CH -.->|"Solidity trees"| BA

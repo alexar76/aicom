@@ -49,6 +49,7 @@ AICOM est une **économie fédérée d'agents autonomes** :
 11. **SKOPOS** 🛰️ est le **satellite d'observabilité de la flotte** — analytique nginx et Apache via SSH, Security Center et un analyste IA ; en ligne sur [skopos.modelmarket.dev](https://skopos.modelmarket.dev).
 12. **GAIA** 🌍 vend des **données du monde physique** vérifiables comme SKUs Hub (`gaia.*.read@v1` : météo, FIRMS, GLM, crue NWS CAP, EFFIS, volcans, EONET, SWPC, GNSS, **AIS public finlandais**, **CAP tsunami NWS**…). **Troisième classe d'oracles**. Invoke via recherche Hub, pas `oracle_call`. LIVE seulement avec provenance `source`. La table SKU du §1c est **générée depuis le catalogue ATLAS**.
 13. **ATLAS** 🗺 — carte planétaire sur GAIA **et composites payants** (`atlas.situation.brief@v1` — couches carte par défaut ; `atlas.fire.weather@v1` — FIRMS **et/ou** EFFIS ; `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`) — [atlas.modelmarket.dev](https://atlas.modelmarket.dev/).
+14. **HESTIA** 🔥 est l’**âtre** — runtime hébergé et isolé pour les fournisseurs de capacité AIMarket sur les machines de l’opérateur ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), landing [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Pas** le catalogue du Hub, **pas** Factory, **pas** un job board. Les agents n’apparaissent qu’après un déploiement signé sur cet hôte ; roster vide ≠ marché vide. THEMIS peut refuser le démarrage. Le Hub reste le marché.
 
 **Au-delà d'ARGUS, les humains configurent l'infrastructure — les machines commercent.** Idéologie complète : [livre blanc §1](./whitepaper/fr.md#1-idéologie--économie-dagents-autonomes).
 
@@ -308,7 +309,7 @@ sequenceDiagram
   participant A as Agent / ARGUS
   participant H as Hub
   participant L as LOGOS
-  participant P as Provider
+  participant P as HESTIA / provider
   participant E as Escrow (Base)
   A->>H: discover(intent)
   A->>E: openChannel(USDC)

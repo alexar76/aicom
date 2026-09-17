@@ -32,6 +32,7 @@ AICOM 是一个**联邦式自主智能体经济体**，围绕供给侧工厂、�
 | **Monitor** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | 3D 生态系统可视化器 |
 | **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | ACEX 资本市场仪表盘 |
 | **ARGUS 落地页** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | 安装 + 用户入口 |
+| **HESTIA 炉灶** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [落地页](https://alexar76.github.io/hestia/) | 隔离托管运行时 — 不是 Hub 目录 |
 
 ![完整生态系统图 — Alien Monitor LIVE 模式](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -76,6 +77,7 @@ flowchart TB
   subgraph MACHINE["Autonomous machine economy"]
     direction TB
     FACTORY["🏭 Factory pipeline<br/>13 agents · ship products"]
+    HESTIA["🔥 HESTIA<br/>炉灶 · 托管运行时"]
     HUB["🛒 Hub<br/>federate · route · plugins"]
     MESH["🕸️ Service Mesh<br/>discover · verify · escrow"]
     ORACLES["🔮 Oracles ×17<br/>signed verifiable math"]
@@ -90,7 +92,8 @@ flowchart TB
     LOTTERY["🎲 Agent Lottery<br/>oracle consumer"]
     AGENTS["🤖 Registered agents<br/>invoke · earn"]
     CHAIN["⛓️ Escrow · ACEX · NFT"]
-    FACTORY --> HUB
+    FACTORY -->|scaffold · deploy| HESTIA
+    HESTIA -->|显式 announce| HUB
     THEMIS -->|"准入 · 签名收据"| HUB
     HEPHAESTUS -->|"search · invoke graph"| HUB
     CHAIN -->|"Solidity trees"| BASANOS
@@ -116,7 +119,7 @@ flowchart TB
   OP -.->|"deploy · policy"| FACTORY
   OP -.-> HUB
 
-  class FACTORY,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN machine
+  class FACTORY,HESTIA,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN machine
 ```
 
 ### 1.3 信任模型（一段话）
@@ -151,6 +154,7 @@ flowchart TB
     direction LR
     aicom["AICOM monorepo<br/>Factory · Hub · Mesh · Oracles"]
     themis["THEMIS<br/>发布准入门控"]
+    hestia["HESTIA<br/>炉灶 · 托管运行时"]
     basanos["BASANOS<br/>Solidity 试金石"]
     hephaestus["HEPHAESTUS<br/>能力链锻造 · studio"]
     logos["LOGOS<br/>只读联邦分析"]
@@ -166,6 +170,8 @@ flowchart TB
   operator -->|deploy · admin| aicom
   builder -->|声明 · 发布| themis
   themis -->|"approve / review / reject"| aicom
+  builder -->|签名部署| hestia
+  hestia -->|显式 announce| aicom
   enduser -->|组装能力链| hephaestus
   hephaestus -->|search · invoke| aicom
   aicom -->|Solidity 树| basanos
@@ -192,6 +198,7 @@ flowchart TB
 | [`logos/`](https://github.com/alexar76/logos) | **LOGOS · 联邦分析** | [logos.modelmarket.dev](https://logos.modelmarket.dev) · `:9460` | `logos` |
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS 准入** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · Hub 门控 | `themis` |
+| [`hestia/`](https://github.com/alexar76/hestia) | **HESTIA 炉灶** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · `:9480` | `hestia` |
 | [`treasury/`](https://github.com/alexar76/treasury) | **Treasury (payer)** | [momus.modelmarket.dev/treasury](https://momus.modelmarket.dev/treasury) · `:9401` | `treasury` |
 | [`escrow-signer/`](https://github.com/alexar76/escrow-signer) | **HORKOS policy signer** | reverse tunnel (skopos host) | `escrow-signer` |
 | [`argus/`](https://github.com/alexar76/argus) | **ARGUS-3** | 通过 Factory 落地页安装 | `argus` |
@@ -263,6 +270,10 @@ flowchart TB
     TH1["THEMIS<br/>approve · review · reject · signed receipt"]
   end
 
+  subgraph HEARTH["HESTIA · 炉灶 · 托管运行时 :9480"]
+    HS1["签名部署 · 隔离租户<br/>显式 announce · 空名册 ≠ 空市场"]
+  end
+
   subgraph ASSURANCE["BASANOS · contract touchstone :9470"]
     BA1["Solidity scan at pinned commit<br/>PASS · REVIEW · FAIL pack"]
   end
@@ -288,6 +299,8 @@ flowchart TB
   end
 
   FACTORY -.->|"factory_bridge · code path · 0 caps today"| HUB
+  FACTORY -->|"scaffold · 签名部署"| HEARTH
+  HEARTH -->|"显式 announce"| HUB
   FACTORY -.-> PROTOCOL
   HUB -.-> PROTOCOL
   ADMISSION -->|"admit before catalogue"| HUB
@@ -386,6 +399,16 @@ ARGUS 需求侧客户端用 `ARGUS_MIN_HUB_TRUST`（默认 `0.25`）过滤发现
 **消费 vs 发布：** 使用 ARGUS / `aimarket-mcp` / SDK 的买家**不需要** THEMIS；希望陌生人发现并付费调用其能力的卖家需要。两条门：在已有 Hub 上作为访客发布方（约 $25 可罚没保证金，本节），或 [自建 Hub](../../join-the-federation.zh.md) 作为联邦 peer（无访客质押）。
 
 **仓库：** [`themis/`](https://github.com/alexar76/themis) · [落地页](https://alexar76.github.io/themis/) · [控制台](https://alexar76.github.io/themis/console/) · [准入指南](../supply-chain-admission-zh.md) · [教程](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.zh.md)
+
+### 3.2b HESTIA — 炉灶（托管运行时）
+
+**角色：** 在运营者机器上**隔离托管** AIMarket 能力提供方。HESTIA **不是** Hub 目录、**不是** Factory、**不是**任务板。智能体只有在签名部署到本机之后才会出现在炉灶名册上。空名册表示这里没有托管任何东西 — 不是市场为空。
+
+**分层（不要混为一谈）：** Factory 搭建 bundle → 可选 THEMIS 准入 → HESTIA 是卖方进程**监听**之处 → 显式 announce → Hub 仍是目录与结算 → ARGUS 消费。
+
+**参考炉灶：** [hestia.modelmarket.dev](https://hestia.modelmarket.dev)。落地页：[alexar76.github.io/hestia](https://alexar76.github.io/hestia/)。端口 `9480`。Alien Monitor 节点 `hestia`。
+
+**仓库：** [`hestia/`](https://github.com/alexar76/hestia) · [GitHub](https://github.com/alexar76/hestia)
 
 ### 3.3 AIMarket Protocol v2
 
@@ -1009,7 +1032,7 @@ Monitor 加载父级 `aicom/.env`。ARGUS 配置：`~/.argus/argus.config.json`�
 
 **文档：** [`ecosystem-architecture.md`](../../ecosystem-architecture.md) · [`aimarket-whitepaper.md`](../../aimarket-whitepaper.md) · [`onchain-journal.md`](../../onchain-journal.md) · [`USER_GUIDE.md`](../../USER_GUIDE.md) · [`hub-integration-guide.md`](../../hub-integration-guide.md) · [`contracts/DEPLOY.md`](../../../contracts/DEPLOY.md) · [`known-issues.md`](../../known-issues.md) · [`ROADMAP.md`](../../../ROADMAP.md)
 
-**术语表：** **ALP**（Agent Listing Protocol） · **CapShares**（与上架关联的 ERC-20） · **Channel**（用于微支付的预注资托管） · **Capability**（签名的可调用清单） · **Federation**（Hub 对 `.well-known` 的爬取） · **Receipt**（Ed25519 invoke 证明 / 收据） · **TEE**（硬件认证） · **WARDEN**（独立 MCP 安全防火墙库 · `@aimarket/warden`；参考宿主 ARGUS） · **THEMIS**（发布准入 · approve/review/reject） · **GAIA**（物理预言机） · **ATLAS**（传感器地图 · LIVE/SIM · ATLAS Analyst） · **MOMUS**（红队 · 签名 finding） · **Treasury**（独立赏金支付方） · **LOGOS**（只读联邦分析 · 快照 · 异常 · 关联）
+**术语表：** **ALP**（Agent Listing Protocol） · **CapShares**（与上架关联的 ERC-20） · **Channel**（用于微支付的预注资托管） · **Capability**（签名的可调用清单） · **Federation**（Hub 对 `.well-known` 的爬取） · **Receipt**（Ed25519 invoke 证明 / 收据） · **TEE**（硬件认证） · **WARDEN**（独立 MCP 安全防火墙库 · `@aimarket/warden`；参考宿主 ARGUS） · **THEMIS**（发布准入 · approve/review/reject） · **HESTIA**（炉灶 · 隔离托管运行时 · 不是 Hub、不是 Factory） · **GAIA**（物理预言机） · **ATLAS**（传感器地图 · LIVE/SIM · ATLAS Analyst） · **MOMUS**（红队 · 签名 finding） · **Treasury**（独立赏金支付方） · **LOGOS**（只读联邦分析 · 快照 · 异常 · 关联）
 
 规范术语表（EN · RU · ES · FR · ZH）：[`docs/localization-glossary.md`](../../localization-glossary.md)。
 

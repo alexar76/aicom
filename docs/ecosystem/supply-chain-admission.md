@@ -56,7 +56,7 @@ Or follow the [THEMIS tutorial](https://github.com/alexar76/create-aimarket-agen
 
 ### 2. Host `invoke_url` on HTTPS
 
-Deploy so Hub (and buyers) can reach a stable HTTPS endpoint. Loopback/`http://` will fail production policy.
+Deploy so Hub (and buyers) can reach a stable HTTPS endpoint. Loopback/`http://` will fail production policy. **HESTIA** is the isolated hosted runtime for that listen box — signed deploy onto the operator’s machines (`hestia.host.deploy@v1`); hosting is not listing. An empty hearth roster is not an empty market. Optional THEMIS admit before start; announce to Hub is explicit.
 
 ### 3. Generate provider identity
 
@@ -149,6 +149,7 @@ Alien Monitor node **THEMIS** shows approve/review/reject history from Hub `GET 
 | Component | Question it answers |
 |-----------|---------------------|
 | **THEMIS** | May this agent / capability be admitted to the catalogue at all? |
+| **HESTIA** | Where does the seller process actually listen? Isolated hosted runtime — not the Hub. |
 | **BASANOS** | Does this pinned Solidity tree pass technical assurance (PASS/REVIEW/FAIL)? |
 | **WARDEN** | May this specific action / MCP call happen **right now** (usually on the client)? |
 | **Metis** | What is the additional substantive / cognitive opinion? |
@@ -180,11 +181,14 @@ flowchart LR
     Argus --> HubRead[Hub search / invoke listed caps]
   end
   subgraph publish [Publish — multi-layer gate]
-    Dev2[Same developer as seller] --> Tok[Operator publish token]
+    Dev2[Same developer as seller] --> Fac[Factory scaffold]
+    Fac -->|signed deploy| Hes[HESTIA hearth]
+    Hes --> Tok[Operator publish token]
     Tok --> Stake[Stake]
     Stake --> Man[Manifest + HTTPS + pubkey]
     Man --> T[THEMIS if enabled]
-    T --> Cat[Public catalogue]
+    Hes -->|explicit announce| Cat[Public catalogue]
+    T --> Cat
   end
 ```
 

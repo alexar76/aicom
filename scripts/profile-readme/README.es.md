@@ -39,7 +39,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vista general del ecosistema: Factory, Oracles y METIS alimentan Hub; ARGUS consume; ACEX financia; SKOPOS observa; MOMUS encuentra; Treasury paga; LOGOS analiza la federación" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vista general del ecosistema: Factory despliega en HESTIA; HESTIA anuncia al Hub; Oracles y METIS alimentan Hub; ARGUS consume; ACEX financia; SKOPOS observa; MOMUS encuentra; Treasury paga; LOGOS analiza la federación" width="900">
   </a>
 </p>
 
@@ -66,10 +66,10 @@
 | **Quieres la fábrica en un navegador** | [magic-ai-factory.com](https://magic-ai-factory.com) — prueba como invitado + [demo de administración](https://magic-ai-factory.com/admin/login) (sin contraseña: `admin`, después **Enter admin demo**) |
 | **Quieres la arquitectura** | [Base de conocimiento del ecosistema](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-es.md) · [whitepaper](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/es.md) · [casos de uso](https://use.modelmarket.dev/) |
 | **Quieres operar la flota** | `./start.sh --everything` más abajo, o [inicio rápido en VPS](https://github.com/alexar76/aicom/blob/main/docs/quickstart-ecosystem-deploy.es.md) |
-| **Quieres publicar un proveedor** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [tutorial completo del agente de seguridad](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.es.md) · [agente terminado](https://github.com/alexar76/themis) |
+| **Quieres publicar un proveedor** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [tutorial completo del agente de seguridad](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.es.md) · [agente terminado](https://github.com/alexar76/themis) · hospeda el proceso en **[HESTIA](https://github.com/alexar76/hestia)** (hogar, no el Hub) |
 | **Quieres contribuir** | [Discussions](https://github.com/alexar76/aicom/discussions) · [good first issues](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
-El catálogo de repos está **más abajo**, agrupado por la función de cada repo: Factory, núcleo AIMarket, Construir y conectar, gateways MCP, Cómputo verificable, Mundo físico, Confianza y seguridad, el cliente que ejecutas, ACEX, Observabilidad, Comunidad y difusión, Aprender y explorar. Cada repo aparece exactamente en un grupo, con su landing en vivo en esa fila, y el [índice A–Z](#az) permite encontrarlo desde cualquier otro ángulo: aquí no hay un segundo mapa del sitio.
+El catálogo de repos está **más abajo**, agrupado por la función de cada repo: Factory, Hogar, núcleo AIMarket, Construir y conectar, gateways MCP, Cómputo verificable, Mundo físico, Confianza y seguridad, el cliente que ejecutas, ACEX, Observabilidad, Comunidad y difusión, Aprender y explorar. Cada repo aparece exactamente en un grupo, con su landing en vivo en esa fila, y el [índice A–Z](#az) permite encontrarlo desde cualquier otro ángulo: aquí no hay un segundo mapa del sitio.
 
 También en vivo, sin iniciar sesión: [Agent Arena](https://magic-ai-factory.com/arena/) · [Factory IQ](https://magic-ai-factory.com/iq) · [Pulse Terminal](https://magic-ai-factory.com/pulse/) · [Signal Hunt](https://hunt.modelmarket.dev/) · [Lottery](https://lottery.modelmarket.dev/)
 
@@ -160,14 +160,15 @@ Un solo pipeline, en el orden en que realmente se mueven la confianza y el diner
 | # | Etapa | Quién la realiza |
 | --- | --- | --- |
 | 1 | **Construir** | [`aicom`](https://github.com/alexar76/aicom) diseña, construye, prueba y publica productos |
-| 2 | **Admitir** | **THEMIS** decide al publicar: `approve` / `review` / `reject` firmados |
-| 3 | **Publicar e invocar** | El [protocolo](https://github.com/alexar76/aimarket-protocol) **AIMarket** + el [hub](https://github.com/alexar76/aimarket-hub) transportan el catálogo, los canales y las invocaciones |
-| 4 | **Suministrar** | 17 **oráculos** (aleatoriedad, demora, consenso y matemáticas de confianza) · lecturas físicas con atestación de **GAIA** · cognición de **METIS** |
-| 5 | **Verificar** | Cognición de **METIS** · Solidity de **BASANOS** en un pin · exploits EVM en vivo de **DOLOS** · HTTP/federación de **MOMUS** · MCP de terceros de **WARDEN** |
-| 6 | **Consumir** | **ARGUS** — el cliente del lado de la demanda que realmente ejecutan personas y agentes |
-| 7 | **Liquidar** | Depósito en garantía (escrow), canales y recompensas de **Treasury**, pagadas solo tras una verificación independiente |
-| 8 | **Financiar** | **ACEX** valora, lista y concede préstamos respaldados por agentes |
-| 9 | **Observar** | **SKOPOS** observa la flota · **LOGOS**, la federación · **Alien Monitor**, todo en 3D en vivo |
+| 2 | **Alojar** | **HESTIA** es el hogar — runtime aislado y alojado; despliegue firmado en este host. Roster vacío ≠ mercado vacío |
+| 3 | **Admitir** | **THEMIS** decide al publicar: `approve` / `review` / `reject` firmados (opcional) |
+| 4 | **Publicar e invocar** | El [protocolo](https://github.com/alexar76/aimarket-protocol) **AIMarket** + el [hub](https://github.com/alexar76/aimarket-hub) transportan el catálogo, los canales y las invocaciones |
+| 5 | **Suministrar** | 17 **oráculos** (aleatoriedad, demora, consenso y matemáticas de confianza) · lecturas físicas con atestación de **GAIA** · cognición de **METIS** |
+| 6 | **Verificar** | Cognición de **METIS** · Solidity de **BASANOS** en un pin · exploits EVM en vivo de **DOLOS** · HTTP/federación de **MOMUS** · MCP de terceros de **WARDEN** |
+| 7 | **Consumir** | **ARGUS** — el cliente del lado de la demanda que realmente ejecutan personas y agentes |
+| 8 | **Liquidar** | Depósito en garantía (escrow), canales y recompensas de **Treasury**, pagadas solo tras una verificación independiente |
+| 9 | **Financiar** | **ACEX** valora, lista y concede préstamos respaldados por agentes |
+| 10 | **Observar** | **SKOPOS** observa la flota · **LOGOS**, la federación · **Alien Monitor**, todo en 3D en vivo |
 
 Más abajo, cada repo aparece en **exactamente un** grupo: la función que cumple en ese pipeline. Si
 solo conoces un nombre, salta al [índice A–Z](#az).
@@ -181,7 +182,8 @@ solo conoces un nombre, salta al [índice A–Z](#az).
 
 | Desde | Hasta | Flujo |
 | --- | --- | --- |
-| Factory / aicom | Hub | publicar capacidades |
+| Factory / aicom | HESTIA | scaffold · despliegue firmado en el hogar |
+| HESTIA | Hub | anuncio explícito (alojar ≠ listar) |
 | THEMIS | Hub | admisión al publicar · approve / review / reject |
 | BASANOS | ACEX / contratos | escaneo de Solidity · paquete de garantía firmado |
 | DOLOS | UNI Anvil (fork) | equipo rojo EVM dinámico · hallazgos Ed25519 |
@@ -212,8 +214,15 @@ solo conoces un nombre, salta al [índice A–Z](#az).
 | [**aicom**](https://github.com/alexar76/aicom) | AI-Factory — pipeline autónomo que diseña, construye, prueba y publica productos |
 | [**aicom-landing**](https://github.com/alexar76/aicom-landing) | Generador rápido de landings de marketing, separado del pipeline completo |
 
+### 🔥 Hogar — donde corre el proceso del vendedor
+<sub>Entre el scaffold y el catálogo. Alojar no es listar. Roster vacío ≠ mercado vacío.</sub>
+
+| Repo | Qué es |
+| --- | --- |
+| [**hestia**](https://github.com/alexar76/hestia) | **HESTIA** (Ἑστία) — runtime aislado y alojado para proveedores de capacidad AIMarket en las máquinas del operador. **No** es el catálogo del Hub, **ni** Factory, **ni** un tablón. Los agentes aparecen solo tras un despliegue firmado en este host. THEMIS admite de forma opcional; el anuncio es explícito; el Hub sigue siendo el mercado. · [landing](https://alexar76.github.io/hestia/) · [hogar](https://hestia.modelmarket.dev) |
+
 ### 🛒 Núcleo AIMarket — el protocolo y el mercado
-<sub>Etapa 3. El estándar, el servidor de referencia y la malla que descubre y liquida.</sub>
+<sub>Etapa 4. El estándar, el servidor de referencia y la malla que descubre y liquida.</sub>
 
 | Repo | Qué es |
 | --- | --- |
@@ -364,6 +373,7 @@ encontrarlo desde cualquier otro ángulo.
 | [dolos](https://github.com/alexar76/dolos) | Confianza y seguridad | equipo rojo EVM dinámico (aislado en fork) |
 | [gaia](https://github.com/alexar76/gaia) | Mundo físico | lecturas IoT con atestación |
 | [helios](https://github.com/alexar76/helios) | Comunidad y difusión | yaml → vídeo narrado → YouTube |
+| [hestia](https://github.com/alexar76/hestia) | Hogar | runtime aislado y alojado · no es Hub, no es Factory |
 | [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) | Aplicación de ejemplo | Flutter + SDK, producto real |
 | [logos](https://github.com/alexar76/logos) | Observabilidad | análisis de solo lectura de la federación |
 | [lottery](https://github.com/alexar76/lottery) | Cómputo verificable | sorteos on-chain no manipulables · UBI para máquinas |

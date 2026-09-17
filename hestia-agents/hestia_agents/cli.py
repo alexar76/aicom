@@ -118,15 +118,71 @@ def cmd_verify(args: argparse.Namespace) -> int:
     return 1 if failures else 0
 
 
+def cmd_quote(args: argparse.Namespace) -> int:
+    """Ask a priced agent what it costs. Prints the exact transaction to send.
+
+    Nothing here signs anything: the buyer pays the tenant owner from their own
+    wallet, and the hearth only reads the chain afterwards.
+    """
+    httpx = _client()
+    for slug in args.only or list(AGENTS):
+        cap = AGENTS[slug]["capability_id"]
+        res = httpx.post(
+            f"{args.hearth.rstrip('/')}/t/{slug}/invoke",
+            json=PROBES[slug], timeout=30.0,
+        )
+        if res.status_code != 402:
+            print(f"  {slug}: free right now (HTTP {res.status_code})")
+            continue
+        q = res.json()
+        print(f"  {slug}  [{cap}]")
+        print(f"    send      : {q['amount_usd']} {q['token']}  ({q['amount_units']} base units)")
+        print(f"    to        : {q['pay_to']}")
+        print(f"    on        : {q['chain']}   token {q['token_contract']}")
+        print("    then      : retry with header  X-Payment: <tx hash>")
+    return 0
+
+
+def cmd_call(args: argparse.Namespace) -> int:
+    """Invoke an agent, presenting a payment transaction hash if one is given."""
+    httpx = _client()
+    slug = args.slug
+    headers = {"X-Payment": args.tx} if args.tx else {}
+    res = httpx.post(
+        f"{args.hearth.rstrip('/')}/t/{slug}/invoke",
+        json=PROBES[slug], headers=headers, timeout=30.0,
+    )
+    if res.status_code == 402:
+        q = res.json()
+        print(f"  402 {q.get('detail')}")
+        print(f"  pay {q['amount_usd']} {q['token']} to {q['pay_to']} on {q['chain']}")
+        return 2
+    if res.status_code != 200:
+        print(f"  HTTP {res.status_code}: {res.text[:300]}")
+        return 1
+    body = res.json()
+    print("  result   :", body["result"])
+    print("  receipt  :", body["signature"][:44], "...")
+    print("  provider :", body["provider_pubkey"][:44], "...")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="hestia-agents")
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("build", help="regenerate agents/*/deploy.json").set_defaults(func=cmd_build)
 
+    call = sub.add_parser("call", help="invoke one agent, optionally presenting a payment")
+    call.add_argument("slug", choices=sorted(AGENTS))
+    call.add_argument("--hearth", default=os.environ.get("HESTIA_PUBLIC_BASE", DEFAULT_HEARTH))
+    call.add_argument("--tx", default="", help="payment transaction hash")
+    call.set_defaults(func=cmd_call)
+
     for name, func, helptext in (
         ("deploy", cmd_deploy, "deploy every agent onto a hearth"),
         ("verify", cmd_verify, "invoke each agent twice and compare the receipts"),
+        ("quote", cmd_quote, "ask what each agent costs and how to pay it"),
     ):
         node = sub.add_parser(name, help=helptext)
         node.add_argument("--hearth", default=os.environ.get("HESTIA_PUBLIC_BASE", DEFAULT_HEARTH))

@@ -32,6 +32,7 @@ AICOM — это **федеративная экономика автономн�
 | **Monitor** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | 3D-визуализатор экосистемы |
 | **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | Дашборд капитальных рынков ACEX |
 | **Лендинг ARGUS** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | Установка и вход для пользователя |
+| **Очаг HESTIA** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [лендинг](https://alexar76.github.io/hestia/) | Изолированный hosted-runtime — не каталог Hub |
 
 ![Полный граф экосистемы — Alien Monitor в режиме LIVE](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -76,6 +77,7 @@ flowchart TB
   subgraph MACHINE["Автономная машинная экономика"]
     direction TB
     FACTORY["🏭 Конвейер Factory<br/>13 агентов · выпуск продуктов"]
+    HESTIA["🔥 HESTIA<br/>очаг · hosted-runtime"]
     HUB["🛒 Hub<br/>федерация · маршрутизация · плагины"]
     MESH["🕸️ Service Mesh<br/>обнаружение · верификация · эскроу"]
     ORACLES["🔮 Оракулы ×17<br/>подписанная верифицируемая математика"]
@@ -90,7 +92,8 @@ flowchart TB
     LOTTERY["🎲 Agent Lottery<br/>потребитель оракулов"]
     AGENTS["🤖 Зарегистрированные агенты<br/>invoke · заработок"]
     CHAIN["⛓️ Эскроу · ACEX · NFT"]
-    FACTORY --> HUB
+    FACTORY -->|scaffold · deploy| HESTIA
+    HESTIA -->|явный announce| HUB
     THEMIS -->|"admit · подписанный receipt"| HUB
     HEPHAESTUS -->|"search · invoke graph"| HUB
     CHAIN -->|"Solidity trees"| BASANOS
@@ -116,7 +119,7 @@ flowchart TB
   OP -.->|"деплой · политика"| FACTORY
   OP -.-> HUB
 
-  class FACTORY,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN machine
+  class FACTORY,HESTIA,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN machine
 ```
 
 ### 1.3 Модель доверия (один абзац)
@@ -151,6 +154,7 @@ flowchart TB
     direction LR
     aicom["Монорепозиторий AICOM<br/>Factory · Hub · Mesh · Oracles"]
     themis["THEMIS<br/>Шлюз допуска публикации"]
+    hestia["HESTIA<br/>Очаг · hosted-runtime"]
     basanos["BASANOS<br/>Пробирный камень Solidity"]
     hephaestus["HEPHAESTUS<br/>Кузница цепочек · studio"]
     logos["LOGOS<br/>Read-only аналитика федерации"]
@@ -165,6 +169,8 @@ flowchart TB
 
   operator -->|деплой · админ| aicom
   builder -->|декларация · публикация| themis
+  builder -->|подписанный деплой| hestia
+  hestia -->|явный announce| aicom
   themis -->|"approve / review / reject"| aicom
   enduser -->|собрать цепочки| hephaestus
   hephaestus -->|search · invoke| aicom
@@ -192,6 +198,7 @@ flowchart TB
 | [`logos/`](https://github.com/alexar76/logos) | **LOGOS · аналитика федерации** | [logos.modelmarket.dev](https://logos.modelmarket.dev) · `:9460` | `logos` |
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS admission** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · шлюз Hub | `themis` |
+| [`hestia/`](https://github.com/alexar76/hestia) | **HESTIA очаг** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · `:9480` | `hestia` |
 | [`treasury/`](https://github.com/alexar76/treasury) | **Treasury (payer)** | [momus.modelmarket.dev/treasury](https://momus.modelmarket.dev/treasury) · `:9401` | `treasury` |
 | [`escrow-signer/`](https://github.com/alexar76/escrow-signer) | **HORKOS policy signer** | reverse tunnel (skopos host) | `escrow-signer` |
 | [`argus/`](https://github.com/alexar76/argus) | **ARGUS-3** | установка через лендинг Factory | `argus` |
@@ -259,6 +266,10 @@ flowchart TB
     TH1["THEMIS<br/>approve · review · reject · signed receipt"]
   end
 
+  subgraph HEARTH["HESTIA · очаг · hosted-runtime :9480"]
+    HS1["Подписанный деплой · изолированный тенант<br/>явный announce · пустой roster ≠ пустой рынок"]
+  end
+
   subgraph ASSURANCE["BASANOS · contract touchstone :9470"]
     BA1["Solidity scan at pinned commit<br/>PASS · REVIEW · FAIL pack"]
   end
@@ -284,6 +295,8 @@ flowchart TB
   end
 
   FACTORY -.->|"factory_bridge · code path · 0 caps today"| HUB
+  FACTORY -->|"scaffold · подписанный деплой"| HEARTH
+  HEARTH -->|"явный announce"| HUB
   FACTORY -.-> PROTOCOL
   HUB -.-> PROTOCOL
   ADMISSION -->|"admit before catalogue"| HUB
@@ -379,6 +392,16 @@ ARGUS фильтрует discover по `ARGUS_MIN_HUB_TRUST` (по умолча�
 **Consume vs publish:** покупателям ARGUS / `aimarket-mcp` / SDK THEMIS **не** нужен. Продавцам, чьи capability должны находить и оплачивать чужие агенты, — нужен. Две двери: гостевой издатель на существующем Hub (слэшируемый залог ≈ $25, этот раздел) **или** [свой Hub](../../join-the-federation.ru.md) как peer федерации (гостевого стейка нет).
 
 **Репозитории:** [`themis/`](https://github.com/alexar76/themis) · [лендинг](https://alexar76.github.io/themis/) · [консоль](https://alexar76.github.io/themis/console/) · [гайд допуска](../supply-chain-admission-ru.md) · [урок](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.ru.md)
+
+### 3.2b HESTIA — очаг (hosted-runtime)
+
+**Роль:** Изолированный **hosted-runtime** провайдеров способностей AIMarket на машинах оператора. HESTIA — **не** каталог Hub, **не** Factory и **не** доска работ. Агенты появляются в roster очага только после явного подписанного деплоя на этот хост. Пустой roster значит, что здесь ничего не хостится — не то, что рынок пуст.
+
+**Слои (не схлопывать):** Factory собирает бандл → опциональный допуск THEMIS → HESTIA — где процесс продавца **слушает** → явный announce → Hub остаётся каталогом и расчётом → ARGUS потребляет.
+
+**Эталонный очаг:** [hestia.modelmarket.dev](https://hestia.modelmarket.dev). Лендинг: [alexar76.github.io/hestia](https://alexar76.github.io/hestia/). Порт `9480`. Узел Alien Monitor `hestia`.
+
+**Репозитории:** [`hestia/`](https://github.com/alexar76/hestia) · [GitHub](https://github.com/alexar76/hestia)
 
 ### 3.3 AIMarket Protocol v2
 
@@ -998,7 +1021,7 @@ Monitor загружает родительский `aicom/.env`. Конфиг A
 
 **Документация:** [`ecosystem-architecture.md`](../../ecosystem-architecture.md) · [`aimarket-whitepaper.md`](../../aimarket-whitepaper.md) · [`onchain-journal.md`](../../onchain-journal.md) · [`USER_GUIDE.md`](../../USER_GUIDE.md) · [`hub-integration-guide.md`](../../hub-integration-guide.md) · [`contracts/DEPLOY.md`](../../../contracts/DEPLOY.md) · [`known-issues.md`](../../known-issues.md) · [`ROADMAP.md`](../../../ROADMAP.md)
 
-**Глоссарий:** **ALP** (Agent Listing Protocol) · **CapShares** (ERC-20, привязанный к листингу) · **Channel** (предоплаченный эскроу для микроплатежей) · **Capability** (подписанный вызываемый манифест) · **Federation** (краулинг хаба `.well-known`) · **Receipt** (доказательство invoke с Ed25519, квитанция) · **TEE** (аппаратная аттестация) · **WARDEN** (автономная библиотека MCP-файрвола · `@aimarket/warden`; эталонный хост ARGUS) · **THEMIS** (допуск публикации · approve/review/reject) · **GAIA** (физический оракул) · **ATLAS** (карта датчиков · LIVE/SIM · ATLAS Analyst) · **MOMUS** (red team · подписанные findings) · **Treasury** (отдельный плательщик bounty) · **HORKOS** (escrow policy signer · only `authorizedHubs` key · Base debitChannel only) · **LOGOS** (read-only аналитика федерации · снимки · аномалии · корреляции)
+**Глоссарий:** **ALP** (Agent Listing Protocol) · **CapShares** (ERC-20, привязанный к листингу) · **Channel** (предоплаченный эскроу для микроплатежей) · **Capability** (подписанный вызываемый манифест) · **Federation** (краулинг хаба `.well-known`) · **Receipt** (доказательство invoke с Ed25519, квитанция) · **TEE** (аппаратная аттестация) · **WARDEN** (автономная библиотека MCP-файрвола · `@aimarket/warden`; эталонный хост ARGUS) · **THEMIS** (допуск публикации · approve/review/reject) · **HESTIA** (очаг · изолированный hosted-runtime · не Hub, не Factory) · **GAIA** (физический оракул) · **ATLAS** (карта датчиков · LIVE/SIM · ATLAS Analyst) · **MOMUS** (red team · подписанные findings) · **Treasury** (отдельный плательщик bounty) · **HORKOS** (escrow policy signer · only `authorizedHubs` key · Base debitChannel only) · **LOGOS** (read-only аналитика федерации · снимки · аномалии · корреляции)
 
 Каноническая таблица терминов (EN · RU · ES · FR · ZH): [`docs/localization-glossary.md`](../../localization-glossary.md).
 

@@ -336,7 +336,7 @@ sequenceDiagram
   participant A as Agent / ARGUS
   participant H as Hub
   participant L as LOGOS
-  participant P as Provider
+  participant P as HESTIA / provider
   participant E as Escrow (Base)
   A->>H: discover(intent)
   A->>E: openChannel(USDC)

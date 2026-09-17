@@ -32,6 +32,7 @@ Superficies públicas:
 | **Monitor** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | Visualizador 3D del ecosistema |
 | **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | Panel de mercados de capital ACEX |
 | **Landing ARGUS** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | Instalación y entrada de usuario |
+| **Hogar HESTIA** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [landing](https://alexar76.github.io/hestia/) | Runtime aislado y alojado — no es el catálogo del Hub |
 
 ![Grafo completo del ecosistema — Alien Monitor modo LIVE](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -76,6 +77,7 @@ flowchart TB
   subgraph MACHINE["Economía autónoma de máquinas"]
     direction TB
     FACTORY["🏭 Pipeline Factory<br/>13 agentes · enviar productos"]
+    HESTIA["🔥 HESTIA<br/>hogar · runtime alojado"]
     HUB["🛒 Hub<br/>federar · enrutar · plugins"]
     MESH["🕸️ Service Mesh<br/>descubrir · verificar · escrow"]
     ORACLES["🔮 Oráculos ×17<br/>matemática verificable firmada"]
@@ -90,7 +92,8 @@ flowchart TB
     LOTTERY["🎲 Agent Lottery<br/>consumidor de oráculos"]
     AGENTS["🤖 Agentes registrados<br/>invoke · ganar"]
     CHAIN["⛓️ Escrow · ACEX · NFT"]
-    FACTORY --> HUB
+    FACTORY -->|scaffold · deploy| HESTIA
+    HESTIA -->|anuncio explícito| HUB
     THEMIS -->|"admitir · recibo firmado"| HUB
     HEPHAESTUS -->|"search · invoke graph"| HUB
     CHAIN -->|"Solidity trees"| BASANOS
@@ -116,7 +119,7 @@ flowchart TB
   OP -.->|"despliegue · política"| FACTORY
   OP -.-> HUB
 
-  class FACTORY,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN machine
+  class FACTORY,HESTIA,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN machine
 ```
 
 ### 1.3 Modelo de confianza (un párrafo)
@@ -151,6 +154,7 @@ flowchart TB
     direction LR
     aicom["Monorepo AICOM<br/>Factory · Hub · Mesh · Oracles"]
     themis["THEMIS<br/>Puerta de admisión al publicar"]
+    hestia["HESTIA<br/>Hogar · runtime alojado"]
     basanos["BASANOS<br/>Piedra de toque Solidity"]
     hephaestus["HEPHAESTUS<br/>Forja de cadenas · studio"]
     logos["LOGOS<br/>Analítica federada de solo lectura"]
@@ -166,6 +170,8 @@ flowchart TB
   operator -->|despliegue · admin| aicom
   builder -->|declarar · publicar| themis
   themis -->|"approve / review / reject"| aicom
+  builder -->|despliegue firmado| hestia
+  hestia -->|anuncio explícito| aicom
   enduser -->|componer cadenas| hephaestus
   hephaestus -->|search · invoke| aicom
   aicom -->|árboles Solidity| basanos
@@ -192,6 +198,7 @@ flowchart TB
 | [`logos/`](https://github.com/alexar76/logos) | **LOGOS · analítica federada** | [logos.modelmarket.dev](https://logos.modelmarket.dev) · `:9460` | `logos` |
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS admisión** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · puerta Hub | `themis` |
+| [`hestia/`](https://github.com/alexar76/hestia) | **HESTIA hogar** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · `:9480` | `hestia` |
 | [`treasury/`](https://github.com/alexar76/treasury) | **Treasury (payer)** | [momus.modelmarket.dev/treasury](https://momus.modelmarket.dev/treasury) · `:9401` | `treasury` |
 | [`escrow-signer/`](https://github.com/alexar76/escrow-signer) | **HORKOS policy signer** | reverse tunnel (skopos host) | `escrow-signer` |
 | [`argus/`](https://github.com/alexar76/argus) | **ARGUS-3** | instalación vía landing Factory | `argus` |
@@ -259,6 +266,10 @@ flowchart TB
     TH1["THEMIS<br/>approve · review · reject · signed receipt"]
   end
 
+  subgraph HEARTH["HESTIA · hogar · runtime alojado :9480"]
+    HS1["Despliegue firmado · inquilino aislado<br/>anuncio explícito · roster vacío ≠ mercado vacío"]
+  end
+
   subgraph ASSURANCE["BASANOS · contract touchstone :9470"]
     BA1["Solidity scan at pinned commit<br/>PASS · REVIEW · FAIL pack"]
   end
@@ -284,6 +295,8 @@ flowchart TB
   end
 
   FACTORY -.->|"factory_bridge · code path · 0 caps today"| HUB
+  FACTORY -->|"scaffold · despliegue firmado"| HEARTH
+  HEARTH -->|"anuncio explícito"| HUB
   FACTORY -.-> PROTOCOL
   HUB -.-> PROTOCOL
   ADMISSION -->|"admit before catalogue"| HUB
@@ -379,6 +392,16 @@ ARGUS filtra discover con `ARGUS_MIN_HUB_TRUST` (por defecto `0.25`). Guía de d
 **Consumir vs publicar:** los compradores con ARGUS / `aimarket-mcp` / SDKs **no** necesitan THEMIS. Quienes quieran que desconocidos descubran y paguen su capability, sí — por **dos puertas**: editor invitado en un Hub existente (garantía ≈ $25, esta sección) **o** [tu propio Hub](../../join-the-federation.es.md) como peer de la federación (sin stake de invitado).
 
 **Repos:** [`themis/`](https://github.com/alexar76/themis) · [landing](https://alexar76.github.io/themis/) · [consola](https://alexar76.github.io/themis/console/) · [guía de admisión](../supply-chain-admission-es.md) · [tutorial](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.es.md)
+
+### 3.2b HESTIA — el hogar (runtime alojado)
+
+**Rol:** **Runtime aislado y alojado** para proveedores de capacidad AIMarket en las máquinas del operador. HESTIA **no** es el catálogo del Hub, **ni** Factory, **ni** un tablón. Los agentes aparecen en el roster del hogar solo tras un despliegue firmado en este host. Un roster vacío significa que aquí no hay nada alojado — no que el mercado esté vacío.
+
+**Capas (no colapsar):** Factory arma el bundle → admisión THEMIS opcional → HESTIA es donde el proceso del vendedor **escucha** → anuncio explícito → el Hub sigue siendo catálogo y liquidación → ARGUS consume.
+
+**Hogar de referencia:** [hestia.modelmarket.dev](https://hestia.modelmarket.dev). Landing: [alexar76.github.io/hestia](https://alexar76.github.io/hestia/). Puerto `9480`. Nodo Alien Monitor `hestia`.
+
+**Repos:** [`hestia/`](https://github.com/alexar76/hestia) · [GitHub](https://github.com/alexar76/hestia)
 
 ### 3.3 AIMarket Protocol v2
 
@@ -997,7 +1020,7 @@ Documentado en [`docs/aimarket-whitepaper.md`](../../aimarket-whitepaper.md) §7
 
 **Docs:** [`ecosystem-architecture.md`](../../ecosystem-architecture.md) · [`aimarket-whitepaper.md`](../../aimarket-whitepaper.md) · [`onchain-journal.md`](../../onchain-journal.md) · [`USER_GUIDE.md`](../../USER_GUIDE.md) · [`hub-integration-guide.md`](../../hub-integration-guide.md) · [`contracts/DEPLOY.md`](../../../contracts/DEPLOY.md) · [`known-issues.md`](../../known-issues.md) · [`ROADMAP.md`](../../../ROADMAP.md)
 
-**Glosario:** **ALP** (Agent Listing Protocol) · **CapShares** (ERC-20 vinculado a listado) · **Channel** (depósito en garantía prefondeado para micropagos) · **Capability** (manifiesto invocable firmado) · **Federation** (crawl del hub de `.well-known`) · **Receipt** (prueba invoke Ed25519 / recibo) · **TEE** (atestación hardware) · **WARDEN** (biblioteca autónoma de firewall MCP · `@aimarket/warden`; host de referencia ARGUS) · **THEMIS** (admisión al publicar · approve/review/reject) · **GAIA** (oráculo físico) · **ATLAS** (mapa de sensores · LIVE/SIM · ATLAS Analyst) · **MOMUS** (red team · findings firmados) · **Treasury** (pagador de bounty separado) · **HORKOS** (escrow policy signer · only `authorizedHubs` key · Base debitChannel only) · **LOGOS** (analítica federada de solo lectura · snapshots · anomalías · correlaciones)
+**Glosario:** **ALP** (Agent Listing Protocol) · **CapShares** (ERC-20 vinculado a listado) · **Channel** (depósito en garantía prefondeado para micropagos) · **Capability** (manifiesto invocable firmado) · **Federation** (crawl del hub de `.well-known`) · **Receipt** (prueba invoke Ed25519 / recibo) · **TEE** (atestación hardware) · **WARDEN** (biblioteca autónoma de firewall MCP · `@aimarket/warden`; host de referencia ARGUS) · **THEMIS** (admisión al publicar · approve/review/reject) · **HESTIA** (hogar · runtime aislado y alojado · no Hub, no Factory) · **GAIA** (oráculo físico) · **ATLAS** (mapa de sensores · LIVE/SIM · ATLAS Analyst) · **MOMUS** (red team · findings firmados) · **Treasury** (pagador de bounty separado) · **HORKOS** (escrow policy signer · only `authorizedHubs` key · Base debitChannel only) · **LOGOS** (analítica federada de solo lectura · snapshots · anomalías · correlaciones)
 
 Tabla canónica (EN · RU · ES · FR · ZH): [`docs/localization-glossary.md`](../../localization-glossary.md).
 

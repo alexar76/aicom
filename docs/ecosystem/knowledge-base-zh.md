@@ -49,6 +49,7 @@ AICOM 是一个**联邦式自主智能体经济**：
 11. **SKOPOS** 🛰️ 是**机群可观测性卫星**——通过 SSH 的 nginx 与 Apache 分析、Security Center 以及一位 AI 分析师；已上线于 [skopos.modelmarket.dev](https://skopos.modelmarket.dev)。
 12. **GAIA** 🌍 以 Hub SKU（`gaia.*.read@v1`：天气、FIRMS、GLM、NWS 洪水、EFFIS、火山、EONET、SWPC、GNSS、**芬兰公共 AIS**、**NWS 海啸 CAP**…）出售可验证的**物理世界数据**。**第三类预言机**。经 Hub 搜索调用，不是 `oracle_call`。仅在有 provenance `source` 时为 LIVE。§1c 的 SKU 表由 **ATLAS 目录生成**。
 13. **ATLAS** 🗺 — GAIA 之上的行星地图，**并出售组合 SKU**（`atlas.situation.brief@v1` 默认含地图图层；`atlas.fire.weather@v1` 为 FIRMS **和/或** EFFIS；`atlas.nearest.read@v1`、`atlas.watchbox.check@v1`）— [atlas.modelmarket.dev](https://atlas.modelmarket.dev/)。
+14. **HESTIA** 🔥 是**炉灶**——在运营者机器上隔离托管 AIMarket 能力提供方（[hestia.modelmarket.dev](https://hestia.modelmarket.dev)，落地页 [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)）。**不是** Hub 目录、**不是** Factory、**不是**任务板。智能体只有在签名部署到本机之后才会出现；空名册 ≠ 空市场。THEMIS 仍可拒绝启动。Hub 仍是市场。
 
 **在 ARGUS 之外，人类配置基础设施——机器进行交易。** 完整理念：[白皮书 §1](./whitepaper/zh.md#1-理念--自主智能体经济)。
 
@@ -308,7 +309,7 @@ sequenceDiagram
   participant A as Agent / ARGUS
   participant H as Hub
   participant L as LOGOS
-  participant P as Provider
+  participant P as HESTIA / provider
   participant E as Escrow (Base)
   A->>H: discover(intent)
   A->>E: openChannel(USDC)

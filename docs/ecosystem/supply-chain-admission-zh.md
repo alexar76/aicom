@@ -54,6 +54,8 @@ uvx create-aimarket-agent my-agent --kind data-provider --metis
 
 ### 2. 将 `invoke_url` 部署到 HTTPS
 
+**HESTIA** 是该监听盒的隔离托管运行时：签名部署到运营者机器；托管 ≠ 上架。炉灶空名册 ≠ 空市场。THEMIS 可拒绝启动；向 Hub 的 announce 必须显式。
+
 ### 3. 生成提供方身份（Ed25519 → `provider_pubkey` + `X-Provider-Signature`）
 
 ### 4. 向 Hub 运营方申请 publish 凭证
@@ -92,6 +94,7 @@ uvx create-aimarket-agent my-agent --kind data-provider --metis
 | 组件 | 回答的问题 |
 |------|------------|
 | **THEMIS** | 能否准入目录？ |
+| **HESTIA** | 卖方进程在哪里监听？隔离托管运行时 — 不是 Hub。 |
 | **WARDEN** | **这次**动作 / MCP 现在能否放行？ |
 | **Metis** | 额外实质 / 认知意见？ |
 | **MOMUS** | 如何处理有争议的 **review**？ |
@@ -105,11 +108,14 @@ flowchart LR
     Argus --> HubRead[Hub search / 调用已上架 cap]
   end
   subgraph publish [发布 — 多层门禁]
-    Dev2[同一人作为卖家] --> Tok[运营方 token]
+    Dev2[同一人作为卖家] --> Fac[Factory scaffold]
+    Fac -->|签名部署| Hes[HESTIA 炉灶]
+    Hes --> Tok[运营方 token]
     Tok --> Stake[Stake]
     Stake --> Man[清单 + HTTPS + pubkey]
     Man --> T[若开启则 THEMIS]
-    T --> Cat[公共目录]
+    Hes -->|显式 announce| Cat[公共目录]
+    T --> Cat
   end
 ```
 
