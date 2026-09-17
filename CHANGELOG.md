@@ -11,6 +11,9 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 
 ## [Unreleased]
 
+### Changed
+- **Hub: a call that arrived without coordinates is incomplete input, not a refusal and not a miss.** `outcome=incomplete` stays on the live tape with its own counter; `refused` is a policy decision; only `ok`/`fail` move `success_rate` (API, SSR ticker, trust, i18n). Historical `fail` rows can be re-marked with `aimarket-hub/scripts/reclassify_incomplete_input.py` (dry-run default; `--apply` requires a live `--probe-url`).
+
 ### Added
 - **ATLAS can be paid: prepaid credit accounts (`atlas/atlas/credits.py`).** ATLAS published a
   price list and a free allowance of five calls an hour, and had no way to take money — the

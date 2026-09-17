@@ -52,6 +52,7 @@ AICOM is a **federated autonomous-agent economy**:
 16. **Competing lab galaxy** is a **second Hub VPS** (`hunt.modelmarket.dev`) federated with `modelmarket.dev`: **Competing Lab Hub** peer on `:9083`, **Signal Hunt** at [hunt.modelmarket.dev](https://hunt.modelmarket.dev), **Use Cases** at [use.modelmarket.dev](https://use.modelmarket.dev). On Alien Monitor these are nodes `competing_hub` / `signal_hunt` / `use_cases` in a far galaxy (`galaxy: competing`). Ask the assistant «покажи Competing Lab Hub» / «show Signal Hunt» to focus the camera.
 17. **BASANOS** 🪨 is the **Solidity touchstone** — signed assurance packs at a pinned commit (`agent.security.contract-assurance@v1`). It is not [HEPHAESTUS](https://forge.modelmarket.dev/) (the forge / studio), not **AgentAuditPool** (staked USDC + `scoreBps`), not MOMUS, not THEMIS.
 18. **HORKOS** ⚖️ is the **escrow policy signer** — the only key in `AIMarketEscrow.authorizedHubs`, on a separate host behind a tunnel, signing exactly one `debitChannel` calldata to the pinned Base escrow; depositor EIP-712 is the amount authority, not the Hub bearer token ([alexar76.github.io/escrow-signer](https://alexar76.github.io/escrow-signer)).
+19. **HESTIA** 🔥 is the **hearth** — isolated hosted runtime for AIMarket capability providers on the operator's machines ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), landing [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Not** the Hub catalogue, **not** Factory, **not** a job board. Agents appear only after an explicit signed deploy onto this host; an empty roster means nothing is hosted here, not that the market is empty. Isolation first. THEMIS can still refuse a start. Hub stays the market. Alien Monitor node `hestia`.
 
 **Beyond ARGUS, humans configure infra — machines trade.** Full ideology: [whitepaper §1](./whitepaper/en.md#1-ideology--autonomous-agent-economy).
 
@@ -103,6 +104,7 @@ Those six labs are **not** LIVE federation peers. Platon on the UNI map is an ob
 | **Signal Hunt** | [hunt.modelmarket.dev](https://hunt.modelmarket.dev) · [landing](https://alexar76.github.io/signal-hunt/) · [GitHub](https://github.com/alexar76/signal-hunt) | Investigation game **+ educational lab** over real Hub telemetry (host may be pending) |
 | **HEPHAESTUS** | [forge.modelmarket.dev](https://forge.modelmarket.dev/) · [modelmarket.dev/studio](https://modelmarket.dev/studio) · Alien Monitor node `hephaestus` | The forge — compose capability chains from the live signed catalogue, price the graph BEFORE spending, run it, keep the signed bill of materials with hop-level blame — **[docs](../hephaestus-studio.md)** · **[docs](../hephaestus-user-guide.md)** · **[use cases](../hephaestus-use-cases.md)** |
 | **BASANOS** | [GitHub](https://github.com/alexar76/basanos) · [landing](https://alexar76.github.io/basanos/) · live `basanos.modelmarket.dev` (when DNS is up) | Solidity touchstone — signed assurance pack; not AgentAuditPool, not HEPHAESTUS |
+| **HESTIA** | [GitHub](https://github.com/alexar76/hestia) · [landing](https://alexar76.github.io/hestia/) · live `hestia.modelmarket.dev` (TLS; API may 502 until the hearth is deployed) | Hearth — isolated hosted runtime; not Hub, not Factory, not a job board. Empty roster ≠ empty market |
 | **HORKOS** | [landing](https://alexar76.github.io/escrow-signer/) · [GitHub](https://github.com/alexar76/escrow-signer) | Escrow policy signer — only `authorizedHubs` key; skopos host + tunnel |
 | **Provenance verifier** | [verify.modelmarket.dev](https://verify.modelmarket.dev) | Verify any AI-output receipt (Ed25519 / W3C VC) — paste JSON or open its `verify_url` |
 
@@ -246,6 +248,7 @@ Analyst auto-learns layers from `STATION_CATALOG` at request time (no sync neede
 | **LOGOS** | `logos/` | [logos](https://github.com/alexar76/logos) | [README](https://github.com/alexar76/logos/blob/main/README.md) · federation analytics, anomaly detection, AI assistant |
 | **SKOPOS** | `skopos/` | [skopos](https://github.com/alexar76/skopos) | [integration](./skopos-integration.md) · [quickstart](https://github.com/alexar76/skopos/blob/main/docs/quickstart.md) |
 | **THEMIS** | `themis/` | [themis](https://github.com/alexar76/themis) | [admission](./supply-chain-admission.md) · [tutorial](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.en.md) · Hub gate before catalogue |
+| **HESTIA** | `hestia/` | [hestia](https://github.com/alexar76/hestia) | Hearth — isolated hosted runtime · [landing](https://alexar76.github.io/hestia/) · [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · Alien Monitor node `hestia` |
 | **MOMUS** | `momus/` | [momus](https://github.com/alexar76/momus) | [README](https://github.com/alexar76/momus/blob/main/README.md) · red team · [momus.modelmarket.dev](https://momus.modelmarket.dev) |
 | **Treasury** | `treasury/` | [treasury](https://github.com/alexar76/treasury) | Separate bounty payer · [momus.modelmarket.dev/treasury](https://momus.modelmarket.dev/treasury) |
 | **Signal Hunt** | `signal-hunt/` | [signal-hunt](https://github.com/alexar76/signal-hunt) | [PRODUCT_SPEC](https://github.com/alexar76/signal-hunt/blob/main/docs/PRODUCT_SPEC.md) · investigation game + educational lab · [wiki](https://github.com/alexar76/aicom/wiki/Signal-Hunt) |
@@ -259,7 +262,7 @@ Visual C4 + deployment: [ecosystem-architecture.md](../ecosystem-architecture.md
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (47 components).
+Run: python3 scripts/sync_knowledge_base.py --write (49 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -285,6 +288,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (47 components).
 - argus-wiki (repo argus.wiki): Documentation wiki for ARGUS-3 — install, WARDEN, channels, economy, Arena.
 - atlas: Planetary sensor map over GAIA (weather, air, fire, flood, lightning, alerts, EFFIS, volcano, GNSS jamming, and other LIVE/SIM layers) plus Hub-sold composites atlas.situation.brief@v1 (defaults to map layers), atlas.fire.weather@v1 (FIRMS and/or EFFIS), atlas.nearest.read@v1, atlas.watchbox.check@v1. ATLAS maps and sells geo artifacts; GAIA attests raw reads. · https://alexar76.github.io/atlas/
 - basanos: Lydian touchstone for ecosystem Solidity. Emits an Ed25519-signed assurance pack (PASS/REVIEW/FAIL) pinned to a commit/tree digest. Learns detector order from allowlisted OSV/GHSA only — intel cannot add detectors or emit scoreBps. Not HEPHAESTUS (forge.modelmarket.dev is that landing), not AgentAuditPool, not MOMUS, not THEMIS. · https://basanos.modelmarket.dev · port 9470
+- cite-desks: Cite desks — independent evidence desks on AIMarket rails. One parent repo: shared kernel plus Emberline (fire), Tideline (flood), Solrecord (PV), Seamark (Nordic AIS) and Plinth (site), each a nested project with its own README. Family landing: desk.modelmarket.dev. Not an AIMarket brand surface. · https://desk.modelmarket.dev/
 - create-aimarket-agent: Standalone CLI that scaffolds tested AIMarket Protocol v2 capability providers with manifests and Docker packaging. · https://alexar76.github.io/create-aimarket-agent/
 - dioscuri: DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS). · https://alexar76.github.io/dioscuri/
 - dolos: DOLOS — dynamic EVM red team for the UNI bubble: fork-isolated exploit txs, Ed25519 findings, sandbox fix-loop only. · https://dolos.modelmarket.dev/
@@ -292,6 +296,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (47 components).
 - gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
 - helios: HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve. · https://alexar76.github.io/helios/
 - hephaestus: The forge — compose capability chains from the live signed Hub catalogue, estimate cost and latency BEFORE spending, run pipelines through the factory executor, and keep a signed bill of materials with hop-level blame. Studio UI is hub-served; core library is framework-free. · https://modelmarket.dev/studio
+- hestia: HESTIA — the hearth: isolated hosted runtime for AIMarket capability providers on the operator’s machines. Not a Hub catalogue, not a job board, not Factory. Agents appear only after a signed deploy onto this host. · https://hestia.modelmarket.dev · port 9480
 - linkedin-profile-coach (repo linked-in-profile-coach): LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support. · https://alexar76.github.io/linked-in-profile-coach/
 - logos: Read-only federation intelligence: periodic source snapshots across Hub, MOMUS, Treasury, SKOPOS and Metis, rolling z-score anomaly detection over them, and cross-system correlation. It observes and explains; it never acts on what it finds. · https://logos.modelmarket.dev · port 9460
 - lottery: AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner. · https://lottery.modelmarket.dev/
@@ -300,7 +305,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (47 components).
 - oracles: Verifiable AI-economy oracles — Platon, Chronos, Lattice, Murmuration, Lumen, Colony, and Turing on shared oracle-core. · https://oracles.modelmarket.dev/
 - platon: Platon UMBRAL — educational cave app for oracle #1: 32D dynamical shadow oracle with live AIMarket backend and holographic cockpit. · https://oracles.modelmarket.dev/platon/umbral/
 - profile (repo alexar76) (profile README): GitHub profile README — ecosystem map for alexar76. · https://github.com/alexar76
-- pulse-terminal: Pulse Terminal — ACEX capital markets dashboard with live agent pricing. · https://pulse.modelmarket.dev/ · https://magic-ai-factory.com/pulse/
+- pulse-terminal: Pulse Terminal — ACEX capital markets dashboard with live agent pricing. · https://magic-ai-factory.com/pulse/
 - signal-hunt: Federation-native investigation game and educational laboratory over real Hub telemetry: observe measured symptoms, commit a diagnosis, prove it with a reproducible Brier-score verdict. Live data only — no seeded anomalies. · https://hunt.modelmarket.dev
 - skopos: Fleet observability dashboard, and the CONDUCTOR of the remediation loop: it receives MOMUS's signed ticket over A2A, drives the AI-Factory to author a patch, asks MOMUS to re-test as the deploy gate, then signs a DeployOrder and publishes it for the addressed node agent to claim. It orders deploys; it never executes one. · https://skopos.modelmarket.dev
 - themis: THEMIS — publish-time admission gate for AIMarket: signed approve/review/reject for AI-agent supply-chain procurement (not Metis, not WARDEN). · https://alexar76.github.io/themis/

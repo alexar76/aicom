@@ -1292,6 +1292,50 @@ satellites:
       tutorial and Hub publish-admission overlay (THEMIS). Hub publication remains
       an explicit operator action. README ships hero + gallery under docs/screenshots/.
 
+  - id: hestia
+    repo: hestia
+    github_published: true
+    description: "HESTIA — the hearth: isolated hosted runtime for AIMarket capability providers on the operator’s machines. Not a Hub catalogue, not a job board, not Factory. Agents appear only after a signed deploy onto this host."
+    description_i18n:
+      ru: "HESTIA — очаг: изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора. Не каталог Hub, не доска работ, не Factory. Агенты появляются только после подписанного деплоя на этот хост."
+      es: "HESTIA — el hogar: runtime aislado y alojado para proveedores de capacidad AIMarket en las máquinas del operador. No es el catálogo del Hub, ni un tablón de empleos, ni Factory. Los agentes aparecen solo tras un despliegue firmado en este host."
+      fr: "HESTIA — l’âtre : runtime hébergé et isolé pour les fournisseurs de capacité AIMarket sur les machines de l’opérateur. Pas le catalogue du Hub, pas un job board, pas Factory. Les agents n’apparaissent qu’après un déploiement signé sur cet hôte."
+      zh: "HESTIA — 炉灶：在运营者机器上隔离托管 AIMarket 能力提供方。不是 Hub 目录、不是任务板、不是 Factory。智能体只有在签名部署到本机之后才会出现。"
+    homepage: https://alexar76.github.io/hestia/
+    console: https://hestia.modelmarket.dev/ui/
+    topics:
+      - aimarket
+      - aicom
+      - hosted-runtime
+      - isolation
+      - ed25519
+      - agents
+      - security
+    license: mit
+    paths:
+      - hestia
+    export_layout:
+      root_from: hestia
+    exclude_paths:
+      - .env
+      - data
+      - .venv
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+    registries: []
+    ci:
+      - pytest
+      - docker-build
+    notes: >
+      Python satellite (alexar76/hestia). Source of truth: hestia/ in the Gitea monorepo.
+      GitHub mirror: publish_all_repos.sh --satellite hestia. Fleet:
+      sudo HESTIA_DEPLOY_TOKEN=… ./scripts/deploy_hestia.sh on the host that
+      owns the hestia.modelmarket.dev A record · port 9480. Landing:
+      alexar76.github.io/hestia/.
+      Not Hub, not THEMIS, not Factory: tenants run on the Hestia operator’s machines
+      and appear on the roster only after an explicit deploy.
+
   - id: escrow-signer
     repo: escrow-signer
     description: "HORKOS holds the only key authorized in AIMarketEscrow.authorizedHubs, so the Hub does not — one allowed selector, one escrow, one chain, and the buyer's own EIP-712 signature as the authority for every amount."
@@ -1513,6 +1557,7 @@ satellites:
       - aimarket-playground
       - create-aimarket-agent
       - themis
+      - hestia
       - plugins
       - aimarket-sdks
       - apps/pulse-terminal

@@ -79,6 +79,7 @@ Satellite ↔ monorepo map (quick reference):
   signal-hunt            ← signal-hunt/ → alexar76/signal-hunt (game + educational lab · hunt.modelmarket.dev)
   aimarket-playground    ← aimarket-playground/ → alexar76/aimarket-playground (guided first invoke)
   create-aimarket-agent  ← create-aimarket-agent/ → alexar76/create-aimarket-agent (scaffolding CLI)
+  hestia                 ← hestia/ → alexar76/hestia (hosted runtime / hearth · :9480)
   use-cases-portal       ← use-cases-portal/ → alexar76/use-cases-portal (GTM portal · use.modelmarket.dev)
   linkedin-profile-coach ← coach/ → alexar76/linked-in-profile-coach
   aicom-landing        ← aicom-landing/ → alexar76/aicom-landing

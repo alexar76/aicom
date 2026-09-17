@@ -13,7 +13,7 @@ strings follow this glossary where the terms appear.)
 - **Never translate** code, identifiers, CLI, env vars, URLs, and product/brand names
   (`ARGUS`, `WARDEN`, `AI-Factory`, `Hub`, `Mesh`, `Metis`, `GAIA`, `ATLAS`, `SKOPOS`,
   `DIOSCURI`, `HELIOS`, `THEOROS`, `Alien Monitor`, `Signal Hunt`, `LOGOS`, `MOMUS`, `HORKOS`,
-  `THEMIS`, `ACEX`, `AIMarketEscrow`, `aimarket-agent`, `LIVE`, `SIM`,
+  `THEMIS`, `HESTIA`, `ACEX`, `AIMarketEscrow`, `aimarket-agent`, `LIVE`, `SIM`,
   `ATLAS Analyst`, `slash_sync.py`, `USDC`, `Base`, `MCP`, `NFT`, `MIT`, `Brier`, `PRIME`, …).
   Decision tokens `approve` / `review` / `reject` stay Latin in UI chips and tables.
   Class/contract names keep their Latin form even when the common noun is translated (e.g. RU
@@ -49,6 +49,12 @@ strings follow this glossary where the terms appear.)
 | agent | агент | agente | agent | 智能体 | «代理» also seen; prefer 智能体 for AI agents. |
 | agentic / AI-agent supply chain | цепочка поставок AI-агентов | cadena de suministro de agentes de IA | chaîne d’approvisionnement des agents IA | AI 智能体供应链 | OWASP Agentic Top 10 risk family `ASI04 Agentic Supply Chain Vulnerabilities`: agents, models, tools, plugins, prompts, data and delegated services. Use the localized form in prose; risk id stays Latin. |
 | THEMIS | THEMIS | THEMIS | THEMIS | THEMIS | Publish-time admission agent (Θέμις). **Not** Metis (Μῆτις, cognition). Product name stays Latin. |
+| HESTIA | HESTIA | HESTIA | HESTIA | HESTIA | Hosted runtime for AIMarket providers (Ἑστία, the hearth). Product name stays Latin. **Not** Hub, not Factory, not a job board. |
+| hearth (HESTIA) | очаг | hogar | âtre | 炉灶 | The operator’s machines that actually run seller processes. Gloss the metaphor; keep `HESTIA` Latin. |
+| tenant (HESTIA) | тенант | inquilino | locataire | 租户 | One isolated provider process on a hearth. Identifier/API field may stay `tenant`. |
+| deploy (onto a hearth) | деплой (на очаг) | desplegar (en el hogar) | déployer (sur l’âtre) | 部署（到炉灶） | Explicit start of a signed bundle on Hestia. Factory finishing a pipeline is **not** a deploy. |
+| announce (to Hub) | announce (стук в Hub) | anunciar (al Hub) | annoncer (au Hub) | 宣布（向 Hub） | Optional knock on Hub federation. Observation, not a trust grant or a catalogue row. Keep the API verb `announce`. |
+| roster (hearth) | roster / список очага | roster / lista del hogar | roster / liste de l’âtre | 名册 | Public list of tenants **this** hearth is running. Empty ≠ empty market. Field may stay `hearth`. |
 | publish admission / admission gate | допуск публикации / шлюз допуска | admisión al publicar / puerta de admisión | admission à la publication / porte d’admission | 发布准入 / 准入门控 | Hub publish-time gate via THEMIS — before the public catalogue; not invoke-time WARDEN. |
 | approve / review / reject (admission) | approve / review / reject | approve / review / reject | approve / review / reject | approve / review / reject | Keep Latin decision tokens; localize surrounding prose only. |
 | verify / verification | верификация | verificación | vérification | 验证 | |
@@ -239,7 +245,8 @@ never translated** — a reader copies them into a config file.
 | trial (free trial) | проба | prueba | essai | 试用 | ⚠️ RU «проба» also renders MOMUS `probe` (attack strategy). Disambiguate in prose — «бесплатная проба» for the trial, «проба» alone only inside MOMUS context. |
 | visitor (sandbox visitor) | посетитель | visitante | visiteur | 访客 | Identified by the self-chosen `X-AIMarket-Sandbox-Visitor` id, not by an account. |
 | caller | вызывающий | llamante | appelant | 调用方 | Whoever is invoking — an agent, a bridge, a published product. |
-| refusal (a refused call) | отказ | rechazo | refus | 拒绝 | An `ok: false` answer with a reason. **Not** an error and never billed — see the ATLAS section. |
+| incomplete input | неполный ввод | entrada incompleta | entrée incomplète | 输入不完整 | The caller omitted what the capability needs (coordinates, a bbox, an id). Own mark on the tape (`outcome=incomplete`), own counter, **not** a refusal and **not** a miss — excluded from `success_rate`. API error `incomplete_input`. |
+| refusal (a refused call) | отказ | rechazo | refus | 拒绝 | A **policy** decision (quota, plan, blocked consumer). Own mark (`outcome=refused`), never billed, excluded from `success_rate`. **Not** incomplete input and not a provider miss. |
 | enforced (payment) | enforced (плата взимается) | aplicado (enforced) | appliqué (enforced) | 强制执行 | Keep the English token in RU/ES/FR; the ecosystem uses it as a switch name, and «включён» loses the distinction from «declared». |
 | to settle (spend one allowance) | списать | liquidar | régler | 结算 | The second half of the check/settle split. Function name `settle` stays Latin. |
 | metering / meter | счётчик (учёт вызовов) | contador | compteur | 计量 | The thing that counts calls. A «broken meter» fails open. |

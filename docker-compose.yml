@@ -169,6 +169,12 @@ services:
       AIFACTORY_PIPELINE_SLO_MAX_REGRESSION: ${AIFACTORY_PIPELINE_SLO_MAX_REGRESSION:-0.05}
       AIFACTORY_PIPELINE_SLO_MAX_MTTR_HOURS: ${AIFACTORY_PIPELINE_SLO_MAX_MTTR_HOURS:-12}
       # [discovery] AI Market federation
+      # Phase 2 of the post-quantum migration: sign this factory's manifest and discovery
+      # document hybrid (Ed25519 + ML-DSA-65). The ML-DSA key is written beside the classical
+      # one as data/secrets/ai_market_signing.key_mldsa, which is on the ./data volume, so the
+      # identity survives a recreate. Off, this factory published classical-only manifests and
+      # every peer already at phase 3 (AIMARKET_PQC_REQUIRE=1) silently stopped indexing it.
+      AIMARKET_PQC: ${AIMARKET_PQC:-1}
       AIFACTORY_AI_MARKET_CHAIN: ${AIFACTORY_AI_MARKET_CHAIN:-base}
       AIFACTORY_AI_MARKET_TOKEN: ${AIFACTORY_AI_MARKET_TOKEN:-USDT}
       AIFACTORY_AI_MARKET_CONTRACT: ${AIFACTORY_AI_MARKET_CONTRACT:-}

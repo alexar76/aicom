@@ -107,6 +107,10 @@ components:
       allowlisted OSV/GHSA only — intel cannot add detectors or emit scoreBps.
       Not HEPHAESTUS (forge.modelmarket.dev is that landing), not AgentAuditPool,
       not MOMUS, not THEMIS.
+  hestia:
+    group: infra
+    url: https://hestia.modelmarket.dev
+    port: 9480
   signal-hunt:
     group: ops
     url: https://hunt.modelmarket.dev

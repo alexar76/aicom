@@ -51,6 +51,8 @@ webauthn==2.7.1
 qrcode[pil]==7.4.2
 # 48.0.1 clears GHSA-537c-gmf6-5ccf on statically linked OpenSSL wheels.
 cryptography==50.0.0
+# Hybrid manifest signatures (ML-DSA-65) — see services/ai_market_protocol/signing.py.
+dilithium-py==1.4.0
 python-multipart>=0.0.18
 pywebpush==1.14.1
 

@@ -50,6 +50,7 @@ def test_the_new_satellites_are_actually_there():
             "create-aimarket-agent",
             "themis",
             "basanos",
+            "hestia",
             "hephaestus",
         ):
             assert f"- {cid}" in text, f"{target.path} does not know about {cid}"

@@ -95,6 +95,7 @@ AICOM — это **федеративная экономика автономн�
 | **GAIA** | [alexar76.github.io/gaia](https://alexar76.github.io/gaia/) · [GitHub](https://github.com/alexar76/gaia) | Шлюз физических оракулов — аттестованные IoT-датчики (`:9320`) — **[docs](../iot-physical-oracles.md) · [add sensor](../add-gaia-atlas-sensor.md)** |
 | **ATLAS** | [atlas.modelmarket.dev](https://atlas.modelmarket.dev/) · [alexar76.github.io/atlas](https://alexar76.github.io/atlas/) · [GitHub](https://github.com/alexar76/atlas) | Планетарная карта датчиков поверх GAIA (LIVE/SIM + Analyst) — узел Alien Monitor `atlas` |
 | **THEMIS** | [GitHub](https://github.com/alexar76/themis) · узел `themis` | Допуск публикации — **[RU](./supply-chain-admission-ru.md)** · [EN](./supply-chain-admission.md) · [ES](./supply-chain-admission-es.md) · [FR](./supply-chain-admission-fr.md) · [ZH](./supply-chain-admission-zh.md) |
+| **HESTIA** | [GitHub](https://github.com/alexar76/hestia) · [лендинг](https://alexar76.github.io/hestia/) · live `hestia.modelmarket.dev` | Очаг — изолированный hosted-runtime; не Hub, не Factory, не доска работ. Пустой roster ≠ пустой рынок |
 | **HEPHAESTUS** | [modelmarket.dev/studio](https://modelmarket.dev/studio) · узел `hephaestus` | Кузница — собрать цепочку возможностей из живого подписанного каталога, посчитать смету ДО траты, прогнать и сохранить подписанный bill of materials (спецификацию работ) с хоповой атрибуцией вины — **[RU](../hephaestus-studio.ru.md)** · [руководство](../hephaestus-user-guide.ru.md) · [сценарии](../hephaestus-use-cases.ru.md) · [EN](../hephaestus-studio.md) |
 | **Верификатор происхождения** | [verify.modelmarket.dev](https://verify.modelmarket.dev) | Проверка любого receipt'а ИИ-ответа (Ed25519 / W3C VC) — вставь JSON или открой его `verify_url` |
 
@@ -247,7 +248,7 @@ Analyst учит слои из каталога в момент запроса. 
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (47 components).
+Run: python3 scripts/sync_knowledge_base.py --write (49 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -273,6 +274,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (47 components).
 - argus-wiki (repo argus.wiki): Documentation wiki for ARGUS-3 — install, WARDEN, channels, economy, Arena.
 - atlas: Planetary sensor map over GAIA (weather, air, fire, flood, lightning, alerts, EFFIS, volcano, GNSS jamming, and other LIVE/SIM layers) plus Hub-sold composites atlas.situation.brief@v1 (defaults to map layers), atlas.fire.weather@v1 (FIRMS and/or EFFIS), atlas.nearest.read@v1, atlas.watchbox.check@v1. ATLAS maps and sells geo artifacts; GAIA attests raw reads. · https://alexar76.github.io/atlas/
 - basanos: Lydian touchstone for ecosystem Solidity. Emits an Ed25519-signed assurance pack (PASS/REVIEW/FAIL) pinned to a commit/tree digest. Learns detector order from allowlisted OSV/GHSA only — intel cannot add detectors or emit scoreBps. Not HEPHAESTUS (forge.modelmarket.dev is that landing), not AgentAuditPool, not MOMUS, not THEMIS. · https://basanos.modelmarket.dev · port 9470
+- cite-desks: Cite desks — независимые evidence-столы на рельсах AIMarket. Один родительский репозиторий: kernel + Emberline / Tideline / Solrecord / Seamark / Plinth, у каждого свой README. · https://desk.modelmarket.dev/
 - create-aimarket-agent: Автономный CLI, создающий протестированных поставщиков возможностей AIMarket Protocol v2 с манифестами, подписью Ed25519 и Docker-упаковкой. · https://alexar76.github.io/create-aimarket-agent/
 - dioscuri: DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS). · https://alexar76.github.io/dioscuri/
 - dolos: DOLOS — динамическая red-team по EVM для пузыря UNI: форкает Anvil пузыря и бросает реальные эксплойт-транзакции в задеплоенные контракты, доказывая, какие изъяны реальны, а какие — шум статики; подписанные Ed25519 находки; только на песочной цепочке гоняет полный цикл атака->фикс->forge-test->редеплой->повторная атака. Никогда не трогает цепь, которую нельзя выбросить; находка mainnet — рекомендательная. · https://dolos.modelmarket.dev/
@@ -280,6 +282,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (47 components).
 - gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
 - helios: HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve. · https://alexar76.github.io/helios/
 - hephaestus: The forge — compose capability chains from the live signed Hub catalogue, estimate cost and latency BEFORE spending, run pipelines through the factory executor, and keep a signed bill of materials with hop-level blame. Studio UI is hub-served; core library is framework-free. · https://modelmarket.dev/studio
+- hestia: HESTIA — очаг: изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора. Не каталог Hub, не доска работ, не Factory. Агенты появляются только после подписанного деплоя на этот хост. · https://hestia.modelmarket.dev · port 9480
 - linkedin-profile-coach (repo linked-in-profile-coach): LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support. · https://alexar76.github.io/linked-in-profile-coach/
 - logos: Read-only federation intelligence: periodic source snapshots across Hub, MOMUS, Treasury, SKOPOS and Metis, rolling z-score anomaly detection over them, and cross-system correlation. It observes and explains; it never acts on what it finds. · https://logos.modelmarket.dev · port 9460
 - lottery: AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner. · https://lottery.modelmarket.dev/

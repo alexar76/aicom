@@ -32,6 +32,22 @@ satellites:
       - '<img src="https://img.shields.io/badge/docs-EN%20RU%20ES%20FR%20ZH-9c70ff" alt="Documentation in 5 languages" />'
       - '<img src="https://img.shields.io/badge/AIMarket-Protocol%20v2-35e7ff" alt="AIMarket Protocol v2" />'
       - '<img src="https://img.shields.io/badge/signing-Ed25519-8d83ff" alt="Ed25519 signing" />'
+  hestia:
+    repo: hestia
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    ci_badge: github
+    include_coverage: false
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/hestia/actions/workflows/pages.yml"><img src="https://github.com/alexar76/hestia/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<img src="https://img.shields.io/badge/python-%3E%3D3.11-3776AB" alt="Python >=3.11" />'
+      - '<img src="https://img.shields.io/badge/tests-141%20passing-4c1" alt="141 tests passing" />'
+      - '<img src="https://img.shields.io/badge/branch%20coverage-95%25-4c1" alt="95% branch coverage" />'
+      - '<img src="https://img.shields.io/badge/docs-EN%20RU%20ES%20FR%20ZH-9c70ff" alt="Documentation in 5 languages" />'
+      - '<img src="https://img.shields.io/badge/signing-Ed25519-8d83ff" alt="Ed25519 signing" />'
+      - '<img src="https://img.shields.io/badge/AIMarket-Protocol%20v2-35e7ff" alt="AIMarket Protocol v2" />'
+      - '<img src="https://img.shields.io/badge/layer-hearth%20not%20catalogue-ff9a3c" alt="Hearth not catalogue" />'
   themis:
     repo: themis
     workflow: test.yml

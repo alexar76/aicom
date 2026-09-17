@@ -382,6 +382,12 @@ _post_rsync_satellite_hook() {
         echo "  ✓ docs/landing/ → GitHub Pages (workflow uploads folder)"
       fi
       ;;
+    hestia)
+      if [[ -f "$clone/docs/landing/index.html" ]]; then
+        : > "$clone/docs/landing/.nojekyll"
+        echo "  ✓ docs/landing/ → GitHub Pages (workflow uploads folder)"
+      fi
+      ;;
     alien-monitor)
       # AI registry loader reads scripts/satellite-map.yaml on the satellite.
       mkdir -p "$clone/scripts"
@@ -2403,6 +2409,11 @@ else:
       extra_excludes="$(_python_map exclude-paths themis)"
       export_simple "$sat_id" "themis" "themis" "mit" "$extra_excludes"
       ;;
+    hestia)
+      local extra_excludes
+      extra_excludes="$(_python_map exclude-paths hestia)"
+      export_simple "$sat_id" "hestia" "hestia" "mit" "$extra_excludes"
+      ;;
     use-cases-portal)
       local extra_excludes
       extra_excludes="$(_python_map exclude-paths use-cases-portal)"
@@ -2497,6 +2508,9 @@ echo "  https://${GITHUB_ORG}.github.io/signal-hunt/"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/aimarket-playground"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/create-aimarket-agent"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/themis"
+echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/hestia"
+echo "  https://${GITHUB_ORG}.github.io/hestia/"
+echo "  https://hestia.modelmarket.dev/"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/use-cases-portal"
 echo "  https://${GITHUB_ORG}.github.io/use-cases-portal/"
 echo "  https://${GITHUB_HOST}/${GITHUB_ORG}/oracles"

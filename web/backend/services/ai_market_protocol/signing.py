@@ -1,4 +1,4 @@
-"""Ed25519 manifest signatures and server receipt signing."""
+"""Hybrid (Ed25519 + ML-DSA-65) manifest signatures and server receipt signing."""
 
 from __future__ import annotations
 
@@ -35,6 +35,76 @@ def _load_or_create_keypair() -> tuple[bytes, bytes]:
         pub_bytes = seed[:32]
         path.write_bytes(seed + pub_bytes)
         return seed, pub_bytes
+
+
+try:  # pragma: no cover - presence is what is under test, not the import line
+    from dilithium_py.ml_dsa import ML_DSA_65 as _MLDSA
+
+    _PQ_LIB = True
+except ImportError:  # pragma: no cover
+    _MLDSA = None
+    _PQ_LIB = False
+
+
+class PQCMisconfigured(RuntimeError):
+    """PQ signing is switched on but this process cannot produce an ML-DSA signature."""
+
+
+def _truthy(value: str | None) -> bool:
+    return (value or "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _pq_keypair() -> tuple[bytes, bytes] | None:
+    """This node's ML-DSA-65 keypair, or None when hybrid signing is off.
+
+    Kept beside the classical key as ``<key>_mldsa``, the convention every other signer in
+    the ecosystem follows, so it persists on whatever volume the Ed25519 key does — a PQ
+    key regenerated on each boot would re-key the factory's identity every restart.
+
+    Missing library with the flag ON raises instead of degrading. The quiet fallback is
+    what this function exists to prevent: this factory published a classical-only manifest
+    all through phase 2 of the PQC migration and nothing said so, until a peer that had
+    reached phase 3 (AIMARKET_PQC_REQUIRE=1) began refusing every manifest from here and
+    froze its copy of this catalogue for a week while still reporting the peer as healthy.
+    """
+    if not _truthy(os.environ.get("AIMARKET_PQC")):
+        return None
+    if not _PQ_LIB:
+        raise PQCMisconfigured(
+            "AIMARKET_PQC is on but dilithium-py is missing — install it on this signer"
+        )
+    classical = signing_key_path()
+    path = classical.with_name(classical.name + "_mldsa")
+    if path.exists():
+        # Two hex lines, pk then sk — the on-disk shape aimarket_hub._load_or_make_pq
+        # already writes, so one convention covers every PQ key in the fleet.
+        pk_hex, sk_hex = path.read_text().split("\n")[:2]
+        return bytes.fromhex(pk_hex), bytes.fromhex(sk_hex)
+    pk, sk = _MLDSA.keygen()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(f"{pk.hex()}\n{sk.hex()}\n")
+    try:
+        os.chmod(path, 0o600)
+    except OSError:
+        pass
+    return pk, sk
+
+
+def _pq_fields(canonical: str) -> dict[str, str]:
+    """The additive ``pq_*`` block for a signature object; ``{}`` when PQ signing is off.
+
+    The FIELD NAMES are the interoperability contract — a second spelling of ``pq_value``
+    is a signature no verifier in the ecosystem looks at.
+    """
+    pair = _pq_keypair()
+    if pair is None:
+        return {}
+    pk, sk = pair
+    return {
+        "pq_algorithm": "ml-dsa-65",
+        "pq_public_key": base64.b64encode(pk).decode("ascii"),
+        "pq_value": base64.b64encode(_MLDSA.sign(sk, canonical.encode("utf-8"))).decode("ascii"),
+    }
 
 
 def public_key_b64() -> str:
@@ -110,17 +180,21 @@ def object_canonical(obj: dict[str, Any]) -> str:
 
 
 def manifest_signature(manifest: dict[str, Any]) -> dict[str, str]:
+    canonical = manifest_canonical(manifest)
     return {
         "algorithm": "ed25519",
         "public_key": public_key_b64(),
-        "value": sign_canonical(manifest_canonical(manifest)),
+        "value": sign_canonical(canonical),
+        **_pq_fields(canonical),
     }
 
 
 def object_signature(obj: dict[str, Any]) -> dict[str, str]:
     """Sign a discovery document in place of a manifest's structural canonical."""
+    canonical = object_canonical(obj)
     return {
         "algorithm": "ed25519",
         "public_key": public_key_b64(),
-        "value": sign_canonical(object_canonical(obj)),
+        "value": sign_canonical(canonical),
+        **_pq_fields(canonical),
     }
