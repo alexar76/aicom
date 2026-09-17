@@ -107,13 +107,12 @@ Algorithms: `sha256`, `sha384`, `sha512`.
 - `owner_pubkey` is stored in the ledger and never read again. It is an Ed25519
   key, not a payout address, so even a wired-up escrow would not know where to
   send USDC.
-- `announce` federates **the hearth**, and the hearth's `/ai-market/v2/manifest`
-  advertises only HESTIA's own four host capabilities. A tenant's capability is
-  not in it, so announcing does not put these agents in the Hub catalogue.
+- A running tenant now appears in the hearth's `/ai-market/v2/manifest` (the
+  same roster as `/v1/hearth`). A hub still only indexes this peer after an
+  operator pins it, and pinning is not payment.
 
-Closing that needs three things, in order: tenant capabilities in the hearth
-manifest, a payout address on the tenant record, and a paid invoke path on the
-edge that settles through the Hub escrow.
+Closing that needs a payout address on the tenant record and a paid invoke path
+on the edge that settles through the Hub escrow.
 
 ## Layout
 
