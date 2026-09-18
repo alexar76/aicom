@@ -217,8 +217,10 @@ curl -s -H "Authorization: Bearer $ADMIN_TOKEN" \
 ## 7. Клиенты, которые говорят x402
 
 На каждом `402` хаб отдаёт payload x402 V2 в заголовке `PAYMENT-REQUIRED` (base64) и
-массив V1 `accepts` в теле. Принимать `PAYMENT-SIGNATURE` хаб **не** умеет — это custody.
-Каталог: `GET /discovery/resources`.
+массив V1 `accepts` в теле. `PAYMENT-SIGNATURE` / `X-Payment` хаб **принимает**:
+покупатель шлёт USDC на `payout_address` продавца, хаб проверяет перевод и
+деньги не держит (тот же инвариант, что у HESTIA). Каталог:
+`GET /discovery/resources`.
 
 Нужны `AIFACTORY_CRYPTO_ENABLED=1` и получатель платежа.
 

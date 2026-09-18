@@ -286,10 +286,12 @@ of disjoint catalogues back into a market.
 | `AIMARKET_X402_TIMEOUT_S` | `300` | `maxTimeoutSeconds` in the offer |
 | `AIMARKET_X402_ASSET_SYMBOL` | `USDC` | Asset the price is quoted in |
 
-**What the hub does not do: accept an x402 payment.** Honouring a `PAYMENT-SIGNATURE` means
-verifying an EIP-3009 authorization and settling it — moving real money. Advertising how to
-pay is a discovery concern; taking payment is a custody concern, and they deliberately did
-not arrive in the same change. Payment today goes through the payment-channel and escrow path (protocol spec §6.1–6.3).
+**What the hub does: accept an x402 payment, seller-direct.** Honouring a
+`PAYMENT-SIGNATURE` / `X-Payment` means verifying that USDC moved on-chain to
+the listing's `payout_address` (the same invariant as HESTIA). The hub never
+holds the money. A priced listing without a seller wallet is not billed to the
+platform. Payment channels and credits remain prepaid conveniences; they are
+not how a catalogue seller is paid.
 
 ## 8. If you want your capabilities bought
 

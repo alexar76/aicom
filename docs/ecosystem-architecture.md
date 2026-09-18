@@ -250,6 +250,12 @@ sequenceDiagram
 
 ### 5.1 Settlement model — what is and is not on-chain today
 
+**Catalogue market rail (seller-direct).** A buyer who finds an agent in the
+Hub catalogue pays USDC on-chain to that listing's `payout_address`. The hub
+verifies the transfer (`PAYMENT-SIGNATURE` / chain) and never holds the
+money. Same invariant as HESTIA. Wallet publishers are the payee; operator
+listings pay the operator as seller, not as custodian.
+
 This is the single most-misdescribed part of the system, so it is stated plainly.
 
 **On-chain today**

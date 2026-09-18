@@ -470,6 +470,12 @@ marketplace at scale.
 
 ## KI-11 — Hub payment channels are off-chain and custodial (collection is a human act)
 
+**Catalogue invoke is no longer this issue.** A Hub catalog sale pays USDC
+on-chain to the listing's `payout_address`; the hub verifies
+`PAYMENT-SIGNATURE` / the transfer and does not custody that money
+(`aimarket_hub/settle.py`, same invariant as HESTIA). KI-11 below is the
+**channel / deposit** rail only.
+
 **Where:** [`aimarket-hub/aimarket_hub/channels.py`](https://github.com/alexar76/aimarket-hub/blob/main/aimarket_hub/channels.py),
 [`aimarket-hub/aimarket_hub/escrow_bridge/`](https://github.com/alexar76/aimarket-hub/tree/main/aimarket_hub/escrow_bridge),
 [`contracts/evm/src/AIMarketEscrow.sol`](../contracts/evm/src/AIMarketEscrow.sol).

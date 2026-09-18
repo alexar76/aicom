@@ -169,9 +169,10 @@ En el navegador: terminal del hub y **Alien Monitor** (mapa LIVE, etiqueta `pend
 
 ## 7. Clientes x402
 
-Cada `402` lleva el payload x402 V2 en `PAYMENT-REQUIRED` (base64). El hub **no** acepta
-`PAYMENT-SIGNATURE`. Catálogo: `GET /discovery/resources`. Hace falta `AIFACTORY_CRYPTO_ENABLED=1`
-y un destinatario de pago.
+Cada `402` lleva el payload x402 V2 en `PAYMENT-REQUIRED` (base64). El hub **acepta**
+`PAYMENT-SIGNATURE` / `X-Payment`: el comprador envía USDC a `payout_address` del
+anuncio; el hub verifica la transferencia y no custodia el dinero (el mismo
+invariante que HESTIA). Catálogo: `GET /discovery/resources`.
 
 ## 8. Si quieres que compren tus capabilities
 

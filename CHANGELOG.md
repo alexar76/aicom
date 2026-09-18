@@ -12,6 +12,7 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 ## [Unreleased]
 
 ### Changed
+- **Hub catalogue settle is seller-direct, like HESTIA.** A buyer pays USDC on-chain to the listing's `payout_address`; the hub verifies `PAYMENT-SIGNATURE` / the transfer (`aimarket_hub/settle.py`) and never holds the money. Wallet publishers are the payee. Channels remain the KI-11 custodial rail.
 - **Hub: a call that arrived without coordinates is incomplete input, not a refusal and not a miss.** `outcome=incomplete` stays on the live tape with its own counter; `refused` is a policy decision; only `ok`/`fail` move `success_rate` (API, SSR ticker, trust, i18n). Historical `fail` rows can be re-marked with `aimarket-hub/scripts/reclassify_incomplete_input.py` (dry-run default; `--apply` requires a live `--probe-url`).
 
 ### Added
