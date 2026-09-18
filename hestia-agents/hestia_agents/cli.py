@@ -139,7 +139,69 @@ def cmd_quote(args: argparse.Namespace) -> int:
         print(f"    send      : {q['amount_usd']} {q['token']}  ({q['amount_units']} base units)")
         print(f"    to        : {q['pay_to']}")
         print(f"    on        : {q['chain']}   token {q['token_contract']}")
-        print("    then      : retry with header  X-Payment: <tx hash>")
+        if q.get("binding") == "eip3009":
+            print(f"    nonce     : {q['nonce']}   (expires {int(q.get('expires_at', 0))})")
+            print("    pay with  : transferWithAuthorization signed over that nonce")
+            print(f"    build it  : hestia-agents pay {slug} --from 0xYOURADDRESS")
+            print("    then      : call --tx <tx hash> --nonce <nonce>")
+        else:
+            print("    then      : retry with header  X-Payment: <tx hash>")
+    return 0
+
+
+def cmd_pay(args: argparse.Namespace) -> int:
+    """Build the payment a bound hearth will accept. Signs nothing.
+
+    Step 1 prints EIP-712 typed data — sign it with the wallet that holds your
+    key. Step 2 (`--signature`) prints the calldata to send to the token
+    contract. The key never comes near this process.
+    """
+    import json as _json
+    import time as _time
+
+    from hestia_agents.x402 import QuoteError, calldata, typed_data
+
+    httpx = _client()
+    slug = args.slug
+    res = httpx.post(
+        f"{args.hearth.rstrip('/')}/t/{slug}/invoke",
+        json=PROBES[slug], timeout=30.0,
+    )
+    if res.status_code != 200 and res.status_code != 402:
+        print(f"  HTTP {res.status_code}: {res.text[:300]}")
+        return 1
+    if res.status_code == 200:
+        print(f"  {slug} is free right now — no payment needed")
+        return 0
+    quote = res.json()
+    valid_before = args.valid_before or int(_time.time()) + 3600
+    try:
+        typed = typed_data(quote, sender=args.sender, valid_before=valid_before)
+    except QuoteError as exc:
+        print(f"  cannot build a payment: {exc}")
+        return 1
+    if not args.signature:
+        print("  Sign this with the wallet that holds your key (eth_signTypedData_v4):")
+        print(_json.dumps(typed, indent=2))
+        print()
+        print("  Then re-run with --signature 0x<65-byte signature> to get the calldata.")
+        print(f"  Nonce for the call header: {typed['message']['nonce']}")
+        return 0
+    try:
+        data = calldata(typed, args.signature)
+    except QuoteError as exc:
+        print(f"  bad signature: {exc}")
+        return 1
+    print("  Send this transaction from the address you signed with:")
+    print(f"    to       : {typed['domain']['verifyingContract']}   (the token contract)")
+    print("    value    : 0")
+    print(f"    data     : {data}")
+    print()
+    print("  Then present it to the hearth:")
+    print(
+        f"    hestia-agents call {slug} --tx <tx hash> "
+        f"--nonce {typed['message']['nonce']}"
+    )
     return 0
 
 
@@ -147,7 +209,12 @@ def cmd_call(args: argparse.Namespace) -> int:
     """Invoke an agent, presenting a payment transaction hash if one is given."""
     httpx = _client()
     slug = args.slug
-    headers = {"X-Payment": args.tx} if args.tx else {}
+    headers = {}
+    if args.tx:
+        headers["X-Payment"] = args.tx
+    if getattr(args, "nonce", ""):
+        # A bound hearth needs to know WHICH quote this payment settles.
+        headers["X-Payment-Nonce"] = args.nonce
     res = httpx.post(
         f"{args.hearth.rstrip('/')}/t/{slug}/invoke",
         json=PROBES[slug], headers=headers, timeout=30.0,
@@ -156,6 +223,11 @@ def cmd_call(args: argparse.Namespace) -> int:
         q = res.json()
         print(f"  402 {q.get('detail')}")
         print(f"  pay {q['amount_usd']} {q['token']} to {q['pay_to']} on {q['chain']}")
+        if q.get("binding") == "eip3009":
+            print(
+                "  this hearth binds payments: build one with  "
+                f"hestia-agents pay {slug} --from 0xYOU"
+            )
         return 2
     if res.status_code != 200:
         print(f"  HTTP {res.status_code}: {res.text[:300]}")
@@ -177,7 +249,20 @@ def main(argv: list[str] | None = None) -> int:
     call.add_argument("slug", choices=sorted(AGENTS))
     call.add_argument("--hearth", default=os.environ.get("HESTIA_PUBLIC_BASE", DEFAULT_HEARTH))
     call.add_argument("--tx", default="", help="payment transaction hash")
+    call.add_argument(
+        "--nonce", default="", help="payment nonce from the 402 (bound hearths)"
+    )
     call.set_defaults(func=cmd_call)
+
+    pay = sub.add_parser(
+        "pay", help="build the EIP-3009 payment a bound hearth accepts (signs nothing)"
+    )
+    pay.add_argument("slug", choices=sorted(AGENTS))
+    pay.add_argument("--hearth", default=os.environ.get("HESTIA_PUBLIC_BASE", DEFAULT_HEARTH))
+    pay.add_argument("--from", dest="sender", required=True, help="your paying address")
+    pay.add_argument("--signature", default="", help="the signed typed data, to get calldata")
+    pay.add_argument("--valid-before", type=int, default=0, help="unix deadline (default +1h)")
+    pay.set_defaults(func=cmd_pay)
 
     for name, func, helptext in (
         ("deploy", cmd_deploy, "deploy every agent onto a hearth"),
