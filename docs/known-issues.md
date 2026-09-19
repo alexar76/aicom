@@ -473,8 +473,12 @@ marketplace at scale.
 **Catalogue invoke is no longer this issue.** A Hub catalog sale pays USDC
 on-chain to the listing's `payout_address`; the hub verifies
 `PAYMENT-SIGNATURE` / the transfer and does not custody that money
-(`aimarket_hub/settle.py`, same invariant as HESTIA). KI-11 below is the
-**channel / deposit** rail only.
+(`aimarket_hub/settle.py`, same invariant as HESTIA). An operator share is
+available on that rail through `MarketSplitter` and is still not custody — the
+contract forwards both legs inside the buyer's transaction and the hub verifies
+the legs rather than the route. Rails, and what each asks you to trust, are
+mapped in [`aimarket-hub/docs/money-rails.md`](../aimarket-hub/docs/money-rails.md).
+KI-11 below is the **channel / deposit** rail only.
 
 **Where:** [`aimarket-hub/aimarket_hub/channels.py`](https://github.com/alexar76/aimarket-hub/blob/main/aimarket_hub/channels.py),
 [`aimarket-hub/aimarket_hub/escrow_bridge/`](https://github.com/alexar76/aimarket-hub/tree/main/aimarket_hub/escrow_bridge),
@@ -521,7 +525,29 @@ Consequences that must not be papered over:
    paid invoke, but nothing collects it unless an operator runs the CLI. An unattended hub
    accrues claims it never presents.
 
-**Required action (dev + operator) — what is left:**
+**Both remaining dev items landed 2026-09-19.** What is left is an operator decision,
+not code:
+
+- `AIMARKET_ESCROW_REQUIRED=1` makes the custodial deposit branch **unreachable** —
+  `/channel/open` then accepts only an `escrow_channel_id` the contract confirms. It
+  is deliberately NOT gated on the bridge also being enabled: requiring escrow with
+  the bridge off would have left the custodial path open, which is the operator
+  asking for the strongest setting and silently getting the weakest. That
+  misconfiguration now refuses BOTH doors and `payment_readiness()` reports
+  `escrow_required_but_bridge_disabled` at boot rather than letting it be discovered
+  one refused open at a time.
+- `AIMARKET_ESCROW_COLLECT_INTERVAL_S` starts a bounded pass in the hub's own
+  lifespan (`escrow_bridge/collector.py`), so an authorized debit no longer waits for
+  a person to run the CLI. Off by default; bounded by the bridge's existing submit
+  policy and by `MAX_USD_PER_PASS` / `PER_DAY`, so calling more often cannot spend
+  more. Each cycle runs `confirm()` before `run()` — a debit collected out of band
+  leaves a row that blocks every later row on its channel, and resolving those first
+  is what keeps the queue moving.
+
+Consequence 1 is therefore closable and consequence 3 is closed. What remains is an
+operator hot wallet with ETH for gas, and the decision to turn both switches on.
+
+**Required action (dev + operator) — what was left:**
 1. ~~Land an escrow bridge that signs/submits `debitChannel` per settled receipt.~~ The
    bridge, its guards, its store and its CLI exist. What remains: (a) an unattended trigger
    — a bounded background pass in the hub's lifespan, or a host timer invoking
