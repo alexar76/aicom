@@ -188,6 +188,28 @@ copy_factory_cursor_rules() {
   fi
 }
 
+# Same overlay: rsync drops .cursor, but a GitHub clone of aicom must load Cursor
+# skills without a copy step. Canonical files live in agent-skills/ (Claude plugin
+# pack). Whitelist only the two public skills — a new .cursor/skills dir is not
+# automatically a public surface.
+copy_factory_cursor_skills() {
+  local target="$1"
+  local src="$ROOT/agent-skills/skills"
+  local name
+  if [[ ! -d "$src" ]]; then
+    echo "ERROR: agent-skills/skills missing — Hub MCP skills cannot ship to GitHub." >&2
+    return 1
+  fi
+  for name in aimarket-hub-mcp warden-mcp-firewall; do
+    if [[ ! -f "$src/$name/SKILL.md" ]]; then
+      echo "ERROR: missing $src/$name/SKILL.md" >&2
+      return 1
+    fi
+    mkdir -p "$target/.cursor/skills/$name"
+    cp -f "$src/$name/SKILL.md" "$target/.cursor/skills/$name/SKILL.md"
+  done
+}
+
 # Live-history README banner (same idea as metis in mirror_satellites.sh).
 # Injected only into the GitHub clone — not committed in the monorepo README.
 # Idempotent: marker short-circuits a second prepend.
@@ -349,6 +371,7 @@ if [[ -n "$EXPORT_DIR" ]]; then
   strip_unpublished_from_factory_map "$TARGET"
   copy_factory_github_assets "$TARGET"
   copy_factory_cursor_rules "$TARGET"
+  copy_factory_cursor_skills "$TARGET"
   _inject_factory_live_banner "$TARGET"
   run_factory_mirror_secrets "$TARGET"
   check_repo_roots
@@ -439,6 +462,7 @@ git rm -rf --ignore-unmatch data/state 2>/dev/null || true
 
 copy_factory_github_assets "$CLONE"
 copy_factory_cursor_rules "$CLONE"
+copy_factory_cursor_skills "$CLONE"
 _inject_factory_live_banner "$CLONE"
 run_factory_mirror_secrets "$CLONE"
 check_repo_roots

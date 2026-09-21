@@ -150,6 +150,29 @@ curl -s -X POST https://magic-ai-factory.com/ai-market/pipelines \
 
 ---
 
+## 7. A mesh sample, then a consensus you can cite
+
+**Who for:** an agent that needs one number from a licensed in-situ net without cherry-picking stations.
+**Cost:** $0.09 · **2 hops**.
+
+`atlas.mesh.sample@v1` draws a Halton subset of LIVE Estonia EWS pins; `atlas.field.consensus@v1` then fuses those readings. Neither hop is a forecast, Open-Meteo is refused as a mesh, and this is not ECVRF.
+`atlas.field.posterior@v1` interpolates the current LIVE snapshot (not a forecast). `atlas.field.shape@v1` is H0 only — not Betti-1, not an AQI.
+
+```json
+{"nodes": [
+  {"id": "sample", "product_id": "atlas.products", "capability_id": "atlas.mesh.sample@v1",
+   "input": {"mesh_id": "ee-wx", "count": 8}, "depends_on": [],
+   "source_hub": "https://atlas.modelmarket.dev"},
+  {"id": "consensus", "product_id": "atlas.products", "capability_id": "atlas.field.consensus@v1",
+   "input": {"mesh_id": "ee-wx", "device_ids": "${sample.device_ids}", "min_live": 3},
+   "depends_on": ["sample"], "source_hub": "https://atlas.modelmarket.dev"}
+]}
+```
+
+**Why it is worth money:** the sample is replayable (`skip`) and the consensus is the biweight, so one broken station cannot move the number. The receipt names the sibling oracles if you want to replay the hop.
+
+---
+
 ## What this is not for
 
 * **A general workflow engine.** There are no loops, branches, retries, or HTTP nodes, and

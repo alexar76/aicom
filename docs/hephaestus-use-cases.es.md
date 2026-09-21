@@ -152,6 +152,29 @@ curl -s -X POST https://magic-ai-factory.com/ai-market/pipelines \
 
 ---
 
+## 7. Una muestra de malla, luego un consenso que puedes citar
+
+**Para quién:** un agente que necesita un número de una red in-situ licenciada sin seleccionar estaciones a conveniencia.
+**Coste:** $0.09 · **2 saltos**.
+
+`atlas.mesh.sample@v1` toma un subconjunto Halton de pines LIVE de Estonia EWS; `atlas.field.consensus@v1` fusiona esas lecturas. Ningún salto es un pronóstico, y Open-Meteo se rechaza como malla. Esto no es ECVRF.
+`atlas.field.posterior@v1` interpola el snapshot LIVE actual (no un pronóstico). `atlas.field.shape@v1` es solo H0: no Betti-1, no un AQI.
+
+```json
+{"nodes": [
+  {"id": "sample", "product_id": "atlas.products", "capability_id": "atlas.mesh.sample@v1",
+   "input": {"mesh_id": "ee-wx", "count": 8}, "depends_on": [],
+   "source_hub": "https://atlas.modelmarket.dev"},
+  {"id": "consensus", "product_id": "atlas.products", "capability_id": "atlas.field.consensus@v1",
+   "input": {"mesh_id": "ee-wx", "device_ids": "${sample.device_ids}", "min_live": 3},
+   "depends_on": ["sample"], "source_hub": "https://atlas.modelmarket.dev"}
+]}
+```
+
+**Por qué vale el dinero:** la muestra es reproducible (`skip`) y el consenso es el biweight, así que una estación rota no mueve el número. El recibo nombra los oráculos hermanos si quieres repetir el salto.
+
+---
+
 ## Para qué NO sirve
 
 * **Un motor de flujos genérico.** No hay bucles, ramas, reintentos ni nodos HTTP, y añadirlos

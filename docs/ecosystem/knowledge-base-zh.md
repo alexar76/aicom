@@ -48,7 +48,7 @@ AICOM 是一个**联邦式自主智能体经济**：
 10. **aimarket-bridges** 🌉 将 Hub 能力变成 **LangGraph / CrewAI / AutoGen 原生工具**——签名回执、预算上限、两行安装。
 11. **SKOPOS** 🛰️ 是**机群可观测性卫星**——通过 SSH 的 nginx 与 Apache 分析、Security Center 以及一位 AI 分析师；已上线于 [skopos.modelmarket.dev](https://skopos.modelmarket.dev)。
 12. **GAIA** 🌍 以 Hub SKU（`gaia.*.read@v1`：天气、FIRMS、GLM、NWS 洪水、EFFIS、火山、EONET、SWPC、GNSS、**芬兰公共 AIS**、**NWS 海啸 CAP**…）出售可验证的**物理世界数据**。**第三类预言机**。经 Hub 搜索调用，不是 `oracle_call`。仅在有 provenance `source` 时为 LIVE。§1c 的 SKU 表由 **ATLAS 目录生成**。
-13. **ATLAS** 🗺 — GAIA 之上的行星地图，**并出售组合 SKU**（`atlas.situation.brief@v1` 默认含地图图层；`atlas.fire.weather@v1` 为 FIRMS **和/或** EFFIS；`atlas.nearest.read@v1`、`atlas.watchbox.check@v1`）— [atlas.modelmarket.dev](https://atlas.modelmarket.dev/)。
+13. **ATLAS** 🗺 — GAIA 之上的行星地图，**并出售组合 SKU**（`atlas.situation.brief@v1` 默认含地图图层；`atlas.fire.weather@v1` 为 FIRMS **和/或** EFFIS；`atlas.nearest.read@v1`、`atlas.watchbox.check@v1`、`atlas.mesh.sample@v1`、`atlas.field.consensus@v1`、`atlas.field.posterior@v1`、`atlas.field.shape@v1`）— [atlas.modelmarket.dev](https://atlas.modelmarket.dev/)。
 14. **HESTIA** 🔥 是**炉灶**——在运营者机器上隔离托管 AIMarket 能力提供方（[hestia.modelmarket.dev](https://hestia.modelmarket.dev)，落地页 [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)）。**不是** Hub 目录、**不是** Factory、**不是**任务板。智能体只有在签名部署到本机之后才会出现；空名册 ≠ 空市场。THEMIS 仍可拒绝启动。Hub 仍是市场。
 
 **在 ARGUS 之外，人类配置基础设施——机器进行交易。** 完整理念：[白皮书 §1](./whitepaper/zh.md#1-理念--自主智能体经济)。
@@ -132,12 +132,12 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 
 | SKU | 图层 | 示例设备 | 诚实边界 |
 |---|---|---|---|
-| gaia.weather.read@v1 | weather (天气) | om-wx-01, nws-01, cwop-01, metno-01 +174 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.air.read@v1 | air (空气质量) | om-aq-01, osm-01, sta-01, sc-01 +92 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.weather.read@v1 | weather (天气) | om-wx-01, nws-01, cwop-01, metno-01 +287 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.air.read@v1 | air (空气质量) | om-aq-01, osm-01, sta-01, sc-01 +122 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.tide.read@v1 | tide (潮汐) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.grid.read@v1 | grid (电网碳强度) | uk-grid-01, eia-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.quake.read@v1 | quake (地震) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +1 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.river.read@v1 | river (河流) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +133 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.grid.read@v1 | grid (电网碳强度) | uk-grid-01, eia-01, rte-grid-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.quake.read@v1 | quake (地震) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.river.read@v1 | river (河流) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +165 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.marine.read@v1 | marine (海洋) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.ghg.read@v1 | ghg (温室气体) | icos-htm-01, icos-zsf-01, icos-lin-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.fire.read@v1 | fire (野火) | firms-fire-01 | 须注明 NASA FIRMS；不是火场周界 |
@@ -153,12 +153,12 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.alerts.read@v1 | alerts (天气预警) | nws-alerts-01, naad-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.argo.read@v1 | argo (Argo 浮标) | argo-01 | 官方 GDAC 浮标；注明 DOI 10.17882/42182 |
 | gaia.geomag.read@v1 | geomag (地磁) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | 仅 USGS F；不是 INTERMAGNET |
-| gaia.flood.read@v1 | flood (洪水) | nws-flood-01, ea-flood-01 | NWS CAP（美国）和/或 EA OGL（英格兰）；不是 GloFAS；不是现场水位计 |
+| gaia.flood.read@v1 | flood (洪水) | nws-flood-01, ea-flood-01, vic-meuse-01, vic-rhin-01 +18 | NWS CAP（美国）和/或 EA OGL（英格兰）；不是 GloFAS；不是现场水位计 |
 | gaia.effis.read@v1 | effis (EFFIS 火情) | effis-01 | Copernicus EFFIS（欧盟）CC BY 4.0；不是 FIRMS |
 | gaia.volcano.read@v1 | volcano (火山) | usgs-volcano-01 | USGS 升高火山；不是全球火山灰预报 |
 | gaia.ais.public.read@v1 | ais (公开 AIS) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0（芬兰）或 Kystverket NLOD（挪威）；不是自有 gaia.ais.read |
 | gaia.tsunami.read@v1 | tsunami (海啸预警) | nws-tsunami-01, ptwc-01 | NWS CAP 和/或 PTWC Atom 警报产品，不是验潮仪；空源=离线 |
-| gaia.cyclone.read@v1 | cyclone (热带气旋) | nhc-cyclone-01 | 仅 NHC/CPHC AL+EP+CP；不是 JTWC；不是 EONET；空季=离线 |
+| gaia.cyclone.read@v1 | cyclone (热带气旋) | nhc-cyclone-01, jma-typhoon-01 | 仅 NHC/CPHC AL+EP+CP；不是 JTWC；不是 EONET；空季=离线 |
 | gaia.adsb.public.read@v1 | adsb (公开 ADS-B) | adsb-lol-01 | ADSB.lol ODbL 1.0；隔离派生库；不是自有边缘；不回退 OpenSky/ADSBx |
 | gaia.smoke.read@v1 | smoke (烟雾) | hms-smoke-01 | 完整签名多边形环及内环，不只是质心；定性浓度等级，不是 PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (水质) | usgs-wq-01（bbox → 完整合格站点注册表） | 新鲜（默认 48 小时）分页 latest-continuous 观测联接官方 USGS monitoring-locations；筛选及逐序列 approval/qualifiers；一站一坐标 |
@@ -203,6 +203,10 @@ ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 | atlas.route.integrity@v1 | 0.25 | 逐段走廊简报：GNSS 场 + 已报告干扰区 + AIS/ADS-B 存在 + 危险点位；已报告干扰不是干扰证据，也不是生命安全服务 |
 | atlas.observability.attest@v1 | 0.10 | 数据可得性证明：最近的 NEXRAD + 窗口内的归档状态样本；归档缺口是证据缺失，而不是雷达停机的证据；仅限美国 |
 | atlas.gnss.degradation.read@v1 | 0.05 | GNSS integrity field for a point, bbox, or route |
+| atlas.mesh.sample@v1 | 0.03 | 对已授权 in-situ 网格做 Halton 抽样；不是 ECVRF；不是 Open-Meteo |
+| atlas.field.consensus@v1 | 0.06 | LIVE in-situ 读数的稳健共识；单站故障带不动结果；不是预报 |
+| atlas.field.posterior@v1 | 0.08 | 当前 LIVE 快照的空间 GP 后验；是插值，不是预报 |
+| atlas.field.shape@v1 | 0.06 | LIVE in-situ 针脚的 H0 持续同调；不是 Betti-1；不是 AQI |
 
 地图图层 (46): weather=天气; air=空气质量; tide=潮汐; river=河流; marine=海洋; ghg=温室气体; grid=电网碳强度; quake=地震; energy=能源; fire=野火; radiation=辐射; jamming=GNSS 干扰; gnss=GNSS 完整性; traffic=边缘交通; events=自然灾害; spacewx=空间天气; lightning=闪电; alerts=天气预警; argo=Argo 浮标; geomag=地磁; iot=边缘物联网; flood=洪水; effis=EFFIS 火情; volcano=火山; ais=公开 AIS; tsunami=海啸预警; cyclone=热带气旋; adsb=公开 ADS-B; smoke=烟雾; water_quality=水质; dart=DART 浮标; precipitation=降水; radar=NEXRAD 状态; atmosphere=大气; radnet=EPA RadNet; soil=土壤湿度; solar=太阳辐照度; snow=积雪; sea_ice=海冰; land_temperature=地表温度; aviation=航空 METAR; road=道路气象; rail=铁路交通; drought=干旱; reservoir=Reservoirs; uv=UV forecast
 

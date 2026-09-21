@@ -45,6 +45,9 @@ from atlas.stations import LAYER_META, STATION_CATALOG  # noqa: E402
 # Hub'Eau / eHYD / SMHI MetObs show up instead of only the oldest four ids.
 _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
     "river": (
+        "ie-river-",
+        "lt-hydro-",
+        "lv-hydro-",
         "bafu-",
         "hubeau-",
         "ehyd-",
@@ -58,6 +61,13 @@ _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
         "smhi-hydro-",
     ),
     "weather": (
+        "at-wx-",
+        "jp-wx-",
+        "lt-wx-",
+        "lv-wx-",
+        "br-wx-",
+        "cz-wx-",
+        "kr-wx-",
         "aemet-wx-",
         "ch-wx-",
         "cwa-wx-",
@@ -78,6 +88,10 @@ _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
     "tide": ("uhslc-", "noaa-tide-", "coops-"),
     "air": ("hk-aqhi-", "sg-psi-", "be-aq-", "aurn-", "openaq-", "om-aq-", "sc-", "osm-"),
     "marine": ("cdip-", "ndbc-", "om-marine-"),
+    "flood": ("vic-", "gfm-", "ea-flood", "nws-flood"),
+    "grid": ("rte-grid-", "uk-grid-"),
+    "cyclone": ("jma-typhoon-", "nhc-cyclone-"),
+    "quake": ("jma-quake-", "ingv-", "emsc-", "usgs-quake-"),
 }
 
 

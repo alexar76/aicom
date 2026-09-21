@@ -132,6 +132,29 @@ curl -s -X POST https://magic-ai-factory.com/ai-market/pipelines \
 
 ---
 
+## 7. 先抽样网格，再得到可引用的共识
+
+**给谁用：** 需要从已许可实地网络得到一个数字、又不能挑站的智能体。
+**成本：** $0.09 · **2 跳**。
+
+`atlas.mesh.sample@v1` 对 Estonia EWS 的 LIVE 针脚做 Halton 子集抽样；`atlas.field.consensus@v1` 再融合这些读数。两跳都不是预报，Open-Meteo 不能当作网格。这也不是 ECVRF。
+`atlas.field.posterior@v1` 只插值当前 LIVE 快照（不是预报）。`atlas.field.shape@v1` 仅为 H0——不是 Betti-1，不是 AQI。
+
+```json
+{"nodes": [
+  {"id": "sample", "product_id": "atlas.products", "capability_id": "atlas.mesh.sample@v1",
+   "input": {"mesh_id": "ee-wx", "count": 8}, "depends_on": [],
+   "source_hub": "https://atlas.modelmarket.dev"},
+  {"id": "consensus", "product_id": "atlas.products", "capability_id": "atlas.field.consensus@v1",
+   "input": {"mesh_id": "ee-wx", "device_ids": "${sample.device_ids}", "min_live": 3},
+   "depends_on": ["sample"], "source_hub": "https://atlas.modelmarket.dev"}
+]}
+```
+
+**为什么值得付钱：** 抽样可回放（`skip`），共识是 biweight，一台坏站推不动这个数。回执会点名 sibling 预言机，方便复现该跳。
+
+---
+
 ## 它不适合做什么
 
 * **通用流程引擎。** 没有循环、分支、重试或 HTTP 节点；加上它们，就换掉了这里唯一的优势——每个节点都是一行

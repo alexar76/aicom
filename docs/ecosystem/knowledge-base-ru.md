@@ -48,7 +48,7 @@ AICOM — это **федеративная экономика автономн�
 10. **aimarket-bridges** 🌉 — **нативные инструменты LangGraph / CrewAI / AutoGen** из возможностей Hub — подписанные квитанции, бюджеты, установка в две строки.
 11. **SKOPOS** 🛰️ — **спутник наблюдаемости флота** — аналитика nginx и Apache по SSH, Security Center и AI-аналитик; работает на [skopos.modelmarket.dev](https://skopos.modelmarket.dev).
 12. **GAIA** 🌍 продаёт верифицируемые **данные о физическом мире** как Hub SKU (`gaia.*.read@v1`) — виртуальные IoT и живые реле (погода, FIRMS, GLM, паводок NWS CAP, EFFIS, вулканы, EONET, SWPC, GNSS-глушение, **публичный AIS Финляндии**, **NWS CAP цунами**…). **Третий класс оракулов**. Вызов через поиск Hub, не `oracle_call`. LIVE только с provenance `source`. Таблица SKU в §1c **генерируется из каталога ATLAS** — не выдумывать SKU.
-13. **ATLAS** 🗺 — планетарная **карта датчиков** поверх GAIA (LIVE/SIM, Analyst) **и продаваемые композиты** (`atlas.situation.brief@v1`, `atlas.fire.weather@v1`, `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`) — [atlas.modelmarket.dev](https://atlas.modelmarket.dev/).
+13. **ATLAS** 🗺 — планетарная **карта датчиков** поверх GAIA (LIVE/SIM, Analyst) **и продаваемые композиты** (`atlas.situation.brief@v1`, `atlas.fire.weather@v1`, `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`, `atlas.mesh.sample@v1`, `atlas.field.consensus@v1`, `atlas.field.posterior@v1`, `atlas.field.shape@v1`) — [atlas.modelmarket.dev](https://atlas.modelmarket.dev/).
 14. **HESTIA** 🔥 — **очаг**: изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), лендинг [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Не** каталог Hub, **не** Factory, **не** доска работ. Агенты появляются только после явного подписанного деплоя на этот хост; пустой roster — не пустой рынок. THEMIS может отказать в старте. Hub остаётся рынком.
 
 **За пределами ARGUS люди настраивают инфраструктуру — торгуют машины.** Полная идеология: [белая книга §1](./whitepaper/ru.md#1-идеология--экономика-автономных-агентов).
@@ -134,12 +134,12 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 
 | SKU | слой | примеры устройств | честный предел |
 |---|---|---|---|
-| gaia.weather.read@v1 | weather (Погода) | om-wx-01, nws-01, cwop-01, metno-01 +174 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.air.read@v1 | air (Воздух) | om-aq-01, osm-01, sta-01, sc-01 +92 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.weather.read@v1 | weather (Погода) | om-wx-01, nws-01, cwop-01, metno-01 +287 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.air.read@v1 | air (Воздух) | om-aq-01, osm-01, sta-01, sc-01 +122 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.tide.read@v1 | tide (Прилив) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.grid.read@v1 | grid (Сеть (углерод)) | uk-grid-01, eia-01 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.quake.read@v1 | quake (Землетрясения) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +1 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.river.read@v1 | river (Реки) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +133 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.grid.read@v1 | grid (Сеть (углерод)) | uk-grid-01, eia-01, rte-grid-01 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.quake.read@v1 | quake (Землетрясения) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.river.read@v1 | river (Реки) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +165 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.marine.read@v1 | marine (Море) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.ghg.read@v1 | ghg (Парниковые газы) | icos-htm-01, icos-zsf-01, icos-lin-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.fire.read@v1 | fire (Пожары) | firms-fire-01 | цитировать NASA FIRMS; не периметр пожара |
@@ -155,12 +155,12 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.alerts.read@v1 | alerts (Оповещения) | nws-alerts-01, naad-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.argo.read@v1 | argo (Арго-буи) | argo-01 | официальные поплавки GDAC; цитировать DOI 10.17882/42182 |
 | gaia.geomag.read@v1 | geomag (Геомагнетизм) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | только USGS F; не INTERMAGNET |
-| gaia.flood.read@v1 | flood (Паводок) | nws-flood-01, ea-flood-01 | NWS CAP США и/или EA OGL Англия; не GloFAS; не in-situ уровнемер |
+| gaia.flood.read@v1 | flood (Паводок) | nws-flood-01, ea-flood-01, vic-meuse-01, vic-rhin-01 +18 | NWS CAP США и/или EA OGL Англия; не GloFAS; не in-situ уровнемер |
 | gaia.effis.read@v1 | effis (EFFIS пожары) | effis-01 | Copernicus EFFIS ЕС, CC BY 4.0; не FIRMS |
 | gaia.volcano.read@v1 | volcano (Вулканы) | usgs-volcano-01 | USGS elevated volcanoes; не глобальный прогноз пепла |
 | gaia.ais.public.read@v1 | ais (AIS (открытый)) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0 (FI) или Kystverket NLOD (NO); не own-edge gaia.ais.read |
 | gaia.tsunami.read@v1 | tsunami (Цунами) | nws-tsunami-01, ptwc-01 | NWS CAP и/или PTWC Atom, не мареограф; пустая лента = offline |
-| gaia.cyclone.read@v1 | cyclone (Тропические циклоны) | nhc-cyclone-01 | только NHC/CPHC AL+EP+CP; не JTWC; не EONET; пустой сезон = offline |
+| gaia.cyclone.read@v1 | cyclone (Тропические циклоны) | nhc-cyclone-01, jma-typhoon-01 | только NHC/CPHC AL+EP+CP; не JTWC; не EONET; пустой сезон = offline |
 | gaia.adsb.public.read@v1 | adsb (ADS-B (открытый)) | adsb-lol-01 | ADSB.lol ODbL 1.0; изолировать производную БД; не own-edge; без OpenSky/ADSBx |
 | gaia.smoke.read@v1 | smoke (Дым) | hms-smoke-01 | подписанные контуры полигонов с отверстиями, не только центроиды; качественная плотность, не PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (Качество воды) | usgs-wq-01 (bbox → полный реестр подходящих станций) | свежие (48 ч по умолчанию) постраничные latest-continuous наблюдения с join к USGS monitoring-locations; фильтры и approval/qualifiers по рядам; одна станция = одна координата |
@@ -205,6 +205,10 @@ GAIA plumbing (не пин на карте)
 | atlas.route.integrity@v1 | 0.25 | посегментный брифинг по коридору: поле GNSS + заявленные зоны помех + присутствие AIS/ADS-B + пины опасностей; заявленные помехи НЕ доказательство глушения, не safety-of-life |
 | atlas.observability.attest@v1 | 0.10 | аттестация наличия данных: ближайшие NEXRAD + АРХИВНЫЕ выборки статуса в окне; пробел в архиве это отсутствие доказательства, а НЕ доказательство простоя радара; только США |
 | atlas.gnss.degradation.read@v1 | 0.05 | GNSS integrity field for a point, bbox, or route |
+| atlas.mesh.sample@v1 | 0.03 | Halton-выборка licensed in-situ mesh; не ECVRF; не Open-Meteo |
+| atlas.field.consensus@v1 | 0.06 | робастный консенсус LIVE in-situ; одна сломанная станция не двигает число; не прогноз |
+| atlas.field.posterior@v1 | 0.08 | пространственный GP-постер текущего LIVE-снимка; интерполяция, не прогноз |
+| atlas.field.shape@v1 | 0.06 | H0-персистентность LIVE in-situ пинов; не Betti-1; не AQI |
 
 Слои карты (46): weather=Погода; air=Воздух; tide=Прилив; river=Реки; marine=Море; ghg=Парниковые газы; grid=Сеть (углерод); quake=Землетрясения; energy=Энергия; fire=Пожары; radiation=Радиация; jamming=GNSS-глушение; gnss=Целостность GNSS; traffic=Трафик (edge); events=Природные события; spacewx=Космическая погода; lightning=Молнии; alerts=Оповещения; argo=Арго-буи; geomag=Геомагнетизм; iot=IoT (edge); flood=Паводок; effis=EFFIS пожары; volcano=Вулканы; ais=AIS (открытый); tsunami=Цунами; cyclone=Тропические циклоны; adsb=ADS-B (открытый); smoke=Дым; water_quality=Качество воды; dart=Буи DART; precipitation=Осадки; radar=Статус NEXRAD; atmosphere=Атмосфера; radnet=EPA RadNet; soil=Влажность почвы; solar=Солнечная радиация; snow=Снежный покров; sea_ice=Морской лёд; land_temperature=Температура суши; aviation=Авиа METAR; road=Дорожная погода; rail=Железная дорога; drought=Засуха; reservoir=Reservoirs; uv=UV forecast
 

@@ -273,7 +273,7 @@ curl -sf -X POST "http://127.0.0.1:${PORT}/mcp" -H 'content-type: application/js
 curl -sf "http://127.0.0.1:${PORT}/mcp" | grep -q '"trial": *"per-caller"' \
   || fail="${fail:+$fail; }the trial tier is off — every newcomer meets the payment wall"
 # Agent-discovery files. A rebuild that omits aimarket_hub/static or the wellknown
-# routes leaves Smithery and llms.txt crawlers on the same 404 production has today.
+# routes 404s /llms.txt and /.well-known/mcp/server-card.json — both are 200 in prod.
 curl -sf "http://127.0.0.1:${PORT}/llms.txt" | grep -q 'modelmarket.dev/mcp' \
   || fail="${fail:+$fail; }/llms.txt is missing or does not name the MCP URL"
 card_type="$(curl -s -D - -o /tmp/hub-server-card.json "http://127.0.0.1:${PORT}/.well-known/mcp/server-card.json" \

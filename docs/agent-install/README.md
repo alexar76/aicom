@@ -10,22 +10,30 @@ Two public skills plus one paste-URL. You do not need to clone this monorepo to 
 
 Canonical docs: [`hosted-mcp-endpoint.md`](../hosted-mcp-endpoint.md). Live trial size: `free_trial.max_invokes_per_visitor` in [/.well-known/ai-market.json](https://modelmarket.dev/.well-known/ai-market.json).
 
-Skills live in this tree:
+**Source of truth** (this is what GitHub already serves):
 
-- Cursor: [`.cursor/skills/aimarket-hub-mcp/SKILL.md`](../../.cursor/skills/aimarket-hub-mcp/SKILL.md) · [`.cursor/skills/warden-mcp-firewall/SKILL.md`](../../.cursor/skills/warden-mcp-firewall/SKILL.md)
-- Claude plugin: [`agent-skills/`](../../agent-skills/) (marketplace: [`.claude-plugin/marketplace.json`](../../.claude-plugin/marketplace.json))
+- [`agent-skills/skills/aimarket-hub-mcp/SKILL.md`](../../agent-skills/skills/aimarket-hub-mcp/SKILL.md)
+- [`agent-skills/skills/warden-mcp-firewall/SKILL.md`](../../agent-skills/skills/warden-mcp-firewall/SKILL.md)
+- Plugin pack: [`agent-skills/`](../../agent-skills/) · marketplace: [`.claude-plugin/marketplace.json`](../../.claude-plugin/marketplace.json)
+
+`.cursor/skills/` is the Cursor in-repo copy of those two files (tracked, same bytes). Do not invent a third path.
+
+Raw:
+
+- https://raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills/aimarket-hub-mcp/SKILL.md
+- https://raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills/warden-mcp-firewall/SKILL.md
 
 ## Cursor — Hub MCP skill (3 lines)
 
-From any project (needs an aicom checkout, or GitHub raw after this tree is mirrored):
+No clone. From any project:
 
 ```bash
 mkdir -p .cursor/skills/aimarket-hub-mcp
-cp /path/to/aicom/.cursor/skills/aimarket-hub-mcp/SKILL.md .cursor/skills/aimarket-hub-mcp/SKILL.md
-# then paste https://modelmarket.dev/mcp into .cursor/mcp.json (shape is in the skill)
+curl -fsSL https://raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills/aimarket-hub-mcp/SKILL.md \
+  -o .cursor/skills/aimarket-hub-mcp/SKILL.md
 ```
 
-If this repo is already the workspace, the skill is already at `.cursor/skills/aimarket-hub-mcp/`. Add the MCP URL:
+Then paste `https://modelmarket.dev/mcp` into `.cursor/mcp.json` (shape is in the skill):
 
 ```json
 {
@@ -38,15 +46,19 @@ If this repo is already the workspace, the skill is already at `.cursor/skills/a
 }
 ```
 
+If this repo is already the workspace, the skill is already at `.cursor/skills/aimarket-hub-mcp/`. Only the MCP URL is left.
+
 ## Claude Code — Hub MCP skill (3 lines)
 
-Copy into the user skills dir:
+No clone:
 
 ```bash
 mkdir -p ~/.claude/skills/aimarket-hub-mcp
-cp /path/to/aicom/.cursor/skills/aimarket-hub-mcp/SKILL.md ~/.claude/skills/aimarket-hub-mcp/SKILL.md
-# then add the same mcp.json URL in Claude Desktop / Claude Code MCP settings
+curl -fsSL https://raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills/aimarket-hub-mcp/SKILL.md \
+  -o ~/.claude/skills/aimarket-hub-mcp/SKILL.md
 ```
+
+Same URL in Claude Desktop / Claude Code MCP settings.
 
 Or, from an aicom checkout, install the plugin:
 
@@ -59,7 +71,11 @@ There is no Anysphere Cursor Marketplace listing. Do not invent one.
 
 ## WARDEN firewall skill
 
-Same three-line copy, other directory name: `warden-mcp-firewall`. Stdio config from the skill:
+Same three-line curl, other directory name: `warden-mcp-firewall`. Raw:
+
+https://raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills/warden-mcp-firewall/SKILL.md
+
+Stdio config from the skill:
 
 ```json
 {

@@ -64,7 +64,7 @@ curl -s -X POST https://modelmarket.dev/mcp -H 'content-type: application/json' 
 >
 > **Free capabilities do not touch the allowance** — the trial identity is attached only to
 > priced ones. The hub consumes a trial before it ever looks at the price, so sending it
-> unconditionally would both cap free capabilities at three calls and replace the eventual
+> unconditionally would both cap free capabilities at the trial allowance and replace the eventual
 > 402 with a `429 trial_quota_exhausted` that carries no price at all.
 
 Why so little? Because the wallet friction downstream is deliberate — this is a

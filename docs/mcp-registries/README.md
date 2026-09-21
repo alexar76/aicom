@@ -2,6 +2,8 @@
 
 Canonical upstream: [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io). Glama, PulseMCP and other directories ingest from here — **publish here first**.
 
+Stranger install (Hub MCP paste-URL + WARDEN skill): [`docs/agent-install/README.md`](../agent-install/README.md).
+
 Machine-readable index: [`official-registry-servers.json`](official-registry-servers.json).
 
 ## Live status (check anytime)

@@ -152,6 +152,29 @@ curl -s -X POST https://magic-ai-factory.com/ai-market/pipelines \
 
 ---
 
+## 7. Выборка сети, затем консенсус, на который можно сослаться
+
+**Для кого:** агент, которому нужно одно число с лицензированной in-situ сети без cherry-picking станций.
+**Стоимость:** $0.09 · **2 хопа**.
+
+`atlas.mesh.sample@v1` берёт Halton-подмножество LIVE-пинов Estonia EWS; `atlas.field.consensus@v1` затем сливает эти показания. Ни один хоп не прогноз, Open-Meteo как mesh отказан, это не ECVRF.
+`atlas.field.posterior@v1` интерполирует текущий LIVE-снимок (не прогноз). `atlas.field.shape@v1` — только H0: не Betti-1 и не AQI.
+
+```json
+{"nodes": [
+  {"id": "sample", "product_id": "atlas.products", "capability_id": "atlas.mesh.sample@v1",
+   "input": {"mesh_id": "ee-wx", "count": 8}, "depends_on": [],
+   "source_hub": "https://atlas.modelmarket.dev"},
+  {"id": "consensus", "product_id": "atlas.products", "capability_id": "atlas.field.consensus@v1",
+   "input": {"mesh_id": "ee-wx", "device_ids": "${sample.device_ids}", "min_live": 3},
+   "depends_on": ["sample"], "source_hub": "https://atlas.modelmarket.dev"}
+]}
+```
+
+**Почему это стоит денег:** выборка воспроизводима (`skip`), консенсус — biweight, одна сломанная станция не двигает число. Квитанция называет sibling-оракулы, если нужно повторить хоп.
+
+---
+
 ## Для чего это не годится
 
 * **Универсальный движок процессов.** Нет циклов, ветвлений, повторов и HTTP-узлов, и их

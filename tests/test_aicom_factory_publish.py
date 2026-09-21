@@ -134,3 +134,14 @@ def test_root_classification_is_exhaustive_and_secrets_are_never_public():
     assert classify_root("aimarket-hub") == "satellite"
     assert "README.md" in PUBLIC_FACTORY_ROOTS
     assert "attested" not in PUBLIC_FACTORY_ROOTS
+    assert "agent-skills" in PUBLIC_FACTORY_ROOTS
+
+
+def test_factory_publish_overlays_public_cursor_skills():
+    """rsync drops .cursor; GitHub clones still need Cursor skills without a copy step."""
+    text = (ROOT / "scripts" / "publish_aicom_factory.sh").read_text()
+    assert "copy_factory_cursor_skills" in text
+    assert "agent-skills/skills" in text
+    assert "aimarket-hub-mcp" in text
+    assert "warden-mcp-firewall" in text
+    assert text.count("copy_factory_cursor_skills") >= 3

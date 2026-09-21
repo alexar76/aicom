@@ -48,7 +48,7 @@ AICOM est une **économie fédérée d'agents autonomes** :
 10. **aimarket-bridges** 🌉 transforme les capacités du Hub en **outils natifs LangGraph / CrewAI / AutoGen** — reçus signés, plafonds budgétaires, installation en deux lignes.
 11. **SKOPOS** 🛰️ est le **satellite d'observabilité de la flotte** — analytique nginx et Apache via SSH, Security Center et un analyste IA ; en ligne sur [skopos.modelmarket.dev](https://skopos.modelmarket.dev).
 12. **GAIA** 🌍 vend des **données du monde physique** vérifiables comme SKUs Hub (`gaia.*.read@v1` : météo, FIRMS, GLM, crue NWS CAP, EFFIS, volcans, EONET, SWPC, GNSS, **AIS public finlandais**, **CAP tsunami NWS**…). **Troisième classe d'oracles**. Invoke via recherche Hub, pas `oracle_call`. LIVE seulement avec provenance `source`. La table SKU du §1c est **générée depuis le catalogue ATLAS**.
-13. **ATLAS** 🗺 — carte planétaire sur GAIA **et composites payants** (`atlas.situation.brief@v1` — couches carte par défaut ; `atlas.fire.weather@v1` — FIRMS **et/ou** EFFIS ; `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`) — [atlas.modelmarket.dev](https://atlas.modelmarket.dev/).
+13. **ATLAS** 🗺 — carte planétaire sur GAIA **et composites payants** (`atlas.situation.brief@v1` — couches carte par défaut ; `atlas.fire.weather@v1` — FIRMS **et/ou** EFFIS ; `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`, `atlas.mesh.sample@v1`, `atlas.field.consensus@v1`, `atlas.field.posterior@v1`, `atlas.field.shape@v1`) — [atlas.modelmarket.dev](https://atlas.modelmarket.dev/).
 14. **HESTIA** 🔥 est l’**âtre** — runtime hébergé et isolé pour les fournisseurs de capacité AIMarket sur les machines de l’opérateur ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), landing [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Pas** le catalogue du Hub, **pas** Factory, **pas** un job board. Les agents n’apparaissent qu’après un déploiement signé sur cet hôte ; roster vide ≠ marché vide. THEMIS peut refuser le démarrage. Le Hub reste le marché.
 
 **Au-delà d'ARGUS, les humains configurent l'infrastructure — les machines commercent.** Idéologie complète : [livre blanc §1](./whitepaper/fr.md#1-idéologie--économie-dagents-autonomes).
@@ -132,12 +132,12 @@ GAIA (iot.modelmarket.dev) — ancré device_id, ~$0.002 sauf mention.
 
 | SKU | couche | appareils d'exemple | limite honnête |
 |---|---|---|---|
-| gaia.weather.read@v1 | weather (Météo) | om-wx-01, nws-01, cwop-01, metno-01 +174 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
-| gaia.air.read@v1 | air (Air) | om-aq-01, osm-01, sta-01, sc-01 +92 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
+| gaia.weather.read@v1 | weather (Météo) | om-wx-01, nws-01, cwop-01, metno-01 +287 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
+| gaia.air.read@v1 | air (Air) | om-aq-01, osm-01, sta-01, sc-01 +122 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.tide.read@v1 | tide (Marée) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
-| gaia.grid.read@v1 | grid (Réseau (carbone)) | uk-grid-01, eia-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
-| gaia.quake.read@v1 | quake (Séismes) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +1 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
-| gaia.river.read@v1 | river (Rivières) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +133 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
+| gaia.grid.read@v1 | grid (Réseau (carbone)) | uk-grid-01, eia-01, rte-grid-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
+| gaia.quake.read@v1 | quake (Séismes) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
+| gaia.river.read@v1 | river (Rivières) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +165 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.marine.read@v1 | marine (Marin) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.ghg.read@v1 | ghg (GES) | icos-htm-01, icos-zsf-01, icos-lin-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.fire.read@v1 | fire (Incendies) | firms-fire-01 | citer NASA FIRMS; pas un périmètre d'incendie |
@@ -153,12 +153,12 @@ GAIA (iot.modelmarket.dev) — ancré device_id, ~$0.002 sauf mention.
 | gaia.alerts.read@v1 | alerts (Alertes) | nws-alerts-01, naad-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.argo.read@v1 | argo (Flotteurs Argo) | argo-01 | flotteurs GDAC officiels; citer DOI 10.17882/42182 |
 | gaia.geomag.read@v1 | geomag (Géomagnétisme) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | USGS F uniquement; pas INTERMAGNET |
-| gaia.flood.read@v1 | flood (Crue) | nws-flood-01, ea-flood-01 | NWS CAP USA et/ou EA OGL Angleterre; pas GloFAS; pas un limnimètre |
+| gaia.flood.read@v1 | flood (Crue) | nws-flood-01, ea-flood-01, vic-meuse-01, vic-rhin-01 +18 | NWS CAP USA et/ou EA OGL Angleterre; pas GloFAS; pas un limnimètre |
 | gaia.effis.read@v1 | effis (Feux EFFIS) | effis-01 | Copernicus EFFIS UE, CC BY 4.0; pas FIRMS |
 | gaia.volcano.read@v1 | volcano (Volcans) | usgs-volcano-01 | volcans élevés USGS; pas une prévision mondiale de cendres |
 | gaia.ais.public.read@v1 | ais (AIS public) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0 (FI) ou Kystverket NLOD (NO); pas gaia.ais.read edge |
 | gaia.tsunami.read@v1 | tsunami (Alertes tsunami) | nws-tsunami-01, ptwc-01 | CAP NWS et/ou Atom PTWC, pas un marégraphe; vide = offline |
-| gaia.cyclone.read@v1 | cyclone (Cyclones tropicaux) | nhc-cyclone-01 | NHC/CPHC AL+EP+CP uniquement; pas JTWC; pas EONET; saison vide = offline |
+| gaia.cyclone.read@v1 | cyclone (Cyclones tropicaux) | nhc-cyclone-01, jma-typhoon-01 | NHC/CPHC AL+EP+CP uniquement; pas JTWC; pas EONET; saison vide = offline |
 | gaia.adsb.public.read@v1 | adsb (ADS-B public) | adsb-lol-01 | ADSB.lol ODbL 1.0; isoler la BD dérivée; pas edge; pas OpenSky/ADSBx |
 | gaia.smoke.read@v1 | smoke (Fumée) | hms-smoke-01 | anneaux de polygones signés avec trous, pas seulement les centroïdes ; densité qualitative, pas PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (Qualité de l’eau) | usgs-wq-01 (bbox → registre complet des stations qualifiées) | observations latest-continuous fraîches (48 h par défaut), paginées et jointes à USGS monitoring-locations ; filtres et approval/qualifiers ; une station = une coordonnée |
@@ -203,6 +203,10 @@ Composites ATLAS (atlas.modelmarket.dev) — artefacts de décision facturables.
 | atlas.route.integrity@v1 | 0.25 | brief de corridor par segment : champ GNSS + zones d'interférence signalées + présence AIS/ADS-B + pins de danger ; une interférence signalée n'est PAS une preuve de brouillage, ni safety-of-life |
 | atlas.observability.attest@v1 | 0.10 | attestation de disponibilité des données : NEXRAD le plus proche + échantillons de statut ARCHIVÉS sur une fenêtre ; un trou dans l'archive est une absence de preuve, PAS la preuve d'une panne radar ; États-Unis seulement |
 | atlas.gnss.degradation.read@v1 | 0.05 | GNSS integrity field for a point, bbox, or route |
+| atlas.mesh.sample@v1 | 0.03 | échantillon Halton d’un maillage in-situ licencié ; pas ECVRF ; pas Open-Meteo |
+| atlas.field.consensus@v1 | 0.06 | consensus robuste de lectures in-situ LIVE ; une station cassée ne déplace pas le chiffre ; pas une prévision |
+| atlas.field.posterior@v1 | 0.08 | postérieur GP spatial du snapshot LIVE ; interpolation, pas une prévision |
+| atlas.field.shape@v1 | 0.06 | persistance H0 des pins in-situ LIVE ; pas Betti-1 ; pas un AQI |
 
 Couches carte (46): weather=Météo; air=Air; tide=Marée; river=Rivières; marine=Marin; ghg=GES; grid=Réseau (carbone); quake=Séismes; energy=Énergie; fire=Incendies; radiation=Radiation; jamming=Brouillage GNSS; gnss=Intégrité GNSS; traffic=Trafic edge; events=Événements naturels; spacewx=Météo spatiale; lightning=Foudre; alerts=Alertes; argo=Flotteurs Argo; geomag=Géomagnétisme; iot=IoT edge; flood=Crue; effis=Feux EFFIS; volcano=Volcans; ais=AIS public; tsunami=Alertes tsunami; cyclone=Cyclones tropicaux; adsb=ADS-B public; smoke=Fumée; water_quality=Qualité de l’eau; dart=Bouées DART; precipitation=Précipitations; radar=État NEXRAD; atmosphere=Atmosphère; radnet=EPA RadNet; soil=Humidité du sol; solar=Irradiation solaire; snow=Manteau neigeux; sea_ice=Glace de mer; land_temperature=Température terrestre; aviation=METAR aviation; road=Météo routière; rail=Trafic ferroviaire; drought=Sécheresse; reservoir=Reservoirs; uv=UV forecast
 

@@ -150,6 +150,29 @@ curl -s -X POST https://magic-ai-factory.com/ai-market/pipelines \
 
 ---
 
+## 7. Un échantillon de maillage, puis un consensus que l'on peut citer
+
+**Pour qui :** un agent qui a besoin d'un chiffre d'un réseau in-situ licencié sans choisir les stations à convenance.
+**Coût :** $0.09 · **2 sauts**.
+
+`atlas.mesh.sample@v1` tire un sous-ensemble Halton de pins LIVE Estonia EWS ; `atlas.field.consensus@v1` fusionne ensuite ces lectures. Aucun saut n'est une prévision, et Open-Meteo est refusé comme maillage. Ce n'est pas ECVRF.
+`atlas.field.posterior@v1` interpole le snapshot LIVE courant (pas une prévision). `atlas.field.shape@v1` est H0 seulement — pas Betti-1, pas un AQI.
+
+```json
+{"nodes": [
+  {"id": "sample", "product_id": "atlas.products", "capability_id": "atlas.mesh.sample@v1",
+   "input": {"mesh_id": "ee-wx", "count": 8}, "depends_on": [],
+   "source_hub": "https://atlas.modelmarket.dev"},
+  {"id": "consensus", "product_id": "atlas.products", "capability_id": "atlas.field.consensus@v1",
+   "input": {"mesh_id": "ee-wx", "device_ids": "${sample.device_ids}", "min_live": 3},
+   "depends_on": ["sample"], "source_hub": "https://atlas.modelmarket.dev"}
+]}
+```
+
+**Pourquoi cela vaut de l'argent :** l'échantillon est rejouable (`skip`) et le consensus est le biweight, donc une station cassée ne déplace pas le chiffre. Le reçu nomme les oracles frères si vous voulez rejouer le saut.
+
+---
+
 ## Ce à quoi cela ne sert PAS
 
 * **Un moteur de workflow généraliste.** Pas de boucles, de branches, de reprises ni de nœuds

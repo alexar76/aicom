@@ -45,7 +45,7 @@ AICOM is a **federated autonomous-agent economy**:
 9. **aimarket-bridges** 🌉 turns Hub capabilities into **native LangGraph / CrewAI / AutoGen tools** — signed receipts, budget caps, two-line install.
 10. **SKOPOS** 🛰️ is the **fleet observability satellite** — nginx & Apache analytics over SSH, Security Center, AI analyst, and **Observability** (Prometheus APM + 3D service graph); live on [skopos.modelmarket.dev](https://skopos.modelmarket.dev). See [observability-prometheus.md](../observability-prometheus.md).
 11. **GAIA** 🌍 sells verifiable **physical-world data** as Hub SKUs (`gaia.*.read@v1`) — virtual IoT *and* live relays (weather, FIRMS fire, GLM lightning, NWS flood/alerts, EFFIS, volcano, EONET, SWPC, GNSS jamming, **public Finnish AIS**, **NWS tsunami CAP**, …), Ed25519-attested and plausibility-checked. **Third oracle class**: math (×17), cognitive (Metis), physical (GAIA). Invoke via Hub search — not `oracle_call`. LIVE only with provenance `source`. The SKU table in §1c is **generated from the ATLAS catalog** — do not invent SKUs.
-12. **ATLAS** 🗺 is the **planetary sensor map** over GAIA — LIVE vs SIM pins, Alien Monitor embed, **ATLAS Analyst**, **and Hub-sold composites** (`atlas.situation.brief@v1`, `atlas.fire.weather@v1`, `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`) at [atlas.modelmarket.dev](https://atlas.modelmarket.dev).
+12. **ATLAS** 🗺 is the **planetary sensor map** over GAIA — LIVE vs SIM pins, Alien Monitor embed, **ATLAS Analyst**, **and Hub-sold composites** (`atlas.situation.brief@v1`, `atlas.fire.weather@v1`, `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`, `atlas.mesh.sample@v1`, `atlas.field.consensus@v1`, `atlas.field.posterior@v1`, `atlas.field.shape@v1`) at [atlas.modelmarket.dev](https://atlas.modelmarket.dev).
 13. **MOMUS** 👁 is the **adversarial red team** — safe read-only probes, Ed25519-signed findings; it never pays itself. **Treasury** is the separate bounty payer ([momus.modelmarket.dev](https://momus.modelmarket.dev)).
 14. **Signal Hunt** 🎯 is a **federation investigation game and educational laboratory** over real Hub telemetry — measured symptoms, committed evidence, Brier-scored diagnoses; each round is a live lab on federation literacy. Live target [hunt.modelmarket.dev](https://hunt.modelmarket.dev) when the host is up.
 15. **THEMIS** 🛡 is the **optional publish-time admission gate** for third-party agents, MCP servers and plugins — approve / review / reject with a signed receipt before Hub lists them (Hub mode default **`off`** until the operator enables `advisory` / `enforce`). Listing itself is already multi-layer (publish token, stake ≈ $25, manifest, signatures, trust floors) — **not** open signup. **Two seller doors:** guest stake ≈ $25 on an existing Hub, or [run your own Hub](../join-the-federation.md) as a peer (no guest stake). **Consuming** via ARGUS / `aimarket-mcp` does not require THEMIS. Runtime invoke control stays **WARDEN**; disputes go to **MOMUS**; history is on **Alien Monitor**. Current-state table + step-by-step: [supply-chain-admission.md](./supply-chain-admission.md) · [RU](./supply-chain-admission-ru.md) · [ES](./supply-chain-admission-es.md) · [FR](./supply-chain-admission-fr.md) · [ZH](./supply-chain-admission-zh.md).
@@ -142,12 +142,12 @@ GAIA (iot.modelmarket.dev) — device_id-anchored, ~$0.002 unless noted.
 
 | SKU | layer | example devices | honest limit |
 |---|---|---|---|
-| gaia.weather.read@v1 | weather (Weather) | om-wx-01, nws-01, cwop-01, metno-01 +174 | operator-anchored device_id; LIVE only with provenance source |
-| gaia.air.read@v1 | air (Air quality) | om-aq-01, osm-01, sta-01, sc-01 +92 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.weather.read@v1 | weather (Weather) | om-wx-01, nws-01, cwop-01, metno-01 +287 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.air.read@v1 | air (Air quality) | om-aq-01, osm-01, sta-01, sc-01 +122 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.tide.read@v1 | tide (Tide) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | operator-anchored device_id; LIVE only with provenance source |
-| gaia.grid.read@v1 | grid (Grid carbon) | uk-grid-01, eia-01 | operator-anchored device_id; LIVE only with provenance source |
-| gaia.quake.read@v1 | quake (Earthquakes) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +1 | operator-anchored device_id; LIVE only with provenance source |
-| gaia.river.read@v1 | river (Rivers) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +133 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.grid.read@v1 | grid (Grid carbon) | uk-grid-01, eia-01, rte-grid-01 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.quake.read@v1 | quake (Earthquakes) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.river.read@v1 | river (Rivers) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +165 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.marine.read@v1 | marine (Marine) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.ghg.read@v1 | ghg (Greenhouse gas) | icos-htm-01, icos-zsf-01, icos-lin-01 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.fire.read@v1 | fire (Wildfire) | firms-fire-01 | cite NASA FIRMS; not a fire perimeter |
@@ -163,12 +163,12 @@ GAIA (iot.modelmarket.dev) — device_id-anchored, ~$0.002 unless noted.
 | gaia.alerts.read@v1 | alerts (Weather alerts) | nws-alerts-01, naad-01 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.argo.read@v1 | argo (Argo floats) | argo-01 | official GDAC floats; cite DOI 10.17882/42182 |
 | gaia.geomag.read@v1 | geomag (Geomagnetism) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | USGS F only; not INTERMAGNET |
-| gaia.flood.read@v1 | flood (Flood) | nws-flood-01, ea-flood-01 | NWS CAP US and/or UK EA OGL England; not GloFAS; not an in-situ gauge |
+| gaia.flood.read@v1 | flood (Flood) | nws-flood-01, ea-flood-01, vic-meuse-01, vic-rhin-01 +18 | NWS CAP US and/or UK EA OGL England; not GloFAS; not an in-situ gauge |
 | gaia.effis.read@v1 | effis (EFFIS fires) | effis-01 | Copernicus EFFIS EU, CC BY 4.0; not FIRMS |
 | gaia.volcano.read@v1 | volcano (Volcanoes) | usgs-volcano-01 | USGS elevated volcanoes; not a global ash forecast |
 | gaia.ais.public.read@v1 | ais (Public AIS) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0 (FI) or Kystverket NLOD (NO); not own-edge gaia.ais.read |
 | gaia.tsunami.read@v1 | tsunami (Tsunami alerts) | nws-tsunami-01, ptwc-01 | NWS CAP and/or PTWC Atom warning product, not a tide gauge; empty = offline |
-| gaia.cyclone.read@v1 | cyclone (Tropical cyclones) | nhc-cyclone-01 | NHC/CPHC AL+EP+CP only; not JTWC; not EONET; empty season = offline |
+| gaia.cyclone.read@v1 | cyclone (Tropical cyclones) | nhc-cyclone-01, jma-typhoon-01 | NHC/CPHC AL+EP+CP only; not JTWC; not EONET; empty season = offline |
 | gaia.adsb.public.read@v1 | adsb (Public ADS-B) | adsb-lol-01 | ADSB.lol ODbL 1.0; isolate derived DB; not own-edge; no OpenSky/ADSBx fallback |
 | gaia.smoke.read@v1 | smoke (Smoke) | hms-smoke-01 | full signed polygon rings + holes, not just centroids; qualitative density, not PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (Water quality) | usgs-wq-01 (bbox → complete qualified station registry) | fresh (48h default) paginated latest-continuous observations joined to the official USGS monitoring-locations registry; filters and per-series approval/qualifiers; one station = one coordinate |
@@ -213,6 +213,10 @@ ATLAS composites (atlas.modelmarket.dev) — billable decision artifacts.
 | atlas.route.integrity@v1 | 0.25 | per-segment corridor brief: GNSS field + reported interference zones + AIS/ADS-B presence + hazard pins; reported interference is NOT proof of jamming, not safety-of-life |
 | atlas.observability.attest@v1 | 0.10 | data-availability attestation: nearest NEXRAD + ARCHIVED status samples in a window; an archive gap is absence of evidence, NOT evidence the radar was down; U.S. only |
 | atlas.gnss.degradation.read@v1 | 0.05 | GNSS integrity field for a point, bbox, or route |
+| atlas.mesh.sample@v1 | 0.03 | Halton sample of a licensed in-situ mesh; not ECVRF; not Open-Meteo |
+| atlas.field.consensus@v1 | 0.06 | robust consensus of LIVE in-situ readings; one broken station cannot move the number; not a forecast |
+| atlas.field.posterior@v1 | 0.08 | spatial GP posterior of the current LIVE snapshot; interpolates now, not a forecast |
+| atlas.field.shape@v1 | 0.06 | H0 persistence of LIVE in-situ pins; not Betti-1; not an AQI |
 
 Map layers (46): weather=Weather; air=Air quality; tide=Tide; river=Rivers; marine=Marine; ghg=Greenhouse gas; grid=Grid carbon; quake=Earthquakes; energy=Energy; fire=Wildfire; radiation=Radiation; jamming=GNSS jamming; gnss=GNSS integrity; traffic=Edge traffic; events=Natural events; spacewx=Space weather; lightning=Lightning; alerts=Weather alerts; argo=Argo floats; geomag=Geomagnetism; iot=Edge IoT; flood=Flood; effis=EFFIS fires; volcano=Volcanoes; ais=Public AIS; tsunami=Tsunami alerts; cyclone=Tropical cyclones; adsb=Public ADS-B; smoke=Smoke; water_quality=Water quality; dart=DART gauges; precipitation=Precipitation; radar=NEXRAD status; atmosphere=Atmosphere; radnet=EPA RadNet; soil=Soil moisture; solar=Solar irradiation; snow=Snowpack; sea_ice=Sea ice; land_temperature=Land temperature; aviation=Aviation METAR; road=Road weather; rail=Rail traffic; drought=Drought; reservoir=Reservoirs; uv=UV forecast
 

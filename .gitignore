@@ -167,10 +167,12 @@ data/.cache/huggingface/
 .claude/
 config/claude-code/
 scripts/install-claude-code-deepseek.sh
-# Keep project Cursor rules in git (team shared); ignore other .cursor junk.
+# Keep project Cursor rules + public agent skills in git; ignore other .cursor junk.
 .cursor/*
 !.cursor/rules/
 !.cursor/rules/**
+!.cursor/skills/
+!.cursor/skills/**
 .idea/
 .vscode/
 *.swp
