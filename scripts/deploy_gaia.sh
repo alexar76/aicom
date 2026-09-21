@@ -93,7 +93,7 @@ if [[ -n "$OM_REMOTE" ]]; then
   echo "Open-Meteo: REMOTE operator-run instance ${OM_REMOTE} — no local model data."
   if [[ "$OM_REMOTE" == http://* ]] && [[ -z "${GAIA_OM_AUTH_TOKEN:-}" ]]; then
     echo "  WARN: plaintext http across hosts with no GAIA_OM_AUTH_TOKEN." >&2
-    echo "        Put TLS + a bearer in front of it (deploy/nginx/om.modelmarket.dev.conf)," >&2
+    echo "        Put TLS + a bearer in front of it (a dedicated vhost, not om.modelmarket.dev)," >&2
     echo "        or keep the hop inside a private network (WireGuard/Tailscale)." >&2
   fi
   # Prove the remote origin actually answers with a synced value before we rely on it.

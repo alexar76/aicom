@@ -17,6 +17,7 @@ This file is a short host-side checklist. Prefer the ecosystem runbook + scripts
 | Lab Hub peer | `http://hunt.modelmarket.dev:9083` (UNI, crypto off) |
 | Hunt | `https://hunt.modelmarket.dev` (nginx TLS, compose `nginx-edge`) |
 | Use | `use.modelmarket.dev` static under `/var/www/use.modelmarket.dev` |
+| `om.modelmarket.dev` | **Stub** — nginx 301 → `https://modelmarket.dev/`. Unused OM node torn down; do not re-raise. Live weather is the admin-vps GAIA sidecar. |
 | Alien Monitor galaxy | `COMPETING_GALAXY_ANCHOR ≈ (30, 12, −20)` on primary Monitor |
 | SKOPOS fleet | `competing-lab` (`agent-push`) → [skopos.modelmarket.dev](https://skopos.modelmarket.dev) |
 

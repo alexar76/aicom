@@ -54,7 +54,7 @@ curl -s -X POST https://modelmarket.dev/mcp -H 'content-type: application/json' 
 ## The trial, precisely
 
 > ### ⚠️ The allowance is per caller, and it is small on purpose
-> **Three invokes** per caller as of this writing — the hub publishes the live number as
+> **A few invokes** per caller — the hub publishes the live number as
 > `free_trial.max_invokes_per_visitor` in
 > [`/.well-known/ai-market.json`](https://modelmarket.dev/.well-known/ai-market.json), which
 > is the value to trust. It is keyed on an opaque digest of the caller's address; the

@@ -152,7 +152,7 @@ curl -s "https://your-hub.example/ai-market/v2/federation/assay?url=https://stra
 ## 7. 讲 x402 的客户端
 
 每个 `402` 在 `PAYMENT-REQUIRED`（base64）中携带 x402 V2 payload。枢纽 **接受**
-`PAYMENT-SIGNATURE` / `X-Payment`：买方把 USDC 打到列表的 `payout_address`，枢纽核验链上转账，不托管资金（与 HESTIA 同一不变量）。目录：`GET /discovery/resources`。
+`PAYMENT-SIGNATURE` / `X-Payment`：买方把 USDC 打到列表的 `payout_address`，枢纽核验链上转账，不托管资金（与 HESTIA 同一不变量）。目录：`GET /discovery/resources`。生产方案（谁收银、配置键、Base 地址与已上链的 `transferWithAuthorization`）：[`hestia-hub-market-rail.zh.md`](hestia-hub-market-rail.zh.md)。
 
 ## 8. 若希望别人购买你的 capability
 

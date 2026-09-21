@@ -254,7 +254,12 @@ sequenceDiagram
 Hub catalogue pays USDC on-chain to that listing's `payout_address`. The hub
 verifies the transfer (`PAYMENT-SIGNATURE` / chain) and never holds the
 money. Same invariant as HESTIA. Wallet publishers are the payee; operator
-listings pay the operator as seller, not as custodian.
+listings pay the operator as seller, not as custodian. Production keys,
+the one-till rule (`HESTIA_PAYMENTS_ENABLED=0` while Hub is `AIMARKET_SELLS_FOR`
+that host), and a mined Base purchase:
+[`hestia-hub-market-rail.md`](hestia-hub-market-rail.md)
+([RU](hestia-hub-market-rail.ru.md) · [ES](hestia-hub-market-rail.es.md) ·
+[FR](hestia-hub-market-rail.fr.md) · [ZH](hestia-hub-market-rail.zh.md)).
 
 This is the single most-misdescribed part of the system, so it is stated plainly.
 

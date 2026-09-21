@@ -17,6 +17,7 @@
 | Competing Lab Hub | `http://hunt.modelmarket.dev:9083` (peer) | UNI-only Hub (`AIFACTORY_CRYPTO_ENABLED=0`), federated peer of primary |
 | Signal Hunt | `https://hunt.modelmarket.dev` | Game + own Hub behind host nginx (Caddy off) |
 | Use-cases portal | `http(s)://use.modelmarket.dev` | Static portal on the lab edge |
+| `om.modelmarket.dev` | 301 → `https://modelmarket.dev/` | Homepage stub. Unused Open-Meteo node removed; live `om-*` pins stay on the admin-vps sidecar |
 | Alien Monitor | primary Monitor | Second **galaxy** far from origin (`competing_hub` / `signal_hunt` / `use_cases`) |
 
 Federation **mesh wiring** on this box is not automatic — operators run the scripts

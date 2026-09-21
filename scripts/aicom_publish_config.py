@@ -175,6 +175,7 @@ FACTORY_LOCAL_EXCLUDES = [
 # list it belongs to. Snapshot of what was public on 2026-09-11 — behaviour-preserving;
 # the REVIEW markers are the owner's call, not this change's.
 PUBLIC_FACTORY_ROOTS = frozenset([
+    '.claude-plugin',  # Claude marketplace catalog for hosted Hub MCP + WARDEN skills
     '.coveragerc',
     '.devcontainer',
     '.dockerignore',
@@ -190,6 +191,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'README.md',
     'ROADMAP.md',
     'SECURITY.md',
+    'agent-skills',  # Cursor/Claude skills: Hub MCP paste-URL + WARDEN firewall
     'agents',
     'apps',
     'awr',

@@ -13,9 +13,11 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 
 ### Changed
 - **Hub catalogue settle is seller-direct, like HESTIA.** A buyer pays USDC on-chain to the listing's `payout_address`; the hub verifies `PAYMENT-SIGNATURE` / the transfer (`aimarket_hub/settle.py`) and never holds the money. Wallet publishers are the payee. Channels remain the KI-11 custodial rail.
+- **HESTIA well-known publishes `mcp_endpoint`.** Without it the Hub POSTed `/capabilities/{product}/{cap}/invoke` after a seller-direct settle; this host does not serve that path, so a paid catalogue sale 502'd. The field names `/ai-market/v2/invoke`, where agents are dispatched by `capability_id`.
 - **Hub: a call that arrived without coordinates is incomplete input, not a refusal and not a miss.** `outcome=incomplete` stays on the live tape with its own counter; `refused` is a policy decision; only `ok`/`fail` move `success_rate` (API, SSR ticker, trust, i18n). Historical `fail` rows can be re-marked with `aimarket-hub/scripts/reclassify_incomplete_input.py` (dry-run default; `--apply` requires a live `--probe-url`).
 
 ### Added
+- **Production market rail documented in five languages** ([`docs/hestia-hub-market-rail.md`](docs/hestia-hub-market-rail.md) · RU · ES · FR · ZH): live topology, every Hub/HESTIA payment key, legal configurations (Hub till vs host till vs dual nonce), and a Base mainnet purchase of `json.canonical@v1` — one `USDC.transferWithAuthorization` to the seller (`payout_address`), Hub HTTP 200 after.
 - **ATLAS can be paid: prepaid credit accounts (`atlas/atlas/credits.py`).** ATLAS published a
   price list and a free allowance of five calls an hour, and had no way to take money — the
   402 pointed at a hub payment channel, and the hub's own call to ATLAS lands on that same

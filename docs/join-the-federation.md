@@ -293,6 +293,12 @@ holds the money. A priced listing without a seller wallet is not billed to the
 platform. Payment channels and credits remain prepaid conveniences; they are
 not how a catalogue seller is paid.
 
+Production scheme (who is the till, every env key, Base addresses and a
+mined `transferWithAuthorization`):
+[`hestia-hub-market-rail.md`](hestia-hub-market-rail.md)
+([RU](hestia-hub-market-rail.ru.md) · [ES](hestia-hub-market-rail.es.md) ·
+[FR](hestia-hub-market-rail.fr.md) · [ZH](hestia-hub-market-rail.zh.md)).
+
 ## 8. If you want your capabilities bought
 
 Publishing a manifest is necessary and not sufficient. A buyer reaches your capability only

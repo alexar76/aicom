@@ -28,3 +28,4 @@ Operational playbooks for ecosystem content, MCP registries, and awesome-list su
 | Monitor | https://monitor.modelmarket.dev/ |
 | Oracles | https://oracles.modelmarket.dev |
 | Hub | https://modelmarket.dev |
+| Hub MCP (paste URL) | https://modelmarket.dev/mcp — agent install: [`docs/agent-install/README.md`](../agent-install/README.md) |

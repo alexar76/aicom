@@ -272,6 +272,17 @@ curl -sf -X POST "http://127.0.0.1:${PORT}/mcp" -H 'content-type: application/js
   | grep -q 'market_invoke' || fail="${fail:+$fail; }/mcp tools/list does not list market_invoke"
 curl -sf "http://127.0.0.1:${PORT}/mcp" | grep -q '"trial": *"per-caller"' \
   || fail="${fail:+$fail; }the trial tier is off — every newcomer meets the payment wall"
+# Agent-discovery files. A rebuild that omits aimarket_hub/static or the wellknown
+# routes leaves Smithery and llms.txt crawlers on the same 404 production has today.
+curl -sf "http://127.0.0.1:${PORT}/llms.txt" | grep -q 'modelmarket.dev/mcp' \
+  || fail="${fail:+$fail; }/llms.txt is missing or does not name the MCP URL"
+card_type="$(curl -s -D - -o /tmp/hub-server-card.json "http://127.0.0.1:${PORT}/.well-known/mcp/server-card.json" \
+  | tr -d '\r' | awk 'tolower($1)=="content-type:"{print $2; exit}')"
+if ! grep -q 'market_invoke' /tmp/hub-server-card.json \
+   || [[ "$card_type" != application/json* ]]; then
+  fail="${fail:+$fail; }/.well-known/mcp/server-card.json is not 200 JSON with market_invoke"
+fi
+rm -f /tmp/hub-server-card.json
 # Every declared peer must actually charge. `payment_configured` says nothing about this,
 # and a peer silently missing from the list is the failure that took a month to notice.
 for peer in ${SELLS_FOR//,/ }; do

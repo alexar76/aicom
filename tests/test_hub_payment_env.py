@@ -40,6 +40,10 @@ NON_BILLING_SATELLITES = {
     "https://basanos.modelmarket.dev",
     "https://momus.modelmarket.dev",
     "https://themis.modelmarket.dev",
+    # Hearth bills itself when HESTIA_PAYMENTS_ENABLED=1. Prod 2026-09-21 moved
+    # the till to Hub settle (payments off on the hearth) so these agents are
+    # sold here, same shape as ATLAS: unpaid invoke at the satellite is 200.
+    "https://hestia.modelmarket.dev",
 }
 # WARDEN is deliberately absent, and this is the reason rather than an oversight: warden/ has
 # no server at all (11 TypeScript source files, zero HTTP listeners; its entry point is an

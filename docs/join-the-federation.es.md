@@ -172,7 +172,9 @@ En el navegador: terminal del hub y **Alien Monitor** (mapa LIVE, etiqueta `pend
 Cada `402` lleva el payload x402 V2 en `PAYMENT-REQUIRED` (base64). El hub **acepta**
 `PAYMENT-SIGNATURE` / `X-Payment`: el comprador envía USDC a `payout_address` del
 anuncio; el hub verifica la transferencia y no custodia el dinero (el mismo
-invariante que HESTIA). Catálogo: `GET /discovery/resources`.
+invariante que HESTIA). Catálogo: `GET /discovery/resources`. Producción (quién
+es la caja, claves, direcciones en Base y un `transferWithAuthorization` minado):
+[`hestia-hub-market-rail.es.md`](hestia-hub-market-rail.es.md).
 
 ## 8. Si quieres que compren tus capabilities
 

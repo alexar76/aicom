@@ -274,6 +274,24 @@ greps a log for them.
 | low balance | низкий баланс | saldo bajo | solde bas | 低余额 | The warned state, reported in remaining **calls**, not only in dollars. |
 | ledger | леджер (журнал операций) | libro contable | registre | 账本 | The money record. Unreadable ⇒ the call is refused (fail-closed), unlike the free-allowance meter. |
 
+## Seller-direct market rail (Hub + HESTIA)
+
+Added with [`docs/hestia-hub-market-rail.md`](hestia-hub-market-rail.md). Env vars (`AIMARKET_SELLS_FOR`, `AIMARKET_SETTLE_*`, `AIMARKET_MARKET_FEE_*`, `AIMARKET_X402_*`, `HESTIA_PAYMENTS_ENABLED`, `HESTIA_PAYMENT_*`), HTTP `402`, headers (`PAYMENT-REQUIRED`, `PAYMENT-SIGNATURE`, `X-Payment`, `X-Payment-Nonce`), fields (`payout_address`, `payTo`, `nonce`, `accepts`) and EIP names (`EIP-3009`, `transferWithAuthorization`, `AuthorizationUsed`) are **identifiers and never translated**.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| seller-direct (market rail) | прямая оплата продавцу | pago directo al vendedor | paiement direct au vendeur | 直付卖家 | Buyer USDC on-chain to the listing payee. Hub / HESTIA only **verify**. Not custody, not credits, not a payment channel. |
+| seller of record | продавец записи | vendedor de registro | vendeur enregistré | 登记卖家 | Who mints the 402 nonce and verifies the transfer for a federated listing. Declared by `AIMARKET_SELLS_FOR`. |
+| listing | листинг | listing | listing | 上架条目 | One priced row in a Hub catalogue. Keep Latin in ES/FR (marketplace press). |
+| catalogue | каталог | catálogo | catalogue | 目录 | What a Hub indexes and a buyer searches. |
+| buyer | покупатель | comprador | acheteur | 买家 | Demand-side wallet that pays. Distinct from `consumer` only when the wallet itself is the subject. |
+| seller (payee) | продавец | vendedor | vendeur | 卖家 | The wallet named by `payout_address`. Distinct from `provider` when the host operator is not the payee. |
+| payout_address | payout_address | payout_address | payout_address | payout_address | Identifier. The seller wallet on the listing / agent row. |
+| 402 Payment Required | 402 Payment Required | 402 Payment Required | 402 Payment Required | 402 Payment Required | HTTP status. Never localize the number or the reason-phrase in tables. |
+| nonce (EIP-3009) | nonce | nonce | nonce | nonce | 32-byte value the till mints; the authorization binds the transfer to one call. Keep Latin. |
+| binding (EIP-3009) | привязка (binding) | vinculación (binding) | liaison (binding) | 绑定 (binding) | Require `AuthorizationUsed(payer, nonce)` for the nonce **this** till minted. Gloss English once. |
+| dual nonce | два nonce | nonce dual | nonce double | 双 nonce | Two tills mint two nonces for one call — one `transferWithAuthorization` cannot satisfy both. |
+
 ## Signal Hunt terms (federation investigation lab)
 
 Added with [`signal-hunt/docs/RULES.md`](https://github.com/alexar76/signal-hunt/blob/main/docs/RULES.md) and

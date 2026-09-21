@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # Deploy a self-hosted Open-Meteo NODE on a big-disk host, for GAIA to pull from.
 #
-#   sudo ./scripts/deploy_om_node.sh                       # TLS + bearer (default)
-#   sudo OM_NODE_DOMAIN=om.modelmarket.dev ./scripts/deploy_om_node.sh
+#   sudo OM_NODE_DOMAIN=om.example.dev ./scripts/deploy_om_node.sh
 #   sudo OM_NODE_ALLOW_IPS="203.0.113.20" ./scripts/deploy_om_node.sh
 #   sudo ./scripts/deploy_om_node.sh --no-tls              # private network only
 #   sudo ./scripts/deploy_om_node.sh --print-token         # show the bearer again
+#
+# RETIRED HOSTNAME
+#   om.modelmarket.dev on competing-lab is a homepage stub (301 → https://modelmarket.dev/).
+#   Live om-* pins use the GAIA sidecar (GAIA_OM_BASE_URL=http://open-meteo:8080).
+#   This script refuses that name so a re-run cannot resurrect the unused node.
 #
 # WHY A SEPARATE HOST
 #   Weather-model data is 32-48 GB narrow, 150 GB+ comprehensive, plus daily sync
@@ -29,7 +33,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-DOMAIN="${OM_NODE_DOMAIN:-om.modelmarket.dev}"
+DOMAIN="${OM_NODE_DOMAIN:-}"
 # The Open-Meteo services only — this file is valid standalone, which is why they
 # live apart from the gaia-backend rewiring overlay.
 COMPOSE="$ROOT/gaia/docker-compose.om-node.yml"
@@ -54,6 +58,21 @@ done
 if [[ "$(id -u)" -ne 0 ]]; then
   echo "Run as root: sudo $0" >&2
   exit 1
+fi
+
+if [[ "$PRINT_TOKEN_ONLY" -eq 0 ]]; then
+  if [[ -z "$DOMAIN" ]]; then
+    echo "Set OM_NODE_DOMAIN to the hostname of the new node." >&2
+    echo "  om.modelmarket.dev is retired (homepage stub → https://modelmarket.dev/)." >&2
+    echo "  Live weather stays on the GAIA sidecar (http://open-meteo:8080)." >&2
+    exit 1
+  fi
+  if [[ "$DOMAIN" == "om.modelmarket.dev" ]]; then
+    echo "REFUSING: om.modelmarket.dev is a homepage stub, not an Open-Meteo origin." >&2
+    echo "  Live om-* pins use GAIA_OM_BASE_URL=http://open-meteo:8080 on admin-vps." >&2
+    echo "  Pick a different OM_NODE_DOMAIN if you are raising a new node." >&2
+    exit 1
+  fi
 fi
 
 ensure_token() {

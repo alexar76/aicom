@@ -220,7 +220,8 @@ curl -s -H "Authorization: Bearer $ADMIN_TOKEN" \
 массив V1 `accepts` в теле. `PAYMENT-SIGNATURE` / `X-Payment` хаб **принимает**:
 покупатель шлёт USDC на `payout_address` продавца, хаб проверяет перевод и
 деньги не держит (тот же инвариант, что у HESTIA). Каталог:
-`GET /discovery/resources`.
+`GET /discovery/resources`. Прод: кто касса, ключи, адреса на Base и добытый
+`transferWithAuthorization` — [`hestia-hub-market-rail.ru.md`](hestia-hub-market-rail.ru.md).
 
 Нужны `AIFACTORY_CRYPTO_ENABLED=1` и получатель платежа.
 

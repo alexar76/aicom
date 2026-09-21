@@ -1,0 +1,55 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>GAIA/ATLAS weather licence re-verify 2026-09-20</title>
+<style>
+  body { font: 16px/1.45 ui-sans-serif, system-ui; background: #0b1220; color: #e8eef8; margin: 0; padding: 28px; max-width: 920px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  .sub { color: #9fb0c8; margin-bottom: 20px; }
+  .card { background: #142033; border: 1px solid #2a3c58; border-radius: 12px; padding: 18px 20px; margin: 0 0 16px; }
+  .ok { color: #3dd6c6; font-weight: 700; font-size: 18px; }
+  dt { color: #9fb0c8; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; margin-top: 12px; }
+  dd { margin: 4px 0 0; word-break: break-word; }
+  pre { white-space: pre-wrap; font: 13px/1.45 ui-monospace, SFMono-Regular, monospace; margin: 0; }
+  a { color: #7ec8ff; }
+</style>
+<h1>Live weather licence proof</h1>
+<p class="sub">Captured 2026-09-20 ~13:31 UTC from production. Not a mock. URLs:
+  <a href="https://atlas.modelmarket.dev/api/v1/stations/om-wx-01">om-wx-01</a> ·
+  <a href="https://atlas.modelmarket.dev/health">ATLAS health</a> ·
+  <a href="https://iot.modelmarket.dev/health">GAIA health</a>
+</p>
+<div class="card">
+  <div class="ok">LICENCE OK — self-host Open-Meteo relay</div>
+  <dl>
+    <dt>station</dt>
+    <dd>om-wx-01 · Berlin · 22.2 °C · online/live/has_reading all true</dd>
+    <dt>values</dt>
+    <dd>temperature_c 22.2 · humidity_pct 45.0 · pressure_hpa 1010.8 · wind_mps 5.25</dd>
+    <dt>source / provenance</dt>
+    <dd>https://open-meteo.com (Open-Meteo Forecast API; CC BY 4.0 — attribution required; relayed via operator-run Open-Meteo instance http://open-meteo:8080)</dd>
+    <dt>fleet</dt>
+    <dd>21 / 21 om-wx-* online with the same operator-run provenance · 0 naked hosted-free commercial origin</dd>
+    <dt>ATLAS health</dt>
+    <dd>atlas ok · 758 stations · gaia https://iot.modelmarket.dev</dd>
+    <dt>GAIA health</dt>
+    <dd>gaia ok · 694 devices · sim_control false</dd>
+    <dt>still silent (expected, no fleet keys)</dt>
+    <dd>frost-blindern-01 online=false · AEMET / CWA / Météo-France / NRW also stay silent</dd>
+  </dl>
+</div>
+<div class="card">
+<pre>{
+  "id": "om-wx-01",
+  "online": true,
+  "live": true,
+  "has_reading": true,
+  "headline": "22.2 °C",
+  "source": "https://open-meteo.com (Open-Meteo Forecast API; CC BY 4.0 — attribution required; relayed via operator-run Open-Meteo instance http://open-meteo:8080)",
+  "values": {
+    "temperature_c": 22.2,
+    "humidity_pct": 45.0,
+    "pressure_hpa": 1010.8,
+    "wind_mps": 5.25
+  }
+}</pre>
+</div>
