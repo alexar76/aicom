@@ -428,8 +428,52 @@ key: trusted because it was recorded out of band, not because the document says 
 | migration phase | фаза миграции | fase de migración | phase de migration | 迁移阶段 | Phases 1–3 are numbered, never renamed. |
 | post-quantum-ready | готов к постквантовому переходу | preparado para post-cuántico | prêt pour le post-quantique | 具备后量子迁移能力 | Able to CHECK a PQ signature. Must not be rendered as «постквантовая безопасность» / «seguridad post-cuántica» / «sécurité post-quantique» / 后量子安全 — that is phase 3, and conflating them overstates what is deployed. |
 
+## HISTOR terms (transparency log of MCP tool definitions)
+
+Added with `histor/` (2026-09-23). `HISTOR`, `MTL/1`, `MCP Trust Label`, `STH`, `did:key`, the
+method ids (`tool-set-observation`, `tool-def-pattern-scan`, `tool-set-continuity`,
+`name-threat-match`), the verdict tokens `pass` / `fail` / `inconclusive`, the tiers `block` /
+`advise`, reason codes (`MTL-SUBJ-003` …), HTTP statuses (`http-401`) and the capability ids
+(`histor.check@v1`) are **identifiers and never translated**. Log vocabulary follows the
+established Certificate Transparency renderings (RFC 6962 / RFC 9162), web-verified below.
+
+**Vocabulary rule that outranks translation.** MTL/1 §9.2 forbids rendering any label outcome
+as *safe, secure, audited, certified, approved, trusted* or an unqualified *verified* — and the
+same holds for their equivalents: RU «безопасный / проверенный / одобренный / доверенный», ES
+«seguro / verificado / aprobado / de confianza», FR «sûr / sécurisé / vérifié / approuvé / de
+confiance», ZH «安全 / 已验证 / 已认证 / 可信». A change is never «взлом / подмена / rug pull
+обнаружен»: it is an *изменение определений* with a date.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| transparency log | журнал прозрачности | registro de transparencia | journal de transparence | 透明日志 | The append-only, publicly auditable log. CT usage: RU «журналы CT», FR «journal de transparence», ES «registro de transparencia», ZH «透明日志 / 证书透明化日志». |
+| Merkle tree | дерево Меркла | árbol de Merkle | arbre de Merkle | 默克尔树 | |
+| leaf (log) | лист | hoja | feuille | 叶子 | One label = one leaf. |
+| signed tree head (STH) | подписанная вершина дерева (STH) | encabezado de árbol firmado (STH) | tête d’arbre signée (STH) | 签名树头（STH） | Gloss `STH` once; afterwards `STH` alone is fine. |
+| inclusion proof | доказательство включения | prueba de inclusión | preuve d’inclusion | 包含证明 | Shows a label is in the tree under a given head. |
+| consistency proof | доказательство согласованности | prueba de consistencia | preuve de cohérence | 一致性证明 | Shows a later head extends an earlier one: nothing removed or rewritten. |
+| append-only | только на добавление | solo de adición | en ajout seul | 仅追加 | |
+| tool definition | определение инструмента | definición de herramienta | définition d’outil | 工具定义 | The name + description + schemas an MCP server advertises. |
+| tool set | набор инструментов | conjunto de herramientas | ensemble d’outils | 工具集 | Everything `tools/list` returned, drained across pages. |
+| advertised (definitions) | объявленные | anunciadas | annoncées | 公布的 | What the server says to every client. Never «заявленные как безопасные». |
+| label (MTL) | метка | etiqueta | étiquette | 标签 | One signed MTL/1 document. The type names `MCPTrustLabel` / `VerificationVerdict` stay Latin. |
+| observation | наблюдение | observación | observation | 观测 | One `initialize` + `tools/list` against one endpoint at one time. |
+| pinned (tool set) | закреплён | fijado | épinglé | 已固定 | Same rendering as `pinned commit` / `pinned PQ key` above: the digest is recorded, nothing more. |
+| unchanged since | без изменений с | sin cambios desde | inchangé depuis | 自…起未变更 | Continuity `pass` rendering (MTL/1 §9.2). |
+| definitions changed | определения изменились | las definiciones cambiaron | les définitions ont changé | 定义已变更 | Continuity `fail` rendering. Neutral, dated, never an accusation. |
+| continuity (label) | непрерывность | continuidad | continuité | 连续性 | The method that compares two digests. |
+| pattern set | набор шаблонов | conjunto de patrones | ensemble de motifs | 模式集 | WARDEN static-scan rules pinned by digest. |
+| record set | набор записей | conjunto de registros | ensemble d’enregistrements | 记录集 | WARDEN built-in threat records, pinned by digest. |
+| flagged for review | отмечено для проверки | marcado para revisión | signalé pour relecture | 待复核 | Any `inconclusive`. Never styled as failure. |
+| endpoint | эндпоинт | endpoint | point de terminaison (endpoint) | 端点 | |
+| crawl | обход | rastreo | exploration (crawl) | 抓取 | One pass over every registry endpoint. |
+| split view | раздельное представление (split view) | vista dividida (split view) | vue scindée (split view) | 分裂视图（split view） | A server showing different clients different definitions. Gloss English once. |
+| witness (log) | свидетель | testigo | témoin | 见证者 | A second, separately operated observer co-signing heads. |
+| contribute (a digest) | передать дайджест | aportar el resumen (digest) | contribuer l’empreinte (digest) | 贡献摘要 | Opt-in; only `(endpoint, digest, day)` is stored. Uses the AWR `digest` rendering. |
+
 ## Sources (web-verified renderings)
 
+- HISTOR / Certificate Transparency log vocabulary: [Let’s Encrypt — Журналы Certificate Transparency (CT)](https://letsencrypt.org/ru/docs/ct-logs/), [Enterno — CT logs](https://enterno.io/articles/certificate-transparency-logs) (RU «подписанная вершина дерева», «доказательство включения / согласованности»); [MDN — Transparence des certificats](https://developer.mozilla.org/fr/docs/Web/Security/Defenses/Certificate_Transparency), [Bortzmeyer — RFC 9162](https://www.bortzmeyer.org/9162.html) (FR); [Google — Registro de transparencia](https://developers.google.com/android/binary_transparency/google1p/log_details?hl=es-419), [Apple — registros de Transparencia de certificados](https://support.apple.com/es-lamr/103703) (ES); [RFC 6962 中文翻译](https://rfc2cn.com/rfc6962.html), [华为云 — 证书透明化日志工作原理](https://www.huaweicloud.com/articles/5654fc7d410d215a6ada181b2195af0c.html) (ZH «签名树头 / 包含证明 / 一致性证明»).
 - Attestation / provenance boundaries: [IETF RFC 9334 — RATS Architecture](https://www.rfc-editor.org/rfc/rfc9334.html) distinguishes attester evidence, verifier appraisal and relying-party policy; [W3C PROV Overview](https://www.w3.org/TR/prov-overview/) defines provenance as information used to assess quality, reliability or trustworthiness rather than a truth guarantee.
 - Agentic / AI-agent supply chain: [OWASP Top 10 for Agentic Applications — ASI04](https://genai.owasp.org/2025/12/09/owasp-top-10-for-agentic-applications-the-benchmark-for-agentic-security-in-the-age-of-autonomous-ai/) establishes the English risk name. OWASP's localized supply-chain material supports the language roots used here: [RU](https://genai.owasp.org/download/46133/?tmstv=1741814631), [ES](https://genai.owasp.org/download/46116/?tmstv=1741814891), [FR](https://genai.owasp.org/wp-content/uploads/2024/05/LLM_AI_Security_and_Governance_Checklist-v1_FR-2.pdf), [ZH](https://genai.owasp.org/download/46125/?tmstv=1741814490). The complete compound is canonical AICOM wording until OWASP publishes Agentic Top 10 translations.
 - Slashing / staking / escrow: [Ledger — staking glossary](https://www.ledger.com/academy/ledgers-staking-glossary), [Journal du Coin — slashing (FR)](https://journalducoin.com/lexique/slashing/), [Cryptoast — lexique (FR)](https://cryptoast.fr/lexique/), [learnblockchain.cn — Slashing 罚没](https://learnblockchain.cn/article/16557), [腾讯新闻 — POS 罚没](https://news.qq.com/rain/a/20230131A032HG00), [MetaMask 质押 (zh)](https://learn.metamask.io/zh-CN/lessons/what-is-staking)

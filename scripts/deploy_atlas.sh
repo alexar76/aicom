@@ -205,6 +205,13 @@ install_on_host() {
   if [[ -f "$ROOT/.env" ]]; then
     env_args+=(--env-file "$ROOT/.env")
   fi
+  # --env-file above only feeds ${...} interpolation. What reaches the container is
+  # deploy/env/atlas.env — the operator token, the LLM key, the signing seed, the credits
+  # switch — and it is cut from .env here, on every deploy, or compose refuses to start.
+  # (The local compose reads ../.env itself.)
+  if [[ "$compose" == "$COMPOSE_PROD" ]]; then
+    python3 "$ROOT/scripts/security/service_env.py" atlas "$ROOT/.env" "$ROOT/deploy/env/atlas.env"
+  fi
   docker compose -f "$compose" "${env_args[@]}" up -d --build
 
   echo -n "Waiting for atlas health on 127.0.0.1:9330 "
@@ -234,7 +241,7 @@ install_on_host() {
 install_remote() {
   local host="$REMOTE"
   echo "Rsync atlas + nginx → ${host}:/root/claudecode/aicom/ …"
-  ssh "$host" "mkdir -p /root/claudecode/aicom/atlas /root/claudecode/aicom/deploy/nginx /root/claudecode/aicom/scripts"
+  ssh "$host" "mkdir -p /root/claudecode/aicom/atlas /root/claudecode/aicom/deploy/nginx /root/claudecode/aicom/scripts/security"
   # /data holds a dev signing key + watchbox registry; production keeps its own
   # on the atlas_data volume. Never let a laptop's copy overwrite the host's.
   rsync -az --delete \
@@ -244,6 +251,8 @@ install_remote() {
     "$ROOT/atlas/" "$host:/root/claudecode/aicom/atlas/"
   scp "$NGINX_CONF_SRC" "$host:/root/claudecode/aicom/deploy/nginx/atlas.modelmarket.dev.conf"
   scp "$ROOT/scripts/deploy_atlas.sh" "$host:/root/claudecode/aicom/scripts/deploy_atlas.sh"
+  # The host cuts atlas.env from its own .env; the laptop's .env never travels.
+  scp "$ROOT/scripts/security/service_env.py" "$host:/root/claudecode/aicom/scripts/security/service_env.py"
 
   local tls_flag=""
   [[ "$DO_TLS" -eq 1 ]] || tls_flag="--no-tls"

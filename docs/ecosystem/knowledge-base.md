@@ -52,7 +52,7 @@ AICOM is a **federated autonomous-agent economy**:
 16. **Competing lab galaxy** is a **second Hub VPS** (`hunt.modelmarket.dev`) federated with `modelmarket.dev`: **Competing Lab Hub** peer on `:9083`, **Signal Hunt** at [hunt.modelmarket.dev](https://hunt.modelmarket.dev), **Use Cases** at [use.modelmarket.dev](https://use.modelmarket.dev). On Alien Monitor these are nodes `competing_hub` / `signal_hunt` / `use_cases` in a far galaxy (`galaxy: competing`). Ask the assistant «покажи Competing Lab Hub» / «show Signal Hunt» to focus the camera.
 17. **BASANOS** 🪨 is the **Solidity touchstone** — signed assurance packs at a pinned commit (`agent.security.contract-assurance@v1`). It is not [HEPHAESTUS](https://forge.modelmarket.dev/) (the forge / studio), not **AgentAuditPool** (staked USDC + `scoreBps`), not MOMUS, not THEMIS.
 18. **HORKOS** ⚖️ is the **escrow policy signer** — the only key in `AIMarketEscrow.authorizedHubs`, on a separate host behind a tunnel, signing exactly one `debitChannel` calldata to the pinned Base escrow; depositor EIP-712 is the amount authority, not the Hub bearer token ([alexar76.github.io/escrow-signer](https://alexar76.github.io/escrow-signer)).
-19. **HESTIA** 🔥 is the **hearth** — isolated hosted runtime for AIMarket capability providers on the operator's machines ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), landing [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Not** the Hub catalogue, **not** Factory, **not** a job board. Agents appear only after an explicit signed deploy onto this host; an empty roster means nothing is hosted here, not that the market is empty. Isolation first. THEMIS can still refuse a start. Hub stays the market. Alien Monitor node `hestia`.
+19. **HESTIA** 🖥️ is the **hosted runtime** — isolated for AIMarket capability providers on the operator's machines ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), landing [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Not** the Hub catalogue, **not** Factory, **not** a job board. Agents appear only after an explicit signed deploy onto this host; an empty roster means nothing is hosted here, not that the market is empty. Isolation first. THEMIS can still refuse a start. Hub stays the market. Alien Monitor node `hestia`.
 
 **Beyond ARGUS, humans configure infra — machines trade.** Full ideology: [whitepaper §1](./whitepaper/en.md#1-ideology--autonomous-agent-economy).
 
@@ -104,7 +104,7 @@ Those six labs are **not** LIVE federation peers. Platon on the UNI map is an ob
 | **Signal Hunt** | [hunt.modelmarket.dev](https://hunt.modelmarket.dev) · [landing](https://alexar76.github.io/signal-hunt/) · [GitHub](https://github.com/alexar76/signal-hunt) | Investigation game **+ educational lab** over real Hub telemetry (host may be pending) |
 | **HEPHAESTUS** | [forge.modelmarket.dev](https://forge.modelmarket.dev/) · [modelmarket.dev/studio](https://modelmarket.dev/studio) · Alien Monitor node `hephaestus` | The forge — compose capability chains from the live signed catalogue, price the graph BEFORE spending, run it, keep the signed bill of materials with hop-level blame — **[docs](../hephaestus-studio.md)** · **[docs](../hephaestus-user-guide.md)** · **[use cases](../hephaestus-use-cases.md)** |
 | **BASANOS** | [GitHub](https://github.com/alexar76/basanos) · [landing](https://alexar76.github.io/basanos/) · live `basanos.modelmarket.dev` (when DNS is up) | Solidity touchstone — signed assurance pack; not AgentAuditPool, not HEPHAESTUS |
-| **HESTIA** | [GitHub](https://github.com/alexar76/hestia) · [landing](https://alexar76.github.io/hestia/) · live `hestia.modelmarket.dev` (TLS; API may 502 until the hearth is deployed) | Hearth — isolated hosted runtime; not Hub, not Factory, not a job board. Empty roster ≠ empty market |
+| **HESTIA** | [GitHub](https://github.com/alexar76/hestia) · [landing](https://alexar76.github.io/hestia/) · live `hestia.modelmarket.dev` (TLS; API may 502 until the runtime is deployed) | Hosted runtime — isolated; not Hub, not Factory, not a job board. Empty roster ≠ empty market |
 | **HORKOS** | [landing](https://alexar76.github.io/escrow-signer/) · [GitHub](https://github.com/alexar76/escrow-signer) | Escrow policy signer — only `authorizedHubs` key; skopos host + tunnel |
 | **Provenance verifier** | [verify.modelmarket.dev](https://verify.modelmarket.dev) | Verify any AI-output receipt (Ed25519 / W3C VC) — paste JSON or open its `verify_url` |
 
@@ -142,12 +142,12 @@ GAIA (iot.modelmarket.dev) — device_id-anchored, ~$0.002 unless noted.
 
 | SKU | layer | example devices | honest limit |
 |---|---|---|---|
-| gaia.weather.read@v1 | weather (Weather) | om-wx-01, nws-01, cwop-01, metno-01 +287 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.weather.read@v1 | weather (Weather) | om-wx-01, nws-01, cwop-01, metno-01 +267 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.air.read@v1 | air (Air quality) | om-aq-01, osm-01, sta-01, sc-01 +122 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.tide.read@v1 | tide (Tide) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.grid.read@v1 | grid (Grid carbon) | uk-grid-01, eia-01, rte-grid-01 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.quake.read@v1 | quake (Earthquakes) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | operator-anchored device_id; LIVE only with provenance source |
-| gaia.river.read@v1 | river (Rivers) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +165 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.river.read@v1 | river (Rivers) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.marine.read@v1 | marine (Marine) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.ghg.read@v1 | ghg (Greenhouse gas) | icos-htm-01, icos-zsf-01, icos-lin-01 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.fire.read@v1 | fire (Wildfire) | firms-fire-01 | cite NASA FIRMS; not a fire perimeter |
@@ -252,7 +252,7 @@ Analyst auto-learns layers from `STATION_CATALOG` at request time (no sync neede
 | **LOGOS** | `logos/` | [logos](https://github.com/alexar76/logos) | [README](https://github.com/alexar76/logos/blob/main/README.md) · federation analytics, anomaly detection, AI assistant |
 | **SKOPOS** | `skopos/` | [skopos](https://github.com/alexar76/skopos) | [integration](./skopos-integration.md) · [quickstart](https://github.com/alexar76/skopos/blob/main/docs/quickstart.md) |
 | **THEMIS** | `themis/` | [themis](https://github.com/alexar76/themis) | [admission](./supply-chain-admission.md) · [tutorial](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.en.md) · Hub gate before catalogue |
-| **HESTIA** | `hestia/` | [hestia](https://github.com/alexar76/hestia) | Hearth — isolated hosted runtime · [landing](https://alexar76.github.io/hestia/) · [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · Alien Monitor node `hestia` |
+| **HESTIA** | `hestia/` | [hestia](https://github.com/alexar76/hestia) | Hosted runtime — isolated · [landing](https://alexar76.github.io/hestia/) · [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · Alien Monitor node `hestia` |
 | **MOMUS** | `momus/` | [momus](https://github.com/alexar76/momus) | [README](https://github.com/alexar76/momus/blob/main/README.md) · red team · [momus.modelmarket.dev](https://momus.modelmarket.dev) |
 | **Treasury** | `treasury/` | [treasury](https://github.com/alexar76/treasury) | Separate bounty payer · [momus.modelmarket.dev/treasury](https://momus.modelmarket.dev/treasury) |
 | **Signal Hunt** | `signal-hunt/` | [signal-hunt](https://github.com/alexar76/signal-hunt) | [PRODUCT_SPEC](https://github.com/alexar76/signal-hunt/blob/main/docs/PRODUCT_SPEC.md) · investigation game + educational lab · [wiki](https://github.com/alexar76/aicom/wiki/Signal-Hunt) |
@@ -266,7 +266,7 @@ Visual C4 + deployment: [ecosystem-architecture.md](../ecosystem-architecture.md
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (49 components).
+Run: python3 scripts/sync_knowledge_base.py --write (50 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -300,7 +300,8 @@ Run: python3 scripts/sync_knowledge_base.py --write (49 components).
 - gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
 - helios: HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve. · https://alexar76.github.io/helios/
 - hephaestus: The forge — compose capability chains from the live signed Hub catalogue, estimate cost and latency BEFORE spending, run pipelines through the factory executor, and keep a signed bill of materials with hop-level blame. Studio UI is hub-served; core library is framework-free. · https://modelmarket.dev/studio
-- hestia: HESTIA — the hearth: isolated hosted runtime for AIMarket capability providers on the operator’s machines. Not a Hub catalogue, not a job board, not Factory. Agents appear only after a signed deploy onto this host. · https://hestia.modelmarket.dev · port 9480
+- hestia: HESTIA — the hosted runtime: isolated, for AIMarket capability providers on the operator’s machines. Not a Hub catalogue, not a job board, not Factory. Agents appear only after a signed deploy onto this host. · https://hestia.modelmarket.dev · port 9480
+- histor: HISTOR — public transparency log of MCP tool definitions: reads what remote MCP endpoints in the official registry advertise (never calls a tool), signs it as MTL/1 labels, appends them to an RFC 9162 Merkle log, and answers /check: is what a client received what was observed? Never calls a server safe. · https://alexar76.github.io/histor/
 - linkedin-profile-coach (repo linked-in-profile-coach): LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support. · https://alexar76.github.io/linked-in-profile-coach/
 - logos: Read-only federation intelligence: periodic source snapshots across Hub, MOMUS, Treasury, SKOPOS and Metis, rolling z-score anomaly detection over them, and cross-system correlation. It observes and explains; it never acts on what it finds. · https://logos.modelmarket.dev · port 9460
 - lottery: AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner. · https://lottery.modelmarket.dev/

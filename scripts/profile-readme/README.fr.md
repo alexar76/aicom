@@ -66,10 +66,10 @@
 | **Vous voulez la Factory dans un navigateur** | [magic-ai-factory.com](https://magic-ai-factory.com) — essai invité + [démo administrateur](https://magic-ai-factory.com/admin/login) (sans mot de passe : `admin`, puis **Enter admin demo**) |
 | **Vous voulez l’architecture** | [Base de connaissances de l’écosystème](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-fr.md) · [livre blanc](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/fr.md) · [cas d’usage](https://use.modelmarket.dev/) |
 | **Vous voulez exploiter la flotte** | `./start.sh --everything` ci-dessous, ou [démarrage rapide sur VPS](https://github.com/alexar76/aicom/blob/main/docs/quickstart-ecosystem-deploy.fr.md) |
-| **Vous voulez publier un fournisseur** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [tutoriel complet sur l’agent de sécurité](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.fr.md) · [agent terminé](https://github.com/alexar76/themis) · hébergez le processus sur **[HESTIA](https://github.com/alexar76/hestia)** (âtre, pas le Hub) |
+| **Vous voulez publier un fournisseur** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [tutoriel complet sur l’agent de sécurité](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.fr.md) · [agent terminé](https://github.com/alexar76/themis) · hébergez le processus sur **[HESTIA](https://github.com/alexar76/hestia)** (runtime hébergé, pas le Hub) |
 | **Vous voulez contribuer** | [Discussions](https://github.com/alexar76/aicom/discussions) · [good first issues](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
-Le catalogue des repos se trouve **ci-dessous**, regroupé selon le rôle de chaque repo — Factory, Âtre, cœur d’AIMarket, Build & connect, passerelles MCP, calcul vérifiable, monde physique, confiance et sécurité, client que vous exécutez, ACEX, observabilité, communauté et diffusion, apprentissage et exploration. Chaque repo appartient à un seul groupe, avec sa landing LIVE sur la même ligne, et l’[index A–Z](#az) permet de le retrouver sous n’importe quel angle — il n’y a pas de second plan du site ici.
+Le catalogue des repos se trouve **ci-dessous**, regroupé selon le rôle de chaque repo — Factory, Runtime hébergé, cœur d’AIMarket, Build & connect, passerelles MCP, calcul vérifiable, monde physique, confiance et sécurité, client que vous exécutez, ACEX, observabilité, communauté et diffusion, apprentissage et exploration. Chaque repo appartient à un seul groupe, avec sa landing LIVE sur la même ligne, et l’[index A–Z](#az) permet de le retrouver sous n’importe quel angle — il n’y a pas de second plan du site ici.
 
 Également LIVE, sans connexion : [Agent Arena](https://magic-ai-factory.com/arena/) · [Factory IQ](https://magic-ai-factory.com/iq) · [Pulse Terminal](https://magic-ai-factory.com/pulse/) · [Signal Hunt](https://hunt.modelmarket.dev/) · [Lottery](https://lottery.modelmarket.dev/)
 
@@ -153,11 +153,11 @@ Un seul pipeline, dans l’ordre où la confiance et l’argent circulent réell
 | # | Étape | Qui s’en charge |
 | --- | --- | --- |
 | 1 | **Construire** | [`aicom`](https://github.com/alexar76/aicom) conçoit, construit, teste et publie les produits |
-| 2 | **Héberger** | **HESTIA** est l’âtre — runtime hébergé et isolé ; déploiement signé sur cet hôte. Roster vide ≠ marché vide |
+| 2 | **Héberger** | **HESTIA** est le runtime hébergé — isolé, sur les machines de l’opérateur ; déploiement signé sur cet hôte. Roster vide ≠ marché vide |
 | 3 | **Admettre** | **THEMIS** décide au moment de la publication — `approve` / `review` / `reject` signés (optionnel) |
 | 4 | **Référencer et invoquer** | Le [protocole](https://github.com/alexar76/aimarket-protocol) **AIMarket** + le [hub](https://github.com/alexar76/aimarket-hub) transportent le catalogue, les canaux de paiement et les appels |
 | 5 | **Fournir** | 17 **oracles** (aléatoire, délai, consensus, mathématiques de confiance) · lectures physiques attestées de **GAIA** · cognition **METIS** |
-| 6 | **Vérifier** | Cognition **METIS** · Solidity dans un pin avec **BASANOS** · exploits EVM LIVE avec **DOLOS** · HTTP/fédération avec **MOMUS** · MCP tiers avec **WARDEN** |
+| 6 | **Vérifier** | Cognition **METIS** · Solidity dans un pin avec **BASANOS** · exploits EVM LIVE avec **DOLOS** · HTTP/fédération avec **MOMUS** · MCP tiers avec **WARDEN** · **HISTOR** ce que les serveurs MCP tiers ont annoncé, dans le temps |
 | 7 | **Consommer** | **ARGUS** — le client côté demande réellement exécuté par les humains et les agents |
 | 8 | **Régler** | Séquestre (escrow), canaux de paiement et primes **Treasury**, payés uniquement après vérification indépendante |
 | 9 | **Financer** | **ACEX** valorise et référence les agents, et prête sur leur valeur |
@@ -173,7 +173,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 
 | De | Vers | Flux |
 | --- | --- | --- |
-| Factory / aicom | HESTIA | scaffold · déploiement signé sur l’âtre |
+| Factory / aicom | HESTIA | scaffold · déploiement signé sur le runtime hébergé |
 | HESTIA | Hub | annonce explicite (héberger ≠ référencer) |
 | THEMIS | Hub | admission à la publication · approve / review / reject |
 | BASANOS | ACEX / contrats | scan Solidity · dossier d’assurance signé |
@@ -187,6 +187,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | Hub | ACEX | CapShares |
 | SKOPOS | Factory / Hub | observation de la flotte |
 | MOMUS | Factory / Hub | recherche · signature |
+| HISTOR | clients MCP · Hub | étiquettes MTL/1 signées · `/check` · `histor.check@v1` |
 | Treasury | Hub / chaîne | paiement après vérification |
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | instantanés en lecture seule · anomalies · analyses |
 | Alien Monitor | Hub | graphe 3D LIVE |
@@ -205,12 +206,12 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**aicom**](https://github.com/alexar76/aicom) | AI-Factory — pipeline autonome qui conçoit, construit, teste et publie les produits |
 | [**aicom-landing**](https://github.com/alexar76/aicom-landing) | Générateur rapide de landings marketing, extrait du pipeline complet |
 
-### 🔥 Âtre — là où tourne le processus vendeur
+### 🖥️ Runtime hébergé — là où tourne le processus vendeur
 <sub>Entre le scaffold et le catalogue. Héberger n’est pas référencer. Roster vide ≠ marché vide.</sub>
 
 | Repo | Description |
 | --- | --- |
-| [**hestia**](https://github.com/alexar76/hestia) | **HESTIA** (Ἑστία) — runtime hébergé et isolé pour les fournisseurs de capacité AIMarket sur les machines de l’opérateur. **Pas** le catalogue du Hub, **pas** Factory, **pas** un job board. Les agents n’apparaissent qu’après un déploiement signé sur cet hôte. THEMIS admet en option ; l’annonce est explicite ; le Hub reste le marché. · [landing](https://alexar76.github.io/hestia/) · [âtre](https://hestia.modelmarket.dev) |
+| [**hestia**](https://github.com/alexar76/hestia) | **HESTIA** (Ἑστία) — runtime hébergé et isolé pour les fournisseurs de capacité AIMarket sur les machines de l’opérateur. **Pas** le catalogue du Hub, **pas** Factory, **pas** un job board. Les agents n’apparaissent qu’après un déploiement signé sur cet hôte. THEMIS admet en option ; l’annonce est explicite ; le Hub reste le marché. · [landing](https://alexar76.github.io/hestia/) · [runtime hébergé](https://hestia.modelmarket.dev) |
 
 ### 🛒 Cœur d’AIMarket — le protocole et le marché
 <sub>Étape 4. La norme, le serveur de référence et le maillage (mesh) qui découvre et règle.</sub>
@@ -244,7 +245,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**aimarket-oracle-gateway**](https://github.com/alexar76/aimarket-oracle-gateway) | **Serveur MCP** — 35 outils d’oracle vérifiables et payés à l’appel (`get_random`, `compute_vdf`, `get_reputation_scores`, …) couvrant les 17 oracles, exposés aux agents IA externes via stdio · [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway) |
 
 ### 🧮 Calcul vérifiable — ce que les agents achètent réellement
-<sub>Étape 4. Mathématiques signées et cognition vérifiée, facturées à l’appel.</sub>
+<sub>Étape 5. Mathématiques signées et cognition vérifiée, facturées à l’appel.</sub>
 
 | Repo | Description |
 | --- | --- |
@@ -254,7 +255,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**lottery**](https://github.com/alexar76/lottery) | **AI-Agent Oracle Lottery** — tirages on-chain impartiaux (Platon + Chronos **VDF vérifié on-chain**), pondérés par la réputation LUMEN, **UBI machine** sponsorisé par Hub ; de **véritables agents AI Service Mesh jouent avec leurs propres portefeuilles** · Solidity/Foundry |
 
 ### 🌍 Monde physique — les capteurs comme capacité payante
-<sub>Étape 4, réalité off-chain : lectures attestées, carte qui les couvre, et desks qui transforment ces SKU en produits B2B citables.</sub>
+<sub>Étape 5, réalité off-chain : lectures attestées, carte qui les couvre, et desks qui transforment ces SKU en produits B2B citables.</sub>
 
 | Repo | Description |
 | --- | --- |
@@ -263,7 +264,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**cite-desks**](https://github.com/alexar76/cite-desks) | **Cite desks** — cinq desks d’évidence indépendants sur les rails AIMarket (Emberline feu, Tideline crue, Solrecord PV, Seamark AIS nordique, Plinth site) : watches, runs planifiés, cite packs, USDC · [famille](https://desk.modelmarket.dev/) · [Emberline](https://emberlinedesk.com/) · fork [alexar76/cite-desks](https://github.com/alexar76/cite-desks) |
 
 ### 🛡 Confiance et sécurité — qui peut entrer et qui paie pour le découvrir
-<sub>Étape 5, plus le rail de primes. Cinq contrôles indépendants, chacun signé, à cinq moments différents : publication, source à un pin, contrats déployés, HTTP LIVE et outil MCP tiers avant son accès à un hôte — plus la clé distincte qui paie leurs constats. **DOLOS ne figure qu’ici** : c’est une équipe rouge, pas un outil communautaire ou d’observabilité.</sub>
+<sub>Étape 6, plus le rail de primes. Six contrôles indépendants, chacun signé, à six moments différents : publication, source à un pin, contrats déployés, HTTP LIVE, outil MCP tiers avant son accès à un hôte et registre public de ce qu’annonçait chaque point de terminaison MCP distant du registre officiel, et de ses changements — plus la clé distincte qui paie leurs constats. **DOLOS ne figure qu’ici** : c’est une équipe rouge, pas un outil communautaire ou d’observabilité.</sub>
 
 | Repo | Description | Quand il s’exécute |
 | --- | --- | --- |
@@ -273,16 +274,17 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**momus**](https://github.com/alexar76/momus) | **MOMUS** — équipe rouge HTTP/fédération autonome : sondes sûres en lecture seule → constats signés Ed25519 ; cherche et signe mais **ne peut pas se payer elle-même** · [LIVE](https://momus.modelmarket.dev) · [landing](https://alexar76.github.io/momus/) | en continu, sur les services LIVE |
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury** — payeur de primes distinct pour MOMUS (sa propre clé et son propre conteneur) ; ne paie qu’après vérification indépendante · [LIVE](https://momus.modelmarket.dev/treasury) · [landing](https://alexar76.github.io/treasury/) | après vérification |
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN** — bibliothèque **pare-feu de sécurité MCP** sans dépendance (pas un serveur) : scan statique des définitions d’outils → flux de menaces signé → origine → épinglage · [landing](https://warden.modelmarket.dev/) · [étude de terrain : 1 108 serveurs MCP publics](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.fr.md) | avant qu’un outil tiers n’atteigne un hôte |
+| [**histor**](https://github.com/alexar76/histor) | **HISTOR** (ἵστωρ) — **journal de transparence public des définitions d’outils MCP** : lit ce qu’annonce chaque point de terminaison distant du registre officiel MCP (n’appelle jamais un outil), le signe en étiquettes MTL/1, les ajoute à un arbre de Merkle RFC 9162 avec des têtes d’arbre signées et date chaque modification avec son diff. Ne déclare jamais un serveur sûr · [live](https://histor.modelmarket.dev) · [landing](https://alexar76.github.io/histor/) | chaque jour, sur chaque point de terminaison distant du registre officiel · et sur `/check` |
 
 ### 👤 Le client que vous exécutez réellement
-<sub>Étape 6. Tout ce qui précède est de l’infrastructure ; voici ce qui dispose d’un utilisateur.</sub>
+<sub>Étape 7. Tout ce qui précède est de l’infrastructure ; voici ce qui dispose d’un utilisateur.</sub>
 
 | Repo | Description |
 | --- | --- |
 | [**argus**](https://github.com/alexar76/argus) | **ARGUS-3** — agent de référence côté demande et seul point de contact humain prévu : MCP protégé par WARDEN (réputation LUMEN), LLM multi-fournisseurs, Telegram ; consommateur/fournisseur AIMarket natif ; cryptomonnaies **désactivées par défaut** · [landing LIVE](https://magic-ai-factory.com/argus/) |
 
 ### 📈 ACEX — le marché des capitaux pour les agents
-<sub>Étape 8. Là où les revenus futurs d’un agent sont valorisés.</sub>
+<sub>Étape 9. Là où les revenus futurs d’un agent sont valorisés.</sub>
 
 | Repo | Description |
 | --- | --- |
@@ -290,7 +292,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**pulse-terminal**](https://github.com/alexar76/pulse-terminal) | Tableau de bord des marchés de capitaux ACEX avec valorisation LIVE des agents |
 
 ### 🌌 Observabilité — lire le système sans rien modifier
-<sub>Étape 9. Tous trois sont en lecture seule par conception : ils mesurent, ils n’agissent pas.</sub>
+<sub>Étape 10. Tous trois sont en lecture seule par conception : ils mesurent, ils n’agissent pas.</sub>
 
 | Repo | Description |
 | --- | --- |
@@ -334,6 +336,8 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 
 Chaque repo est listé une fois ci-dessus, dans l’unique groupe qui correspond à son rôle. Cet index permet de le retrouver sous n’importe quel autre angle.
 
+L’index de référence se trouve dans la [version anglaise](README.md#az) ; si une traduction a du retard, fiez-vous à lui.
+
 | Repo | Groupe | En une ligne |
 | --- | --- | --- |
 | [acex](https://github.com/alexar76/acex) | ACEX | CapShares, prêts, AMM |
@@ -363,7 +367,8 @@ Chaque repo est listé une fois ci-dessus, dans l’unique groupe qui correspond
 | [dolos](https://github.com/alexar76/dolos) | Confiance et sécurité | équipe rouge EVM dynamique (isolée dans un fork) |
 | [gaia](https://github.com/alexar76/gaia) | Monde physique | lectures IoT attestées |
 | [helios](https://github.com/alexar76/helios) | Communauté et diffusion | yaml → vidéo narrée → YouTube |
-| [hestia](https://github.com/alexar76/hestia) | Âtre | runtime hébergé et isolé · pas le Hub, pas Factory |
+| [hestia](https://github.com/alexar76/hestia) | Runtime hébergé | runtime hébergé et isolé · pas le Hub, pas Factory |
+| [histor](https://github.com/alexar76/histor) | Confiance et sécurité | journal de transparence des définitions d’outils MCP |
 | [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) | Application d’exemple | Flutter + SDK, produit réel |
 | [logos](https://github.com/alexar76/logos) | Observabilité | analyses en lecture seule de la fédération |
 | [lottery](https://github.com/alexar76/lottery) | Calcul vérifiable | tirages on-chain impartiaux · UBI machine |

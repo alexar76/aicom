@@ -29,17 +29,29 @@ TRANSLATIONS = {lang: PROFILE_DIR / f"README.{lang}.md" for lang in ("ru", "es",
 
 #: Agents whose role is adversarial or gatekeeping. None of them belongs to a people-facing or
 #: read-only-measurement group, however convenient the cross-listing looks.
-SECURITY_AGENTS = ("themis", "basanos", "dolos", "momus", "treasury", "warden")
+SECURITY_AGENTS = ("themis", "basanos", "dolos", "momus", "treasury", "warden", "histor")
 
 
 def _sections(text: str) -> dict[str, str]:
-    """`### ` heading -> body, for the catalogue portion only."""
+    """`### ` heading -> body, for the catalogue portion only. A repeated heading is an error:
+    keyed by heading, the second copy would silently replace the first."""
     parts = re.split(r"^### ", text, flags=re.M)[1:]
     out = {}
     for part in parts:
         head, _, body = part.partition("\n")
+        assert head.strip() not in out, f"duplicate heading: {head.strip()!r}"
         out[head.strip()] = body
     return out
+
+
+#: A table row whose first cell is a repo or agent name in ANY emphasis — `**X**`, `[**X**](…)`,
+#: `[X](…)`, any case. The catalogue's canonical form is only one of these; a misfiled row in
+#: another form must not slip past the checks below.
+_NAMED_ROW = re.compile(r"^\|\s*(?:\[\*\*([A-Za-z0-9-]+)\*\*\]\([^)]*\)|\*\*([A-Za-z0-9-]+)\*\*|\[([A-Za-z0-9-]+)\]\([^)]*\))\s*\|", re.M)
+_CANONICAL_ROW = re.compile(r"^\| \[\*\*[a-z0-9-]+\*\*\]\(https://github\.com/alexar76/[a-z0-9-]+\) \|")
+#: Where each named agent lives, by group emoji — the placements the old digest check enforced.
+PLACEMENT = {**{a: "🛡" for a in SECURITY_AGENTS}, "argus": "👤", "metis": "🧮",
+             "dioscuri": "💬", "theoros": "💬", "helios": "💬"}
 
 
 def _catalogue_groups(text: str) -> dict[str, list[str]]:
@@ -114,39 +126,85 @@ def test_community_group_is_only_people_facing():
     assert set(community) == {"dioscuri", "theoros", "helios"}, community
 
 
+def _groups_by_emoji(text: str) -> dict[str, list[str]]:
+    """Role group -> repos, keyed by the heading's leading emoji so any two languages compare."""
+    out: dict[str, list[str]] = {}
+    for head, repos in _catalogue_groups(text).items():
+        key = head.split(" ", 1)[0]
+        assert key not in out, f"two catalogue groups share the key {key!r}"
+        out[key] = repos
+    return out
+
+
 @pytest.mark.parametrize("lang", sorted(TRANSLATIONS))
 def test_translations_use_the_same_grouping(lang):
-    """The short versions carried ONE flat 'Agents' table mixing all four roles.
+    """A reader must not learn a different taxonomy from their own language.
 
-    They are summaries, so they list fewer repos — but a reader must not learn a different
-    taxonomy from their own language.
+    The translations once carried ONE flat 'Agents' table mixing all four roles, then an
+    agents-only digest under `#### ` headings. Since the full locales (24ed02194) each one is
+    the whole catalogue, so the check is the strongest one available: every group, keyed by its
+    emoji rather than the translated words, lists exactly the repos the English group lists,
+    in the same order — and the named placements below hold in every language.
     """
     text = TRANSLATIONS[lang].read_text(encoding="utf-8")
-    # Four groups, keyed by the emoji rather than the translated words.
     for emoji in ("🛡", "🧮", "👤", "💬"):
         assert emoji in text, (lang, emoji)
 
-    blocks = re.split(r"^#### ", text, flags=re.M)[1:]
-    home = {}
-    for block in blocks:
-        head, _, body = block.partition("\n")
-        for m in re.finditer(r"^\| \*\*([A-Za-z0-9-]+)\*\*", body, flags=re.M):
-            home.setdefault(m.group(1).upper(), []).append(head.strip())
+    english = _groups_by_emoji(EN.read_text(encoding="utf-8"))
+    translated = _groups_by_emoji(text)
+    assert translated == english, (lang, {
+        k: {"english": english.get(k), lang: translated.get(k)}
+        for k in english.keys() | translated.keys() if english.get(k) != translated.get(k)
+    })
 
-    for agent in ("THEMIS", "BASANOS", "DOLOS", "WARDEN", "MOMUS", "TREASURY"):
-        assert home.get(agent), (lang, agent, "missing from every group")
-        assert len(home[agent]) == 1, (lang, agent, home[agent])
-        assert home[agent][0].startswith("🛡"), (lang, agent, home[agent])
+    home: dict[str, list[str]] = {}
+    for emoji, repos in translated.items():
+        for repo in repos:
+            home.setdefault(repo, []).append(emoji)
 
-    assert home["ARGUS-3"][0].startswith("👤"), (lang, home["ARGUS-3"])
-    assert home["METIS"][0].startswith("🧮"), (lang, home["METIS"])
-    for agent in ("DIOSCURI", "THEOROS", "HELIOS"):
-        assert home[agent][0].startswith("💬"), (lang, agent, home[agent])
+    english_home = {repo: emoji for emoji, repos in english.items() for repo in repos}
+    for head, body in _sections(text).items():
+        if head.startswith("A–Z"):
+            continue  # the index lists every repo as [slug](…) by design
+        key = head.split(" ", 1)[0]
+        # A row naming a repo in ANY form — bold, linked or both, any case — is a catalogue entry:
+        # it must be the canonical row and sit in the repo's English group. Rows naming anything
+        # else (a Telegram channel, a stage) are not entries and are left alone.
+        for m in _NAMED_ROW.finditer(body):
+            name = (m.group(1) or m.group(2) or m.group(3)).lower().removesuffix("-3")
+            if name not in english_home:
+                continue
+            row = body[m.start():].split("\n", 1)[0]
+            assert _CANONICAL_ROW.match(row), (lang, head, row[:80])
+            assert key == english_home[name], (lang, name, head)
+            if name in PLACEMENT:
+                assert key == PLACEMENT[name], (lang, name, head)
+    for agent in SECURITY_AGENTS:
+        assert home.get(agent) == ["🛡"], (lang, agent, home.get(agent))
+    assert home.get("argus") == ["👤"], (lang, home.get("argus"))
+    assert home.get("metis") == ["🧮"], (lang, home.get("metis"))
+    for agent in ("dioscuri", "theoros", "helios"):
+        assert home.get(agent) == ["💬"], (lang, agent, home.get(agent))
+
+
+@pytest.mark.parametrize("lang", sorted(TRANSLATIONS))
+def test_translation_index_covers_its_catalogue_and_invents_nothing(lang):
+    """Each full locale has its own A–Z index; it obeys the same rule as the English one."""
+    text = TRANSLATIONS[lang].read_text(encoding="utf-8")
+    assert '<a id="az"></a>' in text and "(#az)" in text, lang
+    catalogued = {r for repos in _catalogue_groups(text).values() for r in repos}
+    indexed = set(_index_entries(text))
+    assert not catalogued - indexed, (lang, "catalogued but not indexed", catalogued - indexed)
+    assert not indexed - catalogued, (lang, "indexed but in no group", indexed - catalogued)
 
 
 @pytest.mark.parametrize("lang", sorted(TRANSLATIONS))
 def test_translations_point_at_the_english_index(lang):
-    """A summary must say where the full catalogue is, and land on the declared anchor."""
+    """The English index is the canonical one; a translation must say so and land on its anchor.
+
+    Written for the summaries, which had no index of their own. A full locale does, but it is
+    made from the English page and can lag behind it, so the pointer still earns its place.
+    """
     text = TRANSLATIONS[lang].read_text(encoding="utf-8")
     assert "README.md#az" in text, lang
 

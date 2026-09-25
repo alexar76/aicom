@@ -52,6 +52,8 @@ fi
 export AICOM_IMAGE_TAG="${AICOM_IMAGE_TAG:-$("$ROOT/scripts/docker_image_tag.sh")}"
 echo "=== Observability deploy (tag=${AICOM_IMAGE_TAG}) ==="
 
+# This recreates `app` too, so its env file must be current, not whatever the last deploy left.
+python3 "$ROOT/scripts/security/service_env.py" stack "$ENV_FILE" "$ROOT/deploy/env"
 docker compose "${COMPOSE_FILES[@]}" up -d --build app prometheus grafana
 
 echo "Waiting for Prometheus + Grafana..."

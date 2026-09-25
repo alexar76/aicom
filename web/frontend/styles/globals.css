@@ -1,5 +1,5 @@
-/* Served from public/fonts/ by us, not by Google — see scripts/selfhost_google_fonts.py. */
-@import url('/fonts/fonts.css');
+/* Webfonts are self-hosted in public/fonts/ and linked from app/layout.tsx — see
+   scripts/selfhost_google_fonts.py. Not @import: Turbopack cannot resolve a root URL. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -55,6 +55,10 @@ SATELLITE_ENV_OVERRIDES = {
     "DIOSCURI_LLM_MODEL": MINIMAX_MODEL,
     "TREASURY_LLM_PROVIDER": "openai",
     "MOMUS_LLM_API_KEY": None,
+    "HISTOR_CLASSIFIER_BASE_URL": OPENROUTER_BASE,
+    "HISTOR_CLASSIFIER_MODEL": MINIMAX_MODEL,
+    "HISTOR_CLASSIFIER_API_KEY": None,
+    "HISTOR_OPENROUTER_API_KEY": None,
 }
 
 
@@ -178,6 +182,8 @@ def apply_local_env(repo_root: Path, api_key: str) -> Path:
     updates = {k: v for k, v in SATELLITE_ENV_OVERRIDES.items() if v is not None}
     updates["OPENROUTER_API_KEY"] = api_key
     updates["MOMUS_LLM_API_KEY"] = api_key
+    updates["HISTOR_CLASSIFIER_API_KEY"] = api_key
+    updates["HISTOR_OPENROUTER_API_KEY"] = api_key
     _upsert_env_lines(env_path, updates)
     return env_path
 

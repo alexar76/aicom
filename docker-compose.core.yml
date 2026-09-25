@@ -7,7 +7,8 @@
 # and the `aicom_net` bridge). It ONLY adds services; it never edits the root.
 #
 #   Driven by ./start.sh  (generates the secrets referenced below).
-#   Manual:  docker compose -f docker-compose.yml -f docker-compose.core.yml up -d --build
+#   Manual:  python3 scripts/security/service_env.py stack .env deploy/env   (first, every time)
+#            docker compose -f docker-compose.yml -f docker-compose.core.yml up -d --build
 #   Full fleet instead:  ./start.sh --full   (→ scripts/quickstart_ecosystem.sh)
 #
 # Safe by default: AIFACTORY_CRYPTO_ENABLED is unset → no mainnet, no real funds
@@ -107,9 +108,11 @@ services:
       - "${ALIEN_PORT:-9100}:9100"
     # ALIEN_API_TOKEN comes from .env via env_file ONLY — never set an empty
     # default in `environment:` (it would override env_file and break auth).
+    # The monitor's cut of .env (start.sh writes it), not .env whole: that handed it the
+    # Stripe keys, the ATLAS seed and the hub admin token, none of which it reads.
     env_file:
-      - path: .env
-        required: false
+      - path: deploy/env/alien-monitor.env
+        required: true
     environment:
       ALIEN_MODE: ${ALIEN_MODE:-universe}
       ALIEN_PORT: "9100"

@@ -26,21 +26,44 @@ resolve_package_dir() {
   case "$arg" in
     aimarket-gaia-gateway|gaia-gateway) PKG="gaia"; return 0 ;;
   esac
+  # Every match, then refuse ambiguity — never "the first one find happened to hand back".
+  #
+  # `.claude/worktrees/` holds full copies of this monorepo at whatever commit a session
+  # was working on, and `find` walks them: `.claude` sorts before `platon`, so asking to
+  # publish aimarket-platon resolved to a week-old worktree copy and built 0.1.0 out of
+  # the ORACLES tree, which in that snapshot still carried the pre-rename name. It got as
+  # far as a finished wheel and was stopped by the secret gate, for an unrelated reason.
+  # That is luck, not a control. Worktrees are excluded, and if two live trees ever claim
+  # one name the script says so instead of guessing — that collision is a real
+  # pre-publication blocker (see verify_published_dist_freshness.py).
   local f name dir
+  local -a matches=()
   while IFS= read -r -d '' f; do
     name="$(grep -E '^name = ' "$f" | head -1 | sed -E 's/^name = "([^"]+)".*/\1/')"
     if [[ "$name" == "$arg" ]]; then
       dir="${f%/pyproject.toml}"
-      PKG="${dir#"$ROOT"/}"
-      return 0
+      matches+=("${dir#"$ROOT"/}")
     fi
   done < <(
     find "$ROOT" -name pyproject.toml \
       -not -path '*/.venv/*' \
       -not -path '*/node_modules/*' \
+      -not -path '*/.claude/*' \
+      -not -path '*/.upstreams/*' \
+      -not -path '*/site-packages/*' \
       -not -path '*/create-aimarket-agent/src/*' \
       -print0
   )
+  if [[ ${#matches[@]} -eq 1 ]]; then
+    PKG="${matches[0]}"
+    return 0
+  fi
+  if [[ ${#matches[@]} -gt 1 ]]; then
+    echo "error: '$arg' is declared by ${#matches[@]} pyproject.toml files:" >&2
+    printf '  %s/pyproject.toml\n' "${matches[@]}" >&2
+    echo "Pass the directory explicitly, or give one of them a different name." >&2
+    exit 2
+  fi
   return 1
 }
 
@@ -92,6 +115,29 @@ if [[ "$PKG" != "$PKG_ARG" ]]; then
 fi
 
 python3 -m pip install --quiet --upgrade pip build twine
+
+# ── Freshness gate ────────────────────────────────────────────────────────────
+# Is the version about to be published actually a NEW version? A distribution whose
+# tree moved on while its version string stayed put is worse than an unpublished one:
+# `pip install <name>==<same version>` serves the older codebase, so every fix in the
+# tree is unreachable. Nineteen distributions were in that state at once; the guard
+# that detects it was written afterwards and then wired to nothing, so it happened
+# again — aimarket-platon 0.1.1 sat on PyPI for eleven days without the
+# X-Forwarded-For fix that its own tree had, and nobody was told.
+#
+# Scoped to this package's own tree so it costs one PyPI fetch, not ninety.
+# Override for a deliberate re-upload of identical bytes: SKIP_FRESHNESS_GATE=1.
+if [[ "${SKIP_FRESHNESS_GATE:-0}" != "1" ]]; then
+  _tree="${PKG%%/*}"
+  echo "== Freshness gate ($_tree) =="
+  if ! python3 "$ROOT/scripts/verify_published_dist_freshness.py" "$_tree"; then
+    echo "" >&2
+    echo "refusing to publish: this version already exists on PyPI with different bytes." >&2
+    echo "Bump 'version' in $PKG/pyproject.toml, or set SKIP_FRESHNESS_GATE=1 if you" >&2
+    echo "really mean to re-upload (PyPI will reject a duplicate filename anyway)." >&2
+    exit 1
+  fi
+fi
 
 echo "== Build $PKG =="
 cd "$ROOT/$PKG"

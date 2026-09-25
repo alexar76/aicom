@@ -99,6 +99,16 @@ Publishing it changed three things, and each was a real exposure rather than a p
   needs a deposit on the bubble chain, which is bound to the docker bridge and unreachable
   from outside. So the world can read the bubble and cannot spend in it.
 
+None of this survives a deploy from a copy that predates it. On 2026-09-16 the host's own
+2026-08-28 copy of the deploy script was re-run, and the hub came back healthy with all
+three undone — plus the seed list, the seed pins and `AIMARKET_SELLS_FOR` — for eight days,
+until the crawl-freshness alert caught the symptom. Two things now stand in the way:
+`deploy/uni-hub-verify.py`, which `deploy/uni-hub.sh` runs after every start (and a hand
+recreate should run too), refuses a container that breaks any of the published rules;
+and the ecosystem alerter checks every hub of ours hourly from outside, for an advertised
+address nobody else can reach and for an operator door that opens to a token printed in
+this repository. The host copy of the old script is retired. Deploy from the monorepo.
+
 The observation deck is the exception that proves the rule. The universe map links *out* to
 this hub, and the two maps link to each other, because an operator standing outside is
 entitled to see both worlds. That link deliberately does not exist inside the bubble hub:

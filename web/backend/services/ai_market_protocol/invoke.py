@@ -447,6 +447,13 @@ async def invoke_capability_v1(
                 claimant=payer,
             )
             if not claim.get("ok"):
+                if claim.get("error") == "deposit_registry_unavailable":
+                    # The claim store could not be written: nothing is known about this
+                    # transfer yet, so telling the buyer it was spent would be false.
+                    raise HTTPException(
+                        status_code=503,
+                        detail="payment claims are temporarily unavailable; retry shortly",
+                    )
                 raise HTTPException(
                     status_code=402,
                     detail="on-chain payment already used for another invoke or order",

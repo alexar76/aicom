@@ -8,7 +8,7 @@ Quick switching between **DeepSeek native API**, **canonical Metis hybrid** (Dee
 |------|-----------|---------------|
 | **Factory** | `my-vps` | Factory pipeline, Alien Monitor, ATLAS Analyst, ARGUS, THEMIS |
 | **Metis** | `root@skopos.modelmarket.dev` | Metis council/verify, SKOPOS AI agent |
-| **Oracles** | `admin-vps` | MOMUS, HELIOS, DIOSCURI, Platon, LOGOS, ARGUS, Alien Monitor |
+| **Oracles** | `admin-vps` | MOMUS, HELIOS, DIOSCURI, Platon, LOGOS, ARGUS, Alien Monitor, **HISTOR** (classifier) |
 | **Hub lab** | `competing-lab` | AIMarket Hub (verify via Metis — no local LLM) |
 
 Inventory: `scripts/llm_fleet.yaml` · scan: `./scripts/switch_llm_profile.sh scan`
@@ -82,6 +82,18 @@ flowchart TB
 | **`intent_parser_b`**, **`moa_proposer_skeptic`** | **OpenRouter** | **`minimax/minimax-m3`** |
 
 Evidence: [metis/docs/en/BENCHMARKS.md](https://github.com/alexar76/metis/blob/main/docs/en/BENCHMARKS.md)
+
+## HISTOR classifier
+
+HISTOR's meaning-based MCP classifier is OpenAI-compatible (`HISTOR_CLASSIFIER_*` on
+`admin-vps:/opt/histor/.env`). Profiles map it like the rest of the Oracles fleet:
+
+| Profile | Base URL | Model | Key used |
+|---------|----------|-------|----------|
+| `hybrid-metis` / `deepseek-all` | `https://api.deepseek.com` | `deepseek-v4-pro` | `DEEPSEEK_API_KEY` (`HISTOR_CLASSIFIER_API_KEY` cleared) |
+| `openrouter-all` | `https://openrouter.ai/api/v1` | `minimax/minimax-m3` | `HISTOR_CLASSIFIER_API_KEY` (= OpenRouter key; beats DeepSeek in resolution order) |
+
+Does not touch `HISTOR_CLASSIFIER_MAX_PER_CRAWL` — if the budget is `0`, the classifier stays off.
 
 ## Files
 

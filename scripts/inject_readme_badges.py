@@ -55,6 +55,7 @@ PATH_TO_ID: dict[str, str] = {
     "create-aimarket-agent": "create-aimarket-agent",
     "skopos": "skopos",
     "gaia": "gaia",
+    "histor": "histor",
     ".": "aicom",
 }
 

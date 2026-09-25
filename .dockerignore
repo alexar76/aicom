@@ -57,6 +57,11 @@ package-lock.json
 .env
 .env.*
 !.env.example
+# The per-service cuts of .env that scripts/security/service_env.py writes before every
+# compose up, and the hub's host-local payment/ZK files. The root Dockerfile's `COPY . .`
+# would otherwise put their secrets into every ai-factory image layer.
+deploy/env/
+deploy/*.env
 docker-compose*.yml
 !docker-compose.yml
 

@@ -46,7 +46,7 @@ glossary.
 - Actor signatures are verified by Memory Market on every protected request.
 
 See the repository deployment runbooks in
-[`attested/attested-saas-gateway/docs/`](../attested/attested-saas-gateway/docs/) and
+[`attested/attested-saas-gateway/docs/`](https://github.com/alexar76/attested/tree/main/attested-saas-gateway/docs/) and
 [`SAAS_PROJECTS.md`](../SAAS_PROJECTS.md).
 
 The same index is published at `/docs` by the SaaS edge.

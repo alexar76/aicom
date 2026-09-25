@@ -80,6 +80,7 @@ Satellite ↔ monorepo map (quick reference):
   aimarket-playground    ← aimarket-playground/ → alexar76/aimarket-playground (guided first invoke)
   create-aimarket-agent  ← create-aimarket-agent/ → alexar76/create-aimarket-agent (scaffolding CLI)
   hestia                 ← hestia/ → alexar76/hestia (hosted runtime / hearth · :9480)
+  histor                 ← histor/ → alexar76/histor (MCP tool-definition transparency log · :9490 · history: live)
   use-cases-portal       ← use-cases-portal/ → alexar76/use-cases-portal (GTM portal · use.modelmarket.dev)
   linkedin-profile-coach ← coach/ → alexar76/linked-in-profile-coach
   aicom-landing        ← aicom-landing/ → alexar76/aicom-landing

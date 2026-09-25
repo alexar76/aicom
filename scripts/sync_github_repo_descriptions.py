@@ -12,6 +12,9 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from ensure_github_repo import clamp_description  # noqa: E402  (same 350-character rule as repo creation)
+
 try:
     import yaml
 except ImportError:
@@ -48,7 +51,7 @@ def _patch_repo_fields(
     url = f"https://api.github.com/repos/{org}/{repo}"
     body: dict[str, str] = {}
     if description.strip():
-        body["description"] = description.strip()
+        body["description"] = clamp_description(description)
     if homepage.strip():
         body["homepage"] = homepage.strip()
     if not body:

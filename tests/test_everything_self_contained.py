@@ -82,7 +82,9 @@ def _inherits_dotenv(service: dict) -> bool:
     entries = [ef] if isinstance(ef, str) else ef
     for e in entries:
         path = e if isinstance(e, str) else str(e.get("path", ""))
-        if Path(path).name == ".env":
+        # deploy/env/<service>.env is that service's cut of .env (scripts/security/service_env.py),
+        # so whatever of .env the cut keeps still reaches the container.
+        if Path(path).name == ".env" or Path(path).parent.as_posix().endswith("deploy/env"):
             return True
     return False
 

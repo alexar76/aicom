@@ -26,7 +26,7 @@ JSON — это то, что отдаёт кнопка `Copy request`, поэт�
 ```json
 {"nodes": [
   {"id": "read", "product_id": "gaia.gateway", "capability_id": "gaia.weather.read@v1",
-   "input": {}, "depends_on": [], "source_hub": "https://iot.modelmarket.dev"},
+   "input": {"city": "Berlin"}, "depends_on": [], "source_hub": "https://iot.modelmarket.dev"},
   {"id": "check", "product_id": "gaia.gateway", "capability_id": "gaia.verify@v1",
    "input": {"reading": "${read.reading}", "attestation": "${read.attestation}"},
    "depends_on": ["read"], "source_hub": "https://iot.modelmarket.dev"}

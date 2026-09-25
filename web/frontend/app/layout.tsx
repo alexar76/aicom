@@ -72,8 +72,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark" data-theme-bg="dark">
+    // suppressHydrationWarning covers this element's own attributes only: pages whose body the
+    // server rendered in the visitor's language set `lang` before hydration (DocumentLang).
+    <html lang="en" className="dark" data-theme-bg="dark" suppressHydrationWarning>
       <head>
+        {/* eslint-disable-next-line @next/next/no-css-tags -- self-hosted webfonts in /public/fonts (scripts/selfhost_google_fonts.py); a CSS @import of this URL fails the Turbopack build */}
+        <link rel="stylesheet" href="/fonts/fonts.css" />
         {/* eslint-disable-next-line @next/next/no-css-tags -- runtime-swappable theme stylesheet served from /public, intentionally loaded by URL */}
         <link rel="stylesheet" href="/themes.css" />
       </head>

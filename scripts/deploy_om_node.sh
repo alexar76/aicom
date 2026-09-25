@@ -110,12 +110,14 @@ ensure_token
 # ── 2. The API + sync containers. Reuses the same overlay GAIA uses locally, so
 #       there is one definition of how Open-Meteo is run, not two.
 # Must track docker-compose.om-node.yml: at least one HOURLY model (ecmwf_ifs025
-# alone is 3-hourly, so `current` returns null off the 3h boundary).
-export GAIA_OM_SYNC_MODELS="${OM_NODE_MODELS:-dwd_icon,ecmwf_ifs025}"
+# alone is 3-hourly, so `current` returns null off the 3h boundary) plus the two CAMS
+# models /v1/air-quality needs, or every om-aq-* relay reads all-null.
+export GAIA_OM_SYNC_MODELS="${OM_NODE_MODELS:-dwd_icon,ecmwf_ifs025,cams_global,cams_europe,ncep_gfswave025,meteofrance_sea_surface_temperature}"
 # RAW variables. `sync` skips names a model does not carry IN SILENCE, so the derived
 # surface_pressure / wind_speed_10m downloaded nothing; Open-Meteo derives them from
-# pressure_msl and the u/v wind components.
-export GAIA_OM_SYNC_VARIABLES="${OM_NODE_VARIABLES:-temperature_2m,relative_humidity_2m,pressure_msl,wind_u_component_10m,wind_v_component_10m}"
+# pressure_msl and the u/v wind components. us_aqi/european_aqi are derived from the six
+# pollutants, so all six are synced.
+export GAIA_OM_SYNC_VARIABLES="${OM_NODE_VARIABLES:-temperature_2m,relative_humidity_2m,pressure_msl,wind_u_component_10m,wind_v_component_10m,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,aerosol_optical_depth,dust,alder_pollen,birch_pollen,grass_pollen,wave_height,sea_surface_temperature}"
 export GAIA_OM_SYNC_PAST_DAYS="${OM_NODE_PAST_DAYS:-2}"
 
 echo "Starting open-meteo (serve + sync) — models=${GAIA_OM_SYNC_MODELS} vars=${GAIA_OM_SYNC_VARIABLES}"

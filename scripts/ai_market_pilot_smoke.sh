@@ -13,7 +13,7 @@ set -euo pipefail
 #   PRODUCT_ID=prod-xxxx \
 #   TX_HASH=0x... \
 #   CHAIN=base TOKEN=USDT CONTRACT_ADDRESS=0x... \
-#   CUSTOMER_ID=aimkt-smoke CUSTOMER_EMAIL=smoke@example.com \
+#   CUSTOMER_TOKEN=<customer JWT> PAYER_SIGNATURE=<wallet personal_sign> \
 #   WALLET_ADDRESS=0xBuyerWallet AMOUNT=1.0 \
 #   CAPABILITY_ID=generate_report \
 #   ./scripts/ai_market_pilot_smoke.sh
@@ -42,18 +42,31 @@ if [[ -z "${PRODUCT_ID}" || -z "${TX_HASH}" ]]; then
 fi
 
 echo "3) POST /ai-market/pilot/settlement/confirm"
-SETTLEMENT_JSON="$(curl -sS -X POST "${BASE_URL}/ai-market/pilot/settlement/confirm" \
-  -H "Content-Type: application/json" \
-  -d "{
+# The pilot binds a license to a signed-in customer and to the wallet that paid:
+# CUSTOMER_TOKEN is a customer JWT, PAYER_SIGNATURE the paying wallet's personal_sign
+# over the challenge the first call prints. Without a signature this stops there.
+if [[ -z "${CUSTOMER_TOKEN:-}" ]]; then
+  echo "CUSTOMER_TOKEN (a customer JWT) is required: anonymous pilot confirms are refused" >&2
+  exit 1
+fi
+SETTLEMENT_BODY="{
     \"product_id\": \"${PRODUCT_ID}\",
     \"tx_hash\": \"${TX_HASH}\",
     \"chain\": \"${CHAIN}\",
     \"token\": \"${TOKEN}\",
     \"contract_address\": \"${CONTRACT_ADDRESS}\",
-    \"customer_id\": \"${CUSTOMER_ID}\",
-    \"customer_email\": \"${CUSTOMER_EMAIL}\",
-    \"wallet_address\": \"${WALLET_ADDRESS}\"
-  }")"
+    \"wallet_address\": \"${WALLET_ADDRESS}\",
+    \"payer_signature\": \"${PAYER_SIGNATURE:-}\"
+  }"
+SETTLEMENT_JSON="$(curl -sS -X POST "${BASE_URL}/ai-market/pilot/settlement/confirm" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -d "${SETTLEMENT_BODY}")"
+if [[ -z "${PAYER_SIGNATURE:-}" ]]; then
+  echo "Sign this challenge with the paying wallet, then rerun with PAYER_SIGNATURE=0x…:"
+  echo "${SETTLEMENT_JSON}" | python3 -c 'import json,sys; print(json.load(sys.stdin)["detail"]["challenge"])'
+  exit 0
+fi
 echo "${SETTLEMENT_JSON}" | python3 -m json.tool
 LICENSE_KEY="$(echo "${SETTLEMENT_JSON}" | python3 -c 'import json,sys;print((json.load(sys.stdin).get("license_key") or "").strip())')"
 

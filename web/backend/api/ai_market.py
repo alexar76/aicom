@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 import os
 import time
-import uuid
 from pathlib import Path
 from typing import Any
 
@@ -27,7 +26,9 @@ from web.backend.schemas.api_requests import (
     AiMarketSearchRequest,
     AiMarketSettlementConfirmRequest,
 )
+from web.backend.services.ai_market_protocol.channels import claim_transfer, release_transfer
 from web.backend.services.commerce import CommerceService, TxHashAlreadyUsedError
+from web.backend.services.payment_claim import DOOR_PILOT, checkout_tx_hash, claim_message, verify_claim
 from web.backend.services.storefront_pricing import (
     checkout_usdt_from_sales_file,
     pilot_settlement_price_usdt,
@@ -246,35 +247,42 @@ async def confirm_pilot_settlement(
     Production pilot: single chain/token/contract settlement confirmation.
     On success creates order + license entitlement.
 
-    Identity binding rule: if the caller is authenticated, the entitlement is
-    bound to the token's ``sub``/``email`` and any ``customer_id`` /
-    ``customer_email`` in the body that disagrees is rejected. This prevents an
-    attacker from minting a paid-tx entitlement under someone else's identity.
-    Anonymous callers receive a server-generated synthetic identity.
+    Same proof as checkout. A transfer's hash is public (mempool, explorers), so a
+    matching recipient and amount says nothing about who is asking. This door used to
+    hand an anonymous caller a license for any paid transfer, front-running the buyer's
+    own checkout and leaving them with a 409. Now the caller must be a signed-in
+    customer, and the wallet that paid must sign a server-built message naming that
+    customer, this product and this transaction. A request without ``payer_signature``
+    is answered with that message as ``challenge``. The transfer is then spent through
+    the same single-use claim every other door takes.
     """
     cfg = _pilot_config()
     chain = (body.chain or cfg["chain"]).strip().lower()
     token = (body.token or cfg["token"]).strip().upper()
     contract = (body.contract_address or "").strip()
     product_id = body.product_id
-    tx_hash = body.tx_hash
 
     auth_payload = decode_customer(authorization)
-    if auth_payload:
-        customer_id = str(auth_payload.get("sub") or "").strip()
-        customer_email = str(auth_payload.get("email") or "").strip()
-        if not customer_id or not customer_email:
-            raise HTTPException(status_code=401, detail="Customer token missing identity claims")
-        # Reject mismatched identity in the body (prevents impersonation attempts).
-        if body.customer_id and body.customer_id.strip() and body.customer_id.strip() != customer_id:
-            raise HTTPException(status_code=403, detail="customer_id does not match authenticated customer")
-        if body.customer_email and body.customer_email.strip().lower() != customer_email.lower():
-            raise HTTPException(status_code=403, detail="customer_email does not match authenticated customer")
-    else:
-        # Anonymous flow: ignore client-supplied identity to prevent binding the
-        # license to an arbitrary email/id chosen by the caller.
-        customer_id = f"aimkt-{uuid.uuid4().hex[:8]}"
-        customer_email = f"{customer_id}@ai-market.local"
+    if not auth_payload:
+        raise HTTPException(
+            status_code=401,
+            detail="Sign in first: a pilot license is bound to a customer account and to a "
+                   "signature from the wallet that paid",
+        )
+    customer_id = str(auth_payload.get("sub") or "").strip()
+    customer_email = str(auth_payload.get("email") or "").strip()
+    if not customer_id or not customer_email:
+        raise HTTPException(status_code=401, detail="Customer token missing identity claims")
+    # Reject mismatched identity in the body (prevents impersonation attempts).
+    if body.customer_id and body.customer_id.strip() and body.customer_id.strip() != customer_id:
+        raise HTTPException(status_code=403, detail="customer_id does not match authenticated customer")
+    if body.customer_email and body.customer_email.strip().lower() != customer_email.lower():
+        raise HTTPException(status_code=403, detail="customer_email does not match authenticated customer")
+    try:
+        # One key per transfer: a bare or upper-case hash is the same transaction.
+        tx_hash = checkout_tx_hash(chain, body.tx_hash)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     wallet = body.wallet_address or ""
     try:
         amount = pilot_settlement_price_usdt(product_id)
@@ -295,12 +303,24 @@ async def confirm_pilot_settlement(
         raise HTTPException(status_code=400, detail=f"pilot supports only {cfg['chain']} + {cfg['token']}")
     if cfg["contract"] and contract.lower() != cfg["contract"].lower():
         raise HTTPException(status_code=400, detail="contract_address does not match pilot contract")
-    recipient = payment_api._get_address_for_chain(chain)
+    recipient = payment_api._ensure_recipient_configured(chain, payment_api._get_address_for_chain(chain))
+    payment_id = f"aimarket-{tx_hash[:24]}"
+    claim_id = f"{payment_id}:{customer_id}"
+    # The quote the payer signs, in checkout's own claim format.
+    quote = {"payment_id": payment_id, "customer_id": customer_id, "product_id": product_id,
+             "chain": chain, "currency": token, "amount": amount, "wallet_address": recipient}
+    challenge = claim_message(quote, tx_hash)
+    if not body.payer_signature:
+        raise HTTPException(status_code=400, detail={
+            "message": "Sign this challenge with the wallet that paid and resend it as payer_signature",
+            "challenge": challenge,
+        })
     if chain == "solana":
         verify = payment_api._verify_solana_transaction(
             tx_hash=tx_hash,
             expected_recipient=recipient,
             expected_amount=amount,
+            expected_token=token,
         )
     else:
         verify = payment_api._verify_evm_transaction(
@@ -312,7 +332,19 @@ async def confirm_pilot_settlement(
         )
     if not verify.get("verified"):
         raise HTTPException(status_code=400, detail=f"on-chain verification failed: {verify.get('error')}")
-    payment_id = f"aimarket-{tx_hash[:24]}"
+    if not verify_claim(
+            quote, tx_hash, body.payer_signature, str(verify.get("from") or ""),
+            contract_check=lambda who, digest, sig: payment_api._contract_wallet_accepts(chain, who, digest, sig)):
+        raise HTTPException(status_code=403, detail={
+            "message": "payer_signature was not made by the wallet that sent this transfer",
+            "challenge": challenge,
+        })
+    transfer = claim_transfer(chain=chain, tx_hash=tx_hash, door=DOOR_PILOT, claim_id=claim_id,
+                              amount_usd=amount, orders=commerce)
+    if not transfer.get("ok"):
+        if transfer.get("error") == "deposit_registry_unavailable":
+            raise HTTPException(status_code=503, detail="payment claims are temporarily unavailable; retry shortly")
+        raise HTTPException(status_code=409, detail="Transaction already used to pay for something else")
     try:
         order = commerce.create_order_and_license(
             customer_id=customer_id,
@@ -323,14 +355,18 @@ async def confirm_pilot_settlement(
             currency=token,
             tx_hash=tx_hash,
         )
-    except TxHashAlreadyUsedError as exc:
-        raise HTTPException(
-            status_code=409,
-            detail={
-                "message": "Transaction hash already used for another order",
-                "existing_payment_id": exc.existing_payment_id,
-            },
-        ) from exc
+    except Exception as exc:
+        # Nothing was delivered, so the transfer is given back.
+        release_transfer(chain=chain, tx_hash=tx_hash, door=DOOR_PILOT, claim_id=claim_id)
+        if isinstance(exc, TxHashAlreadyUsedError):
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "message": "Transaction hash already used for another order",
+                    "existing_payment_id": exc.existing_payment_id,
+                },
+            ) from exc
+        raise
     event = {
         "type": "ai_market_entitlement_activated",
         "time": time.time(),
@@ -354,9 +390,9 @@ async def confirm_pilot_settlement(
 @router.get("/entitlements/{customer_id}")
 async def list_entitlements(customer_id: str, payload: dict = Depends(require_customer)):
     # Authorization: a customer may only list their own entitlements.
-    # Synthetic anonymous IDs created via ``/pilot/settlement/confirm`` (prefix
-    # ``aimkt-``) cannot be queried because they have no JWT — that is
-    # intentional; the license_key returned at confirm time is the credential.
+    # Synthetic anonymous IDs that ``/pilot/settlement/confirm`` issued before it
+    # required sign-in (prefix ``aimkt-``) cannot be queried because they have no
+    # JWT — that is intentional; the license_key returned at confirm time is the credential.
     if str(payload.get("sub") or "") != customer_id:
         raise HTTPException(status_code=403, detail="forbidden")
     licenses = _read_json(store_licenses_path())

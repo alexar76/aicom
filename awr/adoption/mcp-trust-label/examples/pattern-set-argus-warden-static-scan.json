@@ -2,8 +2,8 @@
  "id": "urn:awr:mtl:1:patternset:argus-warden-static-scan",
  "source": "warden/src/static-scan.ts",
  "note": "GENERATED from the shipping ARGUS WARDEN static-scan gate by calling staticScanRuleset(); do not hand-edit. This file exists so that a pattern-set digest is reproducible: two MTL labels are comparable only when they name the same pattern set. Ruleset v2 gave every rule a TIER: a `block` rule can refuse a connection, an `advise` rule is reported and never blocks at any blockAtSeverity and never affects the score. A label that presents an advisory hit as a blocking finding misrepresents the scan. The `severity` values are the gate own and MTL/1 attaches no safety meaning to them. Ruleset v3 added SURFACES: every rule declares whether it runs against the tool name, the description or the input schema. The tool name was scanned by nothing before v3; noun-keyed rules stay off it deliberately, because they match ordinary identifiers. Ruleset v4 added GUARDS and re-tiered on field evidence: a guard inspects a match in context and drops it when the match is not the thing the rule looks for (a mention rather than an instruction, a detection rather than a request, an identifier fragment rather than a secret). Two rules with the same regex and different guards are different rulesets, so `guards` is inside the digest. Comparing a v4 label with a v3 one compares different scans: v4 blocks on 15 rules where v3 blocked on 18.",
- "version": "4",
- "digest": "sha256-klRyTiD3njdBs7sOjcDCfmAHaKsfQi75/wlQjjWWkXI=",
+ "version": "5",
+ "digest": "sha256-HUKSzM6cREP8FH7ektqNi9gNIPoVmxKdfLXFF1IIl4s=",
  "digestNote": "sha256 over the RFC 8785 canonical form of {version, rules}, rules sorted by code-unit comparison. Recompute with: node -e \"import('./warden/dist/index.js').then(m=>console.log(m.staticScanRuleset().digest))\", or regenerate this whole file with awr/adoption/mcp-trust-label/tools/regen_pattern_set.mjs.",
  "scannedFields": [
   "name",
@@ -12,13 +12,13 @@
  ],
  "surfaceCounts": {
   "name": 17,
-  "description": 25,
-  "inputSchema": 25
+  "description": 26,
+  "inputSchema": 26
  },
- "ruleCount": 25,
+ "ruleCount": 26,
  "tierCounts": {
   "block": 15,
-  "advise": 10
+  "advise": 11
  },
  "rules": [
   {
@@ -34,7 +34,8 @@
    "flags": "",
    "guards": [
     "blob"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_CREDENTIAL_PARAM",
@@ -46,7 +47,8 @@
    ],
    "source": "\\bapi[_\\s-]?key\\b",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_CREDENTIAL_PARAM",
@@ -58,7 +60,8 @@
    ],
    "source": "\\bcredentials?\\b|\\baccess[_\\s-]?token\\b|\\bbearer\\s+token\\b",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_CREDENTIAL_PARAM",
@@ -70,7 +73,8 @@
    ],
    "source": "\\bpassword\\b|\\bpasswd\\b",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_CREDENTIAL_PARAM",
@@ -82,7 +86,8 @@
    ],
    "source": "\\bsecret(?:s)?\\b",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_DATA_URL",
@@ -98,7 +103,8 @@
    "guards": [
     "payload",
     "mention"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_DATA_URL",
@@ -114,7 +120,8 @@
    "guards": [
     "uri",
     "mention"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_ENV_REFERENCE",
@@ -126,7 +133,8 @@
    ],
    "source": "(?:^|[^.\\w])\\.env\\b|\\benvironment\\s+variables?\\b",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_EXFIL",
@@ -139,7 +147,8 @@
    ],
    "source": "\\b(?:post|send|put)\\s+to\\s+https?:\\/\\/",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_EXFIL",
@@ -152,7 +161,10 @@
    ],
    "source": "\\b(?:send|post|forward|relay)\\s+(?:it|them|this|the\\s+\\w+|all|results?|output|data|contents?)\\s+to\\s+(?:https?:\\/\\/|\\b[\\w-]+(?:\\.[\\w-]+)*\\.[a-z]{2,}\\b)",
    "flags": "i",
-   "guards": []
+   "guards": [
+    "navigation"
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_EXFIL",
@@ -167,7 +179,8 @@
    "flags": "i",
    "guards": [
     "mention"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_EXFIL",
@@ -180,7 +193,8 @@
    ],
    "source": "\\bupload\\b[\\s\\S]{0,40}\\bto\\s+(?:https?:\\/\\/|[\\w.-]+\\.[a-z]{2,})",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_HIDDEN_UNICODE",
@@ -191,11 +205,12 @@
     "description",
     "inputSchema"
    ],
-   "source": "[\\u200B-\\u200F\\u202A-\\u202E\\u2060\\uFEFF]",
-   "flags": "",
+   "source": "[\\u200B-\\u200F\\u202A-\\u202E\\u2060\\u2066-\\u2069\\uFEFF\\u{E0000}-\\u{E007F}\\u{E0100}-\\u{E01EF}]",
+   "flags": "u",
    "guards": [
     "zeroWidth"
-   ]
+   ],
+   "raw": true
   },
   {
    "code": "TOOL_DEF_IMPERATIVE",
@@ -208,7 +223,8 @@
    ],
    "source": "\\binstead\\s+of\\b",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_IMPERATIVE",
@@ -221,7 +237,8 @@
    ],
    "source": "\\byou\\s+must\\b",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_INJECTION",
@@ -234,7 +251,8 @@
    ],
    "source": "<\\s*\\/?\\s*(?:system|instructions?|important)\\s*>",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_INJECTION",
@@ -247,7 +265,8 @@
    ],
    "source": "\\b(?:system\\s+prompt|developer\\s+(?:message|prompt))\\b",
    "flags": "i",
-   "guards": []
+   "guards": [],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_INJECTION",
@@ -262,7 +281,8 @@
    "flags": "i",
    "guards": [
     "mention"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_INJECTION",
@@ -277,7 +297,8 @@
    "flags": "i",
    "guards": [
     "mention"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_INJECTION",
@@ -292,7 +313,8 @@
    "flags": "i",
    "guards": [
     "mention"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_INJECTION",
@@ -305,7 +327,28 @@
    ],
    "source": "\\bwithout\\s+(?:telling|informing|asking)\\s+(?:the\\s+)?user\\b",
    "flags": "i",
-   "guards": []
+   "guards": [
+    "autonomy"
+   ],
+   "raw": false
+  },
+  {
+   "code": "TOOL_DEF_SECRET_EXFIL",
+   "severity": "medium",
+   "tier": "advise",
+   "surfaces": [
+    "description",
+    "inputSchema"
+   ],
+   "source": "~\\/\\.ssh\\/[\\w.-]{1,64}|\\bid_rsa\\b|~?\\/?\\.aws\\/credentials\\b|~?\\/?\\.(?:npmrc|pgpass|netrc|git-credentials)\\b|(?:^|[^.\\w])\\.env(?:\\.[\\w-]{1,40})?\\b|\\bprocess\\.env\\b",
+   "flags": "i",
+   "guards": [
+    "publicKeyPath",
+    "polarity",
+    "detection",
+    "secretExfilPair"
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_SECRET_HARVEST",
@@ -321,7 +364,8 @@
    "guards": [
     "polarity",
     "harvestTarget"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_SECRET_REQUEST",
@@ -337,7 +381,8 @@
     "polarity",
     "detection",
     "identifierFragment"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_SECRET_REQUEST",
@@ -354,7 +399,8 @@
     "mention",
     "detection",
     "identifierFragment"
-   ]
+   ],
+   "raw": false
   },
   {
    "code": "TOOL_DEF_SECRET_REQUEST",
@@ -369,7 +415,8 @@
    "guards": [
     "polarity",
     "publicKeyPath"
-   ]
+   ],
+   "raw": false
   }
  ]
 }

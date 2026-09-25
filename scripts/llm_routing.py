@@ -59,6 +59,10 @@ METIS_PRO_SEATS = frozenset(
     }
 )
 
+# HISTOR classifier: OpenAI-compat /chat/completions. Base URL has no trailing /v1 path
+# segment for DeepSeek (appends /chat/completions itself); OpenRouter needs /api/v1.
+# HISTOR_CLASSIFIER_API_KEY wins over DEEPSEEK_API_KEY in histor/config.py — clear it on
+# DeepSeek profiles so the native key is used; set it to the OpenRouter key on failover.
 DEEPSEEK_ENV_DEFAULTS = {
     "ATLAS_LLM_PROVIDER": "deepseek_api",
     "ATLAS_LLM_BASE_URL": DEEPSEEK_BASE,
@@ -75,6 +79,9 @@ DEEPSEEK_ENV_DEFAULTS = {
     "DIOSCURI_LLM_BASE_URL": "",
     "DIOSCURI_LLM_MODEL": DS_PRO,
     "TREASURY_LLM_PROVIDER": "deepseek",
+    "HISTOR_CLASSIFIER_BASE_URL": "https://api.deepseek.com",
+    "HISTOR_CLASSIFIER_MODEL": DS_PRO,
+    "HISTOR_CLASSIFIER_API_KEY": "",
 }
 
 OPENROUTER_ENV_OVERRIDES = {
@@ -92,6 +99,8 @@ OPENROUTER_ENV_OVERRIDES = {
     "DIOSCURI_LLM_BASE_URL": OPENROUTER_BASE,
     "DIOSCURI_LLM_MODEL": MINIMAX,
     "TREASURY_LLM_PROVIDER": "openai",
+    "HISTOR_CLASSIFIER_BASE_URL": OPENROUTER_BASE,
+    "HISTOR_CLASSIFIER_MODEL": MINIMAX,
 }
 
 
@@ -283,6 +292,9 @@ def env_updates_for_profile(profile: str, *, openrouter_key: str = "") -> dict[s
         out = dict(OPENROUTER_ENV_OVERRIDES)
         out["OPENROUTER_API_KEY"] = openrouter_key
         out["MOMUS_LLM_API_KEY"] = openrouter_key
+        # Must beat DEEPSEEK_API_KEY in histor's key resolution order.
+        out["HISTOR_CLASSIFIER_API_KEY"] = openrouter_key
+        out["HISTOR_OPENROUTER_API_KEY"] = openrouter_key
         return out
     out = dict(DEEPSEEK_ENV_DEFAULTS)
     if openrouter_key and profile == "hybrid-metis":

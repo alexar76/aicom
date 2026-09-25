@@ -1,5 +1,7 @@
 # Agent install — Hub MCP and WARDEN
 
+> 🌐 **English** · [Русский](README.ru.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md)
+
 Two public skills plus one paste-URL. You do not need to clone this monorepo to **try** the marketplace.
 
 | Door | What it is |

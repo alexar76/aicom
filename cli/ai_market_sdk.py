@@ -231,6 +231,49 @@ class AIMarketClient:
         r.raise_for_status()
         return r.json()
 
+    def _settlement_payload(
+        self,
+        *,
+        product_id: str,
+        tx_hash: str,
+        chain: str = "",
+        token: str = "",
+        contract_address: str = "",
+        customer_id: str = "",
+        customer_email: str = "",
+        wallet_address: str = "",
+        payer_signature: str = "",
+    ) -> dict[str, Any]:
+        payload: dict[str, Any] = {"product_id": product_id, "tx_hash": tx_hash}
+        for key, value in (
+            ("chain", chain), ("token", token), ("contract_address", contract_address),
+            ("customer_id", customer_id), ("customer_email", customer_email),
+            ("wallet_address", wallet_address), ("payer_signature", payer_signature),
+        ):
+            if value:
+                payload[key] = value
+        return payload
+
+    def settlement_challenge(self, *, product_id: str, tx_hash: str, **fields: str) -> str:
+        """The message the wallet that paid must sign (EIP-191 personal_sign).
+
+        The pilot binds a license to a signed-in customer (``access_token``) and to a
+        signature from the paying wallet over a server-built message naming that customer,
+        the product and this transaction. Asking without a signature returns that message.
+        """
+        r = requests.post(
+            self._url("/ai-market/pilot/settlement/confirm"),
+            json=self._settlement_payload(product_id=product_id, tx_hash=tx_hash, **fields),
+            headers=self._auth_headers(),
+            timeout=self.timeout_sec,
+        )
+        if r.status_code == 400:
+            detail = (r.json() or {}).get("detail")
+            if isinstance(detail, dict) and detail.get("challenge"):
+                return str(detail["challenge"])
+        r.raise_for_status()
+        raise RuntimeError("the server did not return a settlement challenge")
+
     def confirm_settlement(
         self,
         *,
@@ -242,27 +285,21 @@ class AIMarketClient:
         customer_id: str = "",
         customer_email: str = "",
         wallet_address: str = "",
+        payer_signature: str = "",
     ) -> dict[str, Any]:
-        """POST /ai-market/pilot/settlement/confirm — verify tx + create license."""
-        payload: dict[str, Any] = {
-            "product_id": product_id,
-            "tx_hash": tx_hash,
-        }
-        if chain:
-            payload["chain"] = chain
-        if token:
-            payload["token"] = token
-        if contract_address:
-            payload["contract_address"] = contract_address
-        if customer_id:
-            payload["customer_id"] = customer_id
-        if customer_email:
-            payload["customer_email"] = customer_email
-        if wallet_address:
-            payload["wallet_address"] = wallet_address
+        """POST /ai-market/pilot/settlement/confirm — verify tx + create license.
+
+        Needs ``access_token`` and ``payer_signature``: the paying wallet's signature over
+        :meth:`settlement_challenge` for the same product and transaction.
+        """
         r = requests.post(
             self._url("/ai-market/pilot/settlement/confirm"),
-            json=payload,
+            json=self._settlement_payload(
+                product_id=product_id, tx_hash=tx_hash, chain=chain, token=token,
+                contract_address=contract_address, customer_id=customer_id,
+                customer_email=customer_email, wallet_address=wallet_address,
+                payer_signature=payer_signature,
+            ),
             headers=self._auth_headers(),
             timeout=self.timeout_sec,
         )

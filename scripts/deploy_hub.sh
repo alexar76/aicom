@@ -44,7 +44,6 @@ fi
 
 docker build -f "$ROOT/aimarket-hub/Dockerfile" -t "$IMAGE" "$ROOT"
 
-docker rm -f modelmarket-hub 2>/dev/null || true
 ENV_FILE="$ROOT/.env"
 # Hub-only payment interlock (see deploy/hub-payment.env.example). Loaded AFTER shared
 # .env so addresses/flags win. Without this file, redeploys silently leave payments off
@@ -81,7 +80,8 @@ if [[ ! -f "$ZK_ENV" ]]; then
 fi
 DOCKER_ENV=()
 if [[ -f "$ENV_FILE" ]]; then
-  DOCKER_ENV+=(--env-file "$ENV_FILE")
+  python3 "$ROOT/scripts/security/service_env.py" hub "$ENV_FILE" "$ROOT/deploy/env/hub.env"
+  DOCKER_ENV+=(--env-file "$ROOT/deploy/env/hub.env")
 fi
 if [[ -f "$PAYMENT_ENV" ]]; then
   DOCKER_ENV+=(--env-file "$PAYMENT_ENV")
@@ -99,6 +99,9 @@ else
   echo "      (copy deploy/hub-zk.env.example → deploy/hub-zk.env on the host)" >&2
 fi
 FACTORY_DATA="${AIFACTORY_DATA_ROOT:-$ROOT/data}"
+FACTORY_EXPORT="${AIMARKET_FACTORY_EXPORT_ROOT:-/var/lib/aicom/hub-catalog}"
+python3 "$ROOT/scripts/security/refresh_factory_export.py" --destination "$FACTORY_EXPORT"
+docker rm -f modelmarket-hub 2>/dev/null || true
 
 docker run -d --name modelmarket-hub --restart unless-stopped \
   --add-host=host.docker.internal:host-gateway \
@@ -107,7 +110,7 @@ docker run -d --name modelmarket-hub --restart unless-stopped \
   -p "127.0.0.1:${HUB_PORT}:9083" \
   -p "127.0.0.1:${THEMIS_PORT:-9460}:8080" \
   -v "${VOLUME}:/app/data" \
-  -v "${FACTORY_DATA}:/factory_data:ro" \
+  -v "${FACTORY_EXPORT}:/factory_data:ro" \
   -e AIMARKET_HUB_NAME="${HUB_NAME}" \
   -e AIMARKET_HUB_URL="${HUB_URL}" \
   -e AIMARKET_SEED_LIST="${SEED_LIST}" \

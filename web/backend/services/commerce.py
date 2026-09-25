@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import contextlib
+import functools
 import hashlib
 import os
 import random
@@ -19,6 +21,17 @@ import logging
 from core.jwt_tokens import decode_hs256_optional, encode_hs256
 from core.logging_utils import log_suppressed
 from core.public_site_url import resolve_public_site_url
+from web.backend.services.payment_claim import canonical_tx_hash
+
+# SQL twin of payment_claim.canonical_tx_hash: 0x/0X-prefixed or bare 64-hex EVM hashes
+# become lowercase 0x-hex, anything else (Solana) is compared byte for byte.
+_TX_ID_SQL = """CASE WHEN length(tx_hash) = 66 AND substr(tx_hash,1,2) IN ('0x','0X')
+    AND substr(tx_hash,3) NOT GLOB '*[^0-9a-fA-F]*' THEN lower(tx_hash)
+    WHEN length(tx_hash) = 64 AND tx_hash NOT GLOB '*[^0-9a-fA-F]*' THEN '0x' || lower(tx_hash)
+    ELSE tx_hash END"""
+_CANONICAL_TX_INDEX = "idx_orders_canonical_tx_v2"
+# The first canonical index missed bare-hex aliases; v2 covers everything it did.
+_SUPERSEDED_TX_INDEX = "idx_orders_canonical_tx_unique"
 
 logger = logging.getLogger(__name__)
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
@@ -134,6 +147,29 @@ class _LockedSqliteConnection:
 
     def __getattr__(self, name: str):
         return getattr(self._conn, name)
+
+
+
+def _atomic(method):
+    """Run a multi-statement CommerceService writer as one unit on the shared connection.
+
+    Every statement already takes ``_db_lock``, but a writer made of several statements
+    did not hold it between them. Another request could then commit this one's first
+    statements before its last ran, or pass the same check-then-write (a monthly run
+    limit, a webhook's "already processed") in between. On an exception the uncommitted
+    tail is rolled back, so the next request's commit cannot persist half a write.
+    """
+    @functools.wraps(method)
+    def run(self, *args, **kwargs):
+        with self._db_lock:
+            try:
+                return method(self, *args, **kwargs)
+            except BaseException:
+                with contextlib.suppress(sqlite3.Error):
+                    if self.conn.in_transaction:
+                        self.conn.rollback()
+                raise
+    return run
 
 
 class CommerceService:
@@ -308,6 +344,7 @@ class CommerceService:
         self.conn.execute(
             "CREATE INDEX IF NOT EXISTS idx_stripe_sessions_customer_id ON stripe_checkout_sessions(customer_id)"
         )
+        self._ensure_canonical_tx_index()
         self.conn.execute(
             """
             CREATE TABLE IF NOT EXISTS customer_demo_notes (
@@ -324,6 +361,42 @@ class CommerceService:
             "CREATE INDEX IF NOT EXISTS idx_customer_demo_notes_customer ON customer_demo_notes(customer_id)"
         )
         self.conn.commit()
+
+    def _ensure_canonical_tx_index(self) -> None:
+        """Reject tx aliases in the database itself, without letting old rows stop startup.
+
+        A database written before this index can already hold two orders for one
+        transfer (a case or 0x alias the older indexes allowed). CREATE UNIQUE INDEX
+        then fails, and because every API module builds a CommerceService at import,
+        raising here would take the whole backend down, not just payments. Such rows
+        need an operator to reconcile them, not deletion: report every duplicate and
+        keep serving. New aliases are still refused by the canonical lookup in
+        create_order_and_license and by the shared transfer claim every door takes.
+        """
+        try:
+            self.conn.execute(
+                f"CREATE UNIQUE INDEX IF NOT EXISTS {_CANONICAL_TX_INDEX} "
+                f"ON orders(({_TX_ID_SQL})) WHERE tx_hash IS NOT NULL AND tx_hash != ''"
+            )
+        except sqlite3.IntegrityError:
+            duplicates = self.duplicate_tx_orders()
+            logger.error(
+                "commerce.db holds %d transfer(s) claimed by more than one order, so the "
+                "canonical tx index could not be created; reconcile these orders: %s",
+                len(duplicates), duplicates,
+            )
+            return
+        self.conn.execute(f"DROP INDEX IF EXISTS {_SUPERSEDED_TX_INDEX}")
+
+    def duplicate_tx_orders(self) -> list[dict]:
+        """Transfers that more than one order claims, keyed by canonical tx hash."""
+        rows = self.conn.execute(
+            f"SELECT ({_TX_ID_SQL}) AS tx, group_concat(payment_id, ',') AS payments "
+            f"FROM orders WHERE tx_hash IS NOT NULL AND tx_hash != '' "
+            f"GROUP BY ({_TX_ID_SQL}) HAVING count(*) > 1"
+        ).fetchall()
+        return [{"tx_hash": r["tx"], "payment_ids": sorted(str(r["payments"]).split(","))}
+                for r in rows]
 
     def _migrate_legacy_json(self) -> None:
         customers_file = self.base / "customers.json"
@@ -408,6 +481,7 @@ class CommerceService:
     def _norm_email(self, email: str) -> str:
         return email.strip().lower()
 
+    @_atomic
     def register_customer(self, email: str, password: str) -> dict:
         email = self._norm_email(email)
         existing = self.conn.execute("SELECT id FROM customers WHERE email = ?", (email,)).fetchone()
@@ -458,6 +532,7 @@ class CommerceService:
         ).fetchone()
         return dict(row) if row else None
 
+    @_atomic
     def set_customer_plan(self, customer_id: str, plan: str) -> bool:
         plan_norm = (plan or "free").strip().lower()
         if plan_norm not in {"free", "maker", "studio", "enterprise"}:
@@ -483,6 +558,7 @@ class CommerceService:
         suffix = "".join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
         return f"af-{seed}-{suffix}"[:32]
 
+    @_atomic
     def get_or_create_referral_code(self, customer_id: str, customer_email: str) -> str:
         existing = self.conn.execute(
             "SELECT referral_code FROM customer_referrals WHERE customer_id = ?",
@@ -537,6 +613,7 @@ class CommerceService:
             "share_link": f"{resolve_public_site_url()}/?ref={code}",
         }
 
+    @_atomic
     def save_stripe_checkout_session(
         self,
         session_id: str,
@@ -576,6 +653,7 @@ class CommerceService:
         )
         self.conn.commit()
 
+    @_atomic
     def apply_stripe_webhook_event(
         self,
         event_id: str,
@@ -656,6 +734,7 @@ class CommerceService:
         runs = int(row["runs_count"]) if row else 0
         return {"period_ym": period_ym, "runs_count": runs}
 
+    @_atomic
     def consume_monthly_run(self, customer_id: str, limit: int, ts: Optional[float] = None) -> dict:
         now = ts or time.time()
         period_ym = time.strftime("%Y-%m", time.gmtime(now))
@@ -688,11 +767,11 @@ class CommerceService:
         )
 
     def get_order_by_tx_hash(self, tx_hash: str) -> Optional[dict]:
-        tx = (tx_hash or "").strip()
+        tx = canonical_tx_hash(tx_hash)
         if not tx:
             return None
         row = self.conn.execute(
-            "SELECT * FROM orders WHERE tx_hash = ?",
+            f"SELECT * FROM orders WHERE ({_TX_ID_SQL}) = ? AND tx_hash IS NOT NULL AND tx_hash != ''",
             (tx,),
         ).fetchone()
         return dict(row) if row else None
@@ -708,79 +787,86 @@ class CommerceService:
         tx_hash: str,
         referral_source: str | None = None,
     ) -> dict:
-        existing = self.conn.execute(
-            "SELECT * FROM orders WHERE payment_id = ?",
-            (payment_id,),
-        ).fetchone()
-        if existing is not None:
-            return dict(existing)
+        # One lock for the whole check-insert-commit. The connection is shared by every
+        # request thread and holds ONE transaction, so with only per-statement locking
+        # another request's rollback (or commit) could land between the two INSERTs:
+        # the order vanished while its license was still committed, or a half-written
+        # order was committed by someone else's commit.
+        with self._db_lock:
+            existing = self.conn.execute(
+                "SELECT * FROM orders WHERE payment_id = ?",
+                (payment_id,),
+            ).fetchone()
+            if existing is not None:
+                return dict(existing)
 
-        tx_clean = (tx_hash or "").strip()
-        if tx_clean:
-            dup = self.get_order_by_tx_hash(tx_clean)
-            if dup is not None and dup.get("payment_id") != payment_id:
-                raise TxHashAlreadyUsedError(tx_clean, str(dup.get("payment_id")))
-
-        order_id = f"ord-{uuid.uuid4().hex[:12]}"
-        license_key = f"lic-{uuid.uuid4().hex}-{uuid.uuid4().hex[:8]}"
-        now = time.time()
-        order = {
-            "id": order_id,
-            "customer_id": customer_id,
-            "customer_email": customer_email,
-            "payment_id": payment_id,
-            "product_id": product_id,
-            "amount": amount,
-            "currency": currency,
-            "tx_hash": tx_hash,
-            "referral_source": referral_source,
-            "status": "paid",
-            "license_key": license_key,
-            "created_at": now,
-        }
-        # The UNIQUE(tx_hash) violation is raised by execute(), not by commit() —
-        # wrapping only the commit meant a duplicate tx_hash escaped as a raw
-        # IntegrityError (500) instead of TxHashAlreadyUsedError, leaving the caller's
-        # payment stuck in a non-pending status.
-        try:
-            self.conn.execute(
-                """
-                INSERT INTO orders
-                (id, customer_id, customer_email, payment_id, product_id, amount, currency, tx_hash, referral_source, status, license_key, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    order_id,
-                    customer_id,
-                    customer_email,
-                    payment_id,
-                    product_id,
-                    amount,
-                    currency,
-                    tx_hash,
-                    referral_source,
-                    "paid",
-                    license_key,
-                    now,
-                ),
-            )
-            self.conn.execute(
-                """
-                INSERT INTO licenses
-                (license_key, order_id, customer_id, product_id, status, created_at)
-                VALUES (?, ?, ?, ?, ?, ?)
-                """,
-                (license_key, order_id, customer_id, product_id, "active", now),
-            )
-            self.conn.commit()
-        except sqlite3.IntegrityError as exc:
-            self.conn.rollback()
+            tx_clean = canonical_tx_hash(tx_hash)
+            tx_hash = tx_clean
             if tx_clean:
                 dup = self.get_order_by_tx_hash(tx_clean)
-                if dup is not None:
-                    raise TxHashAlreadyUsedError(tx_clean, str(dup.get("payment_id"))) from exc
-            raise
-        return order
+                if dup is not None and dup.get("payment_id") != payment_id:
+                    raise TxHashAlreadyUsedError(tx_clean, str(dup.get("payment_id")))
+
+            order_id = f"ord-{uuid.uuid4().hex[:12]}"
+            license_key = f"lic-{uuid.uuid4().hex}-{uuid.uuid4().hex[:8]}"
+            now = time.time()
+            order = {
+                "id": order_id,
+                "customer_id": customer_id,
+                "customer_email": customer_email,
+                "payment_id": payment_id,
+                "product_id": product_id,
+                "amount": amount,
+                "currency": currency,
+                "tx_hash": tx_hash,
+                "referral_source": referral_source,
+                "status": "paid",
+                "license_key": license_key,
+                "created_at": now,
+            }
+            # The UNIQUE(tx_hash) violation is raised by execute(), not by commit() —
+            # wrapping only the commit meant a duplicate tx_hash escaped as a raw
+            # IntegrityError (500) instead of TxHashAlreadyUsedError, leaving the caller's
+            # payment stuck in a non-pending status.
+            try:
+                self.conn.execute(
+                    """
+                    INSERT INTO orders
+                    (id, customer_id, customer_email, payment_id, product_id, amount, currency, tx_hash, referral_source, status, license_key, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        order_id,
+                        customer_id,
+                        customer_email,
+                        payment_id,
+                        product_id,
+                        amount,
+                        currency,
+                        tx_hash,
+                        referral_source,
+                        "paid",
+                        license_key,
+                        now,
+                    ),
+                )
+                self.conn.execute(
+                    """
+                    INSERT INTO licenses
+                    (license_key, order_id, customer_id, product_id, status, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                    """,
+                    (license_key, order_id, customer_id, product_id, "active", now),
+                )
+                self.conn.commit()
+            except sqlite3.IntegrityError as exc:
+                self.conn.rollback()
+                if tx_clean:
+                    dup = self.get_order_by_tx_hash(tx_clean)
+                    if dup is not None:
+                        raise TxHashAlreadyUsedError(tx_clean, str(dup.get("payment_id"))) from exc
+                raise
+            return order
 
     def get_orders_for_customer(self, customer_id: str) -> list[dict]:
         rows = self.conn.execute(
@@ -812,6 +898,7 @@ class CommerceService:
 
     # --- Demo notes (E2E / teaching CRUD; scoped per customer) -----------------
 
+    @_atomic
     def create_demo_note(self, customer_id: str, title: str, body: str) -> dict:
         note_id = f"note-{uuid.uuid4().hex[:12]}"
         now = time.time()
@@ -841,6 +928,7 @@ class CommerceService:
         ).fetchall()
         return [dict(r) for r in rows]
 
+    @_atomic
     def update_demo_note(self, customer_id: str, note_id: str, title: str | None, body: str | None) -> Optional[dict]:
         row = self.conn.execute(
             "SELECT id FROM customer_demo_notes WHERE id = ? AND customer_id = ?",
@@ -874,6 +962,7 @@ class CommerceService:
             "updated_at": now,
         }
 
+    @_atomic
     def delete_demo_note(self, customer_id: str, note_id: str) -> bool:
         cur = self.conn.execute(
             "DELETE FROM customer_demo_notes WHERE id = ? AND customer_id = ?",

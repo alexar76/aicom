@@ -381,9 +381,10 @@ services:
     # ALIEN_API_TOKEN must arrive via env_file ONLY. Setting ${ALIEN_API_TOKEN:-}
     # in `environment:` below would override env_file with an empty string and
     # silently break /api/argus/run auth. Do not "tidy" this into environment:.
+    # The monitor's cut of .env, written by scripts/everything.sh (same file as core.yml).
     env_file:
-      - path: .env
-        required: false
+      - path: deploy/env/alien-monitor.env
+        required: true
     environment:
       ALIEN_MODE: ${ALIEN_MODE:-universe}
       ALIEN_PORT: "9100"

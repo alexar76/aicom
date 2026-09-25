@@ -2,6 +2,7 @@
  * Public-site marketing copy — global launch is English-first.
  */
 
+import { browserSiteLocale, defaultSiteLocale, rememberSiteLocale } from '@/lib/siteLocale';
 import { MARKETING_ES } from './marketing-es';
 import { MARKETING_RU } from './marketing-ru';
 import { MARKETING_FR } from './marketing-fr';
@@ -300,32 +301,16 @@ const EN: MarketingStrings = {
 };
 
 export function detectMarketingLocale(): MarketingLocale {
-  if (typeof window === 'undefined') {
-    const env = (process.env.NEXT_PUBLIC_MARKETING_LOCALE || '').toLowerCase();
-    if (env.startsWith('ru')) return 'ru';
-    if (env.startsWith('es')) return 'es';
-    if (env.startsWith('fr')) return 'fr';
-    if (env.startsWith('zh')) return 'zh';
-    return 'en';
-  }
-  const stored = window.localStorage.getItem('marketing_locale');
-  if (stored === 'ru' || stored === 'es' || stored === 'en' || stored === 'fr' || stored === 'zh') return stored;
-  const nav = navigator.language.toLowerCase();
-  if (nav.startsWith('ru')) return 'ru';
-  if (nav.startsWith('es')) return 'es';
-  if (nav.startsWith('fr')) return 'fr';
-  if (nav.startsWith('zh')) return 'zh';
-  const env = (process.env.NEXT_PUBLIC_MARKETING_LOCALE || '').toLowerCase();
-  if (env.startsWith('ru')) return 'ru';
-  if (env.startsWith('es')) return 'es';
-  if (env.startsWith('fr')) return 'fr';
-  if (env.startsWith('zh')) return 'zh';
-  return 'en';
+  // One rule on both sides (lib/siteLocale.ts): what the server resolved for this request is
+  // what every client component that detects after mount arrives at too.
+  if (typeof window === 'undefined') return defaultSiteLocale();
+  return browserSiteLocale();
 }
 
 export function saveMarketingLocale(locale: MarketingLocale): void {
   if (typeof window === 'undefined') return;
   window.localStorage.setItem('marketing_locale', locale);
+  rememberSiteLocale(locale);
   window.dispatchEvent(new CustomEvent('marketing-locale-changed', { detail: locale }));
 }
 

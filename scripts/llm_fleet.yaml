@@ -30,7 +30,7 @@ hosts:
       - metis-skopos         # fleet AI agent (OpenRouter in agent.yaml)
 
   oracles:
-    label: "MOMUS / HELIOS / DIOSCURI / GAIA / Platon"
+    label: "MOMUS / HELIOS / DIOSCURI / GAIA / Platon / HISTOR"
     ssh: admin-vps
     repo: /root/aicom
     env_files:
@@ -38,6 +38,7 @@ hosts:
       - /root/helios/.env
       - /root/dioscuri/.env
       - /root/aicom/.env
+      - /opt/histor/.env     # HISTOR_CLASSIFIER_* (meaning-based MCP classifier)
     env_file: /root/aicom/.env
     containers:
       - momus-backend        # MOMUS_LLM_*
@@ -50,6 +51,7 @@ hosts:
       - platon-platon-backend
       - logos
       - skopos-remediation
+      - histor-histor-1      # HISTOR classifier (OpenAI-compat)
 
   hub_lab:
     label: "Competing lab Hub + hunt"

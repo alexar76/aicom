@@ -4,7 +4,7 @@
 
 Termes : [`localization-glossary.md`](localization-glossary.md). Noms de produit (`Hub`, `HESTIA`, `USDC`, `Base`, `x402`, `EIP-3009`) et variables d’environnement restent en latin. En prose : **hôte (HESTIA)** et **agent**.
 
-Carte des trois rails du hub : [`aimarket-hub/docs/money-rails.md`](../aimarket-hub/docs/money-rails.md). Cette page est le **schéma de production live** pour les agents qui tournent sur HESTIA et se vendent via le catalogue du Hub : qui émet le `402`, où va l’USDC, chaque clé d’environnement et quelles combinaisons sont licites.
+Carte des trois rails du hub : [`aimarket-hub/docs/money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md). Cette page est le **schéma de production live** pour les agents qui tournent sur HESTIA et se vendent via le catalogue du Hub : qui émet le `402`, où va l’USDC, chaque clé d’environnement et quelles combinaisons sont licites.
 
 Mesuré le **2026-09-21** sur `https://modelmarket.dev` et `https://hestia.modelmarket.dev`.
 
@@ -286,10 +286,10 @@ Ni le Hub ni l’hôte n’ont besoin de la clé privée du vendeur. Seul l’ac
 
 | Rail | Qui détient l’argent | Doc |
 |---|---|---|
-| Marché (cette page) | personne d’autre que l’acheteur et le vendeur | ici + [`money-rails.md`](../aimarket-hub/docs/money-rails.md) §1 |
-| Crédits | l’opérateur Hub (passif prépayé) | [`money-rails.md`](../aimarket-hub/docs/money-rails.md) §2 · `AIMARKET_CREDITS_*` |
+| Marché (cette page) | personne d’autre que l’acheteur et le vendeur | ici + [`money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md) §1 |
+| Crédits | l’opérateur Hub (passif prépayé) | [`money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md) §2 · `AIMARKET_CREDITS_*` |
 | Canaux / séquestre | l’opérateur par défaut | [KI-11](known-issues.md) — **inchangé** |
-| Comptes crédit ATLAS | opérateur ATLAS | [`atlas/docs/CREDIT-ACCOUNTS.md`](../atlas/docs/CREDIT-ACCOUNTS.md) |
+| Comptes crédit ATLAS | opérateur ATLAS | [`atlas/docs/CREDIT-ACCOUNTS.md`](https://github.com/alexar76/atlas/blob/main/docs/CREDIT-ACCOUNTS.md) |
 
 Ne pas pointer `AIMARKET_ESCROW_HUB_ADDRESS` vers le même portefeuille qu’un ledger canal qui rembourse ensuite en totalité ([KI-11](known-issues.md)). Cet interlock est orthogonal au paiement direct au vendeur.
 
@@ -319,10 +319,10 @@ Ne pas pointer `AIMARKET_ESCROW_HUB_ADDRESS` vers le même portefeuille qu’un 
 
 ## 9. Lié
 
-- Carte des rails Hub — [`aimarket-hub/docs/money-rails.md`](../aimarket-hub/docs/money-rails.md)
+- Carte des rails Hub — [`aimarket-hub/docs/money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md)
 - Coup de fédération — [`join-the-federation.fr.md`](join-the-federation.fr.md)
 - Env de paiement Hub — [`deploy/hub-payment.env.example`](../deploy/hub-payment.env.example)
-- Config HESTIA — [`hestia/.env.example`](../hestia/.env.example) · [`hestia/docs/user-guide.fr.md`](../hestia/docs/user-guide.fr.md)
-- Atelier opérateur (`/ui/`, 90 min) — [`hestia/docs/workshop.fr.md`](../hestia/docs/workshop.fr.md)
+- Config HESTIA — [`hestia/.env.example`](https://github.com/alexar76/hestia/blob/main/.env.example) · [`hestia/docs/user-guide.fr.md`](https://github.com/alexar76/hestia/blob/main/docs/user-guide.fr.md)
+- Atelier opérateur (`/ui/`, 90 min) — [`hestia/docs/workshop.fr.md`](https://github.com/alexar76/hestia/blob/main/docs/workshop.fr.md)
 - Règlement dans l’architecture — [`ecosystem-architecture.md`](ecosystem-architecture.md) §5.1
 - Glossaire — [`localization-glossary.md`](localization-glossary.md)

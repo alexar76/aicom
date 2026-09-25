@@ -10,6 +10,8 @@ cd "$ROOT"
 COMPOSE="${COMPOSE:-docker compose}"
 
 echo "==> Build & start app (embeds latest scripts)"
+# The Factory's cut of .env, fresh: compose refuses to start `app` without it.
+python3 scripts/security/service_env.py stack .env deploy/env
 $COMPOSE build app
 $COMPOSE up -d app
 

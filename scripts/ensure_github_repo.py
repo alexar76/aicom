@@ -11,6 +11,33 @@ import urllib.request
 from typing import Any
 
 
+# GitHub refuses a repository description over 350 characters with a bare
+# "Repository creation failed." (HTTP 422) — HISTOR's first publish hit exactly that.
+GITHUB_DESCRIPTION_MAX = 350
+
+
+def clamp_description(text: str, limit: int = GITHUB_DESCRIPTION_MAX) -> str:
+    """The description GitHub will accept: whole words, an ellipsis when cut."""
+    text = " ".join(text.split())
+    if len(text) <= limit:
+        return text
+    cut = text[: limit - 1].rsplit(" ", 1)[0].rstrip(" ,;:—-")
+    return cut + "…"
+
+
+def error_detail(payload: dict[str, Any] | str) -> str:
+    """GitHub's message plus the per-field errors it puts beside it (the part that says why)."""
+    if not isinstance(payload, dict):
+        return str(payload)[:300]
+    parts = [str(payload.get("message") or "")]
+    for err in payload.get("errors") or []:
+        if isinstance(err, dict):
+            parts.append(str(err.get("message") or f"{err.get('field')}: {err.get('code')}"))
+        else:
+            parts.append(str(err))
+    return " — ".join(p for p in parts if p)[:400]
+
+
 def _token() -> str:
     return os.environ.get("GH_PAT") or os.environ.get("GITHUB_TOKEN") or ""
 
@@ -35,6 +62,33 @@ def _request(method: str, url: str, token: str, body: dict[str, Any] | None = No
         return e.code, payload
 
 
+def _token_kind(token: str) -> str:
+    """Classic tokens list their scopes in X-OAuth-Scopes; fine-grained ones send no such header."""
+    req = urllib.request.Request("https://api.github.com/user", method="GET")
+    req.add_header("Authorization", f"Bearer {token}")
+    req.add_header("Accept", "application/vnd.github+json")
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            scopes = resp.headers.get("X-OAuth-Scopes")
+            login = json.loads(resp.read().decode() or "{}").get("login", "?")
+    except Exception:  # noqa: BLE001 - a hint, never a failure of its own
+        return "token type unknown"
+    if scopes is None:
+        return f"fine-grained token of {login}"
+    return f"classic token of {login}, scopes: {scopes or 'none'}"
+
+
+def _no_reason_hint(org: str, repo: str, token: str) -> str:
+    # A 422 with no per-field errors is what GitHub answers when the token may push to existing
+    # repositories but not create one — a fine-grained token limited to selected repositories.
+    return (
+        f"GitHub gave no reason ({_token_kind(token)}). That usually means this token cannot create "
+        f"repositories. Create {org}/{repo} by hand at https://github.com/new (public, empty: no README, "
+        f"license or .gitignore) and rerun; a fine-grained token must also cover the new repository "
+        f"(Repository access: All repositories, or add {repo}) with Contents and Administration: Read and write."
+    )
+
+
 def ensure_repo(org: str, repo: str, *, description: str = "", private: bool = False) -> tuple[bool, str]:
     token = _token()
     if not token:
@@ -55,7 +109,7 @@ def ensure_repo(org: str, repo: str, *, description: str = "", private: bool = F
         "has_wiki": False,
     }
     if description.strip():
-        body["description"] = description.strip()
+        body["description"] = clamp_description(description)
 
     # User-owned org repos: POST /orgs/{org}/repos; personal account: POST /user/repos
     for url in (f"https://api.github.com/orgs/{org}/repos", "https://api.github.com/user/repos"):
@@ -67,8 +121,10 @@ def ensure_repo(org: str, repo: str, *, description: str = "", private: bool = F
             if any(e.get("message") == "name already exists on this account" for e in errors if isinstance(e, dict)):
                 return True, "exists"
         if status not in (404, 403):
-            msg = payload.get("message") if isinstance(payload, dict) else str(payload)
-            return False, f"POST {url} HTTP {status}: {msg}"
+            detail = error_detail(payload)
+            if status == 422 and isinstance(payload, dict) and not payload.get("errors"):
+                detail += " — " + _no_reason_hint(org, repo, token)
+            return False, f"POST {url} HTTP {status}: {detail}"
 
     return False, "could not create repo (check token org scope)"
 

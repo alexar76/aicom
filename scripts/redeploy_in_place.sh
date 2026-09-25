@@ -207,7 +207,19 @@ else
   echo "reusing   : $TAG"
 fi
 
-docker rm -f "$NAME" >/dev/null
+# Keep the running container as "$NAME-prev" instead of deleting it: a new image that
+# crash-loops must be one rename away from undone. It used to be `docker rm -f` here, and
+# on 2026-09-23 a rebuilt UNI hub died at startup on a setting the old image never needed
+# (a durable sandbox ledger path) with nothing left to go back to.
+PREV="${NAME}-prev"
+docker rm -f "$PREV" >/dev/null 2>&1 || true
+docker rename "$NAME" "$PREV"
+docker stop "$PREV" >/dev/null
+rollback() {
+  echo "ROLLBACK  : restoring $PREV as $NAME" >&2
+  docker rm -f "$NAME" >/dev/null 2>&1 || true
+  docker rename "$PREV" "$NAME" && docker start "$NAME" >/dev/null
+}
 # The healthcheck probes THIS container's port. Inheriting the image's :9100 probe under
 # --network host tested the OTHER (UNI) container, so LIVE reported healthy no matter what
 # state it was in — the same defect this deployment has hit before.
@@ -246,11 +258,12 @@ docker run -d --name "$NAME" \
   $MOUNTS ${PUBLISH:-} \
   "${RUN_ARGS[@]+"${RUN_ARGS[@]}"}" \
   "${HEALTH_ARGS[@]+"${HEALTH_ARGS[@]}"}" \
-  "$TAG" ${CONTAINER_CMD:-}
+  "$TAG" ${CONTAINER_CMD:-} || { echo "FAILED: docker run refused" >&2; rollback; exit 1; }
 
 if [[ -z "$PORT" ]]; then
   echo "no port could be established for $NAME — cannot verify it came up" >&2
   docker logs --tail 20 "$NAME" >&2
+  rollback
   exit 1
 fi
 for _ in $(seq 1 30); do
@@ -261,16 +274,18 @@ for _ in $(seq 1 30); do
   if [[ "$state" == "restarting" || "$state" == "exited" ]]; then
     echo "FAILED: $NAME is $state — last logs:" >&2
     docker logs --tail 40 "$NAME" >&2
+    rollback
     exit 1
   fi
   for probe in /api/health /.well-known/ai-market.json; do
     # From the HOST, so the published port on a bridge container.
     if curl -fsS -m 5 "http://127.0.0.1:${PROBE_PORT:-$PORT}$probe" >/dev/null 2>&1; then
-      echo "healthy   : $NAME on http://127.0.0.1:${PROBE_PORT:-$PORT}$probe"
+      echo "healthy   : $NAME on http://127.0.0.1:${PROBE_PORT:-$PORT}$probe (previous kept stopped as $PREV)"
       exit 0
     fi
   done
 done
 echo "FAILED to come up — last logs:" >&2
 docker logs --tail 40 "$NAME" >&2
+rollback
 exit 1

@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation';
 import { MessageCircle, X, Send, Loader2, AlertCircle, Mic, MicOff } from 'lucide-react';
 import api from '@/lib/api';
+import { defaultSiteLocale } from '@/lib/siteLocale';
 import { getSupportMessageBlockReason } from '@/lib/promptSafety';
 import {
   enqueueOutboundMessage,
@@ -143,7 +144,9 @@ async function gateMicrophoneForDictation(locale: SupportWidgetLocale): Promise<
 
 export function SupportWidget() {
   const pathname = usePathname();
-  const [locale, setLocale] = useState<SupportWidgetLocale>(() => detectSupportWidgetLocale());
+  // A fixed first value, detected after mount: detecting during the first render gave the
+  // server's English aria-label to a Russian browser, and React does not repair attributes.
+  const [locale, setLocale] = useState<SupportWidgetLocale>(defaultSiteLocale);
   const productId = useMemo(() => parseProductIdFromPath(pathname || ''), [pathname]);
   const quickPromptSection = useMemo(() => sectionFromPath(pathname || ''), [pathname]);
   const quickPrompts = useMemo(
@@ -163,6 +166,7 @@ export function SupportWidget() {
 
   useEffect(() => {
     const syncLocale = () => setLocale(detectSupportWidgetLocale());
+    syncLocale();
     const onStorage = (e: StorageEvent) => {
       if (e.key === 'marketing_locale' || e.key === null) syncLocale();
     };

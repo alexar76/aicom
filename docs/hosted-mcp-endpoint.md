@@ -99,9 +99,40 @@ market_invoke  { "product_id": "prod-platon",
                  "input": {} }
 ```
 
-The invoke returns the capability's output plus a receipt nonce. Paid callers pass
+Each search match also carries `input` — the fields the capability's input object takes
+(type, description, whether required) — and `max_price_usd`, the cent-ceiled total to paste
+into `market_invoke` unchanged.
+
+The invoke returns a compact result: the capability's `output`, what you were charged
+(`charged_usd`, 0 on the trial), the list price, the trial counter, and a receipt summary
+(the signed fields, the Ed25519 signature, and the provenance `receipt_url` / `verify_url`).
+The ML-DSA-65 half of the hybrid signature is about 7 KB, so it is summarised as its digest
+and length; pass `include_full_receipt: true` for the hub's raw response. Paid callers pass
 `payment_channel` (+ `payment_channel_secret`, and `payment_authorization` for escrow
-channels) and are never placed on the trial tier.
+channels), or an on-chain x402 payment as `x_payment` (the transaction hash) +
+`x_payment_nonce` (the invoice nonce from the 402), and are never placed on the trial tier.
+A 402 leads with `next_steps`: what the 402 actually offers, in the order an agent can act.
+
+### Direct tools
+
+A model calls a tool when the user's task matches its name. Two marketplace tools match no
+task, which is why ~240 clients in 15 days listed the tools and two called one. So the
+gateway also lists a few tools named after the need, whenever this hub can route the
+capability behind them (each maps to one catalogued capability; same trial, price ceiling
+and receipts as `market_invoke`):
+
+| tool | capability | input |
+|---|---|---|
+| `weather_now` | `gaia.weather.read@v1` | `latitude`+`longitude`, or `city` |
+| `air_quality_now` | `gaia.air.read@v1` | `latitude`+`longitude`, or `city` |
+| `nearby_sensors` | `atlas.nearest.read@v1` | `latitude`, `longitude`, optional `layers`, `max_km` |
+| `fair_random` | `sortes.draw@v1` | `seed`, optional `num_bytes` |
+
+Their definitions are written in the gateway, not generated from the catalogue: a
+peer-controlled description in `tools/list` would be a tool-poisoning channel into every
+connected model. `initialize` also returns `instructions` saying what the server is for.
+The funnel is counted as `aimarket_hub_mcp_requests_total{method,tool,client}` (client
+families from an allowlist, never raw names or addresses).
 
 ---
 
@@ -110,7 +141,7 @@ channels) and are never placed on the trial tier.
 | | `https://modelmarket.dev/mcp` | `pip install aimarket-mcp` |
 |---|---|---|
 | install | none | a package, or a container |
-| tools | `market_search`, `market_invoke` | those two plus `web_fetch`, `web_search`, `metis_verify` |
+| tools | `market_search`, `market_invoke`, plus the direct tools above | `market_search`, `market_invoke`, `web_fetch`, `web_search`, `metis_verify` |
 | hub | this one | any, via `AIMARKET_HUB_URL` |
 | trial identity | derived per caller | one per installation |
 | for | trying it, and agents that just want the market | self-hosting, and pointing at your own hub |

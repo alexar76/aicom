@@ -12,10 +12,11 @@
 # Bootstrap:
 #   python3 scripts/fill_production_env.py --env-file .env --public-url https://your-host
 #
-# Run:
+# Run (the service env files are cut from .env first, every time — compose refuses without them):
+#   python3 scripts/security/service_env.py stack .env deploy/env
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 #
-# Or:
+# Or, which does both:
 #   ./scripts/run_prod_compose.sh up -d --build
 #
 # Load / soak test (after healthy):
@@ -79,8 +80,8 @@ services:
       app:
         condition: service_healthy
     env_file:
-      - path: .env
-        required: false
+      - path: deploy/env/frontend.env
+        required: true
     environment:
       AICOM_ROLE: frontend
       INTERNAL_API_URL: http://app:8081
@@ -112,8 +113,8 @@ services:
       redis:
         condition: service_healthy
     env_file:
-      - path: .env
-        required: false
+      - path: deploy/env/factory.env
+        required: true
     environment:
       <<: *prod-common-env
       AICOM_ROLE: pipeline-worker
@@ -137,8 +138,8 @@ services:
       postgres:
         condition: service_healthy
     env_file:
-      - path: .env
-        required: false
+      - path: deploy/env/factory.env
+        required: true
     environment:
       <<: *prod-common-env
       AICOM_ROLE: director-worker

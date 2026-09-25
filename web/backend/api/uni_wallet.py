@@ -257,22 +257,25 @@ async def confirm_topup(body: UniTopupConfirmRequest, customer: dict = Depends(r
                 status_code=403,
                 detail="top-up sender does not match the wallet that signed the ownership proof",
             )
-        # Cross-subsystem dedup: a tx already consumed to pay for an order cannot
-        # also be minted into UNI (one on-chain payment == one credit).
-        try:
-            from web.backend.services.commerce import CommerceService
+        # One on-chain payment is one credit, system-wide. UNI verifies against the same
+        # platform wallet as checkout, channels and invoke, and it used to check only
+        # commerce orders — and let the credit through whenever that store was down — so
+        # one transfer could become UNI credit and also a license, a channel or an invoke.
+        # It now takes the same single-use claim they do, under the canonical hash: UNI's
+        # own idempotency key was the hash as typed, so a case variant credited twice.
+        from web.backend.services.ai_market_protocol.channels import claim_transfer
+        from web.backend.services.payment_claim import DOOR_UNI_TOPUP, canonical_tx_hash
 
-            if CommerceService().get_order_by_tx_hash(tx_clean):
-                raise HTTPException(
-                    status_code=409,
-                    detail="this transaction was already used to pay for an order",
-                )
-        except HTTPException:
-            raise
-        except Exception:
-            # Commerce store unavailable — don't fail the credit on an infra hiccup;
-            # topup_from_chain still enforces its own per-tx idempotency below.
-            pass
+        tx_clean = canonical_tx_hash(tx_clean)
+        claim_id = f"uni:{owner_id}"
+        claimed = claim_transfer(chain=chain, tx_hash=tx_clean, door=DOOR_UNI_TOPUP,
+                                 claim_id=claim_id, amount_usd=body.usd_amount)
+        if not claimed.get("ok"):
+            if claimed.get("error") == "deposit_registry_unavailable":
+                raise HTTPException(status_code=503,
+                                    detail="payment claims are temporarily unavailable; retry shortly")
+            raise HTTPException(status_code=409,
+                                detail="this transaction was already used to pay for something else")
 
     try:
         out = uni_wallet().topup_from_chain(
@@ -282,8 +285,16 @@ async def confirm_topup(body: UniTopupConfirmRequest, customer: dict = Depends(r
             chain=chain,
             token=token,
         )
-    except UniWalletError as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        if sender is not None:
+            # Nothing was credited, so the transfer is given back.
+            from web.backend.services.ai_market_protocol.channels import release_transfer
+            from web.backend.services.payment_claim import DOOR_UNI_TOPUP
+
+            release_transfer(chain=chain, tx_hash=tx_clean, door=DOOR_UNI_TOPUP, claim_id=f"uni:{owner_id}")
+        if isinstance(exc, UniWalletError):
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        raise
     return {"status": "credited", **out}
 
 

@@ -14,6 +14,8 @@
 #
 #   ./scripts/deploy_hub_rebuild.sh                 # build, swap, verify, rollback on failure
 #   ./scripts/deploy_hub_rebuild.sh --rollback      # put the previous container back
+#   ./scripts/deploy_hub_rebuild.sh --allow-drop    # proceed although the capture holds
+#                                                   # names the hub does not read (listed first)
 set -euo pipefail
 
 NAME="${AIMARKET_HUB_NAME_CONTAINER:-modelmarket-hub}"
@@ -57,16 +59,18 @@ fi
 # deploy that produced the running image. --no-build reuses the live image byte for byte and
 # changes nothing but the environment.
 NO_BUILD=0
+ALLOW_DROP=0
 OVERRIDES=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --no-build) NO_BUILD=1; shift ;;
+    --allow-drop) ALLOW_DROP=1; shift ;;
     # --set KEY=VALUE, repeatable. Applied to the capture AFTER the duplicate collapse and
     # BEFORE the payment mirror, so the value reaches both the new container and the file
     # the next deploy_hub.sh will read. Replaces any captured assignment of that key rather
     # than appending a second one: appending would put the ambiguity straight back.
     --set) [[ -n "${2:-}" ]] || die "--set needs KEY=VALUE"; OVERRIDES+=("$2"); shift 2 ;;
-    *) die "unknown argument: $1 (expected --rollback, --no-build, --set KEY=VALUE)" ;;
+    *) die "unknown argument: $1 (expected --rollback, --no-build, --allow-drop, --set KEY=VALUE)" ;;
   esac
 done
 
@@ -82,7 +86,7 @@ log "Capturing the running container's environment → $ENV_CAPTURE"
 # base image is how a rebuilt container ends up unable to find python.
 docker inspect "$NAME" --format '{{json .Config.Env}}' | python3 -c '
 import json, re, sys
-skip = re.compile(r"^(PATH|HOSTNAME|LANG|GPG_KEY|PYTHON_[A-Z_]+)=")
+skip = re.compile(r"^(PATH|HOSTNAME|LANG|GPG_KEY|PYTHON_[A-Z0-9_]+)=")
 kept, bad, last = [], [], {}
 for entry in json.load(sys.stdin) or []:
     if skip.match(entry) or "=" not in entry:
@@ -112,6 +116,20 @@ if bad:
     sys.exit(3)
 ' > "$ENV_CAPTURE" || die "environment capture failed — see the message above; deploy by hand"
 chmod 600 "$ENV_CAPTURE"
+# Keep only what the hub reads. A deploy that once handed it the whole shared .env left other
+# services' secrets in the live container; those are dropped here. The filter is checked
+# against the hub's code (tests/test_service_env_scope.py), but a name it drops is still
+# named and needs an explicit --allow-drop: this capture is the only copy of the hub's config.
+python3 "$BUILD_DIR/scripts/security/service_env.py" --literal hub "$ENV_CAPTURE" "$ENV_CAPTURE.filtered" >/dev/null
+dropped="$(comm -23 <(cut -d= -f1 "$ENV_CAPTURE" | sort -u) <(cut -d= -f1 "$ENV_CAPTURE.filtered" | sort -u) | paste -sd' ' -)"
+if [[ -n "$dropped" ]]; then
+  log "the hub does not read these, so the new container will not get them: $dropped"
+  if (( ! ALLOW_DROP )); then
+    rm -f "$ENV_CAPTURE.filtered"
+    die "nothing has been changed. Check the names above, then re-run with --allow-drop"
+  fi
+fi
+mv "$ENV_CAPTURE.filtered" "$ENV_CAPTURE"
 echo "captured $(wc -l < "$ENV_CAPTURE") variable(s)"
 
 missing=()
@@ -222,6 +240,48 @@ SELLS_FOR="${AIMARKET_SELLS_FOR:-$(grep -E '^AIMARKET_SELLS_FOR=' "$ENV_CAPTURE"
 [[ -n "$SELLS_FOR" ]] || die "AIMARKET_SELLS_FOR resolved empty — every federated capability would be served free"
 log "Seller of record for: $SELLS_FOR"
 
+FACTORY_EXPORT="${AIMARKET_FACTORY_EXPORT_ROOT:-/var/lib/aicom/hub-catalog}"
+python3 "$BUILD_DIR/scripts/security/refresh_factory_export.py" --destination "$FACTORY_EXPORT"
+
+# ── The deposit registry both doors share ───────────────────────────────────────
+# One on-chain transfer is credited once across the hub (channels, invoke) and the Factory
+# (checkout, pilot, channels). A claim is a file created with O_EXCL, so the two containers
+# see each other's claims only when they write the SAME directory. The Factory keeps it at
+# its default place in its data tree; the hub gets that one directory read-write and nothing
+# else of the tree. Without it the hub's default sits under the read-only catalog export, the
+# hub falls back to a directory in its own volume, and a transfer that funded a channel here
+# still buys a license there.
+CLAIMS_HOST_DIR="${AIMARKET_DEPOSIT_CLAIMS_HOST_DIR:-/root/claudecode/aicom/data/state/ai_market/deposit_claims}"
+CLAIMS_DIR_IN_HUB=/shared/deposit-claims
+hub_uid="$(docker run --rm --entrypoint id "$IMAGE" -u)" || die "could not read the hub image's user id"
+hub_gid="$(docker run --rm --entrypoint id "$IMAGE" -g)" || die "could not read the hub image's group id"
+factory_uid="$(docker exec "${AIFACTORY_APP_CONTAINER:-aicom-app-1}" id -u 2>/dev/null || true)"
+if [[ -n "$factory_uid" && "$factory_uid" != "$hub_uid" ]]; then
+  die "the Factory runs as uid $factory_uid and the hub as $hub_uid — one of them could not
+write the shared deposit registry. Nothing has been changed."
+fi
+# Every directory created here belongs to the containers' user: a root-owned state/ai_market
+# would lock the Factory out of the ledgers it keeps next to the registry.
+created=()
+d="$CLAIMS_HOST_DIR"
+while [[ ! -d "$d" ]]; do created+=("$d"); d="$(dirname "$d")"; done
+mkdir -p "$CLAIMS_HOST_DIR"
+for d in ${created[@]+"${created[@]}"} "$CLAIMS_HOST_DIR"; do chown "$hub_uid:$hub_gid" "$d"; done
+chmod 700 "$CLAIMS_HOST_DIR"
+# Claims the hub made while it only had its own directory stay claimed: copied, never
+# overwritten (an existing file is the other door's claim on the same transfer).
+hub_volume="$(docker volume inspect modelmarket_hub_data --format '{{.Mountpoint}}' 2>/dev/null || true)"
+carried=0
+if [[ -n "$hub_volume" && -d "$hub_volume/deposit_claims" ]]; then
+  for claim in "$hub_volume"/deposit_claims/*.json; do
+    [[ -e "$claim" ]] || continue
+    [[ -e "$CLAIMS_HOST_DIR/${claim##*/}" ]] && continue
+    cp -p "$claim" "$CLAIMS_HOST_DIR/"
+    carried=$((carried + 1))
+  done
+fi
+log "deposit registry: $CLAIMS_HOST_DIR — $(find "$CLAIMS_HOST_DIR" -maxdepth 1 -name '*.json' | wc -l) claim(s), $carried carried from the hub volume"
+
 log "Swapping containers"
 docker rm -f "$PREV" 2>/dev/null || true
 # Refuse rather than tear down the live hub into a state the rollback cannot reach: if the
@@ -242,10 +302,12 @@ docker run -d --name "$NAME" --restart unless-stopped \
   --env-file "$ENV_CAPTURE" \
   -e AIMARKET_TRUSTED_PROXIES="$TRUSTED" \
   -e AIMARKET_SELLS_FOR="$SELLS_FOR" \
+  -e AIMARKET_DEPOSIT_CLAIMS_DIR="$CLAIMS_DIR_IN_HUB" \
   -p "127.0.0.1:${PORT}:9083" \
   -p "127.0.0.1:${THEMIS_PORT:-9460}:8080" \
   -v modelmarket_hub_data:/app/data \
-  -v /root/claudecode/aicom/data:/factory_data:ro \
+  -v "${FACTORY_EXPORT}:/factory_data:ro" \
+  -v "${CLAIMS_HOST_DIR}:${CLAIMS_DIR_IN_HUB}" \
   "$IMAGE"
 started=$?
 set -e
@@ -310,6 +372,13 @@ if [[ "$studio_code" != "200" ]] || ! grep -q 'HEPHAESTUS' /tmp/studio-check.htm
   fail="${fail:+$fail; }/studio/ answered ${studio_code} without a page — the studio bundle is missing from the image"
 fi
 rm -f /tmp/studio-check.html
+# The registry the running process resolved, not the one this script meant: a directory it
+# cannot write makes it refuse every deposit, and a fallback makes the doors disagree.
+resolved="$(docker exec "$NAME" python3 -c \
+  'from aimarket_hub.deposit_claims import deposit_claims_dir; print(deposit_claims_dir() or "")' \
+  2>/dev/null | tail -1)"
+[[ "$resolved" == "$CLAIMS_DIR_IN_HUB" ]] \
+  || fail="${fail:+$fail; }the hub does not use the shared deposit registry (resolved: ${resolved:-none})"
 
 if [[ -n "$fail" ]]; then
   echo "POST-DEPLOY CHECK FAILED: $fail" >&2

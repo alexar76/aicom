@@ -92,6 +92,11 @@ if [[ "${TIER_ONLY:-0}" -eq 1 ]]; then
 fi
 
 # ── simple actions ──────────────────────────────────────────────────────────
+# compose loads every env_file even for logs/down; the up path below rewrites them after
+# minting secrets.
+if [[ "$ACTION" != "up" && -f .env ]]; then
+  python3 scripts/security/service_env.py stack .env deploy/env >/dev/null
+fi
 if [[ "$ACTION" == "logs" ]]; then exec "${COMPOSE[@]}" logs -f --tail=120; fi
 if [[ "$ACTION" == "down" ]]; then
   step "Stopping core stack (data + volumes kept)…"
@@ -234,6 +239,9 @@ if [[ "$BUILD" -eq 1 ]]; then
 else
   step "Starting core stack (reusing existing images)"
 fi
+# Each service gets its own cut of .env (scripts/security/service_env.py), not the whole
+# file; written after the secrets above so they are in it.
+python3 scripts/security/service_env.py stack .env deploy/env >/dev/null
 "${COMPOSE[@]}" "${UP[@]}"
 
 # ── 6. wait for health ────────────────────────────────────────────────────────

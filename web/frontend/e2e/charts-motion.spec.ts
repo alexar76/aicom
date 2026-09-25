@@ -29,9 +29,9 @@ test.describe('React 19 — recharts + framer-motion', () => {
     await expect(page.locator('body')).toBeVisible();
     await page.waitForTimeout(500);
 
-    const critical = errors.filter(
-      (m) => !m.includes('ResizeObserver') && !m.includes('hydration'),
-    );
+    // Hydration errors are NOT excused: excusing them is how React #418 on this page (the
+    // locale detected during the first render) went unnoticed. See locale-hydration.spec.ts.
+    const critical = errors.filter((m) => !m.includes('ResizeObserver'));
     expect(critical).toEqual([]);
   });
 });

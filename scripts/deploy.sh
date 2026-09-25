@@ -92,6 +92,9 @@ if [[ "$NO_ENV_FILL" -eq 0 ]]; then
   python3 "$ROOT/scripts/fill_production_env.py" "${FILL_ARGS[@]}"
 fi
 
+# Every file the compose files read, cut fresh from .env (compose refuses to start without them).
+python3 "$ROOT/scripts/security/service_env.py" stack "$ENV_FILE" "$ROOT/deploy/env"
+
 COMPOSE_FILES=(-f docker-compose.yml)
 if [[ "${AIFACTORY_USE_HOST_DOCKER:-}" == "1" ]]; then
   COMPOSE_FILES+=(-f docker-compose.host-docker.yml)

@@ -11,6 +11,7 @@ The state machine is pure, so all of this runs without a network.
 from __future__ import annotations
 
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -34,11 +35,25 @@ def fresh_state() -> dict:
 NOW = 1_787_000_000.0  # a fixed clock: a test that depends on the wall clock is a flake
 
 
+@pytest.fixture(autouse=True)
+def _neutral_environment(monkeypatch):
+    """The mechanics tests run with every domain in scope and English wording; the tests
+    for scope and for the Russian page set their own. E-mail stays off unless a test wires
+    it, and no POST ever leaves the machine."""
+    monkeypatch.setenv("AICOM_ALERT_SCOPE", "*")
+    monkeypatch.setenv("AICOM_ALERT_LANG", "en")
+    for var in ("AICOM_ALERT_EMAIL_TO", "AICOM_ALERT_SMTP_HOST", "AICOM_ALERT_SMTP_USER",
+                "AICOM_ALERT_SMTP_PASSWORD", "AICOM_ALERT_SMTP_PORT", "AICOM_ALERT_EMAIL_FROM"):
+        monkeypatch.delenv(var, raising=False)
+    monkeypatch.setattr(alert, "_post", lambda *a, **k: (0, None, "offline in tests"))
+
+
 # ── flap protection ──────────────────────────────────────────────────────────────────────
 
 def test_single_failure_does_not_page():
     """A deploy restarts the hub. One bad poll is not an incident."""
     state = fresh_state()
+    state["last_heartbeat"] = alert._iso(NOW - 3600)  # the digest is not what is under test
     broke, fixed, hb = alert.decide([C("hub_manifest", False, "timeout")], state,
                                     flap=2, heartbeat_hours=24, now=NOW)
     assert broke == [] and fixed == [] and hb is False
@@ -149,13 +164,33 @@ def test_heartbeat_waits_out_its_interval():
     assert hb is True
 
 
-def test_no_heartbeat_while_something_critical_is_down():
-    """An 'all good' digest during an outage is the exact lie this file must not tell."""
+def test_the_digest_keeps_coming_while_something_critical_is_down():
+    """It used to be withheld during an outage, so an incident that stayed open made the
+    alerter go quiet for its whole length — eight days, once, in which silence meant
+    "still broken" and "dead" alike. The digest now comes on its clock regardless; what it
+    must never do is call an outage green."""
     state = fresh_state()
-    for i in range(3):
-        _, _, hb = alert.decide([C("hub_manifest", False, "down")], state, flap=2,
-                                heartbeat_hours=0, now=NOW + i * 600)
-        assert hb is False
+    sent = []
+    for i in range(4):
+        checks = [C("hub_manifest", False, "down")]
+        broke, fixed, hb = alert.decide(checks, state, flap=2, heartbeat_hours=0,
+                                        now=NOW + i * 600)
+        if hb:
+            sent.append(alert.format_message(checks, broke, fixed, hb, host="h",
+                                             hub="https://x", when="t", state=state,
+                                             now=NOW + i * 600))
+    assert sent, "no digest during an outage"
+    for text in sent:
+        assert "all good" not in text
+        assert "is not serving its catalogue" in text and "open for" in text
+
+
+def test_a_run_that_pages_does_not_also_send_the_digest():
+    state = fresh_state()
+    alert.decide([C("hub_manifest", False)], state, flap=2, heartbeat_hours=0, now=NOW)
+    broke, _, hb = alert.decide([C("hub_manifest", False)], state, flap=2,
+                                heartbeat_hours=0, now=NOW + 600)
+    assert broke == ["hub_manifest"] and hb is False
 
 
 # ── bookkeeping ──────────────────────────────────────────────────────────────────────────
@@ -258,24 +293,25 @@ def test_failure_message_names_the_check_and_the_evidence():
     text = alert.format_message(checks, ["signer_not_halted"], [], False,
                                 host="oracles", hub="https://modelmarket.dev",
                                 when="2026-08-25 07:00 UTC")
-    assert "signer_not_halted" in text
-    assert "HALTED: ledger unavailable" in text
+    assert "The escrow signer halted itself" in text          # what, in words
+    assert "Impact: it stopped on purpose" in text               # why it matters
+    assert "Evidence: HALTED: ledger unavailable" in text        # the proof
     assert "oracles" in text and "2026-08-25 07:00 UTC" in text
-    assert "next:" in text  # actionable at 3am, not just informative
+    assert "--dry-run" in text  # actionable at 3am, not just informative
 
 
 def test_recovery_message_says_recovered():
     text = alert.format_message([C("hub_manifest", True)], [], ["hub_manifest"], False,
                                 host="h", hub="https://x", when="t")
     assert "recovered" in text.lower()
-    assert "hub_manifest" in text
+    assert "Hub x is serving its catalogue again" in text
 
 
 def test_heartbeat_message_carries_the_warnings_nobody_was_paged_for():
     checks = [C("hub_manifest", True), C("hub_stats_live", False, "502", critical=False)]
     text = alert.format_message(checks, [], [], True, host="h", hub="https://x", when="t")
-    assert "1/2 checks ok" in text
-    assert "hub_stats_live" in text
+    assert "1 of 2 checks OK" in text
+    assert "Live stats of hub x are not answering" in text
 
 
 def test_message_fits_a_phone_screen():
@@ -341,7 +377,7 @@ def test_a_real_run_sends_and_persists(monkeypatch, tmp_path):
     state = tmp_path / "state.json"
     rc = alert.main(["--state", str(state)])
     assert rc == 0
-    assert len(sent) == 1 and "all critical checks green" in sent[0]
+    assert len(sent) == 1 and "daily digest — all good" in sent[0]
     assert json.loads(state.read_text())["last_heartbeat"]
 
 
@@ -533,11 +569,12 @@ def _peers_response(peers: list[dict]):
     return lambda *a, **k: (200, {"peers": peers}, "")
 
 
-def _peer(name: str, *, status: str = "active", crawled_h_ago: float = 0.5) -> dict:
+def _peer(name: str, *, status: str = "active", crawled_h_ago: float = 0.5,
+          url: str = "") -> dict:
     stamp = time.strftime(
         "%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - crawled_h_ago * 3600)
     )
-    return {"name": name, "url": f"https://{name}.example", "status": status,
+    return {"name": name, "url": url or f"https://{name}.example", "status": status,
             "last_crawl": stamp}
 
 
@@ -731,7 +768,9 @@ def test_collect_emits_one_federation_block_per_hub(monkeypatch):
 # completeness check plus an "ignore" list for hubs judged not ours to watch. The
 # federation is open — hubs join without asking — so "ours" is not a property this
 # alerter can read, and the hub that got classified as somebody else's had a rejected
-# key pin at that very moment. Nothing is classified now, and nothing is silenced.
+# key pin at that very moment. The alerter still classifies nothing; since 2026-09-24 the
+# owner declares the scope (a list of domains), and what it leaves out is named in the
+# digest rather than dropped.
 
 
 def _federation_map(mapping):
@@ -836,10 +875,17 @@ def test_aliases_are_deduped_by_host_not_by_label():
     ) == ["independent=https://independentai.network/hub"]
 
 
-def test_nothing_can_be_silenced():
-    """There is no ignore list any more — the concept is gone from the module."""
+def test_nothing_is_silenced_silently():
+    """There is no ignore list — the concept is gone from the module. What the owner's
+    scope leaves out is not hidden: every digest names it."""
     assert not hasattr(alert, "probe_federation_watchlist")
     assert "FEDERATION_HUBS_IGNORE" not in Path(alert.__file__).read_text()
+    scope = alert.Scope(("modelmarket.dev",))
+    assert not scope.allows("https://independentai.network/hub")
+    text = alert.format_message([C("hub_manifest", True)], [], [], True, host="h",
+                                hub="https://modelmarket.dev", when="t", lang="ru",
+                                state=fresh_state(), scope=scope, now=NOW)
+    assert "independentai.network" in text and "Не наблюдаю" in text
 
 
 # ── the credit rail: a seller that cannot be paid ────────────────────────────────────────
@@ -1009,9 +1055,13 @@ class TestTlsExpiryIsWatchedBeforeItBecomesAnOutage:
     def test_the_watched_list_covers_the_estate_and_can_be_overridden(self, monkeypatch):
         monkeypatch.delenv("AICOM_ALERT_TLS_NAMES", raising=False)
         names = alert.tls_names_from_env("https://modelmarket.dev")
-        for expected in ("modelmarket.dev", "hub.attestedmemory.net",
-                         "memory.attestedmemory.net", "independentai.network"):
+        for expected in ("modelmarket.dev", "uni.modelmarket.dev", "hub.modelmarket.dev",
+                         "magic-ai-factory.com"):
             assert expected in names, expected
+        # Other ecosystems renew their own certificates (the owner's scope, 2026-09-24).
+        for foreign in ("hub.attestedmemory.net", "memory.attestedmemory.net",
+                        "independentai.network"):
+            assert foreign not in names, foreign
 
         monkeypatch.setenv("AICOM_ALERT_TLS_NAMES", "one.test, two.test")
         assert alert.tls_names_from_env("https://modelmarket.dev") == ["one.test", "two.test"]
@@ -1095,9 +1145,13 @@ class TestTlsExpiryIsWatchedBeforeItBecomesAnOutage:
     def test_the_watched_list_covers_the_estate_and_can_be_overridden(self, monkeypatch):
         monkeypatch.delenv("AICOM_ALERT_TLS_NAMES", raising=False)
         names = alert.tls_names_from_env("https://modelmarket.dev")
-        for expected in ("modelmarket.dev", "hub.attestedmemory.net",
-                         "memory.attestedmemory.net", "independentai.network"):
+        for expected in ("modelmarket.dev", "uni.modelmarket.dev", "hub.modelmarket.dev",
+                         "magic-ai-factory.com"):
             assert expected in names, expected
+        # Other ecosystems renew their own certificates (the owner's scope, 2026-09-24).
+        for foreign in ("hub.attestedmemory.net", "memory.attestedmemory.net",
+                        "independentai.network"):
+            assert foreign not in names, foreign
 
         monkeypatch.setenv("AICOM_ALERT_TLS_NAMES", "one.test, two.test")
         assert alert.tls_names_from_env("https://modelmarket.dev") == ["one.test", "two.test"]
@@ -1111,3 +1165,490 @@ class TestTlsExpiryIsWatchedBeforeItBecomesAnOutage:
         monkeypatch.delenv("AICOM_ALERT_TLS_NAMES", raising=False)
         names = alert.tls_names_from_env("https://some-other-hub.example/hub")
         assert "some-other-hub.example" in names
+
+
+# ── scope: the alexar76 ecosystem, as the owner declared it on 2026-09-24 ─────────────────
+
+
+class TestScope:
+    def test_the_default_is_the_alexar76_ecosystem(self, monkeypatch):
+        monkeypatch.delenv("AICOM_ALERT_SCOPE", raising=False)
+        scope = alert.Scope.from_env()
+        for ours in ("https://modelmarket.dev", "https://uni.modelmarket.dev/sat/khronos",
+                     "hub.modelmarket.dev", "https://magic-ai-factory.com", "local",
+                     "http://127.0.0.1:9500"):
+            assert scope.allows(ours), ours
+        for theirs in ("https://independentai.network/hub", "https://charon.independentai.network",
+                       "https://hub.attestedmemory.net", "https://emberlinedesk.com",
+                       "https://pingblip.com", "http://108.165.32.182:9083",
+                       "https://notmodelmarket.dev"):
+            assert not scope.allows(theirs), theirs
+        assert "independentai.network" in scope.excluded
+        assert "notmodelmarket.dev" in scope.excluded  # a suffix is not a subdomain
+
+    def test_star_watches_everything_and_a_list_overrides(self, monkeypatch):
+        monkeypatch.setenv("AICOM_ALERT_SCOPE", "*")
+        assert alert.Scope.from_env().allows("https://anything.example")
+        monkeypatch.setenv("AICOM_ALERT_SCOPE", "Example.org, .other.test")
+        scope = alert.Scope.from_env()
+        assert scope.allows("https://a.example.org") and scope.allows("https://other.test")
+        assert not scope.allows("https://modelmarket.dev")
+
+    def test_a_foreign_peer_does_not_turn_our_hub_red(self, monkeypatch):
+        """Our hub not re-crawling somebody else's node is that node's operator's business."""
+        monkeypatch.setattr(alert, "_get", _peers_response([
+            _peer("GAIA", crawled_h_ago=1, url="https://iot.modelmarket.dev"),
+            _peer("Attested Hub", crawled_h_ago=21 * 24, url="https://hub.attestedmemory.net",
+                  status="key_mismatch"),
+        ]))
+        scope = alert.Scope(("modelmarket.dev",))
+        checks = {c.name: c for c in alert.probe_federation(
+            "https://modelmarket.dev", scope=scope)}
+        assert checks["hub_federation_crawl_fresh"].ok
+        assert checks["hub_federation_pins_accepted"].ok
+        assert "1 outside the watched scope" in checks["hub_federation_peers"].detail
+        assert "hub.attestedmemory.net" in scope.excluded
+
+    def test_our_own_frozen_peer_still_fails_under_the_scope(self, monkeypatch):
+        monkeypatch.setattr(alert, "_get", _peers_response([
+            _peer("KHRONOS", crawled_h_ago=198, url="https://uni.modelmarket.dev/sat/khronos"),
+        ]))
+        checks = {c.name: c for c in alert.probe_federation(
+            "https://uni.modelmarket.dev", label="uni.modelmarket.dev",
+            scope=alert.Scope(("modelmarket.dev",)))}
+        assert not checks["hub_federation_crawl_fresh@uni.modelmarket.dev"].ok
+
+    def test_collect_neither_probes_nor_discovers_other_ecosystems(self, monkeypatch):
+        for probe in ("probe_dns", "probe_hub", "probe_signer", "probe_status_page",
+                      "probe_settlement", "probe_paywall", "probe_tls_expiry"):
+            monkeypatch.setattr(alert, probe, lambda *a, **k: [])
+        probed: list[str] = []
+        monkeypatch.setattr(alert, "probe_hub_identity",
+                            lambda hub, *a, **k: probed.append(hub) or [])
+        monkeypatch.setattr(alert, "_get", _federation_map({
+            "https://modelmarket.dev": [
+                {"url": "https://hunt.modelmarket.dev", "name": "Hunt"},
+                {"url": "https://hub.attestedmemory.net", "name": "Attested"},
+            ],
+            "https://hunt.modelmarket.dev": [{"url": "https://modelmarket.dev", "name": "Apex",
+                                              "last_crawl": "2026-09-01T10:00:00Z"}],
+            "https://hub.attestedmemory.net": [{"url": "https://x", "name": "X"}],
+            "https://independentai.network/hub": [{"url": "https://x", "name": "X"}],
+        }))
+        scope = alert.Scope(("modelmarket.dev",))
+        names = {c.name for c in alert.collect(
+            "full", hub="https://modelmarket.dev", signer="", status_url="", settlement_url="",
+            timeout=5.0, federation_hubs=["independent=https://independentai.network/hub"],
+            scope=scope)}
+        assert "hub_federation_peers@hunt.modelmarket.dev" in names
+        assert not any("independent" in n or "attestedmemory" in n for n in names)
+        assert "https://hub.attestedmemory.net" not in probed
+        assert "https://hunt.modelmarket.dev" in probed
+
+    def test_foreign_canary_failures_do_not_count(self, monkeypatch):
+        monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, {
+            "checked_at": alert._iso(NOW - 3600),
+            "checks": [
+                {"name": "priced_capability_gated[https://independentai.network/hub]",
+                 "ok": False, "critical": True},
+                {"name": "peer_alive[https://hub.attestedmemory.net]", "ok": False,
+                 "critical": True},
+            ]}, ""))
+        scope = alert.Scope(("modelmarket.dev",))
+        checks = {c.name: c for c in alert.probe_status_page("https://v/s.json", now=NOW,
+                                                             scope=scope)}
+        assert checks["canary_verdict_ok"].ok
+        # ...while one of ours still does.
+        monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, {
+            "checked_at": alert._iso(NOW - 3600),
+            "checks": [{"name": "peer_alive[https://iot.modelmarket.dev]", "ok": False,
+                        "critical": True}]}, ""))
+        checks = {c.name: c for c in alert.probe_status_page("https://v/s.json", now=NOW,
+                                                             scope=scope)}
+        assert not checks["canary_verdict_ok"].ok
+
+    def test_the_paywall_is_judged_over_our_providers_only(self, monkeypatch):
+        import payment_canary
+        monkeypatch.setattr(payment_canary, "observe", lambda hub, timeout, **k: {
+            "manifest": {"name": "m", "payment_configured": True, "payment_testnet": False,
+                         "_priced_providers": ["local", "https://iot.modelmarket.dev",
+                                               "https://independentai.network/hub"]},
+            "probes": [
+                {"status": 402, "body": {}, "capability_id": "a", "source_hub": "local"},
+                {"status": 402, "body": {}, "capability_id": "b",
+                 "source_hub": "https://iot.modelmarket.dev"},
+                {"status": 200, "body": {}, "capability_id": "c",
+                 "source_hub": "https://independentai.network/hub"},
+            ],
+            "mcp_info": {"service": "aimarket-hub-mcp", "trial": "per-caller"},
+            "peers": [{"url": "https://hub.attestedmemory.net", "alive": False, "sells": True}],
+        })
+        checks = {c.name: c for c in alert.probe_paywall(
+            "https://modelmarket.dev", 5.0, scope=alert.Scope(("modelmarket.dev",)))}
+        assert checks["every_priced_provider_probed"].ok
+        assert not any("independentai" in n or "attestedmemory" in n for n in checks)
+        assert all(c.ok for c in checks.values() if c.critical)
+
+
+# ── a redeploy must not be able to undo a fix unnoticed ─────────────────────────────────
+
+
+def _identity_stub(monkeypatch, *, well_known, credit_status, credit_body=None):
+    monkeypatch.setattr(alert, "_get", lambda url, *a, **k: (200, well_known, ""))
+    calls = []
+    def post(url, payload, timeout, headers=None):
+        calls.append((url, payload, headers))
+        return credit_status, credit_body, ""
+    monkeypatch.setattr(alert, "_post", post)
+    return calls
+
+
+class TestHubIdentity:
+    GOOD = {"hub_url": "https://uni.modelmarket.dev",
+            "manifest_url": "https://uni.modelmarket.dev/ai-market/v2/manifest",
+            "mcp_endpoint": "https://uni.modelmarket.dev/ai-market/mcp"}
+
+    def test_a_healthy_hub_passes_both(self, monkeypatch):
+        _identity_stub(monkeypatch, well_known=self.GOOD, credit_status=403)
+        checks = {c.name: c for c in alert.probe_hub_identity("https://uni.modelmarket.dev",
+                                                              label="uni")}
+        assert checks["hub_advertises_public_url@uni"].ok
+        assert checks["hub_refuses_published_admin_tokens@uni"].ok
+        assert f"all {len(alert.PUBLISHED_ADMIN_TOKENS)}" in \
+            checks["hub_refuses_published_admin_tokens@uni"].detail
+
+    def test_advertising_loopback_is_the_uni_regression(self, monkeypatch):
+        """What UNI advertised for eight days after the stale script was re-run."""
+        _identity_stub(monkeypatch, well_known=dict(
+            self.GOOD, manifest_url="http://127.0.0.1:9183/ai-market/v2/manifest"),
+            credit_status=403)
+        check = {c.name: c for c in alert.probe_hub_identity("https://uni.modelmarket.dev")}[
+            "hub_advertises_public_url"]
+        assert not check.ok and check.critical and "127.0.0.1" in check.detail
+
+    def test_private_and_plaintext_addresses_are_not_public(self):
+        for bad in ("http://modelmarket.dev/x", "https://10.0.0.5/x", "https://localhost/x",
+                    "https://[::1]/x", "https://172.17.0.1:9083"):
+            assert not alert._publicly_reachable(bad), bad
+        assert alert._publicly_reachable("https://uni.modelmarket.dev/ai-market/mcp")
+
+    def test_an_accepted_published_token_pages(self, monkeypatch):
+        """Past the token, the amount is not a number: the hub answers 400 and writes nothing."""
+        calls = _identity_stub(monkeypatch, well_known=self.GOOD, credit_status=400,
+                               credit_body={"detail": "amount_usd must be a number"})
+        check = {c.name: c for c in alert.probe_hub_identity("https://uni.modelmarket.dev")}[
+            "hub_refuses_published_admin_tokens"]
+        assert not check.ok and check.critical and "OPENS" in check.detail
+        # The probe itself must be unable to move a cent.
+        for url, payload, headers in calls:
+            assert url.endswith("/accounts/acct_0000000000000000/credit")
+            with pytest.raises(ValueError):
+                float(payload["amount_usd"])
+
+    def test_admin_switched_off_is_a_closed_door(self, monkeypatch):
+        _identity_stub(monkeypatch, well_known=self.GOOD, credit_status=503, credit_body={
+            "detail": "Admin endpoints disabled: AIMARKET_ADMIN_TOKEN not configured"})
+        check = {c.name: c for c in alert.probe_hub_identity("https://x.modelmarket.dev")}[
+            "hub_refuses_published_admin_tokens"]
+        assert check.ok
+
+    def test_a_503_after_the_token_is_an_open_door(self, monkeypatch):
+        _identity_stub(monkeypatch, well_known=self.GOOD, credit_status=503,
+                       credit_body={"detail": "credit accounts are off on this hub"})
+        check = {c.name: c for c in alert.probe_hub_identity("https://x.modelmarket.dev")}[
+            "hub_refuses_published_admin_tokens"]
+        assert not check.ok
+
+    def test_no_route_is_not_measured_rather_than_passed_or_paged(self, monkeypatch):
+        _identity_stub(monkeypatch, well_known=self.GOOD, credit_status=404)
+        check = {c.name: c for c in alert.probe_hub_identity("https://x.modelmarket.dev")}[
+            "hub_refuses_published_admin_tokens"]
+        assert check.ok and not check.critical and "not measured" in check.detail
+
+    def test_the_uni_constant_is_on_the_list(self):
+        assert "uni-admin-token-not-a-secret-in-a-bubble" in alert.PUBLISHED_ADMIN_TOKENS
+        docs = (ROOT / "docs" / "uni-realm.md").read_text(encoding="utf-8")
+        assert "uni-admin-token-not-a-secret-in-a-bubble" in docs  # that is why it is listed
+
+
+# ── the page a human reads ───────────────────────────────────────────────────────────────
+
+
+class TestRussianPage:
+    def test_a_failure_says_what_broke_why_it_matters_and_the_evidence(self):
+        checks = [C("hub_federation_crawl_fresh@uni.modelmarket.dev", False,
+                    "stalest peer crawl: KHRONOS Time Series 198.5h ago (threshold 26h)"),
+                  C("hub_manifest", True)]
+        text = alert.format_message(checks, [checks[0].name], [], False, host="not-my-vps",
+                                    hub="https://modelmarket.dev", when="2026-09-24 11:00 UTC",
+                                    lang="ru", state=fresh_state(), now=NOW)
+        assert "Хаб uni.modelmarket.dev перестал обновлять данные пиров" in text
+        assert "Чем грозит:" in text and "Факт: stalest peer crawl: KHRONOS" in text
+        assert "not-my-vps" in text and "--dry-run" in text
+
+    def test_a_digest_during_an_outage_says_how_long_it_has_been_open(self):
+        state = fresh_state()
+        state["checks"]["hub_federation_crawl_fresh@uni"] = {
+            "failures": 400, "alerted": True, "since": alert._iso(NOW - 8 * 86400 - 7 * 3600)}
+        checks = [C("hub_federation_crawl_fresh@uni", False, "stale"), C("hub_manifest", True)]
+        text = alert.format_message(checks, [], [], True, host="h", hub="https://modelmarket.dev",
+                                    when="t", lang="ru", state=state,
+                                    scope=alert.Scope(("modelmarket.dev",)), now=NOW)
+        assert "открыто проблем: 1" in text
+        assert "уже 8 сут 7 ч" in text
+        assert "всё в порядке" not in text
+        assert "Следующая сводка" in text and "Наблюдаю: modelmarket.dev" in text
+
+    def test_a_recovery_says_how_long_it_lasted(self):
+        state = fresh_state()
+        for i in range(2):
+            alert.decide([C("hub_manifest", False, "down")], state, flap=2, heartbeat_hours=24,
+                         now=NOW + i * 600)
+        _, fixed, _ = alert.decide([C("hub_manifest", True)], state, flap=2, heartbeat_hours=24,
+                                   now=NOW + 3 * 3600)
+        text = alert.format_message([C("hub_manifest", True)], [], fixed, False, host="h",
+                                    hub="https://modelmarket.dev", when="t", lang="ru",
+                                    state=state, now=NOW + 3 * 3600)
+        assert "починилось" in text and "Хаб modelmarket.dev снова отдаёт каталог" in text
+        assert "было сломано 3 ч" in text
+
+    def test_every_check_this_file_can_emit_has_words(self):
+        """A new probe without wording would reach the owner as a bare identifier."""
+        src = Path(alert.__file__).read_text(encoding="utf-8")
+        emitted = set(re.findall(r'Check\(\s*f?"([a-z_]+)', src))
+        import payment_canary
+        emitted |= set(re.findall(r'(?:Check\(\s*|name = )f?"([a-z_]+)',
+                                  Path(payment_canary.__file__).read_text(encoding="utf-8")))
+        emitted.discard("x")
+        for lang, table in alert._WORDING.items():
+            missing = sorted(n for n in emitted if n not in table)
+            assert not missing, (lang, missing)
+        assert set(alert._PHRASES["en"]) == set(alert._PHRASES["ru"])
+
+    def test_a_failing_channel_is_reported_by_the_one_that_works(self):
+        delivery = {"telegram": {"ok": True, "at": "2026-09-24T10:00:00Z"},
+                    "email": {"ok": False, "at": "2026-09-24T10:00:00Z",
+                              "error": "SMTPAuthenticationError: 535",
+                              "failing_since": "2026-09-23T08:00:00Z"}}
+        checks = [C("hub_manifest", False, "down")]
+        text = alert.format_message(checks, ["hub_manifest"], [], False, host="h",
+                                    hub="https://modelmarket.dev", when="t", lang="ru",
+                                    state=fresh_state(), delivery=delivery, now=NOW)
+        assert "почта ✗" in text and "535" in text and "2026-09-23" in text
+
+    def test_the_russian_page_fits_telegram(self):
+        checks = [C(f"peer_alive[https://s{i}.modelmarket.dev]", False, "x" * 300)
+                  for i in range(40)]
+        text = alert.format_message(checks, [c.name for c in checks], [], False, host="h",
+                                    hub="https://x", when="t", lang="ru", state=fresh_state(),
+                                    now=NOW)
+        assert len(text) < 4000
+
+
+# ── e-mail ───────────────────────────────────────────────────────────────────────────────
+
+
+class FakeSMTP:
+    instances: list["FakeSMTP"] = []
+
+    def __init__(self, host, port, timeout=None, context=None):
+        self.host, self.port, self.events, self.sent = host, port, [], []
+        FakeSMTP.instances.append(self)
+
+    def starttls(self, context=None):
+        self.events.append("starttls")
+
+    def login(self, user, password):
+        self.events.append(("login", user))
+
+    def send_message(self, msg):
+        self.sent.append(msg)
+        return {}
+
+    def quit(self):
+        self.events.append("quit")
+
+    def close(self):
+        self.events.append("close")
+
+
+class TestEmail:
+    CFG = {"host": "smtp.example", "port": 587, "user": "bot@example.org",
+           "password": "pw", "from": "bot@example.org", "to": ["owner@example.org"]}
+
+    def test_starttls_comes_before_the_password(self, monkeypatch):
+        FakeSMTP.instances.clear()
+        monkeypatch.setattr(alert.smtplib, "SMTP", FakeSMTP)
+        ok, info = alert.send_email(self.CFG, "🔴 alexar76: сломалось — 1\nтело")
+        assert ok, info
+        server = FakeSMTP.instances[0]
+        assert server.events[:2] == ["starttls", ("login", "bot@example.org")]
+        msg = server.sent[0]
+        assert msg["Subject"] == "🔴 alexar76: сломалось — 1"
+        assert msg["To"] == "owner@example.org"
+        assert "тело" in msg.get_content()
+
+    def test_port_465_is_implicit_tls(self, monkeypatch):
+        FakeSMTP.instances.clear()
+        monkeypatch.setattr(alert.smtplib, "SMTP_SSL", FakeSMTP)
+        def forbidden(*a, **k):
+            raise AssertionError("plain SMTP must not be used on 465")
+        monkeypatch.setattr(alert.smtplib, "SMTP", forbidden)
+        ok, _ = alert.send_email(dict(self.CFG, port=465), "subject\nbody")
+        assert ok and "starttls" not in FakeSMTP.instances[0].events
+
+    def test_a_refused_starttls_sends_nothing_and_never_raises(self, monkeypatch):
+        class NoTLS(FakeSMTP):
+            def starttls(self, context=None):
+                raise alert.smtplib.SMTPNotSupportedError("STARTTLS extension not supported")
+        FakeSMTP.instances.clear()
+        monkeypatch.setattr(alert.smtplib, "SMTP", NoTLS)
+        ok, info = alert.send_email(self.CFG, "s\nb")
+        assert not ok and "STARTTLS" in info
+        assert not FakeSMTP.instances[0].sent
+        assert ("login", "bot@example.org") not in FakeSMTP.instances[0].events
+
+    def test_email_is_off_until_both_recipient_and_server_are_set(self, monkeypatch):
+        assert alert.email_config_from_env() is None
+        monkeypatch.setenv("AICOM_ALERT_EMAIL_TO", "owner@example.org")
+        assert alert.email_config_from_env() is None
+        monkeypatch.setenv("AICOM_ALERT_SMTP_HOST", "smtp.example")
+        monkeypatch.setenv("AICOM_ALERT_SMTP_USER", "bot@example.org")
+        cfg = alert.email_config_from_env()
+        assert cfg["port"] == 587 and cfg["from"] == "bot@example.org"
+
+    def test_the_password_is_never_a_command_line_argument(self):
+        src = (ROOT / "scripts" / "ecosystem_alert.py").read_text(encoding="utf-8")
+        assert "--password" not in src and "--smtp" not in src
+
+
+class TestDelivery:
+    def _run(self, monkeypatch, tmp_path, *, telegram_ok, email_ok, checks=None):
+        monkeypatch.setattr(alert, "collect",
+                            lambda *a, **k: checks or [C("hub_manifest", True, "ok")])
+        sent = {"telegram": [], "email": []}
+        monkeypatch.setattr(alert, "send_telegram", lambda t, c, text, **k: (
+            sent["telegram"].append(text) or (telegram_ok, "1" if telegram_ok else "HTTP 502")))
+        monkeypatch.setattr(alert, "send_email", lambda cfg, text, **k: (
+            sent["email"].append(text) or (email_ok, "sent" if email_ok else "SMTP 535")))
+        monkeypatch.setenv("AICOM_ALERT_TELEGRAM_TOKEN", "123:abc")
+        monkeypatch.setenv("AICOM_ALERT_TELEGRAM_CHAT", "42")
+        monkeypatch.setenv("AICOM_ALERT_EMAIL_TO", "owner@example.org")
+        monkeypatch.setenv("AICOM_ALERT_SMTP_HOST", "smtp.example")
+        state = tmp_path / "state.json"
+        rc = alert.main(["--state", str(state)])
+        return rc, sent, json.loads(state.read_text())
+
+    def test_both_channels_get_the_same_message(self, monkeypatch, tmp_path):
+        rc, sent, state = self._run(monkeypatch, tmp_path, telegram_ok=True, email_ok=True)
+        assert rc == 0 and len(sent["telegram"]) == 1 and sent["telegram"] == sent["email"]
+        assert state["delivery"]["email"]["ok"] and state["delivery"]["telegram"]["ok"]
+
+    def test_one_channel_down_still_counts_as_told_and_is_remembered(self, monkeypatch, tmp_path):
+        rc, _, state = self._run(monkeypatch, tmp_path, telegram_ok=True, email_ok=False)
+        assert state["last_heartbeat"]  # the human was reached, the digest is done
+        assert state["delivery"]["email"]["ok"] is False
+        assert state["delivery"]["email"]["error"] == "SMTP 535"
+
+    def test_every_channel_down_means_nobody_was_told(self, monkeypatch, tmp_path):
+        rc, _, state = self._run(monkeypatch, tmp_path, telegram_ok=False, email_ok=False)
+        assert rc == 1
+        assert state["last_heartbeat"] == ""  # so the next run tries again
+
+    def test_failing_since_survives_repeated_failures(self):
+        state = fresh_state()
+        chans = [("email", lambda text: (False, "down"))]
+        alert.deliver(chans, "x", state, NOW)
+        alert.deliver(chans, "x", state, NOW + 3600)
+        assert state["delivery"]["email"]["failing_since"] == alert._iso(NOW)
+        alert.deliver([("email", lambda text: (True, "sent"))], "x", state, NOW + 7200)
+        assert state["delivery"]["email"] == {"ok": True, "at": alert._iso(NOW + 7200)}
+
+
+def test_the_canary_contacts_nothing_outside_the_scope(monkeypatch):
+    """Discarding a result is not the same as not asking: every hourly probe of somebody
+    else's service landed in their logs."""
+    import payment_canary
+    asked: list[str] = []
+    def fake_get(url, timeout):
+        asked.append(url)
+        if url.endswith("/ai-market/v2/prices"):
+            return 200, {"prices": [
+                {"price_usd": 0.01, "capability_id": "a", "product_id": "p",
+                 "source_hub": "https://iot.modelmarket.dev"},
+                {"price_usd": 0.01, "capability_id": "b", "product_id": "p",
+                 "source_hub": "https://independentai.network/hub"},
+            ]}
+        if url.endswith("/federation/peers"):
+            return 200, {"peers": [{"url": "https://iot.modelmarket.dev"},
+                                   {"url": "https://hub.attestedmemory.net"}]}
+        return 200, {}
+    posted: list[dict] = []
+    monkeypatch.setattr(payment_canary, "_get", fake_get)
+    monkeypatch.setattr(payment_canary, "_post",
+                        lambda url, body, timeout: posted.append(body) or (402, {}))
+    peered: list[str] = []
+    monkeypatch.setattr(payment_canary, "probe_peer",
+                        lambda entry, *a, **k: peered.append(entry["url"]) or dict(entry, alive=True))
+    scope = alert.Scope(("modelmarket.dev",))
+    seen = payment_canary.observe("https://modelmarket.dev", 5.0, allow=scope.allows)
+    assert [b.get("source_hub") for b in posted] == ["https://iot.modelmarket.dev"]
+    assert peered == ["https://iot.modelmarket.dev"]
+    assert seen["manifest"] is None or "independentai" not in str(
+        seen["manifest"].get("_priced_providers"))
+
+
+
+class TestEnglishPageIsTheDefault:
+    """The owner asked for English (2026-09-24); the plain-language shape is the same."""
+
+    def test_default_language_is_english(self, monkeypatch, tmp_path):
+        monkeypatch.delenv("AICOM_ALERT_LANG", raising=False)
+        monkeypatch.setattr(alert, "collect", lambda *a, **k: [C("hub_manifest", True, "ok")])
+        sent = []
+        monkeypatch.setattr(alert, "send_telegram",
+                            lambda token, chat, text, **k: (sent.append(text) or (True, "1")))
+        monkeypatch.setenv("AICOM_ALERT_TELEGRAM_TOKEN", "123:abc")
+        monkeypatch.setenv("AICOM_ALERT_TELEGRAM_CHAT", "42")
+        alert.main(["--state", str(tmp_path / "s.json")])
+        assert sent and "daily digest — all good" in sent[0] and "Next digest in" in sent[0]
+
+    def test_a_failure_in_english(self):
+        checks = [C("hub_federation_crawl_fresh@uni.modelmarket.dev", False,
+                    "stalest peer crawl: KHRONOS Time Series 198.5h ago (threshold 26h)")]
+        text = alert.format_message(checks, [checks[0].name], [], False, host="not-my-vps",
+                                    hub="https://modelmarket.dev", when="t",
+                                    state=fresh_state(), now=NOW)
+        assert text.startswith("\U0001F534 alexar76: 1 broken")
+        assert "✖ Hub uni.modelmarket.dev stopped refreshing its peers" in text
+        assert "Impact: its catalogue shows stale capabilities and prices" in text
+        assert "Evidence: stalest peer crawl: KHRONOS" in text
+
+    def test_an_english_digest_during_an_outage(self):
+        state = fresh_state()
+        state["checks"]["hub_federation_crawl_fresh@uni"] = {
+            "failures": 400, "alerted": True, "since": alert._iso(NOW - 8 * 86400 - 7 * 3600)}
+        scope = alert.Scope(("modelmarket.dev",))
+        scope.allows("https://hub.attestedmemory.net")
+        checks = [C("hub_federation_crawl_fresh@uni", False, "stale"), C("hub_manifest", True)]
+        text = alert.format_message(checks, [], [], True, host="h", hub="https://modelmarket.dev",
+                                    when="t", state=state, scope=scope, now=NOW)
+        assert "daily digest — 1 open" in text and "open for 8d 7h" in text
+        assert "Not watched (other ecosystems, owner's decision): hub.attestedmemory.net" in text
+        assert "Delivery: Telegram — no sends yet · e-mail — not configured" in text
+
+    def test_an_english_recovery_says_how_long_it_lasted(self):
+        state = fresh_state()
+        for i in range(2):
+            alert.decide([C("signer_ready", False)], state, flap=2, heartbeat_hours=24,
+                         now=NOW + i * 600)
+        _, fixed, _ = alert.decide([C("signer_ready", True)], state, flap=2,
+                                   heartbeat_hours=24, now=NOW + 26 * 3600)
+        text = alert.format_message([C("signer_ready", True)], [], fixed, False, host="h",
+                                    hub="https://x", when="t", state=state, now=NOW + 26 * 3600)
+        assert "✔ The escrow signer is ready again (was broken for 26h)" in text
+
+    def test_an_unknown_language_falls_back_to_english(self):
+        text = alert.format_message([C("hub_manifest", True)], [], [], True, host="h",
+                                    hub="https://x", when="t", lang="de", now=NOW)
+        assert "all good" in text

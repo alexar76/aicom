@@ -266,3 +266,6 @@ cite-desks/kernel/desk.db
 # Download cache for scripts/selfhost_google_fonts.py — regenerable from Google, and what
 # the sites serve is their own copy under each web root, so this is never the source of truth.
 scripts/.webfont-cache/
+
+# Service-scoped production credentials generated on the deployment host.
+deploy/env/*.env

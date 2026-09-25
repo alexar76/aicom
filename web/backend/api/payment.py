@@ -24,14 +24,20 @@ from core.config_merge import load_merged_config
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 
+from web.backend.core.admin_roles import AdminRole, normalize_role, require_admin_with_rbac
 from web.backend.services.customer_auth import require_customer
 from web3 import Web3
 from web.backend.schemas.api_requests import ConfirmPaymentRequest, CreatePaymentRequest
-from web3.exceptions import TransactionNotFound
+from web3.exceptions import ContractLogicError, TransactionNotFound
+from eth_abi import encode as abi_encode
 
 # Unified multi-chain network registry + health-checked RPC failover (EVM + Solana).
 from aimarket_hub import chain_net
 from web.backend.services.commerce import CommerceService, TxHashAlreadyUsedError
+from web.backend.services.ai_market_protocol.channels import claim_transfer, release_transfer
+from web.backend.services.payment_claim import (
+    DOOR_CHECKOUT, checkout_tx_hash, claim_message, verify_claim)
+from core.public_site_url import resolve_public_site_url
 from web.backend.services.storefront_pricing import checkout_usdt_from_sales_file
 
 logger = logging.getLogger(__name__)
@@ -199,7 +205,10 @@ def _load_pending_payments_from_disk() -> None:
     for pid, pay in data.items():
         if not isinstance(pay, dict):
             continue
-        if pay.get("status") == "pending" and float(pay.get("expires_at") or 0) <= now:
+        # A quote held for operator review (the buyer paid but could not sign) is the
+        # only record of what they are owed, so it outlives the quote's expiry.
+        if (pay.get("status") == "pending" and not pay.get("claim_review")
+                and float(pay.get("expires_at") or 0) <= now):
             continue
         cleaned[str(pid)] = pay
     _pending_payments = cleaned
@@ -517,10 +526,11 @@ def _verify_evm_transaction(
                 continue
 
             # Decode value from log data
-            data_hex = log.get("data", "0x0")
-            if data_hex.startswith("0x"):
-                data_hex = data_hex[2:]
-            value_raw = int.from_bytes(bytes.fromhex(data_hex.zfill(64)), "big")
+            data = log.get("data", b"")
+            raw = bytes.fromhex(data.removeprefix("0x")) if isinstance(data, str) else bytes(data)
+            if len(raw) != 32:
+                continue
+            value_raw = int.from_bytes(raw, "big")
             value_transferred = value_raw / (10 ** decimals)
 
             min_amount = _minimum_paid_amount(expected_amount)
@@ -556,17 +566,66 @@ def _verify_evm_transaction(
     }
 
 
+# EIP-1271: isValidSignature(bytes32,bytes) returns this selector when the wallet signed.
+_ERC1271_SELECTOR = bytes.fromhex("1626ba7e")
+_ERC1271_MAGIC = _ERC1271_SELECTOR + b"\0" * 28
+
+
+def _contract_wallet_accepts(chain: str, wallet: str, digest: bytes, signature: bytes) -> bool:
+    """Ask a smart contract wallet whether it signed ``digest`` (EIP-1271).
+
+    A contract has no key to recover, so the only proof it can give is its own
+    answer. Two guards keep that answer meaningful: an address with no code is not
+    asked (a key wallet is judged by ecrecover alone), and a contract that also
+    accepts a blank signature accepts anyone's, so its yes proves nothing.
+    """
+    pool = _pool_for_chain(chain)
+    if pool is None or chain == "solana":
+        return False
+    try:
+        target = Web3.to_checksum_address(wallet)
+    except Exception:
+        return False
+
+    def _accepts(w3: Web3, candidate: bytes) -> bool:
+        data = _ERC1271_SELECTOR + abi_encode(["bytes32", "bytes"], [digest, candidate])
+        try:
+            out = w3.eth.call({"to": target, "data": "0x" + data.hex()})
+        except ContractLogicError:
+            return False  # a revert is the wallet saying no
+        return bytes(out)[:32] == _ERC1271_MAGIC
+
+    def _ask(url: str) -> bool:
+        w3 = Web3(Web3.HTTPProvider(
+            url,
+            request_kwargs={"timeout": _RPC_TIMEOUT, "headers": {"User-Agent": chain_net.user_agent()}},
+        ))
+        if not w3.eth.get_code(target):
+            return False
+        return _accepts(w3, signature) and not _accepts(w3, b"\0" * 65)
+
+    try:
+        return bool(pool.run(_ask))
+    except chain_net.AllEndpointsDown as exc:
+        logger.warning("EVM RPC unavailable for contract-wallet check on %s: %s", chain, exc)
+        return False
+
+
 # ── Solana verification ──────────────────────────────────────────────────────
 
 
-def _solana_confirmations(tx_data: dict) -> int:
-    conf = tx_data.get("confirmations")
+def _solana_confirmations(status: dict) -> int:
+    if status.get("err") is not None:
+        return 0
+    if status.get("confirmationStatus") == "finalized":
+        return MIN_CONFIRMATIONS
+    conf = status.get("confirmations")
     if conf is not None:
         try:
             return max(0, int(conf))
         except (TypeError, ValueError):
             pass
-    return 1 if tx_data.get("slot") else 0
+    return 0
 
 
 def _solana_token_balance_delta(meta: dict, owner: str, mint: str) -> Optional[float]:
@@ -633,7 +692,12 @@ def _verify_solana_transaction(
         tx_obj = tx_data.get("transaction") or {}
         message = tx_obj.get("message") or {}
         account_keys = message.get("accountKeys") or []
-        confirmations = _solana_confirmations(tx_data)
+        status_result = pool.call("getSignatureStatuses", [[tx_hash], {"searchTransactionHistory": True}])
+        statuses = (status_result or {}).get("value") or []
+        status = statuses[0] if len(statuses) == 1 and isinstance(statuses[0], dict) else {}
+        if status.get("err") is not None:
+            return {"verified": False, "error": "Transaction failed on Solana"}
+        confirmations = _solana_confirmations(status)
         slot = tx_data.get("slot", 0)
         from_addr = ""
         if account_keys:
@@ -660,6 +724,17 @@ def _verify_solana_transaction(
                     "confirmations": confirmations,
                     "error": f"Awaiting confirmations ({confirmations}/{MIN_CONFIRMATIONS})",
                 }
+            # The fee payer can sponsor somebody else's token transfer. The claim
+            # must instead be signed by an actual debited owner who signed the tx.
+            signers = {a.get("pubkey") for a in account_keys
+                       if isinstance(a, dict) and a.get("signer") is True}
+            owners = {a.get("owner") for a in meta.get("preTokenBalances", [])
+                      if a.get("mint") == mint and a.get("owner") in signers}
+            payers = [owner for owner in owners
+                      if _solana_token_balance_delta(meta, owner, mint) <= -min_amount]
+            if len(payers) != 1:
+                return {"verified": False, "error": "Cannot identify a single signed token payer"}
+            from_addr = payers[0]
             return {
                 "verified": True,
                 "confirmations": confirmations,
@@ -707,6 +782,22 @@ def _verify_solana_transaction(
                     f"Insufficient SOL. Expected ≥{expected_amount}, got {amount_sol} SOL"
                 ),
             }
+
+        # The first account is the transaction fee payer, not necessarily the
+        # wallet that funded this transfer. Bind the claim to the one signed
+        # account whose balance actually decreased by at least the quoted amount.
+        signed_accounts = []
+        for index, acct in enumerate(account_keys):
+            if not isinstance(acct, dict) or not acct.get("signer"):
+                continue
+            if index >= len(pre_balances) or index >= len(post_balances):
+                continue
+            delta_sol = (int(post_balances[index]) - int(pre_balances[index])) / 1_000_000_000
+            if delta_sol <= -min_amount:
+                signed_accounts.append(acct.get("pubkey", ""))
+        if len(signed_accounts) != 1:
+            return {"verified": False, "error": "Cannot identify a single signed SOL payer"}
+        from_addr = signed_accounts[0]
 
         if not _confirmations_sufficient(confirmations):
             return {
@@ -837,6 +928,52 @@ async def payment_status(payment_id: str, customer: dict = Depends(require_custo
     }
 
 
+@router.get("/proof/{payment_id}")
+async def payment_proof(payment_id: str, tx_hash: str = Query(..., max_length=128),
+                        customer: dict = Depends(require_customer)):
+    payment = _pending_payments.get(payment_id)
+    if not payment:
+        raise HTTPException(status_code=404, detail="Payment not found")
+    if not payment.get("customer_id") or payment["customer_id"] != customer.get("sub"):
+        raise HTTPException(status_code=403, detail="Payment does not belong to this customer")
+    if not payment.get("wallet_address"):
+        raise HTTPException(status_code=409, detail="Legacy payment lacks a recipient quote; contact support")
+    if not payment.get("site"):
+        # Pin the site the message names, so confirm rebuilds exactly what was signed.
+        payment["site"] = resolve_public_site_url()
+        _persist_pending_payments()
+    try:
+        return {"message": claim_message(payment, tx_hash), "chain": payment["chain"]}
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+def _hold_for_review(payment: dict, tx_hash: str, payer: str, reason: str) -> dict:
+    """Keep a paid-but-unproven claim where an operator can find and release it.
+
+    Some buyers cannot sign at all: an exchange withdrawal, or a router contract as
+    the token sender. Refusing them with no record left them paid and stranded.
+    Returns the refusal detail, which tells the buyer exactly what to do next.
+    """
+    payment["claim_review"] = {
+        "tx_hash": tx_hash, "payer": payer, "reason": reason, "requested_at": time.time(),
+    }
+    _pending_payments[payment["payment_id"]] = payment
+    _persist_pending_payments()
+    who = f"the wallet that sent it ({payer})" if payer else "the wallet that sent it"
+    return {
+        "message": "Sign the checkout ownership message with the paying wallet",
+        "payer": payer,
+        "recovery": (
+            f"Sign with {who}; smart contract wallets are supported. If that wallet "
+            f"cannot sign messages (for example an exchange withdrawal), contact support "
+            f"with payment {payment['payment_id']} and transaction {tx_hash}. Your "
+            "transfer has not been used, and an operator can verify it and release "
+            "your license."
+        ),
+    }
+
+
 @router.post("/confirm/{payment_id}")
 async def confirm_payment(
     payment_id: str,
@@ -851,7 +988,22 @@ async def confirm_payment(
     - Verify the recipient address matches the fixed address
     - Verify the transferred amount meets or exceeds the expected amount
     - Verify the transaction receipt status is 1 (success)
+    - Verify the payer signed the claim (EIP-191, or EIP-1271 for a contract wallet)
     """
+    return await _confirm_payment(payment_id, body.tx_hash, body.payer_signature,
+                                  customer, test_confirmations)
+
+
+async def _confirm_payment(
+    payment_id: str,
+    tx_hash: str,
+    payer_signature: str,
+    customer: dict,
+    test_confirmations: Optional[int],
+    operator: Optional[dict] = None,
+):
+    """Verify, claim and fulfil one checkout. ``operator`` replaces the payer signature
+    with an admin's review; every other check (quote, chain, single use) still applies."""
     from core.crypto_config import crypto_enabled
 
     if not crypto_enabled():
@@ -859,7 +1011,7 @@ async def confirm_payment(
             status_code=503,
             detail="Crypto payments are disabled (AIFACTORY_CRYPTO_ENABLED=0).",
         )
-    tx_hash = body.tx_hash.strip()
+    tx_hash = tx_hash.strip()
     if not tx_hash:
         raise HTTPException(status_code=400, detail="Transaction hash is required")
 
@@ -867,8 +1019,15 @@ async def confirm_payment(
     if not payment:
         raise HTTPException(status_code=404, detail="Payment not found")
 
-    if payment.get("customer_id") and payment["customer_id"] != customer.get("sub"):
+    if not payment.get("customer_id") or payment["customer_id"] != customer.get("sub"):
         raise HTTPException(status_code=403, detail="Payment does not belong to this customer")
+    try:
+        tx_hash = checkout_tx_hash(payment["chain"], tx_hash)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    use_stub = test_confirmations is not None and payment_verify_stub_enabled()
+    if not use_stub and operator is None and not payer_signature:
+        raise HTTPException(status_code=400, detail=_hold_for_review(payment, tx_hash, "", "no_signature"))
 
     lock = _confirm_locks.setdefault(payment_id, asyncio.Lock())
     async with lock:
@@ -935,13 +1094,15 @@ async def confirm_payment(
                 ),
             )
         # The recipient must be a real, configured wallet even on the verify path (F1).
-        expected_recipient = _ensure_recipient_configured(chain, _get_address_for_chain(chain))
+        expected_recipient = _ensure_recipient_configured(
+            chain, payment.get("wallet_address") or _get_address_for_chain(chain))
+        payment.setdefault("wallet_address", expected_recipient)
 
         # Normalise tx hash (EVM chains use 0x prefix, Solana uses base58)
         if chain == "solana":
             tx_hash_clean = tx_hash
         else:
-            tx_hash_clean = tx_hash if tx_hash.startswith("0x") else f"0x{tx_hash}"
+            tx_hash_clean = tx_hash
 
         existing_order = commerce.get_order_by_tx_hash(tx_hash_clean)
         if existing_order:
@@ -991,7 +1152,7 @@ async def confirm_payment(
                 )
 
         # ── On-chain verification ────────────────────────────────────────────
-        if test_confirmations is not None and payment_verify_stub_enabled():
+        if use_stub:
             result = _stub_verify_result(test_confirmations)
         elif chain == "solana":
             result = _verify_solana_transaction(
@@ -1048,6 +1209,40 @@ async def confirm_payment(
                 },
             )
 
+        payer = str(result.get("from") or "")
+        if operator is None and not use_stub and not verify_claim(
+                payment, tx_hash_clean, payer_signature, payer,
+                contract_check=lambda who, digest, sig: _contract_wallet_accepts(chain, who, digest, sig)):
+            payment["status"] = prior_status
+            raise HTTPException(status_code=403, detail={
+                **_hold_for_review(payment, tx_hash_clean, payer, "signature_refused"),
+                "message": "Payer signature does not authorize this checkout",
+            })
+
+        # One transfer, one purchase, across every door: a transfer that already funded
+        # a channel or paid an invoke verifies here just as well, so claim it in the
+        # registry those doors use before creating anything.
+        try:
+            transfer = claim_transfer(chain=chain, tx_hash=tx_hash_clean, door=DOOR_CHECKOUT,
+                                      claim_id=payment_id, amount_usd=amount, orders=commerce)
+        except Exception:
+            # An unreadable claim store must refuse, not leave the quote stuck "confirming".
+            logger.exception("Transfer claim failed for payment %s", payment_id)
+            transfer = {"ok": False, "error": "deposit_registry_unavailable"}
+        if not transfer.get("ok"):
+            unavailable = transfer.get("error") == "deposit_registry_unavailable"
+            payment["status"] = prior_status if unavailable else "pending"
+            _pending_payments[payment_id] = payment
+            _persist_pending_payments()
+            if unavailable:
+                raise HTTPException(status_code=503, detail=(
+                    "Payment claims are temporarily unavailable; your transfer has not been "
+                    "used. Try again shortly."))
+            raise HTTPException(status_code=409, detail={
+                "message": "Transaction already used to pay for something else",
+                "used_at": (transfer.get("claim") or {}).get("stack"),
+            })
+
         # ── Mark confirmed ───────────────────────────────────────────────────
         payment["status"] = "confirmed"
         payment["tx_hash"] = tx_hash_clean
@@ -1070,6 +1265,7 @@ async def confirm_payment(
                 referral_source=payment.get("referral_source"),
             )
         except TxHashAlreadyUsedError as exc:
+            release_transfer(chain=chain, tx_hash=tx_hash_clean, door=DOOR_CHECKOUT, claim_id=payment_id)
             payment["status"] = "pending"
             _pending_payments[payment_id] = payment
             _persist_pending_payments()
@@ -1084,6 +1280,8 @@ async def confirm_payment(
             # Status was already flipped to "confirmed" above. Any failure to create
             # the order must put it back, or the payment is stranded: confirmed with
             # no order and no licence, and no retry path that reaches this branch.
+            # Nothing was delivered, so the transfer is given back as well.
+            release_transfer(chain=chain, tx_hash=tx_hash_clean, door=DOOR_CHECKOUT, claim_id=payment_id)
             payment["status"] = "pending"
             _pending_payments[payment_id] = payment
             _persist_pending_payments()
@@ -1109,6 +1307,9 @@ async def confirm_payment(
             f"Payment {payment_id} confirmed via on-chain: "
             f"tx={tx_hash_clean}, confirmations={result.get('confirmations', 0)}"
         )
+        if operator is not None:
+            logger.warning("Payment %s released by operator %s without a payer signature (tx %s, payer %s)",
+                           payment_id, operator.get("sub") or operator.get("username"), tx_hash_clean, payer)
 
         return {
             "status": "confirmed",
@@ -1120,6 +1321,44 @@ async def confirm_payment(
             "message": "Payment verified on-chain! Your license is now active.",
         }
 
+
+# ── Operator review: paid buyers who cannot sign ─────────────────────────────
+# An exchange withdrawal or a router contract cannot sign the ownership message, so
+# the buyer's quote is held (see _hold_for_review) and an admin releases it here after
+# checking the buyer's evidence out of band. The release goes through the same
+# confirm path: the quote, recipient, amount, confirmations and single-use claim are
+# all re-checked on chain; only the payer signature is replaced by the admin's word.
+
+
+def _require_payment_admin(admin: dict = Depends(require_admin_with_rbac)) -> dict:
+    """Admin+ only: a release hands out a paid license on the operator's judgement."""
+    if normalize_role(admin.get("role")) not in (AdminRole.ADMIN, AdminRole.SUPER_ADMIN):
+        raise HTTPException(status_code=403, detail="admin role required to release payment claims")
+    return admin
+
+
+@router.get("/admin/claims")
+async def list_claim_reviews(admin: dict = Depends(_require_payment_admin)):
+    """Quotes whose buyer paid but could not prove it with a signature."""
+    claims = [
+        {key: p.get(key) for key in ("payment_id", "customer_id", "customer_email", "product_id",
+                                     "amount", "currency", "chain", "wallet_address", "claim_review")}
+        for p in _pending_payments.values()
+        if p.get("claim_review") and p.get("status") != "confirmed"
+    ]
+    claims.sort(key=lambda c: c["claim_review"].get("requested_at") or 0)
+    return {"claims": claims, "count": len(claims)}
+
+
+@router.post("/admin/claims/{payment_id}/approve")
+async def approve_claim_review(payment_id: str, body: ConfirmPaymentRequest,
+                               admin: dict = Depends(_require_payment_admin)):
+    """Release a held quote against ``body.tx_hash`` after reviewing the buyer's evidence."""
+    payment = _pending_payments.get(payment_id)
+    if not payment or not payment.get("claim_review"):
+        raise HTTPException(status_code=404, detail="No held claim for this payment")
+    return await _confirm_payment(payment_id, body.tx_hash, "", {"sub": payment.get("customer_id")},
+                                  None, operator=admin)
 
 
 @router.get("/chains")

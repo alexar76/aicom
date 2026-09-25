@@ -43,13 +43,16 @@ python3 "$GF" --dest cite-desks/emberline/frontend/public \
 
 echo
 echo "=== static sites (fonts beside the page, relative href) ==="
+# Only directories a web server serves as-is. A page an APP serves is not one: the hub's
+# landing got a copy beside terminal-home.html that no route served (404 on every hub); it
+# links the bundle the hub mounts, aimarket_hub/assets/fonts, as assets/fonts/fonts.css.
+#
 # Grouped by directory: pages sharing a directory share one fonts.css, so a directory with
 # two pages asking for different weights gets the union rather than one overwriting the other.
 for dir in \
   aicom-landing/public \
   aicom-landing/docs/examples \
   aimarket-bridges/docs \
-  aimarket-hub \
   aimarket-playground/docs/landing \
   aimarket-widget \
   atlas/atlas/_static \

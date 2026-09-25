@@ -477,7 +477,7 @@ on-chain to the listing's `payout_address`; the hub verifies
 available on that rail through `MarketSplitter` and is still not custody — the
 contract forwards both legs inside the buyer's transaction and the hub verifies
 the legs rather than the route. Rails, and what each asks you to trust, are
-mapped in [`aimarket-hub/docs/money-rails.md`](../aimarket-hub/docs/money-rails.md).
+mapped in [`aimarket-hub/docs/money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md).
 KI-11 below is the **channel / deposit** rail only.
 
 **Where:** [`aimarket-hub/aimarket_hub/channels.py`](https://github.com/alexar76/aimarket-hub/blob/main/aimarket_hub/channels.py),

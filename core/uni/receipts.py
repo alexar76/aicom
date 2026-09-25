@@ -206,6 +206,32 @@ def get_receipt_by_idempotency_key(idempotency_key: str, *, conn: Any = None) ->
         return _query(c)
 
 
+def find_topup_receipt(tx_hash: str) -> dict[str, Any] | None:
+    """The UNI top-up already credited from this transfer, under any spelling of its hash.
+
+    Top-ups are keyed ``topup:<tx>`` with the hash as the caller typed it, and an EVM hash
+    is case-insensitive, so an exact lookup misses ``0xABC…`` when ``0xabc…`` was credited.
+    Other doors (checkout, channels, invoke) ask this before spending a transfer UNI took
+    before they all shared one claim.
+    """
+    tx = (tx_hash or "").strip()
+    if not tx:
+        return None
+    key = f"topup:{tx}".lower()
+    placeholder = "%s" if uni_db_backend() == "postgres" else "?"
+    with uni_connection() as c:
+        row = c.execute(
+            f"SELECT payload_json FROM uni_receipts WHERE lower(idempotency_key) = {placeholder} LIMIT 1",
+            (key,),
+        ).fetchone()
+    if not row:
+        return None
+    try:
+        return json.loads(row_to_dict(row).get("payload_json") or "{}")
+    except json.JSONDecodeError:
+        return {}
+
+
 def list_receipts_for_wallet(
     wallet_id: str,
     *,

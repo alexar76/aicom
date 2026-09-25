@@ -361,13 +361,22 @@ def probe_peer(peer: dict[str, Any], timeout: float = LIVENESS_TIMEOUT,
 
 
 def observe(hub: str, timeout: float,
-            capabilities: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+            capabilities: list[dict[str, Any]] | None = None,
+            allow: Any = None) -> dict[str, Any]:
+    """``allow(url) -> bool``, when given, narrows the run to the providers and peers it
+    admits — BEFORE anything is sent to them. The ecosystem alerter watches one ecosystem
+    only, and a probe it would then throw away is still a request to somebody else's
+    service every hour (they saw them in their logs as a stream of 404s)."""
     _, manifest = _get(f"{hub}/.well-known/ai-market.json", timeout)
     _, mcp_info = _get(f"{hub}/mcp", timeout)
 
     expected_providers: set = set()
     if capabilities is None:
         _, prices = _get(f"{hub}/ai-market/v2/prices", timeout)
+        if allow is not None and isinstance(prices, dict):
+            prices = dict(prices, prices=[
+                row for row in prices.get("prices") or []
+                if isinstance(row, dict) and allow(str(row.get("source_hub") or "local"))])
         # The denominator, captured before any truncation: every provider that advertises a
         # price. evaluate() fails the run if one of them ends up unprobed.
         expected_providers = priced_providers(prices)
@@ -405,6 +414,8 @@ def observe(hub: str, timeout: float,
     peers = []
     for entry in raw_peers:
         if not isinstance(entry, dict) or not entry.get("url"):
+            continue
+        if allow is not None and not allow(str(entry["url"])):
             continue
         entry = dict(entry, sells=str(entry["url"]).rstrip("/") in selling)
         peers.append(probe_peer(entry))

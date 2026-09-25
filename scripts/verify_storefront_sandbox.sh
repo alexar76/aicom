@@ -17,6 +17,8 @@ if ! docker compose version &>/dev/null; then
 fi
 
 echo "== ${DC} up (use 'docker-compose build app' first if the image is stale) =="
+# The Factory's cut of .env, fresh: compose refuses to start `app` without it.
+python3 scripts/security/service_env.py stack .env deploy/env
 ${DC} up -d app
 
 echo "== wait for API health =="

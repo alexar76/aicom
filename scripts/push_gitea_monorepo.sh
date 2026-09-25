@@ -120,6 +120,35 @@ if bad:
 # Default: scan only the unpushed range (remote..HEAD). If Gitea is unreachable,
 # fall back to HEAD tip only — never scan all of main (old history may predate
 # the sanitizer). Override: SKIP_TRAILER_GATE=1
+# The public GitHub mirror (alexar76/aicom) is satellite-stripped, so a relative
+# link from docs/ into aimarket-hub/, hestia/ or any other satellite 404s for
+# everyone who reads the page there. It is invisible from inside the monorepo,
+# where the path resolves fine — which is why the flagship money-rail page shipped
+# in five languages with seven dead links in each and nobody noticed for a week.
+#
+# The audit is local and fast; the fixer it names rewrites the links to the
+# satellite repo URL. Override: SKIP_LINK_GATE=1
+_assert_satellite_links_resolve() {
+  if [[ "${SKIP_LINK_GATE:-0}" == "1" ]]; then
+    echo "  ⚠️  SKIP_LINK_GATE=1 — not auditing satellite links in docs/"
+    return 0
+  fi
+  if [[ ! -x "$ROOT/scripts/verify_whitepaper_links.sh" ]]; then
+    echo "  ⚠️  link audit missing — skipping"
+    return 0
+  fi
+  if bash "$ROOT/scripts/verify_whitepaper_links.sh" >/tmp/aicom-link-audit.log 2>&1; then
+    echo "  ✓ satellite link gate clean"
+    return 0
+  fi
+  echo "  ✗ docs link to satellites through paths the public mirror does not have:" >&2
+  grep -E "^FAIL" /tmp/aicom-link-audit.log >&2 || tail -20 /tmp/aicom-link-audit.log >&2
+  echo "" >&2
+  echo "  Fix: python3 scripts/fix_whitepaper_satellite_links.py" >&2
+  echo "  (or SKIP_LINK_GATE=1 to push anyway)" >&2
+  return 1
+}
+
 _assert_clean_commit_trailers() {
   local url="$1"
   if [[ "${SKIP_TRAILER_GATE:-0}" == "1" ]]; then
@@ -216,6 +245,7 @@ _push_direct() {
   fi
   _assert_alexar76_author "$url"
   _assert_clean_commit_trailers "$url"
+  _assert_satellite_links_resolve
   git_t push "$url" "${BRANCH}:${BRANCH}"
   remote="$(_remote_head "$url" || true)"
   if [[ "$remote" != "$local_head" ]]; then

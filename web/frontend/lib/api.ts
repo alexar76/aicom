@@ -104,6 +104,27 @@ export class ApiRequestError extends Error {
   }
 }
 
+/**
+ * Whether a checkout ownership signature may be reused after a failed confirm.
+ *
+ * Only "awaiting confirmations" leaves the signature unjudged (the server checks it
+ * last). Any other failure may be the signature itself, e.g. signed with the wrong
+ * account, and resending it would fail the same way on every "Try Again".
+ */
+export function keepPaymentProofAfterError(err: unknown): boolean {
+  return (
+    err instanceof ApiRequestError &&
+    err.status === 409 &&
+    err.detailPayload?.status === 'pending_confirmation'
+  );
+}
+
+/** The server's next step for a buyer whose claim it could not accept, if it gave one. */
+export function paymentRecoveryHint(err: unknown): string {
+  const recovery = err instanceof ApiRequestError ? err.detailPayload?.recovery : undefined;
+  return typeof recovery === 'string' ? recovery : '';
+}
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -999,7 +1020,7 @@ class ApiClient {
   async confirmPayment(
     paymentId: string,
     txHash: string,
-    opts?: { testConfirmations?: number },
+    opts?: { testConfirmations?: number; payerSignature?: string },
   ): Promise<PaymentStatus> {
     const q =
       opts?.testConfirmations !== undefined
@@ -1007,8 +1028,12 @@ class ApiClient {
         : '';
     return this.request(`/payment/confirm/${paymentId}${q}`, {
       method: 'POST',
-      body: JSON.stringify({ tx_hash: txHash }),
+      body: JSON.stringify({ tx_hash: txHash, payer_signature: opts?.payerSignature || '' }),
     });
+  }
+
+  async getPaymentProof(paymentId: string, txHash: string): Promise<{ message: string; chain: string }> {
+    return this.request(`/payment/proof/${encodeURIComponent(paymentId)}?tx_hash=${encodeURIComponent(txHash)}`);
   }
 
   async getSupportedChains(): Promise<any[]> {

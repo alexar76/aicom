@@ -132,12 +132,12 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 
 | SKU | 图层 | 示例设备 | 诚实边界 |
 |---|---|---|---|
-| gaia.weather.read@v1 | weather (天气) | om-wx-01, nws-01, cwop-01, metno-01 +287 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.weather.read@v1 | weather (天气) | om-wx-01, nws-01, cwop-01, metno-01 +267 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.air.read@v1 | air (空气质量) | om-aq-01, osm-01, sta-01, sc-01 +122 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.tide.read@v1 | tide (潮汐) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.grid.read@v1 | grid (电网碳强度) | uk-grid-01, eia-01, rte-grid-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.quake.read@v1 | quake (地震) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.river.read@v1 | river (河流) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +165 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.river.read@v1 | river (河流) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.marine.read@v1 | marine (海洋) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.ghg.read@v1 | ghg (温室气体) | icos-htm-01, icos-zsf-01, icos-lin-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.fire.read@v1 | fire (野火) | firms-fire-01 | 须注明 NASA FIRMS；不是火场周界 |
@@ -251,7 +251,7 @@ ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (49 components).
+Run: python3 scripts/sync_knowledge_base.py --write (50 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -285,7 +285,8 @@ Run: python3 scripts/sync_knowledge_base.py --write (49 components).
 - gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
 - helios: HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve. · https://alexar76.github.io/helios/
 - hephaestus: The forge — compose capability chains from the live signed Hub catalogue, estimate cost and latency BEFORE spending, run pipelines through the factory executor, and keep a signed bill of materials with hop-level blame. Studio UI is hub-served; core library is framework-free. · https://modelmarket.dev/studio
-- hestia: HESTIA — 炉灶：在运营者机器上隔离托管 AIMarket 能力提供方。不是 Hub 目录、不是任务板、不是 Factory。智能体只有在签名部署到本机之后才会出现。 · https://hestia.modelmarket.dev · port 9480
+- hestia: HESTIA — 托管运行时：在运营者机器上隔离运行 AIMarket 能力提供方。不是 Hub 目录、不是任务板、不是 Factory。智能体只有在签名部署到本机之后才会出现。 · https://hestia.modelmarket.dev · port 9480
+- histor: HISTOR — MCP 工具定义的公开透明日志：读取官方 MCP 注册表中远程端点公布的内容（从不调用工具），签名为 MTL/1 标签，追加到 RFC 9162 默克尔树，并通过 /check 回答客户端收到的内容是否与观测一致。从不宣称任何服务器安全。 · https://alexar76.github.io/histor/
 - linkedin-profile-coach (repo linked-in-profile-coach): LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support. · https://alexar76.github.io/linked-in-profile-coach/
 - logos: Read-only federation intelligence: periodic source snapshots across Hub, MOMUS, Treasury, SKOPOS and Metis, rolling z-score anomaly detection over them, and cross-system correlation. It observes and explains; it never acts on what it finds. · https://logos.modelmarket.dev · port 9460
 - lottery: AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner. · https://lottery.modelmarket.dev/

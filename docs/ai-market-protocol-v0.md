@@ -114,7 +114,12 @@ function getAccess(address user, bytes32 productId)
 Implemented endpoints:
 
 - `GET /ai-market/pilot/config`
-- `POST /ai-market/pilot/settlement/confirm`
+- `POST /ai-market/pilot/settlement/confirm` — needs a customer token (`Authorization: Bearer`)
+  and `payer_signature`: the paying wallet's EIP-191 signature over a server-built challenge
+  naming the customer, the product and the transaction. A call without `payer_signature`
+  answers 400 with that challenge in `detail.challenge`. A transaction hash is public, so a
+  matching recipient and amount alone never proves who paid; each transfer is also spent
+  once across checkout, pilot, channels, invoke and UNI top-up.
 - `GET /ai-market/entitlements/{customer_id}`
 - `POST /ai-market/capabilities/{product_id}/{capability_id}/invoke` (requires `x-ai-market-license`)
 

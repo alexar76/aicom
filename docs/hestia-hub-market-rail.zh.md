@@ -4,7 +4,7 @@
 
 术语见 [`localization-glossary.md`](localization-glossary.md)。产品名（`Hub`、`HESTIA`、`USDC`、`Base`、`x402`、`EIP-3009`）和环境变量保持拉丁文。正文写 **主机 (HESTIA)** 和 **智能体**。
 
-Hub 三条轨道总图：[`aimarket-hub/docs/money-rails.md`](../aimarket-hub/docs/money-rails.md)。本页是跑在 HESTIA、经 Hub 目录出售的智能体的 **线上生产方案**：谁签发 `402`、USDC 去向、每一把环境键、哪些组合合法。
+Hub 三条轨道总图：[`aimarket-hub/docs/money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md)。本页是跑在 HESTIA、经 Hub 目录出售的智能体的 **线上生产方案**：谁签发 `402`、USDC 去向、每一把环境键、哪些组合合法。
 
 **2026-09-21** 在 `https://modelmarket.dev` 与 `https://hestia.modelmarket.dev` 实测。
 
@@ -286,10 +286,10 @@ Hub 不需要卖家私钥。主机也不需要。只有买家签 `transferWithAu
 
 | 轨道 | 谁拿着钱 | 文档 |
 |---|---|---|
-| 市场（本页） | 除买家与卖家外无人 | 此处 + [`money-rails.md`](../aimarket-hub/docs/money-rails.md) §1 |
-| 积分 | Hub 运营方（预付负债） | [`money-rails.md`](../aimarket-hub/docs/money-rails.md) §2 · `AIMARKET_CREDITS_*` |
+| 市场（本页） | 除买家与卖家外无人 | 此处 + [`money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md) §1 |
+| 积分 | Hub 运营方（预付负债） | [`money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md) §2 · `AIMARKET_CREDITS_*` |
 | 通道 / 托管 | 默认是运营方 | [KI-11](known-issues.md) — **未改** |
-| ATLAS 信用账户 | ATLAS 运营方 | [`atlas/docs/CREDIT-ACCOUNTS.md`](../atlas/docs/CREDIT-ACCOUNTS.md) |
+| ATLAS 信用账户 | ATLAS 运营方 | [`atlas/docs/CREDIT-ACCOUNTS.md`](https://github.com/alexar76/atlas/blob/main/docs/CREDIT-ACCOUNTS.md) |
 
 不要把 `AIMARKET_ESCROW_HUB_ADDRESS` 指到随后会全额退款的通道账本同一钱包（[KI-11](known-issues.md)）。该互锁与直付卖家正交。
 
@@ -319,10 +319,10 @@ Hub 不需要卖家私钥。主机也不需要。只有买家签 `transferWithAu
 
 ## 9. 相关
 
-- Hub 轨道总图 — [`aimarket-hub/docs/money-rails.md`](../aimarket-hub/docs/money-rails.md)
+- Hub 轨道总图 — [`aimarket-hub/docs/money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md)
 - 联邦敲门 — [`join-the-federation.zh.md`](join-the-federation.zh.md)
 - Hub 付款 env — [`deploy/hub-payment.env.example`](../deploy/hub-payment.env.example)
-- HESTIA 配置 — [`hestia/.env.example`](../hestia/.env.example) · [`hestia/docs/user-guide.zh.md`](../hestia/docs/user-guide.zh.md)
-- 运营者工坊（`/ui/`，90 分钟）— [`hestia/docs/workshop.zh.md`](../hestia/docs/workshop.zh.md)
+- HESTIA 配置 — [`hestia/.env.example`](https://github.com/alexar76/hestia/blob/main/.env.example) · [`hestia/docs/user-guide.zh.md`](https://github.com/alexar76/hestia/blob/main/docs/user-guide.zh.md)
+- 运营者工坊（`/ui/`，90 分钟）— [`hestia/docs/workshop.zh.md`](https://github.com/alexar76/hestia/blob/main/docs/workshop.zh.md)
 - 架构中的结算 — [`ecosystem-architecture.md`](ecosystem-architecture.md) §5.1
 - 术语表 — [`localization-glossary.md`](localization-glossary.md)

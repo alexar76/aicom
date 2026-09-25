@@ -88,6 +88,8 @@ ensure_env_for_stack() {
     echo -e "${RED}GRAFANA_ADMIN_PASSWORD is required. Run: python3 scripts/fill_production_env.py --env-file .env${NC}" >&2
     exit 2
   fi
+  # Each service's cut of .env, fresh (compose refuses to start without these files).
+  python3 ./scripts/security/service_env.py stack .env deploy/env
 }
 
 # ── Help ────────────────────────────────────────────────────────────────────
@@ -106,6 +108,11 @@ if [[ "${1:-}" == "--help" ]]; then
     echo "  Prometheus: http://localhost:\${AICOM_PORT_PROMETHEUS:-9090}"
     echo "  Grafana:    http://localhost:\${AICOM_PORT_GRAFANA:-9082}"
     exit 0
+fi
+
+# compose loads every env_file for down/logs as well.
+if [[ -f .env && ( "${1:-}" == --down || "${1:-}" == --down-volumes || "${1:-}" == --logs ) ]]; then
+    python3 ./scripts/security/service_env.py stack .env deploy/env >/dev/null
 fi
 
 # ── Down ────────────────────────────────────────────────────────────────────

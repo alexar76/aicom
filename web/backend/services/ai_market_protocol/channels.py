@@ -37,6 +37,7 @@ from web.backend.services.ai_market_protocol.on_chain import (
 from web.backend.services.ai_market_protocol.paths import channels_path
 from web.backend.services.ai_market_protocol.signing import sign_payload
 from web.backend.services.commerce import CommerceService
+from web.backend.services.payment_claim import DOOR_INVOKE, canonical_tx_hash
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -185,9 +186,79 @@ def _load_tx_claims() -> dict[str, Any]:
     return _load_json_store(payment_tx_path(), "payment-tx")
 
 
+def _find_tx_claim(claims: dict[str, Any], tx_hash: str) -> tuple[str | None, dict[str, Any] | None]:
+    """The (stored key, claim) for this transfer under any spelling of its hash.
+
+    New claims are keyed canonically; the scan finds rows written before that, when
+    ``0xABC…`` and ``0xabc…`` were separate keys and each could be spent.
+    """
+    tx = canonical_tx_hash(tx_hash)
+    if not tx:
+        return None, None
+    if tx in claims:
+        return tx, claims[tx]
+    for key, claim in claims.items():
+        if canonical_tx_hash(key) == tx:
+            return key, claim
+    return None, None
+
+
 def payment_tx_claim(tx_hash: str) -> dict[str, Any] | None:
     """The existing claim on ``tx_hash``, if this hash was already spent."""
-    return _load_tx_claims().get((tx_hash or "").strip())
+    return _find_tx_claim(_load_tx_claims(), tx_hash)[1]
+
+
+# ── The one claim every door takes ───────────────────────────────────────────
+# A checkout order, a pilot license, a channel deposit and an x402 invoke all verify
+# against the same platform wallet, so one transfer satisfies all of them. Each door
+# used to keep only its own record, which let one $5 transfer open a $5 channel AND
+# buy a license. They now all take the shared single-use deposit claim (an O_EXCL file
+# per canonical chain+tx, the one aimarket-hub's channel door takes as well), and also
+# consult the per-door stores written before they shared it, so old spends stay spent.
+
+def claim_transfer(
+    *,
+    chain: str,
+    tx_hash: str,
+    door: str,
+    claim_id: str,
+    amount_usd: float = 0.0,
+    orders: Any = None,
+) -> dict[str, Any]:
+    """Spend one inbound transfer at ``door`` exactly once, system-wide. Fails closed.
+
+    ``claim_id`` names what the transfer is spent on (a payment id, a channel id). A
+    claim already held by the same door and ``claim_id`` is handed back as this
+    caller's: that is a retry after a crash between claiming and delivering, and
+    refusing it would lock a paid buyer out of their own order. ``orders`` is the
+    commerce store the caller writes to (defaults to this module's).
+
+    The caller MUST NOT deliver anything unless ``ok`` is True, and must
+    :func:`release_transfer` if it then fails to deliver.
+    """
+    tx = canonical_tx_hash(tx_hash)
+    if not tx:
+        return {"ok": False, "error": "tx_hash_required"}
+    got = claim_deposit(
+        chain=chain, tx_hash=tx, stack=door, claim_id=claim_id, amount_cents=_to_cents(amount_usd),
+    )
+    if not got.get("ok"):
+        if got.get("error") == "deposit_registry_unavailable":
+            return {"ok": False, "error": "deposit_registry_unavailable"}
+        held = got.get("claim") or {}
+        if held.get("stack") != door or held.get("claim_id") != claim_id:
+            return {"ok": False, "error": "tx_hash_already_used", "claim": held}
+    if _tx_hash_already_used(tx, orders=orders):
+        release_transfer(chain=chain, tx_hash=tx, door=door, claim_id=claim_id)
+        return {"ok": False, "error": "tx_hash_already_used"}
+    return {"ok": True, "tx_hash": tx}
+
+
+def release_transfer(*, chain: str, tx_hash: str, door: str, claim_id: str) -> bool:
+    """Give a transfer back when nothing was delivered for it (only its holder can)."""
+    return release_deposit_claim(
+        chain=chain, tx_hash=canonical_tx_hash(tx_hash), stack=door, claim_id=claim_id,
+    )
 
 
 def claim_payment_tx(
@@ -206,18 +277,23 @@ def claim_payment_tx(
     Dev placeholder hashes are not registered (they intentionally have no chain
     behind them and are reused freely in local flows).
     """
-    tx = (tx_hash or "").strip()
+    tx = canonical_tx_hash(tx_hash)
     if not tx:
         return {"ok": False, "error": "tx_hash_required"}
     if is_demo_tx(tx):
         return {"ok": True, "demo": True, "claim": None}
+    claim_id = f"invoke-{uuid.uuid4().hex[:12]}"
+    shared = claim_transfer(
+        chain=chain, tx_hash=tx, door=DOOR_INVOKE, claim_id=claim_id, amount_usd=amount_usd,
+    )
+    if not shared.get("ok"):
+        return {"ok": False, "error": shared.get("error"), "claim": payment_tx_claim(tx)}
     with channel_store_lock():
         claims = _load_tx_claims()
-        existing = claims.get(tx)
-        if existing:
+        _, existing = _find_tx_claim(claims, tx)
+        if existing or _tx_hash_already_used(tx):
+            release_transfer(chain=chain, tx_hash=tx, door=DOOR_INVOKE, claim_id=claim_id)
             return {"ok": False, "error": "tx_hash_already_used", "claim": existing}
-        if _tx_hash_already_used(tx):
-            return {"ok": False, "error": "tx_hash_already_used"}
         claim = {
             "tx_hash": tx,
             "chain": (chain or "").strip().lower(),
@@ -242,18 +318,18 @@ def mark_payment_tx_unfulfilled(*, tx_hash: str, reason: str) -> dict[str, Any]:
     like a fulfilled sale — paying it back is an operator action, this code never
     moves funds.
     """
-    tx = (tx_hash or "").strip()
+    tx = canonical_tx_hash(tx_hash)
     if not tx or is_demo_tx(tx):
         return {"ok": False, "error": "no_claim"}
     with channel_store_lock():
         claims = _load_tx_claims()
-        claim = claims.get(tx)
+        key, claim = _find_tx_claim(claims, tx)
         if not claim:
             return {"ok": False, "error": "no_claim"}
         claim["fulfilled"] = False
         claim["obligation_reason"] = reason
         claim["obligation_recorded_at"] = time.time()
-        claims[tx] = claim
+        claims[key] = claim
         _save_json_store(payment_tx_path(), claims)
     logger.warning(
         "on-chain payment %s (%s USD) delivered nothing (%s) — refund obligation to %s",
@@ -272,19 +348,38 @@ def list_unfulfilled_payments() -> list[dict[str, Any]]:
     return out
 
 
-def _tx_hash_already_used(tx_clean: str) -> bool:
-    if not tx_clean or is_demo_tx(tx_clean):
+def _tx_hash_already_used(tx_clean: str, *, orders: Any = None) -> bool:
+    # Compared canonically: web3 fetches every spelling of an EVM hash as the same
+    # transaction, so an exact-string match let each case variant be spent again.
+    tx = canonical_tx_hash(tx_clean)
+    if not tx or is_demo_tx(tx):
         return False
-    if _commerce.get_order_by_tx_hash(tx_clean):
+    if (orders or _commerce).get_order_by_tx_hash(tx):
         return True
-    if tx_clean in _load_tx_claims():
+    if _find_tx_claim(_load_tx_claims(), tx)[1] is not None:
         return True
     for ch in _load_channels().values():
-        if ch.get("open_tx_hash") == tx_clean:
+        if canonical_tx_hash(str(ch.get("open_tx_hash") or "")) == tx:
             return True
-        if ch.get("settle_tx_hash") == tx_clean:
+        if canonical_tx_hash(str(ch.get("settle_tx_hash") or "")) == tx:
             return True
-    return False
+    return _credited_as_uni_topup(tx)
+
+
+def _credited_as_uni_topup(tx: str) -> bool:
+    """Whether UNI already minted credit from this transfer before it took the shared claim.
+
+    UNI verifies against the same platform wallet. Best effort on purpose: a UNI store that
+    cannot be read must not stop checkout, and every UNI top-up since the shared claim is
+    refused by that claim regardless.
+    """
+    try:
+        from core.uni.config import uni_enabled
+        from core.uni.receipts import find_topup_receipt
+
+        return uni_enabled() and find_topup_receipt(tx) is not None
+    except Exception:  # noqa: BLE001
+        return False
 
 
 def open_channel(
@@ -340,7 +435,7 @@ def open_channel(
     else:
         if not (tx_hash or "").strip():
             return {"error": "tx_hash_required", "detail": "deposit transaction hash required"}
-        tx_clean = normalize_tx_hash(tx_hash, chain=chain)
+        tx_clean = canonical_tx_hash(normalize_tx_hash(tx_hash, chain=chain))
         if _tx_hash_already_used(tx_clean):
             return {"error": "tx_hash_already_used", "detail": "transaction hash already used"}
         verified = verify_tx_transfer(
@@ -429,9 +524,9 @@ def open_channel(
     # held across file I/O), and released below if the channel is not actually created.
     claimed = False
     if tx_clean and not is_demo_tx(tx_clean):
-        claim = claim_deposit(
-            chain=chain, tx_hash=tx_clean, stack=DEPOSIT_STACK_WEB_V1,
-            claim_id=ch_id, amount_cents=int(round(deposit_usd * 100)),
+        claim = claim_transfer(
+            chain=chain, tx_hash=tx_clean, door=DEPOSIT_STACK_WEB_V1,
+            claim_id=ch_id, amount_usd=deposit_usd,
         )
         if not claim.get("ok"):
             if claim.get("error") == "deposit_registry_unavailable":
@@ -445,14 +540,14 @@ def open_channel(
                 }
             return {
                 "error": "tx_hash_already_used",
-                "detail": "transaction hash already used to fund a channel",
+                "detail": "transaction hash already used to fund a channel, an order or an invoke",
             }
         claimed = True
 
     def _unclaim() -> None:
         if claimed:
-            release_deposit_claim(
-                chain=chain, tx_hash=tx_clean, stack=DEPOSIT_STACK_WEB_V1, claim_id=ch_id,
+            release_transfer(
+                chain=chain, tx_hash=tx_clean, door=DEPOSIT_STACK_WEB_V1, claim_id=ch_id,
             )
 
     with channel_store_lock():

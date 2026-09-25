@@ -231,6 +231,9 @@ class CreatePaymentRequest(BaseModel):
 
 class ConfirmPaymentRequest(BaseModel):
     tx_hash: str = Field(..., min_length=16, max_length=128)
+    # Room for a smart-wallet signature (EIP-1271 blob, possibly ERC-6492 wrapped),
+    # which runs to a few KB of hex; a 65-byte key signature is 132 characters.
+    payer_signature: str = Field(default="", max_length=16384)
 
     @field_validator("tx_hash")
     @classmethod
@@ -264,6 +267,8 @@ class AiMarketSettlementConfirmRequest(BaseModel):
     customer_id: Optional[str] = Field(None, max_length=80)
     customer_email: Optional[str] = Field(None, max_length=254)
     wallet_address: Optional[str] = Field(None, max_length=128)
+    # Signature by the paying wallet over the challenge the endpoint returns without it.
+    payer_signature: str = Field(default="", max_length=16384)
 
     @field_validator("product_id")
     @classmethod

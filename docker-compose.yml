@@ -101,11 +101,14 @@ services:
       - ./data:/app/data
       # Docker API: default DinD sidecar (docker-compose.dind.yml). Host socket only with
       # AIFACTORY_USE_HOST_DOCKER=1 + docker-compose.host-docker.yml (escape risk).
-    # Optional: LLM keys and other secrets in `.env` (chmod 600). Prefer file secrets:
+    # The Factory's cut of .env (LLM keys, prod gates, checkout keys), written by
+    # `scripts/security/service_env.py stack .env deploy/env`, which every launcher runs first.
+    # Required: a missing file used to start the Factory with AIFACTORY_PROD and every secret
+    # silently unset. Prefer file secrets for LLM keys:
     #   data/secrets/llm/<provider>_api_key  or  docker-compose.secrets.yml overlay.
     env_file:
-      - path: .env
-        required: false
+      - path: deploy/env/factory.env
+        required: true
     environment:
       # ═══════════════════════════════════════════════════════════════════
       #  Env-flag taxonomy (35+ AIFACTORY_* vars grouped by subsystem):
@@ -286,9 +289,10 @@ services:
       # - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
       # - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
       # - ./grafana/alerting:/etc/grafana/provisioning/alerting:ro
+    # GF_* settings kept in .env (SMTP, auth) and nothing else; written with factory.env.
     env_file:
-      - path: .env
-        required: false
+      - path: deploy/env/grafana.env
+        required: true
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       # Required — no default. ./scripts/fill_production_env.py appends GRAFANA_ADMIN_PASSWORD when missing.

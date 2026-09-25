@@ -55,8 +55,9 @@ def sanitize_message(text: str) -> str:
             continue
         if _CREATED_BY.match(line) or _REVIEWED_BY.match(line) or _ASSISTED_BY.match(line):
             continue
-        if _BLOCKED.search(line):
-            continue
+        # Do not strip ordinary prose: "_BLOCKED" matches English words like
+        # "cursor" (a saved log cursor) and would rewrite honest commit bodies,
+        # which the Gitea trailer gate then treats as dirty history.
         lines.append(line)
     out = "\n".join(lines).strip()
     return out + ("\n" if text.endswith("\n") else "")

@@ -1,3 +1,4 @@
+import { rememberSiteLocale } from '@/lib/siteLocale';
 import en from '../../language-packs/docs/en.json';
 import ru from '../../language-packs/docs/ru.json';
 import es from '../../language-packs/docs/es.json';
@@ -18,29 +19,18 @@ export function getDocsStrings(locale?: string | null): DocsStrings {
   return PACKS.en;
 }
 
-export function detectDocLocale(): DocLocale {
-  if (typeof window === 'undefined') {
-    const env = (process.env.NEXT_PUBLIC_MARKETING_LOCALE || '').toLowerCase();
-    if (env.startsWith('ru')) return 'ru';
-    if (env.startsWith('es')) return 'es';
-    if (env.startsWith('fr')) return 'fr';
-    if (env.startsWith('zh')) return 'zh';
-    return 'en';
-  }
+/** A choice saved in this browser (shared marketing_locale first, then docs-locale), or null. */
+export function detectStoredDocLocale(): DocLocale | null {
+  if (typeof window === 'undefined') return null;
   try {
-    const shared = localStorage.getItem('marketing_locale');
-    if (shared === 'ru' || shared === 'es' || shared === 'en' || shared === 'fr' || shared === 'zh') return shared;
-    const docs = localStorage.getItem('docs-locale');
-    if (docs === 'ru' || docs === 'es' || docs === 'en' || docs === 'fr' || docs === 'zh') return docs;
+    for (const key of ['marketing_locale', 'docs-locale']) {
+      const v = localStorage.getItem(key);
+      if (v === 'ru' || v === 'es' || v === 'en' || v === 'fr' || v === 'zh') return v;
+    }
   } catch {
     /* ignore */
   }
-  const nav = navigator.language.toLowerCase();
-  if (nav.startsWith('ru')) return 'ru';
-  if (nav.startsWith('es')) return 'es';
-  if (nav.startsWith('fr')) return 'fr';
-  if (nav.startsWith('zh')) return 'zh';
-  return 'en';
+  return null;
 }
 
 export function saveDocLocale(locale: DocLocale): void {
@@ -51,6 +41,7 @@ export function saveDocLocale(locale: DocLocale): void {
   } catch {
     /* ignore */
   }
+  rememberSiteLocale(locale);
   document.documentElement.lang = locale;
   window.dispatchEvent(new CustomEvent('marketing-locale-changed', { detail: locale }));
 }

@@ -79,6 +79,10 @@ done
 [[ -n "$BIND_ADDR" ]] || die "--bind needs an address (127.0.0.1 or 0.0.0.0)"
 
 # ── simple actions (no preflight, no secrets, no health gate) ───────────────
+# Each service's cut of .env (scripts/security/service_env.py): compose loads every
+# env_file even for logs/down, and refuses to start without them.
+write_service_env() { python3 scripts/security/service_env.py stack .env deploy/env >/dev/null; }
+if [[ "$ACTION" != "up" && -f .env ]]; then write_service_env; fi
 if [[ "$ACTION" == "logs" ]]; then
   exec "${COMPOSE[@]}" logs -f --tail=120
 fi
@@ -450,6 +454,8 @@ if [[ -f scripts/.mirror-forbidden-hosts ]]; then
   done < scripts/.mirror-forbidden-hosts
 fi
 PHONE_HOME=""
+# The resolved config must hold what an existing .env would hand each service.
+if [[ -f .env ]]; then write_service_env; fi
 if RESOLVED="$("${COMPOSE[@]}" config 2>/dev/null)"; then
   for _h in "${OUR_HOSTS[@]}"; do
     # -F: hosts are literals, and an IP's dots must not match any character.
@@ -760,6 +766,7 @@ bootstrap_themis_auditor_pubkey() {
   fi
   ok "THEMIS pubkey pinned for Hub admission"
 }
+write_service_env   # `compose build themis` below loads the project, env files included
 bootstrap_themis_auditor_pubkey
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -776,6 +783,7 @@ else
   step "Starting ~42 containers (reusing existing images)"
 fi
 say ""
+write_service_env   # again: the steps above may have added to .env
 "${COMPOSE[@]}" "${UP[@]}"
 
 # ══════════════════════════════════════════════════════════════════════════

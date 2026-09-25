@@ -44,3 +44,32 @@ def test_agent_install_is_curl_from_github_raw():
     assert "raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills/aimarket-hub-mcp/SKILL.md" in text
     assert "raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills/warden-mcp-firewall/SKILL.md" in text
     assert "cp /path/to/aicom/.cursor/skills" not in text
+
+
+def test_agent_install_docs_exist_in_all_five_supported_languages():
+    docs = {
+        "en": "README.md",
+        "ru": "README.ru.md",
+        "es": "README.es.md",
+        "fr": "README.fr.md",
+        "zh": "README.zh.md",
+    }
+    for lang, filename in docs.items():
+        text = (ROOT / "docs" / "agent-install" / filename).read_text(encoding="utf-8")
+        assert "aimarket-hub-mcp" in text, lang
+        assert "warden-mcp-firewall" in text, lang
+        assert "https://modelmarket.dev/mcp" in text, lang
+        assert "raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills" in text, lang
+
+
+def test_localized_hub_readmes_link_to_their_install_guide_once():
+    docs = {
+        "ru": "README.ru.md",
+        "es": "README.es.md",
+        "fr": "README.fr.md",
+        "zh": "README.zh.md",
+    }
+    for lang, filename in docs.items():
+        text = (ROOT / "aimarket-hub" / "docs" / filename).read_text(encoding="utf-8")
+        expected = f"docs/agent-install/README.{lang}.md"
+        assert text.count(expected) == 2, lang  # first-screen copy + overview table

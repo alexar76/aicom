@@ -134,12 +134,12 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 
 | SKU | слой | примеры устройств | честный предел |
 |---|---|---|---|
-| gaia.weather.read@v1 | weather (Погода) | om-wx-01, nws-01, cwop-01, metno-01 +287 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.weather.read@v1 | weather (Погода) | om-wx-01, nws-01, cwop-01, metno-01 +267 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.air.read@v1 | air (Воздух) | om-aq-01, osm-01, sta-01, sc-01 +122 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.tide.read@v1 | tide (Прилив) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.grid.read@v1 | grid (Сеть (углерод)) | uk-grid-01, eia-01, rte-grid-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.quake.read@v1 | quake (Землетрясения) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.river.read@v1 | river (Реки) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +165 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.river.read@v1 | river (Реки) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.marine.read@v1 | marine (Море) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.ghg.read@v1 | ghg (Парниковые газы) | icos-htm-01, icos-zsf-01, icos-lin-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.fire.read@v1 | fire (Пожары) | firms-fire-01 | цитировать NASA FIRMS; не периметр пожара |
@@ -253,7 +253,7 @@ Analyst учит слои из каталога в момент запроса. 
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (49 components).
+Run: python3 scripts/sync_knowledge_base.py --write (50 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -287,7 +287,8 @@ Run: python3 scripts/sync_knowledge_base.py --write (49 components).
 - gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
 - helios: HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve. · https://alexar76.github.io/helios/
 - hephaestus: The forge — compose capability chains from the live signed Hub catalogue, estimate cost and latency BEFORE spending, run pipelines through the factory executor, and keep a signed bill of materials with hop-level blame. Studio UI is hub-served; core library is framework-free. · https://modelmarket.dev/studio
-- hestia: HESTIA — очаг: изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора. Не каталог Hub, не доска работ, не Factory. Агенты появляются только после подписанного деплоя на этот хост. · https://hestia.modelmarket.dev · port 9480
+- hestia: HESTIA — хостинг-рантайм: изолированный, для провайдеров способностей AIMarket на машинах оператора. Не каталог Hub, не доска работ, не Factory. Агенты появляются только после подписанного деплоя на этот хост. · https://hestia.modelmarket.dev · port 9480
+- histor: HISTOR — публичный журнал прозрачности определений инструментов MCP: читает, что объявляют удалённые эндпоинты официального реестра MCP (без вызовов инструментов), подписывает метками MTL/1, добавляет в дерево Меркла по RFC 9162 и отвечает через /check, совпадает ли полученное клиентом с наблюдаемым. Безопасным сервер не называет никогда. · https://alexar76.github.io/histor/
 - linkedin-profile-coach (repo linked-in-profile-coach): LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support. · https://alexar76.github.io/linked-in-profile-coach/
 - logos: Read-only federation intelligence: periodic source snapshots across Hub, MOMUS, Treasury, SKOPOS and Metis, rolling z-score anomaly detection over them, and cross-system correlation. It observes and explains; it never acts on what it finds. · https://logos.modelmarket.dev · port 9460
 - lottery: AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner. · https://lottery.modelmarket.dev/

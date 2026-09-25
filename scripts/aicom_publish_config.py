@@ -30,6 +30,10 @@ DEFAULT_RSYNC_EXCLUDES = [
     "build",
     "dist",
     "target",  # Rust/Cargo build trees (e.g. awr/rust/target) — tens of thousands of files
+    # Next.js local caches. gitignored, but rsync copies the working tree; turbopack
+    # .sst blobs trip verify_mirror_secrets (raw-key-shape false positives).
+    ".next",
+    ".next-pulse-qa",
     ".ruff_cache",
     ".hypothesis",
     ".mesh_data",
@@ -41,6 +45,9 @@ DEFAULT_RSYNC_EXCLUDES = [
     # secrets and a public push. Keep aligned with .gitignore's secret rules.
     ".env",
     ".env.*",
+    # Per-service env files cut from .env by scripts/security/service_env.py. They hold the
+    # same secrets, and neither pattern above matches them (the basename is factory.env).
+    "deploy/env",
     "session_secret",  # raw hub/game session seeds (e.g. data/signal-hunt/session_secret)
     "data/secrets",
     "*.key",
@@ -123,10 +130,13 @@ FACTORY_LOCAL_EXCLUDES = [
     "data/signups.json",
     "web/frontend/test-results",
     "web/frontend/tsconfig.tsbuildinfo",
+    ".next",
+    ".next-pulse-qa",
     # ── Secret belt-and-braces (also in DEFAULT_RSYNC_EXCLUDES) ─────────────
     # Duplicated here so a future refactor that drops one list still blocks
     # secrets from reaching the public mirror.
     ".env",
+    "deploy/env",
     "session_secret",
     "data/secrets",
     "*.key",

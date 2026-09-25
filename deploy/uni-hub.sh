@@ -138,6 +138,7 @@ docker run -d --name "$NAME" \
   -e AIMARKET_CREDITS_ENABLED=1 \
   -e AIMARKET_CREDITS_FREE_GRANT_USD=0 \
   -e AIMARKET_PUBLISHER_SHARE_BPS=7000 \
+  -e AIMARKET_SANDBOX_DB_PATH=/app/data/sandbox_trials.db \
   "$IMAGE" >/dev/null
 
 echo "started $NAME on 127.0.0.1:${PORT}, public at $HUB_URL"
@@ -145,3 +146,7 @@ sleep 10
 docker logs "$NAME" 2>&1 | grep -iE "realm|SEALED|breach|crypto|Traceback" | head -12 || true
 echo "--- health ---"
 curl -s -o /dev/null -w "http %{http_code}\n" --max-time 10 "http://127.0.0.1:${PORT}/ai-market/v2/stats/live" || true
+# Healthy is not the same as right: on 2026-09-16 a stale copy of this script brought the hub
+# back green with six published fixes undone. Refuse to call a deploy done until they hold.
+echo "--- published invariants ---"
+python3 "$(dirname "$0")/uni-hub-verify.py" --container "$NAME" --hub-url "$HUB_URL"

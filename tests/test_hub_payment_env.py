@@ -142,3 +142,22 @@ def test_the_rebuild_script_reads_env_the_way_docker_does():
         "SELLS_FOR is being read from the FIRST assignment again — docker keeps the last"
     )
     assert "| tail -1 | cut -d= -f2-" in script, "SELLS_FOR must be read as last-wins"
+
+
+def test_the_capture_leaves_every_image_owned_name_to_the_new_image():
+    """The capture skipped PYTHON_[A-Z_]+, so PYTHON_SHA256 (the base image's own) was captured,
+    the hub filter then dropped it as unread, and the drop gate stopped every rollout until
+    --allow-drop — an alarm that fires on every run teaches the operator to pass the flag."""
+    import re
+    import sys
+
+    sys.path.insert(0, str(ROOT / "scripts" / "security"))
+    import service_env
+
+    script = (ROOT / "scripts" / "deploy_hub_rebuild.sh").read_text(encoding="utf-8")
+    pattern = re.search(r'skip = re\.compile\(r"(.+?)"\)', script).group(1)
+    skip = re.compile(pattern)
+    for name in ("PATH", "HOSTNAME", "LANG", "GPG_KEY", "PYTHON_VERSION", "PYTHON_SHA256", "PYTHON_PIP_VERSION"):
+        assert service_env.IMAGE_OWNED.fullmatch(name), name
+        assert skip.match(f"{name}=x"), f"the capture keeps {name}, and the drop gate will trip on it"
+    assert not skip.match("AIMARKET_SELLS_FOR=x"), "the capture must keep the hub's own settings"

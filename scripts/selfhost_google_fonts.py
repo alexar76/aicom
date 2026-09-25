@@ -89,7 +89,6 @@ PREFIX_DEST = (
     ("lottery/frontend/", "lottery/frontend"),
     ("alien-monitor/frontend/", "alien-monitor/frontend/public"),
     ("use-cases-portal/", "use-cases-portal"),
-    ("aimarket-hub/", "aimarket-hub"),
     ("cite-desks/kernel/web/", "cite-desks/kernel/web"),
     ("cite-desks/emberline/frontend/", "cite-desks/emberline/frontend/public"),
     ("independent/daily-card/apps/web/", "independent/daily-card/apps/web/public"),
@@ -235,8 +234,20 @@ def should_skip(path: Path) -> bool:
     return any(part in SKIP_DIR_NAMES for part in path.parts)
 
 
+# Pages an app serves, not a directory. Mirroring beside them writes a copy no route serves:
+# the hub's landing got aimarket-hub/fonts/ and 404ed on every hub. Link the app's own bundle.
+APP_SERVED = {
+    "aimarket-hub/": "the hub serves aimarket_hub/assets/fonts at /assets/fonts/ — link "
+                     "assets/fonts/fonts.css (relative, so it works under a path prefix) and "
+                     "add any new face to that bundle by hand",
+}
+
+
 def dest_for(path: Path, root: Path) -> Path:
     rel = path.relative_to(root).as_posix()
+    for prefix, how in APP_SERVED.items():
+        if rel.startswith(prefix):
+            raise SystemExit(f"{rel} links Google Fonts, but {how}")
     if "site_assets" in path.parts:
         idx = path.parts.index("site_assets")
         return Path(*path.parts[: idx + 1])

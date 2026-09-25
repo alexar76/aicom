@@ -66,10 +66,10 @@
 | **在浏览器中体验 Factory** | [magic-ai-factory.com](https://magic-ai-factory.com)——访客试用 + [管理员演示](https://magic-ai-factory.com/admin/login)（免密码：输入 `admin`，然后点击 **Enter admin demo**） |
 | **了解架构** | [生态系统知识库](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-zh.md) · [白皮书](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/zh.md) · [用例](https://use.modelmarket.dev/) |
 | **运行整个机队** | 使用下方的 `./start.sh --everything`，或阅读 [VPS 快速入门](https://github.com/alexar76/aicom/blob/main/docs/quickstart-ecosystem-deploy.zh.md) |
-| **发布提供方** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [完整安全智能体教程](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.zh.md) · [完成版智能体](https://github.com/alexar76/themis) · 进程托管在 **[HESTIA](https://github.com/alexar76/hestia)**（炉灶，不是 Hub） |
+| **发布提供方** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [完整安全智能体教程](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.zh.md) · [完成版智能体](https://github.com/alexar76/themis) · 进程托管在 **[HESTIA](https://github.com/alexar76/hestia)**（托管运行时，不是 Hub） |
 | **参与贡献** | [Discussions](https://github.com/alexar76/aicom/discussions) · [适合首次贡献的问题](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
-仓库目录位于**下方**，按各仓库扮演的角色分组——Factory、炉灶、AIMarket 核心、构建与连接、MCP 网关、可验证计算、物理世界、信任与安全、你实际运行的客户端、ACEX、可观测性、社区与传播、学习与探索。每个仓库只属于一个分组，该行同时列出其实时落地页；你也可以从任何角度通过 [A–Z 索引](#az)找到它——这里没有第二份站点地图。
+仓库目录位于**下方**，按各仓库扮演的角色分组——Factory、托管运行时、AIMarket 核心、构建与连接、MCP 网关、可验证计算、物理世界、信任与安全、你实际运行的客户端、ACEX、可观测性、社区与传播、学习与探索。每个仓库只属于一个分组，该行同时列出其实时落地页；你也可以从任何角度通过 [A–Z 索引](#az)找到它——这里没有第二份站点地图。
 
 同样实时可用且无需登录：[Agent Arena](https://magic-ai-factory.com/arena/) · [Factory IQ](https://magic-ai-factory.com/iq) · [Pulse Terminal](https://magic-ai-factory.com/pulse/) · [Signal Hunt](https://hunt.modelmarket.dev/) · [Lottery](https://lottery.modelmarket.dev/)
 
@@ -153,11 +153,11 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | # | 阶段 | 执行者 |
 | --- | --- | --- |
 | 1 | **构建** | [`aicom`](https://github.com/alexar76/aicom) 设计、构建、测试并发布产品 |
-| 2 | **托管** | **HESTIA** 是炉灶——隔离托管运行时；签名部署到本机。空名册 ≠ 空市场 |
+| 2 | **托管** | **HESTIA** 是托管运行时——隔离运行在运营者机器上；签名部署到本机。空名册 ≠ 空市场 |
 | 3 | **准入** | **THEMIS** 在发布时做出决定——签名的 `approve` / `review` / `reject`（可选） |
 | 4 | **上架与调用** | **AIMarket** [协议](https://github.com/alexar76/aimarket-protocol) + [Hub](https://github.com/alexar76/aimarket-hub) 承载目录、通道和调用 |
 | 5 | **供给** | 17 个**预言机**（随机性、延迟、共识、信任数学）· **GAIA** 证明（attestation）的物理读数 · **METIS** 认知 |
-| 6 | **验证** | **METIS** 认知 · **BASANOS** 在固定提交上检查 Solidity · **DOLOS** 实时 EVM 利用 · **MOMUS** HTTP/联邦 · **WARDEN** 第三方 MCP |
+| 6 | **验证** | **METIS** 认知 · **BASANOS** 在固定提交上检查 Solidity · **DOLOS** 实时 EVM 利用 · **MOMUS** HTTP/联邦 · **WARDEN** 第三方 MCP · **HISTOR** 第三方 MCP 服务器随时间公布的内容 |
 | 7 | **消费** | **ARGUS**——人类和智能体实际运行的需求侧客户端 |
 | 8 | **结算** | 托管、支付通道和 **Treasury** 赏金，仅在独立验证后支付 |
 | 9 | **融资** | **ACEX** 为智能体定价、上架并提供抵押借贷 |
@@ -174,7 +174,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 
 | 从 | 到 | 流程 |
 | --- | --- | --- |
-| Factory / aicom | HESTIA | scaffold · 签名部署到炉灶 |
+| Factory / aicom | HESTIA | scaffold · 签名部署到托管运行时 |
 | HESTIA | Hub | 显式 announce（托管 ≠ 上架） |
 | THEMIS | Hub | 发布准入 · approve / review / reject |
 | BASANOS | ACEX / contracts | Solidity 扫描 · 签名保障包 |
@@ -188,6 +188,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | Hub | ACEX | CapShares |
 | SKOPOS | Factory / Hub | 机队监测 |
 | MOMUS | Factory / Hub | 发现 · 签名 |
+| HISTOR | MCP 客户端 · Hub | 签名的 MTL/1 标签 · `/check` · `histor.check@v1` |
 | Treasury | Hub / chain | 验证后付款 |
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | 只读快照 · 异常 · 洞察 |
 | Alien Monitor | Hub | 实时 3D 图谱 |
@@ -206,12 +207,12 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**aicom**](https://github.com/alexar76/aicom) | AI-Factory——自主设计、构建、测试并发布产品的流水线 |
 | [**aicom-landing**](https://github.com/alexar76/aicom-landing) | 从完整流水线中拆分出的快速营销落地页生成器 |
 
-### 🔥 炉灶——卖方进程运行之处
+### 🖥️ 托管运行时——卖方进程运行之处
 <sub>位于 scaffold 与目录之间。托管不是上架。空名册 ≠ 空市场。</sub>
 
 | 仓库 | 简介 |
 | --- | --- |
-| [**hestia**](https://github.com/alexar76/hestia) | **HESTIA**（Ἑστία）——在运营者机器上隔离托管 AIMarket 能力提供方。**不是** Hub 目录、**不是** Factory、**不是**任务板。智能体只有在签名部署到本机之后才会出现。THEMIS 可选准入；announce 必须显式；Hub 仍是市场。· [落地页](https://alexar76.github.io/hestia/) · [炉灶](https://hestia.modelmarket.dev) |
+| [**hestia**](https://github.com/alexar76/hestia) | **HESTIA**（Ἑστία）——在运营者机器上隔离托管 AIMarket 能力提供方。**不是** Hub 目录、**不是** Factory、**不是**任务板。智能体只有在签名部署到本机之后才会出现。THEMIS 可选准入；announce 必须显式；Hub 仍是市场。· [落地页](https://alexar76.github.io/hestia/) · [托管运行时](https://hestia.modelmarket.dev) |
 
 ### 🛒 AIMarket 核心——协议与市场
 <sub>阶段 4。标准、参考服务器，以及负责发现和结算的网格。</sub>
@@ -245,7 +246,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**aimarket-oracle-gateway**](https://github.com/alexar76/aimarket-oracle-gateway) | **MCP 服务器**——覆盖全部 17 个预言机的 35 个可验证按次付费预言机工具（`get_random`、`compute_vdf`、`get_reputation_scores`……），通过 stdio 向外部 AI 智能体开放 · [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway) |
 
 ### 🧮 可验证计算——智能体实际购买的能力
-<sub>阶段 4。按调用计价的签名数学与已验证认知。</sub>
+<sub>阶段 5。按调用计价的签名数学与已验证认知。</sub>
 
 | 仓库 | 简介 |
 | --- | --- |
@@ -255,7 +256,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**lottery**](https://github.com/alexar76/lottery) | **AI-Agent Oracle Lottery**——不可操纵的链上抽奖（Platon + Chronos **VDF 链上验证**）、LUMEN 声誉加权、Hub 赞助的**机器 UBI**；**真实 AI Service Mesh 智能体使用自己的钱包参与** · Solidity/Foundry |
 
 ### 🌍 物理世界——作为付费能力的传感器
-<sub>阶段 4，链下现实：具有证明（attestation）的读数、覆盖它们的地图，以及把这些 SKU 变成可引用 B2B 产品的证据台。</sub>
+<sub>阶段 5，链下现实：具有证明（attestation）的读数、覆盖它们的地图，以及把这些 SKU 变成可引用 B2B 产品的证据台。</sub>
 
 | 仓库 | 简介 |
 | --- | --- |
@@ -264,7 +265,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**cite-desks**](https://github.com/alexar76/cite-desks) | **Cite desks**——AIMarket 轨道上的五个独立证据台（Emberline 火情、Tideline 洪水、Solrecord 光伏、Seamark 北欧 AIS、Plinth 场址）：watches、定时运行、cite packs、USDC · [家族](https://desk.modelmarket.dev/) · [Emberline](https://emberlinedesk.com/) · fork [alexar76/cite-desks](https://github.com/alexar76/cite-desks) |
 
 ### 🛡 信任与安全——谁可以进入，以及谁为发现问题付款
-<sub>阶段 5，外加赏金轨道。五项独立检查分别在五个不同时间点运行并各自签名：发布时、固定提交的源码、已部署合约、实时 HTTP，以及第三方 MCP 工具到达宿主前；另有独立密钥为发现的问题付款。**DOLOS 只属于这里**——它是红队，而非社区或可观测性工具。</sub>
+<sub>阶段 6，外加赏金轨道。六项独立检查分别在六个不同时间点运行并各自签名：发布时、固定提交的源码、已部署合约、实时 HTTP、第三方 MCP 工具到达宿主前，以及公开记录官方注册表中每个远程 MCP 端点公布的内容及其变更时间；另有独立密钥为发现的问题付款。**DOLOS 只属于这里**——它是红队，而非社区或可观测性工具。</sub>
 
 | 仓库 | 简介 | 运行时机 |
 | --- | --- | --- |
@@ -274,16 +275,17 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**momus**](https://github.com/alexar76/momus) | **MOMUS**——自主 HTTP/联邦红队：安全的只读探测 → Ed25519 签名发现；负责发现和签名，但**不能给自己付款** · [实时](https://momus.modelmarket.dev) · [落地页](https://alexar76.github.io/momus/) | 持续运行于实时服务 |
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury**——MOMUS 的独立赏金支付方（自有密钥和容器）；仅在独立验证后付款 · [实时](https://momus.modelmarket.dev/treasury) · [落地页](https://alexar76.github.io/treasury/) | 验证后 |
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN**——零依赖的 **MCP 安全防火墙库**（不是服务器）：静态工具定义扫描 → 签名威胁源 → 来源 → 固定 · [落地页](https://warden.modelmarket.dev/) · [实地调研：1,108 个公开 MCP 服务器](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.zh.md) | 第三方工具到达宿主前 |
+| [**histor**](https://github.com/alexar76/histor) | **HISTOR**（ἵστωρ）——公开的 **MCP 工具定义透明日志**：读取官方 MCP 注册表中每个远程端点公布的内容（从不调用工具），签名为 MTL/1 标签，追加到带签名树头的 RFC 9162 默克尔树，并为每次变更标注日期和差异。从不宣称任何服务器安全 · [在线](https://histor.modelmarket.dev) · [落地页](https://alexar76.github.io/histor/) | 每日，覆盖官方注册表中的所有远程端点 · 以及 `/check` 时 |
 
 ### 👤 你实际运行的客户端
-<sub>阶段 6。以上都是基础设施；这是用户实际使用的部分。</sub>
+<sub>阶段 7。以上都是基础设施；这是用户实际使用的部分。</sub>
 
 | 仓库 | 简介 |
 | --- | --- |
 | [**argus**](https://github.com/alexar76/argus) | **ARGUS-3**——需求侧参考智能体，也是唯一设计给人类使用的触点：由 WARDEN 门控的 MCP（LUMEN 声誉）、多提供方 LLM、Telegram；原生 AIMarket 消费方/提供方；加密货币功能**默认关闭** · [实时落地页](https://magic-ai-factory.com/argus/) |
 
 ### 📈 ACEX——智能体资本市场
-<sub>阶段 8。智能体未来收益在这里获得定价。</sub>
+<sub>阶段 9。智能体未来收益在这里获得定价。</sub>
 
 | 仓库 | 简介 |
 | --- | --- |
@@ -291,7 +293,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**pulse-terminal**](https://github.com/alexar76/pulse-terminal) | 提供实时智能体定价的 ACEX 资本市场仪表板 |
 
 ### 🌌 可观测性——读取系统，不做任何更改
-<sub>阶段 9。三者按设计均为只读：它们负责度量，不采取行动。</sub>
+<sub>阶段 10。三者按设计均为只读：它们负责度量，不采取行动。</sub>
 
 | 仓库 | 简介 |
 | --- | --- |
@@ -335,6 +337,8 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 
 每个仓库只在上方出现一次，并归入与其角色相符的唯一分组。你可以通过此索引从任何其他角度找到它。
 
+权威索引见[英文版](README.md#az)；如果译本有所滞后，请以英文版为准。
+
 | 仓库 | 分组 | 一句话简介 |
 | --- | --- | --- |
 | [acex](https://github.com/alexar76/acex) | ACEX | CapShares、借贷、AMM |
@@ -364,7 +368,8 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [dolos](https://github.com/alexar76/dolos) | 信任与安全 | 动态 EVM 红队（分叉隔离） |
 | [gaia](https://github.com/alexar76/gaia) | 物理世界 | 具有证明（attestation）的 IoT 读数 |
 | [helios](https://github.com/alexar76/helios) | 社区与传播 | yaml → 配音视频 → YouTube |
-| [hestia](https://github.com/alexar76/hestia) | 炉灶 | 隔离托管运行时 · 不是 Hub、不是 Factory |
+| [hestia](https://github.com/alexar76/hestia) | 托管运行时 | 隔离托管运行时 · 不是 Hub、不是 Factory |
+| [histor](https://github.com/alexar76/histor) | 信任与安全 | MCP 工具定义透明日志 |
 | [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) | 示例应用 | Flutter + SDK，真实产品 |
 | [logos](https://github.com/alexar76/logos) | 可观测性 | 只读联邦分析 |
 | [lottery](https://github.com/alexar76/lottery) | 可验证计算 | 不可操纵的链上抽奖 · 机器 UBI |

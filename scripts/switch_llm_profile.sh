@@ -100,6 +100,10 @@ DEEPSEEK = {
     "DIOSCURI_LLM_PROVIDER": "deepseek",
     "DIOSCURI_LLM_MODEL": "deepseek-v4-pro",
     "TREASURY_LLM_PROVIDER": "deepseek",
+    # HISTOR: clear classifier API key so DEEPSEEK_API_KEY is used (config.py order).
+    "HISTOR_CLASSIFIER_BASE_URL": "https://api.deepseek.com",
+    "HISTOR_CLASSIFIER_MODEL": "deepseek-v4-pro",
+    "HISTOR_CLASSIFIER_API_KEY": "",
 }
 OPENROUTER = {
     "ATLAS_LLM_PROVIDER": "openrouter_api",
@@ -118,6 +122,10 @@ OPENROUTER = {
     "DIOSCURI_LLM_MODEL": "minimax/minimax-m3",
     "TREASURY_LLM_PROVIDER": "openai",
     "OPENROUTER_API_KEY": or_key,
+    "HISTOR_CLASSIFIER_BASE_URL": "https://openrouter.ai/api/v1",
+    "HISTOR_CLASSIFIER_MODEL": "minimax/minimax-m3",
+    "HISTOR_CLASSIFIER_API_KEY": or_key,
+    "HISTOR_OPENROUTER_API_KEY": or_key,
 }
 updates = DEEPSEEK if profile in ("deepseek-all", "hybrid-metis") else OPENROUTER
 if profile == "hybrid-metis" and or_key:
@@ -207,21 +215,27 @@ print(sync_deepseek_provider_config())
 \""
   fi
   if [[ $NO_RESTART -eq 0 ]]; then
-    "${SSH[@]}" "$FACTORY" "docker restart aicom-app-1 alien-monitor; (cd /root/claudecode/aicom/atlas && docker compose --env-file ../.env up -d --force-recreate)"
+    # ATLAS reads its keys from deploy/env/atlas.env, cut from the .env just patched above;
+    # recreating without re-cutting it would start ATLAS on the previous profile's key.
+    "${SSH[@]}" "$FACTORY" "docker restart aicom-app-1 alien-monitor; (cd /root/claudecode/aicom && python3 scripts/security/service_env.py atlas .env deploy/env/atlas.env && cd atlas && docker compose --env-file ../.env up -d --force-recreate)"
   fi
 }
 
 apply_oracles() {
   echo "== Oracles ($ORACLES) profile=$PROFILE =="
   OR_KEY="$(resolve_openrouter_key 2>/dev/null || true)"
-  for envf in /root/momus-deploy/.env /root/helios/.env /root/dioscuri/.env /root/aicom/.env; do
+  for envf in /root/momus-deploy/.env /root/helios/.env /root/dioscuri/.env /root/aicom/.env /opt/histor/.env; do
     patch_env_remote "$ORACLES" "$envf" "$PROFILE" "${OR_KEY:-}"
   done
+  # Keep classifier key wiring in sync with the monorepo (CLASSIFIER_API_KEY / OpenRouter passthrough).
+  "${SCP[@]}" histor/docker-compose.yml "${ORACLES}:/opt/histor/docker-compose.yml" 2>/dev/null || true
   if [[ $NO_RESTART -eq 0 ]]; then
     "${SSH[@]}" "$ORACLES" "cd /root/momus-deploy && docker compose -f docker-compose.prod.yml up -d --force-recreate momus-backend momus-treasury 2>/dev/null || docker restart momus-backend momus-treasury"
     "${SSH[@]}" "$ORACLES" "cd /root/helios && docker compose up -d --force-recreate 2>/dev/null || docker restart helios helios-worker"
     "${SSH[@]}" "$ORACLES" "cd /root/dioscuri && docker compose up -d --force-recreate 2>/dev/null || docker restart dioscuri"
     "${SSH[@]}" "$ORACLES" "docker restart argus alien-monitor platon-platon-backend logos 2>/dev/null || true"
+    # HISTOR reads classifier env at start; recreate so .env changes (incl. API key) reach the container.
+    "${SSH[@]}" "$ORACLES" "cd /opt/histor && docker compose -p histor --env-file .env -f docker-compose.yml -f docker-compose.postgres.yml up -d --force-recreate histor 2>/dev/null || docker restart histor-histor-1 2>/dev/null || true"
   fi
 }
 

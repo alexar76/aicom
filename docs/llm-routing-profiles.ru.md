@@ -8,7 +8,7 @@
 |------|-----|---------------|
 | **Factory** | `my-vps` | Factory, Alien Monitor, ATLAS, ARGUS, THEMIS |
 | **Metis** | `root@skopos.modelmarket.dev` | Metis, SKOPOS |
-| **Oracles** | `admin-vps` | MOMUS, HELIOS, DIOSCURI, Platon, LOGOS |
+| **Oracles** | `admin-vps` | MOMUS, HELIOS, DIOSCURI, Platon, LOGOS, **HISTOR** (классификатор) |
 | **Hub lab** | `competing-lab` | Hub (verify через Metis) |
 
 ## Профили
@@ -27,3 +27,5 @@
 ```
 
 Полная схема (EN): [llm-routing-profiles.md](llm-routing-profiles.md)
+
+HISTOR (классификатор MCP на `admin-vps:/opt/histor`): в `hybrid-metis` / `deepseek-all` → DeepSeek `deepseek-v4-pro`; в `openrouter-all` → MiniMax через OpenRouter. Бюджет `HISTOR_CLASSIFIER_MAX_PER_CRAWL` скрипт не трогает.

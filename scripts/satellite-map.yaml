@@ -1295,12 +1295,12 @@ satellites:
   - id: hestia
     repo: hestia
     github_published: true
-    description: "HESTIA — the hearth: isolated hosted runtime for AIMarket capability providers on the operator’s machines. Not a Hub catalogue, not a job board, not Factory. Agents appear only after a signed deploy onto this host."
+    description: "HESTIA — the hosted runtime: isolated, for AIMarket capability providers on the operator’s machines. Not a Hub catalogue, not a job board, not Factory. Agents appear only after a signed deploy onto this host."
     description_i18n:
-      ru: "HESTIA — очаг: изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора. Не каталог Hub, не доска работ, не Factory. Агенты появляются только после подписанного деплоя на этот хост."
-      es: "HESTIA — el hogar: runtime aislado y alojado para proveedores de capacidad AIMarket en las máquinas del operador. No es el catálogo del Hub, ni un tablón de empleos, ni Factory. Los agentes aparecen solo tras un despliegue firmado en este host."
-      fr: "HESTIA — l’âtre : runtime hébergé et isolé pour les fournisseurs de capacité AIMarket sur les machines de l’opérateur. Pas le catalogue du Hub, pas un job board, pas Factory. Les agents n’apparaissent qu’après un déploiement signé sur cet hôte."
-      zh: "HESTIA — 炉灶：在运营者机器上隔离托管 AIMarket 能力提供方。不是 Hub 目录、不是任务板、不是 Factory。智能体只有在签名部署到本机之后才会出现。"
+      ru: "HESTIA — хостинг-рантайм: изолированный, для провайдеров способностей AIMarket на машинах оператора. Не каталог Hub, не доска работ, не Factory. Агенты появляются только после подписанного деплоя на этот хост."
+      es: "HESTIA — el runtime alojado: aislado, para proveedores de capacidad AIMarket en las máquinas del operador. No es el catálogo del Hub, ni un tablón de empleos, ni Factory. Los agentes aparecen solo tras un despliegue firmado en este host."
+      fr: "HESTIA — le runtime hébergé : isolé, pour les fournisseurs de capacité AIMarket sur les machines de l’opérateur. Pas le catalogue du Hub, pas un job board, pas Factory. Les agents n’apparaissent qu’après un déploiement signé sur cet hôte."
+      zh: "HESTIA — 托管运行时：在运营者机器上隔离运行 AIMarket 能力提供方。不是 Hub 目录、不是任务板、不是 Factory。智能体只有在签名部署到本机之后才会出现。"
     homepage: https://alexar76.github.io/hestia/
     console: https://hestia.modelmarket.dev/ui/
     topics:
@@ -1335,6 +1335,59 @@ satellites:
       alexar76.github.io/hestia/.
       Not Hub, not THEMIS, not Factory: tenants run on the Hestia operator’s machines
       and appear on the roster only after an explicit deploy.
+
+  - id: histor
+    repo: histor
+    github_published: true
+    description: "HISTOR — public transparency log of MCP tool definitions: reads what remote MCP endpoints in the official registry advertise (never calls a tool), signs it as MTL/1 labels, appends them to an RFC 9162 Merkle log, and answers /check: is what a client received what was observed? Never calls a server safe."
+    description_i18n:
+      ru: "HISTOR — публичный журнал прозрачности определений инструментов MCP: читает, что объявляют удалённые эндпоинты официального реестра MCP (без вызовов инструментов), подписывает метками MTL/1, добавляет в дерево Меркла по RFC 9162 и отвечает через /check, совпадает ли полученное клиентом с наблюдаемым. Безопасным сервер не называет никогда."
+      es: "HISTOR — registro de transparencia público de las definiciones de herramientas MCP: lee lo que anuncian los endpoints remotos del registro oficial de MCP (sin llamar a herramientas), lo firma como etiquetas MTL/1, lo añade a un árbol de Merkle RFC 9162 y responde en /check si lo que recibió un cliente coincide con lo observado. Nunca declara seguro a un servidor."
+      fr: "HISTOR — journal de transparence public des définitions d’outils MCP : lit ce qu’annoncent les points de terminaison distants du registre officiel MCP (sans appeler d’outil), le signe en étiquettes MTL/1, l’ajoute à un arbre de Merkle RFC 9162 et répond via /check si ce qu’un client a reçu correspond à ce qui a été observé. Ne déclare jamais un serveur sûr."
+      zh: "HISTOR — MCP 工具定义的公开透明日志：读取官方 MCP 注册表中远程端点公布的内容（从不调用工具），签名为 MTL/1 标签，追加到 RFC 9162 默克尔树，并通过 /check 回答客户端收到的内容是否与观测一致。从不宣称任何服务器安全。"
+    homepage: https://alexar76.github.io/histor/
+    console: https://histor.modelmarket.dev/
+    topics:
+      - mcp
+      - mcp-security
+      - model-context-protocol
+      - transparency-log
+      - merkle-tree
+      - rfc9162
+      - verifiable-credentials
+      - tool-poisoning
+      - aimarket
+      - aicom
+    license: mit
+    history: live   # accepts PRs — server authors dispute labels here; append-only, reverse-synced like metis
+    paths:
+      - histor
+    export_layout:
+      root_from: histor
+    exclude_paths:
+      - .env
+      - data
+      - .venv
+      - __pycache__
+      - .pytest_cache
+      - .ruff_cache
+      - .coverage
+      - coverage.json
+      - junit.xml
+      - scanner/node_modules
+    registries: []
+    ci:
+      - pytest
+      - pytest-integration
+      - docker-build
+    notes: >
+      Python satellite (alexar76/histor) with a Node sidecar (scanner/, pinned @aimarket/warden).
+      Source of truth: histor/ in the Gitea monorepo. GitHub mirror: publish_all_repos.sh
+      --satellite histor (history: live, like metis). Fleet: sudo ./scripts/deploy_histor.sh on the
+      host that owns the histor.modelmarket.dev A record · port 9490 · Postgres in production
+      (docker-compose.postgres.yml), SQLite for development. Landing: alexar76.github.io/histor/
+      (the same docs/landing the service serves at /). The issuer did:key it generates on first start
+      belongs in awr/adoption/metrics/own-keys.txt.
 
   - id: escrow-signer
     repo: escrow-signer

@@ -1211,7 +1211,7 @@ them.** They are the reason there is no MTL issuer in this repository.
 
    The pattern set is no longer a transcription. `pattern-set-argus-warden-static-scan.json` is
    **generated** by `tools/regen_pattern_set.mjs` calling `staticScanRuleset()` in
-   `@aimarket/warden` — 25 rules, 15 `block`, 10 `advise`, version 4, 17 rules also covering the
+   `@aimarket/warden` — 26 rules, 15 `block`, 11 `advise`, version 5, 17 rules also covering the
    tool name — so the digest §7.3 makes the label falsifiable by now binds to the gate's own table
    rather than to a hand copy of it.
 
@@ -1256,7 +1256,7 @@ these rather than trust the table.
 | Gate chain and its order | `warden/src/index.ts` — `Warden.create` |
 | Composite score is the product of gate scores | `warden/src/index.ts` — `vet` |
 | Block decision is threshold-driven; default threshold `high` | `warden/src/index.ts`, `argus/src/config.ts` |
-| 25 rules (15 `block`, 10 `advise`) in ruleset v4; 17 of them also scan the tool `name`, the 3 noun-keyed codes do not. v4 re-tiered three rules to `advise` on field evidence and added per-rule `guards`, which are inside the digest | `warden/src/static-scan.ts` |
+| 26 rules (15 `block`, 11 `advise`) in ruleset v5; 17 of them also scan the tool `name`, the 4 noun-keyed codes do not. v5 folds the text before matching (`fold`, in the digest), adds the advisory `TOOL_DEF_SECRET_EXFIL` pair rule, and marks each rule `raw` or folded; v4 re-tiered three rules to `advise` and added per-rule `guards`. `fold` and `raw` are inside the digest | `warden/src/static-scan.ts` |
 | Gate score is `1 −` penalty for the worst **blocking** severity, i.e. one of {1, 0.9, 0.7, 0.4, 0}; `advise` matches are excluded from it | `warden/src/static-scan.ts` |
 | **Executed (2026-08-24, ruleset v3):** benign two-tool server → 3 matches, all `advise` (2 `low`, 1 `info`), gate score 1.0, nothing blocked at any threshold; the two tool names match nothing | `warden/dist/static-scan.js` |
 | **Executed:** clean two-tool server → 0 matches, gate score 1 | `warden/dist/static-scan.js` |

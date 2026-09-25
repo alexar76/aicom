@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -23,7 +23,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
-import api, { ApiRequestError } from '@/lib/api';
+import api, { ApiRequestError, keepPaymentProofAfterError, paymentRecoveryHint } from '@/lib/api';
 import { getStoredReferral } from '@/lib/referral';
 import { truncateAddress, copyToClipboard } from '@/lib/utils';
 
@@ -183,6 +183,7 @@ export default function CheckoutPage() {
   const [txHash, setTxHash] = useState('');
   const [copied, setCopied] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [errorHint, setErrorHint] = useState('');
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
@@ -198,6 +199,7 @@ export default function CheckoutPage() {
 
   // Wallet state
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const paymentProof = useRef<{ message: string; signature: string } | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [walletError, setWalletError] = useState('');
 
@@ -406,12 +408,36 @@ export default function CheckoutPage() {
     if (!opts?.silentPending) setErrorMessage('');
 
     try {
+      let payerSignature = '';
+      if (!(verifyStub && opts?.testConfirmations !== undefined)) {
+        const proof = await api.getPaymentProof(paymentInfo.payment_id, finalHash);
+        if (paymentProof.current?.message === proof.message) {
+          payerSignature = paymentProof.current.signature;
+        } else if (proof.chain === 'solana') {
+          // With no wallet in this browser the confirm goes out unsigned: the server
+          // then holds the paid claim for review and answers with the recovery steps.
+          const wallet = (window as any).solana;
+          if (wallet?.signMessage) {
+            await wallet.connect();
+            const signed = await wallet.signMessage(new TextEncoder().encode(proof.message), 'utf8');
+            payerSignature = Array.from(signed.signature as Uint8Array)
+              .map((byte) => byte.toString(16).padStart(2, '0')).join('');
+          }
+        } else if ((window as any).ethereum) {
+          const provider = new BrowserProvider((window as any).ethereum);
+          payerSignature = await (await provider.getSigner()).signMessage(proof.message);
+        }
+        if (payerSignature) paymentProof.current = { message: proof.message, signature: payerSignature };
+      }
       const result = await api.confirmPayment(paymentInfo.payment_id, finalHash, {
         testConfirmations: opts?.testConfirmations,
+        payerSignature,
       });
       setPaymentInfo((prev: any) => ({ ...prev, ...result }));
       setStep('success');
     } catch (err: unknown) {
+      // A refused signature must not be resent by "Try Again" after switching accounts.
+      if (!keepPaymentProofAfterError(err)) paymentProof.current = null;
       if (err instanceof ApiRequestError && err.status === 409) {
         const payload = err.detailPayload;
         if (payload?.status === 'pending_confirmation') {
@@ -429,6 +455,7 @@ export default function CheckoutPage() {
           ? err.message
           : (err as { message?: string })?.message || 'On-chain verification failed';
       setErrorMessage(detail);
+      setErrorHint(paymentRecoveryHint(err));
       setStep('error');
     } finally {
       setIsConfirming(false);
@@ -717,6 +744,11 @@ export default function CheckoutPage() {
                     <p className="text-xs text-gray-500 mt-0.5">
                       Make sure you have enough {paymentInfo.chain === 'solana' ? 'SOL' : 'ETH'} for gas fees.
                     </p>
+                    <p className="text-xs text-gray-300 mt-2">
+                      Pay from your own wallet. You must sign a message with that wallet to claim your license;
+                      smart contract wallets can sign too. An exchange withdrawal cannot sign, so support has to
+                      check the transfer and release the license.
+                    </p>
                   </div>
                 </div>
 
@@ -929,10 +961,10 @@ export default function CheckoutPage() {
                 <h2 className="text-2xl font-bold text-white mb-2">Verification Failed</h2>
                 <p className="text-gray-400 mb-4">{errorMessage || 'Could not verify the transaction on-chain.'}</p>
                 <p className="text-sm text-gray-500 mb-6">
-                  Make sure you sent the exact amount to the correct address and try again.
+                  {errorHint || 'Make sure you sent the exact amount to the correct address and try again.'}
                 </p>
                 <div className="flex gap-3 justify-center">
-                  <Button onClick={() => { setStep('payment'); setErrorMessage(''); }}>
+                  <Button onClick={() => { setStep('payment'); setErrorMessage(''); setErrorHint(''); }}>
                     Try Again
                   </Button>
                   <Button variant="secondary" onClick={() => (window.location.href = '/')}>

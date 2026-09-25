@@ -40,7 +40,8 @@ ensure_env() {
     echo -e "${YELLOW}No .env — creating from .env.example${NC}"
     cp .env.example .env
   fi
-  python3 ./scripts/fill_production_env.py --env-file .env "${@}" 2>/dev/null || true
+  # ${@+...}: bash 3.2 with set -u calls an empty "$@" unbound and exits here.
+  python3 ./scripts/fill_production_env.py --env-file .env ${@+"$@"} 2>/dev/null || true
   # shellcheck disable=SC1091
   set -a && source .env && set +a
   if [[ -z "${POSTGRES_PASSWORD:-}" ]]; then
@@ -55,6 +56,9 @@ ensure_env() {
     echo -e "${RED}GRAFANA_ADMIN_PASSWORD is required. Run: python3 scripts/fill_production_env.py --env-file .env${NC}" >&2
     exit 2
   fi
+  # After fill_production_env: the service files must carry what it just added, and a file
+  # left from an earlier run still holds whatever .env said back then.
+  python3 ./scripts/security/service_env.py stack .env deploy/env
 }
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
@@ -64,6 +68,11 @@ if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
   echo ""
   echo "Production overlay: Postgres + split API/frontend/workers + AIFACTORY_PROD=1"
   exit 0
+fi
+
+# compose loads the whole project for --down/--logs too, env files included.
+if [[ -f .env && ( "${1:-}" == "--down" || "${1:-}" == "--logs" ) ]]; then
+  python3 ./scripts/security/service_env.py stack .env deploy/env >/dev/null
 fi
 
 if [[ "${1:-}" == "--down" ]]; then

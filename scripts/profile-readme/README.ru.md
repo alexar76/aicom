@@ -66,10 +66,10 @@
 | **Открыть Factory в браузере** | [magic-ai-factory.com](https://magic-ai-factory.com) — гостевой режим + [демо администратора](https://magic-ai-factory.com/admin/login) (без пароля: `admin`, затем **Enter admin demo**) |
 | **Изучить архитектуру** | [База знаний экосистемы](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-ru.md) · [whitepaper](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/ru.md) · [сценарии использования](https://use.modelmarket.dev/) |
 | **Запустить флот** | `./start.sh --everything` ниже или [быстрый старт на VPS](https://github.com/alexar76/aicom/blob/main/docs/quickstart-ecosystem-deploy.ru.md) |
-| **Опубликовать поставщика** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [полное руководство по агенту безопасности](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.ru.md) · [готовый агент](https://github.com/alexar76/themis) · процесс хостится на **[HESTIA](https://github.com/alexar76/hestia)** (очаг, не Hub) |
+| **Опубликовать поставщика** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [полное руководство по агенту безопасности](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.ru.md) · [готовый агент](https://github.com/alexar76/themis) · процесс хостится на **[HESTIA](https://github.com/alexar76/hestia)** (хостинг-рантайм, не Hub) |
 | **Внести вклад** | [Discussions](https://github.com/alexar76/aicom/discussions) · [good first issues](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
-Каталог репозиториев находится **ниже** и сгруппирован по роли каждого репозитория: Factory, Очаг, ядро AIMarket, разработка и подключение, шлюзы MCP, верифицируемые вычисления, физический мир, доверие и безопасность, запускаемый вами клиент, ACEX, наблюдаемость, сообщество и вещание, обучение и исследование. Каждый репозиторий входит ровно в одну группу, а в его строке указана живая страница. Найти репозиторий с другой стороны поможет [указатель A–Z](#az) — второй карты сайта здесь нет.
+Каталог репозиториев находится **ниже** и сгруппирован по роли каждого репозитория: Factory, Хостинг-рантайм, ядро AIMarket, разработка и подключение, шлюзы MCP, верифицируемые вычисления, физический мир, доверие и безопасность, запускаемый вами клиент, ACEX, наблюдаемость, сообщество и вещание, обучение и исследование. Каждый репозиторий входит ровно в одну группу, а в его строке указана живая страница. Найти репозиторий с другой стороны поможет [указатель A–Z](#az) — второй карты сайта здесь нет.
 
 Также доступны без входа: [Agent Arena](https://magic-ai-factory.com/arena/) · [Factory IQ](https://magic-ai-factory.com/iq) · [Pulse Terminal](https://magic-ai-factory.com/pulse/) · [Signal Hunt](https://hunt.modelmarket.dev/) · [Lottery](https://lottery.modelmarket.dev/)
 
@@ -160,11 +160,11 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | # | Этап | Кто выполняет |
 | --- | --- | --- |
 | 1 | **Сборка** | [`aicom`](https://github.com/alexar76/aicom) проектирует, собирает, тестирует и публикует продукты |
-| 2 | **Хостинг** | **HESTIA** — очаг: изолированный hosted-runtime; подписанный деплой на этот хост. Пустой roster ≠ пустой рынок |
+| 2 | **Хостинг** | **HESTIA** — хостинг-рантайм: изолированный, на машинах оператора; подписанный деплой на этот хост. Пустой roster ≠ пустой рынок |
 | 3 | **Допуск** | **THEMIS** принимает решение во время публикации — подписанные `approve` / `review` / `reject` (опционально) |
 | 4 | **Размещение и вызов (invoke)** | [Протокол](https://github.com/alexar76/aimarket-protocol) **AIMarket** + [Hub](https://github.com/alexar76/aimarket-hub) передают каталог, каналы и вызовы |
 | 5 | **Поставка** | 17 **оракулов** (случайность, задержка, консенсус, математика доверия) · аттестованные физические показания **GAIA** · когнитивный слой **METIS** |
-| 6 | **Верификация** | когнитивный слой **METIS** · Solidity в закреплённом коммите от **BASANOS** · живые EVM-эксплойты от **DOLOS** · HTTP/федерация от **MOMUS** · сторонний MCP от **WARDEN** |
+| 6 | **Верификация** | когнитивный слой **METIS** · Solidity в закреплённом коммите от **BASANOS** · живые EVM-эксплойты от **DOLOS** · HTTP/федерация от **MOMUS** · сторонний MCP от **WARDEN** · **HISTOR** — что объявляли сторонние MCP-серверы, во времени |
 | 7 | **Потребление** | **ARGUS** — клиент на стороне спроса, который действительно запускают люди и агенты |
 | 8 | **Расчёт** | эскроу, платёжные каналы и вознаграждения **Treasury**, выплачиваемые только после независимой верификации |
 | 9 | **Финансирование** | **ACEX** оценивает агентов, размещает их и выдаёт займы под них |
@@ -182,7 +182,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 
 | Откуда | Куда | Поток |
 | --- | --- | --- |
-| Factory / aicom | HESTIA | scaffold · подписанный деплой на очаг |
+| Factory / aicom | HESTIA | scaffold · подписанный деплой в хостинг-рантайм |
 | HESTIA | Hub | явный announce (хостинг ≠ листинг) |
 | THEMIS | Hub | допуск публикации · approve / review / reject |
 | BASANOS | ACEX / contracts | сканирование Solidity · подписанный пакет гарантий |
@@ -196,6 +196,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | Hub | ACEX | CapShares |
 | SKOPOS | Factory / Hub | наблюдение за флотом |
 | MOMUS | Factory / Hub | поиск · подпись |
+| HISTOR | MCP-клиенты · Hub | подписанные метки MTL/1 · `/check` · `histor.check@v1` |
 | Treasury | Hub / chain | оплата после верификации |
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | снимки только для чтения · аномалии · аналитические выводы |
 | Alien Monitor | Hub | живой 3D-граф |
@@ -214,12 +215,12 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**aicom**](https://github.com/alexar76/aicom) | AI-Factory — автономный конвейер, который проектирует, собирает, тестирует и публикует продукты |
 | [**aicom-landing**](https://github.com/alexar76/aicom-landing) | Быстрый генератор маркетинговых лендингов, выделенный из полного конвейера |
 
-### 🔥 Очаг — где крутится процесс продавца
+### 🖥️ Хостинг-рантайм — где крутится процесс продавца
 <sub>Между scaffold и каталогом. Хостинг — не листинг. Пустой roster ≠ пустой рынок.</sub>
 
 | Репозиторий | Что это |
 | --- | --- |
-| [**hestia**](https://github.com/alexar76/hestia) | **HESTIA** (Ἑστία) — изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора. **Не** каталог Hub, **не** Factory, **не** доска работ. Агенты появляются только после явного подписанного деплоя на этот хост. THEMIS — опциональный допуск; announce явный; Hub остаётся рынком. · [лендинг](https://alexar76.github.io/hestia/) · [очаг](https://hestia.modelmarket.dev) |
+| [**hestia**](https://github.com/alexar76/hestia) | **HESTIA** (Ἑστία) — изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора. **Не** каталог Hub, **не** Factory, **не** доска работ. Агенты появляются только после явного подписанного деплоя на этот хост. THEMIS — опциональный допуск; announce явный; Hub остаётся рынком. · [лендинг](https://alexar76.github.io/hestia/) · [хостинг-рантайм](https://hestia.modelmarket.dev) |
 
 ### 🛒 Ядро AIMarket — протокол и рынок
 <sub>Этап 4. Стандарт, эталонный сервер и меш, который выполняет обнаружение и расчёты.</sub>
@@ -253,7 +254,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**aimarket-oracle-gateway**](https://github.com/alexar76/aimarket-oracle-gateway) | **Сервер MCP** — 35 верифицируемых инструментов оракулов с оплатой за вызов (`get_random`, `compute_vdf`, `get_reputation_scores`, …) для всех 17 оракулов, доступных внешним AI-агентам через stdio · [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway) |
 
 ### 🧮 Верифицируемые вычисления — что действительно покупают агенты
-<sub>Этап 4. Подписанная математика и верифицированный когнитивный слой с оплатой за вызов.</sub>
+<sub>Этап 5. Подписанная математика и верифицированный когнитивный слой с оплатой за вызов.</sub>
 
 | Репозиторий | Что это |
 | --- | --- |
@@ -263,7 +264,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**lottery**](https://github.com/alexar76/lottery) | **AI-Agent Oracle Lottery** — неподдающиеся манипуляции ончейн-розыгрыши (Platon + Chronos **VDF verified on-chain**), взвешенные по репутации LUMEN, спонсируемый Hub **machine UBI**; **реальные агенты AI Service Mesh играют со своими кошельками** · Solidity/Foundry |
 
 ### 🌍 Физический мир — датчики как платная возможность
-<sub>Этап 4, офчейн-реальность: аттестованные показания, карта поверх них и столы, которые превращают эти SKU в цитируемые B2B-продукты.</sub>
+<sub>Этап 5, офчейн-реальность: аттестованные показания, карта поверх них и столы, которые превращают эти SKU в цитируемые B2B-продукты.</sub>
 
 | Репозиторий | Что это |
 | --- | --- |
@@ -272,7 +273,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**cite-desks**](https://github.com/alexar76/cite-desks) | **Cite desks** — пять независимых evidence-столов на рельсах AIMarket (Emberline · огонь, Tideline · паводок, Solrecord · PV, Seamark · Nordic AIS, Plinth · площадка): watches, запуски по расписанию, cite packs, USDC · [семья](https://desk.modelmarket.dev/) · [Emberline](https://emberlinedesk.com/) · форк [alexar76/cite-desks](https://github.com/alexar76/cite-desks) |
 
 ### 🛡 Доверие и безопасность — кто получает допуск и кто платит за найденное
-<sub>Этап 5 и рельсы вознаграждений. Пять независимых проверок, каждая с подписью, в пять разных моментов: при публикации, для исходного кода в закреплённом коммите, для развёрнутых контрактов, живого HTTP и стороннего инструмента MCP до его попадания на хост — плюс отдельный ключ, который оплачивает найденное. **DOLOS находится здесь и только здесь** — это красная команда, а не инструмент сообщества или наблюдаемости.</sub>
+<sub>Этап 6 и рельсы вознаграждений. Шесть независимых проверок, каждая с подписью, в шесть разных моментов: при публикации, для исходного кода в закреплённом коммите, для развёрнутых контрактов, живого HTTP, стороннего инструмента MCP до его попадания на хост и в публичной записи того, что объявлял каждый удалённый эндпоинт MCP из официального реестра и когда это менялось, — плюс отдельный ключ, который оплачивает найденное. **DOLOS находится здесь и только здесь** — это красная команда, а не инструмент сообщества или наблюдаемости.</sub>
 
 | Репозиторий | Что это | Когда запускается |
 | --- | --- | --- |
@@ -282,16 +283,17 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**momus**](https://github.com/alexar76/momus) | **MOMUS** — автономная красная команда HTTP/федерации: безопасные пробы только для чтения → находки с подписью Ed25519; находит и подписывает, но **не может платить себе** · [живой сервис](https://momus.modelmarket.dev) · [лендинг](https://alexar76.github.io/momus/) | непрерывно, на живых сервисах |
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury** — отдельный плательщик вознаграждений для MOMUS (собственный ключ и контейнер); платит только после независимой верификации · [живой сервис](https://momus.modelmarket.dev/treasury) · [лендинг](https://alexar76.github.io/treasury/) | после верификации |
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN** — **библиотека файрвола безопасности MCP** без зависимостей (не сервер): статическое сканирование описания инструмента → подписанный поток угроз → происхождение → закрепление · [лендинг](https://warden.modelmarket.dev/) · [исследование: 1 108 публичных серверов MCP](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.ru.md) | до попадания стороннего инструмента на хост |
+| [**histor**](https://github.com/alexar76/histor) | **HISTOR** (ἵστωρ) — публичный **журнал прозрачности определений инструментов MCP**: читает, что объявляет каждый удалённый эндпоинт из официального реестра MCP (никогда не вызывает инструменты), подписывает это метками MTL/1, добавляет их в дерево Меркла по RFC 9162 с подписанными вершинами и датирует каждое изменение с диффом. Безопасным сервер не называет никогда · [live](https://histor.modelmarket.dev) · [лендинг](https://alexar76.github.io/histor/) | ежедневно, по всем удалённым эндпоинтам официального реестра · и по запросу `/check` |
 
 ### 👤 Клиент, который вы действительно запускаете
-<sub>Этап 6. Всё выше — инфраструктура; здесь появляется пользователь.</sub>
+<sub>Этап 7. Всё выше — инфраструктура; здесь появляется пользователь.</sub>
 
 | Репозиторий | Что это |
 | --- | --- |
 | [**argus**](https://github.com/alexar76/argus) | **ARGUS-3** — эталонный агент на стороне спроса и единственная предполагаемая точка взаимодействия с человеком: MCP под контролем WARDEN (репутация LUMEN), несколько поставщиков LLM, Telegram; нативный потребитель/поставщик AIMarket; криптовалюта **по умолчанию отключена** · [живой лендинг](https://magic-ai-factory.com/argus/) |
 
 ### 📈 ACEX — рынок капитала для агентов
-<sub>Этап 8. Здесь оценивается будущий доход агента.</sub>
+<sub>Этап 9. Здесь оценивается будущий доход агента.</sub>
 
 | Репозиторий | Что это |
 | --- | --- |
@@ -299,7 +301,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**pulse-terminal**](https://github.com/alexar76/pulse-terminal) | Панель рынков капитала ACEX с актуальными ценами агентов |
 
 ### 🌌 Наблюдаемость — чтение системы без изменений
-<sub>Этап 9. Все три компонента по замыслу работают только на чтение: они измеряют, но не действуют.</sub>
+<sub>Этап 10. Все три компонента по замыслу работают только на чтение: они измеряют, но не действуют.</sub>
 
 | Репозиторий | Что это |
 | --- | --- |
@@ -344,6 +346,8 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 Каждый репозиторий один раз указан выше — в единственной группе, соответствующей его роли. Этот указатель
 поможет найти его с любой другой стороны.
 
+Канонический указатель — в [английской версии](README.md#az); если перевод отстаёт, сверяйтесь с ним.
+
 | Репозиторий | Группа | Одной строкой |
 | --- | --- | --- |
 | [acex](https://github.com/alexar76/acex) | ACEX | CapShares, кредитование, AMM |
@@ -373,8 +377,8 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [dolos](https://github.com/alexar76/dolos) | Доверие и безопасность | динамическая красная команда EVM (изолирована в форке) |
 | [gaia](https://github.com/alexar76/gaia) | Физический мир | аттестованные показания IoT |
 | [helios](https://github.com/alexar76/helios) | Сообщество и вещание | yaml → озвученное видео → YouTube |
-| [hestia](https://github.com/alexar76/hestia) | Очаг | изолированный hosted-runtime · не Hub, не Factory |
-| [hestia](https://github.com/alexar76/hestia) | Очаг | изолированный hosted-runtime · не Hub, не Factory |
+| [hestia](https://github.com/alexar76/hestia) | Хостинг-рантайм | изолированный hosted-runtime · не Hub, не Factory |
+| [histor](https://github.com/alexar76/histor) | Доверие и безопасность | журнал прозрачности определений инструментов MCP |
 | [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) | Пример приложения | Flutter + SDK, реальный продукт |
 | [logos](https://github.com/alexar76/logos) | Наблюдаемость | аналитика федерации только для чтения |
 | [lottery](https://github.com/alexar76/lottery) | Верифицируемые вычисления | неподдающиеся манипуляции ончейн-розыгрыши · machine UBI |

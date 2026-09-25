@@ -216,6 +216,7 @@ def test_the_pattern_table_carries_a_tier_for_every_rule():
     assert off_name == {
         "TOOL_DEF_CREDENTIAL_PARAM",
         "TOOL_DEF_ENV_REFERENCE",
+        "TOOL_DEF_SECRET_EXFIL",
         "TOOL_DEF_SECRET_REQUEST",
     }, off_name
 

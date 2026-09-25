@@ -23,6 +23,8 @@ def pay_client(tmp_path, monkeypatch):
     # `test_ai_market_channel_settlement.py` and `test_ai_market_protocol_v1_admin.py`
     # already do; the "crypto is off" behaviour has its own dedicated cases.
     monkeypatch.setenv("AIFACTORY_CRYPTO_ENABLED", "1")
+    monkeypatch.setenv("AIFACTORY_PAYMENT_TESTNET", "1")
+    monkeypatch.setenv("AIFACTORY_PAYMENT_VERIFY_STUB", "1")
     # `_ensure_recipient_configured` reads the resolved recipient (config, else
     # `AIMARKET_PAYMENT_RECIPIENT`) and answers 503 for a placeholder, so patching
     # `pay_mod.RECIPIENT_ADDRESS_EVM` alone stopped being enough — payment creation

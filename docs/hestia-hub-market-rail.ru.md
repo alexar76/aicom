@@ -4,7 +4,7 @@
 
 Термины — [`localization-glossary.md`](localization-glossary.md). Имена продуктов (`Hub`, `HESTIA`, `USDC`, `Base`, `x402`, `EIP-3009`) и env-переменные остаются латиницей. В прозе: **хост (HESTIA)** и **агент** — не «очаг» и не «тенант».
 
-Карта трёх рельсов хаба: [`aimarket-hub/docs/money-rails.md`](../aimarket-hub/docs/money-rails.md). Эта страница — **живая продовая схема**: кто чеканит `402`, куда идёт USDC, каждая транзакция на Base и каждый ключ.
+Карта трёх рельсов хаба: [`aimarket-hub/docs/money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md). Эта страница — **живая продовая схема**: кто чеканит `402`, куда идёт USDC, каждая транзакция на Base и каждый ключ.
 
 Проверено **2026-09-21** на `https://modelmarket.dev` и `https://hestia.modelmarket.dev`.
 
@@ -285,10 +285,10 @@ Live-список (`deploy/hub-payment.env.example`): `https://oracles.modelmark
 
 | Рельс | Кто держит деньги | Документ |
 |---|---|---|
-| Market (эта страница) | никто, кроме покупателя и продавца | здесь + [`money-rails.md`](../aimarket-hub/docs/money-rails.md) §1 |
-| Credits | оператор Hub (предоплаченное обязательство) | [`money-rails.md`](../aimarket-hub/docs/money-rails.md) §2 · `AIMARKET_CREDITS_*` |
+| Market (эта страница) | никто, кроме покупателя и продавца | здесь + [`money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md) §1 |
+| Credits | оператор Hub (предоплаченное обязательство) | [`money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md) §2 · `AIMARKET_CREDITS_*` |
 | Каналы / эскроу | по умолчанию оператор | [KI-11](known-issues.md) — **без изменений** |
-| Кредитные аккаунты ATLAS | оператор ATLAS | [`atlas/docs/CREDIT-ACCOUNTS.md`](../atlas/docs/CREDIT-ACCOUNTS.md) |
+| Кредитные аккаунты ATLAS | оператор ATLAS | [`atlas/docs/CREDIT-ACCOUNTS.md`](https://github.com/alexar76/atlas/blob/main/docs/CREDIT-ACCOUNTS.md) |
 
 Не направлять `AIMARKET_ESCROW_HUB_ADDRESS` на тот же кошелёк, что и леджер канала с полным refund ([KI-11](known-issues.md)). Это ортогонально прямой оплате продавцу.
 
@@ -318,10 +318,10 @@ Live-список (`deploy/hub-payment.env.example`): `https://oracles.modelmark
 
 ## 9. Связанное
 
-- Карта рельсов Hub — [`aimarket-hub/docs/money-rails.md`](../aimarket-hub/docs/money-rails.md)
+- Карта рельсов Hub — [`aimarket-hub/docs/money-rails.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/money-rails.md)
 - Стук в федерацию — [`join-the-federation.ru.md`](join-the-federation.ru.md)
 - Payment env Hub — [`deploy/hub-payment.env.example`](../deploy/hub-payment.env.example)
-- Конфиг HESTIA — [`hestia/.env.example`](../hestia/.env.example) · [`hestia/docs/user-guide.ru.md`](../hestia/docs/user-guide.ru.md)
-- Воркшоп оператора (`/ui/`, 90 мин) — [`hestia/docs/workshop.ru.md`](../hestia/docs/workshop.ru.md)
+- Конфиг HESTIA — [`hestia/.env.example`](https://github.com/alexar76/hestia/blob/main/.env.example) · [`hestia/docs/user-guide.ru.md`](https://github.com/alexar76/hestia/blob/main/docs/user-guide.ru.md)
+- Воркшоп оператора (`/ui/`, 90 мин) — [`hestia/docs/workshop.ru.md`](https://github.com/alexar76/hestia/blob/main/docs/workshop.ru.md)
 - Расчёт в архитектуре — [`ecosystem-architecture.md`](ecosystem-architecture.md) §5.1
 - Глоссарий — [`localization-glossary.md`](localization-glossary.md)
