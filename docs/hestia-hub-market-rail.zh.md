@@ -12,7 +12,7 @@ Hub 三条轨道总图：[`aimarket-hub/docs/money-rails.md`](https://github.com
 
 ## 1. 一笔付款填不满两座收银台
 
-Hub（`aimarket_hub/settle.py`）与 HESTIA（`hestia/payments.py`）都可以当收银台：签发 `nonce`、返回 `payTo` = 卖家钱包的 `402`，再要求链上 `transferWithAuthorization`，其 `AuthorizationUsed` 日志必须带 **该** nonce（`AIMARKET_SETTLE_REQUIRE_BINDING` / `HESTIA_PAYMENT_REQUIRE_BINDING`，默认均为 `1`）。
+Hub（`aimarket_hub/settle.py`）与 HESTIA（`hestia/payments.py`）都可以当收银台：签发 `nonce`、返回 `payTo` = 卖家钱包的 `402`，再要求链上 `transferWithAuthorization`，其 `AuthorizationUsed` 日志必须带 **该** nonce（始终如此：两座收银台都不接受未绑定的付款）。两座收银台的 nonce 都是一个新 `payment_secret` 的 `sha256`，该秘密值只交给索取 `402` 的一方，兑付时必须出示它（§3、§4）。
 
 EIP-3009 把一次授权绑到一个 nonce。若 Hub 签发 nonce A、主机对同一次调用签发 nonce B，买家的一笔转账只能满足其中一方。Hub 核验后转发 invoke，HESTIA 会再出 **第二个** `402`、另一个 nonce。这不是重试，是断轨。
 
@@ -68,12 +68,14 @@ Hub 仍是目录。HESTIA 仍是主机。Announce 是敲门；crawler 索引 `pa
 
 1. 买家向 Hub `POST /ai-market/v2/invoke`，带 `capability_id` + `product_id`，不付款。
 2. Hub 看到联邦上架，其 `source_hub` 匹配 `AIMARKET_SELLS_FOR`（`https://hestia.modelmarket.dev`）。本 Hub 是 **登记卖家**：标价、手续费 `0`、`payTo` = 上架的 `payout_address`。
-3. Hub 签发 nonce A，写入 `settle_invoice`（`AIMARKET_SETTLE_INVOICE_TTL_S`，默认 300 秒），返回 `402` + x402 `PAYMENT-REQUIRED`。
+3. Hub 生成新的 `payment_secret`，签发 nonce A = `sha256(payment_secret)`，两者一并写入 `settle_invoice`（`AIMARKET_SETTLE_INVOICE_TTL_S`，默认 300 秒），返回 `402` + x402 `PAYMENT-REQUIRED`。秘密值只在 JSON 正文里 —— 从不放进 `PAYMENT-REQUIRED`、`accepts[].extra` 或请求头。
 4. 买家签署 EIP-3009 `transferWithAuthorization`（nonce A）并提交到 Base。USDC **买家 → 卖家**。Hub 收不到这笔钱。
-5. 买家用 `X-Payment` / `PAYMENT-SIGNATURE` 和 `X-Payment-Nonce` 再 invoke。
-6. Hub 读收据：已上链、confirmations ≥ `AIMARKET_SETTLE_MIN_CONFIRMATIONS`、给卖家的 USDC `Transfer` ≥ 标价、nonce A 的 `AuthorizationUsed`、tx 与 nonce 尚未花费。
-7. Hub 把 invoke 转发给主机。主机 **不** 签发 nonce（`HESTIA_PAYMENTS_ENABLED=0`）。智能体 handler 执行。
+5. 买家用 `X-Payment` / `PAYMENT-SIGNATURE`、`X-Payment-Nonce` 和 `X-Payment-Secret` 再 invoke。仅凭秘密值也能确定 nonce A；若发送 nonce，它必须正是该秘密值所能打开的那个。
+6. Hub 读收据：已上链、confirmations ≥ `AIMARKET_SETTLE_MIN_CONFIRMATIONS`、秘密值能打开 nonce A、有 nonce A 的 `AuthorizationUsed`，且 **该** 授权自己完成的那笔转账（代币的下一条日志）从签名者转给卖家、金额不低于标价；该授权尚未花费。
+7. Hub 把 invoke 转发给主机。付款随之转发，`X-Payment-Nonce` 中是 nonce A，因为这笔付款是 Hub 在本次请求中亲自结算的；买家的秘密值留在 Hub。主机 **不** 签发 nonce（`HESTIA_PAYMENTS_ENABLED=0`）。智能体 handler 执行。
 8. Hub 返回 `200`，附结果和收据。
+
+为什么要秘密值：转账一上链，其哈希和 nonce A 就是公开的（代币会记下 `AuthorizationUsed`）。若兑付只需这两个值，任何盯着链的人都能抢先出示，而真正付款的买家反被以“已花费”拒绝。链上只能看到承诺值；秘密值只在买家自己的重试中才离开买家。为什么只算授权自己的那笔转账：若把转给卖家的所有转账相加，任何在上链前拿到买家已签名授权的人，都可以把它和自己一笔 1 个单位的授权打包在同一笔交易里，用自己的账单兑走买家的钱。一笔付款对应一个授权：同一笔交易里的两个授权是两笔付款、买两次调用；调用未完成时，只释放其中一笔。§3a 的购买（2026-09-21）早于秘密值：那次重试只带了 `X-Payment` 和 `X-Payment-Nonce`。
 
 没有链上收据的签名不是付款。通道和积分是别的轨道（[KI-11](known-issues.md) 仍是托管通道）。
 
@@ -190,9 +192,13 @@ sequenceDiagram
 |---|---|---|
 | A0（线上） | `AIMARKET_MARKET_FEE_BPS=0` | 标价全部给卖家。 |
 | A1 | `AIMARKET_MARKET_FEE_BPS>0` + 已部署 `MarketSplitter` + `AIMARKET_MARKET_SPLITTER` + `AIMARKET_MARKET_FEE_TO` | `402` 写 splitter；一笔 tx 同时付给卖家和运营。未上线。上限 1000 bps（10%）。**先** 部署合约，再让 env 对齐。 |
-| A2 | 关闭 binding（`AIMARKET_SETTLE_REQUIRE_BINDING=0`） | 任何近期打给卖家的 Transfer 都可冒充付款。**保持 binding 开启。** |
+| A2 | 关闭 binding（`AIMARKET_SETTLE_REQUIRE_BINDING=0`） | 已移除。普通转账无法说明是谁付的款，谁先出示，调用就归谁；两座收银台现在都忽略该设置，并在启动时记录为错误。 |
 
 无 Hub 的直连主机 invoke：在 **B** 下是通往 `/t/{slug}/invoke` 的付费门；在 **A** 下免费——这是有意的：商店是目录。
+
+在 **B** 下兑付：主机的 `402` 带有 `nonce` 和 `payment_secret`，其中 `nonce` = `sha256(payment_secret)`；秘密值只在正文里，从不放进请求头。买家对该 nonce 签署 `transferWithAuthorization`，再带 `X-Payment: <tx hash>` 和 `X-Payment-Secret: <payment_secret>` 重试。`X-Payment-Nonce` 可以不发，因为秘密值已经确定了它；若发送，必须正是该秘密值所能打开的 nonce。主机只计入该授权自己完成的那笔转账（代币的下一条日志，从签名者转入收款地址），并且每个授权单独认领，所以同一笔交易里的两个授权可买两次调用。要秘密值的原因：转账一上链，其哈希和 nonce 就是公开的，任何盯着链的人都可能抢先出示；只有秘密值（它只交给了索取报价的一方）能证明兑付者就是付款者。普通转账会被拒绝：不存在未绑定模式（`HESTIA_PAYMENT_REQUIRE_BINDING=0` 会被忽略）。
+
+Hub 在 **B** 下作为经纪时，只是单纯转发：它没有该主机的对等密钥，原样转交主机的 `402`（连同其中的 `payment_secret`），并把 `X-Payment`、`X-Payment-Nonce` 和 `X-Payment-Secret` 透传给主机。因此经纪 Hub 能看到秘密值——在 `402` 里一次，在重试里又一次：买家把秘密值托付给它，就像把调用托付给它一样。持有该主机对等密钥的 Hub 则会自行向买家收费，并且只在本次请求中亲自结算了付款时才转发它（§3）——带的是自己的 nonce，不带买家的秘密值，于是主机的收银台会拒绝这笔付款（§8）。
 
 ---
 
@@ -213,14 +219,14 @@ sequenceDiagram
 
 | 变量 | 默认 | 含义 |
 |---|---|---|
-| `AIMARKET_SETTLE_REQUIRE_BINDING` | `1` | 要求 **本** Hub 所签发 nonce 的 `AuthorizationUsed`。**保持开启。** 关闭 = 打给同一卖家的旧 Transfer 可付新调用。 |
+| `AIMARKET_SETTLE_REQUIRE_BINDING` | 已移除 | binding 始终开启：**本** Hub 所签发 nonce 的 `AuthorizationUsed`、该授权自己的转账到达卖家，以及能打开该 nonce 的 `X-Payment-Secret`。设为 `0` 会被忽略并记录。 |
 | `AIMARKET_SETTLE_INVOICE_TTL_S` | `300` | nonce A 可付款的时长。代码里最少 30 秒。 |
-| `AIMARKET_SETTLE_MAX_AGE_S` | `0`（关） | 拒绝更旧的 Transfer。一旦关闭 binding 就需要。 |
+| `AIMARKET_SETTLE_MAX_AGE_S` | `0`（关） | 拒绝更旧的 Transfer。账单有效期已经限制了时长。 |
 | `AIMARKET_SETTLE_MIN_CONFIRMATIONS` | `1` | 付款计入前的确认数。 |
 | `AIMARKET_SETTLE_RPC_URL` | 空 | 独占 RPC。气泡 URL 不得落到主网。空 → `AIMARKET_RPC_<CHAIN>`。 |
 | `AIMARKET_MARKET_FEE_BPS` | `0` | 运营分成（基点），上限 1000。线上为 `0`。 |
 | `AIMARKET_MARKET_FEE_TO` | Hub 的 x402 钱包 | 运营分成去向。没有收款方则不收费。 |
-| `AIMARKET_MARKET_SPLITTER` | 空 | 已部署的 `MarketSplitter`。没有它，手续费只有在买家自己给出两段 Transfer 时才能结清。 |
+| `AIMARKET_MARKET_SPLITTER` | 空 | 已部署的 `MarketSplitter`。没有它就完全不收手续费（并记录错误日志）。有它时，绑定的付款只能以自己的三笔转账结清：总额转入 splitter，随后 splitter 分别付给卖家和运营方。 |
 
 ### 5.3 x402 信封（`402` 的正文 / 头）
 
@@ -271,14 +277,26 @@ sequenceDiagram
 | `HESTIA_PAYMENT_TOKEN_EIP712_NAME` | `USD Coin` | `402` 里公布的 EIP-712 域名。 |
 | `HESTIA_PAYMENT_TOKEN_EIP712_VERSION` | `2` | EIP-712 域版本（USDC）。 |
 | `HESTIA_PAYMENT_MIN_CONFIRMATIONS` | `1` | 与 `AIMARKET_SETTLE_MIN_CONFIRMATIONS` 同角色。 |
-| `HESTIA_PAYMENT_REQUIRE_BINDING` | `1` | 主机侧 nonce 绑定。若本主机是收银台 **保持开启**。 |
+| `HESTIA_PAYMENT_REQUIRE_BINDING` | 已移除 | 主机侧 nonce 绑定，始终开启：主机的每个 `402` 都带 `payment_secret`，买家用 `X-Payment-Secret` 兑付（§4）。设为 `0` 会被忽略并记录。 |
 | `HESTIA_PAYMENT_INVOICE_TTL_S` | `900` | 主机发票寿命（长于 Hub 的 300 秒）。 |
-| `HESTIA_PAYMENT_MAX_AGE_S` | `3600` | 拒绝更旧的未绑定 Transfer。`0` 关闭。 |
+| `HESTIA_PAYMENT_MAX_AGE_S` | `3600` | 拒绝更旧的付款。`0` 关闭。 |
 | `HESTIA_HUB_URL` | `https://modelmarket.dev` | Announce / 联邦目标。空 = 永不敲门。托管 ≠ 上架。 |
 | `HESTIA_AUTO_ANNOUNCE` | `0` | 即使为 `1` 仍需 `HESTIA_HUB_URL`。观察，不是授信。 |
 | `payout_address` | 智能体部署字段，不是 env | 智能体行上的卖家钱包（`POST /v1/tenants`）。Hub crawler 写入上架。空 + payments on → 不向任何人收费（没有指向运营方的 `402`）。 |
 
 Hub 不需要卖家私钥。主机也不需要。只有买家签 `transferWithAuthorization`。
+
+### 6.1 可验证计算
+
+`hestia.compute.run@v1`（$0.001，一个副本）和 `hestia.compute.verify@v1`（$0.0025，两个副本）也通过本轨道出售；卖方是主机本身，而非智能体。计算开启后从不免费，且不参考 `HESTIA_PAYMENTS_ENABLED`。每次调用携带以下三组请求头之一：
+
+| 请求头 | 发送方 | 付款方式 |
+|---|---|---|
+| `X-API-Key` ∈ `HESTIA_COMPUTE_HUB_KEYS` | Hub（其 `AIMARKET_PEER_API_KEYS` 中对应本主机的条目） | Hub 已在其积分轨道向买方收费 —— **线上模式** |
+| `X-API-Key` + `X-Payment: <tx hash>` + `X-Payment-Nonce` | Hub，转发它在本次请求中亲自结算的市场轨道付款 | 该 nonce 指明的授权（Hub 自己的账单），其自身的转账向 `HESTIA_COMPUTE_PAYOUT_ADDRESS` 转入不低于标价的金额，在此仅被认领一次；由密钥表明是谁在兑付。未指明任何授权的付款（包括普通转账）会被拒绝 |
+| `X-Payment: <tx hash>` + `X-Payment-Secret`，无密钥 | 直接买家 | 转入 `HESTIA_COMPUTE_PAYOUT_ADDRESS`、nonce 为 `sha256(secret)` 的 EIP-3009 `transferWithAuthorization`，在此仅被认领一次；秘密值由买家自选，主机从不自行生成 nonce |
+
+Hub 在发送密钥的**同时**附带转账时，由转账付款：它在链上验证并只被认领一次，密钥代替了秘密值。未在 `X-Payment-Nonce` 中指明任何授权的付款（包括普通转账）会被拒绝；随密钥发送的秘密值也必须能打开它的 nonce。没有密钥时，普通转账、打不开链上 nonce 的秘密值以及可猜测的秘密值（不同字节少于 16 个）都会被拒绝：交易一上链，其哈希和 nonce 就是公开的，所以直接买家要用 nonce 背后的秘密值证明付款的是自己。两扇门都只认指明的授权自己完成的那笔转账，且每个授权单独认领：同一笔交易里的两个授权买两次调用。未付款的计算 `402` 会写明这一点（`binding: "secret"`，`nonce_rule: "sha256(secret)"`）。生产环境仅使用 Hub 密钥（没有计算收款地址）。详见：[`hestia/docs/COMPUTE.md`](https://github.com/alexar76/hestia/blob/main/docs/COMPUTE.md)。
 
 ---
 
@@ -312,6 +330,8 @@ Hub 不需要卖家私钥。主机也不需要。只有买家签 `transferWithAu
 2. 设置 `HESTIA_PAYMENT_RPC_URL`，然后 `HESTIA_PAYMENTS_ENABLED=1`。
 3. 目录买家付 Hub 路由费 **以及** 主机标价 — 两笔转账。
 4. 付费门是直连 `/t/{slug}/invoke`。
+5. 买家客户端须带上 `X-Payment-Secret`，值为主机 `402` 中的 `payment_secret`；只发 `X-Payment` / `X-Payment-Nonce` 会被拒绝（§4）。
+6. Hub 的 `AIMARKET_PEER_API_KEYS` 中没有该主机的条目。若有该条目，Hub 会自行向买家收费，并且只转发自己结算的付款，不带主机收银台所要的秘密值。同一把密钥也是在积分轨道上出售计算的依据（§6.1）。
 
 同一上架条目上 **切勿** 开两座收银台。
 

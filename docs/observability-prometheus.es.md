@@ -25,6 +25,22 @@ Skopos **no** sustituye Grafana: consulta Prometheus para KPI y el grafo 3D; Gra
 
 Código: `aimarket-hub/aimarket_hub/metrics.py`.
 
+**Quién puede leerlo.** `/metrics` nombra cada capacidad que vende el hub, cuántas veces se pagó
+o se rechazó cada una, qué familias de clientes MCP lo usan y la latencia de las invocaciones: es
+el panel del operador, no una página pública. Por defecto solo responde a quien se conecta
+**directamente** desde una dirección de loopback o privada (127.0.0.0/8, 10/8, 172.16/12,
+192.168/16, ::1, fc00::/7) y sin cabeceras de reenvío. Prometheus en la red de contenedores pasa;
+todo lo que llega por el nginx público recibe `404`, porque nginx añade `X-Forwarded-For` /
+`X-Real-IP`.
+
+| Variable | Por defecto | Efecto |
+|---|---|---|
+| `AIMARKET_METRICS_TOKEN` | sin definir | Un recolector externo lo lee con `Authorization: Bearer <token>`. |
+| `AIMARKET_METRICS_PUBLIC` | `0` | `1` lo vuelve a abrir a todos (como antes de 3.7.0). |
+
+La etiqueta `capability` es el id **del catálogo**: una invocación de una capacidad que el hub no
+lista cuenta como `capability="unlisted"`, así que los ids inventados no crean series nuevas.
+
 ## Scrape
 
 Config: [`prometheus.yml`](../prometheus.yml). Prometheus necesita

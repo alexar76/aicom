@@ -159,6 +159,9 @@ data/**/marketing_content.json
 course-app/
 # hello-capability demo signing key (generated locally for aimarket-hub quickstart)
 aimarket-hub/examples/hello-capability/provider_key
+# weather-witness key and daily-cap ledger, when run from the example directory
+aimarket-hub/examples/subcontract-capability/provider_key
+aimarket-hub/examples/subcontract-capability/daily_spend.*
 # Local CPU text-to-image: venv + HF weights (downloaded on first run; not in git)
 data/local-image-test/
 data/.cache/huggingface/

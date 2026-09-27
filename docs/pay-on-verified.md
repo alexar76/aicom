@@ -701,6 +701,19 @@ Every performed verdict leaves two independent artifacts:
 | Provider smuggles a structural delimiter into its output to dodge conviction | both spans are redacted of the reserved literals before composing, and GAIA anchors on the first fence-opened block |
 | Buyer writes audit instructions into `verify.intent` to manufacture a provider fault | the intent is fenced and labelled as the buyer's specification, with the judge told not to follow directives inside either block |
 | Operator typos `AIMARKET_VERIFY_FAIL_CLOSED` / `…_SCORE_THRESHOLD` | an unrecognised boolean fails closed; a bar outside `0.0–1.0` (incl. `nan`) falls back to `0.7`; both are logged |
+| The losing party disputes a genuine verdict | with `AIMARKET_APPEAL_WINDOW_S > 0` the verdict is provisional and the loser may post a bond and appeal to a second, blind verifier before any money moves — see [aimarket-hub/docs/pay-on-verified.md "Appeals"](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#appeals) |
+
+### 7.1 Appeals
+
+Off by default (`AIMARKET_APPEAL_WINDOW_S=0`). When on, a genuine verdict on a paid
+settlement is **provisional**: the hold stays held, and capture/release, the slash ladder
+and the reputation event all wait until the window closes unappealed or an appeal to a
+second verifier (`AIMARKET_APPEAL_METIS_URL`) resolves. The buyer appeals a pass with the
+channel secret, the seller appeals a fail with its hub credits key; the bond
+(max $0.02, 20% of price, ≤ price) is forfeited if the appeal court agrees with the first
+verdict and returned otherwise. The court never sees the first verdict. Envelopes that carry
+an `appeal` object are signed at verification signature v3. Full protocol, refusals and
+guarantees: [aimarket-hub/docs/pay-on-verified.md](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#appeals).
 
 ---
 

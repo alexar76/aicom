@@ -10,7 +10,7 @@ export default function PrivacyPage() {
   return (
     <div className="min-h-screen px-4 py-16 pt-24 max-w-3xl mx-auto">
       <h1 className="text-4xl font-bold text-white mb-2">Privacy Policy</h1>
-      <p className="text-gray-500 text-sm mb-10">Last updated: June 2026</p>
+      <p className="text-gray-500 text-sm mb-10">Last updated: September 2026</p>
 
       <div className="space-y-6 text-gray-300 text-sm leading-relaxed">
         <section>
@@ -18,16 +18,36 @@ export default function PrivacyPage() {
           <p>
             The platform may store product ideas submitted via public forms, admin actions, pipeline
             telemetry, and append-only marketing logs (page views, CTA clicks) on the server you
-            operate. LLM prompts and responses are written to local disk for debugging and cost
-            accounting unless you disable logging.
+            operate. First-party request logs record the visitor&apos;s IP address, user-agent and the
+            pages requested. LLM prompts and responses are written to local disk for debugging and
+            cost accounting unless you disable logging.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-white mb-2">IP addresses</h2>
+          <p>
+            An IP address is personal data under the GDPR and personal information under US state law,
+            so we minimise it. In the traffic analytics pipeline, IP addresses are{' '}
+            <strong className="text-gray-100">anonymised at ingest</strong> — truncated to their
+            network (IPv4 <code className="text-indigo-300">a.b.c.0</code> /24, IPv6 /48) — so an
+            individual device is no longer singled out, and those records are retained for{' '}
+            <strong className="text-gray-100">at most 90 days</strong>. The full address is used only
+            transiently to rate-limit submissions and in short-lived security/audit logs to prevent
+            abuse (a legitimate interest). Country and network are derived before truncation, so
+            analytics and abuse detection keep working.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-2">What we do not do</h2>
           <p>
-            We do not sell visitor data to ad networks. Self-hosted deployments control retention;
-            delete <code className="text-indigo-300">data/</code> or rotate logs on your schedule.
+            We do not sell visitor data, and the storefront loads{' '}
+            <strong className="text-gray-100">no Google Analytics or other third-party trackers</strong>
+            {' '}— no cross-site or advertising cookies. Everything is first-party, on the host you
+            operate. Self-hosted deployments control retention; delete{' '}
+            <code className="text-indigo-300">data/</code> or change the log-retention window on your
+            schedule.
           </p>
         </section>
 
@@ -41,18 +61,12 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Analytics</h2>
-          <p>
-            First-party request logs and optional server-side event logs on the host you operate.
-            The storefront does not load Google Analytics or other third-party trackers.
-          </p>
-        </section>
-
-        <section>
           <h2 className="text-lg font-semibold text-white mb-2">Your rights</h2>
           <p>
-            For GDPR or similar requests on a public deployment, contact the site operator via the
-            lead form. Self-hosted operators are the data controller for their instance.
+            For GDPR, CCPA/CPRA or similar access and erasure requests on a public deployment, contact
+            the site operator via the lead form. Self-hosted operators are the data controller for
+            their instance. Which law applies depends on where visitors are located, not where the
+            operator is incorporated.
           </p>
         </section>
       </div>

@@ -25,6 +25,20 @@ Skopos **不**替代 Grafana：它用 Prometheus 拉 KPI 与三维服务图；Gr
 
 实现：`aimarket-hub/aimarket_hub/metrics.py`。
 
+**谁可以读取。** `/metrics` 列出 Hub 出售的每项能力、每项被付费或被拒绝的次数、调用它的 MCP
+客户端类别以及调用延迟：这是运营者的面板，而不是公开页面。默认只回应**直接**从回环或私有地址
+（127.0.0.0/8、10/8、172.16/12、192.168/16、::1、fc00::/7）连接且不带转发头的调用方。容器网络上的
+Prometheus 可以通过；经公共 nginx 进来的请求一律得到 `404`，因为 nginx 会添加
+`X-Forwarded-For` / `X-Real-IP`。
+
+| 变量 | 默认 | 作用 |
+|---|---|---|
+| `AIMARKET_METRICS_TOKEN` | 未设置 | 外部采集器用 `Authorization: Bearer <token>` 读取。 |
+| `AIMARKET_METRICS_PUBLIC` | `0` | `1` 恢复为所有人可读（3.7.0 之前的行为）。 |
+
+`capability` 标签是**目录中的** id：调用 Hub 未列出的能力计为 `capability="unlisted"`，因此编造的
+id 不会产生新的时间序列。
+
 ## 抓取
 
 配置：[`prometheus.yml`](../prometheus.yml)。Prometheus 需要

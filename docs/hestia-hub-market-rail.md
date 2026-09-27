@@ -12,7 +12,7 @@ Measured on **2026-09-21** against `https://modelmarket.dev` and `https://hestia
 
 ## 1. One payment cannot satisfy two tills
 
-Both Hub (`aimarket_hub/settle.py`) and HESTIA (`hestia/payments.py`) can be a till: mint a `nonce`, emit `402` with `payTo` = the seller wallet, then require an on-chain `transferWithAuthorization` whose `AuthorizationUsed` log carries **that** nonce (`AIMARKET_SETTLE_REQUIRE_BINDING` / `HESTIA_PAYMENT_REQUIRE_BINDING`, both default `1`).
+Both Hub (`aimarket_hub/settle.py`) and HESTIA (`hestia/payments.py`) can be a till: mint a `nonce`, emit `402` with `payTo` = the seller wallet, then require an on-chain `transferWithAuthorization` whose `AuthorizationUsed` log carries **that** nonce (always: neither till takes an unbound payment). Either till's nonce is `sha256` of a fresh `payment_secret` that only the caller who took the `402` receives, and redeeming needs that secret (§3, §4).
 
 EIP-3009 binds one authorization to one nonce. If Hub mints nonce A and the host mints nonce B for the same call, the buyer's single transfer can satisfy only one of them. Hub would verify the transfer, forward the invoke, and HESTIA would emit a **second** `402` on a different nonce. That is not a retry — it is a broken rail.
 
@@ -68,12 +68,14 @@ Hub stays the catalogue. HESTIA stays the host. Announce is a knock; crawl index
 
 1. Buyer `POST /ai-market/v2/invoke` on the Hub with `capability_id` + `product_id`, no payment.
 2. Hub sees a federated listing whose `source_hub` matches `AIMARKET_SELLS_FOR` (`https://hestia.modelmarket.dev`). It is **seller of record**: list price, fee `0`, `payTo` = listing `payout_address`.
-3. Hub mints nonce A, stores a `settle_invoice` (`AIMARKET_SETTLE_INVOICE_TTL_S`, default 300 s), returns `402` + x402 `PAYMENT-REQUIRED`.
+3. Hub mints a fresh `payment_secret` and nonce A = `sha256(payment_secret)`, stores both in a `settle_invoice` (`AIMARKET_SETTLE_INVOICE_TTL_S`, default 300 s), returns `402` + x402 `PAYMENT-REQUIRED`. The secret is in the JSON body only — never in `PAYMENT-REQUIRED`, `accepts[].extra` or a header.
 4. Buyer signs EIP-3009 `transferWithAuthorization` for nonce A and submits it on Base. USDC moves **buyer → seller** in that transaction. Hub never receives it.
-5. Buyer retries the invoke with `X-Payment` / `PAYMENT-SIGNATURE` and `X-Payment-Nonce`.
-6. Hub reads the receipt: mined, confirmations ≥ `AIMARKET_SETTLE_MIN_CONFIRMATIONS`, `Transfer` of USDC to the seller ≥ price, `AuthorizationUsed` for nonce A, tx and nonce not already spent.
-7. Hub forwards the invoke to the host. The host does **not** mint a nonce (`HESTIA_PAYMENTS_ENABLED=0`). The agent handler runs.
+5. Buyer retries the invoke with `X-Payment` / `PAYMENT-SIGNATURE`, `X-Payment-Nonce` and `X-Payment-Secret`. The secret alone also names nonce A; a nonce that is sent must be the one the secret opens.
+6. Hub reads the receipt: mined, confirmations ≥ `AIMARKET_SETTLE_MIN_CONFIRMATIONS`, the secret opens nonce A, `AuthorizationUsed` for nonce A, and the transfer **that** authorization moved (the token's next log) goes from the signer to the seller for at least the price; that authorization is not already spent.
+7. Hub forwards the invoke to the host. The payment goes with it, with nonce A in `X-Payment-Nonce`, because the Hub settled it on this request; the buyer's secret stays at the Hub. The host does **not** mint a nonce (`HESTIA_PAYMENTS_ENABLED=0`). The agent handler runs.
 8. Hub returns `200` with the result and a receipt.
+
+Why the secret: once the transfer is mined, its hash and nonce A are public (the token logs `AuthorizationUsed`). A redemption that needed only those two let anyone watching the chain present them first, and the buyer who paid was then refused as already spent. The chain shows only the commitment; the secret leaves the buyer only in their own retry. Why only the authorization's own transfer: counting every transfer to the seller let anyone holding a buyer's signed authorization before it was mined bundle it with a one-unit authorization of their own and redeem the buyer's money under their own invoice. A payment is its authorization, so two authorizations in one transaction are two payments and buy two calls, and a release after an unserved call un-spends one of them only. The purchase in §3a (2026-09-21) predates the secret: its retry carried `X-Payment` and `X-Payment-Nonce` alone.
 
 A signature with no chain receipt is not a payment. Channels and credits are other rails ([KI-11](known-issues.md) stays the custodial channel).
 
@@ -190,9 +192,13 @@ Further variants on **A** (still one till):
 |---|---|---|
 | A0 (live) | `AIMARKET_MARKET_FEE_BPS=0` | Whole list price to the seller. |
 | A1 | `AIMARKET_MARKET_FEE_BPS>0` + deployed `MarketSplitter` + `AIMARKET_MARKET_SPLITTER` + `AIMARKET_MARKET_FEE_TO` | `402` names the splitter; one tx pays seller and operator. Not live. Cap 1000 bps (10%). Deploy the contract **first**, then set env to match. |
-| A2 | Binding off (`AIMARKET_SETTLE_REQUIRE_BINDING=0`) | Any recent Transfer to the seller can be presented as payment. **Leave binding on.** |
+| A2 | Binding off (`AIMARKET_SETTLE_REQUIRE_BINDING=0`) | Removed. A plain transfer says nothing about who paid, so whoever presented it first took the call; both tills now ignore the setting and log it as an error at startup. |
 
 Direct host invoke (no Hub) with **B** is a paid call to `/t/{slug}/invoke`. Direct host invoke with **A** is free — that is intentional: the catalogue is the shop.
+
+Redeeming on **B**: the host's `402` carries `nonce` and `payment_secret`, where `nonce` = `sha256(payment_secret)`, and the secret is in the body only, never in a header. The buyer signs `transferWithAuthorization` over that nonce, then retries with `X-Payment: <tx hash>` and `X-Payment-Secret: <payment_secret>`. `X-Payment-Nonce` may be left out, since the secret names it; one that is sent must be the nonce the secret opens. The host counts only the transfer that authorization moved (the token's next log, from the signer to the payout address) and claims each authorization on its own, so two in one transaction buy two calls. The reason for the secret: once the transfer is mined, its hash and its nonce are public, so anyone watching the chain could present them first, and only the secret, which went to whoever asked for the quote, shows that the one redeeming is the one who paid. A plain transfer is refused: there is no unbound mode (`HESTIA_PAYMENT_REQUIRE_BINDING=0` is ignored).
+
+When the Hub brokers the call on **B**, it is a pure relay: it holds no peer key for the host, relays the host's `402` verbatim, `payment_secret` included, and passes `X-Payment`, `X-Payment-Nonce` and `X-Payment-Secret` through to the host. A brokering Hub therefore sees the secret, in the `402` and again in the retry: the buyer trusts it with the secret as with the call. A Hub that holds a peer key for the host bills the buyer itself instead, and forwards a payment only when it settled it on that request (§3) — with its own nonce and without the buyer's secret, which the host's till then refuses (§8).
 
 ---
 
@@ -213,14 +219,14 @@ Live list (see `deploy/hub-payment.env.example`): `https://oracles.modelmarket.d
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `AIMARKET_SETTLE_REQUIRE_BINDING` | `1` | Require `AuthorizationUsed` for the nonce **this Hub** minted. **Leave on.** Off = an old Transfer to the same seller can pay a new call. |
+| `AIMARKET_SETTLE_REQUIRE_BINDING` | removed | Binding is always on: `AuthorizationUsed` for the nonce **this Hub** minted, the transfer that authorization moved to reach the seller, and `X-Payment-Secret` to open the nonce. `0` is ignored and logged. |
 | `AIMARKET_SETTLE_INVOICE_TTL_S` | `300` | How long nonce A stays payable. Minimum 30 s in code. |
-| `AIMARKET_SETTLE_MAX_AGE_S` | `0` (off) | Reject a Transfer older than this. Needed if binding is ever off. |
+| `AIMARKET_SETTLE_MAX_AGE_S` | `0` (off) | Reject a Transfer older than this. The invoice TTL already bounds age. |
 | `AIMARKET_SETTLE_MIN_CONFIRMATIONS` | `1` | Confirmations before the payment counts. |
 | `AIMARKET_SETTLE_RPC_URL` | empty | Exclusive RPC override. A bubble URL must not fall through to mainnet. Empty → `AIMARKET_RPC_<CHAIN>`. |
 | `AIMARKET_MARKET_FEE_BPS` | `0` | Operator share in basis points, capped at 1000. Live is `0`. |
 | `AIMARKET_MARKET_FEE_TO` | Hub x402 wallet | Where the operator share goes. A fee with no recipient is not charged. |
-| `AIMARKET_MARKET_SPLITTER` | empty | Deployed `MarketSplitter`. Without it a fee still settles only if the buyer produces both Transfer legs. |
+| `AIMARKET_MARKET_SPLITTER` | empty | Deployed `MarketSplitter`. Without it the fee is not charged at all (logged as an error). With it, a bound payment settles only as its own three transfers: the gross into the splitter, then the splitter's legs to the seller and to the operator. |
 
 ### 5.3 x402 envelope (the `402` body / header)
 
@@ -271,14 +277,26 @@ A priced agent is only billed when **this process** is the till. Production sets
 | `HESTIA_PAYMENT_TOKEN_EIP712_NAME` | `USD Coin` | EIP-712 domain name published in the `402` so the buyer does not guess. |
 | `HESTIA_PAYMENT_TOKEN_EIP712_VERSION` | `2` | EIP-712 domain version (USDC). |
 | `HESTIA_PAYMENT_MIN_CONFIRMATIONS` | `1` | Same role as `AIMARKET_SETTLE_MIN_CONFIRMATIONS`. |
-| `HESTIA_PAYMENT_REQUIRE_BINDING` | `1` | Host-side nonce binding. **Leave on** if this host is the till. |
+| `HESTIA_PAYMENT_REQUIRE_BINDING` | removed | Host-side nonce binding, always on: each host `402` carries `payment_secret` and the buyer redeems with `X-Payment-Secret` (§4). `0` is ignored and logged. |
 | `HESTIA_PAYMENT_INVOICE_TTL_S` | `900` | Host invoice lifetime (longer than Hub's 300 s). |
-| `HESTIA_PAYMENT_MAX_AGE_S` | `3600` | Reject an unbound Transfer older than this. `0` disables. |
+| `HESTIA_PAYMENT_MAX_AGE_S` | `3600` | Reject a payment older than this. `0` disables. |
 | `HESTIA_HUB_URL` | `https://modelmarket.dev` | Announce / federation target. Empty = never announces. Hosting ≠ listing. |
 | `HESTIA_AUTO_ANNOUNCE` | `0` | If `1`, still needs `HESTIA_HUB_URL`. Observation, not a trust grant. |
 | `payout_address` | per-agent deploy field, not env | Seller wallet written on the agent row (`POST /v1/tenants`). Indexed by the Hub crawler into the listing. Empty + payments on → not billed to nobody (no `402` naming the operator). |
 
 The Hub does not need the seller's private key. The host does not need it either. Only the buyer signs `transferWithAuthorization`.
+
+### 6.1 Verified compute
+
+`hestia.compute.run@v1` ($0.001, one replica) and `hestia.compute.verify@v1` ($0.0025, two replicas) are sold on this rail too; their seller is the host itself, never an agent. Compute is never free when it is on, and `HESTIA_PAYMENTS_ENABLED` is not consulted. A call carries one of three sets of headers:
+
+| Header | Sent by | What paid |
+|---|---|---|
+| `X-API-Key` ∈ `HESTIA_COMPUTE_HUB_KEYS` | the hub (its `AIMARKET_PEER_API_KEYS` entry for this host) | the hub billed the buyer on its credits rail — **the live mode** |
+| `X-API-Key` + `X-Payment: <tx hash>` + `X-Payment-Nonce` | the hub, forwarding a market-rail payment it settled on that request | the authorization that nonce names (the hub's own invoice), whose own transfer moved at least the price to `HESTIA_COMPUTE_PAYOUT_ADDRESS`, claimed here once; the key shows who is redeeming it. A payment naming no authorization, a plain transfer included, is refused |
+| `X-Payment: <tx hash>` + `X-Payment-Secret`, no key | a direct buyer | an EIP-3009 `transferWithAuthorization` to `HESTIA_COMPUTE_PAYOUT_ADDRESS` whose nonce is `sha256(secret)`, claimed here once; the buyer picks the secret, the host never mints a nonce of its own |
+
+When the hub sends its key **with** a transfer, the transfer is what pays: it is verified on chain and claimed once, and the key stands in for the secret. A payment that names no authorization in `X-Payment-Nonce`, a plain transfer included, is refused, and a secret sent with the key must open its nonce. Without a key, a plain transfer, a secret that does not open the nonce on chain, and a guessable secret (fewer than 16 distinct bytes) are refused: the transaction hash and its nonce are public once mined, so a direct buyer shows they are the payer with the secret behind the nonce. At both doors only the transfer the named authorization moved pays, and each authorization is its own claim: two in one transaction buy two calls. The unpaid compute `402` says so (`binding: "secret"`, `nonce_rule: "sha256(secret)"`). Production runs hub-key only (no compute payout address). Details: [`hestia/docs/COMPUTE.md`](https://github.com/alexar76/hestia/blob/main/docs/COMPUTE.md).
 
 ---
 
@@ -312,6 +330,8 @@ Do not point `AIMARKET_ESCROW_HUB_ADDRESS` at the same wallet as a channel ledge
 2. Set `HESTIA_PAYMENT_RPC_URL`, then `HESTIA_PAYMENTS_ENABLED=1`.
 3. Buyers of the catalogue listing pay the Hub routing fee **and** the host list price — two transfers.
 4. Direct `/t/{slug}/invoke` is now the paid door.
+5. Buyer clients send `X-Payment-Secret` with the `payment_secret` from the host's `402`; `X-Payment` / `X-Payment-Nonce` alone is refused (§4).
+6. The Hub holds no `AIMARKET_PEER_API_KEYS` entry for the host. With one it bills the buyer itself and forwards only a payment it settled, without the secret the host's till asks for. That same key is what sells compute on the credits rail (§6.1).
 
 **Never** enable both tills on the same listing.
 

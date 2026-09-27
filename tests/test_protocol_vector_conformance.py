@@ -393,3 +393,65 @@ class TestBridgeAgreesWithTheVectors:
         )
         assert check.verified is True, check.reason
         assert check.key == key, "the bridge must use the ORIGIN's published key"
+
+
+# ── mandates (mandates.md §9): hub and SDK agree with the committed vectors ────
+
+class TestMandateVectors:
+    """The hub verifies mandates; the SDK issues them; ARGUS (TypeScript) has its own test
+    against the same file. All three must name every document by the same digest and sign
+    every message the same way — and the file must be what its generator writes."""
+
+    @pytest.fixture(scope="class")
+    def mv(self):
+        return _vector("mandate-signed.json")
+
+    def test_the_generator_writes_exactly_the_committed_file(self):
+        pytest.importorskip("awr")
+        generator = VECTORS / "generate_mandates.py"
+        with tempfile.TemporaryDirectory() as tmp:
+            out = pathlib.Path(tmp)
+            exec(compile(generator.read_text(), str(generator), "exec"),  # noqa: S102
+                 {"__file__": str(out / "generate_mandates.py"), "__name__": "__main__"})
+            assert (out / "mandate-signed.json").read_bytes() == (VECTORS / "mandate-signed.json").read_bytes()
+
+    def test_the_hub_names_both_documents_by_their_digests(self, mv):
+        pytest.importorskip("awr")
+        from aimarket_hub import mandates
+
+        root = mandates.parse_mandate(mv["root"]["document"])
+        child = mandates.parse_mandate(mv["child"]["document"])
+        assert (root.digest, child.digest) == (mv["root"]["digest"], mv["child"]["digest"])
+        mandates.check_link(child, root)
+
+    def test_the_sdk_rebuilds_both_documents_byte_for_byte(self, mv):
+        from aimarket_agent.mandates import AgentKey, mandate_digest, sign_document
+
+        for name, issuer in (("root", "owner"), ("child", "agent")):
+            expected = mv[name]["document"]
+            unsigned = {k: v for k, v in expected.items() if k != "proof"}
+            rebuilt = sign_document(unsigned, AgentKey.from_seed_hex(mv["keys"][issuer]["seed_hex"]),
+                                    created=expected["proof"]["created"])
+            assert rebuilt == expected and mandate_digest(rebuilt) == mv[name]["digest"]
+
+    def test_hub_and_sdk_sign_every_message_alike(self, mv):
+        pytest.importorskip("awr")
+        from aimarket_agent.mandates import AgentKey, owner_change_authorization, request_proof, revoke_payload
+        from aimarket_hub import mandates
+
+        hub, keys = mv["hub_origin"], mv["keys"]
+        p = mv["request_proof"]
+        delegate = AgentKey.from_seed_hex(keys["delegate"]["seed_hex"])
+        assert request_proof(delegate, hub_origin=hub, leaf_digest=p["leaf"], body=p["body"].encode(),
+                             t=p["t"], nonce=p["n"]) == p["header"]
+        assert mandates.request_message(hub_origin=hub, method=p["method"], path=p["path"], digest=p["leaf"],
+                                        t=p["t"], nonce=p["n"], body=p["body"].encode()).decode() == p["message"]
+        owner = AgentKey.from_seed_hex(keys["owner"]["seed_hex"])
+        c = mv["owner_change"]
+        auth = owner_change_authorization(owner, hub_origin=hub, account_id=c["account_id"], action=c["action"],
+                                          did=c["did"], require_mandate=bool(c["require_mandate"]), t=c["t"], nonce=c["n"])
+        assert auth["s"] == c["signature"]
+        assert mandates.verify_did_signature(c["by"], c["message"].encode(), mandates.b64url_decode(c["signature"]))
+        r = mv["revoke"]
+        assert revoke_payload(owner, hub_origin=hub, digest=r["digest"], t=r["t"], nonce=r["n"])["s"] == r["signature"]
+        assert mandates.verify_did_signature(r["by"], r["message"].encode(), mandates.b64url_decode(r["signature"]))

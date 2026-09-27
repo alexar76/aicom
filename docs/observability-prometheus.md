@@ -35,6 +35,21 @@ Hub exposes `prometheus_client` gauges/counters:
 
 Implementation: `aimarket-hub/aimarket_hub/metrics.py`, mounted at `GET /metrics`.
 
+**Who can read it.** `/metrics` names every capability the hub sells, how often each was paid
+for or refused, which MCP client families call it, and invoke latency: an operator's dashboard,
+not a public page. By default it answers only a caller that connects **directly** from a
+loopback or private address (127.0.0.0/8, 10/8, 172.16/12, 192.168/16, ::1, fc00::/7) and carries
+no forwarding header. Prometheus on the container network passes; anything that comes through
+the public nginx gets `404`, because nginx adds `X-Forwarded-For` / `X-Real-IP`.
+
+| Variable | Default | Effect |
+|---|---|---|
+| `AIMARKET_METRICS_TOKEN` | unset | A scraper from outside reads it with `Authorization: Bearer <token>`. |
+| `AIMARKET_METRICS_PUBLIC` | `0` | `1` makes it world-readable again (the behaviour before 3.7.0). |
+
+The `capability` label is the id **from the catalogue**: an invoke naming a capability the hub
+does not list is counted as `capability="unlisted"`, so made-up ids cannot create new series.
+
 ## Prometheus scrape
 
 Config lives in repo-root [`prometheus.yml`](../prometheus.yml):

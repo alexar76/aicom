@@ -276,7 +276,7 @@ greps a log for them.
 
 ## Seller-direct market rail (Hub + HESTIA)
 
-Added with [`docs/hestia-hub-market-rail.md`](hestia-hub-market-rail.md). Env vars (`AIMARKET_SELLS_FOR`, `AIMARKET_SETTLE_*`, `AIMARKET_MARKET_FEE_*`, `AIMARKET_X402_*`, `HESTIA_PAYMENTS_ENABLED`, `HESTIA_PAYMENT_*`), HTTP `402`, headers (`PAYMENT-REQUIRED`, `PAYMENT-SIGNATURE`, `X-Payment`, `X-Payment-Nonce`), fields (`payout_address`, `payTo`, `nonce`, `accepts`) and EIP names (`EIP-3009`, `transferWithAuthorization`, `AuthorizationUsed`) are **identifiers and never translated**.
+Added with [`docs/hestia-hub-market-rail.md`](hestia-hub-market-rail.md). Env vars (`AIMARKET_SELLS_FOR`, `AIMARKET_SETTLE_*`, `AIMARKET_MARKET_FEE_*`, `AIMARKET_X402_*`, `HESTIA_PAYMENTS_ENABLED`, `HESTIA_PAYMENT_*`), HTTP `402`, headers (`PAYMENT-REQUIRED`, `PAYMENT-SIGNATURE`, `X-Payment`, `X-Payment-Nonce`, `X-Payment-Secret`), fields (`payout_address`, `payTo`, `nonce`, `payment_secret`, `accepts`, `binding`, `nonce_rule`), the binding values (`eip3009`, `none`, `secret`) and the rule `sha256(secret)`, the MCP arguments (`x_payment`, `x_payment_nonce`, `x_payment_secret`) and EIP names (`EIP-3009`, `transferWithAuthorization`, `AuthorizationUsed`) are **identifiers and never translated**.
 
 | EN | RU | ES | FR | ZH | Notes |
 |----|----|----|----|----|-------|
@@ -288,8 +288,10 @@ Added with [`docs/hestia-hub-market-rail.md`](hestia-hub-market-rail.md). Env va
 | seller (payee) | продавец | vendedor | vendeur | 卖家 | The wallet named by `payout_address`. Distinct from `provider` when the host operator is not the payee. |
 | payout_address | payout_address | payout_address | payout_address | payout_address | Identifier. The seller wallet on the listing / agent row. |
 | 402 Payment Required | 402 Payment Required | 402 Payment Required | 402 Payment Required | 402 Payment Required | HTTP status. Never localize the number or the reason-phrase in tables. |
-| nonce (EIP-3009) | nonce | nonce | nonce | nonce | 32-byte value the till mints; the authorization binds the transfer to one call. Keep Latin. |
-| binding (EIP-3009) | привязка (binding) | vinculación (binding) | liaison (binding) | 绑定 (binding) | Require `AuthorizationUsed(payer, nonce)` for the nonce **this** till minted. Gloss English once. |
+| nonce (EIP-3009) | nonce | nonce | nonce | nonce | 32-byte value the authorization binds the transfer to, one call per nonce. It is `sha256` of a payment secret: the till mints both, except at the HESTIA compute door, where a direct buyer picks the secret. Keep Latin. |
+| payment secret | секрет (секрет платежа) | secreto (secreto de pago) | secret (secret de paiement) | 秘密值（payment secret） | The 32 random bytes whose `sha256` is the nonce. Goes only to the caller that took the `402`, in its JSON body; redeeming must show it, because the nonce and the tx hash are public once mined. Not a key, not a password. Identifiers `payment_secret`, `X-Payment-Secret`, `x_payment_secret` stay Latin. |
+| redeem (a payment) | погасить платёж | canjear | présenter le paiement | 兑付 | Present a mined payment to the till to get the call. Distinct from **settle** (the till verifying it) and from paying (the on-chain transfer). |
+| binding (EIP-3009) | привязка (binding) | vinculación (binding) | liaison (binding) | 绑定 (binding) | Require `AuthorizationUsed(payer, nonce)` for the nonce **this** till minted. Gloss English once. The `402` field `binding` takes the identifier values `eip3009` (bound, redeem with the secret), `none` (address only) and `secret` (HESTIA compute: the buyer picks the secret, `nonce_rule: "sha256(secret)"`). |
 | dual nonce | два nonce | nonce dual | nonce double | 双 nonce | Two tills mint two nonces for one call — one `transferWithAuthorization` cannot satisfy both. |
 
 ## Signal Hunt terms (federation investigation lab)

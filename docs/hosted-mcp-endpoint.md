@@ -110,8 +110,16 @@ The ML-DSA-65 half of the hybrid signature is about 7 KB, so it is summarised as
 and length; pass `include_full_receipt: true` for the hub's raw response. Paid callers pass
 `payment_channel` (+ `payment_channel_secret`, and `payment_authorization` for escrow
 channels), or an on-chain x402 payment as `x_payment` (the transaction hash) +
-`x_payment_nonce` (the invoice nonce from the 402), and are never placed on the trial tier.
+`x_payment_nonce` (the invoice nonce from the 402) + `x_payment_secret` (the 402's
+`payment_secret`), and are never placed on the trial tier. The secret is what shows the
+caller is the one who paid: once the payment is mined its transaction hash and nonce are
+public, and the hub refuses a bound payment without the secret whose `sha256` is the nonce.
+The gateway checks that `x_payment_secret` is `0x` + 64 hex and passes it on as
+`X-Payment-Secret`, only together with `x_payment`.
 A 402 leads with `next_steps`: what the 402 actually offers, in the order an agent can act.
+For an on-chain invoice that names the retry in full — `x_payment=<transaction hash>`,
+`x_payment_nonce=…` and, when the 402 carried one, `x_payment_secret=…` — with a reminder to
+keep the secret to yourself until you redeem.
 
 ### Direct tools
 

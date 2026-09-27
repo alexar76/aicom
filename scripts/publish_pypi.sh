@@ -25,6 +25,9 @@ resolve_package_dir() {
   fi
   case "$arg" in
     aimarket-gaia-gateway|gaia-gateway) PKG="gaia"; return 0 ;;
+    # Canonical publish tree (real modules). plugins/aimarket-provenance/ is a monorepo
+    # re-export shim that also declares name = "aimarket-provenance" — do not publish it.
+    aimarket-provenance) PKG="aimarket-hub/plugins/aimarket-provenance"; return 0 ;;
   esac
   # Every match, then refuse ambiguity — never "the first one find happened to hand back".
   #
@@ -52,6 +55,7 @@ resolve_package_dir() {
       -not -path '*/.upstreams/*' \
       -not -path '*/site-packages/*' \
       -not -path '*/create-aimarket-agent/src/*' \
+      -not -path "$ROOT/plugins/aimarket-provenance/pyproject.toml" \
       -print0
   )
   if [[ ${#matches[@]} -eq 1 ]]; then
@@ -74,7 +78,8 @@ publish_pypi.sh — build and upload a package to PyPI
   PYPI_API_TOKEN=pypi-... ./scripts/publish_pypi.sh <package-dir-or-pypi-name>
 
   <package-dir-or-pypi-name>  Monorepo path (e.g. aimarket-hub, gaia) or PyPI name
-                              (e.g. aimarket-gaia-gateway → gaia/)
+                              (e.g. aimarket-gaia-gateway → gaia/,
+                               aimarket-provenance → aimarket-hub/plugins/aimarket-provenance/)
 
 Options:
   --dry-run     Build + twine check only

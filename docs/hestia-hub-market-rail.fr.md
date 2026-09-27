@@ -12,7 +12,7 @@ Mesuré le **2026-09-21** sur `https://modelmarket.dev` et `https://hestia.model
 
 ## 1. Un paiement ne satisfait pas deux caisses
 
-Le Hub (`aimarket_hub/settle.py`) et HESTIA (`hestia/payments.py`) peuvent chacun être caisse : ils émettent un `nonce`, un `402` avec `payTo` = portefeuille du vendeur, puis exigent un `transferWithAuthorization` on-chain dont le log `AuthorizationUsed` porte **ce** nonce (`AIMARKET_SETTLE_REQUIRE_BINDING` / `HESTIA_PAYMENT_REQUIRE_BINDING`, défaut `1` des deux côtés).
+Le Hub (`aimarket_hub/settle.py`) et HESTIA (`hestia/payments.py`) peuvent chacun être caisse : ils émettent un `nonce`, un `402` avec `payTo` = portefeuille du vendeur, puis exigent un `transferWithAuthorization` on-chain dont le log `AuthorizationUsed` porte **ce** nonce (toujours : aucune des deux caisses n’accepte de paiement non lié). Pour l’une comme pour l’autre caisse, le nonce est le `sha256` d’un `payment_secret` neuf que seul reçoit celui qui a demandé le `402`, et présenter le paiement exige ce secret (§3, §4).
 
 EIP-3009 lie une autorisation à un nonce. Si le Hub émet le nonce A et l’hôte le nonce B pour la même invocation, un seul virement de l’acheteur ne satisfait qu’une caisse. Le Hub vérifierait le paiement, transmettrait l’invoke, et HESTIA émettrait un **second** `402` sur un autre nonce. Ce n’est pas une nouvelle tentative : c’est un rail cassé.
 
@@ -68,12 +68,14 @@ Le Hub reste le catalogue. HESTIA reste l’hôte. Announce est un coup à la po
 
 1. L’acheteur `POST /ai-market/v2/invoke` sur le Hub avec `capability_id` + `product_id`, sans paiement.
 2. Le Hub voit un listing fédéré dont `source_hub` correspond à `AIMARKET_SELLS_FOR` (`https://hestia.modelmarket.dev`). Il est **vendeur enregistré** : prix de liste, frais `0`, `payTo` = `payout_address` du listing.
-3. Le Hub émet le nonce A, stocke un `settle_invoice` (`AIMARKET_SETTLE_INVOICE_TTL_S`, défaut 300 s), répond `402` + x402 `PAYMENT-REQUIRED`.
+3. Le Hub émet un `payment_secret` neuf et le nonce A = `sha256(payment_secret)`, stocke les deux dans un `settle_invoice` (`AIMARKET_SETTLE_INVOICE_TTL_S`, défaut 300 s), répond `402` + x402 `PAYMENT-REQUIRED`. Le secret n’est que dans le corps JSON — jamais dans `PAYMENT-REQUIRED`, dans `accepts[].extra` ni dans un en-tête.
 4. L’acheteur signe EIP-3009 `transferWithAuthorization` pour le nonce A et le soumet sur Base. L’USDC va **acheteur → vendeur**. Le Hub ne le reçoit pas.
-5. L’acheteur réessaie l’invoke avec `X-Payment` / `PAYMENT-SIGNATURE` et `X-Payment-Nonce`.
-6. Le Hub lit le reçu : miné, confirmations ≥ `AIMARKET_SETTLE_MIN_CONFIRMATIONS`, `Transfer` USDC vers le vendeur ≥ prix, `AuthorizationUsed` du nonce A, tx et nonce non encore dépensés.
-7. Le Hub transmet l’invoke à l’hôte. L’hôte **n’émet pas** de nonce (`HESTIA_PAYMENTS_ENABLED=0`). Le handler de l’agent s’exécute.
+5. L’acheteur réessaie l’invoke avec `X-Payment` / `PAYMENT-SIGNATURE`, `X-Payment-Nonce` et `X-Payment-Secret`. Le secret seul désigne déjà le nonce A ; un nonce envoyé doit être celui que le secret ouvre.
+6. Le Hub lit le reçu : miné, confirmations ≥ `AIMARKET_SETTLE_MIN_CONFIRMATIONS`, le secret ouvre le nonce A, `AuthorizationUsed` du nonce A est présent, et le virement effectué par **cette** autorisation (le log suivant du jeton) va du signataire au vendeur pour au moins le prix ; cette autorisation n’est pas encore dépensée.
+7. Le Hub transmet l’invoke à l’hôte. Le paiement l’accompagne, avec le nonce A dans `X-Payment-Nonce`, parce que le Hub l’a réglé sur cette même requête ; le secret de l’acheteur reste au Hub. L’hôte **n’émet pas** de nonce (`HESTIA_PAYMENTS_ENABLED=0`). Le handler de l’agent s’exécute.
 8. Le Hub répond `200` avec le résultat et un reçu.
+
+Pourquoi le secret : une fois le virement miné, son hash et le nonce A sont publics (le jeton journalise `AuthorizationUsed`). Une présentation qui ne demandait que ces deux valeurs laissait quiconque surveille la chaîne les présenter le premier, et l’acheteur qui avait payé se voyait refuser pour « déjà dépensé ». La chaîne ne montre que l’engagement ; le secret ne quitte l’acheteur que dans sa propre nouvelle tentative. Pourquoi seul compte le virement de l’autorisation elle-même : en additionnant tous les virements vers le vendeur, quiconque détenait l’autorisation signée d’un acheteur avant son minage pouvait la grouper avec une autorisation à lui d’une unité et encaisser l’argent de l’acheteur sur sa propre facture. Un paiement, c’est son autorisation : deux autorisations dans une transaction sont deux paiements et achètent deux appels, et si l’appel n’est pas servi, une seule d’entre elles est libérée. L’achat du §3a (2026-09-21) est antérieur au secret : sa nouvelle tentative ne portait que `X-Payment` et `X-Payment-Nonce`.
 
 Une signature sans reçu de chaîne n’est pas un paiement. Canaux et crédits sont d’autres rails ([KI-11](known-issues.md) reste le canal custodial).
 
@@ -190,9 +192,13 @@ Variantes de **A** (toujours une seule caisse) :
 |---|---|---|
 | A0 (live) | `AIMARKET_MARKET_FEE_BPS=0` | Tout le prix de liste au vendeur. |
 | A1 | `AIMARKET_MARKET_FEE_BPS>0` + `MarketSplitter` déployé + `AIMARKET_MARKET_SPLITTER` + `AIMARKET_MARKET_FEE_TO` | Le `402` nomme le splitter ; une tx paie vendeur et opérateur. Pas live. Plafond 1000 bps (10 %). Déployer le contrat **d’abord**, puis aligner l’env. |
-| A2 | Binding off (`AIMARKET_SETTLE_REQUIRE_BINDING=0`) | Tout Transfer récent vers le vendeur peut se présenter comme paiement. **Laisser le binding allumé.** |
+| A2 | Binding off (`AIMARKET_SETTLE_REQUIRE_BINDING=0`) | Supprimé. Un virement simple ne dit pas qui a payé, si bien que l’appel revenait à qui le présentait le premier ; les deux caisses ignorent désormais la variable et le consignent comme erreur au démarrage. |
 
 Invoke direct à l’hôte (sans Hub) en **B** est un appel payant vers `/t/{slug}/invoke`. En **A** il est gratuit : le catalogue est la boutique.
+
+Présenter le paiement en **B** : le `402` de l’hôte porte `nonce` et `payment_secret`, avec `nonce` = `sha256(payment_secret)`, et le secret n’est que dans le corps, jamais dans un en-tête. L’acheteur signe `transferWithAuthorization` sur ce nonce, puis réessaie avec `X-Payment: <tx hash>` et `X-Payment-Secret: <payment_secret>`. `X-Payment-Nonce` peut être omis, puisque le secret le désigne ; s’il est envoyé, ce doit être le nonce que le secret ouvre. L’hôte ne compte que le virement effectué par cette autorisation (le log suivant du jeton, du signataire vers l’adresse d’encaissement) et réclame chaque autorisation à part, si bien que deux dans une même transaction achètent deux appels. La raison du secret : une fois le virement miné, son hash et son nonce sont publics, si bien que quiconque surveille la chaîne pourrait les présenter le premier, et seul le secret, remis à celui qui a demandé le devis, montre que celui qui présente le paiement est celui qui a payé. Un virement simple est refusé : il n’y a pas de mode non lié (`HESTIA_PAYMENT_REQUIRE_BINDING=0` est ignoré).
+
+Quand le Hub sert de courtier en **B**, c’est un simple relais : il n’a pas de clé de pair pour l’hôte, relaie le `402` de l’hôte tel quel, `payment_secret` compris, et transmet à l’hôte `X-Payment`, `X-Payment-Nonce` et `X-Payment-Secret`. Un Hub courtier voit donc le secret, dans le `402` puis dans la nouvelle tentative : l’acheteur lui confie le secret comme il lui confie l’appel. Un Hub qui détient une clé de pair pour l’hôte facture lui-même l’acheteur et ne transmet un paiement que s’il l’a réglé sur cette même requête (§3) — avec son propre nonce et sans le secret de l’acheteur, et la caisse de l’hôte refuse alors ce paiement (§8).
 
 ---
 
@@ -213,14 +219,14 @@ Liste live (`deploy/hub-payment.env.example`) : `https://oracles.modelmarket.dev
 
 | Variable | Default | Sens |
 |---|---|---|
-| `AIMARKET_SETTLE_REQUIRE_BINDING` | `1` | Exiger `AuthorizationUsed` du nonce que **ce** Hub a émis. **Laisser allumé.** Off = un vieux Transfer vers le même vendeur peut payer un nouvel appel. |
+| `AIMARKET_SETTLE_REQUIRE_BINDING` | supprimée | Le binding est toujours allumé : `AuthorizationUsed` du nonce que **ce** Hub a émis, le virement de cette autorisation jusqu’au vendeur et un `X-Payment-Secret` qui ouvre le nonce. `0` est ignoré et consigné. |
 | `AIMARKET_SETTLE_INVOICE_TTL_S` | `300` | Durée pendant laquelle le nonce A reste payable. Minimum 30 s dans le code. |
-| `AIMARKET_SETTLE_MAX_AGE_S` | `0` (off) | Rejeter un Transfer plus vieux. Nécessaire si le binding est un jour éteint. |
+| `AIMARKET_SETTLE_MAX_AGE_S` | `0` (off) | Rejeter un Transfer plus vieux. Le TTL de la facture borne déjà l’âge. |
 | `AIMARKET_SETTLE_MIN_CONFIRMATIONS` | `1` | Confirmations avant que le paiement compte. |
 | `AIMARKET_SETTLE_RPC_URL` | vide | RPC exclusif. Une URL bulle ne doit pas retomber sur le mainnet. Vide → `AIMARKET_RPC_<CHAIN>`. |
 | `AIMARKET_MARKET_FEE_BPS` | `0` | Part opérateur en points de base, plafond 1000. Live = `0`. |
 | `AIMARKET_MARKET_FEE_TO` | portefeuille x402 du Hub | Où va la part opérateur. Des frais sans destinataire ne sont pas prélevés. |
-| `AIMARKET_MARKET_SPLITTER` | vide | `MarketSplitter` déployé. Sans lui, des frais ne se règlent que si l’acheteur produit les deux jambes Transfer. |
+| `AIMARKET_MARKET_SPLITTER` | vide | `MarketSplitter` déployé. Sans lui, aucun frais n’est prélevé (une erreur est journalisée). Avec lui, un paiement lié ne se règle que comme ses trois virements propres : le brut vers le splitter, puis les jambes du splitter vers le vendeur et vers l’opérateur. |
 
 ### 5.3 Enveloppe x402 (corps / en-tête du `402`)
 
@@ -271,14 +277,26 @@ Un agent tarifé n’est facturé que lorsque **ce processus** est la caisse. En
 | `HESTIA_PAYMENT_TOKEN_EIP712_NAME` | `USD Coin` | Nom du domaine EIP-712 publié dans le `402`. |
 | `HESTIA_PAYMENT_TOKEN_EIP712_VERSION` | `2` | Version du domaine (USDC). |
 | `HESTIA_PAYMENT_MIN_CONFIRMATIONS` | `1` | Même rôle que `AIMARKET_SETTLE_MIN_CONFIRMATIONS`. |
-| `HESTIA_PAYMENT_REQUIRE_BINDING` | `1` | Binding de nonce côté hôte. **Laisser allumé** si cet hôte est la caisse. |
+| `HESTIA_PAYMENT_REQUIRE_BINDING` | supprimée | Binding de nonce côté hôte, toujours allumé : chaque `402` de l’hôte porte `payment_secret` et l’acheteur présente son paiement avec `X-Payment-Secret` (§4). `0` est ignoré et consigné. |
 | `HESTIA_PAYMENT_INVOICE_TTL_S` | `900` | Durée de facture hôte (plus longue que les 300 s du Hub). |
-| `HESTIA_PAYMENT_MAX_AGE_S` | `3600` | Rejeter un Transfer non lié plus vieux. `0` désactive. |
+| `HESTIA_PAYMENT_MAX_AGE_S` | `3600` | Rejeter un paiement plus vieux. `0` désactive. |
 | `HESTIA_HUB_URL` | `https://modelmarket.dev` | Cible d’announce / fédération. Vide = n’annonce jamais. Héberger ≠ lister. |
 | `HESTIA_AUTO_ANNOUNCE` | `0` | Même à `1`, il faut `HESTIA_HUB_URL`. Observation, pas octroi de confiance. |
 | `payout_address` | champ de déploiement de l’agent, pas env | Portefeuille vendeur sur la ligne agent (`POST /v1/tenants`). Le crawler Hub l’indexe. Vide + payments on → on ne facture personne (pas de `402` vers l’opérateur). |
 
 Ni le Hub ni l’hôte n’ont besoin de la clé privée du vendeur. Seul l’acheteur signe `transferWithAuthorization`.
+
+### 6.1 Calcul vérifié
+
+`hestia.compute.run@v1` (0,001 $, une réplique) et `hestia.compute.verify@v1` (0,0025 $, deux répliques) se vendent aussi sur ce rail ; leur vendeur est l’hôte lui-même, jamais un agent. Une fois activé, le calcul n’est jamais gratuit, et `HESTIA_PAYMENTS_ENABLED` n’est pas consulté. Un appel porte l’une des trois combinaisons d’en-têtes suivantes :
+
+| En-tête | Envoyé par | Ce qui a payé |
+|---|---|---|
+| `X-API-Key` ∈ `HESTIA_COMPUTE_HUB_KEYS` | le hub (son entrée `AIMARKET_PEER_API_KEYS` pour cet hôte) | le hub a débité l’acheteur sur son rail de crédits — **le mode en production** |
+| `X-API-Key` + `X-Payment: <tx hash>` + `X-Payment-Nonce` | le hub, qui transmet un paiement du rail de marché qu’il a réglé sur cette même requête | l’autorisation que ce nonce désigne (la facture du hub lui-même), dont le propre virement a porté au moins le prix vers `HESTIA_COMPUTE_PAYOUT_ADDRESS`, réclamée ici une seule fois ; la clé dit qui la présente. Un paiement qui ne désigne aucune autorisation, virement simple compris, est refusé |
+| `X-Payment: <tx hash>` + `X-Payment-Secret`, sans clé | un acheteur direct | un `transferWithAuthorization` EIP-3009 vers `HESTIA_COMPUTE_PAYOUT_ADDRESS` dont le nonce est `sha256(secret)`, réclamé ici une seule fois ; l’acheteur choisit le secret, l’hôte n’émet jamais de nonce à lui |
+
+Quand le hub envoie sa clé **avec** un virement, c’est le virement qui paie : il est vérifié sur la chaîne et réclamé une seule fois, et la clé tient lieu de secret. Un paiement qui ne désigne aucune autorisation dans `X-Payment-Nonce`, virement simple compris, est refusé, et un secret envoyé avec la clé doit ouvrir son nonce. Sans clé sont refusés un virement simple, un secret qui n’ouvre pas le nonce inscrit sur la chaîne et un secret devinable (moins de 16 octets distincts) : une fois la transaction minée, son hash et son nonce sont publics, si bien qu’un acheteur direct prouve que c’est lui qui a payé par le secret qui se cache derrière le nonce. Aux deux portes, seul paie le virement effectué par l’autorisation désignée, et chaque autorisation est réclamée à part : deux dans une même transaction achètent deux appels. Le `402` de calcul non payé le dit (`binding: "secret"`, `nonce_rule: "sha256(secret)"`). La production fonctionne avec la clé du hub uniquement (pas d’adresse d’encaissement pour le calcul). Détails : [`hestia/docs/COMPUTE.md`](https://github.com/alexar76/hestia/blob/main/docs/COMPUTE.md).
 
 ---
 
@@ -312,6 +330,8 @@ Ne pas pointer `AIMARKET_ESCROW_HUB_ADDRESS` vers le même portefeuille qu’un 
 2. Fixer `HESTIA_PAYMENT_RPC_URL`, puis `HESTIA_PAYMENTS_ENABLED=1`.
 3. Les acheteurs du listing catalogue paient la routing fee Hub **et** le prix de liste hôte — deux virements.
 4. La porte payante est le `/t/{slug}/invoke` direct.
+5. Les clients des acheteurs envoient `X-Payment-Secret` avec le `payment_secret` du `402` de l’hôte ; `X-Payment` / `X-Payment-Nonce` seuls sont refusés (§4).
+6. Le Hub n’a pas d’entrée pour l’hôte dans `AIMARKET_PEER_API_KEYS`. Avec une entrée, il facture lui-même l’acheteur et ne transmet qu’un paiement qu’il a réglé, sans le secret que demande la caisse de l’hôte. Cette même clé est celle qui vend le calcul sur le rail de crédits (§6.1).
 
 **Jamais** allumer les deux caisses sur le même listing.
 
