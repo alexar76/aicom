@@ -357,6 +357,18 @@ if [[ -n "$EXPORT_DIR" ]]; then
     echo "ERROR: pingblip/ reached the GitHub factory tree — refusing to export." >&2
     exit 1
   fi
+  if [[ -e "$TARGET/protocol-v2-receipt-from-spec" ]]; then
+    echo "ERROR: protocol-v2-receipt-from-spec/ reached the GitHub factory tree — refusing to export." >&2
+    exit 1
+  fi
+  if [[ -e "$TARGET/protocol-v2-from-spec-rs" ]]; then
+    echo "ERROR: protocol-v2-from-spec-rs/ reached the GitHub factory tree — refusing to export." >&2
+    exit 1
+  fi
+  if [[ -e "$TARGET/protocol-v2-federator-go" ]]; then
+    echo "ERROR: protocol-v2-federator-go/ reached the GitHub factory tree — refusing to export." >&2
+    exit 1
+  fi
   for leak in \
     attested \
     personal-attested-memory team-memory-os expert-memory-market \
@@ -432,6 +444,18 @@ if [[ -e "$CLONE/emberline" || -e "$CLONE/cite-desks" ]]; then
 fi
 if [[ -e "$CLONE/pingblip" ]]; then
   echo "ERROR: pingblip/ reached the GitHub factory clone — refusing to push." >&2
+  exit 1
+fi
+if [[ -e "$CLONE/protocol-v2-receipt-from-spec" ]]; then
+  echo "ERROR: protocol-v2-receipt-from-spec/ reached the GitHub factory clone — refusing to push." >&2
+  exit 1
+fi
+if [[ -e "$CLONE/protocol-v2-from-spec-rs" ]]; then
+  echo "ERROR: protocol-v2-from-spec-rs/ reached the GitHub factory clone — refusing to push." >&2
+  exit 1
+fi
+if [[ -e "$CLONE/protocol-v2-federator-go" ]]; then
+  echo "ERROR: protocol-v2-federator-go/ reached the GitHub factory clone — refusing to push." >&2
   exit 1
 fi
 for leak in \

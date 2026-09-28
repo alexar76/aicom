@@ -1656,8 +1656,11 @@ Coordinated disclosure preferred. We credit researchers in release notes when pe
 PYEOF
   fi
 
-  # CONTRIBUTING.md
-  if [[ -f "$ROOT/CONTRIBUTING.md" ]]; then
+  # CONTRIBUTING.md — keep a satellite-authored file. The factory document
+  # describes the monorepo and would wipe a protocol-specific "PRs are welcome".
+  if [[ -f "$target/CONTRIBUTING.md" ]] && grep -qF '<!-- satellite-contributing -->' "$target/CONTRIBUTING.md"; then
+    echo "  · CONTRIBUTING.md kept from satellite source"
+  elif [[ -f "$ROOT/CONTRIBUTING.md" ]]; then
     cp "$ROOT/CONTRIBUTING.md" "$target/CONTRIBUTING.md"
   fi
 
@@ -2357,6 +2360,21 @@ else:
       ;;
     pingblip)
       echo "ERROR: pingblip/ is Gitea-only (github_published: false). Refuse GitHub mirror." >&2
+      echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
+      return 1
+      ;;
+    protocol-v2-receipt-from-spec)
+      echo "ERROR: protocol-v2-receipt-from-spec/ is Gitea-only (github_published: false). Refuse GitHub mirror." >&2
+      echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
+      return 1
+      ;;
+    protocol-v2-from-spec-rs)
+      echo "ERROR: protocol-v2-from-spec-rs/ is Gitea-only (github_published: false). Refuse GitHub mirror." >&2
+      echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
+      return 1
+      ;;
+    protocol-v2-federator-go)
+      echo "ERROR: protocol-v2-federator-go/ is Gitea-only (github_published: false). Refuse GitHub mirror." >&2
       echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
       return 1
       ;;

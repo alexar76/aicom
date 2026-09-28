@@ -105,6 +105,10 @@ DEFAULT_RSYNC_EXCLUDES = [
     # excludes the whole tree via FACTORY_LOCAL_EXCLUDES.
     "cite-desks",
     "pingblip",
+    # Blind receipt verifier. Same rule as pingblip: monorepo only.
+    "protocol-v2-receipt-from-spec",
+    "protocol-v2-from-spec-rs",
+    "protocol-v2-federator-go",
     # Raw key seed kept next to logos/ for operator use. gitignore is not
     # enough: satellite rsync copies the working tree, not `git ls-files`.
     "unused",
@@ -164,6 +168,9 @@ FACTORY_LOCAL_EXCLUDES = [
     # wiring, or product-shell trees on the public factory mirror.
     "attested",
     "pingblip",
+    "protocol-v2-receipt-from-spec",
+    "protocol-v2-from-spec-rs",
+    "protocol-v2-federator-go",
     "SAAS_PROJECTS.md",
     "saas-compose.yml",
     "saas-edge",

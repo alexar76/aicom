@@ -299,6 +299,9 @@ satellites:
     # express patent grant a specification needs. The mirror must not overwrite the pointer
     # LICENSE with the monorepo's plain MIT — see mirror_satellites.sh.
     license: "Apache-2.0 OR MIT"
+    # Same door as metis and the factory repo: append-only history, PRs accepted,
+    # import_satellite_pr.sh brings a merge back into the monorepo.
+    history: live
     paths:
       - aimarket-protocol
     export_layout:
