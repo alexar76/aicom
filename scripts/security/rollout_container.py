@@ -3,7 +3,8 @@
 
 Requires an explicit HTTP health URL and runs on the Docker host. Secrets remain
 in memory and in a root-only rollback snapshot. On failure the previous container
-is restored. This does not rebuild images or change monetary configuration.
+is restored. This does not rebuild images, and changes no setting but those --set
+names explicitly (NAME=VALUE, repeatable; names are reported, values never).
 
 Containers that borrow this one's network namespace (THEMIS runs with
 --network container:modelmarket-hub) are recreated inside the new container, and
@@ -265,6 +266,21 @@ def rollback(units, urls, stamp):
     return errors
 
 
+def apply_settings(config, assignments):
+    """Replace or add each NAME=VALUE in config's Env and return the names. A setting the
+    operator did not name is never touched, and a value is never echoed back."""
+    names = set()
+    for item in assignments:
+        name, sep, value = item.partition("=")
+        if not sep or not name or name[0].isdigit() or not name.replace("_", "").isalnum():
+            raise SystemExit("--set takes NAME=VALUE with a shell-style variable name"
+                             + (f", not {name!r}" if sep else " (this argument has no '=')"))
+        config["Env"] = [e for e in config.get("Env") or [] if e.partition("=")[0] != name]
+        config["Env"].append(f"{name}={value}")
+        names.add(name)
+    return sorted(names)
+
+
 def redacted(body):
     body = copy.deepcopy(body)
     body["Env"] = [e.partition("=")[0] + "=<redacted>" for e in body.get("Env") or []]
@@ -280,6 +296,8 @@ def main():
     ap.add_argument("--service", choices=["hub", "factory", "grafana", "atlas", "frontend"])
     ap.add_argument("--factory-export", type=Path)
     ap.add_argument("--env-output", type=Path)
+    ap.add_argument("--set", action="append", default=[], metavar="NAME=VALUE",
+                    help="set one environment variable on the new container; repeat for each")
     ap.add_argument("--dry-run", action="store_true",
                     help="print the planned docker commands and change nothing")
     args = ap.parse_args()
@@ -297,6 +315,7 @@ def main():
         inherited = rebase(config, api("GET", f"/images/{old['Image']}/json"), args.image)
     if args.service:
         config["Env"] = filtered(args.service, config.get("Env", []))
+    set_names = apply_settings(config, args.set)
     units = [{"info": old, "name": args.name, "body": config}]
     units += [{"info": d, "name": d["Name"].lstrip("/"), "body": create_body(d)} for d in deps]
     for unit in units:
@@ -309,6 +328,7 @@ def main():
         forward(run, units, args.health)
         print(json.dumps({"dry_run": True, "container": args.name, "image": config["Image"],
                           "removed_env_names": removed, "image_env_names": inherited,
+                          "set_env_names": set_names,
                           "borrowers": [u["name"] for u in units[1:]], "commands": run.commands,
                           "create": {u["name"]: redacted(u["body"]) for u in units}}, indent=2))
         return
@@ -333,7 +353,7 @@ def main():
             f.write("\n".join(config["Env"]) + "\n")
     print(json.dumps({"container": args.name, "healthy": True, "image": config["Image"],
                       "previous_container": units[0]["previous"], "removed_env_names": removed,
-                      "image_env_names": inherited,
+                      "image_env_names": inherited, "set_env_names": set_names,
                       "borrowers": {u["name"]: u["previous"] for u in units[1:]},
                       "snapshot": str(snapshot)}))
 

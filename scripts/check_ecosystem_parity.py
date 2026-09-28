@@ -21,6 +21,14 @@ makes the three classes of drift impossible to merge:
      Its committed digest sidecar must match the fixture, and the language test
      suites must bind to that one fixture (not fork their own copy).
 
+  4. Method skew   — the AimarketAgent class must expose the same public methods
+     in all three SDKs. Here names ARE compared (after camelCase → snake_case),
+     because a method is found by name: models matched on field count alone let
+     the Rust agent ship without fetch_trusted_hashes and verify_tee_receipt
+     while both other SDKs had them, and the guard still said PARITY OK.
+     Module-level helpers outside the class (TypeScript's `market`) are not
+     covered.
+
 This is deliberately a *guard*, not a code generator: the SDK models are hand-
 tuned for each language's ergonomics (BigInt/viem in TS, serde in Rust,
 web3dart in Dart) and generating them would regress DX. The guard locks the
@@ -54,6 +62,22 @@ CANONICAL_MODELS = [
     "BillOfMaterials",
     "SearchResponse",
 ]
+
+# The public AimarketAgent surface, in snake_case. Every SDK must expose each of these,
+# and nothing public beyond them except what LANGUAGE_ONLY allows. Edit this list when
+# the agent gains or loses a method — in all three SDKs.
+CANONICAL_AGENT_METHODS = [
+    "well_known", "discover", "discover_product",
+    "open_channel", "get_channel_balance", "invoke", "invoke_batch", "close_channel",
+    "verify_tee_attestation", "verify_tee_receipt", "trust_code_hash", "fetch_trusted_hashes",
+    "run_once", "dispose",
+]
+# Public methods that exist in one language by its conventions, not as protocol surface.
+LANGUAGE_ONLY = {
+    "rust": {"new", "with_config"},     # constructors are associated functions in Rust
+    "ts": set(),
+    "dart": set(),
+}
 
 GREEN = "\033[32m"
 RED = "\033[31m"
@@ -182,6 +206,65 @@ def check_models(failures: list[str]) -> None:
             failures.append(f"model {model} field-count mismatch: {present}")
 
 
+def _snake(name: str) -> str:
+    return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
+
+
+def rust_agent_methods(src: str) -> set[str]:
+    names: set[str] = set()
+    for m in re.finditer(r"^impl AimarketAgent\s*\{", src, re.MULTILINE):
+        names |= set(re.findall(r"^    pub (?:async )?fn (\w+)", _balanced_block(src, m.start()), re.MULTILINE))
+    return names
+
+
+def ts_agent_methods(src: str) -> set[str]:
+    m = re.search(r"export class AimarketAgent\b", src)
+    if not m:
+        return set()
+    body = _balanced_block(src, m.start())
+    public = set(re.findall(r"^  (?:async )?(?:get )?([a-zA-Z]\w*)\s*\(", body, re.MULTILINE))
+    hidden = set(re.findall(r"^  (?:private|protected) (?:async )?([a-zA-Z]\w*)\s*\(", body, re.MULTILINE))
+    return {_snake(n) for n in public - hidden - {"constructor"}}
+
+
+_DART_TYPE = r"(?:Future<[^\n(]*?>|Stream<[^\n(]*?>|[A-Z]\w*(?:<[^\n(]*?>)?\??|void|bool|int|double|num|String|dynamic)"
+
+
+def dart_agent_methods(src: str) -> set[str]:
+    m = re.search(r"class AimarketAgent\b", src)
+    if not m:
+        return set()
+    body = _balanced_block(src, m.start())
+    # A member at class indent with a return type; `_private` names are not public.
+    found = re.findall(
+        rf"^  (?:static\s+)?{_DART_TYPE}\s+(?:get\s+)?([a-z]\w*)\s*(?:\(|<|async\b|\{{|=>)",
+        body, re.MULTILINE)
+    return {_snake(n) for n in found}
+
+
+def check_methods(failures: list[str]) -> None:
+    print(_c(YELLOW, "\n▌ 4. Agent method parity"))
+    found = {
+        "ts": ts_agent_methods((SDKS / "typescript" / "src" / "agent.ts").read_text()),
+        "rust": rust_agent_methods((SDKS / "rust" / "src" / "agent.rs").read_text()),
+        "dart": dart_agent_methods((SDKS / "dart" / "lib" / "src" / "agent.dart").read_text()),
+    }
+    print(f"    {'method':<26}{'ts':>5}{'rust':>6}{'dart':>6}")
+    for method in CANONICAL_AGENT_METHODS:
+        have = {lang: method in names for lang, names in found.items()}
+        mark = _c(GREEN, "✓") if all(have.values()) else _c(RED, "✗")
+        cells = "".join(f"{('✓' if have[lang] else '-'):>{w}}" for lang, w in (("ts", 5), ("rust", 6), ("dart", 6)))
+        print(f"  {mark} {method:<26}{cells}")
+        missing = [lang for lang, ok in have.items() if not ok]
+        if missing:
+            failures.append(f"agent method {method} missing in: {', '.join(missing)}")
+    for lang, names in found.items():
+        extra = sorted(names - set(CANONICAL_AGENT_METHODS) - LANGUAGE_ONLY[lang])
+        if extra:
+            print(f"  {_c(RED, '✗')} {lang} has public methods the others lack: {', '.join(extra)}")
+            failures.append(f"{lang} agent methods not in CANONICAL_AGENT_METHODS: {', '.join(extra)}")
+
+
 def check_vectors(failures: list[str]) -> None:
     print(_c(YELLOW, "\n▌ 3. Cross-SDK test-vector integrity"))
     vec_path = SDKS / "test-vectors" / "debit_authorization.json"
@@ -240,6 +323,7 @@ def main() -> int:
     check_versions(failures)
     check_models(failures)
     check_vectors(failures)
+    check_methods(failures)
 
     print()
     if failures:

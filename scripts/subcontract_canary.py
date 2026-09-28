@@ -21,8 +21,15 @@ Cost-plus (default): the root call reserves an allowance, and the canary asserts
 ``--fixed-price`` sends no allowance: the composite pays the readings with its own key, and
 the tree must still show both children, funded ``own``.
 
+``--a2a`` makes the root call an A2A 1.0 ``SendMessage`` to ``POST /a2a`` instead of
+``POST /ai-market/v2/invoke``, and additionally asserts that the answer is a COMPLETED Task
+that ``GetTask`` reads back unchanged. Only the ROOT changes protocol: the composite still
+buys its readings at ``/ai-market/v2/invoke``, the one place a job tree is joined (``/a2a``
+refuses job headers rather than dropping them).
+
     SUBCONTRACT_CANARY_API_KEY=aimk_... scripts/subcontract_canary.py
     scripts/subcontract_canary.py --api-key-file /root/.subcontract-canary.key --fixed-price --json
+    scripts/subcontract_canary.py --api-key-file /root/.subcontract-canary.key --a2a
 
 The key is read from the environment or a file, never from the command line, where every
 user on the host could read it from the process list. A cost-plus run costs the buyer the
@@ -35,6 +42,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import secrets
 import sys
 import urllib.error
 import urllib.request
@@ -47,6 +55,8 @@ COMPOSITE = {"product_id": "weather-witness", "capability_id": "weather.witness@
 CHILDREN = ("gaia.air.read@v1", "gaia.weather.read@v1")
 # The credits ledger's unit is $0.00001; anything closer than half of it is the same amount.
 EPS = 0.000005
+A2A_HEADERS = {"A2A-Version": "1.0"}
+A2A_COMPLETED = "TASK_STATE_COMPLETED"
 
 
 class Check:
@@ -90,16 +100,80 @@ class Http:
 # ── observation ──────────────────────────────────────────────────────────────
 
 
+def _artifact_data(task: dict[str, Any], name: str) -> tuple[Any, dict[str, Any]]:
+    for item in task.get("artifacts") or []:
+        if isinstance(item, dict) and name in (item.get("name"), item.get("artifactId")):
+            parts = item.get("parts") or [{}]
+            part = parts[0] if isinstance(parts[0], dict) else {}
+            meta = item.get("metadata") if isinstance(item.get("metadata"), dict) else {}
+            return part.get("data", part.get("text")), meta
+    return None, {}
+
+
+def task_as_invoke(task: Any) -> tuple[int, dict[str, Any] | None]:
+    """An A2A Task, read back into the invoke answer the checks below expect: the result
+    artifact, the bill from ``metadata.aimarket`` and the AWR/2 receipt artifact. A task that
+    did not complete is reported with the hub's own refusal, never as a delivered call."""
+    if not isinstance(task, dict):
+        return 0, None
+    aimarket = (task.get("metadata") or {}).get("aimarket") or {}
+    if (task.get("status") or {}).get("state") != A2A_COMPLETED:
+        refusal = ((((task.get("status") or {}).get("message") or {}).get("metadata") or {})
+                   .get("aimarket") or {})
+        return 502, {"success": False, "a2a_state": (task.get("status") or {}).get("state"),
+                     "error": refusal.get("error"), "detail": refusal.get("detail")}
+    result, _ = _artifact_data(task, "result")
+    provenance, meta = _artifact_data(task, "provenance")
+    body: dict[str, Any] = {"success": True, "result": result}
+    for key in ("price_usd", "subcontracting", "remaining_balance"):
+        if key in aimarket:
+            body[key] = aimarket[key]
+    if isinstance(provenance, dict):
+        body["provenance_receipt"] = {**provenance, **meta}
+    return 200, body
+
+
+def _a2a_root(http: Http, hub: str, api_key: str, payload: dict[str, Any]) -> tuple[int, Any, dict[str, Any]]:
+    headers = {"X-API-Key": api_key, **A2A_HEADERS}
+    message = {"messageId": f"canary-{secrets.token_hex(8)}", "role": "ROLE_USER",
+               "parts": [{"data": {"invoke": payload}, "mediaType": "application/json"}]}
+    rpc_status, answer = http.post(f"{hub}/a2a", {"jsonrpc": "2.0", "id": 1, "method": "SendMessage",
+                                                  "params": {"message": message}}, headers)
+    task = ((answer or {}).get("result") or {}).get("task") if isinstance(answer, dict) else None
+    a2a: dict[str, Any] = {"rpc_status": rpc_status, "task_id": None, "state": None,
+                           "reread_state": None, "reread_same": False,
+                           "rpc_error": (answer or {}).get("error") if isinstance(answer, dict) else None}
+    if not isinstance(task, dict):
+        return 0, None, a2a
+    a2a["task_id"], a2a["state"] = task.get("id"), (task.get("status") or {}).get("state")
+    # A Task is a record the client can come back to: read it again and compare.
+    _, again = http.post(f"{hub}/a2a", {"jsonrpc": "2.0", "id": 2, "method": "GetTask",
+                                        "params": {"id": task.get("id")}}, headers)
+    reread = (again or {}).get("result") if isinstance(again, dict) else None
+    if isinstance(reread, dict):
+        a2a["reread_state"] = (reread.get("status") or {}).get("state")
+        a2a["reread_same"] = (reread.get("id") == task.get("id")
+                              and (reread.get("metadata") or {}).get("aimarket", {}).get("subcontracting")
+                              == (task.get("metadata") or {}).get("aimarket", {}).get("subcontracting"))
+    status, body = task_as_invoke(task)
+    return status, body, a2a
+
+
 def observe(hub: str, api_key: str, *, city: str, allowance_usd: float, fixed_price: bool,
-            http: Http | None = None) -> dict[str, Any]:
+            http: Http | None = None, a2a: bool = False) -> dict[str, Any]:
     http = http or Http()
     hub = hub.rstrip("/")
     payload: dict[str, Any] = {**COMPOSITE, "input": {"city": city}}
     if not fixed_price:
         payload["subcontract"] = {"allowance_usd": allowance_usd, "max_depth": 1}
-    status, body = http.post(f"{hub}/ai-market/v2/invoke", payload, {"X-API-Key": api_key})
+    task: dict[str, Any] | None = None
+    if a2a:
+        status, body, task = _a2a_root(http, hub, api_key, payload)
+    else:
+        status, body = http.post(f"{hub}/ai-market/v2/invoke", payload, {"X-API-Key": api_key})
     seen: dict[str, Any] = {"status": status, "body": body if isinstance(body, dict) else None,
-                            "tree_status": None, "tree": None, "receipt_status": None, "receipt": None}
+                            "tree_status": None, "tree": None, "receipt_status": None, "receipt": None,
+                            "a2a": task}
     sub = (seen["body"] or {}).get("subcontracting") or {}
     job_id = sub.get("job_id")
     if isinstance(job_id, str) and job_id:
@@ -129,6 +203,17 @@ def _num(value: Any) -> float | None:
 def evaluate(seen: dict[str, Any], *, allowance_usd: float, fixed_price: bool) -> list[Check]:
     checks: list[Check] = []
     body = seen.get("body") or {}
+    a2a = seen.get("a2a")
+    if isinstance(a2a, dict):
+        task_id = str(a2a.get("task_id") or "")
+        checks.append(Check(
+            "a2a_task_completed",
+            task_id.startswith("a2at_") and a2a.get("state") == A2A_COMPLETED
+            and a2a.get("reread_state") == A2A_COMPLETED and a2a.get("reread_same") is True,
+            f"SendMessage (HTTP {a2a.get('rpc_status')}) → task {task_id or 'none'} {a2a.get('state')}; "
+            f"GetTask → {a2a.get('reread_state')}, bill {'unchanged' if a2a.get('reread_same') else 'DIFFERENT'}"
+            + (f"; error {json.dumps(a2a.get('rpc_error'))[:200]}" if a2a.get("rpc_error") else ""),
+        ))
     delivered = seen.get("status") == 200 and body.get("success") is True
     result = body.get("result") if isinstance(body.get("result"), dict) else {}
     checks.append(Check(
@@ -242,6 +327,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--allowance", type=float, default=0.01, help="allowance_usd for cost-plus")
     parser.add_argument("--fixed-price", action="store_true",
                         help="send no allowance: the composite pays its readings itself")
+    parser.add_argument("--a2a", action="store_true",
+                        help="make the root call over A2A 1.0 (POST /a2a SendMessage) instead of /invoke")
     parser.add_argument("--api-key-file", default="",
                         help="file holding the buyer's X-API-Key (else $SUBCONTRACT_CANARY_API_KEY)")
     parser.add_argument("--timeout", type=float, default=45.0)
@@ -254,8 +341,10 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     when = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     mode = "fixed-price" if args.fixed_price else f"cost-plus (allowance ${args.allowance})"
+    if args.a2a:
+        mode += ", root over A2A"
     seen = observe(args.hub, api_key, city=args.city, allowance_usd=args.allowance,
-                   fixed_price=args.fixed_price, http=Http(args.timeout))
+                   fixed_price=args.fixed_price, http=Http(args.timeout), a2a=args.a2a)
     checks = evaluate(seen, allowance_usd=args.allowance, fixed_price=args.fixed_price)
     failed = [c for c in checks if not c.ok and c.critical]
     if args.json:
@@ -263,7 +352,8 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps({"hub": args.hub, "mode": mode, "checked_at": when, "ok": not failed,
                           "checks": [c.as_dict() for c in checks],
                           "subcontracting": body.get("subcontracting"),
-                          "price_usd": body.get("price_usd")}, indent=2))
+                          "price_usd": body.get("price_usd"),
+                          "a2a_task_id": (seen.get("a2a") or {}).get("task_id")}, indent=2))
     else:
         print(render(checks, args.hub, mode, when))
     return 1 if failed else 0

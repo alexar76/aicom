@@ -379,3 +379,25 @@ def test_dry_run_prints_the_plan_and_changes_nothing(rollout, engine, monkeypatc
     assert "AIMARKET_ADMIN_TOKEN=<redacted>" in plan["create"]["modelmarket-hub"]["Env"]
     assert "PATH" in plan["image_env_names"]
     assert plan["create"]["themis"]["HostConfig"]["NetworkMode"].startswith("container:modelmarket-hub-candidate-")
+
+
+def test_set_changes_only_the_named_variables_and_never_prints_a_value(rollout, engine, monkeypatch, capsys):
+    before = dict(e.partition("=")[::2] for e in engine.named("modelmarket-hub")["Config"]["Env"])
+    run(rollout, monkeypatch, *HUB_ARGS, "--set", "AIMARKET_TOPUP_ENABLED=1",
+        "--set", "AIMARKET_HUB_NAME=value-that-must-not-be-printed")
+    env = dict(e.partition("=")[::2] for e in engine.named("modelmarket-hub")["Config"]["Env"])
+    assert env["AIMARKET_TOPUP_ENABLED"] == "1" and env["AIMARKET_HUB_NAME"] == "value-that-must-not-be-printed"
+    untouched = {k: v for k, v in before.items() if k != "AIMARKET_HUB_NAME"}
+    assert {k: v for k, v in env.items() if k not in ("AIMARKET_TOPUP_ENABLED", "AIMARKET_HUB_NAME")} == untouched
+    out = capsys.readouterr().out
+    assert "value-that-must-not-be-printed" not in out and "s3cret-admin-token" not in out
+    assert json.loads(out.strip().splitlines()[-1])["set_env_names"] == ["AIMARKET_HUB_NAME", "AIMARKET_TOPUP_ENABLED"]
+
+
+@pytest.mark.parametrize("bad", ["AIMARKET_TOPUP_ENABLED", "=1", "1ABC=x", "BAD-NAME=x"])
+def test_a_malformed_set_stops_before_anything_changes(rollout, engine, monkeypatch, capsys, bad):
+    before = copy.deepcopy(engine.containers)
+    with pytest.raises(SystemExit) as refused:
+        run(rollout, monkeypatch, *HUB_ARGS, "--set", bad)
+    assert engine.containers == before and {m for m, _ in engine.calls} == {"GET"}
+    assert "=x" not in str(refused.value)

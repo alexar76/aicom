@@ -267,7 +267,12 @@ greps a log for them.
 |----|----|----|----|----|-------|
 | credit account (prepaid) | кредитный аккаунт | cuenta de crédito | compte de crédit | 额度账户 | The paid entrance, exempt from the free allowance. Not «счёт»/«cuenta bancaria»: it holds prepaid value, not a bank relationship. |
 | balance | баланс | saldo | solde | 余额 | What is left to spend. Published as `balance_usd`. |
-| top-up (to top up) | пополнение (пополнить) | recarga (recargar) | recharge (recharger) | 充值 | Operator-only, idempotent on `reference`. Not «депозит»: nothing is escrowed. |
+| top-up (to top up) | пополнение (пополнить) | recarga (recargar) | recharge (recharger) | 充值 | By the operator (`POST /accounts/{id}/credit`) or, on the Hub, bought by the account itself with USDC ([`credits-topup.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/credits-topup.md)); idempotent on `reference` either way. Not «депозит»: nothing is escrowed. |
+| top-up quote | счёт на пополнение | oferta de recarga | offre de recharge | 充值报价 | The `402` a Hub mints for a top-up: amount, `payTo` and a nonce bound to ONE account (table `credit_topup_quotes`). Binding, unlike a *cost estimate* (смета / presupuesto / devis / 成本预估). |
+| paid credit / granted credit | купленный кредит / подаренный кредит | crédito comprado / crédito concedido | crédit acheté / crédit offert | 购买的额度 / 赠送的额度 | `topped_up_usd` (money came in) vs `granted_usd` (given away: signup grants, operator grants). Kept apart on purpose: the grant budget and the solvency report read them differently. |
+| operator wallet | кошелёк оператора | cartera del operador | portefeuille de l'opérateur | 运营者钱包 | The `payTo` of a top-up. An address, not custody by the Hub: the Hub holds no key. |
+| confirmation (block) | подтверждение | confirmación | confirmation | 确认 | Blocks on top of the one that mined a payment (`AIMARKET_TOPUP_MIN_CONFIRMATIONS`). |
+| open signup | открытая регистрация | registro abierto | inscription ouverte | 开放注册 | An agent opens its own credit account (`AIMARKET_CREDITS_OPEN_SIGNUP`). |
 | hold (reserved amount) | резерв | reserva | réserve | 预留 | Placed before the work. Verb stays `hold` in code; RU/ES/FR/ZH translate the noun in prose. |
 | capture (settle a hold) | списание | cobro | débit | 扣费 | Only on delivery. A refusal releases instead. |
 | millicent | миллицент | milicéntimo | millicentime | 毫分 | The ledger unit, so a published $0.02 is charged as exactly $0.02. |
@@ -293,6 +298,42 @@ Added with [`docs/hestia-hub-market-rail.md`](hestia-hub-market-rail.md). Env va
 | redeem (a payment) | погасить платёж | canjear | présenter le paiement | 兑付 | Present a mined payment to the till to get the call. Distinct from **settle** (the till verifying it) and from paying (the on-chain transfer). |
 | binding (EIP-3009) | привязка (binding) | vinculación (binding) | liaison (binding) | 绑定 (binding) | Require `AuthorizationUsed(payer, nonce)` for the nonce **this** till minted. Gloss English once. The `402` field `binding` takes the identifier values `eip3009` (bound, redeem with the secret), `none` (address only) and `secret` (HESTIA compute: the buyer picks the secret, `nonce_rule: "sha256(secret)"`). |
 | dual nonce | два nonce | nonce dual | nonce double | 双 nonce | Two tills mint two nonces for one call — one `transferWithAuthorization` cannot satisfy both. |
+
+## Mandate and subcontracting terms (AMD/1 · SUB/1)
+
+Added with [`aimarket-hub/docs/subcontracting.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/subcontracting.md) (2026-09-28); the renderings are the ones
+[`aimarket-hub/docs/mandates.*.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/mandates.md) already used, fixed here. `AMD/1`, `SUB/1`, the headers
+(`X-AIMarket-Job`, `X-AIMarket-Job-Grant`, `X-AIMarket-Hub`, `X-AIMarket-Mandate`, `X-AIMarket-Mandate-Proof`), the
+fields (`job_id`, `node`, `parent`, `depth`, `funded_by`, `allowance_usd`, `max_depth`, `spent_usd`, `released_usd`,
+`spent_from_allowance_usd`, `allowance_status`, `perCallAllowance`, `maxDepth`), the values (`allowance`, `own`,
+`running`, `captured`, `failed`, `refused`, `open`, `closed`), the `limit` values (`depth`, `cycle`, `nodes`,
+`children`), the error codes (`job_invalid`, `job_limit`, `allowance_exhausted`, `subcontract_unsupported`, …), the
+ledger verbs (`hold`, `transfer_hold`, `capture`, `release`) and the A2A states (`TASK_STATE_*`) are **identifiers and
+never translated**.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| mandate | мандат | mandato | mandat | 授权书 | An owner's signed spending limits for an agent key (AMD/1). |
+| subcontracting | субподряд | subcontratación | sous-traitance | 分包 | A provider buying from another provider while it serves a call (SUB/1). |
+| subcontractor | субподрядчик | subcontratista | sous-traitant | 分包方 | A provider bought from inside a job. Its market role is still `provider` (поставщик / proveedor / fournisseur / 提供方). |
+| job (job tree) | задание (дерево задания) | trabajo (árbol del trabajo) | tâche (arbre de la tâche) | 作业（作业树） | The tree of calls one root call starts. Not an A2A `Task` — see that row. |
+| root call / root buyer | корневой вызов / корневой покупатель | llamada raíz / comprador raíz | appel racine / acheteur racine | 根调用 / 根买家 | Depth 0: the call that opened the job, and whoever paid for it. |
+| child (call) | дочерний вызов | llamada hija | appel enfant | 子调用 | A purchase made inside a job, one level below its parent. |
+| node (job node) | узел | nodo | nœud | 节点 | One call in the tree. Ids `node_…` stay Latin. |
+| job token | токен задания | token del trabajo | jeton de tâche | 作业令牌 | `X-AIMarket-Job`, signed by the hub, 60 s. **Linkage only — carries no money.** An auth token: ZH 令牌, never 代币. |
+| grant (job grant) | grant | grant | grant | grant | `X-AIMarket-Job-Grant`: a bearer secret for spending the allowance, by design. Keep Latin; gloss once: RU «grant (секрет на трату из бюджета субподряда)», ES «grant (secreto para gastar la asignación)», FR «grant (secret pour dépenser l'enveloppe)», ZH「grant（从分包额度中支出的凭证）」. |
+| allowance (subcontracting) | бюджет субподряда | asignación | enveloppe | 分包额度 | The part of the root buyer's money providers may spend on subcontractors. RU may shorten to «бюджет» once introduced. **ZH always writes 分包额度 in full**: bare 额度 also means credits (额度账户, 额度轨道). Not the *free allowance* (бесплатный лимит / límite gratuito / quota gratuit / 免费额度). |
+| cost-plus | cost-plus | cost-plus | cost-plus | 成本加成（cost-plus） | The root buyer pays subcontractors at cost, out of the allowance; materials consumed are paid for. Keep Latin in RU/ES/FR; gloss once: RU «(материалы оплачивает покупатель)», ES «(los materiales los paga el comprador)», FR «(les matériaux sont à la charge de l'acheteur)». |
+| fixed price (subcontracting) | фиксированная цена | precio fijo | prix fixe | 固定价格 | The provider pays its subcontractors from its own rail and carries that risk. |
+| bill (of a job) | счёт | factura | facture | 账单 | Short for the job's `bill of materials` (the `subcontracting` block), which keeps the HEPHAESTUS rule: English, glossed once (спецификация работ / lista de materiales / nomenclature / 物料清单). |
+| carve out (from the allowance) | вырезать из бюджета | descontar de la asignación | prélever sur l'enveloppe | 从分包额度中扣出 | `transfer_hold`: part of the allowance's hold becomes the child's own hold, by one conditional statement. |
+| release (a hold) | возврат | liberación | libération | 释放 | The opposite of *capture*: the reserved money goes back. Verb `release` stays Latin. |
+| routing fee | комиссия маршрутизации | comisión de enrutamiento | frais de routage | 路由费 | A reselling hub's spread on a routed call (`AIMARKET_ROUTING_FEE_BPS`). |
+| linkage (job linkage) | связывание | vinculación | rattachement à la tâche | 关联 | What the job token alone gives. FR: not «liaison», which renders EIP-3009 *binding* above. |
+| stranded allowance | зависший бюджет | asignación varada | enveloppe orpheline | 滞留的分包额度 | An allowance whose root call never settled it. |
+| sweep | зачистка | barrido | balayage | 清扫 | The background settlement of stranded allowances (`AIMARKET_SUBCONTRACT_SWEEP_S`). |
+| depth / cycle / fan-out | глубина / цикл / ветвление | profundidad / ciclo / ramificación | profondeur / cycle / ramification | 深度 / 循环 / 扇出 | Tree limits; the `limit` values stay Latin. |
+| A2A Task | задача A2A (Task) | tarea A2A (Task) | Task A2A | A2A 任务（Task） | The A2A 1.0 protocol object a `SendMessage` answers with. **FR keeps `Task`**: «tâche» is already *job*, and one word for both is the confusion this table exists to prevent. |
 
 ## Signal Hunt terms (federation investigation lab)
 

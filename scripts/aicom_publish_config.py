@@ -168,6 +168,8 @@ FACTORY_LOCAL_EXCLUDES = [
     # wiring, or product-shell trees on the public factory mirror.
     "attested",
     "pingblip",
+    # Local creative/output packs (e.g. Instagram renders) — Gitea only; not factory.
+    "output",
     "protocol-v2-receipt-from-spec",
     "protocol-v2-from-spec-rs",
     "protocol-v2-federator-go",

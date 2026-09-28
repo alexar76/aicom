@@ -50,12 +50,16 @@ contract UniUSD is ERC20 {
     uint256 private immutable _deployChainId;
     bytes32 private immutable _cachedDomainSeparator;
 
-    error AuthorizationUsed();
+    error AuthorizationAlreadyUsed();
     error AuthorizationNotYetValid();
     error AuthorizationExpired();
     error InvalidSignature();
 
-    event AuthorizationUsedEvent(address indexed authorizer, bytes32 indexed nonce);
+    /// @dev Named exactly as Base USDC names it: the hub finds a payment by this event's topic,
+    ///      keccak256("AuthorizationUsed(address,bytes32)"). Called AuthorizationUsedEvent (the
+    ///      error had taken the name) it logged another topic, and no payment made inside the
+    ///      bubble could ever be verified — the difference this contract exists not to have.
+    event AuthorizationUsed(address indexed authorizer, bytes32 indexed nonce);
 
     constructor() ERC20("USD Coin", "USDC") {
         _deployChainId = block.chainid;
@@ -104,7 +108,7 @@ contract UniUSD is ERC20 {
     ) external {
         if (block.timestamp <= validAfter) revert AuthorizationNotYetValid();
         if (block.timestamp >= validBefore) revert AuthorizationExpired();
-        if (authorizationState[from][nonce]) revert AuthorizationUsed();
+        if (authorizationState[from][nonce]) revert AuthorizationAlreadyUsed();
 
         bytes32 structHash = keccak256(
             abi.encode(
@@ -116,7 +120,7 @@ contract UniUSD is ERC20 {
         if (signer == address(0) || signer != from) revert InvalidSignature();
 
         authorizationState[from][nonce] = true;
-        emit AuthorizationUsedEvent(from, nonce);
+        emit AuthorizationUsed(from, nonce);
         _transfer(from, to, value);
     }
 }
