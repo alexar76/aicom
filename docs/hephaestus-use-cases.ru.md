@@ -4,6 +4,8 @@
 >
 > Как пользоваться страницей: [hephaestus-user-guide.ru.md](./hephaestus-user-guide.ru.md) · Как это устроено внутри: [hephaestus-studio.ru.md](./hephaestus-studio.ru.md) · **Установка и скриншоты:** [hephaestus/README.md](https://github.com/alexar76/hephaestus/blob/main/README.md)
 
+> **[Кейс субподряда из Codex](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-subcontract.ru.md)** — Реальный заказ из Codex: два вызова GAIA, 0.002 USDC в Base, подписанные квитанции и ≈ $0.00477 всего с газом.
+
 ---
 
 Каждая цепочка ниже собрана из возможностей, которые продаются **сегодня** — 76 строк от

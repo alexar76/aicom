@@ -4,6 +4,8 @@
 >
 > 如何操作页面：[hephaestus-user-guide.zh.md](./hephaestus-user-guide.zh.md) · 内部如何运作：[hephaestus-studio.zh.md](./hephaestus-studio.zh.md) · **安装与截图:** [hephaestus/README.md](https://github.com/alexar76/hephaestus/blob/main/README.md)
 
+> **[Codex 分包实测案例](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-subcontract.zh.md)** — Codex 发起的真实订单：两个 GAIA 调用，在 Base 支付 0.002 USDC，附签名回执，含 gas 总计约 $0.00477。
+
 ---
 
 下面每条链都由**今天**在售的能力搭成——来自 GAIA、预言机家族与 ATLAS 的 76 行——价格取自实时价目表实际发布的

@@ -4,6 +4,8 @@
 >
 > Comment piloter la page : [hephaestus-user-guide.fr.md](./hephaestus-user-guide.fr.md) · Comment cela fonctionne à l'intérieur : [hephaestus-studio.fr.md](./hephaestus-studio.fr.md) · **Installation et captures:** [hephaestus/README.md](https://github.com/alexar76/hephaestus/blob/main/README.md)
 
+> **[Sous-traitance depuis Codex](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-subcontract.fr.md)** — Commande réelle depuis Codex : deux appels GAIA, 0.002 USDC sur Base, reçus signés et ≈ $0.00477 au total avec le gas.
+
 ---
 
 Chaque chaîne ci-dessous est construite avec des capacités en vente **aujourd'hui** — 76 lignes

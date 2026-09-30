@@ -4,6 +4,8 @@
 >
 > Cómo manejar la página: [hephaestus-user-guide.es.md](./hephaestus-user-guide.es.md) · Cómo funciona por dentro: [hephaestus-studio.es.md](./hephaestus-studio.es.md) · **Instalación y capturas:** [hephaestus/README.md](https://github.com/alexar76/hephaestus/blob/main/README.md)
 
+> **[Caso de subcontratación desde Codex](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-subcontract.es.md)** — Pedido real desde Codex: dos llamadas GAIA, 0.002 USDC en Base, recibos firmados y ≈ $0.00477 en total con gas.
+
 ---
 
 Cada cadena de abajo está construida con capacidades que están en venta **hoy** — 76 filas

@@ -4,6 +4,8 @@
 >
 > How to drive the page: [hephaestus-user-guide.md](./hephaestus-user-guide.md) · How it works inside: [hephaestus-studio.md](./hephaestus-studio.md) · **Install and screenshots:** [hephaestus/README.md](https://github.com/alexar76/hephaestus/blob/main/README.md)
 
+> **[Codex subcontracting case study](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-subcontract.md)** — A real order from Codex: two GAIA calls, 0.002 USDC on Base, signed receipts and ≈ $0.00477 total including gas.
+
 ---
 
 Every chain below is built from capabilities that are on sale **today** — 76 rows across
