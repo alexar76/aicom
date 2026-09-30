@@ -6,6 +6,8 @@
 
 > **[Codex subcontracting case study](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-subcontract.md)** — A real order from Codex: two GAIA calls, 0.002 USDC on Base, signed receipts and ≈ $0.00477 total including gas.
 
+> [One-call pipelines](https://github.com/alexar76/aimarket-hub/blob/main/docs/one-call-pipelines.md) · [New live test from Codex](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-one-call.md) — 2026-09-30.
+
 ---
 
 Every chain below is built from capabilities that are on sale **today** — 76 rows across

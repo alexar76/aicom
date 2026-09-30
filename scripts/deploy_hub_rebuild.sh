@@ -322,21 +322,23 @@ for _ in $(seq 1 45); do
 done
 (( healthy )) || { docker logs --tail 40 "$NAME" || true; rollback; die "new container never became healthy"; }
 
+# Consume the full response: grep -q can close the pipe early and make curl
+# exit 23 under pipefail, causing a false rollback on a healthy long response.
 fail=""
 curl -sf "http://127.0.0.1:${PORT}/.well-known/ai-market.json" \
-  | grep -q '"payment_configured": *true' || fail="payment_configured is not true"
-curl -sf "http://127.0.0.1:${PORT}/mcp" | grep -q '"service": *"aimarket-hub-mcp"' \
+  | grep '"payment_configured": *true' >/dev/null || fail="payment_configured is not true"
+curl -sf "http://127.0.0.1:${PORT}/mcp" | grep '"service": *"aimarket-hub-mcp"' >/dev/null \
   || fail="${fail:+$fail; }apex /mcp does not answer"
 # The JSON-RPC surface, not just the info document: a gateway can answer GET perfectly
 # while every tools/call raises, and that is the half strangers actually use.
 curl -sf -X POST "http://127.0.0.1:${PORT}/mcp" -H 'content-type: application/json' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' \
-  | grep -q 'market_invoke' || fail="${fail:+$fail; }/mcp tools/list does not list market_invoke"
-curl -sf "http://127.0.0.1:${PORT}/mcp" | grep -q '"trial": *"per-caller"' \
+  | grep 'market_invoke' >/dev/null || fail="${fail:+$fail; }/mcp tools/list does not list market_invoke"
+curl -sf "http://127.0.0.1:${PORT}/mcp" | grep '"trial": *"per-caller"' >/dev/null \
   || fail="${fail:+$fail; }the trial tier is off — every newcomer meets the payment wall"
 # Agent-discovery files. A rebuild that omits aimarket_hub/static or the wellknown
 # routes 404s /llms.txt and /.well-known/mcp/server-card.json — both are 200 in prod.
-curl -sf "http://127.0.0.1:${PORT}/llms.txt" | grep -q 'modelmarket.dev/mcp' \
+curl -sf "http://127.0.0.1:${PORT}/llms.txt" | grep 'modelmarket.dev/mcp' >/dev/null \
   || fail="${fail:+$fail; }/llms.txt is missing or does not name the MCP URL"
 card_type="$(curl -s -D - -o /tmp/hub-server-card.json "http://127.0.0.1:${PORT}/.well-known/mcp/server-card.json" \
   | tr -d '\r' | awk 'tolower($1)=="content-type:"{print $2; exit}')"

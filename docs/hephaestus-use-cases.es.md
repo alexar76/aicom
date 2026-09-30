@@ -6,6 +6,8 @@
 
 > **[Caso de subcontratación desde Codex](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-subcontract.es.md)** — Pedido real desde Codex: dos llamadas GAIA, 0.002 USDC en Base, recibos firmados y ≈ $0.00477 en total con gas.
 
+> [Pipelines en una llamada](https://github.com/alexar76/aimarket-hub/blob/main/docs/one-call-pipelines.es.md) · [Nueva prueba real desde Codex](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-one-call.es.md) — 2026-09-30.
+
 ---
 
 Cada cadena de abajo está construida con capacidades que están en venta **hoy** — 76 filas

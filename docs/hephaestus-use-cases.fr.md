@@ -6,6 +6,8 @@
 
 > **[Sous-traitance depuis Codex](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-subcontract.fr.md)** — Commande réelle depuis Codex : deux appels GAIA, 0.002 USDC sur Base, reçus signés et ≈ $0.00477 au total avec le gas.
 
+> [Pipelines en un appel](https://github.com/alexar76/aimarket-hub/blob/main/docs/one-call-pipelines.fr.md) · [Nouveau test réel depuis Codex](https://github.com/alexar76/aimarket-hub/blob/main/docs/case-study-codex-one-call.fr.md) — 2026-09-30.
+
 ---
 
 Chaque chaîne ci-dessous est construite avec des capacités en vente **aujourd'hui** — 76 lignes
