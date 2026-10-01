@@ -5,13 +5,15 @@
   "description": "AIMarket services on OKX.AI as A2MCP endpoints: HISTOR pre-flight check and WARDEN tool-definition scan.",
   "type": "module",
   "license": "MIT",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node src/server.js",
     "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {
-    "@aimarket/warden": "0.7.0",
+    "@aimarket/warden": "0.8.1",
     "express": "^5.1.0"
   }
 }

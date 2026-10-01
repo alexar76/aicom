@@ -205,7 +205,9 @@ def test_the_pattern_table_carries_a_tier_for_every_rule():
     # v3: the scanned surfaces are a property of each RULE. `scannedFields` is the
     # union, derived by the generator, so a summary cannot drift from the table it
     # summarises -- which is the only reason a label reader can trust either.
-    assert table["scannedFields"] == ["name", "description", "inputSchema"]
+    # v6 added title, outputSchema, annotations and metadata; the original three stay.
+    assert {"name", "description", "inputSchema"} <= set(table["scannedFields"])
+    assert len(set(table["scannedFields"])) == len(table["scannedFields"])
     assert {s for r in rules for s in r["surfaces"]} == set(table["scannedFields"])
     for surface, count in table["surfaceCounts"].items():
         assert count == sum(1 for r in rules if surface in r["surfaces"]), surface

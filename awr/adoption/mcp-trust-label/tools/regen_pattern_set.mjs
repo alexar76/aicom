@@ -34,10 +34,16 @@ for (const rule of ruleset.rules) tierCounts[rule.tier] = (tierCounts[rule.tier]
 // `scannedFields` is derived from the table rather than restated here: a rule that
 // starts or stops looking at a surface must not be able to disagree with the
 // summary a label reader trusts.
-const SURFACE_ORDER = ["name", "description", "inputSchema"];
+// Ruleset v6 added title, outputSchema, annotations and metadata. A surface this list does not
+// know yet is appended rather than dropped: filtering through a fixed list is how the v6 surfaces
+// went missing from this file's summary while every rule declared them.
+const SURFACE_ORDER = ["name", "title", "description", "inputSchema", "outputSchema", "annotations", "metadata"];
 const scanned = new Set();
 for (const rule of ruleset.rules) for (const surface of rule.surfaces ?? []) scanned.add(surface);
-const scannedFields = SURFACE_ORDER.filter((surface) => scanned.has(surface));
+const scannedFields = [
+  ...SURFACE_ORDER.filter((surface) => scanned.has(surface)),
+  ...[...scanned].filter((surface) => !SURFACE_ORDER.includes(surface)).sort(),
+];
 const surfaceCounts = {};
 for (const surface of scannedFields) {
   surfaceCounts[surface] = ruleset.rules.filter((r) => (r.surfaces ?? []).includes(surface)).length;

@@ -48,8 +48,8 @@ later is an update of the registered service, not a new registration.
 
 ## Honest limits to keep in mind
 
-- WARDEN's false-positive profile is published: on the 2026-10-01 corpus 0.7.0 blocks 6 of 986
-  servers and by our reading 4 of those are its own false positives
+- WARDEN's false-positive profile is published: on the 2026-10-01 corpus 0.8.1 blocks 3 of 986
+  servers and by our reading 1 of those is its own false positive
   ([`warden/docs/mcp-survey.md`](../../warden/docs/mcp-survey.md)). The scan covers definitions only;
   it cannot see what a tool does when called.
 - HISTOR reports what it has observed. A server it has never seen comes back `match: not-listed`,

@@ -607,7 +607,9 @@ against the pattern set identified by `patternSet.id` and digested by `patternSe
 and these matches occurred — no more.
 
 **Procedure.** For each normalised tool entry, run every pattern in the pattern set against the
-surfaces that pattern declares: the tool `name`, the `description`, the serialised `inputSchema`.
+surfaces that pattern declares: the tool `name`, the `description`, the serialised `inputSchema`
+and, from ruleset v6, the `title`, the serialised `outputSchema`, the `annotations` and the
+`metadata`.
 Record `{code, severity, tier, tool, where}` per match, where `where` names the surface that
 matched and `tier` is the one the published pattern table records for that `code`.
 
