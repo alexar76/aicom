@@ -147,3 +147,51 @@ def test_inject_in_page_nav_helpers_idempotent():
     assert "scroll-behavior:smooth" in out.replace(" ", "")
     out2 = sb.inject_sandbox_in_page_nav_helpers(out)
     assert out2.count("aicom-sandbox-hash-nav") == 1
+
+
+def test_base_href_brings_fragment_link_keeper_once():
+    """<base href> makes ``href="#/login"`` resolve to the base DIRECTORY (a 404 page);
+    the keeper that holds hash links on the current document must ride along with it."""
+    html = "<html><head></head><body><a href=\"#/login\">Login</a></body></html>"
+    out = sb.inject_html_base_href(html, "/api/sandbox/file/sb-1/frontend/dist/")
+    assert out.count('id="aicom-sandbox-fragment-links"') == 1
+    assert out.find("<base ") < out.find("aicom-sandbox-fragment-links")
+    assert "location.hash=raw" in out
+    # bubble phase + defaultPrevented check: apps that route the click themselves win
+    assert "e.defaultPrevented" in out
+    again = sb.inject_html_base_href(out, "/api/sandbox/file/sb-1/frontend/dist/")
+    assert again.count('id="aicom-sandbox-fragment-links"') == 1
+    assert again.lower().count("<base") == 1
+
+
+def test_proxy_html_gets_fragment_keeper_and_storage_shim():
+    body = b"<html><head></head><body><a href='#/x'>x</a></body></html>"
+    out, is_html = sb.rewrite_upstream_proxy_body(
+        body,
+        "text/html; charset=utf-8",
+        sandbox_id="sb-1",
+        proxy_kind="backend",
+        inject_backend_fetch_shim=False,
+    )
+    text = out.decode()
+    assert is_html
+    assert "aicom-sandbox-fragment-links" in text
+    assert "aicom-sandbox-storage-shim" in text
+
+
+def test_storage_shim_runs_before_app_scripts_and_is_idempotent():
+    html = (
+        '<html><head><base href="/api/sandbox/file/sb-1/">'
+        '<script type="module" src="./assets/index.js"></script></head><body></body></html>'
+    )
+    out = sb.inject_sandbox_storage_shim(html)
+    assert out.find("aicom-sandbox-storage-shim") < out.find("assets/index.js")
+    assert out.find("<base ") < out.find("aicom-sandbox-storage-shim")
+    assert sb.inject_sandbox_storage_shim(out).count("aicom-sandbox-storage-shim") == 1
+
+
+def test_smooth_scroll_replace_state_keeps_document_path():
+    """replaceState(null,'','#id') resolves against <base> too — it must name this document."""
+    out = sb.inject_sandbox_in_page_nav_helpers("<html><body></body></html>")
+    assert "history.replaceState(null,'',location.href.split('#')[0]+raw)" in out
+    assert "history.replaceState(null,'',raw)" not in out

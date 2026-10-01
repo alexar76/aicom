@@ -173,10 +173,76 @@ def inject_preview_api_fetch_shim(
     return shim + html
 
 
+# ``<base href>`` changes what ``href="#/login"`` means: the fragment resolves against the
+# BASE (``…/frontend/dist/``), not this document (``…/frontend/dist/index.html?lang=en``),
+# so a hash-routed menu loads the directory URL — a 404 — instead of moving the fragment.
+# Bubble phase on window, so an app (or the smooth-scroll helper) that already called
+# preventDefault keeps control; only clicks that would otherwise leave the document are kept.
+_FRAGMENT_LINK_KEEPER = """<script id="aicom-sandbox-fragment-links">
+(function(){
+window.addEventListener('click',function(e){
+ if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+ var a=e.target&&e.target.closest&&e.target.closest('a[href]');
+ if(!a||a.hasAttribute('download'))return;
+ var raw=(a.getAttribute('href')||'').trim();
+ if(raw.charAt(0)!=='#')return;
+ var t=(a.getAttribute('target')||'').toLowerCase();
+ if(t&&t!=='_self')return;
+ try{if(new URL(raw,document.baseURI).href.split('#')[0]===location.href.split('#')[0])return;}catch(x){}
+ e.preventDefault();
+ location.hash=raw;
+});
+})();
+</script>"""
+
+
+# The preview frame has an opaque origin (no ``allow-same-origin``, see
+# ``sandbox_iframe_sandbox_attr``), so merely READING ``window.localStorage`` throws
+# SecurityError. Generated SPAs keep their session token there, typically inside a React
+# ``useState`` initializer — the throw unmounts the whole tree and the page goes blank.
+# A per-document in-memory Storage keeps such pages alive. It persists nothing and reaches
+# no real storage, so the frame stays exactly as isolated as before.
+_STORAGE_SHIM = """<script id="aicom-sandbox-storage-shim">
+(function(){
+function mem(){var d=Object.create(null);return{
+ get length(){return Object.keys(d).length;},
+ key:function(i){var k=Object.keys(d);return i>=0&&i<k.length?k[i]:null;},
+ getItem:function(k){k=String(k);return k in d?d[k]:null;},
+ setItem:function(k,v){d[String(k)]=String(v);},
+ removeItem:function(k){delete d[String(k)];},
+ clear:function(){d=Object.create(null);}};}
+['localStorage','sessionStorage'].forEach(function(n){
+ try{window[n].getItem('');return;}catch(e){}
+ try{Object.defineProperty(window,n,{value:mem(),configurable:true,writable:true});}catch(e){}
+});
+})();
+</script>"""
+
+
+def inject_sandbox_storage_shim(html: str) -> str:
+    """In-memory ``localStorage``/``sessionStorage`` for the opaque-origin preview frame.
+
+    Inserted right after ``<base>`` (or ``<head>``) so it runs before any app script.
+    A no-op in the page when real storage is reachable (same-origin opt-in).
+    """
+    if 'id="aicom-sandbox-storage-shim"' in html:
+        return html
+    m = re.search(r"<base\s[^>]*>", html, re.I) or re.search(r"<head[^>]*>", html, re.I)
+    if m:
+        return html[: m.end()] + _STORAGE_SHIM + html[m.end() :]
+    return _STORAGE_SHIM + html
+
+
 def inject_html_base_href(html: str, base_href: str) -> str:
-    """Inject ``<base href>``; strip conflicting ``<base>`` (e.g. generator localhost bases)."""
+    """Inject ``<base href>``; strip conflicting ``<base>`` (e.g. generator localhost bases).
+
+    Also injects the fragment-link keeper: without it every ``href="#…"`` on the page
+    navigates away to the base URL (see ``_FRAGMENT_LINK_KEEPER``).
+    """
     html = re.sub(r"<base\s[^>]*>", "", html, flags=re.I)
     tag = f'<base href="{base_href}">'
+    if 'id="aicom-sandbox-fragment-links"' not in html:
+        tag += _FRAGMENT_LINK_KEEPER
     m = re.search(r"<head[^>]*>", html, re.I)
     if m:
         return html[: m.end()] + tag + html[m.end() :]
@@ -300,6 +366,7 @@ def rewrite_upstream_proxy_body(
             else rel_prefix
         )
         text = inject_html_base_href(text, prefix)
+        text = inject_sandbox_storage_shim(text)
         if inject_backend_fetch_shim:
             text = inject_preview_api_fetch_shim(text, sandbox_id, preview_token=preview_token)
         text = _inject_loopback_navigation_guard(text)
@@ -374,7 +441,7 @@ document.addEventListener('click',function(e){
  var reduce=0;
  try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches?1:0;}catch(x){}
  try{el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}catch(x){el.scrollIntoView(true);}
- try{history.replaceState(null,'',raw);}catch(x){}
+ try{history.replaceState(null,'',location.href.split('#')[0]+raw);}catch(x){}
 },true);
 })();
 </script>"""
@@ -417,8 +484,9 @@ def sandbox_iframe_sandbox_attr() -> str:
     ``fetch`` then sends ``Origin: null``; the factory answers sandbox file/proxy paths with
     ``Access-Control-Allow-Origin: null`` (no credentials), and the injected fetch shim forces
     ``credentials: 'omit'`` plus ``X-Sandbox-Preview-Token``. A preview that needs
-    ``localStorage`` still fails unless ``AIFACTORY_SANDBOX_PREVIEW_ALLOW_SAME_ORIGIN=1`` —
-    a deliberate, greppable opt-in. The durable fix is a separate preview ORIGIN.
+    ``localStorage`` gets an in-memory stand-in (``inject_sandbox_storage_shim``) that lasts
+    one document; persistent storage still needs ``AIFACTORY_SANDBOX_PREVIEW_ALLOW_SAME_ORIGIN=1``
+    — a deliberate, greppable opt-in. The durable fix is a separate preview ORIGIN.
     """
     import os
 

@@ -100,6 +100,7 @@ from web.backend.services.sandbox_static_rewrite import (
     _rewrite_root_absolute_paths,
     inject_preview_api_fetch_shim,
     inject_sandbox_in_page_nav_helpers,
+    inject_sandbox_storage_shim,
     public_origin_from_request,
     rewrite_loopback_location_header,
     rewrite_upstream_proxy_body,
@@ -1404,6 +1405,16 @@ async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
     full_path = resolved
     norm_path = file_path.replace("\\", "/").lstrip("/")
 
+    if full_path.is_dir():
+        # A directory URL (``…/frontend/dist/``) is what a ``#/route`` link resolves to
+        # under the injected <base href>, and what a reload then requests: serve its
+        # index.html like any static server. ``norm_path`` must name the file, so the
+        # base href keeps the directory even when the URL had no trailing slash.
+        dir_index = full_path / "index.html"
+        if not dir_index.is_symlink() and dir_index.is_file():
+            full_path = dir_index
+            norm_path = dir_index.relative_to(base_dir).as_posix()
+
     if not full_path.exists() or not full_path.is_file():
         # Vite SPA builds emit ``/assets/…`` from ``frontend/dist/index.html``. When
         # <base href> was (or still is) the sandbox root, browsers request
@@ -1506,6 +1517,7 @@ async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
             content = _inject_iframe_base_href(
                 content, sandbox_id, request, file_path=norm_path
             )
+            content = inject_sandbox_storage_shim(content)
             sbrec = _active_sandboxes.get(sandbox_id) or {}
             if sbrec.get("backend_preview_port"):
                 content = inject_preview_api_fetch_shim(

@@ -135,6 +135,7 @@ def test_root_classification_is_exhaustive_and_secrets_are_never_public():
     assert "README.md" in PUBLIC_FACTORY_ROOTS
     assert "attested" not in PUBLIC_FACTORY_ROOTS
     assert "agent-skills" in PUBLIC_FACTORY_ROOTS
+    assert "okx-a2mcp" in PUBLIC_FACTORY_ROOTS
 
 
 def test_factory_publish_overlays_public_cursor_skills():

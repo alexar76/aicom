@@ -252,6 +252,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'main.py',
     'marketplace_taxonomy.py',
     'npm-reserve',
+    'okx-a2mcp',  # OKX.AI A2MCP edge for HISTOR + WARDEN (deploy/nginx apex /a2mcp)
     'orchestrator',
     'package-lock.json',
     'package.json',

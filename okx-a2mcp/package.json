@@ -1,0 +1,17 @@
+{
+  "name": "okx-a2mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AIMarket services on OKX.AI as A2MCP endpoints: HISTOR pre-flight check and WARDEN tool-definition scan.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "dependencies": {
+    "@aimarket/warden": "0.7.0",
+    "express": "^5.1.0"
+  }
+}
