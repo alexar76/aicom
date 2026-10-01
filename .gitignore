@@ -272,3 +272,7 @@ scripts/.webfont-cache/
 
 # Service-scoped production credentials generated on the deployment host.
 deploy/env/*.env
+
+# Local factory-import scratch (never publish)
+.tmp-aicom-import/
+.tmp*/

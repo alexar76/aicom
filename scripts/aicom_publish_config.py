@@ -37,6 +37,8 @@ DEFAULT_RSYNC_EXCLUDES = [
     ".ruff_cache",
     ".hypothesis",
     ".mesh_data",
+    ".tmp-aicom-import",  # factory-import scratch — never mirror
+    ".tmp*",  # agent/local TMPDIR under the monorepo root
     "data/prometheus",  # local Prometheus TSDB chunks — binary tombstones trip key-shape guard
     "data/signal-hunt",  # local hunt runtime (session_secret, signing key, sqlite) — gitignored; rsync still sees it
     # ── Secrets: NEVER rsync to the public mirror ──────────────────────────
@@ -181,6 +183,9 @@ FACTORY_LOCAL_EXCLUDES = [
     "personal-attested-memory",
     "team-memory-os",
     "expert-memory-market",
+    # Local scratch from import_factory_pr / agent TMPDIR — rsync ignores .gitignore.
+    ".tmp-aicom-import",
+    ".tmp*",
 ]
 
 
