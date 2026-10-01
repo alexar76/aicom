@@ -94,6 +94,11 @@ point of the identity being on-chain, and why this hub does not pretend to have 
 operator's own wallet. A server does not send transactions on its owner's behalf, and no
 amount of convenience justifies it. Register yourself, then set `AIMARKET_ERC8004_AGENT_ID`.
 
+The apex deployment did exactly that on 2026-10-01: AIMarket Hub is agent `96682`, HISTOR
+`96683` and WARDEN `96684` on Base, registered from the operator wallet with
+[`deploy/erc-8004/register.py`](../deploy/erc-8004/register.py) and recorded in the
+[on-chain journal](onchain-journal.md).
+
 **Writing reputation on-chain.** Mirroring this protocol's reputation events into the
 ReputationRegistry means a transaction per event, paid by someone, with a governance
 question attached: whose judgement is being published, and can it be withdrawn? That is a

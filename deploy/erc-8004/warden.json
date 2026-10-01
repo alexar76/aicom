@@ -1,0 +1,28 @@
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "WARDEN",
+  "description": "Open-source firewall for MCP tool definitions. Scans a server's tools/list for prompt injection, secret requests, exfiltration and hidden Unicode before a host shows them to a model, with deterministic published rules (version and digest in every verdict) and a published, reproducible false-positive profile.",
+  "image": "https://modelmarket.dev/.well-known/erc-8004/warden.png",
+  "services": [
+    {
+      "name": "web",
+      "endpoint": "https://warden.modelmarket.dev/"
+    },
+    {
+      "name": "A2MCP",
+      "endpoint": "https://modelmarket.dev/a2mcp/warden-scan"
+    },
+    {
+      "name": "npm",
+      "endpoint": "https://www.npmjs.com/package/@aimarket/warden"
+    }
+  ],
+  "x402Support": false,
+  "active": true,
+  "registrations": [
+    {
+      "agentId": 96684,
+      "agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "HISTOR",
+  "description": "Public transparency log for MCP servers. Observes the official MCP registry daily, pins each server's tool set in an append-only Merkle log and issues signed labels when definitions change. Ask it about a server before your agent connects; it never contacts the server you ask about.",
+  "image": "https://modelmarket.dev/.well-known/erc-8004/histor.png",
+  "services": [
+    {
+      "name": "web",
+      "endpoint": "https://histor.modelmarket.dev/"
+    },
+    {
+      "name": "A2MCP",
+      "endpoint": "https://modelmarket.dev/a2mcp/histor-check"
+    },
+    {
+      "name": "DID",
+      "endpoint": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+      "version": "v1"
+    }
+  ],
+  "x402Support": false,
+  "active": true,
+  "registrations": [
+    {
+      "agentId": 96683,
+      "agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+    }
+  ]
+}

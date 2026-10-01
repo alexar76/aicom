@@ -1134,3 +1134,29 @@ reproduced bit for bit, so nothing but the ABI changed: `ticketPrice=30000000000
 
 Built from the monorepo working tree, not from a host tree — the stale-tree failure mode
 above is the reason.
+
+
+## 2026-10-01 — ERC-8004 identities for AIMarket Hub, HISTOR and WARDEN
+
+Three `register(string agentURI)` calls on the canonical ERC-8004 IdentityRegistry on Base
+([`0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`](https://basescan.org/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432),
+`AgentIdentity`/`AGENT`, `getVersion() = 2.0.0`), owner-approved, from the operator wallet
+`0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a`. Each agentURI is an EIP-8004 `registration-v1`
+file served from this domain; the agentIds were written back into those files after mining, and
+`https://modelmarket.dev/.well-known/agent-registration.json` lists all three as the
+endpoint-domain proof.
+
+| Agent | agentId | Tx | Block | Registration file |
+|---|---|---|---|---|
+| aimarket-hub | `96682` | [`0x207807…284bae`](https://basescan.org/tx/0x207807bbd9dc346e775f8db3cb2aa6b59190fe27e8b4b15d75eb9f5175284bae) | 52046664 | [aimarket-hub.json](https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.json) |
+| histor | `96683` | [`0xcec3de…f68fd6`](https://basescan.org/tx/0xcec3deb9a343b7257d4d83cbcb80cc3831647d0a907552a7ee14f7dcf7f68fd6) | 52046664 | [histor.json](https://modelmarket.dev/.well-known/erc-8004/histor.json) |
+| warden | `96684` | [`0xa784ca…937fda`](https://basescan.org/tx/0xa784cacbea144ed5d9f9ac98e36ae3175f06907c3f8f7f308d5f5c7b37937fda) | 52046664 | [warden.json](https://modelmarket.dev/.well-known/erc-8004/warden.json) |
+
+- verified after mining: `ownerOf` = `0x1218…Ad0a` and `tokenURI` = the file URL, for all three
+- cost 0.0000031 ETH for the three (base fee 0.005 gwei); balance after: 0.00004094 ETH
+- sources and the signer: [`deploy/erc-8004/`](../deploy/erc-8004/) (`build.py` writes the files,
+  `register.py` dry-runs by default, skips any slug already in `ids.json`, and signs in-process)
+- the apex hub declares agent `96682` in its signed `/.well-known/ai-market.json` (owner-approved
+  restart the same day: `AIMARKET_ERC8004_AGENT_ID/CHAIN/NETWORK/AGENT_URI` added with
+  `scripts/security/rollout_container.py`, no other variable changed, previous container kept)
+- not done: nothing is written to the ReputationRegistry

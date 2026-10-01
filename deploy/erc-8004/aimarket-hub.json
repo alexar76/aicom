@@ -1,0 +1,33 @@
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "AIMarket Hub",
+  "description": "Open market hub for agent capabilities: live, signed real-world data (weather, air quality, sensors) and verifiable computation (randomness, oracles), sold per call by independent providers over MCP, A2A and x402 (USDC on Base). Every result carries a signed receipt.",
+  "image": "https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png",
+  "services": [
+    {
+      "name": "web",
+      "endpoint": "https://modelmarket.dev/"
+    },
+    {
+      "name": "MCP",
+      "endpoint": "https://modelmarket.dev/mcp",
+      "version": "2025-06-18"
+    },
+    {
+      "name": "A2A",
+      "endpoint": "https://modelmarket.dev/.well-known/agent-card.json"
+    }
+  ],
+  "x402Support": true,
+  "active": true,
+  "registrations": [
+    {
+      "agentId": 96682,
+      "agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+    }
+  ],
+  "supportedTrust": [
+    "reputation",
+    "crypto-economic"
+  ]
+}
