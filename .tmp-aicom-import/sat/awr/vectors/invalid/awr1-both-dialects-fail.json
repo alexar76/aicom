@@ -1,0 +1,47 @@
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1"
+  ],
+  "id": "urn:uuid:00000041-1e6a-4c11-8f00-000000000000",
+  "type": [
+    "VerifiableCredential",
+    "WorkReceipt"
+  ],
+  "issuer": {
+    "id": "did:key:11qYAYKxCrfVS/7TyWQHOg7hcvPapiMl",
+    "name": "legacy-hub",
+    "publicKeyJwk": {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo"
+    }
+  },
+  "issuanceDate": "2026-01-15T09:00:05Z",
+  "hubInfo": {
+    "version": "1.4.2",
+    "region": "eu-central-1"
+  },
+  "credentialSubject": {
+    "work": {
+      "modelId": "legacy-model@vendor",
+      "startedAt": "2026-01-15T08:59:58Z",
+      "completedAt": "2026-01-15T09:00:00Z",
+      "latencyMs": 2340,
+      "status": "succeeded"
+    },
+    "inputDigest": "sha256-ntYicspG8WqhUyawUlC4dTFMnG08+B5Wol6Kci8rnNo=",
+    "outputDigest": "sha256-z3ZSXO7HDKRUMIrd+zvSig+hNUcug/XPmO+faJPgJak=",
+    "price": {
+      "currency": "USD",
+      "amount": "0.15"
+    },
+    "nonce": "added-after-the-signature"
+  },
+  "proof": {
+    "type": "Ed25519Signature2018",
+    "created": "2026-01-15T09:00:05Z",
+    "verificationMethod": "did:key:11qYAYKxCrfVS/7TyWQHOg7hcvPapiMl#key-1",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "D2diPTmadpH0YM7/MqJRM78OObMN6pcYZJxjxGtXc/3dGIeEYZ8jQ28VV2mNc59uSWuhi4p241Ky1ahRpNvECg=="
+  }
+}

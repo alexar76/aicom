@@ -1,0 +1,36 @@
+[Unit]
+# One template, two cadences. `%i` is the mode: `quick` runs every few minutes and makes
+# no invoke traffic; `full` runs hourly and probes the paywall for real.
+#
+# It lives on the host that does NOT run the hub, on purpose: the canary on the hub's own
+# machine cannot report that machine being gone.
+Description=AIMarket ecosystem alert (%i probes)
+Documentation=https://github.com/alexar76/aicom
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Credentials only, never argv: `ps` is world-readable on this host.
+EnvironmentFile=/etc/aicom-alert.env
+# Not under /root: ProtectHome=yes below makes the root home unreadable to the service,
+# so a copy living there fails with a bare `No such file or directory` while the timer
+# happily reports itself as enabled. Found that way on the first real run.
+ExecStart=/usr/bin/python3 /usr/local/lib/aicom-alert/ecosystem_alert.py --mode %i
+# The script exits 1 while a critical check is down. That is information, not a unit
+# failure — a red unit would need clearing by hand before the next run could report
+# recovery, and the recovery message is the one that ends an incident.
+SuccessExitStatus=1
+TimeoutStartSec=180
+Nice=5
+
+# The alerter reads two URLs and writes one state file. Nothing else needs to be reachable.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/aicom-alert
+StateDirectory=aicom-alert
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,51 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://verify.modelmarket.dev/ns/awr/v2"
+  ],
+  "id": "urn:uuid:7a8b9c0d-1e2f-4a3b-8c4d-5e6f708192a3",
+  "type": [
+    "VerifiableCredential",
+    "WorkReceipt"
+  ],
+  "issuer": {
+    "id": "did:key:z6Mkm81s5Do97Q6cEy8guhZLNGEvDGY6cTBbx4KWVNSk4B1W",
+    "name": "modelmarket-hub (demo key)"
+  },
+  "validFrom": "2026-07-30T10:15:30Z",
+  "awrVersion": "2.0.0",
+  "credentialSubject": {
+    "work": {
+      "modelId": "claude-sonnet-5@anthropic",
+      "capability": "urn:example:capability:summarise",
+      "startedAt": "2026-07-30T10:15:28Z",
+      "completedAt": "2026-07-30T10:15:30Z",
+      "latencyMs": 2340,
+      "status": "succeeded"
+    },
+    "inputDigest": "sha256-RwiL7tqwTemBqsWP1cmHuVuhYx1PibORCO0O11vAQi4=",
+    "outputDigest": "sha256-FBSXJZyIaUdzfGG+jQxE5cQtIv2BxmXL98x9NRcTWuI=",
+    "price": {
+      "currency": "USD",
+      "amount": "0.15"
+    },
+    "nonce": "01J9Z8QK4T7YB2N5V6W8XA3C0D",
+    "environment": {
+      "teeAttestation": {
+        "platform": "aws-nitro",
+        "enclaveId": "i-0abcd1234efgh5678",
+        "codeHash": "c4551a6b17b69e1860b71875805ac7c515c690f44a675cba62187faa15ab8b0e",
+        "document": "b3BhcXVlIGF0dGVzdGF0aW9uIGRvY3VtZW50"
+      }
+    },
+    "awrProfile": "L0"
+  },
+  "proof": {
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "created": "2026-07-30T10:15:30Z",
+    "verificationMethod": "did:key:z6Mkm81s5Do97Q6cEy8guhZLNGEvDGY6cTBbx4KWVNSk4B1W#z6Mkm81s5Do97Q6cEy8guhZLNGEvDGY6cTBbx4KWVNSk4B1W",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "z4yGjKpEjFuSxcDuPmkSHgtzpSYyCz2X2Qjo2casMo4hw84CATarQaSF6BqeRD1vqp92k1k1wr4wpPRVNTwtCHur8"
+  }
+}

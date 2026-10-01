@@ -1,0 +1,43 @@
+{
+  "name": "@alexar76/awr-emit",
+  "version": "2.0.0",
+  "description": "Emit a signed AWR/2 WorkReceipt from Node with zero runtime dependencies — W3C Verifiable Credential, eddsa-jcs-2022 over RFC 8785, did:key. Includes an MCP tool-call wrapper.",
+  "keywords": [
+    "awr",
+    "work-receipt",
+    "provenance",
+    "verifiable-credentials",
+    "w3c-vc",
+    "data-integrity",
+    "eddsa-jcs-2022",
+    "rfc8785",
+    "jcs",
+    "did-key",
+    "ed25519",
+    "mcp",
+    "ai-agent",
+    "audit",
+    "zero-dependency"
+  ],
+  "type": "module",
+  "main": "awr-emit.mjs",
+  "exports": {
+    ".": "./awr-emit.mjs",
+    "./mcp": "./mcp-middleware.mjs"
+  },
+  "files": ["awr-emit.mjs", "mcp-middleware.mjs", "README.md", "LICENSE"],
+  "engines": { "node": ">=22" },
+  "scripts": { "test": "node --test test.mjs" },
+  "author": "AICOM (alexar76)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexar76/aicom.git",
+    "directory": "awr/emitters/typescript"
+  },
+  "homepage": "https://verify.modelmarket.dev",
+  "bugs": { "url": "https://github.com/alexar76/aicom/issues" },
+  "publishConfig": { "access": "public" },
+  "dependencies": {},
+  "devDependencies": {}
+}

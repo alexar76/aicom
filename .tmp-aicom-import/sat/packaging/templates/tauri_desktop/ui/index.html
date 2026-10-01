@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Factory Desktop App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="toolbar">
+        <h1>Factory Desktop App</h1>
+        <p class="subtitle">Local-first desktop workflow</p>
+      </header>
+      <main class="content">
+        <section class="card">
+          <label for="name">Your name</label>
+          <input id="name" type="text" placeholder="Operator" />
+          <button id="run" type="button">Run local action</button>
+          <p id="out" class="output"></p>
+        </section>
+      </main>
+    </div>
+  </body>
+  <script src="app.js"></script>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "@aimarket/oracle-gateway",
+  "version": "0.0.1",
+  "description": "Oracle gateway MCP plugin namespace",
+  "license": "MIT",
+  "main": "index.js",
+  "files": ["index.js", "README.md"],
+  "homepage": "https://github.com/alexar76/aimarket-oracle-gateway",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexar76/aimarket-sdks.git"
+  },
+  "keywords": ["aimarket", "modelmarket", "ai-market"],
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "test": "node -e \"require('./index.js')\""
+  }
+}

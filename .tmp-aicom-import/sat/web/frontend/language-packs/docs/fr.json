@@ -1,0 +1,726 @@
+{
+  "locale": "fr",
+  "localeNames": {
+    "en": "English",
+    "ru": "Русский",
+    "es": "Español",
+    "fr": "Français",
+    "zh": "中文"
+  },
+  "localeLabels": {
+    "en": "EN",
+    "ru": "RU",
+    "es": "ES",
+    "fr": "FR",
+    "zh": "ZH"
+  },
+  "nav": {
+    "home": "Accueil",
+    "docs": "Docs",
+    "admin": "Admin",
+    "toggle": "Basculer le menu"
+  },
+  "hero": {
+    "backToHome": "Retour à l'accueil",
+    "title": "Documentation",
+    "subtitle": "Architecture, démarrage rapide, manuel du propriétaire avec visuels, référence API, table de vérité CLI et liens vers les manuels Markdown dans docs/."
+  },
+  "footer": {
+    "tagline": "AI-Factory v2.1 — Documentation",
+    "home": "Accueil",
+    "admin": "Admin",
+    "apiDocs": "API Docs",
+    "github": "GitHub"
+  },
+  "ui": {
+    "copyCode": "Copier le code",
+    "screenshotNotBundled": "Capture non incluse",
+    "screenshotHintPrefix": "Depuis",
+    "screenshotHintRun": "exécutez",
+    "screenshotHintMiddle": " avec l'app accessible (",
+    "screenshotHintEnv": "DOCS_SCREENSHOT_BASE_URL",
+    "screenshotHintAnd": ", ",
+    "screenshotHintPassword": "ADMIN_PASSWORD"
+  },
+  "sectionTitles": {
+    "overview": "Vue d'ensemble",
+    "userGuide": "Guide utilisateur",
+    "ownerGuide": "Manuel du propriétaire",
+    "architecture": "Architecture",
+    "quickstart": "Démarrage rapide",
+    "adminPanel": "Panneau d'administration",
+    "apiReference": "Référence API",
+    "cli": "Commandes CLI",
+    "agents": "Agents IA",
+    "pipeline": "Flux du pipeline",
+    "crypto": "Paiements crypto",
+    "uniCredit": "Bus de crédit UNI",
+    "security": "Sécurité",
+    "director": "Director AI",
+    "configuration": "Configuration"
+  },
+  "overview": {
+    "title": "AI-Factory v2.1",
+    "badge": "Plateforme AI Company · un seul stack Docker",
+    "intro": "Stack de production dans un seul conteneur (FastAPI + Next.js).",
+    "introPipeline": "Un pipeline multi-agents",
+    "introPipelineSuffix": " pour tout :",
+    "introAutonomous": "autonome",
+    "introAutonomousSuffix": " le mode alimente la recherche de marché et les idées générées ;",
+    "introOnDemand": "à la demande",
+    "introOnDemandSuffix": " le mode démarre à partir de la phrase du client — mêmes étapes, mêmes portes QA.",
+    "introMiddle": "",
+    "introEnd": "Les livrables typiques sont des landings prêtes à partager ; le checkout crypto et l'aperçu en sandbox sont fournis dans le bundle.",
+    "coreCapabilities": "Capacités principales",
+    "capabilities": [
+      "Rôles de pipeline spécialisés dans le roster admin : Analyst, PM, Methodologist, Architect, Designer (UX), Developer, QA, Security, DevOps, Marketing, Sales, Evolution Analyst — plus Director comme méta-agent. `agents/` dans le dépôt est la source de vérité ; `ui_experience` dans l'architecture est le brief UX contraignant pour le Developer.",
+      "Routage multi-LLM avec failover — Ollama local, DeepSeek, Together, Groq",
+      "Director AI — analyse planifiée, file de décisions, rapports",
+      "Boutique crypto — USDT/USDC (Base, Arbitrum, Ethereum, Solana) ; prix par défaut ~4,99 $ USDT lorsque les artefacts de vente omettent le prix",
+      "Boutique et admin façon glass — animations, mise en page responsive",
+      "Ops orientées entreprise — chemins de secrets, hooks d'audit, isolation de sandbox",
+      "Compagnon CLI pour les opérateurs (`ai-company` là où il est installé)",
+      "Boucle d'évolution — améliorations pilotées par la télémétrie"
+    ],
+    "atAGlance": "En un coup d'œil",
+    "stats": [
+      {
+        "label": "Modèle de déploiement",
+        "value": "Compose"
+      },
+      {
+        "label": "Portes de qualité",
+        "value": "Demo + QA"
+      },
+      {
+        "label": "Prix par défaut",
+        "value": "~$5"
+      },
+      {
+        "label": "Profondeur du stack",
+        "value": "Full"
+      }
+    ],
+    "singleContainerTitle": "Conteneur unique",
+    "singleContainerBody": "Tout tourne dans un seul conteneur Docker (Ubuntu 24.04, Python 3.12, Node.js 20). Aucune dépendance externe requise.",
+    "handbookTitle": "Manuel canonique (Markdown)",
+    "handbookBodyPrefix": "Pour les diagrammes imprimables (Mermaid), les tables de scénarios complètes et les pièges, voir ",
+    "handbookBodyPath": "docs/owner-guide.md",
+    "handbookBodySuffix": " dans le dépôt — maintenu synchronisé avec cet onglet.",
+    "userGuideBoxTitle": "Guide utilisateur illustré",
+    "userGuideBoxPrefix": "Utilisation pas à pas « pour les nuls » avec captures d'écran : ",
+    "userGuideBoxPath": "docs/USER_GUIDE.md",
+    "userGuideBoxTab": "Guide utilisateur",
+    "userGuideBoxSuffix": " ici sur ",
+    "userGuideBoxDocsPath": "/docs"
+  },
+  "userGuide": {
+    "titlePrefix": "Guide utilisateur ",
+    "titleGradient": "illustré",
+    "badge": "Pour les nuls · Boutique + Admin · Captures rafraîchies depuis votre stack en fonctionnement",
+    "intro": "Le Markdown canonique se trouve dans docs/USER_GUIDE.md dans le dépôt. Il est rédigé pour les opérateurs qui ont besoin d'un chemin en douceur avant de plonger dans docs/admin-guide.md (chaque onglet, chaque point de contact API).",
+    "whatYouWillLearnTitle": "Ce que vous apprendrez",
+    "whatYouWillLearnItems": [
+      "Comment la boutique, `/docs` et `/admin` sont liés.",
+      "Checklist du premier jour : connexion → assistant New product → Pipeline.",
+      "New Product : barre de progression, modèles quick-start, modèles local vs cloud, consentement AI prefill, erreurs actionnables.",
+      "Workshop : board, diff spec/architecture, iteration canvas, multi-device lab, pattern library, Web Push.",
+      "Où cliquer quand des erreurs LLM ou réseau apparaissent (les liens sont intégrés dans les panneaux rouges de l'UI en direct)."
+    ],
+    "screenshotsTitle": "Captures d'écran (dernière prise)",
+    "screenshotsRegenerate": "Régénérez à tout moment : cd web/frontend && npm run capture-docs-screenshots",
+    "captions": {
+      "publicHome": "Accueil de la boutique — entrée publique.",
+      "publicDocs": "Documentation intégrée — ce site.",
+      "adminNewProduct": "New product — assistant guidé + modèles.",
+      "adminWorkshop": "Workshop — board, diffs, canvas, patterns, push.",
+      "adminPipeline": "Pipeline — vérité opérationnelle pour chaque id prod-…."
+    },
+    "offlineTitle": "Hors ligne / PDF",
+    "offlineBodyPrefix": "Ouvrez ",
+    "offlineBodyPath1": "docs/USER_GUIDE.md",
+    "offlineBodyMiddle": " dans votre éditeur ou GitHub et imprimez en PDF si la direction veut un dossier papier. Le contenu propriétaire riche en Mermaid reste dans ",
+    "offlineBodyPath2": "docs/owner-guide.md"
+  },
+  "ownerGuide": {
+    "titlePrefix": "Plateforme ",
+    "titleGradient": "manuel du propriétaire",
+    "badge": "Scénarios d'opérateur · Politique de boutique · Support vs pipeline",
+    "intro": "Cette section s'adresse à la personne qui exploite une instance déployée : provisionner les LLM, surveiller le pipeline, curer le marketplace et aider les acheteurs. La référence détaillée des onglets se trouve dans docs/admin-guide.md ; les patterns REST dans docs/api-integration-guide.md.",
+    "visualMapTitle": "Carte visuelle",
+    "operatorControlPlane": "Plan de contrôle de l'opérateur",
+    "firstDayTitle": "Pas à pas — premier jour",
+    "firstDayItems": [
+      "Confirmez un bind mount hôte pour /app/data (voir le README racine — évitez les volumes Docker anonymes).",
+      "Connectez-vous sur /admin/login et changez le mot de passe admin ; activez TOTP si souhaité.",
+      "Ouvrez LLM Providers — branchez au moins un backend de modèle et vérifiez les routing rules.",
+      "Soumettez une idée depuis New Product ou lancez CLI discover / create-idea dans le conteneur.",
+      "Surveillez Pipeline — dépliez une carte, cliquez sur les tuiles d'étape pour les payloads et erreurs de tâche.",
+      "Optionnel : lancez README full_pipeline_smoke.py contre un product ID terminé."
+    ],
+    "marketplaceTitle": "Pas à pas — curation du marketplace",
+    "marketplaceItems": [
+      "Repérez une ligne COMPLETED → panneau Storefront.",
+      "Éditez Marketplace copy pour ajuster le texte de carte/détail (persisté dans marketing_content.json).",
+      "Si les quality gates bloquent le listing mais que vous acceptez le risque : Force public storefront + justification.",
+      "Pour retirer un SKU : Not pursuing (avec raison) ou Hide from public storefront — les acheteurs perdent listing + detail 404.",
+      "Rappel : le « Completed » du Dashboard compte le lifecycle ; la visibilité en boutique ajoute code + quality + hide rules."
+    ],
+    "useCaseCards": [
+      {
+        "title": "Burst intake",
+        "body": "CLI create-ideas-batch ou POST /api/admin/products/create-batch après validation du quota LLM."
+      },
+      {
+        "title": "Stuck stage",
+        "body": "Pipeline modal → inspecter l'agent en échec → LLM Logs + provider routing → rework humain optionnel."
+      },
+      {
+        "title": "Buyer confusion",
+        "body": "Lumen (/api/support) gère le chat ; ajustez le RAG baseline markdown sous backend services si le branding change."
+      },
+      {
+        "title": "Discovery backlog",
+        "body": "Director discovery ranking → enqueue winners — documenté dans README + pipeline-operations.md."
+      }
+    ],
+    "listingFlowTitle": "Flux de décision de listing",
+    "listingShippedQuestion": "Shipped + code on disk?",
+    "listingShippedNo": "No → never listed",
+    "listingHiddenQuestion": "Hidden / Not pursuing?",
+    "listingHiddenYes": "Yes → 404 on public catalog + detail",
+    "listingQualityQuestion": "Passes marketplace quality OR admin force-list?",
+    "listingQualityYes": "Yes → visible on storefront",
+    "screenshotsTitle": "Captures d'écran",
+    "screenshotsIntro": "Capturées dans le dépôt et reflétées vers /docs-screenshots/ pour cette page.",
+    "captions": {
+      "adminLogin": "Admin login — changez les identifiants dès le premier jour.",
+      "adminDashboard": "Instantané Dashboard — diffère des compteurs visibles en boutique.",
+      "adminPipeline": "Moniteur Pipeline — les contrôles de boutique vivent dans les cartes completed dépliées.",
+      "adminNewProduct": "New product — assistant guidé, chips quick-start, modèles cloud.",
+      "adminWorkshop": "Workshop — material diff, iteration canvas, pattern library, Web Push.",
+      "adminProviders": "LLM Providers — clés, routing, health probes.",
+      "adminSettings": "Settings — surface de configuration de toute la fabrique."
+    },
+    "mermaidTitle": "Diagrammes Mermaid et PDF imprimable",
+    "mermaidBodyPrefix": "GitHub rend les organigrammes dans ",
+    "mermaidBodyPath": "docs/owner-guide.md",
+    "mermaidBodySuffix": ". Copiez ce fichier dans Notion, Confluence, ou imprimez en PDF pour les dossiers investisseurs/opérateurs."
+  },
+  "architecture": {
+    "titleGradient": "Architecture",
+    "intro": "AI-Factory suit une architecture modulaire avec une séparation claire des responsabilités. Tous les composants tournent dans un seul conteneur Docker, communiquant via HTTP interne et le filesystem.",
+    "componentDiagramTitle": "Diagramme des composants",
+    "requestFlow": "Flux des requêtes",
+    "requestFlowBody": "Les requêtes des utilisateurs vont vers Next.js sur le port 8080. Les appels à /api/* sont proxifiés par les rewrites Next.js vers le backend FastAPI sur le port 8081. Le panneau admin est également servi par Next.js."
+  },
+  "quickstart": {
+    "titleGradient": "Démarrage",
+    "intro": "Déployez et lancez la plateforme AI-Factory avec une seule commande Docker.",
+    "step1": "1. Construire l'image",
+    "step2": "2. Lancer le conteneur",
+    "step3": "3. Accéder à la plateforme",
+    "accessLinks": [
+      {
+        "label": "Boutique",
+        "url": "http://localhost:8080",
+        "note": ""
+      },
+      {
+        "label": "Panneau admin",
+        "url": "http://localhost:8080/admin",
+        "note": ""
+      },
+      {
+        "label": "API Docs",
+        "url": "http://localhost:8080/api/docs",
+        "note": "(FastAPI Swagger)"
+      }
+    ],
+    "step4": "4. Se connecter à Admin",
+    "loginIntro": "Il n'y a pas de mot de passe admin123 par défaut. Au premier démarrage avec un volume data vide, l'entrypoint demande un mot de passe dans la console quand stdin est un TTY ; sinon il écrit un mot de passe à usage unique dans data/secrets/bootstrap_admin.txt. Voir docs/security.md dans le dépôt.",
+    "loginItems": [
+      "Username: admin",
+      "Password : défini au premier bootstrap (prompt console ou bootstrap file)",
+      "Allez sur /admin/login et connectez-vous",
+      "Dev only : AIFACTORY_DEV_BOOTSTRAP_PASSWORD dans .env"
+    ],
+    "step5": "5. Créez votre premier produit",
+    "dockerSandboxTitle": "Docker sandbox",
+    "dockerSandboxBody": "L'image de la fabrique peut lancer des preview containers isolés (network none, dropped capabilities). Le host-gateway pour joindre Ollama sur l'hôte est opt-in via docker-compose.host-gateway.yml — non activé par défaut."
+  },
+  "adminPanel": {
+    "titleGradient": "Panneau",
+    "intro": "Le panneau admin sur /admin offre un contrôle complet sur la plateforme AI-Factory. Il est protégé par une authentification basée sur JWT avec 2FA optionnelle (TOTP).",
+    "authTitle": "Authentification",
+    "authIntro": "",
+    "authItems": [
+      "Tokens JWT avec cookies HTTP-only",
+      "Déconnexion auto après 30 minutes d'inactivité",
+      "Protection brute-force : max 5 tentatives échouées par 15 minutes",
+      "2FA optionnelle via Google Authenticator (TOTP)"
+    ],
+    "dashboardTitle": "Onglet Dashboard",
+    "dashboardIntro": "Aperçu des métriques en temps réel, incluant :",
+    "dashboardItems": [
+      "Pipeline metrics — total/active/completed/failed products, pending/running/timed-out tasks",
+      "Resource usage — CPU, memory, disk utilization",
+      "Revenue — earnings over last 24h, 7d, 30d",
+      "P&L produit — économie unitaire par produit en direct : revenu vs coût LLM, marge brute, ROI et recouvrement des coûts",
+      "Security status — system health indicator, recent failed logins"
+    ],
+    "providersTitle": "Onglet Model Providers",
+    "providersIntro": "Configurez et gérez les LLM providers :",
+    "providersItems": [
+      "Voir tous les providers configurés avec leur statut (online/offline/degraded)",
+      "Activer/désactiver des providers",
+      "Surveiller la latence et la disponibilité des modèles",
+      "Configurer les routing rules par type de tâche"
+    ],
+    "agentsTitle": "Onglet Agents",
+    "agentsIntro": "Surveillez et configurez les AI agents :",
+    "agentsItems": [
+      "Voir le statut des 11 pipeline roles (y compris Designer)",
+      "Configurer timeouts, retry limits et priorities",
+      "Voir les logs des agents avec filtrage",
+      "Redémarrer des agents individuels au besoin"
+    ],
+    "securityTitle": "Onglet Security",
+    "securityIntro": "Surveillance et configuration de la sécurité :",
+    "securityItems": [
+      "Voir les audit logs avec filtres date/action/user",
+      "Exporter les logs au format JSON",
+      "Changer le mot de passe admin",
+      "Configurer la 2FA"
+    ],
+    "directorTitle": "Onglet Director",
+    "directorIntro": "Gestion de Director AI :",
+    "directorItems": [
+      "Voir les derniers rapports Director avec métriques et recommandations",
+      "Configurer la fréquence d'analyse (1/2/4/12 hours)",
+      "Activer/désactiver les automatic actions",
+      "Déclencher une analyse manuelle pour tester"
+    ],
+    "settingsTitle": "Onglet Settings",
+    "settingsIntro": "Personnalisation du thème de la boutique :",
+    "settingsItems": [
+      "Choisissez parmi 5 thèmes : Cyberpunk, Minimal, Glass, Neon, Corporate",
+      "Le thème s'applique dynamiquement sans recharger la page"
+    ]
+  },
+  "apiReference": {
+    "titleGradient": "Référence",
+    "intro": "Le backend FastAPI expose une API REST complète. Tous les endpoints sont accessibles via /api/* à travers le proxy Next.js. Une documentation interactive est disponible sur /api/docs (Swagger UI). Schéma brut : backend /openapi.json.",
+    "introSwagger": "/api/docs",
+    "handbookTitle": "Manuel d'intégration",
+    "handbookBodyPrefix": "Pour les authentication flows (cookie + Bearer), une carte groupée des routers, des snippets curl et les headers support-chat, voir ",
+    "handbookBodyPath": "docs/api-integration-guide.md",
+    "handbookBodySuffix": ". Swagger reste la référence après les mises à niveau.",
+    "publicEndpoints": "Endpoints publics",
+    "adminEndpoints": "Admin endpoints (JWT Required)",
+    "endpoints": {
+      "health": {
+        "method": "GET",
+        "path": "/api/health",
+        "description": "Contrôle de santé du système. Renvoie status, version et service name.",
+        "code": "Response:\n{\n  \"status\": \"ok\",\n  \"version\": \"2.1.0\",\n  \"service\": \"ai-factory-backend\"\n}",
+        "codeLanguage": "json"
+      },
+      "products": {
+        "method": "GET",
+        "path": "/api/products",
+        "description": "Listing de boutique pour les shipped builds — filtre incomplete sandboxes, marketplace quality, admin hide / not pursuing."
+      },
+      "productById": {
+        "method": "GET",
+        "path": "/api/products/{id}",
+        "description": "Détail produit pour la boutique publique — les hidden SKUs renvoient 404."
+      },
+      "support": {
+        "method": "MIXED",
+        "path": "/api/support/*",
+        "description": "Lumen support sessions & messages — nécessite souvent X-AIF-Support-Token une fois émis (voir env AIFACTORY_SUPPORT_REQUIRE_TOKEN)."
+      },
+      "sandboxRouter": {
+        "method": "ROUTER",
+        "path": "/api/sandbox · /api/payment · /api/customer …",
+        "description": "Sandbox previews, payments, feedback, marketing helpers — inspectez Swagger pour les verbs."
+      },
+      "aiMarket": {
+        "method": "PROTOCOL",
+        "path": "/.well-known/ai-market.json · /ai-market/*",
+        "description": "AI Market Protocol v1 — MCP manifest, HTTP 402 payments, channels, pipelines. Pas sous /api. Reference : cli/ai_market_agent.py, docs ai-market-protocol-v1.md."
+      },
+      "theme": {
+        "method": "GET",
+        "path": "/api/config/theme",
+        "description": "Obtenir la configuration actuelle du thème de la boutique."
+      },
+      "adminLogin": {
+        "method": "POST",
+        "path": "/api/admin/auth/login",
+        "description": "Admin login. Définit le cookie HTTP-only access_token ; les scripts peuvent aussi envoyer Authorization: Bearer ….",
+        "code": "Request:\n{\n  \"username\": \"admin\",\n  \"password\": \"your_password\",\n  \"totp_code\": \"123456\"  // optional, if 2FA enabled\n}\n\nResponse:\n{\n  \"access_token\": \"eyJhbG...\",\n  \"token_type\": \"bearer\",\n  \"requires_2fa\": false\n}",
+        "codeLanguage": "json"
+      },
+      "adminDashboard": {
+        "method": "GET",
+        "path": "/api/admin/dashboard",
+        "description": "Métriques Dashboard : pipeline stats, resources, revenue, security."
+      },
+      "adminProviders": {
+        "method": "GET",
+        "path": "/api/admin/providers",
+        "description": "Lister les LLM providers avec status, latency et model info."
+      },
+      "adminAgents": {
+        "method": "GET",
+        "path": "/api/admin/agents",
+        "description": "Lister les AI agents avec status, tasks et uptime."
+      },
+      "adminSecurityLogs": {
+        "method": "GET",
+        "path": "/api/admin/security/logs?limit=100",
+        "description": "Obtenir les audit logs avec le paramètre limit optionnel."
+      },
+      "adminDirectorReports": {
+        "method": "GET",
+        "path": "/api/admin/director/reports",
+        "description": "Lister les rapports générés par Director AI."
+      },
+      "adminProductsCreate": {
+        "method": "POST",
+        "path": "/api/admin/products/create",
+        "description": "Créer un nouveau produit à partir d'une idée.",
+        "code": "Request:\n{\n  \"idea\": \"Description of your product idea\",\n  \"target_audience\": \"developers\"  // optional\n}",
+        "codeLanguage": "json"
+      },
+      "adminMarketplaceCopy": {
+        "method": "PATCH",
+        "path": "/api/admin/pipeline/products/{id}/marketplace-copy",
+        "description": "Fusionner les marketing strings orientées boutique pour un shipped product."
+      },
+      "adminStorefrontAdmin": {
+        "method": "PATCH",
+        "path": "/api/admin/pipeline/products/{id}/storefront-admin",
+        "description": "Human score, force-list override, admin hide-from-storefront flags."
+      }
+    }
+  },
+  "cli": {
+    "titleGradient": "Commandes",
+    "intro": "Les commandes sont fournies avec le dépôt dans cli/ai_company_cli.py. Beaucoup de snippets README utilisent ai-company — préférez un chemin d'interpréteur explicite sauf si votre image l'aliase.",
+    "truthTableTitle": "Table de vérité",
+    "truthTableBodyPrefix": "Certaines commandes sont des démonstrations (wallet withdraw flow, parties du security scan). Lisez ",
+    "truthTableBodyPath": "docs/cli-reference.md",
+    "invocationTitle": "Invocation",
+    "highValueTitle": "Opérations à forte valeur",
+    "notImplementedTitle": "Ce qui n'est pas implémenté",
+    "notImplementedItems": [
+      "`director report --last` — ouvrez l'onglet Admin Director ou lisez /app/data/reports/director/*.md",
+      "`storefront preview` — utilisez le Next.js déployé ou npm run dev dans web/frontend",
+      "`restart web|orchestrator|director` — stub only ; redémarrez via Compose/systemd"
+    ],
+    "preferAdminTitle": "Préférez l'UI Admin quand…",
+    "preferAdminBody": "Éditer les LLM providers avec hot reload, les panneaux storefront hide/marketing et le Live Monitor est plus sûr via /admin qu'en éditant le YAML à la main, sauf si vous connaissez les reload semantics."
+  },
+  "agents": {
+    "titleGradient": "Agents",
+    "intro": "La plateforme utilise dix agents core plus une porte Methodologist et le méta-agent Evolution Analyst, chacun avec un rôle strict. Director AI se place au-dessus de la boucle. Les agents communiquent via le filesystem — aucun agent ne peut modifier le travail d'un autre. Pour les web deliverables, l'Architect émet aussi ui_experience (tokens, typography, motion) afin que le Developer livre une UI intentionnelle — montrée comme une étape ",
+    "introDesigner": "Designer",
+    "introSuffix": " dédiée sur le diagramme public du pipeline.",
+    "cards": [
+      {
+        "name": "Analyst",
+        "role": "Recherche de marché, analyse d'opportunités, research briefs"
+      },
+      {
+        "name": "PM (Product Manager)",
+        "role": "Validation d'idées, recherche de marché, spec generation"
+      },
+      {
+        "name": "Methodologist",
+        "role": "Domain process gate — vérifie que la spec et le code généré suivent la méthodologie acceptée pour le domaine du produit (CRM, helpdesk, e-commerce, …) via des domain packs enfichables et un learning store des leçons d'opérateur"
+      },
+      {
+        "name": "Architect",
+        "role": "Conception système, décisions de stack technologique, architecture docs"
+      },
+      {
+        "name": "Designer (UX layer)",
+        "role": "Pas une queue task séparée : ui_experience structuré (mood, CSS variables, fonts, motion, signature moment) rédigé avec l'architecture et implémenté par le Developer"
+      },
+      {
+        "name": "Developer",
+        "role": "Implémentation du code selon les architecture specs"
+      },
+      {
+        "name": "QA",
+        "role": "Tests automatisés, détection de bugs, analyse de la qualité du code"
+      },
+      {
+        "name": "Security",
+        "role": "Scan de vulnérabilités, secret detection, dependency audit"
+      },
+      {
+        "name": "DevOps",
+        "role": "Dockerization, deployment config, sandbox setup"
+      },
+      {
+        "name": "Marketing",
+        "role": "Descriptions de produits, landing pages, SEO content"
+      },
+      {
+        "name": "Sales",
+        "role": "Pricing, payment integration, customer interaction"
+      },
+      {
+        "name": "Evolution Analyst",
+        "role": "Analyse de la télémétrie, auto-improvements, A/B testing"
+      }
+    ],
+    "safety": "Sécurité des agents",
+    "safetyItems": [
+      "Frontières de rôle strictes — aucun agent ne peut effectuer les tâches d'un autre",
+      "Timeout protection — les agents ont une limite d'exécution de 30 secondes (configurable)",
+      "Output validation — toutes les sorties des agents sont validées contre des schemas",
+      "Escalation — si un agent échoue à répétition, Director AI est notifié",
+      "Mémoire basée sur le filesystem — pas de context hallucination, tout l'état est sur disque"
+    ]
+  },
+  "pipeline": {
+    "titleGradient": "Flux",
+    "intro": "Le cycle de vie du produit suit une machine à états déterministe avec 13 états. Chaque état est géré par un agent spécifique, assurant une propriété et une responsabilité claires.",
+    "introOnDemand": "Les produits autonomes consomment encore les analyst/marketing idea flows ; les produits à la demande ancrent chaque agent downstream sur le brief client — not a separate lightweight conveyor for orders.",
+    "standardPipeline": "Pipeline standard",
+    "featuresTitle": "Fonctionnalités du pipeline",
+    "featuresItems": [
+      "FSM déterministe — chaque produit suit la même machine à états",
+      "Récupération d'erreur — si QA trouve des bugs, le produit reboucle vers DEV_FIXING",
+      "Gestion des timeouts — chaque étape a un timeout configurable (default 30s)",
+      "Exécution parallèle — plusieurs produits peuvent être à différentes étapes du pipeline",
+      "Persistance de l'état — JSON (default) ou backend SQLite3 optionnel avec migration CLI",
+      "Director override — Director AI peut ajuster timeouts et priorités",
+      "Plafond de dépense LLM par produit (USD) — défini dans Admin → Settings → Pipeline & product quality (0 = illimité) ; l'env AIFACTORY_MAX_PIPELINE_COST_USD prime",
+      "Les cartes produit du Pipeline affichent des graphiques inline : dépense LLM par agent, progression, score de qualité"
+    ],
+    "directorCycleTitle": "Cycle Director AI (toutes les 4 heures)",
+    "directorCycleIntro": "En parallèle du product pipeline, Director AI s'exécute toutes les 4 heures :",
+    "directorCycleItems": [
+      "1. Collecter les métriques de toutes les sources (state files, telemetry, logs, database)",
+      "2. Analyser les métriques par rapport aux valeurs cibles, identifier anomalies et tendances",
+      "3. Générer des décisions — auto-apply des actions autorisées, mettre les recommandations en file pour l'admin",
+      "4. Générer un rapport markdown enregistré dans /data/reports/director/",
+      "5. Notifier le panneau admin avec le rapport prêt"
+    ],
+    "pipelineStates": [
+      "IDEA_RECEIVED",
+      "SPEC_WRITTEN",
+      "MARKET_CONTENT_READY",
+      "METHODOLOGY_REVIEWED",
+      "ARCH_DESIGNED",
+      "CODE_COMMITTED",
+      "QA_TESTING",
+      "SECURITY_SCANNED",
+      "SALES_ACTIVE",
+      "SANDBOX_RUNNING",
+      "TELEMETRY_COLLECTING",
+      "EVOLUTION_ANALYZING"
+    ]
+  },
+  "crypto": {
+    "titleGradient": "Paiements",
+    "intro": "AI-Factory prend en charge les paiements crypto multi-chaînes pour les produits générés. Les clients peuvent acheter des produits avec les stablecoins USDT ou USDC.",
+    "economicsTitle": "Économie",
+    "economicsBody": "La boutique et le checkout affichent par défaut environ 4,99 $ USDT lorsque les fichiers marketing/sales ne précisent pas d'autre prix — calibré pour les achats impulsifs de landings, les opérateurs pouvant surcharger par SKU.",
+    "supportedNetworks": "Réseaux pris en charge",
+    "paymentFlowTitle": "Flux de paiement",
+    "paymentFlowItems": [
+      "Le client sélectionne un produit et choisit un réseau (Base/Solana/Arbitrum)",
+      "Le système génère une adresse de paiement et un montant uniques",
+      "Le client envoie USDT/USDC à l'adresse fournie",
+      "Le système surveille les confirmations blockchain (polling toutes les 15s)",
+      "Aux confirmations suffisantes — la licence du produit est activée",
+      "Le client accède au demo sandbox et au produit complet"
+    ],
+    "walletTitle": "Gestion des wallets",
+    "walletBody": "Les wallets de la plateforme se configurent via le CLI. Les adresses de wallet sont affichées dans le panneau admin sous Crypto Settings. Les retraits nécessitent une approbation multi-signature.",
+    "chains": [
+      {
+        "name": "Base",
+        "tokens": "USDT, USDC"
+      },
+      {
+        "name": "Solana",
+        "tokens": "USDT, USDC"
+      },
+      {
+        "name": "Arbitrum",
+        "tokens": "USDT, USDC"
+      }
+    ]
+  },
+  "uniCredit": {
+    "titleGradient": "bus de crédit",
+    "intro": "UNI est un crédit interne indexé sur l'USDT — pas un jeton (token) négociable. Tous les débits et crédits dans la plateforme utilisent des UNI entiers à taux fixe ; l'USDT n'est que la rampe d'entrée et de sortie via les wallets de la trésorerie de la plateforme.",
+    "pegTitle": "Ancrage fixe",
+    "pegBody": "1 UNI = 0,01 $ USDT (100 UNI par 1 $). Cela permet la micro-facturation des appels LLM sans registres USDT en virgule flottante. Configurez via AIFACTORY_UNI_USD_CENTS_PER_UNI=1 (alias legacy AIFACTORY_UNI_USDT_RATE=100).",
+    "feesTitle": "Barème des frais (par défaut)",
+    "feesItems": [
+      "Spread de top-up : 0% (AIFACTORY_UNI_TOPUP_SPREAD_BPS=0) — onboarding sans friction psychologique",
+      "Par invoke / dépense de channel : 5% de frais de plateforme (AIFACTORY_UNI_PLATFORM_FEE_BPS=500)",
+      "Retrait : 1% + minimum 20 $ équivalent (AIFACTORY_UNI_WITHDRAW_FEE_BPS=100, AIFACTORY_UNI_MIN_WITHDRAW_UNI=2000)",
+      "Les frais de plateforme s'accumulent sur le wallet owner_id=PLATFORM_FEES — retirés comme tout vendeur"
+    ],
+    "treasuryTitle": "Invariant de trésorerie",
+    "treasuryBody": "L'USDT on-chain en trésorerie doit couvrir tous les UNI utilisateurs en circulation au taux d'ancrage. Le job en arrière-plan uni_treasury_audit enregistre reserve_ratio ; alerte en dessous de 0,999. Définissez AIFACTORY_UNI_TREASURY_USDT_OBSERVED pour les audits manuels jusqu'à ce que l'indexeur de chaîne soit branché.",
+    "flowTitle": "Flux typique",
+    "flowItems": [
+      "Le client recharge en USDT → POST /api/uni/topup/confirm → UNI crédités (receipt kind=topup)",
+      "Ouverture de channel AI Market → hold réserve des UNI ; invoke → spend_hold répartit 95% vendeur / 5% plateforme",
+      "Achat direct de capability → charge() débite atomiquement l'acheteur et crédite vendeur + plateforme",
+      "Retrait vendeur → POST /api/uni/withdraw → payout on-chain mis en file (intégration dispatcher)"
+    ],
+    "apiTitle": "API HTTP",
+    "apiItems": [
+      "GET /api/uni/config — ancrage et bps des frais",
+      "GET /api/uni/wallet — balance_uni, available_uni",
+      "GET /api/uni/receipts — historique des reçus signés",
+      "POST /api/uni/topup/intent — instructions de dépôt en trésorerie",
+      "POST /api/uni/grant — financement du monitor (X-Uni-Grant-Secret)"
+    ],
+    "settingsTitle": "Paramètres admin liés",
+    "settingsBody": "Le plafond LLM par produit du Pipeline (USD) se trouve sous Admin → Settings → Pipeline & product quality → Max LLM cost per product (quality.max_pipeline_cost_usd). L'économie UNI ne remplace pas ce plafond — elle complète le commerce on-chain.",
+    "docsMarkdown": "Voir aussi docs/uni-economics.md et docs/postgres-production-runbook.md dans le dépôt."
+  },
+  "security": {
+    "titleGradient": "Sécurité",
+    "intro": "AI-Factory implémente des mesures de sécurité de niveau entreprise sur toutes les couches.",
+    "authTitle": "Authentification et autorisation",
+    "authItems": [
+      "Authentification basée sur JWT avec cookies HTTP-only",
+      "Hachage des mots de passe avec SHA-256 + salt (fallback)",
+      "Support 2FA via Google Authenticator (TOTP)",
+      "Protection brute-force : max 5 tentatives échouées par 15 minutes",
+      "Timeout de session après 30 minutes d'inactivité",
+      "Toutes les actions admin journalisées dans un audit log inviolable"
+    ],
+    "sandboxTitle": "Isolation de sandbox",
+    "sandboxItems": [
+      "Docker-in-Docker pour les product sandboxes",
+      "Aucun accès réseau depuis les sandboxes (default)",
+      "Limites de ressources (CPU/memory) par sandbox",
+      "Isolation filesystem — pas d'accès aux fichiers de l'hôte",
+      "Nettoyage automatique du sandbox au timeout"
+    ],
+    "dataProtectionTitle": "Protection des données",
+    "dataProtectionItems": [
+      "Secrets chiffrés at rest avec Fernet (symmetric encryption)",
+      "Audit logs append-only avec détection de manipulation",
+      "Rate limiting sur tous les API endpoints",
+      "Aucune donnée sensible renvoyée dans les API responses",
+      "Règles de pare-feu dans le conteneur (nftables)"
+    ],
+    "monitoringTitle": "Surveillance de la sécurité",
+    "monitoringItems": [
+      "Dashboard de sécurité en temps réel dans le panneau admin",
+      "Suivi des tentatives de login échouées avec IP logging",
+      "Export de l'audit log au format JSON",
+      "Alertes automatiques sur activité suspecte"
+    ],
+    "firstPasswordTitle": "Premier mot de passe admin",
+    "firstPasswordBodyPrefix": "Pas de mot de passe par défaut fixe. Utilisez le prompt console au premier démarrage TTY, lisez ",
+    "firstPasswordPath": "data/secrets/bootstrap_admin.txt",
+    "firstPasswordBodySuffix": " pour un Compose détaché, ou changez via Admin → Users. La protection CSRF s'applique aux sessions admin basées sur cookie (header X-CSRF-Token)."
+  },
+  "director": {
+    "titleGradient": "AI",
+    "intro": "Director AI est un méta-agent qui supervise toute la plateforme. Il ne participe pas au développement de produits mais évalue les performances du système et prend des décisions d'optimisation.",
+    "analysisCycleTitle": "Cycle d'analyse (toutes les 4 heures)",
+    "cycleItems": [
+      "1. Metrics Collection — recueille les données depuis pipeline state, telemetry, logs et financial records",
+      "2. Analysis — compare les métriques aux cibles, identifie anomalies et tendances",
+      "3. Decision Making — génère des actions automatiques (si activées) et des recommandations",
+      "4. Report Generation — crée un rapport markdown détaillé",
+      "5. Notification — met à jour le panneau admin avec le nouveau rapport"
+    ],
+    "metricsTitle": "Métriques suivies",
+    "metricCards": [
+      {
+        "title": "Efficacité du pipeline",
+        "items": [
+          "Idea → MVP time (cible : <4h)",
+          "Auto-completion rate (cible : >95%)",
+          "Agent timeout/error rates",
+          "Auto-fix success rate (cible : >85%)"
+        ]
+      },
+      {
+        "title": "Métriques business",
+        "items": [
+          "Sandbox → purchase conversion (cible : >12%)",
+          "Panier moyen en crypto",
+          "Top/bottom products by revenue",
+          "Efficacité du marketing content"
+        ]
+      },
+      {
+        "title": "Santé technique",
+        "items": [
+          "Alertes CPU/RAM/disk usage",
+          "Disponibilité des LLM provider",
+          "Nombre de security incident",
+          "Model inference latency (P95)"
+        ]
+      },
+      {
+        "title": "Qualité produit",
+        "items": [
+          "Note moyenne du produit (d'après les reviews)",
+          "Bugs par 1000 lignes de code",
+          "Critical bug response time (P0)",
+          "Evolution improvements appliquées"
+        ]
+      }
+    ],
+    "autoActionsTitle": "Actions automatiques",
+    "autoActionsIntro": "Lorsque c'est activé, Director AI peut automatiquement :",
+    "autoActionsItems": [
+      "Augmenter les agent timeouts si le timeout rate dépasse 15%",
+      "Déclencher des marketing reviews si la conversion chute sous 8%",
+      "Recommander le passage aux local models si le GPU est sous-utilisé",
+      "Ajuster les resource limits selon les patterns d'usage"
+    ],
+    "reportFormatTitle": "Format du rapport",
+    "reportFormatIntro": "Les rapports Director sont enregistrés comme fichiers Markdown dans /data/reports/director/ et affichés dans le panneau admin. Chaque rapport inclut :",
+    "reportFormatItems": [
+      "Comparaison des métriques clés (actual vs target)",
+      "Actions automatiques appliquées",
+      "Recommandations nécessitant l'approbation de l'admin",
+      "Prévision à 24 heures avec évaluation des risques"
+    ]
+  },
+  "configuration": {
+    "titleGradient": "Configuration",
+    "intro": "La plateforme se configure via des fichiers YAML et JSON dans /data/config/. Les modifications peuvent se faire via le panneau admin ou directement en éditant ces fichiers.",
+    "modelProvidersTitle": "Model Providers (model_providers.yaml)",
+    "routingRulesTitle": "Règles de routage",
+    "globalConfigTitle": "Global Config (config.yaml)",
+    "qualityBlockTitle": "Bloc quality du pipeline (quality:)",
+    "qualityBlockItems": [
+      "max_pipeline_repair_rounds — budget de la boucle QA repair avant FAILED",
+      "max_pipeline_cost_usd — plafond de dépense LLM par produit en USD (0 = illimité) ; affiché sur les graphiques de vitals produit du Pipeline",
+      "demo / visual / browser / marketplace gates — mêmes champs que Admin → Settings → Pipeline & product quality",
+      "Les variables d'env AIFACTORY_* priment sur le YAML enregistré (hard override Docker)"
+    ],
+    "themesTitle": "Thèmes",
+    "themesIntro": "Cinq thèmes préinstallés sont disponibles :",
+    "themeItems": [
+      "Cyberpunk — cyan néon, accents violets, fond dégradé sombre",
+      "Minimal — blanc/gris épuré avec ombres subtiles",
+      "Glass — panneaux transparents avec fort effet de flou",
+      "Neon — couleurs néon vives sur fond sombre",
+      "Corporate — schéma de couleurs bleu/blanc professionnel"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "awr-emitter"
+version = "2.0.0"
+description = "Emit an AWR/2 WorkReceipt in one call, over the awr reference implementation"
+# Must be a file INSIDE this directory. `../README.md` -- the shared emitter document one level
+# up -- reads fine from a checkout and makes the package unbuildable: setuptools refuses it
+# outright ("Cannot access ... or anything outside"), so `python -m build` never gets as far as
+# producing an sdist. The sibling failure is worse and is live on PyPI right now in
+# aimarket-platon 0.1.0, whose sdist carries a member `aimarket_platon-0.1.0/../README.md` that
+# pip rejects as a path traversal. Hence a README of this package's own, with ABSOLUTE links:
+# a relative link in a long_description resolves against pypi.org and 404s on the project page.
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+# The format itself comes from `awr` and is never reimplemented here; the upper bound is
+# SPEC.md 3.1/6.4, which require a verifier to refuse an awrVersion major it does not
+# implement, so awr 3.x would install documents this emitter must not produce.
+dependencies = ["awr>=2.0,<3"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[tool.setuptools]
+# `adapters` used to be listed here as a top-level package, which would have installed a module
+# named plain `adapters` into the user's site-packages: a generic name this project has no claim
+# to, where somebody else's `import adapters` could resolve to ours. It lives under
+# `awr_emitter.adapters` instead, and the adapter's own test moved with it.
+packages = ["awr_emitter", "awr_emitter.adapters"]
+
+[tool.setuptools.package-data]
+# Nothing to ship but code -- stated explicitly so a stray fixture or key file cannot be swept
+# into the wheel by a future default.
+awr_emitter = []

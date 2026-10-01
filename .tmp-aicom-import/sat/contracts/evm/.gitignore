@@ -1,0 +1,18 @@
+# Foundry
+cache/
+out/
+broadcast/
+# Forge installs OpenZeppelin / forge-std into lib/ via `forge install` or the
+# Makefile helper. Treat as build-time deps — they are not checked in here so
+# the repo doesn't carry duplicate copies of upstream Solidity sources.
+lib/
+
+# Dotenv file (contains RPC URLs, private keys)
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

@@ -1,0 +1,182 @@
+{
+  "awrBundle": "2.0",
+  "documents": [
+    {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://verify.modelmarket.dev/ns/awr/v2"
+      ],
+      "id": "urn:uuid:000000d0-a11c-4f38-9b8a-1c2d3e4f5a6b",
+      "type": [
+        "VerifiableCredential",
+        "WorkReceipt"
+      ],
+      "issuer": {
+        "id": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "name": "example-hub"
+      },
+      "validFrom": "2026-07-31T10:15:30Z",
+      "awrVersion": "2.0.0",
+      "credentialSubject": {
+        "work": {
+          "modelId": "chain-hop-3@example",
+          "completedAt": "2026-07-31T10:15:30Z",
+          "status": "succeeded"
+        },
+        "inputDigest": "sha256-d7J4PoGXWrGX2/x0oP8IIHiW33h2vqZbT3tSvApd/CI=",
+        "outputDigest": "sha256-d7J4PoGXWrGX2/x0oP8IIHiW33h2vqZbT3tSvApd/CI=",
+        "nonce": "chainnodes-0003",
+        "parents": [
+          {
+            "digestSRI": "sha256-m51+Xx3bnGy4NPbQy4EE/+Z5ihlvLM86bgUT/SpDDa0=",
+            "id": "urn:uuid:000000cf-a11c-4f38-9b8a-1c2d3e4f5a6b",
+            "role": "subagent"
+          }
+        ]
+      },
+      "proof": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://verify.modelmarket.dev/ns/awr/v2"
+        ],
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "created": "2026-07-31T10:15:30Z",
+        "verificationMethod": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw#z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "z32YZUpsXKMmtM3RCopjGgVKeJZB3xJZY6eTyDhyt4uC66MDucZLvP1jQ1NpCiyCMnvJMTkJVSzd6scYwdTGLpTNt"
+      }
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://verify.modelmarket.dev/ns/awr/v2"
+      ],
+      "id": "urn:uuid:000000cf-a11c-4f38-9b8a-1c2d3e4f5a6b",
+      "type": [
+        "VerifiableCredential",
+        "WorkReceipt"
+      ],
+      "issuer": {
+        "id": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "name": "example-hub"
+      },
+      "validFrom": "2026-07-31T10:15:30Z",
+      "awrVersion": "2.0.0",
+      "credentialSubject": {
+        "work": {
+          "modelId": "chain-hop-2@example",
+          "completedAt": "2026-07-31T10:15:30Z",
+          "status": "succeeded"
+        },
+        "inputDigest": "sha256-d7J4PoGXWrGX2/x0oP8IIHiW33h2vqZbT3tSvApd/CI=",
+        "outputDigest": "sha256-d7J4PoGXWrGX2/x0oP8IIHiW33h2vqZbT3tSvApd/CI=",
+        "nonce": "chainnodes-0002",
+        "parents": [
+          {
+            "digestSRI": "sha256-E9qis3nXB8H9kdgKfll0ft0rBAY9JXU7aiva/1AIwtk=",
+            "id": "urn:uuid:000000ce-a11c-4f38-9b8a-1c2d3e4f5a6b",
+            "role": "subagent"
+          }
+        ]
+      },
+      "proof": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://verify.modelmarket.dev/ns/awr/v2"
+        ],
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "created": "2026-07-31T10:15:30Z",
+        "verificationMethod": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw#z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "z4m4p8F85ViDncksgsi4J2ueDV1PnhU8WT9RLFZDiPpT5w7dqarvR8uYmeMUeLr6YWoQY8qNN8QbDc45xa2YSBQjF"
+      }
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://verify.modelmarket.dev/ns/awr/v2"
+      ],
+      "id": "urn:uuid:000000ce-a11c-4f38-9b8a-1c2d3e4f5a6b",
+      "type": [
+        "VerifiableCredential",
+        "WorkReceipt"
+      ],
+      "issuer": {
+        "id": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "name": "example-hub"
+      },
+      "validFrom": "2026-07-31T10:15:30Z",
+      "awrVersion": "2.0.0",
+      "credentialSubject": {
+        "work": {
+          "modelId": "chain-hop-1@example",
+          "completedAt": "2026-07-31T10:15:30Z",
+          "status": "succeeded"
+        },
+        "inputDigest": "sha256-d7J4PoGXWrGX2/x0oP8IIHiW33h2vqZbT3tSvApd/CI=",
+        "outputDigest": "sha256-d7J4PoGXWrGX2/x0oP8IIHiW33h2vqZbT3tSvApd/CI=",
+        "nonce": "chainnodes-0001",
+        "parents": [
+          {
+            "digestSRI": "sha256-DQ4N0fl8grMfcA5NQ8AQCK0r3B7cVgByc+Zgqjo1TZ0=",
+            "id": "urn:uuid:000000cd-a11c-4f38-9b8a-1c2d3e4f5a6b",
+            "role": "subagent"
+          }
+        ]
+      },
+      "proof": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://verify.modelmarket.dev/ns/awr/v2"
+        ],
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "created": "2026-07-31T10:15:30Z",
+        "verificationMethod": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw#z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "zzt8uLEmzcwtRx46UkgbNkhCGDLH4tCG6JbTnZTEsfzmeKnJMRZjdw8tsBU18isnoupfGw1SKMBPVLzbTR5FCFE9"
+      }
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://verify.modelmarket.dev/ns/awr/v2"
+      ],
+      "id": "urn:uuid:000000cd-a11c-4f38-9b8a-1c2d3e4f5a6b",
+      "type": [
+        "VerifiableCredential",
+        "WorkReceipt"
+      ],
+      "issuer": {
+        "id": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "name": "example-hub"
+      },
+      "validFrom": "2026-07-31T10:15:30Z",
+      "awrVersion": "2.0.0",
+      "credentialSubject": {
+        "work": {
+          "modelId": "chain-hop-0@example",
+          "completedAt": "2026-07-31T10:15:30Z",
+          "status": "succeeded"
+        },
+        "inputDigest": "sha256-d7J4PoGXWrGX2/x0oP8IIHiW33h2vqZbT3tSvApd/CI=",
+        "outputDigest": "sha256-d7J4PoGXWrGX2/x0oP8IIHiW33h2vqZbT3tSvApd/CI=",
+        "nonce": "chainnodes-0000"
+      },
+      "proof": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://verify.modelmarket.dev/ns/awr/v2"
+        ],
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "created": "2026-07-31T10:15:30Z",
+        "verificationMethod": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw#z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "z2AHpuANrrQXoz9Sq6ZuMBZbkaFeMq7uUWMKA91hNPgZ5UkocQxBEBq5mHb1aNvXD3xe9jBV5wUunfP9qBa4UL2AM"
+      }
+    }
+  ]
+}

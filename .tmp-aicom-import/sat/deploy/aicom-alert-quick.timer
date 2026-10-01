@@ -1,0 +1,15 @@
+[Unit]
+Description=AIMarket alert — quick probes every 10 minutes
+Documentation=https://github.com/alexar76/aicom
+
+[Timer]
+Unit=aicom-alert@quick.service
+OnBootSec=3min
+OnUnitActiveSec=10min
+# Two instances would each hold half of the state machine's history and could both decide
+# to page for the same failure.
+AccuracySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

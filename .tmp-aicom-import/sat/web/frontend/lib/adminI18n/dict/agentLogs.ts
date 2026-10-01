@@ -1,0 +1,65 @@
+import type { I18nDict } from '../types';
+
+export const AGENT_LOGS_DICT: I18nDict = {
+  'agentLogs.title': {
+    en: 'Agent Execution Logs',
+    ru: 'Журнал выполнения агентов',
+    es: 'Logs de ejecución de agentes',
+    fr: 'Journaux d\'exécution des agents',
+    zh: '智能体执行日志',
+  },
+  'agentLogs.searchPlaceholder': {
+    en: 'Search message / agent / payload…',
+    ru: 'Поиск по сообщению / агенту / данным…',
+    es: 'Buscar mensaje / agente / payload…',
+    fr: 'Rechercher message / agent / payload…',
+    zh: '搜索消息 / 智能体 / payload…',
+  },
+  'agentLogs.errorsOnly': { en: 'Errors only', ru: 'Только ошибки', es: 'Solo errores', fr: 'Erreurs uniquement', zh: '仅错误' },
+  'agentLogs.agentAll': { en: 'All Agents', ru: 'Все агенты', es: 'Todos los agentes', fr: 'Tous les agents', zh: '所有智能体' },
+  'agentLogs.fromLocal': { en: 'From (local)', ru: 'С (локально)', es: 'Desde (local)', fr: 'De (local)', zh: '从（本地）' },
+  'agentLogs.toLocal': { en: 'To (local)', ru: 'По (локально)', es: 'Hasta (local)', fr: 'À (local)', zh: '至（本地）' },
+  'agentLogs.refresh': { en: 'Refresh', ru: 'Обновить', es: 'Actualizar', fr: 'Actualiser', zh: '刷新' },
+  'agentLogs.summary': {
+    en: 'Showing {filtered} filtered / {loaded} loaded / {total} in time window',
+    ru: 'Показано {filtered} после фильтра / {loaded} загружено / {total} в окне времени',
+    es: 'Mostrando {filtered} filtradas / {loaded} cargadas / {total} en la ventana',
+    fr: 'Affichage {filtered} filtrées / {loaded} chargées / {total} dans la fenêtre de temps',
+    zh: '显示 {filtered} 条已筛选 / {loaded} 条已加载 / 时间窗口内共 {total} 条',
+  },
+  'agentLogs.loading': {
+    en: 'Loading agent logs…',
+    ru: 'Загрузка логов агентов…',
+    es: 'Cargando logs de agentes…',
+    fr: 'Chargement des journaux d\'agents…',
+    zh: '正在加载智能体日志…',
+  },
+  'agentLogs.empty': {
+    en: 'No logs match current filters.',
+    ru: 'Нет записей под текущие фильтры.',
+    es: 'Ningún registro coincide con los filtros.',
+    fr: 'Aucun journal ne correspond aux filtres actuels.',
+    zh: '没有日志符合当前筛选条件。',
+  },
+  'agentLogs.emptyHintAgent': {
+    en: 'Try clearing search/errors for "{agent}".',
+    ru: 'Очистите поиск или фильтр ошибок для «{agent}».',
+    es: 'Prueba a limpiar búsqueda/errores para «{agent}».',
+    fr: 'Essayez d\'effacer la recherche/les erreurs pour « {agent} ».',
+    zh: '尝试清除对 "{agent}" 的搜索/错误筛选。',
+  },
+  'agentLogs.error.load': {
+    en: 'Could not load agent logs',
+    ru: 'Не удалось загрузить журнал агентов',
+    es: 'No se pudieron cargar los registros de agentes',
+    fr: 'Impossible de charger les journaux d\'agents',
+    zh: '无法加载智能体日志',
+  },
+  'agentLogs.emptyHintGeneric': {
+    en: 'Try clearing filters or refresh.',
+    ru: 'Сбросьте фильтры или обновите.',
+    es: 'Prueba a limpiar filtros o actualizar.',
+    fr: 'Essayez d\'effacer les filtres ou d\'actualiser.',
+    zh: '尝试清除筛选条件或刷新。',
+  },
+};

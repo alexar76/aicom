@@ -14,6 +14,7 @@
 #   ./scripts/push_gitea_monorepo.sh              # push current branch (default main)
 #   ./scripts/push_gitea_monorepo.sh --dry-run    # show remote + pending commits
 #   GITEA_BRANCH=main ./scripts/push_gitea_monorepo.sh
+#   ./scripts/push_gitea_monorepo.sh --branch codex/change --pr main --title "Change" --body-file /tmp/pr.md
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -21,16 +22,32 @@ cd "$ROOT"
 
 BRANCH="${GITEA_BRANCH:-main}"
 DRY_RUN=0
+PR_BASE=""
+PR_TITLE=""
+PR_BODY_FILE=""
 GITEA2_URL="ssh://git@gitea2/alexar76/aicom.git"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN=1; shift ;;
     --branch)  BRANCH="${2:-}"; shift 2 ;;
+    --pr) PR_BASE="${2:-}"; shift 2 ;;
+    --title) PR_TITLE="${2:-}"; shift 2 ;;
+    --body-file) PR_BODY_FILE="${2:-}"; shift 2 ;;
     -h|--help) sed -n '2,14p' "$0"; exit 0 ;;
     *) echo "unknown option: $1" >&2; exit 1 ;;
   esac
 done
+
+if [[ -n "$PR_BASE" ]]; then
+  git check-ref-format --branch "$PR_BASE" >/dev/null
+  git check-ref-format --branch "$BRANCH" >/dev/null
+  [[ -n "$PR_TITLE" && "$PR_TITLE" != *$'\n'* && -f "$PR_BODY_FILE" ]] \
+    || { echo "--pr requires a single-line --title and an existing --body-file" >&2; exit 2; }
+elif [[ -n "$PR_TITLE" || -n "$PR_BODY_FILE" ]]; then
+  echo "--title and --body-file require --pr" >&2
+  exit 2
+fi
 
 current_branch="$(git branch --show-current 2>/dev/null || true)"
 if [[ -n "$current_branch" && "$current_branch" != "$BRANCH" ]]; then
@@ -229,6 +246,29 @@ _push_direct() {
   local remote local_head
   remote="$(_remote_head "$url" || true)"
   local_head="$(_local_head)"
+  if [[ -n "$PR_BASE" ]]; then
+    # Gitea AGit creates/reuses a PR through the same SSH identity and safety
+    # gates as an ordinary push. It never updates the target base branch.
+    local pr_ref="refs/for/${PR_BASE}/${BRANCH}"
+    echo "  review ${BRANCH} -> ${pr_ref}"
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+      echo "  local  ${local_head}"
+      echo "  title  ${PR_TITLE}"
+      return 0
+    fi
+    _assert_alexar76_author "$url"
+    _assert_clean_commit_trailers "$url"
+    _assert_satellite_links_resolve
+    local pr_description
+    # Git push options cannot contain literal LF; Gitea decodes escaped newlines.
+    pr_description="$(python3 - "$PR_BODY_FILE" <<'PY'
+import pathlib, sys
+print(pathlib.Path(sys.argv[1]).read_text().replace("\n", "\\n"), end="")
+PY
+)"
+    git_t push "$url" "${BRANCH}:${pr_ref}" -o "title=${PR_TITLE}" -o "description=${pr_description}"
+    return 0
+  fi
   if [[ "$DRY_RUN" -eq 1 ]]; then
     echo "  local  ${local_head}"
     echo "  remote ${remote:-<unreachable>}"
@@ -260,7 +300,11 @@ echo "Monorepo → Gitea#2 only (alexar76/aicom), branch=${BRANCH}"
 _push_direct "Gitea#2" "$GITEA2_URL"
 
 if [[ "$DRY_RUN" -eq 0 ]]; then
-  git fetch origin 2>/dev/null || true
-  echo ""
-  echo "Done. Gitea#2 should now be at $(_local_head)."
+  if [[ -n "$PR_BASE" ]]; then
+    echo "Done. Review submitted to Gitea#2; base branch was not changed."
+  else
+    git fetch origin 2>/dev/null || true
+    echo ""
+    echo "Done. Gitea#2 should now be at $(_local_head)."
+  fi
 fi

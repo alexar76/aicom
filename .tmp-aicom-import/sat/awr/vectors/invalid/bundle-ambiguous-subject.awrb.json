@@ -1,0 +1,92 @@
+{
+  "awrBundle": "2.0",
+  "documents": [
+    {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://verify.modelmarket.dev/ns/awr/v2"
+      ],
+      "id": "urn:uuid:00000001-a11c-4f38-9b8a-1c2d3e4f5a6b",
+      "type": [
+        "VerifiableCredential",
+        "WorkReceipt"
+      ],
+      "issuer": {
+        "id": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "name": "example-hub"
+      },
+      "validFrom": "2026-07-31T10:15:30Z",
+      "awrVersion": "2.0.0",
+      "credentialSubject": {
+        "work": {
+          "modelId": "claude-sonnet-5@anthropic",
+          "completedAt": "2026-07-31T10:15:30Z",
+          "status": "succeeded"
+        },
+        "inputDigest": "sha256-ntYicspG8WqhUyawUlC4dTFMnG08+B5Wol6Kci8rnNo=",
+        "outputDigest": "sha256-z3ZSXO7HDKRUMIrd+zvSig+hNUcug/XPmO+faJPgJak="
+      },
+      "proof": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://verify.modelmarket.dev/ns/awr/v2"
+        ],
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "created": "2026-07-31T10:15:30Z",
+        "verificationMethod": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw#z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "z2R1VSDk8BubG6VztZDDJiH4fCgNe8xNmCZvPfvnkt6StDwUkFun2sf7c7moqpEZygRS63WUwFTg7k38joRPVYEXK"
+      }
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://verify.modelmarket.dev/ns/awr/v2"
+      ],
+      "id": "urn:uuid:0000000d-a11c-4f38-9b8a-1c2d3e4f5a6b",
+      "type": [
+        "VerifiableCredential",
+        "WorkReceipt"
+      ],
+      "issuer": {
+        "id": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "name": "example-hub"
+      },
+      "validFrom": "2026-07-31T10:15:30Z",
+      "awrVersion": "2.0.0",
+      "credentialSubject": {
+        "work": {
+          "modelId": "claude-sonnet-5@anthropic",
+          "completedAt": "2026-07-31T10:15:30Z",
+          "status": "succeeded"
+        },
+        "inputDigest": "sha256-ntYicspG8WqhUyawUlC4dTFMnG08+B5Wol6Kci8rnNo=",
+        "outputDigest": "sha256-z3ZSXO7HDKRUMIrd+zvSig+hNUcug/XPmO+faJPgJak=",
+        "nonce": "01J9Z8QK4T7YB2N5V6W8XA3C11",
+        "settlement": {
+          "scheme": "escrow-evm-v1",
+          "chainId": 8453,
+          "contract": "0x0000000000000000000000000000000000000000",
+          "holdId": "0x9f2c1d4e5a6b7c8d9e0f1a2b3c4d5e6f70819293a4b5c6d7e8f90a1b2c3d4e5f",
+          "amount": {
+            "currency": "USD",
+            "amount": "0.10"
+          }
+        }
+      },
+      "proof": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://verify.modelmarket.dev/ns/awr/v2"
+        ],
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "created": "2026-07-31T10:15:30Z",
+        "verificationMethod": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw#z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "z2PLCyrxibvnpjiQKfUZ8MbBHRwJKNhQuZbcLf57dush88zK1PnETnUjQHAWXa7qDqEgmQnPvSCnr848JQRUz2SsM"
+      }
+    }
+  ]
+}

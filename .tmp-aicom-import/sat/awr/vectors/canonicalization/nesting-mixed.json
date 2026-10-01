@@ -1,0 +1,45 @@
+{
+  "level1": {
+    "array": [
+      1,
+      "two",
+      true,
+      null,
+      {
+        "z": 1,
+        "a": [
+          {
+            "deep": [
+              [
+                [
+                  {
+                    "deepest": "value"
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "object": {
+      "c": {
+        "b": {
+          "a": {
+            "": "empty key at depth 4"
+          }
+        }
+      }
+    }
+  },
+  "arrayOfObjects": [
+    {
+      "b": 1,
+      "a": 2
+    },
+    {
+      "a": 3,
+      "b": 4
+    }
+  ]
+}

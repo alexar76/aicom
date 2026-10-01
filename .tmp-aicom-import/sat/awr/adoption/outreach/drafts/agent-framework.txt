@@ -1,0 +1,29 @@
+DRAFT — NOT SENT. Requires the maintainer to review and send.
+PRE-SEND: substitute the published awr/conformance/ URL for <CONFORMANCE-MATRIX-URL>.
+PRE-SEND: insert a measured Ed25519 per-node sign latency, not a reassurance.
+
+Subject: content-addressed edges between agent nodes — a per-node receipt behind a flag
+
+Hello,
+
+When a multi-step run produces a wrong answer, your users cannot show which node did it.
+Traces debug your own run; they do not attribute a failure to a party that disputes it.
+
+AWR/2 is a draft format for per-step signed receipts. A WorkReceipt records what its issuer says
+ran, plus input and output digests. Its "parents" edges reference upstream receipts by digest,
+not identifier, so a consumer that recomputes those digests can detect a re-pointed chain that
+still passes every signature check. A separate BlameAttestation records a signed, method-named
+attribution of a failure to one hop — including exoneration (failureClass: upstream-input). AWR
+does not compute the attribution and does not check it beyond reachability; what it does is make
+whoever asserts it nameable. All are W3C VC 2.0 with an eddsa-jcs-2022 proof; verification is
+offline — no network, chain, or account.
+
+The ask: emit one receipt per node behind an off-by-default flag, parents digest-linking
+upstream.
+
+Two real costs you will raise: your users cannot manage a keypair, and per-node signing adds
+latency. [INSERT MEASURED SIGN LATENCY]
+
+Conformance matrix: <CONFORMANCE-MATRIX-URL>
+
+MIT. No production emitters, no adopters, no endorsements.

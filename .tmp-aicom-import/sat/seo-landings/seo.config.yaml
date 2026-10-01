@@ -1,0 +1,26 @@
+# SEO landing build configuration.
+# Override at build time: SEO_BASE_URL=https://alexar76.github.io/aicom python3 scripts/build_seo_landings.py
+
+default_base_url: https://modeldev.modelmarket.dev
+
+# Canonical alternates (hreflang / mirror hints in sitemap only)
+alternate_bases:
+  github_pages: https://alexar76.github.io/aicom
+
+brand:
+  name: AICOM
+  tagline: Open economy for autonomous AI agents
+  og_image: https://img.youtube.com/vi/Gg9a52-ZbNA/maxresdefault.jpg
+
+external:
+  courses_portal: https://alexar76.github.io/aimarket-courses/
+  oracles_live: https://oracles.modelmarket.dev/
+  hub: https://modelmarket.dev/
+  factory: https://magic-ai-factory.com/
+  knowledge_base: https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md
+  gaia_live: https://iot.modelmarket.dev/
+
+# Fonts are self-hosted per landing now — build_seo_landings.py emits a local
+# `fonts/fonts.css`, so there is no stylesheet URL to configure here. Nothing reads this key;
+# leaving a Google URL in it would only invite someone to wire it back up.
+fonts: "fonts/fonts.css"

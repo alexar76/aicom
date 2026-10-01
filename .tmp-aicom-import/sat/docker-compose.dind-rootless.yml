@@ -1,0 +1,48 @@
+# Optional rootless DinD — merge INSTEAD of docker-compose.dind.yml when the
+# host has cgroup v2 + /etc/subuid|/etc/subgid delegated for the run user:
+#
+#   docker compose -f docker-compose.yml -f docker-compose.dind-rootless.yml up -d
+#
+# A break-out lands as an unprivileged host user (I1 mitigation). Privileged
+# DinD remains the default because rootless needs host setup that not every
+# deploy has.
+
+services:
+  docker-dind:
+    image: docker:27.4.0-dind-rootless
+    privileged: false
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    mem_limit: 4g
+    cpus: 2.0
+    pids_limit: 2048
+    volumes:
+      - docker-dind-certs-ca:/certs/ca
+      - docker-dind-certs-client:/certs/client
+      - docker-dind-data:/home/rootless/.local/share/docker
+    networks:
+      - aicom_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "docker", "info"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 20s
+
+  app:
+    depends_on:
+      docker-dind:
+        condition: service_healthy
+    environment:
+      DOCKER_HOST: tcp://docker-dind:2376
+      DOCKER_TLS_VERIFY: "1"
+      DOCKER_CERT_PATH: /certs/client
+      AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION: ${AIFACTORY_SANDBOX_PREVIEW_NETWORK_ISOLATION:-1}
+    volumes:
+      - docker-dind-certs-client:/certs/client:ro
+
+volumes:
+  docker-dind-certs-ca:
+  docker-dind-certs-client:
+  docker-dind-data:

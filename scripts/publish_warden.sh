@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Publish @aimarket/warden (the standalone WARDEN MCP firewall) to npm.
 #
-#   NPM_TOKEN=npm_... ./scripts/publish_warden.sh
+#   npm login
+#   ./scripts/publish_warden.sh
 #   ./scripts/publish_warden.sh --dry-run
 #
 # Release order: this package FIRST, then argus. argus pins it exactly, so a
@@ -15,7 +16,7 @@ DRY_RUN=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN=1; shift ;;
-    -h|--help) echo "Usage: NPM_TOKEN=... $0 [--dry-run]"; exit 0 ;;
+    -h|--help) echo "Usage: $0 [--dry-run] (owner must run npm login first)"; exit 0 ;;
     *) echo "unknown option: $1" >&2; exit 1 ;;
   esac
 done
@@ -58,13 +59,10 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   exit 0
 fi
 
-TOKEN="${NPM_TOKEN:-${NODE_AUTH_TOKEN:-}}"
-[[ -n "$TOKEN" ]] || { echo "error: set NPM_TOKEN" >&2; exit 4; }
-
-NPMRC="$(mktemp "${TMPDIR:-/tmp}/npmrc.aimarket-warden.XXXXXX")"
-trap 'rm -f "$NPMRC"' EXIT
-printf '//registry.npmjs.org/:_authToken=%s\n' "$TOKEN" > "$NPMRC"
-npm --userconfig "$NPMRC" publish --access public
+# Use the owner's existing npm login. Never create token-bearing files or ask for
+# secrets in chat/CI. npm itself handles any interactive authentication challenge.
+npm whoami >/dev/null || { echo "error: owner must run npm login first" >&2; exit 4; }
+npm publish --access public
 
 echo "OK published $NAME@$VERSION"
 echo "Install: npm install $NAME"

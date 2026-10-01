@@ -1,0 +1,44 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://verify.modelmarket.dev/ns/awr/v2"
+  ],
+  "id": "urn:uuid:00000082-a11c-4f38-9b8a-1c2d3e4f5a6b",
+  "type": [
+    "VerifiableCredential",
+    "VerificationVerdict"
+  ],
+  "issuer": {
+    "id": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT",
+    "name": "example-verifier-a"
+  },
+  "validFrom": "2026-07-31T10:15:30Z",
+  "awrVersion": "2.0.0",
+  "credentialSubject": {
+    "verifiedWork": {
+      "digestSRI": "sha256-GaKRyA96tYHB3FzDzc75wcWdYC0+DNWHAN5NJ/iLuhk=",
+      "id": "urn:uuid:00000001-a11c-4f38-9b8a-1c2d3e4f5a6b"
+    },
+    "verdict": "pass",
+    "score": "0.93",
+    "method": {
+      "id": "urn:example:method:grounded-council-v1",
+      "name": "grounded council, 3 jurors",
+      "modelIds": [
+        "claude-opus-5@anthropic"
+      ]
+    }
+  },
+  "proof": {
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://verify.modelmarket.dev/ns/awr/v2"
+    ],
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "created": "2026-07-31T10:15:30Z",
+    "verificationMethod": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT#z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "z4oFmeysPiZ7YiuDY8c6cYo8wWU5QWoz9UJ2CMwSsyB3H8GLQTXARB9qc9jLLxCSVwsRg9rH11jVyAmrgv4JbLXNL"
+  }
+}

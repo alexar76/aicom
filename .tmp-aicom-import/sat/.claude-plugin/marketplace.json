@@ -1,0 +1,17 @@
+{
+  "name": "aimarket",
+  "owner": {
+    "name": "alexar76"
+  },
+  "metadata": {
+    "description": "AIMarket agent skills — hosted Hub MCP by URL and WARDEN firewall"
+  },
+  "plugins": [
+    {
+      "name": "aimarket-agent-skills",
+      "description": "Add https://modelmarket.dev/mcp (market_search → market_invoke, always pass source_hub) and vet advertised MCP tools with WARDEN.",
+      "source": "./agent-skills",
+      "category": "productivity"
+    }
+  ]
+}

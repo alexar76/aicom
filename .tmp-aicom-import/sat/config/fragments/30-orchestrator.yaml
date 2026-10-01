@@ -1,0 +1,7 @@
+orchestrator:
+  max_concurrent_tasks: 5
+  task_queue_size: 100
+  state_file: /app/data/state/pipeline.json
+  polling_interval_sec: 1.0
+  max_retries_per_step: 3
+  enable_director_integration: true

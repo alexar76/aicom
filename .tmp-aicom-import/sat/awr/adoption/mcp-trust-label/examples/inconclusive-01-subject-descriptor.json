@@ -1,0 +1,20 @@
+{
+  "mtl": "1",
+  "server": {
+    "name": "com.example/tracker",
+    "registry": "urn:awr:mtl:1:registry:example",
+    "version": "0.9.0"
+  },
+  "toolSet": {
+    "count": 2,
+    "names": [
+      "create_issue",
+      "list_files"
+    ],
+    "digestSRI": "sha256-Ei6TrbxC30M3swU6D97xRgWdfw3sN7XuAI+fKx776mc="
+  },
+  "artifact": {
+    "transport": "stdio",
+    "package": "npm:@example/tracker-mcp@0.9.0"
+  }
+}

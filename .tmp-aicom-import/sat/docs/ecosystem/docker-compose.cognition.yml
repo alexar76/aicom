@@ -1,0 +1,80 @@
+# Shared cognition layer — DIOSCURI + HELIOS on one data volume.
+#
+# From monorepo root:
+#   docker volume create aicom-ecosystem-data
+#   docker compose \
+#     -f dioscuri/docker-compose.yml \
+#     -f helios/docker-compose.yml \
+#     -f docs/ecosystem/docker-compose.cognition.yml \
+#     up -d --build
+#
+# Shared paths inside /data:
+#   mnemosyne.json          — CALLIOPE reads DIOSCURI KB
+#   helios-queue.jsonl      — release-short + theoros-short jobs (DIOSCURI → HELIOS worker)
+
+name: aicom-cognition
+
+volumes:
+  ecosystem-data:
+    external: true
+    name: aicom-ecosystem-data
+
+services:
+  dioscuri:
+    volumes:
+      - ecosystem-data:/data
+      - ./dioscuri/dioscuri.config.json:/app/dioscuri.config.json:ro
+    environment:
+      HELIOS_SYNDICATION: ${HELIOS_SYNDICATION:-1}
+      HELIOS_QUEUE_PATH: ${HELIOS_QUEUE_PATH:-/data/helios-queue.jsonl}
+
+  helios:
+    volumes:
+      - ecosystem-data:/data
+      - ./helios/helios.config.yaml:/app/helios.config.yaml:ro
+    environment:
+      DIOSCURI_DATA_DIR: /data
+      HELIOS_QUEUE_PATH: ${HELIOS_QUEUE_PATH:-/data/helios-queue.jsonl}
+
+  helios-worker:
+    image: aicom/helios:0.1
+    container_name: helios-worker
+    restart: unless-stopped
+    stop_grace_period: 120s
+    init: true
+    env_file:
+      - ./helios/.env
+    environment:
+      HELIOS_DATA_DIR: /data
+      HELIOS_CONFIG: /app/helios.config.yaml
+      DIOSCURI_DATA_DIR: /data
+      HELIOS_QUEUE_PATH: ${HELIOS_QUEUE_PATH:-/data/helios-queue.jsonl}
+      HELIOS_WORKER_INTERVAL_SEC: ${HELIOS_WORKER_INTERVAL_SEC:-300}
+    volumes:
+      - ecosystem-data:/data
+      - ./helios/helios.config.yaml:/app/helios.config.yaml:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 2048m
+    cpus: 1.5
+    depends_on:
+      helios:
+        condition: service_started
+    command:
+      - sh
+      - -c
+      - |
+        while true; do
+          helios worker || echo "[helios-worker] exit $?" >&2
+          sleep "$${HELIOS_WORKER_INTERVAL_SEC:-300}"
+        done
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

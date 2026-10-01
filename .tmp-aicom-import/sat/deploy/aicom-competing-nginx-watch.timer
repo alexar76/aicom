@@ -1,0 +1,13 @@
+[Unit]
+Description=Competing-lab nginx edge watchdog — every 2 minutes
+Documentation=file:///opt/aicom-scripts/competing_lab_nginx_watch.py
+
+[Timer]
+Unit=aicom-competing-nginx-watch.service
+OnBootSec=2min
+OnUnitActiveSec=2min
+AccuracySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

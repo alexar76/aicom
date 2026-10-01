@@ -1,0 +1,41 @@
+import type { I18nDict } from '../types';
+
+export const BLOG_DICT: I18nDict = {
+  'tab.blog': { en: 'Blog posts', ru: 'Посты блога', es: 'Entradas del blog', fr: 'Articles de blog', zh: '博客文章' },
+  'blog.intro': {
+    en: 'Launch posts from the Marketing agent. Review, edit, and optionally add sandbox hero screenshots.',
+    ru: 'Launch-посты от Marketing-агента. Просмотр, правка и опциональные скриншоты sandbox.',
+    es: 'Posts de lanzamiento del agente Marketing. Revisar, editar y capturas opcionales del sandbox.',
+    fr: 'Articles de lancement de l\'agent Marketing. Relisez, modifiez et ajoutez éventuellement des captures hero du sandbox.',
+    zh: '来自 Marketing 智能体的发布文章。审阅、编辑，并可选择添加 sandbox 主图截图。',
+  },
+  'blog.backfill': { en: 'Backfill all products', ru: 'Создать для всех продуктов', es: 'Rellenar todos los productos', fr: 'Compléter tous les produits', zh: '为所有产品补齐' },
+  'blog.backfillDone': {
+    en: 'Backfill complete',
+    ru: 'Backfill завершён',
+    es: 'Relleno completado',
+    fr: 'Complément terminé',
+    zh: '补齐完成',
+  },
+  'blog.selectPost': { en: 'Select a post', ru: 'Выберите пост', es: 'Selecciona una entrada', fr: 'Sélectionnez un article', zh: '选择一篇文章' },
+  'blog.noPosts': { en: 'No launch posts yet.', ru: 'Launch-постов пока нет.', es: 'Aún no hay posts de lanzamiento.', fr: 'Aucun article de lancement pour l\'instant.', zh: '暂无发布文章。' },
+  'blog.save': { en: 'Save changes', ru: 'Сохранить', es: 'Guardar cambios', fr: 'Enregistrer les modifications', zh: '保存更改' },
+  'blog.saved': { en: 'Post saved', ru: 'Пост сохранён', es: 'Entrada guardada', fr: 'Article enregistré', zh: '文章已保存' },
+  'blog.preview': { en: 'Preview on site', ru: 'Открыть на сайте', es: 'Vista previa en el sitio', fr: 'Aperçu sur le site', zh: '在网站预览' },
+  'blog.screenshot': { en: 'Capture screenshot', ru: 'Сделать скриншот', es: 'Capturar pantalla', fr: 'Prendre une capture', zh: '截取屏幕截图' },
+  'blog.screenshotDone': { en: 'Screenshot added', ru: 'Скриншот добавлен', es: 'Captura añadida', fr: 'Capture ajoutée', zh: '截图已添加' },
+  'blog.screenshotFailed': {
+    en: 'Screenshot failed — is the app running?',
+    ru: 'Скриншот не удался — приложение запущено?',
+    es: 'Captura fallida — ¿está la app en marcha?',
+    fr: 'Échec de la capture — l\'application est-elle lancée ?',
+    zh: '截图失败 — 应用在运行吗？',
+  },
+  'blog.status': { en: 'Status', ru: 'Статус', es: 'Estado', fr: 'Statut', zh: '状态' },
+  'blog.published': { en: 'Published', ru: 'Опубликован', es: 'Publicado', fr: 'Publié', zh: '已发布' },
+  'blog.draft': { en: 'Draft', ru: 'Черновик', es: 'Borrador', fr: 'Brouillon', zh: '草稿' },
+  'blog.bodyJson': { en: 'Body (JSON blocks)', ru: 'Тело (JSON-блоки)', es: 'Cuerpo (bloques JSON)', fr: 'Corps (blocs JSON)', zh: '正文（JSON 块）' },
+  'blog.editedByAdmin': { en: 'Edited in admin', ru: 'Изменено в админке', es: 'Editado en admin', fr: 'Modifié dans l\'admin', zh: '在后台编辑' },
+  'blog.fromMarketing': { en: 'From Marketing agent', ru: 'От Marketing-агента', es: 'Del agente Marketing', fr: 'De l\'agent Marketing', zh: '来自 Marketing 智能体' },
+  'blog.product': { en: 'Product', ru: 'Продукт', es: 'Producto', fr: 'Produit', zh: '产品' },
+};
