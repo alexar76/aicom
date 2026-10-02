@@ -606,10 +606,13 @@ about safety.
 against the pattern set identified by `patternSet.id` and digested by `patternSet.digestSRI`,
 and these matches occurred — no more.
 
-**Procedure.** For each normalised tool entry, run every pattern in the pattern set against the
-surfaces that pattern declares: the tool `name`, the `description`, the serialised `inputSchema`
-and, from ruleset v6, the `title`, the serialised `outputSchema`, the `annotations` and the
-`metadata`.
+**Procedure.** For each normalised tool entry (§5.2), run every pattern in the pattern set against
+the surfaces that pattern declares and the entry carries: the tool `name`, the `description`, the
+serialised `inputSchema` and, when present, the serialised `outputSchema`. Rulesets v6 and later
+also declare `title`, `annotations` and `metadata`; §5.2 drops those members, so under MTL/1 they
+are not scanned and a label says nothing about them. That is the price of a claim bound to the
+digest: the scan covers exactly the text the subject commits to. A host that wants every advertised
+field scanned runs the gate on the full definitions itself.
 Record `{code, severity, tier, tool, where}` per match, where `where` names the surface that
 matched and `tier` is the one the published pattern table records for that `code`.
 

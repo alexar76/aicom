@@ -364,3 +364,16 @@ def test_the_hardcoded_pattern_matches_are_what_the_gate_emits(tmp_path):
     assert label["credentialSubject"]["verdict"] == "inconclusive", (
         "PROFILE 7.3 forbids fail for this method: three matches on benign text are why"
     )
+
+
+def test_the_pattern_table_reproduces_its_own_digest():
+    """A reader holding only this file must be able to recompute `digest`. Since ruleset v5 the
+    preimage is {version, fold, rules}; the file once omitted `fold` and its note described the
+    pre-v5 preimage, so the digest could only be checked against the gate, not against the file."""
+    from awr import canonical_sri
+
+    with open(PATTERN_SET, "r", encoding="utf-8") as handle:
+        table = json.load(handle)
+    assert "fold" in table
+    assert "{version, fold, rules}" in table["digestNote"]
+    assert canonical_sri({"version": table["version"], "fold": table["fold"], "rules": table["rules"]}) == table["digest"]

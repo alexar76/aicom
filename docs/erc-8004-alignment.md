@@ -97,7 +97,8 @@ amount of convenience justifies it. Register yourself, then set `AIMARKET_ERC800
 The apex deployment did exactly that on 2026-10-01: AIMarket Hub is agent `96682`, HISTOR
 `96683` and WARDEN `96684` on Base, registered from the operator wallet with
 [`deploy/erc-8004/register.py`](../deploy/erc-8004/register.py) and recorded in the
-[on-chain journal](onchain-journal.md).
+[on-chain journal](onchain-journal.md); the agents, transactions and how to check them, in five
+languages: [ERC-8004 identities](erc-8004-identities.md).
 
 **Writing reputation on-chain.** Mirroring this protocol's reputation events into the
 ReputationRegistry means a transaction per event, paid by someone, with a governance

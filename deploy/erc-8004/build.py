@@ -44,8 +44,10 @@ AGENTS = {
             {"name": "web", "endpoint": "https://histor.modelmarket.dev/"},
             {"name": "A2MCP", "endpoint": "https://modelmarket.dev/a2mcp/histor-check"},
             {"name": "DID", "endpoint": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9", "version": "v1"},
+            # The same check sold per call over x402 (USDC on Base, listed in the CDP Bazaar).
+            {"name": "x402", "endpoint": "https://modelmarket.dev/x402/histor-check"},
         ],
-        "x402Support": False,
+        "x402Support": True,
     },
     "warden": {
         "name": "WARDEN",
@@ -59,8 +61,9 @@ AGENTS = {
             {"name": "web", "endpoint": "https://warden.modelmarket.dev/"},
             {"name": "A2MCP", "endpoint": "https://modelmarket.dev/a2mcp/warden-scan"},
             {"name": "npm", "endpoint": "https://www.npmjs.com/package/@aimarket/warden"},
+            {"name": "x402", "endpoint": "https://modelmarket.dev/x402/warden-scan"},
         ],
-        "x402Support": False,
+        "x402Support": True,
     },
 }
 

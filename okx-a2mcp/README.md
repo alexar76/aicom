@@ -6,7 +6,7 @@ pay-per-call mode, where an agent calls an HTTPS endpoint directly. Two services
 | Service | Endpoint | What it answers |
 |---|---|---|
 | `histor-check` | `POST /a2mcp/histor-check` (or `GET ?endpoint=…`) | HISTOR's signed record of an MCP server: when its tool set was first pinned, whether it changed, what the pattern scan found. HISTOR answers from its own daily observations and never fetches the URL it is asked about. |
-| `warden-scan` | `POST /a2mcp/warden-scan` | WARDEN's verdict on a `tools/list`: allow/block, a 0–1 score, every finding with the matched text, and the ruleset version and digest. No network, no state. |
+| `warden-scan` | `POST /a2mcp/warden-scan` | WARDEN's verdict on a `tools/list`: allow/block, a 0–1 score, every finding with the matched text, and the ruleset version and digest. Every member of each tool reaches WARDEN as sent; a description or title over 20 000 characters is refused (`400 bad_tool`), never cut — a cut would hide whatever follows it. No network, no state. |
 
 Only services we run ourselves are listed. Reselling other sellers' hub listings here would make
 this endpoint hold their money, which the hub's seller-direct rails exist to avoid.
@@ -20,9 +20,42 @@ What OKX.AI calls, and what this server answers:
 - **A result** → `200 {"status":"ok", …}`.
 - **Bad input** → `400`, **rate limit** → `429` (30 calls a minute per caller and service), **HISTOR
   down** → `502`. Every error is JSON with `status: "error"` and an `error` code.
-- **Paid calls** would be `402` + `PAYMENT-REQUIRED` (x402 V2). Not used yet — see below.
+- **Paid calls** on OKX.AI would be `402` + `PAYMENT-REQUIRED` (x402 V2). Not used yet — see below.
 
-`GET /a2mcp` lists the services with their fields; `GET /health` is the liveness probe.
+`GET /a2mcp` lists the services with their fields (and their x402 twin when one is configured);
+`GET /health` is the liveness probe.
+
+## x402 twins (Base, CDP Bazaar)
+
+The same two services are also sold per call over x402, independent of OKX:
+`POST /x402/histor-check` and `POST /x402/warden-scan`, $0.001 each in USDC on Base mainnet,
+verified and settled by the Coinbase CDP facilitator. Each route declares the Bazaar discovery
+extension (input example, input schema, output example), so the CDP Bazaar lists it after its first
+settled payment. Without a valid payment the answer is `402` with the V2 `PAYMENT-REQUIRED` header.
+The middleware settles only answers below 400, and a paid call with missing parameters gets `400`
+(not the free endpoint's `input_required`), so a refused request costs the buyer nothing.
+
+| Env | | |
+|---|---|---|
+| `CDP_KEY_FILE` | path to the CDP secret API key JSON (`{id, privateKey}`, as the portal downloads it) | read into memory, so the key is never in the container's environment; mount it read-only |
+| `X402_PAY_TO` | the receiving address | must differ from any wallet you test-pay from: the facilitator refuses payer = payTo (`self_send_not_allowed`) |
+| `X402_PRICE` | `$0.001` | per call, both routes |
+
+x402 is off unless both `CDP_KEY_FILE` and `X402_PAY_TO` are set; the free `/a2mcp` routes do not
+change either way. Building the paywall contacts the facilitator; if that fails (an outage, a revoked
+key) the gateway still starts, the paid routes answer `503` and the build is retried in the background.
+The per-caller limit runs before the paywall, so a flood of copied payment headers never reaches the
+facilitator under our key.
+
+## Deploy
+
+`./deploy.sh` ships the committed sources to the apex host, builds there and swaps the container
+(`deploy/remote.sh`): `127.0.0.1:9485 → 9480`, network `okx-a2mcp`, secrets in
+`/opt/okx-a2mcp-secrets` (uid 1000, mode 400, mounted read-only: the CDP key and the caller-id key,
+which the script generates on the host the first time), read-only root filesystem, all capabilities
+dropped, 256 MB. The previous container is kept stopped as `okx-a2mcp-prev` and restored if the new
+one fails `/health`. nginx routes `/a2mcp` and `/x402/` to port 9485
+([`deploy/nginx/modelmarket.dev.conf`](../deploy/nginx/modelmarket.dev.conf)).
 
 ## Run and test
 
@@ -39,10 +72,13 @@ PORT=9480 npm start            # HISTOR_URL, PUBLIC_URL, RATE_PER_MINUTE are opt
 | `PUBLIC_URL` | — | used in the `/a2mcp` manifest |
 | `RATE_PER_MINUTE` | `30` | per caller and service |
 | `TRUST_PROXY` | `loopback, uniquelocal` | Express `trust proxy`: nginx reaches a published container via the Docker bridge |
+| `CALLER_ID_SECRET_FILE` | — | file holding the key of the buyer id sent to HISTOR (or `CALLER_ID_SECRET`); without one, a random key per process |
+| `FREE_HISTOR_PER_MINUTE` | `200` | free `histor-check` calls across all callers; HISTOR allows us 300 a minute, the rest is the paid route's headroom |
 
 Behind nginx the caller is read from `X-Forwarded-For`, trusted only from loopback and private
-addresses — the Docker bridge nginx's traffic arrives from. HISTOR receives
-a hash of the caller's address as `X-AIMarket-Buyer`, never the address.
+addresses — the Docker bridge nginx's traffic arrives from. HISTOR receives an HMAC of the caller's
+address under a key it never sees as `X-AIMarket-Buyer`: a plain hash of an IPv4 address can be
+reversed by trying all of them.
 
 ## Paid mode (not built yet)
 

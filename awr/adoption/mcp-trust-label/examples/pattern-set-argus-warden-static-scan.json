@@ -1,10 +1,11 @@
 {
  "id": "urn:awr:mtl:1:patternset:argus-warden-static-scan",
  "source": "warden/src/static-scan.ts",
- "note": "GENERATED from the shipping ARGUS WARDEN static-scan gate by calling staticScanRuleset(); do not hand-edit. This file exists so that a pattern-set digest is reproducible: two MTL labels are comparable only when they name the same pattern set. Ruleset v2 gave every rule a TIER: a `block` rule can refuse a connection, an `advise` rule is reported and never blocks at any blockAtSeverity and never affects the score. A label that presents an advisory hit as a blocking finding misrepresents the scan. The `severity` values are the gate own and MTL/1 attaches no safety meaning to them. Ruleset v3 added SURFACES: every rule declares whether it runs against the tool name, the description or the input schema. The tool name was scanned by nothing before v3; noun-keyed rules stay off it deliberately, because they match ordinary identifiers. Ruleset v4 added GUARDS and re-tiered on field evidence: a guard inspects a match in context and drops it when the match is not the thing the rule looks for (a mention rather than an instruction, a detection rather than a request, an identifier fragment rather than a secret). Two rules with the same regex and different guards are different rulesets, so `guards` is inside the digest. Comparing a v4 label with a v3 one compares different scans: v4 blocks on 15 rules where v3 blocked on 18.",
- "version": "7",
- "digest": "sha256-nMFVesjb4Cj3shEsB1hORajQunoGPbAVI86wvgiXTyc=",
- "digestNote": "sha256 over the RFC 8785 canonical form of {version, rules}, rules sorted by code-unit comparison. Recompute with: node -e \"import('./warden/dist/index.js').then(m=>console.log(m.staticScanRuleset().digest))\", or regenerate this whole file with awr/adoption/mcp-trust-label/tools/regen_pattern_set.mjs.",
+ "note": "GENERATED from the shipping ARGUS WARDEN static-scan gate by calling staticScanRuleset(); do not hand-edit. This file exists so that a pattern-set digest is reproducible: two MTL labels are comparable only when they name the same pattern set. Ruleset v2 gave every rule a TIER: a `block` rule can refuse a connection, an `advise` rule is reported and never blocks at any blockAtSeverity and never affects the score. A label that presents an advisory hit as a blocking finding misrepresents the scan. The `severity` values are the gate own and MTL/1 attaches no safety meaning to them. Ruleset v3 added SURFACES: every rule declares whether it runs against the tool name, the description or the input schema. The tool name was scanned by nothing before v3; noun-keyed rules stay off it deliberately, because they match ordinary identifiers. Ruleset v4 added GUARDS and re-tiered on field evidence: a guard inspects a match in context and drops it when the match is not the thing the rule looks for (a mention rather than an instruction, a detection rather than a request, an identifier fragment rather than a secret). Two rules with the same regex and different guards are different rulesets, so `guards` is inside the digest. Comparing a v4 label with a v3 one compares different scans: v4 blocks on 15 rules where v3 blocked on 18. Ruleset v5 added the FOLD: text is normalised (compatibility forms, invisible characters, Unicode tags, look-alike letters) before any rule reads it, so `fold` is inside the digest too. Ruleset v6 added the title, outputSchema, annotations and metadata surfaces; under MTL/1 only those a normalised entry carries are scanned (PROFILE.md §7.3). Rulesets v7 and v8 changed guards only, which is why the version is inside the digest: the same rule table with different guard behaviour is a different scan.",
+ "version": "8",
+ "fold": "nfkc+tags-decoded+invisible-stripped+mixed-script-confusables/1",
+ "digest": "sha256-n7MLgD6v62p7ZPn5brfrgfz3BIJF60eNrZ5508GdRHw=",
+ "digestNote": "sha256 over the RFC 8785 canonical form of {version, fold, rules}, rules sorted by code-unit comparison. Recompute with: node -e \"import('./warden/dist/index.js').then(m=>console.log(m.staticScanRuleset().digest))\", or regenerate this whole file with awr/adoption/mcp-trust-label/tools/regen_pattern_set.mjs.",
  "scannedFields": [
   "name",
   "title",
@@ -486,7 +487,8 @@
     "polarity",
     "detection",
     "identifierFragment",
-    "keyValue"
+    "keyValue",
+    "outputEnumLabel"
    ],
    "raw": false
   },

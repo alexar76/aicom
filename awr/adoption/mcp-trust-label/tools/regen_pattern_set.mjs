@@ -67,11 +67,18 @@ const document = {
     "(a mention rather than an instruction, a detection rather than a request, an identifier " +
     "fragment rather than a secret). Two rules with the same regex and different guards are " +
     "different rulesets, so `guards` is inside the digest. Comparing a v4 label with a v3 one " +
-    "compares different scans: v4 blocks on 15 rules where v3 blocked on 18.",
+    "compares different scans: v4 blocks on 15 rules where v3 blocked on 18. Ruleset v5 added the " +
+    "FOLD: text is normalised (compatibility forms, invisible characters, Unicode tags, look-alike " +
+    "letters) before any rule reads it, so `fold` is inside the digest too. Ruleset v6 added the " +
+    "title, outputSchema, annotations and metadata surfaces; under MTL/1 only those a normalised " +
+    "entry carries are scanned (PROFILE.md §7.3). Rulesets v7 and v8 changed guards only, which " +
+    "is why the version is inside the digest: the same rule table with different guard behaviour " +
+    "is a different scan.",
   version: ruleset.version,
+  fold: ruleset.fold,
   digest: ruleset.digest,
   digestNote:
-    "sha256 over the RFC 8785 canonical form of {version, rules}, rules sorted by code-unit " +
+    "sha256 over the RFC 8785 canonical form of {version, fold, rules}, rules sorted by code-unit " +
     'comparison. Recompute with: node -e "import(\'./warden/dist/index.js\')' +
     '.then(m=>console.log(m.staticScanRuleset().digest))", or regenerate this whole file with ' +
     "awr/adoption/mcp-trust-label/tools/regen_pattern_set.mjs.",

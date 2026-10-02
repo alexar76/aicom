@@ -1160,3 +1160,28 @@ endpoint-domain proof.
   restart the same day: `AIMARKET_ERC8004_AGENT_ID/CHAIN/NETWORK/AGENT_URI` added with
   `scripts/security/rollout_container.py`, no other variable changed, previous container kept)
 - not done: nothing is written to the ReputationRegistry
+- the same record in five languages, with how to check it: [ERC-8004 identities](erc-8004-identities.md)
+
+## 2026-10-02 — first x402 payments: HISTOR check and WARDEN scan listed in the CDP Bazaar
+
+The gateway's x402 twins (`POST https://modelmarket.dev/x402/histor-check` and
+`/x402/warden-scan`, [`okx-a2mcp/`](../okx-a2mcp/)) charge $0.001 in USDC on Base, settled by the
+Coinbase CDP facilitator, paid to the operator wallet `0x1218…Ad0a`. The CDP Bazaar lists a route
+only after its first settled payment, and the facilitator refuses a payment whose payer is the
+payee (`self_send_not_allowed`). So, owner-approved, the operator wallet funded our old burner
+`0x40409bE3bAf99f22aA86b2FBaAa99EF2188D5674` with exactly the two calls' price, and the burner
+paid one call per route back to the operator wallet.
+
+| Step | Signer | Tx | Block | Effect |
+|---|---|---|---|---|
+| fund the burner | `0x1218…Ad0a` | [`0x4fa002…80afd94`](https://basescan.org/tx/0x4fa0024e8cc43d45046bd7ed63cd39a5f32b74782f73db2055bc4cce080afd94) | 52060863 | USDC `transfer` 0.002 → burner |
+| pay `warden-scan` | facilitator (burner's EIP-3009 authorization) | [`0x8a8ef8…eeae36b`](https://basescan.org/tx/0x8a8ef830f5bd514d56c90e78885d0531367efddcb24ca06d1109a1a03eeae36b) | 52060873 | 0.001 USDC burner → `0x1218…Ad0a` |
+| pay `histor-check` | facilitator (burner's EIP-3009 authorization) | [`0x341160…472dff87`](https://basescan.org/tx/0x3411604cb9b165eeec2fe62ef2082f49304483e9bdaea421b0b8b611472dff87) | 52060875 | 0.001 USDC burner → `0x1218…Ad0a` |
+
+- net effect: the operator wallet is back at 1.021519 USDC; the burner is at 0; the only cost is
+  the funding transfer's gas, 62 147 gas ≈ 0.00000037 ETH (the facilitator pays settlement gas)
+- both calls answered `200 {"status":"ok"}` before settlement
+- the Bazaar indexed both routes at settlement time (03:18:11 and 03:18:17 UTC) with our
+  description, icon, tags and input/output examples; find them with
+  `GET https://api.cdp.coinbase.com/platform/v2/x402/discovery/search?query=modelmarket` (the
+  unfiltered `/discovery/resources` listing is capped at 22 000 entries and does not show them)

@@ -276,3 +276,6 @@ deploy/env/*.env
 # Local factory-import scratch (never publish)
 .tmp-aicom-import/
 .tmp*/
+
+# Pipeline client release built by scripts/build_pipeline_client.py: a deployment artifact.
+aimarket-hub/aimarket_hub/static/client/

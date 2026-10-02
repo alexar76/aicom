@@ -7,7 +7,9 @@
 One `register(string agentURI)` per agent in build.AGENTS, agentURI =
 https://modelmarket.dev/.well-known/erc-8004/<slug>.json. The dry run estimates gas and Base's L1
 data fee for every transaction and refuses to send if the wallet cannot pay for all of them. A
-slug already in ids.json is skipped, so a rerun never registers an agent twice. The key is read
+slug already in ids.json is skipped, and a registration that was sent but never confirmed (its
+hash is written to pending.json before sending) is settled before anything new goes out, so a
+rerun never registers an agent twice. The key is read
 from the key file into this process and never printed; transactions are signed here and only the
 raw signed bytes leave it. Run build.py afterwards to put the agentIds into the files.
 """
@@ -69,6 +71,21 @@ def main() -> None:
     del accounts
     ids_path = os.path.join(HERE, "ids.json")
     ids = json.load(open(ids_path)) if os.path.exists(ids_path) else {}
+    pending_path = os.path.join(HERE, "pending.json")
+    pending = json.load(open(pending_path)) if os.path.exists(pending_path) else {}
+    # A registration sent but never confirmed is settled first. Without this a rerun after a poll
+    # timeout or an RPC error took a fresh nonce and registered the same agent a second time.
+    for slug, p in list(pending.items()):
+        receipt = rpc("eth_getTransactionReceipt", [p["tx"]])
+        if not receipt:
+            sys.exit(f"refusing: {slug} has a sent registration with no receipt yet ({p['tx']}); "
+                     f"wait for it, or delete {slug} from pending.json once it is known to be dropped")
+        if receipt["status"] == "0x1":
+            record(ids, ids_path, slug, p["uri"], p["tx"], receipt)
+        else:
+            print(f"  {slug}: earlier registration {p['tx']} reverted; it will be sent again")
+        del pending[slug]
+        save(pending_path, pending)
 
     todo = [s for s in AGENTS if s not in ids]
     balance = int(rpc("eth_getBalance", [acct.address, "latest"]), 16)
@@ -86,10 +103,11 @@ def main() -> None:
         gas = int(int(rpc("eth_estimateGas", [{"from": acct.address, "to": REGISTRY, "data": data}]), 16) * 1.25)
         tx = {"chainId": CHAIN_ID, "nonce": nonce + i, "to": REGISTRY, "value": 0, "data": data, "gas": gas,
               "maxFeePerGas": max_fee, "maxPriorityFeePerGas": prio, "type": 2}
-        raw = bytes(acct.sign_transaction(tx).raw_transaction)
+        signed = acct.sign_transaction(tx)
+        raw = bytes(signed.raw_transaction)
         cost = gas * max_fee + l1_fee(raw)
         total += cost
-        plan.append((slug, uri, raw))
+        plan.append((slug, uri, raw, "0x" + bytes(signed.hash).hex()))
         print(f"  {slug:<13} gas<= {gas}  worst-case cost {cost / 1e18:.9f} ETH  uri {uri}")
     print(f"worst-case total {total / 1e18:.9f} ETH of {balance / 1e18:.9f}")
     if total > balance:
@@ -98,8 +116,12 @@ def main() -> None:
         print("dry run — nothing sent")
         return
 
-    for slug, uri, raw in plan:
-        tx_hash = rpc("eth_sendRawTransaction", ["0x" + raw.hex()])
+    for slug, uri, raw, tx_hash in plan:
+        # Recorded BEFORE sending: if the send call errors after the node accepted it, the hash
+        # is still known, and the next run settles it instead of registering again.
+        pending[slug] = {"tx": tx_hash, "uri": uri}
+        save(pending_path, pending)
+        rpc("eth_sendRawTransaction", ["0x" + raw.hex()])
         print(f"  {slug}: sent {tx_hash}", flush=True)
         receipt = None
         for _ in range(60):
@@ -107,18 +129,32 @@ def main() -> None:
             if receipt:
                 break
             time.sleep(2)
-        if not receipt or receipt["status"] != "0x1":
-            sys.exit(f"  {slug}: transaction failed or not mined: {receipt and receipt['status']}")
-        agent_id = next(int(log["topics"][1], 16) for log in receipt["logs"]
-                        if log["address"].lower() == REGISTRY.lower() and log["topics"][0] == REGISTERED)
-        ids[slug] = agent_id
-        with open(ids_path, "w") as f:
-            json.dump(ids, f, indent=2)
-            f.write("\n")
-        with open(os.path.join(HERE, "registrations.log"), "a") as f:
-            f.write(json.dumps({"slug": slug, "agentId": agent_id, "tx": tx_hash, "uri": uri,
-                                "block": int(receipt["blockNumber"], 16)}) + "\n")
-        print(f"  {slug}: agentId {agent_id}  block {int(receipt['blockNumber'], 16)}")
+        if not receipt:
+            sys.exit(f"  {slug}: not mined after 2 minutes; rerun later to settle {tx_hash} (kept in pending.json)")
+        if receipt["status"] != "0x1":
+            del pending[slug]
+            save(pending_path, pending)
+            sys.exit(f"  {slug}: transaction reverted: {tx_hash}")
+        record(ids, ids_path, slug, uri, tx_hash, receipt)
+        del pending[slug]
+        save(pending_path, pending)
+
+
+def save(path, value) -> None:
+    with open(path, "w") as f:
+        json.dump(value, f, indent=2)
+        f.write("\n")
+
+
+def record(ids, ids_path, slug, uri, tx_hash, receipt) -> None:
+    agent_id = next(int(log["topics"][1], 16) for log in receipt["logs"]
+                    if log["address"].lower() == REGISTRY.lower() and log["topics"][0] == REGISTERED)
+    ids[slug] = agent_id
+    save(ids_path, ids)
+    with open(os.path.join(HERE, "registrations.log"), "a") as f:
+        f.write(json.dumps({"slug": slug, "agentId": agent_id, "tx": tx_hash, "uri": uri,
+                            "block": int(receipt["blockNumber"], 16)}) + "\n")
+    print(f"  {slug}: agentId {agent_id}  block {int(receipt['blockNumber'], 16)}")
 
 
 if __name__ == "__main__":
