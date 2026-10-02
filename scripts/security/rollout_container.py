@@ -298,6 +298,9 @@ def main():
     ap.add_argument("--env-output", type=Path)
     ap.add_argument("--set", action="append", default=[], metavar="NAME=VALUE",
                     help="set one environment variable on the new container; repeat for each")
+    ap.add_argument("--loopback-ports", action="store_true",
+                    help="republish every published port on 127.0.0.1 only (docker's own NAT "
+                         "bypasses ufw, so 0.0.0.0 means the internet reaches it around nginx)")
     ap.add_argument("--dry-run", action="store_true",
                     help="print the planned docker commands and change nothing")
     args = ap.parse_args()
@@ -316,6 +319,10 @@ def main():
     if args.service:
         config["Env"] = filtered(args.service, config.get("Env", []))
     set_names = apply_settings(config, args.set)
+    if args.loopback_ports:
+        for bindings in (config["HostConfig"].get("PortBindings") or {}).values():
+            for b in bindings or []:
+                b["HostIp"] = "127.0.0.1"
     units = [{"info": old, "name": args.name, "body": config}]
     units += [{"info": d, "name": d["Name"].lstrip("/"), "body": create_body(d)} for d in deps]
     for unit in units:
