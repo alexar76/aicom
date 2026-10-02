@@ -62,6 +62,47 @@ const LISTING = {
   }])),
 };
 
+/**
+ * OpenAPI 3.1 for the paid routes, built from the same listing the Bazaar reads, so the two
+ * cannot drift. Circle's Agent Marketplace asks for one; any agent can read it too.
+ */
+export function openapiDocument({ publicUrl, payTo, serviceIds, network = BASE_MAINNET }) {
+  const paths = {};
+  for (const id of serviceIds) {
+    const l = LISTING[id];
+    if (!l) continue;
+    paths[`/x402/${id}`] = {
+      post: {
+        operationId: id.replace(/-([a-z])/g, (_, c) => c.toUpperCase()),
+        summary: l.description.split(". ")[0].replace(/\.$/, ""),
+        description: l.description,
+        tags: l.tags,
+        "x-payment-info": { protocol: "x402", scheme: "exact", price: l.price ?? "$0.001", network, asset: "USDC", payTo },
+        requestBody: { required: true, content: { "application/json": { schema: l.inputSchema, example: l.input } } },
+        responses: {
+          200: { description: "The result (paid).", content: { "application/json": { example: l.output } } },
+          400: { description: "Missing or invalid input. Not settled: the buyer pays nothing." },
+          402: { description: "Payment required: the x402 V2 terms are in the PAYMENT-REQUIRED header.",
+                 headers: { "PAYMENT-REQUIRED": { schema: { type: "string" }, description: "base64 JSON x402 payment terms" } } },
+          429: { description: "Per-caller rate limit." },
+          502: { description: "The upstream service failed. Not settled." },
+        },
+      },
+    };
+  }
+  return {
+    openapi: "3.1.0",
+    info: {
+      title: "AIMarket x402 services",
+      version: "1.0.0",
+      description: "Signed real-world data, verifiable randomness and MCP security checks, paid per call over x402 (USDC on Base). Every paid response carries a signed receipt where the service issues one.",
+      contact: { url: "https://modelmarket.dev" },
+    },
+    servers: [{ url: publicUrl || "https://modelmarket.dev" }],
+    paths,
+  };
+}
+
 /** What one paid route costs: its own listed price, else the gateway default. */
 export function priceOf(id, fallback = "$0.001") {
   return LISTING[id]?.price ?? fallback;

@@ -11,6 +11,9 @@ on GitHub, filed from the owner's account.
 | 3 | [docker/mcp-registry](https://github.com/docker/mcp-registry) | WARDEN (local, Docker-built image) and AIMarket Hub (remote) | 2 |
 | 4 | [punkpeye/awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | nothing to file: WARDEN is already listed | 0 |
 | 5 | [coinbase/x402](https://github.com/coinbase/x402) ecosystem page | AIMarket (Services/Endpoints) | 1 |
+| 6 | Circle Agent Marketplace (Google form) | the six x402 routes | form |
+| 7 | Smithery | AIMarket Hub (remote) | web publish |
+| 8 | Coinbase AgentKit | already reachable via its x402 provider | 0 |
 
 Already listed and not to be re-submitted: punkpeye/awesome-mcp-servers has `alexar76/aimarket-plugins`,
 `alexar76/aimarket-mcp`, `alexar76/aimarket-oracle-gateway`, `alexar76/argus` and `alexar76/warden`
@@ -233,6 +236,55 @@ Logo: `typescript/site/public/logos/aimarket.png` = https://modelmarket.dev/.wel
 **PR body:** the six routes, each answering 402 with x402 V2 terms — `https://modelmarket.dev/x402/{weather-now,air-quality-now,nearby-sensors,fair-random,histor-check,warden-scan}` ($0.001–$0.03), the machine-readable list at `https://modelmarket.dev/a2mcp`, and that payment settles through the CDP facilitator to `0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a` (the operator, ERC-8004 agent #96682's owner).
 
 Check before filing: `curl -s -o /dev/null -w "%{http_code}" -X POST https://modelmarket.dev/x402/weather-now` → `402`.
+
+---
+
+## 6. Circle Agent Marketplace — the six x402 routes
+
+What: Circle's curated catalogue of x402 services that accept USDC (agents.circle.com/services, and
+its public Discovery API). Listings are reviewed by hand; the payout wallet is sanctions-screened.
+Their prerequisites, checked 2026-10-02: the service answers 402 unpaid and serves when paid
+(yes), an OpenAPI spec is published (yes: `https://modelmarket.dev/x402/openapi.json`, 6 paths),
+the payout wallet is known (`0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a`).
+
+**Form:** https://forms.gle/7YFzvdmMcn1JH5tF6 (from developers.circle.com/agent-stack/agent-marketplace/get-listed).
+Answers to paste (one submission for the set; if the form takes one endpoint per entry, submit
+`weather-now` first and list the rest in the description):
+
+- Service name: `AIMarket`
+- Endpoint URL(s): `https://modelmarket.dev/x402/weather-now`, `/x402/air-quality-now`, `/x402/nearby-sensors`, `/x402/fair-random`, `/x402/histor-check`, `/x402/warden-scan`
+- OpenAPI: `https://modelmarket.dev/x402/openapi.json`
+- Network / asset: Base mainnet (eip155:8453), USDC; facilitator: Coinbase CDP
+- Payout wallet: `0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a`
+- Prices: $0.001 (weather, air quality, HISTOR, WARDEN), $0.006 (fair random), $0.03 (nearby sensors)
+- Category: Data (weather, air quality, sensors), Utilities (verifiable randomness), Security (MCP checks)
+- Short description: `Signed real-world data and verifiable computation per call over x402: current weather and air quality at a place, the nearest live public sensors, ECVRF fair randomness with an offline-checkable proof, and two MCP security checks (HISTOR transparency log, WARDEN tool-definition scan). Every data result carries a signed receipt.`
+- Contact / website: https://modelmarket.dev
+
+---
+
+## 7. Smithery — AIMarket Hub (remote MCP server)
+
+Not listed there yet (registry.smithery.ai searched for modelmarket/aimarket/warden/histor on
+2026-10-02). Smithery publishes a public HTTPS MCP server by URL and scans its tools itself.
+
+1. Sign in at https://smithery.ai (GitHub login) → **Publish** (smithery.ai/new) → tab **URL**.
+2. URL: `https://modelmarket.dev/mcp` · namespace/name: `@alexar76/aimarket-hub`.
+3. Finish the flow; the scan should list the direct tools (`weather_now`, `air_quality_now`,
+   `nearby_sensors`, `fair_random`) and `market_search` / `market_invoke`. No auth, no config.
+4. Description (if asked): the one from §3b (Docker remote entry).
+
+CLI alternative (needs a Smithery API key): `npx @smithery/cli mcp publish "https://modelmarket.dev/mcp" -n @alexar76/aimarket-hub`.
+
+---
+
+## 8. Coinbase AgentKit — nothing to file
+
+AgentKit's built-in x402 action provider (`discover_x402_services` → CDP Bazaar
+`/discovery/resources`, then `make_http_request_with_x402`) already reaches all six routes: the
+listing pages through all ~24 200 resources and ours are on its last page (checked 2026-10-02).
+A dedicated "AIMarket" action provider would only add named actions; file one only if AgentKit
+users ask for it.
 
 ---
 

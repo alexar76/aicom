@@ -76,13 +76,29 @@ try:
     balance = int(json.load(urllib.request.urlopen(req, timeout=20))["result"], 16) / 1e18
 except Exception:
     balance = None
+
+
+def live_total():
+    """How many agents carry a live feedback from this wallet: the newest log entry per agent."""
+    import os
+    newest = {}
+    path = os.path.join(os.environ.get("WARDEN_FB_STATE", "/var/lib/warden-feedback"), "feedback.log")
+    try:
+        for line in open(path):
+            if line.strip():
+                e = json.loads(line)
+                if str(e.get("client", "")).lower() == WALLET.lower() and e.get("status") == "ok":
+                    newest[e["agentId"]] = e.get("kind", "give")
+    except OSError:
+        return None
+    return sum(1 for kind in newest.values() if kind == "give")
 plan = open(f"{run}/plan.txt").read(); send = open(f"{run}/send.txt").read()
 held = re.findall(r"\('(\d+)', '([^']*)'\)", plan.split("held for the owner")[1].split("\n")[0]) if "held for the owner" in plan else []
 json.dump({"ranAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "status": status,
            "given": len(re.findall(r"^  give \d+: ok", send, re.M)), "revoked": len(re.findall(r"^  revoke \d+: ok", send, re.M)),
            "held": [{"agentId": int(a), "name": n} for a, n in held],
            "error": None if status == "ok" else send.strip().splitlines()[-1][:300],
-           "wallet": WALLET, "balanceEth": balance}, open(out, "w"), indent=1)
+           "wallet": WALLET, "balanceEth": balance, "liveFeedback": live_total()}, open(out, "w"), indent=1)
 PY
 chmod 644 "$WARDEN_FB_REPORTS/last-run.json"
 [ "$status" = ok ]

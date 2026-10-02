@@ -49,7 +49,9 @@ def message(run: dict) -> str:
     lines = ["WARDEN · отзывы ERC-8004: еженедельная перепроверка"]
     if run.get("status") != "ok":
         lines.append(f"❗ запуск не удался: {run.get('error') or 'см. journalctl -u warden-feedback на admin-vps'}")
-    lines.append(f"опубликовано: {run.get('given', 0)} · снято: {run.get('revoked', 0)}")
+    lines.append(f"за этот запуск — опубликовано: {run.get('given', 0)} · снято: {run.get('revoked', 0)}")
+    if run.get("liveFeedback") is not None:
+        lines.append(f"всего живых отзывов WARDEN: {run['liveFeedback']}")
     held = run.get("held") or []
     if held:
         names = ", ".join(f"{h.get('name')} (#{h.get('agentId')})" for h in held)

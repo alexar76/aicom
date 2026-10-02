@@ -88,3 +88,18 @@ test("the draw seed is passed whole, never cut", async () => {
     assert.equal(tooLong.status, 400);
   } finally { await close(); }
 });
+
+test("the paid routes are described as OpenAPI 3.1 with their prices", async () => {
+  const { call, close } = await serve({ paywall, hubApiKey: "k", publicUrl: "https://a2mcp.example" });
+  try {
+    const res = await call("/x402/openapi.json");
+    assert.equal(res.status, 200);
+    const doc = await res.json();
+    assert.equal(doc.openapi, "3.1.0");
+    assert.equal(doc.servers[0].url, "https://a2mcp.example");
+    const op = doc.paths["/x402/nearby-sensors"].post;
+    assert.equal(op["x-payment-info"].price, "$0.03");
+    assert.ok(op.requestBody.content["application/json"].schema.required.includes("latitude"));
+    assert.ok(op.responses[402]);
+  } finally { await close(); }
+});

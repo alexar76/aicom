@@ -3,7 +3,7 @@ import express from "express";
 import { failure, paramsOf } from "./a2mcp.js";
 import { buildServices, callerIdFor, WARDEN_VERSION } from "./services.js";
 import { hubServices } from "./hub.js";
-import { priceOf } from "./x402.js";
+import { openapiDocument, priceOf } from "./x402.js";
 
 /** Fixed-window counter per caller and service; in memory, because one process serves it. */
 function rateLimiter(perMinute, now) {
@@ -92,6 +92,11 @@ export function createApp({
   });
 
   if (paywall) {
+    // Machine-readable description of the paid routes (Circle's Agent Marketplace asks for it).
+    app.get("/x402/openapi.json", (_req, res) => {
+      res.json(openapiDocument({ publicUrl, payTo: paywall.payTo,
+        serviceIds: paywall.paths.map((p) => p.replace("POST /x402/", "")) }));
+    });
     // The middleware answers 402 for the configured routes until a valid payment arrives, and
     // settles only when the handler answers below 400 — so a refused request costs nothing.
     // The per-caller limit runs BEFORE the paywall: the middleware asks the CDP facilitator to
