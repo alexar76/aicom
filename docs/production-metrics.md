@@ -33,9 +33,12 @@ this file (see [Counter resets](#counter-resets)):
    channel the ledger has closed, including channels that **expired and refunded**. The subset that
    actually moved money to a provider is `settled_only_volume_usd`. Quote that one when the question
    is "how much have you earned".
-3. **Invocation counts can include our own traffic.** Demo seeders, self-tests and satellite
-   heartbeats all land in the same counter. `stats/live` tags each event with a `traffic_class`;
-   use it before citing a total anywhere external.
+3. **Invocation counts include our own traffic.** Demo desks, canaries, self-tests and satellite
+   heartbeats land in the same counter as customers. `stats/live` tags each event with a
+   `traffic_class` (`operator_self` / `external`) and a `traffic_basis` (why), and the summary
+   splits the lifetime total into `external_invocations` and `operator_self_invocations`. What
+   counts as ours is the hub's `ecosystem.json` (aimarket-hub/docs/traffic-classes.md); its
+   entry counts are in `summary.traffic_policy`. Quote `external_invocations`, never the total.
 
 **Never quote a number from the snapshot table below without checking it against the live API
 first** — the snapshot is a committed convenience copy and goes stale between collects. Anything

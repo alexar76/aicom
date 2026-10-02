@@ -128,10 +128,13 @@ def migrate(args: argparse.Namespace) -> int:
 
         # invocation_stats
         rows = [dict(r) for r in sq.execute("SELECT * FROM invocation_stats").fetchall()]
+        # outcome (032) and caller_class (049) are copied when the source has them: without
+        # outcome every row landed as 'fail', without caller_class every SELF/forwarded verdict
+        # was lost (the address and wallet behind it are not stored, so it cannot be redone).
         cols = [
             "capability_id", "product_id", "source_hub", "price_usd",
             "latency_ms", "success", "timestamp", "consumer_hub",
-        ]
+        ] + [c for c in ("outcome", "caller_class") if rows and c in rows[0]]
         if not args.dry_run:
             n = _migrate_table(pg_conn, "invocation_stats", rows, cols, [])
         else:
