@@ -5,6 +5,7 @@
 // ({id, privateKey}, as the CDP portal downloads it) and passed to the SDK in memory, so it never
 // appears in the container's environment or in `docker inspect`.
 import { readFileSync } from "node:fs";
+import { HUB_TOOLS } from "./hub.js";
 
 const BASE_MAINNET = "eip155:8453";
 
@@ -45,7 +46,26 @@ const LISTING = {
     },
     output: { status: "ok", service: "warden-scan", verdict: { allow: true, score: 1, findings: [] } },
   },
+  // The hub's direct capabilities, each at the hub's own price (src/hub.js).
+  ...Object.fromEntries(Object.entries(HUB_TOOLS).map(([id, t]) => [id, {
+    description: t.description,
+    tags: t.tags,
+    icon: "https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png",
+    price: t.price,
+    input: t.example,
+    inputSchema: {
+      type: "object",
+      properties: Object.fromEntries(t.fields.map((f) => [f.name, { type: f.type, description: f.description }])),
+      ...(t.fields.some((f) => f.required) ? { required: t.fields.filter((f) => f.required).map((f) => f.name) } : {}),
+    },
+    output: { status: "ok", service: id, capability_id: t.capability_id, result: {}, receipt: {} },
+  }])),
 };
+
+/** What one paid route costs: its own listed price, else the gateway default. */
+export function priceOf(id, fallback = "$0.001") {
+  return LISTING[id]?.price ?? fallback;
+}
 
 /**
  * Build the payment middleware for POST /x402/<service>, or return null when x402 is not
@@ -64,7 +84,7 @@ export async function buildPaywall({ keyFile, payTo, price = "$0.001", publicUrl
     const l = LISTING[id];
     if (!l) continue;
     routes[`POST /x402/${id}`] = {
-      accepts: { scheme: "exact", price, network: BASE_MAINNET, payTo },
+      accepts: { scheme: "exact", price: l.price ?? price, network: BASE_MAINNET, payTo },
       resource: `${publicUrl}/x402/${id}`,
       description: l.description,
       mimeType: "application/json",

@@ -1,0 +1,20 @@
+#!/bin/bash
+# Run WARDEN's ERC-8004 feedback refresh now, outside the weekly timer — from any machine with ssh
+# to admin-vps. Shows the plan first and sends only after you answer y.
+#
+#   deploy/erc-8004/warden-feedback            # plan, then ask
+#   deploy/erc-8004/warden-feedback --status   # last run, wallet balance, next scheduled run
+set -euo pipefail
+HOST=${WARDEN_FB_HOST:-admin-vps}
+if [ "${1:-}" = "--status" ]; then
+  ssh "$HOST" 'cat /var/www/warden-feedback/last-run.json; systemctl list-timers warden-feedback.timer --no-pager | sed -n 2p'
+  echo "wallet: 0x564bE09d06117A106ECC006a19b67768cBd91666  $(curl -s -X POST -H 'content-type: application/json' \
+    -d '{"jsonrpc":"2.0","id":1,"method":"eth_getBalance","params":["0x564bE09d06117A106ECC006a19b67768cBd91666","latest"]}' \
+    https://mainnet.base.org | python3 -c 'import json,sys; print(int(json.load(sys.stdin)["result"],16)/1e18, "ETH")')"
+  exit 0
+fi
+echo "planning on $HOST (re-scans every verified agent, ~1–2 min)…"
+ssh "$HOST" 'DRY=1 /opt/warden-feedback/warden_feedback_refresh.sh' | grep -E "^(actions|held|unreachable)|would " || true
+read -r -p "send these transactions? [y/N] " answer
+[ "$answer" = "y" ] || { echo "nothing sent"; exit 0; }
+ssh "$HOST" 'systemctl start warden-feedback.service; journalctl -u warden-feedback.service -n 40 --no-pager -o cat | grep -E "^  (give|revoke) " || true; cat /var/www/warden-feedback/last-run.json'

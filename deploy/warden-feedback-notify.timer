@@ -1,0 +1,10 @@
+[Unit]
+Description=Hourly check of WARDEN's ERC-8004 feedback run
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

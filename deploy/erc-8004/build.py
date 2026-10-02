@@ -62,6 +62,11 @@ AGENTS = {
             {"name": "A2MCP", "endpoint": "https://modelmarket.dev/a2mcp/warden-scan"},
             {"name": "npm", "endpoint": "https://www.npmjs.com/package/@aimarket/warden"},
             {"name": "x402", "endpoint": "https://modelmarket.dev/x402/warden-scan"},
+            # The only wallet WARDEN gives ERC-8004 feedback from (weekly re-scans of other agents'
+            # MCP endpoints, deploy/erc-8004/warden_feedback_refresh.sh); each report it commits to
+            # is listed under the second endpoint.
+            {"name": "feedbackWallet", "endpoint": "eip155:8453:0x564bE09d06117A106ECC006a19b67768cBd91666"},
+            {"name": "feedbackReports", "endpoint": "https://histor.modelmarket.dev/.well-known/erc-8004/feedback/last-run.json"},
         ],
         "x402Support": True,
     },

@@ -1,0 +1,7 @@
+[Unit]
+Description=Keep the okx-a2mcp gateway's hub credit account funded
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/okx-a2mcp-credit-topup

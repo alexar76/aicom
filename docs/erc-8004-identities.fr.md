@@ -96,6 +96,28 @@ curl -s https://modelmarket.dev/.well-known/ai-market.json | jq .erc8004
 Pour HISTOR ou WARDEN, mettez `96683` ou `96684` dans les lignes `cast`, et `histor.json` ou
 `warden.json` dans le premier `curl` ; le bloc `erc8004` n’existe que dans le document du hub.
 
+## Les avis de WARDEN sur d’autres agents, revérifiés chaque semaine
+
+WARDEN note d’autres agents dans le ReputationRegistry (`0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` sur Base). Il prend tous les agents Base actifs dont 8004scan a vérifié l’endpoint MCP, demande à cet endpoint son `tools/list` et analyse chaque définition d’outil avec le `@aimarket/warden` publié. S’il n’y a aucune détection bloquante, il publie un avis par agent : valeur = le score de WARDEN, `tag1` = `warden-scan`, `tag2` = le jeu de règles (`ruleset-v8`). L’avis renvoie à un rapport qui nomme le scanner, l’empreinte des règles et un hash des définitions exactes, et le hash keccak du rapport est inscrit sur la chaîne. Le rapport dit ce qu’il est : une vérification statique de définitions d’outils à un instant donné, ni un audit du service, ni une recommandation.
+
+**Pourquoi il faut recommencer.** Un serveur peut changer ses outils à tout moment, et un résultat propre du mois dernier ne dit rien d’aujourd’hui. D’où une exécution **chaque semaine** (le lundi à 09:00 UTC, `warden-feedback.timer` sur notre propre serveur) :
+
+- **Définitions inchangées.** Rien n’est envoyé.
+- **Modifiées mais toujours propres.** L’ancien avis est révoqué et un nouveau pointe vers un rapport daté.
+- **Une détection bloquante apparaît.** Notre avis est révoqué, car l’affirmation ne tient plus, et l’agent est mis en attente d’une décision humaine. Rien de négatif n’est publié automatiquement : WARDEN a des faux positifs, et une marque publique sur l’agent d’autrui se décide au cas par cas.
+- **Nouveaux agents propres.** Ils sont notés.
+- **Un endpoint qui ne répond pas.** Il est laissé tel quel.
+- **Nos propres agents.** Jamais notés : le contrat l’interdit, et le faire depuis un autre portefeuille serait un faux avis.
+
+**Depuis quel portefeuille.** Uniquement `0x564bE09d06117A106ECC006a19b67768cBd91666`, déclaré dans le fichier d’enregistrement de WARDEN comme `feedbackWallet`. Il n’existe que pour cela : il ne possède aucun agent, détient un peu d’ETH pour le gaz, et sa clé ne quitte jamais le serveur.
+
+**Vérifiez.** Le résumé de chaque exécution se trouve à `https://histor.modelmarket.dev/.well-known/erc-8004/feedback/last-run.json`, avec chaque rapport à côté. Une note Telegram suit chaque exécution, et une autre si une semaine passe sans exécution. Pour lancer hors calendrier (le plan s’affiche et rien n’est envoyé avant confirmation) :
+
+```bash
+deploy/erc-8004/warden-feedback            # plan, puis question
+deploy/erc-8004/warden-feedback --status   # dernière exécution, solde du portefeuille, prochaine exécution
+```
+
 ## Sources
 
 - [`deploy/erc-8004/`](../deploy/erc-8004/) : `build.py` écrit les fichiers d’enregistrement,

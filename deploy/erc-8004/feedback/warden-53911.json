@@ -1,0 +1,37 @@
+{
+ "type": "aimarket.warden-scan/v1",
+ "issuer": {
+  "name": "WARDEN",
+  "agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+  "agentId": 96684,
+  "wallet": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a"
+ },
+ "subject": {
+  "agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+  "agentId": 53911,
+  "name": "Axiom",
+  "mcpEndpoint": "https://agentic.clawbots.org/api/agentic/mcp"
+ },
+ "scannedAt": "2026-10-02T19:19:53Z",
+ "scanner": {
+  "package": "@aimarket/warden@0.8.2",
+  "integrity": "sha512-jSdepve/mwTLCwrSmbQ3vJLGPSXBWvgIQcJFi3CVrcUqiiXBbSPjlClqMUGIaT0tEE/exRcPgfAPOUe1SyuXow==",
+  "ruleset": {
+   "version": "8",
+   "ref": {
+    "version": "8",
+    "digest": "sha256-n7MLgD6v62p7ZPn5brfrgfz3BIJF60eNrZ5508GdRHw="
+   }
+  }
+ },
+ "method": "initialize + tools/list over streamable HTTP, nothing else called; every advertised field of every tool scanned by StaticScanGate and ThreatGate (built-in list).",
+ "result": {
+  "tools": 9,
+  "toolsSha256": "d00139c3d87b4515e45c08783100bbee166dec002e47bc73462c3111981f3b5c",
+  "score": 100,
+  "blockingFindings": 0,
+  "advisoryFindings": 1
+ },
+ "meaning": "A static check of the tool definitions this endpoint served at scannedAt. Not an audit of the service, its code or its operator, and not an endorsement.",
+ "reproduce": "https://github.com/alexar76/warden"
+}

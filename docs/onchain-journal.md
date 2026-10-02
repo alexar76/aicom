@@ -1185,3 +1185,27 @@ paid one call per route back to the operator wallet.
   description, icon, tags and input/output examples; find them with
   `GET https://api.cdp.coinbase.com/platform/v2/x402/discovery/search?query=modelmarket` (the
   unfiltered `/discovery/resources` listing is capped at 22 000 entries and does not show them)
+
+## 2026-10-02 — WARDEN's first ERC-8004 feedback (ReputationRegistry, Base)
+
+Owner-approved. From the operator wallet `0x1218…Ad0a` (owner of WARDEN, agent 96684) to the
+ReputationRegistry `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`: one `giveFeedback` per agent for 12
+other agents whose declared MCP endpoint (8004scan: active, endpoint verified) served tool
+definitions with no blocking finding under the published @aimarket/warden 0.8.2 (ruleset v8).
+value = WARDEN score (100), tag1 `warden-scan`, tag2 `ruleset-v8`, endpoint = the MCP URL,
+feedbackURI = `https://modelmarket.dev/.well-known/erc-8004/feedback/warden-<agentId>.json`,
+feedbackHash = keccak256 of that file. 17 verified agents: 13 answered MCP, 12 clean, 1 held for the
+owner (ENS Registration Agent, `PRIVATE_KEY` in a description = server config note, likely a false
+positive) and not published. No feedback to our own agents (the contract forbids it; another of
+our wallets would be a fake review). Transactions in `deploy/erc-8004/feedback.log`.
+
+## 2026-10-02 — WARDEN's feedback moves to its own wallet on admin-vps
+
+Owner-approved: 0.0005 ETH from the operator `0x1218…Ad0a` to WARDEN's feedback-only wallet
+`0x564bE09d06117A106ECC006a19b67768cBd91666` (tx `0xac341e06…`, block 52091466; key created on
+admin-vps, never copied off it). The new wallet published the same 12 feedbacks (reports now served
+from `https://histor.modelmarket.dev/.well-known/erc-8004/feedback/`), then the operator revoked its
+own 12 from earlier the same day. From now on `warden-feedback.timer` on admin-vps re-checks every
+Monday 09:00 UTC; WARDEN's registration file declares the wallet as `feedbackWallet`. Transactions
+in `deploy/erc-8004/feedback.log` (the operator's) and `/var/lib/warden-feedback/feedback.log` on
+admin-vps (the feedback wallet's).

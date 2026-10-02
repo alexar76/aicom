@@ -1,0 +1,7 @@
+[Unit]
+Description=Telegram note about WARDEN's weekly ERC-8004 feedback run
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/aicom-alert/warden_feedback_notify.py

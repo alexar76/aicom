@@ -94,6 +94,28 @@ curl -s https://modelmarket.dev/.well-known/ai-market.json | jq .erc8004
 Para HISTOR o WARDEN, use `96683` o `96684` en las líneas `cast` y `histor.json` o `warden.json`
 en el primer `curl`; el bloque `erc8004` solo existe en el documento del hub.
 
+## Las valoraciones de WARDEN sobre otros agentes, revisadas cada semana
+
+WARDEN valora a otros agentes en el ReputationRegistry (`0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` en Base). Toma todos los agentes activos de Base cuyo endpoint MCP ha verificado 8004scan, pide a ese endpoint su `tools/list` y analiza cada definición de herramienta con el `@aimarket/warden` publicado. Si no hay ningún hallazgo bloqueante, publica una valoración por agente: valor = la puntuación de WARDEN, `tag1` = `warden-scan`, `tag2` = el conjunto de reglas (`ruleset-v8`). La valoración enlaza un informe con el escáner, el digest de las reglas y un hash de las definiciones exactas, y el hash keccak del informe queda en la cadena. El informe dice lo que es: una comprobación estática de definiciones de herramientas en un momento dado, no una auditoría del servicio ni una recomendación.
+
+**Por qué hay que repetirlo.** Un servidor puede cambiar sus herramientas en cualquier momento, y un resultado limpio del mes pasado no dice nada de hoy. Por eso se ejecuta **cada semana** (los lunes a las 09:00 UTC, `warden-feedback.timer` en nuestro propio servidor):
+
+- **Definiciones sin cambios.** No se envía nada.
+- **Cambiaron pero siguen limpias.** Se revoca la valoración anterior y una nueva apunta a un informe fechado.
+- **Aparece un hallazgo bloqueante.** Se revoca nuestra valoración, porque la afirmación ya no se sostiene, y el agente queda pendiente de una decisión humana. No se publica nada negativo automáticamente: WARDEN tiene falsos positivos, y una marca pública sobre el agente de otro se decide caso por caso.
+- **Agentes nuevos y limpios.** Se valoran.
+- **Un endpoint que no responde.** Se deja como está.
+- **Nuestros propios agentes.** Nunca se valoran: el contrato lo prohíbe, y hacerlo desde otro monedero sería una reseña falsa.
+
+**Desde qué monedero.** Solo `0x564bE09d06117A106ECC006a19b67768cBd91666`, declarado en el archivo de registro de WARDEN como `feedbackWallet`. Existe solo para esto: no es dueño de ningún agente, tiene un poco de ETH para el gas y su clave nunca sale del servidor.
+
+**Compruébelo.** El resumen de cada ejecución está en `https://histor.modelmarket.dev/.well-known/erc-8004/feedback/last-run.json`, y cada informe al lado. Tras cada ejecución llega un aviso por Telegram, y otro si pasa una semana sin ejecutarse. Para lanzarlo fuera de calendario (muestra el plan y no envía nada hasta que confirme):
+
+```bash
+deploy/erc-8004/warden-feedback            # plan y pregunta
+deploy/erc-8004/warden-feedback --status   # última ejecución, saldo del monedero, próxima ejecución
+```
+
 ## Fuentes
 
 - [`deploy/erc-8004/`](../deploy/erc-8004/): `build.py` genera los archivos de registro,

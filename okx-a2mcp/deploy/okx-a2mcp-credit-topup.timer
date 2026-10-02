@@ -1,0 +1,10 @@
+[Unit]
+Description=Hourly credit check for the okx-a2mcp gateway
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

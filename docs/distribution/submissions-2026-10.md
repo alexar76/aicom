@@ -10,6 +10,7 @@ on GitHub, filed from the owner's account.
 | 2 | [sudeepb02/awesome-erc8004](https://github.com/sudeepb02/awesome-erc8004) | AIMarket Hub, HISTOR, WARDEN | 1 |
 | 3 | [docker/mcp-registry](https://github.com/docker/mcp-registry) | WARDEN (local, Docker-built image) and AIMarket Hub (remote) | 2 |
 | 4 | [punkpeye/awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | nothing to file: WARDEN is already listed | 0 |
+| 5 | [coinbase/x402](https://github.com/coinbase/x402) ecosystem page | AIMarket (Services/Endpoints) | 1 |
 
 Already listed and not to be re-submitted: punkpeye/awesome-mcp-servers has `alexar76/aimarket-plugins`,
 `alexar76/aimarket-mcp`, `alexar76/aimarket-oracle-gateway`, `alexar76/argus` and `alexar76/warden`
@@ -49,8 +50,8 @@ Adds AIMarket Hub to AI Agent Integration.
 - Source: https://github.com/alexar76/aimarket-hub (Apache-2.0)
 ```
 
-Do **not** claim a CDP Bazaar listing for the hub — the hub itself is not in the Bazaar. What is
-there since 2026-10-02 are two separate x402 routes, `https://modelmarket.dev/x402/histor-check`
+Do **not** claim a CDP Bazaar listing for the hub itself. What is
+there since 2026-10-02 are separate x402 routes on the same domain (HISTOR/WARDEN since the morning, the hub's four direct capabilities resold by the gateway since the afternoon, once each has settled once), `https://modelmarket.dev/x402/histor-check`
 and `/x402/warden-scan` ($0.001, service name "AIMarket"); mention them only as those two
 services, not as the hub's listing.
 
@@ -204,6 +205,34 @@ per-caller trial and what happens after it (HTTP 402 with x402 terms), Apache-2.
 ## 4. awesome-mcp-servers — already done
 
 `alexar76/warden` has its own line under Security (PR #12774, merged). Nothing to file.
+
+---
+
+## 5. x402.org ecosystem — AIMarket (Services/Endpoints)
+
+Where: [coinbase/x402](https://github.com/coinbase/x402), the site reads one folder per entry,
+`typescript/site/app/ecosystem/partners-data/<slug>/metadata.json`, plus a logo in
+`typescript/site/public/logos/`. Category `Services/Endpoints`. The queue is long (100+ open
+ecosystem PRs on 2026-10-02), so keep the PR to exactly these two files.
+
+`typescript/site/app/ecosystem/partners-data/aimarket/metadata.json`:
+
+```json
+{
+  "name": "AIMarket",
+  "category": "Services/Endpoints",
+  "logoUrl": "/logos/aimarket.png",
+  "description": "Signed real-world data and verifiable computation per call over x402 (USDC on Base, CDP facilitator): current weather, air quality, nearest live sensors, ECVRF fair randomness, and MCP security checks (HISTOR transparency log, WARDEN tool scan). Every result carries a signed receipt.",
+  "websiteUrl": "https://modelmarket.dev"
+}
+```
+
+Logo: `typescript/site/public/logos/aimarket.png` = https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png.
+
+**PR title:** `ecosystem: add AIMarket (Services/Endpoints)`
+**PR body:** the six routes, each answering 402 with x402 V2 terms — `https://modelmarket.dev/x402/{weather-now,air-quality-now,nearby-sensors,fair-random,histor-check,warden-scan}` ($0.001–$0.03), the machine-readable list at `https://modelmarket.dev/a2mcp`, and that payment settles through the CDP facilitator to `0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a` (the operator, ERC-8004 agent #96682's owner).
+
+Check before filing: `curl -s -o /dev/null -w "%{http_code}" -X POST https://modelmarket.dev/x402/weather-now` → `402`.
 
 ---
 

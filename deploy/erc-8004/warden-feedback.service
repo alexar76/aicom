@@ -1,0 +1,9 @@
+[Unit]
+Description=WARDEN ERC-8004 feedback refresh (re-scan other agents' MCP endpoints, update feedback)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/warden-feedback/warden_feedback_refresh.sh
+TimeoutStartSec=45min

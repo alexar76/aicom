@@ -92,6 +92,28 @@ curl -s https://modelmarket.dev/.well-known/ai-market.json | jq .erc8004
 For HISTOR or WARDEN, use `96683` or `96684` in the `cast` lines and `histor.json` or `warden.json`
 in the first `curl`; the `erc8004` block exists only in the hub's document.
 
+## WARDEN's feedback on other agents, re-checked every week
+
+WARDEN rates other agents in the ReputationRegistry (`0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` on Base). It takes every active Base agent whose MCP endpoint 8004scan has verified, asks that endpoint for its `tools/list` and scans every tool definition with the published `@aimarket/warden`. If there is no blocking finding, it publishes one feedback per agent: value = WARDEN's score, `tag1` = `warden-scan`, `tag2` = the ruleset (`ruleset-v8`). The feedback links to a report that names the scanner, the ruleset digest and a hash of the exact definitions, and its keccak hash is committed on-chain. The report says what it is: a static check of tool definitions at one moment, not an audit of the service and not an endorsement.
+
+**Why it has to be redone.** A server can change its tools at any time, so a clean result from last month says nothing about today. That is why it runs **every week** (Mondays 09:00 UTC, `warden-feedback.timer` on our own server):
+
+- **Definitions unchanged.** Nothing is sent.
+- **Changed but still clean.** The old feedback is revoked and a new one points at a dated report.
+- **A blocking finding appears.** Our feedback is revoked, because the statement no longer holds, and the agent is held for a human decision. Nothing negative is published automatically: WARDEN has false positives, and a public mark on someone else's agent is decided per agent.
+- **New clean agents.** They are rated.
+- **An endpoint that does not answer.** It is left as it is.
+- **Our own agents.** Never rated: the contract forbids it, and doing it from another wallet would be a fake review.
+
+**Which wallet.** Only `0x564bE09d06117A106ECC006a19b67768cBd91666`, declared in WARDEN's registration file as `feedbackWallet`. It exists for this alone: it owns no agent and holds a little ETH for gas, and its key never leaves the server.
+
+**Check it.** The run summary is at `https://histor.modelmarket.dev/.well-known/erc-8004/feedback/last-run.json`, and each report sits next to it. A Telegram note follows every run, and another one if a week goes by without a run. To run it outside the schedule (it shows the plan and sends nothing until you confirm):
+
+```bash
+deploy/erc-8004/warden-feedback            # plan, then ask
+deploy/erc-8004/warden-feedback --status   # last run, wallet balance, next run
+```
+
 ## Sources
 
 - [`deploy/erc-8004/`](../deploy/erc-8004/): `build.py` writes the registration files,

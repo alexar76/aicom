@@ -69,6 +69,28 @@ curl -s https://modelmarket.dev/.well-known/ai-market.json | jq .erc8004
 
 查 HISTOR 或 WARDEN 时，在 `cast` 两行中改用 `96683` 或 `96684`，在第一条 `curl` 中改用 `histor.json` 或 `warden.json`；`erc8004` 块只存在于 hub 的文档中。
 
+## WARDEN 对其他代理的评价：每周重新核查
+
+WARDEN 在声誉注册表（Base 上的 `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`）中评价其他代理。它选取所有 MCP 端点经 8004scan 验证的活跃 Base 代理，向该端点请求 `tools/list`，并用已发布的 `@aimarket/warden` 扫描每一个工具定义。没有阻断性发现时，为每个代理发布一条评价：数值为 WARDEN 评分，`tag1` 为 `warden-scan`，`tag2` 为规则集（`ruleset-v8`）。评价链接到一份报告，报告写明扫描器、规则集摘要以及所扫描定义的哈希，报告的 keccak 哈希记录在链上。报告明确说明其性质：某一时刻对工具定义的静态检查，不是对服务的审计，也不是推荐。
+
+**为什么必须重复。** 服务器随时可能更换工具，上个月的干净结果说明不了今天。因此**每周**运行一次（每周一 09:00 UTC，由我们自己服务器上的 `warden-feedback.timer` 触发）：
+
+- **定义未变**：不发送任何交易。
+- **定义有变但仍干净**：撤销旧评价，发布指向带日期报告的新评价。
+- **出现阻断性发现**：撤销我们的评价（该陈述已不成立），并把该代理留给人工决定。不会自动发布任何负面内容：WARDEN 存在误报，对他人代理的公开标记需逐个决定。
+- **新的干净代理**：予以评价。
+- **端点不响应**：保持原样。
+- **我们自己的代理**：从不评价——合约禁止这样做，而换一个钱包去做就是虚假评价。
+
+**使用哪个钱包。** 只用 `0x564bE09d06117A106ECC006a19b67768cBd91666`，它在 WARDEN 的注册文件中声明为 `feedbackWallet`。该钱包只为此存在：不拥有任何代理，只存放少量 ETH 用于 gas，私钥从不离开服务器。
+
+**如何核对。** 每次运行的摘要在 `https://histor.modelmarket.dev/.well-known/erc-8004/feedback/last-run.json`，各份报告就在旁边。每次运行后会收到 Telegram 通知；如果一周没有运行，也会收到提醒。计划外手动运行（先显示计划，确认前不发送任何交易）：
+
+```bash
+deploy/erc-8004/warden-feedback            # 显示计划，然后询问
+deploy/erc-8004/warden-feedback --status   # 上次运行、钱包余额、下次运行
+```
+
 ## 来源
 
 - [`deploy/erc-8004/`](../deploy/erc-8004/)：`build.py` 生成注册文件，`register.py` 完成注册（不带 `--send` 时只做 dry run；若钱包付不起包括 Base L1 数据费在内的最坏情况费用，它会拒绝执行；已在 `ids.json` 中的智能体会被跳过；签名在进程内完成，私钥绝不会出现在命令行上），以及 `ids.json`、`registrations.log`。

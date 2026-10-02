@@ -39,7 +39,30 @@ The middleware settles only answers below 400, and a paid call with missing para
 |---|---|---|
 | `CDP_KEY_FILE` | path to the CDP secret API key JSON (`{id, privateKey}`, as the portal downloads it) | read into memory, so the key is never in the container's environment; mount it read-only |
 | `X402_PAY_TO` | the receiving address | must differ from any wallet you test-pay from: the facilitator refuses payer = payTo (`self_send_not_allowed`) |
-| `X402_PRICE` | `$0.001` | per call, both routes |
+| `X402_PRICE` | `$0.001` | per call, for routes without a price of their own |
+
+### The hub's capabilities, over x402
+
+With `HUB_API_KEY_FILE` set, four more paid routes resell the AIMarket hub's direct capabilities at
+the hub's own price, so the Bazaar lists what the hub sells too:
+
+| Route | Hub capability | Price |
+|---|---|---|
+| `POST /x402/weather-now` | `gaia.weather.read@v1` (latitude+longitude or city) | $0.001 |
+| `POST /x402/air-quality-now` | `gaia.air.read@v1` (latitude+longitude or city) | $0.001 |
+| `POST /x402/nearby-sensors` | `atlas.nearest.read@v1` (latitude, longitude, layers, max_km) | $0.03 |
+| `POST /x402/fair-random` | `sortes.draw@v1` (seed up to 4096 bytes, num_bytes) | $0.006 |
+
+The buyer pays this gateway; the gateway then buys the call from the hub with its own credit
+account (the key in `HUB_API_KEY_FILE`, mounted like the CDP key) and returns the hub's result and
+signed receipt. These routes have no free twin: `/a2mcp/<id>` answers `402`, because a free route
+would spend the gateway's account for anyone. A call the hub refuses is not settled. The gateway's
+account is a relay for outside buyers, so the hub's `ecosystem.json` must not list it under `self`.
+`HUB_URL` defaults to `https://modelmarket.dev`.
+
+The account is kept funded by `deploy/credit-topup.sh` (installed as `okx-a2mcp-credit-topup.timer` on
+the apex host, hourly): below $1 it grants $5 through the hub's operator endpoint from inside the hub
+container, at most $20 a UTC day; past the cap it refuses and says so in the journal.
 
 x402 is off unless both `CDP_KEY_FILE` and `X402_PAY_TO` are set; the free `/a2mcp` routes do not
 change either way. Building the paywall contacts the facilitator; if that fails (an outage, a revoked

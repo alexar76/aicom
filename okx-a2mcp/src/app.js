@@ -2,6 +2,8 @@ import { randomBytes } from "node:crypto";
 import express from "express";
 import { failure, paramsOf } from "./a2mcp.js";
 import { buildServices, callerIdFor, WARDEN_VERSION } from "./services.js";
+import { hubServices } from "./hub.js";
+import { priceOf } from "./x402.js";
 
 /** Fixed-window counter per caller and service; in memory, because one process serves it. */
 function rateLimiter(perMinute, now) {
@@ -36,8 +38,13 @@ export function createApp({
   // Free histor-check calls across all callers, kept under HISTOR's 300/min ceiling for us.
   freeHistorPerMinute = 200,
   now = () => Date.now(),
+  // The hub the paid capability twins buy from, and the gateway's credit-account key there.
+  hubUrl = "https://modelmarket.dev",
+  hubApiKey = "",
 } = {}) {
   const services = buildServices({ historUrl: historUrl.replace(/\/+$/, ""), fetchImpl, timeoutMs, freePerMinute: freeHistorPerMinute, now });
+  // Paid-only twins of the hub's capabilities, when the gateway has a hub account (src/hub.js).
+  for (const s of hubServices({ hubUrl, apiKey: hubApiKey, fetchImpl })) services.set(s.id, s);
   const allow = rateLimiter(perMinute, now);
   const app = express();
   app.disable("x-powered-by");
@@ -55,10 +62,10 @@ export function createApp({
         id: s.id,
         endpoint: `${publicUrl}/a2mcp/${s.id}`,
         methods: s.methods,
-        price: "free",
+        price: s.paidOnly ? `x402 only, ${priceOf(s.id)}` : "free",
         fields: s.fields,
         ...(paywall && paywall.paths.includes(`POST /x402/${s.id}`)
-          ? { x402: { endpoint: `${publicUrl}/x402/${s.id}`, method: "POST", price: paywall.price,
+          ? { x402: { endpoint: `${publicUrl}/x402/${s.id}`, method: "POST", price: priceOf(s.id, paywall.price),
                       network: paywall.network, asset: "USDC", payTo: paywall.payTo } }
           : {}),
       })),
