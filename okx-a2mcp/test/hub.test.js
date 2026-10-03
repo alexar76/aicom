@@ -98,8 +98,21 @@ test("the paid routes are described as OpenAPI 3.1 with their prices", async () 
     assert.equal(doc.openapi, "3.1.0");
     assert.equal(doc.servers[0].url, "https://a2mcp.example");
     const op = doc.paths["/x402/nearby-sensors"].post;
-    assert.equal(op["x-payment-info"].price, "$0.03");
+    assert.deepEqual(op["x-payment-info"].price, { mode: "fixed", currency: "USD", amount: "0.03" });
+    assert.equal(op["x-payment-info"].protocols[0].x402.network, "eip155:8453");
+    assert.deepEqual(op.security, []);
     assert.ok(op.requestBody.content["application/json"].schema.required.includes("latitude"));
     assert.ok(op.responses[402]);
+  } finally { await close(); }
+});
+
+test("the x402 manifest lists every paid route on this origin", async () => {
+  const { call, close } = await serve({ paywall, hubApiKey: "k", publicUrl: "https://a2mcp.example" });
+  try {
+    const m = await (await call("/.well-known/x402")).json();
+    assert.equal(m.kind, "resource-server");
+    assert.equal(m.x402Version, 2);
+    assert.deepEqual(m.resources.map((r) => r.url).sort(), IDS.map((id) => `https://a2mcp.example/x402/${id}`).sort());
+    assert.ok(m.resources.every((r) => r.method === "POST" && r.description));
   } finally { await close(); }
 });

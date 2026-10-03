@@ -77,7 +77,12 @@ export function openapiDocument({ publicUrl, payTo, serviceIds, network = BASE_M
         summary: l.description.split(". ")[0].replace(/\.$/, ""),
         description: l.description,
         tags: l.tags,
-        "x-payment-info": { protocol: "x402", scheme: "exact", price: l.price ?? "$0.001", network, asset: "USDC", payTo },
+        // The agentcash/x402scan discovery profile: structured price + protocols; the rest is detail.
+        "x-payment-info": {
+          price: { mode: "fixed", currency: "USD", amount: (l.price ?? "$0.001").replace(/^\$/, "") },
+          protocols: [{ x402: { scheme: "exact", network, asset: "USDC", payTo } }],
+        },
+        security: [],
         requestBody: { required: true, content: { "application/json": { schema: l.inputSchema, example: l.input } } },
         responses: {
           200: { description: "The result (paid).", content: { "application/json": { example: l.output } } },
@@ -100,6 +105,22 @@ export function openapiDocument({ publicUrl, payTo, serviceIds, network = BASE_M
     },
     servers: [{ url: publicUrl || "https://modelmarket.dev" }],
     paths,
+  };
+}
+
+/** The /.well-known/x402 manifest: this host is a resource server; its paid routes, all same-origin. */
+export function wellKnownManifest({ publicUrl, serviceIds }) {
+  const base = (publicUrl || "https://modelmarket.dev").replace(/\/$/, "");
+  return {
+    x402Version: 2,
+    kind: "resource-server",
+    name: "AIMarket",
+    description: "Signed real-world data, verifiable randomness and MCP security checks, paid per call over x402 (USDC on Base).",
+    resources: serviceIds.filter((id) => LISTING[id]).map((id) => ({
+      url: `${base}/x402/${id}`, method: "POST", description: LISTING[id].description.split(". ")[0].replace(/\.$/, ""),
+    })),
+    attestation: { type: "none" },
+    docs: `${base}/x402/openapi.json`,
   };
 }
 

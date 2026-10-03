@@ -3,7 +3,7 @@ import express from "express";
 import { failure, paramsOf } from "./a2mcp.js";
 import { buildServices, callerIdFor, WARDEN_VERSION } from "./services.js";
 import { hubServices } from "./hub.js";
-import { openapiDocument, priceOf } from "./x402.js";
+import { openapiDocument, priceOf, wellKnownManifest } from "./x402.js";
 
 /** Fixed-window counter per caller and service; in memory, because one process serves it. */
 function rateLimiter(perMinute, now) {
@@ -92,10 +92,16 @@ export function createApp({
   });
 
   if (paywall) {
-    // Machine-readable description of the paid routes (Circle's Agent Marketplace asks for it).
+    // Machine-readable description of the paid routes. The hub folds it into the origin's
+    // /openapi.json (AIMARKET_OPENAPI_MERGE_URLS), which is where x402 indexers read it.
+    const paidIds = () => paywall.paths.map((p) => p.replace("POST /x402/", ""));
     app.get("/x402/openapi.json", (_req, res) => {
-      res.json(openapiDocument({ publicUrl, payTo: paywall.payTo,
-        serviceIds: paywall.paths.map((p) => p.replace("POST /x402/", "")) }));
+      res.json(openapiDocument({ publicUrl, payTo: paywall.payTo, serviceIds: paidIds() }));
+    });
+    // The x402 capability manifest (draft-hawkins-x402-dns-discovery), served at
+    // /.well-known/x402 by the origin's nginx.
+    app.get(["/.well-known/x402", "/x402/well-known.json"], (_req, res) => {
+      res.set("Cache-Control", "public, max-age=3600").json(wellKnownManifest({ publicUrl, serviceIds: paidIds() }));
     });
     // The middleware answers 402 for the configured routes until a valid payment arrives, and
     // settles only when the handler answers below 400 — so a refused request costs nothing.

@@ -11,8 +11,8 @@ on GitHub, filed from the owner's account.
 | 3 | [docker/mcp-registry](https://github.com/docker/mcp-registry) | WARDEN (local, Docker-built image) and AIMarket Hub (remote) | 2 |
 | 4 | [punkpeye/awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | nothing to file: WARDEN is already listed | 0 |
 | 5 | [coinbase/x402](https://github.com/coinbase/x402) ecosystem page | AIMarket (Services/Endpoints) | 1 |
-| 6 | Circle Agent Marketplace (Google form) | the six x402 routes | form |
-| 7 | Smithery | AIMarket Hub (remote) | web publish |
+| 6 | Circle Agent Marketplace | excluded by owner on 2026-10-03; liability terms declined | do not submit |
+| 7 | Smithery | AIMarket Hub (remote): live 2026-10-03, rescan pending | done |
 | 8 | Coinbase AgentKit | already reachable via its x402 provider | 0 |
 
 Already listed and not to be re-submitted: punkpeye/awesome-mcp-servers has `alexar76/aimarket-plugins`,
@@ -239,33 +239,28 @@ Check before filing: `curl -s -o /dev/null -w "%{http_code}" -X POST https://mod
 
 ---
 
-## 6. Circle Agent Marketplace — the six x402 routes
+## 6. Circle Agent Marketplace — excluded
 
-What: Circle's curated catalogue of x402 services that accept USDC (agents.circle.com/services, and
-its public Discovery API). Listings are reviewed by hand; the payout wallet is sanctions-screened.
-Their prerequisites, checked 2026-10-02: the service answers 402 unpaid and serves when paid
-(yes), an OpenAPI spec is published (yes: `https://modelmarket.dev/x402/openapi.json`, 6 paths),
-the payout wallet is known (`0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a`).
+**Owner decision, 2026-10-03: do not submit.** The form's Agent Service Registry Listing
+Acknowledgement requires representations about service rights and an obligation to indemnify,
+defend and hold Circle harmless for related claims, losses and expenses, including reasonable
+attorneys' fees. The owner declined these terms and removed Circle from the distribution plan.
 
-**Form:** https://forms.gle/7YFzvdmMcn1JH5tF6 (from developers.circle.com/agent-stack/agent-marketplace/get-listed).
-Answers to paste (one submission for the set; if the form takes one endpoint per entry, submit
-`weather-now` first and list the rest in the description):
-
-- Service name: `AIMarket`
-- Endpoint URL(s): `https://modelmarket.dev/x402/weather-now`, `/x402/air-quality-now`, `/x402/nearby-sensors`, `/x402/fair-random`, `/x402/histor-check`, `/x402/warden-scan`
-- OpenAPI: `https://modelmarket.dev/x402/openapi.json`
-- Network / asset: Base mainnet (eip155:8453), USDC; facilitator: Coinbase CDP
-- Payout wallet: `0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a`
-- Prices: $0.001 (weather, air quality, HISTOR, WARDEN), $0.006 (fair random), $0.03 (nearby sensors)
-- Category: Data (weather, air quality, sensors), Utilities (verifiable randomness), Security (MCP checks)
-- Short description: `Signed real-world data and verifiable computation per call over x402: current weather and air quality at a place, the nearest live public sensors, ECVRF fair randomness with an offline-checkable proof, and two MCP security checks (HISTOR transparency log, WARDEN tool-definition scan). Every data result carries a signed receipt.`
-- Contact / website: https://modelmarket.dev
+The form was filled as a saved draft in Chrome but was **not submitted**. Do not resume or submit
+it while Circle's terms keep this clause: the only reason to reconsider is Circle removing or capping it.
 
 ---
 
 ## 7. Smithery — AIMarket Hub (remote MCP server)
 
-Not listed there yet (registry.smithery.ai searched for modelmarket/aimarket/warden/histor on
+**Live since 2026-10-03:** https://smithery.ai/servers/alexar76/aimarket-hub (deployment
+`https://aimarket-hub--alexar76.run.tools`). Early scans listed 8 tools because Smithery reads
+`/.well-known/mcp/server-card.json`, which used to omit the four DIRECT tools even while
+`tools/list` returned all 12. The card now includes `weather_now`, `air_quality_now`,
+`nearby_sensors`, and `fair_random` — republish/rescan after hub deploy to refresh the listing.
+WARDEN is not published there: it is a local npm server with no remote endpoint.
+
+How it was filed (kept for reference). Before filing it was not listed there (registry.smithery.ai searched for modelmarket/aimarket/warden/histor on
 2026-10-02). Smithery publishes a public HTTPS MCP server by URL and scans its tools itself.
 
 1. Sign in at https://smithery.ai (GitHub login) → **Publish** (smithery.ai/new) → tab **URL**.
@@ -299,3 +294,30 @@ curl -s https://modelmarket.dev/.well-known/agent-registration.json      # three
 git ls-remote https://github.com/alexar76/warden HEAD                     # commit for 3a
 npm view @aimarket/warden version                                         # 0.8.1
 ```
+
+---
+
+## 9. x402 discovery — origin OpenAPI, x402scan and the directories built on it (2026-10-03)
+
+x402 indexers (x402scan, AgentCash, and endpoint.x402jp.com, which takes almost all of its catalogue
+from x402scan) discover an origin's paid routes from `https://<origin>/openapi.json` only;
+`@agentcash/discovery` no longer reads `/.well-known/x402`. On modelmarket.dev the hub owns that
+path, so the six `/x402/*` routes were invisible to them.
+
+- **Hub 3.15.2** (apex only, `AIMARKET_OPENAPI_MERGE_URLS=https://modelmarket.dev/x402/openapi.json`):
+  folds the gateway's paid paths into `/openapi.json` (same origin only, never overrides a hub route,
+  refreshed every 10 min, last good copy kept). `npx @agentcash/discovery modelmarket.dev` lists all
+  six as `paid` with their prices.
+- **Gateway** emits the discovery profile: `x-payment-info.price = {mode, currency, amount}`,
+  `protocols: [{x402: {...}}]`, `security: []`; and the draft-hawkins `/.well-known/x402` manifest
+  (nginx exact location → gateway).
+- **x402scan: done.** Registered the six URLs one by one (`public.resources.register`), not the whole
+  origin: origin registration probes every route without a `security` declaration, which on the hub
+  would mean ~150 unauthenticated POST/DELETE calls. Server page:
+  https://www.x402scan.com/server/43ac9c5b-534e-41ee-9cdc-312703238a23
+- **Agentic.Market** (Coinbase): already listed, fed from the CDP Bazaar.
+- **endpoint.x402jp.com:** picks us up from x402scan on its daily 06:00 UTC fetch; no PR needed.
+- **x402-list.com** (needs an e-mail), **Cline MCP Marketplace** and **LobeHub** (need accounts):
+  colleague tasks 2–4. WARDEN logo for them: `warden/docs/assets/logo-400.png`.
+- Not pursued: Visa CLI merchant registry (read terms first; US-only beta), Pay.sh (Solana),
+  Agentverse (own agent protocol), Nevermined/Skyfire (payment rails), pay-to-list directories.
