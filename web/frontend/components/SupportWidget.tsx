@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation';
 import { MessageCircle, X, Send, Loader2, AlertCircle, Mic, MicOff } from 'lucide-react';
 import api from '@/lib/api';
+import { useVisibleViewport } from '@/hooks/useVisibleViewport';
 import { defaultSiteLocale } from '@/lib/siteLocale';
 import { getSupportMessageBlockReason } from '@/lib/promptSafety';
 import {
@@ -182,6 +183,7 @@ export function SupportWidget() {
   const [gate, setGate] = useState<'pending' | 'live' | 'disabled' | 'unknown'>('pending');
   const [requireToken, setRequireToken] = useState(true);
   const [open, setOpen] = useState(false);
+  const keyboard = useVisibleViewport(open);
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -508,6 +510,13 @@ export function SupportWidget() {
           aria-modal="true"
           aria-labelledby="support-widget-title"
           className="fixed bottom-24 right-5 z-[400] flex w-[min(100vw-2.5rem,22rem)] flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-950/95 shadow-2xl backdrop-blur-xl md:bottom-28 md:right-8"
+          // Phone keyboard open: sit just above it and fit the visible area, or the textarea
+          // stays under the keyboard and the user cannot see what they type.
+          style={
+            keyboard
+              ? { bottom: keyboard.keyboardInset + 8, maxHeight: keyboard.height - 16 }
+              : undefined
+          }
         >
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
             <div>
@@ -542,7 +551,7 @@ export function SupportWidget() {
             </div>
           )}
 
-          <div ref={listRef} className="max-h-72 space-y-3 overflow-y-auto px-3 py-3">
+          <div ref={listRef} className="max-h-72 min-h-0 space-y-3 overflow-y-auto px-3 py-3">
             {messages.length === 0 && !loading && (
               <p className="text-xs text-slate-500">
                 {tr.emptyHint}
@@ -586,7 +595,7 @@ export function SupportWidget() {
                 onChange={(e) => setInput(e.target.value.slice(0, MAX_LEN))}
                 placeholder={tr.messagePlaceholder}
                 rows={3}
-                className="min-h-[5.5rem] w-full resize-none rounded-xl border border-white/10 bg-black/30 py-2 pl-3 pr-14 text-sm text-white placeholder:text-slate-500 focus:border-cyan-500/40 focus:outline-none"
+                className="min-h-[5.5rem] w-full resize-none rounded-xl border border-white/10 bg-black/30 py-2 pl-3 pr-14 text-base text-white placeholder:text-slate-500 focus:border-cyan-500/40 md:text-sm focus:outline-none"
                 disabled={sending || !session}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
