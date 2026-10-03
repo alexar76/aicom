@@ -207,3 +207,17 @@ class TestTheSealIsNotBrokenByThePeer:
         rendered = json.dumps([sat.well_known(), sat.manifest()]).lower()
         for tell in ("simulation", "simulated", "fake", "bubble", "sandbox", "test-only"):
             assert tell not in rendered, f"the word {tell!r} leaks into a public payload"
+
+
+class TestEveryToolCarriesARunnableExample:
+    """A schema says what shape is accepted, not which values make sense: buyers that built
+    inputs from types alone sent `units.convert` empty unit names and got 400 every time."""
+
+    @pytest.mark.parametrize("name", ["khronos", "kyma", "psephos", "stoicheion", "diktyon", "horizon"])
+    def test_the_published_example_is_accepted_by_its_own_capability(self, name, tmp_path):
+        sat = Satellite(load_catalogue(name), f"https://uni.example.dev/sat/{name}", Signer(tmp_path / "k.pem"))
+        by_id = {c.capability_id: c for c in sat.catalogue.capabilities}
+        for tool in sat.tools():
+            examples = tool["input_schema"].get("examples")
+            assert examples and isinstance(examples[0], dict), tool["capability_id"]
+            by_id[tool["capability_id"]].run(examples[0])  # raises on a bad example

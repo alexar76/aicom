@@ -58,6 +58,8 @@ The bubble therefore runs `AIFACTORY_PROD=1`, `AIFACTORY_PAYMENT_VERIFY_STUB=0` 
 
 ## Standing it up
 
+Step by step, with the host-move checklist, the verifier and a symptom table, in five languages: [uni-realm-runbook.md](uni-realm-runbook.md).
+
 ```bash
 # 1. the bubble's own chain — NOT the alien-monitor demo chain on 8545 (see the warning below)
 docker run -d --name anvil-uni --restart unless-stopped \
@@ -181,6 +183,15 @@ fix: `AIMARKET_SELLS_FOR` names them, and the hub holds and captures the full li
 must be declared and never inferred — "the peer answered 200" does not mean the peer did not
 charge, and billing then would charge the buyer twice.
 
+**A third door: the knock.** `check_seed` guarded the seed list and nothing else. On
+2026-09-23 HISTOR announced itself to the bubble through the open `/federation/announce`
+door, passed the assay and was auto-admitted; for ten days three live-world capabilities sat
+in the bubble's catalogue and every bubble invoke of them went out to
+`histor.modelmarket.dev`. `realm.peer_inside` now applies the seed rule to every way a peer
+arrives — open and admin announce, the inbound-crawl note, gossip, the pending and refresh
+queues — and `realm.evict_outside_peers` drops, at startup, any peer row (with its listings)
+that got in before. Guarded by `aimarket-hub/tests/test_realm_federation_doors.py`.
+
 One pointer still leaves the bubble by design: provenance receipts carry
 `verifier_url: https://verify.modelmarket.dev` (`AIMARKET_VERIFY_DOMAIN`). It is an offline,
 stateless verifier — it needs nothing from the hub, tells the hub nothing, and checks a
@@ -205,6 +216,12 @@ recorded as a provider failure — every capability returning coordinates, dista
 probabilities was affected, on both realms. Fixed in `safety_gate` by excluding non-integral
 numbers from the PII projection only; a nine-digit integer is still scanned, because that one
 really can be an SSN.
+
+The card pattern had the same flaw one level up. It matched inside longer tokens, so a UUID
+whose leading groups happen to be all digits — `urn:uuid:83778821-8649-4619-abc1-…`, the
+label on every HISTOR change — read as a sixteen-digit card, and so did
+`9007199254740991` in any JSON-schema diff. A card candidate must now stand alone as a token
+and pass the Luhn checksum, which every real card number does.
 
 ## Two warnings paid for in advance
 

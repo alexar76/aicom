@@ -1,0 +1,9 @@
+[Unit]
+Description=UNI stranger-journey canary every 6 hours
+
+[Timer]
+OnCalendar=*-*-* 00/6:41:00 UTC
+Persistent=true
+
+[Install]
+WantedBy=timers.target

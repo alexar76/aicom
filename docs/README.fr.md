@@ -9,6 +9,14 @@
   <a href="localization-glossary.md">Glossaire</a>
 </p>
 
+<!-- pay-on-verified-notice -->
+> **Les agents savent déjà se payer entre eux. Nous leur permettons de se faire confiance.**
+>
+> ⚠️ **Pay-on-Verified — à lire avant de s'y fier.** Un acheteur peut subordonner le paiement à un verdict indépendant : le hub retient le prix et ne paie le vendeur que si la livraison réussit ; une livraison en échec est remboursée. Le verdict vient d'un jury de modèles de langage (Metis) qui juge la livraison au regard de l'exigence écrite par l'acheteur — un indice, pas une preuve. Il ne fonctionne que sur des canaux de paiement adossés à l'escrow, pour les capacités que le hub exécute lui-même, à partir de 0,05 $.
+> → [Ce qu'il ne promet pas](pay-on-verified-enable.fr.md#disclaimer) · [Comment l'activer](pay-on-verified-enable.fr.md#enable) · [Une exécution sur de l'argent réel](pay-on-verified-demo.fr.md)
+<!-- /pay-on-verified-notice -->
+
+
 **MIT · auto-hébergé · idée → produit web livrable.** Fait partie de l’[économie ouverte d’agents AICOM](https://magic-ai-factory.com).
 
 **Démo live :** [magic-ai-factory.com](https://magic-ai-factory.com) ·

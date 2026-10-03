@@ -258,6 +258,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'package.json',
     'packaging',
     'pipeline_worker.py',
+    'pov-demo',  # Pay-on-verified live demo sellers + buyer (docs/pay-on-verified-*)
     'plans',  # REVIEW: internal planning docs (audit report, monetization plan) — public today; intended?
     'praxis',
     'product_pnl.py',

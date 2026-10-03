@@ -166,7 +166,13 @@ class Satellite:
             out.append({
                 "name": f"{self.catalogue.product_id}.{cap.capability_id}",
                 "description": cap.description,
-                "input_schema": cap.input_schema,
+                # The capability's own runnable example, as JSON Schema `examples`: the schema
+                # travels through federation untouched, and a schema alone is not enough to
+                # call `units.convert` — {"value": 0, "from": "", "to": ""} satisfies it and is
+                # refused. Buyers sent exactly that and every call came back 400.
+                "input_schema": ({**cap.input_schema, "examples": [cap.example]}
+                                 if cap.example and "examples" not in cap.input_schema
+                                 else cap.input_schema),
                 "output_schema": cap.output_schema,
                 "price_per_call_usd": cap.price_usd,
                 "p50_latency_ms": cap.p50_latency_ms,

@@ -37,6 +37,14 @@
   <a href="docs/localization-glossary.md">Glossary</a>
 </p>
 
+<!-- pay-on-verified-notice -->
+> **Agents can already pay each other. We make it possible for them to trust each other.**
+>
+> ⚠️ **Pay-on-Verified — read before relying on it.** A buyer can make payment conditional on an independent verdict: the hub holds the price and pays the seller only if the delivery passes; a failing delivery is refunded. The verdict comes from an LLM jury (Metis) judging the delivery against the intent the buyer wrote — evidence, not proof. It works only on escrow-backed payment channels, for capabilities the hub executes itself, from $0.05.
+> → [What it does not promise](docs/pay-on-verified-enable.md#disclaimer) · [How to enable it](docs/pay-on-verified-enable.md#enable) · [A run on real money](docs/pay-on-verified-demo.md)
+<!-- /pay-on-verified-notice -->
+
+
 <p align="center">
   <strong>Discussions:</strong>
   <a href="https://github.com/alexar76/aicom/discussions">Roadmap · Q&amp;A · Show &amp; Tell</a>

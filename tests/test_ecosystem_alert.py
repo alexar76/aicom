@@ -1652,3 +1652,26 @@ class TestEnglishPageIsTheDefault:
         text = alert.format_message([C("hub_manifest", True)], [], [], True, host="h",
                                     hub="https://x", when="t", lang="de", now=NOW)
         assert "all good" in text
+
+
+def _journey(age_h: float, failed: tuple[str, ...] = ()) -> dict:
+    ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - age_h * 3600))
+    names = ("well_known_contracts", "offer_found", "invoke_paid", "debit_on_chain", "refund_on_settle")
+    return {"checked_at": ts, "ok": not failed,
+            "checks": [{"name": n, "ok": n not in failed, "critical": True} for n in names]}
+
+
+def test_a_fresh_green_journey_is_quiet(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _journey(1), ""))
+    assert all(c.ok for c in alert.probe_journey("https://x/uni-journey.json"))
+
+
+def test_a_broken_step_names_itself(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _journey(1, ("well_known_contracts",)), ""))
+    bad = [c for c in alert.probe_journey("https://x/uni-journey.json") if not c.ok]
+    assert [c.name for c in bad] == ["uni_journey_ok"] and "well_known_contracts" in bad[0].detail
+
+
+def test_a_journey_that_stopped_running_is_stale(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _journey(20), ""))
+    assert not {c.name: c.ok for c in alert.probe_journey("https://x/uni-journey.json")}["uni_journey_fresh"]

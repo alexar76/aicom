@@ -67,6 +67,57 @@ def rules(env: dict[str, str], hub_url: str) -> list[tuple[str, bool]]:
     ]
 
 
+def _rpc_code(rpc: str, address: str, timeout: float = 5.0) -> str:
+    """Bytecode at `address` on `rpc` ("0x" when none). Raises when the chain does not answer."""
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "eth_getCode",
+                       "params": [address, "latest"]}).encode()
+    req = urllib.request.Request(rpc, data=body, headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return str(json.load(r).get("result") or "0x")
+
+
+def chain_rules(env: dict[str, str], get_code=_rpc_code) -> list[tuple[str, bool]]:
+    """The money side, checked against the chains themselves.
+
+    On 2026-10-01 the bubble moved hosts without its Anvil: the hub was pointed at the
+    alien-monitor demo chain (8545) and at a token and escrow deployed there, which the
+    monitor's next chain reset erased. Every rule above still held, the hub answered 200, and
+    every deposit failed for two days. `get_code` is injectable for the tests.
+    """
+    settle = env.get("AIMARKET_RPC_BASE", "").rstrip("/")
+    demo = env.get("ALIEN_EVM_RPC", "").rstrip("/")
+
+    def has_code(rpc: str, address: str) -> bool:
+        if not rpc or not address:
+            return False
+        try:
+            return len(get_code(rpc, address)) > 2
+        except Exception:
+            return False
+
+    token = env.get("AIMARKET_ADDR_BASE_USDC", "")
+    escrows = {env.get(k, "").lower() for k in (
+        "AIMARKET_ADDR_BASE_AIMARKETESCROW", "AIMARKET_ESCROW_CONTRACT", "AIMARKET_ESCROW_EVM_ADDRESS")}
+    paid_to = {env.get(k, "").lower() for k in (
+        "AIMARKET_PAYMENT_RECIPIENT", "AIMARKET_X402_PAY_TO", "AIMARKET_ESCROW_HUB_ADDRESS")}
+    out = [
+        ("settles on the bubble's own chain, not the alien-monitor demo chain",
+         bool(settle) and settle != demo),
+        ("one token for deposits and x402 (AIMARKET_ADDR_BASE_USDC = AIMARKET_X402_ASSET)",
+         bool(token) and token.lower() == env.get("AIMARKET_X402_ASSET", "").lower()),
+        ("the settlement token exists on the settlement chain", has_code(settle, token)),
+        ("one escrow address everywhere, and it exists on the settlement chain",
+         len(escrows) == 1 and has_code(settle, next(iter(escrows)))),
+        ("paid at the hub's own wallet everywhere (recipient = x402 payTo = escrow hub)",
+         len(paid_to) == 1 and "" not in paid_to),
+    ]
+    lottery = env.get("AIMARKET_CHARITY_LOTTERY_ADDRESS", "")
+    if lottery:
+        out.append(("the charity lottery exists on the demo chain (it moves when that chain resets)",
+                    has_code(demo, lottery)))
+    return out
+
+
 def live_rules(hub_url: str, timeout: float = 10.0) -> list[tuple[str, bool]]:
     """What the world sees through the vhost — the environment can be right and the proxy
     wrong."""
@@ -104,13 +155,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--container", default="modelmarket-hub-uni")
     parser.add_argument("--hub-url", default="https://uni.modelmarket.dev")
     parser.add_argument("--no-live", action="store_true", help="skip the public-side checks")
+    parser.add_argument("--no-chain", action="store_true",
+                        help="skip the on-chain checks (they need the docker bridge, i.e. the host)")
     args = parser.parse_args(argv)
     try:
         env = container_env(args.container)
     except Exception as exc:
         print(f"FAIL cannot inspect {args.container}: {type(exc).__name__}")
         return 1
-    checked = rules(env, args.hub_url) + ([] if args.no_live else live_rules(args.hub_url))
+    checked = (rules(env, args.hub_url) + ([] if args.no_chain else chain_rules(env))
+               + ([] if args.no_live else live_rules(args.hub_url)))
     for rule, holds in checked:
         print(f"{'ok  ' if holds else 'FAIL'} {rule}")
     failed = [r for r, holds in checked if not holds]

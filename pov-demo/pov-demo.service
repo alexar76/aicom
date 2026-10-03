@@ -1,0 +1,27 @@
+# Two demo capability providers for the Pay-on-Verified walkthrough (pov-demo/provider.py).
+# Loopback only: the public address is the hub nginx location /providers/pov-demo/.
+[Unit]
+Description=Pay-on-Verified demo providers (factorworks honest, quickfactor cheat)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pov-demo
+Group=pov-demo
+Environment=POV_DEMO_BIND=127.0.0.1
+Environment=POV_DEMO_PORT=9476
+Environment=POV_DEMO_KEY_DIR=/var/lib/pov-demo
+ExecStart=/usr/bin/python3 /usr/local/lib/pov-demo/provider.py
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/pov-demo
+StateDirectory=pov-demo
+StateDirectoryMode=0700
+
+[Install]
+WantedBy=multi-user.target

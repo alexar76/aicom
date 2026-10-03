@@ -53,6 +53,7 @@ Environment (values never come from argv — argv is world-readable in `ps`):
                                  is watched, e.g. https://independentai.network/aegis
     AICOM_ALERT_STATUS_URL       the canary's published status.json
     AICOM_ALERT_SETTLEMENT_URL   the settlement sweep's published settlement.json
+    AICOM_ALERT_JOURNEY_URL      the UNI stranger-journey canary's uni-journey.json ("" = off)
     AICOM_ALERT_HEARTBEAT_HOURS  digest interval when all is well (default 24)
     AICOM_ALERT_FLAP             consecutive failures before paging (default 2)
 
@@ -87,6 +88,8 @@ DEFAULT_SIGNER = "http://127.0.0.1:9500"
 DEFAULT_HUB = "https://modelmarket.dev"
 DEFAULT_STATUS = "https://verify.modelmarket.dev/status.json"
 DEFAULT_SETTLEMENT = "https://verify.modelmarket.dev/settlement.json"
+DEFAULT_JOURNEY = "https://verify.modelmarket.dev/uni-journey.json"
+JOURNEY_STALE_HOURS = 13.0   # runs every 6 h; two misses in a row is a dead timer
 
 # How stale the canary's published status may get before that itself is the incident.
 # The cron runs daily, so 36h means one missed run is tolerated and two are not.
@@ -531,6 +534,25 @@ def probe_status_page(url: str, timeout: float = 20.0, now: float | None = None,
     return checks
 
 
+def probe_journey(url: str, timeout: float = 20.0, now: float | None = None) -> list[Check]:
+    """Can a stranger still buy? pov-demo/journey.py walks the whole buyer path against the
+    UNI bubble using only what the hub publishes. Every end-to-end script before it read its
+    addresses from its own constants, so none noticed when the hub stopped publishing what a
+    buyer needs (2026-10-03)."""
+    now = time.time() if now is None else now
+    status, body, err = _get(url, timeout)
+    if status != 200 or not isinstance(body, dict):
+        return [Check("uni_journey_published", False, f"{url} -> {err or status}")]
+    age = _hours_since_iso(str(body.get("checked_at", "")), now)
+    if age is None:
+        return [Check("uni_journey_published", False, f"unreadable checked_at: {body.get('checked_at')!r}")]
+    fresh = age <= JOURNEY_STALE_HOURS
+    failed = [str(c.get("name")) for c in body.get("checks", []) if not c.get("ok") and c.get("critical")]
+    return [Check("uni_journey_fresh", fresh, f"ran {age:.1f}h ago" if fresh else f"STALE: ran {age:.1f}h ago (timer dead?)"),
+            Check("uni_journey_ok", not failed and bool(body.get("checks")),
+                  "a stranger can buy end to end" if not failed else "the journey broke at: " + ", ".join(failed[:6]))]
+
+
 def probe_settlement(url: str, timeout: float = 20.0, now: float | None = None
                      ) -> list[Check]:
     """Is the collector still collecting?
@@ -904,6 +926,16 @@ _EN: dict[str, tuple[str, str, str]] = {
     "canary_verdict_ok": (
         "the payment canary found a problem", "the payment canary is green again",
         "something in payment intake is broken — details in its report"),
+    "uni_journey_published": (
+        "the stranger-journey canary is not publishing its report",
+        "the stranger-journey canary publishes its report again",
+        "nobody checks that an outside buyer can still buy"),
+    "uni_journey_fresh": (
+        "the stranger-journey canary has not run", "the stranger-journey canary runs again",
+        "nobody checks that an outside buyer can still buy"),
+    "uni_journey_ok": (
+        "an outside buyer can no longer buy end to end", "an outside buyer can buy again",
+        "a step a real buyer needs is broken — the failing step is in uni-journey.json"),
     "settlement_report_published": (
         "the settlement sweep is not publishing its report",
         "the settlement sweep publishes its report again",
@@ -1082,6 +1114,17 @@ _RU: dict[str, tuple[str, str, str]] = {
     "canary_verdict_ok": (
         "платёжная канарейка нашла проблему", "платёжная канарейка снова зелёная",
         "что-то в приёме оплаты сломано — подробности в её отчёте"),
+    "uni_journey_published": (
+        "канарейка «чужой покупатель» не публикует отчёт",
+        "канарейка «чужой покупатель» снова публикует отчёт",
+        "никто не проверяет, что сторонний покупатель может купить"),
+    "uni_journey_fresh": (
+        "канарейка «чужой покупатель» не запускалась", "канарейка «чужой покупатель» снова запускается",
+        "никто не проверяет, что сторонний покупатель может купить"),
+    "uni_journey_ok": (
+        "сторонний покупатель больше не может пройти покупку до конца",
+        "сторонний покупатель снова может купить",
+        "сломан шаг, нужный настоящему покупателю — какой именно, в uni-journey.json"),
     "settlement_report_published": (
         "сборщик оплат не публикует отчёт", "сборщик оплат снова публикует отчёт",
         "не видно, уходят ли оплаты в сеть"),
@@ -1553,7 +1596,7 @@ def probe_tls_expiry(names: list[str], timeout: float = 8.0,
 
 
 def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url: str,
-            timeout: float, federation_hubs: list[str] | None = None,
+            timeout: float, journey_url: str = "", federation_hubs: list[str] | None = None,
             sellers: list[str] | None = None, scope: Scope | None = None) -> list[Check]:
     scope = scope if scope is not None else Scope.from_env()
     checks: list[Check] = []
@@ -1577,6 +1620,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_signer(signer, min(timeout, 10.0))
     checks += probe_status_page(status_url, timeout, scope=scope)
     checks += probe_settlement(settlement_url, timeout)
+    if journey_url.strip():
+        checks += probe_journey(journey_url, timeout)
     if mode == "full":
         checks += probe_paywall(hub, timeout, scope=scope)
         # Hourly, not every ten minutes: five POSTs per hub, and what it guards against — a
@@ -1620,6 +1665,7 @@ def main(argv: list[str] | None = None) -> int:
     signer = os.environ.get("AICOM_ALERT_SIGNER_URL", DEFAULT_SIGNER)
     status_url = os.environ.get("AICOM_ALERT_STATUS_URL", DEFAULT_STATUS)
     settlement_url = os.environ.get("AICOM_ALERT_SETTLEMENT_URL", DEFAULT_SETTLEMENT)
+    journey_url = os.environ.get("AICOM_ALERT_JOURNEY_URL", DEFAULT_JOURNEY)
     heartbeat_hours = float(os.environ.get("AICOM_ALERT_HEARTBEAT_HOURS", "24") or 24)
     flap = max(1, int(os.environ.get("AICOM_ALERT_FLAP", "2") or 2))
     lang = (os.environ.get("AICOM_ALERT_LANG") or "en").strip().lower()
@@ -1652,7 +1698,7 @@ def main(argv: list[str] | None = None) -> int:
 
     scope = Scope.from_env()
     checks = collect(args.mode, hub=hub, signer=signer, status_url=status_url,
-                     settlement_url=settlement_url, timeout=args.timeout,
+                     settlement_url=settlement_url, timeout=args.timeout, journey_url=journey_url,
                      federation_hubs=federation_hubs_from_env(hub), scope=scope)
     state = load_state(args.state)
     heartbeat_before = state.get("last_heartbeat", "")

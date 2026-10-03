@@ -8,57 +8,23 @@
 
 ## Сделать сейчас
 
-### 1. Smithery — опубликовано, нужно пересканировать
+### 1. Подтвердить две заявки, которые снаружи не видно
 
-Хаб опубликован: https://smithery.ai/servers/alexar76/aimarket-hub. Но при сканировании Smithery увидел 8 инструментов из 12. Не хватает четырёх главных: `weather_now`, `air_quality_now`, `nearby_sensors`, `fair_random`. Хаб показывает их, только пока может их обслужить, а в момент сканирования хабы перезапускались. Сейчас все 12 на месте.
+Сделано 2026-10-03: Smithery пересканирован (все 12 инструментов видны), заявка в Cline подана —
+https://github.com/cline/mcp-marketplace/issues/2735.
 
-**Что сделать:** на странице сервера в Smithery запустить повторное сканирование (**Rescan**, или в настройках сервера). Проверить, что инструментов стало 12.
-
-WARDEN в Smithery не публикуем: он работает локально через npm, отдельного удалённого сервера у него нет.
-
-### 2. x402-list.com — заявка на шесть платных маршрутов
-
-Каталог x402-сервисов. Заявку проверяют автоматически (маршруты должны отвечать 402), потом вручную. Нужен e-mail — какой указать, решает владелец; на него придёт ответ о модерации.
-
-Форма: https://x402-list.com/submit, тип **Service**.
-
-| Поле | Что вписать |
-|---|---|
-| Service name | `AIMarket` |
-| Service URL | `https://modelmarket.dev` |
-| Website URL | `https://modelmarket.dev` |
-| Email | по решению владельца |
-| Category | `Data` |
-| Description | `Signed real-world data and verifiable computation per call over x402 (USDC on Base): current weather and air quality at a place, the nearest live public sensors, ECVRF fair randomness with an offline-checkable proof, and two MCP security checks (HISTOR transparency log, WARDEN tool-definition scan).` |
-| Endpoints | шесть строк: `/x402/weather-now`, `/x402/air-quality-now`, `/x402/nearby-sensors`, `/x402/fair-random`, `/x402/histor-check`, `/x402/warden-scan` |
-| Notes | `All endpoints are POST with a JSON body; GET returns 404. Prices: $0.001 (weather, air quality, HISTOR, WARDEN), $0.006 (fair random), $0.03 (nearby sensors). OpenAPI: https://modelmarket.dev/openapi.json. Already listed on x402scan and the CDP Bazaar.` |
-
-Если придёт отказ, что маршрут «не отвечает 402», пришлите текст: скорее всего, их проверка шлёт GET, а у нас только POST.
-
-### 3. Cline MCP Marketplace — WARDEN
-
-Каталог MCP-серверов внутри Cline (расширение VS Code). Подача — issue на GitHub с аккаунта `alexar76`.
-
-1. Открыть https://github.com/cline/mcp-marketplace/issues/new/choose → шаблон **MCP Server Submission**.
-2. **GitHub Repository URL:** `https://github.com/alexar76/warden`
-3. **Logo Image:** перетащить файл `warden/docs/assets/logo-400.png` из репозитория (PNG 400×400).
-4. **Installation Testing:** галочки ставить только после проверки. В Cline: MCP Servers → Configure → добавить
-   `"warden": { "command": "npx", "args": ["-y", "@aimarket/warden"] }` и убедиться, что появились инструменты (`vet_mcp_server`, `static_scan_tools` и другие, всего 9).
-5. **Additional Information:** `MCP security firewall for advertised tool definitions: static injection/exfiltration scan, signed threat feed, origin checks and pinning before a recorded allow/block verdict. Zero runtime dependencies, MIT. Also in the official MCP Registry (io.github.alexar76/warden) and on Glama.`
-
-Очередь у них длинная, многие заявки закрывают без ответа. Это нормально, повторно не подаём.
-
-### 4. LobeHub MCP Marketplace — WARDEN
-
-1. Зайти на https://lobehub.com/mcp через GitHub (`alexar76`).
-2. Кнопка **Submit MCP** → ссылка на репозиторий `https://github.com/alexar76/warden`.
-3. Описание и логотип — те же, что для Cline (пункт 3).
+Осталось только подтвердить:
+- **x402-list.com** — в каталоге нас пока нет (на 2026-10-03, поиск по `modelmarket` пуст). Если
+  пришло письмо о модерации или отказе, перешлите его нам. Если письма не было — проверьте, что
+  заявка отправлена (форма https://x402-list.com/submit).
+- **LobeHub** — пришлите ссылку на страницу WARDEN в каталоге: снаружи её не проверить, страница
+  собирается в браузере.
 
 ---
 
 ## Следить, по ответам
 
-### 5. Заявки на рассмотрении
+### 2. Заявки на рассмотрении
 
 Раз в несколько дней открыть и посмотреть, нет ли комментариев от проверяющих. На вопросы отвечать, а если вопрос технический, переслать его нам.
 
@@ -70,13 +36,14 @@ WARDEN в Smithery не публикуем: он работает локальн
 | https://github.com/xpaysh/awesome-x402/pull/1680 | Список awesome-x402 |
 | https://github.com/sudeepb02/awesome-erc8004/pull/120 | Список awesome-erc8004 |
 | https://endpoint.x402jp.com | Сводный каталог x402. Подтягивает нас из x402scan сам, раз в сутки в 06:00 UTC. С 4 октября поиск по `modelmarket` должен находить шесть маршрутов; если нет — сообщить нам |
+| https://github.com/cline/mcp-marketplace/issues/2735 | WARDEN в каталоге Cline (очередь длинная, многие закрывают без ответа) |
 | OKX.AI, агент 14118 | Проверка в OKX. Смотреть в личном кабинете OKX (агентский кошелёк в песочнице на сервере attested) |
 
 ---
 
 ## Деньги — только по сообщению
 
-### 6. Пополнить кошелёк отзывов WARDEN
+### 3. Пополнить кошелёк отзывов WARDEN
 
 Когда в Telegram (@Argis3Bot) придёт сообщение «пора пополнить», перевести **ETH в сети Base** на адрес:
 
@@ -84,7 +51,7 @@ WARDEN в Smithery не публикуем: он работает локальн
 
 Сумма — **0.0005 ETH**, это примерно 400 транзакций. Только сеть **Base**: перевод в Ethereum mainnet или другую сеть до кошелька не дойдёт.
 
-### 7. Пополнить кошелёк газа хаба
+### 4. Пополнить кошелёк газа хаба
 
 Этот кошелёк платит газ за покупателей, когда хаб спонсирует их платежи. Если хаб в сводке пишет, что спонсорство кончилось (`gas_sponsor_daily_budget_exhausted` или пустой баланс), перевести **0.0005 ETH в сети Base** на адрес:
 
@@ -94,7 +61,7 @@ WARDEN в Smithery не публикуем: он работает локальн
 
 ## Решения, которые ждут владельца
 
-### 8. Агенты, отложенные WARDEN
+### 5. Агенты, отложенные WARDEN
 
 Если в сводке Telegram есть строка «ждут твоего решения», значит, WARDEN нашёл у агента что-то блокирующее. Отзыв этому агенту автоматически не публикуется. Владелец решает по каждому:
 - оставить без отзыва;
@@ -102,7 +69,7 @@ WARDEN в Smithery не публикуем: он работает локальн
 
 Сейчас уже решено: ENS Registration Agent (#19151) — без отзыва.
 
-### 9. Гранты
+### 6. Гранты
 
 Отложено владельцем (2026-10-02). Когда вернёмся: нужны ответы, кто получатель (физлицо или компания, страна) и чьё имя и контакт указывать.
 

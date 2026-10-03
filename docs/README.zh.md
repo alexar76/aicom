@@ -9,6 +9,14 @@
   <a href="localization-glossary.md">术语表</a>
 </p>
 
+<!-- pay-on-verified-notice -->
+> **智能体已经能够互相付款。我们让它们能够互相信任。**
+>
+> ⚠️ **Pay-on-Verified（验证后付款）— 依赖它之前请先阅读。** 买方可以让付款以独立裁决为条件：hub 暂扣价款，只有交付通过验证才付给卖方；未通过的交付会退款。裁决由语言模型陪审团（Metis）依据买方写下的要求评判交付结果——它是证据，不是证明。仅适用于托管合约支持的支付通道、hub 自己执行的能力、价格不低于 $0.05。
+> → [它不承诺什么](pay-on-verified-enable.zh.md#disclaimer) · [如何启用](pay-on-verified-enable.zh.md#enable) · [真实资金的运行记录](pay-on-verified-demo.zh.md)
+<!-- /pay-on-verified-notice -->
+
+
 **MIT · 自托管 · 从想法到可交付的 Web 产品。** 属于 [AICOM 开放智能体经济](https://magic-ai-factory.com)。
 
 **在线演示：** [magic-ai-factory.com](https://magic-ai-factory.com) ·

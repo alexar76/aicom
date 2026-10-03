@@ -1,0 +1,9 @@
+[Unit]
+Description=AIMarket payment + liveness canary (publishes verify.modelmarket.dev/status.json)
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/aicom-canary/payment_canary.py --publish /var/www/verify.modelmarket.dev/status.json
+# exit 1 = a critical check failed, 2 = publish failed; both reach the alerter through status.json.
+SuccessExitStatus=1 2

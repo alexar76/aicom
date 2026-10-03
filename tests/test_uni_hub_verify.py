@@ -84,3 +84,56 @@ def test_the_deploy_script_runs_the_verifier_and_can_boot_the_current_image():
     # Current hub images refuse to start without a durable sandbox trial ledger.
     assert "AIMARKET_SANDBOX_DB_PATH=/app/data/" in script
     assert "AIMARKET_AUTO_CRAWL=1" in script
+
+
+# ── the money side (2026-10-01 host move) ────────────────────────────────────────────────
+SETTLE, DEMO = "http://172.17.0.1:8546", "http://172.17.0.1:8545"
+TOKEN, ESCROW, HUB = "0x5fbd", "0xe7f1", "0x7099"
+LOTTERY = "0xdc64"
+
+
+def chain_env(**over) -> dict[str, str]:
+    env = {
+        "AIMARKET_RPC_BASE": SETTLE, "ALIEN_EVM_RPC": DEMO,
+        "AIMARKET_ADDR_BASE_USDC": TOKEN, "AIMARKET_X402_ASSET": TOKEN,
+        "AIMARKET_ADDR_BASE_AIMARKETESCROW": ESCROW, "AIMARKET_ESCROW_CONTRACT": ESCROW,
+        "AIMARKET_ESCROW_EVM_ADDRESS": ESCROW,
+        "AIMARKET_PAYMENT_RECIPIENT": HUB, "AIMARKET_X402_PAY_TO": HUB, "AIMARKET_ESCROW_HUB_ADDRESS": HUB,
+        "AIMARKET_CHARITY_LOTTERY_ADDRESS": LOTTERY,
+    }
+    env.update(over)
+    return env
+
+
+def chains(code_on: dict[str, set[str]]):
+    def get_code(rpc, address):
+        if rpc not in code_on:
+            raise OSError("connection refused")
+        return "0x60806040" if address in code_on[rpc] else "0x"
+    return get_code
+
+
+LIVE = chains({SETTLE: {TOKEN, ESCROW}, DEMO: {LOTTERY}})
+
+
+def chain_failed(env, get_code=LIVE) -> list[str]:
+    return [rule for rule, holds in verify.chain_rules(env, get_code) if not holds]
+
+
+def test_the_restored_chain_configuration_passes():
+    assert chain_failed(chain_env()) == []
+
+
+def test_the_2026_10_01_move_is_refused():
+    """Hub on the demo chain, with a token, escrow and lottery the demo chain's reset erased,
+    and paid at Anvil #0."""
+    env = chain_env(AIMARKET_RPC_BASE=DEMO, AIMARKET_ADDR_BASE_USDC="0xc634", AIMARKET_X402_ASSET="0xc634",
+                    AIMARKET_ADDR_BASE_AIMARKETESCROW="0xd1a1", AIMARKET_ESCROW_CONTRACT="0xd1a1",
+                    AIMARKET_ESCROW_EVM_ADDRESS="0xd1a1", AIMARKET_PAYMENT_RECIPIENT="0xf39f",
+                    AIMARKET_X402_PAY_TO="0xf39f", AIMARKET_CHARITY_LOTTERY_ADDRESS="0x5910")
+    assert len(chain_failed(env)) == 5  # all but "one token everywhere", which held
+
+
+def test_a_missing_bubble_chain_is_refused():
+    assert "the settlement token exists on the settlement chain" in chain_failed(
+        chain_env(), chains({DEMO: {LOTTERY}}))

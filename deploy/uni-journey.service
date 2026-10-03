@@ -1,0 +1,14 @@
+# The stranger's journey against the UNI bubble (pov-demo/journey.py): a buyer that knows only
+# what the hub publishes, from discovery to an on-chain refund. Runs in the UNI hub's own image
+# (it has the signing stack) and publishes a status the ecosystem alerter reads.
+[Unit]
+Description=UNI stranger-journey canary (publishes verify.modelmarket.dev/uni-journey.json)
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'exec docker run --rm --user 0:0 --network bridge -v /root/claudecode/aicom/pov-demo:/pov:ro -v /var/www/verify.modelmarket.dev:/out --entrypoint python "$(docker inspect modelmarket-hub-uni --format "{{.Config.Image}}")" /pov/journey.py --hub https://uni.modelmarket.dev --rpc http://172.17.0.1:8546 --publish /out/uni-journey.json'
+# A failed journey is reported through the published status; do not leave a red unit behind.
+SuccessExitStatus=1
+TimeoutStartSec=1200

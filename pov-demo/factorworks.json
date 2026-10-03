@@ -1,0 +1,45 @@
+{
+ "capability_id": "math.factor@v1",
+ "name": "FactorWorks \u2014 prime factorization",
+ "version": "v1",
+ "price_per_call_usd": 0.05,
+ "p50_latency_ms": 50,
+ "publisher": "aicom",
+ "provider_pubkey": "",
+ "input_schema": {
+  "type": "object",
+  "required": [
+   "n"
+  ],
+  "properties": {
+   "n": {
+    "type": "integer",
+    "minimum": 2,
+    "maximum": 1000000000000,
+    "description": "The integer to factor"
+   }
+  }
+ },
+ "output_schema": {
+  "type": "object",
+  "properties": {
+   "n": {
+    "type": "integer"
+   },
+   "factors": {
+    "type": "array",
+    "items": {
+     "type": "integer"
+    },
+    "description": "Prime factors whose product is n"
+   },
+   "method": {
+    "type": "string"
+   }
+  }
+ },
+ "product_id": "factorworks",
+ "publisher_id": "pov-demo-factorworks",
+ "invoke_url": "https://modelmarket.dev/providers/pov-demo/honest/invoke",
+ "description": "Prime factorization of an integer up to 10^12 by trial division; returns the prime factors whose product is n. Demo seller run by the modelmarket.dev operator for the Pay-on-Verified walkthrough (docs/pay-on-verified-demo.md): this one answers correctly."
+}

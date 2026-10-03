@@ -1,0 +1,107 @@
+{
+ "started_utc": "2026-10-03T12:36:45Z",
+ "hub": "https://modelmarket.dev",
+ "buyer": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+ "n": 1000009,
+ "deposit_usd": 1.0,
+ "contracts": {
+  "escrow": "0x12Db8FAC81E5999D2f2087B79e38951571562CF2",
+  "escrow_hub": "0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1",
+  "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "verifier": "metis.modelmarket.dev",
+  "threshold": 0.7,
+  "appeal_window_s": 3600.0,
+  "auth_lifetime_s": 11400
+ },
+ "runs": [
+  {
+   "seller": "quickfactor",
+   "publisher": "pov-demo-quickfactor",
+   "price_usd": 0.05,
+   "steps": [
+    {
+     "step": "openChannel $1.00",
+     "tx": "0x8e7827944b57f702efb179c2e115ade693ec62d61b57a50bda1806a9e7eba403",
+     "block": 52120833
+    },
+    {
+     "step": "settleChannel",
+     "tx": "0xc87df33765c9e217f1d97636b3280f70e27780926481dd5330b56312a270dd34",
+     "block": 52120847
+    }
+   ],
+   "escrow_channel": "0xa983ecc6e6aee45d40febe3c87bf17907454e356c7d5f9f79b5e308c9bd031be",
+   "ledger_channel": "ch_dd1da4db3e9041b1",
+   "invoke_status": 200,
+   "invoke_seconds": 23.8,
+   "delivered": {
+    "n": 1000009,
+    "factors": [
+     7,
+     373,
+     383
+    ],
+    "method": "trial division"
+   },
+   "verification": {
+    "requested": true,
+    "status": "provisional",
+    "performed": true,
+    "verified": false,
+    "verify_score": 0.0,
+    "audit_score": 1.0,
+    "delivery_fulfils": false,
+    "delivery_reasons": [
+     "The delivered factors [7, 373, 383] multiply to 1,000,013, not 1,000,009.",
+     "The correct prime factorization of 1,000,009 is [293, 3413], so the delivery does not satisfy the task."
+    ],
+    "verdict": "failed",
+    "threshold": 0.7,
+    "trace_id": "jury-b4cfabd9-bc54-4fae-acf4-594803eb2c30",
+    "verifier": "metis.modelmarket.dev",
+    "mode": "fast",
+    "settled": false,
+    "reason": "verify_failed",
+    "timestamp": "2026-10-03T12:37:16Z",
+    "nonce": "0x47698e190e083ad3f553e2b05110d604c5afcc25fa6a278c01f6d162d955af2f",
+    "capability_id": "math.factor@v1",
+    "appeal": {
+     "status": "open",
+     "window_s": 3600.0,
+     "deadline": "2026-10-03T13:37:16Z",
+     "appealable_by": "seller",
+     "bond_usd": 0.02,
+     "verifier": "metis.appeal@v1"
+    },
+    "signature": {
+     "algorithm": "ed25519",
+     "value": "1RKjaQ0whU2b5yeY2bUOfqE0KcXPA+jlLaBFz37nneguSMPTQxr9RVmdQiyWJiUTBi6R4gFuWWBKd+fvLmBLCQ==",
+     "version": 3,
+     "pq_algorithm": "ml-dsa-65",
+     "pq_public_key": "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",
+     "pq_value": "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"
+    }
+   },
+   "receipt_id": "0x47698e190e083ad3f553e2b05110d604c5afcc25fa6a278c01f6d162d955af2f",
+   "ledger_close": {
+    "status": 400,
+    "body": {
+     "error": "channel has 1 pending verified settlement(s) \u2014 retry close after they resolve"
+    }
+   },
+   "onchain_before_settle": {
+    "used_units": 0,
+    "balance_units": 1000000,
+    "hub": "0x0000000000000000000000000000000000000000"
+   },
+   "refunded_units": 1000000
+  }
+ ],
+ "steps": [
+  {
+   "step": "approve $1.00",
+   "tx": "0xa86cf875b44157ae80270cdeefe9b7cebdd0c7612e373551cd630e32a9b690c5",
+   "block": 52120832
+  }
+ ]
+}

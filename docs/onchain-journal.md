@@ -1209,3 +1209,15 @@ own 12 from earlier the same day. From now on `warden-feedback.timer` on admin-v
 Monday 09:00 UTC; WARDEN's registration file declares the wallet as `feedbackWallet`. Transactions
 in `deploy/erc-8004/feedback.log` (the operator's) and `/var/lib/warden-feedback/feedback.log` on
 admin-vps (the feedback wallet's).
+
+## 2026-10-03 — Pay-on-Verified on real money: an agent hires two strangers
+
+Buyer `0x097e3F339D0b023605e12A6B81E2d6Cb7571475a` (separate wallet, funded by us), sellers `factorworks`
+(honest) and `quickfactor` (cheats on purpose) — both run by the operator. Honest delivery passed the Metis jury:
+held through the one-hour appeal window, debited by the hub signer
+[`0x42f6ff50…`](https://basescan.org/tx/0x42f6ff5030fae7aad8405d7d672b8df665661dc3147896559bb7ba5577909f36),
+buyer settled $0.95 back ([`0x11b02d8f…`](https://basescan.org/tx/0x11b02d8f17086431c0408211904ce61230a17c714ed4d573c15eb582a7829b08)).
+The cheat failed 5/5 and was never debited; $1.00 back
+([`0xc87df337…`](https://basescan.org/tx/0xc87df33765c9e217f1d97636b3280f70e27780926481dd5330b56312a270dd34)).
+Buyer's total cost: $0.05 plus gas. Full write-up with every transaction and the four defects the first runs
+found: [pay-on-verified-demo.md](pay-on-verified-demo.md).

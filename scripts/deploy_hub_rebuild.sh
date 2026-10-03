@@ -411,3 +411,13 @@ fi
 log "OK — $IMAGE is live, previous container kept as $PREV"
 echo "roll back with: $0 --rollback"
 echo "discard the old one with: docker rm $PREV"
+
+# The companions that live on the host, not in the image: escrow signer tunnel, settlement
+# sweep, payment canary. A healthy hub with any of them missing stops collecting escrow
+# debits or stops being watched, silently — 2026-10-01, after a host move. The hub is left
+# running (it is fine); the deploy is reported as incomplete.
+log "Checking the hub's host companions"
+if ! "$(dirname "$0")/hub_host_companions.sh" --verify; then
+  echo "DEPLOY INCOMPLETE: host companions missing or broken — run scripts/hub_host_companions.sh --install" >&2
+  exit 3
+fi
