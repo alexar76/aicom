@@ -1675,3 +1675,29 @@ def test_a_broken_step_names_itself(monkeypatch):
 def test_a_journey_that_stopped_running_is_stale(monkeypatch):
     monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _journey(20), ""))
     assert not {c.name: c.ok for c in alert.probe_journey("https://x/uni-journey.json")}["uni_journey_fresh"]
+
+
+def _uni_health(ready: bool, lottery: str = "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9") -> dict:
+    return {"status": "ok", "mode": "universe", "blockchain_ready": ready,
+            "contracts": {"evm_lottery": lottery}}
+
+
+def test_a_live_uni_demo_chain_is_quiet(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _uni_health(True), ""))
+    assert all(c.ok for c in alert.probe_uni_demo_chain("https://x/api/health"))
+
+
+@pytest.mark.parametrize("body", [_uni_health(False), _uni_health(True, lottery="")])
+def test_a_dead_uni_demo_chain_pages(monkeypatch, body):
+    """2026-10-03: down 14 hours behind 42 green checks — nothing read it."""
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, body, ""))
+    assert [c.name for c in alert.probe_uni_demo_chain("https://x/api/health") if not c.ok] == ["uni_demo_chain_up"]
+
+
+def test_an_unreachable_uni_monitor_pages(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (502, None, "bad gateway"))
+    assert not alert.probe_uni_demo_chain("https://x/api/health")[0].ok
+
+
+def test_the_uni_demo_chain_check_has_both_languages():
+    assert "uni_demo_chain_up" in alert._EN and "uni_demo_chain_up" in alert._RU

@@ -54,6 +54,7 @@ Environment (values never come from argv — argv is world-readable in `ps`):
     AICOM_ALERT_STATUS_URL       the canary's published status.json
     AICOM_ALERT_SETTLEMENT_URL   the settlement sweep's published settlement.json
     AICOM_ALERT_JOURNEY_URL      the UNI stranger-journey canary's uni-journey.json ("" = off)
+    AICOM_ALERT_UNI_CHAIN_URL    the UNI monitor's /api/health, for its demo chain ("" = off)
     AICOM_ALERT_HEARTBEAT_HOURS  digest interval when all is well (default 24)
     AICOM_ALERT_FLAP             consecutive failures before paging (default 2)
 
@@ -89,6 +90,7 @@ DEFAULT_HUB = "https://modelmarket.dev"
 DEFAULT_STATUS = "https://verify.modelmarket.dev/status.json"
 DEFAULT_SETTLEMENT = "https://verify.modelmarket.dev/settlement.json"
 DEFAULT_JOURNEY = "https://verify.modelmarket.dev/uni-journey.json"
+DEFAULT_UNI_CHAIN = "https://monitor-uni.modelmarket.dev/api/health"
 JOURNEY_STALE_HOURS = 13.0   # runs every 6 h; two misses in a row is a dead timer
 
 # How stale the canary's published status may get before that itself is the incident.
@@ -553,6 +555,22 @@ def probe_journey(url: str, timeout: float = 20.0, now: float | None = None) -> 
                   "a stranger can buy end to end" if not failed else "the journey broke at: " + ", ".join(failed[:6]))]
 
 
+def probe_uni_demo_chain(url: str, timeout: float = 20.0) -> list[Check]:
+    """Is the UNI demo chain (charity lottery, ACEX) up? It lives inside the UNI monitor and
+    no other check reads it: on 2026-10-03 its anvil could not load a state file cut short,
+    and it was down for 14 hours while all 42 checks stayed green."""
+    status, body, err = _get(url, timeout)
+    if status != 200 or not isinstance(body, dict):
+        return [Check("uni_demo_chain_up", False, f"{url} -> {err or status}")]
+    contracts = body.get("contracts") if isinstance(body.get("contracts"), dict) else {}
+    ready = bool(body.get("blockchain_ready"))
+    lottery = str(contracts.get("evm_lottery") or "")
+    ok = ready and bool(lottery)
+    return [Check("uni_demo_chain_up", ok,
+                  "demo chain up, lottery " + lottery[:10] if ok else
+                  f"blockchain_ready={ready}, lottery={'set' if lottery else 'missing'}")]
+
+
 def probe_settlement(url: str, timeout: float = 20.0, now: float | None = None
                      ) -> list[Check]:
     """Is the collector still collecting?
@@ -936,6 +954,9 @@ _EN: dict[str, tuple[str, str, str]] = {
     "uni_journey_ok": (
         "an outside buyer can no longer buy end to end", "an outside buyer can buy again",
         "a step a real buyer needs is broken — the failing step is in uni-journey.json"),
+    "uni_demo_chain_up": (
+        "the UNI demo chain is down", "the UNI demo chain is up again",
+        "the charity lottery and ACEX in the UNI realm do not work — see the UNI monitor's anvil.log"),
     "settlement_report_published": (
         "the settlement sweep is not publishing its report",
         "the settlement sweep publishes its report again",
@@ -1125,6 +1146,9 @@ _RU: dict[str, tuple[str, str, str]] = {
         "сторонний покупатель больше не может пройти покупку до конца",
         "сторонний покупатель снова может купить",
         "сломан шаг, нужный настоящему покупателю — какой именно, в uni-journey.json"),
+    "uni_demo_chain_up": (
+        "демо-цепочка UNI лежит", "демо-цепочка UNI снова работает",
+        "благотворительная лотерея и ACEX в мире UNI не работают — смотри anvil.log монитора UNI"),
     "settlement_report_published": (
         "сборщик оплат не публикует отчёт", "сборщик оплат снова публикует отчёт",
         "не видно, уходят ли оплаты в сеть"),
@@ -1596,7 +1620,8 @@ def probe_tls_expiry(names: list[str], timeout: float = 8.0,
 
 
 def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url: str,
-            timeout: float, journey_url: str = "", federation_hubs: list[str] | None = None,
+            timeout: float, journey_url: str = "", uni_chain_url: str = "",
+            federation_hubs: list[str] | None = None,
             sellers: list[str] | None = None, scope: Scope | None = None) -> list[Check]:
     scope = scope if scope is not None else Scope.from_env()
     checks: list[Check] = []
@@ -1622,6 +1647,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
     checks += probe_settlement(settlement_url, timeout)
     if journey_url.strip():
         checks += probe_journey(journey_url, timeout)
+    if uni_chain_url.strip():
+        checks += probe_uni_demo_chain(uni_chain_url, timeout)
     if mode == "full":
         checks += probe_paywall(hub, timeout, scope=scope)
         # Hourly, not every ten minutes: five POSTs per hub, and what it guards against — a
@@ -1666,6 +1693,7 @@ def main(argv: list[str] | None = None) -> int:
     status_url = os.environ.get("AICOM_ALERT_STATUS_URL", DEFAULT_STATUS)
     settlement_url = os.environ.get("AICOM_ALERT_SETTLEMENT_URL", DEFAULT_SETTLEMENT)
     journey_url = os.environ.get("AICOM_ALERT_JOURNEY_URL", DEFAULT_JOURNEY)
+    uni_chain_url = os.environ.get("AICOM_ALERT_UNI_CHAIN_URL", DEFAULT_UNI_CHAIN)
     heartbeat_hours = float(os.environ.get("AICOM_ALERT_HEARTBEAT_HOURS", "24") or 24)
     flap = max(1, int(os.environ.get("AICOM_ALERT_FLAP", "2") or 2))
     lang = (os.environ.get("AICOM_ALERT_LANG") or "en").strip().lower()
@@ -1699,6 +1727,7 @@ def main(argv: list[str] | None = None) -> int:
     scope = Scope.from_env()
     checks = collect(args.mode, hub=hub, signer=signer, status_url=status_url,
                      settlement_url=settlement_url, timeout=args.timeout, journey_url=journey_url,
+                     uni_chain_url=uni_chain_url,
                      federation_hubs=federation_hubs_from_env(hub), scope=scope)
     state = load_state(args.state)
     heartbeat_before = state.get("last_heartbeat", "")
