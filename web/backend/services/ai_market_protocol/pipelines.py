@@ -103,6 +103,13 @@ def list_traces(limit: int = 20) -> list[dict[str, Any]]:
 
 
 
+#: Failures this executor produced ITSELF, before the hop's provider was ever reached: no
+#: federation hub configured, an unusable one, a hub it could not reach. Signing the hop's
+#: provider as at fault for these is false evidence — 2026-10-04: every Studio run blamed
+#: gaia.weather.read@v1 (HTTP 502) for the factory's missing AIMARKET_FEDERATION_HUB_URL.
+EXECUTOR_FAULTS = frozenset({"federation_not_configured", "federation_url_unsafe", "federation_unreachable"})
+
+
 def hosted_here(product_id: str, capability_id: str) -> bool:
     """Whether this factory serves the capability itself.
 
@@ -257,6 +264,8 @@ async def execute_pipeline(
                 local=is_local, sandbox_visitor=sandbox_visitor, payment_channel=channel_id
             ),
         }
+        if status != 200 or not body.get("success"):
+            step["error"] = str(body.get("error") or "")[:80]
         steps_out.append(step)
         if status != 200 or not body.get("success"):
             break
@@ -270,7 +279,22 @@ async def execute_pipeline(
     # at-fault provider — this signed block is the portable evidence for that.
     failed_step = next((s for s in steps_out if not s["success"]), None)
     blame = None
-    if failed_step is not None:
+    if failed_step is not None and failed_step.get("error") in EXECUTOR_FAULTS:
+        # The provider never saw this hop: the fault is this executor's, and no provider's.
+        blame = {
+            "policy": "hop-level",
+            "at_fault": None,
+            "executor_fault": {
+                "id": failed_step["id"],
+                "capability_id": failed_step["capability_id"],
+                "error": failed_step["error"],
+                "status_code": failed_step["status_code"],
+            },
+            "not_at_fault": [s["id"] for s in steps_out if s["success"]],
+            "not_executed": [nid for nid, _ in ordered
+                             if nid not in {s["id"] for s in steps_out if s["success"]}],
+        }
+    elif failed_step is not None:
         blame = {
             "policy": "hop-level",
             "at_fault": {

@@ -55,6 +55,7 @@ Environment (values never come from argv — argv is world-readable in `ps`):
     AICOM_ALERT_SETTLEMENT_URL   the settlement sweep's published settlement.json
     AICOM_ALERT_JOURNEY_URL      the UNI stranger-journey canary's uni-journey.json ("" = off)
     AICOM_ALERT_UNI_CHAIN_URL    the UNI monitor's /api/health, for its demo chain ("" = off)
+    AICOM_ALERT_DEPOSIT_HUBS     hubs whose top-up wallet the hub watches, comma-separated ("" = off)
     AICOM_ALERT_HEARTBEAT_HOURS  digest interval when all is well (default 24)
     AICOM_ALERT_FLAP             consecutive failures before paging (default 2)
 
@@ -91,6 +92,13 @@ DEFAULT_STATUS = "https://verify.modelmarket.dev/status.json"
 DEFAULT_SETTLEMENT = "https://verify.modelmarket.dev/settlement.json"
 DEFAULT_JOURNEY = "https://verify.modelmarket.dev/uni-journey.json"
 DEFAULT_UNI_CHAIN = "https://monitor-uni.modelmarket.dev/api/health"
+# Hubs with a dedicated top-up wallet (AIMARKET_TOPUP_PAY_TO), watched by the hub itself.
+# Hubs whose deposit watcher MUST be on, by the operator's own declaration — none by default:
+# a hub with no dedicated top-up wallet is not watching on purpose, and that is no page. Only
+# hubs inside the alerter's scope are probed (Independent and Attested are separate ecosystems).
+DEFAULT_DEPOSIT_HUBS = ""
+#: A watcher that has not read its wallet for this long is not watching, whatever it says.
+DEPOSIT_WATCH_STALE_S = 15 * 60
 JOURNEY_STALE_HOURS = 13.0   # runs every 6 h; two misses in a row is a dead timer
 
 # How stale the canary's published status may get before that itself is the incident.
@@ -571,6 +579,43 @@ def probe_uni_demo_chain(url: str, timeout: float = 20.0) -> list[Check]:
                   f"blockchain_ready={ready}, lottery={'set' if lottery else 'missing'}")]
 
 
+def probe_deposit_watch(hubs: list[str], timeout: float = 20.0, scope: Scope | None = None,
+                        now: float | None = None) -> list[Check]:
+    """Is each declared hub watching its top-up wallet, and is any money there that no account claims?
+
+    2026-10-04: the first company-to-company payment was a plain transfer nothing could match;
+    it waited until somebody noticed it on chain. Hubs now credit their top-up wallet themselves
+    (aimarket_hub/deposit_watch.py) and publish how many deposits are still unattributed and when
+    the wallet was last read — a watcher that stopped scanning is not "on", whatever it says.
+    Only hubs inside the scope are probed, like every other per-target probe."""
+    now = time.time() if now is None else now
+    checks: list[Check] = []
+    for hub in hubs:
+        hub = hub.rstrip("/")
+        if scope is not None and not scope.allows(hub):
+            continue
+        status, body, err = _get(f"{hub}/.well-known/ai-market.json", timeout)
+        if status != 200 or not isinstance(body, dict):
+            checks.append(Check(f"deposit_watch_on[{hub}]", False, f"well-known -> {err or status}"))
+            continue
+        topup = (((body.get("payment_rails") or {}).get("credits") or {}).get("topup") or {})
+        watch = topup.get("deposit_watch") or {}
+        on = watch.get("enabled") is True
+        detail = str(watch.get("reason") or "no deposit_watch block (hub older than 3.15.11)")
+        last = watch.get("last_scan_at")
+        if on and isinstance(last, (int, float)) and now - float(last) > DEPOSIT_WATCH_STALE_S:
+            on, detail = False, f"enabled, but the wallet was last read {int((now - float(last)) // 60)} min ago"
+        elif on:
+            detail = f"wallet {str(watch.get('wallet') or '')[:10]}…, every {watch.get('interval_s')} s"
+        checks.append(Check(f"deposit_watch_on[{hub}]", on, detail))
+        if watch.get("enabled") is True:
+            waiting = int(watch.get("unattributed_deposits") or 0)
+            checks.append(Check(f"deposits_unattributed[{hub}]", waiting == 0,
+                                "every deposit is credited" if not waiting else
+                                f"{waiting} deposit(s) match no account — GET /ai-market/v2/admin/deposits"))
+    return checks
+
+
 def probe_settlement(url: str, timeout: float = 20.0, now: float | None = None
                      ) -> list[Check]:
     """Is the collector still collecting?
@@ -957,6 +1002,13 @@ _EN: dict[str, tuple[str, str, str]] = {
     "uni_demo_chain_up": (
         "the UNI demo chain is down", "the UNI demo chain is up again",
         "the charity lottery and ACEX in the UNI realm do not work — see the UNI monitor's anvil.log"),
+    "deposit_watch_on": (
+        "{t} is not watching its top-up wallet", "{t} watches its top-up wallet again",
+        "USDC sent to that hub's top-up wallet is not credited automatically"),
+    "deposits_unattributed": (
+        "money arrived in the top-up wallet of {t} that no account claims",
+        "every deposit in the top-up wallet of {t} is credited",
+        "someone paid and waits for credit: link the sending wallet, credit it, or resolve it — GET /ai-market/v2/admin/deposits"),
     "settlement_report_published": (
         "the settlement sweep is not publishing its report",
         "the settlement sweep publishes its report again",
@@ -1149,6 +1201,13 @@ _RU: dict[str, tuple[str, str, str]] = {
     "uni_demo_chain_up": (
         "демо-цепочка UNI лежит", "демо-цепочка UNI снова работает",
         "благотворительная лотерея и ACEX в мире UNI не работают — смотри anvil.log монитора UNI"),
+    "deposit_watch_on": (
+        "{t} не следит за своим кошельком пополнений", "{t} снова следит за своим кошельком пополнений",
+        "USDC, присланный на кошелёк пополнений этого хаба, не зачисляется автоматически"),
+    "deposits_unattributed": (
+        "на кошелёк пополнений {t} пришли деньги, которые не нашли свой счёт",
+        "все поступления на кошелёк пополнений {t} зачислены",
+        "кто-то заплатил и ждёт зачисления: привяжите кошелёк отправителя, зачислите или закройте вручную — GET /ai-market/v2/admin/deposits"),
     "settlement_report_published": (
         "сборщик оплат не публикует отчёт", "сборщик оплат снова публикует отчёт",
         "не видно, уходят ли оплаты в сеть"),
@@ -1621,6 +1680,7 @@ def probe_tls_expiry(names: list[str], timeout: float = 8.0,
 
 def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url: str,
             timeout: float, journey_url: str = "", uni_chain_url: str = "",
+            deposit_hubs: list[str] | None = None,
             federation_hubs: list[str] | None = None,
             sellers: list[str] | None = None, scope: Scope | None = None) -> list[Check]:
     scope = scope if scope is not None else Scope.from_env()
@@ -1649,6 +1709,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_journey(journey_url, timeout)
     if uni_chain_url.strip():
         checks += probe_uni_demo_chain(uni_chain_url, timeout)
+    if deposit_hubs:
+        checks += probe_deposit_watch(deposit_hubs, timeout, scope=scope)
     if mode == "full":
         checks += probe_paywall(hub, timeout, scope=scope)
         # Hourly, not every ten minutes: five POSTs per hub, and what it guards against — a
@@ -1694,6 +1756,8 @@ def main(argv: list[str] | None = None) -> int:
     settlement_url = os.environ.get("AICOM_ALERT_SETTLEMENT_URL", DEFAULT_SETTLEMENT)
     journey_url = os.environ.get("AICOM_ALERT_JOURNEY_URL", DEFAULT_JOURNEY)
     uni_chain_url = os.environ.get("AICOM_ALERT_UNI_CHAIN_URL", DEFAULT_UNI_CHAIN)
+    deposit_hubs = [h.strip() for h in os.environ.get("AICOM_ALERT_DEPOSIT_HUBS", DEFAULT_DEPOSIT_HUBS).split(",")
+                    if h.strip()]
     heartbeat_hours = float(os.environ.get("AICOM_ALERT_HEARTBEAT_HOURS", "24") or 24)
     flap = max(1, int(os.environ.get("AICOM_ALERT_FLAP", "2") or 2))
     lang = (os.environ.get("AICOM_ALERT_LANG") or "en").strip().lower()
@@ -1727,7 +1791,7 @@ def main(argv: list[str] | None = None) -> int:
     scope = Scope.from_env()
     checks = collect(args.mode, hub=hub, signer=signer, status_url=status_url,
                      settlement_url=settlement_url, timeout=args.timeout, journey_url=journey_url,
-                     uni_chain_url=uni_chain_url,
+                     uni_chain_url=uni_chain_url, deposit_hubs=deposit_hubs,
                      federation_hubs=federation_hubs_from_env(hub), scope=scope)
     state = load_state(args.state)
     heartbeat_before = state.get("last_heartbeat", "")

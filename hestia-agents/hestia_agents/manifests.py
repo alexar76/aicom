@@ -22,7 +22,9 @@ OWNER_PUBKEY = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 # Where buyers pay these agents. The hearth verifies a transfer to this address
 # on chain and serves the call; it never holds the funds and takes no cut, so
 # this is the tenant owner's own wallet.
-PAYOUT_ADDRESS = "0x6E94c380d908531f9822035d6cc4c8D2B0186C9c"
+# The treasury, as the owner confirmed on 2026-09-17 ("норм, все верно"). From 09-18 to 10-04
+# this read 0x6E94…6C9c — our own wallet, but the buyer test wallet, not the treasury.
+PAYOUT_ADDRESS = "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a"
 
 PRODUCT_ID = "hestia-agents"
 PUBLISHER_ID = "aicom"

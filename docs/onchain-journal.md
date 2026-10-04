@@ -1221,3 +1221,36 @@ The cheat failed 5/5 and was never debited; $1.00 back
 ([`0xc87df337…`](https://basescan.org/tx/0xc87df33765c9e217f1d97636b3280f70e27780926481dd5330b56312a270dd34)).
 Buyer's total cost: $0.05 plus gas. Full write-up with every transaction and the four defects the first runs
 found: [pay-on-verified-demo.md](pay-on-verified-demo.md).
+
+## 2026-10-04 — first cross-company subcontract: Independent AI pays Attested Memory
+
+Independent AI prepaid its credit account on Attested Memory's hub with a plain USDC transfer on Base
+from its hub wallet `0xe8654a28c2680613B4428Da97517EA08BeeaFe8c` to Attested's
+`0xB73d8Bc93B791510C4733C5C5Ac2015a3c2930Ec`: 1.0154 USDC,
+[`0x96844162…`](https://basescan.org/tx/0x968441629a9972b7d3cd933e1a7743d4787939c18d5967676a11f02351df20cf)
+(block 52158432). Attested's operator credited it to `acct_0766355042297fb5` by transaction hash (paid
+credit, the transaction claimed so it cannot be used twice). Then a buyer on independentai.network/hub ran
+`claim.audit@v1` with a $0.05 allowance (job `job_85e716aa027d9322d3400d38`): Independent's auditor hired
+Attested's `claim.check@v1` and `contradiction.scan@v1` inside the job; verdict `supported`. The buyer paid
+$0.003 + $0.03131 (Attested's prices + 1 % routing fee); Independent's account at Attested went
+1.0154 → 0.9844 ($0.031 to Attested). The demo buyer was funded by Independent's operator (credits, not a
+transfer). How it works: [aimarket-hub/docs/subcontracting.md → Hiring across companies](https://github.com/alexar76/aimarket-hub/blob/main/docs/subcontracting.md#hiring-across-companies).
+
+## 2026-10-04 — Independent AI pays Attested Memory per call in USDC: no account, no prepayment
+
+The same audit, settled the other way. A buyer on independentai.network/hub ran `claim.audit.direct@v1` for
+$0.05 in credits; verdict `supported`, 6.8 s. Inside it, Independent's auditor bought Attested's
+`claim.check@v1` and `contradiction.scan@v1` on Attested's own hub (hub.attestedmemory.net) and paid each one on
+Base at the moment it bought it: an EIP-3009 `transferWithAuthorization` from Independent's executor wallet
+`0x9d24D267Cf8D9A8b9Ed104b4856cDe8830C266eF` (funded by the owner, ~1 USDC + 0.0003 ETH) to Attested's payout
+address `0xB73d8Bc93B791510C4733C5C5Ac2015a3c2930Ec`:
+
+- `claim.check@v1`, 0.022 USDC — [`0xd8a41fb8…`](https://basescan.org/tx/0xd8a41fb865beba51d9e795f556dc3b77e6ce5bb20a0dceb2e0691aa791997531)
+- `contradiction.scan@v1`, 0.009 USDC — [`0x0998c423…`](https://basescan.org/tx/0x0998c423bd7a4262648a731ae1ed3986beb0c0bbd3716f55f2986c84776bf832)
+
+Both in block 52165064, ~0.0000005 ETH of gas each, paid by the executor wallet. Attested's hub read each
+receipt (the authorization for its own nonce, the transfer to its seller, two confirmations) before serving,
+and counts $0.031 settled by x402, nothing unsettled. No credentials were sent to Attested: Independent's
+prepaid account there (entry above) was not used. Executor wallet 1.000 → 0.969 USDC. All three calls stay in
+the public feeds (Independent event 91, Attested events 54–55, 13:11 UTC). How it works:
+[aimarket-hub/docs/subcontracting.md → Paying per call in USDC, with no account](https://github.com/alexar76/aimarket-hub/blob/main/docs/subcontracting.md#paying-per-call-in-usdc-with-no-account).

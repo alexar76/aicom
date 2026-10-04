@@ -1701,3 +1701,61 @@ def test_an_unreachable_uni_monitor_pages(monkeypatch):
 
 def test_the_uni_demo_chain_check_has_both_languages():
     assert "uni_demo_chain_up" in alert._EN and "uni_demo_chain_up" in alert._RU
+
+
+
+def _wk_with_watch(watch: dict) -> dict:
+    return {"payment_rails": {"credits": {"topup": {"enabled": True, "deposit_watch": watch}}}}
+
+
+def test_a_watched_top_up_wallet_with_nothing_waiting_is_quiet(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _wk_with_watch(
+        {"enabled": True, "wallet": "0xdb74", "interval_s": 60, "unattributed_deposits": 0}), ""))
+    assert all(c.ok for c in alert.probe_deposit_watch(["https://hub.x"]))
+
+
+def test_money_nobody_claims_pages(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _wk_with_watch(
+        {"enabled": True, "wallet": "0xdb74", "interval_s": 60, "unattributed_deposits": 2}), ""))
+    bad = [c.name for c in alert.probe_deposit_watch(["https://hub.x"]) if not c.ok]
+    assert bad == ["deposits_unattributed[https://hub.x]"]
+
+
+def test_a_hub_that_stopped_watching_pages(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _wk_with_watch(
+        {"enabled": False, "reason": "plain transfers are not watched"}), ""))
+    bad = [c.name for c in alert.probe_deposit_watch(["https://hub.x"]) if not c.ok]
+    assert bad == ["deposit_watch_on[https://hub.x]"]
+
+
+def test_the_deposit_checks_have_both_languages():
+    for key in ("deposit_watch_on", "deposits_unattributed"):
+        assert key in alert._EN and key in alert._RU
+
+
+def test_a_watcher_that_stopped_reading_its_wallet_pages(monkeypatch):
+    """3.15.11's watcher could wedge while its well-known still said enabled: the probe now reads
+    when the wallet was last scanned."""
+    now = 1_800_000_000.0
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _wk_with_watch(
+        {"enabled": True, "wallet": "0xdb74", "interval_s": 60, "unattributed_deposits": 0,
+         "last_scan_at": now - 3600}), ""))
+    checks = {c.name: c for c in alert.probe_deposit_watch(["https://hub.x"], now=now)}
+    assert not checks["deposit_watch_on[https://hub.x]"].ok
+    assert "60 min ago" in checks["deposit_watch_on[https://hub.x]"].detail
+
+
+def test_deposit_hubs_outside_the_scope_are_not_probed(monkeypatch):
+    """Independent and Attested are separate ecosystems (the owner, 2026-09-24 and 2026-10-04)."""
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (_ for _ in ()).throw(AssertionError("probed")))
+    scope = alert.Scope(("modelmarket.dev",))
+    assert alert.probe_deposit_watch(["https://independentai.network/hub"], scope=scope) == []
+    assert "independentai.network" in scope.excluded
+
+
+def test_no_hub_is_declared_watching_by_default():
+    assert alert.DEFAULT_DEPOSIT_HUBS == ""
+
+
+def test_a_deposit_page_names_the_hub_it_is_about():
+    assert alert._check_target("deposit_watch_on[https://hub.example.net/hub]") == "https://hub.example.net/hub"

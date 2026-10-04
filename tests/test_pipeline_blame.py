@@ -105,3 +105,32 @@ def test_successful_pipeline_has_no_blame(tmp_path, monkeypatch):
     bom = out["bill_of_materials"]
     assert bom["blame"] is None
     assert [s["id"] for s in bom["steps"]] == ["a", "b", "c"]
+
+
+def test_the_executors_own_failure_blames_no_provider(tmp_path, monkeypatch):
+    """No federation hub configured: the hop's provider never saw the call. 3.x signed it as
+    at fault (Studio showed "at fault: gaia.weather.read@v1 (HTTP 502)" on every run)."""
+    _stub(monkeypatch, tmp_path, fail_caps=set())
+    monkeypatch.setattr(pl, "hosted_here", lambda pid, cid: cid != "bad@v1")
+
+    async def no_hub(**kw):
+        return 502, {"success": False, "error": "federation_not_configured", "detail": "unset"}
+
+    monkeypatch.setattr(pl, "invoke_federated", no_hub)
+    blame = _run(NODES)["bill_of_materials"]["blame"]
+    assert blame["at_fault"] is None
+    assert blame["executor_fault"] == {"id": "b", "capability_id": "bad@v1",
+                                       "error": "federation_not_configured", "status_code": 502}
+    assert blame["not_at_fault"] == ["a"] and blame["not_executed"] == ["b", "c"]
+
+
+def test_a_provider_failure_behind_the_hub_still_blames_the_hop(tmp_path, monkeypatch):
+    _stub(monkeypatch, tmp_path, fail_caps=set())
+    monkeypatch.setattr(pl, "hosted_here", lambda pid, cid: cid != "bad@v1")
+
+    async def provider_down(**kw):
+        return 502, {"success": False, "error": "Provider unreachable"}
+
+    monkeypatch.setattr(pl, "invoke_federated", provider_down)
+    blame = _run(NODES)["bill_of_materials"]["blame"]
+    assert blame["at_fault"]["id"] == "b" and "executor_fault" not in blame
