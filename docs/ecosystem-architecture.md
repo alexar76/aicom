@@ -206,46 +206,46 @@ Five phases implemented by [`aimarket_agent`](https://github.com/alexar76/aimark
 ```mermaid
 sequenceDiagram
   autonumber
-  participant App as Client app / SDK
-  participant Hub as AIMarket Hub
-  participant Plugins as Plugin hooks
-  participant Provider as Provider hub or factory invoke
-  participant Chain as Base / EVM chain
-  participant Ledger as Hub channel ledger (SQLite)
-  participant Logos as LOGOS read-only analytics
+  participant App as "Client app / SDK"
+  participant Hub as "AIMarket Hub"
+  participant Plugins as "Plugin hooks"
+  participant Provider as "Provider hub or factory invoke"
+  participant Chain as "Base / EVM chain"
+  participant Ledger as "Hub channel ledger (SQLite)"
+  participant Logos as "LOGOS read-only analytics"
 
-  App->>Hub: GET /search?intent=…&budget=…
-  Hub-->>App: Plan (ranked capabilities)
+  App->>Hub: "GET /search?intent=...&budget=..."
+  Hub-->>App: "Plan (ranked capabilities)"
 
-  App->>Chain: Transfer deposit to platform settlement wallet
-  App->>Hub: POST /channel/open {deposit_usd, tx_hash, payer proof}
-  Hub->>Chain: Verify tx (recipient · amount · token · confirmations · sender)
-  Chain-->>Hub: Confirmed payer + amount
-  Hub->>Ledger: Credit channel, bind to on-chain payer
-  Hub-->>App: channel_id + channel_secret
+  App->>Chain: "Transfer deposit to platform settlement wallet"
+  App->>Hub: "POST /channel/open {deposit_usd, tx_hash, payer proof}"
+  Hub->>Chain: "Verify tx (recipient, amount, token, confirmations, sender)"
+  Chain-->>Hub: "Confirmed payer + amount"
+  Hub->>Ledger: "Credit channel, bind to on-chain payer"
+  Hub-->>App: "channel_id + channel_secret"
 
-  App->>Hub: POST /invoke {capability_id, input, channel_id}
-  Hub->>Plugins: on_invoke_pre_check
+  App->>Hub: "POST /invoke {capability_id, input, channel_id}"
+  Hub->>Plugins: "on_invoke_pre_check"
   alt blocked
-    Plugins-->>Hub: rejection receipt
-    Hub-->>App: 403 (no debit recorded — nothing to refund)
+    Plugins-->>Hub: "rejection receipt"
+    Hub-->>App: "403 (no debit recorded - nothing to refund)"
   else allowed
-    Hub->>Provider: Route invoke
-    Note over Provider: Factory products · peer hubs · [oracles](https://github.com/alexar76/oracles) · GAIA
-    Provider-->>Hub: output + price_usd
-    Hub->>Ledger: Debit price_usd (off-chain, no tx)
-    Hub->>Plugins: on_invoke_post_check
-    Plugins-->>Hub: provenance / TEE metadata
-    Hub-->>App: result + BOM fields
+    Hub->>Provider: "Route invoke"
+    Note over Provider: "Factory products, peer hubs, oracles, GAIA"
+    Provider-->>Hub: "output + price_usd"
+    Hub->>Ledger: "Debit price_usd (off-chain, no tx)"
+    Hub->>Plugins: "on_invoke_post_check"
+    Plugins-->>Hub: "provenance / TEE metadata"
+    Hub-->>App: "result + BOM fields"
   end
 
-  App->>Hub: POST /channel/close {channel_id}
-  Hub->>Ledger: Mark settled; record remainder as a payout OBLIGATION
-  Hub-->>App: receipt (used_usd · refund_owed_usd · refund_executed_usd = 0)
-  Logos->>Hub: Poll public stats / manifest / peers
-  Hub-->>Logos: Current federation state
-  Logos->>Logos: Persist snapshot; recompute anomalies and correlations
-  Note over Hub,Chain: The refund payout itself is an out-of-band operator<br/>transfer, attested back with a tx hash. No chain call here.
+  App->>Hub: "POST /channel/close {channel_id}"
+  Hub->>Ledger: "Mark settled; record remainder as a payout OBLIGATION"
+  Hub-->>App: "receipt (used_usd, refund_owed_usd, refund_executed_usd = 0)"
+  Logos->>Hub: "Poll public stats / manifest / peers"
+  Hub-->>Logos: "Current federation state"
+  Logos->>Logos: "Persist snapshot; recompute anomalies and correlations"
+  Note over Hub,Chain: "The refund payout itself is an out-of-band operator<br/>transfer, attested back with a tx hash. No chain call here."
 ```
 
 ### 5.1 Settlement model — what is and is not on-chain today
