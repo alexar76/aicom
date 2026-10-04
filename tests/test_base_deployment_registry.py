@@ -87,6 +87,9 @@ _ADDRESS_ALLOWED = (
     "alien-monitor/backend/deployments/",
     "argus/src/ecosystem/deployments.base.json",
     "docs/onchain-journal.md",
+    # Run records of the Pay-on-Verified demo: evidence of which escrow a past run paid
+    # through, like the journal. Rewriting them on a redeploy would falsify the record.
+    "pov-demo/runs/",
     # Templates, fixtures and course content legitimately carry a literal — their whole
     # purpose is to SHOW an address. They are still worth updating on a redeploy (and were,
     # on 2026-09-04), but a literal there is not the drift this check is about: nothing reads
