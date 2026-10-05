@@ -1,0 +1,106 @@
+{
+  "slug": "money-compute",
+  "capability": {
+    "product_id": "hestia-agents",
+    "capability_id": "money.compute@v1",
+    "name": "Exact money arithmetic: invoices, splits, conversions",
+    "description": "Decimal money arithmetic that adds up to the last minor unit. invoice: quantity x price lines, line discounts, tax per rate (exclusive or inclusive), rounded per line or per rate, with a tax breakdown. split: an amount by weights, percents or basis points, always summing exactly (largest remainder). convert: at a rate you supply. ISO 4217 minor units (JPY 0, KWD 3), USDC 6, BTC 8, ETH 18.",
+    "price_per_call_usd": 0.002,
+    "input_schema": {
+      "type": "object",
+      "required": [
+        "op"
+      ],
+      "properties": {
+        "op": {
+          "enum": [
+            "invoice",
+            "split",
+            "convert"
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "description": "ISO 4217 code, USDC, BTC, ETH"
+        },
+        "decimals": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18
+        },
+        "rounding": {
+          "enum": [
+            "half_up",
+            "half_even",
+            "half_down",
+            "up",
+            "down",
+            "ceiling",
+            "floor"
+          ],
+          "default": "half_up"
+        },
+        "lines": {
+          "type": "array",
+          "description": "invoice: {quantity, unit_price, tax_rate (percent), discount: {percent} or {amount}, description}"
+        },
+        "tax_rate": {
+          "type": "string",
+          "description": "invoice default, percent"
+        },
+        "tax_inclusive": {
+          "type": "boolean",
+          "default": false
+        },
+        "rounding_level": {
+          "enum": [
+            "line",
+            "rate"
+          ],
+          "default": "line"
+        },
+        "amount": {
+          "type": "string",
+          "description": "split / convert, e.g. \"19.99\""
+        },
+        "shares": {
+          "type": "array",
+          "description": "weights, or [{name, weight}]"
+        },
+        "method": {
+          "enum": [
+            "largest_remainder",
+            "first",
+            "last"
+          ]
+        },
+        "rate": {
+          "type": "string",
+          "description": "convert: target per source unit"
+        },
+        "to": {
+          "type": "string",
+          "description": "convert: target currency code"
+        },
+        "to_decimals": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "publisher_id": "aicom",
+    "provider_pubkey": ""
+  },
+  "source": {
+    "kind": "template",
+    "handler": "\"\"\"Money arithmetic that adds up: invoices, splits, conversions, to the last minor unit.\n\nFloating point cannot hold 0.10, and a language model asked to add a column of prices\nguesses. Everything here is decimal (the `decimal` module, never float), every rounding\nnames its mode and where it happened, and a split always sums to exactly the amount it\nsplit — the remainder goes to the largest fractional shares, ties to the earlier share.\n\n  invoice   lines of quantity x unit price, line discounts, tax per rate (exclusive or\n            inclusive prices), rounded per line or per tax rate; totals and a tax breakdown\n  split     an amount by weights / percents / basis points, exact to the minor unit\n  convert   an amount at a rate you supply (no live prices here), rounded to the target\n\nAmounts travel as decimal strings (\"19.99\"); a JSON number is read through its shortest\ndecimal form. Minor units follow ISO 4217 (JPY 0, KWD 3, ...) or `decimals` you give;\nUSDC is 6, BTC 8, ETH 18.\n\"\"\"\n\nimport decimal\n\nD = decimal.Decimal\nMAX_LINES = 1000\nMAX_SHARES = 1000\n\nROUNDING = {\n    \"half_up\": decimal.ROUND_HALF_UP,\n    \"half_even\": decimal.ROUND_HALF_EVEN,\n    \"half_down\": decimal.ROUND_HALF_DOWN,\n    \"up\": decimal.ROUND_UP,\n    \"down\": decimal.ROUND_DOWN,\n    \"ceiling\": decimal.ROUND_CEILING,\n    \"floor\": decimal.ROUND_FLOOR,\n}\n\n_EXPONENT = {}\nfor _code in (\"BIF CLP DJF GNF ISK JPY KMF KRW PYG RWF UGX UYI VND VUV XAF XOF XPF\").split():\n    _EXPONENT[_code] = 0\nfor _code in (\"BHD IQD JOD KWD LYD OMR TND\").split():\n    _EXPONENT[_code] = 3\nfor _code, _places in ((\"CLF\", 4), (\"UYW\", 4), (\"USDC\", 6), (\"USDT\", 6), (\"BTC\", 8),\n                       (\"ETH\", 18)):\n    _EXPONENT[_code] = _places\n\n\ndef _decimals(payload, key=\"currency\", override=\"decimals\"):\n    if override in payload:\n        places = payload.get(override)\n        if isinstance(places, bool) or not isinstance(places, int) or not 0 <= places <= 18:\n            raise ValueError(\"'\" + override + \"' must be an integer from 0 to 18\")\n        return places\n    code = payload.get(key)\n    if code is None:\n        return 2\n    if not isinstance(code, str) or not (3 <= len(code) <= 5) or not code.isalpha():\n        raise ValueError(\"'\" + key + \"' must be a currency code like EUR, JPY or USDC\")\n    return _EXPONENT.get(code.upper(), 2)\n\n\ndef _amount(value, where, allow_negative=False):\n    if isinstance(value, bool) or value is None:\n        raise ValueError(where + \" must be a decimal string like \\\"19.99\\\"\")\n    if isinstance(value, (int, float)):\n        value = str(value)  # a float's str is its shortest round-trip decimal: 0.2 -> \"0.2\"\n    if not isinstance(value, str):\n        raise ValueError(where + \" must be a decimal string like \\\"19.99\\\"\")\n    text = value.strip()\n    if \",\" in text or \"_\" in text or \" \" in text:\n        raise ValueError(where + \" must use a dot for decimals and no thousands separators\")\n    try:\n        number = D(text)\n    except decimal.InvalidOperation:\n        raise ValueError(where + \" is not a number: \" + text[:40]) from None\n    if not number.is_finite():\n        raise ValueError(where + \" must be finite\")\n    if number < 0 and not allow_negative:\n        raise ValueError(where + \" must not be negative\")\n    return number\n\n\ndef _rounding(payload):\n    mode = payload.get(\"rounding\", \"half_up\")\n    if mode not in ROUNDING:\n        raise ValueError(\"rounding must be one of \" + \", \".join(sorted(ROUNDING)))\n    return mode\n\n\ndef _q(value, places, mode):\n    out = value.quantize(D(1).scaleb(-places), rounding=ROUNDING[mode])\n    return out if out != 0 else abs(out)\n\n\ndef _s(value, places):\n    \"\"\"A fixed-point string with exactly `places` decimals.\"\"\"\n    return format(_q(value, places, \"half_even\") if value.as_tuple().exponent < -places else\n                  value.quantize(D(1).scaleb(-places)), \"f\")\n\n\n# ------------------------------------------------------------------ invoice\n\n\ndef _invoice(payload):\n    places = _decimals(payload)\n    mode = _rounding(payload)\n    level = payload.get(\"rounding_level\", \"line\")\n    if level not in (\"line\", \"rate\"):\n        raise ValueError(\"rounding_level must be line (round each line) or rate (round each \"\n                         \"tax-rate total)\")\n    inclusive = payload.get(\"tax_inclusive\", False)\n    if not isinstance(inclusive, bool):\n        raise ValueError(\"tax_inclusive must be true or false\")\n    default_rate = payload.get(\"tax_rate\", \"0\")\n    lines = payload.get(\"lines\")\n    if not isinstance(lines, list) or not lines:\n        raise ValueError(\"send 'lines': [{quantity, unit_price, tax_rate?, discount?}, ...]\")\n    if len(lines) > MAX_LINES:\n        raise ValueError(\"at most \" + str(MAX_LINES) + \" lines\")\n    hundred = D(100)\n    out_lines, groups = [], {}\n    for i, line in enumerate(lines):\n        where = \"lines[\" + str(i) + \"]\"\n        if not isinstance(line, dict):\n            raise ValueError(where + \" must be an object\")\n        qty = _amount(line.get(\"quantity\", \"1\"), where + \".quantity\")\n        price = _amount(line.get(\"unit_price\"), where + \".unit_price\")\n        rate = _amount(line.get(\"tax_rate\", default_rate), where + \".tax_rate\")\n        if rate > 1000:\n            raise ValueError(where + \".tax_rate is a percent; \" + str(rate) + \" is not plausible\")\n        base = qty * price\n        disc = line.get(\"discount\")\n        if disc is None:\n            discount = D(0)\n        elif isinstance(disc, dict) and \"percent\" in disc:\n            pct = _amount(disc.get(\"percent\"), where + \".discount.percent\")\n            if pct > hundred:\n                raise ValueError(where + \".discount.percent is above 100\")\n            discount = base * pct / hundred\n        elif isinstance(disc, dict) and \"amount\" in disc:\n            discount = _amount(disc.get(\"amount\"), where + \".discount.amount\")\n            if discount > base:\n                raise ValueError(where + \".discount.amount is more than the line\")\n        else:\n            raise ValueError(where + \".discount must be {percent} or {amount}\")\n        after = base - discount\n        if inclusive:\n            gross = _q(after, places, mode) if level == \"line\" else after\n            tax = gross * rate / (hundred + rate)\n            tax = _q(tax, places, mode) if level == \"line\" else tax\n            net = gross - tax\n        else:\n            net = _q(after, places, mode) if level == \"line\" else after\n            tax = net * rate / hundred\n            tax = _q(tax, places, mode) if level == \"line\" else tax\n            gross = net + tax\n        key = format(rate.normalize(), \"f\")\n        group = groups.setdefault(key, {\"rate\": rate, \"net\": D(0), \"tax\": D(0), \"gross\": D(0)})\n        group[\"net\"] += net\n        group[\"tax\"] += tax\n        group[\"gross\"] += gross\n        entry = {\"line\": i, \"quantity\": format(qty.normalize(), \"f\"),\n                 \"unit_price\": format(price, \"f\"), \"subtotal\": _s(_q(base, places, mode), places),\n                 \"discount\": _s(_q(discount, places, mode), places), \"tax_rate\": key}\n        if \"description\" in line:\n            entry[\"description\"] = str(line.get(\"description\"))[:200]\n        if level == \"line\":\n            entry.update({\"net\": _s(net, places), \"tax\": _s(tax, places),\n                          \"gross\": _s(gross, places)})\n        out_lines.append(entry)\n    breakdown = []\n    total_net = total_tax = total_gross = D(0)\n    for key in sorted(groups, key=lambda k: groups[k][\"rate\"]):\n        g = groups[key]\n        if level == \"rate\":\n            if inclusive:\n                gross = _q(g[\"gross\"], places, mode)\n                tax = _q(gross * g[\"rate\"] / (hundred + g[\"rate\"]), places, mode)\n                net = gross - tax\n            else:\n                net = _q(g[\"net\"], places, mode)\n                tax = _q(net * g[\"rate\"] / hundred, places, mode)\n                gross = net + tax\n        else:\n            net, tax, gross = g[\"net\"], g[\"tax\"], g[\"gross\"]\n        total_net += net\n        total_tax += tax\n        total_gross += gross\n        breakdown.append({\"tax_rate\": key, \"net\": _s(net, places), \"tax\": _s(tax, places),\n                          \"gross\": _s(gross, places)})\n    return {\n        \"op\": \"invoice\", \"decimals\": places, \"rounding\": mode, \"rounding_level\": level,\n        \"tax_inclusive\": inclusive, \"lines\": out_lines, \"tax_breakdown\": breakdown,\n        \"totals\": {\"net\": _s(total_net, places), \"tax\": _s(total_tax, places),\n                   \"gross\": _s(total_gross, places)},\n    }\n\n\n# ------------------------------------------------------------------ split\n\n\ndef _split(payload):\n    places = _decimals(payload)\n    amount = _amount(payload.get(\"amount\"), \"amount\")\n    scale = D(1).scaleb(-places)\n    if amount != amount.quantize(scale, rounding=decimal.ROUND_DOWN):\n        raise ValueError(\"amount has more decimals than \" + str(places) + \"; round it first or \"\n                         \"send 'decimals'\")\n    units = int(amount.scaleb(places))\n    shares = payload.get(\"shares\")\n    if not isinstance(shares, list) or not shares:\n        raise ValueError(\"send 'shares': weights, or [{name, weight}] (percent or bps work too)\")\n    if len(shares) > MAX_SHARES:\n        raise ValueError(\"at most \" + str(MAX_SHARES) + \" shares\")\n    names, weights = [], []\n    for i, share in enumerate(shares):\n        where = \"shares[\" + str(i) + \"]\"\n        if isinstance(share, dict):\n            names.append(str(share.get(\"name\", i)))\n            weights.append(_amount(share.get(\"weight\"), where + \".weight\"))\n        else:\n            names.append(str(i))\n            weights.append(_amount(share, where))\n    total_weight = sum(weights, D(0))\n    if total_weight <= 0:\n        raise ValueError(\"the weights must not all be zero\")\n    # Exact rational arithmetic on integers: weights scaled to a common integer base.\n    exponent = min(min(w.as_tuple().exponent for w in weights), 0)\n    ints = [int(w.scaleb(-exponent)) for w in weights]\n    whole = sum(ints)\n    floors, remainders = [], []\n    for i, w in enumerate(ints):\n        q, r = divmod(units * w, whole)\n        floors.append(q)\n        remainders.append((-r, i))\n    leftover = units - sum(floors)\n    method = payload.get(\"method\", \"largest_remainder\")\n    if method == \"largest_remainder\":\n        order = [i for _, i in sorted(remainders)]\n    elif method == \"first\":\n        order = list(range(len(ints)))\n    elif method == \"last\":\n        order = list(range(len(ints) - 1, -1, -1))\n    else:\n        raise ValueError(\"method must be largest_remainder, first or last\")\n    order = [i for i in order if ints[i] > 0]\n    for k in range(leftover):\n        floors[order[k % len(order)]] += 1\n    allocations = []\n    for i, part in enumerate(floors):\n        allocations.append({\"name\": names[i], \"weight\": format(weights[i].normalize(), \"f\"),\n                            \"amount\": _s(D(part).scaleb(-places), places),\n                            \"share\": format((weights[i] / total_weight * 100).quantize(\n                                D(\"0.0001\"), rounding=decimal.ROUND_HALF_EVEN), \"f\") + \"%\"})\n    check = sum(floors)\n    return {\"op\": \"split\", \"decimals\": places, \"method\": method, \"amount\": _s(amount, places),\n            \"allocations\": allocations, \"remainder_units_distributed\": leftover,\n            \"sums_to_amount\": check == units}\n\n\n# ------------------------------------------------------------------ convert\n\n\ndef _convert(payload):\n    amount = _amount(payload.get(\"amount\"), \"amount\", allow_negative=True)\n    rate = _amount(payload.get(\"rate\"), \"rate\")\n    if rate == 0:\n        raise ValueError(\"rate must not be zero\")\n    places = _decimals(payload, \"to\", \"to_decimals\")\n    mode = _rounding(payload)\n    exact = amount * rate\n    result = _q(exact, places, mode)\n    return {\"op\": \"convert\", \"amount\": format(amount, \"f\"), \"rate\": format(rate, \"f\"),\n            \"inverse_rate\": format((D(1) / rate).quantize(D(\"1E-12\"),\n                                                          rounding=decimal.ROUND_HALF_EVEN), \"f\"),\n            \"exact\": format(exact, \"f\"), \"result\": _s(result, places), \"decimals\": places,\n            \"rounding\": mode, \"rounding_error\": format(result - exact, \"f\")}\n\n\ndef handle(payload):\n    op = payload.get(\"op\")\n    if op == \"invoice\":\n        return _invoice(payload)\n    if op == \"split\":\n        return _split(payload)\n    if op == \"convert\":\n        return _convert(payload)\n    raise ValueError(\"op must be invoice, split or convert\")\n"
+  },
+  "owner_pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "announce": false,
+  "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "note": "arithmetic a language model should not do in its head"
+}

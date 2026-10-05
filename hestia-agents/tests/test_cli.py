@@ -313,10 +313,9 @@ def test_a_failed_probe_is_reported_and_the_other_agents_are_still_checked(
     assert paths.count("/t/commit-referee/invoke") == 2
     out = capsys.readouterr().out.splitlines()
     assert out[0] == "  rules-decide: FAILED 503 " + ("tenant is not running " + "y" * 400)[:200]
-    assert out[1:] == [
-        "  json-canonical: ok (signature repeats: True)",
-        "  commit-referee: ok (signature repeats: True)",
-    ]
+    assert out[1:] == [f"  {slug}: ok (signature repeats: True)" for slug in SLUGS[1:]]
+    for slug in SLUGS[3:]:
+        assert paths.count(f"/t/{slug}/invoke") == 2
 
 
 # ------------------------------------------------------------------- quote
@@ -474,7 +473,7 @@ def test_one_agent_failing_its_quote_does_not_hide_the_others(network, capsys) -
         "what it builds with the secret pay prints, not the one above",
         "    then      : hestia-agents call json-canonical --tx <tx hash> "
         "--secret <the secret pay printed>",
-        "  commit-referee: free right now (HTTP 200)",
+        *[f"  {slug}: free right now (HTTP 200)" for slug in SLUGS[2:]],
     ]
 
 

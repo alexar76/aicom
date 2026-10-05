@@ -1,0 +1,54 @@
+# borg patterns for every host (installed as /etc/aicom-backup/excludes).
+# What is left out can be rebuilt, re-downloaded or re-synced; everything else goes in.
+# A host adds its own lines in /etc/aicom-backup/excludes.local.
+
+# package trees and build output
+sh:**/node_modules
+sh:**/.git
+sh:**/.venv
+sh:**/venv
+sh:**/venvs
+sh:**/site-packages
+sh:**/dist-packages
+sh:**/__pycache__
+sh:**/*.pyc
+sh:**/.next
+sh:**/.dart_tool
+
+# caches
+sh:**/.cache
+sh:**/.npm
+sh:**/.npm-global
+sh:**/.pip
+sh:**/.mypy_cache
+sh:**/.pytest_cache
+sh:**/.ruff_cache
+
+# editor and agent installs, agent worktrees
+sh:/root/.cursor-server
+sh:/root/.vscode-server
+sh:/root/.local/share/claude
+sh:**/.claude/worktrees
+
+# hand-made deploy staging (the code is in Gitea)
+sh:/root/hub-thin-*
+sh:/root/hub-build-*
+sh:/root/*-release-*
+sh:/root/aicom-hub-build
+sh:/root/monitor-thin-*
+
+# rollback copies next to live SQLite files: the nightly archives are the history now
+sh:**/*.db.bak*
+
+# stale 1.3 GB copies of a laptop file from 2026-08-02 (SKOPOS runs on Postgres)
+sh:**/skopos/skopos.sqlite3*
+
+# metrics, chain caches, docker-in-docker image stores: rebuilt by themselves
+sh:**/data/prometheus
+sh:/var/lib/docker/volumes/*dind-data*
+sh:/var/lib/docker/volumes/gaia_open_meteo_data
+sh:/srv/skopos-relay/aicom.git
+
+# other hosts' backups (a receiver) and this host's own backup secrets
+sh:/srv/aicom-backups
+sh:/etc/aicom-backup/passphrase

@@ -106,6 +106,10 @@ PROBES: dict[str, dict[str, Any]] = {
 }
 
 
+# Agents added after the first three carry their probe in their own metadata.
+PROBES.update({slug: meta["probe"] for slug, meta in AGENTS.items() if "probe" in meta})
+
+
 def cmd_verify(args: argparse.Namespace) -> int:
     """Invoke each deployed agent twice and prove the answer is reproducible."""
     httpx = _client()

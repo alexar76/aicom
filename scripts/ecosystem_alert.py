@@ -56,6 +56,9 @@ Environment (values never come from argv — argv is world-readable in `ps`):
     AICOM_ALERT_JOURNEY_URL      the UNI stranger-journey canary's uni-journey.json ("" = off)
     AICOM_ALERT_UNI_CHAIN_URL    the UNI monitor's /api/health, for its demo chain ("" = off)
     AICOM_ALERT_DEPOSIT_HUBS     hubs whose top-up wallet the hub watches, comma-separated ("" = off)
+    AICOM_ALERT_BACKUP_URL       the backup receiver's status.json ("" = off)
+    AICOM_ALERT_BACKUP_HOSTS     backup labels that must be there, comma-separated
+                                 (default: whatever the receiver reports)
     AICOM_ALERT_HEARTBEAT_HOURS  digest interval when all is well (default 24)
     AICOM_ALERT_FLAP             consecutive failures before paging (default 2)
 
@@ -100,6 +103,12 @@ DEFAULT_DEPOSIT_HUBS = ""
 #: A watcher that has not read its wallet for this long is not watching, whatever it says.
 DEPOSIT_WATCH_STALE_S = 15 * 60
 JOURNEY_STALE_HOURS = 13.0   # runs every 6 h; two misses in a row is a dead timer
+# Every server's nightly backup lands on the PingBlip host, which publishes when each
+# repository last took a commit — readable from this host's address only (deploy/backup/).
+DEFAULT_BACKUP = "https://pingblip.com/.aicom/backup-status.json"
+BACKUP_STALE_HOURS = 30.0         # nightly, with up to 2 h of jitter: one missed night pages
+BACKUP_STATUS_STALE_HOURS = 1.0   # the receiver republishes every 10 minutes
+BACKUP_MIN_FREE_GB = 10.0         # below this the receiver's next nights may not fit
 
 # How stale the canary's published status may get before that itself is the incident.
 # The cron runs daily, so 36h means one missed run is tolerated and two are not.
@@ -616,6 +625,53 @@ def probe_deposit_watch(hubs: list[str], timeout: float = 20.0, scope: Scope | N
     return checks
 
 
+def probe_backups(url: str, expected: list[str] | None = None, timeout: float = 20.0,
+                  now: float | None = None) -> list[Check]:
+    """Did every server's nightly backup reach the receiver?
+
+    Until 2026-10-04 nothing left any host: the hub keys, the credit ledger and the HESTIA
+    tenants each lived on one disk. Now every host sends an encrypted backup every night, and
+    the receiver, which cannot open them, publishes when each repository last took a commit
+    (and its own outgoing backup under `own`). A backup that quietly stopped is what this
+    catches — nobody looks at backups until the day they are needed."""
+    now = time.time() if now is None else now
+    status, body, err = _get(url, timeout)
+    if status != 200 or not isinstance(body, dict):
+        return [Check("backup_status_published", False, f"{url} -> {err or status}")]
+    age = _hours_since_iso(str(body.get("generated_at", "")), now)
+    if age is None or age > BACKUP_STATUS_STALE_HOURS:
+        return [Check("backup_status_published", False,
+                      f"unreadable generated_at: {body.get('generated_at')!r}" if age is None
+                      else f"STALE: published {age:.1f}h ago (status timer dead?)")]
+    checks = [Check("backup_status_published", True, f"published {age * 60:.0f} min ago")]
+    last: dict[str, str] = {}
+    for label, row in (body.get("repos") or {}).items():
+        last[str(label)] = str((row or {}).get("last_commit") or "")
+    own = body.get("own") if isinstance(body.get("own"), dict) else None
+    own_errors: list[str] = []
+    if own and own.get("label"):
+        last[str(own["label"])] = str(own.get("finished_at") or "") if own.get("ok") else ""
+        own_errors = [str(e) for e in own.get("errors") or []]
+    for label in (expected if expected else sorted(last)):
+        if label not in last:
+            checks.append(Check(f"backup_fresh[{label}]", False, "no repository on the receiver"))
+            continue
+        hours = _hours_since_iso(last[label], now) if last[label] else None
+        ok = hours is not None and hours <= BACKUP_STALE_HOURS
+        if ok:
+            detail = f"last backup {hours:.1f}h ago"
+        elif own and label == own.get("label") and own_errors:
+            detail = "last run failed: " + "; ".join(own_errors)[:200]
+        else:
+            detail = "never" if hours is None else f"STALE: last backup {hours:.1f}h ago"
+        checks.append(Check(f"backup_fresh[{label}]", ok, detail))
+    free = body.get("free_gb")
+    if isinstance(free, (int, float)):
+        checks.append(Check("backup_receiver_disk", free >= BACKUP_MIN_FREE_GB,
+                            f"{free:.0f} GB free on the receiver"))
+    return checks
+
+
 def probe_settlement(url: str, timeout: float = 20.0, now: float | None = None
                      ) -> list[Check]:
     """Is the collector still collecting?
@@ -1009,6 +1065,16 @@ _EN: dict[str, tuple[str, str, str]] = {
         "money arrived in the top-up wallet of {t} that no account claims",
         "every deposit in the top-up wallet of {t} is credited",
         "someone paid and waits for credit: link the sending wallet, credit it, or resolve it — GET /ai-market/v2/admin/deposits"),
+    "backup_status_published": (
+        "the backup receiver is not publishing backup status",
+        "the backup receiver publishes backup status again",
+        "nobody can see whether the servers are still being backed up"),
+    "backup_fresh": (
+        "the nightly backup of {t} has not arrived", "the backup of {t} arrives again",
+        "if that server's disk dies, its keys and data are gone — see /var/lib/aicom-backup/last-run.json there"),
+    "backup_receiver_disk": (
+        "the backup receiver is running out of disk", "the backup receiver has room again",
+        "the next nights' backups may not fit"),
     "settlement_report_published": (
         "the settlement sweep is not publishing its report",
         "the settlement sweep publishes its report again",
@@ -1208,6 +1274,16 @@ _RU: dict[str, tuple[str, str, str]] = {
         "на кошелёк пополнений {t} пришли деньги, которые не нашли свой счёт",
         "все поступления на кошелёк пополнений {t} зачислены",
         "кто-то заплатил и ждёт зачисления: привяжите кошелёк отправителя, зачислите или закройте вручную — GET /ai-market/v2/admin/deposits"),
+    "backup_status_published": (
+        "хранилище бэкапов не публикует их состояние",
+        "хранилище бэкапов снова публикует их состояние",
+        "не видно, сохраняются ли серверы"),
+    "backup_fresh": (
+        "ночной бэкап {t} не пришёл", "бэкап {t} снова приходит",
+        "если у этого сервера умрёт диск, его ключи и данные пропадут — смотри там /var/lib/aicom-backup/last-run.json"),
+    "backup_receiver_disk": (
+        "в хранилище бэкапов кончается место", "в хранилище бэкапов снова есть место",
+        "следующие ночные бэкапы могут не поместиться"),
     "settlement_report_published": (
         "сборщик оплат не публикует отчёт", "сборщик оплат снова публикует отчёт",
         "не видно, уходят ли оплаты в сеть"),
@@ -1681,6 +1757,7 @@ def probe_tls_expiry(names: list[str], timeout: float = 8.0,
 def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url: str,
             timeout: float, journey_url: str = "", uni_chain_url: str = "",
             deposit_hubs: list[str] | None = None,
+            backup_url: str = "", backup_hosts: list[str] | None = None,
             federation_hubs: list[str] | None = None,
             sellers: list[str] | None = None, scope: Scope | None = None) -> list[Check]:
     scope = scope if scope is not None else Scope.from_env()
@@ -1711,6 +1788,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_uni_demo_chain(uni_chain_url, timeout)
     if deposit_hubs:
         checks += probe_deposit_watch(deposit_hubs, timeout, scope=scope)
+    if backup_url.strip():
+        checks += probe_backups(backup_url, backup_hosts, timeout)
     if mode == "full":
         checks += probe_paywall(hub, timeout, scope=scope)
         # Hourly, not every ten minutes: five POSTs per hub, and what it guards against — a
@@ -1758,6 +1837,9 @@ def main(argv: list[str] | None = None) -> int:
     uni_chain_url = os.environ.get("AICOM_ALERT_UNI_CHAIN_URL", DEFAULT_UNI_CHAIN)
     deposit_hubs = [h.strip() for h in os.environ.get("AICOM_ALERT_DEPOSIT_HUBS", DEFAULT_DEPOSIT_HUBS).split(",")
                     if h.strip()]
+    backup_url = os.environ.get("AICOM_ALERT_BACKUP_URL", DEFAULT_BACKUP)
+    backup_hosts = [h.strip() for h in os.environ.get("AICOM_ALERT_BACKUP_HOSTS", "").split(",")
+                    if h.strip()]
     heartbeat_hours = float(os.environ.get("AICOM_ALERT_HEARTBEAT_HOURS", "24") or 24)
     flap = max(1, int(os.environ.get("AICOM_ALERT_FLAP", "2") or 2))
     lang = (os.environ.get("AICOM_ALERT_LANG") or "en").strip().lower()
@@ -1792,6 +1874,7 @@ def main(argv: list[str] | None = None) -> int:
     checks = collect(args.mode, hub=hub, signer=signer, status_url=status_url,
                      settlement_url=settlement_url, timeout=args.timeout, journey_url=journey_url,
                      uni_chain_url=uni_chain_url, deposit_hubs=deposit_hubs,
+                     backup_url=backup_url, backup_hosts=backup_hosts,
                      federation_hubs=federation_hubs_from_env(hub), scope=scope)
     state = load_state(args.state)
     heartbeat_before = state.get("last_heartbeat", "")

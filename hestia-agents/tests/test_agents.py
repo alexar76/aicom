@@ -11,6 +11,7 @@ import json
 
 import pytest
 
+from hestia_agents.cli import PROBES
 from hestia_agents.manifests import AGENTS, AGENTS_DIR, deploy_body, handler_source
 
 NAMES = sorted(AGENTS)
@@ -156,7 +157,7 @@ def test_every_agent_is_deterministic(name: str) -> None:
             "layout": "lenprefix",
         },
     }
-    payload = cases[name]
+    payload = cases.get(name) or PROBES[name]
     first = json.dumps(handle(payload), sort_keys=True, ensure_ascii=False)
     for _ in range(5):
         assert json.dumps(handle(payload), sort_keys=True, ensure_ascii=False) == first

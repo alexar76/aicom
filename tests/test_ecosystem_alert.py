@@ -1759,3 +1759,96 @@ def test_no_hub_is_declared_watching_by_default():
 
 def test_a_deposit_page_names_the_hub_it_is_about():
     assert alert._check_target("deposit_watch_on[https://hub.example.net/hub]") == "https://hub.example.net/hub"
+
+
+# ── off-host backups ─────────────────────────────────────────────────────────────────────
+
+def _backup_status(now: float, **over) -> dict:
+    iso = lambda t: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+    doc = {"generated_at": iso(now - 300), "free_gb": 80.0,
+           "repos": {"factory-vps": {"last_commit": iso(now - 6 * 3600), "size_mb": 800},
+                     "indep": {"last_commit": iso(now - 7 * 3600), "size_mb": 100}},
+           "own": {"label": "pingblip", "finished_at": iso(now - 5 * 3600), "ok": True, "errors": []}}
+    doc.update(over)
+    return doc
+
+
+def test_fresh_backups_everywhere_are_quiet(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _backup_status(NOW), ""))
+    checks = alert.probe_backups("https://r/status.json", now=NOW)
+    assert all(c.ok for c in checks)
+    assert {c.name for c in checks} == {"backup_status_published", "backup_fresh[factory-vps]",
+                                        "backup_fresh[indep]", "backup_fresh[pingblip]",
+                                        "backup_receiver_disk"}
+
+
+def test_a_backup_that_stopped_arriving_pages_by_name(monkeypatch):
+    doc = _backup_status(NOW)
+    doc["repos"]["indep"]["last_commit"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - 50 * 3600))
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, doc, ""))
+    bad = {c.name: c for c in alert.probe_backups("https://r", now=NOW) if not c.ok}
+    assert list(bad) == ["backup_fresh[indep]"] and bad["backup_fresh[indep]"].critical
+    assert "50.0h" in bad["backup_fresh[indep]"].detail
+
+
+def test_a_host_whose_repository_vanished_is_not_silently_skipped(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _backup_status(NOW), ""))
+    bad = [c.name for c in alert.probe_backups("https://r", ["factory-vps", "attested"], now=NOW)
+           if not c.ok]
+    assert bad == ["backup_fresh[attested]"]
+
+
+def test_a_repository_that_never_received_a_backup_pages(monkeypatch):
+    doc = _backup_status(NOW)
+    doc["repos"]["indep"]["last_commit"] = None
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, doc, ""))
+    bad = {c.name: c.detail for c in alert.probe_backups("https://r", now=NOW) if not c.ok}
+    assert bad == {"backup_fresh[indep]": "never"}
+
+
+def test_the_receivers_own_failed_backup_says_why(monkeypatch):
+    doc = _backup_status(NOW)
+    doc["own"] = {"label": "pingblip", "finished_at": doc["generated_at"], "ok": False,
+                  "errors": ["pg_dumpall in pingblip-postgres-1 failed"]}
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, doc, ""))
+    bad = {c.name: c.detail for c in alert.probe_backups("https://r", now=NOW) if not c.ok}
+    assert "pg_dumpall" in bad["backup_fresh[pingblip]"]
+
+
+def test_a_dead_status_timer_is_one_failure_not_a_wall_of_stale_hosts(monkeypatch):
+    doc = _backup_status(NOW, generated_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - 3 * 3600)))
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, doc, ""))
+    checks = alert.probe_backups("https://r", now=NOW)
+    assert [(c.name, c.ok) for c in checks] == [("backup_status_published", False)]
+
+
+def test_an_unreachable_receiver_is_reported(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (403, None, "HTTP 403"))
+    checks = alert.probe_backups("https://r", now=NOW)
+    assert [(c.name, c.ok) for c in checks] == [("backup_status_published", False)]
+
+
+def test_a_full_receiver_pages(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _backup_status(NOW, free_gb=4.2), ""))
+    bad = [c.name for c in alert.probe_backups("https://r", now=NOW) if not c.ok]
+    assert bad == ["backup_receiver_disk"]
+
+
+def test_the_backup_checks_have_both_languages():
+    for key in ("backup_status_published", "backup_fresh", "backup_receiver_disk"):
+        assert key in alert._EN and key in alert._RU
+    assert alert._describe("backup_fresh[factory-vps]", "https://x", "ru")[0] == "ночной бэкап factory-vps не пришёл"
+
+
+def test_backups_are_probed_only_when_a_receiver_is_configured(monkeypatch):
+    for name in ("probe_credit_rail", "probe_dns", "probe_tls_expiry", "probe_hub", "probe_federation",
+                 "probe_status_page", "probe_settlement"):
+        monkeypatch.setattr(alert, name, lambda *a, **k: [])
+    called = []
+    monkeypatch.setattr(alert, "probe_backups", lambda *a, **k: called.append(a) or [])
+    alert.collect("quick", hub="https://x", signer="", status_url="", settlement_url="", timeout=5,
+                  sellers=[], federation_hubs=[])
+    assert called == []
+    alert.collect("quick", hub="https://x", signer="", status_url="", settlement_url="", timeout=5,
+                  sellers=[], federation_hubs=[], backup_url="https://r", backup_hosts=["indep"])
+    assert called == [("https://r", ["indep"], 5)]

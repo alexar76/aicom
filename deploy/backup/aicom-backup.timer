@@ -1,0 +1,11 @@
+[Unit]
+Description=Nightly off-host backup
+
+[Timer]
+# Spread over 01:30-03:30 UTC so eight hosts do not upload to one receiver at once.
+OnCalendar=*-*-* 01:30:00 UTC
+RandomizedDelaySec=2h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

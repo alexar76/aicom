@@ -1,0 +1,14 @@
+[Unit]
+Description=Nightly off-host backup (borg, encrypted on this host)
+Documentation=file:///usr/local/lib/aicom-backup/README.md
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/aicom-backup
+# A failed run is recorded in /var/lib/aicom-backup/last-run.json; the receiver publishes its
+# freshness and the alerter pages on it.
+Nice=10
+IOSchedulingClass=idle
+TimeoutStartSec=6h

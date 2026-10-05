@@ -1,0 +1,104 @@
+{
+  "slug": "stats-test",
+  "capability": {
+    "product_id": "hestia-agents",
+    "capability_id": "stats.test@v1",
+    "name": "A/B tests and confidence intervals, computed not eyeballed",
+    "description": "Is that difference real? Two-proportion z test with Fisher's exact test for small counts, Welch's t test (summaries or raw values), chi-square on r x c tables, sample size per group for a rate or a mean, Wilson and Clopper-Pearson intervals, and a sample summary with Tukey outliers. States the assumptions each answer rests on.",
+    "price_per_call_usd": 0.002,
+    "input_schema": {
+      "type": "object",
+      "required": [
+        "op"
+      ],
+      "properties": {
+        "op": {
+          "enum": [
+            "proportions",
+            "means",
+            "chi_square",
+            "sample_size",
+            "proportion_ci",
+            "describe"
+          ]
+        },
+        "a": {
+          "type": "object",
+          "description": "proportions: {successes, trials}; means: {mean, sd, n} or {values}"
+        },
+        "b": {
+          "type": "object",
+          "description": "the other arm, same shape as a"
+        },
+        "alternative": {
+          "enum": [
+            "two-sided",
+            "greater",
+            "less"
+          ],
+          "default": "two-sided"
+        },
+        "alpha": {
+          "type": "number",
+          "default": 0.05
+        },
+        "table": {
+          "type": "array",
+          "description": "chi_square: rows of counts"
+        },
+        "metric": {
+          "enum": [
+            "proportion",
+            "mean"
+          ],
+          "default": "proportion"
+        },
+        "baseline": {
+          "type": "number",
+          "description": "sample_size: current rate"
+        },
+        "mde": {
+          "type": "number",
+          "description": "sample_size: absolute effect"
+        },
+        "relative_mde": {
+          "type": "number",
+          "description": "sample_size: e.g. 0.2"
+        },
+        "sd": {
+          "type": "number",
+          "description": "sample_size for a mean"
+        },
+        "power": {
+          "type": "number",
+          "default": 0.8
+        },
+        "successes": {
+          "type": "integer",
+          "description": "proportion_ci"
+        },
+        "trials": {
+          "type": "integer",
+          "description": "proportion_ci"
+        },
+        "values": {
+          "type": "array",
+          "description": "describe: the sample"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "publisher_id": "aicom",
+    "provider_pubkey": ""
+  },
+  "source": {
+    "kind": "template",
+    "handler": "\"\"\"Is that difference real? A/B tests, confidence intervals, sample sizes — computed, not\neyeballed, with the assumptions each answer rests on stated next to it.\n\n  proportions   two conversion rates: pooled z test, the difference's CI, Wilson CIs per arm,\n                and Fisher's exact test whenever an expected count is below 5\n  means         Welch's t test from summaries (mean, sd, n) or raw values; Cohen's d\n  chi_square    an r x c table of counts: Pearson's chi-square, expected counts, Cramer's V\n  sample_size   per group, for a proportion (baseline + minimum detectable effect) or a mean\n  proportion_ci one rate: Wilson and Clopper-Pearson (exact) intervals\n  describe      a sample: mean, median, sd, quartiles, Tukey outliers\n\nThe t, chi-square and beta distributions are computed here (regularized incomplete beta and\ngamma functions, Lentz continued fractions); the normal one is the standard library's.\nA p-value answers \"how surprising if there were no difference\", not \"how likely it is real\".\n\"\"\"\n\nimport math\nimport statistics\n\nNORMAL = statistics.NormalDist()\nMAX_VALUES = 100000\nMAX_CELLS = 400\n\n# ------------------------------------------------------------------ special functions\n\n\ndef _betacf(a, b, x):\n    tiny = 1e-300\n    qab, qap, qam = a + b, a + 1.0, a - 1.0\n    c, d = 1.0, 1.0 - qab * x / qap\n    d = 1.0 / (d if abs(d) > tiny else tiny)\n    h = d\n    for m in range(1, 1000):\n        m2 = 2 * m\n        aa = m * (b - m) * x / ((qam + m2) * (a + m2))\n        d = 1.0 + aa * d\n        d = 1.0 / (d if abs(d) > tiny else tiny)\n        c = 1.0 + aa / c\n        c = c if abs(c) > tiny else tiny\n        h *= d * c\n        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))\n        d = 1.0 + aa * d\n        d = 1.0 / (d if abs(d) > tiny else tiny)\n        c = 1.0 + aa / c\n        c = c if abs(c) > tiny else tiny\n        delta = d * c\n        h *= delta\n        if abs(delta - 1.0) < 3e-16:\n            break\n    return h\n\n\ndef betainc(a, b, x):\n    \"\"\"Regularized incomplete beta I_x(a, b).\"\"\"\n    if x <= 0.0:\n        return 0.0\n    if x >= 1.0:\n        return 1.0\n    front = math.exp(math.lgamma(a + b) - math.lgamma(a) - math.lgamma(b)\n                     + a * math.log(x) + b * math.log1p(-x))\n    if x < (a + 1.0) / (a + b + 2.0):\n        return front * _betacf(a, b, x) / a\n    return 1.0 - front * _betacf(b, a, 1.0 - x) / b\n\n\ndef gammainc_upper(s, x):\n    \"\"\"Regularized upper incomplete gamma Q(s, x).\"\"\"\n    if x <= 0.0:\n        return 1.0\n    if x < s + 1.0:\n        term = total = 1.0 / s\n        k = s\n        for _ in range(10000):\n            k += 1.0\n            term *= x / k\n            total += term\n            if abs(term) < abs(total) * 1e-16:\n                break\n        return 1.0 - total * math.exp(-x + s * math.log(x) - math.lgamma(s))\n    tiny = 1e-300\n    b = x + 1.0 - s\n    c, d = 1.0 / tiny, 1.0 / b\n    h = d\n    for i in range(1, 10000):\n        an = -i * (i - s)\n        b += 2.0\n        d = an * d + b\n        d = 1.0 / (d if abs(d) > tiny else tiny)\n        c = b + an / c\n        c = c if abs(c) > tiny else tiny\n        delta = d * c\n        h *= delta\n        if abs(delta - 1.0) < 3e-16:\n            break\n    return math.exp(-x + s * math.log(x) - math.lgamma(s)) * h\n\n\ndef t_two_sided_p(t, df):\n    return betainc(df / 2.0, 0.5, df / (df + t * t))\n\n\ndef t_cdf(t, df):\n    tail = 0.5 * t_two_sided_p(t, df)\n    return 1.0 - tail if t > 0 else tail\n\n\ndef t_quantile(p, df):\n    \"\"\"Inverse of t_cdf by bisection (monotone, so exact to the float).\"\"\"\n    low, high = -1e6, 1e6\n    for _ in range(200):\n        mid = (low + high) / 2.0\n        if t_cdf(mid, df) < p:\n            low = mid\n        else:\n            high = mid\n    return (low + high) / 2.0\n\n\ndef chi2_sf(x, df):\n    return gammainc_upper(df / 2.0, x / 2.0)\n\n\ndef _beta_quantile(p, a, b):\n    low, high = 0.0, 1.0\n    for _ in range(200):\n        mid = (low + high) / 2.0\n        if betainc(a, b, mid) < p:\n            low = mid\n        else:\n            high = mid\n    return (low + high) / 2.0\n\n\n# ------------------------------------------------------------------ inputs\n\n\ndef _count(value, where, minimum=0):\n    if isinstance(value, bool) or not isinstance(value, int) or value < minimum:\n        raise ValueError(where + \" must be an integer >= \" + str(minimum))\n    return value\n\n\ndef _number(value, where, low=None, high=None):\n    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):\n        raise ValueError(where + \" must be a finite number\")\n    if (low is not None and value <= low) or (high is not None and value >= high):\n        raise ValueError(where + \" must be between \" + str(low) + \" and \" + str(high))\n    return float(value)\n\n\ndef _alpha(payload):\n    return _number(payload.get(\"alpha\", 0.05), \"alpha\", 0.0, 0.5)\n\n\ndef _alternative(payload):\n    alt = payload.get(\"alternative\", \"two-sided\")\n    if alt not in (\"two-sided\", \"greater\", \"less\"):\n        raise ValueError(\"alternative must be two-sided, greater (b > a) or less (b < a)\")\n    return alt\n\n\ndef _p_from_z(z, alt):\n    if alt == \"two-sided\":\n        return 2.0 * (1.0 - NORMAL.cdf(abs(z)))\n    return 1.0 - NORMAL.cdf(z) if alt == \"greater\" else NORMAL.cdf(z)\n\n\ndef _r(value, digits=6):\n    \"\"\"Rounded to significant digits, so the answer does not pretend to 17 of them.\"\"\"\n    if not math.isfinite(value):\n        return None\n    return float(format(value, \".4g\")) if digits == 4 else float(format(value, \".6g\"))\n\n\ndef _wilson(k, n, alpha):\n    z = NORMAL.inv_cdf(1.0 - alpha / 2.0)\n    p = k / n\n    centre = (p + z * z / (2 * n)) / (1 + z * z / n)\n    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / (1 + z * z / n)\n    return [_r(max(0.0, centre - half)), _r(min(1.0, centre + half))]\n\n\ndef _fisher(a, b, c, d, alt):\n    \"\"\"Fisher's exact test on [[a, b], [c, d]] (rows: arm A, arm B; columns: success, fail).\"\"\"\n    row1, col1, n = a + b, a + c, a + b + c + d\n    low, high = max(0, col1 - (n - row1)), min(row1, col1)\n    if high - low > 200000:\n        return None\n\n    def logp(x):\n        return (math.lgamma(row1 + 1) - math.lgamma(x + 1) - math.lgamma(row1 - x + 1)\n                + math.lgamma(n - row1 + 1) - math.lgamma(col1 - x + 1)\n                - math.lgamma(n - row1 - col1 + x + 1) - math.lgamma(n + 1)\n                + math.lgamma(col1 + 1) + math.lgamma(n - col1 + 1))\n\n    observed = logp(a)\n    total = 0.0\n    for x in range(low, high + 1):\n        lp = logp(x)\n        if alt == \"two-sided\":\n            keep = lp <= observed + 1e-7\n        elif alt == \"greater\":  # b's rate above a's: fewer successes in arm A\n            keep = x <= a\n        else:\n            keep = x >= a\n        if keep:\n            total += math.exp(lp)\n    return min(1.0, total)\n\n\n# ------------------------------------------------------------------ operations\n\n\ndef _proportions(payload):\n    alpha, alt = _alpha(payload), _alternative(payload)\n    arms = []\n    for name in (\"a\", \"b\"):\n        arm = payload.get(name)\n        if not isinstance(arm, dict):\n            raise ValueError(\"send '\" + name + \"': {successes, trials}\")\n        n = _count(arm.get(\"trials\"), name + \".trials\", 1)\n        k = _count(arm.get(\"successes\"), name + \".successes\")\n        if k > n:\n            raise ValueError(name + \".successes is more than its trials\")\n        arms.append((k, n))\n    (ka, na), (kb, nb) = arms\n    pa, pb = ka / na, kb / nb\n    pooled = (ka + kb) / (na + nb)\n    se_pooled = math.sqrt(pooled * (1 - pooled) * (1 / na + 1 / nb))\n    z = (pb - pa) / se_pooled if se_pooled > 0 else 0.0\n    p_value = _p_from_z(z, alt) if se_pooled > 0 else 1.0\n    se = math.sqrt(pa * (1 - pa) / na + pb * (1 - pb) / nb)\n    zc = NORMAL.inv_cdf(1.0 - alpha / 2.0)\n    expected = [pooled * na, (1 - pooled) * na, pooled * nb, (1 - pooled) * nb]\n    out = {\n        \"op\": \"proportions\", \"rate_a\": _r(pa), \"rate_b\": _r(pb), \"difference\": _r(pb - pa),\n        \"relative_lift\": _r((pb - pa) / pa) if pa > 0 else None,\n        \"test\": \"two-proportion z test (pooled)\", \"z\": _r(z), \"p_value\": _r(p_value),\n        \"alternative\": alt, \"alpha\": alpha, \"significant\": p_value < alpha,\n        \"ci_difference\": [_r(pb - pa - zc * se), _r(pb - pa + zc * se)],\n        \"ci_a\": _wilson(ka, na, alpha), \"ci_b\": _wilson(kb, nb, alpha),\n        \"assumptions\": [\"independent visitors, each counted once, in one arm\",\n                        \"the sample size was fixed before looking (no peeking)\"],\n    }\n    if min(expected) < 5:\n        fisher = _fisher(ka, na - ka, kb, nb - kb, alt)\n        out[\"small_counts\"] = \"an expected count is below 5: prefer Fisher's exact test\"\n        if fisher is not None:\n            out[\"fisher_p_value\"] = _r(fisher)\n            out[\"significant\"] = fisher < alpha\n            out[\"test\"] = \"Fisher's exact test (small counts)\"\n    return out\n\n\ndef _summary(arm, name):\n    if not isinstance(arm, dict):\n        raise ValueError(\"send '\" + name + \"': {mean, sd, n} or {values}\")\n    if \"values\" in arm:\n        values = arm.get(\"values\")\n        if not isinstance(values, list) or len(values) < 2 or len(values) > MAX_VALUES:\n            raise ValueError(name + \".values needs 2 to \" + str(MAX_VALUES) + \" numbers\")\n        data = [_number(v, name + \".values\") for v in values]\n        return statistics.fmean(data), statistics.stdev(data), len(data)\n    return (_number(arm.get(\"mean\"), name + \".mean\"),\n            _number(arm.get(\"sd\"), name + \".sd\", 0.0, None) if arm.get(\"sd\") != 0 else 0.0,\n            _count(arm.get(\"n\"), name + \".n\", 2))\n\n\ndef _means(payload):\n    alpha, alt = _alpha(payload), _alternative(payload)\n    ma, sa, na = _summary(payload.get(\"a\"), \"a\")\n    mb, sb, nb = _summary(payload.get(\"b\"), \"b\")\n    va, vb = sa * sa / na, sb * sb / nb\n    se = math.sqrt(va + vb)\n    if se == 0:\n        raise ValueError(\"both samples have zero spread: there is nothing to test\")\n    df = (va + vb) ** 2 / ((va * va) / (na - 1) + (vb * vb) / (nb - 1))\n    t = (mb - ma) / se\n    if alt == \"two-sided\":\n        p_value = t_two_sided_p(t, df)\n    else:\n        p_value = 1.0 - t_cdf(t, df) if alt == \"greater\" else t_cdf(t, df)\n    tc = t_quantile(1.0 - alpha / 2.0, df)\n    pooled_sd = math.sqrt(((na - 1) * sa * sa + (nb - 1) * sb * sb) / (na + nb - 2))\n    return {\"op\": \"means\", \"mean_a\": _r(ma), \"mean_b\": _r(mb), \"difference\": _r(mb - ma),\n            \"test\": \"Welch's t test\", \"t\": _r(t), \"df\": _r(df), \"p_value\": _r(p_value),\n            \"alternative\": alt, \"alpha\": alpha, \"significant\": p_value < alpha,\n            \"ci_difference\": [_r(mb - ma - tc * se), _r(mb - ma + tc * se)],\n            \"cohens_d\": _r((mb - ma) / pooled_sd) if pooled_sd > 0 else None,\n            \"assumptions\": [\"independent samples\", \"roughly normal means (large n or \"\n                            \"near-normal data); unequal variances are fine\"]}\n\n\ndef _chi_square(payload):\n    table = payload.get(\"table\")\n    if not isinstance(table, list) or len(table) < 2 or not all(\n            isinstance(r, list) and len(r) == len(table[0]) for r in table) or len(table[0]) < 2:\n        raise ValueError(\"table must be at least 2 x 2: a list of equal-length rows of counts\")\n    if len(table) * len(table[0]) > MAX_CELLS:\n        raise ValueError(\"at most \" + str(MAX_CELLS) + \" cells\")\n    counts = [[_count(v, \"table cell\") for v in row] for row in table]\n    rows = [sum(r) for r in counts]\n    cols = [sum(c) for c in zip(*counts, strict=True)]\n    n = sum(rows)\n    if n == 0 or 0 in rows or 0 in cols:\n        raise ValueError(\"every row and column needs at least one count\")\n    expected = [[rows[i] * cols[j] / n for j in range(len(cols))] for i in range(len(rows))]\n    chi2 = sum((counts[i][j] - expected[i][j]) ** 2 / expected[i][j]\n               for i in range(len(rows)) for j in range(len(cols)))\n    df = (len(rows) - 1) * (len(cols) - 1)\n    p_value = chi2_sf(chi2, df)\n    alpha = _alpha(payload)\n    out = {\"op\": \"chi_square\", \"chi2\": _r(chi2), \"df\": df, \"p_value\": _r(p_value),\n           \"alpha\": alpha, \"significant\": p_value < alpha,\n           \"cramers_v\": _r(math.sqrt(chi2 / (n * (min(len(rows), len(cols)) - 1)))),\n           \"expected\": [[_r(e, 4) for e in row] for row in expected]}\n    low = sum(1 for row in expected for e in row if e < 5)\n    if low:\n        out[\"small_counts\"] = str(low) + \" expected counts are below 5: the chi-square \" \\\n                                         \"approximation is unreliable\"\n    return out\n\n\ndef _sample_size(payload):\n    alpha = _alpha(payload)\n    power = _number(payload.get(\"power\", 0.8), \"power\", 0.0, 1.0)\n    alt = _alternative(payload)\n    z_alpha = NORMAL.inv_cdf(1.0 - (alpha / 2.0 if alt == \"two-sided\" else alpha))\n    z_beta = NORMAL.inv_cdf(power)\n    metric = payload.get(\"metric\", \"proportion\")\n    if metric == \"proportion\":\n        p1 = _number(payload.get(\"baseline\"), \"baseline\", 0.0, 1.0)\n        if \"mde\" in payload:\n            p2 = p1 + _number(payload.get(\"mde\"), \"mde\")\n        else:\n            p2 = p1 * (1 + _number(payload.get(\"relative_mde\"), \"relative_mde\"))\n        if not 0 < p2 < 1 or p2 == p1:\n            raise ValueError(\"baseline plus the effect must be a different rate between 0 and 1\")\n        mean_p = (p1 + p2) / 2\n        n = ((z_alpha * math.sqrt(2 * mean_p * (1 - mean_p))\n              + z_beta * math.sqrt(p1 * (1 - p1) + p2 * (1 - p2))) ** 2) / (p2 - p1) ** 2\n        detail = {\"baseline\": p1, \"target\": _r(p2)}\n    elif metric == \"mean\":\n        sd = _number(payload.get(\"sd\"), \"sd\", 0.0, None)\n        delta = _number(payload.get(\"mde\"), \"mde\")\n        if delta == 0:\n            raise ValueError(\"mde must not be zero\")\n        n = 2 * ((z_alpha + z_beta) * sd / delta) ** 2\n        detail = {\"sd\": sd, \"mde\": delta}\n    else:\n        raise ValueError(\"metric must be proportion or mean\")\n    per_group = math.ceil(n)\n    return dict({\"op\": \"sample_size\", \"metric\": metric, \"per_group\": per_group,\n                 \"total\": 2 * per_group, \"alpha\": alpha, \"power\": power, \"alternative\": alt,\n                 \"method\": \"normal approximation\"}, **detail)\n\n\ndef _proportion_ci(payload):\n    n = _count(payload.get(\"trials\"), \"trials\", 1)\n    k = _count(payload.get(\"successes\"), \"successes\")\n    if k > n:\n        raise ValueError(\"successes is more than trials\")\n    alpha = _alpha(payload)\n    lower = 0.0 if k == 0 else _beta_quantile(alpha / 2.0, k, n - k + 1)\n    upper = 1.0 if k == n else _beta_quantile(1.0 - alpha / 2.0, k + 1, n - k)\n    return {\"op\": \"proportion_ci\", \"rate\": _r(k / n), \"confidence\": 1 - alpha,\n            \"wilson\": _wilson(k, n, alpha), \"clopper_pearson\": [_r(lower), _r(upper)]}\n\n\ndef _describe(payload):\n    values = payload.get(\"values\")\n    if not isinstance(values, list) or len(values) < 2 or len(values) > MAX_VALUES:\n        raise ValueError(\"values needs 2 to \" + str(MAX_VALUES) + \" numbers\")\n    data = sorted(_number(v, \"values\") for v in values)\n    q1, q2, q3 = statistics.quantiles(data, n=4, method=\"inclusive\")\n    iqr = q3 - q1\n    outliers = [v for v in data if v < q1 - 1.5 * iqr or v > q3 + 1.5 * iqr]\n    return {\"op\": \"describe\", \"n\": len(data), \"mean\": _r(statistics.fmean(data)),\n            \"median\": _r(q2), \"sd\": _r(statistics.stdev(data)), \"min\": _r(data[0]),\n            \"max\": _r(data[-1]), \"q1\": _r(q1), \"q3\": _r(q3), \"iqr\": _r(iqr),\n            \"outliers\": [_r(v) for v in outliers[:100]], \"outlier_count\": len(outliers),\n            \"outlier_rule\": \"Tukey: below q1 - 1.5 IQR or above q3 + 1.5 IQR\"}\n\n\nOPS = {\"proportions\": _proportions, \"means\": _means, \"chi_square\": _chi_square,\n       \"sample_size\": _sample_size, \"proportion_ci\": _proportion_ci, \"describe\": _describe}\n\n\ndef handle(payload):\n    op = payload.get(\"op\")\n    if op not in OPS:\n        raise ValueError(\"op must be one of \" + \", \".join(OPS))\n    return OPS[op](payload)\n"
+  },
+  "owner_pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "announce": false,
+  "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "note": "the arithmetic behind 'B beat A' that a language model should not guess"
+}

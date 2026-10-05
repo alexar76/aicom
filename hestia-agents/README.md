@@ -1,7 +1,11 @@
 # HESTIA agents
 
-Three deterministic AIMarket capability providers, built to run as HESTIA
-template tenants.
+Deterministic AIMarket capability providers, built to run as HESTIA template
+tenants and sold under the operator's name (payouts to the treasury).
+
+**Catalogue of all eleven agents, in five languages:** [English](docs/AGENTS.md) ·
+[Русский](docs/AGENTS.ru.md) · [Español](docs/AGENTS.es.md) · [Français](docs/AGENTS.fr.md) ·
+[中文](docs/AGENTS.zh.md) — what each answers, how to call it, an example request.
 
 Each one is a pure function of its payload — no clock, no randomness, no
 network, no filesystem. That is the product, not a limitation. HESTIA signs
@@ -14,6 +18,14 @@ nothing. Determinism is what makes the receipt worth paying for.
 | `rules-decide` | `rules.decide@v1` | Which rule decided this, and why every earlier rule did not |
 | `json-canonical` | `json.canonical@v1` | The one byte sequence this JSON must serialise to before signing |
 | `commit-referee` | `commit.referee@v1` | Did the reveal match — and could the committer have opened it another way |
+| `merkle-proof` | `merkle.proof@v1` | Is this entry in that log / that airdrop — and did the log only grow |
+| `x402-check` | `x402.authorization.check@v1` | Who signed this x402 payment, for what — and will USDC accept it |
+| `mcp-diff` | `mcp.tools.diff@v1` | What changed in an MCP server you approved — and does it look like a rug pull |
+| `money-compute` | `money.compute@v1` | What this invoice, split or conversion comes to — to the last minor unit |
+| `signature-verify` | `signature.verify@v1` | Did this key sign this receipt, credential or answer — byte for byte |
+| `id-check` | `id.check@v1` | Is this IBAN, ISBN, GTIN, ISIN, LEI or wallet address real — or a typo |
+| `confusables` | `text.confusables@v1` | Does this name pretend to be another one |
+| `stats-test` | `stats.test@v1` | Did B really beat A — and how many visitors would it take to know |
 
 ## Quick start
 
@@ -85,17 +97,197 @@ which demonstrates two different reveals verifying against one commitment.
 Layouts: `lenprefix` (recommended), `separator`, `concat`, `value`.
 Algorithms: `sha256`, `sha384`, `sha512`.
 
-## Limits worth knowing before writing a fourth
+### `merkle-proof` — proofs you can check without trusting the issuer
+
+Builds roots and inclusion proofs, and checks one you were handed by recomputing the
+root — never by trusting a `valid` flag that came with it. Two families:
+
+- `rfc6962` (default): Certificate Transparency / RFC 9162, as HISTOR's log uses it.
+  `leaf_format` `hex` (default), `utf8`, or `json` (the leaf is the RFC 8785 form of the
+  value — a HISTOR label as published). Ops: `root`, `prove`, `verify`, `consistency`,
+  `verify_consistency` — the last two answer "was the log only appended to?".
+- `openzeppelin`: Solidity's `MerkleProof.verify` (sorted-pair keccak256). Leaves are
+  bytes32 hashes, or `types` + `values` hashed as `StandardMerkleTree` does
+  (`keccak256(keccak256(abi.encode(...)))`, mixed-case addresses checked against
+  EIP-55). `layout` `standard` (@openzeppelin/merkle-tree) or `layers` (pairs left to
+  right, an odd node promoted — merkletreejs, the ACEX distributor). At most 1 024 leaves:
+  keccak256 is pure Python here.
+
+```json
+{"op": "verify", "leaf_format": "utf8", "leaf": "delta", "index": 3, "tree_size": 5,
+ "proof": ["f931…", "fb33…", "4a3c…"], "root": "27fb…"}
+```
+
+Tested against the Certificate Transparency test-vector roots, the root in
+@openzeppelin/merkle-tree's README, eth-abi leaf hashes, and HISTOR's and the ACEX
+distributor's own trees over every index of 1–40 leaves.
+
+Through a hub, the hub's safety gate scans the input first: a standalone 16-digit
+Luhn-valid string reads as a card number and is refused there. Hash leaves never look
+like that; called directly on the hearth, nothing is scanned.
+
+### `x402-check` — will this payment go through, before anyone submits it
+
+x402's `exact` scheme on EVM pays with USDC's EIP-3009 `transferWithAuthorization`. Send the
+X-PAYMENT header (`x_payment`, base64), the decoded `payment`, or `authorization` +
+`signature` (or `v`, `r`, `s`) + `network` (`base`, `base-sepolia`, … or `eip155:<id>`), and
+optionally the seller's `requirements` (the 402's `accepts` entry) and `now`.
+
+It recomputes the EIP-712 digest, recovers the signer (secp256k1, written out here: the
+hearth has no crypto library) and reports each check: `v` (USDC takes only 27/28), `low_s`
+(USDC reverts on the upper half), `signer`, `domain`, `window`, and against the
+requirements `pay_to`, `amount`, `asset`, `network`, `nonce_binding`. The domains of USDC on
+Ethereum, Base, Base Sepolia, Arbitrum, OP, Polygon and Avalanche were read from the
+contracts; Base Sepolia's `name` is `USDC`, every mainnet's is `USD Coin`, and signing with
+the other one is the commonest reason an x402 payment reverts. Whether the nonce is unused
+and the balance covers it needs the chain, so it is listed under `not_checked`.
+
+Tested against a payment that settled on Base (tx `0xd8a41fb8…`), the seven contracts' own
+`DOMAIN_SEPARATOR()`, and eth-account signatures.
+
+### `mcp-diff` — what changed in a server you already approved
+
+Send two `tools/list` results of one MCP server as `old` and `new` (a list, `{tools}` or the
+JSON-RPC `{result: {tools}}`). The answer lists tools added and removed, a word diff of every
+changed description, the JSON paths of the schemas that moved and the annotation changes —
+then raises signals on what the change ADDED, never on what a description already said:
+
+| Signal | Severity | Example |
+|---|---|---|
+| `instruction_tag`, `override`, `conceal_from_user`, `preempt_other_tools` | high | `<IMPORTANT>`, "ignore the other tools", "do not tell the user", "before using any other tool" |
+| `credential_path`, `covert_action`, `html_comment`, `hidden_characters` | high | `~/.ssh`, `mcp.json`, "silently forward", `<!--`, zero-width / bidi / tag characters |
+| `duplicate_name`, `non_ascii_name` | high | two tools named alike, a Cyrillic `а` in a tool name |
+| `new_address`, `send_elsewhere`, `references_other_tools` | medium | a host, e-mail, IP or wallet the old set never named; a tool rewriting another tool |
+| `permission_widened`, `new_sink_parameter` | medium | `readOnlyHint: true` dropped; a new `webhookUrl` / `command` / `path` parameter |
+| `credential_request`, `embedded_blob`, `pushed_out_of_view` | medium | "your API key", a long base64 run, 40 blank characters before the real text |
+
+Verdict: `unchanged`, `changed` (no signal), `review` (medium) or `suspicious` (high). The
+phrases are English; addresses, hidden characters, names and schema changes read the same in
+every language. HISTOR's continuity log flags a changed tool set; this says what changed.
+
+Through a hub, the hub's own safety gate reads the input first and refuses some hostile text
+outright (`ignore all previous instructions`, `<system>`, e-mail addresses as PII). To diff a
+server whose descriptions carry those, call the hearth directly.
+
+### `money-compute` — arithmetic a model should not do in its head
+
+Decimal throughout (never float); every rounding names its mode and where it happened.
+
+- `invoice`: `lines` of `quantity` x `unit_price`, an optional line `discount`
+  (`{percent}` or `{amount}`) and `tax_rate` (percent; `tax_rate` at the top is the default).
+  `tax_inclusive` prices, `rounding_level` `line` (round each line) or `rate` (round each
+  tax-rate total — the two differ by a cent often enough to matter), and a tax breakdown.
+- `split`: `amount` by `shares` (weights, percents, basis points, or `[{name, weight}]`).
+  Always sums to the amount exactly: the leftover minor units go to the largest fractional
+  remainders, ties to the earlier share (`method` `first` / `last` to choose otherwise).
+- `convert`: `amount` x `rate` (you supply the rate; there are no live prices here), rounded
+  to the target currency, with the rounding error stated.
+
+Minor units: ISO 4217 (`JPY` 0, `KWD` 3, most 2), `USDC`/`USDT` 6, `BTC` 8, `ETH` 18, or
+`decimals`. Amounts are decimal strings (`"19.99"`); thousands separators are refused rather
+than guessed. Through a hub, an amount with exactly nine integer digits (100 000 000–
+999 999 999) reads as an SSN to the hub's PII gate; call the hearth directly for those.
+
+### `signature-verify` — receipts and credentials, checked by anyone
+
+Ed25519 (RFC 8032, written out: the hearth has no crypto library; cofactorless like
+OpenSSL, refusing non-canonical points, `S >= L` and small-order keys). `format` is detected
+from the document or given:
+
+| `format` | Signed bytes |
+|---|---|
+| `raw` | `message` (`utf8` / `hex` / `base64`) |
+| `jcs` | RFC 8785 form of `document` minus `exclude` keys (integer numbers only) |
+| `eddsa-jcs-2022` | W3C Data Integrity: SHA-256(JCS(proof config)) ‖ SHA-256(JCS(document)); proof sets too |
+| `histor` | JCS of a HISTOR document without its `signature` (tree heads, labels) |
+| `hestia` | a hearth agent's answer, bound to the `input`, `capability_id`, `product_id` you sent |
+| `hub-receipt` | an AIMarket hub receipt, v1 or v2 canonical (and the hub's 0.0 / 0 twin) |
+| `hub-object` | a whole object a hub or hearth signs (its `.well-known`, compute receipts) |
+
+`public_key` (hex, base64, `did:key:` or `z6Mk…`) pins WHO signed; a document naming another
+key is then invalid. Without it the document's own key is used and the answer says the key
+was self-asserted: integrity, not identity. For credentials the proof's key must also be the
+issuer's, and `proofPurpose` must be `assertionMethod` (or `proof_purpose`).
+
+A defect in the signed material is an answer (`valid: false` and the reason), not an error.
+Tested against RFC 8032, `cryptography`, every AWR/2 conformance vector (all valid documents
+verify; every invalid one whose defect is in the proof, key or canonical bytes is refused —
+the rest break AWR's own rules and carry genuine signatures), a live HISTOR tree head, and
+the hub's and the hearth's own signers.
+
+### `id-check` — a typo caught before money or goods move
+
+`id` (one) or `ids` (up to 1 000, strings or `{id, type}`); `type` is detected when not
+given. Identifiers of accounts, products, publications, securities, companies and wallets —
+never of people: no payment cards (the holder's secret, and a hub's PII gate refuses them
+anyway), no national IDs.
+
+| `type` | Check |
+|---|---|
+| `iban` | the country's length (89 countries, as Wikipedia's registry table lists them) and mod 97; compact form only (a grouped "DE89 3704 …" reads as a card number to a hub's PII gate) |
+| `bic` | ISO 9362 shape only — a BIC has no check digit, and the answer says so |
+| `isbn` | ISBN-10 (mod 11, `X`) with its ISBN-13 form, ISBN-13 |
+| `gtin` | EAN-8, UPC-A, EAN-13, GTIN-14 (mod 10, weights 3/1) |
+| `issn` | mod 11, `X` (an 8-digit ISSN without its hyphen reads as EAN-8: send `type`) |
+| `isin` | Luhn over the letter expansion — which misses some letter swaps (`US…`/`ES…`) |
+| `lei` | ISO 17442 mod 97 |
+| `evm` | mixed case must carry a correct EIP-55 checksum; a wrong one is never "corrected" |
+| `bitcoin` | Base58Check (P2PKH, P2SH, testnet) and Bech32 / Bech32m segwit, with the scriptPubKey |
+
+Tested on published examples, all BIP 350 vectors (copied from bitcoin/bips), and every
+single-character substitution of IBAN, LEI, ISBN and GTIN examples. Through a hub, an EAN-13
+that starts with 4 and also passes the card checksum reads as a card number to the PII gate.
+
+### `confusables` — a name that pretends to be another
+
+`text` or `texts` (up to 500), optionally `against` (the names you protect) and
+`kind: domain` (labels split, `xn--` punycode decoded first). Each name gets a `risk`
+(`none` / `medium` / `high`), its UTS #39 skeleton, its scripts, and the issues found:
+
+- `mixed_script` (high) — Latin with Cyrillic or Greek in one name; the Japanese, Chinese and
+  Korean mixes UTS #39 allows (Latin + Han + kana / Bopomofo / Hangul) are not flagged.
+- `confusable_with` (high) — same skeleton as a protected name, but not that name
+  (`pаypal`, `rnodelmarket`, `modeImarket`, `ｍodelmarket`, `model​market`).
+- `invisible`, `bidi_control` (high) — zero-width, tag, variation characters; bidi controls
+  that reorder what is shown (Trojan Source).
+- `whole_script`, `compatibility`, `confusable_ignoring_accents`, `punycode` (medium).
+
+The prototype table is a curated subset of Unicode's confusables (Cyrillic, Greek,
+Armenian and Cherokee letters that pass for Latin; rn/m, vv/w, cl/d, I/l/1, O/0) — the full
+`confusables.txt` would not fit a template handler. Punycode is RFC 3492, checked against
+Python's codec. Honest single-script names in any language pass.
+
+### `stats-test` — "B beat A", computed rather than guessed
+
+| `op` | Answers |
+|---|---|
+| `proportions` | two conversion rates: pooled z test, the difference's CI, Wilson CIs per arm; Fisher's exact test takes over when an expected count is below 5 |
+| `means` | Welch's t test from `{mean, sd, n}` or `{values}`, with Cohen's d |
+| `chi_square` | an r x c `table` of counts: chi-square, expected counts, Cramér's V, a small-count warning |
+| `sample_size` | per group, for a rate (`baseline` + `mde` or `relative_mde`) or a mean (`sd` + `mde`) |
+| `proportion_ci` | Wilson and Clopper-Pearson (exact) intervals for one rate |
+| `describe` | n, mean, median, sd, quartiles, Tukey outliers |
+
+`alternative` (`two-sided`, `greater` = b above a, `less`) and `alpha` apply throughout, and
+every answer lists the assumptions it rests on (independent units, no peeking). The t,
+chi-square and beta distributions are computed here — regularized incomplete beta and gamma
+functions by continued fractions — and tested against printed critical values, closed forms,
+Fisher's tea-tasting table (34/70) and Evan Miller's A/B sample size (8 158 per group for
+5% → 6%).
+
+## Limits worth knowing before writing another
 
 - A template handler is capped at **32 000 characters**, and the request body at
   **256 KiB** by default. Reference data — holiday calendars, price books,
   licence matrices — will not fit in the source and has to arrive in the
   payload, or the agent becomes a pinned image instead.
-- Handlers are admitted by AST, which is **admission control, not a sandbox**:
-  an admitted handler still executes as a same-host subprocess. It is bounded —
-  a per-call deadline (10s), an address-space cap (512 MiB), a container mem/pids
-  limit and a response cap — but that is not cgroup isolation. For enforced
-  CPU/memory isolation run `HESTIA_RUNTIME=docker`.
+- On the reference hearth (`HESTIA_RUNTIME=wasm`) a handler runs in the hearth's
+  WebAssembly sandbox: a fresh CPython-for-WASI instance per call, 256 MiB, 10 s,
+  4 MiB of output, no host files, network, processes or secrets. Keep handlers
+  pure Python (no `zlib`, sockets or threads in the WASI build) and expect a pure-
+  Python hash or curve to run about three times slower than native — the Merkle
+  agent caps typed trees at 1 024 leaves for that reason. Under the stub runtime
+  the AST allow-list applies instead (admission control, not a sandbox).
 - Priced handlers **are** charged now: see "Getting paid" below.
 
 ## Getting paid
