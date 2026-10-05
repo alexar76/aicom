@@ -105,6 +105,8 @@ paiement qui échoue.
  "payTo": "0x…", "asset": "0x8335…2913"}, "now": 1791119999}
 ```
 
+Si la signature ne correspond pas à `from`, la réponse essaie les erreurs habituelles — l'autre nom d'USDC, la version 1, l'autre type d'autorisation, Base au lieu de Base Sepolia — et nomme le domaine pour lequel elle a vraiment été signée (`diagnosis`).
+
 Hors chaîne : la disponibilité du nonce et la couverture du solde sont listées dans `not_checked`.
 
 ### mcp-diff

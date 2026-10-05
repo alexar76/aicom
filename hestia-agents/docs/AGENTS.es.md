@@ -103,6 +103,8 @@ los contratos: en Base Sepolia el nombre es `USDC`, en las mainnets `USD Coin`, 
  "payTo": "0x…", "asset": "0x8335…2913"}, "now": 1791119999}
 ```
 
+Si la firma no corresponde a `from`, la respuesta prueba los deslices habituales —el otro nombre de USDC, la versión 1, el otro tipo de autorización, Base en lugar de Base Sepolia— y nombra el dominio para el que se firmó de verdad (`diagnosis`).
+
 Sin cadena: si el nonce sigue libre y si el saldo alcanza figura en `not_checked`.
 
 ### mcp-diff

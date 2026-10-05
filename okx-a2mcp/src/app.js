@@ -2,6 +2,7 @@ import { randomBytes } from "node:crypto";
 import express from "express";
 import { failure, paramsOf } from "./a2mcp.js";
 import { buildServices, callerIdFor, WARDEN_VERSION } from "./services.js";
+import { hearthServices } from "./hearth.js";
 import { hubServices } from "./hub.js";
 import { openapiDocument, priceOf, wellKnownManifest } from "./x402.js";
 
@@ -41,10 +42,14 @@ export function createApp({
   // The hub the paid capability twins buy from, and the gateway's credit-account key there.
   hubUrl = "https://modelmarket.dev",
   hubApiKey = "",
+  // The hearth two HESTIA agents are bought from (src/hearth.js), and this gateway's seller key there.
+  hearthUrl = "https://hestia.modelmarket.dev",
+  hearthApiKey = "",
 } = {}) {
   const services = buildServices({ historUrl: historUrl.replace(/\/+$/, ""), fetchImpl, timeoutMs, freePerMinute: freeHistorPerMinute, now });
   // Paid-only twins of the hub's capabilities, when the gateway has a hub account (src/hub.js).
   for (const s of hubServices({ hubUrl, apiKey: hubApiKey, fetchImpl })) services.set(s.id, s);
+  for (const s of hearthServices({ hearthUrl, apiKey: hearthApiKey, sellerUrl: publicUrl, fetchImpl })) services.set(s.id, s);
   const allow = rateLimiter(perMinute, now);
   const app = express();
   app.disable("x-powered-by");

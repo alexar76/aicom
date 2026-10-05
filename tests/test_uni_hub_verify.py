@@ -32,6 +32,7 @@ def good_env() -> dict[str, str]:
         "AIMARKET_SEED_PUBKEYS": json.dumps({s: "key" for s in seeds}),
         "AIMARKET_SELLS_FOR": ",".join(f"{BASE}/sat/{s}" for s in SATS),
         "AIMARKET_CHAIN_REALM": "uni",
+        "AIMARKET_PQC": "1",
     }
 
 
@@ -52,6 +53,13 @@ def test_the_2026_09_16_regression_fails_six_ways():
     env.pop("AIMARKET_SEED_PUBKEYS")
     env.pop("AIMARKET_SELLS_FOR")
     assert len(failed(env)) == 6
+
+
+def test_a_classical_only_hub_is_refused():
+    """2026-10-05: recreated without AIMARKET_PQC, the hub signed Ed25519 only and stayed green."""
+    env = good_env()
+    env.pop("AIMARKET_PQC")
+    assert failed(env) == ["signs hybrid Ed25519 + ML-DSA-65 (AIMARKET_PQC)"]
 
 
 def test_an_outside_seed_is_refused():

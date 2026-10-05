@@ -166,6 +166,21 @@ DENY = {
         # auto-listing, but only a hub admitting peers uses the judge key, and only a hub
         # reselling to peers uses their per-peer billing keys.
         "AIMARKET_FEDERATION_JUDGE_KEY", "AIMARKET_PEER_API_KEYS",
+        # aimarket_hub/ecosystem.py, the hub's SELF/EXT rule. The hub database the Factory
+        # lists into imports only its caller-class check; the rule that reads these is loaded
+        # by the hub's own server (api.py, terminal_ssr.py) to label its feed.
+        "AIMARKET_ECOSYSTEM_FILE", "AIMARKET_OPERATOR_ACCOUNTS", "AIMARKET_TRUSTED_PROXIES",
+        # aimarket_hub/escrow_bridge/config.py, the hub's escrow settlement bridge. The crawler,
+        # imported for its URL check, imports contracts_declaration, whose own_declaration
+        # (called only by the hub's well-known) loads the bridge config. The Factory settles
+        # no escrow channel; the bridge's signing key and signer token are the hub's alone.
+        "AIMARKET_ESCROW_AUTH_MAX_TTL_S", "AIMARKET_ESCROW_BRIDGE_DB_PATH", "AIMARKET_ESCROW_BRIDGE_ENABLED",
+        "AIMARKET_ESCROW_NETWORK", "AIMARKET_ESCROW_PRIVATE_KEY", "AIMARKET_ESCROW_REQUIRED",
+        "AIMARKET_ESCROW_RPC_TIMEOUT_S", "AIMARKET_ESCROW_SIGNER_TOKEN", "AIMARKET_ESCROW_SIGNER_URL",
+        "AIMARKET_ESCROW_SUBMIT_CONFIRM", "AIMARKET_ESCROW_SUBMIT_STRATEGY",
+        # A buyer's wallet key (see the hub's entry). Nothing in the Factory reads it, and its
+        # PIPELINE_ namespace would otherwise let it through.
+        "PIPELINE_WALLET_KEY",
     },
     "hub": {
         # Read only by acex/scripts/pulse_amm_create_pool_plan.py, an offline operator tool
@@ -173,6 +188,11 @@ DENY = {
         "ACEX_DEPLOYER_KEY",
         # The Factory's product wallet (vercel_fullstack_adapter); the hub never reads it.
         "AIMARKET_WALLET_KEY",
+        # The buyer's key for aimarket_hub/pipeline_cli.py (`aimarket-pipeline`), which signs
+        # the buyer's own payment on the buyer's machine. It ships in the image because the
+        # Dockerfile copies aimarket_hub whole; nothing the hub serves imports it, and a hub
+        # holding it would hold a customer's money.
+        "PIPELINE_WALLET_KEY",
     },
 }
 

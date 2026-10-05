@@ -337,6 +337,53 @@ def _check(checks, name, ok, detail):
     checks.append({"check": name, "ok": ok, "detail": detail})
 
 
+# A signature that does not recover to `from` was usually made for a slightly different domain.
+# The usual slips, tried in order, at most eight recoveries: the other USDC name, version "1",
+# the other authorization type, the mainnet/testnet twin of the chain.
+_TWINS = {8453: 84532, 84532: 8453}
+
+
+def _signer_of(kind, name, version, chain_id, contract, fields, recid, r, s):
+    separator = domain_separator(name, version, chain_id, contract)
+    struct = keccak256(_TYPEHASH[kind] + fields)
+    point = _recover(keccak256(b"\x19\x01" + separator + struct), recid, r, s)
+    if point is None:
+        return None
+    return keccak256(point[0].to_bytes(32, "big") + point[1].to_bytes(32, "big"))[12:]
+
+
+def _diagnose(sender, kind, name, version, chain_id, contract, fields, recid, r, s):
+    """What the signature was really made for, when one of the usual slips explains it."""
+    other_name = "USDC" if name == "USD Coin" else "USD Coin"
+    other_kind = ("ReceiveWithAuthorization" if kind == "TransferWithAuthorization"
+                  else "TransferWithAuthorization")
+    tries = [(kind, other_name, version, chain_id, contract, "the domain name '" + other_name + "'"),
+             (kind, name, "1", chain_id, contract, "version '1'"),
+             (kind, other_name, "1", chain_id, contract,
+              "the domain name '" + other_name + "' and version '1'"),
+             (other_kind, name, version, chain_id, contract, other_kind)]
+    twin = _TWINS.get(chain_id)
+    if twin in KNOWN_TOKENS:
+        twin_contract, twin_name, twin_label = KNOWN_TOKENS[twin]
+        for twin_token in (contract, bytes.fromhex(twin_contract[2:])):
+            tries.append((kind, twin_name, "2", twin, twin_token, twin_label + "'s domain (chain "
+                          + str(twin) + ", name '" + twin_name + "')"))
+    for try_kind, try_name, try_version, try_chain, try_contract, label in tries[:8]:
+        if (try_kind, try_name, try_version, try_chain, try_contract) == (
+                kind, name, version, chain_id, contract):
+            continue
+        signer = _signer_of(try_kind, try_name, try_version, try_chain, try_contract, fields,
+                            recid, r, s)
+        if signer == sender:
+            return {"signed_for": {"primary_type": try_kind, "name": try_name,
+                                   "version": try_version, "chainId": try_chain,
+                                   "verifyingContract": checksum(try_contract)},
+                    "explains": "from signed this with " + label + "; the token checks it "
+                    "against name '" + name + "', version '" + version + "', chain "
+                    + str(chain_id) + " — re-sign with those"}
+    return None
+
+
 def handle(payload):
     auth, (r, s, v), network, kind = _unpack(payload)
     requirements = payload.get("requirements")
@@ -374,9 +421,9 @@ def handle(payload):
                          "known USDC deployments, so they cannot be filled in")
 
     separator = domain_separator(name, version, chain_id, contract)
-    struct = keccak256(_TYPEHASH[kind] + b"\x00" * 12 + sender + b"\x00" * 12 + receiver
-                       + value.to_bytes(32, "big") + valid_after.to_bytes(32, "big")
-                       + valid_before.to_bytes(32, "big") + nonce)
+    fields = (b"\x00" * 12 + sender + b"\x00" * 12 + receiver + value.to_bytes(32, "big")
+              + valid_after.to_bytes(32, "big") + valid_before.to_bytes(32, "big") + nonce)
+    struct = keccak256(_TYPEHASH[kind] + fields)
     digest = keccak256(b"\x19\x01" + separator + struct)
 
     checks = []
@@ -388,13 +435,18 @@ def handle(payload):
            "s is in the upper half: USDC reverts (EIP-2); use n - s and flip v")
     point = _recover(digest, recid, r, s)
     signer = None
+    diagnosis = None
     if point is None:
         _check(checks, "signer", False, "no public key recovers from this signature")
     else:
         signer_raw = keccak256(point[0].to_bytes(32, "big") + point[1].to_bytes(32, "big"))[12:]
         signer = checksum(signer_raw)
+        if signer_raw != sender and recid in (0, 1) and s <= _N // 2:
+            diagnosis = _diagnose(sender, kind, name, version, chain_id, contract, fields,
+                                  recid, r, s)
         _check(checks, "signer", signer_raw == sender,
                "signed by from" if signer_raw == sender else
+               ("not valid for this token: " + diagnosis["explains"]) if diagnosis else
                "signed by " + signer + ", not by from — a wrong key, a wrong domain or an "
                "altered field (a contract wallet signing ERC-1271 cannot be checked offline)")
     if is_known:
@@ -465,6 +517,8 @@ def handle(payload):
                         "the balance of from covers the value",
                         "submission happens before validBefore"],
     }
+    if diagnosis:
+        out["diagnosis"] = diagnosis
     if is_known:
         out["token"] = known[2]
         out["value_usdc"] = _decimal(value, 6)

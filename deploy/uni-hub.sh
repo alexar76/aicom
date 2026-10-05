@@ -86,6 +86,11 @@ NAME="modelmarket-hub-uni"
 # rather than a code change — the SSRF rule stays exactly as strict on every hub that is not
 # the bubble, and the two ufw rules that let containers reach 172.17.0.1 are scoped to the
 # docker bridge, so none of this is reachable from off-host.
+#
+# AIMARKET_PQC=1: the bubble hub has signed hybrid (Ed25519 + ML-DSA-65) since 2026-09-06, with
+# its ML-DSA key at /app/data/hub_signing_key_mldsa on the volume. This script did not carry the
+# flag, so a recreate from it brought the hub back classical-only, and nobody saw it until
+# /health said pqc_ready:false on 2026-10-05. The key file on the volume keeps the same identity.
 docker rm -f "$NAME" >/dev/null 2>&1 || true
 docker volume create modelmarket_hub_uni_data >/dev/null
 
@@ -140,6 +145,7 @@ docker run -d --name "$NAME" \
   -e AIMARKET_CREDITS_FREE_GRANT_USD=0 \
   -e AIMARKET_PUBLISHER_SHARE_BPS=7000 \
   -e AIMARKET_SANDBOX_DB_PATH=/app/data/sandbox_trials.db \
+  -e AIMARKET_PQC=1 \
   "$IMAGE" >/dev/null
 
 echo "started $NAME on 127.0.0.1:${PORT}, public at $HUB_URL"

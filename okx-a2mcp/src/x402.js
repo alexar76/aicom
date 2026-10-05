@@ -5,6 +5,7 @@
 // ({id, privateKey}, as the CDP portal downloads it) and passed to the SDK in memory, so it never
 // appears in the container's environment or in `docker inspect`.
 import { readFileSync } from "node:fs";
+import { HEARTH_TOOLS } from "./hearth.js";
 import { HUB_TOOLS } from "./hub.js";
 
 const BASE_MAINNET = "eip155:8453";
@@ -46,8 +47,9 @@ const LISTING = {
     },
     output: { status: "ok", service: "warden-scan", verdict: { allow: true, score: 1, findings: [] } },
   },
-  // The hub's direct capabilities, each at the hub's own price (src/hub.js).
-  ...Object.fromEntries(Object.entries(HUB_TOOLS).map(([id, t]) => [id, {
+  // The hub's direct capabilities, each at the hub's own price (src/hub.js), and two HESTIA
+  // agents at their own price (src/hearth.js).
+  ...Object.fromEntries([...Object.entries(HUB_TOOLS), ...Object.entries(HEARTH_TOOLS)].map(([id, t]) => [id, {
     description: t.description,
     tags: t.tags,
     icon: "https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png",

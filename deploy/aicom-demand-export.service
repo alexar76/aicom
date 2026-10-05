@@ -1,0 +1,17 @@
+[Unit]
+Description=Publish the demand funnel of modelmarket.dev (x402 routes, MCP, agent calls) for the demand test
+Documentation=https://github.com/alexar76/aicom
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/aicom-demand/demand_export.py --out /var/www/verify.modelmarket.dev/demand.json
+SuccessExitStatus=1
+TimeoutStartSec=300
+Nice=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ReadWritePaths=/var/www/verify.modelmarket.dev /var/lib/aicom-demand
+StateDirectory=aicom-demand

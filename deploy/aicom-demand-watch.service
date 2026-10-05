@@ -1,0 +1,21 @@
+[Unit]
+Description=AIMarket demand test — outside payments and MCP calls of the HESTIA agents (2026-10-05..26)
+Documentation=https://github.com/alexar76/aicom
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/aicom-alert.env
+ExecStart=/usr/bin/python3 /usr/local/lib/aicom-alert/demand_watch.py --state /var/lib/aicom-alert/demand.json
+TimeoutStartSec=180
+Nice=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/aicom-alert
+StateDirectory=aicom-alert
+
+[Install]
+WantedBy=multi-user.target

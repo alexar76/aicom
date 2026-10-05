@@ -129,10 +129,38 @@ def test_a_signature_over_the_wrong_name_is_caught(handle) -> None:
     assert checks["signer"]["ok"] is True, "it IS this key's signature, over the wrong domain"
     assert checks["domain"]["ok"] is False and "'USD Coin'" in checks["domain"]["detail"]
     assert out["verdict"] == "invalid"
-    # Checked against the real domain instead, it is somebody else's signature.
+    # Checked against the real domain instead, it is somebody else's signature — and the
+    # answer says which domain from really signed, so the payer knows what to fix.
     plain = handle({"authorization": vector["authorization"], "signature": vector["signature"],
                     "network": "base"})
     assert by_name(plain)["signer"]["ok"] is False
+    assert plain["diagnosis"]["signed_for"]["name"] == "USDC"
+    assert plain["diagnosis"]["signed_for"]["chainId"] == 8453
+    assert "re-sign" in by_name(plain)["signer"]["detail"]
+
+
+def test_a_testnet_domain_used_on_mainnet_is_named(handle) -> None:
+    vector = VECTORS["sepolia_domain_used_on_base"]
+    out = handle({"authorization": vector["authorization"], "signature": vector["signature"],
+                  "network": "base"})
+    assert out["verdict"] == "invalid" and by_name(out)["signer"]["ok"] is False
+    signed_for = out["diagnosis"]["signed_for"]
+    assert signed_for["chainId"] == 84532 and signed_for["name"] == "USDC"
+    assert signed_for["verifyingContract"].lower() == vector["token"].lower()
+
+
+def test_no_diagnosis_for_a_good_signature_or_an_altered_field(handle) -> None:
+    for vector in VECTORS["signed"]:
+        if vector["chain_id"] != 8453:
+            continue
+        good = handle({"authorization": vector["authorization"], "signature": vector["signature"],
+                       "network": "base", "primary_type": vector["kind"]})
+        assert by_name(good)["signer"]["ok"] is True and "diagnosis" not in good
+        altered = dict(vector["authorization"], value=str(int(vector["authorization"]["value"]) + 1))
+        bad = handle({"authorization": altered, "signature": vector["signature"], "network": "base",
+                      "primary_type": vector["kind"]})
+        assert by_name(bad)["signer"]["ok"] is False and "diagnosis" not in bad
+        assert "a wrong key, a wrong domain or an altered field" in by_name(bad)["signer"]["detail"]
 
 
 # ------------------------------------------------------------------ what USDC would refuse

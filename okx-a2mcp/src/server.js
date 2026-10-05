@@ -15,7 +15,9 @@ const paywall = resilientPaywall({
   publicUrl,
   // The hub capability twins are listed only when the gateway has a hub account to buy with.
   serviceIds: ["histor-check", "warden-scan",
-    ...(process.env.HUB_API_KEY_FILE ? ["weather-now", "air-quality-now", "nearby-sensors", "fair-random"] : [])],
+    ...(process.env.HUB_API_KEY_FILE ? ["weather-now", "air-quality-now", "nearby-sensors", "fair-random"] : []),
+    // Two HESTIA agents, when the gateway holds a seller key on the hearth (src/hearth.js).
+    ...(process.env.HEARTH_API_KEY_FILE ? ["x402-check", "mcp-diff"] : [])],
 });
 
 const app = createApp({
@@ -30,6 +32,9 @@ const app = createApp({
   // The gateway's hub credit-account key, from a mounted file like the other secrets.
   ...(process.env.HUB_API_KEY_FILE ? { hubApiKey: readFileSync(process.env.HUB_API_KEY_FILE, "utf8").trim() } : {}),
   ...(process.env.HUB_URL ? { hubUrl: process.env.HUB_URL } : {}),
+  // The gateway's seller key on the hearth, from a mounted file like the other secrets.
+  ...(process.env.HEARTH_API_KEY_FILE ? { hearthApiKey: readFileSync(process.env.HEARTH_API_KEY_FILE, "utf8").trim() } : {}),
+  ...(process.env.HEARTH_URL ? { hearthUrl: process.env.HEARTH_URL } : {}),
   paywall,
 });
 app.listen(port, host, () =>

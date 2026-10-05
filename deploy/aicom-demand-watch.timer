@@ -1,0 +1,13 @@
+[Unit]
+Description=AIMarket demand test — hourly look, daily summary
+Documentation=https://github.com/alexar76/aicom
+
+[Timer]
+Unit=aicom-demand-watch.service
+OnBootSec=10min
+OnUnitActiveSec=1h
+AccuracySec=2min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

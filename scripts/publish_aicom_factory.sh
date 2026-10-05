@@ -271,6 +271,14 @@ EXCLUDES=()
 while IFS= read -r line; do EXCLUDES+=("$line"); done < <(python3 "$ROOT/scripts/aicom_publish_config.py" list-excludes)
 RSYNC_EXCLUDE_ARGS=()
 while IFS= read -r line; do RSYNC_EXCLUDE_ARGS+=("$line"); done < <(python3 "$ROOT/scripts/aicom_publish_config.py" rsync-args)
+# Internal colleague checklist and grant drafts (often Russian). Both forms so a
+# future monorepo commit of this folder cannot be rsynced onto alexar76/aicom.
+# rsync --exclude does not delete a copy already on the factory clone; the
+# clone sync below removes docs/distribution and git rm drops it from the index.
+DISTRIBUTION_EXCLUDES=(docs/distribution docs/distribution/)
+for p in "${DISTRIBUTION_EXCLUDES[@]}"; do
+  RSYNC_EXCLUDE_ARGS+=(--exclude "$p")
+done
 
 # AIMarket School + academies are satellites only (excluded via satellite-map):
 #   school/   → alexar76/aimarket-school (Colab notebooks)
@@ -341,6 +349,13 @@ if [[ -n "$EXPORT_DIR" ]]; then
   TARGET="$EXPORT_DIR"
   mkdir -p "$TARGET"
   rsync -a --delete "${RSYNC_EXCLUDE_ARGS[@]}" "$ROOT/" "$TARGET/"
+  for p in "${DISTRIBUTION_EXCLUDES[@]}"; do
+    rm -rf "$TARGET/$p"
+  done
+  if [[ -e "$TARGET/docs/distribution" ]]; then
+    echo "ERROR: docs/distribution reached the GitHub factory tree — refusing to export." >&2
+    exit 1
+  fi
   if [[ -e "$TARGET/independent" ]]; then
     echo "ERROR: independent/ reached the GitHub factory tree — refusing to export." >&2
     exit 1
@@ -410,6 +425,9 @@ CLONE="$WORKDIR/clone"
 
 echo "Syncing factory files (deleting satellite dirs on remote) …"
 rsync -a --delete "${RSYNC_EXCLUDE_ARGS[@]}" "$ROOT/" "$CLONE/"
+for p in "${DISTRIBUTION_EXCLUDES[@]}"; do
+  rm -rf "$CLONE/$p"
+done
 
 # Ensure satellite directories are removed even if rsync missed edge cases
 for p in "${EXCLUDES[@]}"; do
@@ -482,7 +500,14 @@ done
 for p in "${LOCAL_EXCLUDES[@]}"; do
   git rm -rf --ignore-unmatch "$p" 2>/dev/null || true
 done
+for p in "${DISTRIBUTION_EXCLUDES[@]}"; do
+  git rm -rf --ignore-unmatch "$p" 2>/dev/null || true
+done
 git rm -rf --ignore-unmatch data/state 2>/dev/null || true
+if [[ -e docs/distribution ]]; then
+  echo "ERROR: docs/distribution reached the GitHub factory clone — refusing to push." >&2
+  exit 1
+fi
 
 copy_factory_github_assets "$CLONE"
 copy_factory_cursor_rules "$CLONE"

@@ -64,6 +64,10 @@ def rules(env: dict[str, str], hub_url: str) -> list[tuple[str, bool]]:
         ("sells on behalf of its satellites (AIMARKET_SELLS_FOR)",
          bool(sells) and all(s.startswith(f"{base}/sat/") for s in sells)),
         ("realm is sealed as uni", env.get("AIMARKET_CHAIN_REALM") == "uni"),
+        # Lost once already (found 2026-10-05): the script did not carry the flag, so a recreate
+        # brought the hub back classical-only while /health stayed green.
+        ("signs hybrid Ed25519 + ML-DSA-65 (AIMARKET_PQC)",
+         env.get("AIMARKET_PQC", "").strip().lower() in ("1", "true", "yes", "on")),
     ]
 
 

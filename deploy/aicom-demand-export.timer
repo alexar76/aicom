@@ -1,0 +1,13 @@
+[Unit]
+Description=Publish the demand funnel every 10 minutes
+Documentation=https://github.com/alexar76/aicom
+
+[Timer]
+Unit=aicom-demand-export.service
+OnBootSec=3min
+OnUnitActiveSec=10min
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

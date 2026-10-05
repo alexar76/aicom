@@ -1,0 +1,19 @@
+---
+description: docs/distribution/ is internal colleague and grant notes — gitignored; never stage, commit, or factory-publish.
+alwaysApply: true
+---
+
+# Do not commit docs/distribution
+
+`docs/distribution/` is an internal colleague checklist and grant drafts (often Russian). Do not stage, commit, or include it in GitHub factory publishes. It is gitignored. Do not `git add -f` it.
+
+Public English comment drafts that must be posted on GitHub issues are not this folder.
+
+```bash
+# BAD — forces the ignored folder into the index
+git add -f docs/distribution/
+git add docs/distribution/colleague-tasks.md
+
+# GOOD — leave the folder on disk and out of every commit and factory publish
+git status --ignored -- docs/distribution
+```

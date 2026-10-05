@@ -102,6 +102,8 @@ Base Sepolia's name is `USDC`, the mainnets' `USD Coin`, the commonest reason a 
  "payTo": "0x…", "asset": "0x8335…2913"}, "now": 1791119999}
 ```
 
+When the signature does not recover to `from`, the answer tries the usual slips — the other USDC name, version 1, the other authorization type, Base for Base Sepolia — and names the domain it was really signed for (`diagnosis`).
+
 Offline: whether the nonce is unused and the balance covers it are listed under `not_checked`.
 
 ### mcp-diff

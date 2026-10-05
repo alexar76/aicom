@@ -82,6 +82,8 @@
  "payTo": "0x…", "asset": "0x8335…2913"}, "now": 1791119999}
 ```
 
+如果签名恢复出的地址不是 `from`，回答会尝试常见的失误——USDC 的另一个名称、版本 1、另一种授权类型、把 Base Sepolia 的域用在 Base 上——并指出签名实际针对的域（`diagnosis`）。
+
 离线检查：nonce 是否尚未使用、余额是否足够，列在 `not_checked` 中。
 
 ### mcp-diff
