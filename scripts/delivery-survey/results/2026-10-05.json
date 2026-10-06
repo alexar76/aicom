@@ -1,0 +1,990 @@
+{
+ "survey": "x402 delivery survey",
+ "date": "2026-10-05",
+ "seed": "aimarket delivery survey 2026-10-05",
+ "catalogue": {
+  "source": "CDP Bazaar discovery API",
+  "listings": 34768,
+  "eligible_hosts": 1466,
+  "snapshot_sha256": "6de6966927e5cc5b83f55f7c128c48861eab4cebf1e3fb61c2c9cb0d583d876c"
+ },
+ "summary": {
+  "drawn": 100,
+  "bought": 95,
+  "charged": 85,
+  "charged_usdc": "0.489446",
+  "outcomes": {
+   "delivered": 74,
+   "failed_the_order": 3,
+   "answered_not_judged": 8,
+   "not_charged_no_answer": 9,
+   "not_bought": 5,
+   "charged_no_answer": 1
+  },
+  "charged_without_a_useful_answer": 4,
+  "usdc_charged_without_a_useful_answer": "0.022",
+  "categories": {
+   "402_mixes_v1_and_v2_fields": 1,
+   "empty_result": 1,
+   "error_after_charge": 1,
+   "error_report_instead_of_data": 1,
+   "incomplete_result": 1,
+   "no_answer_to_unpaid_request": 1,
+   "no_settlement_header": 1,
+   "own_example_cannot_be_sent": 2,
+   "own_example_fails": 7,
+   "payee_differs_from_listing": 1,
+   "price_above_listing": 1,
+   "settlement_claimed_not_on_chain": 1,
+   "upstream_failure": 4
+  }
+ },
+ "evidence_sha256": "f55c952d752319d1a862c7154f8d93ca0aa675b5cd1172b368846e5fbe2f5cf9",
+ "note": "Sellers are not named. The private evidence file (seller hosts, request, answer, transaction, verdict) hashes to evidence_sha256; each seller can be shown its own row. Rows are shuffled within each outcome.",
+ "rows": [
+  {
+   "id": "S001",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "5+",
+   "jury_score": 0.95,
+   "categories": []
+  },
+  {
+   "id": "S002",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S003",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S004",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S005",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S006",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S007",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S008",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S009",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S010",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S011",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S012",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S013",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S014",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S015",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "2-4",
+   "jury_score": 0.95,
+   "categories": []
+  },
+  {
+   "id": "S016",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S017",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S018",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "5+",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S019",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S020",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S021",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "2-4",
+   "jury_score": 0.85,
+   "categories": []
+  },
+  {
+   "id": "S022",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S023",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S024",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "1",
+   "jury_score": 0.95,
+   "categories": []
+  },
+  {
+   "id": "S025",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S026",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "2-4",
+   "jury_score": 0.9,
+   "categories": []
+  },
+  {
+   "id": "S027",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 0.95,
+   "categories": []
+  },
+  {
+   "id": "S028",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "1",
+   "jury_score": 0.9,
+   "categories": []
+  },
+  {
+   "id": "S029",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S030",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S031",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S032",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S033",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S034",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S035",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S036",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "5+",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S037",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S038",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S039",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S040",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "2-4",
+   "jury_score": 0.9,
+   "categories": [
+    "no_settlement_header"
+   ]
+  },
+  {
+   "id": "S041",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "1",
+   "jury_score": 0.95,
+   "categories": []
+  },
+  {
+   "id": "S042",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "5+",
+   "jury_score": 0.95,
+   "categories": []
+  },
+  {
+   "id": "S043",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "5+",
+   "jury_score": 0.95,
+   "categories": []
+  },
+  {
+   "id": "S044",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S045",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S046",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S047",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S048",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S049",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "2-4",
+   "jury_score": 0.9,
+   "categories": []
+  },
+  {
+   "id": "S050",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S051",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S052",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S053",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S054",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "1",
+   "jury_score": 0.9,
+   "categories": []
+  },
+  {
+   "id": "S055",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "5+",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S056",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S057",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "5+",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S058",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "5+",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S059",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S060",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S061",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "2-4",
+   "jury_score": 0.93,
+   "categories": []
+  },
+  {
+   "id": "S062",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "1",
+   "jury_score": 0.95,
+   "categories": []
+  },
+  {
+   "id": "S063",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "5+",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S064",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S065",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 0.95,
+   "categories": []
+  },
+  {
+   "id": "S066",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S067",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S068",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S069",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S070",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S071",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S072",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S073",
+   "outcome": "delivered",
+   "charged": false,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": 1,
+   "categories": [
+    "settlement_claimed_not_on_chain"
+   ]
+  },
+  {
+   "id": "S074",
+   "outcome": "delivered",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "2-4",
+   "jury_score": 1,
+   "categories": []
+  },
+  {
+   "id": "S075",
+   "outcome": "failed_the_order",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": 0.2,
+   "categories": [
+    "incomplete_result"
+   ]
+  },
+  {
+   "id": "S076",
+   "outcome": "failed_the_order",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "5+",
+   "jury_score": 0.1,
+   "categories": [
+    "empty_result"
+   ]
+  },
+  {
+   "id": "S077",
+   "outcome": "failed_the_order",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": 0,
+   "categories": [
+    "own_example_fails",
+    "error_report_instead_of_data"
+   ]
+  },
+  {
+   "id": "S078",
+   "outcome": "answered_not_judged",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": []
+  },
+  {
+   "id": "S079",
+   "outcome": "answered_not_judged",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "5+",
+   "jury_score": null,
+   "categories": [
+    "own_example_fails"
+   ]
+  },
+  {
+   "id": "S080",
+   "outcome": "answered_not_judged",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": []
+  },
+  {
+   "id": "S081",
+   "outcome": "answered_not_judged",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": []
+  },
+  {
+   "id": "S082",
+   "outcome": "answered_not_judged",
+   "charged": true,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": []
+  },
+  {
+   "id": "S083",
+   "outcome": "answered_not_judged",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": []
+  },
+  {
+   "id": "S084",
+   "outcome": "answered_not_judged",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": []
+  },
+  {
+   "id": "S085",
+   "outcome": "answered_not_judged",
+   "charged": true,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": []
+  },
+  {
+   "id": "S086",
+   "outcome": "charged_no_answer",
+   "charged": true,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": [
+    "error_after_charge"
+   ]
+  },
+  {
+   "id": "S087",
+   "outcome": "not_charged_no_answer",
+   "charged": false,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": [
+    "upstream_failure"
+   ]
+  },
+  {
+   "id": "S088",
+   "outcome": "not_charged_no_answer",
+   "charged": false,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": [
+    "own_example_fails"
+   ]
+  },
+  {
+   "id": "S089",
+   "outcome": "not_charged_no_answer",
+   "charged": false,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": [
+    "upstream_failure",
+    "price_above_listing"
+   ]
+  },
+  {
+   "id": "S090",
+   "outcome": "not_charged_no_answer",
+   "charged": false,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": [
+    "own_example_fails"
+   ]
+  },
+  {
+   "id": "S091",
+   "outcome": "not_charged_no_answer",
+   "charged": false,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": [
+    "own_example_fails"
+   ]
+  },
+  {
+   "id": "S092",
+   "outcome": "not_charged_no_answer",
+   "charged": false,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": [
+    "own_example_fails"
+   ]
+  },
+  {
+   "id": "S093",
+   "outcome": "not_charged_no_answer",
+   "charged": false,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": [
+    "upstream_failure"
+   ]
+  },
+  {
+   "id": "S094",
+   "outcome": "not_charged_no_answer",
+   "charged": false,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": [
+    "own_example_fails"
+   ]
+  },
+  {
+   "id": "S095",
+   "outcome": "not_charged_no_answer",
+   "charged": false,
+   "price_usd_band": "0.004-0.005",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": [
+    "upstream_failure"
+   ]
+  },
+  {
+   "id": "S096",
+   "outcome": "not_bought",
+   "charged": null,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": [
+    "402_mixes_v1_and_v2_fields"
+   ]
+  },
+  {
+   "id": "S097",
+   "outcome": "not_bought",
+   "charged": null,
+   "price_usd_band": "0.006-0.010",
+   "payers_30d_band": "5+",
+   "jury_score": null,
+   "categories": [
+    "no_answer_to_unpaid_request"
+   ]
+  },
+  {
+   "id": "S098",
+   "outcome": "not_bought",
+   "charged": null,
+   "price_usd_band": "0.002-0.003",
+   "payers_30d_band": "1",
+   "jury_score": null,
+   "categories": [
+    "payee_differs_from_listing"
+   ]
+  },
+  {
+   "id": "S099",
+   "outcome": "not_bought",
+   "charged": null,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": [
+    "own_example_cannot_be_sent"
+   ]
+  },
+  {
+   "id": "S100",
+   "outcome": "not_bought",
+   "charged": null,
+   "price_usd_band": "0.001",
+   "payers_30d_band": "2-4",
+   "jury_score": null,
+   "categories": [
+    "own_example_cannot_be_sent"
+   ]
+  }
+ ]
+}

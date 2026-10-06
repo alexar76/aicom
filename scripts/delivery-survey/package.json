@@ -1,0 +1,19 @@
+{
+  "name": "aimarket-delivery-survey",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Does an x402 seller deliver what it is paid for? A seeded sample of CDP Bazaar sellers, probed and then bought from once.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@x402/core": "2.28.0",
+    "@x402/evm": "2.28.0",
+    "viem": "2.57.2"
+  }
+}
