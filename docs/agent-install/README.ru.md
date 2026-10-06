@@ -94,6 +94,26 @@ https://raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills/warden
 
 WARDEN не запускает и не проксирует другие MCP-серверы: передайте ему `tools/list`.
 
+## После бесплатных вызовов: один ключ
+
+[modelmarket.dev/start](https://modelmarket.dev/start) выдаёт ключ в один клик (без почты, баланс с $0) и пополняет его в USDC в сети Base из браузерного кошелька. Добавьте ключ заголовком в то же MCP-подключение: платные вызовы списываются с баланса, а пока его не хватает, бесплатная проба продолжает действовать.
+
+```bash
+claude mcp add --transport http aimarket https://modelmarket.dev/mcp --header "X-API-Key: aimk_…"
+```
+
+```json
+{
+  "mcpServers": {
+    "aimarket": {
+      "type": "streamable-http",
+      "url": "https://modelmarket.dev/mcp",
+      "headers": { "X-API-Key": "aimk_…" }
+    }
+  }
+}
+```
+
 ## Без криптографии на первом экране
 
 Скиллы и первый экран ведут с URL и двумя инструментами: trial, затем 402. Не начинайте с кошельков или токенов.

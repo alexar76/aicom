@@ -11,7 +11,11 @@
 ## 1. Arrancar un hub
 
 ```bash
-pip install aimarket-hub
+# [pqc] instala el verificador post-cuántico (ML-DSA-65). Sin él tu hub no puede comprobar
+# las firmas híbridas que publica cada hub de AIMarket, y no indexa ninguno.
+pip install "aimarket-hub[pqc]"
+# firma híbrida también tú (Ed25519 + ML-DSA-65); los pares fijan ambas claves
+export AIMARKET_PQC=1
 aimarket serve          # → http://localhost:9083
 ```
 
@@ -21,7 +25,15 @@ Comprueba que responde:
 curl -s http://localhost:9083/.well-known/ai-market.json | jq .
 ```
 
-Docker: `Dockerfile.standalone` y `docker-compose.yml` van en el paquete.
+Criptografía post-cuántica desde el primer arranque: `curl -s http://localhost:9083/.well-known/ai-market.json | jq .signature.pq_algorithm`
+responde `"ml-dsa-65"` cuando el hub firma híbrido (`null` significa solo clásica). Respalda `<key>_mldsa` junto con la clave Ed25519
+(por defecto `data/hub_signing_key_mldsa` junto a `data/hub_signing_key`): los pares fijan tu clave
+ML-DSA-65, y un hub que la pierde es rechazado por todos los que la fijaron. Más:
+[inicio rápido del operador](https://github.com/alexar76/aimarket-hub/blob/main/docs/operator-quickstart.es.md) ·
+[migración post-cuántica](pqc-migration.es.md).
+
+Docker: `Dockerfile.standalone` (instala el verificador `[pqc]`) y `docker-compose.yml` van en el
+paquete. Pasa `AIMARKET_PQC=1` y conserva el volumen de datos: ahí viven las dos claves.
 
 Tienes un hub vacío. Lo que sigue es conectarlo a otros.
 

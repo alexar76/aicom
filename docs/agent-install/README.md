@@ -92,6 +92,26 @@ Stdio config from the skill:
 
 WARDEN does not start or proxy other MCP servers. Pass `tools/list` in.
 
+## After the free calls: one key
+
+[modelmarket.dev/start](https://modelmarket.dev/start) gives a key in one click (no email, starts at $0) and tops it up with USDC on Base from a browser wallet. Put the key in the same MCP connection as a header; priced calls are then paid from the balance, and while it is short the free trial still applies.
+
+```bash
+claude mcp add --transport http aimarket https://modelmarket.dev/mcp --header "X-API-Key: aimk_…"
+```
+
+```json
+{
+  "mcpServers": {
+    "aimarket": {
+      "type": "streamable-http",
+      "url": "https://modelmarket.dev/mcp",
+      "headers": { "X-API-Key": "aimk_…" }
+    }
+  }
+}
+```
+
 ## Crypto off
 
 Skills and first-screen copy lead with the URL and the two tools. Trial then 402. Do not lead with wallets or tokens.

@@ -1852,3 +1852,37 @@ def test_backups_are_probed_only_when_a_receiver_is_configured(monkeypatch):
     alert.collect("quick", hub="https://x", signer="", status_url="", settlement_url="", timeout=5,
                   sellers=[], federation_hubs=[], backup_url="https://r", backup_hosts=["indep"])
     assert called == [("https://r", ["indep"], 5)]
+
+
+# ── Post-quantum verification: a hub that cannot read hybrid peers ─────────────────────
+
+def _federation_with_health(health: dict):
+    def fake_get(url, *a, **k):
+        if url.endswith("/ai-market/v2/health"):
+            return 200, health, ""
+        return 200, {"peers": [_peer("atlas")]}, ""
+    return fake_get
+
+
+def test_a_hub_that_cannot_verify_pq_pages(monkeypatch):
+    monkeypatch.setattr(alert, "_get", _federation_with_health(
+        {"status": "degraded", "pqc_can_verify": False}))
+    check = _by_name(alert.probe_federation("https://hub.example", label="lab"))["hub_pq_verify@lab"]
+    assert not check.ok and check.critical
+    assert "aimarket-hub[pqc]" in check.detail
+
+
+def test_a_hub_that_verifies_pq_passes(monkeypatch):
+    monkeypatch.setattr(alert, "_get", _federation_with_health({"status": "ok", "pqc_can_verify": True}))
+    assert _by_name(alert.probe_federation("https://hub.example"))["hub_pq_verify"].ok
+
+
+def test_an_older_hub_without_the_field_is_not_judged(monkeypatch):
+    monkeypatch.setattr(alert, "_get", _federation_with_health({"status": "ok", "pqc_ready": True}))
+    assert "hub_pq_verify" not in _by_name(alert.probe_federation("https://hub.example"))
+
+
+def test_the_pq_check_is_worded_in_both_languages():
+    for lang in ("en", "ru"):
+        fail, back, impact = alert._describe("hub_pq_verify@lab", "https://hub.example", lang)
+        assert "hub_pq_verify" not in fail and impact

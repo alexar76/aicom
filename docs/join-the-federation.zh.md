@@ -11,7 +11,11 @@
 ## 1. 启动枢纽
 
 ```bash
-pip install aimarket-hub
+# [pqc] 安装后量子 (ML-DSA-65) 验证器。没有它，你的枢纽无法验证
+# 每个 AIMarket 枢纽发布的混合签名，也就一个都索引不到。
+pip install "aimarket-hub[pqc]"
+# 自己也用混合签名 (Ed25519 + ML-DSA-65)；对等方会固定这两把密钥
+export AIMARKET_PQC=1
 aimarket serve          # → http://localhost:9083
 ```
 
@@ -21,7 +25,15 @@ aimarket serve          # → http://localhost:9083
 curl -s http://localhost:9083/.well-known/ai-market.json | jq .
 ```
 
-Docker：包内有 `Dockerfile.standalone` 和 `docker-compose.yml`。
+从第一次启动起使用后量子密码学：`curl -s http://localhost:9083/.well-known/ai-market.json | jq .signature.pq_algorithm`
+在枢纽使用混合签名时返回 `"ml-dsa-65"`（`null` 表示只有经典签名）。
+请把 `<key>_mldsa` 与 Ed25519 密钥一起备份（默认 `data/hub_signing_key_mldsa`，与 `data/hub_signing_key`
+放在一起）：对等方会固定你的 ML-DSA-65 密钥，丢失它的枢纽会被所有固定过它的对等方拒绝。详见：
+[运营者快速上手](https://github.com/alexar76/aimarket-hub/blob/main/docs/operator-quickstart.zh.md) ·
+[后量子迁移](pqc-migration.zh.md)。
+
+Docker：包内有 `Dockerfile.standalone`（它会安装 `[pqc]` 验证器）和 `docker-compose.yml`。
+请传入 `AIMARKET_PQC=1` 并保留数据卷：两把密钥都在其中。
 
 ## 2. 指向你要读取的枢纽
 

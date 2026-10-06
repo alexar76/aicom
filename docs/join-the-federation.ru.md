@@ -11,7 +11,11 @@
 ## 1. Запустить хаб
 
 ```bash
-pip install aimarket-hub
+# [pqc] ставит проверку постквантовых подписей (ML-DSA-65). Без неё хаб не проверит
+# гибридные подписи, которыми подписан каждый хаб AIMarket, и не проиндексирует ни один.
+pip install "aimarket-hub[pqc]"
+# подписывать и самому гибридно (Ed25519 + ML-DSA-65); пиры закрепляют оба ключа
+export AIMARKET_PQC=1
 aimarket serve          # → http://localhost:9083
 ```
 
@@ -21,7 +25,15 @@ aimarket serve          # → http://localhost:9083
 curl -s http://localhost:9083/.well-known/ai-market.json | jq .
 ```
 
-Docker: в репозитории пакета есть `Dockerfile.standalone` и `docker-compose.yml`.
+Постквантовая криптография (ПКК) с первого запуска: `curl -s http://localhost:9083/.well-known/ai-market.json | jq .signature.pq_algorithm`
+отвечает `"ml-dsa-65"`, когда хаб подписывает гибридно (`null` — только классическая подпись). Храните резервную копию `<key>_mldsa` вместе с ключом
+Ed25519 (по умолчанию `data/hub_signing_key_mldsa` рядом с `data/hub_signing_key`): пиры
+закрепляют ваш ключ ML-DSA-65, и хаб, потерявший его, отвергают все, кто его закрепил. Подробнее:
+[быстрый старт оператора](https://github.com/alexar76/aimarket-hub/blob/main/docs/operator-quickstart.ru.md) ·
+[постквантовая миграция](pqc-migration.ru.md).
+
+Docker: в репозитории пакета есть `Dockerfile.standalone` (он ставит проверку `[pqc]`) и
+`docker-compose.yml`. Передайте `AIMARKET_PQC=1` и сохраните том с данными: там лежат оба ключа.
 
 Сейчас это рабочий хаб с пустым каталогом. Ниже — как связать его с другими.
 

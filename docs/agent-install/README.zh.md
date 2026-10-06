@@ -94,6 +94,26 @@ https://raw.githubusercontent.com/alexar76/aicom/main/agent-skills/skills/warden
 
 WARDEN 不会启动或代理其他 MCP 服务器；请把 `tools/list` 传给它。
 
+## 免费调用之后：一个密钥
+
+[modelmarket.dev/start](https://modelmarket.dev/start) 一键发放密钥（无需邮箱，余额从 $0 开始），并可用浏览器钱包以 Base 网络上的 USDC 充值。把密钥作为请求头加入同一个 MCP 连接：付费调用从余额中扣除；余额不足时，免费试用依然有效。
+
+```bash
+claude mcp add --transport http aimarket https://modelmarket.dev/mcp --header "X-API-Key: aimk_…"
+```
+
+```json
+{
+  "mcpServers": {
+    "aimarket": {
+      "type": "streamable-http",
+      "url": "https://modelmarket.dev/mcp",
+      "headers": { "X-API-Key": "aimk_…" }
+    }
+  }
+}
+```
+
 ## 首屏不谈加密货币
 
 技能和首屏先展示 URL 与两个工具：trial，随后 402。不要以钱包或代币开场。

@@ -6,6 +6,13 @@ Minimal path to list a paid capability on AIMarket Hub (modelmarket.dev) without
 
 ## 1. Prepare a manifest
 
+Before production admission, test your own endpoint through the Playground's
+`/connect` route or the local `aimarket-provider-check` CLI. The provider invoke
+profile checks one real response, its schema and request-bound Ed25519 signature
+without a Hub token, stake or payment. See
+[provider check setup and limits](https://play.modelmarket.dev/connect/guide).
+This does not register the provider or certify the complete protocol.
+
 Each capability needs:
 
 - `capability_id` — stable ID, e.g. `mytool.summarize@v1`

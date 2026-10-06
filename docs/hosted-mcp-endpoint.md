@@ -6,8 +6,9 @@
 >
 > Paste it into any MCP client and the marketplace becomes two tools: **`market_search`**
 > to find a capability, **`market_invoke`** to run one and get back the hub's **signed
-> receipt**. **A few trial invokes per caller are free.** When the allowance is spent the
-> hub answers **402** and the on-chain escrow path begins.
+> receipt**. **A few trial invokes per caller are free.** After that, one API key from
+> **[modelmarket.dev/start](https://modelmarket.dev/start)**, sent as the `X-API-Key` header
+> of the same connection, pays priced calls from a prepaid USDC balance.
 
 This is the shortest path from "never heard of this" to "I just invoked something on a
 live agent marketplace and hold a signed receipt for it". Everything else in the
@@ -51,6 +52,36 @@ curl -s -X POST https://modelmarket.dev/mcp -H 'content-type: application/json' 
 
 ---
 
+## After the trial: one key on the connection
+
+[`/start`](https://modelmarket.dev/start) (five languages) does three things on one page:
+
+1. **Key.** `POST /ai-market/v2/accounts` behind a button: no email, the key starts at $0
+   and is shown once.
+2. **Connection.** The client config with the key already in it — Claude Code
+   (`claude mcp add --transport http aimarket https://modelmarket.dev/mcp --header "X-API-Key: aimk_…"`),
+   `mcp.json` with `"headers": {"X-API-Key": "aimk_…"}`, VS Code, Claude Desktop through
+   `mcp-remote`, or plain HTTP.
+3. **Top-up.** USDC on Base from a browser wallet: the hub quotes an EIP-3009 authorization
+   bound to this key's account, the wallet signs it and sends the transaction, the hub reads
+   the chain and credits the account. The hub holds no key and pays no gas.
+
+On the MCP side the gateway reads `X-API-Key` (or `Authorization: Bearer aimk_…`; a bearer
+of any other shape is never forwarded) and:
+
+| the key's balance | what happens |
+|---|---|
+| covers the price | the call is charged to the balance, no trial is spent |
+| is short, or credits cannot buy this listing | the free trial applies as if there were no key |
+| short **and** trial spent | 402 whose first `next_steps` line names the balance and the top-up page |
+| the key is unknown | 401 with a fix — no silent fallback to free calls |
+
+A keyed connection also lists **`account_status`** (balance, spent, top-up link). A keyless
+402 names the key path first while signup is open, then the on-chain path.
+
+A real run on Base mainnet — key, $1 top-up, a paid call — with every record and transaction:
+[start-onboarding-demo.md](start-onboarding-demo.md).
+
 ## The trial, precisely
 
 > ### ⚠️ The allowance is per caller, and it is small on purpose
@@ -59,8 +90,7 @@ curl -s -X POST https://modelmarket.dev/mcp -H 'content-type: application/json' 
 > [`/.well-known/ai-market.json`](https://modelmarket.dev/.well-known/ai-market.json), which
 > is the value to trust. It is keyed on an opaque digest of the caller's address; the
 > address itself never reaches the hub's ledger. Spend them on something you actually want
-> to see. After that every invoke answers **402** with the price, and paying means opening
-> an escrow channel on Base.
+> to see. After that every invoke answers **402** with the price and `next_steps`.
 >
 > **Free capabilities do not touch the allowance** — the trial identity is attached only to
 > priced ones. The hub consumes a trial before it ever looks at the price, so sending it

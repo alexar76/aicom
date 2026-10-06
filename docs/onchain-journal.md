@@ -1254,3 +1254,17 @@ and counts $0.031 settled by x402, nothing unsettled. No credentials were sent t
 prepaid account there (entry above) was not used. Executor wallet 1.000 → 0.969 USDC. All three calls stay in
 the public feeds (Independent event 91, Attested events 54–55, 13:11 UTC). How it works:
 [aimarket-hub/docs/subcontracting.md → Paying per call in USDC, with no account](https://github.com/alexar76/aimarket-hub/blob/main/docs/subcontracting.md#paying-per-call-in-usdc-with-no-account).
+
+## 2026-10-06 — one key, one dollar: a /start top-up pays an MCP call
+
+Hub 3.15.17 opened self-serve keys on modelmarket.dev and lets an MCP connection carry one. The live
+`/start` page minted account `acct_b7b8a6a0babe6077` and quoted a $1.00 top-up (nonce `0x2abe9ae8…7e7d`);
+the Pay-on-Verified demo buyer `0x097e3F339D0b023605e12A6B81E2d6Cb7571475a` (ours, owner-funded) signed the
+EIP-3009 authorization and sent it itself:
+[`0xf43944ce…ad661`](https://basescan.org/tx/0xf43944ce33179d4635c9e4fed0ad12fa3e64c707fe3c435a74519f37979ad661),
+block 52261416, `AuthorizationUsed` for the quote's nonce + `Transfer` of 1.00 USDC to the treasury
+`0x1218…Ad0a`, 83 252 gas (~0.000000515 ETH). The hub credited $1.00 at 18:43:04 UTC; the next MCP
+`weather_now` with `X-API-Key` was held and captured at $0.001 from the balance (receipt
+`rcpt_7d17010bdf2cb80a9078d4d51c7e5b30`), no free trial used. A first quote (`0xc392eaec…0072`) was signed but
+never broadcast and expired unused. Every record with diagrams, in five languages:
+[start-onboarding-demo.md](start-onboarding-demo.md).

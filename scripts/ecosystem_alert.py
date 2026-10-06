@@ -472,6 +472,19 @@ def probe_federation(hub: str, timeout: float = 20.0, now: float | None = None,
             f"stalest peer crawl: {stalest_name} {stalest_hours:.1f}h ago "
             f"(threshold {stale_hours:.0f}h)",
         ))
+
+    # A hub that cannot check ML-DSA-65 refuses every hybrid-signing peer — all of ours — and
+    # otherwise looks healthy: its own catalogue still serves. Hubs since 3.15.18 report it in
+    # /health; an older hub has no such field and is not judged on it.
+    status, health, _err = _get(f"{base}/ai-market/v2/health", timeout)
+    if status == 200 and isinstance(health, dict) and "pqc_can_verify" in health:
+        can = health.get("pqc_can_verify") is True
+        checks.append(Check(
+            f"hub_pq_verify{tag}", can,
+            "can verify post-quantum signatures" if can
+            else "cannot verify post-quantum (ML-DSA-65) signatures: every hybrid-signing peer "
+                 "is refused; install aimarket-hub[pqc] (dilithium-py) and restart",
+        ))
     return checks
 
 
@@ -1017,6 +1030,10 @@ _EN: dict[str, tuple[str, str, str]] = {
     "hub_federation_crawl_fresh": (
         "hub {t} stopped refreshing its peers", "hub {t} is refreshing its peers again",
         "its catalogue shows stale capabilities and prices"),
+    "hub_pq_verify": (
+        "hub {t} cannot verify post-quantum signatures",
+        "hub {t} verifies post-quantum signatures again",
+        "it refuses every hub that signs hybrid — all of ours — and indexes none of them"),
     "hub_advertises_public_url": (
         "hub {t} advertises an address nobody outside can reach",
         "hub {t} advertises its public address again",
@@ -1227,6 +1244,10 @@ _RU: dict[str, tuple[str, str, str]] = {
     "hub_federation_crawl_fresh": (
         "хаб {t} перестал обновлять данные пиров", "хаб {t} снова обновляет данные пиров",
         "в его каталоге устаревшие возможности и цены"),
+    "hub_pq_verify": (
+        "хаб {t} не может проверять постквантовые подписи",
+        "хаб {t} снова проверяет постквантовые подписи",
+        "он отвергает каждый хаб с гибридной подписью — все наши — и ни один не индексирует"),
     "hub_advertises_public_url": (
         "хаб {t} объявляет адрес, до которого снаружи не достучаться",
         "хаб {t} снова объявляет публичный адрес",

@@ -15,8 +15,8 @@ counts what happens, from two public sources, so it needs no access to any serve
     scanner that calls every tool with {} is refused before the agent: it is in the raw counter,
     not in the calls, and is not counted.
 
-Callers already present at the first look are the baseline (our own checks); every credit
-account on the apex hub is ours (sign-up is closed). A payer outside OWN_WALLETS is external. One whose own latest transfers went to many
+Callers already present at the first look are the baseline (our own checks); our own credit
+accounts on the apex hub are listed in OWN_ACCOUNTS (sign-up there is open since 2026-10-06). A payer outside OWN_WALLETS is external. One whose own latest transfers went to many
 different payees is labelled crawler-like: a bot sweeping a directory, paying every new
 endpoint once, is a visitor, not a customer — and before the test the only outside payer
 the treasury ever had (0xc9c7…1670, $0.001 on 2026-10-03) was exactly that.
@@ -57,13 +57,17 @@ OWN_WALLETS = {a.lower() for a in (
     "0x9d24d267cf8d9a8b9ed104b4856cde8830c266ef",   # Independent's subcontract executor
     "0xB73d8Bc93B791510C4733C5C5Ac2015a3c2930Ec",   # Attested's payment wallet
     "0x0606983cbEc6D0C12a0B750f72Ceb6032c72C25D",   # AIMarketEscrow (settles channels)
+    "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",   # Pay-on-Verified demo buyer (our own /start top-up test)
 )}
 
 
-# Every credit account on the apex hub is ours (sign-up there is closed): their calls are not demand.
+# Our own credit accounts on the apex hub: their calls are not demand. Sign-up there was closed
+# until 2026-10-06 (hub 3.15.17 opened it), so every account minted since is a stranger's unless
+# listed here.
 OWN_ACCOUNTS = ("acct_06d8129188a4cda7", "acct_2d8afaad6ea5ef0c", "acct_b0f15ab854247c1f",
                 "acct_656dc27abb1d3160", "acct_69fc140e62323d25", "acct_ca72364a8c93f22e",
-                "acct_6fa6efffd3ebc27b", "acct_70f04e72ec07b3e5", "acct_a6ed5e16e3d2627f")
+                "acct_6fa6efffd3ebc27b", "acct_70f04e72ec07b3e5", "acct_a6ed5e16e3d2627f",
+                "acct_b7b8a6a0babe6077")  # the /start top-up test, 2026-10-06
 
 
 def who(consumer: str) -> str:

@@ -94,6 +94,26 @@ Configuration stdio du skill :
 
 WARDEN ne démarre ni ne proxy d’autres serveurs MCP : transmettez-lui `tools/list`.
 
+## Après les appels gratuits : une clé
+
+[modelmarket.dev/start](https://modelmarket.dev/start) délivre une clé en un clic (sans e-mail, solde de départ 0 $) et la recharge en USDC sur Base depuis un portefeuille de navigateur. Ajoutez la clé en en-tête de la même connexion MCP : les appels payants sont débités du solde et, tant qu'il ne suffit pas, l'essai gratuit reste valable.
+
+```bash
+claude mcp add --transport http aimarket https://modelmarket.dev/mcp --header "X-API-Key: aimk_…"
+```
+
+```json
+{
+  "mcpServers": {
+    "aimarket": {
+      "type": "streamable-http",
+      "url": "https://modelmarket.dev/mcp",
+      "headers": { "X-API-Key": "aimk_…" }
+    }
+  }
+}
+```
+
 ## Pas de crypto au premier écran
 
 Les skills et le premier écran commencent par l’URL et les deux outils : trial, puis 402. Ne commencez pas par les portefeuilles ou les tokens.

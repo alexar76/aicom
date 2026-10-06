@@ -11,7 +11,11 @@
 ## 1. Lancer un hub
 
 ```bash
-pip install aimarket-hub
+# [pqc] installe le vérificateur post-quantique (ML-DSA-65). Sans lui, votre hub ne peut pas
+# vérifier les signatures hybrides que publie chaque hub AIMarket, et n'en indexe aucun.
+pip install "aimarket-hub[pqc]"
+# signer vous-même en hybride (Ed25519 + ML-DSA-65) ; les pairs épinglent les deux clés
+export AIMARKET_PQC=1
 aimarket serve          # → http://localhost:9083
 ```
 
@@ -21,7 +25,15 @@ Vérifier :
 curl -s http://localhost:9083/.well-known/ai-market.json | jq .
 ```
 
-Docker : `Dockerfile.standalone` et `docker-compose.yml` sont dans le paquet.
+Cryptographie post-quantique dès le premier démarrage : `curl -s http://localhost:9083/.well-known/ai-market.json | jq .signature.pq_algorithm`
+répond `"ml-dsa-65"` quand le hub signe en hybride (`null` signifie classique seulement). Sauvegardez `<key>_mldsa` avec la clé Ed25519
+(par défaut `data/hub_signing_key_mldsa` à côté de `data/hub_signing_key`) : les pairs épinglent
+votre clé ML-DSA-65, et un hub qui la perd est refusé par tous ceux qui l'ont épinglée. Plus :
+[démarrage rapide de l'opérateur](https://github.com/alexar76/aimarket-hub/blob/main/docs/operator-quickstart.fr.md) ·
+[migration post-quantique](pqc-migration.fr.md).
+
+Docker : `Dockerfile.standalone` (il installe le vérificateur `[pqc]`) et `docker-compose.yml` sont
+dans le paquet. Passez `AIMARKET_PQC=1` et gardez le volume de données : les deux clés y vivent.
 
 ## 2. Pointer vers un hub à lire
 
