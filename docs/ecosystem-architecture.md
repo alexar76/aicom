@@ -240,11 +240,11 @@ sequenceDiagram
   end
 
   App->>Hub: "POST /channel/close {channel_id}"
-  Hub->>Ledger: "Mark settled; record remainder as a payout OBLIGATION"
+  Hub->>Ledger: "Mark settled — record remainder as a payout OBLIGATION"
   Hub-->>App: "receipt (used_usd, refund_owed_usd, refund_executed_usd = 0)"
   Logos->>Hub: "Poll public stats / manifest / peers"
   Hub-->>Logos: "Current federation state"
-  Logos->>Logos: "Persist snapshot; recompute anomalies and correlations"
+  Logos->>Logos: "Persist snapshot — recompute anomalies and correlations"
   Note over Hub,Chain: "The refund payout itself is an out-of-band operator<br/>transfer, attested back with a tx hash. No chain call here."
 ```
 

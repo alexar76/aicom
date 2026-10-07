@@ -112,6 +112,8 @@ claude mcp add --transport http aimarket https://modelmarket.dev/mcp --header "X
 }
 ```
 
+Clients that take only a URL (ChatGPT developer-mode connectors, agent platforms): paste `https://modelmarket.dev/mcp/k/aimk_…` — the key is in the URL, so keep that URL private. claude.ai's connector box currently insists on OAuth and may refuse it (anthropics/claude-ai-mcp#697); in Claude Desktop use `mcp-remote` with the header.
+
 ## Crypto off
 
 Skills and first-screen copy lead with the URL and the two tools. Trial then 402. Do not lead with wallets or tokens.

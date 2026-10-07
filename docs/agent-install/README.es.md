@@ -114,6 +114,8 @@ claude mcp add --transport http aimarket https://modelmarket.dev/mcp --header "X
 }
 ```
 
+Clientes que solo aceptan una URL (conectores de ChatGPT en modo desarrollador, plataformas de agentes): pega `https://modelmarket.dev/mcp/k/aimk_…` — la clave va en la URL, así que mantenla privada. El conector de claude.ai hoy exige OAuth y puede rechazarla (anthropics/claude-ai-mcp#697); en Claude Desktop usa `mcp-remote` con la cabecera.
+
 ## Sin cripto en la primera pantalla
 
 Los skills y la primera pantalla empiezan por la URL y las dos herramientas: trial y luego 402. No empieces por monederos ni tokens.

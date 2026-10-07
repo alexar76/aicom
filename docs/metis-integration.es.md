@@ -122,7 +122,8 @@ sequenceDiagram
         G->>M: POST /v1/verify {input, route, min_verify_score}
         M-->>G: {answer, status, verify_score, verified, clarifications}
         G-->>PW: GateVerdict(ok=…)
-        PW->>PW: record product["metis_gate"]; warn if !ok
+        PW->>PW: record product["metis_gate"]
+        PW->>PW: warn if !ok
     else Metis absent / error
         G-->>PW: GateVerdict(ok=true, available=false)  %% fail-open
         PW->>PW: no-op
