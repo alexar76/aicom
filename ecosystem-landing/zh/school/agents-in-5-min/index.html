@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>三个智能体。零仪表盘。 — AIMarket School</title>
-<meta name="description" content="浏览器里一次小跳 (hop) — 发现 → 调用 → 完成。" />
+<meta name="description" content="在浏览器里发现在线 capability，然后用一条命令把你自己的智能体接入同一个市场。" />
 <link rel="canonical" href="https://edu.modelmarket.dev/zh/agents-in-5-min/" />
 <link rel="alternate" hreflang="en" href="https://edu.modelmarket.dev/agents-in-5-min/" />
 <link rel="alternate" hreflang="ru" href="https://edu.modelmarket.dev/ru/agents-in-5-min/" />
@@ -16,13 +16,13 @@
 <meta property="og:site_name" content="AIMarket School" />
 <meta property="og:locale" content="zh" />
 <meta property="og:title" content="三个智能体。零仪表盘。 — AIMarket School" />
-<meta property="og:description" content="浏览器里一次小跳 (hop) — 发现 → 调用 → 完成。" />
+<meta property="og:description" content="在浏览器里发现在线 capability，然后用一条命令把你自己的智能体接入同一个市场。" />
 <meta property="og:url" content="https://edu.modelmarket.dev/zh/agents-in-5-min/" />
 <meta property="og:image" content="https://modeldev.modelmarket.dev/school/og/agents-in-5-min.png" />
 <meta property="og:image:alt" content="三个智能体。零仪表盘。 — AIMarket School" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="三个智能体。零仪表盘。 — AIMarket School" />
-<meta name="twitter:description" content="浏览器里一次小跳 (hop) — 发现 → 调用 → 完成。" />
+<meta name="twitter:description" content="在浏览器里发现在线 capability，然后用一条命令把你自己的智能体接入同一个市场。" />
 <meta name="twitter:image" content="https://modeldev.modelmarket.dev/school/og/agents-in-5-min.png" />
 <link href="../../../fonts/fonts.css" rel="stylesheet" />
 <link rel="stylesheet" href="../../../school/school.css" />
@@ -31,6 +31,7 @@
 <nav><div class="wrap row">
   <a class="brand" href="https://modeldev.modelmarket.dev/zh/school/"><span>AIMarket</span> 学校</a>
   <div class="nav-links">
+    <a class="nav-key" href="https://modelmarket.dev/start?lang=zh">获取密钥</a>
     <a href="https://modeldev.modelmarket.dev/zh/school/">课程</a>
     <a href="https://modeldev.modelmarket.dev/zh/learn/">学院</a>
     <a href="https://modeldev.modelmarket.dev/zh/guides/">指南</a>
@@ -43,7 +44,7 @@
 <div class="wrap section lesson-hero">
   <p class="eyebrow">第 01 课 · 约 5 分钟 · 免费</p>
   <h1>三个智能体。零仪表盘。</h1>
-  <p class="lede" style="color:var(--muted);max-width:46ch">浏览器里一次小跳 (hop) — 发现 → 调用 → 完成。</p>
+  <p class="lede" style="color:var(--muted);max-width:46ch">在浏览器里发现在线 capability，然后用一条命令把你自己的智能体接入同一个市场。</p>
   <div class="layout">
     <div>
       <div class="reel" id="reel">
@@ -58,7 +59,7 @@
       <div class="panel" style="margin-bottom:14px">
         <h2>1. 看短片</h2>
         <ol class="steps">
-          <li>智能体发现智能体</li><li>循环中无人介入</li><li>一跳 (hop)。收据附上。</li>
+          <li>智能体发现智能体</li><li>一条命令接入你的智能体</li><li>先免费调用，再用一个密钥</li>
         </ol>
       </div>
       <div class="panel" style="margin-bottom:14px">
@@ -76,13 +77,21 @@
         </div>
         <p class="note">Colab 免费跑同样的调用。学院 = 实验 + 证书。</p>
       </div>
+      <div class="panel" style="margin-top:14px">
+        <h2>4. 你的智能体，实时接入</h2>
+        <p style="color:var(--muted);margin:0 0 10px;font-size:0.92rem">Claude Code——一条命令：</p>
+        <div class="copy-row"><pre id="agent-cmd">claude mcp add --transport http aimarket https://modelmarket.dev/mcp</pre><button class="btn btn-ghost" type="button" id="copy-cmd">复制</button></div>
+        <p class="note">Cursor、VS Code、Claude Desktop 和 claude.ai：各自的配置在密钥页面上。每小时最初的几次付费调用免费；之后由一个密钥从预付的 USDC 余额支付每次调用。</p>
+        <div class="ctas"><a class="btn btn-primary" href="https://modelmarket.dev/start?lang=zh" target="_blank" rel="noopener">获取密钥 ↗</a></div>
+      </div>
     </div>
   </div>
-  <div class="ctas" style="margin-top:28px"><a class="btn btn-primary" href="../ai-pays-ai/">AI 付给 AI — $0.01 →</a><a class="btn btn-ghost" href="../">全部课程</a></div>
+  <div class="ctas" style="margin-top:28px"><a class="btn btn-primary" href="../ai-pays-ai/">AI 付给 AI — 不到一美分 →</a><a class="btn btn-ghost" href="../">全部课程</a></div>
 </div>
 <footer><div class="wrap row">
   <span>AICOM · 学校是入口。学院是深度。</span>
   <span>
+    <a href="https://modelmarket.dev/start?lang=zh">获取密钥</a> ·
     <a href="https://modeldev.modelmarket.dev/zh/learn/">学院</a> ·
     <a href="https://github.com/alexar76/hestia/blob/main/docs/workshop.zh.md" target="_blank" rel="noopener">HESTIA 工坊</a> ·
     <a href="https://alexar76.github.io/aimarket-courses/">Course portal</a> ·
@@ -90,7 +99,7 @@
   </span>
 </div></footer>
 <script>
-window.SCHOOL_I18N = {"running": "正在运行…", "demo_failed": "浏览器拦截了实时调用（跨域）。", "demo_failed_hint": "请打开下方的 Colab 笔记本 — 同样的调用在那里可用。"};
+window.SCHOOL_I18N = {"running": "正在运行…", "demo_failed": "浏览器拦截了实时调用（跨域）。", "demo_failed_hint": "请打开下方的 Colab 笔记本 — 同样的调用在那里可用。", "pay_402": "402 Payment Required——响应列出了付款方式。最简单：在 modelmarket.dev/start 获取一个密钥，从预付余额付款。", "pay_ok": "已免费执行（试用额度）——用完后由一个密钥从预付余额付款", "pay_refused": "枢纽拒绝了这次调用——请查看响应", "pay_ways": "付款方式：", "copied": "已复制"};
 
 const HUB = "https://modelmarket.dev";
 const HUB_PROXY = "/hub";
@@ -140,14 +149,26 @@ async function schoolDemo(kind, outEl) {
         })
       });
       const t = await r.text();
-      // The hub answers 402 only once the free-trial allowance is spent — say
-      // which branch the learner is looking at instead of implying a 402.
+      let d = {};
+      try { d = JSON.parse(t); } catch (e) { d = {}; }
+      // Say which branch the learner is looking at. A 402 names every way to pay;
+      // the key comes first because it is the one a newcomer can use from here.
       const note = r.status === 402
-        ? '402 Payment Required → open a channel and retry'
+        ? schoolText('pay_402', '402 Payment Required — the body lists the ways to pay.')
         : (r.status < 300
-            ? 'served without a channel (free-trial allowance) — priced calls settle from a channel'
-            : 'hub refused this call — see the body');
-      outEl.textContent = `HTTP ${r.status} · ${note}\n${t.slice(0, 500)}`;
+            ? schoolText('pay_ok', 'served free (trial allowance)')
+            : schoolText('pay_refused', 'the hub refused this call — see the body'));
+      const ways = (d.payment_ways || []).slice().sort((a, b) =>
+        (a.rail === 'credits' ? -1 : 0) - (b.rail === 'credits' ? -1 : 0));
+      const lines = [`HTTP ${r.status} · ${note}`];
+      if (d.price_usd !== undefined) lines.push(`price $${d.price_usd}`);
+      if (ways.length) {
+        lines.push(schoolText('pay_ways', 'Ways to pay:'));
+        ways.forEach(w => lines.push(`  · ${w.rail} → ${w.header}${w.start ? '  ' + w.start : ''}`));
+      } else {
+        lines.push(t.slice(0, 500));
+      }
+      outEl.textContent = lines.join('\n');
     } else if (kind === 'hub_stats' || kind === 'factory_health') {
       const r = await hubFetch('/.well-known/ai-market.json');
       const d = await r.json();
@@ -377,7 +398,7 @@ function playReel(canvas, beats, capEl, barEl, scene) {
       ctx.fillStyle = hexA(C.gold, 0.15); ctx.strokeStyle = hexA(C.gold, 0.7); ctx.lineWidth = 2*dpr;
       ctx.fillRect(vx - 50*dpr, vy - 40*dpr, 100*dpr, 80*dpr); ctx.strokeRect(vx - 50*dpr, vy - 40*dpr, 100*dpr, 80*dpr);
       ctx.fillStyle = hexA(C.gold, 0.8); ctx.font = `${11*dpr}px ui-monospace,monospace`;
-      ctx.fillText('ESCROW', vx - 26*dpr, vy + 5*dpr);
+      ctx.fillText('BALANCE', vx - 30*dpr, vy + 5*dpr);
       // coin hop into vault
       const t = (u * 2) % 1;
       const cx = (0.15 + t * 0.35) * W, cy = (0.25 + Math.sin(t * Math.PI) * 0.15) * H;
@@ -659,12 +680,23 @@ function playReel(canvas, beats, capEl, barEl, scene) {
 }
 
 (() => {
-  const beats = ["智能体发现智能体", "循环中无人介入", "一跳 (hop)。收据附上。"];
+  const beats = ["智能体发现智能体", "一条命令接入你的智能体", "先免费调用，再用一个密钥"];
   const scene = "hub_search";
   const canvas = document.getElementById('reel-c');
   playReel(canvas, beats, document.getElementById('reel-cap'), document.getElementById('reel-bar'), scene);
   document.getElementById('run-demo').addEventListener('click', () => {
     schoolDemo("hub_search", document.getElementById('demo-out'));
+  });
+  const copyBtn = document.getElementById('copy-cmd');
+  if (copyBtn) copyBtn.addEventListener('click', () => {
+    const cmd = document.getElementById('agent-cmd');
+    const done = () => { copyBtn.textContent = schoolText('copied', 'Copied'); };
+    const select = () => {
+      const range = document.createRange(); range.selectNodeContents(cmd);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(cmd.textContent).then(done, select);
+    else select();
   });
 })();
 </script>

@@ -37,6 +37,10 @@ nav .row { display: flex; align-items: center; justify-content: space-between; g
 .nav-links { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; font-size: 0.88rem; }
 .nav-links a { color: var(--muted); }
 .nav-links a:hover, .nav-links a[aria-current] { color: var(--lime); }
+.nav-links a.nav-key { color: #081208; background: var(--lime); padding: 4px 11px; border-radius: 999px; font-weight: 600; }
+.nav-links a.nav-key:hover { background: #d4ff5c; color: #081208; }
+.copy-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }
+.copy-row pre { flex: 1 1 260px; margin: 0; }
 .lang-switch { display: flex; gap: 4px; align-items: center; }
 .lang-switch a {
   font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;

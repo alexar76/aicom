@@ -31,6 +31,7 @@
 <nav><div class="wrap row">
   <a class="brand" href="https://modeldev.modelmarket.dev/school/"><span>AIMarket</span> School</a>
   <div class="nav-links">
+    <a class="nav-key" href="https://modelmarket.dev/start">Get a key</a>
     <a href="https://modeldev.modelmarket.dev/school/">Lessons</a>
     <a href="https://modeldev.modelmarket.dev/learn/">Academy</a>
     <a href="https://modeldev.modelmarket.dev/guides/">Guides</a>
@@ -83,6 +84,7 @@
 <footer><div class="wrap row">
   <span>AICOM · School is the on-ramp. Academy is the depth.</span>
   <span>
+    <a href="https://modelmarket.dev/start">Get a key</a> ·
     <a href="https://modeldev.modelmarket.dev/learn/">Academy</a> ·
     <a href="https://github.com/alexar76/hestia/blob/main/docs/workshop.md" target="_blank" rel="noopener">HESTIA workshop</a> ·
     <a href="https://alexar76.github.io/aimarket-courses/">Course portal</a> ·
@@ -90,7 +92,7 @@
   </span>
 </div></footer>
 <script>
-window.SCHOOL_I18N = {"running": "Running…", "demo_failed": "Live hub bridge unavailable on this host.", "demo_failed_hint": "Open the Colab notebook below — the same calls run there against modelmarket.dev."};
+window.SCHOOL_I18N = {"running": "Running…", "demo_failed": "Live hub bridge unavailable on this host.", "demo_failed_hint": "Open the Colab notebook below — the same calls run there against modelmarket.dev.", "pay_402": "402 Payment Required — the body lists the ways to pay. Easiest: one key from modelmarket.dev/start, paid from a prepaid balance.", "pay_ok": "served free (trial allowance) — once it is spent, one key pays from a prepaid balance", "pay_refused": "the hub refused this call — see the body", "pay_ways": "Ways to pay:", "copied": "Copied"};
 
 const HUB = "https://modelmarket.dev";
 const HUB_PROXY = "/hub";
@@ -140,14 +142,26 @@ async function schoolDemo(kind, outEl) {
         })
       });
       const t = await r.text();
-      // The hub answers 402 only once the free-trial allowance is spent — say
-      // which branch the learner is looking at instead of implying a 402.
+      let d = {};
+      try { d = JSON.parse(t); } catch (e) { d = {}; }
+      // Say which branch the learner is looking at. A 402 names every way to pay;
+      // the key comes first because it is the one a newcomer can use from here.
       const note = r.status === 402
-        ? '402 Payment Required → open a channel and retry'
+        ? schoolText('pay_402', '402 Payment Required — the body lists the ways to pay.')
         : (r.status < 300
-            ? 'served without a channel (free-trial allowance) — priced calls settle from a channel'
-            : 'hub refused this call — see the body');
-      outEl.textContent = `HTTP ${r.status} · ${note}\n${t.slice(0, 500)}`;
+            ? schoolText('pay_ok', 'served free (trial allowance)')
+            : schoolText('pay_refused', 'the hub refused this call — see the body'));
+      const ways = (d.payment_ways || []).slice().sort((a, b) =>
+        (a.rail === 'credits' ? -1 : 0) - (b.rail === 'credits' ? -1 : 0));
+      const lines = [`HTTP ${r.status} · ${note}`];
+      if (d.price_usd !== undefined) lines.push(`price $${d.price_usd}`);
+      if (ways.length) {
+        lines.push(schoolText('pay_ways', 'Ways to pay:'));
+        ways.forEach(w => lines.push(`  · ${w.rail} → ${w.header}${w.start ? '  ' + w.start : ''}`));
+      } else {
+        lines.push(t.slice(0, 500));
+      }
+      outEl.textContent = lines.join('\n');
     } else if (kind === 'hub_stats' || kind === 'factory_health') {
       const r = await hubFetch('/.well-known/ai-market.json');
       const d = await r.json();
@@ -377,7 +391,7 @@ function playReel(canvas, beats, capEl, barEl, scene) {
       ctx.fillStyle = hexA(C.gold, 0.15); ctx.strokeStyle = hexA(C.gold, 0.7); ctx.lineWidth = 2*dpr;
       ctx.fillRect(vx - 50*dpr, vy - 40*dpr, 100*dpr, 80*dpr); ctx.strokeRect(vx - 50*dpr, vy - 40*dpr, 100*dpr, 80*dpr);
       ctx.fillStyle = hexA(C.gold, 0.8); ctx.font = `${11*dpr}px ui-monospace,monospace`;
-      ctx.fillText('ESCROW', vx - 26*dpr, vy + 5*dpr);
+      ctx.fillText('BALANCE', vx - 30*dpr, vy + 5*dpr);
       // coin hop into vault
       const t = (u * 2) % 1;
       const cx = (0.15 + t * 0.35) * W, cy = (0.25 + Math.sin(t * Math.PI) * 0.15) * H;
@@ -665,6 +679,17 @@ function playReel(canvas, beats, capEl, barEl, scene) {
   playReel(canvas, beats, document.getElementById('reel-cap'), document.getElementById('reel-bar'), scene);
   document.getElementById('run-demo').addEventListener('click', () => {
     schoolDemo("search_proof", document.getElementById('demo-out'));
+  });
+  const copyBtn = document.getElementById('copy-cmd');
+  if (copyBtn) copyBtn.addEventListener('click', () => {
+    const cmd = document.getElementById('agent-cmd');
+    const done = () => { copyBtn.textContent = schoolText('copied', 'Copied'); };
+    const select = () => {
+      const range = document.createRange(); range.selectNodeContents(cmd);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(cmd.textContent).then(done, select);
+    else select();
   });
 })();
 </script>

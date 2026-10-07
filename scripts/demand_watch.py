@@ -67,7 +67,8 @@ OWN_WALLETS = {a.lower() for a in (
 OWN_ACCOUNTS = ("acct_06d8129188a4cda7", "acct_2d8afaad6ea5ef0c", "acct_b0f15ab854247c1f",
                 "acct_656dc27abb1d3160", "acct_69fc140e62323d25", "acct_ca72364a8c93f22e",
                 "acct_6fa6efffd3ebc27b", "acct_70f04e72ec07b3e5", "acct_a6ed5e16e3d2627f",
-                "acct_b7b8a6a0babe6077")  # the /start top-up test, 2026-10-06
+                "acct_b7b8a6a0babe6077",  # the /start top-up test, 2026-10-06
+                "acct_2c8f7330a9b3e2e6")  # lesson 04 signup-credit test, 2026-10-07
 
 
 def who(consumer: str) -> str:

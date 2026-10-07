@@ -56,6 +56,7 @@ _EN_UI: dict[str, str] = {
     "nav_oracles": "Oracles",
     "nav_guides": "Guides",
     "nav_encyclopedia": "Encyclopedia",
+    "nav_key": "Get a key",
     "foot_ecosystem": "AICOM ecosystem",
     "foot_knowledge_base": "Knowledge base",
     "foot_courses_portal": "Courses portal",
@@ -505,6 +506,7 @@ def _nav_html(base: str, current: str, lang: str = "en") -> str:
         ("/guides/", U("nav_guides")),
         ("/encyclopedia/", U("nav_encyclopedia")),
     ]
+    key_href = "https://modelmarket.dev/start" + ("" if lang == "en" else f"?lang={lang}")
     items = []
     for href, label in links:
         # The encyclopedia keeps its own per-language mirror (en/ru/es/fr/zh
@@ -520,6 +522,8 @@ def _nav_html(base: str, current: str, lang: str = "en") -> str:
         f'<nav class="topnav"><div class="wrap row">'
         f'<a class="brand" href="{html.escape(base + prefix + "/")}"><span>AICOM</span> · {html.escape(U("nav_learn"))}</a>'
         f'<div class="nav-links">{"".join(items)}'
+        # A learner who finishes a lesson takes the next step on the hub: a key for their agent.
+        f'<a class="nav-cta nav-key" href="{html.escape(key_href)}">{html.escape(U("nav_key"))}</a>'
         f'<a class="nav-cta" href="https://github.com/alexar76/aicom" rel="noopener">GitHub</a>'
         f"</div></div></nav>"
     )
