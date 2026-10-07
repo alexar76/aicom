@@ -114,7 +114,7 @@ claude mcp add --transport http aimarket https://modelmarket.dev/mcp --header "X
 }
 ```
 
-只接受网址的客户端（开发者模式下的 ChatGPT 连接器、智能体平台）：粘贴 `https://modelmarket.dev/mcp/k/aimk_…`——密钥在网址里，请保密该网址。claude.ai 的连接器目前强制要求 OAuth，可能会拒绝它（anthropics/claude-ai-mcp#697）；在 Claude Desktop 中请用带请求头的 `mcp-remote`。
+claude.ai 或 Claude Desktop（自定义连接器，没有请求头字段）以及其他只接受网址的客户端（开发者模式下的 ChatGPT 连接器、智能体平台）：粘贴 `https://modelmarket.dev/mcp/k/aimk_…`——密钥在网址里，请保密该网址。
 
 ## 首屏不谈加密货币
 

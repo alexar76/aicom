@@ -76,12 +76,10 @@ of any other shape is never forwarded) and:
 | short **and** trial spent | 402 whose first `next_steps` line names the balance and the top-up page |
 | the key is unknown | 401 with a fix — no silent fallback to free calls |
 
-For clients that take only a URL and no header — ChatGPT developer-mode connectors, agent
-platforms — the same key goes in the path: `https://modelmarket.dev/mcp/k/<key>`. The hub cuts the
-key out of its access log and nginx logs a redacted request line, but treat that URL as a secret.
-claude.ai's custom-connector box currently insists on an OAuth sign-in and may refuse a server
-without one ([anthropics/claude-ai-mcp#697](https://github.com/anthropics/claude-ai-mcp/issues/697)); in Claude Desktop
-use `mcp-remote` with the `X-API-Key` header.
+For clients that take only a URL and no header — the custom-connector box in claude.ai and Claude
+Desktop, ChatGPT developer-mode connectors, agent platforms — the same key goes in the path:
+`https://modelmarket.dev/mcp/k/<key>`. The hub cuts the key out of its access log and nginx logs a
+redacted request line, but treat that URL as a secret.
 
 A keyed connection also lists **`account_status`** (balance, spent, top-up link). A keyless
 402 names the key path first while signup is open, then the on-chain path.
