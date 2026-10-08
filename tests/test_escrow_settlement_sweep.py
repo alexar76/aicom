@@ -201,7 +201,7 @@ def test_a_failed_sweep_exits_non_zero(monkeypatch):
 # returned 0 for everything — an empty queue forever, reported as success.
 LIVE_STATUS = {
     "config": {"enabled": True, "network": "base", "hub_address_set": True,
-               "contract": "0x12Db8FAC81E5999D2f2087B79e38951571562CF2",
+               "contract": "0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb",
                "strategy": "external", "may_broadcast": True, "blocked_reason": "",
                "signer_url_set": True, "private_key_set": False,
                "max_usd_per_pass": 5.0, "max_usd_per_day": 25.0},

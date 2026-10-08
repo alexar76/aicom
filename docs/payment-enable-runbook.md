@@ -59,7 +59,7 @@ manual, as in [`onchain-journal.md`](onchain-journal.md) §6.
 **Remaining for a real invoke:** the tx-hash funding path cannot work in this image at
 all — its verifier lives in `web.backend.services.ai_market_protocol.on_chain`, which the
 hub Dockerfile does not copy. Escrow is the only live funding path, so a first paid invoke
-needs a depositor to call `openChannel` on `0x12Db8FAC…62CF2` and pass the resulting
+needs a depositor to call `openChannel` on `0xa4cb6ef7…1B2Eb` (AIMarketEscrowV2 since 2026-10-08) and pass the resulting
 `escrow_channel_id`. That requires a key and is an operator action.
 
 ## ⚠ Blocker found on the host (2026-07-27) — do not flip the stub
@@ -95,8 +95,8 @@ hub / treasury):
 | Variable | Set to | Why |
 |---|---|---|
 | `AIMARKET_PAYMENT_RECIPIENT` | `0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a` | the escrow's authorized hub — `settleChannel` already pays out here by contract, so any other value splits revenue across two destinations |
-| `AIFACTORY_AI_MARKET_CONTRACT` | `0x12Db8FAC81E5999D2f2087B79e38951571562CF2` | current `AIMarketEscrow`; the configured `0x3Df85a…163017` is the superseded June deploy |
-| `AIMARKET_ESCROW_EVM_ADDRESS` | `0x12Db8FAC81E5999D2f2087B79e38951571562CF2` | same contract; the bridge and the verifier must point at one escrow |
+| `AIFACTORY_AI_MARKET_CONTRACT` | `0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb` | current `AIMarketEscrow` (V2, 2026-10-08); `0x12Db8FAC…62CF2` (V1) and the June `0x3Df85a…163017` are superseded |
+| `AIMARKET_ESCROW_EVM_ADDRESS` | `0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb` | same contract; the bridge and the verifier must point at one escrow (and HORKOS pins it too) |
 
 `0x1218` is a hot key (`~/.aicom-base-deployer-v4.json`) that also signs deploys and
 settlements, so revenue accumulating there shares a blast radius with the operator role.

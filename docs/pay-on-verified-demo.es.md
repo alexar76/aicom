@@ -38,6 +38,8 @@ Coste total para el comprador en todas las ejecuciones: **$0.05** y unos 0.00002
 
 ## Transacciones (Base mainnet)
 
+> Desde el 2026-10-08 el escrow activo es AIMarketEscrowV2 [`0xa4cb6ef7…1B2Eb`](https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb); las ejecuciones de abajo se hicieron en V1, que tenía 0 USDC cuando fue sustituido.
+
 Contratos: escrow [`0x12Db8FAC…62CF2`](https://basescan.org/address/0x12Db8FAC81E5999D2f2087B79e38951571562CF2),
 cargado por el firmante del hub [`0xBE0bBE44…C5f1`](https://basescan.org/address/0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1),
 USDC [`0x833589fC…02913`](https://basescan.org/address/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913).

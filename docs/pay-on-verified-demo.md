@@ -37,6 +37,8 @@ Total cost to the buyer across all runs: **$0.05** and about 0.00002 ETH of gas.
 
 ## Transactions (Base mainnet)
 
+> Since 2026-10-08 the live escrow is AIMarketEscrowV2 [`0xa4cb6ef7…1B2Eb`](https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb); the runs below were made on V1, which held 0 USDC when it was superseded.
+
 Contracts: escrow [`0x12Db8FAC…62CF2`](https://basescan.org/address/0x12Db8FAC81E5999D2f2087B79e38951571562CF2),
 debited by the hub's signer [`0xBE0bBE44…C5f1`](https://basescan.org/address/0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1),
 USDC [`0x833589fC…02913`](https://basescan.org/address/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913).

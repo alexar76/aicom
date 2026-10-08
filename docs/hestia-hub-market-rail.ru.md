@@ -95,7 +95,7 @@ Hub остаётся каталогом. HESTIA остаётся хостом. A
 | Покупатель / EIP-3009 `from` | `0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a` | [кошелёк](https://basescan.org/address/0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a) |
 | Продавец / `payout_address` / EIP-3009 `to` | `0x6E94c380d908531f9822035d6cc4c8D2B0186C9c` | [кошелёк](https://basescan.org/address/0x6E94c380d908531f9822035d6cc4c8D2B0186C9c) |
 | Relayer газа (`tx.from`) | тот же `0x6E94…` — у покупателя мало ETH; EIP-3009 позволяет **любому** отправить подписанную авторизацию | |
-| `AIMarketEscrow` `0x12Db8FAC…62CF2` | **не в этом пути** | только рельс каналов ([KI-11](known-issues.md)) |
+| `AIMarketEscrow` `0xa4cb6ef7…1B2Eb` | **не в этом пути** | только рельс каналов ([KI-11](known-issues.md)) |
 | `MarketSplitter` | **не используется** | `AIMARKET_MARKET_FEE_BPS=0` |
 
 ### Последовательность с добытой транзакцией

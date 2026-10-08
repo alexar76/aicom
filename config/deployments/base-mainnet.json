@@ -7,11 +7,11 @@
   "explorer": "https://basescan.org",
   "source_of_record": "docs/onchain-journal.md",
   "owner_wallet": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
-  "redeployed_at": "2026-09-11",
+  "redeployed_at": "2026-10-08",
   "contracts": {
     "USDC": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     "AIAgentLottery": "0xEcB3A01b44C5b78210F72768C446c3E4E6175af4",
-    "AIMarketEscrow": "0x12Db8FAC81E5999D2f2087B79e38951571562CF2",
+    "AIMarketEscrow": "0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb",
     "AIMarketCapabilityNFT": "0x544dcdd8B01A7ee1444bf89A5381aA981735a281",
     "AgentCollateralVault": "0x1BF39f659bd47bf0a15294B9e4760C327113AbD9",
     "AgentListingRegistry": "0xab6E20aE29A4c7C10C6131Da9721aE98201B6600",
@@ -91,5 +91,29 @@
     "blocks": {
       "AIAgentLottery": 51158648
     }
+  },
+  "escrow_v2_redeploy_2026_10_08": {
+    "reason": "AIMarketEscrowV2 (contracts/evm/ESCROW-V2.md): a depositor could settleChannel at any instant, so every captured-but-unsubmitted debit authorization died with the channel — V2 makes a depositor requestClose and wait SETTLE_WINDOW (1 hour), and keeps the hub able to land earned debits for SETTLE_WINDOW past expiresAt; receipts are keyed per channel (isReceiptUsed(channelId, receiptId)); a token refusing one settlement leg defers it to withdraw() instead of freezing the whole channel; getChannel returns closableAt before status (ten words).",
+    "contract": "AIMarketEscrowV2 (registry name stays AIMarketEscrow; EIP-712 domain name \"AIMarketEscrow\", version \"1\", unchanged)",
+    "superseded": {
+      "AIMarketEscrow": "0x12Db8FAC81E5999D2f2087B79e38951571562CF2"
+    },
+    "superseded_held_funds": "none — the V1 escrow read 0 USDC immediately before the deploy; the hub had 0 unsubmitted debit authorizations and HORKOS live_rows=0, so V1 was abandoned rather than migrated (same precedent as 2026-09-04)",
+    "constructor": {
+      "authorizedHubs": [
+        "0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1"
+      ],
+      "whitelistedTokens": [
+        "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+      ],
+      "owner": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a"
+    },
+    "txs": {
+      "AIMarketEscrow": "0x1efa8475603b4e158b4ec9a440d45f3faad72cec0d6cfc2f537ba207aace1e9f"
+    },
+    "blocks": {
+      "AIMarketEscrow": 52337280
+    },
+    "source_verified": "Sourcify exact_match (2026-10-08)"
   }
 }

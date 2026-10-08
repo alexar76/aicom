@@ -161,10 +161,11 @@ and a CI smoke that exercises the local path keep the fallback from rotting (thr
 tests), no revenue forgery/double-count (revenue_proofs + tests), no cross-hub reputation smear without
 consumer PoM (slash_sync + tests), no free Sybil listing (acex_ipo revenue + audit gate + tests). None
 is claimed as a production *mainnet* guarantee. A small-value **demonstration deployment is already
-live on Base mainnet** (chainId 8453) — the same `AIMarketEscrow.sol`, currently at
-`0x12Db8FAC81E5999D2f2087B79e38951571562CF2`, has settled real USDC (see
-[`docs/onchain-journal.md`](onchain-journal.md); those settlements were made on the escrow
-this one superseded on 2026-09-04, `0x0606983c…72C25D`) — but the full external audit and multisig owner
+live on Base mainnet** (chainId 8453). The escrow is `AIMarketEscrowV2.sol`, at
+`0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb` since 2026-10-08 (depositor exit through `requestClose` and a one-hour
+settle window). Its predecessors settled real USDC, recorded in
+[`docs/onchain-journal.md`](onchain-journal.md): V1 `0x12Db8FAC…62CF2` (2026-09-04 → 10-08)
+and before it `0x0606983c…72C25D` — but the full external audit and multisig owner
 (O-5 / KI-2…KI-5) remain outstanding before any larger-value operation, and this whitepaper feeds,
 not replaces, that audit. The live escrow is non-custodial: debits require the depositor's EIP-712
 signature and settlement can pay only the bound hub (neither side can redirect funds), so the current

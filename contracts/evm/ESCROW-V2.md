@@ -1,10 +1,15 @@
 # AIMarketEscrowV2 — what changes, and what deploying it costs
 
-**Status: written, tested, NOT deployed.** `AIMarketEscrow.sol` stays in the tree
-untouched because it is what lives at `0x12Db8FAC81E5999D2f2087B79e38951571562CF2` on
-Base. A repo that quietly stops matching its deployed contract is the same defect this
-audit found on PyPI, and it is not worth repeating in a place where the artefact is
-immutable.
+**Status: DEPLOYED 2026-10-08 — the live escrow.** `AIMarketEscrowV2` is at
+[`0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb`](https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb) on Base
+(tx [`0x1efa8475…1e9f`](https://basescan.org/tx/0x1efa8475603b4e158b4ec9a440d45f3faad72cec0d6cfc2f537ba207aace1e9f), block 52 337 280, source
+verified on Sourcify, exact match). Constructor: HORKOS `0xBE0bBE44…C5f1` the only authorized
+hub, Base USDC the only token, owner `0x1218…Ad0a`. Deployed with
+`scripts/deploy_escrow_lottery_base.sh escrow-v2 broadcast`
+(`script/DeployEscrowV2.s.sol`), after the same script ran on a fork of Base where a real-USDC
+channel was opened, debited as HORKOS, closed and settled. V1 (`0x12Db8FAC…62CF2`) held 0 USDC
+and is superseded; `AIMarketEscrow.sol` stays in the tree untouched as the record of what ran
+there. Journal: `docs/onchain-journal.md` §7.
 
 `forge test`: 143 passing, of which 14 are new. Every finding below has a test that
 asserts the **V1** behaviour and then the V2 fix, in one file, so none of this has to be
@@ -76,14 +81,11 @@ and boot fails closed if the domain separator disagrees, so it cannot sign for V
 once. Switch it in the same deploy as the hub's escrow address. V1 channels left over after
 the switch can still be closed: `expireChannel` is permissionless, and anyone can pay its gas.
 
-## Deploy, when you decide to
+## Deploy (done 2026-10-08 — kept as the recipe for the next one)
 
 ```bash
-cd contracts/evm
-forge test                                   # 148, all green
-forge create src/AIMarketEscrowV2.sol:AIMarketEscrowV2 \
-  --rpc-url "$BASE_RPC" --private-key "$DEPLOYER_KEY" \
-  --constructor-args "[$HUB_ADDRESS]" "[0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913]"
+./scripts/deploy_escrow_lottery_base.sh escrow-v2            # simulation against Base
+./scripts/deploy_escrow_lottery_base.sh escrow-v2 broadcast  # the real deploy
 ```
 
 Then, and only once V1 is drained:

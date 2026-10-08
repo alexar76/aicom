@@ -155,3 +155,73 @@ def test_the_journey_on_v1_reads_no_logs(chain):
     run = j.Run()
     j.settle_earlier_channels(ESCROW, TOKEN, _wallet(), run)
     assert chain.sent == [] and run.checks == []
+
+
+class LaggingChain(Chain):
+    """A public RPC a block behind: the first read after requestClose still shows closableAt 0."""
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.stale_reads = 0
+
+    def send(self, wallet, to, data, label):
+        out = super().send(wallet, to, data, label)
+        if label.startswith("requestClose"):
+            self.stale_reads = 1
+            self.last_close = (data[4:36], self.channels[data[4:36]]["closable_at"])
+        return out
+
+    def call(self, to, data):
+        if self.stale_reads and data[:4] == b.sel("getChannel(bytes32)"):
+            self.stale_reads -= 1
+            ch = data[4:36]
+            saved = self.channels[ch]["closable_at"]
+            self.channels[ch]["closable_at"] = 0
+            try:
+                return self.raw(ch)
+            finally:
+                self.channels[ch]["closable_at"] = saved
+        return super().call(to, data)
+
+    def rpc(self, method, params):
+        if method == "eth_getTransactionReceipt" and getattr(self, "last_close", None):
+            ch, at = self.last_close
+            return {"logs": [{"address": ESCROW, "topics": [b.CLOSE_REQUESTED_TOPIC, "0x" + ch.hex()],
+                              "data": "0x" + format(at, "064x")}]}
+        return super().rpc(method, params)
+
+
+@pytest.fixture
+def lagging(monkeypatch):
+    c = LaggingChain(v2=True)
+    monkeypatch.setattr(b, "call", c.call)
+    monkeypatch.setattr(b, "rpc", c.rpc)
+    monkeypatch.setattr(b.Wallet, "send", lambda self, to, data, label: c.send(self, to, data, label))
+    return c
+
+
+def test_closable_at_comes_from_the_receipt_not_a_lagging_read(lagging):
+    """2026-10-08, first real V2 run: the read after requestClose hit a node a block behind,
+    saw closableAt 0, and the buyer settled at once — SettlementWindowOpen."""
+    lagging.put(CH)
+    at = b.request_close(ESCROW, _wallet(), CH, [])
+    assert at == lagging.now + 3600
+
+
+def test_settle_on_v2_never_goes_before_the_window(lagging):
+    """Even told closable_at 0, settle reads the chain and waits rather than reverting."""
+    lagging.put(CH, closable_at=lagging.now + 600)
+    slept = []
+
+    def sleep(s):
+        slept.append(s)
+        lagging.now += s
+
+    real = b.wait_closable
+    b.wait_closable = lambda at: real(at, now=lambda: lagging.now, sleep=sleep)
+    try:
+        b.settle({"escrow": ESCROW, "token": TOKEN}, _wallet(),
+                 {"seller": "x", "escrow_channel": "0x" + CH.hex(), "steps": [], "closable_at": 0})
+    finally:
+        b.wait_closable = real
+    assert sum(slept) >= 600 and lagging.sent == ["settleChannel"]

@@ -96,7 +96,7 @@ Bought: `json.canonical@v1` · `product_id=hestia-agents` · `source_hub=https:/
 | Seller / listing `payout_address` / EIP-3009 `to` | `0x6E94c380d908531f9822035d6cc4c8D2B0186C9c` | [wallet](https://basescan.org/address/0x6E94c380d908531f9822035d6cc4c8D2B0186C9c) |
 | Gas relayer (`tx.from`) | same as seller on this run — buyer ETH was tight; EIP-3009 lets **anyone** submit the signed authorization | |
 | Hub operator wallet | `0x1218…Ad0a` (same EOA as the buyer here — a self-test) | not a payee on this `402` |
-| `AIMarketEscrow` `0x12Db8FAC…62CF2` | **not in this path** | channel rail only ([KI-11](known-issues.md)) |
+| `AIMarketEscrow` `0xa4cb6ef7…1B2Eb` | **not in this path** | channel rail only ([KI-11](known-issues.md)) |
 | `MarketSplitter` | **not deployed / not used** | `AIMARKET_MARKET_FEE_BPS=0` |
 
 ### Sequence with the mined transaction

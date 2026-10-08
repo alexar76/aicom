@@ -154,21 +154,45 @@ def chain_time() -> int:
     return int(rpc("eth_getBlockByNumber", ["latest", False])["timestamp"], 16)
 
 
+CLOSE_REQUESTED_TOPIC = "0x" + keccak(text="CloseRequested(bytes32,uint256)").hex()
+
+
 def request_close(escrow: str, w: "Wallet", ch: bytes, steps: list) -> int:
-    """V2: announce the exit and return closableAt. V1 needs no announcement: 0."""
+    """V2: announce the exit and return closableAt. V1 needs no announcement: 0.
+
+    closableAt is read from the transaction's own CloseRequested event. A read of the
+    channel right after the send can land on a node a block behind and still say 0 — the
+    first real V2 run (2026-10-08) settled at once on exactly that and reverted.
+    """
     st = channel(escrow, ch)
     if not st["v2"]:
         return 0
-    if not st["closable_at"]:
-        steps.append(w.send(escrow, sel("requestClose(bytes32)") + encode(["bytes32"], [ch]), "requestClose"))
+    if st["closable_at"]:
+        return int(st["closable_at"])
+    step = w.send(escrow, sel("requestClose(bytes32)") + encode(["bytes32"], [ch]), "requestClose")
+    steps.append(step)
+    for log in (rpc("eth_getTransactionReceipt", [step["tx"]]) or {}).get("logs", []):
+        topics = log.get("topics") or []
+        if (log.get("address", "").lower() == escrow.lower() and len(topics) > 1
+                and topics[0] == CLOSE_REQUESTED_TOPIC and topics[1].lower() == "0x" + ch.hex()):
+            return int(log["data"], 16)
+    for _ in range(30):                     # no event (should not happen): wait for the read
         st = channel(escrow, ch)
-    return int(st["closable_at"])
+        if st["closable_at"]:
+            return int(st["closable_at"])
+        time.sleep(2)
+    raise RuntimeError("requestClose mined but closableAt never became readable")
+
+
+# Public RPCs sit behind load balancers: the estimate may hit a node a block or two behind
+# the one whose clock said the window was over.
+SETTLE_MARGIN_S = 12
 
 
 def wait_closable(closable_at: int, *, now=None, sleep=time.sleep) -> None:
     """Block until the chain has passed closableAt; settleChannel reverts before it."""
     now = now or chain_time
-    while closable_at and (left := closable_at - now()) > 0:
+    while closable_at and (left := closable_at + SETTLE_MARGIN_S - now()) > 0:
         print(f"  settle window: {left}s left (the hub may still land what it earned)")
         sleep(min(max(left, 5), 60))
 
@@ -286,6 +310,13 @@ def settle(c: dict, w: Wallet, run: dict) -> None:
     ch = bytes.fromhex(run["escrow_channel"][2:])
     wait_closable(int(run.get("closable_at") or 0))
     st = channel(c["escrow"], ch)
+    if st["v2"]:
+        # The chain decides, not the caller's copy: never send a settle the contract reverts.
+        if not st["closable_at"]:
+            run["closable_at"] = request_close(c["escrow"], w, ch, run["steps"])
+            st = channel(c["escrow"], ch)
+        wait_closable(max(int(st["closable_at"]), int(run.get("closable_at") or 0)))
+        st = channel(c["escrow"], ch)
     run["onchain_before_settle"] = {"used_units": st["used"], "balance_units": st["balance"], "hub": st["hub"]}
     step = w.send(c["escrow"], sel("settleChannel(bytes32)") + encode(["bytes32"], [ch]), "settleChannel")
     run["steps"].append(step)
@@ -307,10 +338,24 @@ def main() -> int:
     ap.add_argument("--deposit", type=float, default=1.00)  # the escrow MIN_DEPOSIT is $1.00
     ap.add_argument("--yes", action="store_true", help="actually move money")
     ap.add_argument("--only", default="", help="hire just this product (e.g. quickfactor)")
+    ap.add_argument("--settle", default="", metavar="CHANNEL_ID",
+                    help="only settle this escrow channel of yours (V2: asks to close if needed, waits out the window)")
     args = ap.parse_args()
     hub = args.hub.rstrip("/")
     w = Wallet(json.loads(Path(args.key_file).read_text())["private_key"])
     c = contracts(hub)
+    if args.settle:
+        if not args.yes:
+            print("dry run: re-run with --yes to settle (moves the channel's balance back to you).")
+            return 0
+        run = {"seller": "(resumed)", "escrow_channel": args.settle, "steps": []}
+        print(f"\n── settle {args.settle} ──")
+        settle(c, w, run)
+        out = HERE / "runs" / f"settle-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}.json"
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(json.dumps(run, indent=1))
+        print(f"run log: {out}")
+        return 0
     usdc, eth = balance_of(c["token"], w.address), int(rpc("eth_getBalance", [w.address, "latest"]), 16)
     offers = find_sellers(hub)
     if args.only:

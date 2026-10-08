@@ -37,6 +37,8 @@ Coût total pour l'acheteur sur toutes les exécutions : **0,05 $** et environ 0
 
 ## Transactions (Base mainnet)
 
+> Depuis le 2026-10-08, le séquestre actif est AIMarketEscrowV2 [`0xa4cb6ef7…1B2Eb`](https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb) ; les exécutions ci-dessous ont eu lieu sur V1, qui détenait 0 USDC lorsqu'il a été remplacé.
+
 Contrats : escrow [`0x12Db8FAC…62CF2`](https://basescan.org/address/0x12Db8FAC81E5999D2f2087B79e38951571562CF2),
 débité par le signataire du hub [`0xBE0bBE44…C5f1`](https://basescan.org/address/0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1),
 USDC [`0x833589fC…02913`](https://basescan.org/address/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913).

@@ -28,6 +28,8 @@ Base 主网，2026-10-03，hub modelmarket.dev（3.15.7–3.15.8）。一个买�
 
 ## 交易（Base 主网）
 
+> 自 2026-10-08 起，在用的托管合约是 AIMarketEscrowV2 [`0xa4cb6ef7…1B2Eb`](https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb)；下面的运行发生在 V1 上，V1 被替换时余额为 0 USDC。
+
 合约：托管 [`0x12Db8FAC…62CF2`](https://basescan.org/address/0x12Db8FAC81E5999D2f2087B79e38951571562CF2)，由 hub 的签名者 [`0xBE0bBE44…C5f1`](https://basescan.org/address/0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1) 扣款，USDC [`0x833589fC…02913`](https://basescan.org/address/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)。
 
 **第 2 次运行——正向案例，以及三人陪审团面前的作弊者（11:33 UTC）**

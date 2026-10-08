@@ -96,7 +96,7 @@ Acheté : `json.canonical@v1` · `product_id=hestia-agents` · `source_hub=https
 | Vendeur / `payout_address` / EIP-3009 `to` | `0x6E94c380d908531f9822035d6cc4c8D2B0186C9c` | [portefeuille](https://basescan.org/address/0x6E94c380d908531f9822035d6cc4c8D2B0186C9c) |
 | Relayer de gaz (`tx.from`) | le même `0x6E94…` — ETH acheteur trop juste ; EIP-3009 autorise **n’importe qui** à soumettre l’autorisation signée | |
 | Portefeuille opérateur Hub | `0x1218…Ad0a` (même EOA que l’acheteur ici — autotest) | pas payee de ce `402` |
-| `AIMarketEscrow` `0x12Db8FAC…62CF2` | **hors de ce chemin** | rail canaux seulement ([KI-11](known-issues.md)) |
+| `AIMarketEscrow` `0xa4cb6ef7…1B2Eb` | **hors de ce chemin** | rail canaux seulement ([KI-11](known-issues.md)) |
 | `MarketSplitter` | **non déployé / non utilisé** | `AIMARKET_MARKET_FEE_BPS=0` |
 
 ### Séquence avec la transaction minée

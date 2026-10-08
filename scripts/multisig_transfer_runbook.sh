@@ -8,8 +8,9 @@
 #
 # Usage:
 #   export SAFE_ADDR=0x...
-#   export ESCROW_ADDR=0x3Df85a639EAB8B50DD14f09bdeB46D5FeF163017
-#   export NFT_ADDR=0xA9Af496fD4A1Dc594029Aa8Ea2dbd236Fd255033
+#   # ESCROW_ADDR / NFT_ADDR default to the LIVE AIMarketEscrow / AIMarketCapabilityNFT,
+#   # read from config/deployments/base-mainnet.json (they once defaulted to literals that
+#   # went stale: the June 2026 contracts, superseded and empty). Export them to override.
 #   export DEPLOYER=0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a
 #   export BASE_RPC=https://mainnet.base.org
 #   ./scripts/multisig_transfer_runbook.sh dry-run
@@ -22,8 +23,13 @@ set -euo pipefail
 MODE="${1:-dry-run}"
 BASE_RPC="${BASE_RPC:-https://mainnet.base.org}"
 SAFE_ADDR="${SAFE_ADDR:-}"
-ESCROW_ADDR="${ESCROW_ADDR:-0x3Df85a639EAB8B50DD14f09bdeB46D5FeF163017}"
-NFT_ADDR="${NFT_ADDR:-0xA9Af496fD4A1Dc594029Aa8Ea2dbd236Fd255033}"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+_registry() {
+  python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["contracts"][sys.argv[2]])' \
+    "$ROOT/config/deployments/base-mainnet.json" "$1"
+}
+ESCROW_ADDR="${ESCROW_ADDR:-$(_registry AIMarketEscrow)}"
+NFT_ADDR="${NFT_ADDR:-$(_registry AIMarketCapabilityNFT)}"
 DEPLOYER="${DEPLOYER:-}"
 
 if [[ -z "$SAFE_ADDR" ]]; then

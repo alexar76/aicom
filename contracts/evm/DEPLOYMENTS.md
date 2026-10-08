@@ -1,11 +1,12 @@
 # contracts/evm — Base mainnet (demo) deployments
 
 Live on Basescan (chainId 8453), owned by the demo wallet
-`0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a`. **Redeployed 2026-07-26.**
+`0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a`. **Redeployed 2026-07-26; escrow replaced by
+AIMarketEscrowV2 on 2026-10-08** ([`ESCROW-V2.md`](ESCROW-V2.md); V1 `0x12Db8FAC…62CF2` superseded, held 0 USDC).
 
 | Contract | Address |
 |---|---|
-| AIMarketEscrow | [`0x12Db8FAC81E5999D2f2087B79e38951571562CF2`](https://basescan.org/address/0x12Db8FAC81E5999D2f2087B79e38951571562CF2) |
+| AIMarketEscrow | [`0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb`](https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb) |
 | AIMarketCapabilityNFT | [`0x544dcdd8B01A7ee1444bf89A5381aA981735a281`](https://basescan.org/address/0x544dcdd8B01A7ee1444bf89A5381aA981735a281) |
 
 `FakeUSDT` is **not** deployed in this demo — the escrow whitelists **real Base USDC**

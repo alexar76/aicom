@@ -22,7 +22,9 @@ export const OWN_WALLETS = new Set([
   "0x40409bE3bAf99f22aA86b2FBaAa99EF2188D5674",   // x402 settlement burner
   "0x9d24d267cf8d9a8b9ed104b4856cde8830c266ef",   // Independent's subcontract executor
   "0xB73d8Bc93B791510C4733C5C5Ac2015a3c2930Ec",   // Attested's payment wallet
-  "0x0606983cbEc6D0C12a0B750f72Ceb6032c72C25D",   // AIMarketEscrow
+  "0x0606983cbEc6D0C12a0B750f72Ceb6032c72C25D",   // AIMarketEscrow (superseded 2026-09-04)
+  "0x12Db8FAC81E5999D2f2087B79e38951571562CF2",   // AIMarketEscrow V1 (superseded 2026-10-08)
+  "0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb",   // AIMarketEscrowV2 (live)
 ].map((a) => a.toLowerCase()));
 
 const isObject = (v) => v !== null && typeof v === "object" && !Array.isArray(v);

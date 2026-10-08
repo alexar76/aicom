@@ -197,8 +197,8 @@ async function schoolDemo(kind, outEl) {
       outEl.textContent = (d.matches || []).map(m => `${m.capability_id}\n  ${m.description || ''}`).join('\n\n') || tSlice(d);
     } else if (kind === 'basescan_escrow') {
       outEl.textContent = 'Opening Basescan escrow…';
-      window.open('https://basescan.org/address/0x12Db8FAC81E5999D2f2087B79e38951571562CF2', '_blank', 'noopener');
-      outEl.textContent = 'Escrow 0x12dB8faC…62cF2 — Base mainnet.\nExternal depositor proof: onchain-journal §3j.';
+      window.open('https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb', '_blank', 'noopener');
+      outEl.textContent = 'Escrow 0xa4cb6ef7…1B2Eb — Base mainnet.\nExternal depositor proof: onchain-journal §3j.';
     } else if (kind === 'mesh_live') {
       window.open('https://service-mesh.modelmarket.dev/', '_blank', 'noopener');
       outEl.textContent = 'Opened live mesh dashboard.\nLanding: https://alexar76.github.io/ai-service-mesh/';

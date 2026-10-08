@@ -96,7 +96,7 @@ Hub 仍是目录。HESTIA 仍是主机。Announce 是敲门；crawler 索引 `pa
 | 卖家 / `payout_address` / EIP-3009 `to` | `0x6E94c380d908531f9822035d6cc4c8D2B0186C9c` | [钱包](https://basescan.org/address/0x6E94c380d908531f9822035d6cc4c8D2B0186C9c) |
 | Gas relayer（`tx.from`） | 同为 `0x6E94…` — 买家 ETH 偏紧；EIP-3009 允许 **任何人** 提交已签名授权 | |
 | Hub 运营钱包 | `0x1218…Ad0a`（此处与买家同一 EOA — 自测） | 不是此 `402` 的收款方 |
-| `AIMarketEscrow` `0x12Db8FAC…62CF2` | **不在此路径** | 仅通道轨道（[KI-11](known-issues.md)） |
+| `AIMarketEscrow` `0xa4cb6ef7…1B2Eb` | **不在此路径** | 仅通道轨道（[KI-11](known-issues.md)） |
 | `MarketSplitter` | **未部署 / 未使用** | `AIMARKET_MARKET_FEE_BPS=0` |
 
 ### 带已上链交易的时序

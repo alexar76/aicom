@@ -39,13 +39,15 @@ This is a **demonstration deployment with small real funds** (~2 USDC + ~0.006 E
 > were redeployed 2026-09-04** for the audit fixes in §5, and the rail was switched over the same
 > day — the addresses they replaced (`0x0606983c…72C25D`, `0x701A7bd8…0a9554`) held no funds and
 > are superseded, but they are still named in the historical runs below, which happened on them.
+> The **escrow was replaced by AIMarketEscrowV2 on 2026-10-08** (§7); V1 `0x12Db8FAC…62CF2` held
+> 0 USDC and is superseded.
 > The lottery was redeployed again **2026-09-10** for the unpaid work-seat door (§6);
 > `0x291b6eCB…D38350` is superseded (0 ETH). The NFT, PulseDistributor and verifier are unchanged since §2c.
 
 | # | Contract | Address | Role |
 |--:|---|---|---|
 | 1 | **AIAgentLottery** | [`0xEcB3A0…75af4`](https://basescan.org/address/0xEcB3A01b44C5b78210F72768C446c3E4E6175af4) | native-ETH work-seat lottery (paid tickets off) |
-| 2 | **AIMarketEscrow** | [`0x12Db8FAC…62CF2`](https://basescan.org/address/0x12Db8FAC81E5999D2f2087B79e38951571562CF2) | USDC payment channels for capability invocation |
+| 2 | **AIMarketEscrow** (V2) | [`0xa4cb6ef7…1B2Eb`](https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb) | USDC payment channels for capability invocation — AIMarketEscrowV2 since 2026-10-08 (§7) |
 | 3 | **AIMarketCapabilityNFT** | [`0x544dcdd8…35a281`](https://basescan.org/address/0x544dcdd8B01A7ee1444bf89A5381aA981735a281) | capability/credential NFTs |
 | 4 | **AgentCollateralVault** | [`0x1BF39f65…13AbD9`](https://basescan.org/address/0x1BF39f659bd47bf0a15294B9e4760C327113AbD9) | ACEX — agent collateral custody |
 | 5 | **AgentListingRegistry** | [`0xab6E20aE…1B6600`](https://basescan.org/address/0xab6E20aE29A4c7C10C6131Da9721aE98201B6600) | ACEX — credit-listing registry |
@@ -1277,7 +1279,7 @@ and moving it is a separate decision — so this is the record of the gap, not i
 
 | Live contract | Deployed from | Fixed in source since (not live) |
 | --- | --- | --- |
-| AIMarketEscrow (V1, `0x12Db8FAC…62CF2`) | 2026-09-04 | V1's `settleChannel` / `refundChannel` let a depositor take back everything served since the last landed debit; AIMarketEscrowV2 (close window) is written and tested but not deployed (e2d5ad124). On 2026-10-08 V2's `batchRefund` was made to honour the same close window as `refundChannel` — it skipped it — and gained `batchRequestClose`. The hub bounds the exposure meanwhile: it serves at most `AIMARKET_ESCROW_MAX_UNCOLLECTED_USD` (default 5) on credit per channel before a debit lands, refuses authorizations that expire within 30 min (the buyer chose the deadline; one seconds ahead made every call uncollectable), collects a multi-call window whole (guard 2 used to compare the window's total with its newest call alone and refused every window of two or more calls), withdraws an undelivered call from its window, and stops serving 30 min before on-chain expiry. |
+| AIMarketEscrow (V1, `0x12Db8FAC…62CF2`) | 2026-09-04 | V1's `settleChannel` / `refundChannel` let a depositor take back everything served since the last landed debit; AIMarketEscrowV2 (close window) was written and tested in e2d5ad124 and deployed on 2026-10-08 (§7). On 2026-10-08 V2's `batchRefund` was made to honour the same close window as `refundChannel` — it skipped it — and gained `batchRequestClose`. The hub bounds the exposure meanwhile: it serves at most `AIMARKET_ESCROW_MAX_UNCOLLECTED_USD` (default 5) on credit per channel before a debit lands, refuses authorizations that expire within 30 min (the buyer chose the deadline; one seconds ahead made every call uncollectable), collects a multi-call window whole (guard 2 used to compare the window's total with its newest call alone and refused every window of two or more calls), withdraws an undelivered call from its window, and stops serving 30 min before on-chain expiry. |
 | AgentAuditPool (`0x96005B0E…689b`) | 2026-08-22 | 3183fcb9d (08-25): one observation weighs at most a day, a baseline needs three. 2026-10-08: the TWAP comes from PulseAMM's price × time accumulator (a price counts for as long as it held — a crash held across one block boundary used to count for a day and could manufacture a default), time before the pool existed no longer enters the baseline, the default compares the TWAP since the baseline, and only a pool quoted in its own USDC prices anything. |
 | PulseAMM (`0xED279249…5D22`) | 2026-08-22 | 2026-10-08: a time-weighted price accumulator folded before every swap and block-start reserves for the spot check; the quote token is set once by the owner — a market maker can no longer price a CapShare in a token of its own. |
 | AgentListingRegistry / AgentCollateralVault | 2026-08-22 | 2026-10-08: a squatted, unapproved id can be evicted even with collateral on it (the collateral becomes claimable by its agent wallet — pulled, so a wallet that refuses USDC cannot block it), and unless the listing is live only that wallet may fund the id — one base unit used to make the id permanent. |
@@ -1285,3 +1287,91 @@ and moving it is a separate decision — so this is the record of the gap, not i
 | AIMarketCapabilityNFT (`0x544dcdd8…35a281`) | 2026-07-26 (§2c) | e55fe3ccf (08-05): `nonReentrant` on `mint` / `consumeCall` (M16). |
 | AIAgentLottery | 2026-09-11 | Its broadcast names commit 9011cb60b, which is not in this repository's object database; the bytecode cannot be traced to a commit here. |
 | ACEX set (2026-08-22) | — | No broadcast JSON was kept for that deploy, so its provenance rests on this journal's §2d alone. |
+
+---
+
+## 7. Escrow V2 — AIMarketEscrowV2 replaces V1, 2026-10-08 📌
+
+Owner: "да, передеплой и перепропиши адрес где надо". What V2 changes is in
+[`contracts/evm/ESCROW-V2.md`](../contracts/evm/ESCROW-V2.md). In short: a depositor exits
+through `requestClose` and waits `SETTLE_WINDOW` (1 hour), so authorizations the hub already
+earned can still land. The hub may debit for that hour past `expiresAt`. Receipts are keyed
+per channel (`isReceiptUsed(channelId, receiptId)`). A token that refuses one settlement leg
+defers it to `withdraw()` instead of freezing the channel. **Nothing was migrated: V1 read
+0 USDC immediately before the deploy**, the hub had 0 unsubmitted debit authorizations, and
+HORKOS had no live rows.
+
+| Contract | New address | Superseded |
+|---|---|---|
+| `AIMarketEscrow` (V2) | `0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb` | `0x12Db8FAC81E5999D2f2087B79e38951571562CF2` |
+
+### Transaction
+
+| What | Tx | Block | Gas used | Fee |
+|---|---|---|---|---|
+| `AIMarketEscrowV2` CREATE | `0x1efa8475603b4e158b4ec9a440d45f3faad72cec0d6cfc2f537ba207aace1e9f` | 52337280 | 2 340 057 | 0.0000145 ETH (+ 0.00000001 ETH L1) |
+
+Deployed from `0x1218…Ad0a` with `scripts/deploy_escrow_lottery_base.sh escrow-v2 broadcast`
+(`contracts/evm/script/DeployEscrowV2.s.sol`; the key is read from the keystore inside the
+script). Constructor: `authorizedHubs = [0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1]`
+(HORKOS, the only hub; `0x1218` is **not** a hub on V2), `whitelistedTokens = [USDC]`.
+Read back on chain after the deploy: HORKOS authorized, `0x1218` not, USDC whitelisted,
+`SETTLE_WINDOW() = 3600`, `owner() = 0x1218…Ad0a`. Source verified on Sourcify
+(**exact match**). Basescan verification needs the owner's Basescan key, so it is left to the owner.
+
+### Rehearsed first, on a fork of Base
+
+The same script ran against `anvil --fork-url https://mainnet.base.org` (chain id 8453, real
+USDC bytecode) and produced the same address (deployer nonce 184). On the fork, a depositor
+opened a 1 USDC channel and HORKOS was impersonated to submit a debit signed over the hub's
+own EIP-712 digest. HORKOS's boot checks passed: the derived separator equals
+`domainSeparator()` and the key is authorized. `isReceiptUsed` read the receipt as used,
+`requestClose` → one hour → `settleChannel` refunded 0.99, and the hub key was paid 0.01. No
+real funds moved in the rehearsal.
+
+### Clients made V2-aware before the deploy
+
+550918d3d: HORKOS (`isReceiptUsed` with a two-revert V1 test, signs debits until
+`expiresAt + SETTLE_WINDOW` and expiry only after it), `pov-demo/buyer.py` and `journey.py`
+(`requestClose`, then settle after the window), `scripts/escrow_settlement_sweep.py` (ten-word
+`getChannel`). The hub's mirror has asked `isReceiptUsed` first since the 2026-10-08 rollout,
+and it stops serving a channel once its depositor has asked to close.
+
+
+### Switchover — done 2026-10-08 13:18–13:20 UTC
+
+HORKOS first, then the hub, one minute apart. There was nothing to carry over: the hub's
+escrow bridge had 0 unsubmitted authorizations and HORKOS had no live rows.
+
+- **HORKOS** (`escrow-signer:v2live-20261008`, `ESCROW` pinned to V2): its fail-closed boot
+  check passed against the new contract. Chain id 8453, the derived EIP-712 separator equals
+  `domainSeparator()`, its key is in `authorizedHubs`, and `/health` reports `ready` with the V2
+  escrow. Its bearer token was rotated in the same step, because the old one had been printed in
+  a working session. The old token now gets 401, the new one is accepted.
+- **Hub** (apex, `modelmarket-hub:escrowv2-20261008`): `AIMARKET_ESCROW_EVM_ADDRESS`,
+  `AIMARKET_ESCROW_CONTRACT`, `AIFACTORY_AI_MARKET_CONTRACT` → V2, and the new signer token.
+  THEMIS was recreated inside the new network namespace. The signed well-known declares
+  `escrow 0xa4cb…1B2Eb` and `escrow_hub 0xBE0b…C5f1`.
+- **Deploy sources** that would otherwise revert the rail at the next routine redeploy were
+  repointed, with backups `*.pre-escrowv2-20261008`. On factory-vps: `/root/hub-runtime.env`
+  and the factory's `.env` image tag. On not-my-vps: HORKOS's `.env` and source tree. On my-vps:
+  the old hub env files and the recreate script. The Sentinel product's two participant envs
+  also moved to V2.
+- **Everything else that shows or reads the address:** the factory image registry (the
+  participant fallback and `reopen_product_escrow_channel.py`), both factory-vps monitors and
+  the Attested one, the home pages of all six hubs, the school on edu and modeldev, the
+  paid-invoke guide, and the encyclopedia on modeldev. The encyclopedia had still shown the
+  June escrow `0x3Df85a…`.
+- **After:** the settlement sweep ran clean on V2 (13:34 UTC). The alerter reported 120/120 on
+  its full run and 82/82 on quick.
+
+**Not yet proven:** no debit has been signed and mined against V2 on mainnet, because that needs
+a real USDC deposit to open a channel. The deposit is the owner's call:
+`python3 pov-demo/buyer.py --key-file ~/.aicom-pov-buyer.json --only factorworks --deposit 1.00 --yes`.
+It uses the honest seller, whose pass is the only outcome that makes HORKOS sign a debit on V2. It
+costs that seller's price, and the rest comes back after the one-hour close window.
+
+**Rollback:** each replaced container is parked as `*-security-prev-17914…`. HORKOS is
+`escrow-signer-security-prev-1791465481402324415` and the hub is
+`modelmarket-hub-security-prev-1791465528401779257`. `rollout_container.py` restores one by
+swapping it back. Roll HORKOS and the hub back together, as with the forward step.

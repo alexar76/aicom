@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Redeploy AIMarketEscrow and/or AIAgentLottery to Base mainnet.
+# Redeploy AIMarketEscrow(V2) and/or AIAgentLottery to Base mainnet.
 #
-#   ./scripts/deploy_escrow_lottery_base.sh escrow            # dry-run simulation
-#   ./scripts/deploy_escrow_lottery_base.sh escrow broadcast  # real deploy
+#   ./scripts/deploy_escrow_lottery_base.sh escrow-v2            # dry-run simulation
+#   ./scripts/deploy_escrow_lottery_base.sh escrow-v2 broadcast  # real deploy
+#   ./scripts/deploy_escrow_lottery_base.sh escrow               # V1 (2026-09-04), kept for the record
 #   ./scripts/deploy_escrow_lottery_base.sh lottery
 #   ./scripts/deploy_escrow_lottery_base.sh lottery broadcast
 #
@@ -37,7 +38,7 @@
 #   1. put the new address into config/deployments/base-mainnet.json (the ONLY hand-edited
 #      file) and run: python scripts/sync_deployment_addresses.py
 #   2. record the run in docs/onchain-journal.md
-#   3. FOR THE ESCROW ONLY: repoint HORKOS (escrow-signer pins cfg.ESCROW and verifies at
+#   3. FOR EITHER ESCROW: repoint HORKOS (escrow-signer pins cfg.ESCROW and verifies at
 #      boot that its key is an authorized hub AND that the domain separator matches — it
 #      fails CLOSED, so it stops signing until reconfigured) and the hub's own escrow env.
 #      Until both are done the payment rail is down.
@@ -53,8 +54,8 @@ CAST="$HOME/.foundry/bin/cast"
 WHAT="${1:-}"
 MODE="${2:-dryrun}"
 case "$WHAT" in
-  escrow|lottery) : ;;
-  *) echo "usage: $0 <escrow|lottery> [broadcast]" >&2; exit 1 ;;
+  escrow|escrow-v2|lottery) : ;;
+  *) echo "usage: $0 <escrow|escrow-v2|lottery> [broadcast]" >&2; exit 1 ;;
 esac
 
 [ -f "$KEYFILE" ] || { echo "keystore not found: $KEYFILE" >&2; exit 1; }
@@ -88,6 +89,13 @@ if [ "$WHAT" = "escrow" ]; then
   TARGET="script/Deploy.s.sol:DeployScript"
   echo "INITIAL_HUBS   = $INITIAL_HUBS   (HORKOS — the only authorized hub)"
   echo "INITIAL_TOKENS = $INITIAL_TOKENS   (Base USDC)"
+elif [ "$WHAT" = "escrow-v2" ]; then
+  cd "$ROOT/contracts/evm"
+  export INITIAL_HUB="$HORKOS"
+  export INITIAL_TOKEN="$USDC"
+  TARGET="script/DeployEscrowV2.s.sol:DeployEscrowV2"
+  echo "INITIAL_HUB   = $INITIAL_HUB   (HORKOS — the only authorized hub)"
+  echo "INITIAL_TOKEN = $INITIAL_TOKEN   (Base USDC)"
 else
   cd "$ROOT/lottery/contracts"
   export ADMIN="$OWNER" GOVERNANCE="$OWNER" OPERATOR="$OWNER"
