@@ -64,3 +64,47 @@ def test_verify_registration_stores_credential(admin_json):
     cfg = wa.load_admin_config()
     assert cfg.get("mfa_method") == "webauthn"
     assert len(wa.list_credentials(cfg)) == 1
+
+
+def _client_data(challenge_b64: str) -> str:
+    from webauthn.helpers import bytes_to_base64url
+
+    return bytes_to_base64url(json.dumps({"type": "webauthn.get", "challenge": challenge_b64}).encode())
+
+
+def test_a_second_login_options_request_does_not_cancel_the_first(admin_json):
+    """Login options are requested before anyone is authenticated. With one shared slot,
+    any visitor's request replaced the operator's challenge mid-login."""
+    cfg = wa.load_admin_config()
+    cfg["mfa_method"] = "webauthn"
+    cfg["webauthn_credentials"] = [{"credential_id": "Y3JlZA", "public_key": "cGs", "sign_count": 0}]
+    wa.save_admin_config(cfg)
+    mine = wa.authentication_options("admin")["challenge"]
+    for _ in range(5):
+        wa.authentication_options("admin")          # a stranger hammering the route
+    seen = {}
+
+    def fake_verify(**kw):
+        seen["expected"] = kw["expected_challenge"]
+        return type("V", (), {"new_sign_count": 1})()
+
+    cred = {"id": "Y3JlZA", "response": {"clientDataJSON": _client_data(mine)}}
+    with patch.object(wa, "verify_authentication_response", side_effect=fake_verify):
+        wa.verify_authentication("admin", cred)
+    from webauthn.helpers import bytes_to_base64url
+    assert bytes_to_base64url(seen["expected"]) == mine
+    # the same challenge cannot be used twice
+    with pytest.raises(ValueError):
+        with patch.object(wa, "verify_authentication_response", side_effect=fake_verify):
+            wa.verify_authentication("admin", cred)
+
+
+def test_pending_login_challenges_are_bounded(admin_json):
+    cfg = wa.load_admin_config()
+    cfg["mfa_method"] = "webauthn"
+    cfg["webauthn_credentials"] = [{"credential_id": "Y3JlZA", "public_key": "cGs", "sign_count": 0}]
+    wa.save_admin_config(cfg)
+    for _ in range(wa.MAX_PENDING_LOGINS + 10):
+        wa.authentication_options("admin")
+    rows = wa.load_admin_config()["webauthn_pending"]["login_challenges"]
+    assert len(rows) == wa.MAX_PENDING_LOGINS

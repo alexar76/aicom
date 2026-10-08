@@ -1,10 +1,21 @@
-import { randomBytes } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import express from "express";
 import { failure, paramsOf } from "./a2mcp.js";
 import { buildServices, callerIdFor, WARDEN_VERSION } from "./services.js";
 import { hearthServices } from "./hearth.js";
 import { hubServices } from "./hub.js";
 import { openapiDocument, priceOf, wellKnownManifest } from "./x402.js";
+
+/** The paying wallet named inside an x402 payment header (base64 JSON), lower-cased, or "". */
+export function payerOf(header) {
+  try {
+    const doc = JSON.parse(Buffer.from(String(header), "base64").toString("utf8"));
+    const from = doc?.payload?.authorization?.from ?? doc?.payload?.from ?? "";
+    return /^0x[0-9a-fA-F]{40}$/.test(from) ? from.toLowerCase() : "";
+  } catch {
+    return "";
+  }
+}
 
 /** Fixed-window counter per caller and service; in memory, because one process serves it. */
 function rateLimiter(perMinute, now) {
@@ -119,6 +130,30 @@ export function createApp({
       if (!allow(`x402|${service.id}|${req.ip || "unknown"}`)) {
         return res.status(429).set("Retry-After", "60").json(failure(service, "rate_limited", `at most ${perMinute} calls a minute`));
       }
+      return next();
+    });
+    // One payment, one call in flight. The paywall verifies on entry and settles only after the
+    // handler answers, and the handler spends upstream (hub credit, seller keys) before that:
+    // N concurrent requests carrying the same payment header — or N authorizations from a
+    // wallet that can cover one — all passed verify, all ran, and at most one settled.
+    const inFlight = new Set();
+    app.post("/x402/:service", (req, res, next) => {
+      const header = String(req.get("payment-signature") || req.get("x-payment") || "");
+      if (!header) return next();
+      const keys = [`h:${createHash("sha256").update(header).digest("hex")}`];
+      const payer = payerOf(header);
+      if (payer) keys.push(`p:${payer}`);
+      if (keys.some((k) => inFlight.has(k))) {
+        const service = services.get(req.params.service);
+        return res.status(409).set("Retry-After", "5").json(
+          failure(service || { id: req.params.service }, "payment_in_flight",
+                  "a call paid by this payment or wallet is still running; retry when it answers"));
+      }
+      keys.forEach((k) => inFlight.add(k));
+      let released = false;
+      const release = () => { if (!released) { released = true; keys.forEach((k) => inFlight.delete(k)); } };
+      res.on("finish", release);
+      res.on("close", release);
       return next();
     });
     app.use(paywall.middleware);

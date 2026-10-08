@@ -182,6 +182,14 @@ export async function buildPaywall({ keyFile, payTo, price = "$0.001", publicUrl
   };
 }
 
+/** The path as Express routes it: segments decoded, slashes collapsed, no trailing slash, any case. */
+export function routeKey(path) {
+  const decoded = String(path || "").split("/").map((seg) => {
+    try { return decodeURIComponent(seg); } catch { return seg; }
+  }).join("/");
+  return (decoded.replace(/\/+/g, "/").replace(/(.)\/+$/, "$1") || "/").toLowerCase();
+}
+
 /**
  * A paywall that never takes the gateway down with it. The CDP facilitator is fetched while the
  * paywall is built; when that fails (an outage, a revoked key) the free /a2mcp routes must still
@@ -192,6 +200,7 @@ export function resilientPaywall(config, { log = console, retryMs = [5_000, 15_0
   if (!config.keyFile || !config.payTo) return null;
   const price = config.price ?? "$0.001";
   const paths = config.serviceIds.filter((id) => LISTING[id]).map((id) => `POST /x402/${id}`);
+  const guarded = new Set(paths.map((p) => `POST ${routeKey(p.slice(5))}`));
   let current = null;
   const state = { ready: false, lastError: null };
   const attempt = async (n = 0) => {
@@ -211,7 +220,10 @@ export function resilientPaywall(config, { log = console, retryMs = [5_000, 15_0
     price, network: BASE_MAINNET, payTo: config.payTo, paths, state, ready,
     middleware(req, res, next) {
       if (current) return current.middleware(req, res, next);
-      if (req.method === "POST" && paths.includes(`POST ${req.path}`)) {
+      // Express routes `/x402/id/`, `/X402/id` and `/x402/%69d` to the same handler, so the
+      // refusal must match the way the router matches, or each variant is a free paid call
+      // for as long as the facilitator is down.
+      if (req.method === "POST" && guarded.has(`POST ${routeKey(req.path)}`)) {
         res.set("Retry-After", "60");
         return res.status(503).json({ status: "error", error: "x402_unavailable", message: "the payment facilitator is unreachable; try again shortly" });
       }

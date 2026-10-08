@@ -360,6 +360,10 @@ class CommerceService:
         self.conn.execute(
             "CREATE INDEX IF NOT EXISTS idx_customer_demo_notes_customer ON customer_demo_notes(customer_id)"
         )
+        # Customer JWTs live 7 days; logging out has to end one, not only ask the client.
+        self.conn.execute(
+            "CREATE TABLE IF NOT EXISTS revoked_customer_tokens (jti TEXT PRIMARY KEY, exp REAL NOT NULL)"
+        )
         self.conn.commit()
 
     def _ensure_canonical_tx_index(self) -> None:
@@ -762,9 +766,30 @@ class CommerceService:
         }
 
     def decode_token(self, token: str) -> Optional[dict]:
-        return decode_hs256_optional(
+        payload = decode_hs256_optional(
             token, self.jwt_secret, algorithms=[self.jwt_algorithm]
         )
+        if payload and payload.get("jti") and self.token_revoked(str(payload["jti"])):
+            return None
+        return payload
+
+    def revoke_token(self, token: str) -> bool:
+        """End a customer session server-side (logout). Expired entries are pruned here."""
+        payload = decode_hs256_optional(token, self.jwt_secret, algorithms=[self.jwt_algorithm])
+        if not payload or not payload.get("jti"):
+            return False
+        now = time.time()
+        self.conn.execute("DELETE FROM revoked_customer_tokens WHERE exp < ?", (now,))
+        self.conn.execute(
+            "INSERT OR IGNORE INTO revoked_customer_tokens (jti, exp) VALUES (?, ?)",
+            (str(payload["jti"]), float(payload.get("exp") or now + self.jwt_expiry_seconds)),
+        )
+        self.conn.commit()
+        return True
+
+    def token_revoked(self, jti: str) -> bool:
+        row = self.conn.execute("SELECT 1 FROM revoked_customer_tokens WHERE jti = ?", (jti,)).fetchone()
+        return row is not None
 
     def get_order_by_tx_hash(self, tx_hash: str) -> Optional[dict]:
         tx = canonical_tx_hash(tx_hash)

@@ -124,6 +124,24 @@ RSYNC_EXCLUDES=(
   --exclude '*.db'
   --exclude '*.db-shm'
   --exclude '*.db-wal'
+  # Key material by name — the same shapes the mirror scan refuses (it also catches
+  # unnamed raw seeds by shape, below, before anything is committed).
+  --exclude '*.pem'
+  --exclude '*.key'
+  --exclude '*.p12'
+  --exclude '*.pfx'
+  --exclude '*.jks'
+  --exclude '*.keystore'
+  --exclude '*_key'
+  --exclude '*_signing_key*'
+  --exclude '*_mldsa'
+  --exclude '*_vrf_sk'
+  --exclude '*_ed25519'
+  --exclude 'id_rsa*'
+  --exclude 'id_ecdsa*'
+  --exclude 'id_ed25519*'
+  --exclude '.npmrc'
+  --exclude 'dataset_salt'
 )
 
 ensure_contributing() {
@@ -545,6 +563,16 @@ PY
 }
 
 refresh_product_map "$REPO/products" "$REPO/PRODUCTS.md" "$REPO/README.md"
+
+# The catalog is public and append-only: a secret pushed here cannot be taken back. Each
+# product tree goes through the same scan as the satellite mirrors before anything is
+# committed; one failure stops the whole publish.
+for pid in "${STAGED[@]}"; do
+  if ! bash "$ROOT/scripts/verify_mirror_secrets.sh" "$REPO/products/$pid"; then
+    echo "error: products/$pid failed the secret scan — nothing committed or pushed" >&2
+    exit 1
+  fi
+done
 
 git -C "$REPO" add -A
 if git -C "$REPO" diff --cached --quiet; then

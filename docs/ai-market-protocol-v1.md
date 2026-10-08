@@ -441,9 +441,9 @@ No human. No dashboard. Just HTTP + on-chain.
 ### CLI agent
 
 ```bash
-pip install ai-market-agent
+pip install aimarket-agent
 
-ai-market run "translate spec to 5 langs + legal review" --budget 3.00
+aimarket-agent run "translate spec to 5 langs + legal review" --budget 3.00
 ```
 
 ```

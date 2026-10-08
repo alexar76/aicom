@@ -5,7 +5,7 @@
 # the container with a health check and automatic rollback (deploy/remote.sh). The apex nginx
 # routes /a2mcp and /x402/ to 127.0.0.1:9485 (deploy/nginx/modelmarket.dev.conf).
 set -eu
-TARGET="${1:-root@80.209.243.27}"
+TARGET="${1:-factory-vps}"   # an ssh alias for the apex host; no address in a public tree
 KEY="${OKX_A2MCP_SSH_KEY:-$HOME/.ssh/id_ed25519_factory}"
 PAY_TO="${X402_PAY_TO:-0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a}"   # the operator wallet: public
 cd "$(dirname "$0")"

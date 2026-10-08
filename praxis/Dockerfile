@@ -20,4 +20,9 @@ CMD ["python", "-m", "pytest", "/app/praxis/tests", "-q"]
 
 FROM base AS runtime
 EXPOSE 9460
+# Not root: PRAXIS (signing key in /data). uid 10001 owns only what it writes (/data).
+RUN mkdir -p /data && chown -R 10001:10001 /data
+ENV HOME=/tmp
+USER 10001:10001
+
 CMD ["python", "-m", "praxis.praxis"]

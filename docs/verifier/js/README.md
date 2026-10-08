@@ -30,10 +30,10 @@ Or from the command line, which implements the §17 CLI contract — exit 0 vali
 2 usage/IO, 3 unimplemented:
 
 ```bash
-npx awr-verify verify receipt.json
-npx awr-verify canonicalize receipt.json    # the RFC 8785 canonical bytes
-npx awr-verify digest receipt.json          # sha256-<base64> over those bytes
-npx awr-verify hashdata receipt.json        # proofConfigHash, documentHash, hashData
+npx -p @alexar76/awr-verify awr-verify verify receipt.json
+npx -p @alexar76/awr-verify awr-verify canonicalize receipt.json    # the RFC 8785 canonical bytes
+npx -p @alexar76/awr-verify awr-verify digest receipt.json          # sha256-<base64> over those bytes
+npx -p @alexar76/awr-verify awr-verify hashdata receipt.json        # proofConfigHash, documentHash, hashData
 ```
 
 ## What a valid receipt means

@@ -99,6 +99,19 @@ def _load_pipeline():
         return _pipeline
 
 
+def release_pipeline() -> None:
+    """Drop the cached pipeline (fp32 sd-turbo holds ~4-5 GB); the next call reloads it from HF_HOME."""
+    global _pipeline
+    with _pipeline_lock:
+        if _pipeline is None:
+            return
+        _pipeline = None
+    import gc
+
+    gc.collect()
+    logger.info("Local image pipeline released")
+
+
 def generate_local_image(
     prompt: str,
     *,

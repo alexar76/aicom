@@ -338,8 +338,10 @@ from web.backend.middleware.csrf import csrf_protect_middleware
 from web.backend.middleware.firewall_http import firewall_http_middleware
 from web.backend.middleware.api_version import ApiVersionMiddleware
 from web.backend.middleware.sandbox_opaque_cors import sandbox_opaque_origin_cors
+from web.backend.middleware.public_demo_readonly import public_demo_readonly_middleware
 
 app.add_middleware(ApiVersionMiddleware)
+app.middleware("http")(public_demo_readonly_middleware)
 app.middleware("http")(csrf_protect_middleware)
 app.middleware("http")(firewall_http_middleware)
 app.middleware("http")(sandbox_opaque_origin_cors)

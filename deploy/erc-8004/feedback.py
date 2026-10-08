@@ -104,6 +104,33 @@ REVOKE_SELECTOR = keccak(text="revokeFeedback(uint256,uint64)")[:4]
 LAST_INDEX_SELECTOR = keccak(text="getLastIndex(uint256,address)")[:4]
 EXCLUDE = os.path.join(STATE, "feedback-exclude.json")
 MAX_TX_PER_RUN = 20
+#: Absolute ceilings for one feedback transaction. The endpoint string comes from a third
+#: party's agent card, so the calldata size — and the gas the estimate returns — is theirs to
+#: choose; the wallet pays whatever the node estimates unless capped here.
+MAX_GAS = 400_000
+MAX_FEE_PER_GAS_WEI = 2_000_000_000          # 2 gwei; Base runs at a few hundredths of that
+MAX_ENDPOINT_BYTES = 256
+#: Base's GasPriceOracle: the L1 data fee is charged on top of the L2 gas and is not in it.
+GAS_PRICE_ORACLE = "0x420000000000000000000000000000000000000F"
+GET_L1_FEE_SELECTOR = keccak(text="getL1Fee(bytes)")[:4]
+
+
+def endpoint_ok(url: str) -> bool:
+    """A third party's endpoint as it may go into OUR signed calldata: https, short, plain."""
+    raw = str(url or "")
+    if not raw.startswith("https://") or len(raw.encode("utf-8")) > MAX_ENDPOINT_BYTES:
+        return False
+    return not any(ch.isspace() or ord(ch) < 0x20 or ord(ch) == 0x7F for ch in raw)
+
+
+def l1_fee_wei(data: str) -> int:
+    """What Base charges for posting this calldata to L1 (0 if the oracle cannot be read)."""
+    try:
+        payload = bytes.fromhex(data[2:] if data.startswith("0x") else data)
+        call = "0x" + (GET_L1_FEE_SELECTOR + encode(["bytes"], [payload])).hex()
+        return int(rpc("eth_call", [{"to": GAS_PRICE_ORACLE, "data": call}, "latest"]), 16)
+    except Exception:  # noqa: BLE001 - the caps below still bound the L2 side
+        return 0
 
 
 def last_index(agent_id: int) -> int:
@@ -175,8 +202,15 @@ def send_one(acct, data: str) -> tuple[str, dict]:
     base_fee = int(rpc("eth_getBlockByNumber", ["latest", False])["baseFeePerGas"], 16)
     prio = int(rpc("eth_maxPriorityFeePerGas", []), 16)
     gas = int(int(rpc("eth_estimateGas", [{"from": acct.address, "to": REPUTATION, "data": data}]), 16) * 1.25)
+    max_fee = base_fee * 2 + prio
+    if gas > MAX_GAS or max_fee > MAX_FEE_PER_GAS_WEI:
+        sys.exit(f"refusing: gas {gas} / maxFee {max_fee} wei exceeds the caps ({MAX_GAS} / {MAX_FEE_PER_GAS_WEI})")
+    cost = gas * max_fee + l1_fee_wei(data)
+    balance = int(rpc("eth_getBalance", [acct.address, "latest"]), 16)
+    if balance < cost:
+        sys.exit(f"refusing: {balance / 1e18:.9f} ETH does not cover this transaction ({cost / 1e18:.9f} ETH incl. L1 fee)")
     tx = {"chainId": CHAIN_ID, "nonce": nonce, "to": REPUTATION, "value": 0, "data": data, "gas": gas,
-          "maxFeePerGas": base_fee * 2 + prio, "maxPriorityFeePerGas": prio, "type": 2}
+          "maxFeePerGas": max_fee, "maxPriorityFeePerGas": prio, "type": 2}
     signed = acct.sign_transaction(tx)
     tx_hash = "0x" + bytes(signed.hash).hex()
     json.dump({"tx": tx_hash}, open(PENDING, "w"))
@@ -274,6 +308,9 @@ def main() -> None:
             uri = f"{BASE_URL}/{os.path.basename(extra)}"
             if not served_matches(uri, raw):
                 sys.exit(f"refusing: {uri} is not served byte-for-byte yet (upload feedback/ first)")
+            if not endpoint_ok(r["url"]):
+                print(f"  skipped {aid}: endpoint is not a short plain https URL")
+                continue
             data = calldata(aid, int(r["score"]), r["url"], uri, keccak(raw))
         else:
             idx = last_index(aid)

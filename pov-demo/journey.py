@@ -20,6 +20,10 @@ Steps, each a check (critical unless noted):
   ledger_closed          /channel/close accounted the call
   debit_on_chain         the hub's collector debited the channel on chain (within 10 min)
   refund_on_settle       settleChannel returned the rest of the deposit
+  close_requested        AIMarketEscrowV2 only: requestClose accepted. A V2 depositor settles
+                         only after SETTLE_WINDOW (an hour), so the NEXT run settles this
+                         channel — found from its ChannelOpened log, no state file — and
+                         reports refund_on_settle for it. The bubble clock is never moved.
 
 The wallet is Anvil account #3 of the public test mnemonic: a bubble-only key, worthless outside.
 """
@@ -37,9 +41,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import buyer as b  # noqa: E402  (reused plumbing: rpc, Wallet, channel, units, http)
 from eth_abi import encode  # noqa: E402
 from eth_account import Account  # noqa: E402
+from eth_utils import keccak  # noqa: E402
 
 JOURNEY_KEY = "0x7c852118294e51e653712a81e05800f419141751be58f605c371e15141b007a6"   # Anvil #3
 DEPOSIT = 1.00
+OPENED_TOPIC = "0x" + keccak(text="ChannelOpened(bytes32,address,address,uint256,uint256)").hex()
+# Runs are 6 h apart; this many blocks back covers several of them at any bubble block time.
+LOG_LOOKBACK_BLOCKS = 200_000
 
 
 class Run:
@@ -62,6 +70,31 @@ def pick_offer(hub: str) -> dict | None:
     return offers[0] if offers else None
 
 
+def settle_earlier_channels(escrow: str, token: str, w: "b.Wallet", run: Run) -> None:
+    """V2: settle this wallet's channels from earlier runs whose settle window is over."""
+    if not b.channel(escrow, bytes(32))["v2"]:
+        return
+    try:
+        latest = int(b.rpc("eth_blockNumber", []), 16)
+        logs = b.rpc("eth_getLogs", [{"address": escrow, "toBlock": "latest",
+                                      "fromBlock": hex(max(0, latest - LOG_LOOKBACK_BLOCKS)),
+                                      "topics": [OPENED_TOPIC, None, "0x" + "0" * 24 + w.address[2:].lower()]}])
+        now = b.chain_time()
+    except Exception as exc:
+        run.check("earlier_channels_found", False, f"{type(exc).__name__}: {exc}", critical=False)
+        return
+    for entry in logs or []:
+        ch = bytes.fromhex(entry["topics"][1][2:])
+        st = b.channel(escrow, ch)
+        if st["status"] != 0 or not st["closable_at"] or st["closable_at"] > now:
+            continue
+        before = b.balance_of(token, w.address)
+        w.send(escrow, b.sel("settleChannel(bytes32)") + encode(["bytes32"], [ch]), "settleChannel (earlier run)")
+        refunded = b.balance_of(token, w.address) - before
+        run.check("refund_on_settle", refunded == st["balance"],
+                  f"earlier channel 0x{ch.hex()[:10]}…: refunded {refunded / 1e6:.6f} of {st['balance'] / 1e6:.6f}")
+
+
 def journey(hub: str, run: Run, mint: bool) -> None:
     _, wk = b.http("GET", f"{hub}/.well-known/ai-market.json")
     roles = {e["role"]: e["address"] for e in (wk.get("contracts") or {}).get("entries", [])}
@@ -77,6 +110,7 @@ def journey(hub: str, run: Run, mint: bool) -> None:
     price = float(offer.get("routed_price_usd") or offer["price_per_call_usd"])
 
     w = b.Wallet(JOURNEY_KEY)
+    settle_earlier_channels(escrow, token, w, run)
     need = b.units(DEPOSIT)
     if b.balance_of(token, w.address) < need and mint:
         w.send(token, b.sel("mint(address,uint256)") + encode(["address", "uint256"], [w.address, need * 10]),
@@ -129,6 +163,10 @@ def journey(hub: str, run: Run, mint: bool) -> None:
             break
         time.sleep(10)
     run.check("debit_on_chain", used > 0, f"used {used / 1e6:.6f} on chain")
+    closable_at = b.request_close(escrow, w, ch, [])
+    if closable_at:
+        run.check("close_requested", True, f"closable at {closable_at}; a later run settles it")
+        return
     before = b.balance_of(token, w.address)
     w.send(escrow, b.sel("settleChannel(bytes32)") + encode(["bytes32"], [ch]), "settleChannel")
     refunded = b.balance_of(token, w.address) - before

@@ -97,6 +97,9 @@ _ADDRESS_ALLOWED = (
     # covers them, and it is the one that matters for a stale value.
     "deploy/hub-payment.env.example",
     "school/",
+    # The public encyclopedia's "Live Base MAINNET" table exists to show the addresses;
+    # tests/test_encyclopedia_addresses_live.py holds every row to the registry instead.
+    "docs/encyclopedia/content/",
     "aimarket-hub/tests/",
     "alien-monitor/tests/",
     "escrow-signer/tests/",

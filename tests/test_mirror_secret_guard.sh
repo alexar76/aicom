@@ -103,6 +103,33 @@ import os,sys; open(sys.argv[1],'wb').write(os.urandom(300))" "$d/big_blob.bin"
 bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a 300-byte random blob (density stays key-like)"
 rm -f "$d/big_blob.bin"
 
+# ── dotfiles, the ecosystem's own key formats, and a missing scanner ──────────────────────────────
+# Hidden files ship (.env.example, .github/, .npmrc*) and rg skipped them: a private host sat in
+# metis/deploy/skopos-test/.env.example unseen. The fixture host is a fake one supplied by env.
+d=$(mk_tree dotfile); mkdir -p "$d/deploy/x"
+echo "PROM_URL=http://host-under-test.invalid:9090" > "$d/deploy/x/.env.example"
+MIRROR_FORBIDDEN_HOSTS="host-under-test.invalid" bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "refuses a forbidden host inside a dotfile"
+
+# Shapes assembled at run time so this file itself carries none of them.
+for shape in "sk-or-v1-$(printf 'a%.0s' {1..48})" "sk-ant-api03-$(printf 'B%.0s' {1..40})" \
+             "$(printf '1234567890'):AA$(printf 'x%.0s' {1..33})" "aimk_$(printf 'Q%.0s' {1..32})"; do
+  d=$(mk_tree token)
+  echo "KEY=$shape" > "$d/.env.example"
+  bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "refuses a ${shape:0:8}… credential in a dotfile"
+done
+
+d=$(mk_tree mldsa); mkdir -p "$d/data"
+python3 -c "print('ab'*1312); print('cd'*4032)" > "$d/data/hub_signing_key_mldsa"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "refuses an ML-DSA key file (<key>_mldsa, 12 KB of hex)"
+
+# Without ripgrep every rule used to read as "no match" and the tree was certified.
+d=$(mk_tree norg)
+nobin="$TMP/nobin"; mkdir -p "$nobin"
+for tool in bash basename dirname find grep head mktemp printf python3 rm tr wc cat; do
+  p=$(command -v "$tool") && ln -sf "$p" "$nobin/$tool"
+done
+PATH="$nobin" bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "refuses to certify anything when rg is missing"
+
 echo
 echo "  $pass passed, $fail failed"
 [ "$fail" = 0 ]

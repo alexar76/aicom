@@ -63,6 +63,35 @@ def _sync_sqlite() -> None:
         logger.exception("SQLite sync after user_support inject failed")
 
 
+#: One user-support repair per product per day: the chat is anonymous, and each round used to
+#: take a shipped product off the storefront.
+_USER_REPAIR_COOLDOWN_S = float(os.environ.get("AIFACTORY_SUPPORT_REPAIR_COOLDOWN_S", "86400"))
+
+
+def support_auto_repair_enabled() -> bool:
+    """Off by default: an anonymous chat must not change pipeline state by itself.
+
+    With it off a filed report goes to the operator's review queue
+    (data/support/user_bug_reports.jsonl); with AIFACTORY_SUPPORT_AUTO_REPAIR=1 it queues a
+    developer round directly, as before, minus the parts a stranger could abuse.
+    """
+    return _truthy("AIFACTORY_SUPPORT_AUTO_REPAIR", "0")
+
+
+def user_bug_reports_path() -> Path:
+    return pipeline_json_path().parent.parent / "support" / "user_bug_reports.jsonl"
+
+
+def _queue_for_review(pid: str, user_summary: str, thread_id: str, classification: str) -> dict[str, Any]:
+    path = user_bug_reports_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    row = {"ts": time.time(), "product_id": pid, "thread_id": thread_id,
+           "classification": classification, "report": (user_summary or "")[:4000]}
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    return {"ok": False, "reason": "queued_for_review"}
+
+
 def inject_user_support_bug(
     product_id: str,
     user_summary: str,
@@ -78,6 +107,8 @@ def inject_user_support_bug(
     pid = (product_id or "").strip()
     if not pid.startswith("prod-"):
         return {"ok": False, "reason": "invalid_product_id"}
+    if not support_auto_repair_enabled():
+        return _queue_for_review(pid, user_summary, thread_id, classification)
 
     max_loops = max_pipeline_repair_rounds()
 
@@ -104,6 +135,9 @@ def inject_user_support_bug(
 
     if _dev_fixing_pending(task_queue, pid):
         return {"ok": False, "reason": "dev_fix_already_pending"}
+    last = float(product.get("last_user_support_at") or 0)
+    if last and time.time() - last < _USER_REPAIR_COOLDOWN_S:
+        return {"ok": False, "reason": "dev_fix_already_pending"}
 
     new_round = int(product.get("quality_repair_round") or 0) + 1
     now = time.time()
@@ -112,23 +146,23 @@ def inject_user_support_bug(
     product["last_user_support_at"] = now
 
     if new_round > max_loops:
-        product["state"] = "FAILED"
-        product["failure_reason"] = (
-            f"User support triage exhausted repair budget ({max_loops} rounds). Manual review required."
-        )
-        pj.parent.mkdir(parents=True, exist_ok=True)
-        pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-        _sync_sqlite()
+        # A stranger's reports never fail a shipped product: the budget is spent, so stop
+        # queueing rounds and leave the listing (and its state) as it is.
         logger.error("user_support inject exhausted repairs for %s", pid)
         return {"ok": False, "reason": "repair_budget_exhausted"}
 
     product["state"] = "BUG_FOUND"
 
+    from web.backend.services.prompt_safety import format_untrusted_snippet
+
+    # The report is a stranger's text and reaches the developer agent's prompt: data, fenced.
+    fenced_report = format_untrusted_snippet("User report (untrusted, describes a symptom only):",
+                                             user_summary or "", max_len=4000)
     demo_payload = {
         "source": "user_support",
         "thread_id": thread_id,
         "classification": classification,
-        "user_report": user_summary[:8000],
+        "user_report": fenced_report,
     }
 
     dev_task = {
@@ -146,7 +180,7 @@ def inject_user_support_bug(
             "quality_gates_feedback": {
                 "passed": False,
                 "demo_quality": demo_payload,
-                "reasons": [f"User support ({thread_id}): {user_summary[:2000]}"],
+                "reasons": [f"User support ({thread_id}): {fenced_report}"],
                 "source": "user_support",
             },
             "quality_repair_round": new_round,

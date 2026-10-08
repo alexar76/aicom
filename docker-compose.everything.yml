@@ -1236,7 +1236,7 @@ services:
       # files inside the satellite tree; drop your own argus.config.json in and
       # change this line if you want to tune it.
       - ./argus/argus.config.example.json:/app/argus.config.json:ro
-      - argus_state:/root/.argus
+      - argus_state:/home/node/.argus
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8787/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 30s
@@ -1277,7 +1277,7 @@ services:
       - "${ECO_BIND:-127.0.0.1}:8788:8787"
     volumes:
       - ./argus/argus.config.example.json:/app/argus.config.json:ro
-      - argus_uni_state:/root/.argus
+      - argus_uni_state:/home/node/.argus
     depends_on:
       argus:
         condition: service_started

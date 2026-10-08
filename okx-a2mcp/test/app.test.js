@@ -250,6 +250,20 @@ test("a paywall whose facilitator is down answers 503 on paid routes and leaves 
   } finally { await close(); }
 });
 
+test("while the facilitator is down, no spelling of a paid path reaches the handler for free", async () => {
+  const { resilientPaywall } = await import("../src/x402.js");
+  const paywall = resilientPaywall({ keyFile: "/k", payTo: "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a", serviceIds: ["warden-scan"] },
+    { log: {}, retryMs: [60_000], build: async () => { throw new Error("facilitator unreachable"); } });
+  await paywall.ready;
+  const { call, close } = await serve({ paywall });
+  try {
+    for (const path of ["/x402/warden-scan/", "/X402/Warden-Scan", "/x402/warden%2Dscan", "/x402//warden-scan"]) {
+      const status = (await call(path, { method: "POST" })).status;
+      assert.ok(status === 503 || status === 404, `${path} answered ${status}`);
+    }
+  } finally { await close(); }
+});
+
 test("free histor-check calls share a budget under HISTOR's ceiling; paid calls are not counted against it", async () => {
   const historian = fakeHistor(() => json(200, { type: "histor.check/v1", match: "no-digest" }));
   const { call, close } = await serve({ fetchImpl: historian.fetchImpl, freeHistorPerMinute: 2, perMinute: 100, paywall: fakePaywall });
@@ -268,4 +282,23 @@ test("the buyer id is a keyed HMAC, not a hash anyone can reverse", async () => 
   assert.match(a, /^[0-9a-f]{32}$/);
   assert.notEqual(a, b);
   assert.notEqual(a, createHash("sha256").update("okx-a2mcp|203.0.113.7").digest("hex").slice(0, 32));
+});
+
+test("one payment, one call in flight: a concurrent copy of the same payment, or the same wallet, is refused", async () => {
+  // The paywall settles only after the handler answers, and the handler spends upstream first.
+  const historian = fakeHistor(async () => { await new Promise((r) => setTimeout(r, 250)); return json(200, { type: "histor.check/v1", match: "no-digest" }); });
+  const { call, close } = await serve({ fetchImpl: historian.fetchImpl, paywall: fakePaywall, perMinute: 100 });
+  const pay = (from, nonce) => Buffer.from(JSON.stringify({ x402Version: 2, payload: { authorization: { from, nonce } } })).toString("base64");
+  const paid = (header) => ({ method: "POST", headers: { "content-type": "application/json", "payment-signature": header },
+                             body: JSON.stringify({ name: "io.example/x" }) });
+  const wallet = "0x" + "ab".repeat(20);
+  try {
+    const same = pay(wallet, "0x01");
+    const [a, b] = await Promise.all([call("/x402/histor-check", paid(same)), call("/x402/histor-check", paid(same))]);
+    assert.deepEqual([a.status, b.status].sort(), [200, 409]);
+    const [c, d] = await Promise.all([call("/x402/histor-check", paid(pay(wallet, "0x02"))),
+                                      call("/x402/histor-check", paid(pay(wallet, "0x03")))]);
+    assert.deepEqual([c.status, d.status].sort(), [200, 409], "two authorizations from one wallet at once");
+    assert.equal((await call("/x402/histor-check", paid(pay(wallet, "0x04")))).status, 200, "the lock is released after the answer");
+  } finally { await close(); }
 });

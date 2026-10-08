@@ -135,7 +135,7 @@ result.reasons                               // [{ code: 'AWR-PROOF-006', … },
 ```
 
 ```bash
-npx awr-verify verify receipt.json     # salida 0 válido, 1 inválido, 2 error de uso o E/S
+npx -p @alexar76/awr-verify awr-verify verify receipt.json     # salida 0 válido, 1 inválido, 2 error de uso o E/S
 python -m awr verify receipt.json      # el mismo contrato, los mismos códigos
 ```
 

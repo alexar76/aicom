@@ -111,3 +111,35 @@ def test_evolution_signal_endpoint(client):
     row = json.loads(last)
     assert row.get("event_type") == "evolution_signal"
     assert row.get("data", {}).get("signal") == "nps"
+
+
+def test_logout_ends_the_session_server_side(client):
+    """Customer JWTs live 7 days; a logout that only asks the client to forget the token
+    leaves a copied token working for the rest of the week."""
+    r = client.post("/api/customer/register", json={"email": "bye@example.test", "password": "password123"})
+    token = r.json()["access_token"]
+    auth = {"Authorization": f"Bearer {token}"}
+    assert client.get("/api/customer/me", headers=auth).status_code == 200
+    assert client.post("/api/customer/logout", headers=auth).status_code == 200
+    assert client.get("/api/customer/me", headers=auth).status_code == 401
+
+
+def test_failed_logins_are_limited_per_email(client, monkeypatch):
+    import web.backend.api.customer as cust
+
+    monkeypatch.setattr(cust, "_LOGIN_FAIL_MAX_PER_EMAIL", 3)
+    monkeypatch.setattr(cust, "_login_failures", type(cust._login_failures)(cust._login_failures.default_factory))
+    client.post("/api/customer/register", json={"email": "target@example.test", "password": "password123"})
+    codes = [client.post("/api/customer/login", json={"email": "target@example.test", "password": f"wrong{i}xx"}).status_code
+             for i in range(4)]
+    assert codes == [401, 401, 401, 429]
+
+
+def test_register_does_not_say_which_emails_have_accounts(client, monkeypatch):
+    import web.backend.api.customer as cust
+
+    monkeypatch.setattr(cust, "_register_attempts", type(cust._register_attempts)(cust._register_attempts.default_factory))
+    client.post("/api/customer/register", json={"email": "exists@example.test", "password": "password123"})
+    r = client.post("/api/customer/register", json={"email": "exists@example.test", "password": "password456"})
+    assert r.status_code == 409
+    assert "exist" not in r.json()["detail"].lower()

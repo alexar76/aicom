@@ -10,6 +10,29 @@ clone="${1:-}"
 
 fail=0
 
+# Every content rule below is an `rg` call. Without ripgrep each call exited 127, which the
+# `if rg -q …` read as "no match", and the script certified the mirror having checked nothing.
+command -v rg >/dev/null 2>&1 || {
+  echo "error: ripgrep (rg) is required to certify a mirror — refusing" >&2
+  exit 2
+}
+
+# rg skips hidden files by default, and a mirror ships dotfiles: .env.example (one carried a
+# private host for weeks), .github/workflows, .npmrc*. Scan them; .git itself is not shipped.
+# Files the clone's own .gitignore matches are left out on purpose — `git add -A` will not
+# stage them either.
+#   0 = match, 1 = no match, anything else = rg failed, which must not read as "clean".
+rg_hit() {
+  local rc=0
+  rg -q --hidden -g '!.git' "$@" 2>/dev/null || rc=$?
+  if [[ "$rc" -gt 1 ]]; then
+    echo "error: rg failed (exit $rc) — refusing to certify the mirror" >&2
+    fail=1
+    return 1
+  fi
+  return "$rc"
+}
+
 for forbidden in .env .env.local .env.production dioscuri.config.json argus.config.json helios.config.yaml client_secret.json youtube_token.json; do
   if [[ -f "$clone/$forbidden" ]]; then
     echo "error: forbidden file in mirror: $forbidden" >&2
@@ -32,9 +55,19 @@ fi
 # by a letter — so requiring a word boundary drops that entire false-positive class without
 # loosening what the rule detects. Verified against all five shapes before changing it; do not
 # replace this with a path exclusion for fonts, which would let a token hide in a .css file.
-if rg -q -i \
-  '\b(npm_[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[a-zA-Z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{10,})' \
-  "$clone" 2>/dev/null; then
+# The vendor-prefixed shapes (`sk-ant-…`, `sk-or-v1-…`, `sk-proj-…`) carry a hyphen right after
+# `sk-`, which the first pattern never allowed — the keys this ecosystem actually uses
+# (OpenRouter, Anthropic) passed. Telegram bot tokens, Google OAuth secrets and the hub's own
+# prepaid keys (`aimk_`) are listed too.
+if rg_hit -i \
+  '\b(npm_[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|gho_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[a-zA-Z0-9]{20,}|sk-(ant|or-v1|proj)-[A-Za-z0-9_-]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|glpat-[A-Za-z0-9_-]{20,}|hf_[A-Za-z0-9]{30,}|gsk_[A-Za-z0-9]{30,}|GOCSPX-[A-Za-z0-9_-]{20,})' \
+  "$clone"; then
+  echo "error: suspected API token literal in mirror tree" >&2
+  fail=1
+fi
+# A hub key is `aimk_` + token_urlsafe(24): exactly 32 url-safe characters. Matching the exact
+# length keeps readable placeholders in tests (`aimk_this_hubs_account_at_the_peer`) out of it.
+if rg_hit -e '\b[0-9]{8,10}:AA[A-Za-z0-9_-]{33}\b' -e '\baimk_[A-Za-z0-9_-]{32}([^A-Za-z0-9_-]|$)' "$clone"; then
   echo "error: suspected API token literal in mirror tree" >&2
   fail=1
 fi
@@ -52,10 +85,10 @@ fi
 if [[ -n "$forbidden_hosts" ]]; then
   rg_host_args=()
   for h in $forbidden_hosts; do rg_host_args+=(-e "$h"); done
-  if rg -q -F "${rg_host_args[@]}" \
+  if rg_hit -F "${rg_host_args[@]}" \
     -g '!.mirror-forbidden-hosts' \
     -g '!scripts/scrub_private_hosts.sh' \
-    "$clone" 2>/dev/null; then
+    "$clone"; then
     echo "error: private server IP/hostname literal in mirror tree" >&2
     fail=1
   fi
@@ -71,18 +104,18 @@ fi
 
 # Bare hex credentials assigned to an *_TOKEN key. A real MESH_ADMIN_TOKEN shipped to
 # the public alexar76/lottery mirror this way; it matched no other rule here.
-if rg -q -e '(ADMIN|API|MESH|OPERATOR)_TOKEN["'"'"']?\s*[:=]\s*["'"'"']?[0-9a-f]{32,}' "$clone" 2>/dev/null; then
+if rg_hit -e '(ADMIN|API|MESH|OPERATOR)_TOKEN["'"'"']?\s*[:=]\s*["'"'"']?[0-9a-f]{32,}' "$clone"; then
   echo "error: bare hex token literal in mirror tree" >&2
   fail=1
 fi
 
 # Extra credential shapes — AWS access keys, Google API keys, PEM private-key blocks.
 # Real Google browser keys are AIzaSy…; bare AIza+35 matches random base64 in HTML assets.
-if rg -q \
+if rg_hit \
   -e 'AKIA[0-9A-Z]{16}' \
   -e 'AIzaSy[0-9A-Za-z_-]{33}' \
-  -e '-----BEGIN (RSA |EC )?PRIVATE KEY-----' \
-  "$clone" 2>/dev/null; then
+  -e '-----BEGIN (RSA |EC |DSA |OPENSSH |ENCRYPTED )?PRIVATE KEY-----' \
+  "$clone"; then
   echo "error: suspected AWS/Google/PEM credential in mirror tree" >&2
   fail=1
 fi
@@ -104,7 +137,7 @@ anvil_test_keys=$(
 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6
 ANVIL_KEYS
 )
-if rg --no-heading -o -i 'PRIVATE_KEY=0x[0-9a-fA-F]{64}' "$clone" 2>/dev/null \
+if rg --hidden -g '!.git' --no-heading -o -i 'PRIVATE_KEY=0x[0-9a-fA-F]{64}' "$clone" 2>/dev/null \
   | grep -viF "$anvil_test_keys" | grep -q .; then
   echo "error: raw private key literal in mirror tree" >&2
   fail=1
@@ -125,7 +158,7 @@ fi
 key_hits=""
 while IFS= read -r f; do
   case "$(basename "$f")" in
-    *_signing_key|*_signing_key.*|conductor_key|*_ed25519|*_ed25519.key|id_rsa|id_ecdsa|*.pem|*.p12|*.pfx|*.jks)
+    *_signing_key|*_signing_key.*|*_signing_key_*|*_mldsa|conductor_key|*_ed25519|*_ed25519.key|id_rsa|id_ecdsa|id_ed25519|*.pem|*.p12|*.pfx|*.jks|*.keystore|.npmrc.publish)
       key_hits+="  $f (name looks like key material)"$'\n'; continue;;
   esac
   # Shape test: tiny + contains CONTROL bytes, which text never does.

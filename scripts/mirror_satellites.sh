@@ -395,11 +395,12 @@ _post_rsync_satellite_hook() {
       fi
       ;;
     alien-monitor)
-      # AI registry loader reads scripts/satellite-map.yaml on the satellite.
+      # AI registry loader reads scripts/satellite-map.yaml on the satellite — the published
+      # copy (github_published: false entries dropped), never the raw central map.
       mkdir -p "$clone/scripts"
       if [[ -f "$ROOT/scripts/satellite-map.yaml" ]]; then
-        cp "$ROOT/scripts/satellite-map.yaml" "$clone/scripts/satellite-map.yaml"
-        echo "  ✓ scripts/satellite-map.yaml → satellite scripts/"
+        python3 "$ROOT/scripts/write_published_satellite_map.py" "$clone/scripts/satellite-map.yaml"
+        echo "  ✓ scripts/satellite-map.yaml (published entries only) → satellite scripts/"
       fi
       ;;
     gaia)
@@ -911,6 +912,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   pytest-courses:
     runs-on: ubuntu-latest
@@ -929,9 +933,9 @@ jobs:
           - 3d-data-viz-course
           - physics-inspired-computing-course
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:
           python-version: "3.12"
 
@@ -965,8 +969,8 @@ jobs:
   portal-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:
           python-version: "3.12"
       - name: Build unified Pages tree
@@ -982,8 +986,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -993,26 +995,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:
           python-version: "3.12"
       - name: Build portal + all course sites
         run: |
           for d in *-course; do python3 "$d/scripts/build_course_assets.py"; done
           python3 _tooling/build_monorepo_pages.py
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa  # v3.0.1
         with:
           path: site
   deploy:
     needs: build
+    permissions:
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e  # v4.0.5
 PAGESEOF
   echo "  ✓ .github/workflows/ci.yml + pages.yml (course matrix)"
 }
@@ -1181,13 +1186,16 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:
           python-version: "3.11"
 
@@ -1357,13 +1365,16 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:
           python-version: "3.11"
 
@@ -1376,7 +1387,7 @@ jobs:
           pip install -e "backend[dev]"
           bash scripts/ci_coverage_badge.sh -- backend/tests -q --cov=backend
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4.4.0
         with:
           node-version: "20"
           cache: npm
@@ -1483,13 +1494,16 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   forge:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 
-      - uses: foundry-rs/foundry-toolchain@v1
+      - uses: foundry-rs/foundry-toolchain@de808b1eea699e761c404bda44ba8f21aba30b2c  # v1.3.1
         with:
           version: stable
 
@@ -1502,7 +1516,7 @@ jobs:
         working-directory: contracts
         run: forge test -vv
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:
           python-version: "3.12"
 
@@ -1794,6 +1808,9 @@ on:
     branches: ["main"]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   flutter-build-web:
     runs-on: ubuntu-latest
@@ -1809,7 +1826,7 @@ jobs:
           - apps/freelance-contract-reviewer
           - apps/reputation-dashboard
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 
       - name: Fetch Dart SDK (path dependency)
         run: |
@@ -1823,7 +1840,7 @@ jobs:
           ln -sf ../../packages/aicom_desktop_core apps/packages/aicom_desktop_core
           ln -sf ../../packages/aicom_platform_init apps/packages/aicom_platform_init
 
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2  # v2.23.0
         with:
           channel: stable
           cache: true
@@ -1840,7 +1857,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: flutter-build-web
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
       - name: Verify coverage badge (no git push)
         run: bash scripts/ci_static_badge.sh builds pass
 CIEOF
@@ -1913,13 +1930,20 @@ export_wiki_generic() {
 
   local saved_branch="$BRANCH"
   BRANCH="$wiki_branch"
-  _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "mit"
+  local pushed=0
+  _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "mit" || pushed=$?
   BRANCH="$saved_branch"
+  # A refused push (secret scan, non-GitHub target) must not be followed by a second push
+  # of the same tree under another branch name.
+  [[ "$pushed" -eq 0 ]] || return "$pushed"
 
   if [[ "$wiki_branch" == "master" ]] \
      && git_auth ls-remote "$remote_url" "refs/heads/main" &>/dev/null; then
     echo "  ↳ syncing main branch from master …"
-    git_auth push --force origin "HEAD:main" 2>/dev/null || true
+    # Inside the wiki clone, to the wiki remote. `_commit_and_push` runs in a subshell, so
+    # the cwd here is the MONOREPO root: a bare `push origin` force-pushed the monorepo's
+    # HEAD over Gitea main and sent the GitHub token to Gitea over plain http.
+    git_auth -C "$clone" push --force "$remote_url" "HEAD:main"
   fi
 }
 

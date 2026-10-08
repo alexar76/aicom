@@ -142,3 +142,13 @@ def test_other_direct_tools_are_counted_but_not_announced():
     assert dw.step(state, now=0, transfers=[], mcp=None, crawler=no_bots, calls=[weather]) == []
     assert state["external_calls"] == [weather]
     assert "других прямых инструментов: 1" in dw.summary(state, now=dw._iso("2026-10-06T07:00:00Z"))
+
+
+def test_the_live_escrow_is_our_own_wallet():
+    """The literal named the escrow the 2026-09-04 redeploy replaced."""
+    import json
+    from pathlib import Path
+
+    reg = json.loads((Path(__file__).resolve().parents[1] / "config" / "deployments"
+                      / "base-mainnet.json").read_text(encoding="utf-8"))
+    assert reg["contracts"]["AIMarketEscrow"].lower() in dw.OWN_WALLETS

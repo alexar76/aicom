@@ -46,19 +46,41 @@ settle, refund or expire as they always would. Run both addresses until V1 is em
 
 **One client-visible change.** A depositor closing a channel now calls `requestClose`
 first and settles an hour later. Any buyer tooling that calls `settleChannel` or
-`refundChannel` directly needs that extra step; nothing in this repo does, because closing
-is a buyer action.
+`refundChannel` directly needs that extra step. In this repo, since 2026-10-08,
+`pov-demo/buyer.py` asks to close every channel of a run first (after a passing seller's
+debit has landed) and settles them all once the window is over: one wait, not one per
+seller. On V1 it settles at once, as before. `pov-demo/journey.py`, the six-hourly UNI
+canary, sends `requestClose` on V2 and settles the channel on its next run, which finds it
+from its `ChannelOpened` log. The bubble clock is never moved. Many dust channels close in two transactions:
+`batchRequestClose`, then `batchRefund` after the window (`batchRefund` honours the same
+window as `refundChannel` since 2026-10-08 — it used to skip it).
 
-**One change in our own stack.** `escrow-signer` (HORKOS) signs `settleChannel` and
-`expireChannel` on the hub's behalf. Hub-initiated settle is unchanged and immediate.
-`expireChannel` simply reverts for an extra hour — the signer already treats an early
-revert as normal, so its policy needs no edit.
+**Changes in our own stack — done 2026-10-08, V1 behaviour unchanged.** V2 keys its replay
+flag by `(channelId, receiptId)`, so `usedReceipts(receiptId)` read raw always says "not used"
+there. Both readers now ask `isReceiptUsed(channelId, receiptId)` first. The hub's mirror
+does, and so does `escrow-signer` (HORKOS), on the debit path and in boot reconciliation.
+HORKOS treats an escrow as V1 only after two reverts, `isReceiptUsed` and the V2-only
+`SETTLE_WINDOW()`. A spurious revert or an outage on V2 never falls back to the V1
+question. HORKOS also follows V2's timing: it signs debits until `expiresAt +
+SETTLE_WINDOW` (V1 stops at `expiresAt`), and it signs `expireChannel` only after that
+(earlier it would revert). `scripts/escrow_settlement_sweep.py` reads the ten-word
+`getChannel` and asks for expiry at the same moment. Hub-initiated settle is unchanged and
+immediate. The hub stops serving a V2 channel once its depositor has requested the close
+(`closableAt != 0`). All of it was checked against real V1 and V2 bytecode on a private
+anvil. The checks covered HORKOS's full sign → broadcast → reconcile path, a debit two
+minutes past expiry (V1 refused, V2 signed and landed), expiry inside and after the
+window, and the buyer's `requestClose` → wait → settle path.
+
+**HORKOS pins one escrow.** `escrow-signer/escrow_signer/config.py` `ESCROW` is a constant,
+and boot fails closed if the domain separator disagrees, so it cannot sign for V1 and V2 at
+once. Switch it in the same deploy as the hub's escrow address. V1 channels left over after
+the switch can still be closed: `expireChannel` is permissionless, and anyone can pay its gas.
 
 ## Deploy, when you decide to
 
 ```bash
 cd contracts/evm
-forge test                                   # 143, all green
+forge test                                   # 148, all green
 forge create src/AIMarketEscrowV2.sol:AIMarketEscrowV2 \
   --rpc-url "$BASE_RPC" --private-key "$DEPLOYER_KEY" \
   --constructor-args "[$HUB_ADDRESS]" "[0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913]"
@@ -66,7 +88,8 @@ forge create src/AIMarketEscrowV2.sol:AIMarketEscrowV2 \
 
 Then, and only once V1 is drained:
 
-1. `AIMARKET_ESCROW_CONTRACT` and `AIMARKET_ESCROW_EVM_ADDRESS` → the new address.
+1. `AIMARKET_ESCROW_CONTRACT` and `AIMARKET_ESCROW_EVM_ADDRESS` → the new address, and
+   `ESCROW` in `escrow-signer/escrow_signer/config.py` in the same deploy (HORKOS pins it).
 2. Re-check `authorizedHubs` and the USDC whitelist on the new contract.
 3. Update `docs/onchain-journal.md` and the landing pages.
 4. Record the address here, and only then delete nothing — V1 stays in the tree as the

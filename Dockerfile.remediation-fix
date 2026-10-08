@@ -42,5 +42,10 @@ ENV PYTHONUNBUFFERED=1 \
     REMEDIATION_PORT=9086
 
 EXPOSE 9086
+# Not root: the remediation fixer. uid 10001 owns only what it writes (/data).
+RUN mkdir -p /data && chown -R 10001:10001 /data
+ENV HOME=/tmp
+USER 10001:10001
+
 CMD ["python", "-m", "uvicorn", "web.backend.remediation_service:app", \
      "--host", "0.0.0.0", "--port", "9086", "--workers", "1"]

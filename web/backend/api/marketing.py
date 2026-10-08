@@ -49,6 +49,7 @@ LOG_DIR = marketing_logs_dir()
 ANALYTICS_FILE = LOG_DIR / "events.jsonl"
 LEADS_FILE = LOG_DIR / "leads.jsonl"
 
+_ANALYTICS_MAX_PER_HOUR = int(os.environ.get("AIFACTORY_ANALYTICS_MAX_PER_HOUR", "600"))
 _SAFE_REF = re.compile(r"^[a-zA-Z0-9._\-]{1,64}$")
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
@@ -59,6 +60,13 @@ class AnalyticsEventBody(BaseModel):
     product_id: Optional[str] = Field(None, max_length=128)
     referral: Optional[str] = Field(None, max_length=64)
     meta: Optional[dict[str, Any]] = None
+
+    @field_validator("meta")
+    @classmethod
+    def _bounded_meta(cls, v):
+        from web.backend.schemas.api_requests import bounded_public_dict
+
+        return bounded_public_dict(v)
 
 
 class LeadBody(BaseModel):
@@ -98,8 +106,9 @@ async def get_ga_measurement_id(request: Request):
 
 
 @router.post("/analytics")
-async def post_analytics_event(body: AnalyticsEventBody):
+async def post_analytics_event(body: AnalyticsEventBody, request: Request):
     """Record a client-side analytics event (page views, CTAs, shares)."""
+    _enforce_marketing_rate_limit(request, "analytics", _ANALYTICS_MAX_PER_HOUR)
     ref = body.referral
     if ref is not None and not _SAFE_REF.match(ref):
         raise HTTPException(status_code=400, detail="Invalid referral format")

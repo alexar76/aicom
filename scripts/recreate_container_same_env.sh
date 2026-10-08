@@ -12,6 +12,7 @@
 # The old container is renamed rather than removed, so a rollback is `docker rm -f NAME &&
 # docker rename NAME-pre-<ts> NAME && docker start NAME`.
 set -euo pipefail
+umask 077   # the env file written below holds every secret of the container
 
 name="${1:?container name required}"
 image="${2:?new image required}"
@@ -80,12 +81,22 @@ echo "== starting $name on $image =="
 docker run "${final[@]}" "$image" "${cmd_args[@]}" >/dev/null
 
 echo "== environment check: old vs new =="
-docker inspect "${name}-pre-${stamp}" --format '{{range .Config.Env}}{{println .}}{{end}}' | sort > "/tmp/${name}.old.$stamp"
-docker inspect "$name" --format '{{range .Config.Env}}{{println .}}{{end}}' | sort > "/tmp/${name}.new.$stamp"
-if diff -q "/tmp/${name}.old.$stamp" "/tmp/${name}.new.$stamp" >/dev/null; then
-  echo "  identical ($(wc -l < "/tmp/${name}.new.$stamp" | tr -d ' ') variables)"
+# Names and value hashes only, in a private directory that is removed on exit: the dumps
+# used to be left in /tmp at 0644 with every secret of a production container in them,
+# and a difference was printed as KEY=VALUE.
+cmpdir="$(mktemp -d)"; chmod 700 "$cmpdir"; trap 'rm -rf "$cmpdir"' EXIT
+fingerprint() {
+  docker inspect "$1" --format '{{range .Config.Env}}{{println .}}{{end}}' | sed '/^$/d' |
+    while IFS= read -r line; do
+      printf '%s %s\n' "${line%%=*}" "$(printf '%s' "${line#*=}" | sha256sum | cut -c1-12)"
+    done | sort
+}
+fingerprint "${name}-pre-${stamp}" > "$cmpdir/old"
+fingerprint "$name" > "$cmpdir/new"
+if diff -q "$cmpdir/old" "$cmpdir/new" >/dev/null; then
+  echo "  identical ($(wc -l < "$cmpdir/new" | tr -d ' ') variables)"
 else
-  echo "  DIFFERS:"; diff "/tmp/${name}.old.$stamp" "/tmp/${name}.new.$stamp" | head -20
+  echo "  DIFFERS (names only):"; diff "$cmpdir/old" "$cmpdir/new" | grep '^[<>]' | awk '{print $1, $2}' | sort -u | head -20
 fi
 
 old_ports="$(docker inspect "${name}-pre-${stamp}" --format '{{json .HostConfig.PortBindings}}')"

@@ -42,11 +42,10 @@ CAPABILITIES = (
     "x402.authorization.check@v1", "mcp.tools.diff@v1", "gaia.weather.read@v1",
     "gaia.air.read@v1", "atlas.nearest.read@v1", "sortes.draw@v1",
 )
-# Loopback and non-private defaults only. Extra fleet addresses belong in AICOM_OWN_IPS, not in this file.
-DEFAULT_OWN_IPS = (
-    "80.209.243.27", "108.165.32.182",
-    "162.141.123.165", "212.113.104.129", "82.21.72.167", "95.24.31.225", "127.0.0.1", "::1",
-)
+# Loopback only. The fleet's and the owner's addresses come from AICOM_OWN_IPS (the unit
+# reads it from /etc/aicom-demand/own-ips.env on the host): this file is public, and an
+# owner's address is personal data.
+DEFAULT_OWN_IPS = ("127.0.0.1", "::1")
 DISCOVERY = ("/x402/openapi.json", "/.well-known/x402", "/x402/well-known.json")
 _COMBINED = re.compile(
     r'^(?P<ip>\S+) \S+ \S+ \[(?P<time>[^\]]+)\] "(?P<method>[A-Z]+) (?P<path>\S+)[^"]*" '

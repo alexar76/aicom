@@ -1886,3 +1886,15 @@ def test_the_pq_check_is_worded_in_both_languages():
     for lang in ("en", "ru"):
         fail, back, impact = alert._describe("hub_pq_verify@lab", "https://hub.example", lang)
         assert "hub_pq_verify" not in fail and impact
+
+
+def test_a_received_backup_that_shrank_pages(monkeypatch):
+    """Received repos are append-only and no longer compacted automatically: they only
+    grow. A drop means segments were compacted away — after a mass delete, the moment the
+    loss became final."""
+    doc = _backup_status(NOW)
+    doc["repos"]["factory-vps"].update(size_mb=300, size_mb_peak_7d=1000)
+    doc["repos"]["indep"].update(size_mb=100, size_mb_peak_7d=104)
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, doc, ""))
+    bad = [c.name for c in alert.probe_backups("https://r", now=NOW) if not c.ok]
+    assert bad == ["backup_not_shrunk[factory-vps]"]

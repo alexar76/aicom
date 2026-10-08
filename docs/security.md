@@ -31,14 +31,21 @@ Set in root **`.env`** (persists across `docker compose build` / `up`; file is n
 AIFACTORY_DEMO_READONLY=1
 ```
 
-When enabled, the API returns **403** for:
+The demo admin is every visitor, so admin **changes are refused by default**
+(`web/backend/middleware/public_demo_readonly.py`). A `POST`/`PUT`/`PATCH`/`DELETE`
+under `/api/admin` (or `/api/v1/admin`) returns **403** unless it is one of:
 
-| Action | Rationale |
-|--------|-----------|
-| Factory backup / restore ZIP | No bulk exfiltration or catalog wipe |
-| `POST /api/admin/settings` | Shared Director/autopilot/URLs stay stable (GA head snippet, autopilot, etc.) |
-| `POST /api/admin/auth/change-password` | Demo admin is passwordless — no password rotation on shared host |
-| Admin user create/update/delete | No lockout of other visitors |
+| Allowed on demo | Why |
+|-----------------|-----|
+| `POST /api/admin/auth/login`, `logout`, `verify-2fa`, `webauthn/login/options` | Signing in and out |
+| `POST /api/admin/settings` | Only the `factory_on_hold` soft hold; the route refuses every other key |
+| `POST /api/admin/products/create` | Product creation within the normal limits |
+
+Everything else — LLM providers and routing (a changed `base_url` would receive the
+factory's provider key), outreach sends, blog edits, storefront prices, prompt edits,
+2FA enrolment on the shared account, backup/restore, users, password — is refused.
+These reads are refused too, because they hold other visitors' personal data or stored
+credentials: `/api/admin/funnel`, `/api/admin/outreach`, `/api/admin/support-queue`.
 
 **Still allowed on demo:** sandbox preview (admin and storefront), pipeline browsing, product creation within normal limits. Storefront starts are rate-limited.
 

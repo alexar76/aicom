@@ -16,7 +16,10 @@ What it does, in the order a careful agent would:
    the delivery against the intent, and the hold is captured (pass) or released (fail).
 4. Settle. A passing seller is debited on chain by the hub (the escrow bridge submits the
    authorization); the agent then settles the channel and gets the remainder back. A failing
-   seller is never debited, and settling returns the whole deposit.
+   seller is never debited, and settling returns the whole deposit. On AIMarketEscrowV2 a
+   depositor cannot settle at once: it calls `requestClose`, and the hub keeps SETTLE_WINDOW
+   (an hour) to land what it already earned. The agent asks to close every channel first
+   and settles them when the window is over, so two sellers cost one wait, not two.
 5. Record everything: every transaction hash, the verdicts, the receipts, into a JSON run log
    (pov-demo/runs/) that docs/pay-on-verified-demo.md is written from.
 
@@ -131,10 +134,43 @@ def balance_of(token: str, who: str) -> int:
     return decode(["uint256"], call(token, sel("balanceOf(address)") + encode(["address"], [who])))[0]
 
 
+_CHANNEL_V1 = ("depositor", "hub", "token", "deposit", "balance", "used", "expires", "nonce", "status")
+# AIMarketEscrowV2 inserts closableAt before status: read as V1, it lands in `status`.
+_CHANNEL_V2 = _CHANNEL_V1[:-1] + ("closable_at", "status")
+
+
 def channel(escrow: str, ch: bytes) -> dict:
     raw = call(escrow, sel("getChannel(bytes32)") + encode(["bytes32"], [ch]))
-    f = decode(["(address,address,address,uint256,uint256,uint256,uint256,uint256,uint8)"], raw)[0]
-    return dict(zip(("depositor", "hub", "token", "deposit", "balance", "used", "expires", "nonce", "status"), f))
+    names = _CHANNEL_V2 if len(raw) >= 32 * len(_CHANNEL_V2) else _CHANNEL_V1
+    types = ["address"] * 3 + ["uint256"] * (len(names) - 4) + ["uint8"]
+    out = dict(zip(names, decode(["(" + ",".join(types) + ")"], raw[:32 * len(names)])[0]))
+    out["v2"] = names is _CHANNEL_V2
+    out.setdefault("closable_at", 0)
+    return out
+
+
+def chain_time() -> int:
+    """The latest block's timestamp: what the contract compares closableAt against."""
+    return int(rpc("eth_getBlockByNumber", ["latest", False])["timestamp"], 16)
+
+
+def request_close(escrow: str, w: "Wallet", ch: bytes, steps: list) -> int:
+    """V2: announce the exit and return closableAt. V1 needs no announcement: 0."""
+    st = channel(escrow, ch)
+    if not st["v2"]:
+        return 0
+    if not st["closable_at"]:
+        steps.append(w.send(escrow, sel("requestClose(bytes32)") + encode(["bytes32"], [ch]), "requestClose"))
+        st = channel(escrow, ch)
+    return int(st["closable_at"])
+
+
+def wait_closable(closable_at: int, *, now=None, sleep=time.sleep) -> None:
+    """Block until the chain has passed closableAt; settleChannel reverts before it."""
+    now = now or chain_time
+    while closable_at and (left := closable_at - now()) > 0:
+        print(f"  settle window: {left}s left (the hub may still land what it earned)")
+        sleep(min(max(left, 5), 60))
 
 
 # ── the agent ─────────────────────────────────────────────────────────────────
@@ -231,7 +267,8 @@ def hire(hub: str, c: dict, w: Wallet, offer: dict, n: int, deposit: float, log:
     return run
 
 
-def settle(c: dict, w: Wallet, run: dict, wait_debit: bool) -> None:
+def ask_to_close(c: dict, w: Wallet, run: dict, wait_debit: bool) -> None:
+    """Wait for what a passing seller is owed to land, then announce the exit (V2)."""
     ch = bytes.fromhex(run["escrow_channel"][2:])
     if wait_debit:
         print(f"  waiting for the hub's on-chain debit of {run['seller']} (escrow bridge sweep)…")
@@ -242,6 +279,12 @@ def settle(c: dict, w: Wallet, run: dict, wait_debit: bool) -> None:
             time.sleep(10)
         else:
             raise RuntimeError("the hub never debited the channel on chain")
+    run["closable_at"] = request_close(c["escrow"], w, ch, run["steps"])
+
+
+def settle(c: dict, w: Wallet, run: dict) -> None:
+    ch = bytes.fromhex(run["escrow_channel"][2:])
+    wait_closable(int(run.get("closable_at") or 0))
     st = channel(c["escrow"], ch)
     run["onchain_before_settle"] = {"used_units": st["used"], "balance_units": st["balance"], "hub": st["hub"]}
     step = w.send(c["escrow"], sel("settleChannel(bytes32)") + encode(["bytes32"], [ch]), "settleChannel")
@@ -294,9 +337,12 @@ def main() -> int:
     for offer in offers:
         hire(hub, c, w, offer, args.n, args.deposit, log)
     for run in log["runs"]:
-        print(f"\n── settle {run['seller']} ──")
+        print(f"\n── close {run['seller']} ──")
         passed = (run.get("verification") or {}).get("verdict") == "passed"
-        settle(c, w, run, wait_debit=passed)
+        ask_to_close(c, w, run, wait_debit=passed)
+    for run in log["runs"]:
+        print(f"\n── settle {run['seller']} ──")
+        settle(c, w, run)
     out = HERE / "runs" / f"{log['started_utc'].replace(':', '')}.json"
     out.parent.mkdir(exist_ok=True)
     out.write_text(json.dumps(log, indent=1))

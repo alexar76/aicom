@@ -85,9 +85,15 @@ def load_admin_config() -> dict[str, Any]:
 
 
 def save_admin_config(cfg: dict[str, Any]) -> None:
+    """Write admin.json atomically: it holds the password hash and every passkey, and the
+    login-options route writes it on anonymous requests — a torn write locks everyone out."""
     ADMIN_JSON.parent.mkdir(parents=True, exist_ok=True)
-    with open(ADMIN_JSON, "w", encoding="utf-8") as f:
+    tmp = ADMIN_JSON.with_name(f".{ADMIN_JSON.name}.{os.getpid()}.tmp")
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(cfg, f, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, ADMIN_JSON)
 
 
 def list_credentials(cfg: dict[str, Any]) -> list[dict[str, Any]]:
@@ -135,6 +141,61 @@ def _pop_challenge(cfg: dict[str, Any], kind: str, username: str = "") -> bytes 
     if not isinstance(ch, str) or not ch:
         return None
     return base64url_to_bytes(ch)
+
+
+#: Login challenges outstanding at once. Login options are requested before anyone is
+#: authenticated, so one shared slot let any visitor overwrite the operator's challenge
+#: mid-login (a passkey lockout for the price of a POST). Each request now gets its own.
+MAX_PENDING_LOGINS = 16
+
+
+def _store_login_challenge(cfg: dict[str, Any], challenge: bytes, username: str) -> None:
+    pending = cfg.setdefault("webauthn_pending", {})
+    if not isinstance(pending, dict):
+        pending = {}
+        cfg["webauthn_pending"] = pending
+    now = time.time()
+    rows = [r for r in pending.get("login_challenges") or []
+            if isinstance(r, dict) and r.get("expires", 0) >= now]
+    rows.append({"challenge": bytes_to_base64url(challenge), "expires": now + CHALLENGE_TTL_SEC,
+                 "username": username})
+    pending["login_challenges"] = rows[-MAX_PENDING_LOGINS:]
+    pending.pop("login", None)
+
+
+def _challenge_in_credential(credential: dict[str, Any]) -> str:
+    """The challenge the authenticator signed over, from clientDataJSON (base64url)."""
+    try:
+        raw = (credential.get("response") or {}).get("clientDataJSON") or ""
+        data = json.loads(base64url_to_bytes(raw).decode("utf-8"))
+        ch = data.get("challenge")
+        return ch if isinstance(ch, str) else ""
+    except (ValueError, TypeError, AttributeError, UnicodeDecodeError):
+        return ""
+
+
+def _pop_login_challenge(cfg: dict[str, Any], credential: dict[str, Any], username: str) -> bytes | None:
+    pending = cfg.get("webauthn_pending")
+    if not isinstance(pending, dict):
+        return None
+    signed = _challenge_in_credential(credential)
+    now = time.time()
+    rows = [r for r in pending.get("login_challenges") or [] if isinstance(r, dict)]
+    match = None
+    keep = []
+    for r in rows:
+        if r.get("expires", 0) < now:
+            continue
+        if match is None and signed and r.get("challenge") == signed and str(r.get("username") or "") == username:
+            match = r
+            continue
+        keep.append(r)
+    pending["login_challenges"] = keep
+    save_admin_config(cfg)
+    if match is not None:
+        return base64url_to_bytes(match["challenge"])
+    # A challenge issued by the previous single-slot code, still within its TTL.
+    return _pop_challenge(cfg, "login", username)
 
 
 def registration_options(username: str) -> dict[str, Any]:
@@ -218,14 +279,14 @@ def authentication_options(username: str) -> dict[str, Any]:
         allow_credentials=allow,
         user_verification=UserVerificationRequirement.PREFERRED,
     )
-    _store_challenge(cfg, "login", options.challenge, username)
+    _store_login_challenge(cfg, options.challenge, username)
     save_admin_config(cfg)
     return json.loads(options_to_json(options))
 
 
 def verify_authentication(username: str, credential: dict[str, Any]) -> None:
     cfg = load_admin_config()
-    expected = _pop_challenge(cfg, "login", username)
+    expected = _pop_login_challenge(cfg, credential, username)
     if expected is None:
         raise ValueError("Login challenge expired or missing")
 

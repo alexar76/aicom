@@ -126,7 +126,7 @@ result.reasons                               // [{ code: 'AWR-PROOF-006', … },
 ```
 
 ```bash
-npx awr-verify verify receipt.json     # 退出码 0 有效，1 无效，2 用法/IO 错误
+npx -p @alexar76/awr-verify awr-verify verify receipt.json     # 退出码 0 有效，1 无效，2 用法/IO 错误
 python -m awr verify receipt.json      # 相同的约定，相同的原因码
 ```
 

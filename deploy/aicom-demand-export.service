@@ -6,6 +6,8 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
+# AICOM_OWN_IPS=<comma-separated fleet + owner addresses>, kept on the host (0600), not in git.
+EnvironmentFile=-/etc/aicom-demand/own-ips.env
 ExecStart=/usr/bin/python3 /usr/local/lib/aicom-demand/demand_export.py --out /var/www/verify.modelmarket.dev/demand.json
 SuccessExitStatus=1
 TimeoutStartSec=300

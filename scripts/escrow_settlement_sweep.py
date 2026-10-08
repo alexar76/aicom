@@ -156,17 +156,36 @@ def _rpc(method: str, params: list, timeout: float = 20.0) -> Any:
     raise RuntimeError(f"every Base endpoint failed: {last[:160]}")
 
 
+# AIMarketEscrowV2.SETTLE_WINDOW: on V2 `expireChannel` reverts until expiresAt + this.
+ESCROW_V2_SETTLE_WINDOW_S = 3600
+
+
 def decode_channel(raw: str) -> dict[str, Any]:
-    """The escrow's Channel struct, as `getChannel` returns it."""
-    words = [raw[2 + i * 64: 2 + (i + 1) * 64] for i in range(9)]
+    """The escrow's Channel struct, as `getChannel` returns it.
+
+    AIMarketEscrowV2 returns ten words, with `closableAt` before `status`; read as nine,
+    closableAt lands in `status` and a settled channel looks open.
+    """
+    v2 = len(raw) >= 2 + 10 * 64
+    words = [raw[2 + i * 64: 2 + (i + 1) * 64] for i in range(10 if v2 else 9)]
+    expires_at = int(words[6], 16)
     return {
         "depositor": "0x" + words[0][24:],
         "hub": "0x" + words[1][24:],
         "balance_units": int(words[4], 16),
         "used_units": int(words[5], 16),
-        "expires_at": int(words[6], 16),
-        "status": int(words[8], 16),   # 0 Open, 1 Settled, 2 Refunded, 3 Expired
+        "expires_at": expires_at,
+        # 0 Open, 1 Settled, 2 Refunded, 3 Expired
+        "status": int(words[9] if v2 else words[8], 16),
+        "closable_at": int(words[8], 16) if v2 else 0,
+        # When `expireChannel` stops reverting.
+        "expirable_at": expires_at + (ESCROW_V2_SETTLE_WINDOW_S if v2 else 0),
     }
+
+
+def _expirable(channel: dict[str, Any], now: float) -> bool:
+    at = channel.get("expirable_at", channel["expires_at"])
+    return bool(channel["expires_at"]) and now > at
 
 
 def collectable(channels: list[dict[str, Any]], *, now: float) -> dict[str, Any]:
@@ -179,7 +198,7 @@ def collectable(channels: list[dict[str, Any]], *, now: float) -> dict[str, Any]
     from invisible into a decision.
     """
     open_channels = [c for c in channels if c["status"] == 0 and c["used_units"] > 0]
-    expired = [c for c in open_channels if c["expires_at"] and now > c["expires_at"]]
+    expired = [c for c in open_channels if _expirable(c, now)]
     return {
         "open_with_earnings": len(open_channels),
         "expired_uncollected": len(expired),
@@ -290,8 +309,7 @@ def ask_signer_to_expire(url: str, token: str, escrow: str, channel_id: str,
 def collect_expired(channels: list, *, escrow: str, now: float) -> dict:
     """Ask for every expired channel that owes us something. Never raises."""
     due = [c for c in channels
-           if c["status"] == 0 and c["used_units"] > 0
-           and c["expires_at"] and now > c["expires_at"]]
+           if c["status"] == 0 and c["used_units"] > 0 and _expirable(c, now)]
     if not due:
         return {"attempted": 0, "collected": 0, "tx_hashes": [], "refusals": []}
     try:

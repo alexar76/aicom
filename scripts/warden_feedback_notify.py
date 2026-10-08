@@ -6,12 +6,19 @@ Runs hourly on not-my-vps next to the fleet alerter and reuses its bot: credenti
 the run's public summary — admin-vps never holds the bot token — and says something when:
 
 * a new run finished (what was published, revoked, held for the owner, or why it failed);
-* no run has finished for more than 8 days (once a day, until one does).
+* no run has finished for more than 8 days (once a day, until one does);
+* the summary itself has been unreachable for FETCH_FAIL_RUNS hourly runs in a row (once a day).
+
+The last two are different facts and say so. When the summary cannot be fetched, the age of the
+last run comes from the last summary this script saw (state "notified"), not from nothing: on
+2026-10-08 a 12-minute network outage at admin-vps made one fetch time out and the page claimed
+the weekly run had not happened for 8 days, three days after it had.
 
 Stdlib only. State in /var/lib/aicom-alert/warden-feedback.json.
 """
 from __future__ import annotations
 
+import calendar
 import json
 import os
 import sys
@@ -23,6 +30,7 @@ SUMMARY_URL = os.environ.get(
     "WARDEN_FB_SUMMARY_URL", "https://histor.modelmarket.dev/.well-known/erc-8004/feedback/last-run.json")
 STATE = os.environ.get("WARDEN_FB_NOTIFY_STATE", "/var/lib/aicom-alert/warden-feedback.json")
 STALE_S = 8 * 86400
+FETCH_FAIL_RUNS = 3  # hourly runs: one blip is not a page, three hours of silence is
 LOW_ETH = float(os.environ.get("WARDEN_FB_LOW_ETH", "0.0001"))  # ~80 feedback transactions on Base
 
 
@@ -83,12 +91,21 @@ def main() -> None:
     if ran and ran != state.get("notified"):
         send(message(run))
         state["notified"] = ran
-    ran_ts = time.mktime(time.strptime(ran, "%Y-%m-%dT%H:%M:%SZ")) - time.timezone if ran else 0
-    if (fetch_error or now - ran_ts > STALE_S) and now - state.get("stale_sent", 0) > 86400:
-        why = f"сводка недоступна: {fetch_error}" if fetch_error else f"последний запуск {ran or 'никогда'}"
-        send(f"WARDEN · отзывы ERC-8004: перепроверка не запускалась больше 8 дней ({why}). "
+    # The summary is the only witness; when it cannot be read, the last one seen still dates the run.
+    last = ran or state.get("notified") or ""
+    ran_ts = calendar.timegm(time.strptime(last, "%Y-%m-%dT%H:%M:%SZ")) if last else 0
+    state["fetch_fail"] = state.get("fetch_fail", 0) + 1 if fetch_error else 0
+    if now - ran_ts > STALE_S and now - state.get("stale_sent", 0) > 86400:
+        unread = f"; сводка сейчас недоступна: {fetch_error}" if fetch_error else ""
+        send(f"WARDEN · отзывы ERC-8004: перепроверка не запускалась больше 8 дней "
+             f"(последний известный запуск {last or 'никогда'}{unread}). "
              "Проверь warden-feedback.timer на admin-vps или запусти deploy/erc-8004/warden-feedback.")
         state["stale_sent"] = now
+    elif state["fetch_fail"] >= FETCH_FAIL_RUNS and now - state.get("unreachable_sent", 0) > 86400:
+        send(f"WARDEN · отзывы ERC-8004: сводка {SUMMARY_URL} не читается {state['fetch_fail']} ч подряд "
+             f"({fetch_error}). Последний известный запуск {last} — по расписанию всё в порядке, "
+             "проблема в доступе к histor.modelmarket.dev (admin-vps: nginx, сеть).")
+        state["unreachable_sent"] = now
     bal = run.get("balanceEth")
     if isinstance(bal, (int, float)) and bal < LOW_ETH and now - state.get("low_sent", 0) > 86400:
         send(f"WARDEN · отзывы ERC-8004: на кошельке {run.get('wallet')} осталось {bal:.6f} ETH "

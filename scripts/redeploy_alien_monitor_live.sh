@@ -69,14 +69,18 @@ with open(env_path, "w", encoding="utf-8") as fh:
 # editing, and is mounted read-only whatever the old container said.
 WRITABLE = {"/app/data/universe"}
 mounts = []
+writable_sources = []
 for m in spec.get("Mounts") or []:
     suffix = "" if m["Destination"] in WRITABLE else ":ro"
     mounts.append("%s:%s%s" % (m["Source"], m["Destination"], suffix))
+    if m["Destination"] in WRITABLE:
+        writable_sources.append(m["Source"])
 port = next((e.split("=", 1)[1] for e in spec["Config"]["Env"] if e.startswith("ALIEN_PORT=")), "9101")
 with open(env_path + ".shape", "w", encoding="utf-8") as fh:
     # Quoted: an unquoted assignment makes the shell try to EXECUTE the mount list.
     fh.write("MOUNTS=%s\n" % json.dumps(" ".join("-v %s" % m for m in mounts)))
     fh.write("PORT=%s\n" % json.dumps(port))
+    fh.write("WRITABLE_SOURCES=%s\n" % json.dumps(" ".join(writable_sources)))
 print("captured %d env vars (values not shown)" % sum(1 for _ in open(env_path, encoding="utf-8")))
 '
 # shellcheck disable=SC1090
@@ -95,13 +99,21 @@ else
   echo "reusing   : $TAG"
 fi
 
+# The container runs as uid 10001, so the one host directory it writes must be its own.
+for src in ${WRITABLE_SOURCES:-}; do
+  [[ -d "$src" ]] && chown -R 10001:10001 "$src"
+done
+
 docker rm -f "$NAME" >/dev/null
 # The healthcheck probes THIS container's port. Inheriting the image's :9100 probe under
 # --network host tested the OTHER (UNI) container, so LIVE reported healthy no matter what
 # state it was in — the same defect this deployment has hit before.
 # shellcheck disable=SC2086
+# Not root, no capabilities, no escalation: the monitor's read APIs are public and it
+# shares the host's network namespace. uid 10001 is the image's own monitor user.
 docker run -d --name "$NAME" \
   --network host --restart unless-stopped \
+  --user 10001:10001 --cap-drop ALL --security-opt no-new-privileges:true \
   --env-file "$ENV_FILE" \
   $MOUNTS \
   --health-cmd "python -c \"import json,urllib.request; d=json.loads(urllib.request.urlopen('http://127.0.0.1:$PORT/api/health',timeout=5).read()); exit(0 if d.get('status')=='ok' else 1)\"" \

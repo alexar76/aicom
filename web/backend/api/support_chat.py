@@ -324,6 +324,13 @@ async def post_message(
                 turn.reply += " El pipeline encoló corrección y QA."
             else:
                 turn.reply += " The pipeline queued a fix and a follow-up QA pass."
+        elif pipeline_result.get("reason") == "queued_for_review":
+            if locale == "ru":
+                turn.reply += "\n\n---\nОтчёт передан оператору на проверку."
+            elif locale == "es":
+                turn.reply += "\n\n---\nEl informe pasó al operador para revisión."
+            else:
+                turn.reply += "\n\n---\nThe report is queued for the operator to review."
         elif pipeline_result.get("reason") == "product_not_shipped":
             if locale == "ru":
                 turn.reply += (

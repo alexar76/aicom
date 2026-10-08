@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Push one satellite subtree to its own remote (inverse of publish_aicom_factory.sh).
+# Push one satellite subtree to its own remote (inverse of publish_aicom_factory.sh),
+# through scripts/mirror_satellites.sh and its guards.
 #
 # Usage:
 #   ./scripts/publish_satellite.sh aimarket-hub
-#   ./scripts/publish_satellite.sh pulse-terminal --remote git@github.com:alexar76/pulse-terminal.git
+#   ./scripts/publish_satellite.sh pulse-terminal --dry-run
 #   ./scripts/publish_satellite.sh --list
 #
 set -euo pipefail
@@ -15,12 +16,13 @@ SAT_ID=""
 REMOTE=""
 BRANCH="${SATELLITE_BRANCH:-main}"
 DRY_RUN=0
+BRANCH_SET=""
 
 usage() {
   cat <<'EOF'
 publish_satellite.sh — export one satellite from monorepo to its GitHub repo
 
-  ./scripts/publish_satellite.sh <satellite-id> [--remote URL] [--branch main]
+  ./scripts/publish_satellite.sh <satellite-id> [--branch main] [--dry-run]
   ./scripts/publish_satellite.sh --list
 
 Satellite ids: see scripts/satellite-map.yaml (e.g. aimarket-hub, acex, pulse-terminal)
@@ -66,7 +68,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --list) list_satellites; exit 0 ;;
     --remote) REMOTE="${2:-}"; shift 2 ;;
-    --branch) BRANCH="${2:-}"; shift 2 ;;
+    --branch) BRANCH="${2:-}"; BRANCH_SET=1; shift 2 ;;
     --dry-run) DRY_RUN=1; shift ;;
     -h|--help) usage; exit 0 ;;
     -*) echo "unknown: $1" >&2; exit 1 ;;
@@ -76,7 +78,17 @@ done
 
 [[ -n "$SAT_ID" ]] || { usage; exit 1; }
 
-if [[ "$SAT_ID" == "course" ]]; then
+# One door to a satellite's public repo. This script used to rsync with its own exclude
+# list — no per-satellite exclude_paths, no github_published check — and push from that.
+# The canonical mirror carries those guards, so every satellite goes through it, and the
+# remote is the one the map names, not one typed here.
+if [[ -n "$REMOTE" ]]; then
+  echo "error: --remote is not taken — the remote comes from scripts/satellite-map.yaml" >&2
+  echo "  (org via SATELLITE_GITHUB_ORG)." >&2
+  exit 2
+fi
+
+if [[ "$SAT_ID" == "course" || "$SAT_ID" == course-* ]]; then
   SAT_ID="aimarket-courses"
 fi
 
@@ -86,88 +98,8 @@ if [[ -z "$SRC_PATH" || "$SRC_PATH" == "." ]]; then
   echo "  Do not publish standalone siblings from the monorepo — maintain them in their own checkout." >&2
   exit 2
 fi
-ORG="${SATELLITE_GITHUB_ORG:-alexar76}"
-REMOTE="${REMOTE:-git@${SATELLITE_GITHUB_HOST:-github.com}:${ORG}/${REPO_NAME}.git}"
 
-# Normalize export source — complex layouts delegate to mirror_satellites.sh
-if [[ "$SAT_ID" == "aimarket-desktop" ]]; then
-  echo "→ aimarket-desktop requires layout transform — delegating to mirror_satellites.sh"
-  exec bash "$ROOT/scripts/mirror_satellites.sh" --satellite aimarket-desktop "$@"
-  exit $?
-fi
-if [[ "$SAT_ID" == "aimarket-plugins" ]]; then
-  echo "→ aimarket-plugins requires multi-source layout — delegating to mirror_satellites.sh"
-  exec bash "$ROOT/scripts/mirror_satellites.sh" --satellite aimarket-plugins "$@"
-  exit $?
-fi
-if [[ "$SAT_ID" == "aimarket-courses" || "$SAT_ID" == course* ]]; then
-  echo "→ ${SAT_ID} requires course monorepo layout — delegating to mirror_satellites.sh"
-  exec bash "$ROOT/scripts/mirror_satellites.sh" --satellite aimarket-courses "$@"
-  exit $?
-fi
-if [[ "$SAT_ID" == "aicom-wiki" || "$SAT_ID" == "argus-wiki" ]]; then
-  echo "→ ${SAT_ID} requires wiki page filter — delegating to mirror_satellites.sh"
-  exec bash "$ROOT/scripts/mirror_satellites.sh" --satellite "$SAT_ID" "$@"
-  exit $?
-fi
-if [[ "$SAT_ID" == "oracles" ]]; then
-  echo "→ oracles requires Gitea strip + GitHub CI — delegating to mirror_satellites.sh"
-  exec bash "$ROOT/scripts/mirror_satellites.sh" --satellite oracles "$@"
-  exit $?
-fi
-
-SRC="$ROOT/$SRC_PATH"
-[[ -d "$SRC" ]] || { echo "error: source missing: $SRC" >&2; exit 2; }
-
-echo "Satellite: $SAT_ID"
-echo "Source:    $SRC"
-echo "Remote:    $REMOTE"
-
-if [[ "$DRY_RUN" -eq 1 ]]; then
-  exit 0
-fi
-
-WORKDIR="$(mktemp -d)"
-trap 'rm -rf "$WORKDIR"' EXIT
-
-git clone --depth 1 --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null || {
-  git clone --depth 1 "$REMOTE" "$WORKDIR/clone"
-  (cd "$WORKDIR/clone" && git checkout -B "$BRANCH")
-}
-
-LOCAL_EXCLUDES=()
-while IFS= read -r line; do LOCAL_EXCLUDES+=("$line"); done < <(python3 "$ROOT/scripts/aicom_publish_config.py" list-local-excludes)
-
-RSYNC_EX=( -a --delete
-  --exclude .git
-  --exclude node_modules
-  --exclude __pycache__
-  --exclude .venv
-  --exclude build
-  --exclude dist
-  --exclude ':memory:'
-  --exclude ':memory:-wal'
-  --exclude ':memory:-shm'
-  --exclude '*.sqlite3'
-  --exclude '*.sqlite3-wal'
-  --exclude '*.sqlite3-shm'
-)
-for p in "${LOCAL_EXCLUDES[@]}"; do
-  RSYNC_EX+=(--exclude "$p")
-done
-
-rsync "${RSYNC_EX[@]}" "$SRC/" "$WORKDIR/clone/"
-
-for p in "${LOCAL_EXCLUDES[@]}"; do
-  [[ -e "$WORKDIR/clone/$p" ]] && rm -rf "$WORKDIR/clone/$p"
-done
-
-bash "$ROOT/scripts/purge_mirror_runtime_artifacts.sh" "$WORKDIR/clone"
-bash "$ROOT/scripts/verify_mirror_secrets.sh" "$WORKDIR/clone"
-
-cd "$WORKDIR/clone"
-git add -A
-git diff --cached --quiet && git diff --quiet && { echo "No changes"; exit 0; }
-git commit -m "chore(satellite): sync $SAT_ID from aicom monorepo"
-git push origin "HEAD:$BRANCH"
-echo "OK pushed $SAT_ID → $REMOTE"
+args=(--satellite "$SAT_ID")
+[[ -n "$BRANCH_SET" ]] && args+=(--branch "$BRANCH")
+[[ "$DRY_RUN" -eq 1 ]] && args+=(--dry-run)
+exec bash "$ROOT/scripts/mirror_satellites.sh" "${args[@]}"

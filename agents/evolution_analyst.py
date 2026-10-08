@@ -15,6 +15,7 @@ import time
 from pathlib import Path
 
 from agents.prompt_utils import prompt_json
+from web.backend.services.prompt_safety import wrap_untrusted_for_llm_embedding
 from agents.prompts.load_prompt import load_prompt
 from core.telemetry_signals import extract_evolution_signals_from_jsonl_dir
 from llm import GenerationConfig, LLMRouter
@@ -55,8 +56,10 @@ class EvolutionAnalystAgent(BaseAgent):
             telemetry_str = prompt_json(telemetry_data) if telemetry_data else "No telemetry data available"
             tel_dir = Path(self.data_root) / "telemetry" / product_id
             evolution_signals = extract_evolution_signals_from_jsonl_dir(tel_dir, limit=200)
+            # Anonymous visitors write these (POST /api/telemetry/evolution-signal): they are
+            # data about the product, never instructions — wrapped and bounded like a lead's idea.
             signals_str = (
-                prompt_json(evolution_signals[-120:])
+                wrap_untrusted_for_llm_embedding(prompt_json(evolution_signals[-120:]), max_len=12000)
                 if evolution_signals
                 else "No evolution_signal JSONL events recorded yet."
             )

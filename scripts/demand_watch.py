@@ -50,13 +50,19 @@ START = "2026-10-05T14:00:00Z"
 END = "2026-10-26T23:59:59Z"
 TEST_PRICE_UNITS = 3000          # $0.003 in USDC's 6 decimals: x402-check and mcp-diff
 CRAWLER_PAYEES = 8               # distinct payees in a payer's latest transfers
+# The escrow that settles channels, read from the deployment registry: a literal here kept
+# naming the escrow the 2026-09-04 redeploy replaced, so the live one's transfers would have
+# counted as a stranger's demand.
+_REGISTRY = Path(__file__).resolve().parents[1] / "config" / "deployments" / "base-mainnet.json"
+LIVE_ESCROW = json.loads(_REGISTRY.read_text(encoding="utf-8"))["contracts"]["AIMarketEscrow"]
+
 OWN_WALLETS = {a.lower() for a in (
     TREASURY,
+    LIVE_ESCROW,                                       # AIMarketEscrow (settles channels)
     "0x6E94c380d908531f9822035d6cc4c8D2B0186C9c",   # buyer / former hestia payout
     "0x40409bE3bAf99f22aA86b2FBaAa99EF2188D5674",   # x402 settlement burner
     "0x9d24d267cf8d9a8b9ed104b4856cde8830c266ef",   # Independent's subcontract executor
     "0xB73d8Bc93B791510C4733C5C5Ac2015a3c2930Ec",   # Attested's payment wallet
-    "0x0606983cbEc6D0C12a0B750f72Ceb6032c72C25D",   # AIMarketEscrow (settles channels)
     "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",   # Pay-on-Verified demo buyer (our own /start top-up test)
 )}
 

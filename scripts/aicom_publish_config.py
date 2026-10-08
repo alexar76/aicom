@@ -64,6 +64,29 @@ DEFAULT_RSYNC_EXCLUDES = [
     # and keep the narrower patterns above it so the intent of each stays readable.
     # Nothing tracked by git matches these, so the mirror loses no real content.
     "*_key",
+    # The post-quantum half of every signing key is written next to it as `<key>_mldsa`
+    # (hex text, ~12 KB) — `*_key` stops at the suffix and the key-shape guard only looks at
+    # small binary files, so nothing caught it.
+    "*_mldsa",
+    "*_signing_key*",
+    # Registry publish tokens and runtime databases a satellite's own .gitignore holds back
+    # today; the mirror must not depend on every satellite remembering to.
+    ".npmrc",
+    ".npmrc.*",
+    "*.db",
+    "*.db-wal",
+    "*.db-shm",
+    "*.sqlite",
+    "*.p12",
+    "*.pfx",
+    "*.jks",
+    "*.keystore",
+    "id_rsa*",
+    "id_ecdsa*",
+    "id_ed25519*",
+    "*.age",
+    "*.tfstate",
+    "*.tfstate.*",
     "*_vrf_sk",
     "dataset_salt",
     "*_ed25519",
@@ -158,6 +181,12 @@ FACTORY_LOCAL_EXCLUDES = [
     "conductor_key",
     "data/remediation",  # conductor signing key + A2A observer DB + deploy-order journal
     "EXTRACTION_REPORT.md",
+    # Internal planning (an old security audit with file:line findings, the monetization
+    # plan): monorepo only.
+    "plans",
+    # The backup topology: which host receives every backup, its repo paths, passphrase
+    # locations, key names and its address-restricted port. The scripts stay public.
+    "deploy/backup/README.md",
     # Build artifacts — regenerate via school/build.py / deploy_edu_school.sh
     "edu-landing",
     # Tracked on Gitea; stripped from the public GitHub factory/satellite rsync.
@@ -204,7 +233,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     '.devcontainer',
     '.dockerignore',
     '.gitignore',
-    '.momus',  # REVIEW: MOMUS red-team tickets — public today; intended?
+    '.momus',  # public by design: the signed fix-provenance chain momus/docs/fix-provenance.md cites
     'CHANGELOG.md',
     'CODE_OF_CONDUCT.md',
     'CONTRIBUTING.md',
@@ -259,11 +288,10 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'packaging',
     'pipeline_worker.py',
     'pov-demo',  # Pay-on-verified live demo sellers + buyer (docs/pay-on-verified-*)
-    'plans',  # REVIEW: internal planning docs (audit report, monetization plan) — public today; intended?
     'praxis',
     'product_pnl.py',
     'prometheus.yml',
-    'promo',  # REVIEW: marketing templates (channels/followups/utm) — public today; intended?
+    'promo',  # public launch-post templates and the UTM generator, linked from docs/launch-kit.md
     'pull_request_template.md',
     'pyproject.toml',
     'pytest.ini',
@@ -298,19 +326,21 @@ def classify_root(name: str) -> str:
     return "unclassified"
 
 
-def _tracked_roots(base: Path) -> list[str]:
-    """Top-level entries git tracks. Untracked and ignored files never reach the mirror —
-    the publish clone's `git add -A` obeys the same .gitignore and rsync drops the runtime
-    patterns — so only a tracked root can leak by omission."""
-    out = subprocess.run(["git", "-C", str(base), "ls-files", "-z"],
+def _shipped_roots(base: Path) -> list[str]:
+    """Top-level entries the factory export would carry: tracked ones, and untracked ones
+    .gitignore does not cover. The export rsyncs the working tree and the publish clone
+    runs `git add -A`, so an untracked, unignored root ships exactly like a tracked one;
+    only ignored files stay behind."""
+    out = subprocess.run(["git", "-C", str(base), "ls-files", "-z", "--cached", "--others",
+                          "--exclude-standard"],
                          capture_output=True, text=True, check=True).stdout
     return sorted({p.split("/", 1)[0] for p in out.split("\0") if p})
 
 
 def check_roots(base: Path | None = None) -> list[str]:
-    """Tracked root entries that would reach the public mirror without anyone deciding so."""
+    """Root entries that would reach the public mirror without anyone deciding so."""
     root = base or MAP_PATH.parent.parent
-    return sorted(name for name in _tracked_roots(root) if classify_root(name) == "unclassified")
+    return sorted(name for name in _shipped_roots(root) if classify_root(name) == "unclassified")
 
 
 def _load_map() -> dict[str, Any]:

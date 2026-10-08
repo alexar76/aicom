@@ -1,0 +1,19 @@
+{
+  "name": "awr-verify",
+  "version": "0.0.1",
+  "description": "Unscoped name held for @alexar76/awr-verify — install that package instead",
+  "license": "MIT",
+  "main": "index.js",
+  "bin": { "awr-verify": "cli.js" },
+  "files": ["index.js", "cli.js", "README.md"],
+  "homepage": "https://www.npmjs.com/package/@alexar76/awr-verify",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexar76/aicom.git"
+  },
+  "keywords": ["awr", "work-receipt"],
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "test": "node -e \"require('./index.js')\""
+  }
+}

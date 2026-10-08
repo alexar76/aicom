@@ -3,6 +3,10 @@
 # are all on that host already.
 services:
   remediation-fixer:
+    # Not root, no capabilities, no escalation. uid 10001 must own the volumes it writes.
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
     build:
       context: .
       dockerfile: Dockerfile.remediation-fix

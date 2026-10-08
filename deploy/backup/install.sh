@@ -4,7 +4,7 @@
 # the host's passphrase.
 #
 #   deploy/backup/install.sh HOST LABEL RECEIVER RECEIVER_ADDR QUOTA [EXTRA_ROOT...]
-#   deploy/backup/install.sh factory-vps factory-vps root@82.21.72.167 82.21.72.167 30G /var/lib/aicom
+#   deploy/backup/install.sh factory-vps factory-vps root@RECEIVER RECEIVER_ADDR 30G /var/lib/aicom
 #
 # HOST and RECEIVER are ssh destinations from this machine. RECEIVER_ADDR is how HOST reaches
 # the receiver: ADDR or ADDR:PORT (admin-vps's provider blocks outgoing 22, so it uses the

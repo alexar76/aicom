@@ -8,8 +8,11 @@ Minimal OpenAI-compatible image API for CPU-local diffusers generation.
     -d '{"prompt":"ancient greek mosaic of twin stars, no text","size":"512x512"}'
 
 Env:
-  AICOM_LOCAL_IMAGE_PORT   default 8766
-  AICOM_LOCAL_IMAGE_*      see llm/local_image.py
+  AICOM_LOCAL_IMAGE_HOST         default 127.0.0.1 (0.0.0.0 so a container reaches it via host-gateway)
+  AICOM_LOCAL_IMAGE_PORT         default 8766
+  AICOM_LOCAL_IMAGE_KEEP_LOADED  1 keeps the model in RAM between requests; default releases it
+                                 after each one — a few images a week do not justify ~4-5 GB resident
+  AICOM_LOCAL_IMAGE_*            see llm/local_image.py
 """
 
 from __future__ import annotations
@@ -34,7 +37,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from llm.local_image import generate_local_image
+from llm.local_image import generate_local_image, release_pipeline
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger("local_image_server")
@@ -78,14 +81,18 @@ async def images_generations(body: ImageGenRequest):
     except Exception as exc:
         logger.exception("image generation failed")
         raise HTTPException(status_code=500, detail="generation failed") from exc
+    finally:
+        if os.environ.get("AICOM_LOCAL_IMAGE_KEEP_LOADED", "").strip() != "1":
+            await asyncio.to_thread(release_pipeline)
     return {"data": [{"b64_json": base64.b64encode(png).decode("ascii")}]}
 
 
 def main() -> None:
     import uvicorn
 
+    host = os.environ.get("AICOM_LOCAL_IMAGE_HOST", "127.0.0.1").strip() or "127.0.0.1"
     port = int(os.environ.get("AICOM_LOCAL_IMAGE_PORT", "8766"))
-    uvicorn.run(app, host="127.0.0.1", port=port, log_level="info")
+    uvicorn.run(app, host=host, port=port, log_level="info")
 
 
 if __name__ == "__main__":

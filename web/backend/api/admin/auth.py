@@ -576,10 +576,35 @@ class WebAuthnDisableRequest(BaseModel):
     password: str
 
 
+#: Anonymous requests write admin.json; bound them per client address.
+_WEBAUTHN_OPTIONS_PER_WINDOW = 10
+_WEBAUTHN_OPTIONS_WINDOW_S = 300.0
+_webauthn_options_hits: dict[str, list[float]] = {}
+
+
+def _webauthn_options_allowed(ip: str) -> bool:
+    import time as _time
+
+    now = _time.monotonic()
+    hits = [t for t in _webauthn_options_hits.get(ip, []) if now - t < _WEBAUTHN_OPTIONS_WINDOW_S]
+    if len(hits) >= _WEBAUTHN_OPTIONS_PER_WINDOW:
+        _webauthn_options_hits[ip] = hits
+        return False
+    hits.append(now)
+    _webauthn_options_hits[ip] = hits
+    if len(_webauthn_options_hits) > 4096:
+        for key in [k for k, v in _webauthn_options_hits.items() if not v or now - v[-1] > _WEBAUTHN_OPTIONS_WINDOW_S][:1024]:
+            _webauthn_options_hits.pop(key, None)
+    return True
+
+
 @router.post("/webauthn/login/options")
-async def webauthn_login_options(body: WebAuthnLoginOptionsRequest):
+async def webauthn_login_options(body: WebAuthnLoginOptionsRequest, request: Request):
     """Begin WebAuthn authentication (after password verified; second login step)."""
     from security import webauthn_admin as wa
+
+    if not _webauthn_options_allowed(client_ip(request)):
+        raise HTTPException(status_code=429, detail="Too many passkey login attempts; try again later")
 
     cfg = wa.load_admin_config()
     if not wa.webauthn_is_enabled(cfg):

@@ -178,6 +178,10 @@ DENY = {
         "AIMARKET_ESCROW_NETWORK", "AIMARKET_ESCROW_PRIVATE_KEY", "AIMARKET_ESCROW_REQUIRED",
         "AIMARKET_ESCROW_RPC_TIMEOUT_S", "AIMARKET_ESCROW_SIGNER_TOKEN", "AIMARKET_ESCROW_SIGNER_URL",
         "AIMARKET_ESCROW_SUBMIT_CONFIRM", "AIMARKET_ESCROW_SUBMIT_STRATEGY",
+        "AIMARKET_ESCROW_EXPIRY_MARGIN_S",
+        # aimarket_hub/answer_dependence.py's free-capability probe and the federation
+        # visitor door: both run inside the hub's own crawl and server, never in the Factory.
+        "AIMARKET_ANSWER_PROBE", "AIMARKET_FEDERATION_VISITOR",
         # A buyer's wallet key (see the hub's entry). Nothing in the Factory reads it, and its
         # PIPELINE_ namespace would otherwise let it through.
         "PIPELINE_WALLET_KEY",

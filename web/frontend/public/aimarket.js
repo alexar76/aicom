@@ -195,6 +195,14 @@
     el.textContent = text || "";
   }
 
+  // For the few values still concatenated into innerHTML: an invoke result is relayed
+  // from whichever federated hub served the call, so none of its fields is trusted.
+  function htmlText(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function(c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
   function safeHTML(container, html) {
     // Parse HTML string into detached DOM, then attach event listeners
     // before inserting into document. Prevents XSS through event handlers.
@@ -537,16 +545,16 @@
     }
     var ok = result.success;
     var mark = ok ? "OK" : "FAIL";
-    var price = result.price_usd || 0;
-    var listPrice = result.list_price_usd != null ? result.list_price_usd : price;
+    var price = Number(result.price_usd) || 0;
+    var listPrice = result.list_price_usd != null ? (Number(result.list_price_usd) || 0) : price;
     var sandboxTag = result.sandbox
-      ? '<span class="aimw-badge aimw-badge-safety">sandbox · ' + (result.remaining != null ? result.remaining + " left" : "free") + '</span>'
+      ? '<span class="aimw-badge aimw-badge-safety">sandbox · ' + (result.remaining != null ? htmlText(result.remaining) + " left" : "free") + '</span>'
       : '';
     outputEl.innerHTML = '<div class="aimw-result">' +
       '<strong>' + mark + ' ' + (capabilityId || "").replace(/</g, "&lt;") + '</strong>' +
       '<span style="font-size:11px;"> · ' + (result.sandbox ? "free trial" : "$" + price.toFixed(2)) +
       (result.sandbox && listPrice > 0 ? ' (list $' + listPrice.toFixed(2) + ')' : '') +
-      ' · ' + (result.latency_ms || "?") + 'ms</span>' +
+      ' · ' + htmlText(result.latency_ms || "?") + 'ms</span>' +
       sandboxTag +
       (result.safety_checked ? '<span class="aimw-badge aimw-badge-safety">safety passed</span>' : '') +
       '<pre style="margin-top:8px;font-size:12px;white-space:pre-wrap;">' +

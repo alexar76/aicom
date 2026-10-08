@@ -118,6 +118,20 @@ STATUS_STALE_HOURS = 36.0
 # is woken — long enough to survive a deploy, short enough that a dead collector is caught
 # inside the 24h a payment channel lives.
 SETTLEMENT_STALE_HOURS = 2.0
+# Security posture (per hub, per hour) and hot-wallet outflow thresholds.
+SIGNUPS_REFUSED_MAX = int(os.environ.get("AICOM_ALERT_SIGNUPS_REFUSED_MAX", "30") or 30)
+BAD_KEYS_MAX = int(os.environ.get("AICOM_ALERT_BAD_KEYS_MAX", "200") or 200)
+GRANT_BUDGET_WARN = float(os.environ.get("AICOM_ALERT_GRANT_BUDGET_WARN", "0.8") or 0.8)
+# An hour's outflow pages above half the wallet's balance an hour ago, bounded below by dust
+# (gas wallets hold ~0.0005 ETH, so an absolute 0.005 would miss a full drain) and above by
+# an absolute amount (half of a large balance is far more than anyone should lose quietly).
+WALLET_OUTFLOW_FRACTION = float(os.environ.get("AICOM_ALERT_WALLET_OUTFLOW_FRACTION", "0.5") or 0.5)
+WALLET_OUTFLOW_ETH = float(os.environ.get("AICOM_ALERT_WALLET_OUTFLOW_ETH", "0.005") or 0.005)
+WALLET_OUTFLOW_ETH_DUST = float(os.environ.get("AICOM_ALERT_WALLET_OUTFLOW_ETH_DUST", "0.0001") or 0.0001)
+WALLET_OUTFLOW_USDC = float(os.environ.get("AICOM_ALERT_WALLET_OUTFLOW_USDC", "5") or 5)
+WALLET_OUTFLOW_USDC_DUST = float(os.environ.get("AICOM_ALERT_WALLET_OUTFLOW_USDC_DUST", "1") or 1)
+DEFAULT_BASE_RPC = "https://mainnet.base.org"
+USDC_BASE = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
 
 TELEGRAM_TIMEOUT = 15.0
 EMAIL_TIMEOUT = 20.0
@@ -638,6 +652,10 @@ def probe_deposit_watch(hubs: list[str], timeout: float = 20.0, scope: Scope | N
     return checks
 
 
+#: A received repo smaller than this share of its weekly peak was compacted after losing data.
+BACKUP_MIN_SIZE_RATIO = 0.7
+
+
 def probe_backups(url: str, expected: list[str] | None = None, timeout: float = 20.0,
                   now: float | None = None) -> list[Check]:
     """Did every server's nightly backup reach the receiver?
@@ -665,6 +683,15 @@ def probe_backups(url: str, expected: list[str] | None = None, timeout: float = 
     if own and own.get("label"):
         last[str(own["label"])] = str(own.get("finished_at") or "") if own.get("ok") else ""
         own_errors = [str(e) for e in own.get("errors") or []]
+    for label, row in (body.get("repos") or {}).items():
+        size, peak = (row or {}).get("size_mb"), (row or {}).get("size_mb_peak_7d")
+        if isinstance(size, (int, float)) and isinstance(peak, (int, float)) and peak > 0:
+            # Repos are append-only and no longer compacted automatically, so they only grow;
+            # a drop means segments were compacted away — after a mass delete, the moment it
+            # became final.
+            kept = size >= BACKUP_MIN_SIZE_RATIO * peak
+            checks.append(Check(f"backup_not_shrunk[{label}]", kept,
+                                f"{size:.0f} MB of a {peak:.0f} MB weekly peak"))
     for label in (expected if expected else sorted(last)):
         if label not in last:
             checks.append(Check(f"backup_fresh[{label}]", False, "no repository on the receiver"))
@@ -800,6 +827,113 @@ def _publicly_reachable(url: str) -> bool:
 # `_require_admin` answers 503 with this detail when no admin token is set at all: the door
 # is shut, not open. Any other 503 comes from after the token was accepted.
 _ADMIN_UNSET = "AIMARKET_ADMIN_TOKEN not configured"
+
+
+def probe_security_posture(hub: str, timeout: float = 10.0, label: str = "") -> list[Check]:
+    """Security events, not just uptime and money (2026-10-08 audit).
+
+    The hub counts, over the last hour, the signups its per-address limit refused and the
+    requests that carried an X-API-Key no account owns, and reports how much of the daily
+    signup-grant budget is gone. A burst of the first is someone farming the free grant; of
+    the second, someone guessing keys; a spent budget means newcomers get no grant.
+    """
+    suffix = f"@{label or _federation_label(hub)}"
+    url = hub.rstrip("/") + "/ai-market/v2/security/posture"
+    status, body, err = _get(url, timeout)
+    if status != 200 or not isinstance(body, dict):
+        # An older hub has no such endpoint: a gap in what is watched, not an incident.
+        return [Check("security_posture_published" + suffix, False,
+                      f"{url} -> {err or status}", critical=False)]
+    refused = int(body.get("signups_refused") or 0)
+    bad = int(body.get("bad_api_key_attempts") or 0)
+    grant = body.get("signup_grant") or {}
+    spent = float(grant.get("spent_fraction") or 0.0)
+    return [
+        Check("security_signup_farming" + suffix, refused < SIGNUPS_REFUSED_MAX,
+              f"{refused} signups refused by the per-address limit in the last hour"
+              f" (pages at {SIGNUPS_REFUSED_MAX})"),
+        Check("security_key_guessing" + suffix, bad < BAD_KEYS_MAX,
+              f"{bad} requests with an unknown X-API-Key in the last hour"
+              f" (pages at {BAD_KEYS_MAX})"),
+        Check("security_grant_budget" + suffix, spent < GRANT_BUDGET_WARN,
+              f"{spent * 100:.0f}% of the daily signup-grant budget spent "
+              f"(${float(grant.get('granted_24h_usd') or 0):.2f} of "
+              f"${float(grant.get('daily_budget_usd') or 0):.2f})",
+              critical=False),
+    ]
+
+
+def hot_wallets_from_env(spec: str | None = None) -> list[tuple[str, str, float]]:
+    """``label=0xADDR[:min_eth]`` entries, comma-separated (AICOM_ALERT_HOT_WALLETS)."""
+    raw = os.environ.get("AICOM_ALERT_HOT_WALLETS", "") if spec is None else spec
+    out: list[tuple[str, str, float]] = []
+    for entry in raw.split(","):
+        entry = entry.strip()
+        if not entry or "=" not in entry:
+            continue
+        label, rest = entry.split("=", 1)
+        addr, _, floor = rest.strip().partition(":")
+        if not re.fullmatch(r"0x[0-9a-fA-F]{40}", addr.strip()):
+            continue
+        try:
+            min_eth = float(floor) if floor.strip() else 0.0
+        except ValueError:
+            min_eth = 0.0
+        out.append((label.strip(), addr.strip().lower(), min_eth))
+    return out
+
+
+def _rpc_call(rpc: str, method: str, params: list[Any], timeout: float) -> int | None:
+    status, body, _err = _post(rpc, {"jsonrpc": "2.0", "id": 1, "method": method,
+                                     "params": params}, timeout)
+    if status != 200 or not isinstance(body, dict) or not isinstance(body.get("result"), str):
+        return None
+    try:
+        return int(body["result"], 16)
+    except ValueError:
+        return None
+
+
+def probe_hot_wallets(wallets: list[tuple[str, str, float]], history: dict[str, Any], *,
+                      rpc: str, timeout: float = 10.0, now: float | None = None) -> list[Check]:
+    """The keys that sign by themselves: a floor, and money leaving faster than gas.
+
+    Each run records the wallet's ETH and USDC on Base in ``history`` (the alert state).
+    An outflow is measured against the balance an hour ago, so a drain keeps the check red
+    for the hour and the two-run flap filter still lets it page; ordinary gas spend is far
+    below either threshold.
+    """
+    now = time.time() if now is None else now
+    checks: list[Check] = []
+    for label, addr, min_eth in wallets:
+        suffix = f"@{label}"
+        wei = _rpc_call(rpc, "eth_getBalance", [addr, "latest"], timeout)
+        usdc = _rpc_call(rpc, "eth_call", [{"to": USDC_BASE, "data": "0x70a08231" + "0" * 24 + addr[2:]},
+                                           "latest"], timeout)
+        if wei is None or usdc is None:
+            checks.append(Check("hot_wallet_readable" + suffix, False,
+                                f"{rpc} did not answer for {addr}", critical=False))
+            continue
+        eth = wei / 1e18
+        usd = usdc / 1e6
+        rows = [r for r in history.get(addr, []) if now - float(r[0]) <= 2 * 3600]
+        rows.append([now, eth, usd])
+        history[addr] = rows[-24:]
+        past = [r for r in rows if now - float(r[0]) <= 3600]
+        ref_eth = max(float(r[1]) for r in past)
+        ref_usd = max(float(r[2]) for r in past)
+        out_eth, out_usd = ref_eth - eth, ref_usd - usd
+        eth_limit = max(WALLET_OUTFLOW_ETH_DUST, min(WALLET_OUTFLOW_ETH, ref_eth * WALLET_OUTFLOW_FRACTION))
+        usd_limit = max(WALLET_OUTFLOW_USDC_DUST, min(WALLET_OUTFLOW_USDC, ref_usd * WALLET_OUTFLOW_FRACTION))
+        drained = out_eth > eth_limit or out_usd > usd_limit
+        if min_eth > 0:
+            checks.append(Check("hot_wallet_funded" + suffix, eth >= min_eth,
+                                f"{eth:.6f} ETH (floor {min_eth:g})"))
+        checks.append(Check("hot_wallet_no_outflow" + suffix, not drained,
+                            f"{out_eth:.6f} ETH and {out_usd:.2f} USDC left in the last hour "
+                            f"(now {eth:.6f} ETH, {usd:.2f} USDC)" if drained
+                            else f"{eth:.6f} ETH, {usd:.2f} USDC; no unusual outflow"))
+    return checks
 
 
 def probe_hub_identity(hub: str, timeout: float = 10.0, label: str = "") -> list[Check]:
@@ -1005,6 +1139,27 @@ def decide(checks: list[Check], state: dict[str, Any], *, flap: int,
 # base check name -> (when failing, when recovered, what it costs). `{t}` is the hub, host or
 # URL the check is about. English is the default (AICOM_ALERT_LANG=ru switches).
 _EN: dict[str, tuple[str, str, str]] = {
+    "security_posture_published": (
+        "hub {t} does not publish its security posture", "hub {t} publishes its security posture again",
+        "signup farming and key guessing on it go unseen"),
+    "security_signup_farming": (
+        "someone is farming signups on hub {t}", "signups on hub {t} are back to normal",
+        "the per-address limit is refusing a burst of new accounts — the free grant is the bait; check the hub log for the addresses"),
+    "security_key_guessing": (
+        "someone is guessing API keys on hub {t}", "unknown-key requests on hub {t} are back to normal",
+        "a stream of requests with keys no account owns; a guessed key spends someone's prepaid balance"),
+    "security_grant_budget": (
+        "the daily signup-grant budget on hub {t} is nearly spent", "the signup-grant budget on hub {t} has room again",
+        "not urgent: new accounts get no free grant once it is gone; raise AIMARKET_SIGNUP_GRANT_DAILY_USD or look for farming"),
+    "hot_wallet_readable": (
+        "the balance of hot wallet {t} cannot be read", "the balance of hot wallet {t} is readable again",
+        "the Base RPC did not answer; its floor and outflow are unwatched until it does"),
+    "hot_wallet_funded": (
+        "hot wallet {t} is below its floor", "hot wallet {t} is funded again",
+        "it cannot pay gas: the transactions it signs (sponsored settlements, feedback, debits) stop"),
+    "hot_wallet_no_outflow": (
+        "money is leaving hot wallet {t}", "hot wallet {t} has no unusual outflow",
+        "far more than gas left it within the hour — if no one moved it on purpose, treat the key as compromised and sweep what is left"),
     "hub_dns_resolves": (
         "DNS name {t} does not resolve", "DNS name {t} resolves again",
         "the hub cannot be reached by name"),
@@ -1092,6 +1247,9 @@ _EN: dict[str, tuple[str, str, str]] = {
     "backup_receiver_disk": (
         "the backup receiver is running out of disk", "the backup receiver has room again",
         "the next nights' backups may not fit"),
+    "backup_not_shrunk": (
+        "the received backup of {t} shrank", "the received backup of {t} is whole again",
+        "segments were compacted away: if a client deleted its archives first, they are gone for good — check the repo's transactions before anything else"),
     "settlement_report_published": (
         "the settlement sweep is not publishing its report",
         "the settlement sweep publishes its report again",
@@ -1220,6 +1378,27 @@ _PHRASES: dict[str, dict[str, str]] = {
 
 
 _RU: dict[str, tuple[str, str, str]] = {
+    "security_posture_published": (
+        "хаб {t} не публикует состояние безопасности", "хаб {t} снова публикует состояние безопасности",
+        "фарм регистраций и подбор ключей на нём не видны"),
+    "security_signup_farming": (
+        "на хабе {t} кто-то фармит регистрации", "регистрации на хабе {t} снова в норме",
+        "лимит на адрес отбивает поток новых аккаунтов — приманка в бесплатном гранте; адреса — в логе хаба"),
+    "security_key_guessing": (
+        "на хабе {t} кто-то подбирает API-ключи", "запросы с неизвестными ключами на хабе {t} снова в норме",
+        "поток запросов с ключами, которых нет ни у одного аккаунта; угаданный ключ тратит чужой предоплаченный баланс"),
+    "security_grant_budget": (
+        "дневной бюджет грантов на регистрацию на хабе {t} почти исчерпан", "бюджет грантов на хабе {t} снова есть",
+        "не срочно: когда он кончится, новые аккаунты останутся без гранта; подними AIMARKET_SIGNUP_GRANT_DAILY_USD или ищи фарм"),
+    "hot_wallet_readable": (
+        "не читается баланс горячего кошелька {t}", "баланс горячего кошелька {t} снова читается",
+        "RPC Base не ответил; порог и отток не отслеживаются, пока не ответит"),
+    "hot_wallet_funded": (
+        "горячий кошелёк {t} ниже порога", "горячий кошелёк {t} снова пополнен",
+        "ему нечем платить газ: транзакции, которые он подписывает (спонсорские расчёты, отзывы, списания), встанут"),
+    "hot_wallet_no_outflow": (
+        "из горячего кошелька {t} уходят деньги", "необычного оттока из кошелька {t} нет",
+        "за час ушло намного больше, чем на газ — если никто не переводил намеренно, считай ключ скомпрометированным и выведи остаток"),
     "hub_dns_resolves": (
         "DNS-имя {t} не резолвится", "DNS-имя {t} снова резолвится",
         "хаб недоступен по имени"),
@@ -1305,6 +1484,9 @@ _RU: dict[str, tuple[str, str, str]] = {
     "backup_receiver_disk": (
         "в хранилище бэкапов кончается место", "в хранилище бэкапов снова есть место",
         "следующие ночные бэкапы могут не поместиться"),
+    "backup_not_shrunk": (
+        "бэкап {t} в хранилище уменьшился", "бэкап {t} в хранилище снова цел",
+        "сегменты удалены сжатием: если клиент перед этим стёр архивы, они пропали насовсем — сначала проверь журнал транзакций репозитория"),
     "settlement_report_published": (
         "сборщик оплат не публикует отчёт", "сборщик оплат снова публикует отчёт",
         "не видно, уходят ли оплаты в сеть"),
@@ -1780,7 +1962,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
             deposit_hubs: list[str] | None = None,
             backup_url: str = "", backup_hosts: list[str] | None = None,
             federation_hubs: list[str] | None = None,
-            sellers: list[str] | None = None, scope: Scope | None = None) -> list[Check]:
+            sellers: list[str] | None = None, scope: Scope | None = None,
+            wallet_history: dict[str, Any] | None = None) -> list[Check]:
     scope = scope if scope is not None else Scope.from_env()
     checks: list[Check] = []
     sellers = sellers if sellers is not None else sellers_from_env()
@@ -1811,6 +1994,14 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_deposit_watch(deposit_hubs, timeout, scope=scope)
     if backup_url.strip():
         checks += probe_backups(backup_url, backup_hosts, timeout)
+    checks += probe_security_posture(hub, min(timeout, 10.0))
+    for label, url in watched_pairs:
+        checks += probe_security_posture(url, min(timeout, 10.0), label=label)
+    wallets = hot_wallets_from_env()
+    if wallets and wallet_history is not None:
+        checks += probe_hot_wallets(wallets, wallet_history,
+                                    rpc=os.environ.get("AICOM_ALERT_BASE_RPC", DEFAULT_BASE_RPC),
+                                    timeout=min(timeout, 10.0))
     if mode == "full":
         checks += probe_paywall(hub, timeout, scope=scope)
         # Hourly, not every ten minutes: five POSTs per hub, and what it guards against — a
@@ -1892,12 +2083,14 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if all(ok for ok, _ in results.values()) else 1
 
     scope = Scope.from_env()
+    # Loaded first: the hot-wallet probe compares against balances earlier runs recorded.
+    state = load_state(args.state)
     checks = collect(args.mode, hub=hub, signer=signer, status_url=status_url,
                      settlement_url=settlement_url, timeout=args.timeout, journey_url=journey_url,
                      uni_chain_url=uni_chain_url, deposit_hubs=deposit_hubs,
                      backup_url=backup_url, backup_hosts=backup_hosts,
-                     federation_hubs=federation_hubs_from_env(hub), scope=scope)
-    state = load_state(args.state)
+                     federation_hubs=federation_hubs_from_env(hub), scope=scope,
+                     wallet_history=state.setdefault("wallets", {}))
     heartbeat_before = state.get("last_heartbeat", "")
     broke, fixed, heartbeat = decide(checks, state, flap=flap,
                                      heartbeat_hours=heartbeat_hours, now=now)

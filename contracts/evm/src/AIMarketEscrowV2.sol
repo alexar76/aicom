@@ -446,6 +446,24 @@ contract AIMarketEscrowV2 is ReentrancyGuard, Ownable2Step {
         }
     }
 
+    /// @notice requestClose for many of the caller's channels in one transaction, so a dust
+    ///         exit stays two transactions (this, then batchRefund) instead of one per channel.
+    ///         Entries that are not the caller's open channels are skipped, as in batchRefund.
+    function batchRequestClose(bytes32[] calldata channelIds) external returns (uint256 requested) {
+        uint256 n = channelIds.length;
+        for (uint256 i = 0; i < n; ++i) {
+            Channel storage ch = channels[channelIds[i]];
+            if (ch.depositor != msg.sender || ch.status != ChannelStatus.Open) continue;
+            if (ch.closableAt == 0) {
+                ch.closableAt = block.timestamp + SETTLE_WINDOW;
+                emit CloseRequested(channelIds[i], ch.closableAt);
+            }
+            unchecked {
+                ++requested;
+            }
+        }
+    }
+
     /// @dev Reverts unless the depositor has waited out the window they started.
     function _requireClosable(Channel storage ch) private view {
         if (ch.closableAt == 0) revert CloseNotRequested();
@@ -552,7 +570,8 @@ contract AIMarketEscrowV2 is ReentrancyGuard, Ownable2Step {
      * @dev Dust economics: for small ($1) channels a per-channel refund tx can cost
      *      more gas than it returns. Batching amortizes the ~21k base tx cost across
      *      N channels. Non-refundable entries (not found, not Open, not the caller's,
-     *      or already debited) are **skipped**, not reverted, so one stale id cannot
+     *      close not requested or its window still open, or already debited) are
+     *      **skipped**, not reverted, so one stale id cannot
      *      block the rest of the batch. Follows checks-effects-interactions per item
      *      and is nonReentrant. The caller pays the gas, so an oversized array simply
      *      reverts on out-of-gas for that caller — no griefing surface for others.
@@ -575,6 +594,9 @@ contract AIMarketEscrowV2 is ReentrancyGuard, Ownable2Step {
             // single check also covers ChannelNotFound.
             if (ch.depositor != msg.sender) continue;
             if (ch.status != ChannelStatus.Open) continue;
+            // The same close window as refundChannel: without it this was a second door
+            // that handed back every call served but not yet debited.
+            if (ch.closableAt == 0 || block.timestamp < ch.closableAt) continue;
             if (ch.usedAmount > 0) continue;
 
             // Effects before interaction (CEI): mark refunded, then transfer.

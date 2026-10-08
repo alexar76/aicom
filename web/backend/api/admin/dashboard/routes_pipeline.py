@@ -215,6 +215,13 @@ async def get_pipeline_products(
     ),
 ):
     """Get pipeline products with pagination (same catalog as dashboard / storefront hints)."""
+    from web.backend.services.public_demo_guard import is_public_demo
+
+    if is_public_demo():
+        # Every visitor is admin on the demo; a full page of rows with their artifacts was
+        # 130-190 MB per call — a free way to keep the factory busy serialising.
+        light = True
+        limit = min(limit, 60)
     safe_offset = max(offset, 0)
     safe_limit = max(limit, 1)
     pipeline_file = pipeline_json_path()

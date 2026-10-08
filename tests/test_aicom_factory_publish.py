@@ -127,6 +127,23 @@ def test_every_tracked_repo_root_is_classified():
     )
 
 
+def test_an_untracked_root_is_classified_too(tmp_path):
+    """The factory export rsyncs the working tree and the clone runs `git add -A`, so an
+    untracked root that .gitignore does not cover ships exactly like a tracked one."""
+    import subprocess
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
+    (tmp_path / "README.md").write_text("x\n", encoding="utf-8")
+    subprocess.run(["git", "-C", str(tmp_path), "add", "README.md"], check=True)
+    (tmp_path / ".gitignore").write_text("ignored-dir/\n", encoding="utf-8")
+    (tmp_path / "ignored-dir").mkdir()
+    (tmp_path / "ignored-dir" / "f").write_text("x", encoding="utf-8")
+    (tmp_path / ".stray-keys").mkdir()
+    (tmp_path / ".stray-keys" / "signing_key").write_text("x", encoding="utf-8")
+    stray = check_roots(tmp_path)
+    assert ".stray-keys" in stray
+    assert "ignored-dir" not in stray
+
+
 def test_root_classification_is_exhaustive_and_secrets_are_never_public():
     for name in ("independent", "pantheon", "cite-desks", "attested", "saas-compose.yml"):
         assert classify_root(name) != "public", name

@@ -54,6 +54,36 @@ def _enforce_register_rate_limit(ip: str) -> None:
     window.append(now)
 
 
+# Failed customer logins, per client address and per email: the route had no limit at all.
+_LOGIN_FAIL_WINDOW_SEC = 900.0
+_LOGIN_FAIL_MAX_PER_IP = int(os.environ.get("AIFACTORY_CUSTOMER_LOGIN_FAILS_PER_IP", "20"))
+_LOGIN_FAIL_MAX_PER_EMAIL = int(os.environ.get("AIFACTORY_CUSTOMER_LOGIN_FAILS_PER_EMAIL", "10"))
+_login_failures: dict[str, deque[float]] = defaultdict(deque)
+
+
+def _recent_failures(key: str, now: float) -> deque[float]:
+    window = _login_failures[key]
+    while window and now - window[0] > _LOGIN_FAIL_WINDOW_SEC:
+        window.popleft()
+    return window
+
+
+def _enforce_login_rate_limit(ip: str, email: str) -> None:
+    now = time.time()
+    if (len(_recent_failures(f"ip:{ip}", now)) >= _LOGIN_FAIL_MAX_PER_IP
+            or len(_recent_failures(f"email:{email}", now)) >= _LOGIN_FAIL_MAX_PER_EMAIL):
+        raise HTTPException(status_code=429, detail="Too many failed sign-ins. Try again later.")
+
+
+def _record_login_failure(ip: str, email: str) -> None:
+    now = time.time()
+    _recent_failures(f"ip:{ip}", now).append(now)
+    _recent_failures(f"email:{email}", now).append(now)
+    if len(_login_failures) > 20000:
+        for key in [k for k, v in _login_failures.items() if not v][:5000]:
+            _login_failures.pop(key, None)
+
+
 def _get_token_payload(authorization: Optional[str] = Header(default=None)) -> dict:
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing customer token")
@@ -101,16 +131,21 @@ async def register(body: CustomerRegisterRequest, request: Request):
     _enforce_register_rate_limit(_client_ip(request))
     try:
         customer = commerce.register_customer(body.email, body.password)
-    except ValueError as exc:
-        raise HTTPException(status_code=409, detail=str(exc))
+    except ValueError:
+        # Not "this email already has an account": that told anyone which addresses do.
+        raise HTTPException(status_code=409, detail="Could not register with these details.")
     token = commerce.create_token(customer["id"], customer["email"])
     return {"customer": customer, "access_token": token, "token_type": "bearer"}
 
 
 @router.post("/login")
-async def login(body: CustomerLoginRequest):
+async def login(body: CustomerLoginRequest, request: Request):
+    ip = _client_ip(request)
+    email = str(body.email or "").strip().lower()
+    _enforce_login_rate_limit(ip, email)
     customer = commerce.authenticate_customer(body.email, body.password)
     if not customer:
+        _record_login_failure(ip, email)
         raise HTTPException(status_code=401, detail="Invalid email or password")
     token = commerce.create_token(customer["id"], customer["email"])
     return {"customer": customer, "access_token": token, "token_type": "bearer"}
@@ -129,9 +164,11 @@ async def me(payload: dict = Depends(_get_token_payload)):
 
 
 @router.post("/logout")
-async def customer_logout():
-    """JWT is stateless — clients discard the bearer token after this ack."""
-    return {"ok": True, "detail": "Discard bearer token on the client"}
+async def customer_logout(authorization: Optional[str] = Header(default=None)):
+    """End the session server-side: the token's jti is revoked until it would have expired."""
+    if authorization and authorization.startswith("Bearer "):
+        commerce.revoke_token(authorization.split(" ", 1)[1].strip())
+    return {"ok": True, "detail": "Signed out"}
 
 
 @router.post("/demo-notes")

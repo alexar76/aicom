@@ -1268,3 +1268,20 @@ block 52261416, `AuthorizationUsed` for the quote's nonce + `Transfer` of 1.00 U
 `rcpt_7d17010bdf2cb80a9078d4d51c7e5b30`), no free trial used. A first quote (`0xc392eaec…0072`) was signed but
 never broadcast and expired unused. Every record with diagrams, in five languages:
 [start-onboarding-demo.md](start-onboarding-demo.md).
+
+## 2026-10-08 — live code vs source: what is deployed is older than what is written 📌
+
+An audit on 2026-10-08 compared every live contract with the source that claims it. Nothing
+below was redeployed — every one of these contracts is owned by the operator wallet `0x1218`,
+and moving it is a separate decision — so this is the record of the gap, not its closing.
+
+| Live contract | Deployed from | Fixed in source since (not live) |
+| --- | --- | --- |
+| AIMarketEscrow (V1, `0x12Db8FAC…62CF2`) | 2026-09-04 | V1's `settleChannel` / `refundChannel` let a depositor take back everything served since the last landed debit; AIMarketEscrowV2 (close window) is written and tested but not deployed (e2d5ad124). On 2026-10-08 V2's `batchRefund` was made to honour the same close window as `refundChannel` — it skipped it — and gained `batchRequestClose`. The hub bounds the exposure meanwhile: it serves at most `AIMARKET_ESCROW_MAX_UNCOLLECTED_USD` (default 5) on credit per channel before a debit lands, refuses authorizations that expire within 30 min (the buyer chose the deadline; one seconds ahead made every call uncollectable), collects a multi-call window whole (guard 2 used to compare the window's total with its newest call alone and refused every window of two or more calls), withdraws an undelivered call from its window, and stops serving 30 min before on-chain expiry. |
+| AgentAuditPool (`0x96005B0E…689b`) | 2026-08-22 | 3183fcb9d (08-25): one observation weighs at most a day, a baseline needs three. 2026-10-08: the TWAP comes from PulseAMM's price × time accumulator (a price counts for as long as it held — a crash held across one block boundary used to count for a day and could manufacture a default), time before the pool existed no longer enters the baseline, the default compares the TWAP since the baseline, and only a pool quoted in its own USDC prices anything. |
+| PulseAMM (`0xED279249…5D22`) | 2026-08-22 | 2026-10-08: a time-weighted price accumulator folded before every swap and block-start reserves for the spot check; the quote token is set once by the owner — a market maker can no longer price a CapShare in a token of its own. |
+| AgentListingRegistry / AgentCollateralVault | 2026-08-22 | 2026-10-08: a squatted, unapproved id can be evicted even with collateral on it (the collateral becomes claimable by its agent wallet — pulled, so a wallet that refuses USDC cannot block it), and unless the listing is live only that wallet may fund the id — one base unit used to make the id permanent. |
+| BountySplitter (`0x89A618F6…63426`) | 2026-08-08 (broadcast commit d3ef8222, before the file's first commit 2053c3ace) | 58527b245 (09-12): credits the measured amount, gates `decimals()==6`, resets `fundedAt` on top-up. Holds 0 USDC; nothing has settled through it. |
+| AIMarketCapabilityNFT (`0x544dcdd8…35a281`) | 2026-07-26 (§2c) | e55fe3ccf (08-05): `nonReentrant` on `mint` / `consumeCall` (M16). |
+| AIAgentLottery | 2026-09-11 | Its broadcast names commit 9011cb60b, which is not in this repository's object database; the bytecode cannot be traced to a commit here. |
+| ACEX set (2026-08-22) | — | No broadcast JSON was kept for that deploy, so its provenance rests on this journal's §2d alone. |

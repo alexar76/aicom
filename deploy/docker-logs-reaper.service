@@ -1,0 +1,6 @@
+[Unit]
+Description=Kill abandoned non-following `docker logs` clients (each one can pin a dockerd core)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/aicom-ops/docker_logs_reaper.py --max-age 600

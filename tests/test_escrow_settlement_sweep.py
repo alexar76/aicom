@@ -435,3 +435,38 @@ def test_the_report_shows_the_state_after_collecting(monkeypatch):
     assert report["uncollected"]["collect"]["collected"] == 1
     assert report["uncollected"]["expired_uncollected"] == 0
     assert report["uncollected"]["expired_usd"] == 0.0
+
+
+# ── AIMarketEscrowV2: ten words, and expiry one SETTLE_WINDOW later ─────────────────────
+
+def _raw_channel(*, v2: bool, expires_at: int, closable_at: int = 0, status: int = 0) -> str:
+    words = [0xdead, 0xbeef, 0x833589, 1_000_000, 990_000, 10_000, expires_at, 3]
+    words += [closable_at, status] if v2 else [status]
+    return "0x" + "".join(format(w, "064x") for w in words)
+
+
+def test_a_v1_channel_decodes_as_before():
+    c = sweep.decode_channel(_raw_channel(v2=False, expires_at=1_787_000_000, status=3))
+    assert (c["status"], c["expires_at"], c["expirable_at"]) == (3, 1_787_000_000, 1_787_000_000)
+
+
+def test_a_v2_channel_reads_status_after_closable_at():
+    """Read as V1, closableAt would land in `status` and a settled channel would look open."""
+    c = sweep.decode_channel(_raw_channel(v2=True, expires_at=1_787_000_000,
+                                          closable_at=0, status=1))
+    assert c["status"] == 1 and c["closable_at"] == 0
+    assert c["expirable_at"] == 1_787_000_000 + sweep.ESCROW_V2_SETTLE_WINDOW_S
+
+
+def test_a_v2_channel_is_not_asked_for_inside_its_settle_window(monkeypatch):
+    asked = []
+    monkeypatch.setattr(sweep, "signer_endpoint", lambda: ("http://signer/sign", "tok"))
+    monkeypatch.setattr(sweep, "ask_signer_to_expire",
+                        lambda u, t, e, cid, **k: (asked.append(cid) or (True, "0xhash")))
+    inside = sweep.decode_channel(_raw_channel(v2=True, expires_at=int(NOW) - 10))
+    after = sweep.decode_channel(_raw_channel(
+        v2=True, expires_at=int(NOW) - sweep.ESCROW_V2_SETTLE_WINDOW_S - 1))
+    inside["channel_id"], after["channel_id"] = "0x" + "01" * 32, "0x" + "02" * 32
+    sweep.collect_expired([inside, after], escrow="0xesc", now=NOW)
+    assert asked == ["0x" + "02" * 32]
+    assert sweep.collectable([inside, after], now=NOW)["expired_uncollected"] == 1

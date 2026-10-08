@@ -311,6 +311,26 @@ def _validated_product_id(v: str) -> str:
     return s
 
 
+#: Public telemetry dicts are written to disk and, for evolution signals, read back into an
+#: LLM prompt; nginx alone allowed 128 MB per request. Bound what one anonymous call stores.
+PUBLIC_DICT_MAX_BYTES = 4096
+PUBLIC_DICT_MAX_KEYS = 32
+
+
+def bounded_public_dict(v: Any) -> Any:
+    if v is None:
+        return v
+    if not isinstance(v, dict):
+        raise ValueError("must be an object")
+    if len(v) > PUBLIC_DICT_MAX_KEYS:
+        raise ValueError(f"at most {PUBLIC_DICT_MAX_KEYS} keys")
+    import json as _json
+
+    if len(_json.dumps(v, default=str)) > PUBLIC_DICT_MAX_BYTES:
+        raise ValueError(f"at most {PUBLIC_DICT_MAX_BYTES} bytes")
+    return v
+
+
 class TelemetryEventRequest(BaseModel):
     product_id: str = Field(..., min_length=5, max_length=80)
     event_type: str = Field(..., min_length=2, max_length=64, pattern=r"^[a-z][a-z0-9_]{1,63}$")
@@ -318,6 +338,11 @@ class TelemetryEventRequest(BaseModel):
     session_id: Optional[str] = Field(None, max_length=80)
     page_url: Optional[str] = Field(None, max_length=500)
     locale: Optional[str] = Field(None, max_length=16, pattern=_LOCALE_RE)
+
+    @field_validator("data")
+    @classmethod
+    def bounded_data(cls, v: dict[str, Any]) -> dict[str, Any]:
+        return bounded_public_dict(v)
 
     @field_validator("product_id")
     @classmethod
@@ -338,6 +363,11 @@ class EvolutionSignalRequest(BaseModel):
     weight: float = Field(0.5, ge=0.0, le=1.0)
     context: dict[str, Any] = Field(default_factory=dict)
     session_id: Optional[str] = Field(None, max_length=80)
+
+    @field_validator("context")
+    @classmethod
+    def bounded_context(cls, v: dict[str, Any]) -> dict[str, Any]:
+        return bounded_public_dict(v)
 
     @field_validator("product_id")
     @classmethod

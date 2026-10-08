@@ -99,14 +99,22 @@ maybe_install_node() {
   ok "Node $(node -v)"
 }
 
+# The ONE name we publish, matching `argus/package.json`. Deliberately not a list.
+#
+# This used to try "argus-warden", "@alexar76/argus3", "argus-3" and "@aimarket/argus" in order and
+# install the first that any registry answered for, with `npm install -g` — which runs install
+# scripts. A preference list over registry names is a hijack primitive by construction: an attacker
+# needs only a name ranked above ours. All four are in fact ours today (checked: maintainer
+# `alexar76`), so this was never exploitable — but it becomes exploitable the moment one is
+# unpublished or lapses, and it would then fail silently into a stranger's package.
+ARGUS_NPM_PACKAGE="@alexar76/argus3"
+
 install_argus_cli() {
-  for candidate in "argus-warden" "@alexar76/argus3" "argus-3" "@aimarket/argus"; do
-    if npm view "${candidate}@${ARGUS_NPM_TAG}" version >/dev/null 2>&1; then
-      info "Installing ${candidate}@${ARGUS_NPM_TAG} from npm..."
-      npm install -g "${candidate}@${ARGUS_NPM_TAG}"
-      return 0
-    fi
-  done
+  if npm view "${ARGUS_NPM_PACKAGE}@${ARGUS_NPM_TAG}" version >/dev/null 2>&1; then
+    info "Installing ${ARGUS_NPM_PACKAGE}@${ARGUS_NPM_TAG} from npm..."
+    npm install -g "${ARGUS_NPM_PACKAGE}@${ARGUS_NPM_TAG}"
+    return 0
+  fi
   warn "No ARGUS npm package found — trying local monorepo / git fallback..."
   local src=""
   if [[ -f "${PWD}/argus/package.json" ]]; then

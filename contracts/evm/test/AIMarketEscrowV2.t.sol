@@ -143,6 +143,64 @@ contract AIMarketEscrowV2Test is Test {
         assertEq(token.balanceOf(hub), DEBIT, "the hub was paid for the call it served");
     }
 
+    function test_V2_batchRefundHonoursTheCloseWindowToo() public {
+        // batchRefund is the second door to the same refund: it skipped the close window,
+        // so a depositor served off-chain could take the whole deposit back at once.
+        _open(address(v2), CH, DEPOSIT);
+        bytes32[] memory ids = new bytes32[](1);
+        ids[0] = CH;
+        uint256 before = token.balanceOf(depositor);
+
+        vm.prank(depositor);
+        assertEq(v2.batchRefund(ids, "provider_error"), 0, "no announced exit: skipped");
+
+        vm.prank(depositor);
+        v2.requestClose(CH);
+        vm.prank(depositor);
+        assertEq(v2.batchRefund(ids, "provider_error"), 0, "inside the window: skipped");
+        assertEq(token.balanceOf(depositor), before, "nothing paid out early");
+
+        // The hub lands the call it served inside the window ...
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes memory sig = _sign(address(v2), CH, DEBIT, RECEIPT, 0, deadline);
+        vm.prank(hub);
+        v2.debitChannel(CH, DEBIT, RECEIPT, deadline, sig);
+
+        // ... and after it, a debited channel is still not batch-refundable.
+        vm.warp(block.timestamp + v2.SETTLE_WINDOW() + 1);
+        vm.prank(depositor);
+        assertEq(v2.batchRefund(ids, "provider_error"), 0, "debited: skipped");
+    }
+
+    function test_V2_aDustExitStaysTwoTransactions() public {
+        bytes32 ch2 = keccak256("second");
+        _open(address(v2), CH, DEPOSIT);
+        _open(address(v2), ch2, DEPOSIT);
+        bytes32[] memory ids = new bytes32[](2);
+        ids[0] = CH;
+        ids[1] = ch2;
+        vm.prank(depositor);
+        assertEq(v2.batchRequestClose(ids), 2);
+        vm.warp(block.timestamp + v2.SETTLE_WINDOW() + 1);
+        uint256 before = token.balanceOf(depositor);
+        vm.prank(depositor);
+        assertEq(v2.batchRefund(ids, "dust"), 2);
+        assertEq(token.balanceOf(depositor) - before, 2 * DEPOSIT);
+    }
+
+    function test_V2_batchRefundPaysAnUndebitedChannelOnceTheWindowElapses() public {
+        _open(address(v2), CH, DEPOSIT);
+        bytes32[] memory ids = new bytes32[](1);
+        ids[0] = CH;
+        vm.prank(depositor);
+        v2.requestClose(CH);
+        vm.warp(block.timestamp + v2.SETTLE_WINDOW() + 1);
+        uint256 before = token.balanceOf(depositor);
+        vm.prank(depositor);
+        assertEq(v2.batchRefund(ids, "provider_error"), 1);
+        assertEq(token.balanceOf(depositor) - before, DEPOSIT);
+    }
+
     function test_V2_anImmediateSettleIsRefusedUntilTheWindowElapses() public {
         _open(address(v2), CH, DEPOSIT);
         vm.prank(depositor);

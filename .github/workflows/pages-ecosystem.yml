@@ -23,19 +23,16 @@ concurrency:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       # Pin third-party/floating tags to full commit SHAs (supply-chain
       # hardening — a moved tag can't slip a malicious action into the deploy).
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
@@ -43,14 +40,15 @@ jobs:
           python-version: "3.11"
 
       - name: Install build deps
-        run: pip install pyyaml
+        run: pip install 'pyyaml==6.0.2'
 
       # oracles/ is a satellite — fetch the catalog TS so /oracles/ SEO pages build.
+      # At a pinned commit of alexar76/oracles (2026-10-08), not whatever main is today.
       - name: Fetch oracles catalog for SEO
         run: |
           mkdir -p oracles/frontend/src
           curl -fsSL \
-            "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/src/oracles.ts" \
+            "https://raw.githubusercontent.com/alexar76/oracles/08b0edcecf03572ddc08d8eb28edec56f0bfe8e7/frontend/src/oracles.ts" \
             -o oracles/frontend/src/oracles.ts
           test -s oracles/frontend/src/oracles.ts
 
@@ -72,7 +70,7 @@ jobs:
       - name: Render encyclopedia PDFs
         working-directory: docs/encyclopedia
         run: |
-          npm install --no-save playwright
+          npm install --no-save 'playwright@1.61.1'
           npx playwright install --with-deps chromium
           node scripts/generate-pdf.mjs all
 
@@ -93,16 +91,26 @@ jobs:
           test -f ecosystem-landing/oracles/index.html
           test -f ecosystem-landing/learn/orchestration-course/index.html
 
-      # NOTE: the three GitHub-owned Pages actions below are still on their
-      # major tags. They could not be SHA-pinned offline; see followup
-      # "SHA-pin GitHub Pages actions" to resolve and pin each to a digest.
-      - name: Configure Pages
-        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b  # v5.0.0
-
       - name: Upload landing as Pages artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa  # v3.0.1
         with:
           path: ecosystem-landing
+
+  # The only job that can mint an OIDC token runs no third-party code: pip, npm and
+  # Playwright run in the build above, which never holds one.
+  deploy:
+    needs: build
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b  # v5.0.0
 
       - name: Deploy to GitHub Pages
         id: deployment

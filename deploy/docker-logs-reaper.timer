@@ -1,0 +1,9 @@
+[Unit]
+Description=Every 5 minutes: kill abandoned `docker logs` clients
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=timers.target

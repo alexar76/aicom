@@ -44,6 +44,22 @@ def size_mb(repo: str) -> float:
     return round(total / 1e6, 1)
 
 
+def _load_peaks(path: str) -> dict:
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+        return {k: [(float(t), float(s)) for t, s in v] for k, v in data.items()}
+    except (OSError, ValueError, TypeError):
+        return {}
+
+
+def _save_peaks(path: str, peaks: dict) -> None:
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump(peaks, fh)
+    os.replace(tmp, path)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", required=True)
@@ -52,10 +68,24 @@ def main() -> int:
     args = ap.parse_args()
 
     repos = {}
+    # Kept out of the published directory: the status file is what the web server serves.
+    state_dir = "/var/lib/aicom-backup"
+    peaks_path = (os.path.join(state_dir, "status-peaks.json") if os.path.isdir(state_dir)
+                  else args.out + ".peaks.json")
+    peaks = _load_peaks(peaks_path)
+    now = time.time()
     for name in sorted(os.listdir(args.root)):
         repo = os.path.join(args.root, name)
         if os.path.isfile(os.path.join(repo, "config")) and os.path.isdir(os.path.join(repo, "data")):
-            repos[name] = {"last_commit": last_commit(repo), "size_mb": size_mb(repo)}
+            size = size_mb(repo)
+            # A repo only shrinks when segments are compacted away; after a client's
+            # "delete everything" that is the moment the loss becomes final. The peak over a
+            # week lets the alerter see a drop without any key.
+            seen = [(t, s) for t, s in peaks.get(name, []) if now - t <= 7 * 86400] + [(now, size)]
+            peaks[name] = seen[-2016:]
+            repos[name] = {"last_commit": last_commit(repo), "size_mb": size,
+                           "size_mb_peak_7d": max(s for _t, s in seen)}
+    _save_peaks(peaks_path, peaks)
     doc = {
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "free_gb": round(shutil.disk_usage(args.root).free / 1e9, 1),
