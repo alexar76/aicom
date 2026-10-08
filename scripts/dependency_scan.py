@@ -11,10 +11,12 @@ Why this exists
 A miner was dropped into a production Next.js container through an unauthenticated RCE.
 Two scanners were already running and neither could have caught it:
 
-  * `.github/dependabot.yml` watches 5 directories. The monorepo has 116 npm
-    projects and 41 Python requirement files. Most of them sit outside that list.
-  * `security-scan.yml`'s npm-audit job installs and audits `web/frontend` and the
-    TypeScript SDK only, weekly.
+  * Dependabot used to watch only five directories.
+  * The npm-audit job used to audit only `web/frontend` and the TypeScript SDK.
+
+Dependabot now covers nested npm manifests, and npm-dependency-audit.yml audits
+every committed npm lockfile daily, including dev dependencies. This OSV scanner
+also covers pinned dependencies in the other ecosystems listed below.
 
 So it queries OSV.dev directly from the lockfiles instead of running `npm audit` per
 project: no install step, no network of node_modules, transitive versions included,

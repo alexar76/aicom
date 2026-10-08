@@ -1,0 +1,56 @@
+# Managed by scripts/security/configure_npm_security.py.
+name: npm dependency security
+on:
+  pull_request:
+    paths: ['**/package.json', '**/package-lock.json', '.github/workflows/npm-dependency-audit.yml']
+  push:
+    branches: [main, master]
+    paths: ['**/package.json', '**/package-lock.json', '.github/workflows/npm-dependency-audit.yml']
+  schedule:
+    - cron: '23 6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      directories: ${{ steps.locks.outputs.directories }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - id: locks
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess
+          paths = subprocess.check_output(['git', 'ls-files', '-z'], text=True).split('\0')
+          directories = sorted({str(pathlib.PurePosixPath(p).parent) for p in paths if pathlib.PurePosixPath(p).name == 'package-lock.json' and 'node_modules' not in pathlib.PurePosixPath(p).parts})
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('directories=' + json.dumps(directories) + '\n')
+          print(f'Auditing {len(directories)} npm lockfiles, including development dependencies')
+          PY
+  audit:
+    needs: discover
+    if: needs.discover.outputs.directories != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        directory: ${{ fromJSON(needs.discover.outputs.directories) }}
+    defaults:
+      run:
+        working-directory: ${{ matrix.directory }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+      # Audit the committed lockfile without installing or executing packages.
+      # High/Critical in dev dependencies and registry failures also fail the job.
+      - run: npm audit --package-lock-only --include=dev --ignore-scripts --audit-level=high --json > npm-audit-report.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: npm-audit-${{ strategy.job-index }}
+          path: ${{ matrix.directory }}/npm-audit-report.json

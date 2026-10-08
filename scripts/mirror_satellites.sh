@@ -2089,6 +2089,10 @@ _commit_and_push() (
 
   cd "$clone"
 
+  # Configure against the FINAL exported layout, including nested studio copies.
+  # This also covers custom exporters that do not copy the shared GitHub templates.
+  python3 "$ROOT/scripts/security/configure_npm_security.py" "$clone"
+
   # ── Hard secret gate, for EVERY publish path ──────────────────────────
   # This used to run only inside the `live` branch below (and once inside
   # export_simple), so nine of the ten paths — lottery, oracles, platon, plugins, the

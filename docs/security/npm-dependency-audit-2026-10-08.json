@@ -1,0 +1,3839 @@
+{
+  "date": "2026-10-08",
+  "scope": "Every tracked npm package-lock.json in the local aicom source tree, including nested satellite copies and unpublished projects. Not a scan of deployed containers or remote-only repositories.",
+  "publication": "Local working-tree changes; no commit, push, deploy or GitHub alert dismissal performed.",
+  "counting": "npm audit package counts summed across lockfiles; these are not unique CVEs.",
+  "before": {
+    "projects": 36,
+    "clean_projects": 8,
+    "affected_package_instances": {
+      "info": 0,
+      "low": 16,
+      "moderate": 64,
+      "high": 147,
+      "critical": 32,
+      "total": 259
+    }
+  },
+  "after": {
+    "projects": 36,
+    "clean_projects": 28,
+    "affected_package_instances": {
+      "info": 0,
+      "low": 13,
+      "moderate": 12,
+      "high": 56,
+      "critical": 0,
+      "total": 81
+    }
+  },
+  "changed_lockfiles": [
+    "ai-service-mesh/frontend/package-lock.json",
+    "aicom-landing/package-lock.json",
+    "aimarket-hub/hephaestus/studio/package-lock.json",
+    "aimarket-sdks/typescript/package-lock.json",
+    "alien-monitor/frontend/package-lock.json",
+    "apps/pulse-terminal/package-lock.json",
+    "argus/package-lock.json",
+    "cite-desks/emberline/frontend/package-lock.json",
+    "contracts/zk/package-lock.json",
+    "dioscuri/package-lock.json",
+    "gaia/frontend/package-lock.json",
+    "hephaestus/package-lock.json",
+    "hephaestus/studio/package-lock.json",
+    "independent/daily-card/package-lock.json",
+    "independent/kova-gateway/package-lock.json",
+    "independent/verified-execution-hub/package-lock.json",
+    "logos/frontend/package-lock.json",
+    "momus/frontend/package-lock.json",
+    "oracles/frontend/package-lock.json",
+    "oracles/oracles/platon/frontend/package-lock.json",
+    "pantheon/package-lock.json",
+    "pingblip/memeforge/package-lock.json",
+    "pingblip/web/package-lock.json",
+    "pingblip/world/package-lock.json",
+    "platon/frontend/package-lock.json",
+    "signal-hunt/frontend/package-lock.json",
+    "warden/package-lock.json",
+    "web/frontend/package-lock.json"
+  ],
+  "changed_manifests": [
+    "ai-service-mesh/frontend/package.json",
+    "aicom-landing/package.json",
+    "aimarket-hub/hephaestus/studio/package.json",
+    "aimarket-sdks/typescript/package.json",
+    "alien-monitor/frontend/package.json",
+    "apps/pulse-terminal/package.json",
+    "argus/package.json",
+    "cite-desks/emberline/frontend/package.json",
+    "desktop-integrations/ai-stack-migration-assistant/package.json",
+    "dioscuri/package.json",
+    "gaia/frontend/package.json",
+    "hephaestus/studio/package.json",
+    "independent/kova-gateway/package.json",
+    "independent/verified-execution-hub/package.json",
+    "logos/frontend/package.json",
+    "momus/frontend/package.json",
+    "oracles/frontend/package.json",
+    "oracles/oracles/platon/frontend/package.json",
+    "pantheon/package.json",
+    "platon/frontend/package.json",
+    "signal-hunt/frontend/package.json",
+    "warden/package.json",
+    "web/frontend/package.json"
+  ],
+  "reported_alerts": {
+    "status": "No affected versions remain in any of the 36 tracked lockfiles; checked by tests/test_npm_security_coverage.py and npm audit.",
+    "advisories": [
+      "GHSA-68fv-2mgg-jv7q",
+      "GHSA-fx2h-pf6j-xcff",
+      "GHSA-4w7w-66w2-5vf9",
+      "GHSA-v6wh-96g9-6wx3",
+      "GHSA-67mh-4wv8-2f99"
+    ]
+  },
+  "automation": {
+    "dependabot": "Weekly npm version-update PRs for root and nested manifests; grouped security PRs; no automatic merge. Existing non-npm settings retained.",
+    "audit": "Daily, PR and main/master push audit of all committed npm lockfiles. Includes dev dependencies. High/Critical findings or registry errors fail CI. JSON reports retained as artifacts. No dependency install or lifecycle script execution in audit jobs.",
+    "export": "scripts/mirror_satellites.sh regenerates npm configuration against the final exported layout before its secret/publication gate.",
+    "activation": "Requires publication to each repository default branch. GitHub security-update settings were not inspected or changed."
+  },
+  "audit_results": [
+    {
+      "lock": "ai-service-mesh/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 2,
+        "high": 5,
+        "critical": 0,
+        "total": 7
+      },
+      "error": null,
+      "packages": [
+        "braces",
+        "chokidar",
+        "fast-glob",
+        "micromatch",
+        "postcss-nested",
+        "postcss-selector-parser",
+        "tailwindcss"
+      ]
+    },
+    {
+      "lock": "aicom-landing/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "aimarket-hub/hephaestus/studio/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "aimarket-sdks/typescript/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "alien-monitor/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 2,
+        "high": 5,
+        "critical": 0,
+        "total": 7
+      },
+      "error": null,
+      "packages": [
+        "braces",
+        "chokidar",
+        "fast-glob",
+        "micromatch",
+        "postcss-nested",
+        "postcss-selector-parser",
+        "tailwindcss"
+      ]
+    },
+    {
+      "lock": "apps/pulse-terminal/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 2,
+        "high": 5,
+        "critical": 0,
+        "total": 7
+      },
+      "error": null,
+      "packages": [
+        "braces",
+        "chokidar",
+        "fast-glob",
+        "micromatch",
+        "postcss-nested",
+        "postcss-selector-parser",
+        "tailwindcss"
+      ]
+    },
+    {
+      "lock": "argus/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "cite-desks/emberline/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 2,
+        "high": 0,
+        "critical": 0,
+        "total": 2
+      },
+      "error": null,
+      "packages": [
+        "react-router",
+        "react-router-dom"
+      ]
+    },
+    {
+      "lock": "contracts/zk/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 13,
+        "moderate": 2,
+        "high": 4,
+        "critical": 0,
+        "total": 19
+      },
+      "error": null,
+      "packages": [
+        "@ethersproject/abi",
+        "@ethersproject/abstract-provider",
+        "@ethersproject/abstract-signer",
+        "@ethersproject/contracts",
+        "@ethersproject/hash",
+        "@ethersproject/hdnode",
+        "@ethersproject/json-wallets",
+        "@ethersproject/providers",
+        "@ethersproject/signing-key",
+        "@ethersproject/transactions",
+        "@ethersproject/wallet",
+        "@ethersproject/wordlists",
+        "bfj",
+        "circomlibjs",
+        "elliptic",
+        "ethers",
+        "jsonpath",
+        "underscore",
+        "ws"
+      ]
+    },
+    {
+      "lock": "create-aimarket-agent/npm/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "dioscuri/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "gaia/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "hephaestus/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "hephaestus/studio/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "histor/scanner/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "independent/daily-card/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "independent/kova-gateway/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 15,
+        "critical": 0,
+        "total": 15
+      },
+      "error": null,
+      "packages": [
+        "@cloudflare/vite-plugin",
+        "@ts-morph/common",
+        "braces",
+        "fast-glob",
+        "image-size",
+        "micromatch",
+        "miniflare",
+        "shadcn",
+        "sharp",
+        "ts-morph",
+        "undici",
+        "vinext",
+        "vite-plugin-commonjs",
+        "vite-plugin-dynamic-import",
+        "wrangler"
+      ]
+    },
+    {
+      "lock": "independent/verified-execution-hub/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 15,
+        "critical": 0,
+        "total": 15
+      },
+      "error": null,
+      "packages": [
+        "@cloudflare/vite-plugin",
+        "@ts-morph/common",
+        "braces",
+        "fast-glob",
+        "image-size",
+        "micromatch",
+        "miniflare",
+        "shadcn",
+        "sharp",
+        "ts-morph",
+        "undici",
+        "vinext",
+        "vite-plugin-commonjs",
+        "vite-plugin-dynamic-import",
+        "wrangler"
+      ]
+    },
+    {
+      "lock": "logos/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "momus/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "npm-reserve/packages/aimarket-sdk/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "okx-a2mcp/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "oracles/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "oracles/oracles/platon/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "pantheon/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "pingblip/memeforge/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "pingblip/shared/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "pingblip/web/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "pingblip/world/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "platon/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "scripts/delivery-survey/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "signal-hunt/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "warden/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "warden/scripts/mcp-survey/remeasure/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "error": null,
+      "packages": []
+    },
+    {
+      "lock": "web/frontend/package-lock.json",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 2,
+        "high": 7,
+        "critical": 0,
+        "total": 9
+      },
+      "error": null,
+      "packages": [
+        "@next/eslint-plugin-next",
+        "braces",
+        "chokidar",
+        "eslint-config-next",
+        "fast-glob",
+        "micromatch",
+        "postcss-nested",
+        "postcss-selector-parser",
+        "tailwindcss"
+      ]
+    }
+  ],
+  "remaining_findings": [
+    {
+      "lock": "ai-service-mesh/frontend/package-lock.json",
+      "vulnerabilities": {
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "chokidar",
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "chokidar": {
+          "name": "chokidar",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "tailwindcss"
+          ],
+          "range": "2.0.0 - 3.6.0",
+          "nodes": [
+            "node_modules/chokidar"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": true
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "fast-glob",
+            "tailwindcss"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "postcss-nested": {
+          "name": "postcss-nested",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "postcss-selector-parser"
+          ],
+          "effects": [],
+          "range": "2.0.3 - 6.2.0",
+          "nodes": [
+            "node_modules/postcss-nested"
+          ],
+          "fixAvailable": true
+        },
+        "postcss-selector-parser": {
+          "name": "postcss-selector-parser",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1241232,
+              "name": "postcss-selector-parser",
+              "dependency": "postcss-selector-parser",
+              "title": "PostCSS: Quadratic complexity in flat selector parsing allows CPU exhaustion",
+              "url": "https://github.com/advisories/GHSA-rj75-hqrm-r3gf",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-400",
+                "CWE-407"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<7.1.6"
+            }
+          ],
+          "effects": [
+            "postcss-nested",
+            "tailwindcss"
+          ],
+          "range": "<7.1.6",
+          "nodes": [
+            "node_modules/postcss-selector-parser"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "tailwindcss": {
+          "name": "tailwindcss",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "chokidar",
+            "fast-glob",
+            "micromatch",
+            "postcss-nested",
+            "postcss-selector-parser"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-oxide-insiders.ff2c25f || 0.5.0 - 3.4.19",
+          "nodes": [
+            "node_modules/tailwindcss"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    },
+    {
+      "lock": "alien-monitor/frontend/package-lock.json",
+      "vulnerabilities": {
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "chokidar",
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "chokidar": {
+          "name": "chokidar",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "tailwindcss"
+          ],
+          "range": "2.0.0 - 3.6.0",
+          "nodes": [
+            "node_modules/chokidar"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": true
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "fast-glob",
+            "tailwindcss"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "postcss-nested": {
+          "name": "postcss-nested",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "postcss-selector-parser"
+          ],
+          "effects": [],
+          "range": "2.0.3 - 6.2.0",
+          "nodes": [
+            "node_modules/postcss-nested"
+          ],
+          "fixAvailable": true
+        },
+        "postcss-selector-parser": {
+          "name": "postcss-selector-parser",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1241232,
+              "name": "postcss-selector-parser",
+              "dependency": "postcss-selector-parser",
+              "title": "PostCSS: Quadratic complexity in flat selector parsing allows CPU exhaustion",
+              "url": "https://github.com/advisories/GHSA-rj75-hqrm-r3gf",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-400",
+                "CWE-407"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<7.1.6"
+            }
+          ],
+          "effects": [
+            "postcss-nested",
+            "tailwindcss"
+          ],
+          "range": "<7.1.6",
+          "nodes": [
+            "node_modules/postcss-selector-parser"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "tailwindcss": {
+          "name": "tailwindcss",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "chokidar",
+            "fast-glob",
+            "micromatch",
+            "postcss-nested",
+            "postcss-selector-parser"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-oxide-insiders.ff2c25f || 0.5.0 - 3.4.19",
+          "nodes": [
+            "node_modules/tailwindcss"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    },
+    {
+      "lock": "apps/pulse-terminal/package-lock.json",
+      "vulnerabilities": {
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "chokidar",
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "chokidar": {
+          "name": "chokidar",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "tailwindcss"
+          ],
+          "range": "2.0.0 - 3.6.0",
+          "nodes": [
+            "node_modules/chokidar"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": true
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "fast-glob",
+            "tailwindcss"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "postcss-nested": {
+          "name": "postcss-nested",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "postcss-selector-parser"
+          ],
+          "effects": [],
+          "range": "2.0.3 - 6.2.0",
+          "nodes": [
+            "node_modules/postcss-nested"
+          ],
+          "fixAvailable": true
+        },
+        "postcss-selector-parser": {
+          "name": "postcss-selector-parser",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1241232,
+              "name": "postcss-selector-parser",
+              "dependency": "postcss-selector-parser",
+              "title": "PostCSS: Quadratic complexity in flat selector parsing allows CPU exhaustion",
+              "url": "https://github.com/advisories/GHSA-rj75-hqrm-r3gf",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-400",
+                "CWE-407"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<7.1.6"
+            }
+          ],
+          "effects": [
+            "postcss-nested",
+            "tailwindcss"
+          ],
+          "range": "<7.1.6",
+          "nodes": [
+            "node_modules/postcss-selector-parser"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "tailwindcss": {
+          "name": "tailwindcss",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "chokidar",
+            "fast-glob",
+            "micromatch",
+            "postcss-nested",
+            "postcss-selector-parser"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-oxide-insiders.ff2c25f || 0.5.0 - 3.4.19",
+          "nodes": [
+            "node_modules/tailwindcss"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    },
+    {
+      "lock": "cite-desks/emberline/frontend/package-lock.json",
+      "vulnerabilities": {
+        "react-router": {
+          "name": "react-router",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1124268,
+              "name": "react-router",
+              "dependency": "react-router",
+              "title": "React Router: Open redirect via backslash in <Link> and useNavigate (CVE-2025-68470 bypass)",
+              "url": "https://github.com/advisories/GHSA-wrjc-x8rr-h8h6",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-601"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": ">=6.0.0 <7.18.0"
+            },
+            {
+              "source": 1124272,
+              "name": "react-router",
+              "dependency": "react-router",
+              "title": "React Router: Arbitrary Constructor Injection via deserializeErrors() in React Router SSR Hydration",
+              "url": "https://github.com/advisories/GHSA-337j-9hxr-rhxg",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-470"
+              ],
+              "cvss": {
+                "score": 6.1,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+              },
+              "range": ">=6.4.0 <7.18.0"
+            }
+          ],
+          "effects": [
+            "react-router-dom"
+          ],
+          "range": "6.0.0 - 7.17.0",
+          "nodes": [
+            "node_modules/react-router"
+          ],
+          "fixAvailable": {
+            "name": "react-router-dom",
+            "version": "7.18.4",
+            "isSemVerMajor": true
+          }
+        },
+        "react-router-dom": {
+          "name": "react-router-dom",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "react-router"
+          ],
+          "effects": [],
+          "range": "6.0.0-alpha.0 - 7.17.0",
+          "nodes": [
+            "node_modules/react-router-dom"
+          ],
+          "fixAvailable": {
+            "name": "react-router-dom",
+            "version": "7.18.4",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    },
+    {
+      "lock": "contracts/zk/package-lock.json",
+      "vulnerabilities": {
+        "@ethersproject/abi": {
+          "name": "@ethersproject/abi",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/hash"
+          ],
+          "effects": [
+            "@ethersproject/contracts",
+            "ethers"
+          ],
+          "range": "5.0.10 - 5.8.0",
+          "nodes": [
+            "node_modules/@ethersproject/abi"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "@ethersproject/abstract-provider": {
+          "name": "@ethersproject/abstract-provider",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/transactions"
+          ],
+          "effects": [
+            "@ethersproject/abstract-signer",
+            "@ethersproject/contracts"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/@ethersproject/abstract-provider"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "@ethersproject/abstract-signer": {
+          "name": "@ethersproject/abstract-signer",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/abstract-provider"
+          ],
+          "effects": [
+            "@ethersproject/hash"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/@ethersproject/abstract-signer"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "@ethersproject/contracts": {
+          "name": "@ethersproject/contracts",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/abi",
+            "@ethersproject/abstract-provider",
+            "@ethersproject/abstract-signer",
+            "@ethersproject/transactions"
+          ],
+          "effects": [
+            "ethers"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/@ethersproject/contracts"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "@ethersproject/hash": {
+          "name": "@ethersproject/hash",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/abstract-signer"
+          ],
+          "effects": [
+            "@ethersproject/abi",
+            "@ethersproject/providers",
+            "@ethersproject/wallet",
+            "@ethersproject/wordlists",
+            "ethers"
+          ],
+          "range": "5.0.6 - 5.8.0",
+          "nodes": [
+            "node_modules/@ethersproject/hash"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "@ethersproject/hdnode": {
+          "name": "@ethersproject/hdnode",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/abstract-signer",
+            "@ethersproject/signing-key",
+            "@ethersproject/transactions",
+            "@ethersproject/wordlists"
+          ],
+          "effects": [
+            "@ethersproject/json-wallets"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/@ethersproject/hdnode"
+          ],
+          "fixAvailable": true
+        },
+        "@ethersproject/json-wallets": {
+          "name": "@ethersproject/json-wallets",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/abstract-signer",
+            "@ethersproject/hdnode",
+            "@ethersproject/transactions"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/@ethersproject/json-wallets"
+          ],
+          "fixAvailable": true
+        },
+        "@ethersproject/providers": {
+          "name": "@ethersproject/providers",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/abstract-provider",
+            "@ethersproject/abstract-signer",
+            "@ethersproject/hash",
+            "@ethersproject/transactions",
+            "ws"
+          ],
+          "effects": [
+            "ethers"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/@ethersproject/providers"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "@ethersproject/signing-key": {
+          "name": "@ethersproject/signing-key",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "elliptic"
+          ],
+          "effects": [
+            "@ethersproject/hdnode",
+            "@ethersproject/transactions",
+            "@ethersproject/wallet",
+            "ethers"
+          ],
+          "range": "<=5.8.0",
+          "nodes": [
+            "node_modules/@ethersproject/signing-key"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "@ethersproject/transactions": {
+          "name": "@ethersproject/transactions",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/signing-key"
+          ],
+          "effects": [
+            "@ethersproject/abstract-provider",
+            "@ethersproject/contracts",
+            "@ethersproject/providers"
+          ],
+          "range": "<=5.8.0",
+          "nodes": [
+            "node_modules/@ethersproject/transactions"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "@ethersproject/wallet": {
+          "name": "@ethersproject/wallet",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/abstract-provider",
+            "@ethersproject/abstract-signer",
+            "@ethersproject/hash",
+            "@ethersproject/hdnode",
+            "@ethersproject/json-wallets",
+            "@ethersproject/signing-key",
+            "@ethersproject/transactions",
+            "@ethersproject/wordlists"
+          ],
+          "effects": [],
+          "range": "<=5.8.0",
+          "nodes": [
+            "node_modules/@ethersproject/wallet"
+          ],
+          "fixAvailable": true
+        },
+        "@ethersproject/wordlists": {
+          "name": "@ethersproject/wordlists",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/hash"
+          ],
+          "effects": [
+            "@ethersproject/hdnode"
+          ],
+          "range": "5.0.8 - 5.8.0",
+          "nodes": [
+            "node_modules/@ethersproject/wordlists"
+          ],
+          "fixAvailable": true
+        },
+        "bfj": {
+          "name": "bfj",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "jsonpath"
+          ],
+          "effects": [],
+          "range": "7.1.0 - 9.1.2",
+          "nodes": [
+            "node_modules/bfj"
+          ],
+          "fixAvailable": true
+        },
+        "circomlibjs": {
+          "name": "circomlibjs",
+          "severity": "low",
+          "isDirect": true,
+          "via": [
+            "ethers"
+          ],
+          "effects": [],
+          "range": ">=0.1.0",
+          "nodes": [
+            "node_modules/circomlibjs"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "elliptic": {
+          "name": "elliptic",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1112030,
+              "name": "elliptic",
+              "dependency": "elliptic",
+              "title": "Elliptic Uses a Cryptographic Primitive with a Risky Implementation",
+              "url": "https://github.com/advisories/GHSA-848j-6mx2-7j84",
+              "severity": "low",
+              "cwe": [
+                "CWE-1240"
+              ],
+              "cvss": {
+                "score": 5.6,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L"
+              },
+              "range": "<=6.6.1"
+            }
+          ],
+          "effects": [
+            "@ethersproject/signing-key"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/elliptic"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "ethers": {
+          "name": "ethers",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "@ethersproject/abi",
+            "@ethersproject/abstract-provider",
+            "@ethersproject/abstract-signer",
+            "@ethersproject/contracts",
+            "@ethersproject/hash",
+            "@ethersproject/hdnode",
+            "@ethersproject/json-wallets",
+            "@ethersproject/providers",
+            "@ethersproject/signing-key",
+            "@ethersproject/transactions",
+            "@ethersproject/wallet",
+            "@ethersproject/wordlists"
+          ],
+          "effects": [
+            "circomlibjs"
+          ],
+          "range": "5.0.0-beta.119 - 6.0.0-beta.9",
+          "nodes": [
+            "node_modules/ethers"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        },
+        "jsonpath": {
+          "name": "jsonpath",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "underscore"
+          ],
+          "effects": [
+            "bfj"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/jsonpath"
+          ],
+          "fixAvailable": true
+        },
+        "underscore": {
+          "name": "underscore",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1117689,
+              "name": "underscore",
+              "dependency": "underscore",
+              "title": "Underscore has unlimited recursion in _.flatten and _.isEqual, potential for DoS attack",
+              "url": "https://github.com/advisories/GHSA-qpx9-hpmf-5gmw",
+              "severity": "high",
+              "cwe": [
+                "CWE-674",
+                "CWE-770"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=1.13.7"
+            }
+          ],
+          "effects": [
+            "jsonpath"
+          ],
+          "range": "<=1.13.7",
+          "nodes": [
+            "node_modules/underscore"
+          ],
+          "fixAvailable": true
+        },
+        "ws": {
+          "name": "ws",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1119108,
+              "name": "ws",
+              "dependency": "ws",
+              "title": "ws: Uninitialized memory disclosure",
+              "url": "https://github.com/advisories/GHSA-58qx-3vcg-4xpx",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-908"
+              ],
+              "cvss": {
+                "score": 4.4,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:H/I:N/A:N"
+              },
+              "range": ">=8.0.0 <8.20.1"
+            },
+            {
+              "source": 1123259,
+              "name": "ws",
+              "dependency": "ws",
+              "title": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
+              "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
+              "severity": "high",
+              "cwe": [
+                "CWE-400",
+                "CWE-770",
+                "CWE-1050"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=8.0.0 <8.21.0"
+            }
+          ],
+          "effects": [
+            "@ethersproject/providers"
+          ],
+          "range": "8.0.0 - 8.20.1",
+          "nodes": [
+            "node_modules/ws"
+          ],
+          "fixAvailable": {
+            "name": "circomlibjs",
+            "version": "0.0.8",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    },
+    {
+      "lock": "independent/kova-gateway/package-lock.json",
+      "vulnerabilities": {
+        "@cloudflare/vite-plugin": {
+          "name": "@cloudflare/vite-plugin",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "miniflare",
+            "wrangler"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-fff677e35 || 1.2.3 - 1.54.6",
+          "nodes": [
+            "node_modules/@cloudflare/vite-plugin"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        },
+        "@ts-morph/common": {
+          "name": "@ts-morph/common",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "fast-glob"
+          ],
+          "effects": [
+            "ts-morph"
+          ],
+          "range": "0.2.0 - 0.24.0 || 0.26.0 - 0.27.0",
+          "nodes": [
+            "node_modules/@ts-morph/common"
+          ],
+          "fixAvailable": true
+        },
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "shadcn",
+            "version": "1.0.0",
+            "isSemVerMajor": true
+          }
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [
+            "@ts-morph/common",
+            "shadcn",
+            "vite-plugin-dynamic-import"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": {
+            "name": "shadcn",
+            "version": "1.0.0",
+            "isSemVerMajor": true
+          }
+        },
+        "image-size": {
+          "name": "image-size",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1239765,
+              "name": "image-size",
+              "dependency": "image-size",
+              "title": "image-size: JXL and HEIF parsers allow denial of service through infinite loops",
+              "url": "https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+              "severity": "high",
+              "cwe": [
+                "CWE-835"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=1.2.0 <=2.0.2"
+            },
+            {
+              "source": 1239766,
+              "name": "image-size",
+              "dependency": "image-size",
+              "title": "image-size: ICNS parser allows denial of service through an infinite loop",
+              "url": "https://github.com/advisories/GHSA-w3rx-r6r6-pgpr",
+              "severity": "high",
+              "cwe": [
+                "CWE-835"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=0.6.3 <=2.0.2"
+            }
+          ],
+          "effects": [
+            "vinext"
+          ],
+          "range": "0.6.3 - 2.0.2",
+          "nodes": [
+            "node_modules/image-size"
+          ],
+          "fixAvailable": {
+            "name": "vinext",
+            "version": "1.0.1",
+            "isSemVerMajor": false
+          }
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "fast-glob"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "shadcn",
+            "version": "1.0.0",
+            "isSemVerMajor": true
+          }
+        },
+        "miniflare": {
+          "name": "miniflare",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "sharp",
+            "undici"
+          ],
+          "effects": [
+            "@cloudflare/vite-plugin",
+            "wrangler"
+          ],
+          "range": "<=0.0.0-fec45ed61 || 4.20250508.3 - 5.20260926.0-alpha",
+          "nodes": [
+            "node_modules/miniflare"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        },
+        "shadcn": {
+          "name": "shadcn",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "fast-glob",
+            "ts-morph"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-rc-20261007105214 || >=2.0.0",
+          "nodes": [
+            "node_modules/shadcn"
+          ],
+          "fixAvailable": {
+            "name": "shadcn",
+            "version": "1.0.0",
+            "isSemVerMajor": true
+          }
+        },
+        "sharp": {
+          "name": "sharp",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1193725,
+              "name": "sharp",
+              "dependency": "sharp",
+              "title": "sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545",
+              "url": "https://github.com/advisories/GHSA-rgj7-g3m4-5g8c",
+              "severity": "high",
+              "cwe": [
+                "CWE-122"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": "<0.35.4"
+            },
+            {
+              "source": 1241331,
+              "name": "sharp",
+              "dependency": "sharp",
+              "title": "sharp : Vulnerability in librsvg dependency CVE-2026-96889",
+              "url": "https://github.com/advisories/GHSA-wq5f-xc86-pv6w",
+              "severity": "high",
+              "cwe": [
+                "CWE-416",
+                "CWE-1395"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": "<0.35.5"
+            }
+          ],
+          "effects": [
+            "miniflare"
+          ],
+          "range": "<=0.35.5-rc.1",
+          "nodes": [
+            "node_modules/sharp"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        },
+        "ts-morph": {
+          "name": "ts-morph",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@ts-morph/common"
+          ],
+          "effects": [],
+          "range": "6.0.1 - 23.0.0 || 25.0.0 - 26.0.0",
+          "nodes": [
+            "node_modules/ts-morph"
+          ],
+          "fixAvailable": true
+        },
+        "undici": {
+          "name": "undici",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1239933,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via unhandled error in WebSocket permessage-deflate decompression",
+              "url": "https://github.com/advisories/GHSA-3wwx-pv8p-q78v",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-248"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.28.0 <7.29.1"
+            },
+            {
+              "source": 1240036,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via orphaned RetryHandler response body",
+              "url": "https://github.com/advisories/GHSA-pmjh-fq2x-6v4x",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-772"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.11.0 <7.29.1"
+            },
+            {
+              "source": 1240038,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to downstream response splitting via retry interceptor",
+              "url": "https://github.com/advisories/GHSA-r53p-7pc4-xj5r",
+              "severity": "low",
+              "cwe": [
+                "CWE-444"
+              ],
+              "cvss": {
+                "score": 3.7,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            },
+            {
+              "source": 1240041,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via unrequested WebSocket subprotocol",
+              "url": "https://github.com/advisories/GHSA-rfgv-xxqx-mfg5",
+              "severity": "high",
+              "cwe": [
+                "CWE-248",
+                "CWE-252"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            },
+            {
+              "source": 1240044,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via unbounded decompression of compressed responses",
+              "url": "https://github.com/advisories/GHSA-3xpg-4rpp-hhhm",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-770"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.15.0 <7.29.1"
+            },
+            {
+              "source": 1240046,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to cross-user cookie disclosure via Set-Cookie caching in shared caches",
+              "url": "https://github.com/advisories/GHSA-2jfj-6hjv-fm6j",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-200",
+                "CWE-524"
+              ],
+              "cvss": {
+                "score": 6.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:L/A:N"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            },
+            {
+              "source": 1240048,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to response truncation via oversized chunked responses in the dump interceptor",
+              "url": "https://github.com/advisories/GHSA-2gqq-gqf2-x968",
+              "severity": "low",
+              "cwe": [
+                "CWE-20",
+                "CWE-248"
+              ],
+              "cvss": {
+                "score": 3.7,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+              },
+              "range": ">=7.1.0 <7.29.1"
+            },
+            {
+              "source": 1240050,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to TLS certificate validation bypass via dropped connect options in BalancedPool",
+              "url": "https://github.com/advisories/GHSA-w293-vg96-wgc3",
+              "severity": "high",
+              "cwe": [
+                "CWE-295"
+              ],
+              "cvss": {
+                "score": 7.4,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+              },
+              "range": ">=7.24.1 <7.29.1"
+            },
+            {
+              "source": 1240052,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to caching and replay of unsafe HTTP method responses",
+              "url": "https://github.com/advisories/GHSA-8436-99hf-9mmv",
+              "severity": "low",
+              "cwe": [
+                "CWE-345"
+              ],
+              "cvss": {
+                "score": 3.7,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            },
+            {
+              "source": 1240055,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via WebSocketStream unclean close",
+              "url": "https://github.com/advisories/GHSA-rx4f-c7p8-82vq",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-248",
+                "CWE-754"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            }
+          ],
+          "effects": [
+            "miniflare"
+          ],
+          "range": "7.0.0 - 7.29.0",
+          "nodes": [
+            "node_modules/undici"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        },
+        "vinext": {
+          "name": "vinext",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "image-size",
+            "vite-plugin-commonjs"
+          ],
+          "effects": [],
+          "range": ">=0.0.16",
+          "nodes": [
+            "node_modules/vinext"
+          ],
+          "fixAvailable": {
+            "name": "vinext",
+            "version": "1.0.1",
+            "isSemVerMajor": false
+          }
+        },
+        "vite-plugin-commonjs": {
+          "name": "vite-plugin-commonjs",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "vite-plugin-dynamic-import"
+          ],
+          "effects": [
+            "vinext"
+          ],
+          "range": "0.5.0 - 0.5.2 || >=0.7.0",
+          "nodes": [
+            "node_modules/vite-plugin-commonjs"
+          ],
+          "fixAvailable": {
+            "name": "vinext",
+            "version": "1.0.1",
+            "isSemVerMajor": false
+          }
+        },
+        "vite-plugin-dynamic-import": {
+          "name": "vite-plugin-dynamic-import",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "fast-glob"
+          ],
+          "effects": [
+            "vite-plugin-commonjs"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/vite-plugin-dynamic-import"
+          ],
+          "fixAvailable": {
+            "name": "vinext",
+            "version": "1.0.1",
+            "isSemVerMajor": false
+          }
+        },
+        "wrangler": {
+          "name": "wrangler",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "miniflare"
+          ],
+          "effects": [
+            "@cloudflare/vite-plugin"
+          ],
+          "range": "<=0.0.0-7ae5dd357 || 4.16.0 - 4.130.0",
+          "nodes": [
+            "node_modules/wrangler"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        }
+      }
+    },
+    {
+      "lock": "independent/verified-execution-hub/package-lock.json",
+      "vulnerabilities": {
+        "@cloudflare/vite-plugin": {
+          "name": "@cloudflare/vite-plugin",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "miniflare",
+            "wrangler"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-fff677e35 || 1.2.3 - 1.54.6",
+          "nodes": [
+            "node_modules/@cloudflare/vite-plugin"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        },
+        "@ts-morph/common": {
+          "name": "@ts-morph/common",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "fast-glob"
+          ],
+          "effects": [
+            "ts-morph"
+          ],
+          "range": "0.2.0 - 0.24.0 || 0.26.0 - 0.27.0",
+          "nodes": [
+            "node_modules/@ts-morph/common"
+          ],
+          "fixAvailable": true
+        },
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "shadcn",
+            "version": "1.0.0",
+            "isSemVerMajor": true
+          }
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [
+            "@ts-morph/common",
+            "shadcn",
+            "vite-plugin-dynamic-import"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": {
+            "name": "shadcn",
+            "version": "1.0.0",
+            "isSemVerMajor": true
+          }
+        },
+        "image-size": {
+          "name": "image-size",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1239765,
+              "name": "image-size",
+              "dependency": "image-size",
+              "title": "image-size: JXL and HEIF parsers allow denial of service through infinite loops",
+              "url": "https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+              "severity": "high",
+              "cwe": [
+                "CWE-835"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=1.2.0 <=2.0.2"
+            },
+            {
+              "source": 1239766,
+              "name": "image-size",
+              "dependency": "image-size",
+              "title": "image-size: ICNS parser allows denial of service through an infinite loop",
+              "url": "https://github.com/advisories/GHSA-w3rx-r6r6-pgpr",
+              "severity": "high",
+              "cwe": [
+                "CWE-835"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=0.6.3 <=2.0.2"
+            }
+          ],
+          "effects": [
+            "vinext"
+          ],
+          "range": "0.6.3 - 2.0.2",
+          "nodes": [
+            "node_modules/image-size"
+          ],
+          "fixAvailable": {
+            "name": "vinext",
+            "version": "1.0.1",
+            "isSemVerMajor": false
+          }
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "fast-glob"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "shadcn",
+            "version": "1.0.0",
+            "isSemVerMajor": true
+          }
+        },
+        "miniflare": {
+          "name": "miniflare",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "sharp",
+            "undici"
+          ],
+          "effects": [
+            "@cloudflare/vite-plugin",
+            "wrangler"
+          ],
+          "range": "<=0.0.0-fec45ed61 || 4.20250508.3 - 5.20260926.0-alpha",
+          "nodes": [
+            "node_modules/miniflare"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        },
+        "shadcn": {
+          "name": "shadcn",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "fast-glob",
+            "ts-morph"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-rc-20261007105214 || >=2.0.0",
+          "nodes": [
+            "node_modules/shadcn"
+          ],
+          "fixAvailable": {
+            "name": "shadcn",
+            "version": "1.0.0",
+            "isSemVerMajor": true
+          }
+        },
+        "sharp": {
+          "name": "sharp",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1193725,
+              "name": "sharp",
+              "dependency": "sharp",
+              "title": "sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545",
+              "url": "https://github.com/advisories/GHSA-rgj7-g3m4-5g8c",
+              "severity": "high",
+              "cwe": [
+                "CWE-122"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": "<0.35.4"
+            },
+            {
+              "source": 1241331,
+              "name": "sharp",
+              "dependency": "sharp",
+              "title": "sharp : Vulnerability in librsvg dependency CVE-2026-96889",
+              "url": "https://github.com/advisories/GHSA-wq5f-xc86-pv6w",
+              "severity": "high",
+              "cwe": [
+                "CWE-416",
+                "CWE-1395"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": "<0.35.5"
+            }
+          ],
+          "effects": [
+            "miniflare"
+          ],
+          "range": "<=0.35.5-rc.1",
+          "nodes": [
+            "node_modules/sharp"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        },
+        "ts-morph": {
+          "name": "ts-morph",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@ts-morph/common"
+          ],
+          "effects": [],
+          "range": "6.0.1 - 23.0.0 || 25.0.0 - 26.0.0",
+          "nodes": [
+            "node_modules/ts-morph"
+          ],
+          "fixAvailable": true
+        },
+        "undici": {
+          "name": "undici",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1239933,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via unhandled error in WebSocket permessage-deflate decompression",
+              "url": "https://github.com/advisories/GHSA-3wwx-pv8p-q78v",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-248"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.28.0 <7.29.1"
+            },
+            {
+              "source": 1240036,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via orphaned RetryHandler response body",
+              "url": "https://github.com/advisories/GHSA-pmjh-fq2x-6v4x",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-772"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.11.0 <7.29.1"
+            },
+            {
+              "source": 1240038,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to downstream response splitting via retry interceptor",
+              "url": "https://github.com/advisories/GHSA-r53p-7pc4-xj5r",
+              "severity": "low",
+              "cwe": [
+                "CWE-444"
+              ],
+              "cvss": {
+                "score": 3.7,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            },
+            {
+              "source": 1240041,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via unrequested WebSocket subprotocol",
+              "url": "https://github.com/advisories/GHSA-rfgv-xxqx-mfg5",
+              "severity": "high",
+              "cwe": [
+                "CWE-248",
+                "CWE-252"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            },
+            {
+              "source": 1240044,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via unbounded decompression of compressed responses",
+              "url": "https://github.com/advisories/GHSA-3xpg-4rpp-hhhm",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-770"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.15.0 <7.29.1"
+            },
+            {
+              "source": 1240046,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to cross-user cookie disclosure via Set-Cookie caching in shared caches",
+              "url": "https://github.com/advisories/GHSA-2jfj-6hjv-fm6j",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-200",
+                "CWE-524"
+              ],
+              "cvss": {
+                "score": 6.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:L/A:N"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            },
+            {
+              "source": 1240048,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to response truncation via oversized chunked responses in the dump interceptor",
+              "url": "https://github.com/advisories/GHSA-2gqq-gqf2-x968",
+              "severity": "low",
+              "cwe": [
+                "CWE-20",
+                "CWE-248"
+              ],
+              "cvss": {
+                "score": 3.7,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+              },
+              "range": ">=7.1.0 <7.29.1"
+            },
+            {
+              "source": 1240050,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to TLS certificate validation bypass via dropped connect options in BalancedPool",
+              "url": "https://github.com/advisories/GHSA-w293-vg96-wgc3",
+              "severity": "high",
+              "cwe": [
+                "CWE-295"
+              ],
+              "cvss": {
+                "score": 7.4,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+              },
+              "range": ">=7.24.1 <7.29.1"
+            },
+            {
+              "source": 1240052,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to caching and replay of unsafe HTTP method responses",
+              "url": "https://github.com/advisories/GHSA-8436-99hf-9mmv",
+              "severity": "low",
+              "cwe": [
+                "CWE-345"
+              ],
+              "cvss": {
+                "score": 3.7,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            },
+            {
+              "source": 1240055,
+              "name": "undici",
+              "dependency": "undici",
+              "title": "undici vulnerable to Denial of Service via WebSocketStream unclean close",
+              "url": "https://github.com/advisories/GHSA-rx4f-c7p8-82vq",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-248",
+                "CWE-754"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=7.0.0 <7.29.1"
+            }
+          ],
+          "effects": [
+            "miniflare"
+          ],
+          "range": "7.0.0 - 7.29.0",
+          "nodes": [
+            "node_modules/undici"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        },
+        "vinext": {
+          "name": "vinext",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "image-size",
+            "vite-plugin-commonjs"
+          ],
+          "effects": [],
+          "range": ">=0.0.16",
+          "nodes": [
+            "node_modules/vinext"
+          ],
+          "fixAvailable": {
+            "name": "vinext",
+            "version": "1.0.1",
+            "isSemVerMajor": false
+          }
+        },
+        "vite-plugin-commonjs": {
+          "name": "vite-plugin-commonjs",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "vite-plugin-dynamic-import"
+          ],
+          "effects": [
+            "vinext"
+          ],
+          "range": "0.5.0 - 0.5.2 || >=0.7.0",
+          "nodes": [
+            "node_modules/vite-plugin-commonjs"
+          ],
+          "fixAvailable": {
+            "name": "vinext",
+            "version": "1.0.1",
+            "isSemVerMajor": false
+          }
+        },
+        "vite-plugin-dynamic-import": {
+          "name": "vite-plugin-dynamic-import",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "fast-glob"
+          ],
+          "effects": [
+            "vite-plugin-commonjs"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/vite-plugin-dynamic-import"
+          ],
+          "fixAvailable": {
+            "name": "vinext",
+            "version": "1.0.1",
+            "isSemVerMajor": false
+          }
+        },
+        "wrangler": {
+          "name": "wrangler",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "miniflare"
+          ],
+          "effects": [
+            "@cloudflare/vite-plugin"
+          ],
+          "range": "<=0.0.0-7ae5dd357 || 4.16.0 - 4.130.0",
+          "nodes": [
+            "node_modules/wrangler"
+          ],
+          "fixAvailable": {
+            "name": "@cloudflare/vite-plugin",
+            "version": "1.63.1",
+            "isSemVerMajor": false
+          }
+        }
+      }
+    },
+    {
+      "lock": "web/frontend/package-lock.json",
+      "vulnerabilities": {
+        "@next/eslint-plugin-next": {
+          "name": "@next/eslint-plugin-next",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "fast-glob"
+          ],
+          "effects": [
+            "eslint-config-next"
+          ],
+          "range": ">=14.3.0-canary.0",
+          "nodes": [
+            "node_modules/@next/eslint-plugin-next"
+          ],
+          "fixAvailable": {
+            "name": "eslint-config-next",
+            "version": "14.2.35",
+            "isSemVerMajor": true
+          }
+        },
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "chokidar",
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "chokidar": {
+          "name": "chokidar",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "tailwindcss"
+          ],
+          "range": "2.0.0 - 3.6.0",
+          "nodes": [
+            "node_modules/chokidar"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "eslint-config-next": {
+          "name": "eslint-config-next",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "@next/eslint-plugin-next"
+          ],
+          "effects": [],
+          "range": ">=14.3.0-canary.0",
+          "nodes": [
+            "node_modules/eslint-config-next"
+          ],
+          "fixAvailable": {
+            "name": "eslint-config-next",
+            "version": "14.2.35",
+            "isSemVerMajor": true
+          }
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [
+            "@next/eslint-plugin-next"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/@next/eslint-plugin-next/node_modules/fast-glob",
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": {
+            "name": "eslint-config-next",
+            "version": "14.2.35",
+            "isSemVerMajor": true
+          }
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "fast-glob",
+            "tailwindcss"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "postcss-nested": {
+          "name": "postcss-nested",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "postcss-selector-parser"
+          ],
+          "effects": [],
+          "range": "2.0.3 - 6.2.0",
+          "nodes": [
+            "node_modules/postcss-nested"
+          ],
+          "fixAvailable": true
+        },
+        "postcss-selector-parser": {
+          "name": "postcss-selector-parser",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1241232,
+              "name": "postcss-selector-parser",
+              "dependency": "postcss-selector-parser",
+              "title": "PostCSS: Quadratic complexity in flat selector parsing allows CPU exhaustion",
+              "url": "https://github.com/advisories/GHSA-rj75-hqrm-r3gf",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-400",
+                "CWE-407"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<7.1.6"
+            }
+          ],
+          "effects": [
+            "postcss-nested",
+            "tailwindcss"
+          ],
+          "range": "<7.1.6",
+          "nodes": [
+            "node_modules/postcss-selector-parser"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "tailwindcss": {
+          "name": "tailwindcss",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "chokidar",
+            "fast-glob",
+            "micromatch",
+            "postcss-nested",
+            "postcss-selector-parser"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-oxide-insiders.ff2c25f || 0.5.0 - 3.4.19",
+          "nodes": [
+            "node_modules/tailwindcss"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    }
+  ],
+  "verification": [
+    {
+      "dir": "ai-service-mesh/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "ai-service-mesh/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "aicom-landing",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "aicom-landing",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "aimarket-hub/hephaestus/studio",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "aimarket-hub/hephaestus/studio",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 2
+    },
+    {
+      "dir": "aimarket-hub/hephaestus/studio",
+      "command": [
+        "run",
+        "type-check"
+      ],
+      "code": 2
+    },
+    {
+      "dir": "aimarket-sdks/typescript",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "aimarket-sdks/typescript",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "aimarket-sdks/typescript",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "alien-monitor/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "alien-monitor/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "alien-monitor/frontend",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "apps/pulse-terminal",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "apps/pulse-terminal",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "apps/pulse-terminal",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "argus",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "argus",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "argus",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "cite-desks/emberline/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "cite-desks/emberline/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "cite-desks/emberline/frontend",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "contracts/zk",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "dioscuri",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "dioscuri",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "dioscuri",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 1
+    },
+    {
+      "dir": "gaia/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "gaia/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "gaia/frontend",
+      "command": [
+        "run",
+        "typecheck"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "hephaestus",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "hephaestus",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "hephaestus/studio",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "hephaestus/studio",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "hephaestus/studio",
+      "command": [
+        "run",
+        "type-check"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/daily-card",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/daily-card",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/daily-card",
+      "command": [
+        "run",
+        "typecheck"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/kova-gateway",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/kova-gateway",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/kova-gateway",
+      "command": [
+        "run",
+        "typecheck"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/verified-execution-hub",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/verified-execution-hub",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/verified-execution-hub",
+      "command": [
+        "run",
+        "typecheck"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "logos/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "logos/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "momus/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "momus/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "momus/frontend",
+      "command": [
+        "run",
+        "typecheck"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "oracles/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "oracles/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "oracles/frontend",
+      "command": [
+        "run",
+        "typecheck"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "oracles/oracles/platon/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "oracles/oracles/platon/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "oracles/oracles/platon/frontend",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pantheon",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pantheon",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pingblip/memeforge",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pingblip/memeforge",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": -15
+    },
+    {
+      "dir": "pingblip/memeforge",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pingblip/web",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pingblip/web",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pingblip/web",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pingblip/world",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pingblip/world",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "platon/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "platon/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "platon/frontend",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "signal-hunt/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "signal-hunt/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "warden",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "warden",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "warden",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 1
+    },
+    {
+      "dir": "web/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-fund",
+        "--no-audit",
+        "--fetch-retries=0",
+        "--fetch-timeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "web/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 1
+    },
+    {
+      "dir": "web/frontend",
+      "command": [
+        "run",
+        "test:unit"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "alien-monitor/frontend",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "alien-monitor/frontend",
+      "command": [
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "alien-monitor/frontend",
+      "command": [
+        "run",
+        "test"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/kova-gateway",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/kova-gateway",
+      "command": [
+        "oxfmt",
+        "--version"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/verified-execution-hub",
+      "command": [
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "independent/verified-execution-hub",
+      "command": [
+        "oxfmt",
+        "--version"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "argus",
+      "command": [
+        "run",
+        "test:coverage",
+        "--",
+        "--maxWorkers=2",
+        "--testTimeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "warden",
+      "command": [
+        "run",
+        "test:coverage",
+        "--",
+        "--maxWorkers=1",
+        "--testTimeout=30000"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "pingblip/memeforge",
+      "command": [
+        "--ignore-scripts",
+        "run",
+        "build"
+      ],
+      "code": 0
+    },
+    {
+      "dir": "web/frontend",
+      "command": [
+        "run",
+        "build",
+        "--",
+        "--webpack"
+      ],
+      "code": 0,
+      "environment": "Clean temporary copy with monorepo layout and the updated node_modules; excludes existing .next cache."
+    }
+  ],
+  "known_limitations": [
+    {
+      "project": "aimarket-hub/hephaestus/studio",
+      "detail": "Build and type-check fail because src/main.tsx imports ./App, which is absent from this tracked nested copy. Canonical hephaestus/studio builds successfully."
+    },
+    {
+      "project": "dioscuri",
+      "detail": "One pre-existing test fails: test/demo-urls.test.ts expects monitor.modelmarket.dev but the function returns magic-ai-factory.com. Reproduced in an isolated copy using the original package-lock.json and Vitest 2.1.9; 374 other tests pass after the update."
+    },
+    {
+      "project": "desktop-integrations/ai-stack-migration-assistant",
+      "detail": "Vitest manifest updated. Dependency installation cannot complete: the existing github:alexar76/aimarket-sdks#main dependency has no package.json at repository root. No lockfile exists; this project is not part of the 36-lockfile audit."
+    },
+    {
+      "detail": "Some remaining advisories have no compatible automatic resolution; npm audit suggests major migrations or even downgrades. No --force or legacy-peer-deps was used to conceal these findings."
+    },
+    {
+      "project": "warden / argus",
+      "detail": "Initial concurrent verification caused timeouts; Warden also had an empty child stdout in a concurrent coverage run. Final coverage suites pass with maxWorkers=1 (Warden) / 2 (Argus) and a 30-second test timeout. No production source or test assertion was changed."
+    },
+    {
+      "project": "pingblip/memeforge",
+      "detail": "The full build prehook was stopped during expensive geometric asset validation. Dependency-security tests, shared imports and model inventory checks passed. Prisma generation, Next.js compilation, type checking and static generation passed via npm --ignore-scripts run build; the application unit tests passed separately."
+    },
+    {
+      "project": "web/frontend",
+      "detail": "Initial in-place build compiled but type checking found malformed files in existing .next/dev/types. A clean temporary copy built successfully with --webpack, and all 33 unit tests passed. User cache was retained. The normal Turbopack build was not rerun against a clean cache."
+    }
+  ],
+  "verification_tooling": {
+    "node": "22.22.1",
+    "npm": "npm 11 in a temporary prefix (npm 10 resolver crashed while upgrading Vitest)",
+    "python_tests": "77 targeted coverage/scanner tests passed. Existing CI YAML and supply-chain checks passed; all 31 generated workflow copies were checked for byte equality and validated with their Dependabot configs.",
+    "shell": "bash -n scripts/mirror_satellites.sh passed",
+    "whitespace": "git diff --check passed"
+  }
+}
