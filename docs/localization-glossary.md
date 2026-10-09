@@ -519,7 +519,7 @@ confiance», ZH «安全 / 已验证 / 已认证 / 可信». A change is never �
 Added 2026-10-09 with `warden/docs/scan*.md` and `warden/docs/scanner-comparison*.md`. Each rendering is the
 one the WARDEN docs already used most; where they disagreed, the row settles it and the outliers were fixed.
 Finding codes (`TOOL_DEF_CROSS_TOOL` …), tiers `block` / `advise`, the command `scan`, flags, `warden.lock.json`,
-`ruleset v10`, benchmark and scanner names (`MCPTox`, `mcp-audit`, `mcp-shield`, `Snyk Agent Scan`) are
+`ruleset v10`, benchmark and scanner names (`MCPTox`, `mcp-audit`, `mcp-shield`) are
 **identifiers and never translated**.
 
 **Vocabulary rule.** The HISTOR rule above holds for WARDEN too: an `allow` verdict is never rendered as *safe,
@@ -546,7 +546,6 @@ secure, verified, trusted*. A scanner that blocks nothing has found nothing it r
 | harness (test) | стенд | banco de pruebas | banc d’essai | 测试工具 | |
 | lock file | лок-файл | archivo lock | fichier lock | lock 文件 | The file name `warden.lock.json` stays Latin. |
 | gate chain | цепочка гейтов | cadena de compuertas | chaîne de portes | 关卡链 | |
-| shared quota (free tier) | общая квота | cuota compartida | quota partagé | 共享配额 | Shared by every free user, not per account. |
 
 ## Sources (web-verified renderings)
 
