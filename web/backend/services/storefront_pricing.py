@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 from typing import Any, Optional
 
+from core.json_state import write_text_atomic
 from core.paths import pipeline_json_path, resolve_data_root
 
 DEFAULT_STOREFRONT_PRICE_USDT = 4.99
@@ -255,7 +256,7 @@ def patch_admin_storefront_usdt(
     raw.setdefault("agent", raw.get("agent") or "admin")
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_text_atomic(path, json.dumps(raw, ensure_ascii=False, indent=2))
 
     effective = checkout_usdt_from_sales_file(product_id, data_root=root)
     return {

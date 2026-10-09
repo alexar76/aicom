@@ -15,6 +15,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
 
 logger = logging.getLogger("ai_factory.security.audit")
@@ -388,7 +389,7 @@ class AuditLogger:
         """Export audit logs to a JSON file. Returns number of entries."""
         entries = self.query(limit=1000000, **(filters or {}))
         data = [asdict(e) for e in entries]
-        Path(output_path).write_text(json.dumps(data, indent=2))
+        write_text_atomic(Path(output_path), json.dumps(data, indent=2))
         return len(entries)
 
     def export_csv(self, output_path: str, filters: dict = None) -> int:

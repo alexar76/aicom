@@ -14,7 +14,11 @@ storage side room for three things it needs and did not have:
 * **One long-lived async connection.** The old async save constructed an
   ``AsyncSQLiteManager``, ran its schema bootstrap and closed it again on every call.
 * **An atomic task claim.** ``pending -> running`` goes through a conditional UPDATE,
-  so two workers racing for the same task cannot both win it.
+  so two workers racing for the same task cannot both win it — and a claim the store
+  cannot confirm is refused, never assumed.
+
+Writes of the JSON document go through a temp file and a rename, and a document that
+exists but does not parse stops the load instead of reading as empty.
 """
 
 from __future__ import annotations
@@ -26,7 +30,21 @@ import time
 from pathlib import Path
 from typing import Any, Callable
 
+from core.json_state import write_json_atomic
+
 logger = logging.getLogger(__name__)
+
+
+class PipelineStateLoadError(RuntimeError):
+    """The stored pipeline state exists but could not be read.
+
+    Raised instead of returning an empty state: a machine that started empty would
+    write that emptiness back over the real document on its first save.
+    """
+
+
+class TaskClaimUnavailable(RuntimeError):
+    """The store could not confirm a claim, so nobody may run the task yet."""
 
 
 class PipelineRepository:
@@ -154,36 +172,46 @@ class PipelineRepository:
     # ------------------------------------------------------------------
 
     def load_json(self) -> dict[str, Any]:
-        """Read the JSON state document. Returns empty structures when absent/corrupt."""
-        empty: dict[str, Any] = {"products": {}, "task_queue": []}
+        """Read the JSON state document. A missing file is an empty state.
+
+        Raises:
+            PipelineStateLoadError: the file exists but cannot be read or parsed. It is
+                left untouched on disk for recovery.
+        """
+        path = Path(self.state_file)
+        if not path.exists():
+            return {"products": {}, "task_queue": []}
         try:
-            path = Path(self.state_file)
-            if not path.exists():
-                return empty
-            with open(path) as handle:
+            with open(path, encoding="utf-8") as handle:
                 data = json.load(handle)
+            if not isinstance(data, dict):
+                raise ValueError(f"top level is {type(data).__name__}, not an object")
             return {
                 "products": data.get("products", {}) or {},
                 "task_queue": data.get("task_queue", []) or [],
             }
-        except Exception as exc:
-            logger.error(f"Failed to load pipeline state: {exc}")
-            return empty
+        except (OSError, ValueError) as exc:
+            raise PipelineStateLoadError(
+                f"Pipeline state {path} exists but cannot be read ({exc}); "
+                "refusing to start from an empty state over it"
+            ) from exc
 
     def load_sqlite(self) -> dict[str, Any]:
-        """Read products and tasks from SQLite. Returns empty structures on failure."""
-        empty: dict[str, Any] = {"products": [], "task_queue": []}
+        """Read products and tasks from SQLite.
+
+        Raises:
+            PipelineStateLoadError: the store could not be opened or read.
+        """
         try:
             manager = self.sqlite_manager
-            if manager is None:
-                return empty
             return {
                 "products": manager.get_all_products(),
                 "task_queue": manager.get_all_tasks(),
             }
         except Exception as exc:
-            logger.error(f"Failed to load pipeline state from SQLite: {exc}")
-            return empty
+            raise PipelineStateLoadError(
+                f"Pipeline state in {self.db_path} cannot be read ({exc})"
+            ) from exc
 
     # ------------------------------------------------------------------
     # Save
@@ -193,7 +221,8 @@ class PipelineRepository:
         """Rewrite the JSON document when anything moved. Returns True if it was written.
 
         JSON is a single document, so there is no partial write to make — but an
-        unchanged state still costs nothing.
+        unchanged state still costs nothing. The rewrite goes through a sibling temp
+        file and a rename, so a crash mid-write leaves the previous document intact.
         """
         changed_products, changed_tasks, current = self._split_changed(
             list(products.values()), tasks
@@ -203,14 +232,12 @@ class PipelineRepository:
         if not changed_products and not changed_tasks and not vanished and path.exists():
             return False
         try:
-            path.parent.mkdir(parents=True, exist_ok=True)
             data = {
                 "products": products,
                 "task_queue": tasks,
                 "updated_at": time.time(),
             }
-            with open(path, "w") as handle:
-                json.dump(data, handle, indent=2)
+            write_json_atomic(path, data, indent=2, ensure_ascii=True)
         except Exception as exc:
             logger.error(f"Failed to save pipeline state: {exc}")
             return False
@@ -318,33 +345,37 @@ class PipelineRepository:
     # Task claiming
     # ------------------------------------------------------------------
 
-    def claim_pending_task(self, task_id: str, started_at: float) -> bool:
+    def claim_pending_task(
+        self, task_id: str, started_at: float, task: dict | None = None
+    ) -> bool:
         """Flip one task pending -> running in the store. False means someone else won it.
 
-        Fails open (returns True) on a storage error or with the JSON backend, which is
-        single-worker by construction — the caller's in-process lock is the guard there.
+        ``task`` is the in-memory row, inserted already running when the store has no
+        row for it yet. With the JSON backend, which is single-worker by construction,
+        the caller's in-process lock is the guard and this always grants.
+
+        Raises:
+            TaskClaimUnavailable: the store could not confirm the claim. Running the
+                task anyway is how two workers both run it, so the caller must not.
         """
         if not self.use_sqlite:
             return True
         try:
-            manager = self.sqlite_manager
-            if manager is None:
-                return True
-            return manager.claim_pending_task(task_id, started_at)
+            return self.sqlite_manager.claim_pending_task(task_id, started_at, task)
         except Exception as exc:
-            logger.warning("Task claim for %s fell back to in-memory only: %s", task_id, exc)
-            return True
+            raise TaskClaimUnavailable(f"claim of task {task_id} not confirmed: {exc}") from exc
 
-    async def aclaim_pending_task(self, task_id: str, started_at: float) -> bool:
+    async def aclaim_pending_task(
+        self, task_id: str, started_at: float, task: dict | None = None
+    ) -> bool:
         """Async twin of :meth:`claim_pending_task`."""
         if not self.use_sqlite:
             return True
         try:
             manager = await self._async_manager_for_loop()
-            return await manager.claim_pending_task(task_id, started_at)
+            return await manager.claim_pending_task(task_id, started_at, task)
         except Exception as exc:
-            logger.warning("Task claim for %s fell back to in-memory only: %s", task_id, exc)
-            return True
+            raise TaskClaimUnavailable(f"claim of task {task_id} not confirmed: {exc}") from exc
 
     def read_task(self, task_id: str) -> dict | None:
         """Read one task back from the store (used to resync a task we lost the race for)."""

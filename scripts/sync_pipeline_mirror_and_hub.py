@@ -44,7 +44,10 @@ def mirror_pipeline_json() -> int:
     tasks = prev.get("task_queue") if isinstance(prev.get("task_queue"), list) else []
     current_task_id = prev.get("current_task_id")
     payload = {"products": products, "task_queue": tasks, "current_task_id": current_task_id}
-    out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    # Temp file + rename: the worker reads this file live, so it must never see it half-written.
+    tmp = out.with_name(out.name + ".tmp")
+    tmp.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    os.replace(tmp, out)
 
     print(f"OK mirrored {len(products)} products → {out}")
     return len(products)

@@ -16,6 +16,7 @@ from typing import Any, Optional
 
 from fastapi import APIRouter, Header, HTTPException, Request
 
+from core.json_state import write_text_atomic
 from core.paths import support_sessions_dir
 from web.backend.schemas.api_requests import SupportCreateSessionRequest, SupportPostMessageRequest
 from web.backend.services import prompt_safety, support_agent
@@ -152,7 +153,7 @@ def _save_session(data: dict[str, Any]) -> None:
     sid = data.get("id") or ""
     p = _session_path(sid)
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(p, json.dumps(data, indent=2, ensure_ascii=False))
 
 
 def _ui_context_dict(ctx: Optional[Any]) -> dict[str, str]:

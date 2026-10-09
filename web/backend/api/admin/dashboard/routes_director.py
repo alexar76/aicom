@@ -84,6 +84,7 @@ from web.backend.api.products import count_showcase_listable_products, is_shippe
 from ._router import router
 from .models import *
 from .helpers import *
+from core.json_state import write_text_atomic
 
 def _load_decisions() -> dict:
     """Load decisions from file.
@@ -109,8 +110,7 @@ def _save_decisions(data: dict):
     """Save decisions to file."""
     path = director_decisions_path()
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w") as f:
-        json.dump(data, f, indent=2)
+    write_text_atomic(path, json.dumps(data, indent=2))
 
 
 @router.get("/director/decisions")

@@ -26,6 +26,7 @@ from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.panel import Panel
 from rich.syntax import Syntax
+from core.json_state import write_text_atomic
 
 console = Console()
 
@@ -88,8 +89,7 @@ def init(admin_password: str):
             "jwt_secret": hashlib.sha256(_os.urandom(64)).hexdigest(),
         }
         
-        with open("/app/data/config/admin.json", "w") as f:
-            json.dump(admin_config, f, indent=2)
+        write_text_atomic("/app/data/config/admin.json", json.dumps(admin_config, indent=2))
         progress.update(task, completed=True)
 
         # Generate default model providers config if not exists
@@ -319,8 +319,7 @@ def _enqueue_single_idea(idea: str) -> str:
     }
     data["task_queue"].append(task)
 
-    with open(pipeline_file, "w") as f:
-        json.dump(data, f, indent=2)
+    write_text_atomic(pipeline_file, json.dumps(data, indent=2))
 
     try:
         from web.backend.services.telegram_pipeline_notify import notify_telegram_new_product
@@ -394,7 +393,7 @@ def create_ideas_batch(ideas_file: str | None, ideas_inline: tuple[str, ...], mo
             active_limit=max(1, int(active_limit)),
         )
         pipeline_file.parent.mkdir(parents=True, exist_ok=True)
-        pipeline_file.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_text_atomic(pipeline_file, json.dumps(state, ensure_ascii=False, indent=2))
 
     summary = summarize_batch(batch_id)
     console.print(f"[green]✅ Batch created[/green] [cyan]{batch_id}[/cyan]")
@@ -853,8 +852,7 @@ def export(from_date: Optional[str], export_format: str):
                 writer.writeheader()
                 writer.writerows(entries)
     else:
-        with open(output_file, "w") as f:
-            json.dump(entries, f, indent=2)
+        write_text_atomic(output_file, json.dumps(entries, indent=2))
 
     console.print(f"[green]✅ Exported {len(entries)} entries to {output_file}[/green]")
 

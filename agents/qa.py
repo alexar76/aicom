@@ -49,6 +49,7 @@ from web.backend.services.perf_slo import evaluate_perf_slo
 from web.backend.services.traceability_matrix import build_traceability_matrix
 
 from .base_agent import AgentInput, AgentOutput, BaseAgent
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -1660,8 +1661,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
             try:
                 tel = self.data_root / "telemetry" / product_id
                 tel.mkdir(parents=True, exist_ok=True)
-                (tel / "demo_quality_gate.json").write_text(
-                    json.dumps(
+                write_text_atomic(tel / "demo_quality_gate.json", json.dumps(
                         {
                             "demo_quality": demo_report,
                             "demo_gates_passed": demo_gates_ok,
@@ -1679,9 +1679,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
                             "gates_all_passed": gates_ok,
                         },
                         indent=2,
-                    ),
-                    encoding="utf-8",
-                )
+                    ))
             except OSError as _suppressed_exc:
                 log_suppressed(logger, "non-fatal (agents/qa.py)", exc_info=_suppressed_exc)
 
@@ -3266,10 +3264,7 @@ Use passed=false if alignment_score < 55 or critical gaps exist."""
         try:
             tel_dir = self.data_root / "telemetry" / product_id
             tel_dir.mkdir(parents=True, exist_ok=True)
-            (tel_dir / "methodology_implementation.json").write_text(
-                json.dumps(report, indent=2, ensure_ascii=False),
-                encoding="utf-8",
-            )
+            write_text_atomic(tel_dir / "methodology_implementation.json", json.dumps(report, indent=2, ensure_ascii=False))
         except Exception as _suppressed_exc:
             log_suppressed(logger, "non-fatal (agents/qa.py)", exc_info=_suppressed_exc)
         return report

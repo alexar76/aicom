@@ -84,6 +84,7 @@ from web.backend.api.products import count_showcase_listable_products, is_shippe
 from ._router import router
 from .models import *
 from .helpers import *
+from core.json_state import write_text_atomic
 
 @router.get("/discovery/ideas")
 async def get_discovery_ideas(limit: int = 20):
@@ -204,7 +205,7 @@ def _write_spec_name(product_id: str, new_name: str) -> bool:
             return False
         spec["product_name"] = new_name
         raw["specification"] = spec
-        spec_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_text_atomic(spec_path, json.dumps(raw, ensure_ascii=False, indent=2))
         return True
     except Exception:
         return False
@@ -235,7 +236,7 @@ def _write_marketing_name(product_id: str, new_name: str) -> bool:
             marketing = {}
         marketing["product_name"] = new_name
         raw["marketing"] = marketing
-        mkt_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_text_atomic(mkt_path, json.dumps(raw, ensure_ascii=False, indent=2))
         return True
     except Exception:
         return False

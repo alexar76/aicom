@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.paths import data_root
 from core.public_site_url import resolve_public_site_url
 
@@ -95,7 +96,7 @@ def try_publish_working_app(product_id: str) -> dict[str, Any]:
         "ts": time.time(),
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(out_path, json.dumps(payload, indent=2, ensure_ascii=False))
     logger.info("working_app_publish OK %s → %s (%s)", product_id, url, provider)
     return payload
 
@@ -117,6 +118,6 @@ def _fail(
     if extra:
         payload.update(extra)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(out_path, json.dumps(payload, indent=2, ensure_ascii=False))
     logger.warning("working_app_publish failed %s: %s", product_id, error)
     return payload

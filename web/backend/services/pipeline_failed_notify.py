@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from core.paths import data_root
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +82,7 @@ def _mark_sent(product_id: str, reason: str) -> None:
                 data.pop(pid, None)
         path = _dedupe_path()
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(data, indent=0), encoding="utf-8")
+        write_text_atomic(path, json.dumps(data, indent=0))
 
 
 def notify_pipeline_product_failed(

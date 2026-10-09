@@ -6,15 +6,22 @@ When ``pipeline_uses_sql_store()`` is true, SQLite/Postgres is the source of tru
 or when the backend is JSON-only.
 
 API and scripts must use this module instead of writing ``pipeline.json`` directly.
+
+Writes are atomic (temp file + rename). A ``pipeline.json`` that exists but does not parse
+reads as an empty state — and an empty state written back would replace every product in
+it — so when JSON is the source of truth such a file is never overwritten; as a mirror of
+the SQL store it is moved aside to ``*.corrupt-<ts>.bak`` before the fresh copy goes in.
 """
 
 from __future__ import annotations
 
+import datetime
 import json
 import logging
 import os
 from typing import TYPE_CHECKING, Any
 
+from core.json_state import write_text_atomic
 from core.paths import pipeline_db_path, pipeline_json_path
 from core.pipeline_database import create_sync_pipeline_manager, pipeline_uses_sql_store
 from core.pipeline_worker_notify import notify_pipeline_worker_wake
@@ -66,18 +73,40 @@ def _read_json_file(path: Path) -> dict[str, Any] | None:
         return None
 
 
-def _write_json_file(state: dict[str, Any], path: Path | None = None) -> bool:
+def _json_unreadable(path: Path) -> bool:
+    """True when ``path`` exists but does not hold a readable state document."""
+    return path.is_file() and _read_json_file(path) is None
+
+
+def _set_aside_unreadable(path: Path) -> None:
+    """Move an unreadable mirror out of the way so the fresh write cannot destroy it."""
+    ts = datetime.datetime.now(datetime.UTC).strftime("%Y%m%dT%H%M%SZ")
+    aside = path.with_name(f"{path.name}.corrupt-{ts}.bak")
+    os.replace(path, aside)
+    logger.error("Unreadable pipeline JSON moved aside to %s before rewriting it", aside)
+
+
+def _write_json_file(
+    state: dict[str, Any], path: Path | None = None, *, is_mirror: bool = False
+) -> bool:
     p = _json_path(path)
     try:
-        p.parent.mkdir(parents=True, exist_ok=True)
+        if _json_unreadable(p):
+            if not is_mirror:
+                # The caller's state came from reading this very file as empty. Writing it
+                # would replace every product in it; leave the file for recovery.
+                logger.error(
+                    "Refusing to overwrite unreadable pipeline JSON at %s — restore it or move it aside",
+                    p,
+                )
+                return False
+            _set_aside_unreadable(p)
         compact = _truthy("AIFACTORY_PIPELINE_JSON_COMPACT", "0")
         if compact:
-            p.write_text(
-                json.dumps(state, ensure_ascii=False, separators=(",", ":")),
-                encoding="utf-8",
-            )
+            text = json.dumps(state, ensure_ascii=False, separators=(",", ":"))
         else:
-            p.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+            text = json.dumps(state, ensure_ascii=False, indent=2)
+        write_text_atomic(p, text)
         return True
     except OSError:
         logger.exception("Cannot write pipeline JSON at %s", p)
@@ -206,7 +235,7 @@ def write_pipeline_state(
     if pipeline_uses_sql_store():
         ok = apply_state_to_sql_store(state)
         do_mirror = mirror_json if mirror_json is not None else pipeline_json_mirror_enabled()
-        if ok and do_mirror and not _write_json_file(state, json_path):
+        if ok and do_mirror and not _write_json_file(state, json_path, is_mirror=True):
             logger.warning("SQL save OK but pipeline.json mirror failed")
         if ok:
             notify_pipeline_worker_wake()
@@ -254,7 +283,7 @@ def append_product_to_pipeline_state(
             state.setdefault("products", {})
             state.setdefault("task_queue", [])
             state["products"][pid] = product
-            _write_json_file(state, path)
+            _write_json_file(state, path, is_mirror=True)
         notify_pipeline_worker_wake()
         return True
 

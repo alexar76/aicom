@@ -1,17 +1,24 @@
 """Tests for the pipeline persistence layer split out of PipelineStateMachine.
 
-Covers the three properties the inline persistence did not have: saves proportional
-to what changed, one long-lived async connection, and a task claim that survives two
-workers reaching for the same task.
+Covers the properties the inline persistence did not have: saves proportional to
+what changed, one long-lived async connection, a task claim that survives two workers
+reaching for the same task (and refuses when the store cannot decide), a JSON write a
+crash cannot truncate, and a load that refuses to read a broken store as empty.
 """
 
 from __future__ import annotations
 
 import asyncio
+import json
+import os
 
 import pytest
 
-from orchestrator.pipeline_repository import PipelineRepository
+from orchestrator.pipeline_repository import (
+    PipelineRepository,
+    PipelineStateLoadError,
+    TaskClaimUnavailable,
+)
 from orchestrator.state_machine import (
     PipelineState,
     PipelineStateMachine,
@@ -302,8 +309,36 @@ class TestAtomicClaim:
 
         claimed = sm.get_next_task()
         assert claimed is not None and claimed.id == "task-unsaved"
+        # The claim itself put the row in the store, already running.
+        assert sm.sqlite_manager.get_task("task-unsaved")["status"] == TaskStatus.RUNNING.value
 
-    def test_claim_falls_open_when_the_store_errors(self, tmp_path):
+    def test_an_unsaved_task_is_claimed_by_one_machine_only(self, tmp_path):
+        """No row is not proof of ownership: two machines holding the same unsaved task
+        and claiming it before either saved both used to win it. The INSERT that claims
+        it admits exactly one."""
+        first = _machine(tmp_path)
+        product = first.create_product("idea")
+        second = _machine(tmp_path)
+        twin = Task(
+            id="task-twin",
+            product_id=product.id,
+            agent_type="analyst",
+            state=PipelineState.MARKET_RESEARCHED,
+            status=TaskStatus.PENDING,
+            created_at=1_700_000_000.0,
+        ).to_dict()
+
+        # Both claims land before either machine saves anything.
+        assert first._repo.claim_pending_task("task-twin", 1.0, twin) is True
+        assert second._repo.claim_pending_task("task-twin", 2.0, twin) is False
+        stored = first.sqlite_manager.get_task("task-twin")
+        assert stored["status"] == TaskStatus.RUNNING.value and stored["started_at"] == 1.0
+
+    def test_store_claim_without_a_row_or_a_task_is_refused(self, tmp_path):
+        sm = _machine(tmp_path)
+        assert sm.sqlite_manager.claim_pending_task("no-such-task", 1.0) is False
+
+    def test_claim_fails_closed_when_the_store_errors(self, tmp_path):
         sm = _machine(tmp_path)
         product = sm.create_product("idea")
         _queue_task(sm, product.id, "task-0")
@@ -311,8 +346,57 @@ class TestAtomicClaim:
             RuntimeError("db gone")
         )
 
-        claimed = sm.get_next_task()
-        assert claimed is not None and claimed.id == "task-0"
+        assert sm.get_next_task() is None
+        # Not handed out, and not marked running behind anyone's back either.
+        assert sm._find_task("task-0").status == TaskStatus.PENDING
+
+        with pytest.raises(TaskClaimUnavailable):
+            sm._repo.claim_pending_task("task-0", 1.0)
+
+    def test_async_claim_fails_closed_when_the_store_errors(self, tmp_path):
+        sm = _machine(tmp_path)
+        product = sm.create_product("idea")
+        _queue_task(sm, product.id, "task-0")
+
+        async def scenario():
+            manager = await sm._repo._async_manager_for_loop()
+
+            async def broken(*a, **k):
+                raise RuntimeError("db gone")
+
+            manager.claim_pending_task = broken
+            try:
+                return await sm.aget_next_task()
+            finally:
+                await sm.aclose()
+
+        assert asyncio.run(scenario()) is None
+        assert sm._find_task("task-0").status == TaskStatus.PENDING
+
+    def test_async_claim_of_an_unsaved_task_is_exclusive(self, tmp_path):
+        first = _machine(tmp_path)
+        product = first.create_product("idea")
+        second = _machine(tmp_path)
+        twin = Task(
+            id="task-twin",
+            product_id=product.id,
+            agent_type="analyst",
+            state=PipelineState.MARKET_RESEARCHED,
+            status=TaskStatus.PENDING,
+            created_at=1_700_000_000.0,
+        ).to_dict()
+
+        async def scenario():
+            try:
+                return (
+                    await first._repo.aclaim_pending_task("task-twin", 1.0, twin),
+                    await second._repo.aclaim_pending_task("task-twin", 2.0, twin),
+                )
+            finally:
+                await first.aclose()
+                await second.aclose()
+
+        assert asyncio.run(scenario()) == (True, False)
 
     def test_json_backend_still_claims_in_priority_order(self, tmp_path):
         sm = PipelineStateMachine(state_file=str(tmp_path / "pipeline.json"))
@@ -354,6 +438,68 @@ class TestAtomicClaim:
 
         results = asyncio.run(scenario())
         assert sorted(r is None for r in results) == [False, True]
+
+
+# ---------------------------------------------------------------------------
+# A broken store is not an empty one
+# ---------------------------------------------------------------------------
+
+
+class TestLoadRefusesBrokenState:
+    def test_corrupt_json_stops_the_load_and_is_left_on_disk(self, tmp_path):
+        path = tmp_path / "pipeline.json"
+        path.write_text('{"products": {"p1": ', encoding="utf-8")
+
+        with pytest.raises(PipelineStateLoadError):
+            PipelineStateMachine(state_file=str(path))
+        assert path.read_text(encoding="utf-8") == '{"products": {"p1": '
+
+    def test_unreadable_row_stops_the_load(self, tmp_path):
+        path = tmp_path / "pipeline.json"
+        path.write_text(json.dumps({
+            "products": {"p1": {"id": "p1", "idea": "x", "state": "no_such_state"}},
+            "task_queue": [],
+        }), encoding="utf-8")
+
+        with pytest.raises(PipelineStateLoadError):
+            PipelineStateMachine(state_file=str(path))
+
+    def test_sqlite_read_failure_stops_the_load(self, tmp_path, monkeypatch):
+        from orchestrator import sqlite_manager as sqlite_manager_module
+
+        def broken(self):
+            raise RuntimeError("disk I/O error")
+
+        monkeypatch.setattr(sqlite_manager_module.SQLiteManager, "get_all_products", broken)
+        with pytest.raises(PipelineStateLoadError):
+            _machine(tmp_path)
+
+    def test_missing_file_is_still_an_empty_state(self, tmp_path):
+        sm = PipelineStateMachine(state_file=str(tmp_path / "absent.json"))
+        assert sm.products == {} and sm.task_queue == []
+
+
+class TestAtomicJsonSave:
+    def test_a_failed_rename_leaves_the_previous_document(self, tmp_path, monkeypatch):
+        path = tmp_path / "pipeline.json"
+        sm = PipelineStateMachine(state_file=str(path))
+        sm.create_product("first", product_id="p1")
+        before = path.read_text(encoding="utf-8")
+
+        def crash(*a, **k):
+            raise OSError("killed mid-write")
+
+        monkeypatch.setattr(os, "replace", crash)
+        sm.create_product("second", product_id="p2")
+
+        assert path.read_text(encoding="utf-8") == before
+        assert [p.name for p in tmp_path.iterdir()] == ["pipeline.json"], "temp file cleaned up"
+
+    def test_document_round_trips(self, tmp_path):
+        path = tmp_path / "pipeline.json"
+        sm = PipelineStateMachine(state_file=str(path))
+        sm.create_product("idée", product_id="p1")
+        assert PipelineStateMachine(state_file=str(path)).products["p1"].idea == "idée"
 
 
 # ---------------------------------------------------------------------------

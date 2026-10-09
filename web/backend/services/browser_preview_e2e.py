@@ -92,6 +92,7 @@ from web.backend.services.sandbox_preview_api import (
 )
 
 from core.quality_settings import browser_e2e_enabled, browser_max_depth, browser_max_pages
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -713,10 +714,7 @@ def _playwright_check(
                 try:
                     tel_dir = data_root / "telemetry" / product_id
                     tel_dir.mkdir(parents=True, exist_ok=True)
-                    (tel_dir / "browser_e2e_deep.json").write_text(
-                        json.dumps(deep_summary, indent=2, ensure_ascii=False)[:480_000],
-                        encoding="utf-8",
-                    )
+                    write_text_atomic(tel_dir / "browser_e2e_deep.json", json.dumps(deep_summary, indent=2, ensure_ascii=False)[:480_000])
                 except OSError as _suppressed_exc:
                     log_suppressed(logger, "non-fatal (web/backend/services/browser_preview_e2e.py)", exc_info=_suppressed_exc)
                 deep_issues = deep_crawl_gate_issues(deep_summary)

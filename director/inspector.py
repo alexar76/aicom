@@ -12,6 +12,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
+
 
 class InspectorAgent:
     """Independent inspector that does not mutate pipeline state."""
@@ -200,7 +202,7 @@ class InspectorAgent:
         date_str = time.strftime("%Y%m%d-%H%M%S", time.gmtime(now))
         out_json = self.report_dir / f"inspector-{date_str}.json"
         out_md = self.report_dir / f"inspector-{date_str}.md"
-        out_json.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_text_atomic(out_json, json.dumps(report, ensure_ascii=False, indent=2))
         out_md.write_text(self._to_markdown(report), encoding="utf-8")
         return report
 

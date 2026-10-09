@@ -9,6 +9,7 @@ from typing import Any
 import yaml
 
 from core.config_merge import load_merged_config
+from core.json_state import write_text_atomic
 from core.paths import config_path, state_dir
 
 logger = logging.getLogger(__name__)
@@ -24,10 +25,7 @@ def sync_state_config_json_mirror(*, merged: dict[str, Any] | None = None) -> No
         merged = load_merged_config(config_path())
     dest = _legacy_state_config_json_path()
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(
-        json.dumps(merged, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
+    write_text_atomic(dest, json.dumps(merged, indent=2, ensure_ascii=False))
 
 
 def ensure_primary_config_overlay() -> None:

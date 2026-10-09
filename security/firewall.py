@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
 
 try:
@@ -449,9 +450,9 @@ class FirewallManager:
             if f:
                 token = f.encrypt(json.dumps(payload, separators=(",", ":")).encode("utf-8")).decode("ascii")
                 envelope = {_ENCRYPTED_V1: True, "v": 1, "payload": token}
-                self.rules_file.write_text(json.dumps(envelope, indent=2), encoding="utf-8")
+                write_text_atomic(self.rules_file, json.dumps(envelope, indent=2))
             else:
-                self.rules_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+                write_text_atomic(self.rules_file, json.dumps(payload, indent=2))
         except Exception as e:
             logger.error("Failed to save firewall rules: %s", e)
 

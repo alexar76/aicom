@@ -154,7 +154,10 @@ def main() -> int:
     state["products"] = products
     state["task_queue"] = new_queue
     json_path.parent.mkdir(parents=True, exist_ok=True)
-    json_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
+    # Temp file + rename: the worker reads this file live, so it must never see it half-written.
+    tmp = json_path.with_name(json_path.name + ".tmp")
+    tmp.write_text(json.dumps(state, indent=2), encoding="utf-8")
+    os.replace(tmp, json_path)
     logger.info("Wrote %s", json_path)
 
     _sync_sqlite()

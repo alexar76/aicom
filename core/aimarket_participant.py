@@ -25,6 +25,8 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
+
 DEFAULT_HUB = "https://modelmarket.dev"
 DEFAULT_ATLAS = "https://atlas.modelmarket.dev"
 CACHE_NAME = "aimarket_runtime_channel.json"
@@ -155,17 +157,14 @@ class AimarketParticipant:
             return
         path = _cache_path()
         try:
-            path.write_text(
-                json.dumps(
+            write_text_atomic(path, json.dumps(
                     {
                         "channel_id": self._channel_id,
                         "channel_secret": self._channel_secret,
                         "hub": self.hub,
                         "saved_at": int(time.time()),
                     }
-                ),
-                encoding="utf-8",
-            )
+                ))
         except OSError:
             pass
 

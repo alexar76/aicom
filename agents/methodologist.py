@@ -32,6 +32,7 @@ from typing import Any
 
 from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
+from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
 
 from .base_agent import AgentInput, AgentOutput, BaseAgent
@@ -201,10 +202,7 @@ class MethodologyAgent(BaseAgent):
         try:
             tel_dir = self.data_root / "telemetry" / product_id
             tel_dir.mkdir(parents=True, exist_ok=True)
-            (tel_dir / "methodology_implementation.json").write_text(
-                json.dumps(report, indent=2, ensure_ascii=False),
-                encoding="utf-8",
-            )
+            write_text_atomic(tel_dir / "methodology_implementation.json", json.dumps(report, indent=2, ensure_ascii=False))
         except Exception as _suppressed_exc:
             log_suppressed(logger, "non-fatal (agents/methodologist.py)", exc_info=_suppressed_exc)
         return report

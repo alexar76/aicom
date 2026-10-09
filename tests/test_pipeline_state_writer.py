@@ -150,3 +150,62 @@ def test_append_product_sql_primary(monkeypatch: pytest.MonkeyPatch, tmp_path: P
     assert append_product_to_pipeline_state(product) is True
     loaded = read_pipeline_state()
     assert loaded["products"]["p-new"]["idea"] == "hello"
+
+
+def _json_primary(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Path:
+    root = tmp_path / "data"
+    (root / "state").mkdir(parents=True)
+    pj = root / "state" / "pipeline.json"
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(root))
+    monkeypatch.setenv("PIPELINE_DB_BACKEND", "json")
+    monkeypatch.setenv("USE_SQLITE", "false")
+    monkeypatch.setenv("AICOM_PIPELINE_JSON", str(pj))
+    return pj
+
+
+def test_json_primary_never_overwrites_an_unreadable_file(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    """A torn pipeline.json reads as empty; writing that back would drop every product."""
+    pj = _json_primary(monkeypatch, tmp_path)
+    torn = '{"products": {"p1": {"id": "p1", "idea": "x"'
+    pj.write_text(torn, encoding="utf-8")
+
+    assert read_pipeline_state()["products"] == {}
+    assert append_product_to_pipeline_state({"id": "p2", "idea": "y", "state": "IDEA_RECEIVED"}) is False
+    assert write_pipeline_state({"products": {}, "task_queue": [], "current_task_id": None}) is False
+    assert pj.read_text(encoding="utf-8") == torn
+
+
+def test_json_primary_write_is_atomic(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    import os
+
+    pj = _json_primary(monkeypatch, tmp_path)
+    assert append_product_to_pipeline_state({"id": "p1", "idea": "x", "state": "IDEA_RECEIVED"}) is True
+    before = pj.read_text(encoding="utf-8")
+
+    def crash(*a, **k):
+        raise OSError("killed mid-write")
+
+    monkeypatch.setattr(os, "replace", crash)
+    assert append_product_to_pipeline_state({"id": "p2", "idea": "y", "state": "IDEA_RECEIVED"}) is False
+    assert pj.read_text(encoding="utf-8") == before
+    assert sorted(p.name for p in pj.parent.iterdir()) == ["pipeline.json"]
+
+
+def test_unreadable_mirror_is_set_aside_then_rewritten(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    root = tmp_path / "data"
+    (root / "state").mkdir(parents=True)
+    pj = root / "state" / "pipeline.json"
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(root))
+    monkeypatch.setenv("PIPELINE_DB_BACKEND", "sqlite")
+    monkeypatch.setenv("USE_SQLITE", "true")
+    monkeypatch.setenv("SQLITE_PATH", str(root / "state" / "pipeline.db"))
+    monkeypatch.setenv("AICOM_PIPELINE_JSON", str(pj))
+    monkeypatch.setenv("AIFACTORY_PIPELINE_MIRROR_JSON", "1")
+    pj.write_text("{torn", encoding="utf-8")
+
+    state_doc = {"products": {"p1": {"id": "p1", "idea": "x", "state": "IDEA_RECEIVED", "updated_at": 1.0}},
+                 "task_queue": [], "current_task_id": None}
+    assert write_pipeline_state(state_doc) is True
+    assert json.loads(pj.read_text(encoding="utf-8"))["products"]["p1"]["idea"] == "x"
+    aside = [p for p in pj.parent.iterdir() if ".corrupt-" in p.name]
+    assert len(aside) == 1 and aside[0].read_text(encoding="utf-8") == "{torn"

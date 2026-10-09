@@ -9,6 +9,8 @@ import os
 import time
 from typing import TYPE_CHECKING, Any
 
+from core.json_state import write_text_atomic
+
 if TYPE_CHECKING:
     from pathlib import Path
 
@@ -323,4 +325,4 @@ def record_terminal_outcome(data_root: Path, product: dict[str, Any]) -> None:
     # Mark this terminal outcome recorded so later monitoring cycles skip it.
     with contextlib.suppress(OSError):
         marker.parent.mkdir(parents=True, exist_ok=True)
-        marker.write_text(json.dumps({"product_id": pid, "state": state}), encoding="utf-8")
+        write_text_atomic(marker, json.dumps({"product_id": pid, "state": state}))

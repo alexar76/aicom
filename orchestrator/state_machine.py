@@ -19,7 +19,11 @@ from agents.product_profile import post_devops_human_gate_required
 from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
 from core.paths import pipeline_db_path, pipeline_json_path
 from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW
-from orchestrator.pipeline_repository import PipelineRepository
+from orchestrator.pipeline_repository import (
+    PipelineRepository,
+    PipelineStateLoadError,
+    TaskClaimUnavailable,
+)
 from web.backend.api.metrics import PrometheusMetrics
 
 logger = logging.getLogger(__name__)
@@ -311,7 +315,14 @@ class PipelineStateMachine:
         with self._claim_lock:
             for task in self._pending_by_priority():
                 started_at = time.time()
-                if not self._repo.claim_pending_task(task.id, started_at):
+                try:
+                    claimed = self._repo.claim_pending_task(task.id, started_at, task.to_dict())
+                except TaskClaimUnavailable as exc:
+                    # The store cannot say who owns the task. Hand out nothing this round;
+                    # the task stays pending here and is offered again once it can.
+                    logger.warning("No task handed out: %s", exc)
+                    return None
+                if not claimed:
                     self._apply_claim_loss(task, self._repo.read_task(task.id))
                     continue
                 task.status = TaskStatus.RUNNING
@@ -333,7 +344,14 @@ class PipelineStateMachine:
         async with self._async_claim_lock():
             for task in self._pending_by_priority():
                 started_at = time.time()
-                if not await self._repo.aclaim_pending_task(task.id, started_at):
+                try:
+                    claimed = await self._repo.aclaim_pending_task(
+                        task.id, started_at, task.to_dict()
+                    )
+                except TaskClaimUnavailable as exc:
+                    logger.warning("No task handed out: %s", exc)
+                    return None
+                if not claimed:
                     self._apply_claim_loss(task, await self._repo.aread_task(task.id))
                     continue
                 task.status = TaskStatus.RUNNING
@@ -639,7 +657,12 @@ class PipelineStateMachine:
             logger.warning("maybe_enqueue_on_deploy skipped for %s: %s", product.get("id"), exc)
 
     def _load_state(self):
-        """Load pipeline state from file or SQLite based on self.use_sqlite."""
+        """Load pipeline state from file or SQLite based on self.use_sqlite.
+
+        Raises:
+            PipelineStateLoadError: the stored state exists but cannot be read. Starting
+                empty instead would let the first save write that emptiness over it.
+        """
         if self.use_sqlite:
             self._load_state_from_sqlite()
         else:
@@ -652,15 +675,15 @@ class PipelineStateMachine:
         """Load pipeline state from the JSON file."""
         data = self._repo.load_json()
         try:
-            self.products = {
+            products = {
                 pid: Product.from_dict(pdata) for pid, pdata in data["products"].items()
             }
-            self.task_queue = [Task.from_dict(t) for t in data["task_queue"]]
+            task_queue = [Task.from_dict(t) for t in data["task_queue"]]
         except Exception as exc:
-            logger.error(f"Failed to load pipeline state: {exc}")
-            self.products = {}
-            self.task_queue = []
-            return
+            raise PipelineStateLoadError(
+                f"Pipeline state {self.state_file} has a row this version cannot read: {exc!r}"
+            ) from exc
+        self.products, self.task_queue = products, task_queue
         if self.products or self.task_queue:
             logger.info(
                 f"Loaded pipeline state: {len(self.products)} products, {len(self.task_queue)} tasks"
@@ -671,20 +694,19 @@ class PipelineStateMachine:
         data = self._repo.load_sqlite()
         try:
             task_dicts = data["task_queue"]
-            self.products = {}
+            products: dict[str, Product] = {}
             for pd in data["products"]:
                 product = Product.from_dict(pd)
                 # Restore tasks that belong to this product
                 product_tasks = [t for t in task_dicts if t.get("product_id") == product.id]
                 product.tasks = [Task.from_dict(t) for t in product_tasks]
-                self.products[product.id] = product
-
-            self.task_queue = [Task.from_dict(t) for t in task_dicts]
+                products[product.id] = product
+            task_queue = [Task.from_dict(t) for t in task_dicts]
         except Exception as exc:
-            logger.error(f"Failed to load pipeline state from SQLite: {exc}")
-            self.products = {}
-            self.task_queue = []
-            return
+            raise PipelineStateLoadError(
+                f"Pipeline state in {self.db_path} has a row this version cannot read: {exc!r}"
+            ) from exc
+        self.products, self.task_queue = products, task_queue
 
         logger.info(
             f"Loaded pipeline state from SQLite: {len(self.products)} products, {len(self.task_queue)} tasks"

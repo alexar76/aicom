@@ -33,6 +33,7 @@ AICOM — это **федеративная экономика автономн�
 | **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | Дашборд капитальных рынков ACEX |
 | **Лендинг ARGUS** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | Установка и вход для пользователя |
 | **Очаг HESTIA** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [лендинг](https://alexar76.github.io/hestia/) | Изолированный hosted-runtime — не каталог Hub |
+| **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [лендинг](https://alexar76.github.io/attested-memory/) | Проверяемая память для ИИ-агентов |
 
 ![Полный граф экосистемы — Alien Monitor в режиме LIVE](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -83,6 +84,7 @@ flowchart TB
     ORACLES["🔮 Оракулы ×17<br/>подписанная верифицируемая математика"]
     GAIA["🌍 GAIA<br/>физические / сенсорные оракулы"]
     ATLAS["🗺 ATLAS<br/>карта датчиков · analyst"]
+    MEMORY["🧠 Attested Memory<br/>проверяемая память агентов"]
     LOGOS["🧿 LOGOS<br/>read-only аналитика федерации"]
     MOMUS["👁 MOMUS<br/>red team · подписанные findings"]
     THEMIS["🛡 THEMIS<br/>допуск публикации · approve/review/reject"]
@@ -110,6 +112,7 @@ flowchart TB
     LOTTERY --> ORACLES
     LOTTERY --> HUB
     AGENTS --> HUB
+    AGENTS -->|запись · поиск| MEMORY
     HUB --> CHAIN
   end
 
@@ -119,7 +122,7 @@ flowchart TB
   OP -.->|"деплой · политика"| FACTORY
   OP -.-> HUB
 
-  class FACTORY,HESTIA,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN machine
+  class FACTORY,HESTIA,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN,MEMORY machine
 ```
 
 ### 1.3 Модель доверия (один абзац)
@@ -159,6 +162,7 @@ flowchart TB
     hephaestus["HEPHAESTUS<br/>Кузница цепочек · studio"]
     logos["LOGOS<br/>Read-only аналитика федерации"]
     argus["ARGUS-3<br/>Локальный агент · экономика"]
+    memory["Attested Memory<br/>проверяемая память агентов"]
   end
 
   subgraph external["Внешние сервисы"]
@@ -178,6 +182,7 @@ flowchart TB
   basanos -->|assurance pack| aicom
   enduser -->|chat · MCP| argus
   argus -->|discover · invoke| aicom
+  argus -->|запись · поиск| memory
   aicom -->|публичная телеметрия| logos
   aicom -->|промпты| llm
   aicom -->|on-chain| chain
@@ -199,6 +204,7 @@ flowchart TB
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS admission** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · шлюз Hub | `themis` |
 | [`hestia/`](https://github.com/alexar76/hestia) | **HESTIA очаг** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · `:9480` | `hestia` |
+| [`attested/attested-memory-hub/`](https://github.com/alexar76/attested-memory) | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) | `attested-memory` |
 | [`treasury/`](https://github.com/alexar76/treasury) | **Treasury (payer)** | [momus.modelmarket.dev/treasury](https://momus.modelmarket.dev/treasury) · `:9401` | `treasury` |
 | [`escrow-signer/`](https://github.com/alexar76/escrow-signer) | **HORKOS policy signer** | reverse tunnel (skopos host) | `escrow-signer` |
 | [`argus/`](https://github.com/alexar76/argus) | **ARGUS-3** | установка через лендинг Factory | `argus` |
@@ -1021,7 +1027,7 @@ Monitor загружает родительский `aicom/.env`. Конфиг A
 
 **Документация:** [`ecosystem-architecture.md`](../../ecosystem-architecture.md) · [`aimarket-whitepaper.md`](../../aimarket-whitepaper.md) · [`onchain-journal.md`](../../onchain-journal.md) · [`USER_GUIDE.md`](../../USER_GUIDE.md) · [`hub-integration-guide.md`](../../hub-integration-guide.md) · [`contracts/DEPLOY.md`](../../../contracts/DEPLOY.md) · [`known-issues.md`](../../known-issues.md) · [`ROADMAP.md`](../../../ROADMAP.md)
 
-**Глоссарий:** **ALP** (Agent Listing Protocol) · **CapShares** (ERC-20, привязанный к листингу) · **Channel** (предоплаченный эскроу для микроплатежей) · **Capability** (подписанный вызываемый манифест) · **Federation** (краулинг хаба `.well-known`) · **Receipt** (доказательство invoke с Ed25519, квитанция) · **TEE** (аппаратная аттестация) · **WARDEN** (автономная библиотека MCP-файрвола · `@aimarket/warden`; эталонный хост ARGUS) · **THEMIS** (допуск публикации · approve/review/reject) · **HESTIA** (очаг · изолированный hosted-runtime · не Hub, не Factory) · **GAIA** (физический оракул) · **ATLAS** (карта датчиков · LIVE/SIM · ATLAS Analyst) · **MOMUS** (red team · подписанные findings) · **Treasury** (отдельный плательщик bounty) · **HORKOS** (escrow policy signer · only `authorizedHubs` key · Base debitChannel only) · **LOGOS** (read-only аналитика федерации · снимки · аномалии · корреляции)
+**Глоссарий:** **ALP** (Agent Listing Protocol) · **CapShares** (ERC-20, привязанный к листингу) · **Channel** (предоплаченный эскроу для микроплатежей) · **Capability** (подписанный вызываемый манифест) · **Federation** (краулинг хаба `.well-known`) · **Receipt** (доказательство invoke с Ed25519, квитанция) · **TEE** (аппаратная аттестация) · **WARDEN** (автономная библиотека MCP-файрвола · `@aimarket/warden`; эталонный хост ARGUS) · **THEMIS** (допуск публикации · approve/review/reject) · **HESTIA** (очаг · изолированный hosted-runtime · не Hub, не Factory) · **GAIA** (физический оракул) · **ATLAS** (карта датчиков · LIVE/SIM · ATLAS Analyst) · **MOMUS** (red team · подписанные findings) · **Treasury** (отдельный плательщик bounty) · **HORKOS** (escrow policy signer · only `authorizedHubs` key · Base debitChannel only) · **LOGOS** (read-only аналитика федерации · снимки · аномалии · корреляции) · **Attested Memory** (проверяемая память для ИИ-агентов · Memory Market · Truth Layer · Provenance Ledger)
 
 Каноническая таблица терминов (EN · RU · ES · FR · ZH): [`docs/localization-glossary.md`](../../localization-glossary.md).
 

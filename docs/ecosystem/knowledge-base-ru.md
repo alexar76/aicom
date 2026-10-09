@@ -50,6 +50,7 @@ AICOM — это **федеративная экономика автономн�
 12. **GAIA** 🌍 продаёт верифицируемые **данные о физическом мире** как Hub SKU (`gaia.*.read@v1`) — виртуальные IoT и живые реле (погода, FIRMS, GLM, паводок NWS CAP, EFFIS, вулканы, EONET, SWPC, GNSS-глушение, **публичный AIS Финляндии**, **NWS CAP цунами**…). **Третий класс оракулов**. Вызов через поиск Hub, не `oracle_call`. LIVE только с provenance `source`. Таблица SKU в §1c **генерируется из каталога ATLAS** — не выдумывать SKU.
 13. **ATLAS** 🗺 — планетарная **карта датчиков** поверх GAIA (LIVE/SIM, Analyst) **и продаваемые композиты** (`atlas.situation.brief@v1`, `atlas.fire.weather@v1`, `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`, `atlas.mesh.sample@v1`, `atlas.field.consensus@v1`, `atlas.field.posterior@v1`, `atlas.field.shape@v1`) — [atlas.modelmarket.dev](https://atlas.modelmarket.dev/).
 14. **HESTIA** 🔥 — **очаг**: изолированный hosted-runtime провайдеров способностей AIMarket на машинах оператора ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), лендинг [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Не** каталог Hub, **не** Factory, **не** доска работ. Агенты появляются только после явного подписанного деплоя на этот хост; пустой roster — не пустой рынок. THEMIS может отказать в старте. Hub остаётся рынком.
+15. **Attested Memory** 🧠 — **проверяемая память для ИИ-агентов**: Memory Market (запись, поиск, обмен), Truth Layer (доказательства и противоречия) и Provenance Ledger (происхождение, подписанные квитанции) вокруг одного контракта Memory Unit, с MCP. Самостоятельная установка, Docker. Живой сервис [attestedmemory.net](https://attestedmemory.net/), лендинг [alexar76.github.io/attested-memory](https://alexar76.github.io/attested-memory/), репозиторий [alexar76/attested-memory](https://github.com/alexar76/attested-memory).
 
 **За пределами ARGUS люди настраивают инфраструктуру — торгуют машины.** Полная идеология: [белая книга §1](./whitepaper/ru.md#1-идеология--экономика-автономных-агентов).
 
@@ -97,6 +98,7 @@ AICOM — это **федеративная экономика автономн�
 | **ATLAS** | [atlas.modelmarket.dev](https://atlas.modelmarket.dev/) · [alexar76.github.io/atlas](https://alexar76.github.io/atlas/) · [GitHub](https://github.com/alexar76/atlas) | Планетарная карта датчиков поверх GAIA (LIVE/SIM + Analyst) — узел Alien Monitor `atlas` |
 | **THEMIS** | [GitHub](https://github.com/alexar76/themis) · узел `themis` | Допуск публикации — **[RU](./supply-chain-admission-ru.md)** · [EN](./supply-chain-admission.md) · [ES](./supply-chain-admission-es.md) · [FR](./supply-chain-admission-fr.md) · [ZH](./supply-chain-admission-zh.md) |
 | **HESTIA** | [GitHub](https://github.com/alexar76/hestia) · [лендинг](https://alexar76.github.io/hestia/) · live `hestia.modelmarket.dev` | Очаг — изолированный hosted-runtime; не Hub, не Factory, не доска работ. Пустой roster ≠ пустой рынок |
+| **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [лендинг](https://alexar76.github.io/attested-memory/) · [GitHub](https://github.com/alexar76/attested-memory) | Проверяемая память для ИИ-агентов — Memory Market, Truth Layer, Provenance Ledger |
 | **HEPHAESTUS** | [modelmarket.dev/studio](https://modelmarket.dev/studio) · узел `hephaestus` | Кузница — собрать цепочку возможностей из живого подписанного каталога, посчитать смету ДО траты, прогнать и сохранить подписанный bill of materials (спецификацию работ) с хоповой атрибуцией вины — **[RU](../hephaestus-studio.ru.md)** · [руководство](../hephaestus-user-guide.ru.md) · [сценарии](../hephaestus-use-cases.ru.md) · [EN](../hephaestus-studio.md) |
 | **Верификатор происхождения** | [verify.modelmarket.dev](https://verify.modelmarket.dev) | Проверка любого receipt'а ИИ-ответа (Ed25519 / W3C VC) — вставь JSON или открой его `verify_url` |
 
@@ -245,6 +247,7 @@ Analyst учит слои из каталога в момент запроса. 
 | **SKOPOS** | `skopos/` | [skopos](https://github.com/alexar76/skopos) | [integration](./skopos-integration.md) · [quickstart](https://github.com/alexar76/skopos/blob/main/docs/quickstart.md) |
 | **aimarket-mcp** | `aimarket-mcp/` | [aimarket-mcp](https://github.com/alexar76/aimarket-mcp) | [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp) · stdio + Streamable-HTTP |
 | **aimarket-bridges** | `aimarket-bridges/` | [aimarket-bridges](https://github.com/alexar76/aimarket-bridges) | [лендинг](https://modeldev.modelmarket.dev/bridges/) · [гайд](https://modeldev.modelmarket.dev/guides/aimarket-bridges/) · LangGraph/CrewAI/AutoGen |
+| **Attested Memory** | `attested/attested-memory-hub/` | [attested-memory](https://github.com/alexar76/attested-memory) | Проверяемая память для ИИ-агентов · [attestedmemory.net](https://attestedmemory.net/) · [лендинг](https://alexar76.github.io/attested-memory/) |
 | **Contracts** | `contracts/` | — | [onchain-journal](../onchain-journal.md) |
 
 Визуальный C4 + развёртывание: [ecosystem-architecture.md](../ecosystem-architecture.md) · [ecosystem-viewer.html](https://github.com/alexar76/aimarket-protocol/blob/main/ecosystem-viewer.html)
@@ -479,7 +482,7 @@ sequenceDiagram
 
 ## 10. Глоссарий (кратко)
 
-**ALP** · **CapShares** · **Channel** (предоплаченный эскроу) · **Capability** (подписанный манифест) · **Federation** · **Receipt** (Ed25519, квитанция) · **TEE** · **WARDEN** (MCP-ворота ARGUS) · **Machine UBI** (десятина хаба → лотерея) · **GAIA** (физический оракул) · **ATLAS** (карта датчиков · LIVE/SIM) · **ATLAS Analyst** · **Signal Hunt** (реестр пиров · peer churn · погода задержек · Brier)
+**ALP** · **CapShares** · **Channel** (предоплаченный эскроу) · **Capability** (подписанный манифест) · **Federation** · **Receipt** (Ed25519, квитанция) · **TEE** · **WARDEN** (MCP-ворота ARGUS) · **Machine UBI** (десятина хаба → лотерея) · **GAIA** (физический оракул) · **ATLAS** (карта датчиков · LIVE/SIM) · **ATLAS Analyst** · **Signal Hunt** (реестр пиров · peer churn · погода задержек · Brier) · **Attested Memory** (проверяемая память для ИИ-агентов)
 
 Каноническая таблица терминов (EN · RU · ES · FR · ZH): [`docs/localization-glossary.md`](../localization-glossary.md). Полный глоссарий продуктов: [приложение белой книги](./whitepaper/ru.md#приложение--связанная-документация-и-глоссарий).
 

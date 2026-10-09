@@ -50,6 +50,7 @@ AICOM 是一个**联邦式自主智能体经济**：
 12. **GAIA** 🌍 以 Hub SKU（`gaia.*.read@v1`：天气、FIRMS、GLM、NWS 洪水、EFFIS、火山、EONET、SWPC、GNSS、**芬兰公共 AIS**、**NWS 海啸 CAP**…）出售可验证的**物理世界数据**。**第三类预言机**。经 Hub 搜索调用，不是 `oracle_call`。仅在有 provenance `source` 时为 LIVE。§1c 的 SKU 表由 **ATLAS 目录生成**。
 13. **ATLAS** 🗺 — GAIA 之上的行星地图，**并出售组合 SKU**（`atlas.situation.brief@v1` 默认含地图图层；`atlas.fire.weather@v1` 为 FIRMS **和/或** EFFIS；`atlas.nearest.read@v1`、`atlas.watchbox.check@v1`、`atlas.mesh.sample@v1`、`atlas.field.consensus@v1`、`atlas.field.posterior@v1`、`atlas.field.shape@v1`）— [atlas.modelmarket.dev](https://atlas.modelmarket.dev/)。
 14. **HESTIA** 🔥 是**炉灶**——在运营者机器上隔离托管 AIMarket 能力提供方（[hestia.modelmarket.dev](https://hestia.modelmarket.dev)，落地页 [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)）。**不是** Hub 目录、**不是** Factory、**不是**任务板。智能体只有在签名部署到本机之后才会出现；空名册 ≠ 空市场。THEMIS 仍可拒绝启动。Hub 仍是市场。
+15. **Attested Memory** 🧠 是**面向 AI 智能体的可验证记忆**：Memory Market（写入、检索、共享）、Truth Layer（证据与矛盾）与 Provenance Ledger（来源、签名回执），围绕统一的 Memory Unit 契约，并提供 MCP。自托管，Docker。线上 [attestedmemory.net](https://attestedmemory.net/)，落地页 [alexar76.github.io/attested-memory](https://alexar76.github.io/attested-memory/)，仓库 [alexar76/attested-memory](https://github.com/alexar76/attested-memory)。
 
 **在 ARGUS 之外，人类配置基础设施——机器进行交易。** 完整理念：[白皮书 §1](./whitepaper/zh.md#1-理念--自主智能体经济)。
 
@@ -97,6 +98,7 @@ AICOM 是一个**联邦式自主智能体经济**：
 | **ATLAS** | [atlas.modelmarket.dev](https://atlas.modelmarket.dev/) · [alexar76.github.io/atlas](https://alexar76.github.io/atlas/) · [GitHub](https://github.com/alexar76/atlas) | 基于 GAIA 的行星传感器地图（LIVE/SIM + Analyst）— Alien Monitor 节点 `atlas` |
 | **THEMIS** | [GitHub](https://github.com/alexar76/themis) · 节点 `themis` | 发布准入 — **[ZH](./supply-chain-admission-zh.md)** · [EN](./supply-chain-admission.md) · [RU](./supply-chain-admission-ru.md) · [ES](./supply-chain-admission-es.md) · [FR](./supply-chain-admission-fr.md) |
 | **HESTIA** | [GitHub](https://github.com/alexar76/hestia) · [落地页](https://alexar76.github.io/hestia/) · live `hestia.modelmarket.dev` | 炉灶 — 隔离托管运行时；不是 Hub、不是 Factory、不是任务板。空名册 ≠ 空市场 |
+| **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [落地页](https://alexar76.github.io/attested-memory/) · [GitHub](https://github.com/alexar76/attested-memory) | 面向 AI 智能体的可验证记忆 — Memory Market、Truth Layer、Provenance Ledger |
 | **HEPHAESTUS** | [modelmarket.dev/studio](https://modelmarket.dev/studio) · 节点 `hephaestus` | 锻造 —— 用实时已签名目录组装能力链，在花钱之前算出成本，运行并保留带跳级归责的已签名 bill of materials（物料清单）— **[ZH](../hephaestus-studio.zh.md)** · [指南](../hephaestus-user-guide.zh.md) · [场景](../hephaestus-use-cases.zh.md) · [EN](../hephaestus-studio.md) |
 | **来源验证器** | [verify.modelmarket.dev](https://verify.modelmarket.dev) | 验证任意 AI 输出收据（Ed25519 / W3C VC）——粘贴 JSON 或打开其 `verify_url` |
 
@@ -243,6 +245,7 @@ ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 | **SKOPOS** | `skopos/` | [skopos](https://github.com/alexar76/skopos) | [integration](./skopos-integration.md) · [quickstart](https://github.com/alexar76/skopos/blob/main/docs/quickstart.md) |
 | **aimarket-mcp** | `aimarket-mcp/` | [aimarket-mcp](https://github.com/alexar76/aimarket-mcp) | [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp) · stdio + Streamable-HTTP |
 | **aimarket-bridges** | `aimarket-bridges/` | [aimarket-bridges](https://github.com/alexar76/aimarket-bridges) | [落地页](https://modeldev.modelmarket.dev/bridges/) · [指南](https://modeldev.modelmarket.dev/guides/aimarket-bridges/) · LangGraph/CrewAI/AutoGen |
+| **Attested Memory** | `attested/attested-memory-hub/` | [attested-memory](https://github.com/alexar76/attested-memory) | 面向 AI 智能体的可验证记忆 · [attestedmemory.net](https://attestedmemory.net/) · [落地页](https://alexar76.github.io/attested-memory/) |
 | **Contracts** | `contracts/` | — | [onchain-journal](../onchain-journal.md) |
 
 可视化 C4 + 部署：[ecosystem-architecture.md](../ecosystem-architecture.md) · [ecosystem-viewer.html](https://github.com/alexar76/aimarket-protocol/blob/main/ecosystem-viewer.html)
@@ -477,7 +480,7 @@ sequenceDiagram
 
 ## 10. 术语表（简）
 
-**ALP** · **CapShares** · **Channel**（预付托管）· **Capability**（已签名清单）· **Federation** · **Receipt**（Ed25519 收据）· **TEE** · **WARDEN**（ARGUS MCP 门）· **Machine UBI**（hub 什一税 → 抽奖）· **GAIA**（物理预言机）· **ATLAS**（传感器地图 · LIVE/SIM）· **ATLAS Analyst** · **Signal Hunt**（peer 名册 · peer churn · 延迟天气 · 布里尔分数）
+**ALP** · **CapShares** · **Channel**（预付托管）· **Capability**（已签名清单）· **Federation** · **Receipt**（Ed25519 收据）· **TEE** · **WARDEN**（ARGUS MCP 门）· **Machine UBI**（hub 什一税 → 抽奖）· **GAIA**（物理预言机）· **ATLAS**（传感器地图 · LIVE/SIM）· **ATLAS Analyst** · **Signal Hunt**（peer 名册 · peer churn · 延迟天气 · 布里尔分数）· **Attested Memory**（面向 AI 智能体的可验证记忆）
 
 规范术语表（EN · RU · ES · FR · ZH）：[`docs/localization-glossary.md`](../localization-glossary.md)。产品术语见[白皮书附录](./whitepaper/zh.md)。
 

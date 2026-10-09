@@ -27,6 +27,7 @@ from typing import Any
 from core.paths import config_path
 from core.config_merge import load_merged_config
 from core.paths import data_root
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -266,7 +267,7 @@ def _merge_publish_record(product_id: str, payload: dict[str, Any]) -> None:
     out_path = Path(data_root()) / "state" / product_id / "auto_publish.json"
     try:
         out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+        write_text_atomic(out_path, json.dumps(payload, indent=2, ensure_ascii=False))
     except OSError as e:
         logger.warning("auto_publish: could not persist record for %s: %s", product_id, e)
 
@@ -651,7 +652,7 @@ def try_publish_after_devops(product_id: str) -> dict[str, Any]:
         elif not url:
             payload["error"] = "url_not_detected"
         out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+        write_text_atomic(out_path, json.dumps(payload, indent=2, ensure_ascii=False))
         if ok:
             logger.info("Auto-publish OK %s → %s", product_id, url)
         else:
@@ -674,8 +675,7 @@ def try_publish_after_devops(product_id: str) -> dict[str, Any]:
 
 def _write_result(path: Path, product_id: str, provider: str, ok: bool, error: str | None = None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(
+    write_text_atomic(path, json.dumps(
             {
                 "ok": ok,
                 "product_id": product_id,
@@ -685,6 +685,4 @@ def _write_result(path: Path, product_id: str, provider: str, ok: bool, error: s
             },
             indent=2,
             ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
+        ))

@@ -89,7 +89,10 @@ def main() -> int:
     state["products"][product_id] = product
 
     state_file.parent.mkdir(parents=True, exist_ok=True)
-    state_file.write_text(json.dumps(state, indent=2, ensure_ascii=False), encoding="utf-8")
+    # Temp file + rename: the worker reads this file live, so it must never see it half-written.
+    tmp = state_file.with_name(state_file.name + ".tmp")
+    tmp.write_text(json.dumps(state, indent=2, ensure_ascii=False), encoding="utf-8")
+    os.replace(tmp, state_file)
     print(f"Wrote product {product_id} to {state_file}")
 
     migrate(json_path=str(state_file), db_path=str(db_path))

@@ -123,7 +123,10 @@ def main() -> int:
     pipeline_json = db_path.parent / "pipeline.json"
     empty_state = {"products": {}, "task_queue": [], "current_task_id": None}
     pipeline_json.parent.mkdir(parents=True, exist_ok=True)
-    pipeline_json.write_text(json.dumps(empty_state, indent=2), encoding="utf-8")
+    # Temp file + rename: the worker reads this file live, so it must never see it half-written.
+    tmp = pipeline_json.with_name(pipeline_json.name + ".tmp")
+    tmp.write_text(json.dumps(empty_state, indent=2), encoding="utf-8")
+    os.replace(tmp, pipeline_json)
     print(f"Reset {pipeline_json} to empty products + task_queue.")
 
     if args.clear_logs and not args.zero_dashboard:

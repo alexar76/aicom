@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import sqlite3
 import sys
@@ -50,7 +51,10 @@ def main() -> None:
             doc["products"] = products
             tq = doc.get("task_queue") if isinstance(doc.get("task_queue"), list) else []
             doc["task_queue"] = [t for t in tq if isinstance(t, dict) and t.get("product_id") not in drop_set]
-            pj.write_text(json.dumps(doc, indent=2, ensure_ascii=False), encoding="utf-8")
+            # Temp file + rename: the worker reads this file live, so it must never see it half-written.
+            tmp = pj.with_name(pj.name + ".tmp")
+            tmp.write_text(json.dumps(doc, indent=2, ensure_ascii=False), encoding="utf-8")
+            os.replace(tmp, pj)
         except (OSError, json.JSONDecodeError) as exc:
             print(f"Warning: pipeline.json patch failed: {exc}", file=sys.stderr)
 

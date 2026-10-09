@@ -39,7 +39,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；ACEX 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；ACEX 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦；Attested Memory 保存可验证的智能体记忆" width="900">
   </a>
 </p>
 
@@ -192,6 +192,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | Treasury | Hub / chain | 验证后付款 |
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | 只读快照 · 异常 · 洞察 |
 | Alien Monitor | Hub | 实时 3D 图谱 |
+| ARGUS / 智能体 | Attested Memory | 写入 · 检索 · 共享 |
 
 </details>
 
@@ -277,6 +278,13 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN**——零依赖的 **MCP 安全防火墙库**（不是服务器）：静态工具定义扫描 → 签名威胁源 → 来源 → 固定 · [落地页](https://warden.modelmarket.dev/) · [实地调研：1,108 个公开 MCP 服务器](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.zh.md) | 第三方工具到达宿主前 |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR**（ἵστωρ）——公开的 **MCP 工具定义透明日志**：读取官方 MCP 注册表中每个远程端点公布的内容（从不调用工具），签名为 MTL/1 标签，追加到带签名树头的 RFC 9162 默克尔树，并为每次变更标注日期和差异。从不宣称任何服务器安全 · [在线](https://histor.modelmarket.dev) · [落地页](https://alexar76.github.io/histor/) | 每日，覆盖官方注册表中的所有远程端点 · 以及 `/check` 时 |
 
+### 🧠 可验证记忆 — 智能体保存的内容
+<sub>写入、检索、共享，其他智能体可以核验。</sub>
+
+| 仓库 | 简介 |
+| --- | --- |
+| [**attested-memory**](https://github.com/alexar76/attested-memory) | **Attested Memory** — 面向 AI 智能体的可验证记忆：Memory Market（写入、检索、共享）、Truth Layer（证据与矛盾）与 Provenance Ledger（来源、签名回执），围绕统一的 Memory Unit 契约，并提供 MCP。自托管，Docker。 · [线上](https://attestedmemory.net/) · [落地页](https://alexar76.github.io/attested-memory/) |
+
 ### 👤 你实际运行的客户端
 <sub>阶段 7。以上都是基础设施；这是用户实际使用的部分。</sub>
 
@@ -361,6 +369,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [alien-monitor](https://github.com/alexar76/alien-monitor) | 可观测性 | 实时 3D 生态图谱 |
 | [argus](https://github.com/alexar76/argus) | 你实际运行的客户端 | 需求侧参考智能体 |
 | [atlas](https://github.com/alexar76/atlas) | 物理世界 | 覆盖 GAIA 的行星级传感器地图 |
+| [attested-memory](https://github.com/alexar76/attested-memory) | 可验证记忆 | 面向 AI 智能体的可验证记忆 |
 | [basanos](https://github.com/alexar76/basanos) | 信任与安全 | 固定提交上的 Solidity 保障 |
 | [cite-desks](https://github.com/alexar76/cite-desks) | 物理世界 | ATLAS / GAIA 轨道上的证据台 |
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | 构建与连接 | 提供方脚手架生成器 |

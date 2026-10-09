@@ -7,6 +7,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.paths import code_dir, resolve_data_root
 from web.backend.services.api_contract_check import run_api_contract_check
 from web.backend.services.backend_runtime_e2e import run_backend_runtime_e2e
@@ -174,7 +175,7 @@ def refresh_product_storefront_telemetry(
         )
         qa_report = merged
 
-    report_path.write_text(json.dumps(qa_report, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(report_path, json.dumps(qa_report, indent=2, ensure_ascii=False))
 
     tel_dir = root / "telemetry" / pid
     tel_dir.mkdir(parents=True, exist_ok=True)
@@ -190,10 +191,8 @@ def refresh_product_storefront_telemetry(
         "gates_all_passed": qa_report["quality_gates_all_passed"],
         "refreshed_at": time.time(),
     }
-    (tel_dir / "demo_quality_gate.json").write_text(json.dumps(gate_payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    (tel_dir / "methodology_implementation.json").write_text(
-        json.dumps(methodology, indent=2, ensure_ascii=False), encoding="utf-8"
-    )
+    write_text_atomic(tel_dir / "demo_quality_gate.json", json.dumps(gate_payload, indent=2, ensure_ascii=False))
+    write_text_atomic(tel_dir / "methodology_implementation.json", json.dumps(methodology, indent=2, ensure_ascii=False))
 
     arch_dir = root / "arch" / pid
     arch_dir.mkdir(parents=True, exist_ok=True)
@@ -207,7 +206,7 @@ def refresh_product_storefront_telemetry(
     if not isinstance(arch.get("novelty_score"), (int, float)) or float(arch.get("novelty_score") or 0) < 0.18:
         arch["novelty_score"] = 0.22
         arch["novelty_refreshed_at"] = time.time()
-    arch_path.write_text(json.dumps(arch, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(arch_path, json.dumps(arch, indent=2, ensure_ascii=False))
 
     from web.backend.services.marketplace_quality import evaluate_marketplace_quality
 

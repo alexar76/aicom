@@ -7,6 +7,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.paths import data_root as factory_data_root
 
 logger = logging.getLogger(__name__)
@@ -47,5 +48,5 @@ def put_canvas(product_id: str, payload: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("canvas too large")
     doc = {"version": int(payload.get("version") or 1), "nodes": nodes, "edges": edges}
     path = canvas_path(product_id)
-    path.write_text(json.dumps(doc, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(path, json.dumps(doc, indent=2, ensure_ascii=False))
     return doc

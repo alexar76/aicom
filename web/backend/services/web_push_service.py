@@ -14,6 +14,7 @@ from typing import Any
 
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
+from core.json_state import write_text_atomic
 from core.paths import data_root as factory_data_root
 
 logger = logging.getLogger(__name__)
@@ -61,10 +62,7 @@ def get_or_create_vapid_material() -> dict[str, str]:
     except Exception as e:
         logger.error("web_push: could not generate VAPID keys: %s", e)
         raise
-    path.write_text(
-        json.dumps({"publicKey": pub_b64, "privateKeyPem": priv_pem}, indent=2),
-        encoding="utf-8",
-    )
+    write_text_atomic(path, json.dumps({"publicKey": pub_b64, "privateKeyPem": priv_pem}, indent=2))
     return {"publicKey": pub_b64, "privateKeyPem": priv_pem}
 
 
@@ -85,7 +83,7 @@ def _load_subs() -> list[dict[str, Any]]:
 
 
 def _save_subs(rows: list[dict[str, Any]]) -> None:
-    _subs_path().write_text(json.dumps(rows, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(_subs_path(), json.dumps(rows, indent=2, ensure_ascii=False))
 
 
 def add_subscription(sub: dict[str, Any]) -> dict[str, Any]:

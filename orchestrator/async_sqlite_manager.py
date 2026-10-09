@@ -217,13 +217,16 @@ class AsyncSQLiteManager:
             ),
         )
 
-    async def claim_pending_task(self, task_id: str, started_at: float) -> bool:
+    async def claim_pending_task(
+        self, task_id: str, started_at: float, task: dict | None = None
+    ) -> bool:
         """Flip a task from pending to running in a single conditional statement.
 
         Async twin of ``SQLiteManager.claim_pending_task``: the UPDATE only matches a
         row that is still pending, so of two workers racing for the same task exactly
-        one gets ``rowcount == 1``. A task with no row yet exists only in the caller's
-        memory and counts as owned.
+        one gets ``rowcount == 1``. A task with no row yet is claimed by inserting it
+        already running (the primary key admits one INSERT); without ``task`` to insert
+        it is not claimed. Storage errors propagate.
         """
         conn = await self._require_conn()
         async with conn.execute(
@@ -232,15 +235,33 @@ class AsyncSQLiteManager:
             (started_at, task_id, self.workspace_id),
         ) as cur:
             claimed = cur.rowcount > 0
-        await conn.commit()
-        if claimed:
-            return True
+        if claimed or task is None:
+            await conn.commit()
+            return claimed
         async with conn.execute(
-            "SELECT 1 FROM tasks WHERE id = ? AND workspace_id = ?",
-            (task_id, self.workspace_id),
+            """INSERT OR IGNORE INTO tasks
+               (id, workspace_id, product_id, agent_type, status, state, assigned_to, created_at, started_at, completed_at, input, output, error, priority, retry_count)
+               VALUES (?, ?, ?, ?, 'running', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (
+                task_id,
+                task.get("workspace_id") or self.workspace_id,
+                task.get("product_id"),
+                task.get("agent_type"),
+                task.get("state"),
+                task.get("assigned_to"),
+                task.get("created_at"),
+                started_at,
+                task.get("completed_at"),
+                json.dumps(task.get("input_data") or {}),
+                json.dumps(task.get("output_data") or {}),
+                task.get("error"),
+                task.get("priority", 0),
+                task.get("retry_count", 0),
+            ),
         ) as cur:
-            row = await cur.fetchone()
-        return row is None
+            claimed = cur.rowcount > 0
+        await conn.commit()
+        return claimed
 
     async def _scalar(self, query: str, params: tuple = ()) -> int | float:
         conn = await self._require_conn()

@@ -18,6 +18,7 @@ from orchestrator.pipeline_flow import PIPELINE_AGENT_FLOW
 
 from core.agent_roles import is_developer_agent
 from core.quality_settings import max_pipeline_repair_rounds
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -195,7 +196,7 @@ def _inject_via_pipeline_json(product_id: str, notes: str) -> dict[str, Any]:
             f"Human rework exhausted repair budget ({max_loops} rounds). Manual review required."
         )
         pj.parent.mkdir(parents=True, exist_ok=True)
-        pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        write_text_atomic(pj, json.dumps(data, indent=2, ensure_ascii=False))
         _sync_sqlite_from_json()
         return {"ok": False, "reason": "repair_budget_exhausted"}
 
@@ -237,7 +238,7 @@ def _inject_via_pipeline_json(product_id: str, notes: str) -> dict[str, Any]:
     data["products"][pid] = product
 
     pj.parent.mkdir(parents=True, exist_ok=True)
-    pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(pj, json.dumps(data, indent=2, ensure_ascii=False))
     _sync_sqlite_from_json()
     logger.warning("human_admin_rework → BUG_FOUND / DEV_FIXING for %s round %s", pid, new_round)
     return {"ok": True, "task_id": dev_task["id"], "repair_round": new_round}
@@ -261,7 +262,7 @@ def _append_human_feedback(product_id: str, decision: str, note: str = "") -> No
         "note": (note or "")[:8000],
         "created_at": time.time(),
     }
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_text_atomic(path, json.dumps(payload, ensure_ascii=False, indent=2))
     logger.info("human_review feedback written: %s decision=%s", path.name, decision)
 
 
@@ -492,7 +493,7 @@ def _approve_via_pipeline_json(product_id: str, note: str) -> dict[str, Any]:
         data["products"][pid] = product
         data["task_queue"] = task_queue
         pj.parent.mkdir(parents=True, exist_ok=True)
-        pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        write_text_atomic(pj, json.dumps(data, indent=2, ensure_ascii=False))
         _sync_sqlite_from_json()
     return res
 
@@ -685,7 +686,7 @@ def _approve_repair_exhausted_via_pipeline_json(product_id: str, note: str) -> d
     if res.get("ok"):
         data["products"][pid] = product
         data["task_queue"] = task_queue
-        pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        write_text_atomic(pj, json.dumps(data, indent=2, ensure_ascii=False))
         _sync_sqlite_from_json()
     return res
 
@@ -891,7 +892,7 @@ def _reject_via_pipeline_json(product_id: str, notes: str) -> dict[str, Any]:
     data["task_queue"] = task_queue
     data["products"][pid] = product
     pj.parent.mkdir(parents=True, exist_ok=True)
-    pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(pj, json.dumps(data, indent=2, ensure_ascii=False))
     _sync_sqlite_from_json()
     _append_human_feedback(pid, "block", notes)
     logger.warning("post_devops human reject → BUG_FOUND / DEV_FIXING for %s round %s", pid, new_round)

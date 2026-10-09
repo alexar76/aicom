@@ -53,6 +53,7 @@ AICOM is a **federated autonomous-agent economy**:
 17. **BASANOS** 🪨 is the **Solidity touchstone** — signed assurance packs at a pinned commit (`agent.security.contract-assurance@v1`). It is not [HEPHAESTUS](https://forge.modelmarket.dev/) (the forge / studio), not **AgentAuditPool** (staked USDC + `scoreBps`), not MOMUS, not THEMIS.
 18. **HORKOS** ⚖️ is the **escrow policy signer** — the only key in `AIMarketEscrow.authorizedHubs`, on a separate host behind a tunnel, signing exactly one `debitChannel` calldata to the pinned Base escrow; depositor EIP-712 is the amount authority, not the Hub bearer token ([alexar76.github.io/escrow-signer](https://alexar76.github.io/escrow-signer)).
 19. **HESTIA** 🖥️ is the **hosted runtime** — isolated for AIMarket capability providers on the operator's machines ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), landing [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Not** the Hub catalogue, **not** Factory, **not** a job board. Agents appear only after an explicit signed deploy onto this host; an empty roster means nothing is hosted here, not that the market is empty. Isolation first. THEMIS can still refuse a start. Hub stays the market. Alien Monitor node `hestia`.
+20. **Attested Memory** 🧠 is **verifiable memory for AI agents** — Memory Market (write, search, share), Truth Layer (evidence and contradictions) and Provenance Ledger (lineage, signed receipts) around one Memory Unit contract, with MCP. Self-hosted, Docker. Live at [attestedmemory.net](https://attestedmemory.net/), landing [alexar76.github.io/attested-memory](https://alexar76.github.io/attested-memory/), repo [alexar76/attested-memory](https://github.com/alexar76/attested-memory).
 
 **Beyond ARGUS, humans configure infra — machines trade.** Full ideology: [whitepaper §1](./whitepaper/en.md#1-ideology--autonomous-agent-economy).
 
@@ -105,6 +106,7 @@ Those six labs are **not** LIVE federation peers. Platon on the UNI map is an ob
 | **HEPHAESTUS** | [forge.modelmarket.dev](https://forge.modelmarket.dev/) · [modelmarket.dev/studio](https://modelmarket.dev/studio) · Alien Monitor node `hephaestus` | The forge — compose capability chains from the live signed catalogue, price the graph BEFORE spending, run it, keep the signed bill of materials with hop-level blame — **[docs](../hephaestus-studio.md)** · **[docs](../hephaestus-user-guide.md)** · **[use cases](../hephaestus-use-cases.md)** |
 | **BASANOS** | [GitHub](https://github.com/alexar76/basanos) · [landing](https://alexar76.github.io/basanos/) · live `basanos.modelmarket.dev` (when DNS is up) | Solidity touchstone — signed assurance pack; not AgentAuditPool, not HEPHAESTUS |
 | **HESTIA** | [GitHub](https://github.com/alexar76/hestia) · [landing](https://alexar76.github.io/hestia/) · live `hestia.modelmarket.dev` (TLS; API may 502 until the runtime is deployed) | Hosted runtime — isolated; not Hub, not Factory, not a job board. Empty roster ≠ empty market |
+| **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) · [GitHub](https://github.com/alexar76/attested-memory) | Verifiable memory for AI agents — Memory Market, Truth Layer, Provenance Ledger |
 | **HORKOS** | [landing](https://alexar76.github.io/escrow-signer/) · [GitHub](https://github.com/alexar76/escrow-signer) | Escrow policy signer — only `authorizedHubs` key; skopos host + tunnel |
 | **Provenance verifier** | [verify.modelmarket.dev](https://verify.modelmarket.dev) | Verify any AI-output receipt (Ed25519 / W3C VC) — paste JSON or open its `verify_url` |
 
@@ -258,6 +260,7 @@ Analyst auto-learns layers from `STATION_CATALOG` at request time (no sync neede
 | **Signal Hunt** | `signal-hunt/` | [signal-hunt](https://github.com/alexar76/signal-hunt) | [PRODUCT_SPEC](https://github.com/alexar76/signal-hunt/blob/main/docs/PRODUCT_SPEC.md) · investigation game + educational lab · [wiki](https://github.com/alexar76/aicom/wiki/Signal-Hunt) |
 | **aimarket-mcp** | `aimarket-mcp/` | [aimarket-mcp](https://github.com/alexar76/aimarket-mcp) | [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp) · stdio + Streamable-HTTP |
 | **aimarket-bridges** | `aimarket-bridges/` | [aimarket-bridges](https://github.com/alexar76/aimarket-bridges) | [landing](https://modeldev.modelmarket.dev/bridges/) · [guide](https://modeldev.modelmarket.dev/guides/aimarket-bridges/) · LangGraph/CrewAI/AutoGen |
+| **Attested Memory** | `attested/attested-memory-hub/` | [attested-memory](https://github.com/alexar76/attested-memory) | Verifiable memory for AI agents · [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) |
 | **Contracts** | `contracts/` | — | [onchain-journal](../onchain-journal.md) |
 
 Visual C4 + deployment: [ecosystem-architecture.md](../ecosystem-architecture.md) · [ecosystem-viewer.html](https://github.com/alexar76/aimarket-protocol/blob/main/ecosystem-viewer.html)
@@ -504,7 +507,7 @@ Version policy: [sdk-version-policy.md](../sdk-version-policy.md)
 
 ## 10. Glossary (short)
 
-**ALP** · **CapShares** · **Channel** (prepaid escrow) · **Capability** (signed manifest) · **Federation** · **Receipt** (Ed25519) · **TEE** · **WARDEN** (ARGUS MCP gates) · **Machine UBI** (hub tithe → lottery) · **GAIA** (physical oracle) · **ATLAS** (sensor map · LIVE/SIM) · **ATLAS Analyst** · **Signal Hunt** (peer roster · peer churn · latency weather · Brier)
+**ALP** · **CapShares** · **Channel** (prepaid escrow) · **Capability** (signed manifest) · **Federation** · **Receipt** (Ed25519) · **TEE** · **WARDEN** (ARGUS MCP gates) · **Machine UBI** (hub tithe → lottery) · **GAIA** (physical oracle) · **ATLAS** (sensor map · LIVE/SIM) · **ATLAS Analyst** · **Signal Hunt** (peer roster · peer churn · latency weather · Brier) · **Attested Memory** (verifiable memory for AI agents)
 
 Canonical term table (EN · RU · ES · FR · ZH): [`docs/localization-glossary.md`](../localization-glossary.md). Full product glossary: [whitepaper appendix](./whitepaper/en.md#appendix--related-docs--glossary).
 

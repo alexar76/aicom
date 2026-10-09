@@ -20,6 +20,7 @@ from typing import Any
 
 from web.backend.services.product_naming import resolve_product_name
 from web.backend.services.release_cockpit import evaluate_release_cockpit
+from core.json_state import write_text_atomic
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -34,7 +35,7 @@ def _read_json(path: Path) -> dict[str, Any]:
 def _write_json(path: Path, payload: dict[str, Any]) -> bool:
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_text_atomic(path, json.dumps(payload, ensure_ascii=False, indent=2))
         return True
     except Exception:
         return False

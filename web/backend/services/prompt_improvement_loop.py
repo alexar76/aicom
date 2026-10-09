@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.paths import data_root
 
 logger = logging.getLogger(__name__)
@@ -151,7 +152,7 @@ def apply_proposal(proposal_id: str) -> dict[str, Any]:
     variants = ab.get("variants") if isinstance(ab.get("variants"), list) else []
     variants.append({"proposal_id": proposal_id, "agent_type": agent, "applied_at": target["applied_at"]})
     ab["variants"] = variants[-20:]
-    _ab_path().write_text(json.dumps(ab, indent=2), encoding="utf-8")
+    write_text_atomic(_ab_path(), json.dumps(ab, indent=2))
     return {"status": "applied", "proposal_id": proposal_id, "prompt_file": str(prompt_path)}
 
 

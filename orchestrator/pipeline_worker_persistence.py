@@ -10,6 +10,7 @@ import logging
 import os
 from typing import TYPE_CHECKING, Any
 
+from core.json_state import write_json_atomic
 from core.paths import pipeline_json_path
 from core.pipeline_state_writer import (
     read_pipeline_state_from_sql,
@@ -73,7 +74,9 @@ class PipelineStatePersistence:
                 )
                 logger.warning("Corrupted pipeline state backed up to %s", bad_backup)
             except OSError as copy_exc:
-                logger.warning("Failed to backup corrupted state file: %s", copy_exc)
+                # Without a copy the rebuild below would be the only version left.
+                logger.error("Failed to backup corrupted state file; not rebuilding over it: %s", copy_exc)
+                return None
 
             if not should_recover_json_from_sqlite(self.state_file):
                 logger.warning(
@@ -85,8 +88,7 @@ class PipelineStatePersistence:
             rebuilt = read_pipeline_state_from_sql()
             if not rebuilt:
                 return None
-            with open(self.state_file, "w", encoding="utf-8") as f:
-                json.dump(rebuilt, f, indent=2)
+            write_json_atomic(self.state_file, rebuilt, indent=2, ensure_ascii=True)
             logger.warning(
                 "Recovered pipeline.json from SQL store: products=%s tasks=%s",
                 len(rebuilt.get("products", {})),
@@ -132,11 +134,12 @@ class PipelineStatePersistence:
                     "true",
                     "yes",
                 )
-                with open(self.state_file, "w", encoding="utf-8") as f:
-                    if compact:
-                        json.dump(state, f, separators=(",", ":"))
-                    else:
-                        json.dump(state, f, indent=2)
+                # Temp file + rename: a worker killed mid-save must leave the last good
+                # state, not a truncated file the next start reads as corrupt.
+                if compact:
+                    write_json_atomic(self.state_file, state, indent=None, ensure_ascii=True, separators=(",", ":"))
+                else:
+                    write_json_atomic(self.state_file, state, indent=2, ensure_ascii=True)
                 return True
             except OSError:
                 logger.exception("Cannot save pipeline state file")

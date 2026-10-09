@@ -508,7 +508,9 @@ class SQLiteManager:
     # Atomic compound writes
     # ------------------------------------------------------------------
 
-    def claim_pending_task(self, task_id: str, started_at: float) -> bool:
+    def claim_pending_task(
+        self, task_id: str, started_at: float, task: dict | None = None
+    ) -> bool:
         """Flip a task from pending to running in a single conditional statement.
 
         Task claiming used to be read-then-write: a worker listed the pending tasks,
@@ -516,10 +518,14 @@ class SQLiteManager:
         saw it pending and both ran it. Here the UPDATE only matches a row that is
         still pending, so exactly one racer gets ``rowcount == 1``.
 
+        A task with no row yet (created in memory, not saved) is claimed by inserting
+        it already ``running``: the primary key lets exactly one INSERT through, so the
+        store decides ownership in that case too instead of the caller's memory.
+
         Returns:
-            True when this caller owns the task. A task with no row yet exists only in
-            the caller's memory — nobody else can be racing for it — so that also
-            counts as owned; anything else means another worker already moved it.
+            True when this caller owns the task. False when another worker already
+            moved it, or when it has no row and ``task`` was not given to insert.
+            Storage errors propagate — the caller must not run what it could not claim.
         """
         with self.conn:
             cursor = self.conn.execute(
@@ -529,11 +535,23 @@ class SQLiteManager:
             )
             if cursor.rowcount > 0:
                 return True
-            row = self.conn.execute(
-                "SELECT 1 FROM tasks WHERE id = ? AND workspace_id = ?",
-                (task_id, self.workspace_id),
-            ).fetchone()
-        return row is None
+            if task is None:
+                return False
+            values = self._task_dict_to_sql_values(
+                {**task, "id": task_id, "status": "running", "started_at": started_at}
+            )
+            cursor = self.conn.execute(
+                """INSERT OR IGNORE INTO tasks
+                   (id, workspace_id, product_id, agent_type, status, state, assigned_to,
+                    created_at, started_at, completed_at, input, output,
+                    error, priority, retry_count)
+                   VALUES
+                   (:id, :workspace_id, :product_id, :agent_type, :status, :state, :assigned_to,
+                    :created_at, :started_at, :completed_at, :input, :output,
+                    :error, :priority, :retry_count)""",
+                values,
+            )
+            return cursor.rowcount > 0
 
     def advance_product_and_enqueue(
         self, product: dict, tasks: list[dict] | None = None

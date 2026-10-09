@@ -17,6 +17,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
+from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
 from core.paths import data_root as default_data_root
 from llm import GenerationConfig, LLMRouter
@@ -934,8 +935,7 @@ export { fetchData };""",
         path.mkdir(parents=True, exist_ok=True)
         
         filepath = path / fname
-        with open(filepath, "w") as f:
-            json.dump(data, f, indent=2)
+        write_text_atomic(filepath, json.dumps(data, indent=2))
         
         logger.debug(f"Saved artifact: {filepath}")
         return str(filepath)

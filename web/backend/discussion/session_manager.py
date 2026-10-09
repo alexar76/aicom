@@ -21,6 +21,8 @@ import threading
 from pathlib import Path
 from typing import Optional
 
+from core.json_state import write_text_atomic
+
 from .models import (
     AgentType,
     AvailableAgent,
@@ -160,8 +162,7 @@ def _read_json(path: str) -> Optional[dict]:
 def _write_json(path: str, data: dict):
     """Write a dict to a JSON file, creating directories if needed."""
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    write_text_atomic(path, json.dumps(data, indent=2, ensure_ascii=False))
 
 
 def _delete_file(path: str) -> bool:

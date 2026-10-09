@@ -23,6 +23,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
+
 # The AI-market envelope. Getting this wrong is silent: the hub rejects the call on validation, so
 # the product sees a refusal rather than an error, and the round sees nothing at all.
 #
@@ -129,13 +131,10 @@ def _write_cache(caps: list[dict[str, Any]], *, source: str) -> None:
     path = _cache_path()
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(
-            json.dumps(
+        write_text_atomic(path, json.dumps(
                 {"fetched_at": _time.time(), "source": source, "capabilities": caps},
                 ensure_ascii=False,
-            ),
-            encoding="utf-8",
-        )
+            ))
     except OSError:
         pass
 

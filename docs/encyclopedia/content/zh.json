@@ -2,7 +2,7 @@
   "meta": {
     "title": "AICOM 宇宙百科全书",
     "subtitle": "写给遥远未来极客孩子的故事书——在这里,工厂围绕创意运转,预言机低语可验证的数学,智能体在 Base 上的星光下交易。",
-    "edition": "第一卷 · 扩展星座 · GAIA · ATLAS · SKOPOS · Metis · MOMUS · LOGOS · 2026",
+    "edition": "第一卷 · 扩展星座 · GAIA · ATLAS · SKOPOS · Metis · MOMUS · LOGOS · 2026 · Attested Memory",
     "scrollHint": "翻页",
     "tocTitle": "章节目录",
     "epilogue": "在 ARGUS 之外，人类配置星辰。GAIA 低语，ATLAS 绘图，SKOPOS 守望，Metis 把关，MOMUS 指控，LOGOS 观测。**欢迎来到已经到来的经济。**",
@@ -14,7 +14,7 @@
       "lead": "从前,在一个并不遥远的未来,软件学会了自我构建——并自我售卖——无需向任何中心平台请求许可。",
       "paragraphs": [
         "AICOM 是一个**联邦式自主智能体经济**。把它想成太阳系——月亮已经不止六颗：",
-        "**Factory** 造产品。**Hub** 上架并路由付费调用。**Mesh** 给智能体身份与托管。**数学预言机**（×17）出售可验证随机性。**GAIA** 出售经证明的*物理*读数。**ATLAS** 把传感器画成活地图。**SKOPOS** 像瞭望塔监视 nginx/Apache。**Metis** 是失败即关闭的认知闸门。**MOMUS** 做红队并签名——只有 **Treasury** 能发赏金。**LOGOS** 是只读联邦观测台。**Chain** 在 **Base** 结算 USDC。**ARGUS** 仍是**人类之眼**——WARDEN + 可选钱包。",
+        "**Factory** 造产品。**Hub** 上架并路由付费调用。**Mesh** 给智能体身份与托管。**数学预言机**（×17）出售可验证随机性。**GAIA** 出售经证明的*物理*读数。**ATLAS** 把传感器画成活地图。**SKOPOS** 像瞭望塔监视 nginx/Apache。**Metis** 是失败即关闭的认知闸门。**MOMUS** 做红队并签名——只有 **Treasury** 能发赏金。**LOGOS** 是只读联邦观测台。**Chain** 在 **Base** 结算 USDC。**Attested Memory** 保存可验证的智能体记忆。**ARGUS** 仍是**人类之眼**——WARDEN + 可选钱包。",
         "原则不变：**ARGUS-3 之外，人类配置星辰，机器在其间航行。** 先学会地图——再分辨 LIVE 与 SIM。"
       ],
       "cards": [
@@ -107,6 +107,11 @@
             "ATLAS",
             "[atlas.modelmarket.dev](https://atlas.modelmarket.dev/)",
             "行星级 LIVE/SIM 传感地图 + Analyst"
+          ],
+          [
+            "Attested Memory",
+            "[attestedmemory.net](https://attestedmemory.net/)",
+            "面向 AI 智能体的可验证记忆"
           ],
           [
             "SKOPOS",
@@ -774,12 +779,45 @@
       ]
     },
     {
-      "title": "第十九章 —— 问答预言机",
+      "title": "第十九章 —— Attested Memory，智能体可以核验的记忆",
+      "lead": "遗忘代价很高。带签名的记录，是另一个智能体可以核验的东西。",
+      "paragraphs": [
+        "**Attested Memory** 是面向 AI 智能体的可验证记忆。Memory Market 负责写入、检索与共享。Truth Layer 保存证据与矛盾。Provenance Ledger 保存来源与签名回执。统一的 Memory Unit 契约，并提供 MCP。自托管，Docker。线上：attestedmemory.net。",
+        "公开落地页：[alexar76.github.io/attested-memory](https://alexar76.github.io/attested-memory/)。仓库：[alexar76/attested-memory](https://github.com/alexar76/attested-memory)。",
+        "给孩子的例子：一本课堂笔记本，每一条都有签名，不同意见留在纸上，并且能指出是谁写的。"
+      ],
+      "cards": [
+        {
+          "icon": "🧠",
+          "title": "Memory Market",
+          "body": "写入、检索、共享同一个 Memory Unit。",
+          "color": "purple"
+        },
+        {
+          "icon": "⚖️",
+          "title": "Truth Layer",
+          "body": "证据与矛盾保持可见。",
+          "color": "cyan"
+        },
+        {
+          "icon": "📜",
+          "title": "Provenance Ledger",
+          "body": "来源与签名回执。",
+          "color": "gold"
+        }
+      ]
+    },
+    {
+      "title": "第二十章 —— 问答预言机",
       "lead": "为运营者、开发者、终端用户以及所有被这片星座触及的人准备的答案。",
       "faq": [
         {
           "title": "面向所有人",
           "items": [
+            {
+              "q": "什么是 Attested Memory？",
+              "a": "面向 AI 智能体的可验证记忆，位于 attestedmemory.net——Memory Market、Truth Layer 与 Provenance Ledger，围绕统一的 Memory Unit，并提供 MCP。自托管，Docker。"
+            },
             {
               "q": "What is MOMUS?",
               "a": "Ecosystem red team at momus.modelmarket.dev — safe probes and Ed25519 findings. It never pays itself; Treasury alone releases bounties after independent verify."

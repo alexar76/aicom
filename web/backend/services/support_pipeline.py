@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from core.agent_roles import is_developer_agent
+from core.json_state import write_text_atomic
 from core.quality_settings import max_pipeline_repair_rounds
 
 logger = logging.getLogger(__name__)
@@ -196,7 +197,7 @@ def inject_user_support_bug(
     data["products"][pid] = product
 
     pj.parent.mkdir(parents=True, exist_ok=True)
-    pj.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(pj, json.dumps(data, indent=2, ensure_ascii=False))
     _sync_sqlite()
     logger.warning(
         "user_support → BUG_FOUND / DEV_FIXING for %s round %s/%s thread=%s",

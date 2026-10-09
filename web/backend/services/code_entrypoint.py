@@ -7,6 +7,7 @@ import logging
 import re
 from pathlib import Path
 
+from core.json_state import write_text_atomic
 from core.paths import data_root
 from web.backend.services.sandbox_static_entry import _STATIC_PREVIEW_CANDIDATES
 
@@ -78,7 +79,7 @@ def ensure_web_entrypoint_at_product_root(product_id: str) -> bool:
                 if not has_root:
                     files.append({"path": "index.html", "role": "entrypoint", "copied_from": str(src.relative_to(code_dir))})
                     manifest["files"] = files
-                    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+                    write_text_atomic(manifest_path, json.dumps(manifest, indent=2))
         except (OSError, json.JSONDecodeError) as exc:
             logger.debug("manifest patch after entrypoint copy failed for %s: %s", product_id, exc)
 

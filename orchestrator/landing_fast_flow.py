@@ -8,6 +8,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
+
 _LANDING_FAST_JSON = Path(__file__).resolve().parents[1] / "config" / "pipeline_flow_landing_fast.json"
 
 
@@ -123,8 +125,5 @@ def write_landing_mini_spec(
     spec_dir = data_root / "specs" / product_id
     spec_dir.mkdir(parents=True, exist_ok=True)
     payload = {"specification": spec_inner, "delivery_profile": MARKETING_LANDING}
-    (spec_dir / "specification.json").write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    write_text_atomic(spec_dir / "specification.json", json.dumps(payload, ensure_ascii=False, indent=2))
     return spec_inner

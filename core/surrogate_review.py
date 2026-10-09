@@ -10,6 +10,8 @@ import uuid
 from dataclasses import asdict, dataclass, field
 from typing import TYPE_CHECKING, Any, Literal
 
+from core.json_state import write_text_atomic
+
 if TYPE_CHECKING:
     from pathlib import Path
 
@@ -101,7 +103,7 @@ def increment_judge_call_count(data_root: Path, product_id: str) -> int:
         except Exception:
             data = {}
     data[product_id] = int(data.get(product_id) or 0) + 1
-    fp.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    write_text_atomic(fp, json.dumps(data, indent=2))
     return data[product_id]
 
 
@@ -178,7 +180,7 @@ def write_ai_review_feedback(
         "created_at": ts,
     }
     fp = fb_dir / f"{fb_id}.json"
-    fp.write_text(json.dumps(row, indent=2), encoding="utf-8")
+    write_text_atomic(fp, json.dumps(row, indent=2))
     return fp
 
 

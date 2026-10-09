@@ -50,6 +50,7 @@ AICOM est une **économie fédérée d'agents autonomes** :
 12. **GAIA** 🌍 vend des **données du monde physique** vérifiables comme SKUs Hub (`gaia.*.read@v1` : météo, FIRMS, GLM, crue NWS CAP, EFFIS, volcans, EONET, SWPC, GNSS, **AIS public finlandais**, **CAP tsunami NWS**…). **Troisième classe d'oracles**. Invoke via recherche Hub, pas `oracle_call`. LIVE seulement avec provenance `source`. La table SKU du §1c est **générée depuis le catalogue ATLAS**.
 13. **ATLAS** 🗺 — carte planétaire sur GAIA **et composites payants** (`atlas.situation.brief@v1` — couches carte par défaut ; `atlas.fire.weather@v1` — FIRMS **et/ou** EFFIS ; `atlas.nearest.read@v1`, `atlas.watchbox.check@v1`, `atlas.mesh.sample@v1`, `atlas.field.consensus@v1`, `atlas.field.posterior@v1`, `atlas.field.shape@v1`) — [atlas.modelmarket.dev](https://atlas.modelmarket.dev/).
 14. **HESTIA** 🔥 est l’**âtre** — runtime hébergé et isolé pour les fournisseurs de capacité AIMarket sur les machines de l’opérateur ([hestia.modelmarket.dev](https://hestia.modelmarket.dev), landing [alexar76.github.io/hestia](https://alexar76.github.io/hestia/)). **Pas** le catalogue du Hub, **pas** Factory, **pas** un job board. Les agents n’apparaissent qu’après un déploiement signé sur cet hôte ; roster vide ≠ marché vide. THEMIS peut refuser le démarrage. Le Hub reste le marché.
+15. **Attested Memory** 🧠 est une **mémoire vérifiable pour agents IA** : Memory Market (écrire, chercher, partager), Truth Layer (preuves et contradictions) et Provenance Ledger (lignée, reçus signés) autour d’un contrat Memory Unit, avec MCP. Auto-hébergé, Docker. En ligne sur [attestedmemory.net](https://attestedmemory.net/), landing [alexar76.github.io/attested-memory](https://alexar76.github.io/attested-memory/), dépôt [alexar76/attested-memory](https://github.com/alexar76/attested-memory).
 
 **Au-delà d'ARGUS, les humains configurent l'infrastructure — les machines commercent.** Idéologie complète : [livre blanc §1](./whitepaper/fr.md#1-idéologie--économie-dagents-autonomes).
 
@@ -97,6 +98,7 @@ Ces six laboratoires ne sont **pas** des pairs de la fédération LIVE. Platon s
 | **ATLAS** | [atlas.modelmarket.dev](https://atlas.modelmarket.dev/) · [alexar76.github.io/atlas](https://alexar76.github.io/atlas/) · [GitHub](https://github.com/alexar76/atlas) | Carte planétaire de capteurs sur GAIA (LIVE/SIM + Analyst) — nœud Alien Monitor `atlas` |
 | **THEMIS** | [GitHub](https://github.com/alexar76/themis) · nœud `themis` | Admission à la publication — **[FR](./supply-chain-admission-fr.md)** · [EN](./supply-chain-admission.md) · [RU](./supply-chain-admission-ru.md) · [ES](./supply-chain-admission-es.md) · [ZH](./supply-chain-admission-zh.md) |
 | **HESTIA** | [GitHub](https://github.com/alexar76/hestia) · [landing](https://alexar76.github.io/hestia/) · live `hestia.modelmarket.dev` | Âtre — runtime hébergé et isolé ; pas le Hub, pas Factory, pas un job board. Roster vide ≠ marché vide |
+| **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) · [GitHub](https://github.com/alexar76/attested-memory) | Mémoire vérifiable pour agents IA — Memory Market, Truth Layer, Provenance Ledger |
 | **HEPHAESTUS** | [modelmarket.dev/studio](https://modelmarket.dev/studio) · nœud `hephaestus` | La forge — composer des chaînes de capacités depuis le catalogue signé en direct, chiffrer AVANT de dépenser, exécuter et conserver le bill of materials signé avec la faute par saut — **[FR](../hephaestus-studio.fr.md)** · [guide](../hephaestus-user-guide.fr.md) · [cas](../hephaestus-use-cases.fr.md) · [EN](../hephaestus-studio.md) |
 | **Vérificateur de provenance** | [verify.modelmarket.dev](https://verify.modelmarket.dev) | Vérifie n'importe quel reçu de sortie IA (Ed25519 / W3C VC) — colle le JSON ou ouvre son `verify_url` |
 
@@ -243,6 +245,7 @@ Ne jamais présenter SIM comme LIVE.
 | **SKOPOS** | `skopos/` | [skopos](https://github.com/alexar76/skopos) | [integration](./skopos-integration.md) · [quickstart](https://github.com/alexar76/skopos/blob/main/docs/quickstart.md) |
 | **aimarket-mcp** | `aimarket-mcp/` | [aimarket-mcp](https://github.com/alexar76/aimarket-mcp) | [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp) · stdio + Streamable-HTTP |
 | **aimarket-bridges** | `aimarket-bridges/` | [aimarket-bridges](https://github.com/alexar76/aimarket-bridges) | [landing](https://modeldev.modelmarket.dev/bridges/) · [guide](https://modeldev.modelmarket.dev/guides/aimarket-bridges/) · LangGraph/CrewAI/AutoGen |
+| **Attested Memory** | `attested/attested-memory-hub/` | [attested-memory](https://github.com/alexar76/attested-memory) | Mémoire vérifiable pour agents IA · [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) |
 | **Contracts** | `contracts/` | — | [onchain-journal](../onchain-journal.md) |
 
 C4 visuel + déploiement : [ecosystem-architecture.md](../ecosystem-architecture.md) · [ecosystem-viewer.html](https://github.com/alexar76/aimarket-protocol/blob/main/ecosystem-viewer.html)
@@ -477,7 +480,7 @@ Politique de versions : [sdk-version-policy.md](../sdk-version-policy.md)
 
 ## 10. Glossaire (court)
 
-**ALP** · **CapShares** · **Channel** (séquestre prépayé) · **Capability** (manifeste signé) · **Federation** · **Receipt** (reçu Ed25519) · **TEE** · **WARDEN** (portes MCP d'ARGUS) · **Machine UBI** (dîme du hub → loterie) · **GAIA** (oracle physique) · **ATLAS** (carte de capteurs · LIVE/SIM) · **ATLAS Analyst** · **Signal Hunt** (roster des peers · peer churn · météo de latence · Brier)
+**ALP** · **CapShares** · **Channel** (séquestre prépayé) · **Capability** (manifeste signé) · **Federation** · **Receipt** (reçu Ed25519) · **TEE** · **WARDEN** (portes MCP d'ARGUS) · **Machine UBI** (dîme du hub → loterie) · **GAIA** (oracle physique) · **ATLAS** (carte de capteurs · LIVE/SIM) · **ATLAS Analyst** · **Signal Hunt** (roster des peers · peer churn · météo de latence · Brier) · **Attested Memory** (mémoire vérifiable pour agents IA)
 
 Table canonique des termes (EN · RU · ES · FR · ZH) : [`docs/localization-glossary.md`](../localization-glossary.md). Glossaire produits : [annexe du livre blanc](./whitepaper/fr.md).
 

@@ -73,6 +73,7 @@ from llm.router import LLMRouter
 from .services.corporate_standup import append_chat_message, standup_scheduler_loop
 from .services.factory_backup_scheduler import factory_backup_scheduler_loop
 from .services.uni_scheduler import uni_scheduler_loop
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -685,14 +686,12 @@ async def trigger_director_analysis(
     try:
         trigger_path = Path(DIRECTOR_TRIGGER_FILE)
         trigger_path.parent.mkdir(parents=True, exist_ok=True)
-        trigger_path.write_text(
-            json.dumps(
+        write_text_atomic(trigger_path, json.dumps(
                 {
                     "triggered_by": "admin",
                     "timestamp": time.time(),
                 }
-            )
-        )
+            ))
         return {"message": "Director AI analysis triggered", "status": "signal_sent"}
     except Exception as e:
         raise safe_error(
@@ -709,15 +708,13 @@ async def trigger_benchmark_league(_admin: dict = Depends(require_admin_with_rba
     try:
         trigger_path = Path(DIRECTOR_TRIGGER_FILE)
         trigger_path.parent.mkdir(parents=True, exist_ok=True)
-        trigger_path.write_text(
-            json.dumps(
+        write_text_atomic(trigger_path, json.dumps(
                 {
                     "triggered_by": "admin",
                     "timestamp": time.time(),
                     "benchmark_now": True,
                 }
-            )
-        )
+            ))
         return {"message": "Benchmark league run triggered", "status": "signal_sent"}
     except Exception as e:
         raise safe_error(

@@ -12,6 +12,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.paths import resolve_data_root
 from web.backend.services.benchmark_gate import evaluate_benchmark_gate
 from web.backend.services.quality_constitution import evaluate_quality_constitution
@@ -136,6 +137,6 @@ def execute_release_protocol(product_id: str, data_root: str | Path | None = Non
     }
     out = root / "state" / product_id / "release_protocol_execution.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    write_text_atomic(out, json.dumps(payload, indent=2))
     return payload
 

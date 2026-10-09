@@ -6,6 +6,7 @@ import time
 import uuid
 from typing import TYPE_CHECKING, Any
 
+from core.json_state import write_text_atomic
 from core.paths import batch_pipeline_queue_path
 
 if TYPE_CHECKING:
@@ -39,7 +40,7 @@ def load_batch_queue(path: Path = QUEUE_PATH) -> dict[str, Any]:
 def save_batch_queue(doc: dict[str, Any], path: Path = QUEUE_PATH) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     doc["updated_at"] = time.time()
-    path.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_text_atomic(path, json.dumps(doc, ensure_ascii=False, indent=2))
 
 
 def _trim_batch_items(items: list[dict[str, Any]], *, max_items: int = _MAX_BATCH_ITEMS) -> list[dict[str, Any]]:

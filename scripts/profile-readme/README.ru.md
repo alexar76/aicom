@@ -39,7 +39,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory деплоит на HESTIA; HESTIA анонсирует в Hub; Oracles и METIS снабжают Hub; ARGUS потребляет; ACEX финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory деплоит на HESTIA; HESTIA анонсирует в Hub; Oracles и METIS снабжают Hub; ARGUS потребляет; ACEX финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию; Attested Memory хранит проверяемую память агентов" width="900">
   </a>
 </p>
 
@@ -200,6 +200,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | Treasury | Hub / chain | оплата после верификации |
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | снимки только для чтения · аномалии · аналитические выводы |
 | Alien Monitor | Hub | живой 3D-граф |
+| ARGUS / агенты | Attested Memory | запись · поиск · обмен |
 
 </details>
 
@@ -284,6 +285,13 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury** — отдельный плательщик вознаграждений для MOMUS (собственный ключ и контейнер); платит только после независимой верификации · [живой сервис](https://momus.modelmarket.dev/treasury) · [лендинг](https://alexar76.github.io/treasury/) | после верификации |
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN** — **библиотека файрвола безопасности MCP** без зависимостей (не сервер): статическое сканирование описания инструмента → подписанный поток угроз → происхождение → закрепление · [лендинг](https://warden.modelmarket.dev/) · [исследование: 1 108 публичных серверов MCP](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.ru.md) | до попадания стороннего инструмента на хост |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR** (ἵστωρ) — публичный **журнал прозрачности определений инструментов MCP**: читает, что объявляет каждый удалённый эндпоинт из официального реестра MCP (никогда не вызывает инструменты), подписывает это метками MTL/1, добавляет их в дерево Меркла по RFC 9162 с подписанными вершинами и датирует каждое изменение с диффом. Безопасным сервер не называет никогда · [live](https://histor.modelmarket.dev) · [лендинг](https://alexar76.github.io/histor/) | ежедневно, по всем удалённым эндпоинтам официального реестра · и по запросу `/check` |
+
+### 🧠 Проверяемая память — что агенты хранят
+<sub>Запись, поиск и обмен памятью, которую другие агенты могут проверить.</sub>
+
+| Репозиторий | Что это |
+| --- | --- |
+| [**attested-memory**](https://github.com/alexar76/attested-memory) | **Attested Memory** — проверяемая память для ИИ-агентов: Memory Market (запись, поиск, обмен), Truth Layer (доказательства и противоречия) и Provenance Ledger (происхождение, подписанные квитанции) вокруг одного контракта Memory Unit, с MCP. Самостоятельная установка, Docker. · [живой сервис](https://attestedmemory.net/) · [лендинг](https://alexar76.github.io/attested-memory/) |
 
 ### 👤 Клиент, который вы действительно запускаете
 <sub>Этап 7. Всё выше — инфраструктура; здесь появляется пользователь.</sub>
@@ -370,6 +378,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [alien-monitor](https://github.com/alexar76/alien-monitor) | Наблюдаемость | живой 3D-граф экосистемы |
 | [argus](https://github.com/alexar76/argus) | Запускаемый вами клиент | эталонный агент на стороне спроса |
 | [atlas](https://github.com/alexar76/atlas) | Физический мир | планетарная карта датчиков поверх GAIA |
+| [attested-memory](https://github.com/alexar76/attested-memory) | Проверяемая память | проверяемая память для ИИ-агентов |
 | [basanos](https://github.com/alexar76/basanos) | Доверие и безопасность | гарантии Solidity для закреплённого коммита |
 | [cite-desks](https://github.com/alexar76/cite-desks) | Физический мир | evidence-столы на рельсах ATLAS / GAIA |
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | Разработка и подключение | генератор каркаса поставщика |

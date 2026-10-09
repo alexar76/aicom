@@ -21,6 +21,7 @@ from typing import Any, Optional
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
 
+from core.json_state import write_text_atomic
 from web.backend.core.admin_roles import require_admin_with_rbac
 from web.backend.services.corporate_standup import run_standup_session
 
@@ -104,8 +105,7 @@ def _load_messages() -> list[dict]:
 def _save_messages(messages: list[dict]):
     """Save messages to the JSON file, creating directories if needed."""
     os.makedirs(os.path.dirname(CHAT_FILE), exist_ok=True)
-    with open(CHAT_FILE, "w", encoding="utf-8") as f:
-        json.dump(messages, f, indent=2, ensure_ascii=False)
+    write_text_atomic(CHAT_FILE, json.dumps(messages, indent=2, ensure_ascii=False))
 
 
 def _get_admin_config() -> dict:
@@ -121,8 +121,7 @@ def _get_admin_config() -> dict:
 
 def _save_admin_config(config: dict):
     os.makedirs(os.path.dirname(ADMIN_CONFIG_FILE), exist_ok=True)
-    with open(ADMIN_CONFIG_FILE, "w", encoding="utf-8") as f:
-        json.dump(config, f, indent=2, ensure_ascii=False)
+    write_text_atomic(ADMIN_CONFIG_FILE, json.dumps(config, indent=2, ensure_ascii=False))
 
 
 def _get_chat_settings_model() -> ChatSettingsResponse:

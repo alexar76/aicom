@@ -18,6 +18,7 @@ from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY
 from marketplace_taxonomy import MARKETPLACE_CATEGORY_IDS, slug_to_marketplace_category
 
 from core.paths import discovery_dir
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -346,7 +347,7 @@ class DiscoveryPipeline:
             "generated_at": int(time.time()),
             "sources": {name: rt.to_health() for name, rt in self._sources.items()},
         }
-        self.source_health_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_text_atomic(self.source_health_file, json.dumps(payload, ensure_ascii=False, indent=2))
 
     def _with_source_runtime(
         self,
@@ -395,10 +396,7 @@ class DiscoveryPipeline:
             filtered = filtered[-self.signal_max_rows :]
         removed = len(rows) - len(filtered)
         if removed > 0:
-            self.signals_db.write_text(
-                "\n".join(json.dumps(x, ensure_ascii=False) for x in filtered) + ("\n" if filtered else ""),
-                encoding="utf-8",
-            )
+            write_text_atomic(self.signals_db, "\n".join(json.dumps(x, ensure_ascii=False) for x in filtered) + ("\n" if filtered else ""))
         return {"before": len(rows), "after": len(filtered), "removed": max(0, removed)}
 
     def collect_signals(self) -> list[dict[str, Any]]:
@@ -784,7 +782,7 @@ JSON only."""
             "ranked_ideas": ranked[:12],
             "anomaly": anomaly,
         }
-        self.ranked_ideas_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_text_atomic(self.ranked_ideas_file, json.dumps(payload, ensure_ascii=False, indent=2))
         self.weekly_digest_file.write_text(
             self._build_weekly_digest(all_signals[-500:], ranked),
             encoding="utf-8",

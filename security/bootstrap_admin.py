@@ -18,6 +18,7 @@ import sys
 import time
 from pathlib import Path
 
+from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
 from core.paths import admin_users_path, bootstrap_admin_secret_path, legacy_admin_path
 
@@ -189,7 +190,7 @@ def bootstrap_admin_if_needed() -> int:
             "created_at": time.time(),
         }
         ADMIN_JSON.parent.mkdir(parents=True, exist_ok=True)
-        ADMIN_JSON.write_text(json.dumps(legacy, indent=2), encoding="utf-8")
+        write_text_atomic(ADMIN_JSON, json.dumps(legacy, indent=2))
         try:
             os.chmod(ADMIN_JSON, 0o600)
         except OSError as _suppressed_exc:

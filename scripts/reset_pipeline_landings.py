@@ -93,7 +93,10 @@ def main() -> int:
     else:
         empty_state = {"products": {}, "task_queue": []}
         json_path.parent.mkdir(parents=True, exist_ok=True)
-        json_path.write_text(json.dumps(empty_state, indent=2), encoding="utf-8")
+        # Temp file + rename: the worker reads this file live, so it must never see it half-written.
+        tmp = json_path.with_name(json_path.name + ".tmp")
+        tmp.write_text(json.dumps(empty_state, indent=2), encoding="utf-8")
+        os.replace(tmp, json_path)
         print(f"[reset] wrote empty {json_path}", file=sys.stderr)
 
         if os.environ.get("USE_SQLITE", "").strip().lower() in ("1", "true", "yes"):

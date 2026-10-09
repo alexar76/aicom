@@ -21,6 +21,7 @@ from typing import Any, Optional
 from core.paths import config_path
 from core.config_merge import load_merged_config
 from core.logging_utils import log_suppressed
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -216,7 +217,7 @@ def rebuild_reference_manifest(templates_root: Path) -> dict[str, Any]:
         "templates": scanned,
     }
     mp = templates_root / "manifest.json"
-    mp.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_text_atomic(mp, json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
     return payload
 
 
@@ -264,7 +265,7 @@ def upsert_reference_template_upload(
 
     display_title = (title or "").strip() or tid
     meta = {"title": display_title, "source": "admin_upload"}
-    (dest / "reference.meta.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_text_atomic(dest / "reference.meta.json", json.dumps(meta, indent=2, ensure_ascii=False) + "\n")
 
     for rel, content in files:
         rel_norm = str(rel or "").strip().replace("\\", "/").lstrip("/")
@@ -440,10 +441,7 @@ def pick_template_folder_name(
         chosen = valid_paths[idx % len(valid_paths)]
         try:
             state_path.parent.mkdir(parents=True, exist_ok=True)
-            state_path.write_text(
-                json.dumps({"round_robin_index": idx + 1}, indent=0),
-                encoding="utf-8",
-            )
+            write_text_atomic(state_path, json.dumps({"round_robin_index": idx + 1}, indent=0))
         except OSError as _suppressed_exc:
             log_suppressed(logger, "non-fatal (web/backend/services/reference_templates.py)", exc_info=_suppressed_exc)
         return chosen

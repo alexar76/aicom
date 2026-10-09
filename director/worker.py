@@ -34,6 +34,7 @@ from core.paths import (
     scripts_dir,
     venv_python,
 )
+from core.json_state import write_text_atomic
 
 # Ensure we can import from the project root
 _app = str(app_root())
@@ -211,17 +212,14 @@ class DirectorWorker:
             )
             status_path = Path(BENCHMARK_STATUS_FILE)
             status_path.parent.mkdir(parents=True, exist_ok=True)
-            status_path.write_text(
-                json.dumps(
+            write_text_atomic(status_path, json.dumps(
                     {
                         "status": "skipped_no_token",
                         "ended_at": time.time(),
                         "hint": "Set AIFACTORY_BENCHMARK_ADMIN_TOKEN or AIFACTORY_BENCHMARK_ADMIN_TOKEN_FILE",
                     },
                     indent=2,
-                ),
-                encoding="utf-8",
-            )
+                ))
             return
 
         status_path = Path(BENCHMARK_STATUS_FILE)
@@ -240,8 +238,7 @@ class DirectorWorker:
         except Exception as exc:
             logger.debug("Benchmark status precheck: %s", exc)
 
-        status_path.write_text(
-            json.dumps(
+        write_text_atomic(status_path, json.dumps(
                 {
                     "status": "running",
                     "started_at": time.time(),
@@ -249,16 +246,11 @@ class DirectorWorker:
                     "timeout_min": self._benchmark_timeout_min,
                 },
                 indent=2,
-            ),
-            encoding="utf-8",
-        )
+            ))
         ideas_file = scripts_dir() / "benchmark_ideas.example.txt"
         if not ideas_file.exists():
             logger.warning("Benchmark autorun skipped: ideas file missing")
-            status_path.write_text(
-                json.dumps({"status": "failed", "error": "ideas_file_missing", "ended_at": time.time()}, indent=2),
-                encoding="utf-8",
-            )
+            write_text_atomic(status_path, json.dumps({"status": "failed", "error": "ideas_file_missing", "ended_at": time.time()}, indent=2))
             return
         ts = int(time.time())
         out = benchmarks_reports_dir() / f"run-{ts}.json"
@@ -290,8 +282,7 @@ class DirectorWorker:
         )
         if proc.returncode != 0:
             logger.warning("Benchmark league run failed: %s", proc.stderr[-400:])
-            status_path.write_text(
-                json.dumps(
+            write_text_atomic(status_path, json.dumps(
                     {
                         "status": "failed",
                         "returncode": proc.returncode,
@@ -300,12 +291,9 @@ class DirectorWorker:
                         "output_report": str(out),
                     },
                     indent=2,
-                ),
-                encoding="utf-8",
-            )
+                ))
         else:
-            status_path.write_text(
-                json.dumps(
+            write_text_atomic(status_path, json.dumps(
                     {
                         "status": "completed",
                         "returncode": 0,
@@ -313,9 +301,7 @@ class DirectorWorker:
                         "output_report": str(out),
                     },
                     indent=2,
-                ),
-                encoding="utf-8",
-            )
+                ))
         await self._refresh_benchmark_scorecard()
 
     async def _benchmark_league_loop(self):
@@ -388,8 +374,7 @@ class DirectorWorker:
             existing["pending"] = existing["pending"][-50:]
             existing["applied"] = existing["applied"][-100:]
 
-            with open(DECISIONS_FILE, "w") as f:
-                json.dump(existing, f, indent=2)
+            write_text_atomic(DECISIONS_FILE, json.dumps(existing, indent=2))
 
             logger.info(f"Saved {len(pending)} pending + {len(applied)} auto decisions")
         except Exception as e:
@@ -407,7 +392,7 @@ class DirectorWorker:
             else:
                 trigger_path = Path(TRIGGER_SIGNAL_FILE)
                 trigger_path.parent.mkdir(parents=True, exist_ok=True)
-                trigger_path.write_text(json.dumps({"timestamp": time.time(), "benchmark_now": True}), encoding="utf-8")
+                write_text_atomic(trigger_path, json.dumps({"timestamp": time.time(), "benchmark_now": True}))
                 logger.warning("Auto-action: benchmark_now signal emitted due to pipeline SLO breach")
         if "run_catalog_compliance_remediation" in actions:
             try:
@@ -422,7 +407,7 @@ class DirectorWorker:
                 state["products"] = products
                 state["task_queue"] = task_queue
                 p.parent.mkdir(parents=True, exist_ok=True)
-                p.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+                write_text_atomic(p, json.dumps(state, ensure_ascii=False, indent=2))
                 sync_sqlite_from_pipeline_json()
                 logger.warning("Auto-action: catalog hardening remediation applied")
             except Exception as exc:
@@ -763,8 +748,7 @@ class DirectorWorker:
 
             state.setdefault("products", {})[product_id] = product
             pipeline_file.parent.mkdir(parents=True, exist_ok=True)
-            with open(pipeline_file, "w") as f:
-                json.dump(state, f, indent=2)
+            write_text_atomic(pipeline_file, json.dumps(state, indent=2))
 
             # Keep SQLite storefront/API in sync when JSON is source of truth
             try:

@@ -23,6 +23,7 @@ C4Context
   System(aicom, "AICOM monorepo", "Factory pipeline + hub + LOGOS intelligence + SDKs + desktop apps")
   System(themis, "THEMIS", "Publish-time admission gate · approve/review/reject")
   System(hestia, "HESTIA", "Hosted runtime · isolated · not Hub, not Factory")
+  System(attested, "Attested Memory", "Verifiable memory for AI agents")
   System(basanos, "BASANOS", "Solidity touchstone · signed PASS/REVIEW/FAIL packs")
   System(hephaestus, "HEPHAESTUS", "Capability-chain forge · studio on Hub")
   System_Ext(llm, "LLM providers", "OpenAI-compatible APIs, Ollama")
@@ -33,6 +34,7 @@ C4Context
   Rel(themis, aicom, "Signed admit / review / reject before catalogue")
   Rel(builder, hestia, "Signed deploy onto the hosted runtime")
   Rel(hestia, aicom, "Explicit announce · hosting is not listing")
+  Rel(enduser, attested, "Write, search, and share memory")
   Rel(aicom, basanos, "Solidity trees at pinned commit")
   Rel(basanos, aicom, "Assurance pack · advisory")
   Rel(enduser, hephaestus, "Compose chains in studio")
@@ -54,6 +56,7 @@ C4Context
 | [`aimarket-hub/`](https://github.com/alexar76/aimarket-hub/tree/main/) | Federation hub (search, invoke, plugins) | `aimarket-hub` |
 | [`themis/`](https://github.com/alexar76/themis) | Publish-time admission gate (`approve` / `review` / `reject`) | `themis` |
 | [`hestia/`](https://github.com/alexar76/hestia) | Hosted runtime — isolated (not Hub, not Factory) | `hestia` |
+| [`attested/attested-memory-hub/`](https://github.com/alexar76/attested-memory) | Verifiable memory for AI agents | `attested-memory` |
 | [`basanos/`](https://github.com/alexar76/basanos) | Solidity touchstone — signed assurance at pinned commit | `basanos` |
 | [`hephaestus/`](https://github.com/alexar76/hephaestus) | Capability-chain forge · Hub studio | `hephaestus` |
 | [`aimarket-protocol/`](https://github.com/alexar76/aimarket-protocol/tree/main/) | Protocol v2 spec + schemas | `aimarket-protocol` |
@@ -108,6 +111,10 @@ flowchart TB
     HS["signed deploy · isolated tenant · listen"]
   end
 
+  subgraph memorybox["Attested Memory"]
+    AM["write · search · share<br/>signed receipts"]
+  end
+
   subgraph admission["THEMIS · publish-time admission"]
     TH["approve · review · reject · signed receipt"]
   end
@@ -152,6 +159,7 @@ flowchart TB
   WIDGET --> SRCH
   AGENT --> SRCH
   AGENT --> INV
+  AGENT --> AM
   INV --> CH
   PLG --> INV
   IDX -->|"public manifest · stats · peers"| SNAP
@@ -231,7 +239,7 @@ sequenceDiagram
     Hub-->>App: "403 (no debit recorded - nothing to refund)"
   else allowed
     Hub->>Provider: "Route invoke"
-    Note over Provider: "Factory products, peer hubs, oracles, GAIA"
+    Note over Provider: "Factory products, peer hubs, oracles, GAIA, Attested Memory"
     Provider-->>Hub: "output + price_usd"
     Hub->>Ledger: "Debit price_usd (off-chain, no tx)"
     Hub->>Plugins: "on_invoke_post_check"

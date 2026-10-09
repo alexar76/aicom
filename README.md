@@ -752,6 +752,10 @@ flowchart TB
     HESTIA["HESTIA hearth<br/>signed deploy · listen"]
   end
 
+  subgraph amem["Attested Memory"]
+    AMEM["Attested Memory<br/>verifiable agent memory"]
+  end
+
   subgraph security["Admission & assurance"]
     THEMIS["THEMIS admission"]
     BASANOS["BASANOS · Solidity scan"]
@@ -777,6 +781,7 @@ flowchart TB
   BASANOS -.->|"assurance pack"| HUB
   DSK --> SDK --> HUB
   WGT --> HUB
+  SDK --> AMEM
   HUB -->|"stats · manifest · peers"| LOGOS
   MOMUS -->|"finding digest"| LOGOS
   SKOPOS -->|"remediation stats"| LOGOS
@@ -814,6 +819,7 @@ flowchart TB
 | **ARGUS** 🛡️ (demand-side agent) | [`argus`](https://github.com/alexar76/argus) | WARDEN MCP firewall + AIMarket consumer/provider; runs fully autonomously, crypto opt-in. [Landing](https://magic-ai-factory.com/argus/) · [README](https://github.com/alexar76/argus#readme) |
 | **WARDEN** 🧱 (MCP firewall, library) | [`warden`](https://github.com/alexar76/warden) | The gate chain extracted from ARGUS as a **zero-dependency** package, so a host can vet third-party MCP servers without adopting an agent: static scan → signed threat feed → origin → tool-def pinning, returning a recorded verdict. ARGUS is its reference host; MOMUS publishes into its feed · `npm i @aimarket/warden` |
 | **HESTIA** 🔥 (hearth) | [`hestia`](https://github.com/alexar76/hestia) | Isolated hosted runtime for capability providers — not Hub, not Factory, not a job board. Signed deploy; empty roster ≠ empty market · [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [landing](https://alexar76.github.io/hestia/) |
+| **Attested Memory** 🧠 | [`attested-memory`](https://github.com/alexar76/attested-memory) | Verifiable memory for AI agents — Memory Market, Truth Layer, Provenance Ledger, MCP. Self-hosted, Docker · [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) |
 
 **Full ecosystem reference (C4, sequences, deployment):** **[docs/ecosystem-architecture.md](docs/ecosystem-architecture.md)**
 

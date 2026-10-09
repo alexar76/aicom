@@ -21,6 +21,7 @@ from pathlib import Path, PurePosixPath
 
 from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
+from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
 from core.repair_batches import (
     attach_file_contents,
@@ -888,7 +889,7 @@ def _record_salvage_notes(
     existing.append({"given_back": {str(k): list(v) for k, v in introduced.items()}})
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(existing[-_MAX_SALVAGE_NOTES:], indent=1), encoding="utf-8")
+        write_text_atomic(path, json.dumps(existing[-_MAX_SALVAGE_NOTES:], indent=1))
     except OSError as exc:
         if log:
             log("WARNING", f"could not record salvage notes for {product_id}: {exc}")

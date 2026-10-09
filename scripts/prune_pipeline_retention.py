@@ -141,7 +141,10 @@ def main() -> int:
             doc["task_queue"] = [
                 t for t in tq if isinstance(t, dict) and t.get("product_id") not in drop_set
             ]
-            pj.write_text(json.dumps(doc, indent=2, ensure_ascii=False), encoding="utf-8")
+            # Temp file + rename: the worker reads this file live, so it must never see it half-written.
+            tmp = pj.with_name(pj.name + ".tmp")
+            tmp.write_text(json.dumps(doc, indent=2, ensure_ascii=False), encoding="utf-8")
+            os.replace(tmp, pj)
         except (OSError, json.JSONDecodeError) as e:
             print(f"Warning: could not patch pipeline.json: {e}", file=sys.stderr)
 

@@ -21,6 +21,7 @@ from typing import Any
 from core.paths import config_path
 from core.config_merge import load_merged_config
 from core.paths import data_root, state_dir
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +96,7 @@ def try_railway_deploy_after_devops(product_id: str) -> dict[str, Any]:
     out_dir = state_dir() / product_id
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "railway_deploy.json"
-    out_path.write_text(json.dumps(rec, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_text_atomic(out_path, json.dumps(rec, indent=2, ensure_ascii=False) + "\n")
     logger.info("railway_deploy: recorded for %s -> %s", product_id, out_path)
 
     return {"recorded": True, "path": str(out_path), "railway_project_id": project_id or None}

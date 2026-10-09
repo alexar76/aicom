@@ -60,3 +60,62 @@ def test_no_truncating_writes_left_in_the_two_repaired_files():
         src = (root / rel).read_text(encoding="utf-8")
         assert f'open({name}, "w"' not in src, f"{rel} still truncates {name} before writing"
         assert "write_json_atomic(" in src
+
+
+def test_existing_mode_is_kept(tmp_path: Path):
+    import os
+
+    target = tmp_path / "secret.json"
+    target.write_text("{}", encoding="utf-8")
+    os.chmod(target, 0o600)
+    write_json_atomic(target, {"k": "v"})
+    assert oct(target.stat().st_mode)[-3:] == "600"
+
+
+def test_writes_through_a_symlink(tmp_path: Path):
+    real = tmp_path / "real.json"
+    real.write_text("{}", encoding="utf-8")
+    link = tmp_path / "link.json"
+    link.symlink_to(real)
+    write_json_atomic(link, {"via": "link"})
+    assert link.is_symlink()
+    assert json.loads(real.read_text(encoding="utf-8")) == {"via": "link"}
+
+
+def test_bind_mounted_file_falls_back_to_an_in_place_write(tmp_path: Path, monkeypatch):
+    import errno
+    import os
+
+    target = tmp_path / "mounted.json"
+    target.write_text("{}", encoding="utf-8")
+
+    def busy(*a, **k):
+        raise OSError(errno.EBUSY, "Device or resource busy")
+
+    monkeypatch.setattr(os, "replace", busy)
+    write_json_atomic(target, {"ok": True})
+    assert json.loads(target.read_text(encoding="utf-8")) == {"ok": True}
+    assert list(tmp_path.iterdir()) == [target]
+
+
+def test_concurrent_threads_do_not_share_a_temp_file(tmp_path: Path):
+    import threading
+
+    target = tmp_path / "s.json"
+    errors: list[BaseException] = []
+
+    def write(n: int) -> None:
+        try:
+            for _ in range(20):
+                write_json_atomic(target, {"n": n, "pad": "x" * 2000})
+        except BaseException as exc:  # pragma: no cover - the failure being guarded
+            errors.append(exc)
+
+    threads = [threading.Thread(target=write, args=(i,)) for i in range(8)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    assert errors == []
+    assert json.loads(target.read_text(encoding="utf-8"))["pad"] == "x" * 2000
+    assert list(tmp_path.iterdir()) == [target]

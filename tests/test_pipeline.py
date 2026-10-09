@@ -557,13 +557,16 @@ class TestPersistence:
         assert sm.task_queue == []
 
     def test_load_corrupted_file(self, state_machine, sample_product_idea):
-        """Corrupted JSON is handled gracefully."""
+        """Corrupted JSON stops the load rather than reading as empty — an empty machine
+        would write its emptiness over the file on its first save."""
+        from orchestrator.pipeline_repository import PipelineStateLoadError
+
         state_machine.create_product(sample_product_idea)
         # Corrupt the file
         Path(state_machine.state_file).write_text("{bad json")
-        sm2 = PipelineStateMachine(state_machine.state_file)
-        assert sm2.products == {}
-        assert sm2.task_queue == []
+        with pytest.raises(PipelineStateLoadError):
+            PipelineStateMachine(state_machine.state_file)
+        assert Path(state_machine.state_file).read_text() == "{bad json"
 
     def test_roundtrip_full_state(self, state_machine, sample_product_idea):
         """Complex state with multiple products and tasks roundtrips."""

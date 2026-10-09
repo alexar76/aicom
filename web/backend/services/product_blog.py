@@ -9,6 +9,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.paths import blog_index_path, blog_posts_dir, data_root, marketing_content_path
 from web.backend.services.blog_screenshot import (
     FACTORY_SCREENSHOT_TOKEN,
@@ -255,7 +256,7 @@ def _write_index(posts: list[dict[str, Any]]) -> None:
     idx_path = blog_index_path()
     idx_path.parent.mkdir(parents=True, exist_ok=True)
     posts_sorted = sorted(posts, key=lambda p: p.get("publishedAt") or "", reverse=True)
-    idx_path.write_text(json.dumps({"posts": posts_sorted}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_text_atomic(idx_path, json.dumps({"posts": posts_sorted}, ensure_ascii=False, indent=2) + "\n")
 
 
 def _index_summary(post: dict[str, Any]) -> dict[str, Any]:
@@ -281,7 +282,7 @@ def _save_post_file(post: dict[str, Any]) -> None:
     posts_dir = blog_posts_dir()
     posts_dir.mkdir(parents=True, exist_ok=True)
     post_path = posts_dir / f"{slug}.json"
-    post_path.write_text(json.dumps(post, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_text_atomic(post_path, json.dumps(post, ensure_ascii=False, indent=2) + "\n")
 
 
 def _upsert_index_summary(post: dict[str, Any]) -> None:

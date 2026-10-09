@@ -2,7 +2,7 @@
   "meta": {
     "title": "Encyclopédie cosmique AICOM",
     "subtitle": "Un livre d'histoires pour les enfants geeks d'un futur lointain — où les fabriques orbitent autour des idées, où les oracles murmurent des mathématiques vérifiables et où les agents commercent sous les étoiles sur Base.",
-    "edition": "Volume I · Constellation élargie · GAIA · ATLAS · SKOPOS · Metis · MOMUS · LOGOS · 2026",
+    "edition": "Volume I · Constellation élargie · GAIA · ATLAS · SKOPOS · Metis · MOMUS · LOGOS · 2026 · Attested Memory",
     "scrollHint": "Tourner la page",
     "tocTitle": "Table des chapitres",
     "epilogue": "Au-delà d'ARGUS, les humains configurent les étoiles. GAIA murmure, ATLAS dessine, SKOPOS veille, Metis ferme la porte, MOMUS accuse, LOGOS observe. **L'économie est déjà là.**",
@@ -14,7 +14,7 @@
       "lead": "Il était une fois, dans un futur pas si lointain, un logiciel qui apprit à se construire — et à se vendre — sans demander la permission à une plateforme centrale.",
       "paragraphs": [
         "AICOM est une **économie fédérée d'agents autonomes**. Imagine un système solaire avec plus de six lunes :",
-        "**Factory** construit. **Hub** catalogue et invoque. **Mesh** donne identité et escrow. **Oracles mathématiques** (×17) vendent du hasard vérifiable. **GAIA** vend des lectures *physiques* attestées. **ATLAS** les dessine sur une carte vivante. **SKOPOS** surveille nginx/Apache. **Metis** est la porte cognitive fail-closed. **MOMUS** red-teame et signe — seul **Treasury** paie. **LOGOS** est l'observatoire fédéré en lecture seule. **Chain** règle l'USDC sur **Base**. **ARGUS** reste l'**œil humain** — WARDEN + wallet optionnel.",
+        "**Factory** construit. **Hub** catalogue et invoque. **Mesh** donne identité et escrow. **Oracles mathématiques** (×17) vendent du hasard vérifiable. **GAIA** vend des lectures *physiques* attestées. **ATLAS** les dessine sur une carte vivante. **SKOPOS** surveille nginx/Apache. **Metis** est la porte cognitive fail-closed. **MOMUS** red-teame et signe — seul **Treasury** paie. **LOGOS** est l'observatoire fédéré en lecture seule. **Chain** règle l'USDC sur **Base**. **Attested Memory** garde une mémoire vérifiable pour les agents. **ARGUS** reste l'**œil humain** — WARDEN + wallet optionnel.",
         "Principe : **au-delà d'ARGUS-3, les humains configurent les étoiles ; les machines naviguent entre elles.** Apprends d'abord la carte — puis LIVE vs SIM."
       ],
       "cards": [
@@ -107,6 +107,11 @@
             "ATLAS",
             "[atlas.modelmarket.dev](https://atlas.modelmarket.dev/)",
             "Carte planétaire LIVE/SIM + Analyst"
+          ],
+          [
+            "Attested Memory",
+            "[attestedmemory.net](https://attestedmemory.net/)",
+            "Mémoire vérifiable pour agents IA"
           ],
           [
             "SKOPOS",
@@ -774,12 +779,45 @@
       ]
     },
     {
-      "title": "Chapitre XIX — L'oracle des questions",
+      "title": "Chapitre XIX — Attested Memory, la mémoire que les agents peuvent vérifier",
+      "lead": "Oublier coûte cher. Une note signée est quelque chose qu’un autre agent peut vérifier.",
+      "paragraphs": [
+        "**Attested Memory** est une mémoire vérifiable pour agents IA. Memory Market écrit, cherche et partage. Truth Layer garde les preuves et les contradictions. Provenance Ledger garde la lignée et les reçus signés. Un contrat Memory Unit, plus MCP. Auto-hébergé, Docker. En ligne sur attestedmemory.net.",
+        "La landing publique est [alexar76.github.io/attested-memory](https://alexar76.github.io/attested-memory/). Le dépôt est [alexar76/attested-memory](https://github.com/alexar76/attested-memory).",
+        "Exemple pour les enfants : un cahier de classe où chaque note est signée, les désaccords restent sur la page, et l’on peut montrer qui a écrit quoi."
+      ],
+      "cards": [
+        {
+          "icon": "🧠",
+          "title": "Memory Market",
+          "body": "Écrire, chercher et partager un Memory Unit.",
+          "color": "purple"
+        },
+        {
+          "icon": "⚖️",
+          "title": "Truth Layer",
+          "body": "Les preuves et les contradictions restent visibles.",
+          "color": "cyan"
+        },
+        {
+          "icon": "📜",
+          "title": "Provenance Ledger",
+          "body": "Lignée et reçus signés.",
+          "color": "gold"
+        }
+      ]
+    },
+    {
+      "title": "Chapitre XX — L'oracle des questions",
       "lead": "Des réponses pour les opérateurs, les développeurs, les utilisateurs finaux et tous ceux que la constellation touche.",
       "faq": [
         {
           "title": "Pour tout le monde",
           "items": [
+            {
+              "q": "Qu’est-ce qu’Attested Memory ?",
+              "a": "Mémoire vérifiable pour agents IA sur attestedmemory.net — Memory Market, Truth Layer et Provenance Ledger autour d’un Memory Unit, avec MCP. Auto-hébergé, Docker."
+            },
             {
               "q": "What is MOMUS?",
               "a": "Ecosystem red team at momus.modelmarket.dev — safe probes and Ed25519 findings. It never pays itself; Treasury alone releases bounties after independent verify."

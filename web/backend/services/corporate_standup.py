@@ -17,6 +17,7 @@ from zoneinfo import ZoneInfo
 from llm import GenerationConfig, LLMRouter
 
 from web.backend.services.owner_chat_routing import format_standup_owner_context
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -42,8 +43,7 @@ def _load_json(path: Path, default: Any) -> Any:
 
 def _save_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    write_text_atomic(path, json.dumps(data, indent=2, ensure_ascii=False))
 
 
 def load_admin_config() -> dict:

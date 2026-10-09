@@ -33,6 +33,7 @@ Surfaces publiques :
 | **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | Tableau de bord des marchés de capitaux ACEX |
 | **Landing ARGUS** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | Installation + entrée utilisateur |
 | **Âtre HESTIA** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [landing](https://alexar76.github.io/hestia/) | Runtime hébergé et isolé — pas le catalogue du Hub |
+| **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) | Mémoire vérifiable pour agents IA |
 
 ![Graphe complet de l'écosystème — Alien Monitor en mode LIVE](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -83,6 +84,7 @@ flowchart TB
     ORACLES["🔮 Oracles ×17<br/>signed verifiable math"]
     GAIA["🌍 GAIA<br/>physical/sensor oracles"]
     ATLAS["🗺 ATLAS<br/>sensor map · analyst"]
+    MEMORY["🧠 Attested Memory<br/>mémoire vérifiable"]
     LOGOS["🧿 LOGOS<br/>analytique fédérée en lecture seule"]
     MOMUS["👁 MOMUS<br/>red team · signed findings"]
     THEMIS["🛡 THEMIS<br/>admission publication · approve/review/reject"]
@@ -110,6 +112,7 @@ flowchart TB
     LOTTERY --> ORACLES
     LOTTERY --> HUB
     AGENTS --> HUB
+    AGENTS -->|écrire · chercher| MEMORY
     HUB --> CHAIN
   end
 
@@ -119,7 +122,7 @@ flowchart TB
   OP -.->|"deploy · policy"| FACTORY
   OP -.-> HUB
 
-  class FACTORY,HESTIA,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN machine
+  class FACTORY,HESTIA,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN,MEMORY machine
 ```
 
 ### 1.3 Modèle de confiance (un paragraphe)
@@ -159,6 +162,7 @@ flowchart TB
     hephaestus["HEPHAESTUS<br/>Forge de chaînes · studio"]
     logos["LOGOS<br/>Analytique fédérée en lecture seule"]
     argus["ARGUS-3<br/>Local agent · optional economy"]
+    memory["Attested Memory<br/>mémoire vérifiable"]
   end
 
   subgraph external["External"]
@@ -178,6 +182,7 @@ flowchart TB
   basanos -->|assurance pack| aicom
   enduser -->|chat · MCP| argus
   argus -->|discover · invoke| aicom
+  argus -->|écrire · chercher| memory
   aicom -->|télémétrie publique| logos
   aicom -->|prompts| llm
   aicom -->|on-chain| chain
@@ -199,6 +204,7 @@ flowchart TB
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS admission** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · porte Hub | `themis` |
 | [`hestia/`](https://github.com/alexar76/hestia) | **HESTIA âtre** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · `:9480` | `hestia` |
+| [`attested/attested-memory-hub/`](https://github.com/alexar76/attested-memory) | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) | `attested-memory` |
 | [`treasury/`](https://github.com/alexar76/treasury) | **Treasury (payer)** | [momus.modelmarket.dev/treasury](https://momus.modelmarket.dev/treasury) · `:9401` | `treasury` |
 | [`escrow-signer/`](https://github.com/alexar76/escrow-signer) | **HORKOS policy signer** | reverse tunnel (skopos host) | `escrow-signer` |
 | [`argus/`](https://github.com/alexar76/argus) | **ARGUS-3** | installer via le landing Factory | `argus` |
@@ -1036,7 +1042,7 @@ Documentés dans [`docs/aimarket-whitepaper.md`](../../aimarket-whitepaper.md) �
 
 **Docs :** [`ecosystem-architecture.md`](../../ecosystem-architecture.md) · [`aimarket-whitepaper.md`](../../aimarket-whitepaper.md) · [`onchain-journal.md`](../../onchain-journal.md) · [`USER_GUIDE.md`](../../USER_GUIDE.md) · [`hub-integration-guide.md`](../../hub-integration-guide.md) · [`contracts/DEPLOY.md`](../../../contracts/DEPLOY.md) · [`known-issues.md`](../../known-issues.md) · [`ROADMAP.md`](../../../ROADMAP.md)
 
-**Glossaire :** **ALP** (Agent Listing Protocol) · **CapShares** (ERC-20 liés à une annonce) · **Channel** (séquestre préfinancé pour micropaiements) · **Capability** (manifeste invocable signé) · **Federation** (crawl de `.well-known` par le hub) · **Receipt** (preuve d'invoke Ed25519 / reçu) · **TEE** (attestation matérielle) · **WARDEN** (bibliothèque autonome de pare-feu MCP · `@aimarket/warden` ; hôte de référence ARGUS) · **THEMIS** (admission à la publication · approve/review/reject) · **HESTIA** (âtre · runtime hébergé et isolé · pas Hub, pas Factory) · **GAIA** (oracle physique) · **ATLAS** (carte de capteurs · LIVE/SIM · ATLAS Analyst) · **MOMUS** (red team · findings signés) · **Treasury** (payeur de bounty séparé) · **HORKOS** (escrow policy signer · only `authorizedHubs` key · Base debitChannel only) · **LOGOS** (analytique fédérée en lecture seule · instantanés · anomalies · corrélations)
+**Glossaire :** **ALP** (Agent Listing Protocol) · **CapShares** (ERC-20 liés à une annonce) · **Channel** (séquestre préfinancé pour micropaiements) · **Capability** (manifeste invocable signé) · **Federation** (crawl de `.well-known` par le hub) · **Receipt** (preuve d'invoke Ed25519 / reçu) · **TEE** (attestation matérielle) · **WARDEN** (bibliothèque autonome de pare-feu MCP · `@aimarket/warden` ; hôte de référence ARGUS) · **THEMIS** (admission à la publication · approve/review/reject) · **HESTIA** (âtre · runtime hébergé et isolé · pas Hub, pas Factory) · **GAIA** (oracle physique) · **ATLAS** (carte de capteurs · LIVE/SIM · ATLAS Analyst) · **MOMUS** (red team · findings signés) · **Treasury** (payeur de bounty séparé) · **HORKOS** (escrow policy signer · only `authorizedHubs` key · Base debitChannel only) · **LOGOS** (analytique fédérée en lecture seule · instantanés · anomalies · corrélations) · **Attested Memory** (mémoire vérifiable pour agents IA · Memory Market · Truth Layer · Provenance Ledger)
 
 Table canonique (EN · RU · ES · FR · ZH) : [`docs/localization-glossary.md`](../../localization-glossary.md).
 

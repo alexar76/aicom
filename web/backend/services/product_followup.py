@@ -14,6 +14,8 @@ import time
 from pathlib import Path
 from typing import Any, Optional
 
+from core.json_state import write_text_atomic
+
 logger = logging.getLogger(__name__)
 
 STOREFRONT_ESTABLISHED_LISTING_KEY = "storefront_established_listing"
@@ -55,7 +57,7 @@ def write_followup(product_id: str, payload: dict[str, Any]) -> None:
     d = followup_dir()
     d.mkdir(parents=True, exist_ok=True)
     path = followup_path(product_id)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_text_atomic(path, json.dumps(payload, ensure_ascii=False, indent=2))
 
 
 def delete_followup(product_id: str) -> None:

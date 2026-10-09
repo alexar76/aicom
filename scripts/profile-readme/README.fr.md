@@ -39,7 +39,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vue d’ensemble de l’écosystème : Factory déploie sur HESTIA ; HESTIA annonce au Hub ; Oracles et METIS alimentent Hub ; ARGUS consomme ; ACEX finance ; SKOPOS observe ; MOMUS cherche ; Treasury paie ; LOGOS analyse la fédération" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vue d’ensemble de l’écosystème : Factory déploie sur HESTIA ; HESTIA annonce au Hub ; Oracles et METIS alimentent Hub ; ARGUS consomme ; ACEX finance ; SKOPOS observe ; MOMUS cherche ; Treasury paie ; LOGOS analyse la fédération ; Attested Memory garde une mémoire vérifiable pour les agents" width="900">
   </a>
 </p>
 
@@ -191,6 +191,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | Treasury | Hub / chaîne | paiement après vérification |
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | instantanés en lecture seule · anomalies · analyses |
 | Alien Monitor | Hub | graphe 3D LIVE |
+| ARGUS / agents | Attested Memory | écrire · chercher · partager |
 
 </details>
 
@@ -276,6 +277,13 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN** — bibliothèque **pare-feu de sécurité MCP** sans dépendance (pas un serveur) : scan statique des définitions d’outils → flux de menaces signé → origine → épinglage · [landing](https://warden.modelmarket.dev/) · [étude de terrain : 1 108 serveurs MCP publics](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.fr.md) | avant qu’un outil tiers n’atteigne un hôte |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR** (ἵστωρ) — **journal de transparence public des définitions d’outils MCP** : lit ce qu’annonce chaque point de terminaison distant du registre officiel MCP (n’appelle jamais un outil), le signe en étiquettes MTL/1, les ajoute à un arbre de Merkle RFC 9162 avec des têtes d’arbre signées et date chaque modification avec son diff. Ne déclare jamais un serveur sûr · [live](https://histor.modelmarket.dev) · [landing](https://alexar76.github.io/histor/) | chaque jour, sur chaque point de terminaison distant du registre officiel · et sur `/check` |
 
+### 🧠 Mémoire vérifiable — ce que les agents gardent
+<sub>Écrire, chercher et partager une mémoire que d’autres agents peuvent vérifier.</sub>
+
+| Repo | Description |
+| --- | --- |
+| [**attested-memory**](https://github.com/alexar76/attested-memory) | **Attested Memory** — mémoire vérifiable pour agents IA : Memory Market (écrire, chercher, partager), Truth Layer (preuves et contradictions) et Provenance Ledger (lignée, reçus signés) autour d’un contrat Memory Unit, avec MCP. Auto-hébergé, Docker. · [en ligne](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) |
+
 ### 👤 Le client que vous exécutez réellement
 <sub>Étape 7. Tout ce qui précède est de l’infrastructure ; voici ce qui dispose d’un utilisateur.</sub>
 
@@ -360,6 +368,7 @@ L’index de référence se trouve dans la [version anglaise](README.md#az) ; si
 | [alien-monitor](https://github.com/alexar76/alien-monitor) | Observabilité | graphe 3D LIVE de l’écosystème |
 | [argus](https://github.com/alexar76/argus) | Le client que vous exécutez | agent de référence côté demande |
 | [atlas](https://github.com/alexar76/atlas) | Monde physique | carte planétaire des capteurs au-dessus de GAIA |
+| [attested-memory](https://github.com/alexar76/attested-memory) | Mémoire vérifiable | mémoire vérifiable pour agents IA |
 | [basanos](https://github.com/alexar76/basanos) | Confiance et sécurité | assurance Solidity à un pin |
 | [cite-desks](https://github.com/alexar76/cite-desks) | Monde physique | desks d’évidence sur les rails ATLAS / GAIA |
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | Build & connect | générateur de squelette de fournisseur |

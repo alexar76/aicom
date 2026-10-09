@@ -32,6 +32,7 @@ from pathlib import Path
 from typing import Any
 
 from core.code_discovery import copytree_ignore, iter_product_files
+from core.json_state import write_text_atomic
 from core.paths import data_root
 from web.backend.services.frontend_build_check import npm_env
 
@@ -3201,9 +3202,7 @@ def build_vercel_bundle(
         ],
         "env": deploy_env,
     }
-    (out_dir / "vercel.json").write_text(
-        json.dumps(vercel_config, indent=2) + "\n", encoding="utf-8"
-    )
+    write_text_atomic(out_dir / "vercel.json", json.dumps(vercel_config, indent=2) + "\n")
 
     # Refuse to mark the bundle OK if demo auth / mesh env evaporated (stale worker, etc.).
     entry_text = (out_dir / "api" / "index.py").read_text(encoding="utf-8")

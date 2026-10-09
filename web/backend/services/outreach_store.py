@@ -15,6 +15,8 @@ import uuid
 from pathlib import Path
 from typing import Any, Optional
 
+from core.json_state import write_text_atomic
+
 logger = logging.getLogger(__name__)
 
 MAX_ANNOUNCEMENTS = 500
@@ -72,7 +74,7 @@ def load_channels() -> dict[str, Any]:
     p = channels_path()
     if not p.is_file():
         data = default_channels_payload()
-        p.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        write_text_atomic(p, json.dumps(data, indent=2, ensure_ascii=False))
         return data
     try:
         raw = json.loads(p.read_text(encoding="utf-8"))
@@ -86,7 +88,7 @@ def load_channels() -> dict[str, Any]:
 
 def save_channels(data: dict[str, Any]) -> None:
     outreach_dir().mkdir(parents=True, exist_ok=True)
-    channels_path().write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(channels_path(), json.dumps(data, indent=2, ensure_ascii=False))
 
 
 def load_announcements() -> list[dict[str, Any]]:
@@ -106,7 +108,7 @@ def load_announcements() -> list[dict[str, Any]]:
 def save_announcements(items: list[dict[str, Any]]) -> None:
     outreach_dir().mkdir(parents=True, exist_ok=True)
     trimmed = items[-MAX_ANNOUNCEMENTS:]
-    announcements_path().write_text(json.dumps(trimmed, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(announcements_path(), json.dumps(trimmed, indent=2, ensure_ascii=False))
 
 
 def get_announcement(aid: str) -> Optional[dict[str, Any]]:

@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from core.logging_utils import log_suppressed
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +48,7 @@ def _load_json(path: Path, default: Any) -> Any:
 
 def _save_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(path, json.dumps(data, indent=2, ensure_ascii=False))
 
 
 def _extract_json_object(text: str) -> dict[str, Any] | None:
@@ -201,7 +202,7 @@ def _merge_pipeline_metadata(product_id: str, snippet: dict[str, Any]) -> None:
     products[product_id] = p
     state["products"] = products
     PIPELINE_FILE.parent.mkdir(parents=True, exist_ok=True)
-    PIPELINE_FILE.write_text(json.dumps(state, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(PIPELINE_FILE, json.dumps(state, indent=2, ensure_ascii=False))
 
 
 def _append_feedback_file(product_id: str, entry: dict[str, Any]) -> None:

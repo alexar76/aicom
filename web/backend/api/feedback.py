@@ -23,6 +23,7 @@ from fastapi import APIRouter, HTTPException, Request
 from core.paths import bugs_dir, data_root, feedback_dir, product_state_dir, support_root_dir
 from web.backend.schemas.api_requests import FeedbackSubmitRequest
 from core.logging_utils import log_suppressed
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -146,8 +147,7 @@ async def submit_feedback(body: FeedbackSubmitRequest, request: Request):
     fb_root = feedback_dir()
     fb_root.mkdir(parents=True, exist_ok=True)
 
-    with open(fb_root / f"{feedback_id}.json", "w", encoding="utf-8") as f:
-        json.dump(feedback, f, indent=2, ensure_ascii=False)
+    write_text_atomic(fb_root / f"{feedback_id}.json", json.dumps(feedback, indent=2, ensure_ascii=False))
 
     # Classify and evaluate
     classification = _classify_feedback(body.rating, body.comment)
@@ -156,8 +156,7 @@ async def submit_feedback(body: FeedbackSubmitRequest, request: Request):
     feedback["usefulness_score"] = round(usefulness_score, 2)
 
     # Update saved file with classification
-    with open(fb_root / f"{feedback_id}.json", "w", encoding="utf-8") as f:
-        json.dump(feedback, f, indent=2, ensure_ascii=False)
+    write_text_atomic(fb_root / f"{feedback_id}.json", json.dumps(feedback, indent=2, ensure_ascii=False))
 
     # Route based on classification
     route_result = _route_feedback(
@@ -478,8 +477,7 @@ def _create_bug_task(product_id: str, feedback_id: str, description: str, route_
     bug_root = bugs_dir(product_id)
     bug_root.mkdir(parents=True, exist_ok=True)
 
-    with open(bug_root / f"feedback_bug_{feedback_id}.json", "w") as f:
-        json.dump(bug_data, f, indent=2)
+    write_text_atomic(bug_root / f"feedback_bug_{feedback_id}.json", json.dumps(bug_data, indent=2))
 
 
 def _create_feature_suggestion(product_id: str, feedback_id: str, description: str, is_improvement: bool = False):
@@ -508,8 +506,7 @@ def _create_feature_suggestion(product_id: str, feedback_id: str, description: s
     # Keep only last 50
     suggestions = suggestions[-50:]
 
-    with open(suggestion_file, "w") as f:
-        json.dump(suggestions, f, indent=2)
+    write_text_atomic(suggestion_file, json.dumps(suggestions, indent=2))
 
 
 def _log_praise(product_id: str, feedback_id: str, comment: str):
@@ -535,8 +532,7 @@ def _log_praise(product_id: str, feedback_id: str, comment: str):
         "created_at": time.time(),
     })
 
-    with open(praise_file, "w") as f:
-        json.dump(testimonials, f, indent=2)
+    write_text_atomic(praise_file, json.dumps(testimonials, indent=2))
 
 
 def _log_question(product_id: str, feedback_id: str, comment: str):

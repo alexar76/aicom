@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Any
 
 from agents.surrogate_reviewer import SurrogateReviewer
 from core.autonomy_mode import is_full_autonomy
+from core.json_state import write_text_atomic
 from core.surrogate_review import append_surrogate_audit, write_ai_review_feedback
 from web.backend.services.product_followup import record_post_devops_human_review_approval
 
@@ -145,7 +146,7 @@ async def resolve_director_pending(data_root: Path, llm_router: Any = None) -> i
             else:
                 still_pending.append(decision)
         payload["pending"] = still_pending
-        fp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        write_text_atomic(fp, json.dumps(payload, indent=2))
         return resolved
     except Exception as exc:
         logger.warning("resolve_director_pending failed: %s", exc)

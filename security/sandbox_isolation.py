@@ -19,6 +19,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
 from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
 
@@ -684,7 +685,7 @@ class SandboxIsolation:
                 },
                 "allocated_ports": list(self._allocated_ports),
             }
-            self._state_file.write_text(json.dumps(state, indent=2))
+            write_text_atomic(self._state_file, json.dumps(state, indent=2))
         except Exception as e:
             logger.error(f"Failed to save sandbox state: {e}")
 

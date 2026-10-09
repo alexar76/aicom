@@ -114,6 +114,7 @@ from .artifact_files import (
     unlink_path_quiet as _unlink_path_quiet,
     walk_artifact_files as _walk_artifact_files,
 )
+from core.json_state import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -766,7 +767,7 @@ def _merge_marketing_copy(product_id: str, body: MarketplaceCopyPatch) -> None:
             m[key] = val.strip()
     raw["marketing"] = m
     mkt_path.parent.mkdir(parents=True, exist_ok=True)
-    mkt_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_text_atomic(mkt_path, json.dumps(raw, ensure_ascii=False, indent=2))
 
 
 @router.patch("/pipeline/products/{product_id}/marketplace-copy")

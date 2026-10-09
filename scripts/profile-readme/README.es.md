@@ -39,7 +39,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vista general del ecosistema: Factory despliega en HESTIA; HESTIA anuncia al Hub; Oracles y METIS alimentan Hub; ARGUS consume; ACEX financia; SKOPOS observa; MOMUS encuentra; Treasury paga; LOGOS analiza la federación" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vista general del ecosistema: Factory despliega en HESTIA; HESTIA anuncia al Hub; Oracles y METIS alimentan Hub; ARGUS consume; ACEX financia; SKOPOS observa; MOMUS encuentra; Treasury paga; LOGOS analiza la federación; Attested Memory guarda memoria verificable de los agentes" width="900">
   </a>
 </p>
 
@@ -200,6 +200,7 @@ solo conoces un nombre, salta al [índice A–Z](#az).
 | Treasury | Hub / cadena | pagar tras verificación |
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | snapshots de solo lectura · anomalías · información |
 | Alien Monitor | Hub | grafo 3D en vivo |
+| ARGUS / agentes | Attested Memory | escribir · buscar · compartir |
 
 </details>
 
@@ -284,6 +285,13 @@ solo conoces un nombre, salta al [índice A–Z](#az).
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury** — pagador independiente de recompensas para MOMUS (clave y contenedor propios); solo paga tras una verificación independiente · [en vivo](https://momus.modelmarket.dev/treasury) · [landing](https://alexar76.github.io/treasury/) | tras la verificación |
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN** — biblioteca **firewall de seguridad MCP** sin dependencias (no es un servidor): escaneo estático de definiciones de herramientas → feed de amenazas firmado → origen → pinning · [landing](https://warden.modelmarket.dev/) · [estudio de campo: 1.108 servidores MCP públicos](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.es.md) | antes de que una herramienta de terceros llegue a un host |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR** (ἵστωρ) — **registro de transparencia público de las definiciones de herramientas MCP**: lee lo que anuncia cada endpoint remoto del registro oficial de MCP (nunca llama a una herramienta), lo firma como etiquetas MTL/1, las añade a un árbol de Merkle RFC 9162 con encabezados de árbol firmados y fecha cada cambio con su diff. Nunca declara seguro a un servidor · [en vivo](https://histor.modelmarket.dev) · [landing](https://alexar76.github.io/histor/) | a diario, sobre cada endpoint remoto del registro oficial · y en `/check` |
+
+### 🧠 Memoria verificable — lo que los agentes conservan
+<sub>Escribir, buscar y compartir memoria que otros agentes pueden comprobar.</sub>
+
+| Repo | Qué es |
+| --- | --- |
+| [**attested-memory**](https://github.com/alexar76/attested-memory) | **Attested Memory** — memoria verificable para agentes de IA: Memory Market (escribir, buscar, compartir), Truth Layer (evidencia y contradicciones) y Provenance Ledger (linaje, recibos firmados) sobre un contrato Memory Unit, con MCP. Autoalojado, Docker. · [en vivo](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) |
 
 ### 👤 El cliente que realmente ejecutas
 <sub>Etapa 7. Todo lo anterior es infraestructura; esto es lo que tiene un usuario.</sub>
@@ -370,6 +378,7 @@ El índice canónico está en la [versión en inglés](README.md#az); si una tra
 | [alien-monitor](https://github.com/alexar76/alien-monitor) | Observabilidad | grafo 3D en vivo del ecosistema |
 | [argus](https://github.com/alexar76/argus) | El cliente que ejecutas | agente de referencia del lado de la demanda |
 | [atlas](https://github.com/alexar76/atlas) | Mundo físico | mapa planetario de sensores sobre GAIA |
+| [attested-memory](https://github.com/alexar76/attested-memory) | Memoria verificable | memoria verificable para agentes de IA |
 | [basanos](https://github.com/alexar76/basanos) | Confianza y seguridad | garantía de Solidity en un pin |
 | [cite-desks](https://github.com/alexar76/cite-desks) | Mundo físico | escritorios de evidencia sobre raíles ATLAS / GAIA |
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | Construir y conectar | generador de scaffolds de proveedor |

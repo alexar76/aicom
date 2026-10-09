@@ -8,6 +8,7 @@ import json
 import logging
 from typing import TYPE_CHECKING, Any, Protocol
 
+from core.json_state import write_text_atomic
 from core.paths import agent_artifact_dir, data_root
 from web.backend.services.learning_memory import append_lesson, load_recent_lessons
 
@@ -79,8 +80,7 @@ def save_task_artifact(product_id: str, agent_type: str, data: dict) -> None:
     artifact_dir.mkdir(parents=True, exist_ok=True)
     artifact_file = artifact_dir / "output.json"
     try:
-        with open(artifact_file, "w") as f:
-            json.dump(data, f, indent=2)
+        write_text_atomic(artifact_file, json.dumps(data, indent=2))
     except OSError as e:
         logger.warning("Could not save artifact for %s/%s: %s", product_id, agent_type, e)
 

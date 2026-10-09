@@ -11,6 +11,7 @@ import threading
 import time
 from pathlib import Path
 
+from core.json_state import write_text_atomic
 from core.paths import data_root
 
 logger = logging.getLogger(__name__)
@@ -166,7 +167,7 @@ def _process_queue() -> None:
         for i, k in enumerate(kept):
             if k.get("product_id") == row.get("product_id") and k.get("queued_at") == row.get("queued_at"):
                 kept[i] = row
-    q.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in kept) + ("\n" if kept else ""), encoding="utf-8")
+    write_text_atomic(q, "\n".join(json.dumps(r, ensure_ascii=False) for r in kept) + ("\n" if kept else ""))
 
 
 def _capture_showcase(product_id: str, *, base_url: str) -> None:
@@ -203,7 +204,7 @@ def _write_gallery_stub(product_id: str, base_url: str) -> None:
         "kind": "stub",
     }
     stub = RECORDINGS_DIR / f"showcase-{product_id}.json"
-    stub.write_text(json.dumps(meta, indent=2), encoding="utf-8")
+    write_text_atomic(stub, json.dumps(meta, indent=2))
     _register_gallery_entry(product_id, base_url, media=f"showcase-{product_id}.json")
 
 
@@ -228,7 +229,7 @@ def _register_gallery_entry(product_id: str, base_url: str, media: str | None = 
         },
     )
     idx["entries"] = entries[:48]
-    idx_path.write_text(json.dumps(idx, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(idx_path, json.dumps(idx, indent=2, ensure_ascii=False))
 
 
 def _clip_path(clip: str) -> Path:
@@ -259,7 +260,7 @@ def list_showcase_gallery() -> dict:
     playable = [e for e in entries if isinstance(e, dict) and _entry_has_playable_clip(e)]
     if len(playable) != len(entries):
         idx["entries"] = playable
-        idx_path.write_text(json.dumps(idx, indent=2, ensure_ascii=False), encoding="utf-8")
+        write_text_atomic(idx_path, json.dumps(idx, indent=2, ensure_ascii=False))
     return {"entries": playable, "count": len(playable)}
 
 

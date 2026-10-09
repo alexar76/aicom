@@ -18,6 +18,7 @@ from web.backend.services.ai_market_protocol.references import (
 )
 from web.backend.services.ai_market_protocol.signing import sign_payload
 from web.backend.services.ai_market_protocol.stats import append_stat
+from core.json_state import write_text_atomic
 
 
 def _load_traces() -> dict[str, Any]:
@@ -34,7 +35,7 @@ def _load_traces() -> dict[str, Any]:
 def _save_trace(trace_id: str, row: dict[str, Any]) -> None:
     data = _load_traces()
     data[trace_id] = row
-    pipelines_path().write_text(json.dumps(data, indent=2), encoding="utf-8")
+    write_text_atomic(pipelines_path(), json.dumps(data, indent=2))
 
 
 def get_trace(trace_id: str) -> dict[str, Any] | None:

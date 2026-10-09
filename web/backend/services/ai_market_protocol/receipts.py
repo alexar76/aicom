@@ -7,6 +7,7 @@ import time
 import uuid
 from typing import Any
 
+from core.json_state import write_text_atomic
 from web.backend.services.ai_market_protocol.paths import receipts_path
 from web.backend.services.ai_market_protocol.signing import sign_payload
 
@@ -22,7 +23,7 @@ def _load_receipts() -> dict[str, Any]:
 
 
 def _save_receipts(data: dict[str, Any]) -> None:
-    receipts_path().write_text(json.dumps(data, indent=2), encoding="utf-8")
+    write_text_atomic(receipts_path(), json.dumps(data, indent=2))
 
 
 def create_receipt(

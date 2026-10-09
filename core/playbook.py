@@ -25,6 +25,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.learning_objective import expected_value
 
 logger = logging.getLogger(__name__)
@@ -240,10 +241,7 @@ def distill(data_root: Path, *, llm_router: Any = None) -> int:
 
     fp = playbook_path(Path(data_root))
     fp.parent.mkdir(parents=True, exist_ok=True)
-    fp.write_text(
-        "\n".join(json.dumps(r, ensure_ascii=False) for r in rules) + ("\n" if rules else ""),
-        encoding="utf-8",
-    )
+    write_text_atomic(fp, "\n".join(json.dumps(r, ensure_ascii=False) for r in rules) + ("\n" if rules else ""))
     active = sum(1 for r in rules if r["status"] == "active")
     logger.info("playbook distilled: %d rules (%d active) from %d episodes", len(rules), active, len(episodes))
     return active
@@ -293,10 +291,7 @@ async def refine_playbook_claims(data_root: Path, *, llm_router: Any) -> int:
             logger.debug("playbook claim refine failed: %s", exc)
     if refined:
         fp = playbook_path(Path(data_root))
-        fp.write_text(
-            "\n".join(json.dumps(x, ensure_ascii=False) for x in rules) + "\n",
-            encoding="utf-8",
-        )
+        write_text_atomic(fp, "\n".join(json.dumps(x, ensure_ascii=False) for x in rules) + "\n")
     return refined
 
 

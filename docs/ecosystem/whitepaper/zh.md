@@ -33,6 +33,7 @@ AICOM 是一个**联邦式自主智能体经济体**，围绕供给侧工厂、�
 | **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | ACEX 资本市场仪表盘 |
 | **ARGUS 落地页** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | 安装 + 用户入口 |
 | **HESTIA 炉灶** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [落地页](https://alexar76.github.io/hestia/) | 隔离托管运行时 — 不是 Hub 目录 |
+| **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [落地页](https://alexar76.github.io/attested-memory/) | 面向 AI 智能体的可验证记忆 |
 
 ![完整生态系统图 — Alien Monitor LIVE 模式](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -83,6 +84,7 @@ flowchart TB
     ORACLES["🔮 Oracles ×17<br/>signed verifiable math"]
     GAIA["🌍 GAIA<br/>physical/sensor oracles"]
     ATLAS["🗺 ATLAS<br/>sensor map · analyst"]
+    MEMORY["🧠 Attested Memory<br/>可验证智能体记忆"]
     LOGOS["🧿 LOGOS<br/>只读联邦分析"]
     MOMUS["👁 MOMUS<br/>red team · signed findings"]
     THEMIS["🛡 THEMIS<br/>发布准入 · approve/review/reject"]
@@ -110,6 +112,7 @@ flowchart TB
     LOTTERY --> ORACLES
     LOTTERY --> HUB
     AGENTS --> HUB
+    AGENTS -->|写入 · 检索| MEMORY
     HUB --> CHAIN
   end
 
@@ -119,7 +122,7 @@ flowchart TB
   OP -.->|"deploy · policy"| FACTORY
   OP -.-> HUB
 
-  class FACTORY,HESTIA,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN machine
+  class FACTORY,HESTIA,HUB,MESH,ORACLES,GAIA,ATLAS,LOGOS,MOMUS,THEMIS,BASANOS,HEPHAESTUS,TREASURY,LOTTERY,AGENTS,CHAIN,MEMORY machine
 ```
 
 ### 1.3 信任模型（一段话）
@@ -159,6 +162,7 @@ flowchart TB
     hephaestus["HEPHAESTUS<br/>能力链锻造 · studio"]
     logos["LOGOS<br/>只读联邦分析"]
     argus["ARGUS-3<br/>Local agent · optional economy"]
+    memory["Attested Memory<br/>可验证智能体记忆"]
   end
 
   subgraph external["External"]
@@ -178,6 +182,7 @@ flowchart TB
   basanos -->|assurance pack| aicom
   enduser -->|chat · MCP| argus
   argus -->|discover · invoke| aicom
+  argus -->|写入 · 检索| memory
   aicom -->|公开遥测| logos
   aicom -->|prompts| llm
   aicom -->|on-chain| chain
@@ -199,6 +204,7 @@ flowchart TB
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS 准入** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · Hub 门控 | `themis` |
 | [`hestia/`](https://github.com/alexar76/hestia) | **HESTIA 炉灶** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · `:9480` | `hestia` |
+| [`attested/attested-memory-hub/`](https://github.com/alexar76/attested-memory) | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) | `attested-memory` |
 | [`treasury/`](https://github.com/alexar76/treasury) | **Treasury (payer)** | [momus.modelmarket.dev/treasury](https://momus.modelmarket.dev/treasury) · `:9401` | `treasury` |
 | [`escrow-signer/`](https://github.com/alexar76/escrow-signer) | **HORKOS policy signer** | reverse tunnel (skopos host) | `escrow-signer` |
 | [`argus/`](https://github.com/alexar76/argus) | **ARGUS-3** | 通过 Factory 落地页安装 | `argus` |
@@ -1032,7 +1038,7 @@ Monitor 加载父级 `aicom/.env`。ARGUS 配置：`~/.argus/argus.config.json`�
 
 **文档：** [`ecosystem-architecture.md`](../../ecosystem-architecture.md) · [`aimarket-whitepaper.md`](../../aimarket-whitepaper.md) · [`onchain-journal.md`](../../onchain-journal.md) · [`USER_GUIDE.md`](../../USER_GUIDE.md) · [`hub-integration-guide.md`](../../hub-integration-guide.md) · [`contracts/DEPLOY.md`](../../../contracts/DEPLOY.md) · [`known-issues.md`](../../known-issues.md) · [`ROADMAP.md`](../../../ROADMAP.md)
 
-**术语表：** **ALP**（Agent Listing Protocol） · **CapShares**（与上架关联的 ERC-20） · **Channel**（用于微支付的预注资托管） · **Capability**（签名的可调用清单） · **Federation**（Hub 对 `.well-known` 的爬取） · **Receipt**（Ed25519 invoke 证明 / 收据） · **TEE**（硬件认证） · **WARDEN**（独立 MCP 安全防火墙库 · `@aimarket/warden`；参考宿主 ARGUS） · **THEMIS**（发布准入 · approve/review/reject） · **HESTIA**（炉灶 · 隔离托管运行时 · 不是 Hub、不是 Factory） · **GAIA**（物理预言机） · **ATLAS**（传感器地图 · LIVE/SIM · ATLAS Analyst） · **MOMUS**（红队 · 签名 finding） · **Treasury**（独立赏金支付方） · **LOGOS**（只读联邦分析 · 快照 · 异常 · 关联）
+**术语表：** **ALP**（Agent Listing Protocol） · **CapShares**（与上架关联的 ERC-20） · **Channel**（用于微支付的预注资托管） · **Capability**（签名的可调用清单） · **Federation**（Hub 对 `.well-known` 的爬取） · **Receipt**（Ed25519 invoke 证明 / 收据） · **TEE**（硬件认证） · **WARDEN**（独立 MCP 安全防火墙库 · `@aimarket/warden`；参考宿主 ARGUS） · **THEMIS**（发布准入 · approve/review/reject） · **HESTIA**（炉灶 · 隔离托管运行时 · 不是 Hub、不是 Factory） · **GAIA**（物理预言机） · **ATLAS**（传感器地图 · LIVE/SIM · ATLAS Analyst） · **MOMUS**（红队 · 签名 finding） · **Treasury**（独立赏金支付方） · **LOGOS**（只读联邦分析 · 快照 · 异常 · 关联） · **Attested Memory**（面向 AI 智能体的可验证记忆 · Memory Market · Truth Layer · Provenance Ledger）
 
 规范术语表（EN · RU · ES · FR · ZH）：[`docs/localization-glossary.md`](../../localization-glossary.md)。
 

@@ -9,6 +9,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
+from core.json_state import write_text_atomic
 from core.paths import data_root as factory_data_root
 
 logger = logging.getLogger(__name__)
@@ -36,7 +37,7 @@ def _load() -> list[dict[str, Any]]:
 
 def _save(rows: list[dict[str, Any]]) -> None:
     path = _path()
-    path.write_text(json.dumps(rows, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_text_atomic(path, json.dumps(rows, indent=2, ensure_ascii=False))
 
 
 def list_templates() -> list[dict[str, Any]]:
