@@ -22,31 +22,129 @@ def no_bots(address):
     return False, 1
 
 
-def test_blockscout_pages_stop_at_the_start():
-    pages = {
-        None: {"items": [
-            {"timestamp": "2026-10-07T10:00:00.000000Z", "transaction_hash": "0xa", "log_index": 3,
-             "from": {"hash": STRANGER}, "total": {"value": "3000"}},
-            {"timestamp": "2026-10-06T10:00:00.000000Z", "transaction_hash": "0xb", "log_index": 4,
-             "from": {"hash": OURS}, "total": {"value": "1000"}}],
-            "next_page_params": {"block_number": 5, "index": 1}},
-        "5": {"items": [
-            {"timestamp": "2026-10-04T10:00:00.000000Z", "transaction_hash": "0xc", "log_index": 1,
-             "from": {"hash": BOT}, "total": {"value": "1000"}}],
-            "next_page_params": {"block_number": 2, "index": 1}},
-    }
+HEAD = 52_400_000
+NOW = dw._iso("2026-10-09T08:00:00Z")
+
+
+def nap(seconds):
+    pass
+
+
+def topic(address):
+    return "0x" + "0" * 24 + address[2:].lower()
+
+
+def chain(logs, *, down=(), head=HEAD):
+    """A fake Base behind gateways: `logs` are (block, payer, units, log_index); a gateway whose
+    host is in `down` answers 403, as Blockscout's Cloudflare did."""
     asked = []
 
-    def get(url, timeout):
-        asked.append(url)
-        page = "5" if "block_number=5" in url else None
-        return 200, pages[page], ""
+    def post(url, payload, timeout):
+        asked.append((url, payload["method"], payload["params"]))
+        if any(d in url for d in down):
+            return 403, None, "HTTP 403"
+        if payload["method"] == "eth_blockNumber":
+            return 200, {"result": hex(head)}, ""
+        q = payload["params"][0]
+        lo, hi = int(q["fromBlock"], 16), int(q["toBlock"], 16)
+        assert hi - lo + 1 <= dw.CHUNK and q["address"] == dw.USDC_BASE
+        assert q["topics"] == [dw.TRANSFER_TOPIC, None, topic(dw.TREASURY)]
+        found = [{"blockNumber": hex(b), "transactionHash": f"0x{b:064X}", "logIndex": hex(i),
+                  "topics": [dw.TRANSFER_TOPIC, topic(who), topic(dw.TREASURY)], "data": hex(units),
+                  "blockTimestamp": hex(int(NOW) - (head - b) * 2)}
+                 for b, who, units, i in logs if lo <= b <= hi]
+        return 200, {"result": found}, ""
+    return post, asked
 
-    got = dw.inflows(dw._iso("2026-10-05T14:00:00Z"), get=get)
-    assert [t["tx"] for t in got] == ["0xa", "0xb"]          # 10-04 is before the test
-    assert got[0] == {"tx": "0xa", "log_index": 3, "from": STRANGER, "units": 3000,
-                      "at": "2026-10-07T10:00:00Z"}
-    assert len(asked) == 2 and "filter=to" in asked[0] and dw.USDC_BASE in asked[0]
+
+def test_the_chain_is_read_from_the_start_in_chunks_and_resumes_where_it_stopped():
+    start_block = HEAD - int((NOW - dw._iso(dw.START)) // 2)
+    logs = [(start_block - 400, STRANGER, 3000, 1),        # before the test: not counted
+            (start_block + 10, STRANGER, 3000, 7), (HEAD - 1000, BOT, 1000, 2)]
+    post, asked = chain(logs)
+    state: dict = {}
+    got, err = dw.chain_inflows(state, now=NOW, post=post, urls=["https://a.example"], sleep=nap)
+    assert err == "" and [t["units"] for t in got] == [3000, 1000]
+    assert got[0] == {"tx": f"0x{start_block + 10:064x}", "log_index": 7, "from": STRANGER,
+                      "units": 3000, "at": dw._stamp(NOW - (HEAD - start_block - 10) * 2)}
+    assert state["cursor"] == HEAD - dw.CONFIRMATIONS and NOW - state["read_at"] <= 2 * dw.CONFIRMATIONS
+    reads = [p[0] for _, method, p in asked if method == "eth_getLogs"]
+    assert int(reads[0]["fromBlock"], 16) < start_block - 400 and len(reads) > 1   # START's block, margin, chunks
+    again, err = dw.chain_inflows(state, now=NOW, post=post, urls=["https://a.example"], sleep=nap)
+    assert again == [] and err == ""                      # nothing read twice
+
+
+def test_a_dead_gateway_falls_through_and_a_dead_chain_delays_but_loses_nothing():
+    late = HEAD - 200
+    post, asked = chain([(late, STRANGER, 3000, 1)], down=("a.example",))
+    state = {"cursor": HEAD - 5000}
+    got, err = dw.chain_inflows(state, now=NOW, post=post, urls=["https://a.example", "https://b.example"], sleep=nap)
+    assert err == "" and len(got) == 1                    # the second gateway answered
+    dead, _ = chain([(late, STRANGER, 3000, 1)], down=("a.example", "b.example"))
+    state = {"cursor": HEAD - 5000, "read_at": NOW - 9000}
+    got, err = dw.chain_inflows(state, now=NOW, post=dead, urls=["https://a.example", "https://b.example"], sleep=nap)
+    assert got == [] and "a.example: HTTP 403" in err and "b.example: HTTP 403" in err
+    assert state["cursor"] == HEAD - 5000                 # the gap is left for the next run
+    got, err = dw.chain_inflows(state, now=NOW, post=post, urls=["https://a.example", "https://b.example"], sleep=nap)
+    assert len(got) == 1 and err == ""
+
+
+def test_a_keyed_gateway_never_shows_its_key():
+    post, _ = chain([], down=("secret",))
+    _, err = dw._rpc(["https://base.example/v2/secretKEY123"], "eth_blockNumber", [], post)
+    assert "secretKEY123" not in err and "base.example" in err
+
+
+def test_a_run_out_of_time_stops_without_an_error():
+    post, _ = chain([])
+    ticks = iter(range(0, 10_000, 60))
+    state = {"cursor": HEAD - 50_000}
+    _, err = dw.chain_inflows(state, now=NOW, post=post, urls=["https://a.example"], budget=100,
+                              clock=lambda: next(ticks), sleep=nap)
+    assert err == "" and HEAD - 50_000 < state["cursor"] < HEAD - dw.CONFIRMATIONS
+
+
+def test_a_rate_limit_is_waited_out_within_the_budget():
+    post, _ = chain([(HEAD - 100, STRANGER, 3000, 1)])
+    hits = {"n": 0}
+
+    def flaky(url, payload, timeout):
+        if payload["method"] == "eth_getLogs" and hits["n"] < 2:
+            hits["n"] += 1
+            return 200, {"error": {"code": -32005, "message": "rate limit exceeded"}}, ""
+        return post(url, payload, timeout)
+
+    slept = []
+    state = {"cursor": HEAD - 1000}
+    got, err = dw.chain_inflows(state, now=NOW, post=flaky, urls=["https://a.example"], sleep=slept.append)
+    assert err == "" and len(got) == 1 and slept.count(1.0) == 1 and 2.0 in slept
+
+
+def test_catching_up_is_not_an_alarm_but_a_stuck_chain_is():
+    state = {"read_at": NOW - 80 * 3600}
+    assert dw.chain_health(state, now=NOW, error="") == []          # a backlog read within budget
+    assert dw.chain_health(state, now=NOW, error="eth_getLogs 1-500: a.example: HTTP 403") == []
+    state["read_at"] = NOW - 7 * 3600
+    first = dw.chain_health(state, now=NOW, error="eth_getLogs 1-500: a.example: HTTP 403")
+    assert len(first) == 1 and "7 ч" in first[0] and "HTTP 403" in first[0]
+    assert dw.chain_health(state, now=NOW + 3600, error="same") == []
+    state["read_at"] = NOW + 3500
+    back = dw.chain_health(state, now=NOW + 3600, error="")
+    assert len(back) == 1 and "снова читаются" in back[0]
+    assert dw.chain_health(state, now=NOW + 3600, error="") == []
+    lagging = dict(state, read_at=NOW - 4 * 3600, last_error="eth_blockNumber: x")
+    text = dw.summary({"chain": lagging}, now=NOW)
+    assert "отстаёт на 4 ч: eth_blockNumber: x" in text
+    assert "ещё не прочитаны" in dw.summary({}, now=NOW)
+
+
+def test_every_escrow_ever_deployed_is_ours():
+    """The live one and each one a redeploy replaced (the registry names three by 2026-10-08)."""
+    reg = dw._registry()
+    old = [r["superseded"]["AIMarketEscrow"] for r in reg.values()
+           if isinstance(r, dict) and "AIMarketEscrow" in (r.get("superseded") or {})]
+    assert len(old) >= 2
+    assert {a.lower() for a in [reg["contracts"]["AIMarketEscrow"], *old]} <= dw.OWN_WALLETS
 
 
 def test_a_crawler_is_one_that_pays_many_sellers():
@@ -56,6 +154,23 @@ def test_a_crawler_is_one_that_pays_many_sellers():
 
     assert dw.crawler_like(BOT, get=get) == (True, 12)
     assert dw.crawler_like(STRANGER, get=lambda u, t: (200, {"items": [{"to": {"hash": "0x1"}}]}, "")) == (False, 1)
+    assert dw.crawler_like(BOT, get=lambda u, t: (403, None, "HTTP 403")) == (None, 0)
+
+
+def test_an_unknown_payer_is_said_to_be_unknown_and_asked_again():
+    state: dict = {}
+    msgs = dw.step(state, now=0, transfers=[transfer(STRANGER)], mcp=None, crawler=lambda a: (None, 0))
+    assert "проверить не удалось" in msgs[0] and state["external"][0]["crawler_like"] is None
+    assert "не проверено: 1" in dw.summary(state, now=NOW)
+    dw.step(state, now=0, transfers=[], mcp=None, crawler=lambda a: (True, 30))
+    assert state["external"][0]["crawler_like"] is True and state["external"][0]["payees"] == 30
+
+
+def test_a_backlog_of_payments_is_one_message():
+    state: dict = {}
+    many = [transfer(STRANGER, tx=f"0x{i}", log_index=i) for i in range(5)]
+    msgs = dw.step(state, now=0, transfers=many, mcp=None, crawler=no_bots)
+    assert len(msgs) == 1 and "сразу 5" in msgs[0] and msgs[0].count("basescan.org/tx/") == 5
 
 
 def test_only_outsiders_count_and_each_payment_once():
@@ -152,3 +267,22 @@ def test_the_live_escrow_is_our_own_wallet():
     reg = json.loads((Path(__file__).resolve().parents[1] / "config" / "deployments"
                       / "base-mainnet.json").read_text(encoding="utf-8"))
     assert reg["contracts"]["AIMarketEscrow"].lower() in dw.OWN_WALLETS
+
+
+def test_a_crowd_of_new_payers_is_looked_up_a_few_at_a_time():
+    asked = []
+
+    def crawler(address):
+        asked.append(address)
+        return False, 1
+
+    payers = ["0x" + f"{i:040x}" for i in range(1, 10)]
+    state: dict = {}
+    dw.step(state, now=0, transfers=[transfer(a, tx=a, log_index=0) for a in payers], mcp=None,
+            crawler=crawler)
+    assert len(asked) == dw.CRAWLER_ASKS
+    assert [r["crawler_like"] for r in state["external"]].count(None) == len(payers) - dw.CRAWLER_ASKS
+    asked.clear()
+    dw.step({}, now=0, transfers=[transfer(STRANGER, tx=f"0x{i}", log_index=i) for i in range(5)],
+            mcp=None, crawler=crawler)
+    assert asked == [STRANGER]                            # one payer, one lookup

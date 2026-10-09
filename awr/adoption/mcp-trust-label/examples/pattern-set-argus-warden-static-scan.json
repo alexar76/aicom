@@ -2,9 +2,9 @@
  "id": "urn:awr:mtl:1:patternset:argus-warden-static-scan",
  "source": "warden/src/static-scan.ts",
  "note": "GENERATED from the shipping ARGUS WARDEN static-scan gate by calling staticScanRuleset(); do not hand-edit. This file exists so that a pattern-set digest is reproducible: two MTL labels are comparable only when they name the same pattern set. Ruleset v2 gave every rule a TIER: a `block` rule can refuse a connection, an `advise` rule is reported and never blocks at any blockAtSeverity and never affects the score. A label that presents an advisory hit as a blocking finding misrepresents the scan. The `severity` values are the gate own and MTL/1 attaches no safety meaning to them. Ruleset v3 added SURFACES: every rule declares whether it runs against the tool name, the description or the input schema. The tool name was scanned by nothing before v3; noun-keyed rules stay off it deliberately, because they match ordinary identifiers. Ruleset v4 added GUARDS and re-tiered on field evidence: a guard inspects a match in context and drops it when the match is not the thing the rule looks for (a mention rather than an instruction, a detection rather than a request, an identifier fragment rather than a secret). Two rules with the same regex and different guards are different rulesets, so `guards` is inside the digest. Comparing a v4 label with a v3 one compares different scans: v4 blocks on 15 rules where v3 blocked on 18. Ruleset v5 added the FOLD: text is normalised (compatibility forms, invisible characters, Unicode tags, look-alike letters) before any rule reads it, so `fold` is inside the digest too. Ruleset v6 added the title, outputSchema, annotations and metadata surfaces; under MTL/1 only those a normalised entry carries are scanned (PROFILE.md §7.3). Rulesets v7 and v8 changed guards only, which is why the version is inside the digest: the same rule table with different guard behaviour is a different scan.",
- "version": "8",
+ "version": "9",
  "fold": "nfkc+tags-decoded+invisible-stripped+mixed-script-confusables/1",
- "digest": "sha256-n7MLgD6v62p7ZPn5brfrgfz3BIJF60eNrZ5508GdRHw=",
+ "digest": "sha256-nC+ybcePE8AWwVn5rnMvkm4lPGTezj2sDnkxYG24wek=",
  "digestNote": "sha256 over the RFC 8785 canonical form of {version, fold, rules}, rules sorted by code-unit comparison. Recompute with: node -e \"import('./warden/dist/index.js').then(m=>console.log(m.staticScanRuleset().digest))\", or regenerate this whole file with awr/adoption/mcp-trust-label/tools/regen_pattern_set.mjs.",
  "scannedFields": [
   "name",
@@ -16,17 +16,17 @@
   "metadata"
  ],
  "surfaceCounts": {
-  "name": 17,
-  "title": 26,
-  "description": 26,
-  "inputSchema": 26,
-  "outputSchema": 26,
-  "annotations": 26,
-  "metadata": 26
+  "name": 23,
+  "title": 32,
+  "description": 32,
+  "inputSchema": 32,
+  "outputSchema": 32,
+  "annotations": 32,
+  "metadata": 32
  },
- "ruleCount": 26,
+ "ruleCount": 32,
  "tierCounts": {
-  "block": 15,
+  "block": 21,
   "advise": 11
  },
  "rules": [
@@ -179,6 +179,50 @@
   },
   {
    "code": "TOOL_DEF_EXFIL",
+   "severity": "high",
+   "tier": "block",
+   "surfaces": [
+    "name",
+    "description",
+    "inputSchema",
+    "title",
+    "outputSchema",
+    "annotations",
+    "metadata"
+   ],
+   "source": "\\b(?:bcc|cc)\\b\\s*:?\\s*[\\w.+-]{1,64}@[\\w-]{1,63}(?:\\.[\\w-]{1,63})+",
+   "flags": "i",
+   "guards": [
+    "mention",
+    "placeholderAddress",
+    "polarity"
+   ],
+   "raw": false
+  },
+  {
+   "code": "TOOL_DEF_EXFIL",
+   "severity": "high",
+   "tier": "block",
+   "surfaces": [
+    "name",
+    "description",
+    "inputSchema",
+    "title",
+    "outputSchema",
+    "annotations",
+    "metadata"
+   ],
+   "source": "\\b(?:entire|whole|full|complete)\\s+(?:conversation|chat)(?:\\s+(?:history|log|so\\s+far))?|\\bconversation\\s+history\\b|\\b(?:list\\s+of\\s+)?(?:last|previous|all)\\s+(?:the\\s+)?(?:messages|chats)\\b",
+   "flags": "i",
+   "guards": [
+    "mention",
+    "polarity",
+    "contextExfil"
+   ],
+   "raw": false
+  },
+  {
+   "code": "TOOL_DEF_EXFIL",
    "severity": "critical",
    "tier": "block",
    "surfaces": [
@@ -212,6 +256,30 @@
    "flags": "i",
    "guards": [
     "navigation"
+   ],
+   "raw": false
+  },
+  {
+   "code": "TOOL_DEF_EXFIL",
+   "severity": "high",
+   "tier": "block",
+   "surfaces": [
+    "name",
+    "description",
+    "inputSchema",
+    "title",
+    "outputSchema",
+    "annotations",
+    "metadata"
+   ],
+   "source": "\\b(?:send|post|forward|relay|copy|transmit|e-?mail)\\s[^.;!?\\n]{0,80}?\\bto\\s+(?:https?:\\/\\/[^\\s\"'<>)]+|[\\w.+-]{1,64}@[\\w-]{1,63}(?:\\.[\\w-]{1,63})+)",
+   "flags": "i",
+   "guards": [
+    "navigation",
+    "mention",
+    "dataObject",
+    "placeholderAddress",
+    "polarity"
    ],
    "raw": false
   },
@@ -329,6 +397,46 @@
   },
   {
    "code": "TOOL_DEF_INJECTION",
+   "severity": "high",
+   "tier": "block",
+   "surfaces": [
+    "name",
+    "description",
+    "inputSchema",
+    "title",
+    "outputSchema",
+    "annotations",
+    "metadata"
+   ],
+   "source": "\\b(?:do\\s+not|don'?t|never)\\s+(?:tell|inform|notify|alert)\\s+(?:the\\s+)?user\\s+(?:about\\s+(?:this|these|it|that)\\b|that\\s+(?:this|the)\\s+tool\\b|of\\s+(?:this|these)\\b)",
+   "flags": "i",
+   "guards": [
+    "mention"
+   ],
+   "raw": false
+  },
+  {
+   "code": "TOOL_DEF_INJECTION",
+   "severity": "high",
+   "tier": "block",
+   "surfaces": [
+    "name",
+    "description",
+    "inputSchema",
+    "title",
+    "outputSchema",
+    "annotations",
+    "metadata"
+   ],
+   "source": "\\b(?:do\\s+not|don'?t|never)\\s+mention\\s+that\\s+you\\b",
+   "flags": "i",
+   "guards": [
+    "mention"
+   ],
+   "raw": false
+  },
+  {
+   "code": "TOOL_DEF_INJECTION",
    "severity": "low",
    "tier": "advise",
    "surfaces": [
@@ -418,6 +526,28 @@
     "annotations",
     "metadata"
    ],
+   "source": "\\brm\\s+-(?:rf|fr|r\\s+-f|f\\s+-r)\\s+(?:~\\/?|\\/|\\$HOME\\/?|\\*)(?=[\\s\"'`;)]|$)",
+   "flags": "",
+   "guards": [
+    "mention",
+    "polarity",
+    "detection"
+   ],
+   "raw": false
+  },
+  {
+   "code": "TOOL_DEF_INJECTION",
+   "severity": "high",
+   "tier": "block",
+   "surfaces": [
+    "name",
+    "description",
+    "inputSchema",
+    "title",
+    "outputSchema",
+    "annotations",
+    "metadata"
+   ],
    "source": "\\bwithout\\s+(?:telling|informing|asking)\\s+(?:the\\s+)?user\\b",
    "flags": "i",
    "guards": [
@@ -460,7 +590,7 @@
     "annotations",
     "metadata"
    ],
-   "source": "\\b(?:read|extract|retrieve|fetch|obtain|dump|reveal|collect|harvest|grab|copy|print)\\s[^.;\"\\n]{0,30}?\\b(?:api[_\\s-]?key|access[_\\s-]?token|bearer\\s+token|credential|password|passwd|secret|\\.env\\b|environment\\s+variable)",
+   "source": "\\b(?:read|extract|retrieve|fetch|obtain|dump|reveal|collect|harvest|grab|copy|print)\\s(?:[^.;\"\\n]|\\.(?=[\\w/])){0,40}?(?:\\b(?:api[_\\s-]?key|access[_\\s-]?token|bearer\\s+token|credential|password|passwd|secret|environment\\s+variable)|\\.env\\b|\\.kube\\/config\\b|application_default_credentials|\\.docker\\/config\\.json|\\.git-credentials|\\.netrc\\b|\\.pgpass\\b|\\.npmrc\\b|\\.pypirc\\b)",
    "flags": "i",
    "guards": [
     "polarity",
