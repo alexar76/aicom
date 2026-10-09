@@ -242,7 +242,8 @@ def test_an_unpublished_satellite_reaches_no_knowledge_base():
         if not block:
             continue                      # runtime consumers have no fenced block
         for sat in unpublished:
-            assert f"- {sat['id']}" not in block.group(1), \
+            # Not followed by a name character: "- attested" is a prefix of "- attested-memory".
+            assert not re.search(rf"- {re.escape(str(sat['id']))}(?![\w-])", block.group(1)), \
                 f"{target.path} names unpublished {sat['id']}"
 
 
@@ -271,7 +272,8 @@ def test_factory_satellite_map_drops_unpublished_entries():
     ]
     assert unpublished
     for sid in unpublished:
-        assert f"  - id: {sid}" not in out, sid
+        # Whole line: "  - id: attested" is a prefix of the published "  - id: attested-memory".
+        assert not re.search(rf"^  - id: {re.escape(sid)}$", out, re.M), sid
     published = [
         str(s["id"])
         for s in (yaml.safe_load(src) or {}).get("satellites", [])

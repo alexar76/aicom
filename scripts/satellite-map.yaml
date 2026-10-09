@@ -1512,6 +1512,69 @@ satellites:
       use against systems you do not own. `data/` (the scanner key) and canary build
       artifacts are excluded from the mirror.
 
+  - id: attested-memory
+    # Published 2026-10 (owner: Attested Memory is ours, publish it). Only the memory core and the
+    # three product shells built on it; the Deal / Meter / Prove trio stays in the Gitea-only
+    # `attested` entry above — it repeats rails the Hub already has (escrow, metering, receipts).
+    repo: attested-memory
+    github_published: true
+    history: live
+    description: >
+      Attested Memory — verifiable memory for AI agents: Memory Market (write, search, share),
+      Truth Layer (evidence and contradictions) and Provenance Ledger (lineage, hybrid-signed
+      receipts) around one Memory Unit contract, with an MCP endpoint. Self-hosted, Docker.
+    description_i18n:
+      ru: "Attested Memory — проверяемая память для ИИ-агентов: Memory Market (запись, поиск, обмен), Truth Layer (доказательства и противоречия) и Provenance Ledger (происхождение, подписанные квитанции) вокруг одного контракта Memory Unit, с MCP. Самостоятельная установка, Docker."
+      es: "Attested Memory — memoria verificable para agentes de IA: Memory Market (escribir, buscar, compartir), Truth Layer (evidencia y contradicciones) y Provenance Ledger (linaje, recibos firmados) sobre un contrato Memory Unit, con MCP. Autoalojado, Docker."
+      fr: "Attested Memory — mémoire vérifiable pour agents IA : Memory Market (écrire, chercher, partager), Truth Layer (preuves et contradictions) et Provenance Ledger (lignée, reçus signés) autour d'un contrat Memory Unit, avec MCP. Auto-hébergé, Docker."
+      zh: "Attested Memory — 面向 AI 智能体的可验证记忆：Memory Market（写入、检索、共享）、Truth Layer（证据与矛盾）与 Provenance Ledger（来源、签名回执），围绕统一的 Memory Unit 契约，并提供 MCP。自托管，Docker。"
+    homepage: https://attestedmemory.net/
+    topics:
+      - ai-agents
+      - agent-memory
+      - memory
+      - provenance
+      - verifiable
+      - mcp
+      - security
+      - self-hosted
+    license: apache-2.0
+    paths:
+      - attested/attested-memory-hub
+      - personal-attested-memory
+      - team-memory-os
+      - expert-memory-market
+    export_layout:
+      root_from: attested/attested-memory-hub
+      extra:
+        - from: personal-attested-memory
+          to: apps/personal-attested-memory
+        - from: team-memory-os
+          to: apps/team-memory-os
+        - from: expert-memory-market
+          to: apps/expert-memory-market
+    exclude_paths:
+      - .upstreams
+      - data
+      - .venv
+      - .env
+      - __pycache__
+      - .pytest_cache
+      - .coverage
+      - '*.sqlite3'
+      - '*.sqlite3-wal'
+      - '*.sqlite3-shm'
+      - scripts/publish.sh
+      - scripts/push_gitea_monorepo.sh
+    registries: []
+    ci:
+      - pytest
+    notes: >
+      Root = attested/attested-memory-hub (Apache-2.0); apps/ = the three MIT product shells, each
+      with its own LICENSE. The MCP registry entry is server.json (net.attestedmemory/market,
+      remote https://hub.attestedmemory.net/mcp) — submit after the first mirror push.
+      Deploy: scripts/deploy_attested_memory.sh (hub + gateway + shells).
+
   - id: cite-desks
     # Owner 2026-09-14: one parent GitHub repo (sub-desks inside). Not the factory tree.
     repo: cite-desks

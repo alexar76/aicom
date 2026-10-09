@@ -251,7 +251,7 @@ C4 visuel + déploiement : [ecosystem-architecture.md](../ecosystem-architecture
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (50 components).
+Run: python3 scripts/sync_knowledge_base.py --write (51 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -276,6 +276,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (50 components).
 - argus: ARGUS-3 — wallet-native, security-hardened personal agent; demand-side reference client and the reference host for the WARDEN MCP firewall (@aimarket/warden, a separate package) plus native AIMarket consumer/provider. Owner-locked Telegram, multi-provider, autonomous offline. · https://magic-ai-factory.com/argus/
 - argus-wiki (repo argus.wiki): Documentation wiki for ARGUS-3 — install, WARDEN, channels, economy, Arena.
 - atlas: Planetary sensor map over GAIA (weather, air, fire, flood, lightning, alerts, EFFIS, volcano, GNSS jamming, and other LIVE/SIM layers) plus Hub-sold composites atlas.situation.brief@v1 (defaults to map layers), atlas.fire.weather@v1 (FIRMS and/or EFFIS), atlas.nearest.read@v1, atlas.watchbox.check@v1. ATLAS maps and sells geo artifacts; GAIA attests raw reads. · https://alexar76.github.io/atlas/
+- attested-memory: Attested Memory — mémoire vérifiable pour agents IA : Memory Market (écrire, chercher, partager), Truth Layer (preuves et contradictions) et Provenance Ledger (lignée, reçus signés) autour d'un contrat Memory Unit, avec MCP. Auto-hébergé, Docker. · https://attestedmemory.net/
 - basanos: Lydian touchstone for ecosystem Solidity. Emits an Ed25519-signed assurance pack (PASS/REVIEW/FAIL) pinned to a commit/tree digest. Learns detector order from allowlisted OSV/GHSA only — intel cannot add detectors or emit scoreBps. Not HEPHAESTUS (forge.modelmarket.dev is that landing), not AgentAuditPool, not MOMUS, not THEMIS. · https://basanos.modelmarket.dev · port 9470
 - cite-desks: Cite desks — bureaux de preuve indépendants sur les rails AIMarket. Un dépôt parent : kernel + Emberline / Tideline / Solrecord / Seamark / Plinth / Smokeproof, chacun avec son README. · https://desk.modelmarket.dev/
 - create-aimarket-agent: CLI autonome qui génère des fournisseurs de capacités AIMarket Protocol v2 testés, avec manifestes, signature Ed25519 et packaging Docker. · https://alexar76.github.io/create-aimarket-agent/

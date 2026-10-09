@@ -1216,7 +1216,7 @@ them.** They are the reason there is no MTL issuer in this repository.
 
    The pattern set is no longer a transcription. `pattern-set-argus-warden-static-scan.json` is
    **generated** by `tools/regen_pattern_set.mjs` calling `staticScanRuleset()` in
-   `@aimarket/warden` — 32 rules, 21 `block`, 11 `advise`, version 9, 23 rules also covering the
+   `@aimarket/warden` — 35 rules, 24 `block`, 11 `advise`, version 10, 24 rules also covering the
    tool name — so the digest §7.3 makes the label falsifiable by now binds to the gate's own table
    rather than to a hand copy of it.
 
@@ -1261,7 +1261,7 @@ these rather than trust the table.
 | Gate chain and its order | `warden/src/index.ts` — `Warden.create` |
 | Composite score is the product of gate scores | `warden/src/index.ts` — `vet` |
 | Block decision is threshold-driven; default threshold `high` | `warden/src/index.ts`, `argus/src/config.ts` |
-| 32 rules (21 `block`, 11 `advise`) in ruleset v9; 23 of them also scan the tool `name`, the 4 noun-keyed codes do not. v9 adds six blocking rules (concealment of the tool's own behaviour, longer-object and mailbox exfiltration, a blind copy to a fixed mailbox, the conversation sent out, a recursive delete of `~` or `/`) and reads a tool name as the words it spells. v5 folds the text before matching (`fold`, in the digest), adds the advisory `TOOL_DEF_SECRET_EXFIL` pair rule, and marks each rule `raw` or folded; v4 re-tiered three rules to `advise` and added per-rule `guards`. `fold` and `raw` are inside the digest | `warden/src/static-scan.ts` |
+| 35 rules (24 `block`, 11 `advise`) in ruleset v10; 24 of them also scan the tool `name`, the 4 noun-keyed codes and the cross-tool code do not. v10 adds cross-tool directives (one tool's text binding to another tool's call to rewrite its input or pre-empt it) and a priority-over-the-user claim. v9 adds six blocking rules (concealment of the tool's own behaviour, longer-object and mailbox exfiltration, a blind copy to a fixed mailbox, the conversation sent out, a recursive delete of `~` or `/`) and reads a tool name as the words it spells. v5 folds the text before matching (`fold`, in the digest), adds the advisory `TOOL_DEF_SECRET_EXFIL` pair rule, and marks each rule `raw` or folded; v4 re-tiered three rules to `advise` and added per-rule `guards`. `fold` and `raw` are inside the digest | `warden/src/static-scan.ts` |
 | Gate score is `1 −` penalty for the worst **blocking** severity, i.e. one of {1, 0.9, 0.7, 0.4, 0}; `advise` matches are excluded from it | `warden/src/static-scan.ts` |
 | **Executed (2026-08-24, ruleset v3):** benign two-tool server → 3 matches, all `advise` (2 `low`, 1 `info`), gate score 1.0, nothing blocked at any threshold; the two tool names match nothing | `warden/dist/static-scan.js` |
 | **Executed:** clean two-tool server → 0 matches, gate score 1 | `warden/dist/static-scan.js` |

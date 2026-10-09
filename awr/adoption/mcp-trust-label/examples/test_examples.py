@@ -217,6 +217,8 @@ def test_the_pattern_table_carries_a_tier_for_every_rule():
     off_name = {r["code"] for r in rules if "name" not in r["surfaces"]}
     assert off_name == {
         "TOOL_DEF_CREDENTIAL_PARAM",
+        # v10: cross-tool directives read a sentence about another tool's call; a name is never one.
+        "TOOL_DEF_CROSS_TOOL",
         "TOOL_DEF_ENV_REFERENCE",
         "TOOL_DEF_SECRET_EXFIL",
         "TOOL_DEF_SECRET_REQUEST",

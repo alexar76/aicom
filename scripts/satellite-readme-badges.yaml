@@ -462,3 +462,18 @@ satellites:
       - '<a href="https://alexar76.github.io/use-cases-portal/"><img src="docs/badges/landing.svg" alt="Landing" /></a>'
       - '<img src="docs/badges/i18n.svg" alt="5 languages" />'
       - '<img src="docs/badges/static.svg" alt="Static site" />'
+  attested-memory:
+    repo: attested-memory
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    ci_badge: github
+    include_coverage: false
+    license: Apache-2.0
+    extra_badges:
+      - '<a href="https://github.com/alexar76/attested-memory/actions/workflows/pages.yml"><img src="https://github.com/alexar76/attested-memory/actions/workflows/pages.yml/badge.svg" alt="Pages" /></a>'
+      - '<a href="https://alexar76.github.io/attested-memory/"><img src="https://img.shields.io/badge/landing-GitHub%20Pages-9c70ff" alt="Landing" /></a>'
+      - '<a href="https://attestedmemory.net/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fattestedmemory.net&label=live" alt="Live site" /></a>'
+      - '<a href="https://pypi.org/project/attested-memory/"><img src="https://img.shields.io/badge/pypi-attested--memory-3775A9" alt="PyPI package attested-memory" /></a>'
+      - '<a href="https://github.com/alexar76/attested-memory/tree/main/clients/python"><img src="https://img.shields.io/badge/package-clients%2Fpython-3776AB" alt="Python package" /></a>'
+      - '<img src="https://img.shields.io/badge/python-%3E%3D3.11-3776AB" alt="Python >=3.11" />'
+      - '<img src="https://img.shields.io/badge/Docker-ready-2496ED" alt="Docker ready" />'

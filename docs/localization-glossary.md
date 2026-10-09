@@ -514,6 +514,40 @@ confiance», ZH «安全 / 已验证 / 已认证 / 可信». A change is never �
 | witness (log) | свидетель | testigo | témoin | 见证者 | A second, separately operated observer co-signing heads. |
 | contribute (a digest) | передать дайджест | aportar el resumen (digest) | contribuer l’empreinte (digest) | 贡献摘要 | Opt-in; only `(endpoint, digest, day)` is stored. Uses the AWR `digest` rendering. |
 
+## WARDEN scanner terms (scan, scanner comparison, classifier)
+
+Added 2026-10-09 with `warden/docs/scan*.md` and `warden/docs/scanner-comparison*.md`. Each rendering is the
+one the WARDEN docs already used most; where they disagreed, the row settles it and the outliers were fixed.
+Finding codes (`TOOL_DEF_CROSS_TOOL` …), tiers `block` / `advise`, the command `scan`, flags, `warden.lock.json`,
+`ruleset v10`, benchmark and scanner names (`MCPTox`, `mcp-audit`, `mcp-shield`, `Snyk Agent Scan`) are
+**identifiers and never translated**.
+
+**Vocabulary rule.** The HISTOR rule above holds for WARDEN too: an `allow` verdict is never rendered as *safe,
+secure, verified, trusted*. A scanner that blocks nothing has found nothing it recognises, nothing more.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| scanner (MCP) | сканер | escáner | scanner | 扫描器 | |
+| tool poisoning | отравление инструментов | envenenamiento de herramientas | empoisonnement d’outils | 工具投毒 | Instructions hidden in a tool's own definition. |
+| poisoned tool | отравленный инструмент | herramienta envenenada | outil empoisonné | 投毒工具 | |
+| prompt injection | промпт-инъекция (prompt injection) | inyección de prompts (prompt injection) | injection de prompt (prompt injection) | 提示词注入 | Gloss the English once in RU/ES/FR. |
+| block (verdict) | блокировать / блокировка | bloquear / bloqueo | bloquer / blocage | 阻止 | ZH: 阻止 everywhere; 拦截 in the 2026-08 field survey is the older form. |
+| advisory (finding) | рекомендательная находка; «сообщает рекомендательно» | aviso; «lo informa como aviso» | signalement consultatif; «à titre consultatif» | 建议性发现；「以建议的形式报告」 | Reported, never blocks. Tier token `advise` stays Latin. |
+| flag / flagged (advisory mark) | пометка / помечен | marca / marcado | signalement / signalé | 标记 / 被标记 | Classifier and advisory findings. |
+| false positive | ложное срабатывание | falso positivo | faux positif | 误报 | |
+| recall | полнота | exhaustividad | rappel | 召回率 | Detection-rate sense. FR not «couverture». |
+| held-out half (set) | отложенная половина | mitad reservada | moitié réservée | 留出的一半（held-out） | The part no rule was written from. ZH 留出 is the ML term (留出法); not 保留的. |
+| fitted (rules to a set) | подогнанный под набор | ajustado al conjunto | ajusté au jeu | 照着样本调出来的 | Said of rules written after reading the set they are measured on. |
+| benchmark | бенчмарк | benchmark | benchmark | 基准 | |
+| corpus | корпус | corpus | corpus | 语料 | The public servers no rule was fitted to. |
+| hard benign case | трудный безобидный случай | caso benigno difícil | cas bénin difficile | 困难的良性样例 | An honest definition that looks like an attack. |
+| classifier (meaning-based) | классификатор | clasificador | classificateur | 分类器 | The opt-in model check; not «судья» / «juez» / «juge» / 裁判. |
+| replay (server) | воспроизведение по stdio | reproducción por stdio | rejeu en stdio | 通过 stdio 重放 | A program that answers `tools/list` from a file. |
+| harness (test) | стенд | banco de pruebas | banc d’essai | 测试工具 | |
+| lock file | лок-файл | archivo lock | fichier lock | lock 文件 | The file name `warden.lock.json` stays Latin. |
+| gate chain | цепочка гейтов | cadena de compuertas | chaîne de portes | 关卡链 | |
+| shared quota (free tier) | общая квота | cuota compartida | quota partagé | 共享配额 | Shared by every free user, not per account. |
+
 ## Sources (web-verified renderings)
 
 - HISTOR / Certificate Transparency log vocabulary: [Let’s Encrypt — Журналы Certificate Transparency (CT)](https://letsencrypt.org/ru/docs/ct-logs/), [Enterno — CT logs](https://enterno.io/articles/certificate-transparency-logs) (RU «подписанная вершина дерева», «доказательство включения / согласованности»); [MDN — Transparence des certificats](https://developer.mozilla.org/fr/docs/Web/Security/Defenses/Certificate_Transparency), [Bortzmeyer — RFC 9162](https://www.bortzmeyer.org/9162.html) (FR); [Google — Registro de transparencia](https://developers.google.com/android/binary_transparency/google1p/log_details?hl=es-419), [Apple — registros de Transparencia de certificados](https://support.apple.com/es-lamr/103703) (ES); [RFC 6962 中文翻译](https://rfc2cn.com/rfc6962.html), [华为云 — 证书透明化日志工作原理](https://www.huaweicloud.com/articles/5654fc7d410d215a6ada181b2195af0c.html) (ZH «签名树头 / 包含证明 / 一致性证明»).
