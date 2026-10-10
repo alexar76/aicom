@@ -104,6 +104,19 @@ fi
 echo "ok"
 echo "$health" | grep -q '"service":"histor"' || { echo "not histor: $health" >&2; exit 1; }
 echo "$health" | grep -q '"store":"postgresql"' || { echo "production must run on Postgres: $health" >&2; exit 1; }
+# The MOMUS quality cycle binds its daily WARDEN evaluation to the running image. An image whose
+# vendored WARDEN is byte-identical inherits that binding at no cost (no paid re-measurement);
+# a changed WARDEN keeps the old binding, and the next daily run refuses until the full candidate
+# evaluation has passed — see momus/docs/quality-cycle.md.
+if [[ -x /usr/local/sbin/skopos-warden-quality && -f /var/lib/momus-quality/live-image.json ]]; then
+  image="$(docker inspect --format '{{.Image}}' histor-histor-1)"
+  if /usr/local/sbin/skopos-warden-quality rebind "$image"; then
+    echo "MOMUS quality binding → ${image:7:12} (WARDEN unchanged, nothing re-measured)"
+  else
+    echo "WARNING: the MOMUS quality binding stays on the previous image; the next daily evaluation" \
+         "refuses until the full candidate evaluation of ${image:7:12} passes" >&2
+  fi
+fi
 if [[ "$was_crawling" -eq 1 ]]; then
   token="$(grep '^HISTOR_OPERATOR_TOKEN=' "$ENV_FILE" | cut -d= -f2-)"
   curl -sf --max-time 10 -X POST -H "x-histor-operator: ${token}" http://127.0.0.1:9490/api/v1/admin/crawl >/dev/null \

@@ -155,10 +155,38 @@ fi
 #   * any small file (<= 512 B) that is not text and not a known binary asset — the exact profile of a
 #     raw seed. A 32/64-byte blob with no printable structure has no legitimate reason to ship.
 # Both are name-independent enough that the next key format we invent is caught too.
+# Tracked Ed25519 verify pins named quality-public-key.pem. `*.pem` is otherwise
+# always refused. A private-key header, or the same basename anywhere else, still fails.
+allow_known_public_pem() {
+  local f="$1"
+  local header
+  [[ "$(basename "$f")" == "quality-public-key.pem" ]] || return 1
+  case "$f" in
+    */momus/targets/quality-public-key.pem|*/scripts/quality-public-key.pem|*/scanner/quality/quality-public-key.pem) ;;
+    *) return 1 ;;
+  esac
+  header="$(head -n 1 "$f" | tr -d '\r')"
+  case "$header" in
+    "-----BEGIN PUBLIC KEY-----"|"-----BEGIN RSA PUBLIC KEY-----") ;;
+    *) return 1 ;;
+  esac
+  if grep -q 'PRIVATE KEY' "$f"; then
+    return 1
+  fi
+  return 0
+}
+
 key_hits=""
 while IFS= read -r f; do
   case "$(basename "$f")" in
-    *_signing_key|*_signing_key.*|*_signing_key_*|*_mldsa|conductor_key|*_ed25519|*_ed25519.key|id_rsa|id_ecdsa|id_ed25519|*.pem|*.p12|*.pfx|*.jks|*.keystore|.npmrc.publish)
+    *.pem)
+      if allow_known_public_pem "$f"; then
+        continue
+      fi
+      key_hits+="  $f (name looks like key material)"$'\n'
+      continue
+      ;;
+    *_signing_key|*_signing_key.*|*_signing_key_*|*_mldsa|conductor_key|*_ed25519|*_ed25519.key|id_rsa|id_ecdsa|id_ed25519|*.p12|*.pfx|*.jks|*.keystore|.npmrc.publish)
       key_hits+="  $f (name looks like key material)"$'\n'; continue;;
   esac
   # Shape test: tiny + contains CONTROL bytes, which text never does.

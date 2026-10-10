@@ -57,6 +57,21 @@ d=$(mk_tree pem)
 printf -- '-----BEGIN %s-----\nMC4CAQ\n-----END %s-----\n' 'PRIVATE KEY' 'PRIVATE KEY' > "$d/server.pem"
 bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a PEM private key (pre-existing check)"
 
+# The treasury vendor tree ships momus/targets/quality-public-key.pem, a tracked
+# verify pin. The name is *.pem, so the guard must read the header: a public key
+# at that path is allowed, a private key under the same name is not.
+d=$(mk_tree pubkey); mkdir -p "$d/vendor/momus/momus/targets"
+printf -- '-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA\n-----END PUBLIC KEY-----\n' > "$d/vendor/momus/momus/targets/quality-public-key.pem"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows a tracked quality-public-key.pem whose header is a public key"
+
+d=$(mk_tree privname); mkdir -p "$d/vendor/momus/momus/targets"
+printf -- '-----BEGIN %s-----\nMC4CAQ\n-----END %s-----\n' 'PRIVATE KEY' 'PRIVATE KEY' > "$d/vendor/momus/momus/targets/quality-public-key.pem"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses quality-public-key.pem when the header is a private key"
+
+d=$(mk_tree pubelsewhere); mkdir -p "$d/secrets"
+printf -- '-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA\n-----END PUBLIC KEY-----\n' > "$d/secrets/quality-public-key.pem"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a public PEM outside the known quality-pin paths"
+
 # ── and it must ACCEPT a clean tree, or it blocks every publish ──────────────
 d=$(mk_tree clean); mkdir -p "$d/docs/badges" "$d/src"
 printf '<svg xmlns="http://www.w3.org/2000/svg"></svg>' > "$d/docs/badges/ci.svg"

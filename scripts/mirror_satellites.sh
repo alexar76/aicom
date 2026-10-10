@@ -300,9 +300,9 @@ PY
   fi
   _inject_readme_badges "$sat_id" "$clone"
 
-  _post_rsync_satellite_hook "$sat_id" "$clone" "$repo"
+  _post_rsync_satellite_hook "$sat_id" "$clone" "$repo" || return 1
 
-  _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "$license"
+  _commit_and_push "$clone" "$sat_id" "$remote_url" "$repo" "$license" || return 1
 
   _post_push_satellite_hook "$sat_id" "$clone" "$repo"
 }
@@ -367,6 +367,30 @@ _post_push_satellite_hook() {
   python3 "$ROOT/scripts/ensure_github_pages.py" "$GITHUB_ORG" "$repo" --dispatch-pages || true
 }
 
+# GH_PAT cannot add, edit, or delete Actions YAML. Warden's live tip already has
+# .github/workflows/publish-mcp-registry.yml (the MCP registry publish workflow).
+# The satellite map excludes it from rsync so the monorepo copy is not a workflow
+# edit; the clone wipe would otherwise stage a deletion. Put the exact blob from
+# the current GitHub commit back into the outgoing tree.
+_preserve_warden_mcp_registry_workflow() {
+  local clone="$1"
+  local rel=".github/workflows/publish-mcp-registry.yml"
+  if ! git -C "$clone" cat-file -e "HEAD:${rel}" 2>/dev/null; then
+    echo "  ⛔ warden: live tip has no ${rel} — refusing to publish a tree that would drop it" >&2
+    return 1
+  fi
+  mkdir -p "$clone/.github/workflows"
+  git -C "$clone" cat-file blob "HEAD:${rel}" > "$clone/${rel}"
+  local want got
+  want="$(git -C "$clone" rev-parse "HEAD:${rel}")"
+  got="$(git -C "$clone" hash-object -- "$rel")"
+  if [[ "$want" != "$got" ]]; then
+    echo "  ⛔ warden: restored ${rel} does not match the live GitHub blob — refusing" >&2
+    return 1
+  fi
+  echo "  ✓ preserved ${rel} from the live satellite tip"
+}
+
 _post_rsync_satellite_hook() {
   # Satellite-specific fixes after rsync, before commit (e.g. GitHub Pages root).
   local sat_id="$1"
@@ -374,6 +398,9 @@ _post_rsync_satellite_hook() {
   local repo="$3"
 
   case "$sat_id" in
+    warden)
+      _preserve_warden_mcp_registry_workflow "$clone" || return 1
+      ;;
     attested-memory)
       _mirror_attested_memory_apps "$clone"
       ;;
@@ -2162,6 +2189,19 @@ _commit_and_push() (
   fi
 
   git add -A
+
+  # A workflow add, edit, or delete is rejected without the `workflow` scope, and
+  # GitHub may strip the file. Warden must keep the blob already on the tip.
+  if [[ "$sat_id" == "warden" ]]; then
+    local wf=".github/workflows/publish-mcp-registry.yml"
+    if ! git cat-file -e "HEAD:${wf}" 2>/dev/null \
+      || ! git ls-files --error-unmatch -- "$wf" >/dev/null 2>&1 \
+      || [[ -n "$(git diff --cached --name-only -- "$wf")" ]]; then
+      echo "  ⛔ warden: refusing to publish — the sync would add, edit, or delete ${wf}" >&2
+      echo "     The live workflow must stay byte-for-byte. Nothing was pushed." >&2
+      return 1
+    fi
+  fi
 
   if git diff --cached --quiet && git diff --quiet; then
     echo "  ✓ No changes — already in sync"

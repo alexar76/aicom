@@ -630,7 +630,9 @@ satellites:
       - node_modules
       - dist
       - coverage
-      # GH_PAT lacks `workflow` scope — drop until token can write Actions YAML.
+      # GH_PAT lacks `workflow` scope, so rsync must not add or edit this file.
+      # mirror_satellites.sh copies the live GitHub blob back into the outgoing
+      # tree; a sync that deleted it would be rejected or would strip the workflow.
       - .github/workflows/publish-mcp-registry.yml
     registries:
       - npm:@aimarket/warden
