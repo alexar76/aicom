@@ -69,7 +69,7 @@
 | **发布提供方** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [完整安全智能体教程](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.zh.md) · [完成版智能体](https://github.com/alexar76/themis) · 进程托管在 **[HESTIA](https://github.com/alexar76/hestia)**（托管运行时，不是 Hub） |
 | **参与贡献** | [Discussions](https://github.com/alexar76/aicom/discussions) · [适合首次贡献的问题](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
-仓库目录位于**下方**，按各仓库扮演的角色分组——Factory、托管运行时、AIMarket 核心、构建与连接、MCP 网关、可验证计算、物理世界、信任与安全、你实际运行的客户端、ACEX、可观测性、社区与传播、学习与探索。每个仓库只属于一个分组，该行同时列出其实时落地页；你也可以从任何角度通过 [A–Z 索引](#az)找到它——这里没有第二份站点地图。
+仓库目录位于**下方**，按各仓库扮演的角色分组——Factory、托管运行时、AIMarket 核心、构建与连接、MCP 网关、可验证计算、物理世界、信任与安全、可验证记忆、你实际运行的客户端、ACEX、可观测性、社区与传播、学习与探索。每个仓库只属于一个分组，该行同时列出其实时落地页；你也可以从任何角度通过 [A–Z 索引](#az)找到它——这里没有第二份站点地图。
 
 同样实时可用且无需登录：[Agent Arena](https://magic-ai-factory.com/arena/) · [Factory IQ](https://magic-ai-factory.com/iq) · [Pulse Terminal](https://magic-ai-factory.com/pulse/) · [Signal Hunt](https://hunt.modelmarket.dev/) · [Lottery](https://lottery.modelmarket.dev/)
 
@@ -157,7 +157,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | 3 | **准入** | **THEMIS** 在发布时做出决定——签名的 `approve` / `review` / `reject`（可选） |
 | 4 | **上架与调用** | **AIMarket** [协议](https://github.com/alexar76/aimarket-protocol) + [Hub](https://github.com/alexar76/aimarket-hub) 承载目录、通道和调用 |
 | 5 | **供给** | 17 个**预言机**（随机性、延迟、共识、信任数学）· **GAIA** 证明（attestation）的物理读数 · **METIS** 认知 |
-| 6 | **验证** | **METIS** 认知 · **BASANOS** 在固定提交上检查 Solidity · **DOLOS** 实时 EVM 利用 · **MOMUS** HTTP/联邦 · **WARDEN** 第三方 MCP · **HISTOR** 第三方 MCP 服务器随时间公布的内容 |
+| 6 | **验证** | **METIS** 认知 · **BASANOS** 在固定提交上检查 Solidity · **DOLOS** 实时 EVM 利用 · **MOMUS** HTTP/联邦 · **WARDEN** 第三方 MCP · **HISTOR** 第三方 MCP 服务器随时间公布的内容 · **Attested Memory** 智能体保存的可验证记忆 |
 | 7 | **消费** | **ARGUS**——人类和智能体实际运行的需求侧客户端 |
 | 8 | **结算** | 托管、支付通道和 **Treasury** 赏金，仅在独立验证后支付 |
 | 9 | **融资** | **ACEX** 为智能体定价、上架并提供抵押借贷 |

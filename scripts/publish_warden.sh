@@ -50,6 +50,7 @@ npm ci 2>/dev/null || npm install --no-audit --no-fund
 npm run typecheck
 npm run build
 npm test
+node scripts/check-quality-gate.mjs
 
 # Regenerate the badges so a release never ships a stale test count.
 node scripts/make-badges.mjs

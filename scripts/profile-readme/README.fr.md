@@ -69,7 +69,7 @@
 | **Vous voulez publier un fournisseur** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [tutoriel complet sur l’agent de sécurité](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.fr.md) · [agent terminé](https://github.com/alexar76/themis) · hébergez le processus sur **[HESTIA](https://github.com/alexar76/hestia)** (runtime hébergé, pas le Hub) |
 | **Vous voulez contribuer** | [Discussions](https://github.com/alexar76/aicom/discussions) · [good first issues](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
-Le catalogue des repos se trouve **ci-dessous**, regroupé selon le rôle de chaque repo — Factory, Runtime hébergé, cœur d’AIMarket, Build & connect, passerelles MCP, calcul vérifiable, monde physique, confiance et sécurité, client que vous exécutez, ACEX, observabilité, communauté et diffusion, apprentissage et exploration. Chaque repo appartient à un seul groupe, avec sa landing LIVE sur la même ligne, et l’[index A–Z](#az) permet de le retrouver sous n’importe quel angle — il n’y a pas de second plan du site ici.
+Le catalogue des repos se trouve **ci-dessous**, regroupé selon le rôle de chaque repo — Factory, Runtime hébergé, cœur d’AIMarket, Build & connect, passerelles MCP, calcul vérifiable, monde physique, confiance et sécurité, mémoire vérifiable, client que vous exécutez, ACEX, observabilité, communauté et diffusion, apprentissage et exploration. Chaque repo appartient à un seul groupe, avec sa landing LIVE sur la même ligne, et l’[index A–Z](#az) permet de le retrouver sous n’importe quel angle — il n’y a pas de second plan du site ici.
 
 Également LIVE, sans connexion : [Agent Arena](https://magic-ai-factory.com/arena/) · [Factory IQ](https://magic-ai-factory.com/iq) · [Pulse Terminal](https://magic-ai-factory.com/pulse/) · [Signal Hunt](https://hunt.modelmarket.dev/) · [Lottery](https://lottery.modelmarket.dev/)
 
@@ -157,7 +157,7 @@ Un seul pipeline, dans l’ordre où la confiance et l’argent circulent réell
 | 3 | **Admettre** | **THEMIS** décide au moment de la publication — `approve` / `review` / `reject` signés (optionnel) |
 | 4 | **Référencer et invoquer** | Le [protocole](https://github.com/alexar76/aimarket-protocol) **AIMarket** + le [hub](https://github.com/alexar76/aimarket-hub) transportent le catalogue, les canaux de paiement et les appels |
 | 5 | **Fournir** | 17 **oracles** (aléatoire, délai, consensus, mathématiques de confiance) · lectures physiques attestées de **GAIA** · cognition **METIS** |
-| 6 | **Vérifier** | Cognition **METIS** · Solidity dans un pin avec **BASANOS** · exploits EVM LIVE avec **DOLOS** · HTTP/fédération avec **MOMUS** · MCP tiers avec **WARDEN** · **HISTOR** ce que les serveurs MCP tiers ont annoncé, dans le temps |
+| 6 | **Vérifier** | Cognition **METIS** · Solidity dans un pin avec **BASANOS** · exploits EVM LIVE avec **DOLOS** · HTTP/fédération avec **MOMUS** · MCP tiers avec **WARDEN** · **HISTOR** ce que les serveurs MCP tiers ont annoncé, dans le temps · **Attested Memory**, la mémoire vérifiable que les agents gardent |
 | 7 | **Consommer** | **ARGUS** — le client côté demande réellement exécuté par les humains et les agents |
 | 8 | **Régler** | Séquestre (escrow), canaux de paiement et primes **Treasury**, payés uniquement après vérification indépendante |
 | 9 | **Financer** | **ACEX** valorise et référence les agents, et prête sur leur valeur |

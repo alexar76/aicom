@@ -10,11 +10,11 @@ How AIMarket decides whether a **third-party agent, MCP server, or plugin** may 
 
 ## Current state (honest)
 
-**No — not “anyone on GitHub dumps a repo and appears in the catalogue.”** Listing a paid capability is a **multi-layer publish path**, not open signup.
+**No — not “anyone on GitHub dumps a repo and appears in the catalogue.”** Listing a paid capability requires a **multi-layer publish path**. A self-service API-key account supplies identity; it does not bypass collateral or admission.
 
 | Layer | What is required | Who decides | Current default |
 |-------|------------------|-------------|-----------------|
-| **Publish credential** | Bearer / publisher token (`AIMARKET_PUBLISH_TOKEN` / `AIMARKET_PUBLISHER_TOKENS`) | Hub operator | **Required** — no anonymous publish |
+| **Publish credential** | Own account `X-API-Key` and matching `publisher_id`; operator-issued credentials remain an alternative | Account holder / Hub operator | **Required** — no anonymous publish |
 | **Stake** | Minimum bond (prod default ≈ **$25** USD) | Hub supply-security | **On** in prod (unless `AIMARKET_SUPPLY_SECURITY_RELAXED`) |
 | **Manifest** | `publisher_id`, `provider_pubkey`, HTTPS `invoke_url`, input/output schemas, price | Hub validator | **Required** |
 | **Response signatures** | Request-bound Ed25519 (`X-Provider-Signature`) | Hub on **invoke** | **Required** in prod |
@@ -35,7 +35,7 @@ Alien Monitor **does not admit anyone**. It only shows dossier-free admission te
 
 Someone with a cool agent on GitHub can **consume** AIMarket tomorrow via MCP/ARGUS without THEMIS. Getting **into** a shared catalogue so strangers pay them is the hard path — and it is **two doors**, not one:
 
-- **Guest publisher** on an existing Hub (this page): operator publish token + slashable collateral, prod ≈ **$25** (`POST /ai-market/v2/supply/stake`). The $25 is a bond, not a listing fee.
+- **Guest publisher** on an existing Hub (this page): own account API key + slashable collateral, prod default ≈ **$25** (`POST /ai-market/v2/supply/stake`). The $25 is a bond, not a listing fee.
 - **Your own Hub** as a federation peer: [join the federation](../join-the-federation.md). Announce is free; admission scores what the hub *does*. That is not a free guest row on someone else's catalogue.
 
 Buying already-listed capabilities needs neither a Hub nor the $25 bond.
@@ -62,9 +62,9 @@ Deploy so Hub (and buyers) can reach a stable HTTPS endpoint. Loopback/`http://`
 
 Ed25519 keypair; put the **public** key in the manifest as `provider_pubkey`. Sign every invoke response with request-bound `X-Provider-Signature` (see [supply-security.md](https://github.com/alexar76/aimarket-hub/blob/main/docs/supply-security.md)).
 
-### 4. Ask the Hub operator for a publish credential
+### 4. Create your own publisher account
 
-You cannot invent `AIMARKET_PUBLISH_TOKEN`. The operator issues a token (or a per-`publisher_id` entry in `AIMARKET_PUBLISHER_TOKENS`).
+Open [the provider account page](https://modelmarket.dev/start?role=provider), save your API key locally and use its `account_id` as `publisher_id`. Send the key as `X-API-Key` to `/supply/policy`, `/supply/stake` and `/supply/register`. An operator token is not needed for this account path. [Full commands and recovery steps](../provider-onboarding.md).
 
 ### 5. Stake
 
@@ -72,12 +72,12 @@ You cannot invent `AIMARKET_PUBLISH_TOKEN`. The operator issues a token (or a pe
 POST /ai-market/v2/supply/stake
 ```
 
-Meet `AIMARKET_SUPPLY_MIN_STAKE_USD` (prod ≈ $25). Failed/unsigned invokes can slash stake.
+Read `GET /ai-market/v2/supply/policy` with your key for the current minimum and `additional_stake_usd`. Top up any missing available credit, then post only the missing collateral. A top-up alone is not stake. Failed/unsigned invokes can slash stake.
 
 ### 6. Publish the capability
 
 ```text
-POST /ai-market/v2/publish   # or /supply/register — operator docs for the live route
+POST /ai-market/v2/supply/register   # X-API-Key: your own account key
 Authorization: Bearer <publish-token>
 ```
 

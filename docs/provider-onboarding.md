@@ -2,7 +2,7 @@
 
 Minimal path to list a paid capability on AIMarket Hub (modelmarket.dev) without waiting for full marketplace UI.
 
-**Not open signup.** Anyone can **consume** listed capabilities (ARGUS / `aimarket-mcp` / SDKs). **Selling** is two doors: guest listing on this Hub (operator token + ≈ **$25** slashable stake, below) **or** [run your own Hub](join-the-federation.md) and join as a federation peer (no guest stake). Full current-state table: [`docs/ecosystem/supply-chain-admission.md`](ecosystem/supply-chain-admission.md).
+**Publish with your own account.** Start at [the provider account page](https://modelmarket.dev/start?role=provider), create an API key and keep it in `AIMARKET_API_KEY` in your local terminal. No operator publish token is needed for this path. Admission and collateral requirements still apply; read the current policy below rather than assuming a fixed dollar amount. Alternatively, [run your own Hub](join-the-federation.md) and join as a federation peer. The [publication guide](https://play.modelmarket.dev/publish) follows the same account → collateral → register → discovery path in five languages.
 
 ## 1. Prepare a manifest
 
@@ -22,23 +22,61 @@ Each capability needs:
 - `invoke_url` — HTTPS endpoint your server controls
 - `price_per_call_usd` — per-invoke list price
 - JSON Schemas for `input` / `output`
-- Ed25519-signed manifest (see `aimarket-hub/docs/` and `aimarket_hub/publish.py`)
+- Ed25519-signed invoke responses matching the declared public key
+
+Read `account_id` and use it as `publisher_id` in `capability.json` (the starter's filename):
+
+```bash
+curl --fail-with-body https://modelmarket.dev/ai-market/v2/account \
+  -H "X-API-Key: ${AIMARKET_API_KEY:?Set your own API key locally}"
+```
 
 ## 2. Stake (supply security)
 
-Paid invokes require publisher stake in prod. Configure `publisher_id`, `stake_usd`, and response signing (`X-Provider-Signature`) per `aimarket-hub/docs/supply-security.md`. Prod default minimum ≈ **$25** USD unless supply-security is relaxed.
+Read the actual requirements and your current stake before funding:
+
+```bash
+curl --fail-with-body https://modelmarket.dev/ai-market/v2/supply/policy \
+  -H "X-API-Key: ${AIMARKET_API_KEY:?Set your own API key locally}"
+```
+
+Check `min_stake_usd`, `stake_usd`, `additional_stake_usd`, `balance_usd`,
+`product_allowlist`, and `admission_mode`. If `requires_mandate` is true, the API key
+cannot post collateral: resolve the account policy before funding. If needed, top up
+the difference between `additional_stake_usd` and your available `balance_usd` on the
+[provider account page](https://modelmarket.dev/start?role=provider#topup), then return here.
+**A top-up is spendable credit, not posted collateral.**
+
+If `additional_stake_usd` is zero, skip the following command. Otherwise set
+`AIMARKET_STAKE_USD` to that missing amount and execute once:
+
+```bash
+curl --fail-with-body https://modelmarket.dev/ai-market/v2/supply/stake \
+  -H "X-API-Key: ${AIMARKET_API_KEY:?Set your own API key locally}" \
+  -H "Content-Type: application/json" \
+  -d "{\"amount_usd\":\"${AIMARKET_STAKE_USD:?Set additional_stake_usd from policy}\"}"
+```
+
+This locks credit as slashable collateral. Re-read the policy and account afterwards;
+`balance_usd` is available credit and `collateral_usd` is locked. Collateral return
+requires the operator. The stake command is **not idempotent**: after a timeout, inspect
+the account, policy and `GET /ai-market/v2/account/ledger` with the same key before retrying.
 
 ## 3. Publish to the hub
 
 ```bash
-export AIMARKET_PUBLISH_TOKEN=...   # operator-issued bearer token — not self-service
-curl -X POST "https://modelmarket.dev/ai-market/v2/publish" \
-  -H "Authorization: Bearer $AIMARKET_PUBLISH_TOKEN" \
+curl --fail-with-body "https://modelmarket.dev/ai-market/v2/supply/register" \
+  -H "X-API-Key: ${AIMARKET_API_KEY:?Set your own API key locally}" \
   -H "Content-Type: application/json" \
-  -d @manifest.json
+  --data-binary @capability.json
 ```
 
 Self-hosted hub: same route on your `AIMARKET_HUB_URL`.
+
+Errors: **400** includes insufficient stake or an invalid manifest; read `detail`.
+**401/403** means credentials, publisher identity, account policy or admission need
+attention. **402** from `/supply/stake` means insufficient available credit.
+**503** means admission is unavailable. Do not retry payments to fix a policy rejection.
 
 ## 3b. Publish admission (THEMIS)
 
@@ -61,9 +99,9 @@ Reference agent + tutorial:
 ## 4. Verify discovery
 
 ```bash
-curl -s "https://modelmarket.dev/ai-market/v2/search" \
-  -H "Content-Type: application/json" \
-  -d '{"intent":"mytool summarize","limit":5}' | jq .
+curl --fail-with-body --get "https://modelmarket.dev/ai-market/v2/search" \
+  --data-urlencode "intent=YOUR_CAPABILITY_ID" \
+  --data-urlencode "limit=5"
 ```
 
 ## 5. Test invoke (sandbox)
