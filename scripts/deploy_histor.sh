@@ -83,7 +83,12 @@ wait_healthy() {
 }
 
 echo "=== HISTOR → https://${DOMAIN} (Postgres, profile prod) ==="
-"${COMPOSE[@]}" up -d --build
+"${COMPOSE[@]}" build histor
+# Validate the exact vendored WARDEN in the newly built image before replacing production.
+# A missing/stale/failed receipt leaves the running container untouched.
+docker run --rm --entrypoint node "${IMAGE}:latest" \
+  /app/scanner/quality/check-quality-gate.mjs /app/scanner/node_modules/@aimarket/warden
+"${COMPOSE[@]}" up -d --no-build
 echo -n "waiting for /health on 127.0.0.1:9490 … "
 if ! wait_healthy; then
   echo "the new build did not come up:" >&2

@@ -547,6 +547,28 @@ secure, verified, trusted*. A scanner that blocks nothing has found nothing it r
 | lock file | лок-файл | archivo lock | fichier lock | lock 文件 | The file name `warden.lock.json` stays Latin. |
 | gate chain | цепочка гейтов | cadena de compuertas | chaîne de portes | 关卡链 | |
 
+## WARDEN continuous quality cycle
+
+Added 2026-10-10 for `momus/docs/quality-cycle*.md` (EN/RU/ES/FR/ZH).
+Reuse the existing MOMUS terms for finding, node agent, build/deploy orders and fail-closed;
+reuse WARDEN's classifier and false-positive terms. These are project editorial choices,
+not additional claims of terminology verification by external sources. `AI-Factory`,
+`BuildOrder`, `FixVerdict`, `DeployOrder`, `candidate`, `live`, `INCONCLUSIVE`, field names
+and service unit names remain unchanged. The shared node agent is the existing host executor,
+not an additional WARDEN daemon. A passed synthetic evaluation is not a safety certification.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| quality cycle | цикл контроля качества | ciclo de control de calidad | cycle de contrôle qualité | 质量检查周期 | Scheduled evaluation and guarded remediation. |
+| shared node agent | общий нод-агент | agente de nodo compartido | agent de nœud partagé | 共享节点智能体 | Existing SKOPOS executor for multiple components. |
+| confirmed regression | подтверждённая регрессия | regresión confirmada | régression confirmée | 已确认的回归 | Known-label failure; a novel model proposal is not confirmation. |
+| sealed holdout | закрытый отложенный набор | conjunto reservado cerrado | jeu réservé fermé | 封存留出集 | Frozen before measurement; withheld from the patch author. |
+| release gate | гейт выпуска | puerta de publicación | porte de publication | 发布闸门 | Exact-build signed evidence and freshness checks. |
+| signed quality receipt | подписанная квитанция качества | recibo de calidad firmado | reçu de qualité signé | 已签名的质量收据 | Separate from an invoke receipt; reuse receipt vocabulary. |
+| review queue | очередь проверки | cola de revisión | file de relecture | 复核队列 | New proposals await an explicit label and reason. |
+| accepted baseline | принятая базовая версия | versión base aceptada | version de référence acceptée | 已接受的基线 | Advances only after verified live promotion. |
+| missed attack | пропущенная атака | ataque no detectado | attaque non détectée | 漏报攻击 | Counted only against an established label. |
+
 ## Sources (web-verified renderings)
 
 - HISTOR / Certificate Transparency log vocabulary: [Let’s Encrypt — Журналы Certificate Transparency (CT)](https://letsencrypt.org/ru/docs/ct-logs/), [Enterno — CT logs](https://enterno.io/articles/certificate-transparency-logs) (RU «подписанная вершина дерева», «доказательство включения / согласованности»); [MDN — Transparence des certificats](https://developer.mozilla.org/fr/docs/Web/Security/Defenses/Certificate_Transparency), [Bortzmeyer — RFC 9162](https://www.bortzmeyer.org/9162.html) (FR); [Google — Registro de transparencia](https://developers.google.com/android/binary_transparency/google1p/log_details?hl=es-419), [Apple — registros de Transparencia de certificados](https://support.apple.com/es-lamr/103703) (ES); [RFC 6962 中文翻译](https://rfc2cn.com/rfc6962.html), [华为云 — 证书透明化日志工作原理](https://www.huaweicloud.com/articles/5654fc7d410d215a6ada181b2195af0c.html) (ZH «签名树头 / 包含证明 / 一致性证明»).

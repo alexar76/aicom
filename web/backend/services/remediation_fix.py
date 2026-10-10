@@ -70,6 +70,12 @@ logger = logging.getLogger(__name__)
 DENIED_PATH_PREFIXES: tuple[str, ...] = (
     "momus/momus/",
     "momus/scripts/",
+    "momus/deploy/",
+    "warden/scripts/",
+    "warden/deploy/",
+    "warden/test/",
+    "histor/scanner/quality/",
+    "scripts/",
     "treasury/",
     "skopos/",
     "web/backend/services/remediation_fix.py",
@@ -115,6 +121,8 @@ DEFAULT_SCOPE: dict[str, list[str]] = {
     "gaia-backend": list(_GAIA_PATHS),
     "gaia-gaia-backend-1": list(_GAIA_PATHS),
     "praxis": list(_PRAXIS_PATHS),
+    "warden": ["warden/src/" + name + ".ts" for name in (
+        "classifier", "static-scan", "encoded-text", "fold", "result-screen", "toxic-flow", "sanitize")],
 }
 
 
@@ -617,7 +625,8 @@ def read_is_denied(rel_path: str) -> str:
 
 
 #: How much of a referenced module to show. Enough for a contract, not a whole subsystem.
-MAX_REFERENCE_CHARS = 9000
+# The shared signing contract now starts beyond 9k; keep the referenced API visible.
+MAX_REFERENCE_CHARS = 20000
 
 #: A dotted path named in a criterion — `oracle_core.signing.Signer`, `aimarket_hub.signing`.
 _DOTTED_PATH = re.compile(r"\b([a-z][a-z0-9_]{2,}(?:\.[a-z][a-z0-9_]*)+)")

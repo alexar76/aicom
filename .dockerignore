@@ -108,3 +108,8 @@ treasury/data/
 contracts/zk/build/*.ptau
 contracts/zk/build/*.r1cs
 contracts/zk/build/*.wtns
+
+# WARDEN's offline release suite verifies these committed public measurements.
+# Keep them even with the legacy Docker builder's root-only ignore handling.
+!warden/docs/data/
+!warden/docs/data/**
