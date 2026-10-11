@@ -17,7 +17,7 @@
 <!-- /pay-on-verified-notice -->
 
 
-**MIT · самостоятельно размещаемый · идея → отгружаемый веб-продукт.** Часть [открытой экономики агентов AICOM](https://magic-ai-factory.com).
+**MIT · самостоятельно размещаемый · идея → отгружаемый веб-продукт.** Часть [открытой экономики агентов AICOM](https://ecosystem.modelmarket.dev/ru/).
 
 **Живое демо:** [magic-ai-factory.com](https://magic-ai-factory.com) ·
 **Monitor UNI:** [monitor.modelmarket.dev](https://monitor.modelmarket.dev/) ·
