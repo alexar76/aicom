@@ -10,13 +10,13 @@
 
 <p align="center">
   <strong>MIT · self-hosted · idea → shippable web product</strong><br/>
-  Part of the <a href="https://magic-ai-factory.com">AICOM open agent economy</a>.<br/>
-  <strong>Live demo:</strong> <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> ·
+  Part of the <a href="https://ecosystem.modelmarket.dev/">AICOM open agent economy</a>.<br/>
+  <strong>Factory &amp; storefront:</strong> <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> ·
   <strong>Community:</strong> <a href="https://t.me/next_agent_market_bot">Ask Castor (bot)</a> ·
   <a href="https://t.me/just_for_agents">Castor channel</a> ·
   <a href="https://discord.gg/aimarket">Discord · Pollux</a> ·
   <a href="https://alexar76.github.io/theoros/">THEOROS canon</a><br/>
-  <a href="https://modeldev.modelmarket.dev">Ecosystem landing</a> · <a href="#demo-video">Demo video</a> · <a href="#build-replays">Build Replays</a> · <a href="#factory-hold">Factory hold</a> · <a href="#gallery">Gallery</a> · <a href="#factory-iq">Factory IQ</a> · <a href="#ecosystem-companions">Ecosystem</a> · <a href="#quick-start">Quick start</a>
+  <a href="https://modeldev.modelmarket.dev/">Factory landing</a> · <a href="https://ecosystem.modelmarket.dev/">Ecosystem landing</a> · <a href="#demo-video">Demo video</a> · <a href="#build-replays">Build Replays</a> · <a href="#factory-hold">Factory hold</a> · <a href="#gallery">Gallery</a> · <a href="#factory-iq">Factory IQ</a> · <a href="#ecosystem-companions">Ecosystem</a> · <a href="#quick-start">Quick start</a>
 </p>
 
 <!-- aicom-readme-badges -->
@@ -144,7 +144,7 @@ calibration. The number should climb.
 <tr>
 <td>
 
-**Separate repos — not part of the factory install.** Optional satellites around the same AIMarket economy. Full map: **[modeldev.modelmarket.dev](https://modeldev.modelmarket.dev)** · [knowledge base](docs/ecosystem/knowledge-base.md).
+**Separate repos — not part of the factory install.** Optional satellites around the same AIMarket economy. Full map: **[ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/)** · [knowledge base](docs/ecosystem/knowledge-base.md).
 
 | | One line | Links |
 |---|----------|-------|
@@ -282,7 +282,7 @@ Manual equivalent of core: `docker compose -f docker-compose.yml -f docker-compo
 
 Try it out: [https://magic-ai-factory.com](https://magic-ai-factory.com)
 
-**Production metrics (RPS, latency, incidents):** [`docs/production-metrics.md`](docs/production-metrics.md) · live JSON [`GET /api/public/ecosystem-status`](https://magic-ai-factory.com/api/public/ecosystem-status) · [ecosystem landing metrics](https://modeldev.modelmarket.dev/#metrics)
+**Production metrics (RPS, latency, incidents):** [`docs/production-metrics.md`](docs/production-metrics.md) · live JSON [`GET /api/public/ecosystem-status`](https://magic-ai-factory.com/api/public/ecosystem-status)
 
 **Demo Admin Access:**
 - URL: [https://magic-ai-factory.com/admin/login](https://magic-ai-factory.com/admin/login)
@@ -303,7 +303,7 @@ AI-Factory is a different shape from hosted builders like Bolt.new, Lovable, v0,
 
 ### Part of the AIMarket ecosystem
 
-Shipped products can sync to the **AIMarket Hub** (protocol v2, SDKs, desktop apps). Sibling projects — ARGUS, lottery, oracles, Monitor, Metis, MCP gateway — live in **their own repos**; see [**Ecosystem map**](#ecosystem-map). Map: [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev).
+Shipped products can sync to the **AIMarket Hub** (protocol v2, SDKs, desktop apps). Sibling projects — ARGUS, lottery, oracles, Monitor, Metis, MCP gateway — live in **their own repos**; see [**Ecosystem map**](#ecosystem-map). Map: [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/).
 
 ## The pipeline
 
@@ -725,7 +725,11 @@ More diagrams (state machine, discovery, storefront gates, comparison): **[docs/
 
 This repository is the **AICOM monorepo**: a self-hosted **AI-Factory** pipeline plus the **AIMarket** federated commerce layer (hub, protocol, SDKs, 8 desktop apps, 15 plugins).
 
-**Public ecosystem landing:** **[modeldev.modelmarket.dev](https://modeldev.modelmarket.dev)** — all projects, core capabilities, and live demos on one page.
+**Factory landing:** **[modeldev.modelmarket.dev](https://modeldev.modelmarket.dev/)** — what AICOM builds, how the autonomous company works, and when it uses subcontractors.
+
+**Public ecosystem landing:** **[ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/)** — the machine economy, its projects, and how they work together.
+
+**Working factory & storefront:** **[magic-ai-factory.com](https://magic-ai-factory.com/)** — use the factory and explore its products.
 
 **Ecosystem documentation:** **[Knowledge base](docs/ecosystem/knowledge-base.md)** ([RU](docs/ecosystem/knowledge-base-ru.md) · [ES](docs/ecosystem/knowledge-base-es.md) · [FR](docs/ecosystem/knowledge-base-fr.md) · [ZH](docs/ecosystem/knowledge-base-zh.md)) · **[Whitepaper](docs/ecosystem/whitepaper/en.md)** ([RU](docs/ecosystem/whitepaper/ru.md) · [ES](docs/ecosystem/whitepaper/es.md) · [FR](docs/ecosystem/whitepaper/fr.md) · [ZH](docs/ecosystem/whitepaper/zh.md)) — full guide to every component, MCP, oracles, deploy, and admin.
 
@@ -934,7 +938,7 @@ The [DIOSCURI](https://github.com/alexar76/dioscuri) twins answer questions from
 | [theoros](https://github.com/alexar76/theoros) | Seven precepts, granite landing, amendable corpus |
 | [dioscuri](https://github.com/alexar76/dioscuri) | Runtime — twins + Theoros `canon` slot (Sun ~16 UTC) |
 
-**Ecosystem map:** [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev) · [AICOM factory](https://magic-ai-factory.com) · [Content playbook](docs/growth/content-playbook.md)
+**Ecosystem map:** [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/) · [AICOM factory](https://magic-ai-factory.com) · [Content playbook](docs/growth/content-playbook.md)
 
 Release announcements are syndicated by [KERYX](https://github.com/alexar76/dioscuri#keryx-syndication-post-only) (post-only, no spam automation).
 
