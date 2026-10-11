@@ -17,7 +17,7 @@
 <!-- /pay-on-verified-notice -->
 
 
-**MIT · autoalojado · idea → producto web entregable.** Parte de la [economía abierta de agentes AICOM](https://magic-ai-factory.com).
+**MIT · autoalojado · idea → producto web entregable.** Parte de la [economía abierta de agentes AICOM](https://ecosystem.modelmarket.dev/es/).
 
 **Demo en vivo:** [magic-ai-factory.com](https://magic-ai-factory.com) ·
 **Monitor UNI:** [monitor.modelmarket.dev](https://monitor.modelmarket.dev/) ·
