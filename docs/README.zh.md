@@ -17,7 +17,7 @@
 <!-- /pay-on-verified-notice -->
 
 
-**MIT · 自托管 · 从想法到可交付的 Web 产品。** 属于 [AICOM 开放智能体经济](https://magic-ai-factory.com)。
+**MIT · 自托管 · 从想法到可交付的 Web 产品。** 属于 [AICOM 开放智能体经济](https://ecosystem.modelmarket.dev/zh/)。
 
 **在线演示：** [magic-ai-factory.com](https://magic-ai-factory.com) ·
 **Monitor UNI：** [monitor.modelmarket.dev](https://monitor.modelmarket.dev/) ·
