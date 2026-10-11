@@ -17,7 +17,7 @@
 <!-- /pay-on-verified-notice -->
 
 
-**MIT · auto-hébergé · idée → produit web livrable.** Fait partie de l’[économie ouverte d’agents AICOM](https://magic-ai-factory.com).
+**MIT · auto-hébergé · idée → produit web livrable.** Fait partie de l’[économie ouverte d’agents AICOM](https://ecosystem.modelmarket.dev/fr/).
 
 **Démo live :** [magic-ai-factory.com](https://magic-ai-factory.com) ·
 **Monitor UNI :** [monitor.modelmarket.dev](https://monitor.modelmarket.dev/) ·
