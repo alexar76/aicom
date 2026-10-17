@@ -28,6 +28,7 @@ from pathlib import Path
 
 from web.backend.services.browser_e2e_deep import exception_in_product_output
 from web.backend.services.live_deployment_gate import _repair_scope_from_issues, _sweep_live_api
+from tests.split_source import read_split
 
 ROOT = Path(__file__).resolve().parents[1]
 GATE = (ROOT / "web" / "backend" / "services" / "live_deployment_gate.py").read_text(encoding="utf-8")
@@ -516,7 +517,7 @@ def test_developer_fail_fast_invalid_json_is_documented():
     """Invalid JSON must not burn the full 1500s execute budget (3×600s)."""
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     assert "max_invalid_json = 2" in src
     assert "fail-fast: do not burn the 1500s execute budget" in src
     assert "AIFACTORY_CODE_GEN_FAILOVER_MODEL" in src

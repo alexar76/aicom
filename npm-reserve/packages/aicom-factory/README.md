@@ -8,5 +8,5 @@ AI-Factory autonomous product pipeline namespace
 npm install -g aicom-landing
 ```
 
-- Ecosystem: https://modeldev.modelmarket.dev
+- Ecosystem: https://ecosystem.modelmarket.dev/
 - GitHub: https://github.com/alexar76/aicom

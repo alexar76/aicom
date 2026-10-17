@@ -8,6 +8,7 @@ import pytest
 from fastapi import HTTPException
 
 from web.backend.services import sandbox_guards as guards
+from tests.split_source import read_split
 
 
 def test_enforce_blocks_when_at_concurrency_cap(monkeypatch):
@@ -21,11 +22,10 @@ def test_enforce_blocks_when_at_concurrency_cap(monkeypatch):
 
 def test_admin_start_evicts_when_at_the_cap():
     """Files tab used to 503 while storefront evicted; both must free a slot."""
-    src = (Path(__file__).resolve().parents[1] / "web" / "backend" / "api" / "sandbox.py").read_text(
-        encoding="utf-8"
-    )
+    src = read_split(Path(__file__).resolve().parents[1] / "web" / "backend" / "api" / "sandbox.py")
     fn = src[src.index("def _ensure_sandbox_capacity") : src.index("def _start_sandbox_for_product")]
-    assert "while count_running_sandboxes(_active_sandboxes) >= cap:" in fn
+    # The registry lives on web.backend.api.sandbox; the helper reads it there at call time.
+    assert "while count_running_sandboxes(sandbox_api._active_sandboxes) >= cap:" in fn
     assert "if storefront:" not in fn
     active = {
         "old": {"status": "running", "expires_at": 1.0},

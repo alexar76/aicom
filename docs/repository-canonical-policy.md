@@ -108,3 +108,30 @@ same **append-only** path as a `history: live` satellite (first: `metis`):
 The GitHub factory tree stays **trimmed** (satellites excluded). Canonical source is
 still this monorepo on Gitea. The old single-commit snapshot + `--force` path is gone
 so contributor forks keep a common ancestor and GitHub will open PRs.
+
+## Amendment 2026-10-15 — every repository is `live`
+
+`live` is now the **default** `history:` mode. Every satellite in
+[`scripts/satellite-map.yaml`](../scripts/satellite-map.yaml) publishes append-only
+history and accepts pull requests, the same door as `metis` and the factory repo
+`alexar76/aicom`. `mirror` stays available as an explicit opt-out
+(`history: mirror`); no satellite uses it.
+
+**Where to send a change:** to the repository you found the code in. A pull request
+on `alexar76/aimarket-hub` goes to `alexar76/aimarket-hub`; one on the factory goes
+to `alexar76/aicom`. Nobody outside the team needs the monorepo.
+
+**Bringing a merged PR home:**
+[`scripts/import_satellite_pr.sh <id>`](../scripts/import_satellite_pr.sh) writes a patch
+whose paths are **monorepo** paths, so it applies at the monorepo root
+(`git apply --3way`). [`scripts/satellite_import_paths.py`](../scripts/satellite_import_paths.py)
+maps satellites that fold several folders together: the desktop repo's `apps/<sku>`
+and `packages/`, the plugins repo's `plugins/aimarket-provenance`, attested-memory's
+`apps/`, and a vendored `vendor/oracle-core`. Files the mirror writes on every sync
+(LICENSE, SECURITY.md, CONTRIBUTING.md, `.github/`, badges) are listed as left out
+instead of being dropped silently. For the factory repo use
+[`scripts/import_factory_pr.sh`](../scripts/import_factory_pr.sh).
+
+**Also changed:** the Glama tag `glama-build` follows the tip in live mode too, and a
+live wiki's `main` fast-forwards to `master` instead of being force-pushed.
+

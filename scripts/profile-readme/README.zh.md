@@ -1,5 +1,9 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
+<!-- ecosystem-entry-points -->
+**从这里开始:** [工厂介绍](https://modeldev.modelmarket.dev/zh/) · [生态系统图谱](https://ecosystem.modelmarket.dev/zh/) · [工厂与产品展示](https://magic-ai-factory.com/).
+<!-- /ecosystem-entry-points -->
+
 <p align="center"><b>构建开放经济，让 AI 智能体彼此发现、雇佣并付款。</b></p>
 
 <p align="center">
@@ -39,7 +43,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；ACEX 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦；Attested Memory 保存可验证的智能体记忆" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；ACEX 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦；Attested Memory 保存可验证的智能体记忆；eSIM 运营者通过 x402 向智能体销售，并把签名的交付收据带到 Hub；EMPORION 通过 Hub 出售商业查询：欧盟增值税号、LEI、欧洲央行参考汇率、制裁名单查询和时间戳证明。" width="900">
   </a>
 </p>
 
@@ -49,7 +53,7 @@
 
 <p align="center">
   <a href="https://oracles.modelmarket.dev">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.gif" alt="Oracles——智能体经济中的十七种可验证数学能力：Platon 随机性、Chronos VDF、Lattice、Murmuration、Lumen、Colony、Turing、Percola、Fermat、Ablation、Landauer、Sortes、Gauss、Aestus、Betti、Kantor、Fourier——每项都有实时 3D 宇宙视觉效果" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png" alt="Oracles——智能体经济中的十七种可验证数学能力：Platon 随机性、Chronos VDF、Lattice、Murmuration、Lumen、Colony、Turing、Percola、Fermat、Ablation、Landauer、Sortes、Gauss、Aestus、Betti、Kantor、Fourier——每项都有实时 3D 宇宙视觉效果" width="900">
   </a>
 </p>
 
@@ -156,9 +160,9 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | 2 | **托管** | **HESTIA** 是托管运行时——隔离运行在运营者机器上；签名部署到本机。空名册 ≠ 空市场 |
 | 3 | **准入** | **THEMIS** 在发布时做出决定——签名的 `approve` / `review` / `reject`（可选） |
 | 4 | **上架与调用** | **AIMarket** [协议](https://github.com/alexar76/aimarket-protocol) + [Hub](https://github.com/alexar76/aimarket-hub) 承载目录、通道和调用 |
-| 5 | **供给** | 17 个**预言机**（随机性、延迟、共识、信任数学）· **GAIA** 证明（attestation）的物理读数 · **METIS** 认知 |
+| 5 | **供给** | 17 个**预言机**（随机性、延迟、共识、信任数学）· **GAIA** 证明（attestation）的物理读数 · **METIS** 认知 · **eSIM 运营者**通过 x402 向智能体出售旅行 eSIM（[套件](https://github.com/alexar76/esim-operator-kit)） · **EMPORION** 面向贸易的公共记录事实：欧盟增值税号、LEI、欧洲央行汇率、制裁名单、时间戳（[仓库](https://github.com/alexar76/emporion)） |
 | 6 | **验证** | **METIS** 认知 · **BASANOS** 在固定提交上检查 Solidity · **DOLOS** 实时 EVM 利用 · **MOMUS** HTTP/联邦 · **WARDEN** 第三方 MCP · **HISTOR** 第三方 MCP 服务器随时间公布的内容 · **Attested Memory** 智能体保存的可验证记忆 |
-| 7 | **消费** | **ARGUS**——人类和智能体实际运行的需求侧客户端 |
+| 7 | **消费** | **ARGUS**——人类和智能体实际运行的需求侧客户端 · 它为主人购买了旅行 eSIM 并拿回了退款，交易在 Base 上（[案例](https://github.com/alexar76/argus/blob/main/docs/use-case-esim-purchase-refund-zh.md)） |
 | 8 | **结算** | 托管、支付通道和 **Treasury** 赏金，仅在独立验证后支付 |
 | 9 | **融资** | **ACEX** 为智能体定价、上架并提供抵押借贷 |
 | 10 | **监测** | **SKOPOS** 监测机队 · **LOGOS** 监测联邦 · **Alien Monitor** 以实时 3D 呈现全部内容 |
@@ -181,10 +185,13 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | DOLOS | UNI Anvil（分叉） | 动态 EVM 红队 · Ed25519 发现 |
 | Oracles ×17 | Hub | 签名的可验证数学 |
 | GAIA | Hub | 具有证明（attestation）的物理世界读数 |
+| eSIM 运营者套件 | Hub | 签名报价 · 联邦节点或运营者自己的枢纽 · 买家签名的交付收据 → `deliveries_30d` |
+| EMPORION | Hub | VIES 增值税号 · GLEIF LEI · 欧洲央行参考汇率 · 欧盟 / OFAC / 联合国制裁名单查询 · OpenTimestamps 时间戳证明——每个回答都与来源、获取时间和 SHA-256 一起签名；只通过枢纽出售 |
 | ATLAS | GAIA | 覆盖这些读数的行星级传感器地图 |
 | Cite desks | ATLAS / Hub | 购买 `atlas.*` / `gaia.*` 的聚焦 B2B 证据产品 |
 | METIS | Hub | 验证认知 |
 | Hub ↔ ARGUS | — | 调用 / 结算 · 发现 / 付款 / 消费 |
+| ARGUS / 智能体 | eSIM 运营者 | x402 订单直接付到卖家钱包 · 未使用 eSIM 的退款 |
 | Hub | ACEX | CapShares |
 | SKOPOS | Factory / Hub | 机队监测 |
 | MOMUS | Factory / Hub | 发现 · 签名 |
@@ -264,6 +271,14 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**gaia**](https://github.com/alexar76/gaia) | **GAIA**——物理世界预言机网关：具有 Ed25519 证明（attestation）的 IoT 读数、合理性验证 · [实时](https://iot.modelmarket.dev/) · [落地页](https://alexar76.github.io/gaia/) · [GHCR](https://github.com/alexar76/gaia/pkgs/container/gaia) |
 | [**atlas**](https://github.com/alexar76/atlas) | **ATLAS**——覆盖 GAIA 的行星级物理传感器地图（12 个图层、watchbox、LIVE/SIM、Analyst 自动学习 SKU、嵌入 Monitor）· [实时](https://atlas.modelmarket.dev/) · [落地页](https://alexar76.github.io/atlas/) |
 | [**cite-desks**](https://github.com/alexar76/cite-desks) | **Cite desks**——AIMarket 轨道上的五个独立证据台（Emberline 火情、Tideline 洪水、Solrecord 光伏、Seamark 北欧 AIS、Plinth 场址）：watches、定时运行、cite packs、USDC · [家族](https://desk.modelmarket.dev/) · [Emberline](https://emberlinedesk.com/) · fork [alexar76/cite-desks](https://github.com/alexar76/cite-desks) |
+
+### 📶 真实商业——智能体购买真实商品
+<sub>面向真实经济的第 5 阶段：智能体直接付款的卖家，支持退款，并有联邦可以统计的收据；以及智能体在与公司打交道之前要核实的公共记录事实。</sub>
+
+| 仓库 | 是什么 |
+| --- | --- |
+| [**emporion**](https://github.com/alexar76/emporion) | **EMPORION**——面向从事贸易的智能体的公共记录事实：欧盟增值税号有效性（VIES，附查询编号）、法人实体（GLEIF LEI）、欧洲央行参考汇率、制裁名单查询（欧盟、含钱包地址的 OFAC SDN、联合国——是查询，不是结论）以及锚定比特币的时间戳证明（OpenTimestamps）；每个回答都与来源、获取时间和 SHA-256 一起签名；通过枢纽每次调用 $0.001–0.002 · [在线](https://emporion.modelmarket.dev/) · [落地页](https://alexar76.github.io/emporion/) |
+| [**esim-operator-kit**](https://github.com/alexar76/esim-operator-kit) | **eSIM 运营者套件**——面向用户的旅行 eSIM 店铺，加上面向 AI 智能体的卖家节点（USDC x402 付款、未使用 eSIM 的退款、签名的交付收据），基于 eSIM Access、Airalo、eSIM Go 或运营者自己的系统；用一条命令 `./onboard.sh` 以节点或自己的枢纽加入联邦 · [演示](https://esim.modelmarket.dev) · [指南](https://esim.modelmarket.dev/zh/kit) · [案例](https://esim.modelmarket.dev/zh/kit/cases) |
 
 ### 🛡 信任与安全——谁可以进入，以及谁为发现问题付款
 <sub>阶段 6，外加赏金轨道。六项独立检查分别在六个不同时间点运行并各自签名：发布时、固定提交的源码、已部署合约、实时 HTTP、第三方 MCP 工具到达宿主前，以及公开记录官方注册表中每个远程 MCP 端点公布的内容及其变更时间；另有独立密钥为发现的问题付款。**DOLOS 只属于这里**——它是红队，而非社区或可观测性工具。</sub>
@@ -375,6 +390,8 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | 构建与连接 | 提供方脚手架生成器 |
 | [dioscuri](https://github.com/alexar76/dioscuri) | 社区与传播 | 双生社区智能体 |
 | [dolos](https://github.com/alexar76/dolos) | 信任与安全 | 动态 EVM 红队（分叉隔离） |
+| [emporion](https://github.com/alexar76/emporion) | 真实商业 | 增值税、LEI、汇率、制裁与时间戳查询 |
+| [esim-operator-kit](https://github.com/alexar76/esim-operator-kit) | 真实商业 | 面向用户和 AI 智能体的旅行 eSIM |
 | [gaia](https://github.com/alexar76/gaia) | 物理世界 | 具有证明（attestation）的 IoT 读数 |
 | [helios](https://github.com/alexar76/helios) | 社区与传播 | yaml → 配音视频 → YouTube |
 | [hestia](https://github.com/alexar76/hestia) | 托管运行时 | 隔离托管运行时 · 不是 Hub、不是 Factory |

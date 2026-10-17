@@ -20,6 +20,7 @@ measurement afterwards sets the baseline instead of losing to it.
 from __future__ import annotations
 
 from pathlib import Path
+from tests.split_source import read_split
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -103,7 +104,7 @@ def test_adding_a_term_to_the_score_bumps_the_version():
 
     assert SCORING_RULES_VERSION >= 28
 
-    dev = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     score = dev[dev.index("def _tree_defect_score(") : dev.index("def _revert_out_of_scope_writes")]
     terms = sum(
         1

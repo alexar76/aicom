@@ -4,8 +4,8 @@
 
 Almost every capability on `modelmarket.dev` is free right now — no key, no
 channel, no account — and that is a decision rather than an oversight. This page
-says what is free, what is not, what bounds the free tier, and the two switches
-that turn selling on.
+says what is free, what is not, what bounds the free tier, and the switches that
+turn selling on.
 
 ---
 
@@ -170,7 +170,10 @@ flowchart TD
     R["POST /ai-market/v2/invoke"] --> G{"generic limiter<br/>120 req/min per IP"}
     G -->|over| G429["429 rate limited"]
     G -->|ok| P["resolve: is this call paid?<br/>ORACLE_PAID_TIER_SECRET<br/>or trusted proxy + channel"]
-    P --> F{"unpaid AND over<br/>the free ceiling?"}
+    P --> H{"price gate, if on (§7.3):<br/>priced, unpaid, and no valid<br/>signature from a trusted hub?"}
+    H -->|unsigned| H402["402 payment_required<br/>+ payment_ways: the hubs"]
+    H -->|bad signature| H401["401 hub_signature_invalid<br/>+ the reason"]
+    H -->|no| F{"unpaid AND over<br/>the free ceiling?"}
     F -->|yes| F402["402 payment_required<br/>+ field, requested, max"]
     F -->|no| B{"within the CPU budget?<br/>per client, then aggregate"}
     B -->|no| B429["429 + budget, cost, remainder"]
@@ -184,6 +187,11 @@ shortly` would send the caller into a loop that can never succeed. `402` tells
 them the real ceiling and that payment lifts it. Budget exhaustion, by contrast,
 genuinely does clear on its own — so it is the refusal that deserves `429`, and
 it belongs second.
+
+The price gate, when it is on, comes before both, so a call it refuses costs no
+budget and starts no work. A hub's signature gets a call past the gate and no
+further: it does not lift the free ceiling, which still takes the operator's
+nomination (§7.1).
 
 A `429` from a budget names three numbers, because a caller well under 120/min
 who is refused anyway needs all three to know whether to wait or to ask for less:
@@ -220,7 +228,10 @@ and inside the family has a separate bucket in each.
 
 ## 7. Turning selling on
 
-There are two switches, on two different sides, and **both are off by default**.
+Two switches decide whether anything is sold, one on each side, and **both are off
+by default** (§7.1, §7.2). A third, the provider's price gate (§7.3), keeps a
+provider from giving away at its own URL what the hub sells; it is off by default
+too. §7.4 puts them in an order that breaks nobody.
 
 ### 7.1 Oracle side — who is allowed past the ceiling
 
@@ -280,21 +291,121 @@ explicitly, per peer.
 only when crypto is on, the call is not a sandbox trial, **and** the peer is
 listed.
 
-### 7.3 The sequence that does not break anyone
+### 7.3 Oracle side — the price gate: priced calls come through a hub
+
+§7.1 and §7.2 decide what a call *through the hub* costs. Neither closes the other
+door: a provider's invoke URL is public, and before oracle-core 0.5.0 it had no
+way to refuse a priced capability to whoever called it directly. Measured on
+2026-10-16, an unpaid `POST` to GAIA's own URL for `gaia.power.window@v1`, and to
+EMPORION's for `emporion.vat.check@v1` ($0.002 each), answered `ok: true` with the
+full output, while the same calls through `modelmarket.dev` answered `402` at the
+catalogue price.
+
+The gate does not take payment. The channels, holds and ledger already live in the
+hub. ATLAS meters itself (§10), which works for one service, but a ledger in every
+provider would duplicate the hub's. The gate only lets a provider tell a call a hub
+admitted from one that walked around the hub. A hub that admits a call — it took
+the payment, or chose to give a trial — signs it with its federation key, the
+`signer_public_key` in its `/.well-known/ai-market.json`. The signature covers the
+capability, a hash of the exact input, the invoke URL the hub posted to, a
+timestamp and a fresh nonce, so a signature for one call at one provider does not
+buy a different call, or the same call at another provider. The provider pins the
+hub's key.
+
+For a capability priced above zero, unless the caller is one the operator nominated
+(§7.1):
+
+| the call carries | the provider answers |
+|---|---|
+| no hub signature | `402 payment_required`, with `payment_ways` naming the hubs that sell it |
+| a signature that does not hold: unknown hub, wrong key, stale, another capability or input, addressed to another provider, a nonce already used | `401 hub_signature_invalid` and the reason. The hub turns it into a `502` and releases the buyer's hold, so nobody pays for it. |
+| a signature that holds | served; the free ceiling and the CPU budgets still apply |
+
+Free capabilities are never gated. The wire format, five `X-AIMarket-Hub-*`
+headers, is in the docstring of `oracles/core/oracle_core/price_gate.py`, and the
+hub and the provider pin the same test vector.
+
+On the provider:
+
+| variable | meaning |
+|---|---|
+| `ORACLE_TRUSTED_HUBS` | `url=key,url=key`: each hub whose admission you accept, with its Ed25519 `signer_public_key` (base64) from its well-known. Repeat a URL to accept two keys during a rotation. A malformed entry is dropped and logged; it never widens the list. A third-party operator pins its own hub. |
+| `ORACLE_PRICE_GATE` | `enforce`, `report` or `off`. **Unset, it is `enforce` as soon as a hub is trusted**, and `off` when none is, which is how the core behaved before. `report` serves every call and logs what it would have refused. Any other value reads as `enforce`, so a typo cannot give priced work away. |
+| `ORACLE_HUB_AUDIENCES` | Extra base URLs you answer at, beyond `public_url`, for a hub that reaches you under another name. |
+| `ORACLE_HUB_MAX_SKEW_S` | How far the hub's timestamp may be from your clock, in seconds. Default 120. |
+
+With the gate on, the well-known gains a `price_gate` object (the mode, the trusted
+hubs, the scheme), so a buyer can see where to buy before calling. With it off, the
+document is byte for byte what it was. A provider started with
+`AIFACTORY_PROD=1`, priced capabilities and the gate off says so in its log.
+
+On the hub there is nothing to set: it signs the calls it admits. A local listing's
+call is always signed, because the hub's paywall or trial has already run. A
+federated peer's call is signed only when this hub is that peer's seller of record
+(`AIMARKET_SELLS_FOR`, §7.2). For a peer it only brokers, the peer bills the buyer
+itself, and a signature would tell a gated peer "paid" about a call nobody paid
+for. `AIMARKET_SIGN_PROVIDER_REQUESTS=0` turns signing off. A signing error never
+fails the buyer's call: the call goes out unsigned, and the provider decides.
+
+**Your own direct readers.** A service of yours that calls the provider directly
+rather than through a hub meets the same `402`. Nominate it as in §7.1: set
+`ORACLE_PAID_TIER_SECRET` on the provider and send the same value as
+`X-AIMarket-Paid-Tier`. ATLAS reads GAIA this way, with the value in
+`ATLAS_GAIA_PAID_TIER_SECRET`. The secret also lifts the free ceiling, so keep it
+to your own services.
+
+What the gate does not do:
+
+- **It trusts the hub's decision; it does not see money.** A trusted hub is trusted
+  with its whole policy: what it gives away as a trial, it gives away from this
+  provider.
+- **Replay protection is per process and in memory.** A provider run with several
+  workers accepts a replayed call once per worker inside the skew window, and a
+  restart forgets the nonces it has seen.
+- **A hub that only brokers the provider does not sign**, so its buyers get the
+  provider's `402`, pointing at the hubs that sell it. That is intended. Pin a hub
+  only if it should sell your capabilities.
+
+### 7.4 The sequence that does not break anyone
 
 ```mermaid
 flowchart TD
-    S["today: 42 capabilities free<br/>AIMARKET_SELLS_FOR unset"] --> A["1. announce the change<br/>with a date"]
+    S["start: the peer is not in AIMARKET_SELLS_FOR<br/>its priced capabilities answer anyone, free"] --> A["1. announce the change<br/>with a date"]
     A --> B["2. oracle side first:<br/>set ORACLE_PAID_TIER_SECRET<br/>so paid calls can be served at all"]
     B --> C["3. verify a paid call end to end<br/>at the full input range"]
     C --> D["4. only then set AIMARKET_SELLS_FOR<br/>on the hub"]
-    D --> E["free trial still applies:<br/>5 invokes per visitor per hour, renewing"]
+    D --> H["5. the hub signs the calls it admits<br/>(on by default: check it runs that code)"]
+    H --> R["6. provider: ORACLE_TRUSTED_HUBS<br/>together with ORACLE_PRICE_GATE=report"]
+    R --> N["7. nominate your own direct readers:<br/>ORACLE_PAID_TIER_SECRET"]
+    N --> X["8. ORACLE_PRICE_GATE=enforce"]
+    X --> E["free trial still applies, through the hub:<br/>5 invokes per visitor per hour, renewing"]
 ```
 
 Step 2 before step 4 is the part worth insisting on. Setting
 `AIMARKET_SELLS_FOR` first would make the hub demand payment for capabilities the
 oracle would still refuse above the free ceiling — buyers paying for work they
 cannot receive.
+
+Steps 5 to 8 close the provider's own door, and their order matters as much. For a
+provider listed on the hub directly rather than federated, step 4 does not apply:
+the hub signs its calls anyway.
+
+- **The hub signs before the provider enforces.** A provider that enforces while
+  the hub still sends unsigned calls answers every sale with `402`, and the hub
+  passes that `402` on to the buyer. Sales stop, though nobody is charged.
+- **`report` before `enforce`, set in the same change as `ORACLE_TRUSTED_HUBS`.**
+  The hubs alone mean `enforce` at once. In report mode the provider serves
+  everything and logs, once a minute, how many priced calls came validly signed,
+  unsigned or badly signed, and which addresses sent the unsigned ones. A line
+  saying a call was `signed for` a URL you do not answer at means the hub reaches
+  you under another name: add that URL to `ORACLE_HUB_AUDIENCES`.
+- **Your own readers before `enforce`.** The unsigned callers the report lists are
+  either your own services, which get the paid-tier secret, or strangers, who will
+  get `402` and the hubs to buy from.
+
+Going back takes no rebuild: `ORACLE_PRICE_GATE=report` (or `off`) and a restart of
+the provider. `AIMARKET_SIGN_PROVIDER_REQUESTS=0` stops the hub signing, and is safe
+only once no provider that pins this hub enforces.
 
 ## 8. For oracle authors
 
@@ -506,6 +617,8 @@ requirement of the brief, not a nicety.
 - [payment-enable-runbook](payment-enable-runbook.md) — enabling real payments on the hub
 - `oracles/core/oracle_core/tiers.py` — the implementation, with the numbers in comments
 - `oracles/core/tests/test_tiers.py` — 52 tests over this behaviour
+- `oracles/core/oracle_core/price_gate.py` — the price gate; its docstring holds the wire format
+- `aimarket-hub/aimarket_hub/provider_request_auth.py` — when the hub signs the calls it admits
 - `aimarket-hub/aimarket_hub/sandbox_trials.py` — the trial ledger and its windows
 - `atlas/atlas/payment_gate.py` — the ATLAS meter, with the check/settle split
 - `web/backend/services/vercel_fullstack_adapter.py` — `wallet_env()`, the walletless default

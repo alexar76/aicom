@@ -140,3 +140,7 @@ case is a unanimous "fails" (1.0). Next step: two more seats from other lineages
 
 Optional: an appeal court (`AIMARKET_APPEAL_METIS_URL`, `AIMARKET_APPEAL_WINDOW_S`) — see
 [aimarket-hub/docs/pay-on-verified.md](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#appeals).
+
+Optional: a different verifier per capability (`AIMARKET_VERIFY_ROUTES`) — for example GAIA's exact
+check for its pay-on-verified device control instead of the LLM jury. A route that cannot be used
+refuses the verify block; it never falls back to the default verifier. See [verifier routes](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#verifier-routes).

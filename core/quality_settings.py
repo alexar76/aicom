@@ -164,7 +164,8 @@ def _env_bool(name: str) -> bool | None:
 
 def max_pipeline_cost_usd() -> float:
     """
-    Per-product LLM spend cap (USD). ``0`` disables the guard.
+    Per-product spend cap (observed LLM cost + billed/reserved purchases). ``0`` disables
+    the LLM guard, but procurement requires a positive cap before it may spend.
 
     Resolution: ``AIFACTORY_MAX_PIPELINE_COST_USD`` env (when set) overrides
     Admin → Settings → Pipeline & product quality → Max LLM cost per product.

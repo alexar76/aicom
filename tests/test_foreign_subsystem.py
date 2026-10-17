@@ -27,6 +27,7 @@ from pathlib import Path
 import pytest
 
 from core.foreign_subsystem import MIN_DEFECTS, find_unchartered_subsystems
+from tests.split_source import read_split
 
 CHARTER = (
     "Sentinel is an autonomous, LLM-free safety companion that any website can embed. It tells the "
@@ -166,7 +167,7 @@ def test_it_is_not_double_counted_in_the_developers_score():
     """Its defects are already counted individually as missing symbols; adding the cluster on top
     would make deleting four files look like a bigger win than it is, and the ratchet must not be
     persuadable by arithmetic."""
-    dev = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     score = dev[dev.index("def _tree_defect_score(") : dev.index("def _revert_out_of_scope_writes")]
     assert "unchartered" not in score and "foreign_subsystem" not in score
 
@@ -180,7 +181,9 @@ def test_the_gate_reads_the_charter_from_the_store_not_the_task_payload():
     charter and the wrong answer here, because the 779-character charter exists; it just lives in the
     product record rather than in the task payload.
     """
-    qa = (Path(__file__).resolve().parents[1] / "agents" / "qa.py").read_text(encoding="utf-8")
+    agents_dir = Path(__file__).resolve().parents[1] / "agents"
+    # execute() calls the loader; the loader itself lives in agents/qa_checks/tree.py.
+    qa = (agents_dir / "qa.py").read_text(encoding="utf-8") + (agents_dir / "qa_checks" / "tree.py").read_text(encoding="utf-8")
     # Bound call, not merely the name. The first version wrote `_charter_from_store(...)` without
     # `self.`, so every QA run raised NameError inside the try that guards this gate, swallowed it,
     # and reported no foreign subsystem — the gate looked as if it had run and found nothing. A test

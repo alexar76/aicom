@@ -1,0 +1,14 @@
+{
+  "enabled": false,
+  "hub_url": "https://modelmarket.dev",
+  "hub_public_key": "REPLACE_WITH_VERIFIED_BASE64_ED25519_KEY",
+  "hub_pq_public_key": "REPLACE_WITH_VERIFIED_BASE64_ML_DSA_65_KEY_IF_HUB_SIGNS_HYBRID",
+  "providers": [
+    {"product_id": "REPLACE_WITH_TESTED_PROVIDER", "capability_id": "REPLACE_WITH_DIAGNOSIS_CAPABILITY"}
+  ],
+  "share_globs": ["backend/app/*.py", "frontend/src/*.tsx"],
+  "per_call_usd": 0.25,
+  "per_product_usd": 0.5,
+  "per_day_usd": 2.0,
+  "completion_reserve_usd": 0.5
+}

@@ -1,43 +1,29 @@
 'use client';
 
 import Script from 'next/script';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const site = (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:9080').replace(/\/$/, '');
 
-/** Embeddable AI Market panel — storefront only (not admin). */
+/** Load the optional market only after a visitor opens it; keep the workspace unobstructed. */
 export function AiMarketWidgetLoader() {
   const pathname = usePathname() || '';
   const onAdmin = pathname.startsWith('/admin');
-
-  // Belt-and-suspenders: ensure script runs if next/script is delayed
+  const [loaded, setLoaded] = useState(false);
+  const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (onAdmin) return;
-    if (document.querySelector('script[src*="aimarket.js"]')) return;
-    const s = document.createElement('script');
-    s.src = '/aimarket.js';
-    s.async = true;
-    s.setAttribute('data-theme', 'auto');
-    s.setAttribute('data-intent', '');
-    s.setAttribute('data-budget', '3.00');
-    s.setAttribute('data-hub-url', site);
-    s.setAttribute('data-affiliate-id', 'aifactory_storefront');
-    document.body.appendChild(s);
-  }, [onAdmin]);
-
+    const host = document.getElementById('aimarket-widget-host');
+    if (host) host.style.display = open && !onAdmin ? '' : 'none';
+  }, [open, onAdmin]);
   if (onAdmin) return null;
-
-  return (
-    <Script
-      id="aimarket-widget-script"
-      src="/aimarket.js"
-      strategy="afterInteractive"
-      data-theme="auto"
-      data-intent=""
-      data-budget="3.00"
-      data-hub-url={site}
-      data-affiliate-id="aifactory_storefront"
-    />
-  );
+  return <>
+    <button type="button" aria-expanded={open} aria-label="AIMarket" className="fixed bottom-4 left-4 z-40 rounded-full border border-cyan-400/30 bg-slate-950 px-4 py-3 text-sm text-cyan-200 shadow-lg" onClick={() => { setLoaded(true); setOpen(!open); }}>
+      {open ? '× AIMarket' : 'AIMarket ↗'}
+    </button>
+    {loaded && <Script id="aimarket-widget-script" src="/aimarket.js" strategy="afterInteractive" data-theme="auto" data-intent="" data-budget="3.00" data-hub-url={site} data-affiliate-id="aifactory_storefront" onReady={() => {
+      const host = document.getElementById('aimarket-widget-host');
+      if (host) { host.style.display = open ? '' : 'none'; host.style.bottom = '76px'; }
+    }} onError={() => { setLoaded(false); setOpen(false); window.location.assign('https://modelmarket.dev/start'); }}/ >}
+  </>;
 }

@@ -9,6 +9,8 @@ import logging
 import os
 import time
 import uuid
+from dataclasses import dataclass, field
+from typing import Any
 
 from core.agent_roles import is_architect_agent, is_developer_agent
 from core.charter_fidelity import charter_fidelity_report, feedback_for_pm
@@ -723,6 +725,42 @@ def _refresh_static_findings(accepted_ctx: dict, code_root, pid: str) -> dict:
     return merged
 
 
+@dataclass
+class _AgentTaskRun:
+    """One agent task after its agent answered: the task, its product, and what the gates found.
+
+    `run_agent_task` creates it once the agent has returned; the phases after it read what they
+    need and record their verdicts here for the ones that follow.
+    """
+
+    host: PipelineTaskExecutorHost
+    agent_type: str
+    task: dict
+    products: dict
+    task_queue: list
+    product: dict
+    pid: str
+    task_id: str
+    output: Any
+    agent_input_data: dict
+    live_gate_failed: bool = False
+    live_gate_payload: dict = field(default_factory=dict)
+    live_mesh_payment_parked: bool = False
+    prev_state: str = ""
+    qg: Any = None
+    qa_gate_failed: bool = False
+    sec_reasons: list = field(default_factory=list)
+    security_gate_failed: bool = False
+    quality_gates_exhausted: bool = False
+    security_budget_exhausted: bool = False
+    auto_recovered: bool = False
+    max_quality_loops: int = 0
+    max_security_loops: int = 0
+    target_state: str = ""
+    new_repair_round: int = 0
+    critic_blocked: bool = False
+
+
 async def run_agent_task(
     host: PipelineTaskExecutorHost,
     *,
@@ -751,47 +789,9 @@ async def run_agent_task(
         return
 
     try:
-        from agents.base_agent import AgentInput
-        from agents.product_profile import infer_delivery_profile, normalize_delivery_profile
-
-        # Collect context from previous tasks
-        context = build_task_context(task_queue, pid)
-
-        dp_raw = product.get("delivery_profile")
-        if dp_raw:
-            delivery_profile = normalize_delivery_profile(str(dp_raw))
-        else:
-            delivery_profile = infer_delivery_profile(
-                product.get("admin_instructions"),
-                product.get("idea"),
-            )
-
-        agent_input_data = {
-            "idea": product.get("idea", ""),
-            "category": product.get("category", ""),
-            "tags": product.get("tags", []),
-            "specification": host._load_spec(pid),
-            "architecture": host._load_arch(pid),
-            "admin_instructions": product.get("admin_instructions", ""),
-            "delivery_profile": delivery_profile,
-            "production_mode": bool(product.get("production_mode")),
-            "interface_locale": product.get("interface_locale") or "en",
-            "content_locale": product.get("content_locale") or "auto",
-            "surrogate_repair_hint": product.get("surrogate_repair_hint"),
-            **task.get("input_data", {}),
-        }
-        # Gate-failing repair rounds get a stronger model when configured
-        gfm = gate_failing_model()
-        if gfm and isinstance(agent_input_data.get("quality_repair_round"), (int, float)) and int(agent_input_data["quality_repair_round"]) >= 1:
-            agent_input_data["gate_failing_model"] = gfm
-
-        agent_input = AgentInput(
-            task_id=task_id,
-            product_id=pid,
-            agent_type=agent_type,
-            data=agent_input_data,
-            context=context,
-            timestamp=time.time(),
+        agent_input, agent_input_data = await _agent_input_for(
+            host, agent_type=agent_type, task=task, task_queue=task_queue, product=product,
+            pid=pid, task_id=task_id,
         )
 
         from core.pipeline_cost_guard import PipelineCostBudgetExceeded, assert_product_within_budget
@@ -839,1036 +839,1004 @@ async def run_agent_task(
                     f"agent '{agent_type}' execute exceeded {execute_timeout:.0f}s"
                 ) from None
 
+        run = _AgentTaskRun(
+            host=host, agent_type=agent_type, task=task, products=products, task_queue=task_queue,
+            product=product, pid=pid, task_id=task_id, output=output, agent_input_data=agent_input_data,
+        )
         if output.success:
-            task["status"] = "completed"
+            await _after_agent_success(run)
+        else:
+            _record_agent_failure(run)
+
+    except Exception as e:
+        await _after_agent_exception(e, host, agent_type, task, products, task_queue, task_id)
+
+
+async def _agent_input_for(host: PipelineTaskExecutorHost, *, agent_type: str, task: dict,
+                           task_queue: list, product: dict, pid: str, task_id: str):
+    """The agent's input: the product, its spec and architecture, the task's own data, and for a
+    developer any paid diagnosis."""
+    from agents.base_agent import AgentInput
+    from agents.product_profile import infer_delivery_profile, normalize_delivery_profile
+
+    # Collect context from previous tasks
+    context = build_task_context(task_queue, pid)
+
+    dp_raw = product.get("delivery_profile")
+    if dp_raw:
+        delivery_profile = normalize_delivery_profile(str(dp_raw))
+    else:
+        delivery_profile = infer_delivery_profile(
+            product.get("admin_instructions"),
+            product.get("idea"),
+        )
+
+    agent_input_data = {
+        "idea": product.get("idea", ""),
+        "category": product.get("category", ""),
+        "tags": product.get("tags", []),
+        "specification": host._load_spec(pid),
+        "architecture": host._load_arch(pid),
+        "admin_instructions": product.get("admin_instructions", ""),
+        "delivery_profile": delivery_profile,
+        "production_mode": bool(product.get("production_mode")),
+        "interface_locale": product.get("interface_locale") or "en",
+        "content_locale": product.get("content_locale") or "auto",
+        "surrogate_repair_hint": product.get("surrogate_repair_hint"),
+        **task.get("input_data", {}),
+    }
+    # Gate-failing repair rounds get a stronger model when configured
+    gfm = gate_failing_model()
+    if gfm and isinstance(agent_input_data.get("quality_repair_round"), (int, float)) and int(agent_input_data["quality_repair_round"]) >= 1:
+        agent_input_data["gate_failing_model"] = gfm
+
+    if is_developer_agent(agent_type):
+        from orchestrator.procurement import prepare_diagnosis
+
+        diagnosis = await prepare_diagnosis(
+            root=host.data_root, product=product, task=task,
+            task_queue=task_queue, input_data=agent_input_data,
+        )
+        if diagnosis:
+            agent_input_data["external_diagnosis"] = diagnosis
+
+    agent_input = AgentInput(
+        task_id=task_id,
+        product_id=pid,
+        agent_type=agent_type,
+        data=agent_input_data,
+        context=context,
+        timestamp=time.time(),
+    )
+    return agent_input, agent_input_data
+
+
+async def _after_agent_success(run: _AgentTaskRun) -> None:
+    """Record the completed task, run the checkpoints its agent type owns, advance the product
+    and queue what comes next. A checkpoint that holds the product ends the run there."""
+    _record_completion(run)
+    if _peer_review_blocks(run):
+        return
+    if _pm_charter_gate_holds(run):
+        return
+    if _architect_checkpoint_holds(run):
+        return
+    _inject_site_assets(run)
+    await _publish_after_devops(run)
+    _refuse_completion_on_saved_publish(run)
+    await _heal_live_auth(run)
+    _read_gate_outcomes(run)
+    await _advance_product_state(run)
+    _monitoring_refresh(run)
+    _record_and_notify(run)
+    await _release_critic(run)
+    await _queue_next_task(run)
+
+
+def _record_completion(run: _AgentTaskRun) -> None:
+    host, agent_type, task, products, pid = run.host, run.agent_type, run.task, run.products, run.pid
+    output, agent_input_data = run.output, run.agent_input_data
+    if is_developer_agent(agent_type) and agent_input_data.get("external_diagnosis"):
+        from core.procurement_store import PurchaseStore
+
+        try:
+            PurchaseStore(host.data_root).mark_applied(agent_input_data["external_diagnosis"]["order_id"])
+        except Exception as exc:
+            logger.warning("Could not record diagnosis application for %s (%s)", pid, type(exc).__name__)
+    task["status"] = "completed"
+    task["completed_at"] = time.time()
+    task["output_data"] = output.data
+    task["metrics"] = output.metrics
+    task["output_summary"] = str(output.data)[:200]
+    if pid in products:
+        host.peer_review_engine.register(
+            products[pid], agent_type, output.data if isinstance(output.data, dict) else {}
+        )
+
+
+def _peer_review_blocks(run: _AgentTaskRun) -> bool:
+    host, agent_type, task, products, pid = run.host, run.agent_type, run.task, run.products, run.pid
+    task_queue, product = run.task_queue, run.product
+    peer_blocked = False
+    # QA failures use structured qa_gate_failed handling (repair budget + rich feedback).
+    if pid in products and agent_type != "qa":
+        peer_blocked = host.peer_review_engine.apply_block(
+            task, products[pid], task_queue, product
+        )
+    if peer_blocked:
+        logger.warning("Peer review blocked progression for %s at %s", pid, agent_type)
+        return True
+    return False
+
+
+def _pm_charter_gate_holds(run: _AgentTaskRun) -> bool:
+    """Did the spec keep what the operator asked for? If not, PM runs again or the product is held."""
+    host, agent_type, task, products, pid = run.host, run.agent_type, run.task, run.products, run.pid
+    task_queue, output = run.task_queue, run.output
+    if agent_type == "pm" and pid in products and isinstance(output.data, dict):
+        dp = output.data.get("delivery_profile")
+        if dp:
+            products[pid]["delivery_profile"] = dp
+            products[pid]["updated_at"] = time.time()
+
+        # Did the spec keep what the operator actually asked for? Nothing checked
+        # this before. A charter amended with two explicit requirements — free-tier
+        # behaviour in the UI, an optional wallet — came back as a spec mentioning
+        # neither, plus a custom chart builder, dashboard lifecycle states and a
+        # "Free tier (100 invokes/mo)" that exists nowhere in this ecosystem. The
+        # architect and developer then started on it. Deterministic, so it costs no
+        # tokens to run and cannot itself hallucinate.
+        charter_gate = charter_fidelity_report(
+            str(products[pid].get("admin_instructions") or ""),
+            host._load_spec(pid),
+        )
+        for invented in charter_gate.get("invented_terms") or []:
+            logger.warning(
+                "Spec for %s states a commercial term the charter does not contain: %s",
+                pid, invented.get("claim"),
+            )
+        if not charter_gate.get("passed"):
+            dropped = ", ".join(
+                str(g.get("section")) for g in charter_gate.get("gaps") or []
+            )
+            logger.error(
+                "Spec for %s dropped operator requirement section(s): %s", pid, dropped
+            )
+            charter_retry = requeue_pm_bounded(
+                pid,
+                products,
+                task_queue,
+                host._get_priority,
+                reason="charter_requirement_dropped",
+                instructions=(
+                    str(products[pid].get("admin_instructions") or "")
+                    + "\n\n=== SPEC CORRECTION REQUIRED ===\n"
+                    + feedback_for_pm(charter_gate)
+                ),
+            )
+            if charter_retry is not None:
+                host._audit_agent_handoff(
+                    product_id=pid,
+                    from_agent=agent_type,
+                    from_state="SPEC_WRITTEN",
+                    next_task=charter_retry,
+                    task_id=str(task.get("id") or ""),
+                    reason=f"spec dropped operator requirements: {dropped}",
+                )
+                return True
+            # The requeue declined — cap reached, budget spent, or a PM task already
+            # queued. Falling through would send the developer at a spec the gate has
+            # just judged deficient, which is what happened before this branch
+            # existed: the log said "leaving it for human review" while the product
+            # walked on to CODE_COMMITTED. Park it instead, and say why.
+            products[pid]["state"] = "HUMAN_REVIEW_PENDING"
+            products[pid]["failure_reason"] = (
+                "Specification omits operator requirement section(s): "
+                f"{dropped}. Automatic PM re-runs are exhausted or blocked, so the "
+                "product is held rather than built against a spec that is missing "
+                "what was asked for."
+            )
+            products[pid]["updated_at"] = time.time()
+            logger.error(
+                "Holding %s at HUMAN_REVIEW_PENDING: spec still omits %s and PM cannot "
+                "be re-queued.",
+                pid,
+                dropped,
+            )
+            return True
+    return False
+
+
+def _architect_checkpoint_holds(run: _AgentTaskRun) -> bool:
+    """The last checkpoint before development: a spec, the operator's requirements in it, and an
+    architecture that passes its gate."""
+    agent_type, products, pid = run.agent_type, run.products, run.pid
+    if agent_type in ("architect", "landing_architect") and pid in products:
+        return _spec_checkpoint_holds(run) or _architecture_gate_blocks(run)
+    return False
+
+
+def _spec_checkpoint_holds(run: _AgentTaskRun) -> bool:
+    host, agent_type, task, products, pid = run.host, run.agent_type, run.task, run.products, run.pid
+    task_queue = run.task_queue
+    # Last checkpoint before development: a product with no specification on
+    # disk must go back for one rather than forward to the developer. Every
+    # gate downstream of here judges the build against its spec, so sending it
+    # on produces verdicts that cannot be satisfied by changing code.
+    spec_recovery_task = requeue_pm_when_spec_absent(
+        pid,
+        products,
+        task_queue,
+        host._get_priority,
+        spec_loader=host._load_spec,
+    )
+    if spec_recovery_task is not None:
+        # Leave this architect row CANCELLED, as append_product_task just set it.
+        # Marking it completed was a one-line self-inflicted wound: the same
+        # cycle's reconcile_all_products_from_tasks counts completed rows, ranks
+        # the row's ARCH_DESIGNED above the MARKET_RESEARCHED we just rewound to,
+        # and puts the product back — after which the PM task is three ranks
+        # behind and queue hygiene cancels it as regressive, or archives it as
+        # superseded if PM fails. The product then healed forward into
+        # development with no specification, having already spent a recovery
+        # attempt: exactly the state this checkpoint exists to prevent, reached
+        # through the checkpoint itself. Cancelled rows are skipped by the
+        # reconciler, so the rewind stands.
+        task["error"] = (
+            "superseded at the architecture checkpoint: no specification "
+            "artifact existed, so the spec stage runs again first"
+        )
+        task["completed_at"] = time.time()
+        host._audit_agent_handoff(
+            product_id=pid,
+            from_agent=agent_type,
+            from_state="ARCH_DESIGNED",
+            next_task=spec_recovery_task,
+            task_id=str(task.get("id") or ""),
+            reason="specification artifact absent at architecture checkpoint",
+        )
+        return True
+    if not _spec_has_substance(host._load_spec(pid)):
+        # Same rule as the charter gate below: a declined recovery must not read
+        # as permission to continue. Without this, the cap and budget paths log
+        # "leaving for human review" and then hand the developer a product with
+        # no specification at all — the exact condition that burned ~70 rounds.
+        products[pid]["state"] = "HUMAN_REVIEW_PENDING"
+        products[pid]["failure_reason"] = (
+            "No specification artifact exists and PM cannot be re-queued "
+            "(attempts exhausted, budget spent, or a PM task already pending). "
+            "Held rather than developed blind."
+        )
+        products[pid]["updated_at"] = time.time()
+        logger.error(
+            "Holding %s at HUMAN_REVIEW_PENDING: no specification and no PM "
+            "recovery available.",
+            pid,
+        )
+        return True
+
+    # Charter fidelity is checked HERE as well as after PM, because the check
+    # after PM only runs when PM *succeeds*. A PM task that fails — "LLM
+    # returned invalid/non-JSON response", an ordinary transient — is cancelled,
+    # and the pipeline then heals forward through methodologist, architect and
+    # design_critic to the developer, carrying whatever stale spec is still on
+    # disk. That is exactly what happened: a spec missing both of the operator's
+    # marked requirements reached CODE_COMMITTED because the gate guarding it was
+    # attached to an event that never occurred. A gate on the last checkpoint
+    # before development does not care how the spec stage ended.
+    arch_charter = charter_fidelity_report(
+        str(products[pid].get("admin_instructions") or ""),
+        host._load_spec(pid),
+    )
+    if not arch_charter.get("passed"):
+        dropped_here = ", ".join(
+            str(g.get("section")) for g in arch_charter.get("gaps") or []
+        )
+        logger.error(
+            "Spec for %s still omits operator requirement section(s) at the "
+            "architecture checkpoint: %s",
+            pid,
+            dropped_here,
+        )
+        retry_here = requeue_pm_bounded(
+            pid,
+            products,
+            task_queue,
+            host._get_priority,
+            reason="charter_requirement_dropped_at_arch",
+            instructions=(
+                str(products[pid].get("admin_instructions") or "")
+                + "\n\n=== SPEC CORRECTION REQUIRED ===\n"
+                + feedback_for_pm(arch_charter)
+            ),
+        )
+        if retry_here is not None:
+            task["error"] = (
+                "superseded at the architecture checkpoint: the specification "
+                f"omits {dropped_here}"
+            )
             task["completed_at"] = time.time()
-            task["output_data"] = output.data
-            task["metrics"] = output.metrics
-            task["output_summary"] = str(output.data)[:200]
-            if pid in products:
-                host.peer_review_engine.register(
-                    products[pid], agent_type, output.data if isinstance(output.data, dict) else {}
-                )
+            host._audit_agent_handoff(
+                product_id=pid,
+                from_agent=agent_type,
+                from_state="ARCH_DESIGNED",
+                next_task=retry_here,
+                task_id=str(task.get("id") or ""),
+                reason=f"spec omits operator requirements: {dropped_here}",
+            )
+            return True
+        products[pid]["state"] = "HUMAN_REVIEW_PENDING"
+        products[pid]["failure_reason"] = (
+            "Specification omits operator requirement section(s): "
+            f"{dropped_here}. PM cannot be re-queued, so the product is held "
+            "rather than built without what was asked for."
+        )
+        products[pid]["updated_at"] = time.time()
+        logger.error(
+            "Holding %s at HUMAN_REVIEW_PENDING: spec omits %s and PM cannot be "
+            "re-queued.",
+            pid,
+            dropped_here,
+        )
+        return True
+    return False
 
-            peer_blocked = False
-            # QA failures use structured qa_gate_failed handling (repair budget + rich feedback).
-            if pid in products and agent_type != "qa":
-                peer_blocked = host.peer_review_engine.apply_block(
-                    task, products[pid], task_queue, product
-                )
-            if peer_blocked:
-                logger.warning("Peer review blocked progression for %s at %s", pid, agent_type)
-                return
 
-            if agent_type == "pm" and pid in products and isinstance(output.data, dict):
-                dp = output.data.get("delivery_profile")
-                if dp:
-                    products[pid]["delivery_profile"] = dp
-                    products[pid]["updated_at"] = time.time()
+def _architecture_gate_blocks(run: _AgentTaskRun) -> bool:
+    host, agent_type, task, products, pid = run.host, run.agent_type, run.task, run.products, run.pid
+    task_queue, product, task_id, output = run.task_queue, run.product, run.task_id, run.output
+    arch_ok, arch_issues = host._architecture_gate(
+        pid, delivery_profile=delivery_profile_from_product_dict(products[pid])
+    )
+    if not arch_ok:
+        task["status"] = "failed"
+        task["error"] = "architecture gate failed: " + "; ".join(arch_issues)
+        task["completed_at"] = time.time()
+        products[pid]["state"] = "METHODOLOGY_REVIEWED"
+        products[pid]["updated_at"] = time.time()
+        existing = any(
+            t.get("product_id") == pid
+            and is_architect_agent(t.get("agent_type"))
+            and t.get("status") in ("pending", "running")
+            for t in task_queue
+        )
+        if not existing:
+            arch_retry_task = {
+                "id": f"task-{uuid.uuid4().hex[:12]}",
+                "product_id": pid,
+                "agent_type": "architect",
+                "state": "ARCH_DESIGNED",
+                "status": "pending",
+                "retry_count": 0,
+                "max_retries": 3,
+                "input_data": {
+                    "product_id": pid,
+                    "idea": product.get("idea", ""),
+                    "architecture_gate_feedback": arch_issues,
+                    "admin_instructions": (
+                        "Architecture gatekeeper failed. Fix layering, module boundaries, "
+                        "and migration discipline before developer stage."
+                    ),
+                },
+                "created_at": time.time(),
+                "priority": host._get_priority("architect"),
+            }
+            task_queue.append(arch_retry_task)
+            host._audit_agent_handoff(
+                product_id=pid,
+                from_agent=agent_type,
+                from_state=str(task.get("state") or ""),
+                next_task=arch_retry_task,
+                task_id=task_id,
+                reason="architecture_gate",
+                success=False,
+                output_data=output.data if isinstance(output.data, dict) else None,
+                extra={"issues": arch_issues[:8]},
+            )
+        logger.warning("Architecture gate blocked developer stage for %s: %s", pid, arch_issues)
+        return True
+    return False
 
-                # Did the spec keep what the operator actually asked for? Nothing checked
-                # this before. A charter amended with two explicit requirements — free-tier
-                # behaviour in the UI, an optional wallet — came back as a spec mentioning
-                # neither, plus a custom chart builder, dashboard lifecycle states and a
-                # "Free tier (100 invokes/mo)" that exists nowhere in this ecosystem. The
-                # architect and developer then started on it. Deterministic, so it costs no
-                # tokens to run and cannot itself hallucinate.
-                charter_gate = charter_fidelity_report(
-                    str(products[pid].get("admin_instructions") or ""),
-                    host._load_spec(pid),
-                )
-                for invented in charter_gate.get("invented_terms") or []:
+
+def _inject_site_assets(run: _AgentTaskRun) -> None:
+    """Watermark, published-site head, badge and landing embeds, after a developer or marketing run."""
+    host, agent_type, products, pid = run.host, run.agent_type, run.products, run.pid
+    if agent_type in ("developer", "landing_developer") and pid in products:
+        try:
+            host._apply_watermark_policy(pid, products[pid])
+        except Exception as wm_exc:
+            logger.warning("Watermark policy apply failed for %s: %s", pid, wm_exc)
+        try:
+            from web.backend.services.site_head_snippet import (
+                inject_published_site_head_if_configured,
+            )
+
+            inject_published_site_head_if_configured(host.data_root, pid)
+        except Exception as head_exc:
+            logger.warning("Published site <head> inject failed for %s: %s", pid, head_exc)
+        try:
+            from web.backend.services.site_badge import inject_site_badge_if_enabled
+
+            inject_site_badge_if_enabled(host.data_root, pid)
+        except Exception as badge_exc:
+            logger.warning("Site badge inject failed for %s: %s", pid, badge_exc)
+        try:
+            from web.backend.services.landing_embeds import inject_landing_embeds_for_product
+
+            inject_landing_embeds_for_product(host.data_root, pid, products[pid])
+        except Exception as embed_exc:
+            logger.warning("Landing embed inject failed for %s: %s", pid, embed_exc)
+
+    if agent_type == "marketing" and pid in products:
+        try:
+            from web.backend.services.landing_embeds import inject_landing_embeds_for_product
+
+            inject_landing_embeds_for_product(host.data_root, pid, products[pid])
+        except Exception as embed_exc:
+            logger.warning("Landing embed inject after marketing failed for %s: %s", pid, embed_exc)
+
+
+async def _publish_after_devops(run: _AgentTaskRun) -> None:
+    """Publish after DevOps: the live preview, the public Vercel URL and its live gate, the
+    catalogue, the Railway hook."""
+    agent_type, products, pid, output = run.agent_type, run.products, run.pid, run.output
+    if agent_type == "devops" and output.success and pid in products:
+        try:
+            from web.backend.services.auto_publish import try_publish_after_devops
+
+            pub = await asyncio.to_thread(try_publish_after_devops, pid)
+            if isinstance(pub, dict) and pub.get("published_url"):
+                products[pid]["published_url"] = str(pub["published_url"])
+                products[pid]["updated_at"] = time.time()
+            # A full-stack product publishes twice: a live factory preview and
+            # a public Vercel deployment. Keep the public link too — it is the
+            # one anyone outside the factory can actually open.
+            if isinstance(pub, dict) and pub.get("vercel_url"):
+                products[pid]["vercel_url"] = str(pub["vercel_url"])
+                products[pid]["updated_at"] = time.time()
+            lg = (pub or {}).get("live_gate") if isinstance(pub, dict) else None
+            if isinstance(lg, dict):
+                products[pid]["live_gate"] = lg
+                if not lg.get("skipped") and lg.get("passed") is False:
+                    run.live_gate_failed = True
+                    run.live_gate_payload = lg
                     logger.warning(
-                        "Spec for %s states a commercial term the charter does not contain: %s",
-                        pid, invented.get("claim"),
-                    )
-                if not charter_gate.get("passed"):
-                    dropped = ", ".join(
-                        str(g.get("section")) for g in charter_gate.get("gaps") or []
-                    )
-                    logger.error(
-                        "Spec for %s dropped operator requirement section(s): %s", pid, dropped
-                    )
-                    charter_retry = requeue_pm_bounded(
+                        "Live Vercel UI gate failed for %s: %s",
                         pid,
-                        products,
-                        task_queue,
-                        host._get_priority,
-                        reason="charter_requirement_dropped",
-                        instructions=(
-                            str(products[pid].get("admin_instructions") or "")
-                            + "\n\n=== SPEC CORRECTION REQUIRED ===\n"
-                            + feedback_for_pm(charter_gate)
-                        ),
+                        "; ".join(str(i)[:140] for i in (lg.get("issues") or [])[:3]),
                     )
-                    if charter_retry is not None:
-                        host._audit_agent_handoff(
-                            product_id=pid,
-                            from_agent=agent_type,
-                            from_state="SPEC_WRITTEN",
-                            next_task=charter_retry,
-                            task_id=str(task.get("id") or ""),
-                            reason=f"spec dropped operator requirements: {dropped}",
-                        )
-                        return
-                    # The requeue declined — cap reached, budget spent, or a PM task already
-                    # queued. Falling through would send the developer at a spec the gate has
-                    # just judged deficient, which is what happened before this branch
-                    # existed: the log said "leaving it for human review" while the product
-                    # walked on to CODE_COMMITTED. Park it instead, and say why.
-                    products[pid]["state"] = "HUMAN_REVIEW_PENDING"
-                    products[pid]["failure_reason"] = (
-                        "Specification omits operator requirement section(s): "
-                        f"{dropped}. Automatic PM re-runs are exhausted or blocked, so the "
-                        "product is held rather than built against a spec that is missing "
-                        "what was asked for."
-                    )
-                    products[pid]["updated_at"] = time.time()
-                    logger.error(
-                        "Holding %s at HUMAN_REVIEW_PENDING: spec still omits %s and PM cannot "
-                        "be re-queued.",
-                        pid,
-                        dropped,
-                    )
-                    return
+        except Exception as ap_exc:
+            logger.warning("Auto-publish after DevOps failed for %s: %s", pid, ap_exc)
+        try:
+            from web.backend.services.product_catalog_publish import (
+                try_publish_product_catalog,
+            )
 
-            if agent_type in ("architect", "landing_architect") and pid in products:
-                # Last checkpoint before development: a product with no specification on
-                # disk must go back for one rather than forward to the developer. Every
-                # gate downstream of here judges the build against its spec, so sending it
-                # on produces verdicts that cannot be satisfied by changing code.
-                spec_recovery_task = requeue_pm_when_spec_absent(
+            cat = await asyncio.to_thread(try_publish_product_catalog, pid)
+            if isinstance(cat, dict):
+                products[pid]["product_catalog"] = cat
+                products[pid]["updated_at"] = time.time()
+        except Exception as cat_exc:
+            logger.warning("Product catalog publish failed for %s: %s", pid, cat_exc)
+        try:
+            from web.backend.services.railway_deploy import (
+                try_railway_deploy_after_devops,
+            )
+
+            rw = await asyncio.to_thread(try_railway_deploy_after_devops, pid)
+            if isinstance(rw, dict) and rw.get("recorded"):
+                logger.info(
+                    "Railway deploy hook after DevOps for %s: %s",
                     pid,
-                    products,
-                    task_queue,
-                    host._get_priority,
-                    spec_loader=host._load_spec,
+                    rw.get("path", ""),
                 )
-                if spec_recovery_task is not None:
-                    # Leave this architect row CANCELLED, as append_product_task just set it.
-                    # Marking it completed was a one-line self-inflicted wound: the same
-                    # cycle's reconcile_all_products_from_tasks counts completed rows, ranks
-                    # the row's ARCH_DESIGNED above the MARKET_RESEARCHED we just rewound to,
-                    # and puts the product back — after which the PM task is three ranks
-                    # behind and queue hygiene cancels it as regressive, or archives it as
-                    # superseded if PM fails. The product then healed forward into
-                    # development with no specification, having already spent a recovery
-                    # attempt: exactly the state this checkpoint exists to prevent, reached
-                    # through the checkpoint itself. Cancelled rows are skipped by the
-                    # reconciler, so the rewind stands.
-                    task["error"] = (
-                        "superseded at the architecture checkpoint: no specification "
-                        "artifact existed, so the spec stage runs again first"
-                    )
-                    task["completed_at"] = time.time()
-                    host._audit_agent_handoff(
-                        product_id=pid,
-                        from_agent=agent_type,
-                        from_state="ARCH_DESIGNED",
-                        next_task=spec_recovery_task,
-                        task_id=str(task.get("id") or ""),
-                        reason="specification artifact absent at architecture checkpoint",
-                    )
-                    return
-                if not _spec_has_substance(host._load_spec(pid)):
-                    # Same rule as the charter gate below: a declined recovery must not read
-                    # as permission to continue. Without this, the cap and budget paths log
-                    # "leaving for human review" and then hand the developer a product with
-                    # no specification at all — the exact condition that burned ~70 rounds.
-                    products[pid]["state"] = "HUMAN_REVIEW_PENDING"
-                    products[pid]["failure_reason"] = (
-                        "No specification artifact exists and PM cannot be re-queued "
-                        "(attempts exhausted, budget spent, or a PM task already pending). "
-                        "Held rather than developed blind."
-                    )
-                    products[pid]["updated_at"] = time.time()
-                    logger.error(
-                        "Holding %s at HUMAN_REVIEW_PENDING: no specification and no PM "
-                        "recovery available.",
-                        pid,
-                    )
-                    return
+        except Exception as rw_exc:
+            logger.warning("Railway deploy hook after DevOps failed for %s: %s", pid, rw_exc)
 
-                # Charter fidelity is checked HERE as well as after PM, because the check
-                # after PM only runs when PM *succeeds*. A PM task that fails — "LLM
-                # returned invalid/non-JSON response", an ordinary transient — is cancelled,
-                # and the pipeline then heals forward through methodologist, architect and
-                # design_critic to the developer, carrying whatever stale spec is still on
-                # disk. That is exactly what happened: a spec missing both of the operator's
-                # marked requirements reached CODE_COMMITTED because the gate guarding it was
-                # attached to an event that never occurred. A gate on the last checkpoint
-                # before development does not care how the spec stage ended.
-                arch_charter = charter_fidelity_report(
-                    str(products[pid].get("admin_instructions") or ""),
-                    host._load_spec(pid),
-                )
-                if not arch_charter.get("passed"):
-                    dropped_here = ", ".join(
-                        str(g.get("section")) for g in arch_charter.get("gaps") or []
-                    )
-                    logger.error(
-                        "Spec for %s still omits operator requirement section(s) at the "
-                        "architecture checkpoint: %s",
-                        pid,
-                        dropped_here,
-                    )
-                    retry_here = requeue_pm_bounded(
-                        pid,
-                        products,
-                        task_queue,
-                        host._get_priority,
-                        reason="charter_requirement_dropped_at_arch",
-                        instructions=(
-                            str(products[pid].get("admin_instructions") or "")
-                            + "\n\n=== SPEC CORRECTION REQUIRED ===\n"
-                            + feedback_for_pm(arch_charter)
-                        ),
-                    )
-                    if retry_here is not None:
-                        task["error"] = (
-                            "superseded at the architecture checkpoint: the specification "
-                            f"omits {dropped_here}"
-                        )
-                        task["completed_at"] = time.time()
-                        host._audit_agent_handoff(
-                            product_id=pid,
-                            from_agent=agent_type,
-                            from_state="ARCH_DESIGNED",
-                            next_task=retry_here,
-                            task_id=str(task.get("id") or ""),
-                            reason=f"spec omits operator requirements: {dropped_here}",
-                        )
-                        return
-                    products[pid]["state"] = "HUMAN_REVIEW_PENDING"
-                    products[pid]["failure_reason"] = (
-                        "Specification omits operator requirement section(s): "
-                        f"{dropped_here}. PM cannot be re-queued, so the product is held "
-                        "rather than built without what was asked for."
-                    )
-                    products[pid]["updated_at"] = time.time()
-                    logger.error(
-                        "Holding %s at HUMAN_REVIEW_PENDING: spec omits %s and PM cannot be "
-                        "re-queued.",
-                        pid,
-                        dropped_here,
-                    )
-                    return
 
-                arch_ok, arch_issues = host._architecture_gate(
-                    pid, delivery_profile=delivery_profile_from_product_dict(products[pid])
-                )
-                if not arch_ok:
-                    task["status"] = "failed"
-                    task["error"] = "architecture gate failed: " + "; ".join(arch_issues)
-                    task["completed_at"] = time.time()
-                    products[pid]["state"] = "METHODOLOGY_REVIEWED"
-                    products[pid]["updated_at"] = time.time()
-                    existing = any(
-                        t.get("product_id") == pid
-                        and is_architect_agent(t.get("agent_type"))
-                        and t.get("status") in ("pending", "running")
-                        for t in task_queue
-                    )
-                    if not existing:
-                        arch_retry_task = {
-                            "id": f"task-{uuid.uuid4().hex[:12]}",
-                            "product_id": pid,
-                            "agent_type": "architect",
-                            "state": "ARCH_DESIGNED",
-                            "status": "pending",
-                            "retry_count": 0,
-                            "max_retries": 3,
-                            "input_data": {
-                                "product_id": pid,
-                                "idea": product.get("idea", ""),
-                                "architecture_gate_feedback": arch_issues,
-                                "admin_instructions": (
-                                    "Architecture gatekeeper failed. Fix layering, module boundaries, "
-                                    "and migration discipline before developer stage."
-                                ),
-                            },
-                            "created_at": time.time(),
-                            "priority": host._get_priority("architect"),
-                        }
-                        task_queue.append(arch_retry_task)
-                        host._audit_agent_handoff(
-                            product_id=pid,
-                            from_agent=agent_type,
-                            from_state=str(task.get("state") or ""),
-                            next_task=arch_retry_task,
-                            task_id=task_id,
-                            reason="architecture_gate",
-                            success=False,
-                            output_data=output.data if isinstance(output.data, dict) else None,
-                            extra={"issues": arch_issues[:8]},
-                        )
-                    logger.warning("Architecture gate blocked developer stage for %s: %s", pid, arch_issues)
-                    return
-
-            if agent_type in ("developer", "landing_developer") and pid in products:
-                try:
-                    host._apply_watermark_policy(pid, products[pid])
-                except Exception as wm_exc:
-                    logger.warning("Watermark policy apply failed for %s: %s", pid, wm_exc)
-                try:
-                    from web.backend.services.site_head_snippet import (
-                        inject_published_site_head_if_configured,
-                    )
-
-                    inject_published_site_head_if_configured(host.data_root, pid)
-                except Exception as head_exc:
-                    logger.warning("Published site <head> inject failed for %s: %s", pid, head_exc)
-                try:
-                    from web.backend.services.site_badge import inject_site_badge_if_enabled
-
-                    inject_site_badge_if_enabled(host.data_root, pid)
-                except Exception as badge_exc:
-                    logger.warning("Site badge inject failed for %s: %s", pid, badge_exc)
-                try:
-                    from web.backend.services.landing_embeds import inject_landing_embeds_for_product
-
-                    inject_landing_embeds_for_product(host.data_root, pid, products[pid])
-                except Exception as embed_exc:
-                    logger.warning("Landing embed inject failed for %s: %s", pid, embed_exc)
-
-            if agent_type == "marketing" and pid in products:
-                try:
-                    from web.backend.services.landing_embeds import inject_landing_embeds_for_product
-
-                    inject_landing_embeds_for_product(host.data_root, pid, products[pid])
-                except Exception as embed_exc:
-                    logger.warning("Landing embed inject after marketing failed for %s: %s", pid, embed_exc)
-
-            live_gate_failed = False
-            live_gate_payload: dict = {}
-            live_mesh_payment_parked = False
-            if agent_type == "devops" and output.success and pid in products:
-                try:
-                    from web.backend.services.auto_publish import try_publish_after_devops
-
-                    pub = await asyncio.to_thread(try_publish_after_devops, pid)
-                    if isinstance(pub, dict) and pub.get("published_url"):
-                        products[pid]["published_url"] = str(pub["published_url"])
-                        products[pid]["updated_at"] = time.time()
-                    # A full-stack product publishes twice: a live factory preview and
-                    # a public Vercel deployment. Keep the public link too — it is the
-                    # one anyone outside the factory can actually open.
-                    if isinstance(pub, dict) and pub.get("vercel_url"):
-                        products[pid]["vercel_url"] = str(pub["vercel_url"])
-                        products[pid]["updated_at"] = time.time()
-                    lg = (pub or {}).get("live_gate") if isinstance(pub, dict) else None
-                    if isinstance(lg, dict):
-                        products[pid]["live_gate"] = lg
-                        if not lg.get("skipped") and lg.get("passed") is False:
-                            live_gate_failed = True
-                            live_gate_payload = lg
-                            logger.warning(
-                                "Live Vercel UI gate failed for %s: %s",
-                                pid,
-                                "; ".join(str(i)[:140] for i in (lg.get("issues") or [])[:3]),
-                            )
-                except Exception as ap_exc:
-                    logger.warning("Auto-publish after DevOps failed for %s: %s", pid, ap_exc)
-                try:
-                    from web.backend.services.product_catalog_publish import (
-                        try_publish_product_catalog,
-                    )
-
-                    cat = await asyncio.to_thread(try_publish_product_catalog, pid)
-                    if isinstance(cat, dict):
-                        products[pid]["product_catalog"] = cat
-                        products[pid]["updated_at"] = time.time()
-                except Exception as cat_exc:
-                    logger.warning("Product catalog publish failed for %s: %s", pid, cat_exc)
-                try:
-                    from web.backend.services.railway_deploy import (
-                        try_railway_deploy_after_devops,
-                    )
-
-                    rw = await asyncio.to_thread(try_railway_deploy_after_devops, pid)
-                    if isinstance(rw, dict) and rw.get("recorded"):
-                        logger.info(
-                            "Railway deploy hook after DevOps for %s: %s",
-                            pid,
-                            rw.get("path", ""),
-                        )
-                except Exception as rw_exc:
-                    logger.warning("Railway deploy hook after DevOps failed for %s: %s", pid, rw_exc)
-
-            if (
-                not live_gate_failed
-                and pid in products
-                and str(task.get("state") or "").upper() == "COMPLETED"
-            ):
-                try:
-                    from web.backend.services.live_deployment_gate import (
-                        live_gate_from_saved_vercel_record,
-                    )
-
-                    saved_lg = live_gate_from_saved_vercel_record(pid)
-                    if saved_lg:
-                        live_gate_failed = True
-                        live_gate_payload = saved_lg
-                        products[pid]["live_gate"] = saved_lg
-                        logger.warning(
-                            "Refusing COMPLETED for %s: saved Vercel --prod failed (%s)",
-                            pid,
-                            "; ".join(str(i)[:140] for i in (saved_lg.get("issues") or [])[:3]),
-                        )
-                except Exception as saved_exc:
-                    logger.warning("Saved Vercel publish check failed for %s: %s", pid, saved_exc)
-
-            source_auth_mismatch = False
-            if pid in products:
-                try:
-                    from core.paths import code_dir as resolve_code_dir
-                    from web.backend.services.vercel_fullstack_adapter import (
-                        relay_source_session_mismatch,
-                        relay_source_uuid_pk_mismatch,
-                        relay_source_pinned_mismatch,
-                    )
-
-                    _code = resolve_code_dir(pid, data_root=host.data_root)
-                    source_auth_mismatch = (
-                        relay_source_session_mismatch(_code)
-                        or relay_source_uuid_pk_mismatch(_code)
-                        or relay_source_pinned_mismatch(_code)
-                    )
-                except Exception as src_exc:
-                    logger.debug(
-                        "source auth mismatch probe failed for %s: %s", pid, src_exc
-                    )
-
-            if (live_gate_failed or source_auth_mismatch) and pid in products:
-                # Known live-auth class (401 salt, string UUID → UUID column 500):
-                # the factory patches data/code and republishes. Cursor must not SSH.
-                try:
-                    from web.backend.services.live_deployment_gate import (
-                        live_gate_is_payment_ops,
-                        try_factory_live_auth_heal,
-                    )
-
-                    if not live_gate_is_payment_ops(live_gate_payload):
-                        heal = await asyncio.to_thread(
-                            try_factory_live_auth_heal,
-                            pid,
-                            products[pid],
-                            live_gate_payload,
-                            data_root=host.data_root,
-                        )
-                        if heal.get("healed"):
-                            live_gate_failed = False
-                            lg_ok = heal.get("live_gate")
-                            if isinstance(lg_ok, dict):
-                                live_gate_payload = lg_ok
-                                products[pid]["live_gate"] = lg_ok
-                            pub2 = heal.get("publish")
-                            if isinstance(pub2, dict) and pub2.get("vercel_url"):
-                                products[pid]["vercel_url"] = str(pub2["vercel_url"])
-                            logger.warning(
-                                "Live auth autofix healed %s — continuing as a passed live gate",
-                                pid,
-                            )
-                        elif heal.get("applied"):
-                            lg_still = heal.get("live_gate")
-                            if isinstance(lg_still, dict):
-                                live_gate_payload = lg_still
-                                products[pid]["live_gate"] = lg_still
-                except Exception as heal_exc:
-                    logger.warning("Live auth autofix failed for %s: %s", pid, heal_exc)
-
-            # Track previous state for daily revision handling
-            prev_state = products[pid].get("state", "") if pid in products else ""
-
-            # Recorded here because the budget decision is made later, on the QA output, which cannot
-            # see whether the developer wrote anything. The first version asked the QA output that
-            # question and it answered "yes" every time — a QA result always carries findings — so the
-            # guard never fired and the counter kept climbing through the outage exactly as before.
-            if agent_type == "developer" and pid in products:
-                products[pid]["last_round_generated"] = _round_produced_output(products[pid], output)
-
-            qg = output.data.get("quality_gates") if isinstance(output.data, dict) else None
-            qa_gate_failed = (
-                agent_type == "qa"
-                and isinstance(qg, dict)
-                and qg.get("passed") is False
+def _refuse_completion_on_saved_publish(run: _AgentTaskRun) -> None:
+    task, products, pid = run.task, run.products, run.pid
+    if (
+        not run.live_gate_failed
+        and pid in products
+        and str(task.get("state") or "").upper() == "COMPLETED"
+    ):
+        try:
+            from web.backend.services.live_deployment_gate import (
+                live_gate_from_saved_vercel_record,
             )
 
-            sec_reasons: list[str] = []
-            security_gate_failed = False
-            if agent_type == "security" and output.success and isinstance(output.data, dict):
-                ok_sec, sec_reasons = security_scan_passes_pipeline_gate(output.data)
-                security_gate_failed = not ok_sec
-                if ok_sec and pid in products:
-                    products[pid]["security_repair_round"] = 0
+            saved_lg = live_gate_from_saved_vercel_record(pid)
+            if saved_lg:
+                run.live_gate_failed = True
+                run.live_gate_payload = saved_lg
+                products[pid]["live_gate"] = saved_lg
+                logger.warning(
+                    "Refusing COMPLETED for %s: saved Vercel --prod failed (%s)",
+                    pid,
+                    "; ".join(str(i)[:140] for i in (saved_lg.get("issues") or [])[:3]),
+                )
+        except Exception as saved_exc:
+            logger.warning("Saved Vercel publish check failed for %s: %s", pid, saved_exc)
 
-            quality_gates_exhausted = False
-            security_budget_exhausted = False
-            auto_recovered = False
-            max_quality_loops = (
-                max_pipeline_repair_rounds_for_product(products[pid])
-                if pid in products
-                else max_pipeline_repair_rounds_for_delivery_profile(None)
+
+async def _heal_live_auth(run: _AgentTaskRun) -> None:
+    """The known live-auth class (session salt, UUID keys, pinned relay): patched here and
+    republished, which can turn a failed live gate into a passed one."""
+    host, products, pid = run.host, run.products, run.pid
+    source_auth_mismatch = False
+    if pid in products:
+        try:
+            from core.paths import code_dir as resolve_code_dir
+            from web.backend.services.vercel_fullstack_adapter import (
+                relay_source_session_mismatch,
+                relay_source_uuid_pk_mismatch,
+                relay_source_pinned_mismatch,
             )
-            sec_raw = os.environ.get("AIFACTORY_MAX_SECURITY_LOOPS")
-            if sec_raw is not None and str(sec_raw).strip() != "":
-                try:
-                    max_security_loops = max(1, int(sec_raw))
-                except ValueError:
-                    max_security_loops = max_quality_loops
-            else:
-                max_security_loops = max_quality_loops
 
-            # Successful QA (all gates pass): reset repair counter
-            if (
-                agent_type == "qa"
-                and isinstance(qg, dict)
-                and qg.get("passed") is True
-                and pid in products
-            ):
-                products[pid]["quality_repair_round"] = 0
-                # Gates passed — the surrogate's repair guidance is now stale; drop it.
-                products[pid].pop("surrogate_repair_hint", None)
+            _code = resolve_code_dir(pid, data_root=host.data_root)
+            source_auth_mismatch = (
+                relay_source_session_mismatch(_code)
+                or relay_source_uuid_pk_mismatch(_code)
+                or relay_source_pinned_mismatch(_code)
+            )
+        except Exception as src_exc:
+            logger.debug(
+                "source auth mismatch probe failed for %s: %s", pid, src_exc
+            )
 
-            # Advance the product state
-            target_state = task.get("state", "")
-            new_repair_round = 0
-            if qa_gate_failed and pid in products:
-                # A round the model never got to attempt must not spend the repair budget. Measured on
-                # a live run: the provider began answering 402 Payment Required at 01:05, the developer
-                # returned "0 files" every time, and the counter still climbed from 33 to 58 — twenty
-                # five rounds of budget consumed by an outage that has nothing to do with the product's
-                # quality. The budget exists to stop a product looping forever on defects it cannot
-                # fix, not to punish it for an empty wallet.
-                _generation_happened = bool(products[pid].get("last_round_generated", True))
-                if not _generation_happened:
-                    new_repair_round = int(products[pid].get("quality_repair_round", 0) or 0)
-                    logger.warning(
-                        "Repair budget not charged for %s: the round produced no generated output "
-                        "(provider unavailable or empty response), so round %s stands.",
-                        pid, new_repair_round,
-                    )
-                else:
-                    new_repair_round = products[pid].get("quality_repair_round", 0) + 1
-                    products[pid]["quality_repair_round"] = new_repair_round
-                qa_result = output.data.get("qa_result") if isinstance(output.data, dict) else {}
-                if isinstance(qa_result, dict):
-                    products[pid]["last_bug_context"] = {
-                        "source": "qa",
-                        "qa_findings": qa_result.get("bugs_found") or [],
-                        "test_output": qa_result.get("test_results") or {},
-                        "quality_gates_feedback": dict(qg or {}),
-                    }
+    if (run.live_gate_failed or source_auth_mismatch) and pid in products:
+        # Known live-auth class (401 salt, string UUID → UUID column 500):
+        # the factory patches data/code and republishes. Cursor must not SSH.
+        try:
+            from web.backend.services.live_deployment_gate import (
+                live_gate_is_payment_ops,
+                try_factory_live_auth_heal,
+            )
 
-                # Did that round actually help? QA has just performed the only measurement
-                # that counts — it installed, built the frontend, booted the app and swept it
-                # — so this is where a regressive round gets thrown away. Across eight
-                # measured rounds on one product the loop fixed ~14 findings and introduced
-                # ~15 each time: 101 of 114 distinct defects existed in exactly ONE round,
-                # and only a single defect persisted (an unsatisfiable gate). The plateau at
-                # 12-16 was churn, not a stubborn core, and the developer's own guard could
-                # not see it because its score is static while QA's is not.
-                _guard_round_regression(products[pid], pid, qa_result, host)
-                products[pid]["updated_at"] = time.time()
-                from orchestrator.qa_repair_policy import (
-                    notify_qa_human_review_pending,
-                    resolve_qa_repair_after_failure,
-                )
-
-                if products[pid].get("pipeline_stuck_reason"):
-                    # Identical rejected tree, or accepted churn that never lowered the score.
-                    # Either way another developer round cannot converge — do not enqueue one,
-                    # and do not let auto-recovery stamp COMPLETED over a tree QA just failed.
-                    quality_gates_exhausted = True
-                    effective_round = new_repair_round
-                    products[pid]["quality_repair_round"] = new_repair_round
-                    products[pid]["state"] = "HUMAN_REVIEW_PENDING"
-                    if not products[pid].get("human_review_kind"):
-                        products[pid]["human_review_kind"] = "qa_repair_stuck"
-                    if not products[pid].get("human_review_reason"):
-                        products[pid]["human_review_reason"] = products[pid]["pipeline_stuck_reason"]
-                    notify_qa_human_review_pending(pid, products[pid])
-                    logger.error(
-                        "Product %s: repair loop stuck → HUMAN_REVIEW_PENDING (round %s/%s): %s",
-                        pid,
-                        new_repair_round,
-                        max_quality_loops,
-                        products[pid]["pipeline_stuck_reason"],
-                    )
-                else:
-                    quality_gates_exhausted, effective_round, product_state = resolve_qa_repair_after_failure(
-                        products[pid],
-                        new_repair_round=new_repair_round,
-                        max_quality_loops=max_quality_loops,
-                    )
-                    new_repair_round = effective_round
-                    products[pid]["quality_repair_round"] = effective_round
-                    products[pid]["state"] = product_state
-                    from orchestrator.auto_recovery import try_auto_recovery_after_qa_failure
-
-                    if try_auto_recovery_after_qa_failure(
-                        products[pid],
-                        task_queue,
-                        repair_round=new_repair_round,
-                        data_root=host.data_root,
-                    ):
-                        auto_recovered = True
-                        quality_gates_exhausted = False
-                        qa_gate_failed = False
-                        products[pid]["state"] = "COMPLETED"
-                        target_state = "COMPLETED"
-                    elif quality_gates_exhausted:
-                        from core.autonomy_mode import is_full_autonomy
-                        from orchestrator.autonomy_bridge import resolve_human_gate_async
-
-                        if is_full_autonomy():
-                            resolved = await resolve_human_gate_async(
-                                products[pid],
-                                point="qa_repair_exhausted",
-                                data_root=host.data_root,
-                                context={"quality_gates": qg},
-                                llm_router=getattr(host, "_llm_router", None),
-                            )
-                            if resolved:
-                                products[pid]["state"] = resolved
-                                logger.warning(
-                                    "Product %s: QA exhaust resolved by surrogate → %s",
-                                    pid,
-                                    resolved,
-                                )
-                                quality_gates_exhausted = False
-                        if quality_gates_exhausted:
-                            notify_qa_human_review_pending(pid, products[pid])
-                        logger.warning(
-                            "Product %s: QA repair budgets exhausted → HUMAN_REVIEW_PENDING (round %s/%s)",
-                            pid,
-                            effective_round,
-                            max_quality_loops,
-                        )
-                    else:
-                        products[pid]["state"] = "BUG_FOUND"
-            elif security_gate_failed and pid in products:
-                new_sec_round = products[pid].get("security_repair_round", 0) + 1
-                products[pid]["security_repair_round"] = new_sec_round
-                scan_payload = output.data if isinstance(output.data, dict) else {}
-                products[pid]["last_bug_context"] = {
-                    "source": "security",
-                    "reasons": sec_reasons,
-                    "security_score": scan_payload.get("security_score"),
-                }
-                products[pid]["updated_at"] = time.time()
-                from orchestrator.qa_repair_policy import (
-                    notify_qa_human_review_pending,
-                    resolve_security_repair_after_failure,
-                )
-
-                security_budget_exhausted, product_state = resolve_security_repair_after_failure(
+            if not live_gate_is_payment_ops(run.live_gate_payload):
+                heal = await asyncio.to_thread(
+                    try_factory_live_auth_heal,
+                    pid,
                     products[pid],
-                    new_sec_round=new_sec_round,
-                    max_security_loops=max_security_loops,
+                    run.live_gate_payload,
+                    data_root=host.data_root,
                 )
-                products[pid]["state"] = product_state
-                if security_budget_exhausted:
-                    from core.autonomy_mode import is_full_autonomy
-                    from orchestrator.autonomy_bridge import resolve_human_gate_async
-
-                    if is_full_autonomy():
-                        resolved = await resolve_human_gate_async(
-                            products[pid],
-                            point="security_repair_exhausted",
-                            data_root=host.data_root,
-                            context={"security_reasons": sec_reasons},
-                            llm_router=getattr(host, "_llm_router", None),
-                        )
-                        if resolved:
-                            products[pid]["state"] = resolved
-                            logger.warning(
-                                "Product %s: security exhaust resolved by surrogate → %s",
-                                pid,
-                                resolved,
-                            )
-                            security_budget_exhausted = False
-                    if security_budget_exhausted:
-                        notify_qa_human_review_pending(pid, products[pid])
+                if heal.get("healed"):
+                    run.live_gate_failed = False
+                    lg_ok = heal.get("live_gate")
+                    if isinstance(lg_ok, dict):
+                        run.live_gate_payload = lg_ok
+                        products[pid]["live_gate"] = lg_ok
+                    pub2 = heal.get("publish")
+                    if isinstance(pub2, dict) and pub2.get("vercel_url"):
+                        products[pid]["vercel_url"] = str(pub2["vercel_url"])
                     logger.warning(
-                        "Product %s: security repair budgets exhausted → HUMAN_REVIEW_PENDING",
+                        "Live auth autofix healed %s — continuing as a passed live gate",
                         pid,
+                    )
+                elif heal.get("applied"):
+                    lg_still = heal.get("live_gate")
+                    if isinstance(lg_still, dict):
+                        run.live_gate_payload = lg_still
+                        products[pid]["live_gate"] = lg_still
+        except Exception as heal_exc:
+            logger.warning("Live auth autofix failed for %s: %s", pid, heal_exc)
+
+
+def _read_gate_outcomes(run: _AgentTaskRun) -> None:
+    """What the agent's output says about the gates, and the repair budgets that apply."""
+    host, agent_type, products, pid, output = run.host, run.agent_type, run.products, run.pid, run.output
+    # Track previous state for daily revision handling
+    prev_state = products[pid].get("state", "") if pid in products else ""
+
+    # Recorded here because the budget decision is made later, on the QA output, which cannot
+    # see whether the developer wrote anything. The first version asked the QA output that
+    # question and it answered "yes" every time — a QA result always carries findings — so the
+    # guard never fired and the counter kept climbing through the outage exactly as before.
+    if agent_type == "developer" and pid in products:
+        products[pid]["last_round_generated"] = _round_produced_output(products[pid], output)
+
+    qg = output.data.get("quality_gates") if isinstance(output.data, dict) else None
+    qa_gate_failed = (
+        agent_type == "qa"
+        and isinstance(qg, dict)
+        and qg.get("passed") is False
+    )
+
+    sec_reasons: list[str] = []
+    security_gate_failed = False
+    if agent_type == "security" and output.success and isinstance(output.data, dict):
+        ok_sec, sec_reasons = security_scan_passes_pipeline_gate(output.data)
+        security_gate_failed = not ok_sec
+        if ok_sec and pid in products:
+            products[pid]["security_repair_round"] = 0
+
+    max_quality_loops = (
+        max_pipeline_repair_rounds_for_product(products[pid])
+        if pid in products
+        else max_pipeline_repair_rounds_for_delivery_profile(None)
+    )
+    sec_raw = os.environ.get("AIFACTORY_MAX_SECURITY_LOOPS")
+    if sec_raw is not None and str(sec_raw).strip() != "":
+        try:
+            max_security_loops = max(1, int(sec_raw))
+        except ValueError:
+            max_security_loops = max_quality_loops
+    else:
+        max_security_loops = max_quality_loops
+
+    # Successful QA (all gates pass): reset repair counter
+    if (
+        agent_type == "qa"
+        and isinstance(qg, dict)
+        and qg.get("passed") is True
+        and pid in products
+    ):
+        products[pid]["quality_repair_round"] = 0
+        # Gates passed — the surrogate's repair guidance is now stale; drop it.
+        products[pid].pop("surrogate_repair_hint", None)
+        from orchestrator.procurement import record_diagnosis_outcome
+
+        record_diagnosis_outcome(host.data_root, pid, output.data.get("qa_result") or {}, gates_passed=True)
+    run.prev_state, run.qg, run.qa_gate_failed = prev_state, qg, qa_gate_failed
+    run.sec_reasons, run.security_gate_failed = sec_reasons, security_gate_failed
+    run.max_quality_loops, run.max_security_loops = max_quality_loops, max_security_loops
+
+
+async def _advance_product_state(run: _AgentTaskRun) -> None:
+    """Move the product on: a failed QA gate spends the repair budget (or parks the product), a
+    failed security or live gate does the same on its own budget, anything else takes the task's
+    target state."""
+    host, task, products, task_queue, pid, output = (
+        run.host, run.task, run.products, run.task_queue, run.pid, run.output)
+    qg, qa_gate_failed, security_gate_failed, live_gate_failed = (
+        run.qg, run.qa_gate_failed, run.security_gate_failed, run.live_gate_failed)
+    quality_gates_exhausted, auto_recovered, max_quality_loops = (
+        run.quality_gates_exhausted, run.auto_recovered, run.max_quality_loops)
+    # Advance the product state
+    target_state = task.get("state", "")
+    new_repair_round = 0
+    if qa_gate_failed and pid in products:
+        # A round the model never got to attempt must not spend the repair budget. Measured on
+        # a live run: the provider began answering 402 Payment Required at 01:05, the developer
+        # returned "0 files" every time, and the counter still climbed from 33 to 58 — twenty
+        # five rounds of budget consumed by an outage that has nothing to do with the product's
+        # quality. The budget exists to stop a product looping forever on defects it cannot
+        # fix, not to punish it for an empty wallet.
+        _generation_happened = bool(products[pid].get("last_round_generated", True))
+        if not _generation_happened:
+            new_repair_round = int(products[pid].get("quality_repair_round", 0) or 0)
+            logger.warning(
+                "Repair budget not charged for %s: the round produced no generated output "
+                "(provider unavailable or empty response), so round %s stands.",
+                pid, new_repair_round,
+            )
+        else:
+            new_repair_round = products[pid].get("quality_repair_round", 0) + 1
+            products[pid]["quality_repair_round"] = new_repair_round
+        qa_result = output.data.get("qa_result") if isinstance(output.data, dict) else {}
+        if isinstance(qa_result, dict):
+            products[pid]["last_bug_context"] = {
+                "source": "qa",
+                "qa_findings": qa_result.get("bugs_found") or [],
+                "test_output": qa_result.get("test_results") or {},
+                "quality_gates_feedback": dict(qg or {}),
+            }
+
+        # Did that round actually help? QA has just performed the only measurement
+        # that counts — it installed, built the frontend, booted the app and swept it
+        # — so this is where a regressive round gets thrown away. Across eight
+        # measured rounds on one product the loop fixed ~14 findings and introduced
+        # ~15 each time: 101 of 114 distinct defects existed in exactly ONE round,
+        # and only a single defect persisted (an unsatisfiable gate). The plateau at
+        # 12-16 was churn, not a stubborn core, and the developer's own guard could
+        # not see it because its score is static while QA's is not.
+        _guard_round_regression(products[pid], pid, qa_result, host)
+        from orchestrator.procurement import record_diagnosis_outcome
+
+        record_diagnosis_outcome(host.data_root, pid, qa_result, gates_passed=False)
+        products[pid]["updated_at"] = time.time()
+        from orchestrator.qa_repair_policy import (
+            notify_qa_human_review_pending,
+            resolve_qa_repair_after_failure,
+        )
+
+        if products[pid].get("pipeline_stuck_reason"):
+            # Identical rejected tree, or accepted churn that never lowered the score.
+            # Either way another developer round cannot converge — do not enqueue one,
+            # and do not let auto-recovery stamp COMPLETED over a tree QA just failed.
+            quality_gates_exhausted = True
+            effective_round = new_repair_round
+            products[pid]["quality_repair_round"] = new_repair_round
+            products[pid]["state"] = "HUMAN_REVIEW_PENDING"
+            if not products[pid].get("human_review_kind"):
+                products[pid]["human_review_kind"] = "qa_repair_stuck"
+            if not products[pid].get("human_review_reason"):
+                products[pid]["human_review_reason"] = products[pid]["pipeline_stuck_reason"]
+            notify_qa_human_review_pending(pid, products[pid])
+            logger.error(
+                "Product %s: repair loop stuck → HUMAN_REVIEW_PENDING (round %s/%s): %s",
+                pid,
+                new_repair_round,
+                max_quality_loops,
+                products[pid]["pipeline_stuck_reason"],
+            )
+        else:
+            quality_gates_exhausted, effective_round, product_state = resolve_qa_repair_after_failure(
+                products[pid],
+                new_repair_round=new_repair_round,
+                max_quality_loops=max_quality_loops,
+            )
+            new_repair_round = effective_round
+            products[pid]["quality_repair_round"] = effective_round
+            products[pid]["state"] = product_state
+            from orchestrator.auto_recovery import try_auto_recovery_after_qa_failure
+
+            if try_auto_recovery_after_qa_failure(
+                products[pid],
+                task_queue,
+                repair_round=new_repair_round,
+                data_root=host.data_root,
+            ):
+                auto_recovered = True
+                quality_gates_exhausted = False
+                qa_gate_failed = False
+                products[pid]["state"] = "COMPLETED"
+                target_state = "COMPLETED"
+            elif quality_gates_exhausted:
+                from core.autonomy_mode import is_full_autonomy
+                from orchestrator.autonomy_bridge import resolve_human_gate_async
+
+                if is_full_autonomy():
+                    resolved = await resolve_human_gate_async(
+                        products[pid],
+                        point="qa_repair_exhausted",
+                        data_root=host.data_root,
+                        context={"quality_gates": qg},
+                        llm_router=getattr(host, "_llm_router", None),
+                    )
+                    if resolved:
+                        products[pid]["state"] = resolved
+                        logger.warning(
+                            "Product %s: QA exhaust resolved by surrogate → %s",
+                            pid,
+                            resolved,
+                        )
+                        quality_gates_exhausted = False
+                if quality_gates_exhausted:
+                    notify_qa_human_review_pending(pid, products[pid])
+                logger.warning(
+                    "Product %s: QA repair budgets exhausted → HUMAN_REVIEW_PENDING (round %s/%s)",
+                    pid,
+                    effective_round,
+                    max_quality_loops,
+                )
+            else:
+                products[pid]["state"] = "BUG_FOUND"
+    elif security_gate_failed and pid in products:
+        await _after_security_gate_failure(run)
+    elif live_gate_failed and pid in products:
+        new_repair_round, quality_gates_exhausted = _after_live_gate_failure(
+            run, new_repair_round, quality_gates_exhausted
+        )
+    elif target_state and pid in products:
+        await _advance_to_target_state(run, target_state)
+    run.target_state, run.new_repair_round = target_state, new_repair_round
+    run.qa_gate_failed, run.quality_gates_exhausted, run.auto_recovered = (
+        qa_gate_failed, quality_gates_exhausted, auto_recovered)
+
+
+async def _after_security_gate_failure(run: _AgentTaskRun) -> None:
+    host, products, pid, output = run.host, run.products, run.pid, run.output
+    sec_reasons, max_security_loops = run.sec_reasons, run.max_security_loops
+    new_sec_round = products[pid].get("security_repair_round", 0) + 1
+    products[pid]["security_repair_round"] = new_sec_round
+    scan_payload = output.data if isinstance(output.data, dict) else {}
+    products[pid]["last_bug_context"] = {
+        "source": "security",
+        "reasons": sec_reasons,
+        "security_score": scan_payload.get("security_score"),
+    }
+    products[pid]["updated_at"] = time.time()
+    from orchestrator.qa_repair_policy import (
+        notify_qa_human_review_pending,
+        resolve_security_repair_after_failure,
+    )
+
+    security_budget_exhausted, product_state = resolve_security_repair_after_failure(
+        products[pid],
+        new_sec_round=new_sec_round,
+        max_security_loops=max_security_loops,
+    )
+    products[pid]["state"] = product_state
+    if security_budget_exhausted:
+        from core.autonomy_mode import is_full_autonomy
+        from orchestrator.autonomy_bridge import resolve_human_gate_async
+
+        if is_full_autonomy():
+            resolved = await resolve_human_gate_async(
+                products[pid],
+                point="security_repair_exhausted",
+                data_root=host.data_root,
+                context={"security_reasons": sec_reasons},
+                llm_router=getattr(host, "_llm_router", None),
+            )
+            if resolved:
+                products[pid]["state"] = resolved
+                logger.warning(
+                    "Product %s: security exhaust resolved by surrogate → %s",
+                    pid,
+                    resolved,
+                )
+                security_budget_exhausted = False
+        if security_budget_exhausted:
+            notify_qa_human_review_pending(pid, products[pid])
+        logger.warning(
+            "Product %s: security repair budgets exhausted → HUMAN_REVIEW_PENDING",
+            pid,
+        )
+    else:
+        products[pid]["state"] = "BUG_FOUND"
+    run.security_budget_exhausted = security_budget_exhausted
+
+
+def _after_live_gate_failure(run: _AgentTaskRun, new_repair_round: int,
+                             quality_gates_exhausted: bool) -> tuple[int, bool]:
+    """The sandbox was green and the deployed site is not: park payment-ops, else spend the
+    repair budget. Returns the repair round and whether the budget is exhausted."""
+    products, pid, live_gate_payload = run.products, run.pid, run.live_gate_payload
+    max_quality_loops = run.max_quality_loops
+    # The sandbox was green. Vercel was not. Do not walk to SALES/COMPLETED.
+    from web.backend.services.live_deployment_gate import (
+        live_gate_is_payment_ops,
+        park_product_live_mesh_payment_ops,
+    )
+
+    if live_gate_is_payment_ops(live_gate_payload):
+        park_product_live_mesh_payment_ops(products[pid], live_gate_payload)
+        run.live_mesh_payment_parked = True
+        quality_gates_exhausted = True
+        logger.warning(
+            "Live Vercel gate is payment-ops for %s — HUMAN_REVIEW_PENDING "
+            "(no developer, repair budget not charged)",
+            pid,
+        )
+    else:
+        new_repair_round = int(products[pid].get("quality_repair_round") or 0) + 1
+        products[pid]["quality_repair_round"] = new_repair_round
+        products[pid]["last_bug_context"] = {
+            "source": "live_deployment_gate",
+            "quality_gates_feedback": {
+                "passed": False,
+                "blocking_defects": list(live_gate_payload.get("issues") or []),
+                "repair_scope": list(live_gate_payload.get("repair_scope") or []),
+                "live_gate": live_gate_payload,
+                "reasons": list(live_gate_payload.get("issues") or []),
+            },
+        }
+        products[pid]["updated_at"] = time.time()
+        if new_repair_round > max_quality_loops:
+            quality_gates_exhausted = True
+            products[pid]["state"] = "HUMAN_REVIEW_PENDING"
+            logger.warning(
+                "Live Vercel gate failed for %s — repair budgets exhausted "
+                "(round %s/%s) → HUMAN_REVIEW_PENDING",
+                pid,
+                new_repair_round,
+                max_quality_loops,
+            )
+        else:
+            products[pid]["state"] = "BUG_FOUND"
+            logger.warning(
+                "Live Vercel gate failed for %s (repair %s/%s); "
+                "BUG_FOUND → developer DEV_FIXING",
+                pid,
+                new_repair_round,
+                max_quality_loops,
+            )
+    return new_repair_round, quality_gates_exhausted
+
+
+async def _advance_to_target_state(run: _AgentTaskRun, target_state: str) -> None:
+    host, agent_type, products, pid, prev_state = run.host, run.agent_type, run.products, run.pid, run.prev_state
+    # If product was COMPLETED and this is a revision task,
+    # keep it in COMPLETED state after monitoring finishes
+    if prev_state == "COMPLETED" and target_state == "EVOLUTION_ANALYZING":
+        products[pid]["state"] = "COMPLETED"
+        products[pid]["last_market_revision"] = time.time()
+    else:
+        effective_state = target_state
+        if (
+            agent_type == "devops"
+            and str(target_state or "").upper() == "HUMAN_REVIEW_PENDING"
+        ):
+            from core.autonomy_mode import is_full_autonomy
+            from orchestrator.autonomy_bridge import resolve_human_gate_async
+            from web.backend.services.product_followup import (
+                post_devops_human_review_approved,
+            )
+
+            if is_full_autonomy():
+                resolved = await resolve_human_gate_async(
+                    products[pid],
+                    point="post_devops_gate",
+                    data_root=host.data_root,
+                    llm_router=getattr(host, "_llm_router", None),
+                )
+                if resolved:
+                    effective_state = resolved
+            elif post_devops_human_review_approved(pid):
+                effective_state = "SALES_ACTIVE"
+        products[pid]["state"] = effective_state
+    products[pid]["updated_at"] = time.time()
+    try:
+        from core.outcome_memory import record_terminal_outcome
+
+        st_terminal = str(products[pid].get("state") or "").upper()
+        if st_terminal in ("COMPLETED", "FAILED"):
+            record_terminal_outcome(host.data_root, products[pid])
+    except Exception as exc:
+        logger.warning("record_terminal_outcome failed for %s: %s", pid, exc)
+
+
+def _monitoring_refresh(run: _AgentTaskRun) -> None:
+    host, agent_type, task, products, task_queue = run.host, run.agent_type, run.task, run.products, run.task_queue
+    product, pid, task_id, output = run.product, run.pid, run.task_id, run.output
+    prev_state, target_state, max_quality_loops = run.prev_state, run.target_state, run.max_quality_loops
+    # Analyst periodic monitoring may request a shipped-slice refresh (shares QA repair budget)
+    if (
+        agent_type == "analyst"
+        and isinstance(output.data, dict)
+        and (task.get("input_data") or {}).get("mode") == "monitoring"
+        and prev_state == "COMPLETED"
+        and target_state == "EVOLUTION_ANALYZING"
+        and pid in products
+        and products[pid].get("state") == "COMPLETED"
+        and monitoring_dev_refresh_enabled()
+    ):
+        from web.backend.services.policy_audit import _dev_fixing_pending
+
+        want_r, qg_payload = monitoring_refresh_decision(output.data)
+        if want_r:
+            if _dev_fixing_pending(task_queue, pid):
+                logger.info(
+                    "Monitoring requested refresh for %s but developer DEV_FIXING already pending",
+                    pid,
+                )
+            else:
+                mr_round = int(products[pid].get("quality_repair_round") or 0) + 1
+                if mr_round > max_quality_loops:
+                    logger.warning(
+                        "Monitoring refresh skipped for %s — quality repair budget exhausted (%s/%s)",
+                        pid,
+                        mr_round,
+                        max_quality_loops,
                     )
                 else:
                     products[pid]["state"] = "BUG_FOUND"
-            elif live_gate_failed and pid in products:
-                # The sandbox was green. Vercel was not. Do not walk to SALES/COMPLETED.
-                from web.backend.services.live_deployment_gate import (
-                    live_gate_is_payment_ops,
-                    park_product_live_mesh_payment_ops,
-                )
-
-                if live_gate_is_payment_ops(live_gate_payload):
-                    park_product_live_mesh_payment_ops(products[pid], live_gate_payload)
-                    live_mesh_payment_parked = True
-                    quality_gates_exhausted = True
-                    logger.warning(
-                        "Live Vercel gate is payment-ops for %s — HUMAN_REVIEW_PENDING "
-                        "(no developer, repair budget not charged)",
-                        pid,
-                    )
-                else:
-                    new_repair_round = int(products[pid].get("quality_repair_round") or 0) + 1
-                    products[pid]["quality_repair_round"] = new_repair_round
-                    products[pid]["last_bug_context"] = {
-                        "source": "live_deployment_gate",
-                        "quality_gates_feedback": {
-                            "passed": False,
-                            "blocking_defects": list(live_gate_payload.get("issues") or []),
-                            "repair_scope": list(live_gate_payload.get("repair_scope") or []),
-                            "live_gate": live_gate_payload,
-                            "reasons": list(live_gate_payload.get("issues") or []),
-                        },
-                    }
+                    products[pid]["quality_repair_round"] = mr_round
                     products[pid]["updated_at"] = time.time()
-                    if new_repair_round > max_quality_loops:
-                        quality_gates_exhausted = True
-                        products[pid]["state"] = "HUMAN_REVIEW_PENDING"
-                        logger.warning(
-                            "Live Vercel gate failed for %s — repair budgets exhausted "
-                            "(round %s/%s) → HUMAN_REVIEW_PENDING",
-                            pid,
-                            new_repair_round,
-                            max_quality_loops,
-                        )
-                    else:
-                        products[pid]["state"] = "BUG_FOUND"
-                        logger.warning(
-                            "Live Vercel gate failed for %s (repair %s/%s); "
-                            "BUG_FOUND → developer DEV_FIXING",
-                            pid,
-                            new_repair_round,
-                            max_quality_loops,
-                        )
-            elif target_state and pid in products:
-                # If product was COMPLETED and this is a revision task,
-                # keep it in COMPLETED state after monitoring finishes
-                if prev_state == "COMPLETED" and target_state == "EVOLUTION_ANALYZING":
-                    products[pid]["state"] = "COMPLETED"
-                    products[pid]["last_market_revision"] = time.time()
-                else:
-                    effective_state = target_state
-                    if (
-                        agent_type == "devops"
-                        and str(target_state or "").upper() == "HUMAN_REVIEW_PENDING"
-                    ):
-                        from core.autonomy_mode import is_full_autonomy
-                        from orchestrator.autonomy_bridge import resolve_human_gate_async
-                        from web.backend.services.product_followup import (
-                            post_devops_human_review_approved,
-                        )
-
-                        if is_full_autonomy():
-                            resolved = await resolve_human_gate_async(
-                                products[pid],
-                                point="post_devops_gate",
-                                data_root=host.data_root,
-                                llm_router=getattr(host, "_llm_router", None),
-                            )
-                            if resolved:
-                                effective_state = resolved
-                        elif post_devops_human_review_approved(pid):
-                            effective_state = "SALES_ACTIVE"
-                    products[pid]["state"] = effective_state
-                products[pid]["updated_at"] = time.time()
-                try:
-                    from core.outcome_memory import record_terminal_outcome
-
-                    st_terminal = str(products[pid].get("state") or "").upper()
-                    if st_terminal in ("COMPLETED", "FAILED"):
-                        record_terminal_outcome(host.data_root, products[pid])
-                except Exception as exc:
-                    logger.warning("record_terminal_outcome failed for %s: %s", pid, exc)
-
-            # Analyst periodic monitoring may request a shipped-slice refresh (shares QA repair budget)
-            if (
-                agent_type == "analyst"
-                and isinstance(output.data, dict)
-                and (task.get("input_data") or {}).get("mode") == "monitoring"
-                and prev_state == "COMPLETED"
-                and target_state == "EVOLUTION_ANALYZING"
-                and pid in products
-                and products[pid].get("state") == "COMPLETED"
-                and monitoring_dev_refresh_enabled()
-            ):
-                from web.backend.services.policy_audit import _dev_fixing_pending
-
-                want_r, qg_payload = monitoring_refresh_decision(output.data)
-                if want_r:
-                    if _dev_fixing_pending(task_queue, pid):
-                        logger.info(
-                            "Monitoring requested refresh for %s but developer DEV_FIXING already pending",
-                            pid,
-                        )
-                    else:
-                        mr_round = int(products[pid].get("quality_repair_round") or 0) + 1
-                        if mr_round > max_quality_loops:
-                            logger.warning(
-                                "Monitoring refresh skipped for %s — quality repair budget exhausted (%s/%s)",
-                                pid,
-                                mr_round,
-                                max_quality_loops,
-                            )
-                        else:
-                            products[pid]["state"] = "BUG_FOUND"
-                            products[pid]["quality_repair_round"] = mr_round
-                            products[pid]["updated_at"] = time.time()
-                            dev_task = {
-                                "id": f"task-{uuid.uuid4().hex[:12]}",
-                                "product_id": pid,
-                                "agent_type": "developer",
-                                "state": "DEV_FIXING",
-                                "status": "pending",
-                                "retry_count": 0,
-                                "max_retries": 3,
-                                "input_data": {
-                                    "product_id": pid,
-                                    "idea": product.get("idea", ""),
-                                    "quality_gates_feedback": qg_payload,
-                                    "quality_repair_round": mr_round,
-                                    "quality_repair_max": max_quality_loops,
-                                    "qa_gate_blocked": True,
-                                    "monitoring_refresh_trigger": True,
-                                },
-                                "created_at": time.time(),
-                                "priority": host._get_priority("developer"),
-                            }
-                            task_queue.append(dev_task)
-                            host._audit_agent_handoff(
-                                product_id=pid,
-                                from_agent=agent_type,
-                                from_state=prev_state,
-                                next_task=dev_task,
-                                task_id=task_id,
-                                reason="monitoring_refresh",
-                                output_data=output.data if isinstance(output.data, dict) else None,
-                            )
-                            logger.warning(
-                                "Monitoring → developer refresh for %s (repair %s/%s)",
-                                pid,
-                                mr_round,
-                                max_quality_loops,
-                            )
-
-            eff_state = products[pid].get("state", "") if pid in products else target_state
-            logger.info(f"Agent '{agent_type}' completed task {task_id} -> {eff_state}")
-            record_task_lesson(pid, agent_type, eff_state, output.data if isinstance(output.data, dict) else {})
-
-            try:
-                from web.backend.services.pipeline_chat_notify import (
-                    notify_pipeline_task_done,
-                )
-
-                idea_snip = (product.get("idea") or "") if pid in products else ""
-                notify_pipeline_task_done(
-                    agent_type=agent_type,
-                    product_id=pid,
-                    target_state=eff_state or "",
-                    idea_snippet=idea_snip,
-                )
-            except Exception:
-                logger.debug("Corporate chat pipeline notify skipped", exc_info=False)
-
-            # Check if product reached COMPLETED
-            critic_blocked = False
-            if target_state == "COMPLETED" and pid in products:
-                ok_release, critic_issues = host._release_critic(pid, products[pid])
-                if not ok_release:
-                    critic_blocked = True
-                    # Bounded repair budget with escalation (mirrors QA/security).
-                    # Without a cap the product ping-pongs COMPLETED→release_critic→
-                    # DEV_FIXING→… forever, burning paid heavy LLM calls — especially
-                    # for issues code regen cannot fix (missing real feedback rows,
-                    # architect-owned design_system.json).
-                    new_critic_round = int(products[pid].get("critic_repair_round", 0) or 0) + 1
-                    products[pid]["critic_repair_round"] = new_critic_round
-                    products[pid]["updated_at"] = time.time()
-                    products[pid]["last_bug_context"] = {
-                        "source": "release_critic",
-                        "issues": critic_issues,
-                    }
-                    critic_exhausted = new_critic_round > max_quality_loops
-                    if critic_exhausted:
-                        from core.autonomy_mode import is_full_autonomy
-                        from orchestrator.autonomy_bridge import resolve_human_gate_async
-                        from orchestrator.qa_repair_policy import notify_qa_human_review_pending
-
-                        products[pid]["state"] = "HUMAN_REVIEW_PENDING"
-                        if is_full_autonomy():
-                            resolved = await resolve_human_gate_async(
-                                products[pid],
-                                point="release_critic_exhausted",
-                                data_root=host.data_root,
-                                context={"critic_issues": critic_issues},
-                                llm_router=getattr(host, "_llm_router", None),
-                            )
-                            if resolved:
-                                products[pid]["state"] = resolved
-                                critic_exhausted = False
-                                logger.warning(
-                                    "Product %s: release-critic exhaust resolved by surrogate → %s",
-                                    pid,
-                                    resolved,
-                                )
-                        if critic_exhausted:
-                            notify_qa_human_review_pending(pid, products[pid])
-                            logger.warning(
-                                "Product %s: release-critic repair budget exhausted → "
-                                "HUMAN_REVIEW_PENDING (round %s/%s); issues=%s",
-                                pid,
-                                new_critic_round,
-                                max_quality_loops,
-                                critic_issues,
-                            )
-                    else:
-                        products[pid]["state"] = "BUG_FOUND"
-                        dev_task = {
-                            "id": f"task-{uuid.uuid4().hex[:12]}",
+                    dev_task = {
+                        "id": f"task-{uuid.uuid4().hex[:12]}",
+                        "product_id": pid,
+                        "agent_type": "developer",
+                        "state": "DEV_FIXING",
+                        "status": "pending",
+                        "retry_count": 0,
+                        "max_retries": 3,
+                        "input_data": {
                             "product_id": pid,
-                            "agent_type": "developer",
-                            "state": "DEV_FIXING",
-                            "status": "pending",
-                            "retry_count": 0,
-                            "max_retries": 3,
-                            "input_data": {
-                                "product_id": pid,
-                                "idea": product.get("idea", ""),
-                                "critic_feedback": {
-                                    "gate": "release_critic",
-                                    "issues": critic_issues,
-                                },
-                                "critic_blocked": True,
-                                "critic_repair_round": new_critic_round,
-                                "critic_repair_max": max_quality_loops,
-                            },
-                            "created_at": time.time(),
-                            "priority": host._get_priority("developer"),
-                        }
-                        task_queue.append(dev_task)
-                        host._audit_agent_handoff(
-                            product_id=pid,
-                            from_agent=agent_type,
-                            from_state=prev_state,
-                            next_task=dev_task,
-                            task_id=task_id,
-                            reason="release_critic",
-                            blocked=True,
-                            output_data=output.data if isinstance(output.data, dict) else None,
-                        )
-                        logger.warning(
-                            "Release critic blocked completion for %s; queued DEV_FIXING "
-                            "(%s) round %s/%s",
-                            pid,
-                            dev_task["id"],
-                            new_critic_round,
-                            max_quality_loops,
-                        )
-            if target_state == "COMPLETED" and not critic_blocked and pid in products:
-                logger.info(f"Product {pid} pipeline completed!")
-                try:
-                    from web.backend.services.funnel_distribute import on_product_completed
-
-                    on_product_completed(pid, products[pid])
-                except Exception:
-                    logger.debug("funnel_distribute failed for %s", pid, exc_info=True)
-                try:
-                    from web.backend.services.funnel_leads import (
-                        notify_lead_product_completed,
-                        on_product_state_change,
-                    )
-
-                    on_product_state_change(pid, products[pid])
-                    await notify_lead_product_completed(pid, products[pid])
-                except Exception:
-                    logger.debug("funnel lead notify failed for %s", pid, exc_info=True)
-                try:
-                    spec_done = host._load_spec(pid)
-                    dp_done = delivery_profile_from_product_dict(products[pid]) if pid in products else None
-                    mq_done = evaluate_marketplace_quality(
-                        pid, specification=spec_done, delivery_profile=dp_done
-                    )
-                    if mq_done.get("eligible"):
-                        from web.backend.services.product_followup import (
-                            merge_mark_storefront_established_listing,
-                        )
-
-                        if merge_mark_storefront_established_listing(pid):
-                            products[pid]["updated_at"] = time.time()
-                except Exception:
-                    logger.debug(
-                        "merge_mark_storefront_established_listing at completion failed for %s",
-                        pid,
-                        exc_info=True,
-                    )
-            elif prev_state == "COMPLETED" and target_state == "EVOLUTION_ANALYZING":
-                # Periodic monitoring for COMPLETED product — don't create next sequential task
-                logger.info(f"Periodic market monitoring completed for product {pid}")
-            elif critic_blocked:
-                logger.info("Completion held for %s due to release critic findings", pid)
-            elif qa_gate_failed and not quality_gates_exhausted and not auto_recovered:
-                dev_task = {
-                    "id": f"task-{uuid.uuid4().hex[:12]}",
-                    "product_id": pid,
-                    "agent_type": "developer",
-                    "state": "DEV_FIXING",
-                    "status": "pending",
-                    "retry_count": 0,
-                    "max_retries": 3,
-                    "input_data": {
-                        "product_id": pid,
-                        "idea": product.get("idea", ""),
-                        "demo_quality_feedback": (qg or {}).get("demo_quality"),
-                        "qa_findings": ((output.data or {}).get("qa_result") or {}).get("bugs_found", []),
-                        "test_output": ((output.data or {}).get("qa_result") or {}).get("test_results", {}),
-                        "quality_gates_feedback": {
-                            "passed": (qg or {}).get("passed"),
-                            # The two keys agents/dev.py reads to build
-                            # `fix_these_first_they_break_the_build` and
-                            # `only_edit_these_paths`. This hand-picked subset omitted both, so
-                            # the prioritisation and scoping machinery existed on the consumer
-                            # side and was fed nothing: every round received a flat list in
-                            # which "the app does not boot" sat beside "missing empty state",
-                            # and rounds were measurably spent on the cosmetics.
-                            "blocking_defects": (qg or {}).get("blocking_defects"),
-                            "repair_scope": (qg or {}).get("repair_scope"),
-                            # The gates my static detectors report through. Without these the
-                            # round cannot see a dead endpoint, a duplicate table or a wrong
-                            # mesh envelope at all.
-                            "module_health": (qg or {}).get("module_health"),
-                            "frontend_build": (qg or {}).get("frontend_build"),
-                            "api_contract": (qg or {}).get("api_contract"),
-                            "demo_journey": (qg or {}).get("demo_journey"),
-                            "demo_quality": (qg or {}).get("demo_quality"),
-                            "browser_preview_e2e": (qg or {}).get("browser_preview_e2e"),
-                            "backend_runtime_e2e": (qg or {}).get("backend_runtime_e2e"),
-                            "methodology_review": (qg or {}).get("methodology_review"),
-                            "reasons": (qg or {}).get("reasons"),
-                            "issue_codes": [
-                                i.get("code")
-                                for i in ((qg or {}).get("demo_quality") or {}).get("issues", [])
-                                if isinstance(i, dict) and i.get("code")
-                            ],
+                            "idea": product.get("idea", ""),
+                            "quality_gates_feedback": qg_payload,
+                            "quality_repair_round": mr_round,
+                            "quality_repair_max": max_quality_loops,
+                            "qa_gate_blocked": True,
+                            "monitoring_refresh_trigger": True,
                         },
-                        "quality_repair_round": new_repair_round,
-                        "quality_repair_max": max_quality_loops,
-                        "qa_gate_blocked": True,
-                    },
-                    "created_at": time.time(),
-                    "priority": host._get_priority("developer"),
-                }
-                exists = any(
-                    t.get("product_id") == pid
-                    and is_developer_agent(t.get("agent_type"))
-                    and t.get("state") == "DEV_FIXING"
-                    and t.get("status") in ("pending", "running")
-                    for t in task_queue
-                )
-                if not exists:
+                        "created_at": time.time(),
+                        "priority": host._get_priority("developer"),
+                    }
                     task_queue.append(dev_task)
                     host._audit_agent_handoff(
                         product_id=pid,
@@ -1876,228 +1844,528 @@ async def run_agent_task(
                         from_state=prev_state,
                         next_task=dev_task,
                         task_id=task_id,
-                        reason="qa_gate",
-                        blocked=True,
+                        reason="monitoring_refresh",
                         output_data=output.data if isinstance(output.data, dict) else None,
                     )
                     logger.warning(
-                        f"QA gates failed for {pid} (repair {new_repair_round}/{max_quality_loops}); "
-                        "BUG_FOUND → developer DEV_FIXING (mandatory regen/fix until gates pass or limit)"
-                    )
-            elif qa_gate_failed and quality_gates_exhausted:
-                logger.warning(
-                    "QA gates failed for %s — repair budgets exhausted; awaiting human review (not FAILED)",
-                    pid,
-                )
-            elif security_gate_failed and not security_budget_exhausted:
-                scan_payload = output.data if isinstance(output.data, dict) else {}
-                sec_fb = build_security_gate_feedback(scan_payload, sec_reasons)
-                sec_round = products[pid].get("security_repair_round", 0)
-                dev_task = {
-                    "id": f"task-{uuid.uuid4().hex[:12]}",
-                    "product_id": pid,
-                    "agent_type": "developer",
-                    "state": "DEV_FIXING",
-                    "status": "pending",
-                    "retry_count": 0,
-                    "max_retries": 3,
-                    "input_data": {
-                        "product_id": pid,
-                        "idea": product.get("idea", ""),
-                        "security_gate_feedback": sec_fb,
-                        "security_repair_round": sec_round,
-                        "security_repair_max": max_security_loops,
-                        "security_gate_blocked": True,
-                        "qa_gate_blocked": True,
-                    },
-                    "created_at": time.time(),
-                    "priority": host._get_priority("developer"),
-                }
-                exists = any(
-                    t.get("product_id") == pid
-                    and is_developer_agent(t.get("agent_type"))
-                    and t.get("state") == "DEV_FIXING"
-                    and t.get("status") in ("pending", "running")
-                    for t in task_queue
-                )
-                if not exists:
-                    task_queue.append(dev_task)
-                    host._audit_agent_handoff(
-                        product_id=pid,
-                        from_agent=agent_type,
-                        from_state=prev_state,
-                        next_task=dev_task,
-                        task_id=task_id,
-                        reason="security_gate",
-                        blocked=True,
-                        output_data=output.data if isinstance(output.data, dict) else None,
-                    )
-                    logger.warning(
-                        "Security gate failed for %s (repair %s/%s); "
-                        "BUG_FOUND → developer DEV_FIXING",
+                        "Monitoring → developer refresh for %s (repair %s/%s)",
                         pid,
-                        sec_round,
-                        max_security_loops,
+                        mr_round,
+                        max_quality_loops,
                     )
-            elif security_gate_failed and security_budget_exhausted:
-                logger.warning(
-                    "Security gate failed for %s — repair budgets exhausted; awaiting human review",
-                    pid,
-                )
-            elif live_gate_failed and live_mesh_payment_parked:
-                logger.warning(
-                    "Live Vercel payment-ops for %s parked at HUMAN_REVIEW — skipping developer enqueue",
-                    pid,
-                )
-            elif live_gate_failed and not quality_gates_exhausted:
-                from web.backend.services.live_deployment_gate import live_gate_dev_fixing_task
 
-                dev_task = live_gate_dev_fixing_task(pid, products[pid] if pid in products else product, live_gate_payload)
-                dev_task["priority"] = host._get_priority("developer")
-                exists = any(
-                    t.get("product_id") == pid
-                    and is_developer_agent(t.get("agent_type"))
-                    and t.get("state") == "DEV_FIXING"
-                    and t.get("status") in ("pending", "running")
-                    for t in task_queue
-                )
-                if not exists:
-                    task_queue.append(dev_task)
-                    host._audit_agent_handoff(
-                        product_id=pid,
-                        from_agent=agent_type,
-                        from_state=prev_state,
-                        next_task=dev_task,
-                        task_id=task_id,
-                        reason="live_deployment_gate",
-                        blocked=True,
-                        output_data=output.data if isinstance(output.data, dict) else None,
-                    )
-                    logger.warning(
-                        "Live Vercel UI gate failed for %s; "
-                        "BUG_FOUND → developer DEV_FIXING (full UI of the deployed site)",
-                        pid,
-                    )
-            elif live_gate_failed and quality_gates_exhausted:
-                logger.warning(
-                    "Live Vercel gate failed for %s — repair budgets exhausted; awaiting human review",
-                    pid,
-                )
-            elif (
-                agent_type == "devops"
-                and pid in products
-                and str(products[pid].get("state") or "") == "HUMAN_REVIEW_PENDING"
-            ):
-                from web.backend.services.product_followup import post_devops_human_review_approved
 
-                if post_devops_human_review_approved(pid):
-                    next_task = host._create_next_task(products[pid])
-                    if next_task and next_task.get("agent_type") == "sales":
-                        exists = any(
-                            t.get("product_id") == pid
-                            and t.get("agent_type") == "sales"
-                            and t.get("status") in ("pending", "running")
-                            for t in task_queue
+def _record_and_notify(run: _AgentTaskRun) -> None:
+    agent_type, products, product, pid, task_id = run.agent_type, run.products, run.product, run.pid, run.task_id
+    output, target_state = run.output, run.target_state
+    eff_state = products[pid].get("state", "") if pid in products else target_state
+    logger.info(f"Agent '{agent_type}' completed task {task_id} -> {eff_state}")
+    record_task_lesson(pid, agent_type, eff_state, output.data if isinstance(output.data, dict) else {})
+
+    try:
+        from web.backend.services.pipeline_chat_notify import (
+            notify_pipeline_task_done,
+        )
+
+        idea_snip = (product.get("idea") or "") if pid in products else ""
+        notify_pipeline_task_done(
+            agent_type=agent_type,
+            product_id=pid,
+            target_state=eff_state or "",
+            idea_snippet=idea_snip,
+        )
+    except Exception:
+        logger.debug("Corporate chat pipeline notify skipped", exc_info=False)
+
+
+async def _release_critic(run: _AgentTaskRun) -> None:
+    """A product reaching COMPLETED faces the release critic, on a bounded repair budget."""
+    host, agent_type, products, task_queue, product = (
+        run.host, run.agent_type, run.products, run.task_queue, run.product)
+    pid, task_id, output = run.pid, run.task_id, run.output
+    target_state, prev_state, max_quality_loops = run.target_state, run.prev_state, run.max_quality_loops
+    # Check if product reached COMPLETED
+    critic_blocked = False
+    if target_state == "COMPLETED" and pid in products:
+        ok_release, critic_issues = host._release_critic(pid, products[pid])
+        if not ok_release:
+            critic_blocked = True
+            # Bounded repair budget with escalation (mirrors QA/security).
+            # Without a cap the product ping-pongs COMPLETED→release_critic→
+            # DEV_FIXING→… forever, burning paid heavy LLM calls — especially
+            # for issues code regen cannot fix (missing real feedback rows,
+            # architect-owned design_system.json).
+            new_critic_round = int(products[pid].get("critic_repair_round", 0) or 0) + 1
+            products[pid]["critic_repair_round"] = new_critic_round
+            products[pid]["updated_at"] = time.time()
+            products[pid]["last_bug_context"] = {
+                "source": "release_critic",
+                "issues": critic_issues,
+            }
+            critic_exhausted = new_critic_round > max_quality_loops
+            if critic_exhausted:
+                from core.autonomy_mode import is_full_autonomy
+                from orchestrator.autonomy_bridge import resolve_human_gate_async
+                from orchestrator.qa_repair_policy import notify_qa_human_review_pending
+
+                products[pid]["state"] = "HUMAN_REVIEW_PENDING"
+                if is_full_autonomy():
+                    resolved = await resolve_human_gate_async(
+                        products[pid],
+                        point="release_critic_exhausted",
+                        data_root=host.data_root,
+                        context={"critic_issues": critic_issues},
+                        llm_router=getattr(host, "_llm_router", None),
+                    )
+                    if resolved:
+                        products[pid]["state"] = resolved
+                        critic_exhausted = False
+                        logger.warning(
+                            "Product %s: release-critic exhaust resolved by surrogate → %s",
+                            pid,
+                            resolved,
                         )
-                        if not exists:
-                            task_queue.append(next_task)
-                            logger.info(
-                                "Product %s human gate already approved — queued sales (%s)",
-                                pid,
-                                next_task.get("id"),
-                            )
-                else:
-                    logger.info(
-                        "Product %s paused at post-DevOps human gate — awaiting admin approve before sales",
+                if critic_exhausted:
+                    notify_qa_human_review_pending(pid, products[pid])
+                    logger.warning(
+                        "Product %s: release-critic repair budget exhausted → "
+                        "HUMAN_REVIEW_PENDING (round %s/%s); issues=%s",
                         pid,
+                        new_critic_round,
+                        max_quality_loops,
+                        critic_issues,
                     )
             else:
-                # Create next sequential task
-                next_task = host._create_next_task(product)
-                if next_task:
-                    if next_task.get("agent_type") == "pm":
-                        next_task.setdefault("input_data", {})["clarification_pack"] = await build_clarification_pack_llm(
-                            product.get("idea", ""),
-                            host._llm_router,
-                        )
-                    exists = any(
-                        t.get("product_id") == pid
-                        and t.get("agent_type") == next_task["agent_type"]
-                        and t.get("state") == next_task["state"]
-                        and t.get("status") in ("pending", "running")
-                        for t in task_queue
-                    )
-                    if not exists:
-                        task_queue.append(next_task)
-                        host._audit_agent_handoff(
-                            product_id=pid,
-                            from_agent=agent_type,
-                            from_state=prev_state,
-                            next_task=next_task,
-                            task_id=task_id,
-                            reason="sequential",
-                            output_data=output.data if isinstance(output.data, dict) else None,
-                        )
-                        logger.info(f"Next task created for {pid}: {next_task['agent_type']} -> {next_task['state']}")
-        else:
-            task["status"] = "failed"
-            task["error"] = output.error or "Agent returned failure"
-            category, playbook = host.quality_manager.classify_failure(task["error"])
-            task["failure_category"] = category
-            task["auto_remediation_playbook"] = playbook
-            task["completed_at"] = time.time()
-            task.setdefault("retry_count", 0)
-            from core.pipeline_retry_limits import task_max_retries
-
-            task.setdefault("max_retries", task_max_retries())
-            logger.warning(
-                f"Agent '{agent_type}' failed task {task_id}: {output.error} "
-                f"(retry {task['retry_count']}/{task['max_retries']})"
-            )
-            host.quality_manager.auto_requeue_pm_spec_gate(task, products, task_queue)
-
-    except Exception as e:
-        error_msg = str(e)
-        logger.error(f"Error calling agent '{agent_type}' for task {task_id}: {error_msg}")
-
-        # === RETRY LOGIC for LLM JSON parse failures ===
-        is_json_error = any(kw in error_msg for kw in [
-            "invalid/non-JSON", "Invalid JSON", "JSON parse error",
-            "non-JSON response"
-        ])
-
-        if is_json_error:
-            json_retries = int(task.get("json_parse_retry_count") or 0)
-            from core.pipeline_retry_limits import json_parse_max_retries
-
-            max_json_retries = json_parse_max_retries()
-
-            if json_retries < max_json_retries:
-                logger.warning(
-                    "JSON parse retry %d/%d for %s task %s: %s",
-                    json_retries + 1,
-                    max_json_retries,
-                    agent_type,
-                    task_id,
-                    error_msg,
+                products[pid]["state"] = "BUG_FOUND"
+                dev_task = {
+                    "id": f"task-{uuid.uuid4().hex[:12]}",
+                    "product_id": pid,
+                    "agent_type": "developer",
+                    "state": "DEV_FIXING",
+                    "status": "pending",
+                    "retry_count": 0,
+                    "max_retries": 3,
+                    "input_data": {
+                        "product_id": pid,
+                        "idea": product.get("idea", ""),
+                        "critic_feedback": {
+                            "gate": "release_critic",
+                            "issues": critic_issues,
+                        },
+                        "critic_blocked": True,
+                        "critic_repair_round": new_critic_round,
+                        "critic_repair_max": max_quality_loops,
+                    },
+                    "created_at": time.time(),
+                    "priority": host._get_priority("developer"),
+                }
+                task_queue.append(dev_task)
+                host._audit_agent_handoff(
+                    product_id=pid,
+                    from_agent=agent_type,
+                    from_state=prev_state,
+                    next_task=dev_task,
+                    task_id=task_id,
+                    reason="release_critic",
+                    blocked=True,
+                    output_data=output.data if isinstance(output.data, dict) else None,
                 )
-                task["json_parse_retry_count"] = json_retries + 1
-                task["status"] = "pending"
-                task["error"] = None
-                task["started_at"] = None
-                task["completed_at"] = None
-                await asyncio.sleep(min(2 ** json_retries, 8))
-                return
+                logger.warning(
+                    "Release critic blocked completion for %s; queued DEV_FIXING "
+                    "(%s) round %s/%s",
+                    pid,
+                    dev_task["id"],
+                    new_critic_round,
+                    max_quality_loops,
+                )
+    run.critic_blocked = critic_blocked
 
-        # Permanent failure (exhausted retries or non-retryable error)
-        task["status"] = "failed"
-        task["error"] = error_msg
-        category, playbook = host.quality_manager.classify_failure(error_msg)
-        task["failure_category"] = category
-        task["auto_remediation_playbook"] = playbook
-        task["completed_at"] = time.time()
-        task.setdefault("retry_count", 0)
-        from core.pipeline_retry_limits import task_max_retries
 
-        task.setdefault("max_retries", task_max_retries())
-        host.quality_manager.auto_requeue_pm_spec_gate(task, products, task_queue)
+async def _queue_next_task(run: _AgentTaskRun) -> None:
+    """Completion work, a repair task for whichever gate failed, the sales hand-off after the
+    post-DevOps human gate, or the next sequential task."""
+    products, pid, target_state, prev_state = run.products, run.pid, run.target_state, run.prev_state
+    critic_blocked, qa_gate_failed, auto_recovered = run.critic_blocked, run.qa_gate_failed, run.auto_recovered
+    quality_gates_exhausted, security_gate_failed = run.quality_gates_exhausted, run.security_gate_failed
+    security_budget_exhausted, live_gate_failed = run.security_budget_exhausted, run.live_gate_failed
+    live_mesh_payment_parked, agent_type = run.live_mesh_payment_parked, run.agent_type
+    if target_state == "COMPLETED" and not critic_blocked and pid in products:
+        await _on_product_completed(run)
+    elif prev_state == "COMPLETED" and target_state == "EVOLUTION_ANALYZING":
+        # Periodic monitoring for COMPLETED product — don't create next sequential task
+        logger.info(f"Periodic market monitoring completed for product {pid}")
+    elif critic_blocked:
+        logger.info("Completion held for %s due to release critic findings", pid)
+    elif qa_gate_failed and not quality_gates_exhausted and not auto_recovered:
+        _queue_qa_repair(run)
+    elif qa_gate_failed and quality_gates_exhausted:
+        logger.warning(
+            "QA gates failed for %s — repair budgets exhausted; awaiting human review (not FAILED)",
+            pid,
+        )
+    elif security_gate_failed and not security_budget_exhausted:
+        _queue_security_repair(run)
+    elif security_gate_failed and security_budget_exhausted:
+        logger.warning(
+            "Security gate failed for %s — repair budgets exhausted; awaiting human review",
+            pid,
+        )
+    elif live_gate_failed and live_mesh_payment_parked:
+        logger.warning(
+            "Live Vercel payment-ops for %s parked at HUMAN_REVIEW — skipping developer enqueue",
+            pid,
+        )
+    elif live_gate_failed and not quality_gates_exhausted:
+        _queue_live_gate_repair(run)
+    elif live_gate_failed and quality_gates_exhausted:
+        logger.warning(
+            "Live Vercel gate failed for %s — repair budgets exhausted; awaiting human review",
+            pid,
+        )
+    elif (
+        agent_type == "devops"
+        and pid in products
+        and str(products[pid].get("state") or "") == "HUMAN_REVIEW_PENDING"
+    ):
+        _queue_sales_if_approved(run)
+    else:
+        # Create next sequential task
+        await _queue_sequential_task(run)
+
+
+async def _on_product_completed(run: _AgentTaskRun) -> None:
+    host, products, pid = run.host, run.products, run.pid
+    logger.info(f"Product {pid} pipeline completed!")
+    try:
+        from web.backend.services.funnel_distribute import on_product_completed
+
+        on_product_completed(pid, products[pid])
+    except Exception:
+        logger.debug("funnel_distribute failed for %s", pid, exc_info=True)
+    try:
+        from web.backend.services.funnel_leads import (
+            notify_lead_product_completed,
+            on_product_state_change,
+        )
+
+        on_product_state_change(pid, products[pid])
+        await notify_lead_product_completed(pid, products[pid])
+    except Exception:
+        logger.debug("funnel lead notify failed for %s", pid, exc_info=True)
+    try:
+        spec_done = host._load_spec(pid)
+        dp_done = delivery_profile_from_product_dict(products[pid]) if pid in products else None
+        mq_done = evaluate_marketplace_quality(
+            pid, specification=spec_done, delivery_profile=dp_done
+        )
+        if mq_done.get("eligible"):
+            from web.backend.services.product_followup import (
+                merge_mark_storefront_established_listing,
+            )
+
+            if merge_mark_storefront_established_listing(pid):
+                products[pid]["updated_at"] = time.time()
+    except Exception:
+        logger.debug(
+            "merge_mark_storefront_established_listing at completion failed for %s",
+            pid,
+            exc_info=True,
+        )
+
+
+def _queue_qa_repair(run: _AgentTaskRun) -> None:
+    host, agent_type, task_queue, product = run.host, run.agent_type, run.task_queue, run.product
+    pid, task_id, output, qg = run.pid, run.task_id, run.output, run.qg
+    prev_state, new_repair_round, max_quality_loops = run.prev_state, run.new_repair_round, run.max_quality_loops
+    dev_task = {
+        "id": f"task-{uuid.uuid4().hex[:12]}",
+        "product_id": pid,
+        "agent_type": "developer",
+        "state": "DEV_FIXING",
+        "status": "pending",
+        "retry_count": 0,
+        "max_retries": 3,
+        "input_data": {
+            "product_id": pid,
+            "idea": product.get("idea", ""),
+            "demo_quality_feedback": (qg or {}).get("demo_quality"),
+            "qa_findings": ((output.data or {}).get("qa_result") or {}).get("bugs_found", []),
+            "test_output": ((output.data or {}).get("qa_result") or {}).get("test_results", {}),
+            "quality_gates_feedback": {
+                "passed": (qg or {}).get("passed"),
+                # The two keys agents/dev.py reads to build
+                # `fix_these_first_they_break_the_build` and
+                # `only_edit_these_paths`. This hand-picked subset omitted both, so
+                # the prioritisation and scoping machinery existed on the consumer
+                # side and was fed nothing: every round received a flat list in
+                # which "the app does not boot" sat beside "missing empty state",
+                # and rounds were measurably spent on the cosmetics.
+                "blocking_defects": (qg or {}).get("blocking_defects"),
+                "repair_scope": (qg or {}).get("repair_scope"),
+                # The gates my static detectors report through. Without these the
+                # round cannot see a dead endpoint, a duplicate table or a wrong
+                # mesh envelope at all.
+                "module_health": (qg or {}).get("module_health"),
+                "frontend_build": (qg or {}).get("frontend_build"),
+                "api_contract": (qg or {}).get("api_contract"),
+                "demo_journey": (qg or {}).get("demo_journey"),
+                "demo_quality": (qg or {}).get("demo_quality"),
+                "browser_preview_e2e": (qg or {}).get("browser_preview_e2e"),
+                "backend_runtime_e2e": (qg or {}).get("backend_runtime_e2e"),
+                "methodology_review": (qg or {}).get("methodology_review"),
+                "reasons": (qg or {}).get("reasons"),
+                "issue_codes": [
+                    i.get("code")
+                    for i in ((qg or {}).get("demo_quality") or {}).get("issues", [])
+                    if isinstance(i, dict) and i.get("code")
+                ],
+            },
+            "quality_repair_round": new_repair_round,
+            "quality_repair_max": max_quality_loops,
+            "qa_gate_blocked": True,
+        },
+        "created_at": time.time(),
+        "priority": host._get_priority("developer"),
+    }
+    exists = any(
+        t.get("product_id") == pid
+        and is_developer_agent(t.get("agent_type"))
+        and t.get("state") == "DEV_FIXING"
+        and t.get("status") in ("pending", "running")
+        for t in task_queue
+    )
+    if not exists:
+        task_queue.append(dev_task)
+        host._audit_agent_handoff(
+            product_id=pid,
+            from_agent=agent_type,
+            from_state=prev_state,
+            next_task=dev_task,
+            task_id=task_id,
+            reason="qa_gate",
+            blocked=True,
+            output_data=output.data if isinstance(output.data, dict) else None,
+        )
+        logger.warning(
+            f"QA gates failed for {pid} (repair {new_repair_round}/{max_quality_loops}); "
+            "BUG_FOUND → developer DEV_FIXING (mandatory regen/fix until gates pass or limit)"
+        )
+
+
+def _queue_security_repair(run: _AgentTaskRun) -> None:
+    host, agent_type, products, task_queue, product = (
+        run.host, run.agent_type, run.products, run.task_queue, run.product)
+    pid, task_id, output, prev_state = run.pid, run.task_id, run.output, run.prev_state
+    sec_reasons, max_security_loops = run.sec_reasons, run.max_security_loops
+    scan_payload = output.data if isinstance(output.data, dict) else {}
+    sec_fb = build_security_gate_feedback(scan_payload, sec_reasons)
+    sec_round = products[pid].get("security_repair_round", 0)
+    dev_task = {
+        "id": f"task-{uuid.uuid4().hex[:12]}",
+        "product_id": pid,
+        "agent_type": "developer",
+        "state": "DEV_FIXING",
+        "status": "pending",
+        "retry_count": 0,
+        "max_retries": 3,
+        "input_data": {
+            "product_id": pid,
+            "idea": product.get("idea", ""),
+            "security_gate_feedback": sec_fb,
+            "security_repair_round": sec_round,
+            "security_repair_max": max_security_loops,
+            "security_gate_blocked": True,
+            "qa_gate_blocked": True,
+        },
+        "created_at": time.time(),
+        "priority": host._get_priority("developer"),
+    }
+    exists = any(
+        t.get("product_id") == pid
+        and is_developer_agent(t.get("agent_type"))
+        and t.get("state") == "DEV_FIXING"
+        and t.get("status") in ("pending", "running")
+        for t in task_queue
+    )
+    if not exists:
+        task_queue.append(dev_task)
+        host._audit_agent_handoff(
+            product_id=pid,
+            from_agent=agent_type,
+            from_state=prev_state,
+            next_task=dev_task,
+            task_id=task_id,
+            reason="security_gate",
+            blocked=True,
+            output_data=output.data if isinstance(output.data, dict) else None,
+        )
+        logger.warning(
+            "Security gate failed for %s (repair %s/%s); "
+            "BUG_FOUND → developer DEV_FIXING",
+            pid,
+            sec_round,
+            max_security_loops,
+        )
+
+
+def _queue_live_gate_repair(run: _AgentTaskRun) -> None:
+    host, agent_type, products, task_queue, product = (
+        run.host, run.agent_type, run.products, run.task_queue, run.product)
+    pid, task_id, output, prev_state = run.pid, run.task_id, run.output, run.prev_state
+    live_gate_payload = run.live_gate_payload
+    from web.backend.services.live_deployment_gate import live_gate_dev_fixing_task
+
+    dev_task = live_gate_dev_fixing_task(pid, products[pid] if pid in products else product, live_gate_payload)
+    dev_task["priority"] = host._get_priority("developer")
+    exists = any(
+        t.get("product_id") == pid
+        and is_developer_agent(t.get("agent_type"))
+        and t.get("state") == "DEV_FIXING"
+        and t.get("status") in ("pending", "running")
+        for t in task_queue
+    )
+    if not exists:
+        task_queue.append(dev_task)
+        host._audit_agent_handoff(
+            product_id=pid,
+            from_agent=agent_type,
+            from_state=prev_state,
+            next_task=dev_task,
+            task_id=task_id,
+            reason="live_deployment_gate",
+            blocked=True,
+            output_data=output.data if isinstance(output.data, dict) else None,
+        )
+        logger.warning(
+            "Live Vercel UI gate failed for %s; "
+            "BUG_FOUND → developer DEV_FIXING (full UI of the deployed site)",
+            pid,
+        )
+
+
+def _queue_sales_if_approved(run: _AgentTaskRun) -> None:
+    host, products, task_queue, pid = run.host, run.products, run.task_queue, run.pid
+    from web.backend.services.product_followup import post_devops_human_review_approved
+
+    if post_devops_human_review_approved(pid):
+        next_task = host._create_next_task(products[pid])
+        if next_task and next_task.get("agent_type") == "sales":
+            exists = any(
+                t.get("product_id") == pid
+                and t.get("agent_type") == "sales"
+                and t.get("status") in ("pending", "running")
+                for t in task_queue
+            )
+            if not exists:
+                task_queue.append(next_task)
+                logger.info(
+                    "Product %s human gate already approved — queued sales (%s)",
+                    pid,
+                    next_task.get("id"),
+                )
+    else:
+        logger.info(
+            "Product %s paused at post-DevOps human gate — awaiting admin approve before sales",
+            pid,
+        )
+
+
+async def _queue_sequential_task(run: _AgentTaskRun) -> None:
+    host, agent_type, task_queue, product = run.host, run.agent_type, run.task_queue, run.product
+    pid, task_id, output, prev_state = run.pid, run.task_id, run.output, run.prev_state
+    next_task = host._create_next_task(product)
+    if next_task:
+        if next_task.get("agent_type") == "pm":
+            next_task.setdefault("input_data", {})["clarification_pack"] = await build_clarification_pack_llm(
+                product.get("idea", ""),
+                host._llm_router,
+            )
+        exists = any(
+            t.get("product_id") == pid
+            and t.get("agent_type") == next_task["agent_type"]
+            and t.get("state") == next_task["state"]
+            and t.get("status") in ("pending", "running")
+            for t in task_queue
+        )
+        if not exists:
+            task_queue.append(next_task)
+            host._audit_agent_handoff(
+                product_id=pid,
+                from_agent=agent_type,
+                from_state=prev_state,
+                next_task=next_task,
+                task_id=task_id,
+                reason="sequential",
+                output_data=output.data if isinstance(output.data, dict) else None,
+            )
+            logger.info(f"Next task created for {pid}: {next_task['agent_type']} -> {next_task['state']}")
+
+
+def _record_agent_failure(run: _AgentTaskRun) -> None:
+    host, agent_type, task, products, task_queue = run.host, run.agent_type, run.task, run.products, run.task_queue
+    task_id, output = run.task_id, run.output
+    task["status"] = "failed"
+    task["error"] = output.error or "Agent returned failure"
+    category, playbook = host.quality_manager.classify_failure(task["error"])
+    task["failure_category"] = category
+    task["auto_remediation_playbook"] = playbook
+    task["completed_at"] = time.time()
+    task.setdefault("retry_count", 0)
+    from core.pipeline_retry_limits import task_max_retries
+
+    task.setdefault("max_retries", task_max_retries())
+    logger.warning(
+        f"Agent '{agent_type}' failed task {task_id}: {output.error} "
+        f"(retry {task['retry_count']}/{task['max_retries']})"
+    )
+    host.quality_manager.auto_requeue_pm_spec_gate(task, products, task_queue)
+
+
+async def _after_agent_exception(e: Exception, host: PipelineTaskExecutorHost, agent_type: str, task: dict,
+                                 products: dict, task_queue: list, task_id: str) -> None:
+    """A JSON-parse failure goes back to pending a bounded number of times; anything else fails
+    the task for good."""
+    error_msg = str(e)
+    logger.error(f"Error calling agent '{agent_type}' for task {task_id}: {error_msg}")
+
+    # === RETRY LOGIC for LLM JSON parse failures ===
+    is_json_error = any(kw in error_msg for kw in [
+        "invalid/non-JSON", "Invalid JSON", "JSON parse error",
+        "non-JSON response"
+    ])
+
+    if is_json_error:
+        json_retries = int(task.get("json_parse_retry_count") or 0)
+        from core.pipeline_retry_limits import json_parse_max_retries
+
+        max_json_retries = json_parse_max_retries()
+
+        if json_retries < max_json_retries:
+            logger.warning(
+                "JSON parse retry %d/%d for %s task %s: %s",
+                json_retries + 1,
+                max_json_retries,
+                agent_type,
+                task_id,
+                error_msg,
+            )
+            task["json_parse_retry_count"] = json_retries + 1
+            task["status"] = "pending"
+            task["error"] = None
+            task["started_at"] = None
+            task["completed_at"] = None
+            await asyncio.sleep(min(2 ** json_retries, 8))
+            return
+
+    # Permanent failure (exhausted retries or non-retryable error)
+    task["status"] = "failed"
+    task["error"] = error_msg
+    category, playbook = host.quality_manager.classify_failure(error_msg)
+    task["failure_category"] = category
+    task["auto_remediation_playbook"] = playbook
+    task["completed_at"] = time.time()
+    task.setdefault("retry_count", 0)
+    from core.pipeline_retry_limits import task_max_retries
+
+    task.setdefault("max_retries", task_max_retries())
+    host.quality_manager.auto_requeue_pm_spec_gate(task, products, task_queue)

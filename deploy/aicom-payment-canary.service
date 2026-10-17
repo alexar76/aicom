@@ -4,6 +4,8 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/python3 /usr/local/lib/aicom-canary/payment_canary.py --publish /var/www/verify.modelmarket.dev/status.json
+# --sells-for-container: which peers the hub is seller of record for (read from the live
+# container's AIMARKET_SELLS_FOR), so a peer it only brokers is judged as the peer's business.
+ExecStart=/usr/bin/python3 /usr/local/lib/aicom-canary/payment_canary.py --publish /var/www/verify.modelmarket.dev/status.json --sells-for-container modelmarket-hub
 # exit 1 = a critical check failed, 2 = publish failed; both reach the alerter through status.json.
 SuccessExitStatus=1 2

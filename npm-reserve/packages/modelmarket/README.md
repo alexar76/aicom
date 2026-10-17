@@ -8,5 +8,5 @@ ModelMarket.dev ecosystem namespace
 npm install @aimarket/agent
 ```
 
-- Ecosystem: https://modeldev.modelmarket.dev
+- Ecosystem: https://ecosystem.modelmarket.dev/
 - GitHub: https://github.com/alexar76/aicom

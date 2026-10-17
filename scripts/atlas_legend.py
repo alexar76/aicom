@@ -45,9 +45,12 @@ from atlas.stations import LAYER_META, STATION_CATALOG  # noqa: E402
 # Hub'Eau / eHYD / SMHI MetObs show up instead of only the oldest four ids.
 _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
     "river": (
-        "ie-river-",
+        # P12: representative LIVE meshes added alongside the GAIA relay wave.
+        # Keep these before the older groups: the legend takes one device per
+        # prefix and must make the new map coverage visible in every locale.
         "lt-hydro-",
         "lv-hydro-",
+        "ie-river-",
         "bafu-",
         "hubeau-",
         "ehyd-",
@@ -61,11 +64,13 @@ _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
         "smhi-hydro-",
     ),
     "weather": (
+        # P12 — Austria, Lithuania, Latvia and Japan.  The remaining P12
+        # weather meshes are still discoverable by the layer filter; four
+        # examples keep a map-legend cell readable.
         "at-wx-",
-        "jp-wx-",
         "lt-wx-",
         "lv-wx-",
-        "br-wx-",
+        "jp-wx-",
         "cz-wx-",
         "kr-wx-",
         "aemet-wx-",
@@ -88,10 +93,10 @@ _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
     "tide": ("uhslc-", "noaa-tide-", "coops-"),
     "air": ("hk-aqhi-", "sg-psi-", "be-aq-", "aurn-", "openaq-", "om-aq-", "sc-", "osm-"),
     "marine": ("cdip-", "ndbc-", "om-marine-"),
-    "flood": ("vic-", "gfm-", "ea-flood", "nws-flood"),
+    "flood": ("vic-", "gfm-flood-", "nws-flood-", "ea-flood-"),
     "grid": ("rte-grid-", "uk-grid-"),
+    "quake": ("jma-quake-", "usgs-quake-", "emsc-"),
     "cyclone": ("jma-typhoon-", "nhc-cyclone-"),
-    "quake": ("jma-quake-", "ingv-", "emsc-", "usgs-quake-"),
 }
 
 
@@ -259,16 +264,19 @@ def _device_cell(layer: str) -> str:
     ids = [did for did, meta in STATION_CATALOG.items() if meta.get("layer") == layer]
     chosen: list[str] = []
     used: set[str] = set()
+    # Six weather examples make every P12 national mesh visible.  Other cells
+    # stay capped at four so the generated table remains easy to scan.
+    sample_limit = 6 if layer == "weather" else 4
     for pref in _LAYER_SAMPLE_PREFIXES.get(layer, ()):
         for did in ids:
             if did.startswith(pref) and did not in used:
                 chosen.append(did)
                 used.add(did)
                 break
-        if len(chosen) >= 4:
+        if len(chosen) >= sample_limit:
             break
     for did in ids:
-        if len(chosen) >= 4:
+        if len(chosen) >= sample_limit:
             break
         if did not in used:
             chosen.append(did)

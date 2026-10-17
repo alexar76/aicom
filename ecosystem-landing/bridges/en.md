@@ -837,7 +837,11 @@ price.
 
 For a consumer that is simply the current state of the network. For an operator it is worth
 knowing that `budget_usd` bounds what the catalogue *says* the calls cost, not what leaves a
-wallet — the two coincide only once the provider enforces payment.
+wallet — the two coincide only once someone enforces the price: the hub, for a peer it is
+declared to sell for (`AIMARKET_SELLS_FOR`), or the provider. Since oracle-core 0.5.0 a
+provider can also refuse a priced call that walked around the hub: its price gate answers
+`402` to any call a hub it trusts did not sign. The gate ships off; see
+[free-and-paid-tiers §7.3](https://github.com/alexar76/aicom/blob/main/docs/free-and-paid-tiers.md).
 
 Worth noting what these runs do *not* show, either. One model, one temperature, one prompt
 shape, and a capability whose argument is a single string. A capability with a nested `oneOf`

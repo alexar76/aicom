@@ -1,0 +1,291 @@
+{
+  "scope": "Real external model calls through a temporary local HTTPS Hub; NOT a production marketplace payment or full product build.",
+  "production_preflight": {
+    "hub": "https://modelmarket.dev",
+    "date_utc": "2026-10-11",
+    "well_known_http": 200,
+    "search_http": 200,
+    "credits_eligible_present": false,
+    "compatible_provider_found": false,
+    "sample_matches": [
+      {
+        "product_id": "codeseal",
+        "capability_id": "code.audit@v1",
+        "source_hub": "https://independentai.network/hub",
+        "input_required": [
+          "content"
+        ]
+      },
+      {
+        "product_id": "signal-hunt",
+        "capability_id": "signal.submit@v1",
+        "source_hub": "https://hunt.modelmarket.dev",
+        "input_required": [
+          "session_token",
+          "round_id",
+          "answer_code",
+          "confidence"
+        ]
+      },
+      {
+        "product_id": "hestia",
+        "capability_id": "hestia.compute.run@v1",
+        "source_hub": "https://hestia.modelmarket.dev",
+        "input_required": [
+          "slug",
+          "input"
+        ]
+      },
+      {
+        "product_id": "themis",
+        "capability_id": "agent.security.supply-chain.audit@v1",
+        "source_hub": "https://themis.modelmarket.dev",
+        "input_required": [
+          "candidate"
+        ]
+      }
+    ]
+  },
+  "timeout_run": {
+    "passed": false,
+    "at_utc": "2026-10-11T05:39:36.097541+00:00",
+    "environment": "isolated real HTTPS Hub + real external model; test credit grant",
+    "production_payment_verified": false,
+    "production_modified": false,
+    "http_trace": [
+      {
+        "method": "GET",
+        "path": "/.well-known/ai-market.json",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/ai-market/v2/search",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/ai-market/v2/invoke",
+        "status": 502
+      }
+    ],
+    "model_calls": [
+      {
+        "started_at": "2026-10-11T05:39:06.085707+00:00"
+      }
+    ],
+    "diagnosis": null,
+    "replay_without_network": true,
+    "test_credit_before_usd": 0.5,
+    "test_credit_after_usd": 0.5,
+    "orders": [
+      {
+        "id": "purchase_cddc05ed93d82a52d9954364c8bd61a8ebfc2e67aeaadb62ebc73ec522fe2bad",
+        "status": "unresolved",
+        "payment": "unknown",
+        "charged": 0,
+        "reserved": 100000,
+        "reason": "payment outcome unknown; do not retry"
+      }
+    ],
+    "elapsed_seconds": 36.38
+  },
+  "rejected_format_run": {
+    "passed": false,
+    "at_utc": "2026-10-11T05:41:28.018767+00:00",
+    "environment": "isolated real HTTPS Hub + real external model; test credit grant",
+    "production_payment_verified": false,
+    "production_modified": false,
+    "http_trace": [
+      {
+        "method": "GET",
+        "path": "/.well-known/ai-market.json",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/ai-market/v2/search",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/ai-market/v2/invoke",
+        "status": 200
+      }
+    ],
+    "model_calls": [
+      {
+        "started_at": "2026-10-11T05:41:07.197022+00:00",
+        "model": "minimax/minimax-m3",
+        "usage": {
+          "prompt_tokens": 404,
+          "completion_tokens": 263,
+          "total_tokens": 667,
+          "cost": 0.000373748,
+          "is_byok": false,
+          "prompt_tokens_details": {
+            "cached_tokens": 128,
+            "cache_write_tokens": 0,
+            "audio_tokens": 0,
+            "video_tokens": 0
+          },
+          "cost_details": {
+            "upstream_inference_cost": 0.000373748,
+            "upstream_inference_prompt_cost": 8.4448e-05,
+            "upstream_inference_completions_cost": 0.0002893
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "image_tokens": 0,
+            "audio_tokens": 0
+          }
+        },
+        "generation_id": "gen-1791697269-HnKtBhDthfHPmXfrSj2X",
+        "cost_bound_usd": 0.001248
+      }
+    ],
+    "diagnosis": null,
+    "replay_without_network": true,
+    "test_credit_before_usd": 0.5,
+    "test_credit_after_usd": 0.4,
+    "orders": [
+      {
+        "id": "purchase_cddc05ed93d82a52d9954364c8bd61a8ebfc2e67aeaadb62ebc73ec522fe2bad",
+        "status": "rejected",
+        "payment": "paid",
+        "charged": 100000,
+        "reserved": 0,
+        "reason": "diagnosis needs one to five source-grounded findings"
+      }
+    ],
+    "elapsed_seconds": 22.21
+  },
+  "accepted_run": {
+    "passed": true,
+    "at_utc": "2026-10-11T05:42:31.135779+00:00",
+    "environment": "isolated real HTTPS Hub + real external model; test credit grant",
+    "production_payment_verified": false,
+    "production_modified": false,
+    "http_trace": [
+      {
+        "method": "GET",
+        "path": "/.well-known/ai-market.json",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/ai-market/v2/search",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/ai-market/v2/invoke",
+        "status": 200
+      }
+    ],
+    "model_calls": [
+      {
+        "started_at": "2026-10-11T05:42:25.612052+00:00",
+        "model": "minimax/minimax-m3",
+        "usage": {
+          "prompt_tokens": 510,
+          "completion_tokens": 178,
+          "total_tokens": 688,
+          "cost": 0.00033588,
+          "is_byok": false,
+          "prompt_tokens_details": {
+            "cached_tokens": 128,
+            "cache_write_tokens": 0,
+            "audio_tokens": 0,
+            "video_tokens": 0
+          },
+          "cost_details": {
+            "upstream_inference_cost": 0.00033588,
+            "upstream_inference_prompt_cost": 0.00012228,
+            "upstream_inference_completions_cost": 0.0002136
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "image_tokens": 0,
+            "audio_tokens": 0
+          }
+        },
+        "generation_id": "gen-1791697349-QEygkrRqZxqMzXbzBu6O",
+        "cost_bound_usd": 0.0013625999999999998
+      }
+    ],
+    "diagnosis": {
+      "order_id": "purchase_04f07b75d95c10cd8f34f464dd0ecf8b9b8b111b5f72a6aacf2c1149e97e9c79",
+      "report": {
+        "contract": "aicom.diagnosis/1",
+        "issue": "b863d3d7bfa404f15bb48d5bfc3aa2de193f7a5789ca6b7f0c09f176cda1898f",
+        "fingerprint": "ab2b3a88618667ebdc76bfcf607d7886f86bf0a58f43e4ed41fb93cbe4934504",
+        "diagnosis": [
+          {
+            "file": "app/main.py",
+            "line": 1,
+            "evidence": "def divide(x):",
+            "explanation": "The function divides 1 by x without checking whether x is zero. Calling divide(0) raises ZeroDivisionError, which is a division-by-zero defect.",
+            "suggested_check": "Call divide(0) and confirm that a ZeroDivisionError is raised instead of being handled or guarded."
+          }
+        ]
+      }
+    },
+    "replay_without_network": true,
+    "test_credit_before_usd": 0.5,
+    "test_credit_after_usd": 0.4,
+    "orders": [
+      {
+        "id": "purchase_04f07b75d95c10cd8f34f464dd0ecf8b9b8b111b5f72a6aacf2c1149e97e9c79",
+        "status": "accepted",
+        "payment": "paid",
+        "charged": 100000,
+        "reserved": 0,
+        "reason": ""
+      }
+    ],
+    "deliveries": [
+      {
+        "success": true,
+        "result": {
+          "contract": "aicom.diagnosis/1",
+          "issue": "b863d3d7bfa404f15bb48d5bfc3aa2de193f7a5789ca6b7f0c09f176cda1898f",
+          "fingerprint": "ab2b3a88618667ebdc76bfcf607d7886f86bf0a58f43e4ed41fb93cbe4934504",
+          "diagnosis": [
+            {
+              "file": "app/main.py",
+              "line": 1,
+              "evidence": "def divide(x):",
+              "explanation": "The function divides 1 by x without checking whether x is zero. Calling divide(0) raises ZeroDivisionError, which is a division-by-zero defect.",
+              "suggested_check": "Call divide(0) and confirm that a ZeroDivisionError is raised instead of being handled or guarded."
+            }
+          ]
+        },
+        "receipt": {
+          "nonce": "rcpt_315cea3428ebb83417932ceea56a1244",
+          "product_id": "live-diagnosis-probe",
+          "capability_id": "aicom.diagnose@v1",
+          "price_usd": 0.1,
+          "list_price_usd": 0.1,
+          "timestamp": "2026-10-11T05:42:31Z",
+          "success": true,
+          "latency_ms": 5499,
+          "signature": {
+            "algorithm": "ed25519",
+            "value": "5oLI24n3KtRPDKOxUrsnffJDO9TFX2Xej8UMEZa+EmtWWiDod6XepO50akOP74M9AiMlQqzqjzejVGpYMLjfBQ==",
+            "pq_algorithm": "ml-dsa-65",
+            "pq_public_key": "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",
+            "pq_value": "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"
+          }
+        },
+        "price_usd": 0.1,
+        "remaining_balance": 0.4
+      }
+    ],
+    "hub_public_key": "HGTH//KdhbM4/YzfPuLYBQKuMSl9shBlemT0zSkaVSE=",
+    "hub_pq_public_key": "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",
+    "elapsed_seconds": 7.44
+  },
+  "cost_note": "Accepted call reported $0.00033588; rejected-format call reported $0.000373748. The first timed-out call has no usage receipt, so total model cost is not reconciled. All Hub balances here are isolated test grants.",
+  "fix": "The request acceptance text now explicitly requires diagnosis to be an array of 1–5 objects with typed, bounded fields; the probe uses a bounded short answer without extended reasoning."
+}

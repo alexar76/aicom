@@ -1,0 +1,64 @@
+{
+  "scope": "Production Hub, operator-owned provider, real model-generated report (cached from the preceding signature probe) and production operator-grant credits; synthetic QA fixture, not a full product build.",
+  "at_utc": "2026-10-11T07:12:29Z",
+  "account_id": "acct_9b623b32996f13cb",
+  "balance_before_usd": 2.0,
+  "balance_after_usd": 1.9,
+  "product_status": "accepted",
+  "report": {
+    "order_id": "purchase_e4d530bd4e6a88407c52d206babd9395bbe8006134fa0eafc642a22d8a2d60e9",
+    "report": {
+      "contract": "aicom.diagnosis/1",
+      "issue": "2c96a90e800f495d2a1d357242cd1d747d8eb7b9f418c887217e99e8df37a7e2",
+      "fingerprint": "3c75256621bf776018342420e3820ef49c34203e7788813baf42faad00539eec",
+      "diagnosis": [
+        {
+          "file": "backend/app/diagnosis_canary_v5.py",
+          "line": 2,
+          "evidence": "return 1 / x",
+          "explanation": "The function divides 1 by x without validating that x is non-zero. When x == 0, Python raises ZeroDivisionError, crashing the caller. There is no guard, type check, or default handling, so any zero input propagates as an uncaught exception.",
+          "suggested_check": "Add an input guard such as `if x == 0: raise ValueError('x must be non-zero')` (or return a sentinel/NaN) before performing the division, and add unit tests covering x=0, x=None, and non-numeric inputs to confirm the guard works."
+        }
+      ]
+    }
+  },
+  "replay_without_network": true,
+  "http_trace": [
+    {
+      "method": "GET",
+      "path": "/ai-market/v2/account",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/.well-known/ai-market.json",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ai-market/v2/search",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/ai-market/v2/invoke",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ai-market/v2/account",
+      "status": 200
+    }
+  ],
+  "orders": [
+    {
+      "id": "purchase_e4d530bd4e6a88407c52d206babd9395bbe8006134fa0eafc642a22d8a2d60e9",
+      "status": "accepted",
+      "payment": "paid",
+      "charged": 100000,
+      "reserved": 0,
+      "reason": ""
+    }
+  ],
+  "passed": true
+}

@@ -5,6 +5,7 @@ import { buildServices, callerIdFor, WARDEN_VERSION } from "./services.js";
 import { hearthServices } from "./hearth.js";
 import { hubServices } from "./hub.js";
 import { openapiDocument, priceOf, wellKnownManifest } from "./x402.js";
+import { mountTools } from "./web/routes.js";
 
 /** The paying wallet named inside an x402 payment header (base64 JSON), lower-cased, or "". */
 export function payerOf(header) {
@@ -56,11 +57,18 @@ export function createApp({
   // The hearth two HESTIA agents are bought from (src/hearth.js), and this gateway's seller key there.
   hearthUrl = "https://hestia.modelmarket.dev",
   hearthApiKey = "",
+  // The free pages for people at /tools/ (src/web): checks per minute per address and tool, and
+  // the HESTIA agents' shared free budget across everyone (they run in the hearth's sandbox).
+  webPerMinute = 10,
+  freeHearthPerMinute = 60,
+  // Google Search Console's HTML-tag token for the https://modelmarket.dev/tools/ property (public).
+  siteVerification = "",
 } = {}) {
   const services = buildServices({ historUrl: historUrl.replace(/\/+$/, ""), fetchImpl, timeoutMs, freePerMinute: freeHistorPerMinute, now });
   // Paid-only twins of the hub's capabilities, when the gateway has a hub account (src/hub.js).
   for (const s of hubServices({ hubUrl, apiKey: hubApiKey, fetchImpl })) services.set(s.id, s);
-  for (const s of hearthServices({ hearthUrl, apiKey: hearthApiKey, sellerUrl: publicUrl, fetchImpl })) services.set(s.id, s);
+  for (const s of hearthServices({ hearthUrl, apiKey: hearthApiKey, sellerUrl: publicUrl, fetchImpl,
+                                   freePerMinute: freeHearthPerMinute, now })) services.set(s.id, s);
   const allow = rateLimiter(perMinute, now);
   const app = express();
   app.disable("x-powered-by");
@@ -105,6 +113,15 @@ export function createApp({
     } catch {
       return res.status(500).json(failure(service, "internal_error", "the service failed; try again"));
     }
+  });
+
+  // The people's pages and their API. Before the paywall: nothing under /tools/ is ever paid.
+  mountTools(app, {
+    services,
+    allow: rateLimiter(webPerMinute, now),
+    callerIdOf: (ip) => callerIdFor(ip, callerSecret),
+    origin: publicUrl || "https://modelmarket.dev",
+    verification: siteVerification,
   });
 
   if (paywall) {

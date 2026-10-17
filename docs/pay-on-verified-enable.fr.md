@@ -148,3 +148,8 @@ remplit pas » unanime (1,0). Prochaine étape : deux sièges de plus issus d'au
 
 En option : une cour d'appel (`AIMARKET_APPEAL_METIS_URL`, `AIMARKET_APPEAL_WINDOW_S`) — voir
 [aimarket-hub/docs/pay-on-verified.md](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#appeals).
+
+En option : un vérificateur différent par capacité (`AIMARKET_VERIFY_ROUTES`), par exemple la vérification
+exacte de GAIA pour son pilotage d'appareils payé à l'effet vérifié, au lieu du jury de LLM. Une route
+inutilisable refuse le bloc `verify` ; elle ne se rabat jamais sur le vérificateur par défaut. Voir
+[les routes de vérificateur](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#verifier-routes).

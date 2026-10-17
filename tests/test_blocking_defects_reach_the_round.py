@@ -23,6 +23,7 @@ These tests pin both halves, because either one alone leaves the round blind.
 from __future__ import annotations
 
 from pathlib import Path
+from tests.split_source import read_split
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -48,7 +49,7 @@ def _feedback_blocks() -> list[str]:
 
 def test_the_keys_dev_reads_are_passed_through():
     """The exact defect: the consumer reads two keys the producer never sent."""
-    dev = (ROOT / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(ROOT / "agents" / "dev.py")
     # What dev.py reads out of the gates payload.
     assert '.get("blocking_defects")' in dev
     assert '.get("repair_scope")' in dev
@@ -98,7 +99,7 @@ def test_they_come_before_the_pre_existing_blocking_codes():
 
 def test_dev_still_explains_why_scope_is_restricted():
     """A scope limit without a reason reads as arbitrary and gets ignored."""
-    dev = (ROOT / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(ROOT / "agents" / "dev.py")
     assert "only_edit_these_paths" in dev
     assert "wastes the round" in dev, "the round is not told why the limit exists"
 

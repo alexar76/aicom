@@ -1639,6 +1639,8 @@ async def public_generate_landing(request: Request, body: GuestLandingRequest):
         "production_mode": False,
         "category": "saas",
         "tags": guest_tags,
+        # A visitor's own words: kept out of public galleries (core.product_origin).
+        "visitor_submission": True,
         "state": "IDEA_RECEIVED",
         "created_at": timestamp,
         "updated_at": timestamp,

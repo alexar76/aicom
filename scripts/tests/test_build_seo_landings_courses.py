@@ -14,6 +14,8 @@ import build_seo_landings as bsl  # noqa: E402
 
 def test_load_courses_without_catalog_file(tmp_path, monkeypatch):
     monkeypatch.setattr(bsl, "CATALOG", tmp_path / "missing-catalog.yaml")
+    # The SEO mirror's courses.yaml is the second source _load_courses reads.
+    monkeypatch.setattr(bsl, "SEO_COURSES", tmp_path / "missing-seo-courses.yaml")
     monkeypatch.setattr(bsl, "ROOT", tmp_path)
     assert bsl._load_courses() == []
 

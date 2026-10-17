@@ -1,0 +1,134 @@
+- complementary:
+  - link "Back to site":
+    - /url: /
+  - button "Expand menu":
+  - navigation:
+    - link:
+      - /url: /admin?tab=dashboard
+    - link:
+      - /url: /admin?tab=setup
+    - link:
+      - /url: /admin?tab=monitor
+    - link:
+      - /url: /admin?tab=factory-floor
+    - link:
+      - /url: /admin?tab=time-travel
+    - link:
+      - /url: /admin?tab=showcase
+    - link:
+      - /url: /admin?tab=blog
+    - link:
+      - /url: /admin?tab=prompt-loop
+    - link:
+      - /url: /admin?tab=pipeline
+    - link:
+      - /url: /admin?tab=new-product
+    - link:
+      - /url: /admin?tab=workshop
+    - link:
+      - /url: /admin?tab=files
+    - link:
+      - /url: /admin?tab=agents
+    - link:
+      - /url: /admin?tab=providers
+    - link:
+      - /url: /admin?tab=llm-logs
+    - link:
+      - /url: /admin?tab=agent-logs
+    - link:
+      - /url: /admin?tab=security
+    - link:
+      - /url: /admin?tab=sandbox
+    - link:
+      - /url: /admin?tab=director
+    - link:
+      - /url: /admin?tab=discovery
+    - link:
+      - /url: /admin?tab=settings
+    - link:
+      - /url: /admin?tab=users
+    - link:
+      - /url: /admin?tab=chat
+    - link:
+      - /url: /admin?tab=brainstorming
+    - link:
+      - /url: /admin?tab=support-queue
+    - link:
+      - /url: /admin?tab=outreach
+  - combobox "Language":
+    - option "EN" [selected]
+    - option "RU"
+    - option "ES"
+    - option "FR"
+    - option "ZH"
+  - button "Logout":
+- main:
+  - heading "Get oriented in three moves" [level=3]
+  - paragraph:
+    - text: First install? Run the Setup wizard (URLs + one LLM key) — then continue below.
+  - list:
+    - listitem: See health first — open Dashboard for queue depth and alerts.
+    - listitem: Queue real work — New product walks idea → options → review; save presets as local or cloud templates.
+    - listitem: Wire models once — Providers and Settings so agents do not fail silently.
+  - paragraph: When something fails, look for retry plus links to Providers or Pipeline on the error card.
+  - link "Setup wizard":
+    - /url: /admin?tab=setup
+    - text: Setup wizard
+  - link "New product":
+    - /url: /admin?tab=new-product
+    - text: New product
+  - link "Workshop tools":
+    - /url: /admin?tab=workshop
+    - text: Workshop tools
+  - button "Dismiss onboarding":
+  - paragraph: "You are on New product: use the left guide column for what each step expects, then apply a quick-start chip if you want a filled example idea."
+  - paragraph: "Focus mode: only prod-e1a3b0abf16a is active — 23 other product(s) paused."
+  - paragraph: prod-e1a3b0abf16a
+  - button "Open Pipeline → Focus"
+  - heading "Create New Product" [level=2]
+  - paragraph: "Guided wizard: idea → factory options → review. Templates are first-class — local, cloud, and quick-start chips."
+  - generic: Step 1 of 3 — Idea
+  - generic: about 1 minute
+  - button "1. Idea"
+  - button "2. Options"
+  - button "3. Review"
+  - paragraph: First time here?
+  - list:
+    - listitem: Use a quick-start chip (left on desktop, below on mobile) or write your own idea.
+    - listitem: Cloud templates sync with your factory data directory — save once, reuse from any browser.
+    - listitem: If creation fails, use the suggested links on the error card (Providers, Pipeline, retry).
+  - button "Dismiss intro":
+  - complementary:
+    - paragraph: This step
+    - paragraph: Describe the outcome
+    - paragraph: Focus on who it helps and what changes for them. Technical stack comes later.
+    - list:
+      - listitem: Plain language
+      - listitem: Optional AI assist (with consent)
+      - listitem: Heuristic hints when patterns match
+    - text: Quick-start templates
+    - paragraph: Fills idea + options so you edit instead of starting from a blank page. Sends you to Options when done.
+    - button "Desktop app (Tauri) desktop_app · installable SKU":
+      - generic: Desktop app (Tauri)
+      - generic: desktop_app · installable SKU
+    - button "B2B SaaS MVP Full pipeline · prototype":
+      - generic: B2B SaaS MVP
+      - generic: Full pipeline · prototype
+    - button "Marketing / waitlist landing Landing profile · fast path":
+      - generic: Marketing / waitlist landing
+      - generic: Landing profile · fast path
+    - button "Internal admin tool Full product · production-minded":
+      - generic: Internal admin tool
+      - generic: Full product · production-minded
+  - text: Product idea
+  - generic: "*"
+  - textbox "Describe the product you want to build...": "Catalog audit final: an English landing page for a design studio with a web assistant."
+  - paragraph: Detected brochure / landing style wording — marketing landing profile fits faster shipping.
+  - 'button "Apply: Marketing landing"'
+  - button "Dismiss"
+  - checkbox "Allow one lightweight LLM round-trip to suggest delivery profile, mode, and admin instructions. Your idea is only sent when you press the button below."
+  - generic: Allow one lightweight LLM round-trip to suggest delivery profile, mode, and admin instructions. Your idea is only sent when you press the button below.
+  - button "Suggest with AI (opens Options step)" [disabled]
+  - button "Next":
+    - text: Next
+- alert

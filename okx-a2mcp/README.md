@@ -70,6 +70,38 @@ key) the gateway still starts, the paid routes answer `503` and the build is ret
 The per-caller limit runs before the paywall, so a flood of copied payment headers never reaches the
 facilitator under our key.
 
+## Free pages for people: `/tools/`
+
+The same checks, open to people at [modelmarket.dev/tools/](https://modelmarket.dev/tools/): paste an
+X-PAYMENT header, two `tools/list` results, one `tools/list` or a server address, get a readable
+diagnosis. Four pages (`x402-check`, `mcp-diff`, `warden-scan`, `histor-check`) plus an index, in
+English, Russian, Spanish, French and Chinese (`/tools/<page>`, `/tools/<lang>/<page>`), rendered on the
+server with hreflang alternates, JSON-LD and a sitemap (`/tools/sitemap.xml`; nginx serves
+`/robots.txt` from `/tools/robots.txt`). Source: `src/web/` — texts in `i18n/`, markup in `pages.js`,
+routes in `routes.js`, the browser side in `assets/`.
+
+- **One API, the agents' answers.** The form posts to `POST /tools/api/<service>`, which runs the same
+  service handler as `/a2mcp` and `/x402`, so the page shows byte for byte what an agent pays for.
+  Each page also says so, with the paid endpoint and price.
+- **Free, within limits.** `WEB_PER_MINUTE` (10) checks a minute per address and tool. The two HESTIA
+  agents stay paid on `/a2mcp`; on the page they are bought from the hearth as a free trial
+  (`X-AIMarket-Hub-Charged: 0`, which the hearth serves for the operator's own agents and records no
+  sale for), under one budget shared by everyone, `FREE_HEARTH_PER_MINUTE` (60).
+- **Untrusted text stays text.** Answers quote poisoned tool descriptions; `assets/tools.js` builds
+  the result with `textContent` only (a test refuses `innerHTML`), and the pages send a strict CSP:
+  scripts, styles, fonts and requests from this origin only. The site's stylesheet and fonts come
+  from the hub on the same origin (`/assets/site.css`, `/assets/fonts/`).
+- **Search engines.** `deploy.sh` ends with `scripts/indexnow.mjs`: the sitemap's URLs go to IndexNow
+  (Bing, Yandex, Seznam, Naver), proved by the public key the gateway serves at
+  `/tools/<key>.txt` (`src/web/indexnow-key.txt`). Google reads the sitemap; for Search Console, put the
+  HTML-tag token of the `https://modelmarket.dev/tools/` property in `GOOGLE_SITE_VERIFICATION` and every
+  page carries the tag.
+- **Use is counted** in `verify.modelmarket.dev/demand.json` under `tools` (`scripts/demand_export.py`):
+  page views by people and by crawlers, distinct visitors, checks per tool — outsiders only.
+- **Preview:** `node scripts/dev-tools.mjs 9491`, then `http://127.0.0.1:9491/tools/`. It runs the real
+  HESTIA handlers from `../hestia-agents` in `python3` (unsigned) and fetches `/assets/*` from
+  modelmarket.dev.
+
 ## Deploy
 
 `./deploy.sh` ships the committed sources to the apex host, builds there and swaps the container
@@ -77,7 +109,7 @@ facilitator under our key.
 `/opt/okx-a2mcp-secrets` (uid 1000, mode 400, mounted read-only: the CDP key and the caller-id key,
 which the script generates on the host the first time), read-only root filesystem, all capabilities
 dropped, 256 MB. The previous container is kept stopped as `okx-a2mcp-prev` and restored if the new
-one fails `/health`. nginx routes `/a2mcp` and `/x402/` to port 9485
+one fails `/health`. nginx routes `/a2mcp`, `/x402/`, `/tools/` and `/robots.txt` to port 9485
 ([`deploy/nginx/modelmarket.dev.conf`](../deploy/nginx/modelmarket.dev.conf)).
 
 ## Run and test
@@ -97,6 +129,9 @@ PORT=9480 npm start            # HISTOR_URL, PUBLIC_URL, RATE_PER_MINUTE are opt
 | `TRUST_PROXY` | `loopback, uniquelocal` | Express `trust proxy`: nginx reaches a published container via the Docker bridge |
 | `CALLER_ID_SECRET_FILE` | — | file holding the key of the buyer id sent to HISTOR (or `CALLER_ID_SECRET`); without one, a random key per process |
 | `FREE_HISTOR_PER_MINUTE` | `200` | free `histor-check` calls across all callers; HISTOR allows us 300 a minute, the rest is the paid route's headroom |
+| `WEB_PER_MINUTE` | `10` | checks from the `/tools/` pages, per address and tool |
+| `FREE_HEARTH_PER_MINUTE` | `60` | free `x402-check` + `mcp-diff` calls from the pages, across everyone |
+| `GOOGLE_SITE_VERIFICATION` | — | Search Console HTML-tag token for the `/tools/` property (on the host: `/opt/okx-a2mcp-secrets/google_site_verification`) |
 
 Behind nginx the caller is read from `X-Forwarded-For`, trusted only from loopback and private
 addresses — the Docker bridge nginx's traffic arrives from. HISTOR receives an HMAC of the caller's

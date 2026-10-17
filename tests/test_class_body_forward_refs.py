@@ -24,6 +24,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from web.backend.services.duplicate_module_check import find_class_body_forward_refs
+from tests.split_source import read_split
 
 
 def _tree(root: Path, files: dict[str, str]) -> Path:
@@ -191,7 +192,7 @@ def test_it_is_wired_everywhere_it_has_to_be():
     passed_expr = check[check.index('"passed": not missing') : check.index('"skipped": False')]
     assert "not forward_refs" in passed_expr, "a critical that does not fail its own gate"
 
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     score = dev[dev.index("def _tree_defect_score(") : dev.index("def _revert_out_of_scope_writes")]
     assert "10 * len(find_class_body_forward_refs(code_root, limit=200))" in score, (
         "the round guard still cannot see it, so it will keep giving the fix back"
@@ -206,7 +207,7 @@ def test_the_rejection_log_can_name_this_class():
     """The score counted it while the breakdown did not, so a rejection would have read
     "nothing individually — check the weights" — the exact uninformative message the breakdown was
     built to replace."""
-    dev = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     breakdown = dev[dev.index("def _tree_defect_breakdown(") : dev.index("def _breakdown_delta(")]
     assert '"class_body_forward_ref"' in breakdown
     ids = dev[dev.index("def _tree_defect_identities(") : dev.index("def _identities_appeared(")]

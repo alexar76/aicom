@@ -492,6 +492,23 @@ _post_rsync_satellite_hook() {
         echo "  ✓ docs/landing/ → GitHub Pages (workflow uploads folder)"
       fi
       ;;
+    emporion)
+      # EMPORION's CI, release and Dockerfile.standalone install oracle-core from vendor/.
+      mkdir -p "$clone/vendor"
+      if [[ -d "$ROOT/oracles/core" ]]; then
+        rsync -a --delete \
+          --exclude '.venv' --exclude '__pycache__' --exclude '.pytest_cache' \
+          --exclude '*.egg-info' --exclude '.mypy_cache' \
+          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/"
+        echo "  ✓ vendored oracles/core → vendor/oracle-core (CI + GHCR standalone)"
+      else
+        echo "  ⚠️  oracles/core missing — CI and Dockerfile.standalone will fail until vendored"
+      fi
+      if [[ -f "$clone/docs/landing/index.html" ]]; then
+        : > "$clone/docs/landing/.nojekyll"
+        echo "  ✓ docs/landing/ → GitHub Pages (workflow uploads folder)"
+      fi
+      ;;
     momus)
       # MOMUS's standalone Docker build needs oracle-core without the monorepo path.
       mkdir -p "$clone/vendor"
@@ -664,11 +681,11 @@ export_course() {
   export_simple "$sat_id" "$src_rel" "$repo" "mit"
 }
 
-# ── Mirror notice for read-only satellites ─────────────────────────────────
+# ── Publication notice on every satellite README ───────────────────────────
 # See docs/repository-canonical-policy.md — the monorepo is canonical for
-# every satellite. These are read-only mirrors: PRs are NOT accepted (a push
-# here is overwritten on the next sync). Prepend a short banner to the
-# satellite's README.md so visitors report bugs via Issues instead of PRs.
+# every satellite. A `live` satellite (the default) takes pull requests and
+# imports merged ones back; a `mirror` satellite is read-only (a push there is
+# overwritten on the next sync). The banner tells visitors which door is open.
 # Idempotent — re-running does not re-inject.
 _inject_mirror_banner() {
   local target="$1"
@@ -1751,11 +1768,19 @@ PYEOF
 <!-- satellite-contributing -->
 # Contributing
 
-Read the publication notice at the top of this repository's README first.
-It states whether this repository accepts pull requests or is a read-only mirror.
-For a read-only mirror, open an issue with a minimal reproduction, the affected
-version, expected and actual results, and a proposed patch. Direct pull requests
-are not imported automatically and mirror synchronization replaces local commits.
+Pull requests are welcome here. Send them to this repository, not to the
+Factory repository: history on this repository is append-only (no force-push),
+and a merged pull request is imported back into the canonical AI-Factory
+monorepo and synced here again, so your commit stays in the history.
+
+1. Open an issue first for anything larger than a fix, so the change is agreed
+   before you write it.
+2. Fork, branch from `main`, keep the change focused, and add a test for it.
+3. Run the checks from this repository's README before you open the pull request.
+
+If the notice at the top of the README calls this repository a read-only mirror,
+open an issue with a minimal reproduction, the affected version, expected and
+actual results, and a proposed patch instead: a mirror sync replaces its commits.
 
 Use this repository's README for installation and tests. The Factory's
 web/frontend and deployment scripts are not prerequisites for this package.
@@ -2015,7 +2040,14 @@ export_wiki_generic() {
     # Inside the wiki clone, to the wiki remote. `_commit_and_push` runs in a subshell, so
     # the cwd here is the MONOREPO root: a bare `push origin` force-pushed the monorepo's
     # HEAD over Gitea main and sent the GitHub token to Gitea over plain http.
-    git_auth -C "$clone" push --force "$remote_url" "HEAD:main"
+    # A live wiki never force-pushes: main fast-forwards to master, and a main that
+    # moved on its own is reported instead of overwritten.
+    if [[ "$(_satellite_history_mode "$sat_id")" == "live" ]]; then
+      git_auth -C "$clone" push "$remote_url" "HEAD:main" \
+        || echo "  ⚠️  ${repo}: main moved on its own — not overwritten (live history)." >&2
+    else
+      git_auth -C "$clone" push --force "$remote_url" "HEAD:main"
+    fi
   fi
 }
 
@@ -2108,24 +2140,38 @@ _mirror_git_identity() {
     --check-author "$GIT_AUTHOR_NAME" "$GIT_AUTHOR_EMAIL"
 }
 
-# Publish history mode for a satellite: "live" or "mirror" (default).
-#   mirror = squashed orphan snapshot, force-pushed (read-only; PRs overwritten).
+# Publish history mode for a satellite: "live" (default) or "mirror".
 #   live   = append-only real history, normal commit + push (PRs accepted).
+#   mirror = squashed orphan snapshot, force-pushed (read-only; PRs overwritten).
 # Source of truth: the per-satellite `history:` field in scripts/satellite-map.yaml.
+# Only an explicit `history: mirror` opts out. An unreadable map also yields
+# live: it never force-pushes, so a broken map cannot wipe a satellite's PRs.
 _satellite_history_mode() {
   local sat_id="$1"
-  python3 - "$sat_id" <<PY 2>/dev/null || echo mirror
+  python3 - "$sat_id" <<PY 2>/dev/null || echo live
 import sys, yaml
 from pathlib import Path
 sat = sys.argv[1]
 m = yaml.safe_load(Path("${ROOT}/scripts/satellite-map.yaml").read_text(encoding="utf-8"))
 for s in m.get("satellites") or []:
     if s.get("id") == sat:
-        print("live" if str(s.get("history", "mirror")).strip().lower() == "live" else "mirror")
+        print("mirror" if str(s.get("history", "live")).strip().lower() == "mirror" else "live")
         break
 else:
-    print("mirror")
+    print("live")
 PY
+}
+
+# Glama (and similar) pin a ref of the satellite. Both history modes move the stable
+# tag glama-build to the new tip: a mirror push invalidates old SHAs, and a live tip
+# moves on with every sync. Moving a tag rewrites no branch history.
+_move_glama_tag() {
+  local sat_id="$1"
+  if [[ "$sat_id" == "aimarket-mcp" || "$sat_id" == "aimarket-oracle-gateway" ]]; then
+    git tag -f glama-build HEAD
+    git_auth push --force origin refs/tags/glama-build 2>/dev/null || true
+    echo "  🏷️  Updated tag glama-build (pin this on Glama, not an old commit SHA)"
+  fi
 }
 
 # Body is ( … ), not { … }, ON PURPOSE: this function cd's into the satellite
@@ -2288,6 +2334,7 @@ PY
       echo "         ./scripts/import_satellite_pr.sh ${sat_id}"
       return 1
     }
+    _move_glama_tag "$sat_id"
     if command -v python3 >/dev/null 2>&1; then
       python3 "$ROOT/scripts/prune_github_collaborators.py" "$GITHUB_ORG" "$repo" 2>/dev/null || true
     fi
@@ -2316,13 +2363,7 @@ PY
     echo "  ⚠️  Push failed — check GH_PAT/GITHUB_TOKEN permissions"
     return 1
   }
-  # Glama (and similar) pin commit SHAs — squashed force-push invalidates old SHAs.
-  # Move a stable tag so admins can pin refs/tags/glama-build instead of a dead hash.
-  if [[ "$sat_id" == "aimarket-mcp" || "$sat_id" == "aimarket-oracle-gateway" ]]; then
-    git tag -f glama-build HEAD
-    git_auth push --force origin refs/tags/glama-build 2>/dev/null || true
-    echo "  🏷️  Updated tag glama-build (pin this on Glama, not an old commit SHA)"
-  fi
+  _move_glama_tag "$sat_id"
   if command -v python3 >/dev/null 2>&1; then
     python3 "$ROOT/scripts/prune_github_collaborators.py" "$GITHUB_ORG" "$repo" 2>/dev/null || true
   fi
@@ -2535,6 +2576,11 @@ else:
       extra_excludes="$(_python_map exclude-paths cite-desks)"
       export_simple "$sat_id" "cite-desks" "cite-desks" "mit" "$extra_excludes"
       ;;
+    esim-kit)
+      local extra_excludes
+      extra_excludes="$(_python_map exclude-paths esim-kit)"
+      export_simple "$sat_id" "esim-kit" "esim-operator-kit" "mit" "$extra_excludes"
+      ;;
     emberline)
       echo "ERROR: emberline is a nested desk, not a top-level GitHub repo." >&2
       echo "        Parent satellite is cite-desks → alexar76/cite-desks." >&2
@@ -2594,6 +2640,11 @@ else:
       local extra_excludes
       extra_excludes="$(_python_map exclude-paths histor)"
       export_simple "$sat_id" "histor" "histor" "mit" "$extra_excludes"
+      ;;
+    emporion)
+      local extra_excludes
+      extra_excludes="$(_python_map exclude-paths emporion)"
+      export_simple "$sat_id" "emporion" "emporion" "mit" "$extra_excludes"
       ;;
     use-cases-portal)
       local extra_excludes

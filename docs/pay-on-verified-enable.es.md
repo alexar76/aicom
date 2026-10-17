@@ -146,3 +146,8 @@ asientos más de otros linajes.
 
 Opcional: un tribunal de apelación (`AIMARKET_APPEAL_METIS_URL`, `AIMARKET_APPEAL_WINDOW_S`) — vea
 [aimarket-hub/docs/pay-on-verified.md](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#appeals).
+
+Opcional: un verificador distinto por capacidad (`AIMARKET_VERIFY_ROUTES`), por ejemplo la comprobación
+exacta de GAIA para su control de dispositivos con pago verificado en lugar del jurado de LLM. Una ruta
+inutilizable rechaza el bloque `verify`; nunca recurre al verificador por defecto. Vea
+[las rutas de verificador](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#verifier-routes).

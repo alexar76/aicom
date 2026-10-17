@@ -80,7 +80,7 @@ Ces six laboratoires ne sont **pas** des pairs de la fédération LIVE. Platon s
 | AIMarket Hub **UNI** | [uni.modelmarket.dev](https://uni.modelmarket.dev) | Catalogue parallèle scellé — [uni-and-live.fr.md](../uni-and-live.fr.md) |
 | Portail des oracles | [oracles.modelmarket.dev](https://oracles.modelmarket.dev) | 17 produits de mathématiques vérifiables |
 | Agent Lottery | [lottery.modelmarket.dev](https://lottery.modelmarket.dev) | Consommateur canonique d'oracles |
-| Démos de l'écosystème | [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev) | Vue d'ensemble de la stack |
+| Démos de l'écosystème | [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/) | Vue d'ensemble de la stack |
 | Alien Monitor **UNI** | [monitor-uni.modelmarket.dev/](https://monitor-uni.modelmarket.dev/) | Graphe 3D de la bulle · `ALIEN_MODE=universe` |
 | Alien Monitor **LIVE** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | Graphe 3D de l’argent live · `ALIEN_MODE=real` |
 | Métriques de production | [ecosystem-status API](https://magic-ai-factory.com/api/public/ecosystem-status) · [docs](../production-metrics.md) | RPS, latence, uptime, incidents |
@@ -172,7 +172,7 @@ GAIA (iot.modelmarket.dev) — ancré device_id, ~$0.002 sauf mention.
 | gaia.rail.read@v1 | rail (Trafic ferroviaire) | fintraffic-rail-01 | positions ferroviaires Fintraffic Digitraffic CC BY 4.0 ; rail FI seulement |
 | gaia.drought.read@v1 | drought (Sécheresse) | usdm-01 | U.S. Drought Monitor, stats hebdo par État ; créditer NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
-| gaia.energy.read@v1 | energy (Énergie) | em-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
+| gaia.energy.read@v1 | energy (Énergie) | em-01, plug-sim-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.reservoir.read@v1 | reservoir (Reservoirs) | usace-keys-01, usace-pine-01, usace-deni-01, usace-huds-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.atmosphere.read@v1 | atmosphere (Atmosphère) | cams-* + lat/lon acheteur | toute coordonnée acheteur ; CAMS CC BY 4.0 ; hébergement commercial requis |
 | gaia.dart.read@v1 | dart (Bouées DART) | noaa-dart-01, dart-* (les 43 actifs) | toutes les stations actives du répertoire NDBC ; jauge, pas alerte tsunami |
@@ -181,6 +181,8 @@ GAIA (iot.modelmarket.dev) — ancré device_id, ~$0.002 sauf mention.
 | gaia.solar.read@v1 | solar (Irradiation solaire) | solar-* + lat/lon acheteur | toute coordonnée acheteur ; coordonnée source NASA POWER renvoyée |
 | gaia.snow.read@v1 | snow (Manteau neigeux) | snow-* + lat/lon acheteur en CONUS | toute coordonnée acheteur en CONUS ; cellule SNODAS exacte renvoyée |
 | gaia.land_temperature.read@v1 | land_temperature (Température terrestre) | lst-* + lat/lon acheteur | toute coordonnée acheteur ; cellule Sentinel-3 SLSTR renvoyée |
+| gaia.power.price.read@v1 | power_price (Prix de l'électricité) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | prix de gros du lendemain par zone de dépôt (SMARD, CC BY 4.0 ; 15 zones) ; pas un tarif de détail |
+| gaia.imagery.read@v1 | imagery (Imagerie satellite) | s2-l2a-01 + lat/lon acheteur (5 points vitrine) | toute coordonnée terrestre ; un pixel de 10–20 m de la dernière scène Sentinel-2 L2A sans nuages ; lire les indices avec la classe de scène ; contient des données Copernicus Sentinel modifiées |
 
 GAIA plumbing (pas un pin carte)
 
@@ -189,6 +191,10 @@ GAIA plumbing (pas un pin carte)
 | gaia.window@v1 | N readings of one device_id in one invoke |
 | gaia.verify@v1 | plausibility verdict as a sellable good |
 | gaia.fleet.status@v1 | device registry incl. pinned pubkeys — free |
+| gaia.place.resolve@v1 | place name or coordinate → one place and the reads that cover it (GeoNames, CC BY 4.0) — free |
+| gaia.power.window@v1 | cheapest window of N hours in a bidding zone's published day-ahead prices, with the prices used and their SHA-256 |
+| gaia.actuator.list@v1 | the operator's actuators: limits, relay state, pinned keys, kill switch — free |
+| gaia.actuate@v1 | switch a plug on for N s or off; $0.05, paid only for the effect its own meter measures (pay-on-verified) |
 
 Composites ATLAS (atlas.modelmarket.dev) — artefacts de décision facturables.
 
@@ -210,7 +216,7 @@ Composites ATLAS (atlas.modelmarket.dev) — artefacts de décision facturables.
 | atlas.field.posterior@v1 | 0.08 | postérieur GP spatial du snapshot LIVE ; interpolation, pas une prévision |
 | atlas.field.shape@v1 | 0.06 | persistance H0 des pins in-situ LIVE ; pas Betti-1 ; pas un AQI |
 
-Couches carte (46): weather=Météo; air=Air; tide=Marée; river=Rivières; marine=Marin; ghg=GES; grid=Réseau (carbone); quake=Séismes; energy=Énergie; fire=Incendies; radiation=Radiation; jamming=Brouillage GNSS; gnss=Intégrité GNSS; traffic=Trafic edge; events=Événements naturels; spacewx=Météo spatiale; lightning=Foudre; alerts=Alertes; argo=Flotteurs Argo; geomag=Géomagnétisme; iot=IoT edge; flood=Crue; effis=Feux EFFIS; volcano=Volcans; ais=AIS public; tsunami=Alertes tsunami; cyclone=Cyclones tropicaux; adsb=ADS-B public; smoke=Fumée; water_quality=Qualité de l’eau; dart=Bouées DART; precipitation=Précipitations; radar=État NEXRAD; atmosphere=Atmosphère; radnet=EPA RadNet; soil=Humidité du sol; solar=Irradiation solaire; snow=Manteau neigeux; sea_ice=Glace de mer; land_temperature=Température terrestre; aviation=METAR aviation; road=Météo routière; rail=Trafic ferroviaire; drought=Sécheresse; reservoir=Reservoirs; uv=UV forecast
+Couches carte (49): weather=Météo; air=Air; tide=Marée; river=Rivières; marine=Marin; ghg=GES; grid=Réseau (carbone); quake=Séismes; energy=Énergie; fire=Incendies; radiation=Radiation; jamming=Brouillage GNSS; gnss=Intégrité GNSS; traffic=Trafic edge; events=Événements naturels; spacewx=Météo spatiale; lightning=Foudre; alerts=Alertes; argo=Flotteurs Argo; geomag=Géomagnétisme; iot=IoT edge; flood=Crue; effis=Feux EFFIS; volcano=Volcans; ais=AIS public; tsunami=Alertes tsunami; cyclone=Cyclones tropicaux; adsb=ADS-B public; smoke=Fumée; water_quality=Qualité de l’eau; dart=Bouées DART; precipitation=Précipitations; radar=État NEXRAD; atmosphere=Atmosphère; radnet=EPA RadNet; soil=Humidité du sol; solar=Irradiation solaire; snow=Manteau neigeux; sea_ice=Glace de mer; land_temperature=Température terrestre; aviation=METAR aviation; road=Météo routière; rail=Trafic ferroviaire; drought=Sécheresse; reservoir=Reservoirs; uv=UV forecast; power_price=Prix de l'électricité; imagery=Imagerie satellite; actuator=Actionneurs
 
 <!-- END GENERATED physical-capabilities -->
 
@@ -254,7 +260,7 @@ C4 visuel + déploiement : [ecosystem-architecture.md](../ecosystem-architecture
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (51 components).
+Run: python3 scripts/sync_knowledge_base.py --write (53 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -285,8 +291,10 @@ Run: python3 scripts/sync_knowledge_base.py --write (51 components).
 - create-aimarket-agent: CLI autonome qui génère des fournisseurs de capacités AIMarket Protocol v2 testés, avec manifestes, signature Ed25519 et packaging Docker. · https://alexar76.github.io/create-aimarket-agent/
 - dioscuri: DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS). · https://alexar76.github.io/dioscuri/
 - dolos: DOLOS — red team dynamique EVM pour la bulle UNI : forke l'Anvil de la bulle et lance de vraies transactions d'exploit contre les contrats déployés pour prouver quels défauts sont réels face au bruit de l'analyse statique ; découvertes signées Ed25519 ; uniquement sur la chaîne sandbox il exécute le cycle complet attaque->correction->forge-test->redéploiement->réattaque. Ne touche jamais une chaîne qu'il ne peut jeter ; une découverte mainnet est consultative. · https://dolos.modelmarket.dev/
+- emporion: Public-record facts for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), ECB reference rates, sanctions-list lookups (OFAC SDN, EU, UN) and Bitcoin-anchored timestamps (OpenTimestamps). Each answer is signed with its source, fetch time and SHA-256. The hub sells it at https://modelmarket.dev/providers/emporion. · https://emporion.modelmarket.dev · port 9351
 - escrow-signer: HORKOS détient la seule clé autorisée dans AIMarketEscrow.authorizedHubs pour que le Hub ne la détienne pas — un sélecteur autorisé, un séquestre, une chaîne, et la signature EIP-712 de l'acheteur comme autorité sur chaque montant. · https://alexar76.github.io/escrow-signer/
-- gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
+- esim-kit (repo esim-operator-kit): Intégrez tout opérateur eSIM, y compris ceux qui vendent déjà. Ils proposent des eSIM de voyage aux gens et agents IA sur les rails AIMarket et sont payés comme ils encaissent déjà. Vitrine en 5 langues. Démo : esim.modelmarket.dev. · https://esim.modelmarket.dev/
+- gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, day-ahead power prices from SMARD, Sentinel-2 imagery at any land point, …) plus window/verify. gaia.place.resolve@v1 (free) turns any place name into coordinates and says which reads cover it; gaia.power.window@v1 finds the cheapest hours to run a load; gaia.actuate@v1 switches an operator's metering plug and is paid only for the effect its meter measures. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
 - helios: HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve. · https://alexar76.github.io/helios/
 - hephaestus: The forge — compose capability chains from the live signed Hub catalogue, estimate cost and latency BEFORE spending, run pipelines through the factory executor, and keep a signed bill of materials with hop-level blame. Studio UI is hub-served; core library is framework-free. · https://modelmarket.dev/studio
 - hestia: HESTIA — le runtime hébergé : isolé, pour les fournisseurs de capacité AIMarket sur les machines de l’opérateur. Pas le catalogue du Hub, pas un job board, pas Factory. Les agents n’apparaissent qu’après un déploiement signé sur cet hôte. · https://hestia.modelmarket.dev · port 9480

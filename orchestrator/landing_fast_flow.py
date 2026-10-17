@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -11,6 +12,20 @@ from typing import Any
 from core.json_state import write_text_atomic
 
 _LANDING_FAST_JSON = Path(__file__).resolve().parents[1] / "config" / "pipeline_flow_landing_fast.json"
+
+
+def landing_title(idea: str) -> str:
+    """A product name from the visitor's idea: no markdown, no word cut in half.
+
+    `idea[:80]` went to the public storefront as "**SignalForge Control Plane** — wow marketing
+    landing for an AI-agent orchestrat". Emphasis markers are dropped, a name set off by a dash
+    is kept on its own, and anything longer ends at the last whole word within 80 characters.
+    """
+    text = re.sub(r"\s+", " ", re.sub(r"(\*\*|__|`|^#+\s*)", "", idea or "")).strip()
+    head = re.split(r"\s[—–]\s|\s-\s|[.!?](?:\s|$)", text, maxsplit=1)[0].strip()
+    if len(head) > 80:
+        head = head[:80].rsplit(" ", 1)[0].rstrip(",;:")
+    return head or "Landing"
 
 
 @lru_cache(maxsize=1)
@@ -85,7 +100,7 @@ def write_landing_mini_spec(
     """Programmatic marketing landing spec — no LLM round-trip."""
     from agents.product_profile import MARKETING_LANDING
 
-    title = idea.strip()[:80] or "Landing"
+    title = landing_title(idea)
     spec_inner: dict[str, Any] = {
         "product_name": title,
         "description": idea.strip(),

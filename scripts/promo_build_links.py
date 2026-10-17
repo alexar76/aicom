@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate UTM-tracked launch links from promo/utm/campaigns JSON."""
+"""Generate UTM links from the adjacent PromoMaterials/aicom working directory."""
 
 from __future__ import annotations
 
@@ -18,9 +18,10 @@ def build_url(base_url: str, path: str, params: dict[str, str]) -> str:
 
 
 def main() -> int:
+    promo_dir = Path(__file__).resolve().parents[2] / "PromoMaterials" / "aicom"
     ap = argparse.ArgumentParser(description="Build promo UTM links markdown table")
-    ap.add_argument("--in", dest="input_path", default="promo/utm/campaigns.example.json")
-    ap.add_argument("--out", dest="output_path", default="promo/utm/generated-links.md")
+    ap.add_argument("--in", dest="input_path", default=str(promo_dir / "utm/campaigns.example.json"))
+    ap.add_argument("--out", dest="output_path", default=str(promo_dir / "utm/generated-links.md"))
     args = ap.parse_args()
 
     src = Path(args.input_path)

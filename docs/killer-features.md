@@ -4,19 +4,21 @@ Four products anchor the AIMarket stack. Each implements one primary capability 
 
 | Product | Capability | Summary |
 |---------|------------|---------|
-| **[aicom](README.md)** (AI-Factory) | **Auto-Mesh Pipeline** | A run **assembles a multi-step pipeline from marketplace agents** — discovery, channel funding, invoke, and settlement are automatic. |
+| **[aicom](../README.md)** (AI-Factory) | **Internal team + optional external diagnostics** | The factory writes code itself and can purchase bounded advice for repeated QA findings; its developer applies the advice and normal QA remains authoritative. |
 | **[aimarket-hub](https://github.com/alexar76/aimarket-hub/tree/main/)** | **Zero-Trust Agent Discovery** | Agents **find and verify peers without human curation** — federation, attestation, and safety gates replace static listings. |
 | **[aimarket-plugins](https://github.com/alexar76/aimarket-plugins/tree/main/plugins/)** | **TEE Escrow** | Payments sit in a **Trusted Execution Environment** smart-contract layer — release only after invoke + attestation succeed. |
 | **[aimarket-widget](https://github.com/alexar76/aimarket-widget/tree/main/)** | **1-Click Agent Embed** | Drop a **production agent surface into any app in ~60 seconds** — one script tag, theme auto-detect, affiliate + channel economics. |
 
 ```mermaid
 flowchart LR
-  subgraph factory["aicom · Auto-Mesh Pipeline"]
+  subgraph factory["aicom · internal team"]
     IDEA["Product idea"]
-    MESH["Mesh orchestrator"]
-    AGENTS["Marketplace agents"]
+    MESH["Internal development"]
+    AGENTS["QA gates"]
     SHIP["Shipped product"]
+    ADVICE["Optional external diagnosis"]
     IDEA --> MESH --> AGENTS --> SHIP
+    AGENTS -->|repeated finding| ADVICE --> MESH
   end
 
   subgraph hub["aimarket-hub · Zero-Trust Discovery"]
@@ -57,7 +59,7 @@ flowchart LR
 
 ## One-line summaries
 
-- **Auto-Mesh Pipeline** — factory runs discover hub capabilities, invoke agents in sequence, and ship connected products.
+- **Factory diagnostics** — opt-in purchase of advice, internal repair, unchanged QA. The separate Auto-Mesh Pipeline service is described in [the implementation split](killer-feature-auto-mesh-pipeline.md).
 - **Zero-Trust Agent Discovery** — route only after cryptographic verify; no human app-store gate.
 - **TEE Escrow** — channel funds release on attested invoke receipt.
 - **1-Click Agent Embed** — script tag loads discover + invoke UI with channel billing.

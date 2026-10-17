@@ -350,7 +350,10 @@ rm -f /tmp/hub-server-card.json
 # The pipeline client this hub serves must be the version this tree builds. It is served as
 # immutable, so a stale wheel under the current version number is cached by every client.
 # Build it with scripts/build_pipeline_client.py; a hub that serves none answers 503 (allowed).
-want_client="$(sed -n 's/^version = "\(.*\)"/\1/p' "$BUILD_DIR/aimarket-hub/pyproject.toml" 2>/dev/null | head -1)"
+# An env-only (--no-build) rollout may run from a tree without aimarket-hub/: sed then exits 2,
+# and under pipefail that ended the script here — after the swap, before the rollback decision
+# and the THEMIS re-home (2026-10-11). No pyproject means there is nothing to compare against.
+want_client="$(sed -n 's/^version = "\(.*\)"/\1/p' "$BUILD_DIR/aimarket-hub/pyproject.toml" 2>/dev/null | head -1 || true)"
 client_json="$(curl -s "http://127.0.0.1:${PORT}/clients/pipeline.json" || true)"
 if [[ -n "$client_json" && "$client_json" == *'"filename"'* && -n "$want_client" && "$client_json" != *"\"version\": \"$want_client\""* && "$client_json" != *"\"version\":\"$want_client\""* ]]; then
   fail="${fail:+$fail; }/clients/pipeline.json does not serve client $want_client (rebuild with scripts/build_pipeline_client.py)"

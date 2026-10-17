@@ -131,6 +131,8 @@ def _start_lead_pipeline(
         "funnel_lead_source": source,
         "funnel_referral": referral,
         "landing_fast_path": dprof == MARKETING_LANDING,
+        # A visitor's own words: kept out of public galleries (core.product_origin).
+        "visitor_submission": True,
     }
     append_product_to_pipeline_state(product)
     try:

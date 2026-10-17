@@ -1,5 +1,9 @@
 # 运行自己的枢纽并加入联邦
 
+<!-- sensor-operator-guide -->
+> 你有气象站或空气质量传感器吗？[通过自己的 Hub + GAIA 销售读数](sensor-operator.zh.md)。
+<!-- /sensor-operator-guide -->
+
 > **English:** [join-the-federation.md](./join-the-federation.md) · **Русский:** [join-the-federation.ru.md](./join-the-federation.ru.md) · **Español:** [join-the-federation.es.md](./join-the-federation.es.md) · **Français:** [join-the-federation.fr.md](./join-the-federation.fr.md)
 >
 > 两条命令启动枢纽。一个请求头让别人看见你。之后的准入是自动的：沙箱评估枢纽 *实际做了什么*，而不是它 *怎么写自己*。
@@ -14,8 +18,9 @@
 # [pqc] 安装后量子 (ML-DSA-65) 验证器。没有它，你的枢纽无法验证
 # 每个 AIMarket 枢纽发布的混合签名，也就一个都索引不到。
 pip install "aimarket-hub[pqc]"
-# 自己也用混合签名 (Ed25519 + ML-DSA-65)；对等方会固定这两把密钥
-export AIMARKET_PQC=1
+# 设置保存到 data/aimarket.env（Ed25519 + ML-DSA-65 混合签名、管理员令牌），
+# 并上架免费的 hub.ping@v1，供其他枢纽的准入沙箱运行
+aimarket quickstart --name "My hub"
 aimarket serve          # → http://localhost:9083
 ```
 
@@ -32,8 +37,7 @@ curl -s http://localhost:9083/.well-known/ai-market.json | jq .
 [运营者快速上手](https://github.com/alexar76/aimarket-hub/blob/main/docs/operator-quickstart.zh.md) ·
 [后量子迁移](pqc-migration.zh.md)。
 
-Docker：包内有 `Dockerfile.standalone`（它会安装 `[pqc]` 验证器）和 `docker-compose.yml`。
-请传入 `AIMARKET_PQC=1` 并保留数据卷：两把密钥都在其中。
+Docker：在包仓库的克隆目录中运行 `docker compose run --rm hub quickstart --name "My hub"`，然后 `docker compose up -d`。密钥、数据库和设置都在 `hub_data` 卷上——请保留它。Railway、Render 和 Fly 的配置文件也在同一仓库：[在平台上运行](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-on-a-platform.zh.md)。
 
 ## 2. 指向你要读取的枢纽
 
@@ -56,6 +60,8 @@ GET /.well-known/ai-market.json
 X-AIMarket-Crawler: https://your-hub.example
 ```
 
+敲门之前，`aimarket doctor --url https://your-hub.example` 会在你的枢纽上运行第 4 节所述的同一套准入检测，并告诉你要修什么。
+
 显式宣布：
 
 ```bash
@@ -64,7 +70,7 @@ curl -X POST https://their-hub.example/ai-market/v2/federation/announce \
   -d '{"hub_url": "https://your-hub.example", "hub_name": "Your Hub"}'
 ```
 
-返回 `200`：`status: pending`、`trusted: false`、`assay_scheduled: true`。
+返回 `200`：`status: pending`、`trusted: false`、`assay_scheduled: true`，以及可查看结论的 `assay_url`。
 成为可见不需要凭证。叩门本身不会让你变成 trusted。
 
 ## 4. 叩门之后（自动）
@@ -73,9 +79,9 @@ flowchart TD
     A["你的枢纽叩门<br/>POST /ai-market/v2/federation/announce"] --> C["pending — 已记录，未索引"]
     C --> E{"硬校验，fail-closed<br/>公网 URL · schema · Ed25519 · 新鲜度 · 同源 invoke"}
     E -- "任一失败" --> F["fail — 留在 pending"]
-    E -- "全部通过" --> G{"有公开免费的 capability 吗？"}
-    G -- "有" --> H["沙箱 POST，至多 3 个候选<br/>第一份签名回执胜出"]
-    G -- "没有" --> I["敲最便宜的付费能力<br/>但不付款"]
+    E -- "全部通过" --> G{"有它自己的免费 capability 吗？<br/>（转售的只对纯聚合器才算）"}
+    G -- "有" --> H["沙箱 POST，至多 3 个它自己的<br/>第一份签名回执胜出"]
+    G -- "没有" --> I["敲它最便宜的付费能力<br/>但不付款"]
     I --> J{"402 是否给出轨道、收款方<br/>以及与你自己目录一致的价格？"}
     H --> K["分析真实返回"]
     J -- "是" --> K
@@ -171,8 +177,10 @@ curl -s "https://your-hub.example/ai-market/v2/federation/assay?url=https://stra
 1. 有效的 `.well-known` 与清单。
 2. 签署清单。
 3. 新鲜的 `generated_at`。
-4. 至少一项 **公开免费** capability 供沙箱探测。纯付费枢纽会停在 `review`，直到人工例外。
+4. 至少一项**你自己的免费** capability（`quickstart` 为此上架 `hub.ping@v1`），或一项付费能力，其 `402` 报出你目录里的价格。沙箱探测的是你自己的能力，而不是你转售的。敲门之前先用 `aimarket doctor` 检查。
 5. Announce（或去爬他们）。其余自动完成。
+
+这些都不需要枢纽：`aimarket node` 在你已经运行的 API 旁提供这些文档和收据，并原样透传 x402——[运行节点](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-a-node.zh.md)。
 
 ## 9. 相关
 

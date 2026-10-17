@@ -33,7 +33,7 @@ issued: section 12 forbids it, so no code path in this package produces one.
 
 from __future__ import annotations
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 __spec_version__ = "2.0.0"
 
 from .digest import (  # noqa: E402

@@ -162,6 +162,39 @@ def test_a_timeout_is_reported_not_raised(monkeypatch):
     assert code == 124 and parsed is None and "timed out" in err
 
 
+def test_a_hub_outside_docker_is_reached_through_its_own_exec_wrapper(monkeypatch):
+    """independentai.network runs from a venv under systemd: same sweep, different prefix."""
+    seen = []
+
+    class Done:
+        returncode, stdout, stderr = 0, '{"config": {}}', ""
+
+    def run(cmd, **k):
+        seen.append(cmd)
+        return Done()
+
+    monkeypatch.setattr(sweep.subprocess, "run", run)
+    monkeypatch.delenv("AIMARKET_HUB_EXEC", raising=False)
+    sweep.run_cli("status")
+    assert seen[-1][:3] == ["docker", "exec", sweep.CONTAINER]
+    monkeypatch.setenv("AIMARKET_HUB_EXEC", "/usr/local/sbin/independent-hub-exec --quiet")
+    sweep.run_cli("status")
+    assert seen[-1][:3] == ["/usr/local/sbin/independent-hub-exec", "--quiet", "python"]
+    sweep.signer_endpoint()
+    assert seen[-1][:3] == ["/usr/local/sbin/independent-hub-exec", "--quiet", "printenv"]
+
+
+def test_the_channel_list_reads_the_hubs_own_database_path(monkeypatch):
+    seen = []
+
+    class Done:
+        returncode, stdout, stderr = 0, "[]", ""
+
+    monkeypatch.setattr(sweep.subprocess, "run", lambda cmd, **k: seen.append(cmd) or Done())
+    sweep.read_escrow_channels("0x" + "11" * 20)
+    assert "AIMARKET_CHANNELS_DB_PATH" in seen[-1][-1] and "data/channels.db" in seen[-1][-1]
+
+
 # ── publishing ───────────────────────────────────────────────────────────────────────────
 
 def test_the_report_is_published_atomically(monkeypatch, tmp_path):

@@ -7,17 +7,17 @@
   "explorer": "https://basescan.org",
   "source_of_record": "docs/onchain-journal.md",
   "owner_wallet": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
-  "redeployed_at": "2026-10-08",
+  "redeployed_at": "2026-10-13",
   "contracts": {
     "USDC": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     "AIAgentLottery": "0xEcB3A01b44C5b78210F72768C446c3E4E6175af4",
     "AIMarketEscrow": "0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb",
     "AIMarketCapabilityNFT": "0x544dcdd8B01A7ee1444bf89A5381aA981735a281",
-    "AgentCollateralVault": "0x1BF39f659bd47bf0a15294B9e4760C327113AbD9",
-    "AgentListingRegistry": "0xab6E20aE29A4c7C10C6131Da9721aE98201B6600",
-    "AgentLendingPool": "0x36446D8393a39027D1242C1C277FdD9227232298",
-    "PulseAMM": "0xED2792499757dd6d40504b2522f2E99559fc5D22",
-    "AgentAuditPool": "0x96005B0E70ce1F1E0C0977067216aC45043e689b",
+    "AgentCollateralVault": "0xdAa073EDCA17328188Afe5A83394Fc7b5E42081c",
+    "AgentListingRegistry": "0x3636A636262940Ff4E49aC1BCf34b958F589acC9",
+    "AgentLendingPool": "0x51a61d25b799C17A012eB671e3EDe2569E2d9C3d",
+    "PulseAMM": "0x0A70AA84903ecB2E0aF5c435AFd9EDd178559E47",
+    "AgentAuditPool": "0xE0C711Ef82F9C97eefBF4C0e715de1b09F8a6160",
     "PulseDistributor": "0x325aC681FDd14c23DE074c15ac2Ed07702e38596",
     "PlonkVerifier": "0x1914D8a04dd65c6d8C888B98A31757F79B8e85c5"
   },
@@ -115,5 +115,39 @@
       "AIMarketEscrow": 52337280
     },
     "source_verified": "Sourcify exact_match (2026-10-08)"
+  },
+  "acex_redeploy_2026_10_13": {
+    "reason": "Closes the ACEX rows of the 2026-10-08 live-vs-source audit (docs/onchain-journal.md): the 2026-08-22 set predates 3183fcb9d (one observation weighs at most a day, a baseline needs three samples), 14b48938a (AgentAuditPool's TWAP comes from PulseAMM's price x time accumulator, so a crash held across one block boundary no longer counts for a day and cannot manufacture a default; the quote token is set once by the owner; a squatted unapproved id can be evicted with its collateral claimable by the agent wallet) and ff589b06c (the vault refuses collateral before its registry is set). AgentShareToken's ERC20InsufficientBalance fix (embedded in the registry bytecode) ships with it.",
+    "superseded": {
+      "AgentCollateralVault": "0x1BF39f659bd47bf0a15294B9e4760C327113AbD9",
+      "AgentListingRegistry": "0xab6E20aE29A4c7C10C6131Da9721aE98201B6600",
+      "AgentLendingPool": "0x36446D8393a39027D1242C1C277FdD9227232298",
+      "PulseAMM": "0xED2792499757dd6d40504b2522f2E99559fc5D22",
+      "AgentAuditPool": "0x96005B0E70ce1F1E0C0977067216aC45043e689b"
+    },
+    "superseded_held_funds": "none — all five read 0 USDC and 0 ETH immediately before the switch, so the old set is abandoned rather than migrated (same precedent as acex_redeploy_2026_08_22)",
+    "unchanged": [
+      "PulseDistributor",
+      "AIAgentLottery",
+      "AIMarketEscrow",
+      "AIMarketCapabilityNFT",
+      "PlonkVerifier",
+      "USDC"
+    ],
+    "source_commit": "3bfd71938 (ACEX sources as of ff589b06c); acex/contracts/evm/broadcast/DeployACEX.s.sol/8453/run-1791923741945.json on the operator machine",
+    "txs": {
+      "AgentCollateralVault": "0x4bbfe839a555ca61572ebeb8a33b065b0d84454888850101afaeb96476d1d4a3",
+      "AgentListingRegistry": "0xc1f279750ab796d9ce683c5401226f5a016fd28f04eca971719f7e9588156e67",
+      "vault.setRegistry": "0xb2b8b0b1203629a8925ee776fb101720a8ffcfae7fd28687f3c6b7e41c59e14d",
+      "AgentLendingPool": "0x1c56c24442d1aac477e32cca79f81ea0ef1c10b01bb47f73862e20c42aa4aa41",
+      "vault.setLendingPool": "0x05f0c91fadebb4b614e1a560af1817f42d52746a957a9d9aeb4c1b373d757cd6",
+      "PulseAMM": "0x6355ed6b3fbd45070d4472dff224da98a8c6ed092c95ad1af039c61b6cd17595",
+      "amm.setQuoteToken": "0x344c0ca22890d65bffde4e28041518784fffb4656238255c074228d1d351393b",
+      "AgentAuditPool": "0x97600d3cca584b6e8569b479ed1fe83f15e8683f123508b7e4077f530036be11",
+      "registry.setAuditPool": "0x9038e2e9eeec3bf50cee6d5bd1ba1a5fc8d1b89d21a07e1779851a1d2ffd12b5"
+    },
+    "blocks": "52567190-52567198",
+    "gas": "11754602 at 0.00585 gwei = 0.0000687 ETH",
+    "source_verified": "Sourcify exact_match, all five (2026-10-13)"
   }
 }

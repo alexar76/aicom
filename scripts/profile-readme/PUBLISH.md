@@ -11,7 +11,7 @@ Canonical source: **`README.md` in this folder** (same file you are reading from
    `scripts/profile-readme/README.md` from the monorepo (or copy from Gitea `Superowner/aicom`),
    **copy all `README.{ru,es,fr,zh}.md` language portals**,
    **and copy the `assets/` folder** (hero images are referenced by raw URL — without them the
-   profile shows broken images: `alien-monitor-hero.png`, `oracles-hero.gif`).
+   profile shows broken images: `alien-monitor-hero.png`, `oracles-hero.png`).
 
 ```bash
 # From a machine with push access to github.com/alexar76/alexar76
@@ -19,7 +19,7 @@ git clone https://github.com/alexar76/alexar76.git
 cd alexar76
 cp /path/to/aicom/scripts/profile-readme/README.md ./README.md
 cp /path/to/aicom/scripts/profile-readme/README.{ru,es,fr,zh}.md ./
-cp -R /path/to/aicom/scripts/profile-readme/assets ./assets   # alien-monitor-hero.png + oracles-hero.gif
+cp -R /path/to/aicom/scripts/profile-readme/assets ./assets   # alien-monitor-hero.png + oracles-hero.png
 git add README.md README.*.md assets
 git commit -m "profile: Alien Monitor ecosystem hero + start-here CTAs"
 git push origin main
@@ -45,6 +45,6 @@ Whenever you change `scripts/profile-readme/README.md` **or anything in `assets/
 - [ ] Language bar EN · RU · ES · FR · ZH appears under the tagline
 - [ ] https://github.com/alexar76 first screen is **Playground · Alien Monitor · School** (no `git clone` above the fold), then the heroes + ecosystem SVG, then a 5-row audience table, then repo catalog
 - [ ] `https://raw.githubusercontent.com/alexar76/alexar76/main/assets/alien-monitor-hero.png` loads (no 404)
-- [ ] `https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.gif` loads (no 404)
+- [ ] `https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png` loads (no 404)
 - [ ] Links open: magic-ai-factory.com, modeldev.modelmarket.dev, x.com/build_ai_infra, modelmarket.dev, youtu.be/Gg9a52-ZbNA
 - [ ] No links to `aicom/tree/main/<satellite>` (those 404 after the split)

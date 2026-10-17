@@ -16,6 +16,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from agents.dev import _revert_out_of_scope_writes
+from tests.split_source import read_split
 
 FINDINGS = (
     '[{"title": "GITHUB_HOUSE_CONTRACT not satisfied: missing required repository files", '
@@ -91,7 +92,7 @@ def test_a_rewrite_of_an_existing_file_gets_no_exemption(tmp_path):
 
 
 def test_the_developer_passes_the_findings_in():
-    dev = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     call = dev[dev.index("out_of_scope = _revert_out_of_scope_writes(") :][:600]
     assert "findings_text=_findings_text," in call
     setup = dev[dev.index("_findings_text = json.dumps(") :][:300]

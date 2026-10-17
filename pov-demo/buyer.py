@@ -53,6 +53,41 @@ HUB = "https://modelmarket.dev"
 RPC = os.environ.get("BASE_RPC", "https://mainnet.base.org")
 CHAIN_ID = 8453
 CAPABILITY = "math.factor@v1"
+
+
+class Task:
+    """What the human asks for: the capability, how to find it, its input and the intent the
+    verifier judges the delivery against."""
+
+    def __init__(self, capability: str, search: str, min_sellers: int, local_only: bool = False):
+        self.capability, self.search, self.min_sellers, self.local_only = capability, search, min_sellers, local_only
+
+    def describe(self, args) -> str:
+        if self.capability == "gaia.actuate@v1":
+            return f"switch {args.actuator} on for {args.duration} s"
+        return f"factor {args.n}"
+
+    def input(self, args) -> dict:
+        if self.capability == "gaia.actuate@v1":
+            return {"actuator_id": args.actuator, "command": "on", "duration_s": args.duration}
+        return {"n": args.n}
+
+    def intent(self, args) -> str:
+        if self.capability == "gaia.actuate@v1":
+            return (f"Switch {args.actuator} on for {args.duration} seconds and prove the effect: "
+                    "a signed command and attested meter readings before and after showing the load drew power.")
+        return f"Return the prime factorization of {args.n}: a list of prime numbers whose product is exactly {args.n}."
+
+
+TASKS = {
+    # Two strangers, one honest and one not: the original Pay-on-Verified walkthrough.
+    "factor": Task(CAPABILITY, "prime factorization", min_sellers=2),
+    # One seller, judged by GAIA's own exact check through the hub's verifier route
+    # (AIMARKET_VERIFY_ROUTES). Only the hub's LOCAL listing holds money in escrow: the
+    # federated listing of the same capability is never verified, so it is filtered out.
+    "actuate": Task("gaia.actuate@v1", "switch a device pay only for the measured effect", min_sellers=1,
+                    local_only=True),
+}
 UA = {"user-agent": "pov-demo-buyer/1 (+https://modelmarket.dev)", "content-type": "application/json"}
 
 
@@ -210,21 +245,27 @@ def contracts(hub: str) -> dict:
             sys.exit(f"the hub declares no {need} address; cannot pay through escrow")
     return {"escrow": roles["escrow"], "escrow_hub": roles["escrow_hub"], "token": roles["token"],
             "verifier": pov.get("verifier"), "threshold": pov.get("score_threshold"),
+            # Per-capability verifier routes: who judges a capability that has one.
+            "routes": {r.get("capabilities"): r.get("verifier") for r in pov.get("routes") or []},
             "appeal_window_s": pov.get("appeal_window_s", 0),
             # A pass is final only after the appeal window, and only then can the hub collect
             # the signature; it must still be valid. The channel itself lives 24 h.
             "auth_lifetime_s": int(min(max(float(pov.get("authorization_min_lifetime_s") or 3600), 3600) + 600, 23 * 3600))}
 
 
-def find_sellers(hub: str) -> list[dict]:
-    q = urllib.parse.urlencode({"intent": "prime factorization", "limit": "25"})
+def find_sellers(hub: str, task: Task | None = None) -> list[dict]:
+    task = task or TASKS["factor"]
+    q = urllib.parse.urlencode({"intent": task.search, "limit": "25"})
     _, doc = http("GET", f"{hub}/ai-market/v2/search?{q}")
-    offers = [m for m in doc.get("matches") or [] if m.get("capability_id") == CAPABILITY]
+    offers = [m for m in doc.get("matches") or [] if m.get("capability_id") == task.capability]
+    if task.local_only:
+        offers = [m for m in offers if (m.get("source_hub") or "local") == "local"]
     return sorted(offers, key=lambda m: m.get("product_id", ""))
 
 
 def hire(hub: str, c: dict, w: Wallet, offer: dict, n: int, deposit: float, log: dict,
-         existing_channel: str = "", existing_steps: list | None = None) -> dict:
+         existing_channel: str = "", existing_steps: list | None = None,
+         task: Task | None = None, args=None) -> dict:
     product, price = offer["product_id"], float(offer["price_per_call_usd"])
     run = {"seller": product, "publisher": offer.get("publisher_id"), "price_usd": price,
            "steps": list(existing_steps or [])}
@@ -265,8 +306,12 @@ def hire(hub: str, c: dict, w: Wallet, offer: dict, n: int, deposit: float, log:
     authorization = {"channelId": run["escrow_channel"], "hub": c["escrow_hub"], "token": c["token"],
                      "amount": str(units(price)), "receiptId": receipt_id, "nonce": nonce, "deadline": deadline,
                      "signature": sig if sig.startswith("0x") else "0x" + sig}
-    intent = (f"Return the prime factorization of {n}: a list of prime numbers whose product is exactly {n}.")
-    invoke = {"product_id": product, "capability_id": CAPABILITY, "source_hub": "local", "input": {"n": n},
+    if task is None or args is None:
+        intent = (f"Return the prime factorization of {n}: a list of prime numbers whose product is exactly {n}.")
+        capability, task_input = CAPABILITY, {"n": n}
+    else:
+        intent, capability, task_input = task.intent(args), task.capability, task.input(args)
+    invoke = {"product_id": product, "capability_id": capability, "source_hub": "local", "input": task_input,
               "payment_authorization": authorization,
               "verify": {"requested": True, "intent": intent, "mode": "auto", "wait": True, "wait_timeout_s": 300}}
     t0 = time.time()
@@ -335,6 +380,10 @@ def main() -> int:
     ap.add_argument("--key-file", default=os.path.expanduser("~/.aicom-pov-buyer.json"))
     ap.add_argument("--hub", default=HUB)
     ap.add_argument("--n", type=int, default=1000009)
+    ap.add_argument("--task", choices=sorted(TASKS), default="factor",
+                    help="factor: two strangers factor N; actuate: GAIA switches a plug, judged by GAIA")
+    ap.add_argument("--actuator", default="plug-sim-01", help="--task actuate: an id from gaia.actuator.list@v1")
+    ap.add_argument("--duration", type=int, default=60, help="--task actuate: seconds on (plug-sim-01: 10-900)")
     ap.add_argument("--deposit", type=float, default=1.00)  # the escrow MIN_DEPOSIT is $1.00
     ap.add_argument("--yes", action="store_true", help="actually move money")
     ap.add_argument("--only", default="", help="hire just this product (e.g. quickfactor)")
@@ -357,30 +406,32 @@ def main() -> int:
         print(f"run log: {out}")
         return 0
     usdc, eth = balance_of(c["token"], w.address), int(rpc("eth_getBalance", [w.address, "latest"]), 16)
-    offers = find_sellers(hub)
+    task = TASKS[args.task]
+    offers = find_sellers(hub, task)
     if args.only:
         offers = [o for o in offers if o["product_id"] == args.only]
     print(f"buyer {w.address}: {usdc / 1e6:.6f} USDC, {eth / 1e18:.6f} ETH")
-    print(f"hub escrow {c['escrow']} debited by {c['escrow_hub']}, verifier {c['verifier']}")
-    print(f"task: factor {args.n}; limit ${args.deposit:.2f} per seller; sellers found: "
+    judge = c.get("routes", {}).get(task.capability) or c["verifier"]
+    print(f"hub escrow {c['escrow']} debited by {c['escrow_hub']}, verifier {judge}")
+    print(f"task: {task.describe(args)}; limit ${args.deposit:.2f} per seller; sellers found: "
           + ", ".join(f"{o['product_id']} (${o['price_per_call_usd']}, {o.get('publisher_id')})" for o in offers))
     need = units(args.deposit) * len(offers)
-    if len(offers) < (1 if args.only else 2):
-        sys.exit("expected two sellers" if not args.only else f"no seller {args.only}")
+    if len(offers) < (1 if args.only else task.min_sellers):
+        sys.exit(f"expected {task.min_sellers} seller(s)" if not args.only else f"no seller {args.only}")
     if usdc < need or eth < 50_000_000_000_000:
         sys.exit(f"fund the buyer first: needs {need / 1e6:.2f} USDC and ~0.00005 ETH")
     if not args.yes:
         print("\ndry run: nothing sent. Re-run with --yes to move money.")
         return 0
     log = {"started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "hub": hub, "buyer": w.address,
-           "n": args.n, "deposit_usd": args.deposit, "contracts": c, "runs": [], "steps": []}
+           "task": args.task, "input": task.input(args), "n": args.n, "deposit_usd": args.deposit, "contracts": c, "runs": [], "steps": []}
     allowance = decode(["uint256"], call(c["token"], sel("allowance(address,address)")
                                          + encode(["address", "address"], [w.address, c["escrow"]])))[0]
     if allowance < need:
         log["steps"].append(w.send(c["token"], sel("approve(address,uint256)")
                                    + encode(["address", "uint256"], [c["escrow"], need]), f"approve ${need / 1e6:.2f}"))
     for offer in offers:
-        hire(hub, c, w, offer, args.n, args.deposit, log)
+        hire(hub, c, w, offer, args.n, args.deposit, log, task=task, args=args)
     for run in log["runs"]:
         print(f"\n── close {run['seller']} ──")
         passed = (run.get("verification") or {}).get("verdict") == "passed"

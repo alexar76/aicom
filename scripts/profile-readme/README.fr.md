@@ -1,5 +1,9 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
+<!-- ecosystem-entry-points -->
+**Commencez ici:** [Présentation de la fabrique](https://modeldev.modelmarket.dev/fr/) · [Atlas de l’écosystème](https://ecosystem.modelmarket.dev/fr/) · [Fabrique et catalogue de produits](https://magic-ai-factory.com/).
+<!-- /ecosystem-entry-points -->
+
 <p align="center"><b>Je construis l’économie ouverte où les agents IA se découvrent, s’engagent et se paient entre eux.</b></p>
 
 <p align="center">
@@ -39,7 +43,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vue d’ensemble de l’écosystème : Factory déploie sur HESTIA ; HESTIA annonce au Hub ; Oracles et METIS alimentent Hub ; ARGUS consomme ; ACEX finance ; SKOPOS observe ; MOMUS cherche ; Treasury paie ; LOGOS analyse la fédération ; Attested Memory garde une mémoire vérifiable pour les agents" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vue d’ensemble de l’écosystème : Factory déploie sur HESTIA ; HESTIA annonce au Hub ; Oracles et METIS alimentent Hub ; ARGUS consomme ; ACEX finance ; SKOPOS observe ; MOMUS cherche ; Treasury paie ; LOGOS analyse la fédération ; Attested Memory garde une mémoire vérifiable pour les agents ; les opérateurs eSIM vendent aux agents via x402 et apportent au Hub des reçus de livraison signés ; EMPORION vend via le Hub des vérifications pour le commerce : TVA de l’UE, LEI, taux de référence de la BCE, filtrage des listes de sanctions et preuves d’horodatage." width="900">
   </a>
 </p>
 
@@ -49,7 +53,7 @@
 
 <p align="center">
   <a href="https://oracles.modelmarket.dev">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.gif" alt="Oracles — dix-sept capacités mathématiques vérifiables pour l’économie des agents : Platon randomness, Chronos VDF, Lattice, Murmuration, Lumen, Colony, Turing, Percola, Fermat, Ablation, Landauer, Sortes, Gauss, Aestus, Betti, Kantor, Fourier — chacune avec des visuels cosmiques 3D LIVE" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png" alt="Oracles — dix-sept capacités mathématiques vérifiables pour l’économie des agents : Platon randomness, Chronos VDF, Lattice, Murmuration, Lumen, Colony, Turing, Percola, Fermat, Ablation, Landauer, Sortes, Gauss, Aestus, Betti, Kantor, Fourier — chacune avec des visuels cosmiques 3D LIVE" width="900">
   </a>
 </p>
 
@@ -156,9 +160,9 @@ Un seul pipeline, dans l’ordre où la confiance et l’argent circulent réell
 | 2 | **Héberger** | **HESTIA** est le runtime hébergé — isolé, sur les machines de l’opérateur ; déploiement signé sur cet hôte. Roster vide ≠ marché vide |
 | 3 | **Admettre** | **THEMIS** décide au moment de la publication — `approve` / `review` / `reject` signés (optionnel) |
 | 4 | **Référencer et invoquer** | Le [protocole](https://github.com/alexar76/aimarket-protocol) **AIMarket** + le [hub](https://github.com/alexar76/aimarket-hub) transportent le catalogue, les canaux de paiement et les appels |
-| 5 | **Fournir** | 17 **oracles** (aléatoire, délai, consensus, mathématiques de confiance) · lectures physiques attestées de **GAIA** · cognition **METIS** |
+| 5 | **Fournir** | 17 **oracles** (aléatoire, délai, consensus, mathématiques de confiance) · lectures physiques attestées de **GAIA** · cognition **METIS** · les **opérateurs eSIM** vendent des eSIM de voyage aux agents via x402 ([kit](https://github.com/alexar76/esim-operator-kit)) · **EMPORION** faits de registre public pour commercer : TVA de l'UE, LEI, taux de la BCE, listes de sanctions, horodatages ([dépôt](https://github.com/alexar76/emporion)) |
 | 6 | **Vérifier** | Cognition **METIS** · Solidity dans un pin avec **BASANOS** · exploits EVM LIVE avec **DOLOS** · HTTP/fédération avec **MOMUS** · MCP tiers avec **WARDEN** · **HISTOR** ce que les serveurs MCP tiers ont annoncé, dans le temps · **Attested Memory**, la mémoire vérifiable que les agents gardent |
-| 7 | **Consommer** | **ARGUS** — le client côté demande réellement exécuté par les humains et les agents |
+| 7 | **Consommer** | **ARGUS** — le client côté demande réellement exécuté par les humains et les agents · il a acheté une eSIM de voyage pour son propriétaire et l'a fait rembourser, sur Base ([cas](https://github.com/alexar76/argus/blob/main/docs/use-case-esim-purchase-refund-fr.md)) |
 | 8 | **Régler** | Séquestre (escrow), canaux de paiement et primes **Treasury**, payés uniquement après vérification indépendante |
 | 9 | **Financer** | **ACEX** valorise et référence les agents, et prête sur leur valeur |
 | 10 | **Observer** | **SKOPOS** observe la flotte · **LOGOS** la fédération · **Alien Monitor** l’ensemble en 3D LIVE |
@@ -180,10 +184,13 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | DOLOS | UNI Anvil (fork) | équipe rouge EVM dynamique · constats Ed25519 |
 | Oracles ×17 | Hub | mathématiques vérifiables signées |
 | GAIA | Hub | lectures attestées du monde physique |
+| Kit d'opérateur eSIM | Hub | offres signées · un nœud de fédération ou le propre hub de l'opérateur · reçus de livraison signés par les acheteurs → `deliveries_30d` |
+| EMPORION | Hub | TVA via VIES · LEI via GLEIF · taux de référence de la BCE · filtrage des listes de sanctions UE / OFAC / ONU · preuves d'horodatage OpenTimestamps — chaque réponse signée avec sa source, son heure de récupération et son SHA-256 ; vendu uniquement via le hub |
 | ATLAS | GAIA | carte planétaire des capteurs couvrant ces lectures |
 | Cite desks | ATLAS / Hub | produits B2B d’évidence qui achètent `atlas.*` / `gaia.*` |
 | METIS | Hub | vérification de la cognition |
 | Hub ↔ ARGUS | — | invocation / règlement · découverte / paiement / consommation |
+| ARGUS / agents | Opérateur eSIM | commande x402 directement sur le portefeuille du vendeur · remboursement d'une eSIM inutilisée |
 | Hub | ACEX | CapShares |
 | SKOPOS | Factory / Hub | observation de la flotte |
 | MOMUS | Factory / Hub | recherche · signature |
@@ -263,6 +270,14 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**gaia**](https://github.com/alexar76/gaia) | **GAIA** — passerelle d’oracle du monde physique : lectures IoT attestées par Ed25519, vérification de plausibilité · [LIVE](https://iot.modelmarket.dev/) · [landing](https://alexar76.github.io/gaia/) · [GHCR](https://github.com/alexar76/gaia/pkgs/container/gaia) |
 | [**atlas**](https://github.com/alexar76/atlas) | **ATLAS** — carte planétaire des capteurs physiques au-dessus de GAIA (12 couches, watchboxes, LIVE/SIM, Analyst apprend automatiquement les SKU, intégration Monitor) · [LIVE](https://atlas.modelmarket.dev/) · [landing](https://alexar76.github.io/atlas/) |
 | [**cite-desks**](https://github.com/alexar76/cite-desks) | **Cite desks** — cinq desks d’évidence indépendants sur les rails AIMarket (Emberline feu, Tideline crue, Solrecord PV, Seamark AIS nordique, Plinth site) : watches, runs planifiés, cite packs, USDC · [famille](https://desk.modelmarket.dev/) · [Emberline](https://emberlinedesk.com/) · fork [alexar76/cite-desks](https://github.com/alexar76/cite-desks) |
+
+### 📶 Commerce réel — les agents achètent de vraies choses
+<sub>Étape 5 pour l'économie réelle : un vendeur que l'agent paie directement, avec remboursements et reçus que la fédération peut compter, et les faits de registre public qu'un agent vérifie avant de traiter avec une entreprise.</sub>
+
+| Dépôt | Ce que c'est |
+| --- | --- |
+| [**emporion**](https://github.com/alexar76/emporion) | **EMPORION** — faits de registre public pour les agents qui commercent : validité du numéro de TVA de l'UE (VIES) avec numéro de consultation, entités juridiques (GLEIF LEI), taux de référence de la BCE, filtrage des listes de sanctions (UE, OFAC SDN avec adresses de portefeuilles, ONU — une recherche, pas une décision) et preuves d'horodatage ancrées dans Bitcoin (OpenTimestamps) ; chaque réponse signée avec sa source, son heure de récupération et son SHA-256 ; 0,001–0,002 $ par appel via le hub · [en ligne](https://emporion.modelmarket.dev/) · [landing](https://alexar76.github.io/emporion/) |
+| [**esim-operator-kit**](https://github.com/alexar76/esim-operator-kit) | **Kit d'opérateur eSIM** — une boutique d'eSIM de voyage pour les gens et un nœud vendeur pour les agents IA (x402 en USDC, remboursement des eSIM inutilisées, reçus de livraison signés), sur eSIM Access, Airalo, eSIM Go ou le propre système de l'opérateur ; rejoint la fédération comme nœud ou comme son propre hub en une commande, `./onboard.sh` · [démo](https://esim.modelmarket.dev) · [guides](https://esim.modelmarket.dev/fr/kit) · [cas réels](https://esim.modelmarket.dev/fr/kit/cases) |
 
 ### 🛡 Confiance et sécurité — qui peut entrer et qui paie pour le découvrir
 <sub>Étape 6, plus le rail de primes. Six contrôles indépendants, chacun signé, à six moments différents : publication, source à un pin, contrats déployés, HTTP LIVE, outil MCP tiers avant son accès à un hôte et registre public de ce qu’annonçait chaque point de terminaison MCP distant du registre officiel, et de ses changements — plus la clé distincte qui paie leurs constats. **DOLOS ne figure qu’ici** : c’est une équipe rouge, pas un outil communautaire ou d’observabilité.</sub>
@@ -374,6 +389,8 @@ L’index de référence se trouve dans la [version anglaise](README.md#az) ; si
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | Build & connect | générateur de squelette de fournisseur |
 | [dioscuri](https://github.com/alexar76/dioscuri) | Communauté et diffusion | agents communautaires jumeaux |
 | [dolos](https://github.com/alexar76/dolos) | Confiance et sécurité | équipe rouge EVM dynamique (isolée dans un fork) |
+| [emporion](https://github.com/alexar76/emporion) | Commerce réel | TVA, LEI, change, sanctions et horodatages |
+| [esim-operator-kit](https://github.com/alexar76/esim-operator-kit) | Commerce réel | eSIM de voyage pour les gens et les agents IA |
 | [gaia](https://github.com/alexar76/gaia) | Monde physique | lectures IoT attestées |
 | [helios](https://github.com/alexar76/helios) | Communauté et diffusion | yaml → vidéo narrée → YouTube |
 | [hestia](https://github.com/alexar76/hestia) | Runtime hébergé | runtime hébergé et isolé · pas le Hub, pas Factory |

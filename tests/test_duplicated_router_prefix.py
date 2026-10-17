@@ -30,6 +30,7 @@ from web.backend.services.duplicate_module_check import (
     _repeated_segment_run,
     find_duplicated_router_prefix,
 )
+from tests.split_source import read_split
 
 
 def _tree(root: Path, files: dict[str, str]) -> Path:
@@ -192,7 +193,7 @@ def test_it_is_wired_into_gate_score_and_blocking_list():
     passed_expr = check[check.index('"passed": not missing') : check.index('"skipped": False')]
     assert "not double_prefix" in passed_expr, "a critical that does not fail its own gate"
 
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     score = dev[dev.index("def _tree_defect_score(") : dev.index("def _revert_out_of_scope_writes")]
     assert "5 * len(find_duplicated_router_prefix(code_root, limit=200))" in score, (
         "the round guard cannot see it, so a round that fixes it scores no improvement"

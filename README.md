@@ -8,6 +8,10 @@
 
 # AI-Factory
 
+<!-- sensor-operator-guide -->
+> Own a weather station or air-quality sensor? [Sell your readings through your own Hub + GAIA](docs/sensor-operator.md).
+<!-- /sensor-operator-guide -->
+
 <p align="center">
   <strong>MIT · self-hosted · idea → shippable web product</strong><br/>
   Part of the <a href="https://ecosystem.modelmarket.dev/">AICOM open agent economy</a>.<br/>
@@ -417,6 +421,7 @@ Production hostname notes: **[docs/production-domain.md](docs/production-domain.
 
 </details>
 
+<a id="try-it"></a>
 <details>
 <summary><strong>Try it — prompts, demo.sh, packaging</strong></summary>
 
@@ -510,6 +515,7 @@ POST /api/admin/discovery/run   # JWT; see OpenAPI /api/docs
 <summary><strong>Documentation index</strong></summary>
 
 - **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)** — illustrated user guide
+- **[External diagnostics](docs/factory-subcontracting.md)** — optional AIMarket purchases for repeated repair failures; budgets, provider contract and recovery (EN / RU / ES / FR / ZH)
 - **[docs/owner-guide.md](docs/owner-guide.md)** — platform owner handbook
 - **[docs/api-integration-guide.md](docs/api-integration-guide.md)** — REST auth, curl examples
 - **[docs/cli-reference.md](docs/cli-reference.md)** — container CLI
@@ -829,13 +835,13 @@ flowchart TB
 
 ### Auto-Mesh Pipeline
 
-**AI-Factory doesn’t stop at code generation.** A pipeline run can **discover marketplace agents, fund a USDT channel, invoke them in sequence, and ship a connected product** — mesh orchestration without hand-wiring each API.
+**AI-Factory writes products with its own agents.** Its optional [external diagnosis flow](docs/factory-subcontracting.md) can buy source-grounded advice through AIMarket after repeated internal repair attempts. The internal developer applies the advice and the existing QA gates remain in charge. It is off until an operator configures an approved provider and budget.
 
 | | |
 |---|---|
-| **What** | Intent → hub discover → multi-agent invoke → QA gates → hub catalog sync |
+| **What** | Repeated QA finding → approved Hub offer → bounded purchase → internal repair → QA |
 | **Why** | Shipped products become discoverable capabilities for later runs |
-| **Deep dive** | [docs/killer-feature-auto-mesh-pipeline.md](docs/killer-feature-auto-mesh-pipeline.md) · [Ecosystem capabilities](docs/killer-features.md) |
+| **Deep dive** | [Factory vs. separate Auto-Mesh service](docs/killer-feature-auto-mesh-pipeline.md) · [Purchase configuration and limits](docs/factory-subcontracting.md) |
 
 Production split: Factory **:9080** · Hub **:9083** → [production-modelmarket-dev.md](docs/production-modelmarket-dev.md)
 
@@ -953,3 +959,7 @@ Release announcements are syndicated by [KERYX](https://github.com/alexar76/dios
 **Smart contracts** (`contracts/evm/`, `contracts/solana/`) use **Ownable-gated admin functions** — only the contract owner can authorize hubs and whitelist tokens. The escrow holds funds in a non-custodial model: users deposit directly into the contract; channel participants control their funds; and there is a 24-hour auto-refund path that does not depend on any privileged account. No upgradeable proxies are used.
 
 **Deployment:** always use the provided deploy scripts (`contracts/evm/script/Deploy.s.sol` for EVM, `contracts/solana/` Anchor scripts for Solana). **Do not deploy from a personal EOA** — use a dedicated deployer key or the project's multisig to avoid key leaks and ensure deterministic CREATE2 addresses across chains.
+
+- [Factory / ecosystem website architecture](docs/landing-separation.md) — EN / RU / ES / FR / 中文.
+
+- [Visitor journey: try the factory, review the result, explore the ecosystem](docs/visitor-journey.md) — EN / RU / ES / FR / 中文.

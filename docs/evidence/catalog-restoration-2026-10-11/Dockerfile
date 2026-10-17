@@ -1,0 +1,7 @@
+FROM ai-factory-frontend:visitor-20261011
+USER root
+COPY web/frontend/ /app/web/frontend/
+COPY docs/ /app/docs/
+WORKDIR /app/web/frontend
+RUN npm ci --include=dev --ignore-scripts --no-audit --no-fund && npm rebuild sharp && rm -rf .next && NODE_OPTIONS=--max-old-space-size=1536 npm run build && npm prune --omit=dev --ignore-scripts --no-audit --no-fund && chown -R 10001:10001 .next
+USER 10001:10001

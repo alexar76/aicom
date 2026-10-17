@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-14",
+  "image": "alien-monitor:local-oracles-20261014-2230",
+  "previous_image": "alien-monitor:live-20261013-204359",
+  "server_release": "/root/alien-oracles-20261014-2230",
+  "containers": [
+    "alien-monitor-live",
+    "alien-monitor"
+  ],
+  "public_checks": {
+    "monitor.modelmarket.dev": {
+      "health": "ok",
+      "scene_matches_local": true,
+      "font_matches_local": true
+    },
+    "monitor-uni.modelmarket.dev": {
+      "health": "ok",
+      "scene_matches_local": true,
+      "font_matches_local": true
+    }
+  },
+  "tests": {
+    "files": 23,
+    "passed": 278,
+    "command": "npm test --prefix alien-monitor/frontend -- --maxWorkers=2 --reporter=dot"
+  },
+  "webgl_browser_ready": [
+    "lumen",
+    "chronos",
+    "gauss",
+    "sortes",
+    "platon",
+    "lattice",
+    "murmuration",
+    "colony",
+    "turing",
+    "aestus",
+    "betti",
+    "kantor",
+    "fourier"
+  ],
+  "percola_live_bounds": {
+    "box_x": 38,
+    "box_width": 276,
+    "iframe_x": 38,
+    "iframe_width": 276,
+    "transform": "translate(0px, 27.375px) scale(0.215625)"
+  },
+  "font_source": "Local Inter WOFF2 subsets in alien-monitor/frontend/public/fonts; instantiated wght=400 and merged to TTF with fontTools. Includes Greek labels.",
+  "font_sha256": "3be4825f91cde091580b42030956d9a0ce0377ce98d89b7ea04d081fb5349b0d"
+}

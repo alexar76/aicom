@@ -569,6 +569,99 @@ not an additional WARDEN daemon. A passed synthetic evaluation is not a safety c
 | accepted baseline | принятая базовая версия | versión base aceptada | version de référence acceptée | 已接受的基线 | Advances only after verified live promotion. |
 | missed attack | пропущенная атака | ataque no detectado | attaque non détectée | 漏报攻击 | Counted only against an established label. |
 
+## eSIM operator kit and agent purchases
+
+Added with [`esim-kit/docs/en/cases.md`](https://github.com/alexar76/esim-operator-kit/blob/main/docs/en/cases.md) (ARGUS buys an eSIM and gets a refund). Identifiers stay Latin: `esim.quote@v1`, `esim.order@v1`, `esim.status@v1`, `POST /refund`, `esim_tran_no`, `status_token`, `REFUND_KEY_FILE`, `refunded` / `due` / `in_use`, `PAYMENT-SIGNATURE`, `transferWithAuthorization`, the tool names `esim_buy` / `esim_refund`. Case 3 (2026-10-15, buyer-confirmed deliveries) adds `receipt`, `receipt_signature`, `deliveries_30d`, `distinct_buyers`, `provider_pubkey`, `--no-share` and `ARGUS_SHARE_DELIVERIES`, all Latin.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| refund | возврат | reembolso | remboursement | 退款 | The price going back to the payer. A *cancelled* eSIM is the supplier side of it (отмена / cancelación / annulation / 取消). |
+| refund wallet | кошелёк возвратов | cartera de reembolsos | portefeuille de remboursement | 退款钱包 | The opt-in wallet a seller node pays refunds from (`REFUND_KEY_FILE`). |
+| facilitator (x402) | фасилитатор | facilitador | facilitateur | facilitator | Verifies a signed payment and puts it on chain, paying the gas. ZH keeps the English word, as the x402 docs do. |
+| status token | статус-токен | token de estado | jeton de statut | 状态令牌 | The payer's proof for status and refund (`status_token`). A crypto *token* it is not. |
+| activation code | код активации | código de activación | code d'activation | 激活码 | The LPA string. The traveller's secret: never logged, never shown to a model. |
+| wholesaler (eSIM supplier) | оптовик / поставщик | mayorista / proveedor | grossiste / fournisseur | 批发商 / 供应商 | eSIM Access, Airalo, eSIM Go. Same word as the kit's `supplier` interface. |
+| owner approval (/yes) | подтверждение владельца | aprobación del propietario | approbation du propriétaire | 主人批准 | The agent's owner confirms a payment or a refund in chat. Keep `/yes` Latin. |
+| gas | газ | gas | gas | Gas 费 | The network fee. In x402 the facilitator pays it, not the payer. |
+| at cost | по себестоимости | a precio de coste | à prix coûtant | 按成本价 | A seller with no margin (the test stand). |
+| delivery receipt | квитанция о доставке | recibo de entrega | reçu de livraison | 交付收据 | What the seller node signs for a paid order (`receipt`, kind `delivery`). Same root as `receipt` in Core terms. |
+| refund receipt | квитанция о возврате | recibo de reembolso | reçu de remboursement | 退款收据 | The same for a refund paid back (kind `refund`). |
+| confirmed delivery | подтверждённая доставка | entrega confirmada | livraison confirmée | 已确认交付 | A delivery receipt the hub checked against its transfer on chain; counted in `deliveries_30d`. |
+| distinct buyers | разные покупатели | compradores distintos | acheteurs distincts | 不同买家 | Distinct paying wallets (`distinct_buyers`), not people. |
+| provider key (`provider_pubkey`) | ключ продавца | clave del vendedor | clé du vendeur | 卖家密钥 | The seller node's Ed25519 key: signs free answers and receipts. Not «поставщик / proveedor / fournisseur», which the kit uses for the wholesaler; not the federation node's key in `data/node/`. |
+| selling window | окно продаж | ventana de venta | fenêtre de vente | 销售窗口 | A demo node selling for a test, switched back to demo right after. |
+| coding agent | агент для разработки | agente de programación | agent de programmation | 编程智能体 | An agent working in a terminal, such as Claude Code. |
+| own hub (vs. federation node) | свой хаб | tu propio hub / hub propio | votre propre hub | 你自己的枢纽 | A whole `aimarket hub` on the operator's domain (`./onboard.sh --hub`), as opposed to `aimarket node`. |
+| federation node (`aimarket node`) | узел федерации | nodo de federación | nœud de fédération | 联邦节点 | The light way in: publishes the seller's signed offers for hubs to crawl. Not the seller node (`rails/`). |
+| admission check (assay) | проверка допуска | comprobación de admisión | vérification d'admission | 准入检查 | The sandbox check a hub runs on a newcomer; `aimarket doctor` runs the same one. `assay` stays Latin in identifiers. |
+| pinned key (peer) | закреплённый ключ | clave fijada | clé épinglée | 固定的密钥 | The key a hub first saw at a peer's address; another one later is refused as a possible takeover. Same root as `pinned PQ key`. |
+| onboarding wizard (`onboard.sh`) | мастер онбординга | asistente de incorporación | assistant d'intégration | 接入向导 | The kit's one command from a fresh server to a store, a seller node and a place in the federation. |
+
+## Places, power prices, imagery, device control and EMPORION (2026-10-16)
+
+Added with GAIA's [`PLACES.md`](https://github.com/alexar76/gaia/blob/main/docs/PLACES.md),
+[`POWER-PRICES.md`](https://github.com/alexar76/gaia/blob/main/docs/POWER-PRICES.md),
+[`IMAGERY.md`](https://github.com/alexar76/gaia/blob/main/docs/IMAGERY.md),
+[`ACTUATION.md`](https://github.com/alexar76/gaia/blob/main/docs/ACTUATION.md) and EMPORION's
+`emporion/README.md` in the monorepo (each EN · RU · ES · FR · ZH). Identifiers stay Latin:
+`gaia.place.resolve@v1`, `gaia.power.price.read@v1`, `gaia.power.window@v1`, `gaia.imagery.read@v1`,
+`gaia.actuator.list@v1`, `gaia.actuate@v1`, `emporion.*@v1`, `Pay-on-Verified`, `PulseTime`, `SCL`,
+`NDVI` / `NDWI` / `NBR` / `NDMI`, `LEI`, `VIES`, `SDN`, `.ots`, `ok:false`.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| gazetteer | справочник мест (gazetteer) | nomenclátor | répertoire géographique | 地名库 | GeoNames-backed place resolver. Product coinage; gloss once in RU. |
+| ambiguous (place name) | неоднозначное (название) | ambiguo | ambigu | 有歧义 | Refused with candidates, never guessed. |
+| day-ahead price | цена на сутки вперёд | precio del día siguiente (mercado diario) | prix du lendemain (marché J-1, day-ahead) | 日前电价 | Industry: ES «mercado diario» (OMIE), FR «J-1» (CRE). Web-verified. |
+| bidding zone | зона торгов | zona de oferta | zone de dépôt des offres | 竞价区 | EU CACM term. ES / FR web-verified. |
+| wholesale, not a tariff | оптовая цена, не тариф | precio mayorista, no una tarifa | prix de gros, pas un tarif | 批发价，不是零售电价 | Honesty line in every power reading. |
+| cheapest window | самое дешёвое окно | ventana más barata | fenêtre la moins chère | 最便宜的时间窗 | `gaia.power.window@v1`. |
+| actuator | исполнительное устройство | actuador | actionneur | 执行器 | A metering plug GAIA can switch. |
+| metering smart plug | умная розетка с измерением | enchufe inteligente con medición | prise connectée avec mesure | 计量智能插座 | Relay + meter of only the switched load. |
+| pay only for the measured effect | оплата только за измеренный эффект | se paga solo el efecto medido | on ne paie que l'effet mesuré | 只为测得的效果付费 | The actuation rule; pairs with `Pay-on-Verified`. |
+| kill switch | аварийный выключатель | interruptor de emergencia | arrêt d'urgence | 紧急停止 | Operator stop: env, file or API. |
+| evidence bundle | пакет доказательств | paquete de pruebas | dossier de preuves | 证据包 | Signed command + before + after readings. |
+| pinned key | закреплённый ключ | clave fijada | clé épinglée | 固定公钥 | From the fleet registry, never from the bundle. |
+| scene class (SCL) | класс поверхности (SCL) | clase de escena (SCL) | classe de scène (SCL) | 场景分类（SCL） | Sentinel-2 scene classification at the pixel. |
+| surface reflectance | отражательная способность поверхности | reflectancia de superficie | réflectance de surface | 地表反射率 | Sentinel-2 L2A. |
+| cloud-free view | безоблачный снимок | vista sin nubes | vue sans nuages | 无云影像 | Per pixel, not per scene. |
+| consultation number (VIES) | номер консультации (VIES) | identificador de consulta (VIES) | numéro de consultation (VIES) | 查询编号（VIES） | Issued only to a valid requester VAT number. ES / FR web-verified. |
+| legal entity identifier | идентификатор юридического лица (LEI) | identificador de entidad jurídica (LEI) | identifiant d'entité juridique (LEI) | 法人机构识别编码（LEI） | Keep `LEI`. |
+| sanctions-list lookup | проверка по санкционным спискам | consulta de listas de sanciones | filtrage des listes de sanctions | 制裁名单查询 | «A lookup, not a compliance determination» in every locale. |
+| reference rate (ECB) | справочный курс (ЕЦБ) | tipo de referencia (BCE) | taux de référence (BCE) | 参考汇率（欧洲央行） | Not a dealing rate. |
+| timestamp proof | доказательство метки времени | prueba de sello de tiempo | preuve d'horodatage | 时间戳证明 | Standard OpenTimestamps `.ots`. |
+| calendar (OpenTimestamps) | календарь (OpenTimestamps) | calendario | calendrier | 日历 | Aggregates digests into Bitcoin transactions. |
+
+## Device ownership, consumption statistics and the call log (2026-10-16)
+
+Added with GAIA's [`ACTUATION.md`](https://github.com/alexar76/gaia/blob/main/docs/ACTUATION.md)
+(owner-only plugs, the demo exception, consumption sale) and oracle-core's
+[`CALL-LOG.md`](https://github.com/alexar76/oracles/blob/main/core/docs/CALL-LOG.md), each
+EN · RU · ES · FR · ZH. Identifiers stay Latin: `gaia.owner.command@v1`, `gaia.owner.consumption@v1`,
+`gaia.consumption.read@v1`, `access: owner` / `public`, `owner`, `delegates`, `consumption.sale` /
+`resolution` / `history_days`, `OwnerRequest`, `eth_signTypedData_v4`, `EIP-712`, `/owner`,
+`/ops/v1/*`, `ORACLE_CALLS`, `ORACLE_OPS_TOKEN`, `ORACLE_DATABASE_URL`, `ORACLE_CALLS_RETENTION_DAYS`,
+the outcome values (`ok`, `failed`, `payment_required`, …), the caller kinds (`hub`, `paid_tier`,
+`anonymous`) and `‹input›`.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| owner (of a plug) | владелец | propietario | propriétaire | 所有者 | The wallet the actuator file names `owner`; the only one, with its delegates, a real plug obeys. Not the agent's owner of `owner approval` (ZH 主人 there). |
+| delegate | делегат | delegado | délégué | 受托方（delegate） | A wallet of the owner's own agent, under `delegates`. ZH: product calque, gloss the English once. |
+| demo plug | демонстрационная розетка | enchufe de demostración | prise de démonstration | 演示插座 | The simulated public `plug-sim-01`, the only `access: public` plug. |
+| lease (actuator) | аренда | reserva | réservation | 租约 | A verified `on` holds the plug for its sender until the auto-off. Matches the existing ACTUATION translations. |
+| EIP-712 typed-data signature | подпись EIP-712 (типизированные данные) | firma EIP-712 (datos tipados) | signature EIP-712 (données typées) | EIP-712 结构化数据签名 | What `eth_signTypedData_v4` returns. RU and ZH web-verified; ES / FR: no settled press form found, product calque — keep `EIP-712` in it. |
+| owner page | страница владельца | página del propietario | page du propriétaire | 所有者页面 | `/owner` on a GAIA. |
+| consumption statistics | статистика энергопотребления | estadísticas de consumo | données de consommation | 电量统计 | What a metering plug's app calls it. Web-verified in each locale. |
+| whole, finished bucket | целый завершённый интервал | intervalo completo y terminado | tranche complète et terminée | 完整且已结束的时段 | A sold series never holds the bucket still filling. |
+| on sale (owner's opt-in) | выставлено на продажу (по выбору владельца) | a la venta (por decisión del propietario) | en vente (au choix du propriétaire) | 出售（由所有者选择开启） | `consumption.sale: true`; off by default. |
+| call log | журнал вызовов | registro de llamadas | journal des appels | 调用日志 | oracle-core's `oracle_calls`. The oracle's own view, not the hub's ledger of money. |
+| operator API (ops) | API оператора | API del operador | API de l'opérateur | 运营方 API | `/ops/v1/*` behind `ORACLE_OPS_TOKEN`, loopback only. |
+| pseudonymisation | псевдонимизация | seudonimización | pseudonymisation | 假名化 | GDPR Art. 4(5). A salted client hash is pseudonymised, **not** anonymous: never «анонимизация» / «anonimización» / «anonymisation» / 匿名化 for it. Web-verified. |
+| retention period | срок хранения | plazo de conservación | durée de conservation | 保存期限 | GDPR Art. 5(1)(e) vocabulary. Web-verified. |
+| price gate | ценовой шлюз | compuerta de precio | barrière de prix | 价格闸门 | `oracle_core.price_gate`: a priced capability answers only a call a trusted hub signed (or an operator-nominated caller); anyone else gets `402`. Modes `off` / `report` / `enforce` stay Latin. The renderings already used in `docs/free-and-paid-tiers.*.md`. |
+| public-record facts | публичные факты | hechos de registro público | faits de registre public | 公共记录事实 | EMPORION's own description (VAT, LEI, ECB rates, sanctions lists, timestamps). Product wording, one calque per locale. |
+
 ## Sources (web-verified renderings)
 
 - HISTOR / Certificate Transparency log vocabulary: [Let’s Encrypt — Журналы Certificate Transparency (CT)](https://letsencrypt.org/ru/docs/ct-logs/), [Enterno — CT logs](https://enterno.io/articles/certificate-transparency-logs) (RU «подписанная вершина дерева», «доказательство включения / согласованности»); [MDN — Transparence des certificats](https://developer.mozilla.org/fr/docs/Web/Security/Defenses/Certificate_Transparency), [Bortzmeyer — RFC 9162](https://www.bortzmeyer.org/9162.html) (FR); [Google — Registro de transparencia](https://developers.google.com/android/binary_transparency/google1p/log_details?hl=es-419), [Apple — registros de Transparencia de certificados](https://support.apple.com/es-lamr/103703) (ES); [RFC 6962 中文翻译](https://rfc2cn.com/rfc6962.html), [华为云 — 证书透明化日志工作原理](https://www.huaweicloud.com/articles/5654fc7d410d215a6ada181b2195af0c.html) (ZH «签名树头 / 包含证明 / 一致性证明»).
@@ -601,6 +694,15 @@ not an additional WARDEN daemon. A passed synthetic evaluation is not a safety c
 - GeoShake: [GeoShake Open Data — developers (CC BY 4.0)](https://api.geoshake.org/developer).
 - NAAD / Alert Ready / CAP-CP: [Public Safety Canada — NPAS](https://www.publicsafety.gc.ca/cnt/mrgnc-mngmnt/mrgnc-prprdnss/ntnl-pblc-lrtng-sstm-en.aspx), [Alert Ready / En Alerte](https://www.alertready.ca/), [CAP-CP](https://npas.ca/cap-cp/).
 - DONKI / SWPC: [NASA CCMC DONKI](https://kauai.ccmc.gsfc.nasa.gov/DONKI/), [NOAA SWPC](https://www.swpc.noaa.gov/).
+
+- Bidding zone / zone de dépôt des offres: [CRE — méthodologie Schedex journalier](https://www.cre.fr/content/download/20511/file/190221_2019-034_Methodologie_Schedex_Journalier.pdf), [CRE délibération 2026-94](https://www.cre.fr/fileadmin/Documents/Deliberations/2026/260429_2026-94_Approbation_amendement_MNA.pdf).
+- Zona de oferta / mercado diario: [Iberley — Reglamento del mercado interior de la electricidad, art. 14](https://www.iberley.es/legislacion/articulo-14-mercado-interior-electricidad), [OMIE — mercado de electricidad](https://www.omie.es/es/mercado-de-electricidad).
+- Marché J-1: [CRE — marché de gros de l'électricité](https://www.cre.fr/electricite/marche-de-gros-de-l-electricite).
+- VIES identificador de consulta / numéro de consultation: [TeamSystem — comprobar operador intracomunitario](https://teamsystem.es/magazine/comprobar-operador-intracomunitario/), [Hayot Expertise — VIES](https://hayot-expertise.fr/blog/vies-comment-verifier-un-numero-de-tva-intracommunautaire).
+- EIP-712 (RU / ZH): [Habr — EIP-712, стандарт хеширования и подписи типизированных данных](https://habr.com/ru/post/918648), [MetaMask — eth_signTypedData_v4](https://docs.metamask.io/wallet/reference/eth_signTypedData_v4) (its zh docs: 结构化数据签名), [EIP-712](https://eips.ethereum.org/EIPS/eip-712).
+- Consumption statistics: [iXBT — «статистика энергопотребления» (Alfawise SOW 016)](https://www.ixbt.com/live/comments/164776), [Obramat — enchufe Nivian, «estadísticas de consumo»](https://www.obramat.es/productos/enchufe-smart-nivian-25031613.html), [Legrand — prise qui calcule la consommation](https://www.legrand.fr/questions-frequentes/prise-qui-calcule-la-consommation-ca-existe), [OKOK 智能 — 电量统计 (App Store)](https://apps.apple.com/us/app/-/id1195522905), [新浪众测 — 米家智能插座 电量统计](https://zhongce.sina.com.cn/article/view/32849/).
+- Pseudonymisation / retention: [AEPD — Anonimización y seudonimización](https://www.aepd.es/prensa-y-comunicacion/blog/anonimizacion-y-seudonimizacion), [AEPD — hash en la seudonimización](https://www.aepd.es/prensa-y-comunicacion/notas-de-prensa/la-aepd-publica-recomendaciones-para-aquellos-que-utilicen), [Legiscope — limitación del plazo de conservación](https://www.legiscope.com/blog/limitacion-conservacion-rgpd.html), [donneespersonnelles.fr — pseudonymisation](https://www.donneespersonnelles.fr/pseudonymisation), [Tableau des durées de conservation RGPD](https://donneespersonnelles.fr/tableau-duree-conservation-donnees), [gdpr-text.com (RU) — псевдонимизация](https://gdpr-text.com/ru/?p=4252).
+- Delegate (wallet delegation): [delegate.xyz docs](https://docs.delegate.xyz/), [Ronin — Delegate](https://docs.roninchain.com/developers/tools/delegation) (ZH press explains it as 委托; the delegate side is rendered 受托方 here).
 
 ---
 *Maintainers: extend this table before introducing a new domain term in any language. If a term

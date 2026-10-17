@@ -84,3 +84,5 @@ hub 是否提供该功能、使用哪个验证者和阈值，见其 `/.well-know
 5. **对外宣布前，用一次通过和一次不通过来证明**：一次诚实交付（已扣款），一次错误交付（已退款、授权已撤回）。`pov-demo/` 中的两个演示卖方正是为此而设。
 
 可选：上诉法庭（`AIMARKET_APPEAL_METIS_URL`、`AIMARKET_APPEAL_WINDOW_S`）— 见 [aimarket-hub/docs/pay-on-verified.md](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#appeals)。
+
+可选：为单项能力指定不同的验证者（`AIMARKET_VERIFY_ROUTES`）——例如让 GAIA 的按验证付费设备控制由其精确检查判定，而不是 LLM 评审团。不可用的路由会拒绝 `verify` 块，绝不会退回到默认验证者。见[验证者路由](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#verifier-routes)。

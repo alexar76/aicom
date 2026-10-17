@@ -157,12 +157,22 @@ export function autoLinkDemos(text) {
     return key;
   }
 
-  s = s.replace(/(?<!\]\()https:\/\/[^\s)<>,]+/g, (url) =>
-    stash(mdLink(url.replace(/^https:\/\//, ''), url))
-  );
+  // A link or a code span the author already wrote is finished text. Linking inside it nested
+  // a second link into the first: "[oracles.modelmarket.dev](https://oracles.modelmarket.dev)"
+  // rendered as "oracles.[modelmarket.dev](https://…" with href="https://[magic-ai-factory.com](…".
+  // A backticked Factory route is the one code span that is meant to become a link.
+  const factoryRoutes = new Set(FACTORY_PATH_LINKS.map(([p]) => `\`${p}\``));
+  s = s.replace(/!?\[[^\]]*\]\([^)\s]*\)|`[^`]+`/g, (m) => (factoryRoutes.has(m) ? m : stash(m)));
+
+  s = s.replace(/https:\/\/[^\s)<>,]+/g, (raw) => {
+    // The full stop that ends a sentence is not part of the URL.
+    const [, url, tail] = raw.match(/^(.*?)([.;:!?]*)$/);
+    return stash(mdLink(url.replace(/^https:\/\//, ''), url)) + tail;
+  });
 
   for (const [domain, url] of BARE_DOMAIN_LINKS) {
-    const re = new RegExp(`(?<!\\[)(?<!\`)\\b${domain.replace(/\./g, '\\.')}\\b`, 'gi');
+    // Not the tail of a longer host ("oracles." + "modelmarket.dev"), a URL or an e-mail.
+    const re = new RegExp(`(?<![\\w./@:-])${domain.replace(/\./g, '\\.')}(?![\\w-]|\\.[a-z0-9])`, 'gi');
     s = s.replace(re, (match) => stash(mdLink(match, url)));
   }
 

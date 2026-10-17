@@ -24,6 +24,7 @@ from pathlib import Path
 import pytest
 
 from web.backend.services.duplicate_module_check import find_frontend_missing_exports
+from tests.split_source import read_split
 
 
 def _tree(root: Path, files: dict[str, str]) -> Path:
@@ -164,7 +165,7 @@ def test_it_is_wired_where_the_plateau_lived():
     passed_expr = check[check.index('"passed": not missing') : check.index('"skipped": False')]
     assert "not ts_exports" in passed_expr
 
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     score = dev[dev.index("def _tree_defect_score(") : dev.index("def _revert_out_of_scope_writes")]
     assert "5 * len(find_frontend_missing_exports(code_root, limit=200))" in score
     breakdown = dev[dev.index("def _tree_defect_breakdown(") : dev.index("def _breakdown_delta(")]

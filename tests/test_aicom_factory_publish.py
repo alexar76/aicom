@@ -105,6 +105,8 @@ def test_factory_rsync_excludes_cursor_and_github():
     assert "cite-desks" in factory_local_exclude_paths()
     assert "cite-desks" in DEFAULT_RSYNC_EXCLUDES
     assert "cite-desks" in factory_exclude_paths()
+    assert "deploy/backup/README.md" in locals_
+    assert "deploy/nginx/esim.modelmarket.dev.conf" in locals_
 
 
 def test_satellite_export_includes_provenance():

@@ -8,5 +8,5 @@ Oracle gateway MCP plugin namespace
 pip install aimarket-oracle-gateway
 ```
 
-- Ecosystem: https://modeldev.modelmarket.dev
+- Ecosystem: https://ecosystem.modelmarket.dev/
 - GitHub: https://github.com/alexar76/aicom

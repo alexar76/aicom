@@ -2,7 +2,7 @@
   "name": "okx-a2mcp",
   "version": "0.1.0",
   "private": true,
-  "description": "AIMarket services on OKX.AI as A2MCP endpoints: HISTOR pre-flight check and WARDEN tool-definition scan.",
+  "description": "AIMarket services as A2MCP endpoints, x402 twins and free pages for people (/tools/): x402 payment check, MCP rug-pull diff, WARDEN scan, HISTOR lookup.",
   "type": "module",
   "license": "MIT",
   "engines": {
@@ -13,7 +13,7 @@
     "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {
-    "@aimarket/warden": "0.8.2",
+    "@aimarket/warden": "0.14.0",
     "@coinbase/cdp-sdk": "1.57.1",
     "@x402/core": "2.28.0",
     "@x402/evm": "2.28.0",

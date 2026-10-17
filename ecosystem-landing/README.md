@@ -1,8 +1,14 @@
-# AICOM ecosystem landing
+# AICOM ecosystem — legacy landing and documentation assets
+
+The current ecosystem atlas is built from [`scripts/github-io/`](../scripts/github-io/README.md). This directory retains the legacy landing and documentation assets; it is not the source of the current production homepage.
+
+<!-- ecosystem-entry-points -->
+**Start here:** [Factory landing](https://modeldev.modelmarket.dev/) · [Ecosystem atlas](https://ecosystem.modelmarket.dev/) · [Working factory & storefront](https://magic-ai-factory.com/).
+<!-- /ecosystem-entry-points -->
 
 > 🌐 **English** · [Русский](docs/README.ru.md) · [Español](docs/README.es.md) · [Français](docs/README.fr.md) · [中文](docs/README.zh.md) · [Glossary](https://github.com/alexar76/aicom/blob/main/docs/localization-glossary.md)
 
-> **Live site:** [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev)  
+> **Live site:** [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/)
 > **Documentation:** [Ecosystem knowledge base](../docs/ecosystem/knowledge-base.md) · [RU](../docs/ecosystem/knowledge-base-ru.md) · [ES](../docs/ecosystem/knowledge-base-es.md) · [FR](../docs/ecosystem/knowledge-base-fr.md) · [ZH](../docs/ecosystem/knowledge-base-zh.md) · [Whitepaper](../docs/ecosystem/whitepaper/en.md)
 
 [![Alien Monitor — full ecosystem graph with live metrics, Capability NFT panel, and activity stream](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/09-ecosystem-simulation.png)](https://monitor.modelmarket.dev/)

@@ -9,6 +9,8 @@ limit, found two sellers it had no history with, paid both only on an independen
 the one that lied was not paid. How it works and what it does not promise:
 [pay-on-verified-enable.md](pay-on-verified-enable.md).
 
+**Second demo (2026-10-16):** an agent pays a plug only after GAIA's verifier proves the meter saw the effect — [Pay-on-Verified for a physical effect](pay-on-verified-device-demo.md).
+
 ## Who is who — read this first
 
 - **Both sellers are ours.** `factorworks` (honest) and `quickfactor` (returns the factorization of

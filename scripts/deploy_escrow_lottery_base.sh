@@ -3,6 +3,8 @@
 #
 #   ./scripts/deploy_escrow_lottery_base.sh escrow-v2            # dry-run simulation
 #   ./scripts/deploy_escrow_lottery_base.sh escrow-v2 broadcast  # real deploy
+#   ./scripts/deploy_escrow_lottery_base.sh escrow-v2-independent [broadcast]
+#       the Independent node's own V2 (2026-10-13): its HORKOS 0x73D2… is the only hub
 #   ./scripts/deploy_escrow_lottery_base.sh escrow               # V1 (2026-09-04), kept for the record
 #   ./scripts/deploy_escrow_lottery_base.sh lottery
 #   ./scripts/deploy_escrow_lottery_base.sh lottery broadcast
@@ -54,8 +56,8 @@ CAST="$HOME/.foundry/bin/cast"
 WHAT="${1:-}"
 MODE="${2:-dryrun}"
 case "$WHAT" in
-  escrow|escrow-v2|lottery) : ;;
-  *) echo "usage: $0 <escrow|escrow-v2|lottery> [broadcast]" >&2; exit 1 ;;
+  escrow|escrow-v2|escrow-v2-independent|lottery) : ;;
+  *) echo "usage: $0 <escrow|escrow-v2|escrow-v2-independent|lottery> [broadcast]" >&2; exit 1 ;;
 esac
 
 [ -f "$KEYFILE" ] || { echo "keystore not found: $KEYFILE" >&2; exit 1; }
@@ -70,6 +72,8 @@ export PRIVATE_KEY="$PK"
 OWNER="0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a"
 USDC="0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
 HORKOS="0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1"
+# The Independent node's own HORKOS (independentai.network, 127.0.0.1:9500 on its host).
+INDEPENDENT_HORKOS="0x73D295139DA45e055b852273941B514ccDC01C96"
 
 echo "network : Base mainnet (chain $CHAIN)"
 echo "rpc     : $RPC"
@@ -89,6 +93,13 @@ if [ "$WHAT" = "escrow" ]; then
   TARGET="script/Deploy.s.sol:DeployScript"
   echo "INITIAL_HUBS   = $INITIAL_HUBS   (HORKOS — the only authorized hub)"
   echo "INITIAL_TOKENS = $INITIAL_TOKENS   (Base USDC)"
+elif [ "$WHAT" = "escrow-v2-independent" ]; then
+  cd "$ROOT/contracts/evm"
+  export INITIAL_HUB="$INDEPENDENT_HORKOS"
+  export INITIAL_TOKEN="$USDC"
+  TARGET="script/DeployEscrowV2.s.sol:DeployEscrowV2"
+  echo "INITIAL_HUB   = $INITIAL_HUB   (Independent's HORKOS — the only authorized hub)"
+  echo "INITIAL_TOKEN = $INITIAL_TOKEN   (Base USDC)"
 elif [ "$WHAT" = "escrow-v2" ]; then
   cd "$ROOT/contracts/evm"
   export INITIAL_HUB="$HORKOS"

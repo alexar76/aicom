@@ -159,7 +159,8 @@ def test_pricing_overlay_only_federated_listing():
 
 
 def test_hub_capital_pricing_route_source():
-    hub_api = Path(__file__).resolve().parents[1] / "aimarket-hub" / "aimarket_hub" / "api.py"
+    # The capital routes live in hub_routes/capital.py since api.py was split into route modules.
+    hub_api = Path(__file__).resolve().parents[1] / "aimarket-hub" / "aimarket_hub" / "hub_routes" / "capital.py"
     if not hub_api.is_file():
         pytest.skip("aimarket-hub excluded from factory tree")
     src = hub_api.read_text()

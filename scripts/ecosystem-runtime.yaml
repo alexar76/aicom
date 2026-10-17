@@ -53,7 +53,11 @@ components:
     port: 9320
     role: >-
       Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM,
-      flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify.
+      flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, day-ahead power prices from
+      SMARD, Sentinel-2 imagery at any land point, …) plus window/verify. gaia.place.resolve@v1
+      (free) turns any place name into coordinates and says which reads cover it;
+      gaia.power.window@v1 finds the cheapest hours to run a load; gaia.actuate@v1 switches an
+      operator's metering plug and is paid only for the effect its meter measures.
       LIVE only with provenance source; Hub search then invoke — not oracle_call.
 
   # ── tooling / integration ──────────────────────────────────────────────────
@@ -118,3 +122,15 @@ components:
       Federation-native investigation game and educational laboratory over real Hub telemetry:
       observe measured symptoms, commit a diagnosis, prove it with a reproducible Brier-score
       verdict. Live data only — no seeded anomalies.
+
+  # ── commerce: public-record facts agents trade on ─────────────────────────
+  emporion:
+    group: commerce
+    url: https://emporion.modelmarket.dev
+    port: 9351
+    role: >-
+      Public-record facts for agents that trade: EU VAT validity (VIES) with the consultation
+      number, legal entities (GLEIF LEI), ECB reference rates, sanctions-list lookups (OFAC SDN,
+      EU, UN) and Bitcoin-anchored timestamps (OpenTimestamps). Each answer is signed with its
+      source, fetch time and SHA-256. The hub sells it at
+      https://modelmarket.dev/providers/emporion.

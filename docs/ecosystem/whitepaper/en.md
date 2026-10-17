@@ -34,6 +34,8 @@ Public surfaces:
 | **ARGUS landing** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | Install + user entry |
 | **HESTIA hearth** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [landing](https://alexar76.github.io/hestia/) | Isolated hosted runtime — not the Hub catalogue |
 | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) | Verifiable memory for AI agents |
+| **eSIM operator kit** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · [guides](https://esim.modelmarket.dev/kit) | Travel eSIMs sold to people and AI agents; operators join in one command |
+| **EMPORION** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · [landing](https://alexar76.github.io/emporion/) | Public-record facts for agents that trade, sold through the Hub |
 
 ![Full ecosystem graph — Alien Monitor LIVE mode](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -167,6 +169,8 @@ flowchart TB
     logos["LOGOS<br/>Read-only federation analytics"]
     argus["ARGUS-3<br/>Local agent · optional economy"]
     memory["Attested Memory<br/>verifiable memory for agents"]
+    esim["eSIM operators<br/>store · seller node · x402"]
+    emporion["EMPORION<br/>VAT · LEI · FX · sanctions · OTS"]
   end
 
   subgraph external["External"]
@@ -189,6 +193,9 @@ flowchart TB
   enduser -->|chat · MCP| argus
   argus -->|discover · invoke| aicom
   argus -->|write · search| memory
+  argus -->|x402 order · refund| esim
+  esim -->|signed offers · receipts| aicom
+  emporion -->|signed public-record facts| aicom
   aicom -->|public telemetry| logos
   aicom -->|prompts| llm
   aicom -->|on-chain| chain
@@ -206,6 +213,8 @@ flowchart TB
 | [`oracles/`](https://github.com/alexar76/oracles) | **17 oracles** + portal | [oracles.modelmarket.dev](https://oracles.modelmarket.dev) | `oracles` |
 | [`gaia/`](https://github.com/alexar76/gaia) | **GAIA physical oracles** | `:9320` | `gaia` |
 | [`atlas/`](https://github.com/alexar76/atlas) | **ATLAS sensor map** | [atlas.modelmarket.dev](https://atlas.modelmarket.dev) | `atlas` |
+| [`esim-kit/`](https://github.com/alexar76/esim-operator-kit) | **eSIM operator kit** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · demo seller [modelmarket.dev/providers/esim](https://modelmarket.dev/providers/esim/healthz) | `esim-operator-kit` |
+| [`emporion/`](https://github.com/alexar76/emporion) | **EMPORION commerce facts** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · `:9351` · hub peer [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health) | `emporion` |
 | [`logos/`](https://github.com/alexar76/logos) | **LOGOS federation analytics** | [logos.modelmarket.dev](https://logos.modelmarket.dev) · `:9460` | `logos` |
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS admission** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · Hub gate | `themis` |
@@ -310,6 +319,14 @@ flowchart TB
     RT1 -->|"signed ticket"| RT2
   end
 
+  subgraph ESIM["eSIM operators · esim-operator-kit"]
+    E1["Store for people · seller node /agents<br/>x402 · refunds · signed delivery receipts"]
+  end
+
+  subgraph EMP["EMPORION · public-record facts"]
+    E2["VIES VAT · GLEIF LEI · ECB rates<br/>sanctions lists · OpenTimestamps"]
+  end
+
   subgraph CLIENTS["Clients"]
     C1["ARGUS-3"]
     C2["SDKs · Widget · Desktop ×10"]
@@ -340,6 +357,9 @@ flowchart TB
   REDTEAM -->|"remediation · A2A"| FACTORY
   MESH -->|"MESH_HUB_URL"| HUB
   CLIENTS --> HUB
+  ESIM -->|"signed offers · node or own hub"| HUB
+  EMP -->|"signed lookups · sold only via a hub"| HUB
+  C1 -->|"x402 order · refund"| E1
   C1 --> MESH
   HUB --> CHAIN
   MESH --> CHAIN
@@ -356,6 +376,8 @@ flowchart TB
   class L1,L2,L3 client
   class RT1,RT2 oracle
   class C1,C2 client
+  class E1 client
+  class E2 oracle
   class CH1,CH2 chain
 ```
 
@@ -503,6 +525,26 @@ Shared **`oracle-core`** library. Each oracle emits Ed25519-signed, verifiable a
 **URL:** [atlas.modelmarket.dev](https://atlas.modelmarket.dev/). **Satellite:** `atlas/` → [alexar76/atlas](https://github.com/alexar76/atlas). Monitor node id: `atlas`.
 
 **Docs:** [`atlas/docs/GUIDE.md`](https://github.com/alexar76/atlas/blob/main/docs/GUIDE.md) · knowledge base §0 item 12.
+
+### 3.6c eSIM operator kit — real goods for agents
+
+**Role:** The first seller of a good people use every day: travel eSIMs. One kit gives an operator a storefront for people (cards and seven crypto networks) and a **seller node for AI agents** — `esim.quote@v1`, `esim.order@v1` paid over x402 in USDC on Base, `esim.status@v1`, and refunds of unused eSIMs. The agent pays the seller's wallet directly; the Hub routes the free quote and never holds the money.
+
+**Trust without volumes:** every delivery and every refund comes with a receipt signed by the seller's provider key. A buyer may bring it to the Hub with its transaction; the Hub checks both on chain and shows `deliveries_30d` on the listing (§4.3). The Hub learns that the seller delivered, never the amount or the buyer's address in the clear.
+
+**Joining:** `./onboard.sh` — one command from a fresh server to a store, a seller node and a place in the federation, as a federation node or as the operator's **own hub**; it puts itself behind an existing nginx when one holds ports 80 and 443. Tested as a third-party operator: admitted by modelmarket.dev automatically, quotes routed through the federation, drawn on the Alien Monitor as its own eSIM-operator sphere.
+
+**Live:** demo seller at [esim.modelmarket.dev](https://esim.modelmarket.dev) (live prices, no sales). Three test windows on 15 October 2026 sold real eSIMs to ARGUS and to a coding agent and refunded them, every transaction on Base ([cases](https://esim.modelmarket.dev/kit/cases)). **Satellite:** `esim-kit/` → [alexar76/esim-operator-kit](https://github.com/alexar76/esim-operator-kit).
+
+### 3.6d EMPORION — public-record facts for agents that trade
+
+**Role:** What an agent checks before it deals with a company or moves money, answered from the public records themselves: whether an EU VAT number is valid (VIES, with the consultation number the EU issues for the check), who a legal entity is (GLEIF LEI), the ECB reference rate on a date (a reference, not a dealing rate), whether a name or a wallet address is on the EU, OFAC SDN or UN sanctions lists, and a Bitcoin-anchored timestamp proof for a digest (OpenTimestamps, standard `.ots`). Six priced capabilities at $0.001–0.002 — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — and the free `emporion.sources@v1`.
+
+**Honest by construction:** every answer is Ed25519-signed together with its source, the time it was fetched and the SHA-256 of what the source returned. A sanctions screen is a lookup, not a determination: a match is a reason to look closer, and no match is not a clearance. The lists are kept on disk with their original fetch time and hash, so a restart or an upstream outage never empties one silently, and `/health` names the lists actually loaded.
+
+**Sold through the Hub:** EMPORION runs on `oracle-core` with the price gate on: a priced capability answers only a call a trusted hub signed, a direct call gets `402` naming the hub that sells it (§4.3), and every call is written to the provider's own call log.
+
+**Live:** [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) — a landing with a live 3D agora of its sources — and the hub peer at [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health). **Satellite:** `emporion/` → [alexar76/emporion](https://github.com/alexar76/emporion).
 
 ### 3.7 ARGUS-3
 
@@ -734,6 +776,10 @@ Full economics: [`docs/aimarket-whitepaper.md`](../../aimarket-whitepaper.md) §
 4. Peer hubs pull attestation logs. Every attestation is tiered by **evidence, never by authorship**: one carrying a verifiable consumer-signed **proof-of-misbehavior** is *strong* and counts in full; anything else — missing, unverifiable or malformed PoM, including this hub's **own** automated invoke-failure and self-bond ladders — is *weak* and counts half, and a weak claim needs **at least two distinct issuing hubs** before it moves `federated_penalty` at all. A missing or blank tier defaults to weak, and rows persisted under the older authorship rule are re-judged on load, so upgrading retires the previously inflated penalties instead of grandfathering them.
 
 **Lumen oracle** supplies EigenTrust-style scores for advisory weighting (lottery odds, WARDEN gate). Not a substitute for bonded disputes.
+
+**Buyer-confirmed deliveries.** A seller paid directly (x402 seller-direct) is invisible to the Hub, so a shop that takes the money and delivers nothing looked like one that delivers. Sellers that sign delivery and refund receipts (the eSIM kit does, §3.6c) let a buyer prove a delivery: `POST /ai-market/v2/reputation/deliveries` checks the signature against the `provider_pubkey` the listing published and the transfer under the receipt's own EIP-3009 nonce on chain, counts it once per transaction, and keeps no amount, address or transaction in the clear. Search shows `deliveries_30d {confirmed, distinct_buyers, refunded}`, and the trust score counts one success per distinct buyer. Wallets are cheap, so it reads "buyers confirmed this seller delivered", not "this seller is good".
+
+**Priced calls go through a hub.** A provider's invoke URL is public, so until October 2026 a caller who skipped the hub got every priced capability for free. Providers on `oracle-core` 0.5+ run a price gate: a priced capability is served only to a call a hub the provider trusts has signed — the hub admitted it, paid or as its free trial — or to a caller the operator nominated; anyone else gets `402` with the hub that sells it. On a paid device command the hub also signs who paid, so GAIA can lease the switched plug to its payer. Every call lands in the provider's call log (outcome, who vouched, latency — never the input or an IP address), and only hub-signed calls count as revenue. GAIA and EMPORION enforce the gate since 16 October 2026.
 
 ### 4.4 Oracle payment loop
 

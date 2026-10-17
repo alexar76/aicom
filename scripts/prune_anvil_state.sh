@@ -19,13 +19,19 @@ USE=$(df --output=pcent / | tail -1 | tr -dc '0-9')
 
 for C in $CONTAINERS; do
   docker inspect -f '{{.State.Running}}' "$C" 2>/dev/null | grep -q true || continue
+  # The cache is under the HOME of the user the container runs as: /root for the lottery
+  # chain, /home/monitor for alien-monitor since it runs as uid 10001. Pruning /root only
+  # missed the monitor's ~11 GB directories, and on 2026-10-13 they filled admin-vps.
   freed=$(docker exec "$C" sh -c "
-    TMP=/root/.foundry/anvil/tmp
-    [ -d \"\$TMP\" ] || exit 0
+    total=0
+    for TMP in /root/.foundry/anvil/tmp \"\${HOME:-/root}/.foundry/anvil/tmp\"; do
+    [ -d \"\$TMP\" ] || continue
+    [ \"\$TMP\" = \"\${seen:-}\" ] && continue
+    seen=\$TMP
     before=\$(du -sm \"\$TMP\" 2>/dev/null | cut -f1)
     # Newest dump dir first.
     dirs=\$(ls -1dt \"\$TMP\"/anvil-state-* 2>/dev/null)
-    [ -z \"\$dirs\" ] && exit 0
+    [ -z \"\$dirs\" ] && continue
     n=0
     echo \"\$dirs\" | while IFS= read -r d; do
       [ -n \"\$d\" ] || continue
@@ -38,7 +44,9 @@ for C in $CONTAINERS; do
       fi
     done
     after=\$(du -sm \"\$TMP\" 2>/dev/null | cut -f1)
-    echo \$(( \${before:-0} - \${after:-0} ))
+    total=\$(( total + \${before:-0} - \${after:-0} ))
+    done
+    echo \$total
   " 2>/dev/null || echo 0)
   [ "${freed:-0}" -gt 0 ] && echo "$(date -Is) $C freed ${freed}MB (keep_dirs=$KEEP_DIRS keep_files=$KEEP_FILES, disk=${USE}%)" >> "$LOG"
 done

@@ -26,6 +26,7 @@ from agents.dev import (
     _record_salvage_notes,
     _salvage_notes_path,
 )
+from tests.split_source import read_split
 
 
 def _round_produced_output(product, output):
@@ -177,7 +178,7 @@ def test_the_caller_binds_salvaged_before_reading_it():
     import ast
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text("utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     tree = ast.parse(src)
     binds = [
         n.lineno

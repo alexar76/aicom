@@ -53,12 +53,19 @@ Environment (values never come from argv — argv is world-readable in `ps`):
                                  is watched, e.g. https://independentai.network/aegis
     AICOM_ALERT_STATUS_URL       the canary's published status.json
     AICOM_ALERT_SETTLEMENT_URL   the settlement sweep's published settlement.json
+    AICOM_ALERT_UPTIME_URLS      label=https://… pages that must answer 2xx within
+                                 AICOM_ALERT_UPTIME_TIMEOUT seconds (default 5), comma-
+                                 separated ("" = off). Named one by one, so NOT filtered
+                                 by the scope, e.g. attested=https://hub.attestedmemory.net/ai-market/v2/health
     AICOM_ALERT_JOURNEY_URL      the UNI stranger-journey canary's uni-journey.json ("" = off)
     AICOM_ALERT_UNI_CHAIN_URL    the UNI monitor's /api/health, for its demo chain ("" = off)
     AICOM_ALERT_DEPOSIT_HUBS     hubs whose top-up wallet the hub watches, comma-separated ("" = off)
     AICOM_ALERT_BACKUP_URL       the backup receiver's status.json ("" = off)
     AICOM_ALERT_BACKUP_HOSTS     backup labels that must be there, comma-separated
                                  (default: whatever the receiver reports)
+    AICOM_ALERT_SKOPOS_URL       SKOPOS's read-only findings export, for every host's disk
+                                 and whether it still reports ("" = off)
+    AICOM_ALERT_SKOPOS_TOKEN     SKOPOS's export token (X-Skopos-Export-Token; secret)
     AICOM_ALERT_HEARTBEAT_HOURS  digest interval when all is well (default 24)
     AICOM_ALERT_FLAP             consecutive failures before paging (default 2)
 
@@ -107,6 +114,15 @@ JOURNEY_STALE_HOURS = 13.0   # runs every 6 h; two misses in a row is a dead tim
 # repository last took a commit — readable from this host's address only (deploy/backup/).
 DEFAULT_BACKUP = "https://pingblip.com/.aicom/backup-status.json"
 BACKUP_STALE_HOURS = 30.0         # nightly, with up to 2 h of jitter: one missed night pages
+DEFAULT_SKOPOS_EXPORT = "https://skopos.modelmarket.dev/security/export"
+#: SKOPOS stores a host's posture snapshot at most hourly; three missed hours is a dead agent.
+HOST_REPORT_STALE_HOURS = 3.0
+#: SKOPOS's own disk findings (security/audit.py): >= 85 % "Disk usage high", >= 95 % "almost full".
+DISK_FINDINGS = ("Disk almost full", "Disk usage high")
+#: SKOPOS also keeps each host's disks from every report (~5 min): a host silent for 30 min has
+#: stopped reporting, and a disk at 85 % pages while there is still room to act.
+DISK_REPORT_STALE_HOURS = 0.5
+DISK_FULL_PCT = 85.0
 BACKUP_STATUS_STALE_HOURS = 1.0   # the receiver republishes every 10 minutes
 BACKUP_MIN_FREE_GB = 10.0         # below this the receiver's next nights may not fit
 
@@ -357,6 +373,28 @@ def probe_dns(hub: str, timeout: float = 8.0) -> list[Check]:
         detail = (f"{len(bad)}/{len(addresses)} address(es) do NOT serve a valid "
                   f"{host} certificate: " + "; ".join(bad))
     return [Check("hub_dns_all_addresses_valid", not bad, detail)]
+
+
+DEFAULT_UPTIME_TIMEOUT = 5.0
+
+
+def probe_uptime(url: str, label: str, timeout: float = DEFAULT_UPTIME_TIMEOUT) -> list[Check]:
+    """Does the page answer 2xx within a few seconds? Nothing more.
+
+    Every other hub probe here asks a question about the business — the catalogue, the
+    peers, the paywall — and none of them was pointed at a hub the owner wanted watched
+    only for being up: on 2026-10-16 hub.attestedmemory.net was down 14:05-14:42Z and
+    16:11-16:31Z and this alerter reported every check green, because it had no check for
+    it. The timeout is short on purpose: a hub whose event loop is starved queues requests
+    instead of refusing them, so "eventually answers" would read as up.
+    """
+    started = time.monotonic()
+    status, _body, err = _get(url, timeout)
+    took = time.monotonic() - started
+    ok = 200 <= status < 300
+    detail = (f"{url} -> {status} in {took:.1f}s" if ok
+              else f"{url} -> {err or status} after {took:.1f}s (limit {timeout:.0f}s)")
+    return [Check(f"hub_up@{label}", ok, detail)]
 
 
 def probe_hub(hub: str, timeout: float = 20.0) -> list[Check]:
@@ -712,8 +750,62 @@ def probe_backups(url: str, expected: list[str] | None = None, timeout: float = 
     return checks
 
 
-def probe_settlement(url: str, timeout: float = 20.0, now: float | None = None
-                     ) -> list[Check]:
+def probe_fleet(url: str, token: str, timeout: float = 20.0, now: float | None = None) -> list[Check]:
+    """Is a host running out of disk, or no longer reporting?
+
+    On 2026-10-13 the root disk of admin-vps sat full for half an hour: a leaked cache
+    filled it, the nightly backup refused to start, HISTOR lost writes — and nothing paged,
+    because only the backup receiver's disk was watched. SKOPOS already receives every
+    host's disk usage and writes its own findings at 85 % and 95 %; this reads them from
+    its read-only export, together with how old each host's last report is."""
+    now = time.time() if now is None else now
+    status, body, err = _get(url, timeout, headers={"X-Skopos-Export-Token": token})
+    documents = body.get("documents") if isinstance(body, dict) else None
+    if status != 200 or not isinstance(documents, list):
+        return [Check("fleet_status_published", False, f"{url} -> {err or status}")]
+    checks = [Check("fleet_status_published", True, f"{len(documents)} hosts")]
+    # Every enrolled agent and its last ACCEPTED report. A host whose reports are refused has
+    # no snapshot and no disk row, so reading documents alone never sees it: on 2026-10-13 a
+    # deploy dropped four hosts from SKOPOS's servers.yaml and they sat refused for two hours.
+    agents = {str(a["server"])[:60]: a.get("last_seen_at") for a in body.get("agents") or []
+              if isinstance(a, dict) and a.get("server")}
+    for doc in documents:
+        if not isinstance(doc, dict) or not doc.get("server"):
+            continue
+        host = str(doc["server"])[:60]
+        disks = doc.get("disks") if isinstance(doc.get("disks"), list) else None
+        disk_age = _hours_since_iso(str(doc.get("disks_observed_at") or ""), now) if disks is not None else None
+        if disk_age is not None:
+            # SKOPOS keeps the disks from every report (~5 min): both checks read those.
+            fresh = disk_age <= DISK_REPORT_STALE_HOURS
+            checks.append(Check(f"host_reporting[{host}]", fresh, f"last report {disk_age * 60:.0f} min ago"))
+            full = [d for d in disks if isinstance(d, dict) and isinstance(d.get("use_pct"), (int, float))
+                    and d["use_pct"] >= DISK_FULL_PCT]
+            checks.append(Check(f"host_disk[{host}]", not full,
+                                "; ".join(f"{d.get('mount')} at {d['use_pct']:.0f} % ({d.get('avail')} free)" for d in full)[:200]
+                                or f"below {DISK_FULL_PCT:.0f} % on every disk"))
+            agents.pop(host, None)
+            continue
+        if host not in agents:
+            age = _hours_since_iso(str(doc.get("observed_at") or ""), now)
+            fresh = age is not None and age <= HOST_REPORT_STALE_HOURS
+            checks.append(Check(f"host_reporting[{host}]", fresh,
+                                "never" if age is None else f"last report {age:.1f}h ago"))
+        full = [f for f in doc.get("findings") or []
+                if isinstance(f, dict) and str(f.get("title") or "").startswith(DISK_FINDINGS)]
+        checks.append(Check(f"host_disk[{host}]", not full,
+                            "; ".join(str(f.get("detail") or f.get("title"))[:120] for f in full)
+                            or "below 85 % on every mount"))
+    for host, seen in sorted(agents.items()):
+        # An agent reports every ~5 min, so its last accepted report goes stale on the disk clock.
+        age = _hours_since_iso(str(seen or ""), now)
+        checks.append(Check(f"host_reporting[{host}]", age is not None and age <= DISK_REPORT_STALE_HOURS,
+                            "no report accepted yet" if age is None else f"last report {age * 60:.0f} min ago"))
+    return checks
+
+
+def probe_settlement(url: str, timeout: float = 20.0, now: float | None = None,
+                     label: str = "") -> list[Check]:
     """Is the collector still collecting?
 
     Submission used to be a human habit: a buyer's signed authorization sat in the hub
@@ -723,18 +815,21 @@ def probe_settlement(url: str, timeout: float = 20.0, now: float | None = None
     unsubmitted, is a paging condition in its own right.
     """
     now = time.time() if now is None else now
+    # Another hub's collector (AICOM_ALERT_EXTRA_SETTLEMENTS) is the same checks under
+    # `name@label`, so its state, wording and recovery are its own.
+    at = f"@{label}" if label else ""
     status, body, err = _get(url, timeout)
     if status != 200 or not isinstance(body, dict):
         # Not critical: the report is young, and a hub that has never swept yet must not
         # page anyone at 3am. The staleness check below is the one that matters.
-        return [Check("settlement_report_published", False,
+        return [Check("settlement_report_published" + at, False,
                       f"{url} -> {err or status}", critical=False)]
     age = _hours_since_iso(str(body.get("checked_at", "")), now)
     if age is None:
-        return [Check("settlement_report_published", False,
+        return [Check("settlement_report_published" + at, False,
                       f"unreadable checked_at: {body.get('checked_at')!r}", critical=False)]
     fresh = age <= SETTLEMENT_STALE_HOURS
-    checks = [Check("settlement_sweep_fresh", fresh,
+    checks = [Check("settlement_sweep_fresh" + at, fresh,
                     f"swept {age:.1f}h ago" if fresh
                     else f"STALE: last sweep {age:.1f}h ago (timer dead?)")]
     # Money already debited on chain that no transaction has swept out of escrow yet.
@@ -743,13 +838,13 @@ def probe_settlement(url: str, timeout: float = 20.0, now: float | None = None
     unc = body.get("uncollected") or {}
     expired_usd = float(unc.get("expired_usd") or 0)
     if expired_usd > 0:
-        checks.append(Check("settlement_nothing_expired_uncollected", False,
+        checks.append(Check("settlement_nothing_expired_uncollected" + at, False,
                             f"${expired_usd:.6f} sits in expired channels "
                             f"({unc.get('expired_uncollected')} of them) — anyone can "
                             f"call expireChannel to collect it",
                             critical=False))
     pending = float(body.get("pending_usd_after") or 0)
-    checks.append(Check("settlement_nothing_stuck", bool(body.get("ok")) and pending == 0,
+    checks.append(Check("settlement_nothing_stuck" + at, bool(body.get("ok")) and pending == 0,
                         "queue empty" if pending == 0 and body.get("ok")
                         else f"${pending:.6f} still unsubmitted"
                              + (f"; errors: {'; '.join(body.get('errors') or [])[:120]}"
@@ -1167,6 +1262,9 @@ _EN: dict[str, tuple[str, str, str]] = {
         "not every DNS address of {t} serves our certificate",
         "every DNS address of {t} serves our certificate again",
         "some clients get a TLS error or land on a stranger's server"),
+    "hub_up": (
+        "hub {t} is not answering", "hub {t} answers again",
+        "the hub is down for everyone: buyers, agents and peer hubs"),
     "hub_manifest": (
         "hub {t} is not serving its catalogue", "hub {t} is serving its catalogue again",
         "buyers and agents cannot see the storefront"),
@@ -1247,21 +1345,30 @@ _EN: dict[str, tuple[str, str, str]] = {
     "backup_receiver_disk": (
         "the backup receiver is running out of disk", "the backup receiver has room again",
         "the next nights' backups may not fit"),
+    "fleet_status_published": (
+        "SKOPOS does not publish the hosts' state", "SKOPOS publishes the hosts' state again",
+        "nobody sees whether a host's disk is filling up or a host went quiet"),
+    "host_disk": (
+        "the disk of {t} is filling up", "the disk of {t} has room again",
+        "at 100 % databases stop writing and the nightly backup is skipped (admin-vps, 2026-10-13) — look at df -h and du -xh / --max-depth=2 there"),
+    "host_reporting": (
+        "{t} stopped reporting to SKOPOS", "{t} reports to SKOPOS again",
+        "its disk, memory and load are no longer seen — check skopos-node.timer there"),
     "backup_not_shrunk": (
         "the received backup of {t} shrank", "the received backup of {t} is whole again",
         "segments were compacted away: if a client deleted its archives first, they are gone for good — check the repo's transactions before anything else"),
     "settlement_report_published": (
-        "the settlement sweep is not publishing its report",
-        "the settlement sweep publishes its report again",
+        "the settlement sweep of {t} is not publishing its report",
+        "the settlement sweep of {t} publishes its report again",
         "nobody can see whether payments reach the chain"),
     "settlement_sweep_fresh": (
-        "the settlement sweep has not run", "the settlement sweep runs again",
+        "the settlement sweep of {t} has not run", "the settlement sweep of {t} runs again",
         "payments buyers signed are not being submitted to the chain"),
     "settlement_nothing_stuck": (
-        "there are unsubmitted payments", "no unsubmitted payments left",
+        "there are unsubmitted payments on {t}", "no unsubmitted payments left on {t}",
         "buyers' money is stuck and not reaching the hub"),
     "settlement_nothing_expired_uncollected": (
-        "money is sitting in expired payment channels", "expired channels are collected",
+        "money is sitting in expired payment channels on {t}", "expired channels on {t} are collected",
         "not urgent: anyone can collect it by calling expireChannel"),
     "credit_rail_reachable": (
         "seller {t} is not answering", "seller {t} answers again",
@@ -1294,6 +1401,10 @@ _EN: dict[str, tuple[str, str, str]] = {
         "the paywall was not checked for every priced provider",
         "the paywall is checked for every provider again",
         "for some providers nobody knows whether they charge"),
+    "sells_for_known": (
+        "the canary could not read which peers the hub sells for",
+        "the canary knows which peers the hub sells for again",
+        "brokered peers are judged as if this hub sold them, so their free trials look like leaks"),
     "priced_capability_gated": (
         "paid access to {t} misbehaves", "paid access to {t} requires payment again",
         "paid work may be going out for free, or failing for buyers"),
@@ -1405,6 +1516,9 @@ _RU: dict[str, tuple[str, str, str]] = {
     "hub_dns_all_addresses_valid": (
         "не все DNS-адреса {t} отдают наш сертификат", "все DNS-адреса {t} снова отдают наш сертификат",
         "часть клиентов получает ошибку TLS или попадает на чужой сервер"),
+    "hub_up": (
+        "хаб {t} не отвечает", "хаб {t} снова отвечает",
+        "хаб недоступен всем: покупателям, агентам и соседним хабам"),
     "hub_manifest": (
         "хаб {t} не отдаёт каталог", "хаб {t} снова отдаёт каталог",
         "покупатели и агенты не видят витрину"),
@@ -1484,20 +1598,29 @@ _RU: dict[str, tuple[str, str, str]] = {
     "backup_receiver_disk": (
         "в хранилище бэкапов кончается место", "в хранилище бэкапов снова есть место",
         "следующие ночные бэкапы могут не поместиться"),
+    "fleet_status_published": (
+        "SKOPOS не публикует состояние серверов", "SKOPOS снова публикует состояние серверов",
+        "не видно, заполняется ли где-то диск и не замолчал ли сервер"),
+    "host_disk": (
+        "на {t} кончается диск", "на {t} снова есть место на диске",
+        "при 100 % базы перестают писать, а ночной бэкап пропускается (admin-vps, 2026-10-13) — смотри там df -h и du -xh / --max-depth=2"),
+    "host_reporting": (
+        "{t} перестал отчитываться в SKOPOS", "{t} снова отчитывается в SKOPOS",
+        "его диск, память и нагрузку больше не видно — проверь там skopos-node.timer"),
     "backup_not_shrunk": (
         "бэкап {t} в хранилище уменьшился", "бэкап {t} в хранилище снова цел",
         "сегменты удалены сжатием: если клиент перед этим стёр архивы, они пропали насовсем — сначала проверь журнал транзакций репозитория"),
     "settlement_report_published": (
-        "сборщик оплат не публикует отчёт", "сборщик оплат снова публикует отчёт",
+        "сборщик оплат {t} не публикует отчёт", "сборщик оплат {t} снова публикует отчёт",
         "не видно, уходят ли оплаты в сеть"),
     "settlement_sweep_fresh": (
-        "сборщик оплат не запускался", "сборщик оплат снова работает",
+        "сборщик оплат {t} не запускался", "сборщик оплат {t} снова работает",
         "подписанные покупателями оплаты не отправляются в сеть"),
     "settlement_nothing_stuck": (
-        "есть неотправленные оплаты", "неотправленных оплат больше нет",
+        "есть неотправленные оплаты на {t}", "неотправленных оплат на {t} больше нет",
         "деньги покупателей висят и не доходят до хаба"),
     "settlement_nothing_expired_uncollected": (
-        "деньги лежат в истёкших платёжных каналах", "истёкшие каналы собраны",
+        "деньги лежат в истёкших платёжных каналах на {t}", "истёкшие каналы на {t} собраны",
         "не срочно: забрать их может кто угодно вызовом expireChannel"),
     "credit_rail_reachable": (
         "продавец {t} не отвечает", "продавец {t} снова отвечает",
@@ -1525,6 +1648,10 @@ _RU: dict[str, tuple[str, str, str]] = {
     "every_priced_provider_probed": (
         "пейвол проверен не у всех платных поставщиков", "пейвол снова проверен у всех",
         "у части поставщиков неизвестно, берут ли они деньги"),
+    "sells_for_known": (
+        "канарейка не смогла прочитать, за кого продаёт хаб",
+        "канарейка снова знает, за кого продаёт хаб",
+        "чужих поставщиков судят как проданных хабом, и их бесплатные пробы выглядят как утечки"),
     "priced_capability_gated": (
         "платный доступ к {t} работает неправильно", "платный доступ к {t} снова требует оплату",
         "платная работа может уходить бесплатно или ломаться у покупателей"),
@@ -1857,6 +1984,41 @@ def deliver(channels: list[tuple[str, Any]], text: str, state: dict[str, Any],
 
 # ── orchestration ────────────────────────────────────────────────────────────────────────
 
+def extra_settlements_from_env(raw: str | None = None) -> list[tuple[str, str]]:
+    """``AICOM_ALERT_EXTRA_SETTLEMENTS=label=https://…/settlement.json,…`` → [(label, url)]."""
+    if raw is None:
+        raw = os.environ.get("AICOM_ALERT_EXTRA_SETTLEMENTS", "")
+    out: list[tuple[str, str]] = []
+    for entry in raw.split(","):
+        if entry.strip():
+            label, url = _split_hub_entry(entry)
+            if url.startswith("https://") and re.fullmatch(r"[A-Za-z0-9_.-]+", label or ""):
+                out.append((label, url))
+    return out
+
+
+def uptime_urls_from_env(raw: str | None = None) -> list[tuple[str, str]]:
+    """``AICOM_ALERT_UPTIME_URLS=label=https://…,…`` → [(label, url)], https and named only.
+
+    A label is required (it is the check's name and the key its history is stored under),
+    and two entries with one label would overwrite each other's state, so the first wins.
+    """
+    if raw is None:
+        raw = os.environ.get("AICOM_ALERT_UPTIME_URLS", "")
+    out: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for entry in raw.split(","):
+        entry = entry.strip()
+        if "=" not in entry:
+            continue
+        label, url = _split_hub_entry(entry)
+        if (url.startswith("https://") and re.fullmatch(r"[A-Za-z0-9_.-]+", label or "")
+                and label not in seen):
+            seen.add(label)
+            out.append((label, url))
+    return out
+
+
 def federation_hubs_from_env(primary: str, raw: str | None = None) -> list[str]:
     """Extra hubs whose own peer index should be watched, primary excluded.
 
@@ -1913,7 +2075,7 @@ def tls_names_from_env(hub: str) -> list[str]:
         "atlas.modelmarket.dev", "verify.modelmarket.dev", "oracles.modelmarket.dev",
         "iot.modelmarket.dev", "momus.modelmarket.dev", "skopos.modelmarket.dev",
         "basanos.modelmarket.dev", "hestia.modelmarket.dev", "logos.modelmarket.dev",
-        "histor.modelmarket.dev",
+        "histor.modelmarket.dev", "mcp.modelmarket.dev",
         "magic-ai-factory.com",
     })
 
@@ -1961,11 +2123,23 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
             timeout: float, journey_url: str = "", uni_chain_url: str = "",
             deposit_hubs: list[str] | None = None,
             backup_url: str = "", backup_hosts: list[str] | None = None,
+            fleet_url: str = "", fleet_token: str = "",
             federation_hubs: list[str] | None = None,
             sellers: list[str] | None = None, scope: Scope | None = None,
-            wallet_history: dict[str, Any] | None = None) -> list[Check]:
+            wallet_history: dict[str, Any] | None = None,
+            extra_settlements: list[tuple[str, str]] | None = None,
+            uptime: list[tuple[str, str]] | None = None) -> list[Check]:
     scope = scope if scope is not None else Scope.from_env()
     checks: list[Check] = []
+    # Named one by one by the owner, like the extra settlements below, so not filtered by
+    # the scope; empty by default, so nothing outside it is contacted unless they say so.
+    try:
+        uptime_timeout = float(os.environ.get("AICOM_ALERT_UPTIME_TIMEOUT", "")
+                               or DEFAULT_UPTIME_TIMEOUT)
+    except ValueError:  # a typo in the env must not take the whole alerter down
+        uptime_timeout = DEFAULT_UPTIME_TIMEOUT
+    for label, url in uptime if uptime is not None else uptime_urls_from_env():
+        checks += probe_uptime(url, label, min(timeout, uptime_timeout))
     sellers = sellers if sellers is not None else sellers_from_env()
     checks += probe_credit_rail([s for s in sellers if scope.allows(s)], min(timeout, 10.0))
     checks += probe_dns(hub)
@@ -1986,6 +2160,11 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_signer(signer, min(timeout, 10.0))
     checks += probe_status_page(status_url, timeout, scope=scope)
     checks += probe_settlement(settlement_url, timeout)
+    # Named one by one by the owner, so NOT filtered by the scope: on 2026-10-12 the owner
+    # asked for the Independent hub's collector to be watched while the rest of that node
+    # stays outside AICOM_ALERT_SCOPE (decision of 2026-09-24).
+    for label, url in extra_settlements if extra_settlements is not None else extra_settlements_from_env():
+        checks += probe_settlement(url, timeout, label=label)
     if journey_url.strip():
         checks += probe_journey(journey_url, timeout)
     if uni_chain_url.strip():
@@ -1994,6 +2173,10 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_deposit_watch(deposit_hubs, timeout, scope=scope)
     if backup_url.strip():
         checks += probe_backups(backup_url, backup_hosts, timeout)
+    # Every host we run, not filtered by the scope: a full disk on the PingBlip box stops the
+    # backups of all the others, whatever the game it serves.
+    if fleet_url.strip() and fleet_token.strip():
+        checks += probe_fleet(fleet_url, fleet_token, timeout)
     checks += probe_security_posture(hub, min(timeout, 10.0))
     for label, url in watched_pairs:
         checks += probe_security_posture(url, min(timeout, 10.0), label=label)
@@ -2052,6 +2235,8 @@ def main(argv: list[str] | None = None) -> int:
     backup_url = os.environ.get("AICOM_ALERT_BACKUP_URL", DEFAULT_BACKUP)
     backup_hosts = [h.strip() for h in os.environ.get("AICOM_ALERT_BACKUP_HOSTS", "").split(",")
                     if h.strip()]
+    fleet_url = os.environ.get("AICOM_ALERT_SKOPOS_URL", DEFAULT_SKOPOS_EXPORT)
+    fleet_token = os.environ.get("AICOM_ALERT_SKOPOS_TOKEN", "")
     heartbeat_hours = float(os.environ.get("AICOM_ALERT_HEARTBEAT_HOURS", "24") or 24)
     flap = max(1, int(os.environ.get("AICOM_ALERT_FLAP", "2") or 2))
     lang = (os.environ.get("AICOM_ALERT_LANG") or "en").strip().lower()
@@ -2089,6 +2274,7 @@ def main(argv: list[str] | None = None) -> int:
                      settlement_url=settlement_url, timeout=args.timeout, journey_url=journey_url,
                      uni_chain_url=uni_chain_url, deposit_hubs=deposit_hubs,
                      backup_url=backup_url, backup_hosts=backup_hosts,
+                     fleet_url=fleet_url, fleet_token=fleet_token,
                      federation_hubs=federation_hubs_from_env(hub), scope=scope,
                      wallet_history=state.setdefault("wallets", {}))
     heartbeat_before = state.get("last_heartbeat", "")

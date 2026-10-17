@@ -9,6 +9,7 @@ from web.backend.services.product_code_presence import (
     preserve_manifest_file_entries,
     product_has_code,
 )
+from tests.split_source import read_split
 
 
 def test_empty_manifest_still_true_when_source_exists(tmp_path: Path):
@@ -81,6 +82,6 @@ def test_storefront_and_dev_wire_the_shared_helper():
     products = (root / "web" / "backend" / "api" / "products.py").read_text(encoding="utf-8")
     assert "from web.backend.services.product_code_presence import product_has_code" in products
     assert 'if not files:\n        return False' not in products
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     assert "preserve_manifest_file_entries" in dev
     assert "Preserved" in dev and "prior manifest" in dev

@@ -22,6 +22,7 @@ from web.backend.services.duplicate_module_check import (
     find_unstyled_classes,
     strip_orphan_tailwind_classnames,
 )
+from tests.split_source import read_split
 
 
 def _tree(root: Path, files: dict[str, str]) -> Path:
@@ -105,7 +106,7 @@ def test_it_is_wired_everywhere():
     check = (root / "web" / "backend" / "services" / "duplicate_module_check.py").read_text(encoding="utf-8")
     passed = check[check.index('"passed": not missing') : check.index('"skipped": False')]
     assert "not unstyled" in passed
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     breakdown = dev[dev.index("def _tree_defect_breakdown(") : dev.index("def _tree_defect_identities(")]
     assert "find_unstyled_classes" in breakdown
     score = dev[dev.index("def _tree_defect_score(") : dev.index("def _revert_out_of_scope_writes")]

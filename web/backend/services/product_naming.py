@@ -18,6 +18,8 @@ from typing import Any
 def _clean_name(s: str) -> str:
     s = re.sub(r"\s+", " ", (s or "").strip())
     s = re.sub(r"[™®]", "", s)
+    # A storefront title is plain text: "**Name**" from a spec or an idea showed its asterisks.
+    s = re.sub(r"\*\*|__|`", "", s).strip()
     return s[:120].strip()
 
 

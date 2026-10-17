@@ -14,6 +14,13 @@ number is since the test began, our own traffic left out, callers counted, never
   - ``invocations``: every call of a direct-tool capability that reached the agent through the
     hub (hub.db invocation_stats, read in the hub container): when, which, the outcome, MCP trial
     visitor or credit account, and a 10-hex caller hash — never the caller id.
+  - ``tools``: the free pages for people at /tools/ (okx-a2mcp/src/web) — page views by page,
+    people (browser User-Agents) apart from crawlers, distinct visitors; and the checks their form
+    sent per tool (/tools/api/<tool>): answered, refused, rate-limited, failed, distinct callers.
+    Counted from the first run that knew about them (``tools.since``), not back-filled.
+  - ``hubs``: the operator funnel — hubs run by someone else that crawled the apex with a public
+    address, that wait in its queue, what the admission assay said about them, and how many are
+    admitted. Counts only, from the hub's peers / federation_inbound / peer_assays tables.
 
 Our own traffic is the fleet's and the owner's addresses (AICOM_OWN_IPS). The log is read
 incrementally (offset and inode kept in AICOM_DEMAND_EXPORT_STATE); a rotation is followed into
@@ -124,6 +131,49 @@ def fold_x402(state: dict[str, Any], hit: dict[str, Any], own_ips: set[str], sta
         row["callers"].append(caller)
 
 
+_TOOL_PAGE = re.compile(r"^/tools/(?:(?P<lang>ru|es|fr|zh)/)?(?P<page>[a-z0-9-]*)$")
+_CRAWLER = re.compile(r"bot|crawl|spider|slurp|preview|headless|lighthouse|facebookexternalhit|curl|wget|python|go-http|node",
+                      re.IGNORECASE)
+
+
+def fold_tools(state: dict[str, Any], hit: dict[str, Any], own_ips: set[str], salt: str) -> None:
+    """Count one access-log hit into state["tools"] if it is an outsider on the /tools/ pages."""
+    if hit["at"] < state.get("since_ts", 0) or hit["ip"] in own_ips:
+        return
+    path = hit["path"]
+    caller = hashlib.sha256((salt + hit["ip"]).encode()).hexdigest()[:12]
+    if hit["method"] == "POST" and path.startswith("/tools/api/"):
+        tool = path[len("/tools/api/"):].strip("/")
+        if not tool or "/" in tool or len(tool) > 40:
+            return
+        row = state.setdefault("checks", {}).setdefault(tool, {"answered": 0, "refused": 0, "limited": 0,
+                                                                "failed": 0, "callers": []})
+        kind = {200: "answered", 400: "refused", 429: "limited"}.get(hit["status"])
+        if kind is None and hit["status"] >= 500:
+            kind = "failed"
+        if kind is None:
+            return
+        row[kind] += 1
+        if caller not in row["callers"]:
+            row["callers"].append(caller)
+        return
+    m = _TOOL_PAGE.match(path)
+    if hit["method"] != "GET" or hit["status"] != 200 or not m:
+        return
+    page = m.group("page") or "index"
+    row = state.setdefault("pages", {}).setdefault(page, {"people": 0, "crawlers": 0, "visitors": [],
+                                                           "langs": {}})
+    ua = hit["ua"]
+    if "mozilla" in ua.lower() and not _CRAWLER.search(ua):
+        row["people"] += 1
+        lang = m.group("lang") or "en"
+        row["langs"][lang] = row["langs"].get(lang, 0) + 1
+        if caller not in row["visitors"]:
+            row["visitors"].append(caller)
+    else:
+        row["crawlers"] += 1
+
+
 def read_log(state: dict[str, Any], path: str, own_ips: set[str], start: float) -> int:
     """Fold every new line of the access log (and of its rotated copy) into state."""
     cursor = state.setdefault("cursor", {})
@@ -149,10 +199,15 @@ def read_log(state: dict[str, Any], path: str, own_ips: set[str], start: float) 
             for raw in fh:
                 lines += 1
                 # Most of this host's log is other sites; only these lines need parsing.
-                if b"/x402/" not in raw and b"/.well-known/x402" not in raw:
+                if b"/x402/" not in raw and b"/.well-known/x402" not in raw and b"/tools/" not in raw:
                     continue
                 hit = parse_log_line(raw.decode("utf-8", "replace"))
-                if hit:
+                if not hit:
+                    continue
+                if hit["path"].startswith("/tools/"):
+                    if "tools" in state:
+                        fold_tools(state["tools"], hit, own_ips, state["x402"]["salt"])
+                else:
                     fold_x402(state["x402"], hit, own_ips, start)
             end = fh.tell()
         if name == path:
@@ -194,6 +249,52 @@ def fold_mcp(state: dict[str, Any], raw: dict[str, dict[str, int]]) -> None:
                 total.setdefault(key, {})[fam] = total.get(key, {}).get(fam, 0) + delta
 
 
+# Hosts of this project and its sibling ecosystems; everything else is somebody else's hub.
+OWN_HUB_SUFFIXES = ("modelmarket.dev", "magic-ai-factory.com", "independentai.network",
+                    "attestedmemory.net")
+_HUBS_QUERY = """
+import json, sqlite3
+db = sqlite3.connect("file:/app/data/hub.db?mode=ro", uri=True)
+peers = db.execute("select url, status from peers").fetchall()
+inbound = [r[0] for r in db.execute("select hub_url from federation_inbound").fetchall()]
+assays = {u: v or "" for u, v in db.execute("select peer_url, verdict from peer_assays").fetchall()}
+print(json.dumps({"peers": peers, "inbound": inbound, "assays": assays}))
+"""
+
+
+def _someone_elses(url: str) -> bool:
+    """A public address that is not one of ours: the hubs the operator funnel is about."""
+    from urllib.parse import urlparse
+
+    host = (urlparse(str(url or "")).hostname or "").lower()
+    if not host or "." not in host:
+        return False
+    if host == "localhost" or host.endswith((".localhost", ".local", ".internal", ".test",
+                                             ".invalid", ".example")):
+        return False
+    if re.fullmatch(r"[0-9.]+", host) or ":" in host:
+        return False  # a bare address is a test or an alias, never how an operator names a hub
+    return not any(host == s or host.endswith("." + s) for s in OWN_HUB_SUFFIXES)
+
+
+def hubs(container: str) -> dict[str, Any]:
+    """The operator funnel at the apex, counts only."""
+    out = subprocess.run(["docker", "exec", "-i", container, "python3", "-"],
+                         input=_HUBS_QUERY, capture_output=True, text=True, timeout=60, check=True)
+    raw = json.loads(out.stdout or "{}")
+    peers = [(u, st) for u, st in raw.get("peers", []) if _someone_elses(u)]
+    verdicts: dict[str, int] = {}
+    for url, verdict in (raw.get("assays") or {}).items():
+        if _someone_elses(url) and verdict:
+            verdicts[verdict] = verdicts.get(verdict, 0) + 1
+    return {
+        "crawled_us": len({u for u in raw.get("inbound", []) if _someone_elses(u)}),
+        "pending": sum(1 for _u, st in peers if st == "pending"),
+        "admitted": sum(1 for _u, st in peers if st == "active"),
+        "assay_verdicts": verdicts,
+    }
+
+
 def invocations(container: str) -> list[dict[str, str]]:
     """Direct-tool capability calls through the hub since START, callers hashed."""
     out = subprocess.run(["docker", "exec", "-i", container, "python3", "-", START, ",".join(CAPABILITIES)],
@@ -208,15 +309,23 @@ def invocations(container: str) -> list[dict[str, str]]:
     return rows
 
 
-def public(state: dict[str, Any], calls: list[dict[str, str]], now: float) -> dict[str, Any]:
+def public(state: dict[str, Any], calls: list[dict[str, str]], now: float,
+           hub_funnel: dict[str, Any] | None = None) -> dict[str, Any]:
     routes = {r: {k: v for k, v in row.items() if k != "callers"} | {"callers": len(row["callers"])}
               for r, row in sorted(state["x402"].get("routes", {}).items())}
+    tools = state.get("tools") or {}
+    pages = {p: {"people": r["people"], "crawlers": r["crawlers"], "visitors": len(r["visitors"]),
+                 "langs": r["langs"]} for p, r in sorted(tools.get("pages", {}).items())}
+    checks = {t: {k: v for k, v in r.items() if k != "callers"} | {"callers": len(r["callers"])}
+              for t, r in sorted(tools.get("checks", {}).items())}
     return {
         "generated_at": datetime.fromtimestamp(now, UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "since": START,
         "x402": {"routes": routes, "discovery": state["x402"].get("discovery", {})},
+        "tools": {"since": tools.get("since", ""), "pages": pages, "checks": checks},
         "mcp": state["mcp"].get("total", {}),
         "invocations": calls,
+        "hubs": hub_funnel or {},
         # Kept for readers of the first version of this file (scripts/demand_watch.py).
         "tools_call": {k.split(":", 1)[1]: v for k, v in state["mcp"].get("total", {}).items()
                        if k.startswith("tools/call:")},
@@ -242,6 +351,9 @@ def main(argv: list[str] | None = None) -> int:
         state = {}
     state.setdefault("x402", {}).setdefault("salt", secrets.token_hex(16))
     state.setdefault("mcp", {})
+    if "tools" not in state:
+        now = time.time()
+        state["tools"] = {"since": datetime.fromtimestamp(now, UTC).strftime("%Y-%m-%dT%H:%M:%SZ"), "since_ts": now}
     read_log(state, args.log, own_ips, _start_ts())
     try:
         req = urllib.request.Request(args.metrics, headers={"User-Agent": "aicom-demand-export/2"})
@@ -254,13 +366,18 @@ def main(argv: list[str] | None = None) -> int:
     except (subprocess.SubprocessError, OSError, ValueError) as exc:
         print(f"invocations unreadable: {type(exc).__name__}", file=sys.stderr)
         calls = []
+    try:
+        hub_funnel = hubs(args.hub_container)
+    except (subprocess.SubprocessError, OSError, ValueError) as exc:
+        print(f"hubs unreadable: {type(exc).__name__}", file=sys.stderr)
+        hub_funnel = {}
     os.makedirs(os.path.dirname(args.state), exist_ok=True)
     tmp_state = args.state + ".tmp"
     fd = os.open(tmp_state, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, "w", encoding="utf-8") as fh:
         json.dump(state, fh)
     os.replace(tmp_state, args.state)
-    doc = public(state, calls, time.time())
+    doc = public(state, calls, time.time(), hub_funnel)
     tmp = args.out + ".tmp"
     with open(tmp, "w", encoding="utf-8") as fh:
         json.dump(doc, fh, indent=1, sort_keys=True)

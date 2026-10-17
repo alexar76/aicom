@@ -80,7 +80,7 @@ AICOM 是一个**联邦式自主智能体经济**：
 | AIMarket Hub **UNI** | [uni.modelmarket.dev](https://uni.modelmarket.dev) | 密封平行目录 — [uni-and-live.zh.md](../uni-and-live.zh.md) |
 | 预言机门户 | [oracles.modelmarket.dev](https://oracles.modelmarket.dev) | 17 个可验证数学产品 |
 | Agent Lottery | [lottery.modelmarket.dev](https://lottery.modelmarket.dev) | 规范的预言机消费方 |
-| 生态系统演示 | [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev) | 技术栈概览 |
+| 生态系统演示 | [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/) | 技术栈概览 |
 | Alien Monitor **UNI** | [monitor-uni.modelmarket.dev/](https://monitor-uni.modelmarket.dev/) | 气泡 3D 图谱 · `ALIEN_MODE=universe` |
 | Alien Monitor **LIVE** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | 实况资金 3D 图谱 · `ALIEN_MODE=real` |
 | 生产指标 | [ecosystem-status API](https://magic-ai-factory.com/api/public/ecosystem-status) · [docs](../production-metrics.md) | RPS、延迟、正常运行时间、事件 |
@@ -172,7 +172,7 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.rail.read@v1 | rail (铁路交通) | fintraffic-rail-01 | Fintraffic Digitraffic 列车位置 CC BY 4.0；仅芬兰铁路 |
 | gaia.drought.read@v1 | drought (干旱) | usdm-01 | 美国干旱监测周报州统计；注明 NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.energy.read@v1 | energy (能源) | em-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.energy.read@v1 | energy (能源) | em-01, plug-sim-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.reservoir.read@v1 | reservoir (Reservoirs) | usace-keys-01, usace-pine-01, usace-deni-01, usace-huds-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.atmosphere.read@v1 | atmosphere (大气) | cams-* + 买方 lat/lon | 任意买方坐标；CAMS 数据 CC BY 4.0；需商业托管 |
 | gaia.dart.read@v1 | dart (DART 浮标) | noaa-dart-01, dart-*（全部 43 个活动站） | NDBC 目录中的全部活动站；是水位计，不是海啸警报 |
@@ -181,6 +181,8 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.solar.read@v1 | solar (太阳辐照度) | solar-* + 买方 lat/lon | 任意买方坐标；返回 NASA POWER 源坐标 |
 | gaia.snow.read@v1 | snow (积雪) | snow-* + CONUS 内买方 lat/lon | CONUS 内任意买方坐标；返回精确 SNODAS 网格 |
 | gaia.land_temperature.read@v1 | land_temperature (地表温度) | lst-* + 买方 lat/lon | 任意买方坐标；返回 Sentinel-3 SLSTR 源网格 |
+| gaia.power.price.read@v1 | power_price (电价) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | 按竞价区的日前批发电价（SMARD，CC BY 4.0；15 个区）；不是零售电价 |
+| gaia.imagery.read@v1 | imagery (卫星影像) | s2-l2a-01 + 买方 lat/lon（5 个示例点） | 任意陆地坐标；最新无云 Sentinel-2 L2A 影像的一个 10–20 米像元；指数须结合场景分类解读；含经修改的 Copernicus Sentinel 数据 |
 
 GAIA 管道（不是地图针脚）
 
@@ -189,6 +191,10 @@ GAIA 管道（不是地图针脚）
 | gaia.window@v1 | N readings of one device_id in one invoke |
 | gaia.verify@v1 | plausibility verdict as a sellable good |
 | gaia.fleet.status@v1 | device registry incl. pinned pubkeys — free |
+| gaia.place.resolve@v1 | place name or coordinate → one place and the reads that cover it (GeoNames, CC BY 4.0) — free |
+| gaia.power.window@v1 | cheapest window of N hours in a bidding zone's published day-ahead prices, with the prices used and their SHA-256 |
+| gaia.actuator.list@v1 | the operator's actuators: limits, relay state, pinned keys, kill switch — free |
+| gaia.actuate@v1 | switch a plug on for N s or off; $0.05, paid only for the effect its own meter measures (pay-on-verified) |
 
 ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 
@@ -210,7 +216,7 @@ ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 | atlas.field.posterior@v1 | 0.08 | 当前 LIVE 快照的空间 GP 后验；是插值，不是预报 |
 | atlas.field.shape@v1 | 0.06 | LIVE in-situ 针脚的 H0 持续同调；不是 Betti-1；不是 AQI |
 
-地图图层 (46): weather=天气; air=空气质量; tide=潮汐; river=河流; marine=海洋; ghg=温室气体; grid=电网碳强度; quake=地震; energy=能源; fire=野火; radiation=辐射; jamming=GNSS 干扰; gnss=GNSS 完整性; traffic=边缘交通; events=自然灾害; spacewx=空间天气; lightning=闪电; alerts=天气预警; argo=Argo 浮标; geomag=地磁; iot=边缘物联网; flood=洪水; effis=EFFIS 火情; volcano=火山; ais=公开 AIS; tsunami=海啸预警; cyclone=热带气旋; adsb=公开 ADS-B; smoke=烟雾; water_quality=水质; dart=DART 浮标; precipitation=降水; radar=NEXRAD 状态; atmosphere=大气; radnet=EPA RadNet; soil=土壤湿度; solar=太阳辐照度; snow=积雪; sea_ice=海冰; land_temperature=地表温度; aviation=航空 METAR; road=道路气象; rail=铁路交通; drought=干旱; reservoir=Reservoirs; uv=UV forecast
+地图图层 (49): weather=天气; air=空气质量; tide=潮汐; river=河流; marine=海洋; ghg=温室气体; grid=电网碳强度; quake=地震; energy=能源; fire=野火; radiation=辐射; jamming=GNSS 干扰; gnss=GNSS 完整性; traffic=边缘交通; events=自然灾害; spacewx=空间天气; lightning=闪电; alerts=天气预警; argo=Argo 浮标; geomag=地磁; iot=边缘物联网; flood=洪水; effis=EFFIS 火情; volcano=火山; ais=公开 AIS; tsunami=海啸预警; cyclone=热带气旋; adsb=公开 ADS-B; smoke=烟雾; water_quality=水质; dart=DART 浮标; precipitation=降水; radar=NEXRAD 状态; atmosphere=大气; radnet=EPA RadNet; soil=土壤湿度; solar=太阳辐照度; snow=积雪; sea_ice=海冰; land_temperature=地表温度; aviation=航空 METAR; road=道路气象; rail=铁路交通; drought=干旱; reservoir=Reservoirs; uv=UV forecast; power_price=电价; imagery=卫星影像; actuator=执行器
 
 <!-- END GENERATED physical-capabilities -->
 
@@ -254,7 +260,7 @@ ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (51 components).
+Run: python3 scripts/sync_knowledge_base.py --write (53 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -285,8 +291,10 @@ Run: python3 scripts/sync_knowledge_base.py --write (51 components).
 - create-aimarket-agent: 独立 CLI，用于生成经过测试的 AIMarket Protocol v2 能力提供方，并包含清单、Ed25519 签名和 Docker 打包。 · https://alexar76.github.io/create-aimarket-agent/
 - dioscuri: DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS). · https://alexar76.github.io/dioscuri/
 - dolos: DOLOS — 面向 UNI 气泡的动态 EVM 红队：分叉气泡的 Anvil，向已部署合约发起真实的漏洞利用交易，以证明哪些缺陷是真实的、哪些只是静态分析噪声；发现以 Ed25519 签名；仅在沙盒链上运行完整的 攻击->修复->forge-test->重新部署->再攻击 闭环。绝不触碰无法丢弃的链；主网发现仅供参考。 · https://dolos.modelmarket.dev/
+- emporion: Public-record facts for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), ECB reference rates, sanctions-list lookups (OFAC SDN, EU, UN) and Bitcoin-anchored timestamps (OpenTimestamps). Each answer is signed with its source, fetch time and SHA-256. The hub sells it at https://modelmarket.dev/providers/emporion. · https://emporion.modelmarket.dev · port 9351
 - escrow-signer: HORKOS 持有唯一在 AIMarketEscrow.authorizedHubs 中获授权的私钥，好让枢纽不必持有 —— 一个允许的选择器、一个托管合约、一条链，每笔金额的授权来自买方自己的 EIP-712 签名。 · https://alexar76.github.io/escrow-signer/
-- gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
+- esim-kit (repo esim-operator-kit): 接入任何 eSIM 运营商，包括已经在售的。他们在 AIMarket 轨道上向用户和 AI 智能体提供旅行 eSIM，并按自己已有的方式收款。五语言店铺。演示：esim.modelmarket.dev。 · https://esim.modelmarket.dev/
+- gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, day-ahead power prices from SMARD, Sentinel-2 imagery at any land point, …) plus window/verify. gaia.place.resolve@v1 (free) turns any place name into coordinates and says which reads cover it; gaia.power.window@v1 finds the cheapest hours to run a load; gaia.actuate@v1 switches an operator's metering plug and is paid only for the effect its meter measures. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
 - helios: HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve. · https://alexar76.github.io/helios/
 - hephaestus: The forge — compose capability chains from the live signed Hub catalogue, estimate cost and latency BEFORE spending, run pipelines through the factory executor, and keep a signed bill of materials with hop-level blame. Studio UI is hub-served; core library is framework-free. · https://modelmarket.dev/studio
 - hestia: HESTIA — 托管运行时：在运营者机器上隔离运行 AIMarket 能力提供方。不是 Hub 目录、不是任务板、不是 Factory。智能体只有在签名部署到本机之后才会出现。 · https://hestia.modelmarket.dev · port 9480

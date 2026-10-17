@@ -37,7 +37,14 @@ DOC_PATHS = [DOCS / f"free-and-paid-tiers{suffix}.md" for suffix in LANGS]
 
 HUB_TRIALS = ROOT / "aimarket-hub" / "aimarket_hub" / "sandbox_trials.py"
 ATLAS_GATE = ROOT / "atlas" / "atlas" / "payment_gate.py"
-VERCEL_ADAPTER = ROOT / "web" / "backend" / "services" / "vercel_fullstack_adapter.py"
+# The deploy env a product runs with (wallet_env), split out of vercel_fullstack_adapter.py.
+VERCEL_ADAPTER = ROOT / "web" / "backend" / "services" / "vercel_bundle" / "env.py"
+# The provider's price gate (§7.3) and who may pass it: the hub that signs, and the
+# operator's own readers, nominated in tiers.py.
+PRICE_GATE = ROOT / "oracles" / "core" / "oracle_core" / "price_gate.py"
+ORACLE_TIERS = ROOT / "oracles" / "core" / "oracle_core" / "tiers.py"
+HUB_SIGNING = ROOT / "aimarket-hub" / "aimarket_hub" / "provider_request_auth.py"
+ATLAS_CONFIG = ROOT / "atlas" / "atlas" / "config.py"
 
 
 def _docs() -> list[tuple[Path, str]]:
@@ -83,6 +90,13 @@ def test_documented_env_vars_exist_in_the_code_that_reads_them():
         (ATLAS_GATE, "ATLAS_TRIAL_MAX_PER_CALLER"),
         (VERCEL_ADAPTER, "AIFACTORY_PRODUCT_WALLET_ADDRESS"),
         (VERCEL_ADAPTER, "AIFACTORY_PRODUCT_WALLET_CHAIN"),
+        (ORACLE_TIERS, "ORACLE_PAID_TIER_SECRET"),
+        (ORACLE_TIERS, "ORACLE_TRUSTED_PAYMENT_PROXIES"),
+        (PRICE_GATE, "ORACLE_TRUSTED_HUBS"),
+        (PRICE_GATE, "ORACLE_PRICE_GATE"),
+        (PRICE_GATE, "ORACLE_HUB_AUDIENCES"),
+        (PRICE_GATE, "ORACLE_HUB_MAX_SKEW_S"),
+        (HUB_SIGNING, "AIMARKET_SIGN_PROVIDER_REQUESTS"),
     ]
     for source, var in pairs:
         if not source.is_file():
@@ -90,6 +104,21 @@ def test_documented_env_vars_exist_in_the_code_that_reads_them():
         assert var in source.read_text(encoding="utf-8"), f"{source.name} does not read {var}"
         documented = [p.name for p, text in _docs() if var in text]
         assert len(documented) == len(DOC_PATHS), f"{var} documented only in {documented}"
+
+
+def test_atlas_paid_tier_secret_name_matches_its_setting():
+    """ATLAS's name for GAIA's secret is a prefix plus a field, so no module spells it out."""
+    if not ATLAS_CONFIG.is_file():
+        pytest.skip(f"not in this tree: {ATLAS_CONFIG}")
+    source = ATLAS_CONFIG.read_text(encoding="utf-8")
+    prefix = re.search(r'env_prefix\s*=\s*"(\w+)"', source)
+    assert prefix, f"{ATLAS_CONFIG.name}: no env_prefix to read"
+    assert re.search(r"^\s*gaia_paid_tier_secret\s*:", source, re.M), (
+        f"{ATLAS_CONFIG.name} has no gaia_paid_tier_secret setting"
+    )
+    var = f"{prefix.group(1)}GAIA_PAID_TIER_SECRET"
+    documented = [p.name for p, text in _docs() if var in text]
+    assert len(documented) == len(DOC_PATHS), f"{var} documented only in {documented}"
 
 
 def test_allowance_and_window_agree_across_languages():

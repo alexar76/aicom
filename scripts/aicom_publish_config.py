@@ -187,6 +187,12 @@ FACTORY_LOCAL_EXCLUDES = [
     # The backup topology: which host receives every backup, its repo paths, passphrase
     # locations, key names and its address-restricted port. The scripts stay public.
     "deploy/backup/README.md",
+    # eSIM vhost allow-list for the private test stand. The address stays in this
+    # monorepo so the host deploy keeps working; it must not reach the public mirror.
+    "deploy/nginx/esim.modelmarket.dev.conf",
+    # eSIM vhost allow-list for the private test stand. The address has to stay
+    # in this file for the host deploy; the public mirror must not receive it.
+    "deploy/nginx/esim.modelmarket.dev.conf",
     # Build artifacts — regenerate via school/build.py / deploy_edu_school.sh
     "edu-landing",
     # Tracked on Gitea; stripped from the public GitHub factory/satellite rsync.
@@ -303,6 +309,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'run.sh',
     'scripts',
     'security',
+    'services',  # operator diagnosis provider (aicom.diagnosis/1); factory source, not a satellite
     'seo-landings',
     'start.sh',
     'test_ui_check.mjs',

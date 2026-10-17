@@ -5,6 +5,8 @@ const monorepoRoot = path.join(__dirname, '../..');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   outputFileTracingRoot: monorepoRoot,
+  // Marketing language URLs match the static ecosystem convention; app routes stay unchanged.
+  trailingSlash: process.env.AICOM_SITE_ROLE === 'factory-landing',
   // /api/products can take 20–40s on cold scan; default Next proxy timeout is 30s.
   experimental: {
     proxyTimeout: 120_000,

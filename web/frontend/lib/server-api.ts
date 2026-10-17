@@ -1,4 +1,6 @@
 import type { Product } from '@/lib/api';
+import { cache } from 'react';
+import { productsForExploreCategory } from '@/lib/categories';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
@@ -166,6 +168,18 @@ export async function getProductForMetadata(id: string): Promise<Product | null>
   }
 }
 
+// The category index renders all shelves. Share one catalog request instead of
+// triggering a full backend quality scan independently for every category.
+const fetchExploreCatalog = cache(async (): Promise<Product[]> => {
+  const res = await fetch(`${apiBase()}/api/products`, {
+    next: { revalidate: 60 },
+    signal: AbortSignal.timeout(60_000),
+  });
+  if (!res.ok) return [];
+  const data = await res.json();
+  return data.products || [];
+});
+
 export async function getProductsByCategory(category: string): Promise<Product[]> {
   const fromLocal = async (): Promise<Product[]> => {
     const products = await loadLocalProducts();
@@ -198,13 +212,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
   };
 
   const fromApi = async (): Promise<Product[]> => {
-    const q = encodeURIComponent(category);
-    const res = await fetch(`${apiBase()}/api/products?category=${q}`, {
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.products || [];
+    return productsForExploreCategory(await fetchExploreCatalog(), category);
   };
 
   const mode = dataSourceMode();

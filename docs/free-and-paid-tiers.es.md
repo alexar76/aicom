@@ -4,7 +4,7 @@
 
 Casi todas las capacidades de `modelmarket.dev` son gratuitas ahora mismo —sin
 clave, sin canal, sin cuenta— y eso es una decisión, no un descuido. Esta página
-dice qué es gratuito, qué no, qué acota el nivel gratuito y cuáles son los dos
+dice qué es gratuito, qué no, qué acota el nivel gratuito y cuáles son los
 interruptores que activan la venta.
 
 ---
@@ -178,7 +178,10 @@ flowchart TD
     R["POST /ai-market/v2/invoke"] --> G{"limitador genérico<br/>120 pet./min por IP"}
     G -->|excedido| G429["429 rate limited"]
     G -->|ok| P["resolver: ¿está pagada la llamada?<br/>ORACLE_PAID_TIER_SECRET<br/>o proxy de confianza + canal"]
-    P --> F{"¿sin pagar Y por encima<br/>del techo gratuito?"}
+    P --> H{"compuerta de precio, si está activa (§7.3):<br/>¿con precio, sin pagar y sin firma<br/>válida de un Hub de confianza?"}
+    H -->|sin firma| H402["402 payment_required<br/>+ payment_ways: los Hubs"]
+    H -->|firma inválida| H401["401 hub_signature_invalid<br/>+ el motivo"]
+    H -->|no| F{"¿sin pagar Y por encima<br/>del techo gratuito?"}
     F -->|sí| F402["402 payment_required<br/>+ campo, solicitado, máximo"]
     F -->|no| B{"¿dentro del presupuesto de CPU?<br/>por cliente, luego agregado"}
     B -->|no| B429["429 + presupuesto, coste, resto"]
@@ -192,6 +195,11 @@ que un `429 reintente en breve` metería a quien llama en un bucle que nunca pue
 tener éxito. El `402` le dice el techo real y que pagar lo levanta. El agotamiento
 del presupuesto, en cambio, sí se resuelve solo —así que ese es el rechazo que
 merece `429`, y va segundo—.
+
+La compuerta de precio, si está activada, va antes de ambas, así que una llamada
+que rechaza no gasta presupuesto ni inicia trabajo. La firma de un Hub hace pasar
+una llamada por la compuerta y nada más: no levanta el techo gratuito, que sigue
+requiriendo la designación del operador (§7.1).
 
 Un `429` de presupuesto nombra tres números, porque quien está claramente por
 debajo de 120/min y aun así es rechazado necesita los tres para saber si esperar o
@@ -229,8 +237,11 @@ en solitario y dentro de la familia tiene un cubo separado en cada uno.
 
 ## 7. Activar la venta
 
-Hay dos interruptores, en dos lados distintos, y **ambos están apagados por
-defecto**.
+Dos interruptores deciden si se vende algo, uno en cada lado, y **ambos están
+apagados por defecto** (§7.1, §7.2). Un tercero, la compuerta de precio del
+proveedor (§7.3), impide que un proveedor regale en su propia URL lo que el Hub
+vende; también está apagado por defecto. §7.4 los ordena de forma que no rompan a
+nadie.
 
 ### 7.1 Lado del oráculo — a quién se permite pasar del techo
 
@@ -292,21 +303,127 @@ operador declara explícitamente, par por par.
 se aplican solo cuando la cripto está activada, la llamada no es una prueba de
 sandbox **y** el par está listado.
 
-### 7.3 La secuencia que no rompe a nadie
+### 7.3 Lado del oráculo — la compuerta de precio: las llamadas con precio pasan por un Hub
+
+§7.1 y §7.2 deciden cuánto cuesta una llamada *a través del Hub*. Ninguno cierra la
+otra puerta: la URL de invocación de un proveedor es pública, y antes de
+oracle-core 0.5.0 el proveedor no tenía forma de negar una capacidad con precio a
+quien la llamara directamente. Medido el 2026-10-16: un `POST` sin pagar a la URL
+propia de GAIA para `gaia.power.window@v1`, y a la de EMPORION para
+`emporion.vat.check@v1` ($0.002 cada una), respondió `ok: true` con la salida
+completa, mientras que las mismas llamadas a través de `modelmarket.dev` recibieron
+`402` al precio del catálogo.
+
+La compuerta no cobra. Los canales, las retenciones y el libro ya viven en el Hub.
+ATLAS se mide a sí mismo (§10), lo que funciona para un servicio, pero un libro en
+cada proveedor duplicaría el del Hub. La compuerta solo permite a un proveedor
+distinguir una llamada que un Hub admitió de una que lo rodeó. Un Hub que admite
+una llamada —cobró el precio, o decidió dar una prueba— la firma con su clave de
+federación, la `signer_public_key` de su `/.well-known/ai-market.json`. La firma
+cubre la capacidad, un hash de la entrada exacta, la URL de invocación a la que el
+Hub envió la petición, una marca de tiempo y un nonce nuevo, así que la firma de
+una llamada en un proveedor no compra otra llamada, ni la misma llamada en otro
+proveedor. El proveedor fija la clave del Hub.
+
+Para una capacidad con precio mayor que cero, salvo que quien llama sea alguien
+designado por el operador (§7.1):
+
+| la llamada lleva | el proveedor responde |
+|---|---|
+| ninguna firma de Hub | `402 payment_required`, con `payment_ways` nombrando los Hubs que la venden |
+| una firma que no se sostiene: Hub desconocido, clave equivocada, caducada, otra capacidad u otra entrada, dirigida a otro proveedor, un nonce ya usado | `401 hub_signature_invalid` y el motivo. El Hub lo convierte en un `502` y libera la retención del comprador, así que nadie la paga. |
+| una firma que se sostiene | se sirve; el techo gratuito y los presupuestos de CPU siguen aplicándose |
+
+Las capacidades gratuitas nunca pasan por la compuerta. El formato de cable —cinco
+cabeceras `X-AIMarket-Hub-*`— está en el docstring de
+`oracles/core/oracle_core/price_gate.py`, y el Hub y el proveedor fijan el mismo
+vector de prueba.
+
+En el proveedor:
+
+| variable | significado |
+|---|---|
+| `ORACLE_TRUSTED_HUBS` | `url=key,url=key`: cada Hub cuya admisión aceptas, con su `signer_public_key` Ed25519 (base64) tomada de su well-known. Repite una URL para aceptar dos claves durante una rotación. Una entrada mal formada se descarta y se registra; nunca amplía la lista. Un operador tercero fija su propio Hub. |
+| `ORACLE_PRICE_GATE` | `enforce`, `report` u `off`. **Sin fijar, es `enforce` en cuanto hay un Hub de confianza**, y `off` cuando no hay ninguno, que es como se comportaba el núcleo antes. `report` sirve todas las llamadas y registra lo que habría rechazado. Cualquier otro valor se lee como `enforce`, para que una errata no regale trabajo con precio. |
+| `ORACLE_HUB_AUDIENCES` | URL base adicionales en las que respondes, además de `public_url`, para un Hub que te alcanza con otro nombre. |
+| `ORACLE_HUB_MAX_SKEW_S` | Cuánto puede alejarse la marca de tiempo del Hub de tu reloj, en segundos. Por defecto, 120. |
+
+Con la compuerta activada, el well-known gana un objeto `price_gate` (el modo, los
+Hubs de confianza, el esquema), así que un comprador ve dónde comprar antes de
+llamar. Con ella apagada, el documento es idéntico byte a byte. Un proveedor
+arrancado con `AIFACTORY_PROD=1`, con capacidades con precio y la compuerta
+apagada, lo dice en su registro.
+
+En el Hub no hay nada que fijar: firma las llamadas que admite. La llamada a un
+listado local se firma siempre, porque el muro de pago o la prueba del Hub ya se
+han ejecutado. La llamada a un par federado se firma solo cuando este Hub es el
+vendedor de ese par (`AIMARKET_SELLS_FOR`, §7.2). Un par para el que el Hub solo
+hace de intermediario factura al comprador por sí mismo, y una firma le diría a un
+par con compuerta «pagado» sobre una llamada que nadie pagó.
+`AIMARKET_SIGN_PROVIDER_REQUESTS=0` desactiva la firma. Un error al firmar nunca
+hace fallar la llamada del comprador: la llamada sale sin firma y decide el
+proveedor.
+
+**Tus propios lectores directos.** Un servicio tuyo que llama al proveedor
+directamente, no a través de un Hub, recibe el mismo `402`. Desígnalo como en
+§7.1: fija `ORACLE_PAID_TIER_SECRET` en el proveedor y envía el mismo valor como
+`X-AIMarket-Paid-Tier`. Así lee ATLAS a GAIA, con el valor en
+`ATLAS_GAIA_PAID_TIER_SECRET`. El secreto también levanta el techo gratuito, así
+que resérvalo para tus propios servicios.
+
+Lo que la compuerta no hace:
+
+- **Confía en la decisión del Hub; no ve dinero.** Un Hub de confianza lo es con
+  toda su política: lo que regala como prueba, lo regala desde este proveedor.
+- **La protección contra repetición es por proceso y en memoria.** Un proveedor
+  con varios workers acepta una llamada repetida una vez por worker dentro de la
+  ventana de desfase, y un reinicio olvida los nonces vistos.
+- **Un Hub que solo hace de intermediario del proveedor no firma**, así que sus
+  compradores reciben el `402` del proveedor, que apunta a los Hubs que lo venden.
+  Es lo previsto. Fija un Hub solo si debe vender tus capacidades.
+
+### 7.4 La secuencia que no rompe a nadie
 
 ```mermaid
 flowchart TD
-    S["hoy: 42 capacidades gratuitas<br/>AIMARKET_SELLS_FOR sin fijar"] --> A["1. anunciar el cambio<br/>con una fecha"]
+    S["inicio: el par no está en AIMARKET_SELLS_FOR<br/>sus capacidades con precio responden a cualquiera, gratis"] --> A["1. anunciar el cambio<br/>con una fecha"]
     A --> B["2. primero el lado del oráculo:<br/>fijar ORACLE_PAID_TIER_SECRET<br/>para que las llamadas de pago puedan servirse"]
     B --> C["3. verificar una llamada de pago de extremo a extremo<br/>en todo el rango de entrada"]
     C --> D["4. solo entonces fijar AIMARKET_SELLS_FOR<br/>en el Hub"]
-    D --> E["la prueba gratuita sigue vigente:<br/>5 invocaciones por visitante y hora, renovables"]
+    D --> H["5. el Hub firma las llamadas que admite<br/>(activado por defecto: comprueba que ejecuta ese código)"]
+    H --> R["6. proveedor: ORACLE_TRUSTED_HUBS<br/>junto con ORACLE_PRICE_GATE=report"]
+    R --> N["7. designar tus propios lectores directos:<br/>ORACLE_PAID_TIER_SECRET"]
+    N --> X["8. ORACLE_PRICE_GATE=enforce"]
+    X --> E["la prueba gratuita sigue vigente, a través del Hub:<br/>5 invocaciones por visitante y hora, renovables"]
 ```
 
 El paso 2 antes del paso 4 es la parte en la que conviene insistir. Fijar
 `AIMARKET_SELLS_FOR` primero haría que el Hub exigiera pago por capacidades que el
 oráculo seguiría rechazando por encima del techo gratuito: compradores pagando por
 un trabajo que no pueden recibir.
+
+Los pasos 5 a 8 cierran la puerta propia del proveedor, y su orden importa igual.
+Para un proveedor listado directamente en el Hub y no federado, el paso 4 no
+aplica: el Hub firma sus llamadas de todos modos.
+
+- **El Hub firma antes de que el proveedor aplique la compuerta.** Un proveedor en
+  `enforce` al que el Hub aún envía llamadas sin firmar responde `402` a cada venta,
+  y el Hub pasa ese `402` al comprador. Las ventas se detienen, aunque a nadie se le
+  cobra.
+- **`report` antes de `enforce`, fijado en el mismo cambio que `ORACLE_TRUSTED_HUBS`.**
+  Los Hubs por sí solos significan `enforce` de inmediato. En modo report el
+  proveedor lo sirve todo y registra, una vez por minuto, cuántas llamadas con
+  precio llegaron con firma válida, sin firma o con firma inválida, y desde qué
+  direcciones llegaron las no firmadas. Una línea que dice que una llamada fue
+  `signed for` una URL en la que no respondes significa que el Hub te alcanza con
+  otro nombre: añade esa URL a `ORACLE_HUB_AUDIENCES`.
+- **Tus propios lectores antes de `enforce`.** Quienes llaman sin firma según el
+  informe son o bien tus propios servicios, que reciben el secreto del nivel de
+  pago, o bien desconocidos, que recibirán `402` y los Hubs donde comprar.
+
+Volver atrás no requiere reconstruir: `ORACLE_PRICE_GATE=report` (u `off`) y un
+reinicio del proveedor. `AIMARKET_SIGN_PROVIDER_REQUESTS=0` detiene la firma en el
+Hub, y solo es seguro cuando ningún proveedor que fija este Hub está en `enforce`.
 
 ## 8. Para autores de oráculos
 
@@ -524,6 +641,8 @@ lectura es un requisito del pliego, no un adorno.
 - [payment-enable-runbook](payment-enable-runbook.md) — activar pagos reales en el Hub
 - `oracles/core/oracle_core/tiers.py` — la implementación, con los números en comentarios
 - `oracles/core/tests/test_tiers.py` — 52 tests sobre este comportamiento
+- `oracles/core/oracle_core/price_gate.py` — la compuerta de precio; su docstring contiene el formato de cable
+- `aimarket-hub/aimarket_hub/provider_request_auth.py` — cuándo firma el Hub las llamadas que admite
 - `aimarket-hub/aimarket_hub/sandbox_trials.py` — el libro contable de pruebas y sus ventanas
 - `atlas/atlas/payment_gate.py` — el contador de ATLAS, con la separación check/settle
 - `web/backend/services/vercel_fullstack_adapter.py` — `wallet_env()`, el valor por defecto sin cartera

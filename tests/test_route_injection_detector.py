@@ -38,6 +38,7 @@ import pytest
 from web.backend.services.duplicate_module_check import (
     find_route_handlers_with_broken_injection,
 )
+from tests.split_source import read_split
 
 BROKEN_DECORATOR = '''
 from functools import wraps
@@ -204,7 +205,7 @@ def test_it_reaches_the_module_health_gate_and_the_round_score():
     dmc = (root / "web" / "backend" / "services" / "duplicate_module_check.py").read_text(encoding="utf-8")
     assert "route_handler_broken_injection" in dmc, "not reported as an issue"
     assert '"severity": "critical"' in dmc.split("route_handler_broken_injection")[1][:200]
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     assert "find_route_handlers_with_broken_injection(code_root)" in dev, (
         "the round-regression guard cannot see this defect, so a round that introduces one "
         "still reads as an improvement"
@@ -325,7 +326,7 @@ def test_a_duplicate_table_blocks_the_gate_and_the_score():
     dmc = (root / "web" / "backend" / "services" / "duplicate_module_check.py").read_text(encoding="utf-8")
     assert "duplicate_tablename" in dmc
     assert "not dup_tables" in dmc, "the verdict ignores it"
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     assert "find_duplicate_tablenames(code_root)" in dev, (
         "a round that introduces one would still read as an improvement"
     )
@@ -388,7 +389,7 @@ data = {"capability_id": "atlas.situation.brief@v1", "input": {"west": 1}}
 
 def test_an_unreachable_manifest_means_no_opinion(tmp_path, monkeypatch):
     """A network problem must never fail someone's build."""
-    import web.backend.services.duplicate_module_check as dmc
+    import web.backend.services.module_checks.capabilities as dmc
 
     monkeypatch.setattr(dmc, "_fetch_manifest_schemas", lambda bases: {})
     code = tmp_path / "code" / "prod-x" / "backend"
@@ -403,7 +404,7 @@ cap = "atlas.situation.brief@v1"
 
 def test_input_mismatches_are_reported_once_per_capability(tmp_path, monkeypatch):
     """Six findings for three defects teaches people to skim the list."""
-    import web.backend.services.duplicate_module_check as dmc
+    import web.backend.services.module_checks.capabilities as dmc
 
     monkeypatch.setattr(
         dmc, "_fetch_manifest_schemas",
@@ -436,7 +437,7 @@ def test_top_level_async_def_does_not_inherit_a_sibling_items_key(tmp_path, monk
     The input-schema window used to start at the earlier ``def``, so ``items`` was
     attributed to ``atlas.situation.brief@v1`` even though advisory only sends the bbox.
     """
-    import web.backend.services.duplicate_module_check as dmc
+    import web.backend.services.module_checks.capabilities as dmc
 
     monkeypatch.setattr(
         dmc,
@@ -475,7 +476,7 @@ async def advisory():
 
 def test_a_registry_heartbeat_is_not_an_invoke(tmp_path, monkeypatch):
     """SKU strings in capabilities_used are advertising, not atlas.situation.brief input."""
-    import web.backend.services.duplicate_module_check as dmc
+    import web.backend.services.module_checks.capabilities as dmc
 
     monkeypatch.setattr(
         dmc,
@@ -541,7 +542,7 @@ def test_the_mesh_finding_blocks_and_is_scored():
     assert "mesh_participant_violation" in dmc
     assert "not mesh_contract" in dmc, "the verdict ignores it"
     assert "not mesh_participant" in dmc
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     assert "find_mesh_contract_violations(code_root)" in dev
     assert "find_mesh_participant_violations(code_root)" in dev
 

@@ -27,6 +27,7 @@ from pathlib import Path
 import pytest
 
 from agents.dev import _revert_out_of_scope_writes
+from tests.split_source import read_split
 
 QUIET = lambda *a, **k: None  # noqa: E731
 
@@ -229,7 +230,7 @@ def test_the_breakdown_is_taken_before_the_rollback():
     """
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     # Ordering, checked by position in the file rather than inside a fixed-size window.
     # The window used to end at `system_prompt = build_developer_system_prompt`, a line
     # that no longer follows this block, so it fell back to 6000 characters — and the
@@ -285,7 +286,7 @@ def test_the_rejection_names_the_defects_it_added():
     )
     assert text == "frontend_import: Dashboard.tsx -> ./AnalyticsWorkspace", text
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     region = src[src.index("if patch_mode and before_score is not None:") :][:6000]
     capture = region.index("after_ids = _tree_defect_identities(code_root)")
     rollback = region.index("for rel, content in previous_content.items():")
@@ -319,7 +320,7 @@ def test_a_dangling_import_alone_does_not_regenerate_the_round():
     """
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     region = src[src.index("broke = _self_check_written_files(") :][:2500]
     assert "if not broke or not _worse or attempt + 1 >= max_attempts:" in region
     assert "Handing off with" in region, "handing off with dangling imports is silent"

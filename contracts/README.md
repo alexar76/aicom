@@ -1,6 +1,6 @@
 # AIMarket payment contracts
 
-> **Ecosystem:** [AICOM overview & live demos](https://modeldev.modelmarket.dev)
+> **Ecosystem:** [AICOM overview & live demos](https://ecosystem.modelmarket.dev/)
 
 Non-custodial **USDT/USDC payment channels** for the AIMarket federation — EVM and Solana.
 

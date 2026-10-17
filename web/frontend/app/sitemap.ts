@@ -1,10 +1,12 @@
 import type { MetadataRoute } from 'next';
+import { isFactoryLanding } from '@/lib/siteRole';
 import { BLOG_POSTS } from '@/content/blogPosts';
 import { listBuilds } from '@/lib/server-api';
 
 const site = (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if(isFactoryLanding()) return ['', '/ru/', '/es/', '/fr/', '/zh/'].map(path=>({url:`https://modeldev.modelmarket.dev${path || '/'}`,changeFrequency:'weekly' as const,priority:path?0.8:1}));
   const core = ['', '/about', '/docs', '/benchmark', '/updates', '/blog', '/launch-kit', '/badge', '/builds'].map(
     (path) => ({
       url: `${site}${path}`,

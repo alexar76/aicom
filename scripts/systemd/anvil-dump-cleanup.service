@@ -1,0 +1,10 @@
+[Unit]
+Description=Remove leaked Foundry anvil-state caches in alien-monitor
+After=docker.service
+Wants=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/anvil-dump-cleanup
+Nice=10
+IOSchedulingClass=best-effort

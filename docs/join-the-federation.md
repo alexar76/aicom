@@ -1,5 +1,9 @@
 # Run your own hub and join the federation
 
+<!-- sensor-operator-guide -->
+> Own a weather station or air-quality sensor? [Sell your readings through your own Hub + GAIA](sensor-operator.md).
+<!-- /sensor-operator-guide -->
+
 > **Русский:** [join-the-federation.ru.md](./join-the-federation.ru.md) · **Español:** [join-the-federation.es.md](./join-the-federation.es.md) · **Français:** [join-the-federation.fr.md](./join-the-federation.fr.md) · **中文:** [join-the-federation.zh.md](./join-the-federation.zh.md)
 >
 > Two commands to run a hub. One header to be seen. Admission after that is automatic: a sandbox scores what the hub *does*, not what it *says*.
@@ -14,8 +18,9 @@
 # [pqc] installs the post-quantum (ML-DSA-65) verifier. Without it your hub cannot check
 # the hybrid signatures every AIMarket hub publishes, and indexes none of them.
 pip install "aimarket-hub[pqc]"
-# sign hybrid yourself (Ed25519 + ML-DSA-65); peers pin both keys
-export AIMARKET_PQC=1
+# settings saved to data/aimarket.env (hybrid Ed25519 + ML-DSA-65 signing, an admin token),
+# and a free hub.ping@v1 for other hubs' admission sandbox to run
+aimarket quickstart --name "My hub"
 aimarket serve          # → http://localhost:9083
 ```
 
@@ -32,9 +37,10 @@ key, and a hub that loses it is refused by every peer that pinned it. More:
 [operator quickstart](https://github.com/alexar76/aimarket-hub/blob/main/docs/operator-quickstart.md#post-quantum-signatures-from-the-first-start) ·
 [post-quantum migration](pqc-migration.md).
 
-Docker instead, if you prefer: `Dockerfile.standalone` (it installs the `[pqc]` verifier) and
-`docker-compose.yml` ship in the package repository. Pass `AIMARKET_PQC=1` and keep the data
-volume: both keys live there.
+Docker instead, from a clone of the package repository: `docker compose run --rm hub quickstart
+--name "My hub"`, then `docker compose up -d`. Keys, database and settings live on the
+`hub_data` volume — keep it. Railway, Render and Fly files are in the same repository:
+[run on a platform](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-on-a-platform.md).
 
 At this point you have a working hub with a catalogue of nothing. Everything below is about
 connecting it to other hubs.
@@ -68,6 +74,9 @@ This is sent automatically by the reference hub — set `AIMARKET_HUB_URL` to yo
 public URL and it is correct. If you implement your own crawler, send it. Without it you
 can read a hub that never learns you exist, which is how a federation grows blind spots.
 
+Before you knock, `aimarket doctor --url https://your-hub.example` runs on your hub the same
+admission assay described in section 4 and says what to fix.
+
 You can also announce yourself explicitly:
 
 ```bash
@@ -85,6 +94,7 @@ Every current Hub accepts this as an observation and returns `200` with:
   "status": "pending",
   "trusted": false,
   "assay_scheduled": true,
+  "assay_url": "https://their-hub.example/ai-market/v2/federation/assay?url=https%3A%2F%2Fyour-hub.example",
   "note": "Recorded in quarantine. A sandbox assay runs automatically; a pass indexes this hub without an operator click. Fail or review stay pending for the operator desk."
 }
 ```
@@ -97,9 +107,9 @@ flowchart TD
     A["Your hub knocks<br/>POST /ai-market/v2/federation/announce<br/>(or crawls us with X-AIMarket-Crawler)"] --> C["pending — recorded, nothing indexed"]
     C --> E{"Hard checks, fail-closed<br/>public URL · schema · Ed25519 · freshness · same-origin invoke"}
     E -- "any fails" --> F["fail — stays pending"]
-    E -- "all pass" --> G{"A free public capability?"}
-    G -- "yes" --> H["Sandbox POST, up to 3 candidates<br/>first signed receipt wins"]
-    G -- "no" --> I["Knock on the cheapest PRICED one<br/>WITHOUT paying"]
+    E -- "all pass" --> G{"A free capability of its OWN?<br/>(re-exports only for a pure aggregator)"}
+    G -- "yes" --> H["Sandbox POST, up to 3 of its own<br/>first signed receipt wins"]
+    G -- "no" --> I["Knock on its cheapest PRICED one<br/>WITHOUT paying"]
     I --> J{"402 naming a rail, a recipient,<br/>and the price your own catalogue lists?"}
     H --> K["Analyse the live payload"]
     J -- "yes" --> K
@@ -322,9 +332,14 @@ indexed your manifest. So:
 2. Sign your manifest. An unsigned manifest is not indexed by anyone, and is not even
    previewed.
 3. Keep `generated_at` fresh. A stale signed manifest is rejected as a possible replay.
-4. Offer at least one **public free** capability so the sandbox has something to probe.
-   A paid-only hub stays in `review` until a human admits it, or until you add a free SKU.
+4. Offer at least one **free capability of your own** (`quickstart` lists `hub.ping@v1` for this),
+   or a priced one whose `402` quotes your catalogue price. The sandbox probes your own
+   capabilities, not the ones you re-export. Check with `aimarket doctor` before you knock.
 5. Announce (or crawl them so they see `X-AIMarket-Crawler`). The rest is automatic.
+
+No hub is needed for any of this: `aimarket node` serves these documents and receipts beside an API
+you already run, and passes x402 through as it is —
+[run a node](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-a-node.md).
 
 ## 9. Related
 

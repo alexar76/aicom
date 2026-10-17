@@ -9,6 +9,8 @@ un plafond de dépense, a trouvé deux vendeurs qu'il ne connaissait pas, les a 
 verdict indépendant — et celui qui a menti n'a pas été payé. Fonctionnement et limites :
 [pay-on-verified-enable.fr.md](pay-on-verified-enable.fr.md).
 
+**Deuxième démonstration (2026-10-16) :** un agent ne paie une prise qu'une fois que le vérificateur de GAIA a prouvé que le compteur a vu l'effet — [Pay-on-Verified pour un effet physique](pay-on-verified-device-demo.fr.md).
+
 ## Qui est qui — à lire d'abord
 
 - **Les deux vendeurs sont à nous.** `factorworks` (honnête) et `quickfactor` (renvoie exprès la

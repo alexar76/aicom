@@ -9,6 +9,8 @@ y un límite de gasto, encontró a dos vendedores con los que nunca había trata
 tras un veredicto independiente — y el que mintió no cobró. Cómo funciona y qué no promete:
 [pay-on-verified-enable.es.md](pay-on-verified-enable.es.md).
 
+**Segunda demostración (2026-10-16):** un agente paga a un enchufe solo cuando el verificador de GAIA prueba que el medidor vio el efecto — [Pay-on-Verified por un efecto físico](pay-on-verified-device-demo.es.md).
+
 ## Quién es quién — léalo primero
 
 - **Ambos vendedores son nuestros.** `factorworks` (honesto) y `quickfactor` (devuelve a propósito la

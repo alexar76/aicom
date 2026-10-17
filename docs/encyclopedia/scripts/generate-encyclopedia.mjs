@@ -284,6 +284,22 @@ function buildHtml(c, locale) {
 </html>`;
 }
 
+/** PDF links for the editions generate-pdf.mjs actually produced — a link to a file that was
+ * never built is a 404 on the live portal (it was, for EN/RU/ES). */
+function pdfLinks() {
+  const built = ['en', 'ru', 'es', 'fr', 'zh'].filter((l) =>
+    fs.existsSync(path.join(ROOT, 'pdf', `aicom-encyclopedia-${l}.pdf`))
+  );
+  if (!built.length) return '';
+  const links = built
+    .map((l) => `<a href="pdf/aicom-encyclopedia-${l}.pdf">${l.toUpperCase()}</a>`)
+    .join(' ·\n      ');
+  return `
+    <p style="margin-top:2rem;color:var(--text-dim);font-size:0.85rem;">
+      PDF: ${links}
+    </p>`;
+}
+
 function buildPortal() {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -307,12 +323,7 @@ function buildPortal() {
       <a href="es/index.html">Español</a>
       <a href="fr/index.html">Français</a>
       <a href="zh/index.html">中文</a>
-    </nav>
-    <p style="margin-top:2rem;color:var(--text-dim);font-size:0.85rem;">
-      PDF: <a href="pdf/aicom-encyclopedia-en.pdf">EN</a> ·
-      <a href="pdf/aicom-encyclopedia-ru.pdf">RU</a> ·
-      <a href="pdf/aicom-encyclopedia-es.pdf">ES</a>
-    </p>
+    </nav>${pdfLinks()}
   </header>
 </body>
 </html>`;

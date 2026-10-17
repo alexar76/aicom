@@ -18,6 +18,7 @@ from pathlib import Path
 import pytest
 
 from web.backend.services.duplicate_module_check import find_case_collisions
+from tests.split_source import read_split
 
 
 def _fs_is_case_sensitive(tmp_path: Path) -> bool:
@@ -77,7 +78,7 @@ def test_it_is_wired_everywhere():
     check = (root / "web" / "backend" / "services" / "duplicate_module_check.py").read_text(encoding="utf-8")
     passed_expr = check[check.index('"passed": not missing') : check.index('"skipped": False')]
     assert "not case_twins" in passed_expr
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     score = dev[dev.index("def _tree_defect_score(") : dev.index("def _revert_out_of_scope_writes")]
     assert "5 * len(find_case_collisions(code_root, limit=200))" in score
     qa = (root / "agents" / "qa.py").read_text(encoding="utf-8")
@@ -226,7 +227,7 @@ def test_pruning_never_touches_dependencies_or_the_root(tmp_path):
 def test_the_prune_runs_after_every_rounds_writes():
     """Wired next to the deletions rather than only inside them: a rewrite can empty a directory
     too, by moving its last module elsewhere."""
-    dev = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     assert "only_below=deleted_paths," in dev, "the prune must be scoped to this round's deletions"
     assert "_prune_empty_dirs(" in dev
 

@@ -19,6 +19,7 @@ C4Context
   Person(builder, "Capability builder", "Lists AI functions on a hub")
   Person(enduser, "End user", "Uses desktop apps or storefront")
   Person(analyst, "Federation analyst", "Reads live cross-system telemetry and reports")
+  Person(esimop, "eSIM operator", "Sells travel eSIMs with the kit: ./onboard.sh")
 
   System(aicom, "AICOM monorepo", "Factory pipeline + hub + LOGOS intelligence + SDKs + desktop apps")
   System(themis, "THEMIS", "Publish-time admission gate · approve/review/reject")
@@ -26,6 +27,8 @@ C4Context
   System(attested, "Attested Memory", "Verifiable memory for AI agents")
   System(basanos, "BASANOS", "Solidity touchstone · signed PASS/REVIEW/FAIL packs")
   System(hephaestus, "HEPHAESTUS", "Capability-chain forge · studio on Hub")
+  System(esim, "eSIM operator kit", "Store for people + seller node for AI agents · x402 · refunds · signed delivery receipts")
+  System(emporion, "EMPORION", "Public-record facts for agents that trade · VAT · LEI · ECB rates · sanctions lists · OpenTimestamps")
   System_Ext(llm, "LLM providers", "OpenAI-compatible APIs, Ollama")
   System_Ext(chain, "Base / EVM", "Deposit transfers + settlement wallet; escrow/lottery/NFT contracts")
 
@@ -39,6 +42,10 @@ C4Context
   Rel(basanos, aicom, "Assurance pack · advisory")
   Rel(enduser, hephaestus, "Compose chains in studio")
   Rel(hephaestus, aicom, "Search · invoke composed graph")
+  Rel(esimop, esim, "One command: store, seller node, federation node or own hub")
+  Rel(esim, aicom, "Signed offers · admission · buyers' signed delivery receipts")
+  Rel(enduser, esim, "Buys an eSIM, or has an agent buy it over x402")
+  Rel(emporion, aicom, "Signed lookups · sold only through a hub (price gate)")
   Rel(enduser, aicom, "Discover, invoke, review")
   Rel(analyst, aicom, "Inspect LOGOS read-only analytics")
   Rel(aicom, llm, "Agent prompts & codegen")
@@ -67,6 +74,8 @@ C4Context
 | [`logos/`](https://github.com/alexar76/logos/tree/main/) | Read-only federation intelligence: source snapshots, rolling z-score anomalies, cross-system correlations, Metis-assisted reports | `logos` |
 | [`desktop-integrations/`](https://github.com/alexar76/aimarket-desktop/tree/main/) | 8 Flutter desktop SKUs (sharing `aicom_desktop_core`) + 1 standalone Rust SKU (`local-security-audit`) + 1 VS Code extension (`ai-stack-migration-assistant`, TypeScript) | one repo per app |
 | `gaia/` | Physical-world oracle gateway (IoT sensors → verified capabilities) | `gaia` |
+| [`emporion/`](https://github.com/alexar76/emporion) | EMPORION — public-record facts for agents that trade: EU VAT (VIES), GLEIF LEI, ECB reference rates, sanctions lists (EU, OFAC SDN, UN), OpenTimestamps proofs; every answer signed with its source, fetch time and SHA-256 | `emporion` |
+| [`esim-kit/`](https://github.com/alexar76/esim-operator-kit) | eSIM operator kit — storefront for people, seller node for AI agents (x402, refunds, signed delivery receipts), federation node or the operator's own hub, one-command onboarding (`onboard.sh`) | `esim-operator-kit` |
 | [`contracts/`](../contracts/) | EVM + Solana payment contracts | `aicom-contracts` |
 
 ---
@@ -185,6 +194,10 @@ flowchart LR
     FAC["AI-Factory :9080/:9081"]
     HUB["AIMarket Hub :9083→9083"]
     LOGOS["LOGOS edge :5199<br/>FastAPI :9460"]
+    ESIMN["eSIM demo seller :9493<br/>quote · order (x402) · refund"]
+    ESIMF["eSIM federation node :9494<br/>aimarket node"]
+    ESIMS["eSIM example shop + /kit :9497"]
+    EMP["EMPORION :9351<br/>VAT · LEI · FX · sanctions · OTS"]
     DATA[("bind mount ./data")]
   end
 
@@ -192,10 +205,17 @@ flowchart LR
   NGINX -->|"magic-ai-factory.com"| FAC
   NGINX -->|"modelmarket.dev"| HUB
   NGINX -->|"logos.modelmarket.dev"| LOGOS
+  NGINX -->|"modelmarket.dev/providers/esim · esim.modelmarket.dev/agents"| ESIMN
+  NGINX -->|"esim.modelmarket.dev federation paths"| ESIMF
+  NGINX -->|"esim-shop.modelmarket.dev · /kit"| ESIMS
+  NGINX -->|"emporion.modelmarket.dev · modelmarket.dev/providers/emporion"| EMP
+  ESIMF -->|"upstream"| ESIMN
   FAC --> DATA
   HUB --> DATA
   HUB -->|"crawl peers"| PEERS["Other hubs"]
   LOGOS -->|"poll public stats · manifest · peers"| HUB
+  HUB -->|"crawl · routed quotes · delivery receipts"| ESIMF
+  HUB -->|"crawl · signed priced calls"| EMP
 ```
 
 | Surface | Default host port | Container port | Purpose |
@@ -204,6 +224,10 @@ flowchart LR
 | Factory API | 9081 (`AICOM_PORT_API`) | 8081 | REST, metrics |
 | AIMarket Hub | 9083 (`AIMARKET_HUB_HOST_PORT`) | 9083 | Federation API + widget |
 | LOGOS edge | 5199 (loopback-published) | 5199 | React dashboard + nginx proxy to internal FastAPI `:9460` (`LOGOS_PORT`) |
+| eSIM demo seller | 9493 (loopback) | 9490 | Seller node for agents in demo mode (`esim-kit/rails`) |
+| eSIM federation node | 9494 (loopback) | 9090 | `aimarket node` for `esim-modelmarket` |
+| eSIM example shop | 9497 (loopback) | 9495 | Example storefront and the kit's `/kit` guides (`esim-kit/store`) |
+| EMPORION | 9351 (loopback) | 9351 | Public-record facts for agents (`emporion/`); `/ops/v1/*` call log on loopback only |
 
 ---
 

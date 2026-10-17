@@ -14,9 +14,10 @@ one response that makes it worse.
 from __future__ import annotations
 
 from pathlib import Path
+from tests.split_source import read_split
 
 ROOT = Path(__file__).resolve().parents[1]
-DEV = (ROOT / "agents" / "dev.py").read_text(encoding="utf-8")
+DEV = read_split(ROOT / "agents" / "dev.py")
 BATCHES = (ROOT / "core" / "repair_batches.py").read_text(encoding="utf-8")
 
 

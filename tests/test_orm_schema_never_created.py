@@ -22,6 +22,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from web.backend.services.duplicate_module_check import find_orm_schema_never_created
+from tests.split_source import read_split
 
 
 def _tree(root: Path, files: dict[str, str]) -> Path:
@@ -122,7 +123,7 @@ def test_it_is_wired_everywhere():
     check = (root / "web" / "backend" / "services" / "duplicate_module_check.py").read_text(encoding="utf-8")
     passed = check[check.index('"passed": not missing') : check.index('"skipped": False')]
     assert "not schema_never" in passed, "the health gate can pass with no schema at all"
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     score = dev[dev.index("def _tree_defect_score(") : dev.index("def _revert_out_of_scope_writes")]
     assert "find_orm_schema_never_created(code_root, limit=200)" in score
     assert '"orm_schema_never_created": lambda: d.find_orm_schema_never_created' in dev

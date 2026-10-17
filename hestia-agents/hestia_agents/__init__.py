@@ -9,6 +9,6 @@ Determinism is what makes the receipt worth paying for.
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 AGENT_SLUGS = ("rules-decide", "json-canonical", "commit-referee")

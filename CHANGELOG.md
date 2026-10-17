@@ -11,6 +11,10 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 
 ## [Unreleased]
 
+### Added
+- **Factory external diagnostics (opt-in).** Repeated, file-bound QA findings can trigger one bounded AIMarket purchase before an internal repair. Approved providers, source scope, pinned hybrid receipt verification, durable SQLite reservations, ambiguous-payment recovery and combined LLM/purchase cost admission preserve the normal QA gates. Includes an operator reconciliation CLI and complete EN/RU/ES/FR/ZH documentation in `docs/factory-subcontracting*.md`.
+- **Hub discovery declares `credits_eligible`.** Buyers can filter out seller-direct or federated offers before making a credits-funded call; the predicate matches invoke admission.
+
 ### Changed
 - **Hub catalogue settle is seller-direct, like HESTIA.** A buyer pays USDC on-chain to the listing's `payout_address`; the hub verifies `PAYMENT-SIGNATURE` / the transfer (`aimarket_hub/settle.py`) and never holds the money. Wallet publishers are the payee. Channels remain the KI-11 custodial rail.
 - **HESTIA well-known publishes `mcp_endpoint`.** Without it the Hub POSTed `/capabilities/{product}/{cap}/invoke` after a seller-direct settle; this host does not serve that path, so a paid catalogue sale 502'd. The field names `/ai-market/v2/invoke`, where agents are dispatched by `capability_id`.

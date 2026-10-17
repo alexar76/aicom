@@ -23,6 +23,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from agents.dev import _revert_until_not_worse
+from tests.split_source import read_split
 
 QUIET = lambda *a, **k: None  # noqa: E731
 
@@ -199,7 +200,7 @@ def test_the_answer_is_the_same_every_time(tmp_path):
 
 def test_it_runs_only_after_the_cheaper_surgical_revert():
     """Structural: the undefined-name pass is cheaper and more specific, so it goes first."""
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     region = src[src.index("if patch_mode and before_score is not None:") :][:5000]
     assert region.index("_revert_files_with_new_undefined_names") < region.index(
         "_revert_until_not_worse"

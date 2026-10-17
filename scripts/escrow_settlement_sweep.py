@@ -33,6 +33,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shlex
 import subprocess
 import sys
 import urllib.request
@@ -41,6 +42,17 @@ from typing import Any
 
 CONTAINER = os.environ.get("AIMARKET_HUB_CONTAINER", "modelmarket-hub")
 CLI = ["python", "-m", "aimarket_hub.escrow_bridge.cli"]
+
+
+def hub_exec() -> list[str]:
+    """How to run a command where the hub's code and environment are.
+
+    `docker exec <container>` for the containerised hubs. A hub run by systemd from a venv
+    (independentai.network) sets AIMARKET_HUB_EXEC to a wrapper that runs the command as the
+    hub's user with the hub's environment files; everything after it is the same.
+    """
+    raw = os.environ.get("AIMARKET_HUB_EXEC", "").strip()
+    return shlex.split(raw) if raw else ["docker", "exec", CONTAINER]
 
 # A sweep that hangs is worse than one that fails: the timer would pile up instances.
 TIMEOUT_S = 240.0
@@ -62,13 +74,13 @@ def _extract_json(text: str) -> Any:
 
 def run_cli(*args: str, timeout: float = TIMEOUT_S) -> tuple[int, Any, str]:
     """(exit code, parsed JSON or None, stderr/parse error)."""
-    cmd = ["docker", "exec", CONTAINER, *CLI, *args, "--json"]
+    cmd = [*hub_exec(), *CLI, *args, "--json"]
     try:
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired:
         return 124, None, f"timed out after {timeout:.0f}s: {' '.join(args)}"
     except FileNotFoundError:
-        return 127, None, "docker not found on PATH"
+        return 127, None, f"{cmd[0]} not found on PATH"
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
     try:
         return proc.returncode, _extract_json(combined), proc.stderr[-400:]
@@ -213,7 +225,8 @@ def read_escrow_channels(escrow: str) -> tuple[list[dict[str, Any]], list[str]]:
     errors: list[str] = []
     code, out, err = run_cli_raw(
         "python3", "-c",
-        "import sqlite3,json;c=sqlite3.connect('data/channels.db');"
+        "import os,sqlite3,json;"
+        "c=sqlite3.connect(os.environ.get('AIMARKET_CHANNELS_DB_PATH') or 'data/channels.db');"
         "print(json.dumps([r[0] for r in c.execute("
         "\"SELECT DISTINCT escrow_channel FROM channels WHERE COALESCE(escrow_channel,'')<>''\")]))")
     if out is None:
@@ -235,13 +248,13 @@ def read_escrow_channels(escrow: str) -> tuple[list[dict[str, Any]], list[str]]:
 
 def run_cli_raw(*cmd: str, timeout: float = 60.0) -> tuple[int, Any, str]:
     """Run an arbitrary command in the hub container and parse its JSON output."""
-    full = ["docker", "exec", CONTAINER, *cmd]
+    full = [*hub_exec(), *cmd]
     try:
         proc = subprocess.run(full, capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired:
         return 124, None, "timed out"
     except FileNotFoundError:
-        return 127, None, "docker not found on PATH"
+        return 127, None, f"{full[0]} not found on PATH"
     try:
         start = proc.stdout.find("[")
         if start < 0:
@@ -266,7 +279,7 @@ def signer_endpoint() -> tuple[str, str]:
     """
     out = {}
     for name in ("AIMARKET_ESCROW_SIGNER_URL", "AIMARKET_ESCROW_SIGNER_TOKEN"):
-        proc = subprocess.run(["docker", "exec", CONTAINER, "printenv", name],
+        proc = subprocess.run([*hub_exec(), "printenv", name],
                               capture_output=True, text=True, timeout=30)
         out[name] = proc.stdout.strip()
     return out["AIMARKET_ESCROW_SIGNER_URL"], out["AIMARKET_ESCROW_SIGNER_TOKEN"]

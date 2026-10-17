@@ -20,6 +20,8 @@ X402=""
 [ -f "$SECRETS/hub_api_key" ] && X402="$X402 -e HUB_API_KEY_FILE=/run/secrets/okx/hub_api_key"
 # Two HESTIA agents (src/hearth.js) are bought with this seller key on the hearth; without it they are not listed.
 [ -f "$SECRETS/hearth_api_key" ] && X402="$X402 -e HEARTH_API_KEY_FILE=/run/secrets/okx/hearth_api_key"
+# Search Console's HTML-tag token for the /tools/ pages: public, kept beside the secrets so a redeploy keeps it.
+[ -f "$SECRETS/google_site_verification" ] && X402="$X402 -e GOOGLE_SITE_VERIFICATION=$(tr -cd 'A-Za-z0-9_-' < "$SECRETS/google_site_verification")"
 docker rm -f okx-a2mcp-prev >/dev/null 2>&1 || true
 if docker inspect okx-a2mcp >/dev/null 2>&1; then docker stop okx-a2mcp >/dev/null; docker rename okx-a2mcp okx-a2mcp-prev; fi
 # shellcheck disable=SC2086

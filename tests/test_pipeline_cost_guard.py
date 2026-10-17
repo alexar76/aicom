@@ -12,6 +12,7 @@ from core import pipeline_cost_guard as guard
 @pytest.fixture(autouse=True)
 def _reset_guard(monkeypatch, tmp_path):
     monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path))
+    monkeypatch.setattr(guard, "_STATE_PATH", tmp_path / "state" / "pipeline_product_cost.json")
     guard.reset_pipeline_cost_state_for_tests()
     yield
     guard.reset_pipeline_cost_state_for_tests()

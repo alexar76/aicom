@@ -4,7 +4,7 @@
 
 `modelmarket.dev` 上几乎每一项能力目前都是免费的 —— 不需要密钥、不需要通道、不需要
 账号 —— 这是一个决定，而非疏漏。本页说明：什么是免费的，什么不是，免费层级由什么来
-约束，以及开启售卖的那两个开关。
+约束，以及开启售卖的那些开关。
 
 ---
 
@@ -150,7 +150,10 @@ flowchart TD
     R["POST /ai-market/v2/invoke"] --> G{"通用限流器<br/>每 IP 每分钟 120 次"}
     G -->|超出| G429["429 rate limited"]
     G -->|通过| P["判定：本次调用是否已付费？<br/>ORACLE_PAID_TIER_SECRET<br/>或受信代理 + 通道"]
-    P --> F{"未付费 且 超出<br/>免费上限？"}
+    P --> H{"价格闸门，若开启（§7.3）：<br/>有价、未付费，且没有受信 Hub<br/>的有效签名？"}
+    H -->|无签名| H402["402 payment_required<br/>+ payment_ways：各个 Hub"]
+    H -->|签名无效| H401["401 hub_signature_invalid<br/>+ 原因"]
+    H -->|否| F{"未付费 且 超出<br/>免费上限？"}
     F -->|是| F402["402 payment_required<br/>+ 字段、请求值、最大值"]
     F -->|否| B{"在 CPU 预算内？<br/>先按客户端，再按合计"}
     B -->|否| B429["429 + 预算、成本、余量"]
@@ -162,6 +165,10 @@ flowchart TD
 `429 稍后重试` 会把调用者推进一个永远不可能成功的循环。`402` 告诉他真实的上限，以及
 付费可以解除它。相反，预算耗尽确实会自行恢复 —— 所以那才是配得上 `429` 的拒绝，它排
 在第二位。
+
+价格闸门开启时排在这两项之前，所以被它拒绝的调用既不消耗预算，也不启动任何工作。Hub
+的签名只让调用通过闸门，仅此而已：它不会解除免费上限，解除上限仍然需要运营者的指定
+（§7.1）。
 
 预算给出的 `429` 会点明三个数字，因为一个明显未达 120/分钟却仍被拒绝的调用者，需要
 这三个数字才能判断是该等待还是该少要一些工作：
@@ -195,7 +202,9 @@ Retry later, or ask for less work.
 
 ## 7. 开启售卖
 
-有两个开关，分别在两侧，而且**默认都是关闭的**。
+决定是否售卖的开关有两个，两侧各一个，而且**默认都是关闭的**（§7.1、§7.2）。第三个
+是提供方的价格闸门（§7.3），它让提供方不会在自己的 URL 上白送 Hub 在卖的东西；它默认
+也是关闭的。§7.4 把它们排成一个不会伤到任何人的顺序。
 
 ### 7.1 神谕侧 —— 谁被允许越过上限
 
@@ -245,19 +254,102 @@ AIMARKET_SELLS_FOR=https://oracles.modelmarket.dev
 [crypto-switch](crypto-switch.zh.md)）和沙盒试用层级。只有在加密已开启、该调用不是
 沙盒试用、**并且**对端已列入时，价格才生效。
 
-### 7.3 不会伤到任何人的顺序
+### 7.3 神谕侧 —— 价格闸门：有价调用经由 Hub
+
+§7.1 和 §7.2 决定的是一次*经由 Hub* 的调用花多少钱。两者都没有关上另一扇门：提供方的
+调用 URL 是公开的，而在 oracle-core 0.5.0 之前，提供方没有办法拒绝直接调用有价能力的
+人。2026-10-16 实测：未付费地向 GAIA 自己的 URL `POST` `gaia.power.window@v1`、向
+EMPORION 的 URL `POST` `emporion.vat.check@v1`（各 $0.002），都返回了 `ok: true` 和
+完整输出；而同样的调用经由 `modelmarket.dev` 则按目录价得到 `402`。
+
+闸门不收款。通道、预留和账本已经在 Hub 里。ATLAS 自己计量（§10），这对一个服务行得
+通，但在每个提供方里各放一本账，就是重复 Hub 的账本。闸门只是让提供方能分辨一次调用是
+Hub 放行的，还是绕过了 Hub。放行一次调用的 Hub（它收了款，或决定给一次试用）用自己的
+联邦密钥签名这次调用，也就是它 `/.well-known/ai-market.json` 中的 `signer_public_key`。
+签名覆盖能力、确切输入的哈希、Hub 投递请求的调用 URL、时间戳和一个新的 nonce，所以在
+一个提供方处为一次调用做的签名，既买不到另一次调用，也买不到另一个提供方处的同一次
+调用。提供方固定（pin）这个 Hub 的密钥。
+
+对价格大于零的能力，除非调用方是运营者指定的（§7.1）：
+
+| 调用带着 | 提供方的回答 |
+|---|---|
+| 没有 Hub 签名 | `402 payment_required`，`payment_ways` 中列出售卖它的 Hub |
+| 不成立的签名：未知 Hub、错误密钥、过期、别的能力或输入、发给别的提供方、已用过的 nonce | `401 hub_signature_invalid` 及原因。Hub 会把它转成 `502` 并释放买家的预留，所以没有人为此付钱。 |
+| 成立的签名 | 正常服务；免费上限和 CPU 预算依然适用 |
+
+免费能力永远不经过闸门。线上格式 —— 五个 `X-AIMarket-Hub-*` 头 —— 写在
+`oracles/core/oracle_core/price_gate.py` 的 docstring 里，Hub 和提供方固定同一个测试
+向量。
+
+提供方侧：
+
+| 变量 | 含义 |
+|---|---|
+| `ORACLE_TRUSTED_HUBS` | `url=key,url=key`：你接受其放行的每个 Hub，及其来自 well-known 的 Ed25519 `signer_public_key`（base64）。密钥轮换期间重复写同一个 URL，即可同时接受两把密钥。格式错误的条目会被丢弃并记入日志，绝不会放宽名单。第三方运营者固定自己的 Hub。 |
+| `ORACLE_PRICE_GATE` | `enforce`、`report` 或 `off`。**未设置时，只要有受信 Hub 就是 `enforce`**，没有则为 `off`，即核心以前的行为。`report` 服务每一次调用，并把本会拒绝的记入日志。其他任何值都按 `enforce` 读取，免得一个笔误就把有价工作白送出去。 |
+| `ORACLE_HUB_AUDIENCES` | 除 `public_url` 之外你还会应答的基础 URL，供以别的名字访问你的 Hub 使用。 |
+| `ORACLE_HUB_MAX_SKEW_S` | Hub 的时间戳与你的时钟最多可相差多少秒。默认 120。 |
+
+闸门开启时，well-known 会多出一个 `price_gate` 对象（模式、受信 Hub、方案），让买家在
+调用之前就能看到去哪里买。闸门关闭时，文档逐字节不变。以 `AIFACTORY_PROD=1` 启动、
+有有价能力而闸门关闭的提供方，会在日志里说明这一点。
+
+Hub 侧无需设置任何东西：它会签名自己放行的调用。本地上架项的调用总是签名，因为 Hub 的
+付费墙或试用已经执行过了。联邦对端的调用只在本 Hub 是该对端的记录卖方时才签名
+（`AIMARKET_SELLS_FOR`，§7.2）。对于 Hub 只做中介的对端，由对端自己向买家收费，签名会
+对一个带闸门的对端谎称一次无人付费的调用「已付」。`AIMARKET_SIGN_PROVIDER_REQUESTS=0`
+关闭签名。签名出错绝不会让买家的调用失败：调用以未签名的方式发出，由提供方决定。
+
+**你自己的直接读取方。** 你自己的某个服务若直接调用提供方而不经过 Hub，会得到同样的
+`402`。按 §7.1 指定它：在提供方上设置 `ORACLE_PAID_TIER_SECRET`，并在
+`X-AIMarket-Paid-Tier` 中发送同一个值。ATLAS 就是这样读取 GAIA 的，值放在
+`ATLAS_GAIA_PAID_TIER_SECRET` 中。这个密钥同时会解除免费上限，所以只给你自己的服务。
+
+闸门不做的事：
+
+- **它信任 Hub 的决定，看不到钱。** 受信的 Hub 连同它的全部策略一起被信任：它作为试用
+  送出去的，就是从这个提供方送出去的。
+- **防重放是按进程、在内存里做的。** 以多个 worker 运行的提供方，在时钟偏差窗口内会对
+  每个 worker 各接受一次重放，重启后也会忘掉见过的 nonce。
+- **只做中介的 Hub 不签名**，所以它的买家会收到提供方的 `402`，指向售卖它的 Hub。这是
+  有意的。只有当某个 Hub 应该售卖你的能力时才固定它。
+
+### 7.4 不会伤到任何人的顺序
 
 ```mermaid
 flowchart TD
-    S["今天：42 项能力免费<br/>AIMARKET_SELLS_FOR 未设置"] --> A["1. 带日期<br/>公告变更"]
+    S["起点：该对端不在 AIMARKET_SELLS_FOR 中<br/>它的有价能力对任何人免费应答"] --> A["1. 带日期<br/>公告变更"]
     A --> B["2. 先做神谕侧：<br/>设置 ORACLE_PAID_TIER_SECRET<br/>让付费调用能够被服务"]
     B --> C["3. 在完整输入范围上<br/>端到端验证一次付费调用"]
     C --> D["4. 之后才在 Hub 上<br/>设置 AIMARKET_SELLS_FOR"]
-    D --> E["免费试用依然有效：<br/>每位访客每小时 5 次调用，可续期"]
+    D --> H["5. Hub 签名它放行的调用<br/>（默认开启：确认它运行的是这版代码）"]
+    H --> R["6. 提供方：ORACLE_TRUSTED_HUBS<br/>与 ORACLE_PRICE_GATE=report 一起设置"]
+    R --> N["7. 指定你自己的直接读取方：<br/>ORACLE_PAID_TIER_SECRET"]
+    N --> X["8. ORACLE_PRICE_GATE=enforce"]
+    X --> E["免费试用依然有效，经由 Hub：<br/>每位访客每小时 5 次调用，可续期"]
 ```
 
 第 2 步先于第 4 步，是值得坚持的部分。先设置 `AIMARKET_SELLS_FOR` 会让 Hub 为那些
 神谕在免费上限之上仍会拒绝的能力索取付款 —— 买家为收不到的工作付钱。
+
+第 5 到 8 步关上的是提供方自己的门，它们的顺序同样重要。对于直接在 Hub 上架、而非经
+联邦接入的提供方，第 4 步不适用：Hub 无论如何都会签名它的调用。
+
+- **先让 Hub 签名，再让提供方执行闸门。** 处于 `enforce` 的提供方若仍收到 Hub 发来的
+  未签名调用，会对每一笔销售回答 `402`，而 Hub 会把这个 `402` 转给买家。销售停止，
+  不过没有人被扣费。
+- **先 `report` 后 `enforce`，并且与 `ORACLE_TRUSTED_HUBS` 在同一次变更中设置。** 只
+  设置 Hub 就立即意味着 `enforce`。在 report 模式下，提供方服务一切，并每分钟在日志里
+  记下有多少有价调用带着有效签名、没有签名或签名无效，以及未签名的调用来自哪些地址。
+  如果某一行说某次调用是 `signed for` 一个你并不应答的 URL，说明 Hub 用另一个名字访问
+  你：把这个 URL 加进 `ORACLE_HUB_AUDIENCES`。
+- **先处理你自己的读取方，再 `enforce`。** 报告里列出的未签名调用方，要么是你自己的
+  服务，给它们付费层级密钥；要么是陌生的调用方，会得到 `402` 和可以购买的 Hub。
+
+回退不需要重新构建：`ORACLE_PRICE_GATE=report`（或 `off`）然后重启提供方。
+`AIMARKET_SIGN_PROVIDER_REQUESTS=0` 会停止 Hub 签名，但只有在没有任何固定了该 Hub 的
+提供方处于 `enforce` 时才安全。
 
 ## 8. 给神谕作者
 
@@ -434,6 +526,8 @@ AIFACTORY_PRODUCT_WALLET_CHAIN=base       # 可选，默认 base
 - [payment-enable-runbook](payment-enable-runbook.md) —— 在 Hub 上启用真实支付
 - `oracles/core/oracle_core/tiers.py` —— 实现，数字都写在注释里
 - `oracles/core/tests/test_tiers.py` —— 覆盖此行为的 52 个测试
+- `oracles/core/oracle_core/price_gate.py` —— 价格闸门；其 docstring 记录了线上格式
+- `aimarket-hub/aimarket_hub/provider_request_auth.py` —— Hub 何时签名它放行的调用
 - `aimarket-hub/aimarket_hub/sandbox_trials.py` —— 试用账本及其窗口
 - `atlas/atlas/payment_gate.py` —— ATLAS 计量器，含 check/settle 拆分
 - `web/backend/services/vercel_fullstack_adapter.py` —— `wallet_env()`，默认不带钱包

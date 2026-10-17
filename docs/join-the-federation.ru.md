@@ -1,5 +1,9 @@
 # Поднять свой хаб и войти в федерацию
 
+<!-- sensor-operator-guide -->
+> Есть метеостанция или датчик качества воздуха? [Продавайте показания через собственный Hub + GAIA](sensor-operator.ru.md).
+<!-- /sensor-operator-guide -->
+
 > **English:** [join-the-federation.md](./join-the-federation.md) · **Español:** [join-the-federation.es.md](./join-the-federation.es.md) · **Français:** [join-the-federation.fr.md](./join-the-federation.fr.md) · **中文:** [join-the-federation.zh.md](./join-the-federation.zh.md)
 >
 > Две команды, чтобы запустить хаб. Один заголовок, чтобы вас увидели. Дальше допуск автоматический: песочница оценивает, что хаб *делает*, а не что он *пишет*.
@@ -14,8 +18,9 @@
 # [pqc] ставит проверку постквантовых подписей (ML-DSA-65). Без неё хаб не проверит
 # гибридные подписи, которыми подписан каждый хаб AIMarket, и не проиндексирует ни один.
 pip install "aimarket-hub[pqc]"
-# подписывать и самому гибридно (Ed25519 + ML-DSA-65); пиры закрепляют оба ключа
-export AIMARKET_PQC=1
+# настройки сохраняются в data/aimarket.env (гибридная подпись Ed25519 + ML-DSA-65, токен
+# администратора) и бесплатная hub.ping@v1 для песочницы допуска других хабов
+aimarket quickstart --name "My hub"
 aimarket serve          # → http://localhost:9083
 ```
 
@@ -32,8 +37,10 @@ Ed25519 (по умолчанию `data/hub_signing_key_mldsa` рядом с `dat
 [быстрый старт оператора](https://github.com/alexar76/aimarket-hub/blob/main/docs/operator-quickstart.ru.md) ·
 [постквантовая миграция](pqc-migration.ru.md).
 
-Docker: в репозитории пакета есть `Dockerfile.standalone` (он ставит проверку `[pqc]`) и
-`docker-compose.yml`. Передайте `AIMARKET_PQC=1` и сохраните том с данными: там лежат оба ключа.
+Docker — из клона репозитория пакета: `docker compose run --rm hub quickstart --name "My hub"`,
+затем `docker compose up -d`. Ключи, база и настройки лежат на томе `hub_data` — берегите его.
+Файлы для Railway, Render и Fly — там же:
+[запуск на платформе](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-on-a-platform.ru.md).
 
 Сейчас это рабочий хаб с пустым каталогом. Ниже — как связать его с другими.
 
@@ -64,6 +71,9 @@ X-AIMarket-Crawler: https://your-hub.example
 Эталонный хаб шлёт это сам — задайте `AIMARKET_HUB_URL` на реальный публичный URL.
 Свой crawler должен слать то же. Иначе вы читаете хаб, который о вас не узнает.
 
+Перед стуком `aimarket doctor --url https://your-hub.example` прогоняет на вашем хабе ту же
+проверку допуска, что описана в разделе 4, и говорит, что исправить.
+
 Явный анонс:
 
 ```bash
@@ -81,6 +91,7 @@ curl -X POST https://their-hub.example/ai-market/v2/federation/announce \
   "status": "pending",
   "trusted": false,
   "assay_scheduled": true,
+  "assay_url": "https://their-hub.example/ai-market/v2/federation/assay?url=https%3A%2F%2Fyour-hub.example",
   "note": "Recorded in quarantine. A sandbox assay runs automatically; a pass indexes this hub without an operator click. Fail or review stay pending for the operator desk."
 }
 ```
@@ -93,9 +104,9 @@ flowchart TD
     A["Ваш хаб стучится<br/>POST /ai-market/v2/federation/announce<br/>(или краулит нас с X-AIMarket-Crawler)"] --> C["pending — записан, ничего не проиндексировано"]
     C --> E{"Жёсткие проверки, fail-closed<br/>публичный URL · схема · Ed25519 · свежесть · same-origin invoke"}
     E -- "хоть одна не прошла" --> F["fail — остаётся в pending"]
-    E -- "все прошли" --> G{"Есть бесплатная публичная capability?"}
-    G -- "да" --> H["Sandbox POST, до 3 кандидатов<br/>побеждает первая подписанная квитанция"]
-    G -- "нет" --> I["Стучимся в самую дешёвую ПЛАТНУЮ<br/>НЕ ПЛАТЯ"]
+    E -- "все прошли" --> G{"Есть СВОЯ бесплатная capability?<br/>(чужие — только у чистого агрегатора)"}
+    G -- "да" --> H["Sandbox POST, до 3 своих<br/>побеждает первая подписанная квитанция"]
+    G -- "нет" --> I["Стучимся в его самую дешёвую ПЛАТНУЮ<br/>НЕ ПЛАТЯ"]
     I --> J{"402 называет рельс, получателя<br/>и ту же цену, что ваш каталог?"}
     H --> K["Анализ живого ответа"]
     J -- "да" --> K
@@ -242,9 +253,14 @@ curl -s -H "Authorization: Bearer $ADMIN_TOKEN" \
 1. Валидные `.well-known` и манифест (`aimarket-protocol/schemas/`, `test-vectors/`).
 2. Подписать манифест. Без подписи его никто не индексирует и не preview.
 3. Свежий `generated_at`.
-4. Хотя бы одна **публичная бесплатная** capability — иначе песочнице нечего прогнать,
-   и хаб останется в `review`, пока человек не сделает исключение.
+4. Хотя бы одна **своя бесплатная** capability (`quickstart` заводит для этого `hub.ping@v1`)
+   или платная, чей `402` называет цену из вашего каталога. Песочница проверяет ваши
+   собственные capability, а не пересылаемые чужие. Перед стуком проверьте себя: `aimarket doctor`.
 5. Announce (или crawl их, чтобы увидели `X-AIMarket-Crawler`). Дальше автомат.
+
+Хаб для этого не нужен: `aimarket node` отдаёт эти документы и квитанции рядом с API, который у вас
+уже работает, и пробрасывает x402 как есть —
+[узел из своего API](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-a-node.ru.md).
 
 ## 9. Связанное
 

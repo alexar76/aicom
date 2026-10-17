@@ -14,6 +14,7 @@ cd "$ROOT"
 
 PKG="${1:-}"
 DRY_RUN=0
+VERBOSE=0
 TEST_PYPI=0
 
 # Monorepo path when the PyPI project name differs from the folder (gaia/ → aimarket-gaia-gateway).
@@ -83,6 +84,7 @@ publish_pypi.sh — build and upload a package to PyPI
 
 Options:
   --dry-run     Build + twine check only
+  --verbose     Pass --verbose to twine upload (PyPI's reason for a 400 is only printed then)
   --testpypi    Upload to https://test.pypi.org (token from TESTPYPI_API_TOKEN)
   -h, --help    This help
 
@@ -98,6 +100,7 @@ EOF
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN=1; shift ;;
+    --verbose) VERBOSE=1; shift ;;
     --testpypi) TEST_PYPI=1; shift ;;
     -h|--help) usage; exit 0 ;;
     -*) echo "unknown option: $1" >&2; usage; exit 1 ;;
@@ -149,6 +152,18 @@ cd "$ROOT/$PKG"
 rm -rf dist build *.egg-info
 python3 -m build
 python3 -m twine check --strict dist/*
+
+# PyPI refuses any file whose metadata carries `Private :: Do Not Upload` with a bare
+# "400 Bad Request" at upload time — after the dry run has said OK. Said here instead, by
+# name, so the dry run is the one that fails (aimarket-hestia, 2026-10-14).
+for wheel in dist/*.whl; do
+  if python3 -m zipfile -l "$wheel" >/dev/null 2>&1 && \
+     unzip -p "$wheel" '*.dist-info/METADATA' 2>/dev/null | grep -q '^Classifier: Private :: Do Not Upload'; then
+    echo "ERROR $PKG is marked 'Private :: Do Not Upload' in pyproject.toml classifiers;" >&2
+    echo "      PyPI rejects it. Remove that classifier only if this package is meant to be public." >&2
+    exit 1
+  fi
+done
 
 # ── Secret gate ───────────────────────────────────────────────────────────────
 # Runs on every build, including --dry-run, and BEFORE any upload. A PyPI version can be
@@ -285,7 +300,7 @@ fi
 
 echo "== Upload to $REPO =="
 TWINE_USERNAME=__token__ TWINE_PASSWORD="$TOKEN" \
-  python3 -m twine upload --repository-url "$URL" dist/*
+  python3 -m twine upload $([[ "$VERBOSE" -eq 1 ]] && echo --verbose) --repository-url "$URL" dist/*
 
 echo "OK published $(basename "$PKG") to $REPO"
 if [[ "$REPO" == "pypi" ]]; then

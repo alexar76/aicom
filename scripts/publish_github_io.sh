@@ -21,6 +21,11 @@ case "$REMOTE" in
   *) echo "error: remote must be alexar76.github.io (got: $REMOTE)" >&2; exit 2 ;;
 esac
 
+if [[ -f "$SRC/build.py" ]]; then
+  python3 "$SRC/build.py"
+  python3 "$SRC/validate.py"
+fi
+
 [[ -f "$SRC/index.html" ]] || { echo "missing $SRC/index.html" >&2; exit 2; }
 
 ON_GITHUB=0
@@ -37,7 +42,7 @@ if [[ "$ON_GITHUB" -eq 1 ]] && ! gh api "repos/${ORG}/${REPO}" >/dev/null 2>&1; 
   echo "Creating public repo ${ORG}/${REPO} …"
   gh api --method POST user/repos \
     -f name="$REPO" \
-    -f description="AICOM ecosystem hub — redirects to modeldev.modelmarket.dev" \
+    -f description="AICOM ecosystem — multilingual machine economy atlas" \
     -F private=false \
     -F auto_init=false \
     -F has_issues=false \
@@ -65,6 +70,8 @@ git_auth clone --depth 1 "$REMOTE" "$WORKDIR/repo" 2>/dev/null \
 rsync -a --delete \
   --exclude '.git' \
   --exclude '.DS_Store' \
+  --exclude '__pycache__' \
+  --exclude '*.pyc' \
   "$SRC/" "$WORKDIR/repo/"
 
 if ! bash "$ROOT/scripts/verify_mirror_secrets.sh" "$WORKDIR/repo"; then

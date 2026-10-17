@@ -1,5 +1,9 @@
 # AI-Factory
 
+<!-- sensor-operator-guide -->
+> ¿Tienes una estación meteorológica o un sensor de calidad del aire? [Vende las lecturas con tu propio Hub + GAIA](sensor-operator.es.md).
+<!-- /sensor-operator-guide -->
+
 <p align="center">
   <a href="../README.md">English</a> ·
   <a href="README.ru.md">Русский</a> ·
@@ -44,6 +48,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 
 | Documento | Enlace |
 | --- | --- |
+| Diagnóstico externo de AICOM: algoritmo, configuración, presupuesto y recuperación | [factory-subcontracting.es.md](factory-subcontracting.es.md) |
 | Base de conocimiento | [knowledge-base-es.md](ecosystem/knowledge-base-es.md) |
 | Libro blanco | [whitepaper/es.md](ecosystem/whitepaper/es.md) |
 | Glosario | [localization-glossary.md](localization-glossary.md) |
@@ -52,3 +57,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | UNI y LIVE | [uni-and-live.es.md](uni-and-live.es.md) |
 
 Términos canónicos: agente, oráculo, recibo, depósito en garantía (escrow), liquidación, proveedor/consumidor.
+
+- [Sitios de la fábrica y del ecosistema](landing-separation.es.md) — EN / RU / ES / FR / 中文.
+
+- [Recorrido del visitante: probar la fábrica, revisar el resultado y explorar el ecosistema](visitor-journey.es.md) — EN / RU / ES / FR / 中文.

@@ -17,6 +17,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from web.backend.services.duplicate_module_check import find_capabilities_never_invoked
+from tests.split_source import read_split
 
 CLIENT = '''import httpx
 
@@ -106,7 +107,7 @@ def test_it_is_wired_everywhere():
     check = (root / "web" / "backend" / "services" / "duplicate_module_check.py").read_text(encoding="utf-8")
     passed = check[check.index('"passed": not missing') : check.index('"skipped": False')]
     assert "not hollow" in passed
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     score = dev[dev.index("def _tree_defect_score(") : dev.index("def _revert_out_of_scope_writes")]
     assert "find_capabilities_never_invoked(code_root, limit=200)" in score
     qa = (root / "agents" / "qa.py").read_text(encoding="utf-8")

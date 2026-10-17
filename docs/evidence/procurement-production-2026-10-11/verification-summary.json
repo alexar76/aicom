@@ -1,0 +1,93 @@
+{
+  "recorded_model_calls": [
+    {
+      "generation_id": "gen-1791702233-AQimbTTJmezEBIDWbHDo",
+      "usage": {
+        "prompt_tokens": 484,
+        "completion_tokens": 294,
+        "total_tokens": 778,
+        "cost": 0.00039356,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00039356,
+          "upstream_inference_prompt_cost": 0.00011132,
+          "upstream_inference_completions_cost": 0.00028224
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "generation_id": "gen-1791702310-EzulEzsnPfvpH88o1iQy",
+      "usage": {
+        "prompt_tokens": 489,
+        "completion_tokens": 289,
+        "total_tokens": 778,
+        "cost": 0.00046278,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 128,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00046278,
+          "upstream_inference_prompt_cost": 0.00011598,
+          "upstream_inference_completions_cost": 0.0003468
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "generation_id": "gen-1791702417-CrywoOhpbBXejm8s6nRT",
+      "usage": {
+        "prompt_tokens": 486,
+        "completion_tokens": 242,
+        "total_tokens": 728,
+        "cost": 0.000373608,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 128,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000373608,
+          "upstream_inference_prompt_cost": 0.000107408,
+          "upstream_inference_completions_cost": 0.0002662
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    }
+  ],
+  "earlier_model_calls_without_usage": 2,
+  "conservative_model_reservations_usd": 0.009988,
+  "operator_credit_grant_usd": 2,
+  "successful_market_charge_usd": 0.1,
+  "remaining_credit_usd": 1.9,
+  "earlier_failed_market_invokes": 5,
+  "earlier_market_charges_usd": 0,
+  "unknown_orders": 0,
+  "factory_enabled": true,
+  "provider": "aicom-diagnostics/aicom.diagnose@v1",
+  "traffic_class": "operator_self"
+}

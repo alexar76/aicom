@@ -8,5 +8,5 @@ Scoped landing generator namespace — use aicom-landing
 npm install -g aicom-landing
 ```
 
-- Ecosystem: https://modeldev.modelmarket.dev
+- Ecosystem: https://ecosystem.modelmarket.dev/
 - GitHub: https://github.com/alexar76/aicom

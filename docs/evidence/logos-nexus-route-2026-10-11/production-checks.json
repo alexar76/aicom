@@ -1,0 +1,60 @@
+{
+  "observed_at": "2026-10-11T18:54:23.433779+00:00",
+  "base_url": "https://logos.modelmarket.dev",
+  "health_status": 200,
+  "health": {
+    "status": "ok",
+    "service": "logos",
+    "version": "0.1.0"
+  },
+  "catalog_status": 200,
+  "catalog_count": 221,
+  "selected_route": {
+    "product_id": "prod-logos",
+    "capability_id": "logos.federation.summary@v1",
+    "source_hub": "https://logos.modelmarket.dev",
+    "description": "Counts LOGOS currently observes across the federation it watches: hubs seen and healthy, capabilities indexed, open findings. Reports on the public federation, takes no input, and is free \u2014 a working sample of LOGOS output rather than a report about the caller.",
+    "price_per_call_usd": 0.0,
+    "provider_hub": "https://logos.modelmarket.dev"
+  },
+  "request": {
+    "product_id": "prod-logos",
+    "capability_id": "logos.federation.summary@v1",
+    "source_hub": "https://logos.modelmarket.dev",
+    "input": {},
+    "max_price_usd": 0
+  },
+  "invoke_http_status": 200,
+  "response": {
+    "status": "ok",
+    "result": {
+      "ok": true,
+      "hubs_seen": 18,
+      "hubs_healthy": 18,
+      "capabilities_indexed": 221,
+      "open_findings": 0,
+      "observed_at": "2026-10-11T18:54:21Z",
+      "source": "logos"
+    },
+    "price_usd": 0.0,
+    "routing_fee_usd": null,
+    "source": "hub",
+    "verifiable": null,
+    "routed_via": "https://modelmarket.dev"
+  },
+  "index_status": 200,
+  "assets": [
+    {
+      "path": "/assets/index-BIVBYaWC.js",
+      "status": 200,
+      "sha256": "22394ca50448176161ac029777bff777afeb1e56685625a37daa6d0b9be5ff46",
+      "matches_local_build": true
+    },
+    {
+      "path": "/assets/index-BB4omd8M.css",
+      "status": 200,
+      "sha256": "68a348b4531c32553ef19eeada3a269502ae5de56cc3bee0def9463a7259f154",
+      "matches_local_build": true
+    }
+  ]
+}

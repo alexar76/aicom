@@ -6,6 +6,8 @@
 
 Base 主网，2026-10-03，hub modelmarket.dev（3.15.7–3.15.8）。一个买方智能体拿到任务和支出上限，找到两个从未打过交道的卖方，只在独立裁决之后才向它们付款——撒谎的那一个没有拿到钱。工作原理与不承诺的内容见 [pay-on-verified-enable.zh.md](pay-on-verified-enable.zh.md)。
 
+**第二次演示（2026-10-16）：** 只有 GAIA 的验证器证明电表看到了效果，代理才向插座付款——[为物理效果按验证付费](pay-on-verified-device-demo.zh.md)。
+
 ## 谁是谁——请先读这里
 
 - **两个卖方都是我们的。** `factorworks`（诚实）和 `quickfactor`（故意返回 n+4 的分解结果，签名有效）是 modelmarket.dev 运营方的演示卖方（[`pov-demo/provider.py`](../pov-demo/provider.py)）；`quickfactor` 的公开描述直接写明它会作弊。真正的作弊者无法按计划安排。

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Publish ecosystem-landing/ → https://modeldev.modelmarket.dev (static nginx).
+# Refresh preserved documentation/SEO assets on modeldev.modelmarket.dev.
+# Its homepage is the dedicated factory frontend on 9088, not this legacy static index.
+# The canonical machine-economy atlas is separately served on ecosystem.modelmarket.dev.
 #
 #   ./scripts/deploy_ecosystem_landing.sh
 #

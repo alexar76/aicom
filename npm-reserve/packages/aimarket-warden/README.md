@@ -8,5 +8,5 @@ ARGUS WARDEN MCP firewall namespace
 npm install -g argus-warden
 ```
 
-- Ecosystem: https://modeldev.modelmarket.dev
+- Ecosystem: https://ecosystem.modelmarket.dev/
 - GitHub: https://github.com/alexar76/aicom

@@ -2,8 +2,14 @@
 
 AI-Factory launch package for Product Hunt, Show HN, and community posts.
 
-**Ops kit:** [`promo/README.md`](../promo/README.md) · generate UTM links:
-`python3 scripts/promo_build_links.py --in promo/utm/campaigns.example.json --out promo/utm/generated-links.md`
+## Language for published materials
+
+Use English for all externally shared posts, campaign images, screenshots, demo videos, captions, narration, and alt text, on every channel. Before capturing a localized interface, select English and use English example content; check the resulting frames as well as the surrounding copy. Russian remains a supported language in documentation and interfaces.
+
+For the working factory, start captures at `https://magic-ai-factory.com/?lang=en`. Use the English root pages of `https://modeldev.modelmarket.dev/` and `https://ecosystem.modelmarket.dev/` for promotional captures. Localized QA evidence is not a publication asset.
+
+**Ops kit:** `../PromoMaterials/aicom/README.md` in the separate local PromoMaterials checkout. From the AICOM repository root, generate UTM links:
+`python3 scripts/promo_build_links.py`
 
 **Week 0 (before any launch day):**
 
@@ -24,7 +30,7 @@ AI-Factory launch package for Product Hunt, Show HN, and community posts.
 
 ## Launch Checklist (Week 2 — one channel first)
 
-- [ ] Generate UTM links → `promo/utm/generated-links.md`
+- [ ] Generate UTM links → `../PromoMaterials/aicom/utm/generated-links.md`
 - [ ] Validate checkout flow and plan upgrades in staging.
 - [ ] Confirm referral links are tracked in checkout orders.
 - [ ] Hero GIFs in README: `argus-warden` WARDEN block · `aicom-landing` prompt→page

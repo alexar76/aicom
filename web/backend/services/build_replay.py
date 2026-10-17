@@ -21,6 +21,8 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from core.product_origin import is_visitor_submission
+
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -249,7 +251,7 @@ def get_build_replay(product_id: str) -> dict[str, Any] | None:
         return None
     try:
         product = sm.get_product(pid)
-        if product is None:
+        if product is None or is_visitor_submission(product):
             return None
         tasks = sm.get_tasks_by_product(pid)
     finally:
@@ -280,7 +282,7 @@ def list_recent_builds(limit: int = 24) -> dict[str, Any]:
     if sm is None:
         return {"builds": [], "count": 0}
     try:
-        products = sm.get_all_products()
+        products = [p for p in sm.get_all_products() if not is_visitor_submission(p)]
         products.sort(key=lambda p: float(p.get("created_at") or 0), reverse=True)
         products = products[:lim]
         counts = sm.get_task_counts_for_product_ids([str(p.get("id") or "") for p in products])

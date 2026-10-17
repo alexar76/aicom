@@ -1,0 +1,3 @@
+FROM aicom-landing-aicom-landing
+COPY --chown=1001:1001 aicom-landing/lib/uiLocale.mjs aicom-landing/lib/journeyCopy.mjs /app/lib/
+COPY --chown=1001:1001 aicom-landing/public/index.html /app/public/index.html

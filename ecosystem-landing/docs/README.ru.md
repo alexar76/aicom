@@ -2,11 +2,11 @@
 
 > 🌐 [English](../README.md) · **Русский** · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [Глоссарий](https://github.com/alexar76/aicom/blob/main/docs/localization-glossary.md)
 
-Лендинг [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev/) — карта продуктов, гайдов и живых демо. База знаний: [knowledge-base](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md) (EN · RU · ES · FR · ZH).
+Лендинг [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/) — карта продуктов, гайдов и живых демо. База знаний: [knowledge-base](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md) (EN · RU · ES · FR · ZH).
 
 ## Live
 
-- [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev/)
+- [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/)
 
 ## Быстрый старт
 

@@ -31,11 +31,33 @@ _GAIA_META: tuple[tuple[str, str], ...] = (
     ("gaia.window@v1", "N readings of one device_id in one invoke"),
     ("gaia.verify@v1", "plausibility verdict as a sellable good"),
     ("gaia.fleet.status@v1", "device registry incl. pinned pubkeys — free"),
+    ("gaia.place.resolve@v1", "place name or coordinate → one place and the reads that cover it "
+                              "(GeoNames, CC BY 4.0) — free"),
+    ("gaia.power.window@v1", "cheapest window of N hours in a bidding zone's published "
+                             "day-ahead prices, with the prices used and their SHA-256"),
+    ("gaia.actuator.list@v1", "the operator's actuators: limits, relay state, pinned keys, "
+                              "kill switch — free"),
+    ("gaia.actuate@v1", "switch a plug on for N s or off; $0.05, paid only for the effect "
+                        "its own meter measures (pay-on-verified)"),
 )
 
 # Honesty notes that the catalog cannot infer (licence / not-X). A SKU without a
 # row still appears — the overlay is optional, the roster is not.
 _HONEST: dict[str, dict[str, str]] = {
+    "gaia.power.price.read@v1": {
+        "en": "wholesale day-ahead price per bidding zone (SMARD, CC BY 4.0; 15 zones); not a retail tariff",
+        "ru": "оптовая цена на сутки вперёд по зоне торгов (SMARD, CC BY 4.0; 15 зон); не розничный тариф",
+        "es": "precio mayorista del día siguiente por zona de oferta (SMARD, CC BY 4.0; 15 zonas); no es una tarifa minorista",
+        "fr": "prix de gros du lendemain par zone de dépôt (SMARD, CC BY 4.0 ; 15 zones) ; pas un tarif de détail",
+        "zh": "按竞价区的日前批发电价（SMARD，CC BY 4.0；15 个区）；不是零售电价",
+    },
+    "gaia.imagery.read@v1": {
+        "en": "any land coordinate; one 10–20 m pixel of the latest cloud-free Sentinel-2 L2A scene; read indices with the scene class; contains modified Copernicus Sentinel data",
+        "ru": "любая координата суши; один пиксель 10–20 м последнего безоблачного снимка Sentinel-2 L2A; индексы читать вместе с классом поверхности; содержит изменённые данные Copernicus Sentinel",
+        "es": "cualquier coordenada terrestre; un píxel de 10–20 m de la última escena Sentinel-2 L2A sin nubes; leer los índices con la clase de escena; contiene datos Copernicus Sentinel modificados",
+        "fr": "toute coordonnée terrestre ; un pixel de 10–20 m de la dernière scène Sentinel-2 L2A sans nuages ; lire les indices avec la classe de scène ; contient des données Copernicus Sentinel modifiées",
+        "zh": "任意陆地坐标；最新无云 Sentinel-2 L2A 影像的一个 10–20 米像元；指数须结合场景分类解读；含经修改的 Copernicus Sentinel 数据",
+    },
     "gaia.smoke.read@v1": {
         "en": "full signed polygon rings + holes, not just centroids; qualitative density, not PM2.5",
         "ru": "подписанные контуры полигонов с отверстиями, не только центроиды; качественная плотность, не PM2.5",
@@ -516,6 +538,11 @@ def catalog_sku_ids() -> list[str]:
 
 
 _DEVICE_SUMMARY: dict[str, dict[str, str]] = {
+    "gaia.imagery.read@v1": {
+        "en": "s2-l2a-01 + buyer lat/lon (5 showcase pins)", "ru": "s2-l2a-01 + lat/lon покупателя (5 витринных точек)",
+        "es": "s2-l2a-01 + lat/lon del comprador (5 puntos de muestra)", "fr": "s2-l2a-01 + lat/lon acheteur (5 points vitrine)",
+        "zh": "s2-l2a-01 + 买方 lat/lon（5 个示例点）",
+    },
     "gaia.water_quality.read@v1": {
         "en": "usgs-wq-01 (bbox → complete qualified station registry)", "ru": "usgs-wq-01 (bbox → полный реестр подходящих станций)",
         "es": "usgs-wq-01 (bbox → registro completo de estaciones aptas)", "fr": "usgs-wq-01 (bbox → registre complet des stations qualifiées)",

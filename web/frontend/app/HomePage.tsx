@@ -2,11 +2,15 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { rememberSiteLocale, storedSiteLocale } from '@/lib/siteLocale';
-import { csrfHeaders } from '@/lib/csrf';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ProductNavLink } from '@/components/storefront/ProductNavLink';
 import { useRouter } from 'next/navigation';
+import { csrfHeaders } from '@/lib/csrf';
+import { getGuestPhraseBlockReason } from '@/lib/promptSafety';
+import { LandingStylePresetPicker } from '@/components/landing/LandingStylePresetPicker';
+import { TrustMetricsStrip } from '@/components/TrustMetricsStrip';
+import { formatBenchmarkRate, formatBenchmarkTrend } from '@/lib/formatBenchmark';
+
 import {
   Sparkles,
   Cpu,
@@ -47,11 +51,7 @@ import {
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { Input } from '@/components/ui/Input';
-import api, { Product } from '@/lib/api';
-import { useStorefrontCatalog } from '@/hooks/useStorefrontCatalog';
-import { labelTechStackKey } from '@/lib/product-spec';
-import { formatRelativeTime, getStateLabel } from '@/lib/utils';
+import api from '@/lib/api';
 import {
   getMarketingStrings,
   saveMarketingLocale,
@@ -59,12 +59,11 @@ import {
   type MarketingStrings,
 } from '@/lib/marketing';
 import { HeroVisualShowcase } from '@/components/marketing/HeroVisualShowcase';
-import { getGuestPhraseBlockReason } from '@/lib/promptSafety';
 import { ArchitectureOrbit } from '@/components/landing/ArchitectureOrbit';
 import { LogosEcosystemSection } from '@/components/landing/LogosEcosystemSection';
-import { LandingStylePresetPicker } from '@/components/landing/LandingStylePresetPicker';
-import { TrustMetricsStrip } from '@/components/TrustMetricsStrip';
-import { formatBenchmarkRate, formatBenchmarkTrend } from '@/lib/formatBenchmark';
+import { VisitorStart, VisitorCatalog, VisitorNext } from '@/components/storefront/VisitorWorkspace';
+import { visitorJourney } from '@/lib/visitorJourney';
+import { ecosystemNavigation } from '@/lib/ecosystemNavigation';
 
 const FEATURE_ICONS = {
   sparkles: Sparkles,
@@ -95,10 +94,11 @@ function Navbar({
     { label: copy.navExplore, href: '/explore', icon: Layers },
     { label: copy.navProducts, href: '#products', icon: Bot },
     { label: copy.navDocs, href: '/docs', icon: BookOpen },
-    { label: copy.navAdmin, href: '/admin?tab=dashboard', icon: Settings },
+    { label: visitorJourney[locale].demo, href: '/admin?tab=dashboard', icon: Settings },
   ];
 
   const navLinksMore = [
+    ...ecosystemNavigation(locale).links.map(link => ({ ...link, icon: ExternalLink })),
     { label: copy.navHome, href: '/', icon: Home },
     { label: copy.navFactoryIq, href: '/iq', icon: TrendingUp },
     { label: copy.navFeatures, href: '#features', icon: Star },
@@ -283,280 +283,6 @@ function StatusBanner({ copy }: { copy: MarketingStrings }) {
 
 // ── Hero Section ─────────────────────────────────────────────────────────
 
-async function readApiErrorMessage(res: Response): Promise<string> {
-  try {
-    const j = (await res.json()) as { detail?: unknown };
-    const d = j.detail;
-    if (typeof d === 'string') return d;
-    if (Array.isArray(d))
-      return d
-        .map((x) => (typeof x === 'object' && x && 'msg' in x ? String((x as { msg: string }).msg) : String(x)))
-        .join(' ');
-  } catch {
-    /* ignore */
-  }
-  return res.statusText || 'Request failed';
-}
-
-function HeroSection({ copy }: { copy: MarketingStrings }) {
-  const router = useRouter();
-  const [slogan, setSlogan] = useState('');
-  const [stylePresetId, setStylePresetId] = useState('');
-  const [guestLoading, setGuestLoading] = useState(false);
-  const [guestError, setGuestError] = useState<string | null>(null);
-
-  const continueToAdmin = () => {
-    const t = slogan.trim();
-    try {
-      if (t) sessionStorage.setItem('aicom_prefill_idea', t);
-    } catch {
-      /* ignore */
-    }
-    window.location.href = '/admin?tab=new-product';
-  };
-
-  const guestBuildLanding = async () => {
-    const t = slogan.trim();
-    setGuestError(null);
-    if (t.length < 8) {
-      setGuestError(copy.heroPhraseTooShort);
-      return;
-    }
-    const inj = getGuestPhraseBlockReason(t);
-    if (inj) {
-      setGuestError(inj);
-      return;
-    }
-    setGuestLoading(true);
-    try {
-      const res = await fetch('/api/public/generate-landing', {
-        method: 'POST',
-        // The CSRF middleware enforces on the presence of a session cookie, not on the path,
-        // so this public CTA returned 403 for every visitor who had one — which on the demo
-        // host is everyone who clicked "Open demo". See lib/analytics.ts for the same trap.
-        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
-        body: JSON.stringify({
-          phrase: t,
-          fast_path: true,
-          ...(stylePresetId ? { preset_id: stylePresetId } : {}),
-        }),
-      });
-      if (!res.ok) {
-        setGuestError(await readApiErrorMessage(res));
-        return;
-      }
-      const data = (await res.json()) as { product_id?: string };
-      if (!data.product_id) {
-        setGuestError('Invalid response from server.');
-        return;
-      }
-      router.push(`/product/${data.product_id}`);
-    } catch (e) {
-      setGuestError(e instanceof Error ? e.message : 'Network error');
-    } finally {
-      setGuestLoading(false);
-    }
-  };
-
-  return (
-    <section className="relative min-h-screen flex flex-col justify-center px-4 pt-10 pb-12 sm:pt-12">
-      {/* Background effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/25 rounded-full blur-[128px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-fuchsia-500/15 rounded-full blur-[128px]" />
-      </div>
-
-      <div className="relative max-w-4xl mx-auto w-full">
-        {/* ── 1. Landing generator FIRST (most visible) ───────────────────── */}
-        <HeroVisualShowcase
-          eyebrow={copy.heroVisualEyebrow}
-          title={copy.heroVisualTitle}
-          caption={copy.heroVisualCaption}
-          watchLabel={copy.heroWatchDemo}
-        />
-
-        <motion.div
-          id="hero-generate"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="mb-12 md:mb-14"
-        >
-          <p className="text-center text-[11px] md:text-xs font-semibold uppercase tracking-[0.25em] text-fuchsia-300/95 mb-3">
-            {copy.heroGeneratorEyebrow}
-          </p>
-          <GlassCard className="relative overflow-hidden p-6 md:p-10 text-left border-2 border-fuchsia-500/35 shadow-[0_0_60px_-12px_rgba(217,70,239,0.45)] ring-1 ring-white/10 bg-gradient-to-b from-white/[0.07] to-transparent">
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-fuchsia-600/20 to-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-            <h2 className="relative text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 text-center leading-tight">
-              {copy.heroGeneratorTitle}
-            </h2>
-            <label className="relative block text-sm font-medium text-gray-200 mb-2 mt-6">
-              {copy.heroSloganLineLabel}
-            </label>
-            <div className="relative flex flex-col sm:flex-row gap-3 sm:items-stretch">
-              <input
-                type="text"
-                value={slogan}
-                maxLength={2000}
-                onChange={(e) => {
-                  setSlogan(e.target.value);
-                  if (guestError) setGuestError(null);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !guestLoading) {
-                    e.preventDefault();
-                    void guestBuildLanding();
-                  }
-                }}
-                className="relative flex-1 min-w-0 rounded-xl bg-black/50 border border-fuchsia-500/25 px-4 py-3.5 text-base text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50 shadow-inner"
-                placeholder={copy.heroSloganLinePlaceholder}
-                autoComplete="off"
-                aria-invalid={!!guestError}
-              />
-              <Button
-                size="lg"
-                loading={guestLoading}
-                className="w-full sm:w-auto shrink-0 justify-center text-base font-semibold shadow-lg shadow-fuchsia-900/40 bg-gradient-to-r from-fuchsia-600 to-indigo-600 hover:from-fuchsia-500 hover:to-indigo-500 border-0 sm:px-8"
-                icon={<Sparkles className="w-5 h-5" />}
-                onClick={() => void guestBuildLanding()}
-              >
-                {copy.heroGuestBuildCta}
-              </Button>
-            </div>
-            <LandingStylePresetPicker
-              value={stylePresetId}
-              onChange={setStylePresetId}
-              autoLabel={copy.heroStylePresetAuto}
-              label={copy.heroStylePresetLabel}
-              hint={copy.heroStylePresetHint}
-              className="relative mt-4"
-              selectClassName="relative w-full rounded-xl bg-black/50 border border-fuchsia-500/20 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40"
-            />
-            <p className="relative text-xs text-gray-400 mt-3 leading-relaxed">{copy.heroGuestHelp}</p>
-            <p className="relative text-xs text-gray-400 mt-2 mb-4 leading-relaxed">{copy.heroPricingLine}</p>
-            {guestError && (
-              <p className="relative text-sm text-red-400 mb-4 flex items-start gap-2" role="alert">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                {guestError}
-              </p>
-            )}
-            <div className="relative flex flex-col sm:flex-row sm:items-center gap-3 pt-1 border-t border-white/10">
-              <button
-                type="button"
-                onClick={continueToAdmin}
-                className="text-sm text-fuchsia-200/90 hover:text-white text-left underline-offset-4 hover:underline"
-              >
-                {copy.heroCtaPhrase}
-              </button>
-              <span className="hidden sm:inline text-gray-600">·</span>
-              <button
-                type="button"
-                onClick={() => (window.location.href = '/admin')}
-                className="text-sm text-gray-400 hover:text-white text-left underline-offset-4 hover:underline"
-              >
-                {copy.heroCtaAdminOnly}
-              </button>
-            </div>
-          </GlassCard>
-        </motion.div>
-
-        {/* ── 2. Brand + pitch (below generator; marketplace lives further down) ── */}
-        <div className="text-center max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.08 }}
-            className="mb-5"
-          >
-            <Badge variant="info" className="text-xs px-3 py-1.5">
-              <Sparkles className="w-3.5 h-3.5 mr-1" />
-              {copy.heroBadge}
-            </Badge>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.12 }}
-            className="text-4xl md:text-6xl font-bold mb-5"
-          >
-            <span className="text-gradient">{copy.heroTitleLead}</span>{' '}
-            <span className="text-white">{copy.heroTitleRest}</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.16 }}
-            className="text-base md:text-lg text-gray-400 mb-4 leading-relaxed"
-          >
-            {copy.heroSubtitle}
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-sm text-indigo-200/75 max-w-2xl mx-auto mb-10"
-          >
-            {copy.heroHint}
-          </motion.p>
-        </div>
-
-        {/* Secondary CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.22 }}
-          className="flex flex-wrap gap-4 justify-center mb-14"
-        >
-          <Button
-            variant="secondary"
-            size="lg"
-            icon={<BarChart3 className="w-5 h-5" />}
-            onClick={() => {
-              const el = document.getElementById('products');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            {copy.ctaSecondary}
-          </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            icon={<Zap className="w-5 h-5" />}
-            onClick={() => (window.location.href = '/admin')}
-          >
-            {copy.ctaPrimary}
-          </Button>
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.26 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto"
-        >
-          {[
-            { label: copy.stats.agents, value: copy.stats.agentsValue, icon: Bot },
-            { label: copy.stats.pipeline, value: copy.stats.pipelineValue, icon: Code2 },
-            { label: copy.stats.llm, value: copy.stats.llmValue, icon: Cpu },
-            { label: copy.stats.chains, value: copy.stats.chainsValue, icon: Coins },
-          ].map((stat, i) => (
-            <div key={i} className="text-center">
-              <stat.icon className="w-6 h-6 text-indigo-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">{stat.value}</div>
-              <div className="text-sm text-gray-500">{stat.label}</div>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-// ── Features Section ─────────────────────────────────────────────────────
-
 function FeaturesSection({ copy }: { copy: MarketingStrings }) {
   const features = copy.features.map((f) => ({
     ...f,
@@ -678,602 +404,168 @@ function PipelineSection({ copy }: { copy: MarketingStrings }) {
   );
 }
 
-// ── Products Section ─────────────────────────────────────────────────────
-
-// ── Category Helpers ─────────────────────────────────────────────────────
-
-const CATEGORY_ICONS: Record<string, string> = {
-  landings: 'layout',
-  ai_ml: 'brain',
-  devtools: 'code',
-  fintech: 'wallet',
-  saas: 'cloud',
-  ecommerce: 'shopping-cart',
-  iot: 'cpu',
-  security: 'shield',
-  productivity: 'zap',
-};
-
-const CATEGORY_LABELS: Record<string, string> = {
-  landings: 'Landing pages',
-  ai_ml: 'AI/ML',
-  devtools: 'DevTools',
-  fintech: 'FinTech',
-  saas: 'SaaS',
-  ecommerce: 'E-Commerce',
-  iot: 'IoT',
-  security: 'Security',
-  productivity: 'Productivity',
-};
-
-const CATEGORY_EMOJIS: Record<string, string> = {
-  landings: '🎯',
-  ai_ml: '🧠',
-  devtools: '🛠️',
-  fintech: '💰',
-  saas: '☁️',
-  ecommerce: '🛒',
-  iot: '📡',
-  security: '🔒',
-  productivity: '⚡',
-  uncategorized: '📁',
-};
-
-const CATEGORY_COLORS: Record<string, string> = {
-  landings: 'from-sky-500 to-indigo-500',
-  ai_ml: 'from-purple-500 to-indigo-500',
-  devtools: 'from-blue-500 to-cyan-500',
-  fintech: 'from-emerald-500 to-teal-500',
-  saas: 'from-orange-500 to-yellow-500',
-  ecommerce: 'from-pink-500 to-rose-500',
-  iot: 'from-cyan-500 to-blue-500',
-  security: 'from-red-500 to-orange-500',
-  productivity: 'from-violet-500 to-purple-500',
-};
-
-const getCategoryColor = (cat: string): string => {
-  const colors: Record<string, string> = {
-    landings: 'info',
-    ai_ml: 'info',
-    devtools: 'success',
-    fintech: 'warning',
-    saas: 'warning',
-    ecommerce: 'info',
-    iot: 'info',
-    security: 'error',
-    productivity: 'success',
-    analytics: 'info',
-    automation: 'success',
-    design: 'warning',
-    communication: 'info',
-    other: 'default',
-    uncategorized: 'default',
-  };
-  return colors[cat] || 'default';
-};
-
-// ── Skeleton Card ────────────────────────────────────────────────────────
-
-function SkeletonCard() {
-  return (
-    <div className="glass-card p-6 space-y-4">
-      {/* Header skeleton */}
-      <div className="space-y-2">
-        <div className="skeleton h-5 w-4/5 rounded" />
-        <div className="flex gap-2">
-          <div className="skeleton h-5 w-16 rounded-full" />
-          <div className="skeleton h-5 w-20 rounded-full" />
-        </div>
-      </div>
-      {/* Description skeleton */}
-      <div className="space-y-2">
-        <div className="skeleton h-3 w-full rounded" />
-        <div className="skeleton h-3 w-4/5 rounded" />
-      </div>
-      {/* Tags skeleton */}
-      <div className="flex gap-2">
-        <div className="skeleton h-6 w-16 rounded-full" />
-        <div className="skeleton h-6 w-20 rounded-full" />
-        <div className="skeleton h-6 w-14 rounded-full" />
-      </div>
-      {/* Footer skeleton */}
-      <div className="flex items-center justify-between pt-3 border-t border-white/5">
-        <div className="skeleton h-5 w-16 rounded" />
-        <div className="skeleton h-8 w-24 rounded-xl" />
-      </div>
-    </div>
-  );
+async function readApiErrorMessage(res: Response): Promise<string> {
+  try {
+    const j = (await res.json()) as { detail?: unknown };
+    const d = j.detail;
+    if (typeof d === 'string') return d;
+    if (Array.isArray(d))
+      return d
+        .map((x) => (typeof x === 'object' && x && 'msg' in x ? String((x as { msg: string }).msg) : String(x)))
+        .join(' ');
+  } catch {
+    /* ignore */
+  }
+  return res.statusText || 'Request failed';
 }
 
-function CatalogProductCard({
-  product,
-  index,
-  getProductName,
-  getProductDescription,
-}: {
-  product: Product;
-  index: number;
-  getProductName: (p: Product) => string;
-  getProductDescription: (p: Product) => string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.05 }}
-    >
-      <ProductNavLink
-        href={`/product/${product.id}`}
-        className="h-full rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400/80"
-      >
-        <GlassCard
-          hover
-          glow={product.state === 'COMPLETED'}
-          className={`h-full flex flex-col ${
-            product.delivery_profile === 'marketing_landing'
-              ? 'ring-1 ring-fuchsia-500/20 border-fuchsia-500/15'
-              : 'ring-1 ring-emerald-500/15 border-emerald-500/10'
-          }`}
-        >
-          <div className="mb-3 space-y-2">
-            <h3
-              className="text-lg font-semibold leading-snug text-[color:var(--text-primary)] line-clamp-2"
-              title={getProductName(product)}
-            >
-              {getProductName(product)}
-            </h3>
-            <div className="flex flex-wrap items-center gap-1.5">
-              {product.is_template && (
-                <Badge variant="warning" className="text-[10px]">
-                  Template
-                </Badge>
-              )}
-              <Badge variant={getCategoryColor(product.category || '') as any} className="text-[10px]">
-                {CATEGORY_LABELS[product.category || ''] || product.category || 'Uncategorized'}
-              </Badge>
-              {product.delivery_profile === 'marketing_landing' ? (
-                <Badge variant="default" className="text-[10px]">
-                  Landing
-                </Badge>
-              ) : (
-                <Badge variant="success" className="text-[10px]">
-                  {product.delivery_profile === 'full_software' ? 'Full product' : 'Full stack'}
-                </Badge>
-              )}
-            </div>
-          </div>
+function PipelineBuildSection({ copy }: { copy: MarketingStrings }) {
+  const router = useRouter();
+  const [slogan, setSlogan] = useState('');
+  const [stylePresetId, setStylePresetId] = useState('');
+  const [guestLoading, setGuestLoading] = useState(false);
+  const [guestError, setGuestError] = useState<string | null>(null);
 
-          <p className="mb-3 line-clamp-2 text-sm text-[color:var(--text-secondary)]">{getProductDescription(product)}</p>
-
-          {product.implementation_summary && Object.keys(product.implementation_summary).length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mb-4">
-              {Object.entries(product.implementation_summary)
-                .slice(0, 4)
-                .map(([k, v]) => (
-                  <span
-                    key={k}
-                    className="max-w-[160px] truncate rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-[color:var(--text-muted)]"
-                    title={`${labelTechStackKey(k)}: ${v}`}
-                  >
-                    <span className="text-[color:var(--text-muted)] opacity-70">{labelTechStackKey(k)}:</span> {v}
-                  </span>
-                ))}
-              {Object.keys(product.implementation_summary).length > 4 && (
-                <span className="text-[10px] text-[color:var(--text-muted)] opacity-80">
-                  +{Object.keys(product.implementation_summary).length - 4}
-                </span>
-              )}
-            </div>
-          )}
-
-          {product.tags && product.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {product.tags.slice(0, 3).map((tag: string, ti: number) => (
-                <span key={ti} className="rounded-full bg-white/5 px-2 py-1 text-xs text-[color:var(--text-secondary)]">
-                  {tag}
-                </span>
-              ))}
-              {product.tags.length > 3 && (
-                <span className="text-xs text-[color:var(--text-muted)]">+{product.tags.length - 3}</span>
-              )}
-            </div>
-          )}
-
-          <div className="flex-1" />
-
-          <div className="flex items-center justify-between pt-3 border-t border-white/5">
-            <div className="flex items-center gap-3">
-              {product.price_usdt != null && product.price_usdt > 0 && (
-                <span className="text-sm font-semibold text-emerald-400">
-                  ${product.price_usdt}
-                  <span className="text-[10px] font-normal text-[color:var(--text-muted)]">/mo</span>
-                </span>
-              )}
-            </div>
-            <span className="inline-flex items-center rounded-xl border border-transparent px-4 py-2 text-sm font-medium text-[color:var(--text-secondary)]">
-              Details →
-            </span>
-          </div>
-        </GlassCard>
-      </ProductNavLink>
-    </motion.div>
-  );
-}
-
-// ── Products Section ─────────────────────────────────────────────────────
-
-function ProductsSection({ copy }: { copy: MarketingStrings }) {
-  const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const {
-    products,
-    categories,
-    catalogTotalCount,
-    loading,
-    refreshing,
-    fromCache,
-    error,
-    revalidate,
-  } = useStorefrontCatalog(activeCategory);
-
-  const handleCategoryChange = (catId: string) => {
-    setActiveCategory(catId);
-    setSearchQuery('');
+  const continueToAdmin = () => {
+    const t = slogan.trim();
+    try {
+      if (t) sessionStorage.setItem('aicom_prefill_idea', t);
+    } catch {
+      /* ignore */
+    }
+    window.location.href = '/admin?tab=new-product';
   };
 
-  const handleRetry = () => {
-    revalidate();
-  };
-
-  // Client-side search filter
-  const filteredProducts = products.filter((p) => {
-    if (!searchQuery.trim()) return true;
-    const q = searchQuery.toLowerCase();
-    const stackStr = p.implementation_summary
-      ? Object.values(p.implementation_summary).join(' ').toLowerCase()
-      : '';
-    return (
-      (p.name || '').toLowerCase().includes(q) ||
-      ((p as any).description || '').toLowerCase().includes(q) ||
-      (p.selling_description || '').toLowerCase().includes(q) ||
-      (p.tags || []).some((tag: string) => tag.toLowerCase().includes(q)) ||
-      stackStr.includes(q)
-    );
-  });
-
-  const landingExamples = filteredProducts.filter((p) => p.delivery_profile === 'marketing_landing');
-  const fullExamples = filteredProducts.filter((p) => p.delivery_profile !== 'marketing_landing');
-
-  // Derive the display name for a product
-  const getProductName = (product: Product): string => {
-    return product.name || product.spec?.product_name || product.idea || 'Product';
-  };
-
-  // Derive the display description for a product
-  const getProductDescription = (product: Product): string => {
-    return product.selling_description || product.spec?.description || (product as any).description || product.idea || '';
+  const guestBuildLanding = async () => {
+    const t = slogan.trim();
+    setGuestError(null);
+    if (t.length < 8) {
+      setGuestError(copy.heroPhraseTooShort);
+      return;
+    }
+    const inj = getGuestPhraseBlockReason(t);
+    if (inj) {
+      setGuestError(inj);
+      return;
+    }
+    setGuestLoading(true);
+    try {
+      const res = await fetch('/api/public/generate-landing', {
+        method: 'POST',
+        // The CSRF middleware enforces on the presence of a session cookie, not on the path,
+        // so this public CTA returned 403 for every visitor who had one — which on the demo
+        // host is everyone who clicked "Open demo". See lib/analytics.ts for the same trap.
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
+        body: JSON.stringify({
+          phrase: t,
+          fast_path: true,
+          ...(stylePresetId ? { preset_id: stylePresetId } : {}),
+        }),
+      });
+      if (!res.ok) {
+        setGuestError(await readApiErrorMessage(res));
+        return;
+      }
+      const data = (await res.json()) as { product_id?: string };
+      if (!data.product_id) {
+        setGuestError('Invalid response from server.');
+        return;
+      }
+      router.push(`/product/${data.product_id}`);
+    } catch (e) {
+      setGuestError(e instanceof Error ? e.message : 'Network error');
+    } finally {
+      setGuestLoading(false);
+    }
   };
 
   return (
-    <section className="py-24 px-4" id="products">
-      <div className="max-w-6xl mx-auto">
+    <div className="mt-6">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
+          id="pipeline-build-form"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45 }}
+          className="mb-12 md:mb-14"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-white">{copy.productsTitle}</span>
-          </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            {copy.productsSubtitle}
+          <p className="text-center text-[11px] md:text-xs font-semibold uppercase tracking-[0.25em] text-fuchsia-300/95 mb-3">
+            {copy.heroGeneratorEyebrow}
           </p>
-          {!loading && products.length > 0 ? (
-            <p className="mt-3 text-xs font-mono text-gray-500">
-              {products.length} product{products.length === 1 ? '' : 's'} on the public grid
-              {refreshing ? ' · updating…' : ''}
-            </p>
-          ) : null}
-          {refreshing && products.length > 0 && (
-            <p className="mt-3 inline-flex items-center gap-2 text-xs text-gray-500">
-              <RefreshCw className="h-3.5 w-3.5 animate-spin text-indigo-400/80" aria-hidden />
-              {fromCache ? 'Showing cached catalog — updating…' : 'Updating catalog…'}
-            </p>
-          )}
-        </motion.div>
-
-        {/* Search Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-md mx-auto mb-8"
-        >
-          <Input
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            icon={<Search className="w-4 h-4" />}
-          />
-        </motion.div>
-
-        {/* Category Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          className="flex flex-wrap justify-center gap-2 mb-10"
-        >
-          <motion.button
-            onClick={() => handleCategoryChange('all')}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
-              activeCategory === 'all'
-                ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-lg shadow-indigo-500/10'
-                : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-300'
-            }`}
-          >
-            <Layers className="w-3.5 h-3.5 inline-block mr-1.5" />
-            All
-            <span className="ml-1.5 text-xs opacity-60">
-              ({catalogTotalCount})
-            </span>
-          </motion.button>
-          {categories.map((cat) => (
-            <motion.button
-              key={cat.id}
-              onClick={() => handleCategoryChange(cat.id)}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
-                activeCategory === cat.id
-                  ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-lg shadow-indigo-500/10'
-                  : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-300'
-              }`}
-            >
-              <span className="mr-1.5">{CATEGORY_EMOJIS[cat.id] || '📦'}</span>
-              {CATEGORY_LABELS[cat.id] || cat.name}
-              <span className="ml-1.5 text-xs opacity-60">({cat.product_count})</span>
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Error State — only when there is nothing to show from cache */}
-        {error && !loading && products.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-16"
-          >
-            <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-            <p className="text-red-400 text-lg mb-2">Failed to load products</p>
-            <p className="text-gray-500 text-sm mb-6">{error}</p>
-            <Button
-              variant="secondary"
-              icon={<RefreshCw className="w-4 h-4" />}
-              onClick={handleRetry}
-            >
-              Retry
-            </Button>
-          </motion.div>
-        )}
-
-        {/* Loading State */}
-        {loading && !error && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <SkeletonCard key={i} />
-            ))}
-          </div>
-        )}
-
-        {/* Empty State */}
-        {!loading && !error && filteredProducts.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-16"
-          >
-            {searchQuery ? (
-              <>
-                <Search className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 text-lg mb-2">No results found</p>
-                <p className="text-gray-500 text-sm mb-6">
-                  No products match &ldquo;{searchQuery}&rdquo;. Try a different search term.
-                </p>
-                <Button variant="ghost" onClick={() => setSearchQuery('')}>
-                  Clear Search
-                </Button>
-              </>
-            ) : (
-              <>
-                <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 text-lg mb-2">No products in this category yet</p>
-                <p className="text-gray-500 text-sm mb-6">
-                  {activeCategory !== 'all' ? (
-                    <>Try selecting a different category or check back later.</>
-                  ) : (
-                    <>
-                      Submit an idea through the{' '}
-                      <a href="/admin" className="text-indigo-400 hover:text-indigo-300 underline">
-                        Admin Panel
-                      </a>{' '}
-                      or CLI to get started.
-                    </>
-                  )}
-                </p>
-                {activeCategory !== 'all' && (
-                  <Button
-                    variant="secondary"
-                    onClick={() => handleCategoryChange('all')}
-                  >
-                    View All Products
-                  </Button>
-                )}
-              </>
-            )}
-          </motion.div>
-        )}
-
-        {/* Product grids — landings vs full stacks */}
-        {!loading && !error && filteredProducts.length > 0 && (
-          <div className="space-y-16">
-            <div className="flex items-center justify-between gap-3 rounded-2xl border border-cyan-500/20 bg-gradient-to-r from-cyan-500/5 to-indigo-500/5 px-5 py-4">
-              <p className="text-sm text-gray-300">
-                Curious <em>how</em> these were made?{' '}
-                <span className="text-gray-400">Replay the agents that built each one.</span>
-              </p>
-              <Link
-                href="/builds"
-                className="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-300 hover:text-cyan-200"
+          <GlassCard className="relative overflow-hidden p-6 md:p-10 text-left border-2 border-fuchsia-500/35 shadow-[0_0_60px_-12px_rgba(217,70,239,0.45)] ring-1 ring-white/10 bg-gradient-to-b from-white/[0.07] to-transparent">
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-fuchsia-600/20 to-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+            <h2 className="relative text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 text-center leading-tight">
+              {copy.heroGeneratorTitle}
+            </h2>
+            <label className="relative block text-sm font-medium text-gray-200 mb-2 mt-6">
+              {copy.heroSloganLineLabel}
+            </label>
+            <div className="relative flex flex-col sm:flex-row gap-3 sm:items-stretch">
+              <input
+                type="text"
+                value={slogan}
+                maxLength={2000}
+                onChange={(e) => {
+                  setSlogan(e.target.value);
+                  if (guestError) setGuestError(null);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !guestLoading) {
+                    e.preventDefault();
+                    void guestBuildLanding();
+                  }
+                }}
+                className="relative flex-1 min-w-0 rounded-xl bg-black/50 border border-fuchsia-500/25 px-4 py-3.5 text-base text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50 shadow-inner"
+                placeholder={copy.heroSloganLinePlaceholder}
+                autoComplete="off"
+                aria-invalid={!!guestError}
+              />
+              <Button
+                size="lg"
+                loading={guestLoading}
+                className="w-full sm:w-auto shrink-0 justify-center text-base font-semibold shadow-lg shadow-fuchsia-900/40 bg-gradient-to-r from-fuchsia-600 to-indigo-600 hover:from-fuchsia-500 hover:to-indigo-500 border-0 sm:px-8"
+                icon={<Sparkles className="w-5 h-5" />}
+                onClick={() => void guestBuildLanding()}
               >
-                Watch build replays →
-              </Link>
+                {copy.heroGuestBuildCta}
+              </Button>
             </div>
-            <div>
-              <div className="flex flex-wrap items-baseline justify-between gap-3 mb-2">
-                <h3 className="text-2xl md:text-3xl font-bold text-white">{copy.productsLandingsTitle}</h3>
-                <span className="text-xs font-mono text-fuchsia-300/90 bg-fuchsia-500/10 border border-fuchsia-500/25 rounded-lg px-2.5 py-1">
-                  {landingExamples.length} listing{landingExamples.length === 1 ? '' : 's'}
-                </span>
-              </div>
-              <p className="text-gray-500 text-sm max-w-3xl mb-8">{copy.productsLandingsSubtitle}</p>
-              {landingExamples.length === 0 ? (
-                <p className="text-gray-600 text-sm border border-white/5 rounded-xl px-4 py-6 bg-white/[0.02]">
-                  No marketing landings match this search or category — try &quot;All&quot;, clear search, or open{' '}
-                  <Link href="/explore/landings" className="text-fuchsia-300/90 hover:text-fuchsia-200 underline">
-                    Landing pages
-                  </Link>
-                  .
-                </p>
-              ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {landingExamples.map((product, i) => (
-                    <CatalogProductCard
-                      key={product.id}
-                      product={product}
-                      index={i}
-                      getProductName={getProductName}
-                      getProductDescription={getProductDescription}
-                    />
-                  ))}
-                </div>
-              )}
+            <LandingStylePresetPicker
+              value={stylePresetId}
+              onChange={setStylePresetId}
+              autoLabel={copy.heroStylePresetAuto}
+              label={copy.heroStylePresetLabel}
+              hint={copy.heroStylePresetHint}
+              className="relative mt-4"
+              selectClassName="relative w-full rounded-xl bg-black/50 border border-fuchsia-500/20 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40"
+            />
+            <p className="relative text-xs text-gray-400 mt-3 leading-relaxed">{copy.heroGuestHelp}</p>
+            <p className="relative text-xs text-gray-400 mt-2 mb-4 leading-relaxed">{copy.heroPricingLine}</p>
+            {guestError && (
+              <p className="relative text-sm text-red-400 mb-4 flex items-start gap-2" role="alert">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                {guestError}
+              </p>
+            )}
+            <div className="relative flex flex-col sm:flex-row sm:items-center gap-3 pt-1 border-t border-white/10">
+              <button
+                type="button"
+                onClick={continueToAdmin}
+                className="text-sm text-fuchsia-200/90 hover:text-white text-left underline-offset-4 hover:underline"
+              >
+                {copy.heroCtaPhrase}
+              </button>
+              <span className="hidden sm:inline text-gray-600">·</span>
+              <button
+                type="button"
+                onClick={() => (window.location.href = '/admin')}
+                className="text-sm text-gray-400 hover:text-white text-left underline-offset-4 hover:underline"
+              >
+                {copy.heroCtaAdminOnly}
+              </button>
             </div>
-
-            <div className="border-t border-white/10 pt-16">
-              <div className="flex flex-wrap items-baseline justify-between gap-3 mb-2">
-                <h3 className="text-2xl md:text-3xl font-bold text-white">{copy.productsFullTitle}</h3>
-                <span className="text-xs font-mono text-emerald-300/90 bg-emerald-500/10 border border-emerald-500/25 rounded-lg px-2.5 py-1">
-                  {fullExamples.length} listing{fullExamples.length === 1 ? '' : 's'}
-                </span>
-              </div>
-              <p className="text-gray-500 text-sm max-w-3xl mb-8">{copy.productsFullSubtitle}</p>
-              {fullExamples.length === 0 ? (
-                <p className="text-gray-600 text-sm border border-white/5 rounded-xl px-4 py-6 bg-white/[0.02]">
-                  No full products match this filter — try another category or queue a build from{' '}
-                  <Link href="/admin" className="text-emerald-300/90 hover:text-emerald-200 underline">
-                    Admin
-                  </Link>
-                  .
-                </p>
-              ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {fullExamples.map((product, i) => (
-                    <CatalogProductCard
-                      key={product.id}
-                      product={product}
-                      index={i}
-                      getProductName={getProductName}
-                      getProductDescription={getProductDescription}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
-// ── CTA Section ──────────────────────────────────────────────────────────
-
-function CTASection({ copy }: { copy: MarketingStrings }) {
-  return (
-    <section className="py-24 px-4">
-      <div className="max-w-4xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="glass-strong rounded-3xl p-12 md:p-16"
-        >
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-            {copy.ctaBannerTitle}
-          </h2>
-          <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-            {copy.ctaBannerSubtitle}
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button
-              size="lg"
-              icon={<Zap className="w-5 h-5" />}
-              onClick={() => (window.location.href = '/admin')}
-            >
-              {copy.ctaBannerPrimary}
-            </Button>
-            <Button
-              variant="secondary"
-              size="lg"
-              icon={<BookOpen className="w-5 h-5" />}
-              onClick={() => (window.location.href = '/docs')}
-            >
-              {copy.ctaBannerSecondary}
-            </Button>
-          </div>
+          </GlassCard>
         </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function SeoFaqSection() {
-  const faqs = [
-    {
-      q: 'What does AI-Factory generate?',
-      a: 'Primarily share-ready marketing landings from the public phrase box; the same pipeline also produces full_software builds (APIs, persistence, compose-friendly repos) when work is queued from Admin or Director.',
-    },
-    {
-      q: 'Can I run multiple ideas at once?',
-      a: 'Yes, batch mode supports up to 10 ideas with progress tracking and retry support.',
-    },
-    {
-      q: 'How does quality control work?',
-      a: 'Quality uses benchmark pass-rate metrics, release gates, and continuous pipeline checks.',
-    },
-    {
-      q: 'Do you support paid upgrades?',
-      a: 'Yes. Free tier limits are visible in account, and paid plans upgrade through Stripe checkout.',
-    },
-  ];
-  return (
-    <section className="py-16 px-4">
-      <div className="max-w-5xl mx-auto">
-        <h3 className="text-3xl font-bold text-white mb-6">FAQ</h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          {faqs.map((f) => (
-            <div key={f.q} className="rounded-xl border border-white/10 bg-white/5 p-5">
-              <p className="text-white font-semibold mb-2">{f.q}</p>
-              <p className="text-gray-400 text-sm">{f.a}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+    </div>
   );
 }
 
@@ -1340,8 +632,9 @@ function Metric({
 
 // ── Footer ───────────────────────────────────────────────────────────────
 
-function Footer({ copy }: { copy: MarketingStrings }) {
+function Footer({ copy, locale }: { copy: MarketingStrings; locale: MarketingLocale }) {
   const footerLinks = [
+    ...ecosystemNavigation(locale).links.map(link => ({ ...link, icon: ExternalLink })),
     { label: copy.footerDocumentation, href: '/docs', icon: FileText },
     { label: copy.footerBlog, href: '/blog', icon: BookOpen },
     { label: copy.footerLaunchKit, href: '/launch-kit', icon: Rocket },
@@ -1388,13 +681,30 @@ function Footer({ copy }: { copy: MarketingStrings }) {
 
 // ── Main Page ────────────────────────────────────────────────────────────
 
-export default function HomePage({ initialLocale }: { initialLocale: MarketingLocale }) {
+export default function HomePage({ initialLocale, explicitLocale = false }: { initialLocale: MarketingLocale; explicitLocale?: boolean }) {
   // Resolved on the server (app/page.tsx: cookie, else Accept-Language), so the server render
   // and hydration agree. Detecting it here during the first render cost React #418 for every
   // non-English visitor: the server rendered 'en', the browser rendered 'ru', and React threw
   // the server tree away.
   const [mktLocale, setMktLocale] = useState<MarketingLocale>(initialLocale);
   const siteCopy = getMarketingStrings(mktLocale);
+  useEffect(() => {
+    const revealHashTarget = () => {
+      const id = window.location.hash.slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      const details = target.closest('details');
+      if (details) {
+        details.open = true;
+        requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+      }
+    };
+    revealHashTarget();
+    window.addEventListener('hashchange', revealHashTarget);
+    return () => window.removeEventListener('hashchange', revealHashTarget);
+  }, []);
+
 
   // A choice saved before the cookie existed lives only in localStorage, which the server
   // cannot read: adopt it after hydration and save it where the server looks next time.
@@ -1405,10 +715,11 @@ export default function HomePage({ initialLocale }: { initialLocale: MarketingLo
       setMktLocale(stored);
       rememberSiteLocale(stored);
     };
-    adopt();
+    if (explicitLocale) saveMarketingLocale(initialLocale);
+    else adopt();
     window.addEventListener('marketing-locale-changed', adopt);
     return () => window.removeEventListener('marketing-locale-changed', adopt);
-  }, []);
+  }, [explicitLocale, initialLocale]);
 
   useEffect(() => {
     document.documentElement.lang = mktLocale;
@@ -1417,6 +728,9 @@ export default function HomePage({ initialLocale }: { initialLocale: MarketingLo
   const handleLocaleChange = (code: MarketingLocale) => {
     setMktLocale(code);
     saveMarketingLocale(code);
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', code);
+    window.history.replaceState(null, '', url);
   };
 
   return (
@@ -1425,17 +739,34 @@ export default function HomePage({ initialLocale }: { initialLocale: MarketingLo
         <StatusBanner copy={siteCopy} />
         <Navbar copy={siteCopy} locale={mktLocale} onLocaleChange={handleLocaleChange} />
       </div>
-      <HeroSection copy={siteCopy} />
-      <TrustMetricsStrip />
-      <FeaturesSection copy={siteCopy} />
-      <PipelineSection copy={siteCopy} />
-      <ArchitectureOrbit copy={siteCopy} />
-      <LogosEcosystemSection copy={siteCopy} />
-      <ProductsSection copy={siteCopy} />
-      <TrustBlock />
-      <SeoFaqSection />
-      <CTASection copy={siteCopy} />
-      <Footer copy={siteCopy} />
+      <nav aria-label={ecosystemNavigation(mktLocale).current} className="border-b border-white/10 bg-slate-950/70 px-4 py-3">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+          <span className="text-gray-400">{ecosystemNavigation(mktLocale).current}</span>
+          {ecosystemNavigation(mktLocale).links.map(link => (
+            <a key={link.href} href={link.href} className="inline-flex min-h-8 items-center gap-1 text-cyan-300 hover:text-white">
+              {link.label}<ExternalLink size={14} aria-hidden />
+            </a>
+          ))}
+        </div>
+      </nav>
+      <VisitorStart locale={mktLocale} />
+      <details id="factory-build" className="scroll-mt-40 mx-auto mb-8 max-w-4xl rounded-2xl border border-white/10 px-4 py-5">
+        <summary className="cursor-pointer text-lg font-semibold text-gray-200">{visitorJourney[mktLocale].pipelineBuild}</summary>
+        <PipelineBuildSection copy={siteCopy} />
+      </details>
+      <VisitorCatalog locale={mktLocale} />
+      <VisitorNext locale={mktLocale} />
+      <details className="mx-auto mb-12 max-w-6xl rounded-2xl border border-white/10 px-4 py-5">
+        <summary className="cursor-pointer px-2 text-lg font-semibold text-gray-200">{visitorJourney[mktLocale].technical}</summary>
+        <HeroVisualShowcase eyebrow={siteCopy.heroVisualEyebrow} title={siteCopy.heroVisualTitle} caption={siteCopy.heroVisualCaption} watchLabel={siteCopy.heroWatchDemo} />
+        <TrustMetricsStrip />
+        <TrustBlock />
+        <FeaturesSection copy={siteCopy} />
+        <PipelineSection copy={siteCopy} />
+        <ArchitectureOrbit copy={siteCopy} />
+        <LogosEcosystemSection copy={siteCopy} />
+      </details>
+      <Footer copy={siteCopy} locale={mktLocale} />
     </main>
   );
 }

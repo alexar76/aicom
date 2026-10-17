@@ -1,5 +1,9 @@
 # Lancer votre hub et rejoindre la fédération
 
+<!-- sensor-operator-guide -->
+> Vous avez une station météo ou un capteur de qualité de l’air ? [Vendez les relevés via votre propre Hub + GAIA](sensor-operator.fr.md).
+<!-- /sensor-operator-guide -->
+
 > **English:** [join-the-federation.md](./join-the-federation.md) · **Русский:** [join-the-federation.ru.md](./join-the-federation.ru.md) · **Español:** [join-the-federation.es.md](./join-the-federation.es.md) · **中文:** [join-the-federation.zh.md](./join-the-federation.zh.md)
 >
 > Deux commandes pour lancer un hub. Un en-tête pour être vu. L’admission ensuite est automatique : le sandbox note ce que le hub *fait*, pas ce qu’il *écrit*.
@@ -14,8 +18,9 @@
 # [pqc] installe le vérificateur post-quantique (ML-DSA-65). Sans lui, votre hub ne peut pas
 # vérifier les signatures hybrides que publie chaque hub AIMarket, et n'en indexe aucun.
 pip install "aimarket-hub[pqc]"
-# signer vous-même en hybride (Ed25519 + ML-DSA-65) ; les pairs épinglent les deux clés
-export AIMARKET_PQC=1
+# réglages enregistrés dans data/aimarket.env (signature hybride Ed25519 + ML-DSA-65, jeton
+# d'administration) et une hub.ping@v1 gratuite pour le bac à sable d'admission des autres hubs
+aimarket quickstart --name "My hub"
 aimarket serve          # → http://localhost:9083
 ```
 
@@ -32,8 +37,10 @@ votre clé ML-DSA-65, et un hub qui la perd est refusé par tous ceux qui l'ont 
 [démarrage rapide de l'opérateur](https://github.com/alexar76/aimarket-hub/blob/main/docs/operator-quickstart.fr.md) ·
 [migration post-quantique](pqc-migration.fr.md).
 
-Docker : `Dockerfile.standalone` (il installe le vérificateur `[pqc]`) et `docker-compose.yml` sont
-dans le paquet. Passez `AIMARKET_PQC=1` et gardez le volume de données : les deux clés y vivent.
+Docker, depuis un clone du dépôt du paquet : `docker compose run --rm hub quickstart
+--name "My hub"`, puis `docker compose up -d`. Clés, base et réglages vivent sur le volume
+`hub_data` : gardez-le. Les fichiers Railway, Render et Fly sont dans le même dépôt :
+[lancer sur une plateforme](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-on-a-platform.fr.md).
 
 ## 2. Pointer vers un hub à lire
 
@@ -59,6 +66,9 @@ GET /.well-known/ai-market.json
 X-AIMarket-Crawler: https://your-hub.example
 ```
 
+Avant de frapper, `aimarket doctor --url https://your-hub.example` exécute sur votre hub le même
+assay d’admission que la section 4 et dit quoi corriger.
+
 Annonce explicite :
 
 ```bash
@@ -67,7 +77,7 @@ curl -X POST https://their-hub.example/ai-market/v2/federation/announce \
   -d '{"hub_url": "https://your-hub.example", "hub_name": "Your Hub"}'
 ```
 
-Réponse `200` : `status: pending`, `trusted: false`, `assay_scheduled: true`.
+Réponse `200` : `status: pending`, `trusted: false`, `assay_scheduled: true` et `assay_url`, où lire le verdict.
 Aucun credential n’est requis pour devenir visible. Le knock ne vous rend pas trusted.
 
 ## 4. Après le knock (automatique)
@@ -76,9 +86,9 @@ flowchart TD
     A["Votre hub frappe<br/>POST /ai-market/v2/federation/announce"] --> C["pending — enregistré, rien d’indexé"]
     C --> E{"Contrôles durs, fail-closed<br/>URL publique · schema · Ed25519 · fraîcheur · invoke same-origin"}
     E -- "un échec" --> F["fail — reste pending"]
-    E -- "tout passe" --> G{"Une capability publique gratuite ?"}
-    G -- "oui" --> H["POST sandbox, jusqu’à 3 candidates<br/>le premier reçu signé gagne"]
-    G -- "non" --> I["On frappe à la payante la moins chère<br/>SANS payer"]
+    E -- "tout passe" --> G{"Une capability gratuite À LUI ?<br/>(réexportées : seulement pour un pur agrégateur)"}
+    G -- "oui" --> H["POST sandbox, jusqu’à 3 des siennes<br/>le premier reçu signé gagne"]
+    G -- "non" --> I["On frappe à sa payante la moins chère<br/>SANS payer"]
     I --> J{"402 nommant un rail, un destinataire<br/>et le prix que votre catalogue affiche ?"}
     H --> K["Analyse de la réponse vivante"]
     J -- "oui" --> K
@@ -190,9 +200,14 @@ caisse, clés, adresses sur Base et un `transferWithAuthorization` miné) :
 1. `.well-known` et manifeste valides.
 2. Signer le manifeste.
 3. `generated_at` frais.
-4. Au moins une capability **publique gratuite** pour le sandbox. Un hub payant-only
-   reste en `review` jusqu’à une exception humaine.
+4. Au moins une capability **gratuite à vous** (`quickstart` crée `hub.ping@v1` pour cela), ou
+   une payante dont le `402` cite le prix de votre catalogue. Le sandbox teste vos propres
+   capabilities, pas celles que vous réexportez. Vérifiez avec `aimarket doctor` avant de frapper.
 5. Announce (ou crawlez-les). Le reste est automatique.
+
+Aucun hub n’est nécessaire pour tout cela : `aimarket node` sert ces documents et reçus à côté d’une API
+que vous faites déjà tourner et laisse passer x402 tel quel —
+[lancer un nœud](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-a-node.fr.md).
 
 ## 9. Liens
 

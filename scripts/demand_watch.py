@@ -375,6 +375,17 @@ def _funnel_lines(funnel: dict[str, Any] | None) -> list[str]:
     disc = (funnel.get("x402") or {}).get("discovery") or {}
     if disc:
         lines.append("Каталоги читали описание x402: " + ", ".join(f"{k} {v}" for k, v in sorted(disc.items(), key=lambda kv: -kv[1])))
+    tools = funnel.get("tools") or {}
+    if tools.get("since"):
+        pages = tools.get("pages") or {}
+        checks = tools.get("checks") or {}
+        people = sum(p.get("people", 0) for p in pages.values())
+        visitors = sum(p.get("visitors", 0) for p in pages.values())
+        done = sum(c.get("answered", 0) for c in checks.values())
+        crawlers = sum(p.get("crawlers", 0) for p in pages.values())
+        per_tool = ", ".join(f"{t} {c.get('answered', 0)}" for t, c in sorted(checks.items()))
+        lines.append(f"Страницы /tools/, посторонние: просмотров людьми {people} (посетителей по страницам: {visitors}), "
+                     f"краулерами {crawlers}, проверок {done}" + (f" ({per_tool})" if per_tool else ""))
     mcp = funnel.get("mcp") or {}
     init = sum((mcp.get("initialize") or {}).values())
     listed = sum((mcp.get("tools/list") or {}).values())

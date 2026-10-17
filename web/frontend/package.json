@@ -2,9 +2,9 @@
   "name": "ai-factory-frontend",
   "version": "2.1.0",
   "private": true,
-  "description": "AUTONOMOUS AI-FACTORY v2.1 — Premium Storefront & Admin Panel",
+  "description": "AUTONOMOUS AI-FACTORY v2.1 \u2014 Premium Storefront & Admin Panel",
   "scripts": {
-    "prebuild": "python3 scripts/gen_pwa_icons.py",
+    "prebuild": "python3 scripts/gen_pwa_icons.py && python3 scripts/copy_factory_docs.py",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

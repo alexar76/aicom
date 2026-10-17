@@ -56,6 +56,41 @@ class Check:
 
 # ── evaluation: pure, so the interesting cases are testable without a network ────────────
 
+
+def _is_trial_answer(body: dict[str, Any]) -> bool:
+    receipt = body.get("receipt") if isinstance(body.get("receipt"), dict) else {}
+    return body.get("sandbox") is True or isinstance(body.get("sandbox"), dict) \
+        or receipt.get("sandbox") is True
+
+
+def _brokered_check(name: str, probe: dict[str, Any]) -> Check:
+    """A peer this hub only BROKERS (not in AIMARKET_SELLS_FOR): the peer bills, not us.
+
+    The hub forwards such a call unpaid under its own shared federation identity and takes
+    no money for it, so what comes back is the PEER's decision — its 402, its free trial for
+    that shared identity, or its own input check. None of that is this hub's paywall, so none
+    of it may page anyone; but a peer answering paid work for free is still worth seeing,
+    hence a warning rather than silence. (2026-10-16: Independent's KOVA answered 402 at
+    06:17 and 200 at 08:36 — the same trial allowance, used up and then renewed.)
+    """
+    status = probe.get("status")
+    body = probe.get("body") or {}
+    cap = probe.get("capability_id", "?")
+    hub = probe.get("source_hub") or "?"
+    if status == 402:
+        return Check(name, True, f"{cap} answered 402 at the peer (brokered: the peer bills)",
+                     critical=False)
+    if status == 200:
+        how = ("its free trial answered this hub's shared federation identity"
+               if _is_trial_answer(body) else "it answered without payment")
+        return Check(name, False,
+                     f"brokered, not sold by this hub: {hub} decides what {cap} costs, and "
+                     f"{how} — the peer's policy, not this hub's paywall", critical=False)
+    return Check(name, False,
+                 f"brokered peer: {cap} answered HTTP {status}, which proves nothing about "
+                 f"the peer's paywall; {json.dumps(body)[:160]}", critical=False)
+
+
 def evaluate(
     manifest: dict[str, Any] | None,
     probes: list[dict[str, Any]] | dict[str, Any] | None,
@@ -116,6 +151,9 @@ def evaluate(
         # again for local capabilities, so a single verdict would average away a provider
         # whose paid work is being given away.
         name = f"priced_capability_gated[{hub}]"
+        if probe.get("seller_of_record") is False:
+            checks.append(_brokered_check(name, probe))
+            continue
         if status == 402:
             checks.append(Check(name, True, f"{cap} answered 402 {body.get('error') or ''}".strip()))
         elif status == 200:
@@ -226,7 +264,11 @@ def _post(url: str, payload: dict, timeout: float) -> tuple[int, Any]:
 # was 4 while six peers advertised prices, which left two paywalls untested on every run —
 # and an untested paywall is indistinguishable from a broken one. The denominator check in
 # evaluate() makes any future overflow a visible finding instead of a shorter list.
-MAX_PROBES = 12
+MAX_PROBES = 32
+# When a probe proves nothing (the hub's input check answered 400 before the paywall, the
+# provider was rate-limited), try the provider's next-cheapest capabilities, up to this many
+# in all. Without it one capability with a required field made a whole provider "unproven".
+MAX_TRIES_PER_PROVIDER = 3
 
 
 def priced_providers(prices: Any) -> set:
@@ -256,7 +298,7 @@ def pick_priced_capabilities(prices: Any, limit: int = MAX_PROBES) -> list[dict[
     as long as the regression lasts.
     """
     rows = (prices or {}).get("prices") or []
-    best: dict[str, tuple[float, dict[str, Any]]] = {}
+    per_hub: dict[str, list[tuple[float, dict[str, Any]]]] = {}
     for row in rows:
         cap, product = row.get("capability_id"), row.get("product_id")
         if not cap or not product:
@@ -268,9 +310,15 @@ def pick_priced_capabilities(prices: Any, limit: int = MAX_PROBES) -> list[dict[
         if price <= 0:
             continue
         hub = str(row.get("source_hub") or "local")
-        if hub not in best or price < best[hub][0]:
-            best[hub] = (price, {"capability_id": cap, "product_id": product,
-                                 "source_hub": hub, "price_usd": price})
+        per_hub.setdefault(hub, []).append((price, {"capability_id": cap, "product_id": product,
+                                                    "source_hub": hub, "price_usd": price}))
+    best: dict[str, tuple[float, dict[str, Any]]] = {}
+    for hub, items in per_hub.items():
+        items.sort(key=lambda p: p[0])
+        first = dict(items[0][1])
+        # The next-cheapest, for when the cheapest one's answer proves nothing.
+        first["alternates"] = [dict(i) for _, i in items[1:MAX_TRIES_PER_PROVIDER]]
+        best[hub] = (items[0][0], first)
     ordered = [item for _, item in sorted(best.values(), key=lambda p: p[0])]
     # Deliberately NOT truncated to `limit` silently. With MAX_PROBES=4 and six priced peers,
     # two providers went unprobed on every run — which is exactly the shape of the ATLAS
@@ -360,13 +408,56 @@ def probe_peer(peer: dict[str, Any], timeout: float = LIVENESS_TIMEOUT,
     return out
 
 
+def sells_for_matches(peer_url: str, sells_for: list[str]) -> bool:
+    """aimarket_hub.config.sells_on_behalf_of, verbatim: scheme+host+path prefix match."""
+    peer = (peer_url or "").strip().rstrip("/").lower()
+    if not peer:
+        return False
+    for entry in sells_for:
+        own = (entry or "").strip().rstrip("/").lower()
+        if own and (peer == own or peer.startswith(own + "/")):
+            return True
+    return False
+
+
+def sells_for_from_container(name: str) -> list[str] | None:
+    """AIMARKET_SELLS_FOR as the running hub container has it, or None when unreadable.
+
+    Read from the live container, not a file: the env capture on disk can lag an
+    env-only rollout. Only that one variable is kept; nothing else is read into memory
+    longer than the parse, and nothing is printed.
+    """
+    import subprocess
+
+    try:
+        out = subprocess.run(["docker", "inspect", name, "--format", "{{json .Config.Env}}"],
+                             capture_output=True, text=True, timeout=30, check=True).stdout
+        env = json.loads(out)
+    except Exception:
+        return None
+    for entry in env if isinstance(env, list) else []:
+        key, _, value = str(entry).partition("=")
+        if key == "AIMARKET_SELLS_FOR":
+            return [v for v in value.split(",") if v.strip()]
+    return []
+
+
+def _conclusive(status: Any) -> bool:
+    return status in (200, 402)
+
+
 def observe(hub: str, timeout: float,
             capabilities: list[dict[str, Any]] | None = None,
-            allow: Any = None) -> dict[str, Any]:
+            allow: Any = None, sells_for: list[str] | None = None) -> dict[str, Any]:
     """``allow(url) -> bool``, when given, narrows the run to the providers and peers it
     admits — BEFORE anything is sent to them. The ecosystem alerter watches one ecosystem
     only, and a probe it would then throw away is still a request to somebody else's
-    service every hour (they saw them in their logs as a stream of 404s)."""
+    service every hour (they saw them in their logs as a stream of 404s).
+
+    ``sells_for`` is the hub's AIMARKET_SELLS_FOR. With it, each probe says whether the hub
+    is the seller of record for that provider (local always is), and a merely brokered peer
+    is judged as the peer's business. Without it (None) every provider is held to the
+    seller's standard, as before."""
     _, manifest = _get(f"{hub}/.well-known/ai-market.json", timeout)
     _, mcp_info = _get(f"{hub}/mcp", timeout)
 
@@ -388,22 +479,33 @@ def observe(hub: str, timeout: float,
 
     probes = []
     for capability in capabilities:
-        body = {
-            "product_id": capability["product_id"],
-            "capability_id": capability["capability_id"],
-            "input": {},
-        }
         source_hub = capability.get("source_hub")
-        if source_hub and source_hub != "local":
-            body["source_hub"] = source_hub
-        # No X-Payment-Channel and deliberately no X-AIMarket-Sandbox-Visitor: the trial
-        # tier would answer 200 legitimately, and this probe is about the paywall behind it.
-        status, resp_body = _post(f"{hub}/ai-market/v2/invoke", body, timeout)
-        probes.append({"status": status,
-                       "body": resp_body if isinstance(resp_body, dict) else {},
-                       "capability_id": capability["capability_id"],
-                       "source_hub": source_hub or "local",
-                       "price_usd": capability.get("price_usd")})
+        tried: list[str] = []
+        for candidate in [capability, *(capability.get("alternates") or [])][:MAX_TRIES_PER_PROVIDER]:
+            body = {
+                "product_id": candidate["product_id"],
+                "capability_id": candidate["capability_id"],
+                "input": {},
+            }
+            if source_hub and source_hub != "local":
+                body["source_hub"] = source_hub
+            # No X-Payment-Channel and deliberately no X-AIMarket-Sandbox-Visitor: the trial
+            # tier would answer 200 legitimately, and this probe is about the paywall behind it.
+            status, resp_body = _post(f"{hub}/ai-market/v2/invoke", body, timeout)
+            tried.append(candidate["capability_id"])
+            if _conclusive(status):
+                break
+        probe = {"status": status,
+                 "body": resp_body if isinstance(resp_body, dict) else {},
+                 "capability_id": candidate["capability_id"],
+                 "source_hub": source_hub or "local",
+                 "price_usd": candidate.get("price_usd")}
+        if len(tried) > 1:
+            probe["tried"] = tried
+        if sells_for is not None:
+            probe["seller_of_record"] = (not source_hub or source_hub == "local"
+                                         or sells_for_matches(source_hub, sells_for))
+        probes.append(probe)
 
     # Peer liveness. The 402 probes above cannot see a dead satellite: the payment gate
     # answers before the hub ever contacts the provider, so an unpaid probe returns a
@@ -451,13 +553,26 @@ def main(argv: list[str] | None = None) -> int:
                         help="also write the JSON report here (for a public status page)")
     parser.add_argument("--timestamp", default=os.environ.get("CANARY_TIMESTAMP", ""),
                         help="stamp to record; defaults to UTC now")
+    parser.add_argument("--sells-for-container", metavar="NAME", default="",
+                        help="read AIMARKET_SELLS_FOR from this running hub container, so a "
+                             "peer the hub only brokers is judged as the peer's business")
     args = parser.parse_args(argv)
 
     when = args.timestamp or __import__("datetime").datetime.now(
         __import__("datetime").timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    seen = observe(args.hub, args.timeout)
-    checks = evaluate(seen["manifest"], seen.get("probes"), seen["mcp_info"], seen.get("peers"))
+    sells_for = None
+    extra: list[Check] = []
+    if args.sells_for_container:
+        sells_for = sells_for_from_container(args.sells_for_container)
+        extra.append(Check(
+            "sells_for_known", sells_for is not None,
+            f"{len(sells_for)} peer(s) this hub sells for, read from {args.sells_for_container}"
+            if sells_for is not None else
+            f"could not read AIMARKET_SELLS_FOR from {args.sells_for_container}; every provider "
+            f"is held to the seller's standard", critical=False))
+    seen = observe(args.hub, args.timeout, sells_for=sells_for)
+    checks = evaluate(seen["manifest"], seen.get("probes"), seen["mcp_info"], seen.get("peers")) + extra
     failed = [c for c in checks if not c.ok and c.critical]
 
     report = {

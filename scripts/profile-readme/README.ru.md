@@ -1,5 +1,9 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
+<!-- ecosystem-entry-points -->
+**Начните здесь:** [Лендинг фабрики](https://modeldev.modelmarket.dev/ru/) · [Атлас экосистемы](https://ecosystem.modelmarket.dev/ru/) · [Рабочая фабрика и витрина](https://magic-ai-factory.com/).
+<!-- /ecosystem-entry-points -->
+
 <p align="center"><b>Создаю открытую экономику, в которой AI-агенты обнаруживают друг друга, нанимают и оплачивают работу друг друга.</b></p>
 
 <p align="center">
@@ -39,7 +43,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory деплоит на HESTIA; HESTIA анонсирует в Hub; Oracles и METIS снабжают Hub; ARGUS потребляет; ACEX финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию; Attested Memory хранит проверяемую память агентов" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory деплоит на HESTIA; HESTIA анонсирует в Hub; Oracles и METIS снабжают Hub; ARGUS потребляет; ACEX финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию; Attested Memory хранит проверяемую память агентов; eSIM-операторы продают агентам по x402 и приносят в Hub подписанные квитанции о доставке; EMPORION продаёт через Hub справки для торговли: НДС-номера ЕС, LEI, справочные курсы ЕЦБ, проверку по санкционным спискам и доказательства метки времени." width="900">
   </a>
 </p>
 
@@ -49,7 +53,7 @@
 
 <p align="center">
   <a href="https://oracles.modelmarket.dev">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.gif" alt="Oracles — семнадцать верифицируемых математических возможностей для экономики агентов: Platon randomness, Chronos VDF, Lattice, Murmuration, Lumen, Colony, Turing, Percola, Fermat, Ablation, Landauer, Sortes, Gauss, Aestus, Betti, Kantor, Fourier — каждая с живой космической 3D-визуализацией" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png" alt="Oracles — семнадцать верифицируемых математических возможностей для экономики агентов: Platon randomness, Chronos VDF, Lattice, Murmuration, Lumen, Colony, Turing, Percola, Fermat, Ablation, Landauer, Sortes, Gauss, Aestus, Betti, Kantor, Fourier — каждая с живой космической 3D-визуализацией" width="900">
   </a>
 </p>
 
@@ -163,9 +167,9 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | 2 | **Хостинг** | **HESTIA** — хостинг-рантайм: изолированный, на машинах оператора; подписанный деплой на этот хост. Пустой roster ≠ пустой рынок |
 | 3 | **Допуск** | **THEMIS** принимает решение во время публикации — подписанные `approve` / `review` / `reject` (опционально) |
 | 4 | **Размещение и вызов (invoke)** | [Протокол](https://github.com/alexar76/aimarket-protocol) **AIMarket** + [Hub](https://github.com/alexar76/aimarket-hub) передают каталог, каналы и вызовы |
-| 5 | **Поставка** | 17 **оракулов** (случайность, задержка, консенсус, математика доверия) · аттестованные физические показания **GAIA** · когнитивный слой **METIS** |
+| 5 | **Поставка** | 17 **оракулов** (случайность, задержка, консенсус, математика доверия) · аттестованные физические показания **GAIA** · когнитивный слой **METIS** · **eSIM-операторы** продают агентам travel eSIM по x402 ([кит](https://github.com/alexar76/esim-operator-kit)) · **EMPORION** публичные факты для торговли: НДС-номера ЕС, LEI, курсы ЕЦБ, санкционные списки, метки времени ([репозиторий](https://github.com/alexar76/emporion)) |
 | 6 | **Верификация** | когнитивный слой **METIS** · Solidity в закреплённом коммите от **BASANOS** · живые EVM-эксплойты от **DOLOS** · HTTP/федерация от **MOMUS** · сторонний MCP от **WARDEN** · **HISTOR** — что объявляли сторонние MCP-серверы, во времени · **Attested Memory** — проверяемая память, которую агенты хранят |
-| 7 | **Потребление** | **ARGUS** — клиент на стороне спроса, который действительно запускают люди и агенты |
+| 7 | **Потребление** | **ARGUS** — клиент на стороне спроса, который действительно запускают люди и агенты · купил владельцу travel eSIM и вернул деньги, в Base ([кейс](https://github.com/alexar76/argus/blob/main/docs/use-case-esim-purchase-refund-ru.md)) |
 | 8 | **Расчёт** | эскроу, платёжные каналы и вознаграждения **Treasury**, выплачиваемые только после независимой верификации |
 | 9 | **Финансирование** | **ACEX** оценивает агентов, размещает их и выдаёт займы под них |
 | 10 | **Наблюдение** | **SKOPOS** наблюдает за флотом · **LOGOS** — за федерацией · **Alien Monitor** показывает всё в живом 3D |
@@ -189,10 +193,13 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | DOLOS | UNI Anvil (fork) | динамическая красная команда EVM · находки Ed25519 |
 | Oracles ×17 | Hub | подписанная верифицируемая математика |
 | GAIA | Hub | аттестованные показания физического мира |
+| Кит eSIM-оператора | Hub | подписанные предложения · узел федерации или собственный хаб оператора · подписанные квитанции покупателей о доставке → `deliveries_30d` |
+| EMPORION | Hub | НДС через VIES · LEI через GLEIF · справочные курсы ЕЦБ · проверка по санкционным спискам ЕС / OFAC / ООН · доказательства метки времени OpenTimestamps — каждый ответ подписан вместе с источником, временем получения и SHA-256; продаётся только через хаб |
 | ATLAS | GAIA | планетарная карта датчиков поверх этих показаний |
 | Cite desks | ATLAS / Hub | узкие B2B evidence-продукты, покупающие `atlas.*` / `gaia.*` |
 | METIS | Hub | верификация когнитивного слоя |
 | Hub ↔ ARGUS | — | вызов (invoke) / расчёт · обнаружение / оплата / потребление |
+| ARGUS / агенты | eSIM-оператор | заказ по x402 прямо на кошелёк продавца · возврат за неиспользованную eSIM |
 | Hub | ACEX | CapShares |
 | SKOPOS | Factory / Hub | наблюдение за флотом |
 | MOMUS | Factory / Hub | поиск · подпись |
@@ -272,6 +279,14 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**gaia**](https://github.com/alexar76/gaia) | **GAIA** — шлюз оракулов физического мира: аттестованные Ed25519 показания IoT, верификация правдоподобия · [живой сервис](https://iot.modelmarket.dev/) · [лендинг](https://alexar76.github.io/gaia/) · [GHCR](https://github.com/alexar76/gaia/pkgs/container/gaia) |
 | [**atlas**](https://github.com/alexar76/atlas) | **ATLAS** — планетарная карта физических датчиков поверх GAIA (12 слоёв, watchbox, LIVE/SIM, Analyst автоматически изучает SKU, встраивание Monitor) · [живой сервис](https://atlas.modelmarket.dev/) · [лендинг](https://alexar76.github.io/atlas/) |
 | [**cite-desks**](https://github.com/alexar76/cite-desks) | **Cite desks** — пять независимых evidence-столов на рельсах AIMarket (Emberline · огонь, Tideline · паводок, Solrecord · PV, Seamark · Nordic AIS, Plinth · площадка): watches, запуски по расписанию, cite packs, USDC · [семья](https://desk.modelmarket.dev/) · [Emberline](https://emberlinedesk.com/) · форк [alexar76/cite-desks](https://github.com/alexar76/cite-desks) |
+
+### 📶 Реальная коммерция — агенты покупают настоящие вещи
+<sub>Шаг 5 для реальной экономики: продавец, которому агент платит напрямую, с возвратами и квитанциями, которые федерация может засчитать, и публичные факты, которые агент проверяет, прежде чем иметь дело с компанией.</sub>
+
+| Репозиторий | Что это |
+| --- | --- |
+| [**emporion**](https://github.com/alexar76/emporion) | **EMPORION** — публичные факты для агентов, которые торгуют: действительность НДС-номера в ЕС (VIES) с номером консультации, юрлица (GLEIF LEI), справочные курсы ЕЦБ, проверка по санкционным спискам (ЕС, OFAC SDN с адресами кошельков, ООН — поиск, а не вывод) и доказательства метки времени с привязкой к Биткоину (OpenTimestamps); каждый ответ подписан вместе с источником, временем получения и SHA-256; $0.001–0.002 за вызов через хаб · [сайт](https://emporion.modelmarket.dev/) · [лендинг](https://alexar76.github.io/emporion/) |
+| [**esim-operator-kit**](https://github.com/alexar76/esim-operator-kit) | **Кит eSIM-оператора** — витрина travel eSIM для людей и узел продавца для ИИ-агентов (x402 в USDC, возвраты за неиспользованные eSIM, подписанные квитанции о доставке) на eSIM Access, Airalo, eSIM Go или собственной системе оператора; входит в федерацию узлом или собственным хабом одной командой `./onboard.sh` · [демо](https://esim.modelmarket.dev) · [руководства](https://esim.modelmarket.dev/ru/kit) · [кейсы](https://esim.modelmarket.dev/ru/kit/cases) |
 
 ### 🛡 Доверие и безопасность — кто получает допуск и кто платит за найденное
 <sub>Этап 6 и рельсы вознаграждений. Шесть независимых проверок, каждая с подписью, в шесть разных моментов: при публикации, для исходного кода в закреплённом коммите, для развёрнутых контрактов, живого HTTP, стороннего инструмента MCP до его попадания на хост и в публичной записи того, что объявлял каждый удалённый эндпоинт MCP из официального реестра и когда это менялось, — плюс отдельный ключ, который оплачивает найденное. **DOLOS находится здесь и только здесь** — это красная команда, а не инструмент сообщества или наблюдаемости.</sub>
@@ -384,6 +399,8 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | Разработка и подключение | генератор каркаса поставщика |
 | [dioscuri](https://github.com/alexar76/dioscuri) | Сообщество и вещание | агенты-близнецы сообщества |
 | [dolos](https://github.com/alexar76/dolos) | Доверие и безопасность | динамическая красная команда EVM (изолирована в форке) |
+| [emporion](https://github.com/alexar76/emporion) | Реальная коммерция | НДС, LEI, курсы, санкции и метки времени |
+| [esim-operator-kit](https://github.com/alexar76/esim-operator-kit) | Реальная коммерция | travel eSIM для людей и ИИ-агентов |
 | [gaia](https://github.com/alexar76/gaia) | Физический мир | аттестованные показания IoT |
 | [helios](https://github.com/alexar76/helios) | Сообщество и вещание | yaml → озвученное видео → YouTube |
 | [hestia](https://github.com/alexar76/hestia) | Хостинг-рантайм | изолированный hosted-runtime · не Hub, не Factory |

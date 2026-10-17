@@ -15,3 +15,5 @@ rsync -az --delete -e "ssh -i $KEY -o IdentitiesOnly=yes" \
   Dockerfile package.json package-lock.json src deploy/remote.sh "$TARGET:/opt/okx-a2mcp/"
 # One short command per ssh: long heredoc scripts have hung on this host before.
 ssh -i "$KEY" -o IdentitiesOnly=yes "$TARGET" "sh /opt/okx-a2mcp/remote.sh $TAG $PAY_TO" < /dev/null
+# Search engines that take IndexNow hear about the /tools/ pages; a refusal does not fail the deploy.
+node scripts/indexnow.mjs || echo "indexnow: not accepted this time (the deploy itself is fine)"

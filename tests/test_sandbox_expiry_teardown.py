@@ -17,6 +17,7 @@ from pathlib import Path
 from web.backend.api import sandbox as sandbox_api
 from web.backend.services import sandbox_guards as guards
 from web.backend.services import sandbox_preview_api as preview_api
+from tests.split_source import read_split
 
 
 def _sid() -> str:
@@ -203,9 +204,7 @@ def test_sweeper_events_are_visible_without_a_logging_config():
     The two sweeper events an operator needs after the fact — previews released on expiry and
     gigabytes of preview trees deleted — must therefore not be logged at INFO.
     """
-    src = (Path(__file__).resolve().parents[1] / "web" / "backend" / "api" / "sandbox.py").read_text(
-        encoding="utf-8"
-    )
+    src = read_split(Path(__file__).resolve().parents[1] / "web" / "backend" / "api" / "sandbox.py")
     for marker in ("preview(s) expired, resources released", "removed %d stale preview tree(s)"):
         i = src.index(marker)
         call = src.rindex("logger.", 0, i)

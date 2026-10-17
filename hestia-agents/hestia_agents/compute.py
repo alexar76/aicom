@@ -33,6 +33,26 @@ RECEIPT_KIND = "hestia.compute.receipt@v1"
 CROSS_METHOD = "urn:aimarket:method:hestia-cross-hearth-v1"
 
 
+# Ed25519 points of small order (orders 1, 2, 4, 8; sign bit cleared), as libsodium checks them.
+# `cryptography` (OpenSSL) accepts, under such a key, a signature valid for EVERY message, and no
+# secret exists for these keys; a key that arrives from someone else is refused if it is one. 2026-10-12.
+_ED25519_SMALL_ORDER = frozenset(bytes.fromhex(h) for h in (
+    "0000000000000000000000000000000000000000000000000000000000000000",
+    "0100000000000000000000000000000000000000000000000000000000000000",
+    "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05",
+    "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a",
+    "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+    "edffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+    "eeffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+))
+
+
+def _strict_ed25519_key(raw: bytes) -> bytes:
+    if len(raw) == 32 and (raw[:31] + bytes([raw[31] & 0x7F])) in _ED25519_SMALL_ORDER:
+        raise ValueError("small-order Ed25519 public key")
+    return raw
+
+
 class ComputeClientError(RuntimeError):
     """The call, or the check, did not produce something a buyer can rely on."""
 
@@ -74,7 +94,7 @@ def signature_valid(document: dict[str, Any], public_key_b64: str) -> bool:
     if not isinstance(signature, dict) or signature.get("algorithm") != "ed25519":
         return False
     try:
-        key = Ed25519PublicKey.from_public_bytes(base64.b64decode(public_key_b64, validate=True))
+        key = Ed25519PublicKey.from_public_bytes(_strict_ed25519_key(base64.b64decode(public_key_b64, validate=True)))
         key.verify(
             base64.b64decode(str(signature.get("value") or ""), validate=True),
             object_canonical(document).encode(),

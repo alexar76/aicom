@@ -80,7 +80,7 @@ AICOM — это **федеративная экономика автономн�
 | AIMarket Hub **UNI** | [uni.modelmarket.dev](https://uni.modelmarket.dev) | Герметичный параллельный каталог — [uni-and-live.ru.md](../uni-and-live.ru.md) |
 | Портал оракулов | [oracles.modelmarket.dev](https://oracles.modelmarket.dev) | 17 продуктов верифицируемой математики |
 | Agent Lottery | [lottery.modelmarket.dev](https://lottery.modelmarket.dev) | Канонический потребитель оракулов |
-| Демо экосистемы | [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev) | Обзор стека |
+| Демо экосистемы | [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/) | Обзор стека |
 | Alien Monitor **UNI** | [monitor-uni.modelmarket.dev/](https://monitor-uni.modelmarket.dev/) | 3D-граф пузыря · `ALIEN_MODE=universe` |
 | Alien Monitor **LIVE** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | 3D-граф живых денег · `ALIEN_MODE=real` |
 | Продакшн-метрики | [ecosystem-status API](https://magic-ai-factory.com/api/public/ecosystem-status) · [docs](../production-metrics.md) | RPS, задержка, аптайм, инциденты |
@@ -174,7 +174,7 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.rail.read@v1 | rail (Железная дорога) | fintraffic-rail-01 | Fintraffic Digitraffic поезда CC BY 4.0; только финская ж/д |
 | gaia.drought.read@v1 | drought (Засуха) | usdm-01 | U.S. Drought Monitor, недельная статистика штатов; атрибуция NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.energy.read@v1 | energy (Энергия) | em-01 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.energy.read@v1 | energy (Энергия) | em-01, plug-sim-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.reservoir.read@v1 | reservoir (Reservoirs) | usace-keys-01, usace-pine-01, usace-deni-01, usace-huds-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.atmosphere.read@v1 | atmosphere (Атмосфера) | cams-* + lat/lon покупателя | любая координата покупателя; CAMS CC BY 4.0; нужен коммерческий хостинг |
 | gaia.dart.read@v1 | dart (Буи DART) | noaa-dart-01, dart-* (все 43 активных) | все активные станции каталога NDBC; уровнемер, не предупреждение о цунами |
@@ -183,6 +183,8 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.solar.read@v1 | solar (Солнечная радиация) | solar-* + lat/lon покупателя | любая координата покупателя; возвращается координата источника NASA POWER |
 | gaia.snow.read@v1 | snow (Снежный покров) | snow-* + lat/lon покупателя в CONUS | любая координата покупателя в CONUS; возвращается точная ячейка SNODAS |
 | gaia.land_temperature.read@v1 | land_temperature (Температура суши) | lst-* + lat/lon покупателя | любая координата покупателя; возвращается ячейка Sentinel-3 SLSTR |
+| gaia.power.price.read@v1 | power_price (Цена электроэнергии) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | оптовая цена на сутки вперёд по зоне торгов (SMARD, CC BY 4.0; 15 зон); не розничный тариф |
+| gaia.imagery.read@v1 | imagery (Спутниковые снимки) | s2-l2a-01 + lat/lon покупателя (5 витринных точек) | любая координата суши; один пиксель 10–20 м последнего безоблачного снимка Sentinel-2 L2A; индексы читать вместе с классом поверхности; содержит изменённые данные Copernicus Sentinel |
 
 GAIA plumbing (не пин на карте)
 
@@ -191,6 +193,10 @@ GAIA plumbing (не пин на карте)
 | gaia.window@v1 | N readings of one device_id in one invoke |
 | gaia.verify@v1 | plausibility verdict as a sellable good |
 | gaia.fleet.status@v1 | device registry incl. pinned pubkeys — free |
+| gaia.place.resolve@v1 | place name or coordinate → one place and the reads that cover it (GeoNames, CC BY 4.0) — free |
+| gaia.power.window@v1 | cheapest window of N hours in a bidding zone's published day-ahead prices, with the prices used and their SHA-256 |
+| gaia.actuator.list@v1 | the operator's actuators: limits, relay state, pinned keys, kill switch — free |
+| gaia.actuate@v1 | switch a plug on for N s or off; $0.05, paid only for the effect its own meter measures (pay-on-verified) |
 
 Композиты ATLAS (atlas.modelmarket.dev) — платные артефакты решения.
 
@@ -212,7 +218,7 @@ GAIA plumbing (не пин на карте)
 | atlas.field.posterior@v1 | 0.08 | пространственный GP-постер текущего LIVE-снимка; интерполяция, не прогноз |
 | atlas.field.shape@v1 | 0.06 | H0-персистентность LIVE in-situ пинов; не Betti-1; не AQI |
 
-Слои карты (46): weather=Погода; air=Воздух; tide=Прилив; river=Реки; marine=Море; ghg=Парниковые газы; grid=Сеть (углерод); quake=Землетрясения; energy=Энергия; fire=Пожары; radiation=Радиация; jamming=GNSS-глушение; gnss=Целостность GNSS; traffic=Трафик (edge); events=Природные события; spacewx=Космическая погода; lightning=Молнии; alerts=Оповещения; argo=Арго-буи; geomag=Геомагнетизм; iot=IoT (edge); flood=Паводок; effis=EFFIS пожары; volcano=Вулканы; ais=AIS (открытый); tsunami=Цунами; cyclone=Тропические циклоны; adsb=ADS-B (открытый); smoke=Дым; water_quality=Качество воды; dart=Буи DART; precipitation=Осадки; radar=Статус NEXRAD; atmosphere=Атмосфера; radnet=EPA RadNet; soil=Влажность почвы; solar=Солнечная радиация; snow=Снежный покров; sea_ice=Морской лёд; land_temperature=Температура суши; aviation=Авиа METAR; road=Дорожная погода; rail=Железная дорога; drought=Засуха; reservoir=Reservoirs; uv=UV forecast
+Слои карты (49): weather=Погода; air=Воздух; tide=Прилив; river=Реки; marine=Море; ghg=Парниковые газы; grid=Сеть (углерод); quake=Землетрясения; energy=Энергия; fire=Пожары; radiation=Радиация; jamming=GNSS-глушение; gnss=Целостность GNSS; traffic=Трафик (edge); events=Природные события; spacewx=Космическая погода; lightning=Молнии; alerts=Оповещения; argo=Арго-буи; geomag=Геомагнетизм; iot=IoT (edge); flood=Паводок; effis=EFFIS пожары; volcano=Вулканы; ais=AIS (открытый); tsunami=Цунами; cyclone=Тропические циклоны; adsb=ADS-B (открытый); smoke=Дым; water_quality=Качество воды; dart=Буи DART; precipitation=Осадки; radar=Статус NEXRAD; atmosphere=Атмосфера; radnet=EPA RadNet; soil=Влажность почвы; solar=Солнечная радиация; snow=Снежный покров; sea_ice=Морской лёд; land_temperature=Температура суши; aviation=Авиа METAR; road=Дорожная погода; rail=Железная дорога; drought=Засуха; reservoir=Reservoirs; uv=UV forecast; power_price=Цена электроэнергии; imagery=Спутниковые снимки; actuator=Исполнительные устройства
 
 <!-- END GENERATED physical-capabilities -->
 
@@ -256,7 +262,7 @@ Analyst учит слои из каталога в момент запроса. 
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (51 components).
+Run: python3 scripts/sync_knowledge_base.py --write (53 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -287,8 +293,10 @@ Run: python3 scripts/sync_knowledge_base.py --write (51 components).
 - create-aimarket-agent: Автономный CLI, создающий протестированных поставщиков возможностей AIMarket Protocol v2 с манифестами, подписью Ed25519 и Docker-упаковкой. · https://alexar76.github.io/create-aimarket-agent/
 - dioscuri: DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS). · https://alexar76.github.io/dioscuri/
 - dolos: DOLOS — динамическая red-team по EVM для пузыря UNI: форкает Anvil пузыря и бросает реальные эксплойт-транзакции в задеплоенные контракты, доказывая, какие изъяны реальны, а какие — шум статики; подписанные Ed25519 находки; только на песочной цепочке гоняет полный цикл атака->фикс->forge-test->редеплой->повторная атака. Никогда не трогает цепь, которую нельзя выбросить; находка mainnet — рекомендательная. · https://dolos.modelmarket.dev/
+- emporion: Public-record facts for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), ECB reference rates, sanctions-list lookups (OFAC SDN, EU, UN) and Bitcoin-anchored timestamps (OpenTimestamps). Each answer is signed with its source, fetch time and SHA-256. The hub sells it at https://modelmarket.dev/providers/emporion. · https://emporion.modelmarket.dev · port 9351
 - escrow-signer: HORKOS держит единственный ключ, авторизованный в AIMarketEscrow.authorizedHubs, чтобы его не держал Hub — один разрешённый селектор, один эскроу, одна сеть, а полномочие на сумму даёт EIP-712 подпись покупателя. · https://alexar76.github.io/escrow-signer/
-- gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, …) plus window/verify. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
+- esim-kit (repo esim-operator-kit): Онбординг любого оператора eSIM, включая тех, кто уже продаёт. Они предлагают travel eSIM людям и ИИ-агентам на рельсах AIMarket и получают оплату так, как уже её принимают. Витрина на 5 языках. Демо: esim.modelmarket.dev. · https://esim.modelmarket.dev/
+- gaia: Physical oracle: attested gaia.*.read@v1 SKUs (weather, fire/FIRMS, lightning/GLM, flood/NWS CAP, EFFIS, volcano, EONET, SWPC, GNSS jamming, day-ahead power prices from SMARD, Sentinel-2 imagery at any land point, …) plus window/verify. gaia.place.resolve@v1 (free) turns any place name into coordinates and says which reads cover it; gaia.power.window@v1 finds the cheapest hours to run a load; gaia.actuate@v1 switches an operator's metering plug and is paid only for the effect its meter measures. LIVE only with provenance source; Hub search then invoke — not oracle_call. · https://iot.modelmarket.dev · port 9320
 - helios: HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve. · https://alexar76.github.io/helios/
 - hephaestus: The forge — compose capability chains from the live signed Hub catalogue, estimate cost and latency BEFORE spending, run pipelines through the factory executor, and keep a signed bill of materials with hop-level blame. Studio UI is hub-served; core library is framework-free. · https://modelmarket.dev/studio
 - hestia: HESTIA — хостинг-рантайм: изолированный, для провайдеров способностей AIMarket на машинах оператора. Не каталог Hub, не доска работ, не Factory. Агенты появляются только после подписанного деплоя на этот хост. · https://hestia.modelmarket.dev · port 9480

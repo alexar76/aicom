@@ -31,6 +31,7 @@ from pathlib import Path
 import pytest
 
 from web.backend.services.duplicate_module_check import find_missing_instance_attributes
+from tests.split_source import read_split
 
 
 def _tree(root: Path, files: dict[str, str]) -> Path:
@@ -246,7 +247,7 @@ def test_it_is_wired_where_it_can_act():
     head = qa[: qa.index("# Deletions next")]
     assert '"missing_attribute"' in head, "it never reaches the round as a blocking defect"
 
-    dev = (root / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(root / "agents" / "dev.py")
     assert "find_missing_instance_attributes" in dev, (
         "the developer's own coherence check cannot see it, so a round may introduce one for free"
     )
@@ -271,9 +272,7 @@ def test_import_time_defects_all_weigh_the_same():
     ImportError at boot, exactly as fatal as a missing module or two models on one table, and it was
     the only member of that family weighted 1 instead of 10.
     """
-    src = (
-        Path(__file__).resolve().parents[1] / "agents" / "dev.py"
-    ).read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     score = src[src.index("def _tree_defect_score(") :]
     score = score[: score.index("def _revert_out_of_scope_writes")]
     for fatal in (

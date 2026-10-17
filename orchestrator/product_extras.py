@@ -34,10 +34,13 @@ PRODUCT_EXTRA_KEYS: tuple[str, ...] = (
     "max_quality_loops_override",
     "owner_email",
     "funnel_lead_source",
+    "visitor_submission",  # public submission: never in public galleries (core.product_origin)
     "funnel_referral",
     "operator_locked",
     "operator_locked_at",
     "metis_gate",  # advisory Metis confidence-gate envelope (opt-in; see llm/metis_gate.py)
+    "external_diagnostics_allowed",  # False disables source sharing for this product.
+    "procurement_status",  # Summary only; durable orders/holds live in procurement.sqlite3.
     # Severity-weighted QA defect total of the last ACCEPTED round, and how many rounds
     # have been thrown away. Both must survive a cycle or the round-regression guard has
     # nothing to compare against and silently degrades to accepting everything.

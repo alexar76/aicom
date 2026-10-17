@@ -59,12 +59,16 @@ for (const c of CASES) {
   });
 }
 
-test('the server declares the document language before any script of ours runs', async ({ request }) => {
-  // The root layout is static and says lang="en"; the page sets it while the HTML is parsed.
+test('the server declares the content language before hydration', async ({ request }) => {
+  // The factory declares its content language in HTML; /docs keeps its legacy parser script.
   for (const [header, want] of [['ru-RU,ru;q=0.9', 'ru'], ['de-DE,fr;q=0.8', 'fr'], ['en-US', 'en']]) {
     for (const path of ['/', '/docs']) {
       const html = await (await request.get(path, { headers: { 'accept-language': header } })).text();
-      expect(html, `${path} for ${header}`).toContain(`document.documentElement.lang="${want}"`);
+      if (path === '/') {
+        expect(html, `factory for ${header}`).toContain(`class="factory-page" lang="${want}"`);
+      } else {
+        expect(html, `docs for ${header}`).toContain(`document.documentElement.lang="${want}"`);
+      }
     }
   }
 });

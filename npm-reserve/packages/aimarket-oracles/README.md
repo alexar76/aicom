@@ -8,5 +8,5 @@ Verifiable oracles namespace (Sortes, Platon, …)
 pip install aimarket-hub
 ```
 
-- Ecosystem: https://modeldev.modelmarket.dev
+- Ecosystem: https://ecosystem.modelmarket.dev/
 - GitHub: https://github.com/alexar76/aicom

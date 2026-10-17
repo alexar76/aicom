@@ -1,4 +1,5 @@
 'use client';
+import { adminLoginPath } from '@/lib/adminReturnPath';
 
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -151,7 +152,8 @@ function AdminPageInner() {
 
   const redirectToLogin = useCallback(() => {
     localStorage.removeItem('admin_token');
-    window.location.replace('/admin/login');
+    const returnTo = window.location.pathname + window.location.search + window.location.hash;
+    window.location.replace(adminLoginPath(returnTo));
   }, []);
 
   const loadAdminChrome = useCallback(async () => {
@@ -190,6 +192,8 @@ function AdminPageInner() {
       } catch (err) {
         if (cancelled) return;
         if (err instanceof ApiRequestError && (err.status === 401 || err.status === 403)) {
+          // Do not mount a tab and consume its one-shot idea handoff before login.
+          cancelled = true;
           redirectToLogin();
           return;
         }
@@ -382,7 +386,7 @@ function AdminPageInner() {
           />
         ) : null}
 
-        {renderTab()}
+        {!sessionVerifying && renderTab()}
       </main>
     </div>
   );

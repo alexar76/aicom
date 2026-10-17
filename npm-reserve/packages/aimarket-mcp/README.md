@@ -8,5 +8,5 @@ AIMarket MCP tools namespace
 npm install -g @alexar76/argus3
 ```
 
-- Ecosystem: https://modeldev.modelmarket.dev
+- Ecosystem: https://ecosystem.modelmarket.dev/
 - GitHub: https://github.com/alexar76/aicom

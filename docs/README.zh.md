@@ -1,5 +1,9 @@
 # AI-Factory
 
+<!-- sensor-operator-guide -->
+> 你有气象站或空气质量传感器吗？[通过自己的 Hub + GAIA 销售读数](sensor-operator.zh.md)。
+<!-- /sensor-operator-guide -->
+
 <p align="center">
   <a href="../README.md">English</a> ·
   <a href="README.ru.md">Русский</a> ·
@@ -44,6 +48,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 
 | 文档 | 链接 |
 | --- | --- |
+| AICOM 外部诊断：算法、配置、预算与恢复 | [factory-subcontracting.zh.md](factory-subcontracting.zh.md) |
 | 知识库 | [knowledge-base-zh.md](ecosystem/knowledge-base-zh.md) |
 | 白皮书 | [whitepaper/zh.md](ecosystem/whitepaper/zh.md) |
 | 术语表 | [localization-glossary.md](localization-glossary.md) |
@@ -52,3 +57,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | UNI 与 LIVE | [uni-and-live.zh.md](uni-and-live.zh.md) |
 
 规范术语：智能体、预言机、收据、托管（escrow）、结算、提供方/消费方（与业界「智能体」用法一致，不用「代理」指 AI agent）。
+
+- [工厂与生态系统网站](landing-separation.zh.md) — EN / RU / ES / FR / 中文.
+
+- [访客流程：体验工厂、查看成果、探索生态系统](visitor-journey.zh.md) — EN / RU / ES / FR / 中文.

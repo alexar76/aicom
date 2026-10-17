@@ -26,6 +26,7 @@ from __future__ import annotations
 import pytest
 
 from agents.dev_delivery import DeliveryMode, validate_saved_files
+from tests.split_source import read_split
 
 FOCUSED_BACKEND = [
     "backend/app/services/atlas_client.py",
@@ -99,8 +100,10 @@ def test_the_developer_passes_the_tree():
     """Structural: the fix is inert unless the call site supplies what is on disk."""
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
-    assert "validate_saved_files(\n                    mode, saved_relative_paths, existing_on_disk\n                )" in src, (
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
+    # Whitespace-insensitive: the call's indentation is not the contract, its arguments are.
+    flat = " ".join(src.split())
+    assert "validate_saved_files( mode, saved_relative_paths, existing_on_disk )" in flat, (
         "the developer still validates against its own write list only"
     )
     assert "iter_product_files(code_root" in src
@@ -118,7 +121,7 @@ def test_a_repair_retry_does_not_order_a_rebuild():
     """
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     # Slice the whole retry-note region: anchoring on the message text itself lands inside the
     # comment that explains the fix, which puts the branch above it outside the window.
     start = src.index("correction_note = \"\"")

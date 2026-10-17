@@ -20,3 +20,7 @@ def test_spam_name_blocked_for_marketplace_gate():
 
 def test_collision_style_numeric_suffix_not_spam():
     assert is_placeholder_product_name("EchoScribe (472)") is False
+
+
+def test_display_name_has_no_markdown_emphasis():
+    assert sanitize_product_display_name("**KLEROTERION** desk") == "KLEROTERION desk"

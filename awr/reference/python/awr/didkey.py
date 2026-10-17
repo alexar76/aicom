@@ -196,10 +196,52 @@ def public_key_from_bytes(public_key_bytes: bytes) -> Ed25519PublicKey:
     return Ed25519PublicKey.from_public_bytes(public_key_bytes)
 
 
+_P = 2**255 - 19
+_L = 2**252 + 27742317777372353535851937790883648493
+
+# Points of order dividing 8 (section 6.3.1 rule 3), sign bit cleared: the identity and the seven
+# other torsion points, canonical encodings plus the two non-canonical ones (y = p, p + 1).
+_SMALL_ORDER = frozenset(bytes.fromhex(h) for h in (
+    "0000000000000000000000000000000000000000000000000000000000000000",
+    "0100000000000000000000000000000000000000000000000000000000000000",
+    "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05",
+    "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a",
+    "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+    "edffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+    "eeffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+))
+
+
+def _y_canonical(point: bytes) -> bool:
+    """Section 6.3.1 rule 1: the y-coordinate (top bit cleared) is strictly below p."""
+    return int.from_bytes(point[:31] + bytes([point[31] & 0x7F]), "little") < _P
+
+
+def _small_order(point: bytes) -> bool:
+    return (point[:31] + bytes([point[31] & 0x7F])) in _SMALL_ORDER
+
+
 def verify_signature(public_key_bytes: bytes, signature: bytes, message: bytes) -> bool:
-    """Pure Ed25519 verification (RFC 8032)."""
+    """Ed25519 verification under the one rule section 6.3.1 pins.
+
+    The library alone is RFC 8032's permissive reading: `cryptography` (OpenSSL) accepts,
+    under the identity key, a signature valid for every message — the forgery section 6.3.1
+    describes, which turns any small-order `did:key` into an `L2` issuer nobody holds a key for.
+    Rules 1-3 are checked here, rule 4 (the cofactorless equation; RFC 8032 equality on the
+    canonical encoding) by the library. Until 2026-10-12 this reference skipped rules 1-3 and
+    the Rust reference (`verify_strict`) did not, which is the divergence the spec records.
+    """
+    if len(public_key_bytes) != 32 or len(signature) != 64:
+        return False
+    r, s = signature[:32], signature[32:]
+    if not (_y_canonical(public_key_bytes) and _y_canonical(r)):           # rule 1
+        return False
+    if int.from_bytes(s, "little") >= _L:                                  # rule 2
+        return False
+    if _small_order(public_key_bytes) or _small_order(r):                  # rule 3
+        return False
     try:
-        public_key_from_bytes(public_key_bytes).verify(signature, message)
+        public_key_from_bytes(public_key_bytes).verify(signature, message)  # rule 4
     except (InvalidSignature, ValueError):
         return False
     return True

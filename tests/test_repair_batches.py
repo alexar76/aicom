@@ -28,6 +28,7 @@ from core.repair_batches import (
     batching_enabled,
     plan_batches,
 )
+from tests.split_source import read_split
 
 BOOT_BLOCKER = {
     "severity": "critical",
@@ -165,7 +166,7 @@ def test_the_runner_skips_a_failed_batch_instead_of_losing_the_round():
     """Structural: one transient non-JSON response used to cost a twenty-minute round."""
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     runner = src[src.index("async def _generate_repair_batches") :]
     runner = runner[: runner.index("\n    async def execute(")]
     assert "continue" in runner, "a failed batch aborts the round"
@@ -191,7 +192,7 @@ def test_the_cap_is_enforced_not_merely_requested():
     """Structural: the whole point of this module is limits the instruction cannot outrun."""
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     runner = src[src.index("async def _generate_repair_batches") :]
     runner = runner[: runner.index("\n    async def execute(")]
     assert "unscoped_batch_max_files()" in runner, "the cap is never applied at accept time"
@@ -205,7 +206,7 @@ def test_a_scoped_batch_keeps_all_its_files():
     """Capping a scoped batch by count would drop a legitimate fix that spans its own files."""
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     assert "limit = None if (batch.get(\"files\") or []) else unscoped_batch_max_files()" in src
 
 
@@ -220,7 +221,7 @@ def test_a_bad_batch_is_dropped_before_it_joins_the_round():
     """
     from pathlib import Path
 
-    src = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     runner = src[src.index("async def _generate_repair_batches") :]
     runner = runner[: runner.index("\n    async def execute(")]
     assert "undefined_names_in_source" in runner, "a batch joins the round unchecked"

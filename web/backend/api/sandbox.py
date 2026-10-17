@@ -41,20 +41,6 @@ from web.backend.services.sandbox_proxy_headers import (
     sandbox_proxy_upstream_url,
 )
 
-_GIT_REF_RE = re.compile(r'^[a-zA-Z0-9][a-zA-Z0-9._/@+-]*$')
-
-
-def _validate_git_ref_name(value: str, label: str = "ref") -> str:
-    """Reject git CLI argument injection: no leading ``-``, whitelist chars only."""
-    v = (value or "").strip()
-    if not v:
-        raise HTTPException(status_code=400, detail=f"git {label} is required")
-    if v.startswith("-"):
-        raise HTTPException(status_code=400, detail=f"git {label} must not start with '-'")
-    if not _GIT_REF_RE.match(v):
-        raise HTTPException(status_code=400, detail=f"git {label} contains invalid characters: {v!r}")
-    return v
-
 
 from web.backend.services.url_safety import validate_git_remote_url
 
@@ -106,6 +92,56 @@ from web.backend.services.sandbox_static_rewrite import (
     rewrite_upstream_proxy_body,
     sandbox_public_url,
 )
+from .sandbox_parts.registry import (  # noqa: F401 - re-exported
+    _get_product_code_dir,
+    _lookup_sandbox,
+    _prune_expired_and_teardown,
+    _reap_dead_previews,
+    _reap_preview_resources_bg,
+    _sandbox_workdir,
+    _save_registry,
+    _sweep_interval_s,
+    _sweeper_loop,
+    _teardown_sandbox_resources,
+    _tree_bytes,
+    remove_sandbox_workdir,
+    sweep_once,
+)
+from .sandbox_parts.starting import (  # noqa: F401 - re-exported
+    _background_full_bootstrap,
+    _build_sandbox_start_response,
+    _client_ip,
+    _degraded_preview_badge_html,
+    _enforce_storefront_start_rate_limit,
+    _ensure_fastapi_preview,
+    _ensure_sandbox_capacity,
+    _evict_oldest_running_sandbox,
+    _finalize_sandbox_proxy_response,
+    _HOP_BY_HOP_PROXY_RESP,
+    _run_full_sandbox_bootstrap,
+    _should_try_fastapi_preview,
+    _start_sandbox_for_product,
+    _storefront_allows_sandbox_preview,
+    _try_docker_run,
+)
+from .sandbox_parts.files import (  # noqa: F401 - re-exported
+    _attach_sandbox_preview_cookie,
+    _binary_media_type_from_magic,
+    _bytes_look_like_html,
+    _content_matches_declared_type,
+    _MAGIC_BYTE_TYPES,
+    _proxy_request_with_slash_fallback,
+    _sniff_head_bytes,
+)
+from .sandbox_parts.git import (  # noqa: F401 - re-exported
+    _git_init_blocking,
+    _git_push_blocking,
+    _GIT_REF_RE,
+    _git_status_blocking,
+    _product_has_code,
+    _product_has_html_files,
+    _validate_git_ref_name,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -125,17 +161,6 @@ _SANDBOX_ID_RE = re.compile(r"^sandbox-[0-9a-f]{32}$")
 _WORKDIR_GRACE_S = 3600.0
 _sweeper_lock = threading.Lock()
 _sweeper_thread: threading.Thread | None = None
-
-
-def _save_registry() -> None:
-    try:
-        _SANDBOX_REGISTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
-        tmp = _SANDBOX_REGISTRY_PATH.with_suffix(".json.tmp")
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump(_active_sandboxes, f)
-        tmp.replace(_SANDBOX_REGISTRY_PATH)
-    except Exception as e:
-        logger.warning("sandbox registry save failed: %s", e)
 
 
 def _load_registry() -> None:
@@ -178,15 +203,6 @@ def _load_registry() -> None:
 _load_registry()
 
 
-def _reap_preview_resources_bg() -> None:
-    try:
-        from web.backend.services.sandbox_docker import reap_stale_preview_resources
-
-        reap_stale_preview_resources()
-    except Exception as exc:
-        log_suppressed(logger, "sandbox preview GC", exc_info=exc)
-
-
 def _maybe_gc_preview_resources() -> None:
     """Sweep leftover DinD preview containers/volumes without blocking start()."""
     global _preview_gc_mono
@@ -199,118 +215,6 @@ def _maybe_gc_preview_resources() -> None:
         name="sandbox-preview-gc",
         daemon=True,
     ).start()
-
-
-def _sandbox_workdir(product_id: str | None, sandbox_id: str) -> Path | None:
-    """``<code_dir>/.aicom_sandbox/<sid>`` — one sandbox's preview venv + SPA overlay."""
-    if not product_id:
-        return None
-    code_dir = _get_product_code_dir(str(product_id))
-    if code_dir is None:
-        return None
-    sid = re.sub(r"[^\w-]", "_", (sandbox_id or "sandbox")[:48])
-    if not sid or sid.startswith("."):
-        return None
-    return code_dir / ".aicom_sandbox" / sid
-
-
-def _tree_bytes(path: Path) -> int:
-    total = 0
-    for root, _dirs, files in os.walk(path):
-        for fn in files:
-            try:
-                total += os.lstat(os.path.join(root, fn)).st_size
-            except OSError:
-                continue
-    return total
-
-
-def remove_sandbox_workdir(product_id: str | None, sandbox_id: str) -> int:
-    """Delete a sandbox's preview tree; return bytes freed (0 when there was nothing)."""
-    target = _sandbox_workdir(product_id, sandbox_id)
-    if target is None or target.is_symlink() or not target.is_dir():
-        return 0
-    freed = _tree_bytes(target)
-    shutil.rmtree(target, ignore_errors=True)
-    return freed
-
-
-def _teardown_sandbox_resources(sandbox_id: str, entry: dict[str, Any] | None = None) -> None:
-    """Release everything a preview holds — process, containers, disk.
-
-    Admin stop, cap eviction, TTL expiry and the dead-process reaper all go through here, so
-    the four paths cannot drift apart again (expiry used to release nothing at all).
-    """
-    entry = entry if entry is not None else (_active_sandboxes.get(sandbox_id) or {})
-    try:
-        stop_preview_for_sandbox(sandbox_id)  # uvicorn child + its ephemeral Postgres
-    except Exception as exc:
-        log_suppressed(logger, "sandbox teardown: preview", exc_info=exc)
-    try:
-        stop_compose_for_sandbox(sandbox_id)
-    except Exception as exc:
-        log_suppressed(logger, "sandbox teardown: compose", exc_info=exc)
-    if entry.get("docker_mode"):
-        for verb in ("stop", "rm"):
-            try:
-                subprocess.run(
-                    ["docker", verb, sandbox_id], capture_output=True, text=True, timeout=15
-                )
-            except (subprocess.TimeoutExpired, OSError) as exc:
-                log_suppressed(logger, f"sandbox teardown: docker {verb}", exc_info=exc)
-    freed = 0
-    try:
-        freed = remove_sandbox_workdir(entry.get("product_id"), sandbox_id)
-    except Exception as exc:
-        log_suppressed(logger, "sandbox teardown: workdir", exc_info=exc)
-    if freed:
-        logger.info("sandbox %s: removed preview tree (%.0f MB)", sandbox_id[:24], freed / 2**20)
-
-
-def _prune_expired_and_teardown() -> int:
-    """Drop expired rows (under the registry lock) and release what they held (outside it)."""
-    from web.backend.services.sandbox_guards import pop_expired_sandboxes
-
-    with _registry_lock:
-        before = len(_active_sandboxes)
-        expired = pop_expired_sandboxes(_active_sandboxes)
-        if len(_active_sandboxes) != before:
-            _save_registry()
-    for sid, entry in expired:
-        try:
-            _teardown_sandbox_resources(sid, entry)
-        except Exception as exc:
-            log_suppressed(logger, "sandbox expiry teardown", exc_info=exc)
-    if expired:
-        logger.warning(
-            "sandbox registry: %d preview(s) expired, resources released", len(expired)
-        )
-    return len(expired)
-
-
-def _reap_dead_previews() -> int:
-    """Rows whose uvicorn exited while the app kept running: close them, release resources."""
-    dead = exited_preview_sandboxes()
-    if not dead:
-        return 0
-    rows: list[tuple[str, dict[str, Any]]] = []
-    with _registry_lock:
-        for sid in dead:
-            entry = _active_sandboxes.get(sid)
-            if isinstance(entry, dict) and entry.get("status") == "running":
-                entry["status"] = "stopped"
-                entry["stopped_at"] = time.time()
-                entry["stopped_reason"] = "preview_exited"
-            rows.append((sid, dict(entry) if isinstance(entry, dict) else {}))
-        _save_registry()
-    for sid, entry in rows:
-        _teardown_sandbox_resources(sid, entry)
-    logger.warning(
-        "sandbox: %d preview process(es) exited on their own, rows closed: %s",
-        len(rows),
-        ", ".join(sid[:24] for sid, _ in rows),
-    )
-    return len(rows)
 
 
 def _sweep_stale_workdirs(*, grace_s: float = _WORKDIR_GRACE_S, now: float | None = None) -> tuple[int, int]:
@@ -351,39 +255,6 @@ def _sweep_stale_workdirs(*, grace_s: float = _WORKDIR_GRACE_S, now: float | Non
     return removed, freed
 
 
-def sweep_once() -> dict[str, int]:
-    """One maintenance pass: stopped rows, expired rows, exited processes, orphaned disk, DinD."""
-    with _registry_lock:
-        stale = [
-            (sid, dict(e))
-            for sid, e in _active_sandboxes.items()
-            if isinstance(e, dict) and e.get("status") != "running"
-        ]
-    for sid, entry in stale:  # boot orphans: their Postgres / venv are still there
-        _teardown_sandbox_resources(sid, entry)
-    result = {"expired": _prune_expired_and_teardown(), "exited": _reap_dead_previews()}
-    result["workdirs"], _freed = _sweep_stale_workdirs()
-    _maybe_gc_preview_resources()
-    return result
-
-
-def _sweep_interval_s() -> float:
-    raw = (os.environ.get("AIFACTORY_SANDBOX_SWEEP_INTERVAL_S") or "60").strip()
-    try:
-        return max(0.0, float(raw))
-    except ValueError:
-        return 60.0
-
-
-def _sweeper_loop(interval_s: float) -> None:
-    while True:
-        try:
-            sweep_once()
-        except Exception as exc:
-            log_suppressed(logger, "sandbox sweeper", exc_info=exc)
-        time.sleep(interval_s)
-
-
 def start_expiry_sweeper() -> bool:
     """Start the background sweeper once per process (``AIFACTORY_SANDBOX_SWEEP_INTERVAL_S=0`` disables)."""
     global _sweeper_thread
@@ -400,546 +271,9 @@ def start_expiry_sweeper() -> bool:
     return True
 
 
-def _lookup_sandbox(sandbox_id: str) -> Optional[dict]:
-    """Return sandbox dict, reloading from disk on cache miss (multi-worker safety)."""
-    sb = _active_sandboxes.get(sandbox_id)
-    if sb is not None:
-        return sb
-    _load_registry()
-    return _active_sandboxes.get(sandbox_id)
-
-
-def _get_product_code_dir(product_id: str) -> Optional[Path]:
-    """Get the code directory for a product, if it exists."""
-    root = resolve_product_code_dir(product_id)
-    return root if root.exists() else None
-
-
-def _should_try_fastapi_preview(product_code_dir: Path, compose_ok: bool) -> bool:
-    """Use uvicorn preview for FastAPI repos when compose is unavailable or failed.
-
-    When a built SPA exists, FastAPI can serve UI + API on one origin — prefer that
-    over a compose ``web`` container that cannot proxy ``/api/v1``.
-    """
-    # Operator kill-switch first: this decides whether UNTRUSTED generated code gets
-    # pip-installed and imported in this container at all (docs/sandbox-trust-model.md).
-    if not sandbox_preview_enabled():
-        return False
-    if spa_dist_index(product_code_dir) and detect_fastapi_backend(product_code_dir):
-        return True
-    if compose_ok:
-        return False
-    if not detect_fastapi_backend(product_code_dir):
-        return False
-    # NOT gated on AIFACTORY_SANDBOX_PREVIEW_API: that flag gates the /api/sandbox/backend
-    # PROXY route (line ~1362), not whether uvicorn starts. The dead `if
-    # preview_api_enabled(): return True` that used to sit here read as a gate and was
-    # not one -- both branches returned True. Use AIFACTORY_SANDBOX_PREVIEW_ENABLED=0
-    # above to actually turn previews off.
-    return True
-
-
-def _ensure_fastapi_preview(sandbox_id: str, entry: dict, product_code_dir: Path) -> bool:
-    """Start loopback uvicorn if missing; mutates registry entry. Returns True when listening."""
-    if entry.get("backend_preview_port"):
-        return True
-    bp, uv_proc, pst = start_fastapi_preview(sandbox_id=sandbox_id, code_dir=product_code_dir)
-    entry["backend_preview_port"] = bp
-    entry["preview_api_status"] = pst
-    if uv_proc:
-        register_preview_proc(sandbox_id, uv_proc)
-    if bp:
-        _active_sandboxes[sandbox_id] = entry
-        _save_registry()
-    return bp is not None
-
-
-_HOP_BY_HOP_PROXY_RESP = frozenset(
-    {
-        "connection",
-        "keep-alive",
-        "proxy-authenticate",
-        "proxy-authorization",
-        "te",
-        "trailers",
-        "upgrade",
-        "transfer-encoding",
-    }
-)
-
-
-def _finalize_sandbox_proxy_response(
-    sandbox_id: str,
-    upstream: httpx.Response,
-    *,
-    loopback_port: int,
-    path_prefix: str,
-    proxy_kind: str,
-    inject_backend_fetch_shim: bool,
-    request: Request | None = None,
-) -> Response:
-    """
-    Rewrite Location / HTML / CSS / JS from loopback upstream so remote storefront viewers
-    stay on the factory origin (fixes broken ``localhost`` links in Docker Compose / uvicorn previews).
-    """
-    out_headers = {
-        k: v for k, v in upstream.headers.items() if k.lower() not in _HOP_BY_HOP_PROXY_RESP
-    }
-    loc = out_headers.get("location")
-    if loc:
-        new_loc = rewrite_loopback_location_header(loc, loopback_port, path_prefix)
-        if new_loc != loc:
-            out_headers["location"] = new_loc
-
-    ct = upstream.headers.get("content-type")
-    body = upstream.content
-    sb = _lookup_sandbox(sandbox_id) or {}
-    new_body, is_html = rewrite_upstream_proxy_body(
-        body,
-        ct,
-        sandbox_id=sandbox_id,
-        proxy_kind=proxy_kind,
-        inject_backend_fetch_shim=inject_backend_fetch_shim,
-        public_origin=public_origin_from_request(request),
-        preview_token=sb.get("preview_token"),
-    )
-    if new_body != body:
-        for hk in list(out_headers.keys()):
-            if hk.lower() in ("content-length", "content-encoding"):
-                del out_headers[hk]
-
-    headers_final = dict(out_headers)
-    if is_html:
-        headers_final["Content-Security-Policy"] = SANDBOX_HTML_CSP
-
-    return Response(
-        content=new_body,
-        status_code=upstream.status_code,
-        headers=headers_final,
-        media_type=upstream.headers.get("content-type"),
-    )
-
-
-def _try_docker_run(sandbox_id: str, product_id: str, port: int) -> bool:
-    """Try to start a real Docker container for the sandbox."""
-    product_code_dir = _get_product_code_dir(product_id)
-    if not product_code_dir:
-        return False
-    
-    try:
-        from web.backend.services.sandbox_docker import docker_cli_env
-
-        # Use python:3.12-slim as base for sandbox, mount code
-        base = hardened_docker_run_args(
-            name=sandbox_id,
-            network="none",
-            memory="256m",
-            cpus="0.5",
-            workdir="/app/product",
-            volume_mount=f"{product_code_dir}:/app/product:ro",
-            publish_port=port,
-            read_only_root=True,
-            pids_limit=64,
-        )
-        cmd = append_image_and_command(
-            base,
-            "python:3.12-slim",
-            [
-                "python3",
-                "-m",
-                "http.server",
-                str(port),
-                "--bind",
-                "0.0.0.0",
-                "--directory",
-                "/app/product",
-            ],
-        )
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=30,
-            env=docker_cli_env(),
-        )
-        if result.returncode == 0:
-            logger.info(f"Docker sandbox {sandbox_id} started on port {port}")
-            return True
-        else:
-            logger.warning(f"Docker sandbox start failed: {result.stderr}")
-            return False
-    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
-        logger.warning(f"Docker not available for sandbox: {e}")
-        return False
-
-
 _STOREFRONT_START_WINDOW_SEC = 3600
 _STOREFRONT_START_MAX_PER_HOUR = int(os.environ.get("AIFACTORY_SANDBOX_STOREFRONT_STARTS_PER_HOUR", "60"))
 _storefront_start_attempts: dict[str, deque[float]] = defaultdict(deque)
-
-
-def _client_ip(request: Request) -> str:
-    # Canonical resolver: the RIGHTMOST non-trusted X-Forwarded-For entry.
-    # The inline parser this replaces trusted the LEFTMOST value, which the client
-    # controls -- nginx `proxy_add_x_forwarded_for` APPENDS what it saw, so a caller
-    # that sends its own X-Forwarded-For lands leftmost and can rotate a spoofed IP
-    # past this per-IP limit. See web/backend/http/client_ip.py.
-    from web.backend.http.client_ip import client_ip as _resolve
-
-    return _resolve(request)
-
-
-def _enforce_storefront_start_rate_limit(ip: str) -> None:
-    now = time.time()
-    window = _storefront_start_attempts[ip]
-    while window and now - window[0] > _STOREFRONT_START_WINDOW_SEC:
-        window.popleft()
-    if len(window) >= _STOREFRONT_START_MAX_PER_HOUR:
-        raise HTTPException(status_code=429, detail="Too many sandbox previews. Try again later.")
-    window.append(now)
-
-
-def _storefront_allows_sandbox_preview(product_id: str) -> bool:
-    from web.backend.api.products import _get_products_map, _public_storefront_grid_accepts
-
-    product = _get_products_map().get(product_id)
-    if not product:
-        return False
-    if not _public_storefront_grid_accepts(product_id, product):
-        return False
-    return _product_has_code(product_id)
-
-
-def _degraded_preview_badge_html(sb_state: dict[str, Any]) -> str:
-    if sb_state.get("preview_tier") != "degraded":
-        return ""
-    from web.backend.services.sandbox_guards import degraded_badge_message
-
-    msg = degraded_badge_message(sb_state.get("degraded_reasons"))
-    return (
-        '<span style="margin-left:0.75rem;font-size:0.7rem;padding:0.2rem 0.55rem;'
-        'border-radius:6px;background:rgba(234,179,8,0.15);color:#facc15;'
-        'border:1px solid rgba(234,179,8,0.35)" title="'
-        + msg.replace('"', "&quot;")
-        + '">⚠ '
-        + msg
-        + "</span>"
-    )
-
-
-def _build_sandbox_start_response(
-    sandbox_id: str,
-    entry: dict[str, Any],
-    *,
-    preview_payload: dict[str, Any],
-    compose_preview_payload: dict[str, Any],
-    plan: Any | None = None,
-) -> dict[str, Any]:
-    preview_token = entry.get("preview_token") or ""
-    view_url = f"/api/sandbox/view/{sandbox_id}"
-    if preview_token:
-        view_url = append_preview_token_query(view_url, preview_token)
-    out: dict[str, Any] = {
-        "sandbox_id": sandbox_id,
-        "status": entry.get("status", "running"),
-        "url": view_url,
-        "expires_at": entry.get("expires_at", time.time() + 3600),
-        "port": entry.get("port"),
-        "docker_mode": entry.get("docker_mode", False),
-        "preview_tier": entry.get("preview_tier", "full"),
-        "startup_phase": entry.get("startup_phase", "ready"),
-        "preview_api": preview_payload,
-        "compose_preview": compose_preview_payload,
-    }
-    if entry.get("degraded_reasons"):
-        out["degraded_reasons"] = entry["degraded_reasons"]
-    warning = (plan.startup_warning if plan else None) or entry.get("startup_warning")
-    if warning:
-        out["startup_warning"] = warning
-    if entry.get("preview_tier") == "degraded":
-        out["degraded_badge"] = True
-    return out
-
-
-def _run_full_sandbox_bootstrap(
-    sandbox_id: str,
-    product_id: str,
-    product_code_dir: Path,
-    port: int,
-    *,
-    storefront: bool,
-) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Compose + optional DinD + uvicorn preview (full product demo)."""
-    compose_proxy_port: Optional[int] = None
-    compose_preview_status: Optional[str] = None
-    ensure_frontend_dist(product_code_dir)
-    prefer_spa = bool(spa_dist_index(product_code_dir) and detect_fastapi_backend(product_code_dir))
-    if prefer_spa:
-        cpp, cst, _cproj = None, "skipped_fastapi_spa", None
-    else:
-        cpp, cst, _cproj = start_compose_preview(
-            product_code_dir,
-            sandbox_id,
-            storefront=storefront,
-        )
-    compose_proxy_port = cpp
-    compose_preview_status = cst
-    compose_ok = compose_preview_status == "ok" and compose_proxy_port is not None
-
-    docker_success = False
-    host_port = None
-    if not compose_ok and not prefer_spa:
-        docker_success = _try_docker_run(sandbox_id, product_id, port)
-        if docker_success:
-            host_port = port
-
-    with _registry_lock:
-        entry = _active_sandboxes.get(sandbox_id) or {}
-        entry.update(
-            {
-                "port": host_port,
-                "docker_mode": docker_success,
-                "compose_proxy_port": compose_proxy_port,
-                "compose_preview_status": compose_preview_status,
-                "startup_phase": "bootstrapping",
-            }
-        )
-        _active_sandboxes[sandbox_id] = entry
-        _save_registry()
-
-    preview_payload: dict[str, Any] = {"enabled": False, "proxy_prefix": None, "status": None}
-    if _should_try_fastapi_preview(product_code_dir, compose_ok):
-        if _ensure_fastapi_preview(sandbox_id, entry, product_code_dir):
-            preview_payload = {
-                "enabled": True,
-                "proxy_prefix": f"/api/sandbox/backend/{sandbox_id}/",
-                "status": entry.get("preview_api_status"),
-            }
-        else:
-            preview_payload = {
-                "enabled": False,
-                "proxy_prefix": None,
-                "status": entry.get("preview_api_status"),
-            }
-    elif compose_ok:
-        preview_payload = {
-            "enabled": False,
-            "proxy_prefix": None,
-            "status": "skipped_compose_stack",
-        }
-
-    compose_preview_payload = {
-        "enabled": compose_ok,
-        "proxy_prefix": (f"/api/sandbox/compose/{sandbox_id}/" if compose_ok else None),
-        "status": compose_preview_status,
-    }
-
-    with _registry_lock:
-        entry = _active_sandboxes.get(sandbox_id) or {}
-        entry["startup_phase"] = "ready"
-        _active_sandboxes[sandbox_id] = entry
-        _save_registry()
-
-    return preview_payload, compose_preview_payload
-
-
-def _background_full_bootstrap(
-    sandbox_id: str,
-    product_id: str,
-    port: int,
-    *,
-    storefront: bool,
-) -> None:
-    try:
-        product_code_dir = _get_product_code_dir(product_id)
-        if not product_code_dir:
-            return
-        _run_full_sandbox_bootstrap(
-            sandbox_id,
-            product_id,
-            product_code_dir,
-            port,
-            storefront=storefront,
-        )
-    except Exception:
-        logger.exception("background sandbox bootstrap failed sandbox=%s", sandbox_id[:16])
-        with _registry_lock:
-            entry = _active_sandboxes.get(sandbox_id)
-            if entry:
-                entry["startup_phase"] = "failed"
-                _save_registry()
-
-
-def _evict_oldest_running_sandbox() -> str | None:
-    """Stop the oldest live sandbox to free a concurrency slot."""
-    _prune_expired_and_teardown()
-    now = time.time()
-    candidates: list[tuple[str, dict[str, Any]]] = []
-    for sid, sb in _active_sandboxes.items():
-        if sb.get("status") != "running":
-            continue
-        expires = sb.get("expires_at")
-        if isinstance(expires, (int, float)) and expires < now:
-            continue
-        candidates.append((sid, sb))
-    if not candidates:
-        return None
-
-    candidates.sort(key=lambda item: float(item[1].get("started_at") or 0))
-    sandbox_id = candidates[0][0]
-
-    _teardown_sandbox_resources(sandbox_id, _active_sandboxes.get(sandbox_id))
-
-    _active_sandboxes[sandbox_id]["status"] = "stopped"
-    _active_sandboxes[sandbox_id]["stopped_at"] = time.time()
-    _save_registry()
-    logger.info("Evicted oldest sandbox %s to free a preview slot", sandbox_id)
-    return sandbox_id
-
-
-def _ensure_sandbox_capacity(*, storefront: bool) -> None:
-    """Prune stale rows and evict oldest previews when storefront is at the cap."""
-    from web.backend.services.sandbox_guards import (
-        count_running_sandboxes,
-        enforce_concurrency_limit,
-        sandbox_max_concurrent,
-        storefront_max_concurrent,
-    )
-
-    _load_registry()
-    _prune_expired_and_teardown()
-    _maybe_gc_preview_resources()
-    cap = storefront_max_concurrent() if storefront else sandbox_max_concurrent()
-    # Storefront already evicted; admin Files tab did not — so two leftover
-    # rows (stuck bootstrap + another product's static preview) made Retry
-    # return HTTP 500 / sandbox_busy while the operator was looking at Sentinel.
-    while count_running_sandboxes(_active_sandboxes) >= cap:
-        if not _evict_oldest_running_sandbox():
-            break
-    with _registry_lock:
-        enforce_concurrency_limit(_active_sandboxes, storefront=storefront)
-
-
-def _start_sandbox_for_product(
-    product_id: str,
-    *,
-    storefront: bool = False,
-    wait_for_bootstrap: bool = False,
-) -> dict:
-    """Core sandbox start: full stack by default; degraded static only when disk/RAM is low.
-
-    ``wait_for_bootstrap`` blocks until the full-stack bootstrap finishes, so the returned
-    ``preview_api`` / ``compose_preview`` describe a stack that is already live. It defaults to
-    False because that is the only safe default for an HTTP caller: the bootstrap creates a
-    venv, installs dependencies and builds the SPA, which the response's own
-    ``startup_warning`` itself describes as "several minutes". Only a background job may ask to
-    wait — ``working_app_publish`` does, because it decides whether the app is publishable from
-    exactly those two fields.
-    """
-    from web.backend.services.sandbox_guards import evaluate_sandbox_resource_plan
-
-    _ensure_sandbox_capacity(storefront=storefront)
-
-    sandbox_id = f"sandbox-{uuid.uuid4().hex}"
-    preview_token = mint_sandbox_preview_token()
-    port = 9000 + (len(_active_sandboxes) % 1000)
-
-    product_code_dir = _get_product_code_dir(product_id)
-    if product_code_dir:
-        from web.backend.services.sandbox_spec_landing import materialize_spec_landing_on_disk
-
-        materialize_spec_landing_on_disk(product_id, code_root=product_code_dir)
-        ensure_storefront_preview_index(product_id, code_root=product_code_dir)
-
-    static_rel = (
-        resolve_static_preview_relpath(product_code_dir) if product_code_dir else None
-    )
-    plan = evaluate_sandbox_resource_plan(
-        product_code_dir,
-        has_static_preview=static_rel is not None,
-    )
-
-    entry: dict[str, Any] = {
-        "id": sandbox_id,
-        "product_id": product_id,
-        "preview_token": preview_token,
-        "status": "running",
-        "started_at": time.time(),
-        "expires_at": time.time() + 3600,
-        "url": f"/sandbox/{sandbox_id}",
-        "port": None,
-        "docker_mode": False,
-        "has_code": product_code_dir is not None,
-        "preview_tier": plan.tier,
-        "startup_phase": "starting",
-        "backend_preview_port": None,
-        "preview_api_status": None,
-        "compose_proxy_port": None,
-        "compose_preview_status": None,
-    }
-    if plan.tier == "degraded":
-        entry["degraded_reasons"] = list(plan.reasons)
-        entry["startup_phase"] = "ready"
-        entry["startup_warning"] = None
-    elif plan.startup_warning:
-        entry["startup_warning"] = plan.startup_warning
-
-    with _registry_lock:
-        _active_sandboxes[sandbox_id] = entry
-        _save_registry()
-
-    preview_payload: dict[str, Any] = {"enabled": False, "proxy_prefix": None, "status": None}
-    compose_preview_payload: dict[str, Any] = {
-        "enabled": False,
-        "proxy_prefix": None,
-        "status": None,
-    }
-
-    if plan.tier == "degraded":
-        return _build_sandbox_start_response(
-            sandbox_id,
-            entry,
-            preview_payload=preview_payload,
-            compose_preview_payload=compose_preview_payload,
-            plan=plan,
-        )
-
-    # Unless a caller explicitly asks to wait, the full-stack bootstrap runs in the BACKGROUND.
-    # Holding one HTTP request open for a multi-minute venv build is how the admin preview
-    # broke: any interruption (a VPN reconnect, an idle proxy, a closed laptop) aborts the POST
-    # after the server has already created the sandbox, so the browser reports a bare
-    # "NetworkError" and the operator is shown a dead end while a perfectly good sandbox
-    # finishes booting behind it. nginx logs those as 499 — the client gave up, not the server.
-    #
-    # Returning as soon as the sandbox is registered is also the contract the client was already
-    # written for: it polls GET /ready/{id} for `startup_phase` and drives a progress bar from
-    # it, which only ever advanced on the storefront path. Failures still surface, through
-    # `startup_phase: "failed"` set by _background_full_bootstrap.
-    if product_code_dir and not wait_for_bootstrap:
-        threading.Thread(
-            target=_background_full_bootstrap,
-            args=(sandbox_id, product_id, port),
-            kwargs={"storefront": storefront},
-            daemon=True,
-            name=f"sandbox-bootstrap-{sandbox_id[:12]}",
-        ).start()
-    elif product_code_dir:
-        preview_payload, compose_preview_payload = _run_full_sandbox_bootstrap(
-            sandbox_id,
-            product_id,
-            product_code_dir,
-            port,
-            storefront=storefront,
-        )
-        entry = _active_sandboxes.get(sandbox_id) or entry
-
-    return _build_sandbox_start_response(
-        sandbox_id,
-        entry,
-        preview_payload=preview_payload,
-        compose_preview_payload=compose_preview_payload,
-        plan=plan,
-    )
 
 
 @router.post("/start/{product_id}")
@@ -1049,22 +383,6 @@ async def sandbox_ready(sandbox_id: str):
         "stage": "preview_ready",
         "preview_path": rel,
     }
-
-
-def _attach_sandbox_preview_cookie(response: HTMLResponse, sandbox_id: str, sandbox: dict) -> HTMLResponse:
-    token = (sandbox.get("preview_token") or "").strip()
-    if not token:
-        return response
-    max_age = max(60, int(sandbox.get("expires_at", time.time() + 3600) - time.time()))
-    response.set_cookie(
-        key=f"aicom_sbx_{sandbox_id}",
-        value=token,
-        httponly=True,
-        samesite="lax",
-        path="/api/sandbox/",
-        max_age=max_age,
-    )
-    return response
 
 
 @router.get("/view/{sandbox_id}")
@@ -1312,59 +630,6 @@ h1{{color:#6366f1}} .note{{color:#666;margin-top:2em}}
     )
 
 
-# ── Content-based type validation for sandbox file serving (A8) ──────────────
-# Extensions are attacker-controlled (generated code names its own files), so the
-# served content-type and security treatment are decided from the actual bytes.
-
-# Declared types whose magic bytes we can verify cheaply.
-_MAGIC_BYTE_TYPES = frozenset(
-    {"image/png", "image/jpeg", "image/gif", "image/x-icon", "font/woff", "font/woff2", "application/wasm"}
-)
-
-
-def _sniff_head_bytes(content: str | bytes, n: int = 512) -> bytes:
-    """First ``n`` bytes of the file, regardless of how it was read."""
-    if isinstance(content, bytes):
-        return content[:n]
-    return content[:n].encode("utf-8", errors="ignore")
-
-
-def _bytes_look_like_html(head: bytes) -> bool:
-    """Heuristic HTML sniff matching browser behaviour (leading-whitespace tolerant)."""
-    lead = head.lstrip()[:128].lower()
-    if lead.startswith(b"<!doctype html") or lead.startswith(b"<html"):
-        return True
-    # Browsers sniff these tags as HTML even without a doctype.
-    return any(tag in lead for tag in (b"<head", b"<body", b"<script", b"<iframe", b"<svg"))
-
-
-def _content_matches_declared_type(media_type: str, head: bytes) -> bool:
-    """True when ``head`` carries the magic bytes expected for ``media_type``."""
-    if media_type == "image/png":
-        return head.startswith(b"\x89PNG\r\n\x1a\n")
-    if media_type == "image/jpeg":
-        return head.startswith(b"\xff\xd8\xff")
-    if media_type == "image/gif":
-        return head.startswith((b"GIF87a", b"GIF89a"))
-    if media_type == "image/x-icon":
-        return head.startswith((b"\x00\x00\x01\x00", b"\x00\x00\x02\x00"))
-    if media_type == "font/woff":
-        return head.startswith(b"wOFF")
-    if media_type == "font/woff2":
-        return head.startswith(b"wOF2")
-    if media_type == "application/wasm":
-        return head.startswith(b"\x00asm")
-    return True
-
-
-def _binary_media_type_from_magic(raw: bytes) -> str:
-    """Pick a safe content-type for a binary file from its magic bytes."""
-    for mt in ("image/png", "image/jpeg", "image/gif", "image/x-icon", "font/woff", "font/woff2", "application/wasm"):
-        if _content_matches_declared_type(mt, raw[:512]):
-            return mt
-    return "application/octet-stream"
-
-
 @router.get("/file/{sandbox_id}/{file_path:path}")
 async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
     """Serve individual files from a sandbox (for iframe preview)."""
@@ -1547,34 +812,6 @@ async def get_sandbox_file(request: Request, sandbox_id: str, file_path: str):
     )
 
 
-async def _proxy_request_with_slash_fallback(
-    method: str,
-    url: str,
-    headers: dict[str, str],
-    body: bytes,
-) -> httpx.Response:
-    """Proxy one request, retrying without a trailing slash when the app 404s.
-
-    A generated SPA that calls ``/api/v1/accounts/`` against a router serving
-    ``/api/v1/accounts`` gets a 404 from the product's own SPA catch-all (which
-    matches before FastAPI's redirect logic). Retrying the slash-less variant
-    keeps the demo alive; QA still reports the mismatch so the pipeline fixes it.
-    """
-    async with httpx.AsyncClient(timeout=120.0) as client:
-        upstream = await client.request(
-            method, url, headers=headers, content=body if body else None
-        )
-        if upstream.status_code not in (404, 405):
-            return upstream
-        alt = sandbox_proxy_slash_variant(url)
-        if not alt:
-            return upstream
-        retry = await client.request(
-            method, alt, headers=headers, content=body if body else None
-        )
-        return retry if retry.status_code < 400 else upstream
-
-
 @router.api_route(
     "/backend/{sandbox_id}/{path:path}",
     methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
@@ -1697,61 +934,6 @@ async def list_active_sandboxes(_admin: dict = Depends(require_admin_with_rbac))
     return {"active_sandboxes": len(active), "sandboxes": list(active.values())}
 
 
-# ── Git Integration ──────────────────────────────────────────────────────
-
-
-def _git_init_blocking(product_code_dir: Path, product_id: str, safe_remote: str) -> dict:
-    """Blocking git init body — run via ``asyncio.to_thread`` to keep the event loop free."""
-    try:
-        import subprocess
-        result = subprocess.run(
-            ["git", "init"],
-            cwd=str(product_code_dir),
-            capture_output=True, text=True, timeout=10
-        )
-        if result.returncode != 0:
-            raise HTTPException(status_code=500, detail=f"git init failed: {result.stderr}")
-
-        # Configure basic git user
-        subprocess.run(
-            ["git", "config", "user.email", "ai-factory@aicom.local"],
-            cwd=str(product_code_dir), capture_output=True, timeout=5
-        )
-        subprocess.run(
-            ["git", "config", "user.name", "AI-Factory"],
-            cwd=str(product_code_dir), capture_output=True, timeout=5
-        )
-
-        # Initial commit of existing code
-        subprocess.run(
-            ["git", "add", "-A"],
-            cwd=str(product_code_dir), capture_output=True, timeout=10
-        )
-        subprocess.run(
-            ["git", "commit", "-m", "Initial commit - AI-Factory generated code"],
-            cwd=str(product_code_dir), capture_output=True, timeout=10
-        )
-
-        # Set remote if provided
-        if safe_remote:
-            subprocess.run(
-                ["git", "remote", "add", "origin", safe_remote],
-                cwd=str(product_code_dir), capture_output=True, timeout=5
-            )
-
-        logger.info(f"Git repository initialized for product {product_id}")
-        return {
-            "status": "initialized",
-            "product_id": product_id,
-            "code_dir": str(product_code_dir),
-            "remote": safe_remote or None,
-        }
-    except subprocess.TimeoutExpired:
-        raise HTTPException(status_code=500, detail="git init timed out")
-    except FileNotFoundError:
-        raise HTTPException(status_code=500, detail="git executable not found in container")
-
-
 @router.post("/git/init/{product_id}")
 async def git_init(
     product_id: str,
@@ -1777,58 +959,6 @@ async def git_init(
     return await asyncio.to_thread(_git_init_blocking, product_code_dir, product_id, safe_remote)
 
 
-def _git_push_blocking(product_code_dir: Path, product_id: str, remote: str, branch: str) -> dict:
-    """Blocking git push body — run via ``asyncio.to_thread`` so a slow remote never blocks the loop."""
-    try:
-        import subprocess
-
-        # Check if remote is configured
-        remote_check = subprocess.run(
-            ["git", "remote", "get-url", remote],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
-        if remote_check.returncode != 0:
-            raise HTTPException(status_code=400, detail=f"Remote '{remote}' not configured. Set a remote URL first.")
-        configured_url = (remote_check.stdout or "").strip()
-        try:
-            validate_git_remote_url(configured_url)
-        except ValueError as exc:
-            raise HTTPException(status_code=400, detail=f"Unsafe git remote: {exc}") from exc
-
-        # Add all changes
-        subprocess.run(["git", "add", "-A"], cwd=str(product_code_dir), capture_output=True, timeout=10)
-
-        # Commit if there are changes
-        status = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
-        if status.stdout.strip():
-            subprocess.run(
-                ["git", "commit", "-m", f"Auto-commit: AI-Factory update"],
-                cwd=str(product_code_dir), capture_output=True, timeout=10
-            )
-
-        # Push to remote
-        push_result = subprocess.run(
-            ["git", "push", remote, branch],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=30
-        )
-        if push_result.returncode != 0:
-            raise HTTPException(status_code=500, detail=f"git push failed: {push_result.stderr}")
-
-        return {
-            "status": "pushed",
-            "product_id": product_id,
-            "remote": remote,
-            "branch": branch,
-        }
-    except subprocess.TimeoutExpired:
-        raise HTTPException(status_code=500, detail="git operation timed out")
-    except FileNotFoundError:
-        raise HTTPException(status_code=500, detail="git executable not found in container")
-
-
 @router.post("/git/push/{product_id}")
 async def git_push(
     product_id: str,
@@ -1847,56 +977,6 @@ async def git_push(
     return await asyncio.to_thread(_git_push_blocking, product_code_dir, product_id, remote, branch)
 
 
-def _git_status_blocking(product_code_dir: Path, product_id: str) -> dict:
-    """Blocking git status body — run via ``asyncio.to_thread`` to keep the event loop free."""
-    try:
-        import subprocess
-
-        # Check remote
-        remote_result = subprocess.run(
-            ["git", "remote", "-v"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
-        remotes = [
-            sanitize_git_remote_line(line)
-            for line in remote_result.stdout.strip().split("\n")
-            if line.strip()
-        ]
-
-        # Check branch
-        branch_result = subprocess.run(
-            ["git", "branch", "--show-current"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
-        branch = branch_result.stdout.strip()
-
-        # Check status
-        status_result = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
-        changes = status_result.stdout.strip().split("\n") if status_result.stdout.strip() else []
-
-        # Check log
-        log_result = subprocess.run(
-            ["git", "log", "--oneline", "-10"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
-        commits = log_result.stdout.strip().split("\n") if log_result.stdout.strip() else []
-
-        return {
-            "status": "initialized",
-            "product_id": product_id,
-            "branch": branch,
-            "remotes": remotes,
-            "uncommitted_changes": len(changes),
-            "change_list": changes[:20],
-            "recent_commits": commits,
-        }
-    except FileNotFoundError:
-        return {"status": "error", "detail": "git executable not found"}
-
-
 @router.get("/git/status/{product_id}")
 async def git_status(product_id: str, _admin: dict = Depends(require_admin_with_rbac)):
     """Get git status for a product's codebase (admin only; remotes sanitized)."""
@@ -1906,29 +986,6 @@ async def git_status(product_id: str, _admin: dict = Depends(require_admin_with_
         return {"status": "not_initialized", "product_id": product_id}
 
     return await asyncio.to_thread(_git_status_blocking, product_code_dir, product_id)
-
-
-# ── Helpers to check product code readiness ─────────────────────────────────
-
-
-def _product_has_code(product_id: str) -> bool:
-    """Check if a product has actual generated code files on disk."""
-    from web.backend.services.product_code_presence import product_has_code
-
-    return product_has_code(resolve_product_code_dir(product_id))
-
-
-def _product_has_html_files(product_id: str) -> bool:
-    """Check if a product has at least one .html file in its code directory."""
-    product_code_dir = resolve_product_code_dir(product_id)
-    if not product_code_dir.exists():
-        return False
-    try:
-        for _ in product_code_dir.rglob("*.html"):
-            return True
-    except Exception as _suppressed_exc:
-        log_suppressed(logger, "non-fatal (web/backend/api/sandbox.py)", exc_info=_suppressed_exc)
-    return False
 
 
 # ── Endpoints ────────────────────────────────────────────────────────────────

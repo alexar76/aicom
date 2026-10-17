@@ -48,3 +48,15 @@ def test_write_landing_mini_spec(tmp_path):
     assert spec["style_preset"]["id"] == preset["id"]
     saved = json.loads((tmp_path / "specs" / "prod-fast-1" / "specification.json").read_text())
     assert saved["specification"]["product_name"]
+
+
+def test_landing_title_drops_markdown_and_never_cuts_a_word():
+    from orchestrator.landing_fast_flow import landing_title
+
+    assert landing_title(
+        "**SignalForge Control Plane** — wow marketing landing for an AI-agent orchestration platform"
+    ) == "SignalForge Control Plane"
+    long_idea = "PulseBoard Mini: tiny habit tracker " + "with many more descriptive words " * 4
+    title = landing_title(long_idea)
+    assert len(title) <= 80 and long_idea.startswith(title) and long_idea[len(title)] == " "
+    assert landing_title("") == "Landing"

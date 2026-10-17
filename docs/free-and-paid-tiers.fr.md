@@ -5,7 +5,7 @@
 Presque toutes les capacités de `modelmarket.dev` sont gratuites aujourd'hui — sans
 clé, sans canal, sans compte — et c'est une décision, non un oubli. Cette page dit
 ce qui est gratuit, ce qui ne l'est pas, ce qui borne le palier gratuit, et quels
-sont les deux interrupteurs qui activent la vente.
+sont les interrupteurs qui activent la vente.
 
 ---
 
@@ -178,7 +178,10 @@ flowchart TD
     R["POST /ai-market/v2/invoke"] --> G{"limiteur générique<br/>120 req./min par IP"}
     G -->|dépassé| G429["429 rate limited"]
     G -->|ok| P["résoudre : l'appel est-il payé ?<br/>ORACLE_PAID_TIER_SECRET<br/>ou proxy de confiance + canal"]
-    P --> F{"non payé ET au-dessus<br/>du plafond gratuit ?"}
+    P --> H{"barrière de prix, si active (§7.3) :<br/>tarifé, non payé, et sans signature<br/>valide d'un Hub de confiance ?"}
+    H -->|sans signature| H402["402 payment_required<br/>+ payment_ways : les Hubs"]
+    H -->|signature invalide| H401["401 hub_signature_invalid<br/>+ la raison"]
+    H -->|non| F{"non payé ET au-dessus<br/>du plafond gratuit ?"}
     F -->|oui| F402["402 payment_required<br/>+ champ, demandé, maximum"]
     F -->|non| B{"dans le budget CPU ?<br/>par client, puis agrégé"}
     B -->|non| B429["429 + budget, coût, reste"]
@@ -192,6 +195,12 @@ sous peu` enverrait donc l'appelant dans une boucle qui ne peut jamais réussir.
 `402` lui donne le vrai plafond et lui dit que payer le lève. L'épuisement du
 budget, en revanche, se résorbe bel et bien de lui-même — c'est donc ce refus qui
 mérite `429`, et il vient en second.
+
+La barrière de prix, lorsqu'elle est active, passe avant les deux, si bien qu'un
+appel qu'elle refuse ne consomme aucun budget et ne lance aucun travail. La
+signature d'un Hub fait franchir la barrière à un appel, et rien de plus : elle ne
+lève pas le plafond gratuit, qui exige toujours la désignation par l'opérateur
+(§7.1).
 
 Un `429` de budget nomme trois nombres, car un appelant nettement en dessous de
 120/min et refusé malgré tout a besoin des trois pour savoir s'il doit attendre ou
@@ -229,8 +238,11 @@ la fois seul et au sein de la famille a un seau distinct dans chacun.
 
 ## 7. Activer la vente
 
-Il y a deux interrupteurs, de deux côtés différents, et **les deux sont éteints par
-défaut**.
+Deux interrupteurs décident si quelque chose est vendu, un de chaque côté, et
+**les deux sont éteints par défaut** (§7.1, §7.2). Un troisième, la barrière de prix
+du fournisseur (§7.3), empêche un fournisseur de donner à sa propre URL ce que le
+Hub vend ; il est éteint par défaut lui aussi. Le §7.4 les met dans un ordre qui ne
+casse personne.
 
 ### 7.1 Côté oracle — qui est autorisé au-delà du plafond
 
@@ -294,21 +306,130 @@ quelque chose que l'opérateur déclare explicitement, pair par pair.
 Les prix s'appliquent seulement quand la crypto est active, que l'appel n'est pas un
 essai de bac à sable **et** que le pair est listé.
 
-### 7.3 La séquence qui ne casse personne
+### 7.3 Côté oracle — la barrière de prix : les appels tarifés passent par un Hub
+
+Les §7.1 et §7.2 décident de ce que coûte un appel *passant par le Hub*. Aucun des
+deux ne ferme l'autre porte : l'URL d'invocation d'un fournisseur est publique, et
+avant oracle-core 0.5.0 le fournisseur n'avait aucun moyen de refuser une capacité
+tarifée à qui l'appelait directement. Mesuré le 2026-10-16 : un `POST` non payé vers
+l'URL propre de GAIA pour `gaia.power.window@v1`, et vers celle d'EMPORION pour
+`emporion.vat.check@v1` ($0.002 chacun), a répondu `ok: true` avec la sortie
+complète, tandis que les mêmes appels via `modelmarket.dev` recevaient `402` au prix
+du catalogue.
+
+La barrière ne prend pas de paiement. Les canaux, les réservations et le registre
+vivent déjà dans le Hub. ATLAS se mesure lui-même (§10), ce qui fonctionne pour un
+service, mais un registre dans chaque fournisseur ferait doublon avec celui du Hub.
+La barrière permet seulement à un fournisseur de distinguer un appel qu'un Hub a
+admis d'un appel qui a contourné le Hub. Un Hub qui admet un appel — il a pris le
+paiement, ou a choisi d'accorder un essai — le signe avec sa clé de fédération, la
+`signer_public_key` de son `/.well-known/ai-market.json`. La signature couvre la
+capacité, un hachage de l'entrée exacte, l'URL d'invocation à laquelle le Hub a
+envoyé la requête, un horodatage et un nonce neuf : la signature d'un appel chez un
+fournisseur n'achète donc ni un autre appel, ni le même appel chez un autre
+fournisseur. Le fournisseur épingle la clé du Hub.
+
+Pour une capacité dont le prix dépasse zéro, sauf si l'appelant a été désigné par
+l'opérateur (§7.1) :
+
+| l'appel porte | le fournisseur répond |
+|---|---|
+| aucune signature de Hub | `402 payment_required`, avec `payment_ways` qui nomme les Hubs qui la vendent |
+| une signature qui ne tient pas : Hub inconnu, mauvaise clé, périmée, autre capacité ou autre entrée, adressée à un autre fournisseur, nonce déjà utilisé | `401 hub_signature_invalid` et la raison. Le Hub le transforme en `502` et libère la réservation de l'acheteur : personne ne le paie. |
+| une signature qui tient | servi ; le plafond gratuit et les budgets CPU s'appliquent toujours |
+
+Les capacités gratuites ne passent jamais par la barrière. Le format sur le fil —
+cinq en-têtes `X-AIMarket-Hub-*` — est dans la docstring de
+`oracles/core/oracle_core/price_gate.py`, et le Hub et le fournisseur épinglent le
+même vecteur de test.
+
+Côté fournisseur :
+
+| variable | signification |
+|---|---|
+| `ORACLE_TRUSTED_HUBS` | `url=key,url=key` : chaque Hub dont vous acceptez l'admission, avec sa `signer_public_key` Ed25519 (base64) tirée de son well-known. Répétez une URL pour accepter deux clés pendant une rotation. Une entrée mal formée est écartée et journalisée ; elle n'élargit jamais la liste. Un opérateur tiers épingle son propre Hub. |
+| `ORACLE_PRICE_GATE` | `enforce`, `report` ou `off`. **Non définie, elle vaut `enforce` dès qu'un Hub est de confiance**, et `off` quand il n'y en a aucun, ce qui était le comportement du cœur auparavant. `report` sert tous les appels et journalise ce qu'il aurait refusé. Toute autre valeur se lit comme `enforce`, pour qu'une faute de frappe ne puisse pas donner du travail tarifé. |
+| `ORACLE_HUB_AUDIENCES` | URL de base supplémentaires auxquelles vous répondez, en plus de `public_url`, pour un Hub qui vous joint sous un autre nom. |
+| `ORACLE_HUB_MAX_SKEW_S` | De combien l'horodatage du Hub peut s'écarter de votre horloge, en secondes. 120 par défaut. |
+
+Barrière active, le well-known gagne un objet `price_gate` (le mode, les Hubs de
+confiance, le schéma), pour qu'un acheteur voie où acheter avant d'appeler.
+Barrière éteinte, le document est identique octet pour octet. Un fournisseur
+démarré avec `AIFACTORY_PROD=1`, des capacités tarifées et la barrière éteinte le
+signale dans son journal.
+
+Côté Hub, il n'y a rien à définir : il signe les appels qu'il admet. L'appel d'une
+annonce locale est toujours signé, car le péage ou l'essai du Hub a déjà eu lieu.
+L'appel d'un pair fédéré n'est signé que si ce Hub est le vendeur en titre de ce
+pair (`AIMARKET_SELLS_FOR`, §7.2). Un pair pour lequel le Hub n'est
+qu'intermédiaire facture lui-même l'acheteur, et une signature dirait « payé » à un
+pair muni d'une barrière pour un appel que personne n'a payé.
+`AIMARKET_SIGN_PROVIDER_REQUESTS=0` coupe la signature. Une erreur de signature ne
+fait jamais échouer l'appel de l'acheteur : l'appel part sans signature, et le
+fournisseur décide.
+
+**Vos propres lecteurs directs.** Un de vos services qui appelle le fournisseur
+directement plutôt que via un Hub reçoit le même `402`. Désignez-le comme au
+§7.1 : définissez `ORACLE_PAID_TIER_SECRET` sur le fournisseur et envoyez la même
+valeur dans `X-AIMarket-Paid-Tier`. C'est ainsi qu'ATLAS lit GAIA, avec la valeur
+dans `ATLAS_GAIA_PAID_TIER_SECRET`. Le secret lève aussi le plafond gratuit :
+réservez-le à vos propres services.
+
+Ce que la barrière ne fait pas :
+
+- **Elle se fie à la décision du Hub ; elle ne voit pas l'argent.** Un Hub de
+  confiance l'est pour toute sa politique : ce qu'il donne en essai, il le donne
+  depuis ce fournisseur.
+- **La protection contre le rejeu est par processus et en mémoire.** Un fournisseur
+  lancé avec plusieurs workers accepte un appel rejoué une fois par worker dans la
+  fenêtre de décalage, et un redémarrage oublie les nonces vus.
+- **Un Hub qui n'est qu'intermédiaire du fournisseur ne signe pas**, si bien que
+  ses acheteurs reçoivent le `402` du fournisseur, qui désigne les Hubs qui le
+  vendent. C'est voulu. N'épinglez un Hub que s'il doit vendre vos capacités.
+
+### 7.4 La séquence qui ne casse personne
 
 ```mermaid
 flowchart TD
-    S["aujourd'hui : 42 capacités gratuites<br/>AIMARKET_SELLS_FOR non définie"] --> A["1. annoncer le changement<br/>avec une date"]
+    S["départ : le pair n'est pas dans AIMARKET_SELLS_FOR<br/>ses capacités tarifées répondent à tous, gratuitement"] --> A["1. annoncer le changement<br/>avec une date"]
     A --> B["2. côté oracle d'abord :<br/>définir ORACLE_PAID_TIER_SECRET<br/>pour que les appels payants soient servis"]
     B --> C["3. vérifier un appel payant de bout en bout<br/>sur toute la plage d'entrée"]
     C --> D["4. seulement ensuite définir AIMARKET_SELLS_FOR<br/>sur le Hub"]
-    D --> E["l'essai gratuit reste valable :<br/>5 invocations par visiteur et par heure, renouvelées"]
+    D --> H["5. le Hub signe les appels qu'il admet<br/>(actif par défaut : vérifier qu'il exécute ce code)"]
+    H --> R["6. fournisseur : ORACLE_TRUSTED_HUBS<br/>en même temps que ORACLE_PRICE_GATE=report"]
+    R --> N["7. désigner vos propres lecteurs directs :<br/>ORACLE_PAID_TIER_SECRET"]
+    N --> X["8. ORACLE_PRICE_GATE=enforce"]
+    X --> E["l'essai gratuit reste valable, via le Hub :<br/>5 invocations par visiteur et par heure, renouvelées"]
 ```
 
 L'étape 2 avant l'étape 4 est le point sur lequel il faut insister. Définir
 `AIMARKET_SELLS_FOR` en premier ferait exiger par le Hub un paiement pour des
 capacités que l'oracle refuserait encore au-dessus de son plafond gratuit : des
 acheteurs payant pour un travail qu'ils ne peuvent pas recevoir.
+
+Les étapes 5 à 8 ferment la porte propre du fournisseur, et leur ordre compte tout
+autant. Pour un fournisseur annoncé directement sur le Hub plutôt que fédéré,
+l'étape 4 ne s'applique pas : le Hub signe ses appels de toute façon.
+
+- **Le Hub signe avant que le fournisseur n'applique la barrière.** Un fournisseur
+  en `enforce` à qui le Hub envoie encore des appels non signés répond `402` à
+  chaque vente, et le Hub transmet ce `402` à l'acheteur. Les ventes s'arrêtent,
+  même si personne n'est débité.
+- **`report` avant `enforce`, dans le même changement que `ORACLE_TRUSTED_HUBS`.**
+  Les Hubs seuls signifient `enforce` immédiatement. En mode report, le fournisseur
+  sert tout et journalise, une fois par minute, combien d'appels tarifés sont
+  arrivés avec une signature valide, sans signature ou mal signés, et de quelles
+  adresses venaient les appels non signés. Une ligne disant qu'un appel était
+  `signed for` une URL à laquelle vous ne répondez pas signifie que le Hub vous
+  joint sous un autre nom : ajoutez cette URL à `ORACLE_HUB_AUDIENCES`.
+- **Vos propres lecteurs avant `enforce`.** Les appelants non signés que le rapport
+  liste sont soit vos propres services, qui reçoivent le secret du palier payant,
+  soit des inconnus, qui recevront `402` et les Hubs où acheter.
+
+Revenir en arrière ne demande aucune reconstruction : `ORACLE_PRICE_GATE=report`
+(ou `off`) et un redémarrage du fournisseur. `AIMARKET_SIGN_PROVIDER_REQUESTS=0`
+arrête la signature côté Hub, et n'est sûr qu'une fois qu'aucun fournisseur qui
+épingle ce Hub n'est en `enforce`.
 
 ## 8. Pour les auteurs d'oracles
 
@@ -527,6 +648,8 @@ leur heure de lecture est une exigence du cahier des charges, pas un ornement.
 - [payment-enable-runbook](payment-enable-runbook.md) — activer les paiements réels sur le Hub
 - `oracles/core/oracle_core/tiers.py` — l'implémentation, avec les chiffres en commentaires
 - `oracles/core/tests/test_tiers.py` — 52 tests sur ce comportement
+- `oracles/core/oracle_core/price_gate.py` — la barrière de prix ; sa docstring contient le format sur le fil
+- `aimarket-hub/aimarket_hub/provider_request_auth.py` — quand le Hub signe les appels qu'il admet
 - `aimarket-hub/aimarket_hub/sandbox_trials.py` — le registre des essais et ses fenêtres
 - `atlas/atlas/payment_gate.py` — le compteur ATLAS, avec la séparation check/settle
 - `web/backend/services/vercel_fullstack_adapter.py` — `wallet_env()`, le défaut sans portefeuille

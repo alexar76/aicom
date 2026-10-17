@@ -313,8 +313,13 @@ def test_free_capabilities_are_never_probed():
 
 def test_the_probe_list_is_bounded():
     many = {"prices": [{"capability_id": f"c{i}@v1", "product_id": "p", "price_usd": 0.01 * (i + 1),
-                        "source_hub": f"hub{i}"} for i in range(20)]}
+                        "source_hub": f"hub{i}"} for i in range(canary.MAX_PROBES + 8)]}
     assert len(canary.pick_priced_capabilities(many)) == canary.MAX_PROBES
+
+
+def test_the_limit_covers_todays_providers():
+    """2026-10-16: 13 priced providers against a limit of 12 left one unproven on every run."""
+    assert canary.MAX_PROBES >= 24
 
 
 def test_malformed_price_rows_do_not_crash_the_canary():
@@ -454,3 +459,132 @@ def test_all_providers_probed_passes():
     checks = {c.name: c for c in evaluate(manifest, probes, {"service": "aimarket-hub-mcp",
                                                             "trial": "per-caller"})}
     assert checks["every_priced_provider_probed"].ok is True
+
+
+# ── brokered peers, and probes that prove nothing ────────────────────────────────────────
+# Added 2026-10-16. modelmarket.dev only BROKERS Independent's KOVA (not in AIMARKET_SELLS_FOR):
+# the hub forwards the unpaid probe under its shared federation identity and the peer decides.
+# KOVA answered 402 at 06:17 and 200 (its free trial) at 08:36, and the canary paged "SERVED FOR
+# FREE" for a paywall that is not this hub's. Meanwhile attested's cheapest capability needs
+# `memory_id`, so the hub's input check answered 400 and the whole provider went unproven.
+
+KOVA = "https://independentai.network/hub"
+TRIAL_BODY = {"success": True, "price_usd": 0.0, "sandbox": True,
+              "receipt": {"price_usd": 0.0, "list_price_usd": 0.002, "sandbox": True}}
+
+
+def _probe(status, body, hub, sold):
+    p = {"status": status, "body": body, "capability_id": "kova.network.status@v1",
+         "source_hub": hub, "price_usd": 0.002}
+    if sold is not None:
+        p["seller_of_record"] = sold
+    return p
+
+
+def test_a_brokered_peers_free_trial_warns_but_does_not_fail():
+    checks = canary.evaluate(HEALTHY_MANIFEST, HEALTHY_PROBES + [_probe(200, TRIAL_BODY, KOVA, False)],
+                             HEALTHY_MCP)
+    c = _by_name(checks)[f"priced_capability_gated[{KOVA}]"]
+    assert c.ok is False and c.critical is False and "free trial" in c.detail
+    assert not _failed(checks)
+
+
+def test_a_sold_peer_served_free_still_fails():
+    """The regression the canary exists for must stay critical."""
+    checks = canary.evaluate(HEALTHY_MANIFEST, HEALTHY_PROBES + [_probe(200, TRIAL_BODY, KOVA, True)],
+                             HEALTHY_MCP)
+    assert f"priced_capability_gated[{KOVA}]" in _failed(checks)
+
+
+def test_without_the_sells_for_list_every_provider_is_held_to_the_sellers_standard():
+    checks = canary.evaluate(HEALTHY_MANIFEST, HEALTHY_PROBES + [_probe(200, TRIAL_BODY, KOVA, None)],
+                             HEALTHY_MCP)
+    assert f"priced_capability_gated[{KOVA}]" in _failed(checks)
+
+
+def test_a_brokered_peer_that_bills_passes():
+    checks = canary.evaluate(HEALTHY_MANIFEST,
+                             HEALTHY_PROBES + [_probe(402, {"error": "payment_required"}, KOVA, False)],
+                             HEALTHY_MCP)
+    assert _by_name(checks)[f"priced_capability_gated[{KOVA}]"].ok is True
+    assert not _failed(checks)
+
+
+def test_seller_of_record_follows_the_hubs_own_prefix_rule():
+    sold = ["https://oracles.modelmarket.dev/family/", "https://iot.modelmarket.dev"]
+    assert canary.sells_for_matches("https://oracles.modelmarket.dev/family", sold)
+    assert canary.sells_for_matches("https://IOT.modelmarket.dev/sub", sold)
+    assert not canary.sells_for_matches("https://oracles.modelmarket.dev/familyx", sold)
+    assert not canary.sells_for_matches(KOVA, sold)
+
+
+def test_observe_marks_who_is_seller_of_record(monkeypatch):
+    prices = {"prices": [
+        {"capability_id": "kova.network.status@v1", "product_id": "kova-network", "price_usd": 0.002,
+         "source_hub": KOVA},
+        {"capability_id": "gaia.power.price.read@v1", "product_id": "gaia.gateway", "price_usd": 0.001,
+         "source_hub": "https://iot.modelmarket.dev"},
+        {"capability_id": "local.thing@v1", "product_id": "p", "price_usd": 0.05, "source_hub": "local"},
+    ]}
+    monkeypatch.setattr(canary, "_get", lambda url, t: (200, prices if "prices" in url else {"name": "h"}))
+    monkeypatch.setattr(canary, "_post", lambda url, payload, t: (402, {}))
+    seen = canary.observe("https://hub.test", 5.0, sells_for=["https://iot.modelmarket.dev"])
+    by_hub = {p["source_hub"]: p["seller_of_record"] for p in seen["probes"]}
+    assert by_hub == {KOVA: False, "https://iot.modelmarket.dev": True, "local": True}
+    # And without the list nothing is marked: the strict, pre-2026-10-16 behaviour.
+    assert all("seller_of_record" not in p for p in canary.observe("https://hub.test", 5.0)["probes"])
+
+
+def test_an_inconclusive_probe_tries_the_providers_next_capability(monkeypatch):
+    prices = {"prices": [
+        {"capability_id": "memory.score@v1", "product_id": "a", "price_usd": 0.003,
+         "source_hub": "https://hub.attestedmemory.net"},
+        {"capability_id": "memory.search@v1", "product_id": "b", "price_usd": 0.004,
+         "source_hub": "https://hub.attestedmemory.net"},
+        {"capability_id": "memory.read@v1", "product_id": "c", "price_usd": 0.006,
+         "source_hub": "https://hub.attestedmemory.net"},
+    ]}
+    asked = []
+
+    def fake_post(url, payload, t):
+        asked.append(payload["capability_id"])
+        if payload["capability_id"] == "memory.score@v1":
+            return 400, {"error": "incomplete_input"}
+        return 402, {"error": "payment_required"}
+
+    monkeypatch.setattr(canary, "_get", lambda url, t: (200, prices if "prices" in url else {"name": "h"}))
+    monkeypatch.setattr(canary, "_post", fake_post)
+    seen = canary.observe("https://hub.test", 5.0)
+    assert asked == ["memory.score@v1", "memory.search@v1"]       # stops at the first answer
+    (probe,) = seen["probes"]
+    assert probe["status"] == 402 and probe["capability_id"] == "memory.search@v1"
+    assert probe["tried"] == ["memory.score@v1", "memory.search@v1"]
+
+
+def test_retries_are_bounded_per_provider(monkeypatch):
+    prices = {"prices": [{"capability_id": f"c{i}@v1", "product_id": f"p{i}", "price_usd": 0.01 * (i + 1),
+                          "source_hub": "https://one.test"} for i in range(8)]}
+    asked = []
+    monkeypatch.setattr(canary, "_get", lambda url, t: (200, prices if "prices" in url else {"name": "h"}))
+    monkeypatch.setattr(canary, "_post", lambda url, payload, t: (asked.append(1), (400, {}))[1])
+    seen = canary.observe("https://hub.test", 5.0)
+    assert len(asked) == canary.MAX_TRIES_PER_PROVIDER
+    assert seen["probes"][0]["status"] == 400                      # still reported as inconclusive
+
+
+def test_sells_for_is_read_from_the_container_and_nothing_else(monkeypatch):
+    import subprocess
+
+    env = ["AIMARKET_ADMIN_TOKEN=secret-value", "AIMARKET_SELLS_FOR=https://a.test, https://b.test/x,"]
+
+    class R:
+        stdout = json.dumps(env)
+
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: R())
+    assert canary.sells_for_from_container("modelmarket-hub") == ["https://a.test", " https://b.test/x"]
+
+    def boom(*a, **k):
+        raise FileNotFoundError("docker")
+
+    monkeypatch.setattr(subprocess, "run", boom)
+    assert canary.sells_for_from_container("modelmarket-hub") is None

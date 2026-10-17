@@ -1,5 +1,5 @@
 """
-Per-product LLM spend cap for the autonomous pipeline.
+Per-product spend guard: observed LLM costs plus billed/reserved external purchases.
 
 Monetary amounts use ``Decimal`` for precision.
 """
@@ -40,7 +40,7 @@ class PipelineCostBudgetExceeded(RuntimeError):
         self.product_id = product_id
         self.spent_usd = spent_usd
         self.cap_usd = cap_usd
-        super().__init__(f"Pipeline LLM budget exceeded for {product_id}: ${spent_usd:.4f} spent (cap ${cap_usd:.2f})")
+        super().__init__(f"Pipeline budget exceeded for {product_id}: ${spent_usd:.4f} spent/reserved (cap ${cap_usd:.2f})")
 
 
 def effective_max_pipeline_cost_usd() -> Decimal:
@@ -151,11 +151,20 @@ def record_product_llm_spend(product_id: str, usd: float) -> None:
         _persist_state()
 
 
+def total_product_spend_usd(product_id: str) -> Decimal:
+    """Observed LLM cost plus billed purchases and all unresolved purchase reservations."""
+    from core.paths import data_root
+    from core.procurement_store import PurchaseStore
+
+    llm = product_spend_usd(product_id, reconcile_jsonl=True)
+    return llm + Decimal(PurchaseStore(data_root()).exposure(product_id)) / Decimal(1_000_000)
+
+
 def assert_product_within_budget(product_id: str) -> None:
     cap = effective_max_pipeline_cost_usd()
     if cap <= 0 or not product_id:
         return
-    spent = product_spend_usd(product_id, reconcile_jsonl=True)
+    spent = total_product_spend_usd(product_id)
     if spent >= cap:
         raise PipelineCostBudgetExceeded(product_id, spent, cap)
 
@@ -164,7 +173,7 @@ def check_product_budget(product_id: str) -> tuple[bool, Decimal, Decimal]:
     cap = effective_max_pipeline_cost_usd()
     if cap <= 0 or not product_id:
         return True, Decimal("0"), cap
-    spent = product_spend_usd(product_id, reconcile_jsonl=True)
+    spent = total_product_spend_usd(product_id)
     return spent < cap, spent, cap
 
 

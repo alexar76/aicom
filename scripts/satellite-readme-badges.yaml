@@ -32,6 +32,29 @@ satellites:
       - '<img src="https://img.shields.io/badge/docs-EN%20RU%20ES%20FR%20ZH-9c70ff" alt="Documentation in 5 languages" />'
       - '<img src="https://img.shields.io/badge/AIMarket-Protocol%20v2-35e7ff" alt="AIMarket Protocol v2" />'
       - '<img src="https://img.shields.io/badge/signing-Ed25519-8d83ff" alt="Ed25519 signing" />'
+  esim-kit:
+    repo: esim-operator-kit
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    ci_badge: github
+    # Tests are counted by the Pages workflow on every deploy (badges/tests.json); the plan count is
+    # read live from the demo seller node's /healthz.
+    include_coverage: false
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/esim-operator-kit/actions/workflows/pages.yml"><img src="https://github.com/alexar76/esim-operator-kit/actions/workflows/pages.yml/badge.svg" alt="Pages" /></a>'
+      - '<a href="https://github.com/alexar76/esim-operator-kit/actions/workflows/pages.yml"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Falexar76.github.io%2Fesim-operator-kit%2Fbadges%2Ftests.json" alt="Tests (measured by CI)" /></a>'
+      - '<a href="https://esim-shop.modelmarket.dev/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fesim-shop.modelmarket.dev%2Frobots.txt&label=example%20shop&up_message=live&down_message=down" alt="Example shop" /></a>'
+      - '<a href="https://esim.modelmarket.dev/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fesim.modelmarket.dev%2F&label=landing&up_message=live&down_message=down" alt="Landing" /></a>'
+      - '<a href="https://modelmarket.dev/providers/esim/healthz"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmodelmarket.dev%2Fproviders%2Fesim%2Fhealthz&query=%24.offers&label=plans%20(live)&color=2bd69b" alt="Plans in the live catalogue" /></a>'
+      - '<img src="https://img.shields.io/badge/agents-x402%20%C2%B7%20USDC%20on%20Base-3b6cff" alt="Agents pay over x402 in USDC on Base" />'
+      - '<img src="https://img.shields.io/badge/suppliers-eSIM%20Access%20%C2%B7%20Airalo%20%C2%B7%20eSIM%20Go%20%C2%B7%20HTTP-f3c33c" alt="Suppliers: eSIM Access, Airalo, eSIM Go, your own HTTP" />'
+      - '<img src="https://img.shields.io/badge/AIMarket-federation%20node-35e7ff" alt="AIMarket federation node" />'
+      - '<img src="https://img.shields.io/badge/payments-10%20networks-ff4d4f" alt="Ten payment networks" />'
+      - '<img src="https://img.shields.io/badge/npm-%40aimarket%2Fesim--rails-cb3837" alt="npm @aimarket/esim-rails" />'
+      - '<img src="https://img.shields.io/badge/node-%3E%3D20-339933" alt="Node.js 20 or newer" />'
+      - '<img src="https://img.shields.io/badge/Docker-compose-2496ED" alt="Docker compose" />'
+      - '<img src="https://img.shields.io/badge/docs-EN%20RU%20ES%20FR%20ZH-9c70ff" alt="Documentation in 5 languages" />'
   histor:
     repo: histor
     workflow: ci.yml
@@ -113,6 +136,23 @@ satellites:
       - '<img src="docs/badges/tests.svg" alt="tests" />'
       - '<img src="docs/badges/aimarket.svg" alt="AIMarket v2" />'
       - '<img src="docs/badges/signing.svg" alt="Ed25519 signing" />'
+  emporion:
+    repo: emporion
+    workflow: ci.yml
+    pages_workflow: pages.yml
+    ci_badge: github
+    coverage_kind: python
+    license: MIT
+    extra_badges:
+      - '<a href="https://github.com/alexar76/emporion/actions/workflows/pages.yml"><img src="https://github.com/alexar76/emporion/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
+      - '<a href="https://emporion.modelmarket.dev/"><img src="docs/badges/live.svg" alt="Live service" /></a>'
+      - '<a href="https://alexar76.github.io/emporion/"><img src="docs/badges/landing.svg" alt="Landing" /></a>'
+      - '<a href="https://github.com/alexar76/emporion/pkgs/container/emporion"><img src="docs/badges/ghcr.svg" alt="GHCR package" /></a>'
+      - '<img src="docs/badges/python.svg" alt="Python >=3.11" />'
+      - '<img src="docs/badges/tests.svg" alt="tests" />'
+      - '<img src="docs/badges/aimarket.svg" alt="AIMarket v2" />'
+      - '<img src="docs/badges/signing.svg" alt="Ed25519 + ML-DSA signing" />'
+      - '<img src="docs/badges/i18n.svg" alt="Docs in 5 languages" />'
   atlas:
     repo: atlas
     workflow: ci.yml

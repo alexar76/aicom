@@ -1,5 +1,9 @@
 # AI-Factory
 
+<!-- sensor-operator-guide -->
+> Есть метеостанция или датчик качества воздуха? [Продавайте показания через собственный Hub + GAIA](sensor-operator.ru.md).
+<!-- /sensor-operator-guide -->
+
 <p align="center">
   <a href="../README.md">English</a> ·
   <a href="README.ru.md"><b>Русский</b></a> ·
@@ -45,6 +49,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 
 | Документ | Ссылка |
 | --- | --- |
+| Внешняя диагностика AICOM: алгоритм, настройка, бюджет и восстановление | [factory-subcontracting.ru.md](factory-subcontracting.ru.md) |
 | База знаний | [knowledge-base-ru.md](ecosystem/knowledge-base-ru.md) |
 | Белая книга | [whitepaper/ru.md](ecosystem/whitepaper/ru.md) |
 | Глоссарий терминов | [localization-glossary.md](localization-glossary.md) |
@@ -64,3 +69,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | **Oracles** | математика доверия |
 
 Термины сверяйте с глоссарием: агент, оракул, квитанция, эскроу, расчёт, поставщик/потребитель.
+
+- [Разделение сайтов фабрики и экосистемы](landing-separation.ru.md) — EN / RU / ES / FR / 中文.
+
+- [Путь посетителя: попробовать фабрику, увидеть результат, изучить экосистему](visitor-journey.ru.md) — EN / RU / ES / FR / 中文.

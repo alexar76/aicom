@@ -22,6 +22,7 @@ from pathlib import Path
 import pytest
 
 from agents.dev_edits import apply_edits
+from tests.split_source import read_split
 
 QUIET = lambda *a, **k: None  # noqa: E731
 
@@ -192,7 +193,7 @@ def test_edits_are_applied_after_the_writes_and_nothing_is_excluded():
     both intents survive: the rewrite lands, then the edit refines it, and an edit whose `find` no
     longer matches is reported rather than vanishing.
     """
-    src = (ROOT / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(ROOT / "agents" / "dev.py")
     apply_at = src.index("_edit_previous, _edited_paths, _edit_problems = apply_edits(")
     write_at = src.index('for file_info in code_data.get("files", []) or []:')
     assert write_at < apply_at, "edits still run before the writes that can overwrite them"
@@ -203,7 +204,7 @@ def test_edits_are_applied_after_the_writes_and_nothing_is_excluded():
 
 def test_edited_files_join_the_rounds_write_list():
     """Otherwise the scope guard, the delivery check and the rollback all miss them."""
-    src = (ROOT / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(ROOT / "agents" / "dev.py")
     assert "saved_relative_paths.append(_rel)" in src
     assert 'saved_files.append({"path": _rel, "edited": True})' in src
 
@@ -221,7 +222,7 @@ def test_the_prompt_tells_the_model_the_key_exists():
 
 def test_the_batch_runner_keeps_edits_from_every_batch():
     """Two batches may each edit a different part of one file; keying by path would drop one."""
-    src = (ROOT / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(ROOT / "agents" / "dev.py")
     runner = src[src.index("async def _generate_repair_batches") :]
     runner = runner[: runner.index("\n    async def execute(")]
     assert "merged_edits: list[dict] = []" in runner
@@ -370,7 +371,7 @@ def test_a_missing_file_is_simply_absent(tmp_path):
 
 def test_the_runner_passes_the_tree_to_every_batch():
     """Structural: the attachment is inert unless the runner knows where the code lives."""
-    src = (ROOT / "agents" / "dev.py").read_text(encoding="utf-8")
+    src = read_split(ROOT / "agents" / "dev.py")
     assert "code_root: Path," in src
     assert "attach_file_contents(batch, code_root)" in src
     assert 'code_root=self.data_root / "code" / product_id' in src
@@ -542,7 +543,7 @@ def test_the_batch_merge_carries_deletions_through():
     """
     from pathlib import Path
 
-    dev = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     merge = dev[dev.index("merged_edits: list[dict] = []") :]
     merge = merge[: merge.index("async def execute(")]
     assert 'for _del in data.get("delete_files") or []:' in merge

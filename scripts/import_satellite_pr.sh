@@ -16,9 +16,9 @@
 #
 #   ./scripts/import_satellite_pr.sh metis
 #
-# Then:
-#   git apply --directory=metis /tmp/aicom-import/metis.patch   # review first!
-#   git -C . add metis && git commit -m "feat(metis): import PR #NN from GitHub"
+# Then (the patch carries monorepo paths, so it applies at the monorepo root):
+#   git apply --3way /tmp/aicom-import/metis.patch   # review first!
+#   git commit -m "metis: import PR #NN from GitHub" -- metis
 #   ALLOW_DIVERGENCE=1 ./scripts/publish_all_repos.sh --satellite metis   # re-sync
 # ============================================================================
 set -euo pipefail
@@ -33,28 +33,18 @@ BRANCH="${SATELLITE_BRANCH:-main}"
 OUTDIR="${IMPORT_OUTDIR:-/tmp/aicom-import}"
 SYNC_SUBJECT_PREFIX="chore(satellite): sync"
 
-# ── Resolve repo, monorepo path, and history mode from the map ───────────────
-read -r REPO MONO_PATH MODE < <(python3 - "$SAT_ID" <<PY
-import sys, yaml
-from pathlib import Path
-sat = sys.argv[1]
-m = yaml.safe_load(Path("${ROOT}/scripts/satellite-map.yaml").read_text(encoding="utf-8"))
-for s in m.get("satellites") or []:
-    if s.get("id") == sat:
-        repo = s.get("repo") or sat
-        layout = s.get("export_layout") or {}
-        path = layout.get("root_from") or (s.get("paths") or [sat])[0]
-        mode = str(s.get("history", "mirror")).strip().lower()
-        print(repo, path, mode)
-        break
-else:
-    print("", "", "")
-PY
-)
+# ── Resolve repo, history mode and the satellite → monorepo path map ─────────
+# Most satellites publish one monorepo folder at their root; some fold several
+# folders together (desktop apps/, plugins/, attested-memory apps/, a vendored
+# oracles/core). satellite_import_paths.py prints the map, most specific first.
+MAP_OUT="$(python3 "$ROOT/scripts/satellite_import_paths.py" "$SAT_ID")" || {
+  echo "✗ '$SAT_ID' not found in scripts/satellite-map.yaml"; exit 1; }
+IFS='|' read -r REPO MODE <<<"$(printf '%s\n' "$MAP_OUT" | head -1)"
+MAP_LINES="$(printf '%s\n' "$MAP_OUT" | tail -n +2)"
+MONO_PATH="$(printf '%s\n' "$MAP_LINES" | awk -F'|' '$1==""{print $2}')"
 
-[[ -n "$REPO" ]] || { echo "✗ '$SAT_ID' not found in scripts/satellite-map.yaml"; exit 1; }
 if [[ "$MODE" != "live" ]]; then
-  echo "✗ '$SAT_ID' is history: ${MODE:-mirror}, not 'live'. Reverse-import only applies to live satellites."
+  echo "✗ '$SAT_ID' is history: ${MODE}, not 'live'. Reverse-import only applies to live satellites."
   echo "  (mirror satellites are read-only — PRs there are overwritten, so there is nothing to import.)"
   exit 1
 fi
@@ -62,7 +52,9 @@ fi
 
 # ── Clone the satellite (read-only; token only if provided, for private repos) ─
 TOKEN="${GH_PAT:-${GITHUB_TOKEN:-}}"
-if [[ -n "$TOKEN" ]]; then
+if [[ -n "${SATELLITE_CLONE_URL:-}" ]]; then
+  URL="$SATELLITE_CLONE_URL"   # tests and offline review of a local clone
+elif [[ -n "$TOKEN" ]]; then
   URL="https://x-access-token:${TOKEN}@${HOST}/${ORG}/${REPO}.git"
 else
   URL="https://${HOST}/${ORG}/${REPO}.git"
@@ -96,15 +88,42 @@ git log --format='  %h  %an  %s' "${BASE}..HEAD"
 echo ""
 
 # ── Emit a reviewable patch, minus mirror-injected artifacts ─────────────────
+# One `git diff` per mapping, so each file carries its MONOREPO path and the patch
+# applies at the monorepo root. A file under a more specific prefix is left to
+# that prefix's diff. Renames are split into delete + add so a file that moved
+# between two mapped folders still lands on both sides.
+GENERATED=(
+  ':(exclude)LICENSE' ':(exclude)SECURITY.md' ':(exclude)CONTRIBUTING.md'
+  ':(exclude)CODE_OF_CONDUCT.md' ':(exclude)CONTRIBUTORS.md'
+  ':(exclude).github' ':(exclude)docs/badges'
+  ':(exclude)scripts/ci_static_badge.sh' ':(exclude)scripts/generate_static_badge.py'
+  ':(exclude)scripts/satellite-map.yaml'
+)
 mkdir -p "$OUTDIR"
 PATCH="$OUTDIR/${SAT_ID}.patch"
-git diff "${BASE}..HEAD" -- . \
-  ':(exclude)LICENSE' ':(exclude)SECURITY.md' ':(exclude)CONTRIBUTING.md' \
-  ':(exclude)CODE_OF_CONDUCT.md' ':(exclude)CONTRIBUTORS.md' \
-  ':(exclude).github' ':(exclude)docs/badges' \
-  ':(exclude)scripts/ci_static_badge.sh' ':(exclude)scripts/generate_static_badge.py' \
-  ':(exclude)scripts/satellite-map.yaml' \
-  > "$PATCH" || true
+: > "$PATCH"
+SEEN_PREFIXES=()
+while IFS='|' read -r prefix target; do
+  excludes=()
+  for p in "${SEEN_PREFIXES[@]+"${SEEN_PREFIXES[@]}"}"; do excludes+=(":(exclude)$p"); done
+  if [[ -z "$prefix" ]]; then
+    git diff --binary --no-renames --src-prefix="a/${target:+$target/}" --dst-prefix="b/${target:+$target/}" \
+      "${BASE}..HEAD" -- . "${GENERATED[@]}" "${excludes[@]+"${excludes[@]}"}" >> "$PATCH" || true
+  else
+    git diff --binary --no-renames --relative="$prefix" \
+      --src-prefix="a/${target:+$target/}" --dst-prefix="b/${target:+$target/}" \
+      "${BASE}..HEAD" -- "$prefix" "${excludes[@]+"${excludes[@]}"}" >> "$PATCH" || true
+    SEEN_PREFIXES+=("$prefix")
+  fi
+done <<<"$MAP_LINES"
+
+SKIPPED="$(git diff --name-only --no-renames "${BASE}..HEAD" -- \
+  LICENSE SECURITY.md CONTRIBUTING.md CODE_OF_CONDUCT.md CONTRIBUTORS.md .github docs/badges \
+  scripts/ci_static_badge.sh scripts/generate_static_badge.py scripts/satellite-map.yaml)"
+if [[ -n "$SKIPPED" ]]; then
+  echo "· Left out (written by the mirror on every sync — port by hand if the PR meant them):"
+  printf '    %s\n' $SKIPPED
+fi
 
 if [[ ! -s "$PATCH" ]]; then
   echo "✓ External commits touch only mirror-injected files (governance/badges) — nothing to import into the monorepo."
@@ -112,9 +131,11 @@ if [[ ! -s "$PATCH" ]]; then
 fi
 
 echo "✅ Wrote reviewable patch: $PATCH ($(wc -l < "$PATCH") lines)"
+echo "   Paths in it are monorepo paths:"
+grep '^diff --git ' "$PATCH" | awk '{print "     " substr($4, 3)}' | sort -u
 echo ""
 echo "Next (all local — nothing is pushed):"
 echo "  1. Review:  \$EDITOR $PATCH   (drop any README mirror-banner hunk if present)"
-echo "  2. Apply:   git -C \"$ROOT\" apply --directory=$MONO_PATH \"$PATCH\""
-echo "  3. Commit:  git -C \"$ROOT\" add $MONO_PATH && git -C \"$ROOT\" commit -m \"feat($SAT_ID): import PR from GitHub\""
+echo "  2. Apply:   git -C \"$ROOT\" apply --3way \"$PATCH\""
+echo "  3. Commit:  git -C \"$ROOT\" commit -m \"$SAT_ID: import PR from GitHub\" -- <the paths above>"
 echo "  4. Re-sync: ALLOW_DIVERGENCE=1 ./scripts/publish_all_repos.sh --satellite $SAT_ID   (you run the push)"

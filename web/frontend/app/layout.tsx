@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { MarketingShell } from '@/components/MarketingShell';
 import { AiMarketWidgetLoader } from '@/components/AiMarketWidgetLoader';
 import { PwaRegister } from '@/components/PwaRegister';
+import { isFactoryLanding } from '@/lib/siteRole';
 
 const site =
   (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:9080').replace(/\/$/, '');
@@ -13,11 +14,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(site),
   applicationName: 'AI-Factory',
   title: {
-    default: 'AI-Factory — Generate landings from one phrase',
+    default: 'AI-Factory — Create, preview, explore',
     template: '%s — AI-Factory',
   },
   description:
-    'AI-built landing pages: type a phrase, run the pipeline, preview in sandbox. Same multi-agent stack behind every page — quality gates, optional crypto checkout.',
+    'Create a landing page, preview and download it. Explore factory builds, their review status, and the open agent economy.',
   keywords: [
     'AI',
     'landing page',
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AI-Factory',
     description:
-      'Landing generator first — phrase to HTML/CSS page. Full pipeline, sandbox preview, optional checkout.',
+      'Describe an idea, preview your landing page and download its files. Explore the autonomous factory and agent economy.',
     type: 'website',
     url: site,
     siteName: 'AI-Factory',
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'AI-Factory',
-    description: 'One brief → share-ready page; quality gates included.',
+    description: 'One brief → landing preview and files. Explore what the factory can build.',
   },
 };
 
@@ -74,7 +75,7 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning covers this element's own attributes only: pages whose body the
     // server rendered in the visitor's language set `lang` before hydration (DocumentLang).
-    <html lang="en" className="dark" data-theme-bg="dark" suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" className="dark" data-theme-bg="dark" suppressHydrationWarning>
       <head>
         {/* eslint-disable-next-line @next/next/no-css-tags -- self-hosted webfonts in /public/fonts (scripts/selfhost_google_fonts.py); a CSS @import of this URL fails the Turbopack build */}
         <link rel="stylesheet" href="/fonts/fonts.css" />
@@ -82,12 +83,12 @@ export default function RootLayout({
         <link rel="stylesheet" href="/themes.css" />
       </head>
       <body className="cyber-grid min-h-screen min-w-0 overflow-x-hidden antialiased">
-        <PwaRegister />
+        {!isFactoryLanding() && <PwaRegister />}
         <ThemeProvider>
           <Suspense fallback={null}>
             <MarketingShell>
               <div className="relative z-10 min-w-0">{children}</div>
-              <AiMarketWidgetLoader />
+              {!isFactoryLanding() && <AiMarketWidgetLoader />}
             </MarketingShell>
           </Suspense>
         </ThemeProvider>

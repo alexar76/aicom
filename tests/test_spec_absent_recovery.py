@@ -183,7 +183,8 @@ async def test_spec_alignment_gate_skips_when_there_is_no_spec():
 def test_spec_alignment_prompt_does_not_treat_401_as_a_missing_console():
     from pathlib import Path
 
-    qa = (Path(__file__).resolve().parents[1] / "agents" / "qa.py").read_text(encoding="utf-8")
+    # The spec-alignment prompt lives with the other scored reviews (agents/qa_checks/scoring.py).
+    qa = (Path(__file__).resolve().parents[1] / "agents" / "qa_checks" / "scoring.py").read_text(encoding="utf-8")
     region = qa[qa.index("You are a senior QA engineer reviewing") : qa.index("Use passed=false if alignment_score")]
     assert "authentication wall" in region
     assert "401/403" in region

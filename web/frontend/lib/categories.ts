@@ -1,4 +1,12 @@
 /** Shared category labels for storefront / SEO explore pages */
+import type { Product } from './api';
+
+/** Match the public API's shelf split: landings separately, apps by vertical. */
+export function productsForExploreCategory(products: Product[], category: string): Product[] {
+  return products.filter(product => category === 'landings'
+    ? product.delivery_profile === 'marketing_landing'
+    : product.delivery_profile !== 'marketing_landing' && (product.category || 'uncategorized') === category);
+}
 
 export const CATEGORY_LABELS: Record<string, string> = {
   /** Marketing landings only — not mixed into SaaS / IoT / other verticals */

@@ -7,6 +7,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import api from '@/lib/api';
+import { adminReturnPath } from '@/lib/adminReturnPath';
 import { getPasskeyAssertion } from '@/lib/webauthnClient';
 import {
   type AdminLocale,
@@ -73,7 +74,7 @@ export default function AdminLoginPage() {
       localStorage.removeItem('admin_token');
       localStorage.removeItem('customer_token');
       localStorage.removeItem('customer_email');
-      window.location.href = '/admin?tab=dashboard';
+      window.location.href = adminReturnPath(new URLSearchParams(window.location.search).get('next'));
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : t(locale, 'login.invalidCredentials');
       if (msg === '2FA code required' && !totpCode) {

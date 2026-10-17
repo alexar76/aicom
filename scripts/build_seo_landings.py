@@ -1058,6 +1058,26 @@ def _build_oracles(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
     return urls
 
 
+def _excerpt(md: str, limit: int) -> str:
+    """The first `limit` characters of a guide, ended at a line boundary.
+
+    A plain slice cut a table row in half — the HELIOS row of agent-economy-overview went live
+    as "[github.com/alexar76/helios](https://git". Ending at the last line break keeps every
+    row, link and list item whole; a code fence the cut would leave open is dropped with it.
+    """
+    if len(md) <= limit:
+        return md
+    head = md[:limit]
+    cut = head.rfind("\n")
+    if cut > 0:
+        head = head[:cut]
+    lines = head.split("\n")
+    fences = [i for i, line in enumerate(lines) if line.strip().startswith("```")]
+    if len(fences) % 2:
+        lines = lines[: fences[-1]]
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def _build_guides(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
     guides_path = SEO_ROOT / "data" / "guides.yaml"
     if not guides_path.is_file():
@@ -1075,7 +1095,7 @@ def _build_guides(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
             continue
         md = source.read_text(encoding="utf-8")
         if g.get("excerpt_chars"):
-            md = md[: int(g["excerpt_chars"])]
+            md = _excerpt(md, int(g["excerpt_chars"]))
         md_body = re.sub(r"^#\s+.+\n+", "", md, count=1)  # drop dup H1
         prepared.append({"g": g, "prose": _md_to_html(md_body, src_rel=g["source"])})
 

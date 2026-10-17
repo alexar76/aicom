@@ -8,5 +8,5 @@ AIMarket Hub TypeScript client (coming soon) — use @aimarket/agent today
 npm install @aimarket/agent
 ```
 
-- Ecosystem: https://modeldev.modelmarket.dev
+- Ecosystem: https://ecosystem.modelmarket.dev/
 - GitHub: https://github.com/alexar76/aicom

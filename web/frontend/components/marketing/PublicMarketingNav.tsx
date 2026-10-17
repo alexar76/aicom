@@ -23,6 +23,8 @@ import {
   X,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { visitorJourney } from '@/lib/visitorJourney';
+import { ecosystemNavigation } from '@/lib/ecosystemNavigation';
 import {
   detectMarketingLocale,
   getMarketingStrings,
@@ -74,10 +76,11 @@ export function PublicMarketingNav({ activePath }: { activePath?: string }) {
     { label: copy.navExplore, href: '/explore', icon: Layers },
     { label: copy.navProducts, href: '/#products', icon: Bot },
     { label: copy.navDocs, href: '/docs', icon: BookOpen },
-    { label: copy.navAdmin, href: '/admin', icon: Settings },
+    { label: visitorJourney[locale].demo, href: '/admin', icon: Settings },
   ];
 
   const navLinksMore = [
+    ...ecosystemNavigation(locale).links.map(link => ({ ...link, icon: Layers })),
     { label: copy.navHome, href: '/', icon: Home },
     { label: copy.navFactoryIq, href: '/iq', icon: TrendingUp },
     { label: copy.navFeatures, href: '/#features', icon: Star },

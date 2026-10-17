@@ -11,8 +11,9 @@ Operational playbooks for ecosystem content, MCP registries, and awesome-list su
 
 - [`docs/launch-kit.md`](../launch-kit.md) — Show HN / PH checklist
 - [`docs/marketing.md`](../marketing.md) — storefront, UTM, analytics
-- [`promo/`](../../promo/) — channel templates + UTM generator
 - SEO landings — [`seo-landings/README.md`](../../seo-landings/README.md) (`/learn/`, `/oracles/`, `/guides/`)
+
+**Promotional working materials:** `../PromoMaterials/aicom/` relative to the AICOM repository root, in the separate local PromoMaterials checkout. Generate its UTM links with `python3 scripts/promo_build_links.py`.
 
 **Live surfaces to link in posts**
 
@@ -22,7 +23,7 @@ Operational playbooks for ecosystem content, MCP registries, and awesome-list su
 | Builders (help) | https://discord.gg/aimarket — Pollux on Discord |
 | Twin agents | https://github.com/alexar76/dioscuri · https://alexar76.github.io/dioscuri/ |
 | AI devs (self-hosted) | https://magic-ai-factory.com |
-| Ecosystem map | https://modeldev.modelmarket.dev |
+| Ecosystem map | https://ecosystem.modelmarket.dev/ |
 | Courses | https://alexar76.github.io/aimarket-courses/ |
 | On-chain proof | https://github.com/alexar76/aicom/blob/main/docs/onchain-journal.md |
 | Monitor | https://monitor.modelmarket.dev/ |

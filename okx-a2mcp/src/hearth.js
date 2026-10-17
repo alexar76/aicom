@@ -86,20 +86,39 @@ export const HEARTH_TOOLS = {
 };
 
 /**
- * One service per agent. ``handle`` refuses unpaid calls: the gateway sells these on the hearth's
- * terms, so a free route would give the agents away.
+ * One service per agent. ``handle`` refuses unpaid agent calls: the gateway sells these on the
+ * hearth's terms, so a free A2MCP route would give the agents away. The one free door is the
+ * people's page at /tools/ (``ctx.web``): a shared per-minute budget, bought from the hearth as a
+ * free trial (charged 0), which it serves for the operator's own agents and records no sale for.
  */
-export function hearthServices({ hearthUrl, apiKey, sellerUrl = "", fetchImpl = globalThis.fetch, timeoutMs = 30_000 }) {
+export function hearthServices({
+  hearthUrl, apiKey, sellerUrl = "", fetchImpl = globalThis.fetch, timeoutMs = 30_000,
+  freePerMinute = 60, now = () => Date.now(),
+}) {
   if (!hearthUrl || !apiKey) return [];
   const base = hearthUrl.replace(/\/+$/, "");
+  // One budget for both agents and every web caller: the hearth runs each call in a sandbox, and
+  // a crowd on the free page must not be able to keep it busy for the paying ones.
+  let freeWindow = { start: 0, count: 0 };
+  const freeAllowed = () => {
+    const t = now();
+    if (t - freeWindow.start >= 60_000) freeWindow = { start: t, count: 0 };
+    if (freeWindow.count >= freePerMinute) return false;
+    freeWindow.count++;
+    return true;
+  };
   return Object.entries(HEARTH_TOOLS).map(([id, tool]) => {
     const service = { id, methods: ["POST"], fields: tool.fields, paidOnly: true, price: tool.price };
     service.handle = async (params, ctx = {}) => {
-      if (!ctx.paid) {
+      if (!ctx.paid && !ctx.web) {
         return [402, failure(service, "payment_required", `pay ${tool.price} over x402 at POST /x402/${id}`)];
       }
       const input = tool.build(params || {});
       if (!input) return [200, inputRequired(service, tool.need)];
+      if (!ctx.paid && !freeAllowed()) {
+        return [429, failure(service, "free_capacity",
+          `free checks are at capacity this minute; retry shortly, or pay ${tool.price} over x402 at POST /x402/${id}`)];
+      }
       let res;
       try {
         res = await fetchImpl(`${base}/ai-market/v2/invoke`, {
@@ -107,8 +126,8 @@ export function hearthServices({ hearthUrl, apiKey, sellerUrl = "", fetchImpl = 
           headers: {
             "content-type": "application/json",
             "x-api-key": apiKey,
-            // What the buyer paid, so the hearth records a sale, not a free trial.
-            "x-aimarket-hub-charged": tool.price.replace(/^\$/, ""),
+            // What the buyer paid, so the hearth records a sale — or 0 for the free page: a trial.
+            "x-aimarket-hub-charged": ctx.paid ? tool.price.replace(/^\$/, "") : "0",
             "user-agent": `okx-a2mcp/0.1 (+${sellerUrl || "https://modelmarket.dev"})`,
           },
           body: JSON.stringify({ capability_id: tool.capability_id, input }),

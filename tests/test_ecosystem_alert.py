@@ -505,6 +505,45 @@ def test_a_dead_settlement_timer_pages(monkeypatch):
     assert "STALE" in checks["settlement_sweep_fresh"].detail
 
 
+def test_another_hubs_collector_is_watched_under_its_own_name(monkeypatch):
+    """Owner 2026-10-12: watch the Independent hub's settlement sweep, and only that, of a
+    node that otherwise stays outside the scope. Its checks carry @label, so a stale
+    Independent sweep never reads as (or recovers) the apex one."""
+    old = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - 5 * 3600))
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (
+        200, {"checked_at": old, "ok": True, "pending_usd_after": 0.0}, ""))
+    checks = {c.name: c for c in alert.probe_settlement("https://i/settlement.json", now=NOW,
+                                                        label="independent")}
+    assert set(checks) == {"settlement_sweep_fresh@independent", "settlement_nothing_stuck@independent"}
+    assert checks["settlement_sweep_fresh@independent"].ok is False
+    fail, back, _ = alert._describe("settlement_sweep_fresh@independent", "https://modelmarket.dev")
+    assert "independent" in fail and "independent" in back
+    fail_ru, _, _ = alert._describe("settlement_sweep_fresh@independent", "https://modelmarket.dev", "ru")
+    assert "independent" in fail_ru
+    # The apex collector keeps its unlabelled names and now says whose it is.
+    assert "modelmarket.dev" in alert._describe("settlement_sweep_fresh", "https://modelmarket.dev")[0]
+
+
+def test_extra_settlements_are_named_https_reports_only():
+    assert alert.extra_settlements_from_env(
+        "independent=https://independentai.network/settlement.json, bad label=https://x/s.json,"
+        "plain=http://insecure/s.json") == [("independent", "https://independentai.network/settlement.json")]
+    assert alert.extra_settlements_from_env("") == []
+
+
+def test_a_named_collector_is_watched_outside_the_scope(monkeypatch):
+    seen = []
+    monkeypatch.setattr(alert, "probe_settlement",
+                        lambda url, timeout=20.0, now=None, label="": seen.append((label, url)) or [])
+    for name in ("probe_credit_rail", "probe_dns", "probe_tls_expiry", "probe_hub", "probe_federation",
+                 "probe_status_page", "probe_security_posture"):
+        monkeypatch.setattr(alert, name, lambda *a, **k: [])
+    alert.collect("quick", hub="https://modelmarket.dev", signer="", status_url="", settlement_url="https://v/s.json",
+                  timeout=5, sellers=[], federation_hubs=[], scope=alert.Scope(("modelmarket.dev",)),
+                  extra_settlements=[("independent", "https://independentai.network/settlement.json")])
+    assert ("independent", "https://independentai.network/settlement.json") in seen
+
+
 def test_money_left_unsubmitted_pages(monkeypatch):
     recent = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - 600))
     monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, {
@@ -1898,3 +1937,155 @@ def test_a_received_backup_that_shrank_pages(monkeypatch):
     monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, doc, ""))
     bad = [c.name for c in alert.probe_backups("https://r", now=NOW) if not c.ok]
     assert bad == ["backup_not_shrunk[factory-vps]"]
+
+
+def _fleet_export(now, *, disk=None, age_h=0.5):
+    stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now - age_h * 3600))
+    quiet = {"server": "factory-vps", "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now - 1800)),
+             "findings": [{"severity": "medium", "title": "Memory usage elevated", "detail": "RAM 81% used"}]}
+    watched = {"server": "admin-vps", "observed_at": stamp, "findings": disk or []}
+    return {"documents": [quiet, watched], "count": 2}
+
+
+def test_a_filling_disk_pages_by_host_and_says_where(monkeypatch):
+    seen = {}
+
+    def get(url, timeout, headers=None):
+        seen.update(headers or {})
+        return 200, _fleet_export(NOW, disk=[{"severity": "critical", "title": "Disk almost full (/)",
+                                              "detail": "/dev/vda1 at 99% on /"}]), ""
+
+    monkeypatch.setattr(alert, "_get", get)
+    checks = {c.name: c for c in alert.probe_fleet("https://s/security/export", "tok", now=NOW)}
+    assert seen == {"X-Skopos-Export-Token": "tok"}
+    assert not checks["host_disk[admin-vps]"].ok and "99% on /" in checks["host_disk[admin-vps]"].detail
+    assert checks["host_disk[factory-vps]"].ok, "memory findings are not disk findings"
+    assert all(checks[f"host_reporting[{h}]"].ok for h in ("admin-vps", "factory-vps"))
+
+
+def test_a_host_that_stopped_reporting_pages_and_a_dead_export_is_one_check(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _fleet_export(NOW, age_h=5), ""))
+    bad = {c.name: c.detail for c in alert.probe_fleet("https://s", "tok", now=NOW) if not c.ok}
+    assert bad == {"host_reporting[admin-vps]": "last report 5.0h ago"}
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (403, None, "HTTP 403"))
+    assert [(c.name, c.ok) for c in alert.probe_fleet("https://s", "tok", now=NOW)] == [("fleet_status_published", False)]
+
+
+def test_host_checks_speak_both_languages():
+    for key in ("fleet_status_published", "host_disk", "host_reporting"):
+        assert key in alert._EN and key in alert._RU
+
+
+
+def test_fresh_disk_numbers_page_in_minutes_not_hours(monkeypatch):
+    doc = _fleet_export(NOW)
+    stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - 300))
+    doc["documents"][1].update(disks_observed_at=stamp, disks=[
+        {"filesystem": "/dev/vda1", "mount": "/", "use_pct": 91.0, "avail": "8.9G"},
+        {"filesystem": "/dev/vdb1", "mount": "/data", "use_pct": 40.0, "avail": "60G"}])
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, doc, ""))
+    checks = {c.name: c for c in alert.probe_fleet("https://s", "tok", now=NOW)}
+    assert not checks["host_disk[admin-vps]"].ok and checks["host_disk[admin-vps]"].detail == "/ at 91 % (8.9G free)"
+    assert checks["host_reporting[admin-vps]"].ok and checks["host_reporting[admin-vps]"].detail == "last report 5 min ago"
+    doc["documents"][1]["disks_observed_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - 3600))
+    checks = {c.name: c for c in alert.probe_fleet("https://s", "tok", now=NOW)}
+    assert not checks["host_reporting[admin-vps]"].ok, "an hour without a report is a dead agent once reports are every 5 min"
+
+
+def test_an_agent_whose_reports_are_refused_pages_though_it_has_no_document(monkeypatch):
+    """2026-10-13: four hosts fell out of SKOPOS's servers.yaml and every report came back 400 for
+    two hours. They had no snapshot and no disk row, so only the export's agent list names them."""
+    doc = _fleet_export(NOW)
+    stamp = lambda s: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - s))
+    doc["documents"][1].update(disks_observed_at=stamp(300), disks=[
+        {"filesystem": "/dev/vda1", "mount": "/", "use_pct": 40.0, "avail": "60G"}])
+    doc["agents"] = [{"server": "admin-vps", "last_seen_at": stamp(7200)},
+                     {"server": "factory-vps", "last_seen_at": stamp(7200)},
+                     {"server": "pingblip", "last_seen_at": stamp(240)},
+                     {"server": "attested", "last_seen_at": None}]
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, doc, ""))
+    checks = {c.name: c for c in alert.probe_fleet("https://s", "tok", now=NOW)}
+    assert checks["host_reporting[admin-vps]"].ok, "fresh disks speak for a host that has them"
+    # The 10-13 shape: an hour-old snapshot without disks, from before the reports were refused.
+    assert not checks["host_reporting[factory-vps]"].ok and checks["host_reporting[factory-vps]"].detail == "last report 120 min ago"
+    assert checks["host_reporting[pingblip]"].ok and checks["host_reporting[pingblip]"].detail == "last report 4 min ago"
+    assert not checks["host_reporting[attested]"].ok and checks["host_reporting[attested]"].detail == "no report accepted yet"
+    assert sum(1 for c in checks if c.startswith("host_reporting[")) == 4
+
+
+# ── uptime of an owner-named page ────────────────────────────────────────────────────────
+# On 2026-10-16 hub.attestedmemory.net was down twice (14:05-14:42Z, 16:11-16:31Z) and every
+# check here stayed green: nothing was pointed at it.
+
+def test_uptime_urls_are_named_https_only():
+    assert alert.uptime_urls_from_env(
+        "attested=https://hub.attestedmemory.net/ai-market/v2/health,"
+        "https://unnamed.example/health, bad label=https://x/h, plain=http://insecure/h,"
+        "attested=https://second.example/h") == [
+        ("attested", "https://hub.attestedmemory.net/ai-market/v2/health")]
+    assert alert.uptime_urls_from_env("") == []
+
+
+def test_uptime_is_off_unless_named(monkeypatch):
+    monkeypatch.delenv("AICOM_ALERT_UPTIME_URLS", raising=False)
+    assert alert.uptime_urls_from_env() == []
+
+
+def test_a_2xx_answer_is_up(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, {"status": "ok"}, ""))
+    [check] = alert.probe_uptime("https://hub.attestedmemory.net/ai-market/v2/health", "attested")
+    assert check.name == "hub_up@attested" and check.ok and check.critical
+
+
+@pytest.mark.parametrize("answer", [(0, None, "TimeoutError: timed out"),
+                                    (502, None, "HTTP 502"), (503, None, "HTTP 503")])
+def test_a_timeout_or_error_is_down(monkeypatch, answer):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: answer)
+    [check] = alert.probe_uptime("https://hub.attestedmemory.net/ai-market/v2/health", "attested")
+    assert check.ok is False
+    assert (answer[2] or str(answer[0])) in check.detail
+
+
+def test_uptime_uses_the_short_timeout(monkeypatch):
+    seen = []
+    monkeypatch.setattr(alert, "_get", lambda url, timeout, *a, **k: seen.append(timeout) or (200, {}, ""))
+    for name in ("probe_credit_rail", "probe_dns", "probe_tls_expiry", "probe_hub", "probe_federation",
+                 "probe_status_page", "probe_security_posture", "probe_settlement"):
+        monkeypatch.setattr(alert, name, lambda *a, **k: [])
+    monkeypatch.setenv("AICOM_ALERT_UPTIME_TIMEOUT", "not-a-number")
+    alert.collect("quick", hub="https://modelmarket.dev", signer="", status_url="", settlement_url="",
+                  timeout=20, sellers=[], federation_hubs=[], extra_settlements=[],
+                  uptime=[("attested", "https://hub.attestedmemory.net/ai-market/v2/health")])
+    assert seen == [alert.DEFAULT_UPTIME_TIMEOUT]
+
+
+def test_a_named_uptime_page_is_watched_outside_the_scope(monkeypatch):
+    seen = []
+    monkeypatch.setattr(alert, "probe_uptime",
+                        lambda url, label, timeout=5.0: seen.append((label, url)) or [])
+    for name in ("probe_credit_rail", "probe_dns", "probe_tls_expiry", "probe_hub", "probe_federation",
+                 "probe_status_page", "probe_security_posture", "probe_settlement"):
+        monkeypatch.setattr(alert, name, lambda *a, **k: [])
+    alert.collect("quick", hub="https://modelmarket.dev", signer="", status_url="", settlement_url="",
+                  timeout=5, sellers=[], federation_hubs=[], extra_settlements=[],
+                  scope=alert.Scope(("modelmarket.dev",)),
+                  uptime=[("attested", "https://hub.attestedmemory.net/ai-market/v2/health")])
+    assert seen == [("attested", "https://hub.attestedmemory.net/ai-market/v2/health")]
+
+
+def test_a_hub_down_pages_on_the_second_run_and_recovers():
+    state = fresh_state()
+    state["last_heartbeat"] = alert._iso(NOW)
+    down = [C("hub_up@attested", False, "timed out")]
+    assert alert.decide(down, state, flap=2, heartbeat_hours=24, now=NOW)[0] == []
+    assert alert.decide(down, state, flap=2, heartbeat_hours=24, now=NOW + 600)[0] == ["hub_up@attested"]
+    _, fixed, _ = alert.decide([C("hub_up@attested", True)], state, flap=2, heartbeat_hours=24,
+                               now=NOW + 1200)
+    assert fixed == ["hub_up@attested"]
+
+
+def test_hub_down_reads_as_words_in_both_languages():
+    fail, back, impact = alert._describe("hub_up@attested", "https://modelmarket.dev")
+    assert "attested" in fail and "attested" in back and impact
+    fail_ru, _, impact_ru = alert._describe("hub_up@attested", "https://modelmarket.dev", "ru")
+    assert "attested" in fail_ru and impact_ru

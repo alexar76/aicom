@@ -144,3 +144,8 @@ OpenRouter). Три лаборатории, но одна региональна
 
 Дополнительно: апелляционный суд (`AIMARKET_APPEAL_METIS_URL`, `AIMARKET_APPEAL_WINDOW_S`) — см.
 [aimarket-hub/docs/pay-on-verified.md](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#appeals).
+
+Дополнительно: свой верификатор для отдельной функции (`AIMARKET_VERIFY_ROUTES`) — например, точная
+проверка GAIA для её управления устройствами с оплатой за проверенный эффект вместо жюри из LLM.
+Непригодный маршрут отклоняет блок `verify` и никогда не откатывается на верификатор по умолчанию. См.
+[маршруты верификаторов](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md#verifier-routes).

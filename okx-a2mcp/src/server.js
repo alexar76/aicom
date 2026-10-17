@@ -35,6 +35,10 @@ const app = createApp({
   // The gateway's seller key on the hearth, from a mounted file like the other secrets.
   ...(process.env.HEARTH_API_KEY_FILE ? { hearthApiKey: readFileSync(process.env.HEARTH_API_KEY_FILE, "utf8").trim() } : {}),
   ...(process.env.HEARTH_URL ? { hearthUrl: process.env.HEARTH_URL } : {}),
+  // The free pages at /tools/: checks a minute per address and tool, and the HESTIA agents' shared budget.
+  ...(process.env.WEB_PER_MINUTE ? { webPerMinute: Number(process.env.WEB_PER_MINUTE) } : {}),
+  ...(process.env.FREE_HEARTH_PER_MINUTE ? { freeHearthPerMinute: Number(process.env.FREE_HEARTH_PER_MINUTE) } : {}),
+  ...(process.env.GOOGLE_SITE_VERIFICATION ? { siteVerification: process.env.GOOGLE_SITE_VERIFICATION.trim() } : {}),
   paywall,
 });
 app.listen(port, host, () =>

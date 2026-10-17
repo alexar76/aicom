@@ -225,3 +225,31 @@ def test_settle_on_v2_never_goes_before_the_window(lagging):
     finally:
         b.wait_closable = real
     assert sum(slept) >= 600 and lagging.sent == ["settleChannel"]
+
+
+def test_the_actuate_task_hires_only_the_local_listing(monkeypatch):
+    """The federated listing of gaia.actuate@v1 is never verified, so it must not be hired."""
+    import buyer
+
+    doc = {"matches": [
+        {"capability_id": "gaia.actuate@v1", "product_id": "gaia.gateway", "source_hub": "https://iot.modelmarket.dev"},
+        {"capability_id": "gaia.actuate@v1", "product_id": "gaia.gateway", "source_hub": "local"},
+        {"capability_id": "math.factor@v1", "product_id": "factorworks", "source_hub": "local"},
+    ]}
+    monkeypatch.setattr(buyer, "http", lambda *a, **k: (200, doc))
+    offers = buyer.find_sellers("https://hub.test", buyer.TASKS["actuate"])
+    assert [o["source_hub"] for o in offers] == ["local"]
+    # The factor walkthrough keeps its old behaviour: every listing of its capability.
+    assert [o["product_id"] for o in buyer.find_sellers("https://hub.test")] == ["factorworks"]
+
+
+def test_the_actuate_task_input_and_intent():
+    import argparse
+
+    import buyer
+
+    args = argparse.Namespace(actuator="plug-sim-01", duration=60, n=7)
+    t = buyer.TASKS["actuate"]
+    assert t.input(args) == {"actuator_id": "plug-sim-01", "command": "on", "duration_s": 60}
+    assert "plug-sim-01" in t.intent(args) and t.min_sellers == 1
+    assert buyer.TASKS["factor"].input(args) == {"n": 7}

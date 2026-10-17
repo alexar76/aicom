@@ -21,6 +21,7 @@ from core.ecosystem_api_brief import (
     capability_catalogue,
     render_brief,
 )
+from tests.split_source import read_split
 
 
 def test_the_catalogue_is_read_from_the_satellite_that_owns_it():
@@ -82,7 +83,7 @@ def test_a_product_with_no_capabilities_gets_no_brief(tmp_path):
 
 
 def test_the_developer_agent_receives_it():
-    dev = (Path(__file__).resolve().parents[1] / "agents" / "dev.py").read_text(encoding="utf-8")
+    dev = read_split(Path(__file__).resolve().parents[1] / "agents" / "dev.py")
     assert "from core.ecosystem_api_brief import brief_for_code, render_brief" in dev
     block = dev[dev.index("_mesh_brief = \"\"") :][:1200]
     assert "admin_instructions = f\"{admin_instructions}" in block, "the brief must reach the prompt"

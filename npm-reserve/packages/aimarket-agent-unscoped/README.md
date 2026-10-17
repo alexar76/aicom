@@ -8,5 +8,5 @@ Unscoped alias — TypeScript: @aimarket/agent; Python: aimarket-agent on PyPI
 npm install @aimarket/agent
 ```
 
-- Ecosystem: https://modeldev.modelmarket.dev
+- Ecosystem: https://ecosystem.modelmarket.dev/
 - GitHub: https://github.com/alexar76/aicom

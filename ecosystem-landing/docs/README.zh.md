@@ -2,11 +2,11 @@
 
 > 🌐 [English](../README.md) · [Русский](README.ru.md) · [Español](README.es.md) · [Français](README.fr.md) · **中文** · [术语表](https://github.com/alexar76/aicom/blob/main/docs/localization-glossary.md)
 
-落地页 [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev/) — 产品、指南与在线演示地图。知识库：[knowledge-base](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-zh.md)。
+落地页 [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/) — 产品、指南与在线演示地图。知识库：[knowledge-base](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-zh.md)。
 
 ## Live
 
-- [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev/)
+- [ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/)
 
 ## 快速开始
 

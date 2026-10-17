@@ -34,8 +34,9 @@ This is a **demonstration deployment with small real funds** (~2 USDC + ~0.006 E
 
 > **LIVE set — redeployed 2026-07-26** from `0x1218…Ad0a` (fairness-rework lottery + fresh escrow/NFT/ACEX/ZK).
 > Earlier deployments (2026-06-18 / 06-19) remain in §2–§2b as historical record and are **superseded**.
-> The five **ACEX** contracts below were redeployed **2026-08-22** for the security-audit fixes
-> (§2d); the addresses they replaced held no funds and are superseded. The **escrow and lottery
+> The five **ACEX** contracts below were redeployed **2026-10-13** from the source the 2026-10-08
+> live-vs-source audit found newer than the chain (§9); the 2026-08-22 set they replace (§2d) held
+> no funds and is superseded. The **escrow and lottery
 > were redeployed 2026-09-04** for the audit fixes in §5, and the rail was switched over the same
 > day — the addresses they replaced (`0x0606983c…72C25D`, `0x701A7bd8…0a9554`) held no funds and
 > are superseded, but they are still named in the historical runs below, which happened on them.
@@ -49,11 +50,11 @@ This is a **demonstration deployment with small real funds** (~2 USDC + ~0.006 E
 | 1 | **AIAgentLottery** | [`0xEcB3A0…75af4`](https://basescan.org/address/0xEcB3A01b44C5b78210F72768C446c3E4E6175af4) | native-ETH work-seat lottery (paid tickets off) |
 | 2 | **AIMarketEscrow** (V2) | [`0xa4cb6ef7…1B2Eb`](https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb) | USDC payment channels for capability invocation — AIMarketEscrowV2 since 2026-10-08 (§7) |
 | 3 | **AIMarketCapabilityNFT** | [`0x544dcdd8…35a281`](https://basescan.org/address/0x544dcdd8B01A7ee1444bf89A5381aA981735a281) | capability/credential NFTs |
-| 4 | **AgentCollateralVault** | [`0x1BF39f65…13AbD9`](https://basescan.org/address/0x1BF39f659bd47bf0a15294B9e4760C327113AbD9) | ACEX — agent collateral custody |
-| 5 | **AgentListingRegistry** | [`0xab6E20aE…1B6600`](https://basescan.org/address/0xab6E20aE29A4c7C10C6131Da9721aE98201B6600) | ACEX — credit-listing registry |
-| 6 | **AgentLendingPool** | [`0x36446D83…232298`](https://basescan.org/address/0x36446D8393a39027D1242C1C277FdD9227232298) | ACEX — lending pool |
-| 7 | **PulseAMM** | [`0xED279249…fc5D22`](https://basescan.org/address/0xED2792499757dd6d40504b2522f2E99559fc5D22) | ACEX — pulse AMM (allow-listed pool creation) |
-| 8 | **AgentAuditPool** | [`0x96005B0E…3e689b`](https://basescan.org/address/0x96005B0E70ce1F1E0C0977067216aC45043e689b) | ACEX — audit staking pool |
+| 4 | **AgentCollateralVault** | [`0xdAa073ED…42081c`](https://basescan.org/address/0xdAa073EDCA17328188Afe5A83394Fc7b5E42081c) | ACEX — agent collateral custody |
+| 5 | **AgentListingRegistry** | [`0x3636A636…89acC9`](https://basescan.org/address/0x3636A636262940Ff4E49aC1BCf34b958F589acC9) | ACEX — credit-listing registry |
+| 6 | **AgentLendingPool** | [`0x51a61d25…2d9C3d`](https://basescan.org/address/0x51a61d25b799C17A012eB671e3EDe2569E2d9C3d) | ACEX — lending pool |
+| 7 | **PulseAMM** | [`0x0A70AA84…559E47`](https://basescan.org/address/0x0A70AA84903ecB2E0aF5c435AFd9EDd178559E47) | ACEX — pulse AMM (allow-listed pool creation) |
+| 8 | **AgentAuditPool** | [`0xE0C711Ef…8a6160`](https://basescan.org/address/0xE0C711Ef82F9C97eefBF4C0e715de1b09F8a6160) | ACEX — audit staking pool |
 | 9 | **PulseDistributor** | [`0x325aC681…e38596`](https://basescan.org/address/0x325aC681FDd14c23DE074c15ac2Ed07702e38596) | ACEX — pulse reward distribution |
 | 10 | **PlonkVerifier** | [`0x1914D8a0…9B8e85c5`](https://basescan.org/address/0x1914D8a04dd65c6d8C888B98A31757F79B8e85c5) | ZK proof verifier (oracle proofs) |
 | 11 | **BountySplitter** | [`0x89A618F6…A63426`](https://basescan.org/address/0x89A618F66767101B96977e536797838661A63426) | MOMUS red-team bounty settlement — one pool per finding, split across finder/fixer/conductor |
@@ -63,7 +64,7 @@ This is a **demonstration deployment with small real funds** (~2 USDC + ~0.006 E
 (6 decimals — escrow/service payments). No fake token is used anywhere.
 
 > Full redeploy txs + real-money E2E for this set: **§2c** (deploys) and **§3h** (tests).
-> ACEX audit redeploy: **§2d**.
+> ACEX audit redeploy: **§2d** (2026-08-22); ACEX source-gap redeploy: **§9** (2026-10-13).
 
 ### Contract map
 
@@ -1288,6 +1289,9 @@ and moving it is a separate decision — so this is the record of the gap, not i
 | AIAgentLottery | 2026-09-11 | Its broadcast names commit 9011cb60b, which is not in this repository's object database; the bytecode cannot be traced to a commit here. |
 | ACEX set (2026-08-22) | — | No broadcast JSON was kept for that deploy, so its provenance rests on this journal's §2d alone. |
 
+**2026-10-13:** the four ACEX rows above (AgentAuditPool, PulseAMM, AgentListingRegistry /
+AgentCollateralVault) are closed — the set was redeployed from this source (§9).
+
 ---
 
 ## 7. Escrow V2 — AIMarketEscrowV2 replaces V1, 2026-10-08 📌
@@ -1375,3 +1379,103 @@ costs that seller's price, and the rest comes back after the one-hour close wind
 `escrow-signer-security-prev-1791465481402324415` and the hub is
 `modelmarket-hub-security-prev-1791465528401779257`. `rollout_container.py` restores one by
 swapping it back. Roll HORKOS and the hub back together, as with the forward step.
+
+## 8. Independent's own escrow moves to V2, 2026-10-13 📌
+
+Owner: "Эскроу V2 для Independent … да, с 0x1218". independentai.network ran its own escrow,
+`0x1f29BdF2A70152EFb0B4753054A6Ed51529124A2`, a V1-interface build (7 831 bytes) whose only
+authorized hub was its HORKOS `0x73D2…`. It now has the same `AIMarketEscrowV2` the AICOM hubs use
+(close window, per-channel receipts, deferred legs; see §7). **Nothing was migrated: 0x1f29 read
+0 USDC immediately before the deploy.**
+
+| Contract | New address | Superseded |
+|---|---|---|
+| `AIMarketEscrowV2` (Independent) | `0x0BFCa46A324fe534Eb6E71c52C8b5AD74B969534` | `0x1f29BdF2A70152EFb0B4753054A6Ed51529124A2` |
+
+### Transaction
+
+| What | Tx | Block | Gas used | Fee |
+|---|---|---|---|---|
+| `AIMarketEscrowV2` CREATE | `0xa1cff1e83a87cecf7436989183db47af5553591d740af7f2c5339688fc9a2baf` | 52567008 | 2 340 057 | 0.0000140 ETH |
+
+Deployed from `0x1218…Ad0a` with `scripts/deploy_escrow_lottery_base.sh escrow-v2-independent
+broadcast` after a dry run on the live chain. Constructor: `authorizedHubs =
+[0x73D295139DA45e055b852273941B514ccDC01C96]` (Independent's HORKOS), `whitelistedTokens = [USDC]`.
+Read back on chain: `0x73D2…` authorized, `0x1218` not, USDC whitelisted, `SETTLE_WINDOW() = 3600`,
+`owner() = 0x1218…Ad0a`. Source verified on Sourcify (**exact match**).
+
+### Switched over the same hour
+
+HORKOS on the Independent host serves the escrow compiled in under `SIGNER_DEPLOYMENT=independent`
+(`escrow-signer/escrow_signer/config.py`), so the address changed in code, not in an env file; it
+booted with `ready: true` (key authorized, domain separator matches). The hub's
+`AIMARKET_ESCROW_CONTRACT` (in `/etc/independentai/escrow-bridge.env`) points at the new contract;
+the Independent hub 3.15.16 and the settlement sweep were already V2-aware (`isReceiptUsed`,
+ten-word `getChannel`). `GET /hub/ai-market/v2/health` → `payment_ready: true`; the sweep ran clean.
+Rollback: `config.py.pre-20261013-v2` and `escrow-bridge.env.pre-20261013-v2` beside the live files.
+
+## 9. ACEX redeployed from current source, 2026-10-13 📌
+
+Owner: "Разворачивать ли ACEX заново …?" → "Да, развернуть заново". The 2026-10-08 audit above found
+the live ACEX set (§2d, 2026-08-22) older than its source in four rows; this deploy closes them.
+What the chain gains:
+
+- **AgentAuditPool** takes its TWAP from PulseAMM's price × time accumulator, so a price counts for as
+  long as it actually held — a crash held across one block boundary no longer counts for a day and
+  cannot manufacture a default. A baseline needs three samples (`MIN_OBSERVATIONS_FOR_BASELINE = 3`),
+  time before the pool existed does not enter it, and only a pool quoted in its own USDC prices anything.
+- **PulseAMM** folds the accumulator before every swap and keeps block-start reserves for the spot
+  check; its quote token is set once by the owner.
+- **AgentListingRegistry / AgentCollateralVault**: a squatted, unapproved id can be evicted even with
+  collateral on it (the agent wallet pulls the collateral back), only that wallet may fund an id that
+  is not live, and the vault refuses collateral before its registry is set (ff589b06c).
+- `AgentShareToken`'s overdraw now reverts `ERC20InsufficientBalance` instead of `Panic(0x11)` (§2d's
+  open item; the share token is created by the registry, so it ships inside the registry bytecode).
+
+**Nothing was migrated: all five superseded contracts read 0 USDC and 0 ETH immediately before the
+switch.** `PulseDistributor` (owner-only constructor, no ACEX pointers), the lottery, escrow, NFT,
+verifier and BountySplitter keep their addresses.
+
+| Contract | New address | Superseded (2026-08-22) |
+|---|---|---|
+| AgentCollateralVault | `0xdAa073EDCA17328188Afe5A83394Fc7b5E42081c` | `0x1BF39f659bd47bf0a15294B9e4760C327113AbD9` |
+| AgentListingRegistry | `0x3636A636262940Ff4E49aC1BCf34b958F589acC9` | `0xab6E20aE29A4c7C10C6131Da9721aE98201B6600` |
+| AgentLendingPool | `0x51a61d25b799C17A012eB671e3EDe2569E2d9C3d` | `0x36446D8393a39027D1242C1C277FdD9227232298` |
+| PulseAMM | `0x0A70AA84903ecB2E0aF5c435AFd9EDd178559E47` | `0xED2792499757dd6d40504b2522f2E99559fc5D22` |
+| AgentAuditPool | `0xE0C711Ef82F9C97eefBF4C0e715de1b09F8a6160` | `0x96005B0E70ce1F1E0C0977067216aC45043e689b` |
+
+### Transactions (signer `0x1218…Ad0a`)
+
+| # | Call | Tx | Block | Gas used |
+|--:|---|---|---|---|
+| 1 | `new AgentCollateralVault(usdc)` | [`0x4bbfe8…d1d4a3`](https://basescan.org/tx/0x4bbfe839a555ca61572ebeb8a33b065b0d84454888850101afaeb96476d1d4a3) | 52567190 | 1 293 857 |
+| 2 | `new AgentListingRegistry(vault, usdc)` | [`0xc1f279…156e67`](https://basescan.org/tx/0xc1f279750ab796d9ce683c5401226f5a016fd28f04eca971719f7e9588156e67) | 52567191 | 3 835 978 |
+| 3 | `vault.setRegistry(registry)` | [`0xb2b8b0…e59e14d`](https://basescan.org/tx/0xb2b8b0b1203629a8925ee776fb101720a8ffcfae7fd28687f3c6b7e41c59e14d) | 52567192 | 68 420 |
+| 4 | `new AgentLendingPool(usdc, vault, registry)` | [`0x1c56c2…aa4aa41`](https://basescan.org/tx/0x1c56c24442d1aac477e32cca79f81ea0ef1c10b01bb47f73862e20c42aa4aa41) | 52567193 | 2 213 572 |
+| 5 | `vault.setLendingPool(lending)` | [`0x05f0c9…d757cd6`](https://basescan.org/tx/0x05f0c91fadebb4b614e1a560af1817f42d52746a957a9d9aeb4c1b373d757cd6) | 52567194 | 51 333 |
+| 6 | `new PulseAMM()` | [`0x6355ed…1b6cd17595`](https://basescan.org/tx/0x6355ed6b3fbd45070d4472dff224da98a8c6ed092c95ad1af039c61b6cd17595) | 52567195 | 1 078 224 |
+| 7 | `amm.setQuoteToken(usdc)` | [`0x344c0c…1d351393b`](https://basescan.org/tx/0x344c0ca22890d65bffde4e28041518784fffb4656238255c074228d1d351393b) | 52567196 | 46 319 |
+| 8 | `new AgentAuditPool(registry, vault, usdc, amm)` | [`0x97600d…0036be11`](https://basescan.org/tx/0x97600d3cca584b6e8569b479ed1fe83f15e8683f123508b7e4077f530036be11) | 52567197 | 3 120 552 |
+| 9 | `registry.setAuditPool(auditPool)` | [`0x9038e2…d2ffd12b5`](https://basescan.org/tx/0x9038e2e9eeec3bf50cee6d5bd1ba1a5fc8d1b89d21a07e1779851a1d2ffd12b5) | 52567198 | 46 347 |
+
+Total gas **11 754 602** at 0.00585 gwei = **0.0000687 ETH**. Deployed with
+`scripts/deploy_acex_base.sh broadcast` at commit 3bfd71938 after a dry run on the live chain;
+72 Foundry tests green. Unlike §2d, the broadcast JSON was kept
+(`acex/contracts/evm/broadcast/DeployACEX.s.sol/8453/run-1791923741945.json` on the operator machine;
+`broadcast/` is not committed).
+
+### Read back on chain
+
+`owner()` of all five = `0x1218…Ad0a`. `vault.registry`, `vault.lendingPool`, `registry.vault`,
+`registry.auditPool`, `lending.registry`, `lending.vault`, `auditPool.registry`, `auditPool.vault`,
+`auditPool.pulseAmm` all name the new set; `vault.usdc` and `amm.quoteToken` = USDC;
+`auditPool.MIN_OBSERVATIONS_FOR_BASELINE() = 3`, `MIN_OBSERVATION_WINDOW() = 86400`,
+`amm.MIN_INITIAL_USDC() = 1e9`. Source verified on **Sourcify — exact match, all five** (§2d's set is
+not on Sourcify).
+
+### Not done
+
+No listing, pool or collateral exists on the new set, and none existed on the old one (its registry's
+nonce was still 1, so it never created a share or note token; its lending pool had 0 shares and 0 debt):
+ACEX on Base is deployed, wired and verified, not value-tested. The consumers read the addresses from
+`config/deployments/base-mainnet.json` (regenerated by `scripts/sync_deployment_addresses.py`).

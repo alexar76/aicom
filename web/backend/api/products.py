@@ -17,6 +17,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import Field
 
 from core.logging_utils import log_suppressed
+from core.product_origin import is_visitor_submission
 from core.paths import (
     arch_dir,
     code_dir,
@@ -124,6 +125,9 @@ def _sqlite_product_to_json_shape(raw: dict[str, Any]) -> dict[str, Any]:
         "category": meta.get("category"),
         "tags": meta.get("tags"),
         "tasks": [],
+        # Decided from the row's own fields (brief, funnel owner), which this shape does not
+        # carry; a boolean so nothing of the visitor's goes into a public response.
+        "visitor_submission": is_visitor_submission(raw),
     }
 
 
@@ -514,6 +518,8 @@ def _storefront_front_page_gate(pid: str, product: dict[str, Any] | None = None,
 
 def public_storefront_listing_eligible(pid: str, product: dict[str, Any]) -> tuple[bool, list[str]]:
     """Same gates as ``list_products`` / admin pipeline hints — shipped, code on disk, not hidden, quality or force."""
+    if is_visitor_submission(product):
+        return False, ["visitor_submission_private"]
     state = (product.get("state") or "").upper()
     if not _product_has_code(pid):
         return False, ["no_generated_code_on_disk_or_empty_manifest"]
@@ -575,6 +581,8 @@ def _product_has_code(pid: str) -> bool:
 
 def _public_storefront_grid_accepts(pid: str, product: dict[str, Any]) -> bool:
     """Single source of truth for public grid inclusion (keep in sync with public_storefront_listing_eligible)."""
+    if is_visitor_submission(product):
+        return False
     state = (product.get("state") or "").upper()
     if not _product_has_code(pid):
         return False
@@ -791,6 +799,8 @@ def _build_product_detail_response(product_id: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail="Product not found")
 
     if public_storefront_blocked(product_id):
+        raise HTTPException(status_code=404, detail="Product not found")
+    if is_visitor_submission(product):
         raise HTTPException(status_code=404, detail="Product not found")
 
     marketing = _load_marketing(product_id)

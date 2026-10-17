@@ -1,75 +1,45 @@
-# Auto-Mesh Pipeline
+# AI-Factory and the separate Auto-Mesh service
 
-**Product:** `aicom` (AI-Factory)  
-**Tagline:** *The factory doesn’t just write code — it hires other AIs on the marketplace to assemble the product.*
+AI-Factory builds products with its internal PM, architect, developer, QA and other role agents.
+Its ordinary pipeline does not automatically replace those roles with marketplace providers.
 
-## The problem
+## Implemented factory integration
 
-Traditional “AI app builders” are **single-model code generators**. They cannot:
+The optional [external diagnosis flow](factory-subcontracting.md) adds a concrete purchase path:
 
-- Pull live capabilities from a federated catalog
-- Pay per invoke with verifiable settlement
-- Compose multi-agent workflows that survive production economics
+1. A high/critical, file-bound QA finding persists through two completed internal repairs.
+2. The factory looks for a configured, compatible, credits-eligible service on AIMarket.
+3. It reserves a bounded price and invokes the service once.
+4. It verifies the billing receipt and the report's source references.
+5. Its internal developer receives the advice; normal tests and QA still determine acceptance.
 
-Teams end up hand-wiring APIs, wallets, and compliance after the demo.
+The feature is off by default. It requires an approved provider, source-sharing scope, pinned Hub
+keys and a funded account. Unknown payments stay reserved and are not automatically retried.
+It does not promise a refund when local report acceptance fails.
 
-## Overview
+Full algorithm, configuration, provider contract, accounting and recovery:
+[English](factory-subcontracting.md) · [Русский](factory-subcontracting.ru.md) ·
+[Español](factory-subcontracting.es.md) · [Français](factory-subcontracting.fr.md) ·
+[中文](factory-subcontracting.zh.md).
 
-**Auto-Mesh Pipeline** is the factory orchestrator mode where a run **discovers marketplace capabilities, opens a payment channel, invokes agents in sequence, and ships artifacts** — without an operator clicking through Admin for each step.
+## Separate Auto-Mesh service
 
-| Stage | What happens automatically |
-|-------|----------------------------|
-| **Discover** | Intent → ranked capability plan from hub federation |
-| **Fund** | Channel opened against Base USDT (micro-budget per run) |
-| **Mesh** | Pipeline graph built from agent outputs (PM → Architect → Dev → QA…) |
-| **Verify** | Safety + provenance hooks before spend |
-| **Ship** | Repo + compose + storefront sync to hub catalog |
+[`ai-service-mesh/backend/ai_service_mesh/orchestrator.py`](https://github.com/alexar76/ai-service-mesh/blob/main/backend/ai_service_mesh/orchestrator.py)
+contains a separate `MeshOrchestrator`: discovery, preflight, invoke and fallback to another
+candidate. Its task API is independent of the factory's normal code-generation pipeline.
 
-## Design notes
+The older description on this page presented that service as if every factory build discovered,
+funded and hired external agents for PM → Architect → Dev → QA. That integration is not implemented.
+The bounded diagnosis flow above is the current factory-to-market purchase integration.
 
-1. **Catalog growth** — every shipped product adds capabilities others can mesh into the next run.
-2. **Unit economics** — channel model makes multi-agent runs affordable (one deposit, N invokes).
-3. **End-to-end product** — outputs include federation manifests and payment wiring, not isolated files.
+## Source map
 
-## Architecture
+| Path | Responsibility |
+|---|---|
+| [config/pipeline_flow.json](../config/pipeline_flow.json) | Internal role sequence |
+| [orchestrator/task_executor_agent.py](../orchestrator/task_executor_agent.py) | Developer handoff and QA outcome hooks |
+| [orchestrator/procurement.py](../orchestrator/procurement.py) | Optional purchase workflow |
+| [core/procurement_store.py](../core/procurement_store.py) | Durable reservations and purchase journal |
+| [ai-service-mesh](https://github.com/alexar76/ai-service-mesh/tree/main/) | Separate task orchestration service |
 
-```mermaid
-sequenceDiagram
-  participant Op as Operator / CI
-  participant Factory as AI-Factory
-  participant Hub as AIMarket Hub
-  participant Agents as Marketplace agents
-
-  Op->>Factory: product brief
-  Factory->>Hub: discover(intent)
-  Hub-->>Factory: capability plan
-  Factory->>Hub: open channel($)
-  loop Mesh steps
-    Factory->>Agents: invoke(capability)
-    Agents-->>Factory: structured output
-  end
-  Factory->>Factory: gates (QA, security, E2E)
-  Factory->>Hub: sync shipped manifest
-```
-
-## Where it lives in the monorepo
-
-| Path | Role |
-|------|------|
-| [`config/pipeline_flow.json`](../config/pipeline_flow.json) | Canonical agent sequence |
-| [`agents/`](../agents/) | Role implementations |
-| [`orchestrator/`](../orchestrator/) | Run state, gates, mesh hooks |
-| [`ai-service-mesh/`](https://github.com/alexar76/ai-service-mesh/tree/main/) | Mesh API reference (discovery → escrow → invoke) |
-| [`aimarket-hub/`](https://github.com/alexar76/aimarket-hub/tree/main/) | Federation + invoke surface |
-
-## Operator experience
-
-1. Submit an idea in Admin → Pipeline.
-2. Watch **Live Monitor** — mesh steps show hub discover + per-agent invokes.
-3. Shipped product appears in gallery; capabilities propagate to hub for the next Auto-Mesh run.
-
-## Related capabilities
-
-Auto-Mesh **consumes** hub Zero-Trust Discovery and plugin TEE Escrow; shipped UIs **embed** the 1-Click Agent Widget for end users.
-
-See also: [ecosystem-architecture.md](ecosystem-architecture.md) · [killer-features.md](killer-features.md)
+Related: [ecosystem architecture](ecosystem-architecture.md), [ecosystem capabilities](killer-features.md).

@@ -314,12 +314,28 @@ same class of blocker as KI-2 (smart-contract audit).
 
 **Required action (operator / business):**
 1. Commission external crypto audit (scope: `oracle-core` signing, Chronos VDF, Sortes ECVRF
-   minimum; budget similar order of magnitude to KI-2, narrower scope).
-2. Publish Chronos parameter guide + operator attestation checklist (modulus fingerprint, `T`
-   policy, reference hardware).
-3. Freeze hybrid PQC fields in `aimarket-protocol` with negative test vectors; extend Hub to
-   verify both layers when present.
-4. Oracle key-management runbook (rotation, compromise, HSM option).
+   minimum; budget similar order of magnitude to KI-2, narrower scope). **Still open** — the
+   owner decided (2026-10-12) to self-verify first; nothing below replaces this item.
+2. ~~Publish Chronos parameter guide + operator attestation checklist~~ — **done 2026-10-12:**
+   [`oracles/chronos/docs/PARAMETERS.md`](https://github.com/alexar76/oracles/blob/main/oracles/chronos/docs/PARAMETERS.md)
+   (+ RU), with measured costs (10.5 µs per squaring in Python on the production host,
+   0.88 µs with GMP on a laptop — so `difficulty` is not a wall-clock promise).
+3. ~~Freeze hybrid PQC fields in `aimarket-protocol` with negative test vectors~~ — **done
+   2026-10-12:** spec §7.3.8 (+ §7.3.7, the strict Ed25519 rule), `receipt-hybrid-signed.json`
+   and four negative vectors, checked by `conformance/run.py`. The Hub already verifies both
+   layers when present (`Signer.verify_hybrid`).
+4. ~~Oracle key-management runbook~~ — **done 2026-10-12:**
+   [`oracles/docs/key-management.en.md`](https://github.com/alexar76/oracles/blob/main/docs/key-management.en.md) (+ RU).
+
+**Self-verification 2026-10-12 (what the standard vectors found, all fixed and deployed):**
+- Sortes ECVRF skipped RFC 9381 `validate_key`: for the identity public key a proof could be
+  forged for any input, always with the same output, and `sortes.verify` takes the key from the
+  caller. Fixed (small-order keys refused; responses say whether the key is the oracle's own).
+- Ed25519 verification across the ecosystem accepted the identity-key forgery (`R` = base point,
+  `S` = 1, valid for every message) because OpenSSL, tweetnacl and WebCrypto do. Every verifier
+  now refuses small-order keys and `R`; RFC 8032 vectors pin the signers.
+- Chronos: `y` and `N − y` both verified for the same input (−1 has order 2), one bit of
+  prover choice in a beacon. Outputs are now reported canonically (`y_canonical`, `output`).
 
 **Acceptance criteria:**
 - Audit report PDF linked from `oracles/docs/crypto-maturity.en.md`.

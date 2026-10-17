@@ -51,4 +51,6 @@ if [[ ! -f "$ROOT/ecosystem-landing/learn/index.html" ]]; then
   exit 1
 fi
 
+python3 scripts/build_ecosystem_atlas.py --base-url "${SEO_BASE_URL}"
+
 echo "OK: ecosystem-landing ready ($(find ecosystem-landing -name 'index.html' | wc -l | tr -d ' ') index pages)"
