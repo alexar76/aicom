@@ -166,7 +166,7 @@ flowchart TB
     argus["ARGUS-3<br/>Local agent · optional economy"]
     memory["Attested Memory<br/>mémoire vérifiable"]
     esim["Opérateurs eSIM<br/>boutique · nœud vendeur · x402"]
-    emporion["EMPORION<br/>TVA · LEI · change · sanctions · OTS"]
+    emporion["EMPORION<br/>TVA · LEI · registres · change · sanctions<br/>OTS · captures web · minuteurs"]
   end
 
   subgraph external["External"]
@@ -308,7 +308,7 @@ flowchart TB
   end
 
   subgraph EMP["EMPORION · faits de registre public"]
-    E2["TVA via VIES · GLEIF LEI · taux de la BCE<br/>listes de sanctions · OpenTimestamps"]
+    E2["TVA via VIES · GLEIF LEI · taux de la BCE<br/>listes de sanctions · OpenTimestamps<br/>registres des sociétés · EORI · RDAP · jours ouvrés<br/>captures web · minuteurs"]
   end
 
   subgraph CLIENTS["Clients"]
@@ -518,9 +518,11 @@ Bibliothèque **`oracle-core`** partagée. Chaque oracle émet des artefacts sig
 
 ### 3.6d EMPORION — faits de registre public pour les agents qui commercent
 
-**Rôle :** ce qu'un agent vérifie avant de traiter avec une entreprise ou de déplacer de l'argent, avec la réponse des registres publics eux-mêmes : si un numéro de TVA de l'UE est valide (VIES, avec le numéro de consultation que l'UE délivre pour la vérification), qui est une entité juridique (GLEIF LEI), le taux de référence de la BCE à une date (un taux de référence, pas un taux de transaction), si un nom ou une adresse de portefeuille figure sur les listes de sanctions de l'UE, de l'OFAC SDN ou de l'ONU, et une preuve d'horodatage ancrée dans Bitcoin pour une empreinte (OpenTimestamps, `.ots` standard). Six capacités payantes à 0,001–0,002 $ — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — et la gratuite `emporion.sources@v1`.
+**Rôle :** ce qu'un agent vérifie avant de traiter avec une entreprise ou de déplacer de l'argent, avec la réponse des registres publics eux-mêmes : si un numéro de TVA de l'UE est valide (VIES, avec le numéro de consultation que l'UE délivre pour la vérification), qui est une entité juridique (GLEIF LEI), le taux de référence de la BCE à une date (un taux de référence, pas un taux de transaction), si un nom ou une adresse de portefeuille figure sur les listes de sanctions de l'UE, de l'OFAC SDN ou du Royaume-Uni (la liste britannique reprend les désignations de l'ONU avec leur numéro), et une preuve d'horodatage ancrée dans Bitcoin pour une empreinte (OpenTimestamps, `.ots` standard). Six capacités payantes à 0,001–0,002 $ — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — et la gratuite `emporion.sources@v1`.
 
 **Honnête par construction :** chaque réponse est signée en Ed25519 avec sa source, l'heure de récupération et le SHA-256 de ce que la source a renvoyé. Un filtrage des listes de sanctions est une recherche, pas une décision : une correspondance est une raison de regarder de plus près, et l'absence de correspondance n'est pas un feu vert. Les listes sont conservées sur disque avec leur heure de récupération et leur empreinte d'origine : un redémarrage ou une panne de la source ne vide jamais une liste en silence, et `/health` nomme les listes réellement chargées.
+
+**Depuis la 0.2 — les questions suivantes, et deux outils :** registres nationaux des sociétés par numéro ou par nom (Norvège, France, République tchèque, Finlande), numéros EORI pour la douane de l'UE, qui a enregistré un domaine et quand (RDAP, depuis le registre du TLD via le bootstrap de l'IANA) et jours ouvrés dans ~250 pays et sur des marchés comme TARGET2. Deux capacités vont au-delà des recherches : une **capture web** enregistre ce qu'une page a répondu à un instant — URL finale, redirections, IP, certificat TLS et SHA-256 du corps — et ancre cet enregistrement dans Bitcoin ; un **minuteur** appelle le callback https d'un agent par un événement signé à une heure donnée, ou comme interrupteur d'homme mort quand l'agent cesse de pointer. Les deux n'atteignent que des adresses publiques, épinglées à l'adresse vérifiée.
 
 **Vendu via le Hub :** EMPORION tourne sur `oracle-core` avec la barrière de prix activée : une capacité payante ne répond qu'à un appel signé par un hub de confiance, un appel direct reçoit `402` avec le hub qui la vend (§4.3), et chaque appel est inscrit au journal des appels du fournisseur.
 

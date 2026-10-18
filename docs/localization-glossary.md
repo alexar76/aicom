@@ -547,6 +547,34 @@ secure, verified, trusted*. A scanner that blocks nothing has found nothing it r
 | lock file | лок-файл | archivo lock | fichier lock | lock 文件 | The file name `warden.lock.json` stays Latin. |
 | gate chain | цепочка гейтов | cadena de compuertas | chaîne de portes | 关卡链 | |
 
+## WARDEN flow guard terms
+
+Added 2026-10-18 with `warden/docs/flow-guard*.md` (the model-run terms the same day). Mode names (`ask`, `deny`, `audit`, `off`), labels
+(`private`, `untrusted`, `outbound`, `destructive`), hook names, policy keys and benchmark names (`AgentDojo`,
+`important_instructions`, `CaMeL`) are **identifiers and never translated**. The flow guard refuses or asks; it
+never makes a session *safe*: the same vocabulary rule as above applies.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| flow guard | страж потоков | guardián de flujos | garde de flux | 流向守卫 | |
+| lethal trifecta | смертельная тройка (lethal trifecta) | tríada letal (lethal trifecta) | triade létale (lethal trifecta) | 致命三要素（lethal trifecta） | Simon Willison's term; gloss the English once. |
+| outside text | чужой текст | texto ajeno | texte extérieur | 外部文本 | Text written by someone else. Not «внешние данные». |
+| private data | приватные данные | datos privados | données privées | 私有数据 | |
+| outbound call | исходящий вызов | llamada saliente | appel sortant | 外发调用 | Sends something out or acts for the user. |
+| destination | адресат | destino | destinataire | 目标 | Whom or what a call is aimed at: host, address, IBAN, recipient. |
+| destination you named | адресат, названный пользователем | destino nombrado por el usuario | destinataire nommé par l’utilisateur | 用户点名的目标 | Appears in what the user typed this session. |
+| fingerprint | отпечаток | huella | empreinte | 指纹 | A hash of a text window or value, never the text. |
+| personal number | личный номер | número personal | numéro personnel | 个人号码 | Card, passport, account, phone. |
+| ask (decision) | спрашивает / запрос подтверждения | pregunta | demande | 询问 | |
+| deny (decision) | запрещён / запрет | denegada / deniega | refusé / refuse | 拒绝 | |
+| reference solution (ground truth) | эталонное решение | solución de referencia | solution de référence | 参考解 | A benchmark task's scripted correct calls. |
+| delivered (injection) | доставлена | entregada | livrée | 已送达 | Its text came back in a tool result. |
+| attack action | атака-действие | acción de ataque | action d’attaque | 攻击动作 | An attacker goal that needs a tool call. |
+| replay (oracle run) | воспроизведение | reproducción | rejeu | 回放 | The no-model run that plays reference solutions. |
+| hijacked (model setup) | перехваченная модель | secuestrado | détourné | 被劫持 | Told that the injected message is the user's own. `tool_knowledge` stays an identifier. |
+| call at the attacker | вызов в адрес атакующего | llamada al atacante | appel vers l’attaquant | 指向攻击者的调用 | A refused call whose arguments carry what the goal names. |
+| relay (key holder) | ретранслятор | relé | relais | 中继 | Host process that holds the API key; the container has no network. |
+
 ## WARDEN continuous quality cycle
 
 Added 2026-10-10 for `momus/docs/quality-cycle*.md` (EN/RU/ES/FR/ZH).
@@ -661,6 +689,9 @@ the outcome values (`ok`, `failed`, `payment_required`, …), the caller kinds (
 | retention period | срок хранения | plazo de conservación | durée de conservation | 保存期限 | GDPR Art. 5(1)(e) vocabulary. Web-verified. |
 | price gate | ценовой шлюз | compuerta de precio | barrière de prix | 价格闸门 | `oracle_core.price_gate`: a priced capability answers only a call a trusted hub signed (or an operator-nominated caller); anyone else gets `402`. Modes `off` / `report` / `enforce` stay Latin. The renderings already used in `docs/free-and-paid-tiers.*.md`. |
 | public-record facts | публичные факты | hechos de registro público | faits de registre public | 公共记录事实 | EMPORION's own description (VAT, LEI, ECB rates, sanctions lists, timestamps). Product wording, one calque per locale. |
+| web capture | снимок страницы | captura web | capture web | 网页快照 | `emporion.web.capture@v1`: what a page answered, recorded and anchored in Bitcoin. |
+| dead man's switch | dead man's switch | interruptor de hombre muerto | interrupteur d'homme mort | 死人开关 | `emporion.timer.set@v1` with `deadman_seconds`: fires when the agent stops checking in. RU keeps the English term, as RU engineering usage does. |
+| business day | рабочий день | día hábil | jour ouvré | 工作日 | `emporion.calendar.check@v1`. |
 
 ## Sources (web-verified renderings)
 

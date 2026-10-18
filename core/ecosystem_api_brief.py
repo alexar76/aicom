@@ -4,7 +4,8 @@ The factory builds products that pay for capabilities from its own mesh, and the
 call those capabilities lived in exactly two places, neither of which reached the agent writing the
 code:
 
-* ``atlas/atlas/products.py`` — the real catalogue, with every capability id and input schema;
+* ATLAS's catalogue (``atlas/atlas/product_parts/catalog.py`` and ``atlas/atlas/field_products.py``
+  since ``products.py`` was split) — every capability id and input schema;
 * a detector that compares a product's calls against it and reports the differences.
 
 So a round would be told "input for atlas.fire.weather@v1 does not match its published schema — field
@@ -87,9 +88,16 @@ LIVE_MANIFEST_URLS = (
     "https://modelmarket.dev/ai-market/v2/manifest",
     "https://atlas.modelmarket.dev/ai-market/v2/manifest",
 )
-GITHUB_CATALOGUE_URL = (
-    "https://raw.githubusercontent.com/alexar76/atlas/main/atlas/products.py"
+#: Where ATLAS keeps its catalogue literals, relative to its package, and the list each one holds.
+#: products.py held all of it until it was split into product_parts/ (2bd8253e3); it stays last so a
+#: checkout or mirror from before the split still reads. Reading only products.py after the split
+#: found nothing and every offline briefing came back empty.
+CATALOGUE_FILES = (
+    ("product_parts/catalog.py", "PRODUCT_CAPS"),
+    ("field_products.py", "FIELD_PRODUCT_CAPS"),
+    ("products.py", "PRODUCT_CAPS"),
 )
+GITHUB_CATALOGUE_BASE = "https://raw.githubusercontent.com/alexar76/atlas/main/atlas/"
 CACHE_TTL_SEC = 6 * 3600
 
 
@@ -173,46 +181,118 @@ def _github_capabilities() -> list[dict[str, Any]]:
     """The catalogue source on GitHub — the one thing a container can pull when the hub is down."""
     import urllib.request
 
-    try:
-        with urllib.request.urlopen(
-            urllib.request.Request(GITHUB_CATALOGUE_URL), timeout=15
-        ) as r:
-            text = r.read().decode("utf-8", "replace")
-    except Exception:
-        return []
-    caps = _parse_product_caps(text)
+    caps: list[dict[str, Any]] = []
+    for rel, name in CATALOGUE_FILES:
+        try:
+            with urllib.request.urlopen(
+                urllib.request.Request(GITHUB_CATALOGUE_BASE + rel), timeout=15
+            ) as r:
+                text = r.read().decode("utf-8", "replace")
+        except Exception:
+            continue
+        caps.extend(_parse_product_caps(text, name))
+    caps = _dedupe(caps)
     if caps:
-        _write_cache(caps, source=GITHUB_CATALOGUE_URL)
+        _write_cache(caps, source=GITHUB_CATALOGUE_BASE)
     return caps
 
 
-def _parse_product_caps(text: str) -> list[dict[str, Any]]:
-    """Pull PRODUCT_CAPS out of a products.py source, wherever it came from."""
+def _bundled_capabilities() -> list[dict[str, Any]]:
+    """The catalogue in this checkout's atlas/ — last resort, it is frozen at image-build time."""
+    root = _repo_root() / "atlas" / "atlas"
+    caps: list[dict[str, Any]] = []
+    for rel, name in CATALOGUE_FILES:
+        try:
+            text = (root / rel).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        caps.extend(_parse_product_caps(text, name))
+    return _dedupe(caps)
+
+
+def _dedupe(caps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    seen: set[str] = set()
+    out = []
+    for c in caps:
+        cid = str(c.get("capability_id"))
+        if cid not in seen:
+            seen.add(cid)
+            out.append(c)
+    return out
+
+
+class _NotLiteral(ValueError):
+    pass
+
+
+def _literal(node: Any, symbols: dict[str, Any]) -> Any:
+    """ast.literal_eval that also knows the module's own literal constants.
+
+    The catalogue entries are dicts of literals that name a shared constant or two
+    (``"output_schema": _RECEIPT_OUT``) or call a helper (``_common_output(...)``). A whole-list
+    literal_eval fails on the first such value and drops the catalogue; here a known constant is
+    substituted and a value that cannot be known statically is left out of its dict (it is never
+    the capability id or, so far, the input schema).
+    """
+    import ast
+
+    try:
+        return ast.literal_eval(node)
+    except (ValueError, TypeError, SyntaxError, MemoryError, RecursionError):
+        pass
+    if isinstance(node, ast.Name) and node.id in symbols:
+        return symbols[node.id]
+    if isinstance(node, ast.Dict):
+        out: dict[Any, Any] = {}
+        for k, v in zip(node.keys, node.values):
+            if k is None:  # **spread
+                continue
+            try:
+                out[_literal(k, symbols)] = _literal(v, symbols)
+            except _NotLiteral:
+                continue
+        return out
+    if isinstance(node, (ast.List, ast.Tuple)):
+        items = []
+        for e in node.elts:
+            try:
+                items.append(_literal(e, symbols))
+            except _NotLiteral:
+                continue
+        return items if isinstance(node, ast.List) else tuple(items)
+    raise _NotLiteral(type(node).__name__)
+
+
+def _parse_product_caps(text: str, name: str = "PRODUCT_CAPS") -> list[dict[str, Any]]:
+    """Pull a catalogue list (PRODUCT_CAPS by default) out of a Python source, wherever it came from."""
     import ast
 
     try:
         tree = ast.parse(text)
     except SyntaxError:
         return []
+    symbols: dict[str, Any] = {}
     out: list[dict[str, Any]] = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.AnnAssign):
-            target = node.target
-            if not (isinstance(target, ast.Name) and target.id == "PRODUCT_CAPS"):
-                continue
+    for node in tree.body:
+        # The catalogue is annotated — `PRODUCT_CAPS: list[dict[str, Any]] = [...]` — which is an
+        # AnnAssign, not an Assign; looking only for Assign once found nothing, silently.
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            targets, value = [node.target.id], node.value
         elif isinstance(node, ast.Assign):
-            if not any(isinstance(x, ast.Name) and x.id == "PRODUCT_CAPS" for x in node.targets):
-                continue
+            targets = [t.id for t in node.targets if isinstance(t, ast.Name)]
+            value = node.value
         else:
             continue
-        if node.value is None:
+        if value is None or not targets:
             continue
         try:
-            value = ast.literal_eval(node.value)
-        except (ValueError, TypeError, SyntaxError):
+            evaluated = _literal(value, symbols)
+        except _NotLiteral:
             continue
-        if isinstance(value, list):
-            out.extend(c for c in value if isinstance(c, dict) and c.get("capability_id"))
+        for t in targets:
+            symbols[t] = evaluated
+        if name in targets and isinstance(evaluated, list):
+            out.extend(c for c in evaluated if isinstance(c, dict) and c.get("capability_id"))
     return out
 
 
@@ -234,42 +314,7 @@ def capability_catalogue(*, allow_network: bool = True) -> list[dict[str, Any]]:
         gh = _github_capabilities()
         if gh:
             return gh
-
-    caps: list[dict[str, Any]] = []
-    atlas_products = _repo_root() / "atlas" / "atlas" / "products.py"
-    if not atlas_products.is_file():
-        return caps
-    try:
-        import ast
-
-        tree = ast.parse(atlas_products.read_text(encoding="utf-8", errors="replace"))
-    except (OSError, SyntaxError):
-        return caps
-
-    for node in ast.walk(tree):
-        # The catalogue is annotated — `PRODUCT_CAPS: list[dict[str, Any]] = [...]` — which is an
-        # AnnAssign, not an Assign. Looking only for Assign found nothing and returned an empty
-        # briefing, silently: exactly the kind of quiet zero this whole file exists to prevent.
-        if isinstance(node, ast.AnnAssign):
-            target = node.target
-            if not (isinstance(target, ast.Name) and target.id == "PRODUCT_CAPS"):
-                continue
-        elif isinstance(node, ast.Assign):
-            if not any(isinstance(t, ast.Name) and t.id == "PRODUCT_CAPS" for t in node.targets):
-                continue
-        else:
-            continue
-        if node.value is None:
-            continue
-        try:
-            value = ast.literal_eval(node.value)
-        except (ValueError, TypeError, SyntaxError):
-            continue
-        if isinstance(value, list):
-            for item in value:
-                if isinstance(item, dict) and item.get("capability_id"):
-                    caps.append(item)
-    return caps
+    return _bundled_capabilities()
 
 
 def render_brief(*, capability_ids: list[str] | None = None, max_caps: int = 8) -> str:

@@ -170,7 +170,7 @@ flowchart TB
     argus["ARGUS-3<br/>Local agent · optional economy"]
     memory["Attested Memory<br/>verifiable memory for agents"]
     esim["eSIM operators<br/>store · seller node · x402"]
-    emporion["EMPORION<br/>VAT · LEI · FX · sanctions · OTS"]
+    emporion["EMPORION<br/>VAT · LEI · registers · FX · sanctions<br/>OTS · web capture · timers"]
   end
 
   subgraph external["External"]
@@ -324,7 +324,7 @@ flowchart TB
   end
 
   subgraph EMP["EMPORION · public-record facts"]
-    E2["VIES VAT · GLEIF LEI · ECB rates<br/>sanctions lists · OpenTimestamps"]
+    E2["VIES VAT · GLEIF LEI · ECB rates<br/>sanctions lists · OpenTimestamps<br/>company registers · EORI · RDAP · business days<br/>web capture · timers"]
   end
 
   subgraph CLIENTS["Clients"]
@@ -538,9 +538,11 @@ Shared **`oracle-core`** library. Each oracle emits Ed25519-signed, verifiable a
 
 ### 3.6d EMPORION — public-record facts for agents that trade
 
-**Role:** What an agent checks before it deals with a company or moves money, answered from the public records themselves: whether an EU VAT number is valid (VIES, with the consultation number the EU issues for the check), who a legal entity is (GLEIF LEI), the ECB reference rate on a date (a reference, not a dealing rate), whether a name or a wallet address is on the EU, OFAC SDN or UN sanctions lists, and a Bitcoin-anchored timestamp proof for a digest (OpenTimestamps, standard `.ots`). Six priced capabilities at $0.001–0.002 — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — and the free `emporion.sources@v1`.
+**Role:** What an agent checks before it deals with a company or moves money, answered from the public records themselves: whether an EU VAT number is valid (VIES, with the consultation number the EU issues for the check), who a legal entity is (GLEIF LEI), the ECB reference rate on a date (a reference, not a dealing rate), whether a name or a wallet address is on the EU, OFAC SDN or UK sanctions lists (the UK list carries the UN designations with their UN numbers), and a Bitcoin-anchored timestamp proof for a digest (OpenTimestamps, standard `.ots`). Six priced capabilities at $0.001–0.002 — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — and the free `emporion.sources@v1`.
 
 **Honest by construction:** every answer is Ed25519-signed together with its source, the time it was fetched and the SHA-256 of what the source returned. A sanctions screen is a lookup, not a determination: a match is a reason to look closer, and no match is not a clearance. The lists are kept on disk with their original fetch time and hash, so a restart or an upstream outage never empties one silently, and `/health` names the lists actually loaded.
+
+**Since 0.2 — the next questions, and two tools:** national company registers by number or name (Norway, France, Czech Republic, Finland), EU EORI numbers for customs, who registered a domain and when (RDAP, from the TLD's own registry via IANA's bootstrap), and business days in ~250 countries and on markets such as TARGET2. Two capabilities go beyond lookups: a **web capture** records what a page answered at a moment — final URL, redirects, IP, TLS certificate and the SHA-256 of the body — and anchors that record in Bitcoin; a **timer** calls an agent's https callback with a signed event at a time, or as a dead man's switch when the agent stops checking in. Both reach public addresses only, pinned to the address that was checked.
 
 **Sold through the Hub:** EMPORION runs on `oracle-core` with the price gate on: a priced capability answers only a call a trusted hub signed, a direct call gets `402` naming the hub that sells it (§4.3), and every call is written to the provider's own call log.
 

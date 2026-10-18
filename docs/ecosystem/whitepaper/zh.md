@@ -166,7 +166,7 @@ flowchart TB
     argus["ARGUS-3<br/>Local agent · optional economy"]
     memory["Attested Memory<br/>可验证智能体记忆"]
     esim["eSIM 运营者<br/>店铺 · 卖家节点 · x402"]
-    emporion["EMPORION<br/>增值税 · LEI · 汇率 · 制裁 · OTS"]
+    emporion["EMPORION<br/>增值税 · LEI · 登记册 · 汇率 · 制裁<br/>OTS · 网页快照 · 定时器"]
   end
 
   subgraph external["External"]
@@ -308,7 +308,7 @@ flowchart TB
   end
 
   subgraph EMP["EMPORION · 公共记录事实"]
-    E2["VIES 增值税号 · GLEIF LEI · 欧洲央行汇率<br/>制裁名单 · OpenTimestamps"]
+    E2["VIES 增值税号 · GLEIF LEI · 欧洲央行汇率<br/>制裁名单 · OpenTimestamps<br/>公司登记册 · EORI · RDAP · 工作日<br/>网页快照 · 定时器"]
   end
 
   subgraph CLIENTS["Clients"]
@@ -518,9 +518,11 @@ Hub `PluginRegistry` 中可通过 pip 安装的钩子：`aimarket-safety`、`aim
 
 ### 3.6d EMPORION——面向从事贸易的智能体的公共记录事实
 
-**角色：** 智能体在与公司打交道或转账之前要核实的事项，答案直接来自公共登记本身：某个欧盟增值税号是否有效（VIES，附欧盟为该次核验出具的查询编号）、某个法人实体是谁（GLEIF LEI）、某日的欧洲央行参考汇率（是参考汇率，不是成交汇率）、某个名称或钱包地址是否出现在欧盟、OFAC SDN 或联合国的制裁名单上，以及为某个摘要生成锚定比特币的时间戳证明（OpenTimestamps，标准 `.ots`）。六项付费能力，每次 $0.001–0.002——`emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1`——以及免费的 `emporion.sources@v1`。
+**角色：** 智能体在与公司打交道或转账之前要核实的事项，答案直接来自公共登记本身：某个欧盟增值税号是否有效（VIES，附欧盟为该次核验出具的查询编号）、某个法人实体是谁（GLEIF LEI）、某日的欧洲央行参考汇率（是参考汇率，不是成交汇率）、某个名称或钱包地址是否出现在欧盟、OFAC SDN 或英国的制裁名单上（英国名单收录联合国认定并附联合国编号），以及为某个摘要生成锚定比特币的时间戳证明（OpenTimestamps，标准 `.ots`）。六项付费能力，每次 $0.001–0.002——`emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1`——以及免费的 `emporion.sources@v1`。
 
 **设计上就诚实：** 每个回答都用 Ed25519 签名，连同来源、获取时间以及来源返回内容的 SHA-256。制裁名单查询是查询，不是结论：命中是需要细看的理由，未命中也不等于放行。名单连同最初的获取时间和哈希保存在磁盘上，所以重启或上游故障绝不会悄无声息地把某份名单清空，`/health` 会列出实际已加载的名单。
+
+**自 0.2 起——接下来的问题，以及两样工具：** 按编号或名称查询各国公司登记册（挪威、法国、捷克、芬兰）、欧盟海关用的 EORI 号、域名由谁何时注册（RDAP，经 IANA 引导文件直达该顶级域的注册局），以及约 250 个国家和 TARGET2 等市场的工作日。有两项能力超出了查询：**网页快照**记录某一时刻页面的回答——最终 URL、重定向、IP、TLS 证书和正文的 SHA-256——并把这条记录锚定到比特币；**定时器**在指定时间、或在智能体停止签到时作为死人开关，用签名事件回调智能体的 https 地址。两者都只连接公网地址，并固定连接到已检查的那个地址。
 
 **经 Hub 出售：** EMPORION 运行在开启价格闸门的 `oracle-core` 上：付费能力只应答受信 Hub 签名的调用，直接调用会得到 `402`，并指明出售它的 Hub（§4.3）；每次调用都写入提供方自己的调用日志。
 

@@ -160,7 +160,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | 2 | **托管** | **HESTIA** 是托管运行时——隔离运行在运营者机器上；签名部署到本机。空名册 ≠ 空市场 |
 | 3 | **准入** | **THEMIS** 在发布时做出决定——签名的 `approve` / `review` / `reject`（可选） |
 | 4 | **上架与调用** | **AIMarket** [协议](https://github.com/alexar76/aimarket-protocol) + [Hub](https://github.com/alexar76/aimarket-hub) 承载目录、通道和调用 |
-| 5 | **供给** | 17 个**预言机**（随机性、延迟、共识、信任数学）· **GAIA** 证明（attestation）的物理读数 · **METIS** 认知 · **eSIM 运营者**通过 x402 向智能体出售旅行 eSIM（[套件](https://github.com/alexar76/esim-operator-kit)） · **EMPORION** 面向贸易的公共记录事实：欧盟增值税号、LEI、欧洲央行汇率、制裁名单、时间戳（[仓库](https://github.com/alexar76/emporion)） |
+| 5 | **供给** | 17 个**预言机**（随机性、延迟、共识、信任数学）· **GAIA** 证明（attestation）的物理读数 · **METIS** 认知 · **eSIM 运营者**通过 x402 向智能体出售旅行 eSIM（[套件](https://github.com/alexar76/esim-operator-kit)） · **EMPORION** 面向贸易的公共记录事实：欧盟增值税号、LEI、欧洲央行汇率、制裁名单、时间戳、公司登记册、EORI、域名、工作日、网页快照、定时器（[仓库](https://github.com/alexar76/emporion)） |
 | 6 | **验证** | **METIS** 认知 · **BASANOS** 在固定提交上检查 Solidity · **DOLOS** 实时 EVM 利用 · **MOMUS** HTTP/联邦 · **WARDEN** 第三方 MCP · **HISTOR** 第三方 MCP 服务器随时间公布的内容 · **Attested Memory** 智能体保存的可验证记忆 |
 | 7 | **消费** | **ARGUS**——人类和智能体实际运行的需求侧客户端 · 它为主人购买了旅行 eSIM 并拿回了退款，交易在 Base 上（[案例](https://github.com/alexar76/argus/blob/main/docs/use-case-esim-purchase-refund-zh.md)） |
 | 8 | **结算** | 托管、支付通道和 **Treasury** 赏金，仅在独立验证后支付 |
@@ -186,7 +186,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | Oracles ×17 | Hub | 签名的可验证数学 |
 | GAIA | Hub | 具有证明（attestation）的物理世界读数 |
 | eSIM 运营者套件 | Hub | 签名报价 · 联邦节点或运营者自己的枢纽 · 买家签名的交付收据 → `deliveries_30d` |
-| EMPORION | Hub | VIES 增值税号 · GLEIF LEI · 欧洲央行参考汇率 · 欧盟 / OFAC / 联合国制裁名单查询 · OpenTimestamps 时间戳证明——每个回答都与来源、获取时间和 SHA-256 一起签名；只通过枢纽出售 |
+| EMPORION | Hub | VIES 增值税号 · GLEIF LEI · 欧洲央行参考汇率 · 欧盟 / OFAC / 英国制裁名单查询（含联合国认定） · OpenTimestamps 时间戳证明 · 公司登记册（挪威 · 法国 · 捷克 · 芬兰）· EORI · RDAP · 工作日 · 锚定比特币的网页快照 · 带死人开关的定时器——每个回答都与来源、获取时间和 SHA-256 一起签名；只通过枢纽出售 |
 | ATLAS | GAIA | 覆盖这些读数的行星级传感器地图 |
 | Cite desks | ATLAS / Hub | 购买 `atlas.*` / `gaia.*` 的聚焦 B2B 证据产品 |
 | METIS | Hub | 验证认知 |
@@ -277,7 +277,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 
 | 仓库 | 是什么 |
 | --- | --- |
-| [**emporion**](https://github.com/alexar76/emporion) | **EMPORION**——面向从事贸易的智能体的公共记录事实：欧盟增值税号有效性（VIES，附查询编号）、法人实体（GLEIF LEI）、欧洲央行参考汇率、制裁名单查询（欧盟、含钱包地址的 OFAC SDN、联合国——是查询，不是结论）以及锚定比特币的时间戳证明（OpenTimestamps）；每个回答都与来源、获取时间和 SHA-256 一起签名；通过枢纽每次调用 $0.001–0.002 · [在线](https://emporion.modelmarket.dev/) · [落地页](https://alexar76.github.io/emporion/) |
+| [**emporion**](https://github.com/alexar76/emporion) | **EMPORION**——面向从事贸易的智能体的公共记录事实：欧盟增值税号有效性（VIES，附查询编号）、法人实体（GLEIF LEI）、欧洲央行参考汇率、制裁名单查询（欧盟、含钱包地址的 OFAC SDN、含联合国认定的英国名单——是查询，不是结论）以及锚定比特币的时间戳证明（OpenTimestamps）；每个回答都与来源、获取时间和 SHA-256 一起签名；自 0.2 起还有各国公司登记册、EORI、域名注册信息（RDAP）、工作日、作为证据的网页快照，以及带死人开关的定时器；通过枢纽每次调用 $0.001–0.003 · [在线](https://emporion.modelmarket.dev/) · [落地页](https://alexar76.github.io/emporion/) |
 | [**esim-operator-kit**](https://github.com/alexar76/esim-operator-kit) | **eSIM 运营者套件**——面向用户的旅行 eSIM 店铺，加上面向 AI 智能体的卖家节点（USDC x402 付款、未使用 eSIM 的退款、签名的交付收据），基于 eSIM Access、Airalo、eSIM Go 或运营者自己的系统；用一条命令 `./onboard.sh` 以节点或自己的枢纽加入联邦 · [演示](https://esim.modelmarket.dev) · [指南](https://esim.modelmarket.dev/zh/kit) · [案例](https://esim.modelmarket.dev/zh/kit/cases) |
 
 ### 🛡 信任与安全——谁可以进入，以及谁为发现问题付款
@@ -390,7 +390,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | 构建与连接 | 提供方脚手架生成器 |
 | [dioscuri](https://github.com/alexar76/dioscuri) | 社区与传播 | 双生社区智能体 |
 | [dolos](https://github.com/alexar76/dolos) | 信任与安全 | 动态 EVM 红队（分叉隔离） |
-| [emporion](https://github.com/alexar76/emporion) | 真实商业 | 增值税、LEI、汇率、制裁与时间戳查询 |
+| [emporion](https://github.com/alexar76/emporion) | 真实商业 | 增值税、LEI、登记册、汇率、制裁、时间戳、网页快照与定时器 |
 | [esim-operator-kit](https://github.com/alexar76/esim-operator-kit) | 真实商业 | 面向用户和 AI 智能体的旅行 eSIM |
 | [gaia](https://github.com/alexar76/gaia) | 物理世界 | 具有证明（attestation）的 IoT 读数 |
 | [helios](https://github.com/alexar76/helios) | 社区与传播 | yaml → 配音视频 → YouTube |

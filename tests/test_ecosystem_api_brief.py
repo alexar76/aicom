@@ -109,7 +109,7 @@ def test_the_live_ecosystem_comes_before_the_bundled_snapshot():
     body = body[: body.index("def render_brief(")]
     live_at = body.index("_live_capabilities()")
     github_at = body.index("_github_capabilities()")
-    bundled_at = body.index('"atlas" / "atlas" / "products.py"')
+    bundled_at = body.index("_bundled_capabilities()")
     assert live_at < github_at < bundled_at, "the freshest source must be tried first"
     assert "_read_cache()" in body, "a round runs every few minutes; do not refetch every time"
 
@@ -130,6 +130,46 @@ def test_network_can_be_switched_off_for_offline_use():
     caps = capability_catalogue(allow_network=False)
     assert len(caps) >= 5
     assert {str(c.get("capability_id")) for c in caps} >= {"atlas.fire.weather@v1"}
+
+
+def test_the_bundled_catalogue_reads_atlas_after_its_split():
+    """products.py was split into product_parts/; reading only it returned an empty catalogue."""
+    import ast
+    from pathlib import Path
+
+    from core.ecosystem_api_brief import _bundled_capabilities
+
+    atlas = Path(__file__).resolve().parents[1] / "atlas" / "atlas"
+
+    def ids(rel: str, name: str) -> set[str]:
+        tree = ast.parse((atlas / rel).read_text(encoding="utf-8"))
+        node = next(n for n in tree.body if isinstance(n, ast.AnnAssign)
+                    and getattr(n.target, "id", "") == name)
+        return {ast.literal_eval(k_v[1]) for e in node.value.elts
+                for k_v in zip(e.keys, e.values)
+                if isinstance(k_v[0], ast.Constant) and k_v[0].value == "capability_id"}
+
+    expected = ids("product_parts/catalog.py", "PRODUCT_CAPS") | ids("field_products.py",
+                                                                      "FIELD_PRODUCT_CAPS")
+    caps = _bundled_capabilities()
+    assert {c["capability_id"] for c in caps} == expected and len(caps) == len(expected)
+    # The input schemas survive: they are what a repair round needs.
+    assert all(isinstance(c.get("input_schema"), dict) for c in caps)
+
+
+def test_a_catalogue_entry_naming_a_constant_or_a_helper_still_parses():
+    from core.ecosystem_api_brief import _parse_product_caps
+
+    src = (
+        "_OUT = {'type': 'object'}\n"
+        "PRODUCT_CAPS: list = [\n"
+        "    {'capability_id': 'a@v1', 'input_schema': {'type': 'object'}, 'output_schema': _OUT},\n"
+        "    {'capability_id': 'b@v1', 'input_schema': {}, 'output_schema': helper(1)},\n"
+        "]\n"
+    )
+    caps = _parse_product_caps(src)
+    assert [c["capability_id"] for c in caps] == ["a@v1", "b@v1"]
+    assert caps[0]["output_schema"] == {"type": "object"} and "output_schema" not in caps[1]
 
 
 def test_aimarket_native_agent_prompt_is_loadable():

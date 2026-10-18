@@ -160,7 +160,7 @@ Un seul pipeline, dans l’ordre où la confiance et l’argent circulent réell
 | 2 | **Héberger** | **HESTIA** est le runtime hébergé — isolé, sur les machines de l’opérateur ; déploiement signé sur cet hôte. Roster vide ≠ marché vide |
 | 3 | **Admettre** | **THEMIS** décide au moment de la publication — `approve` / `review` / `reject` signés (optionnel) |
 | 4 | **Référencer et invoquer** | Le [protocole](https://github.com/alexar76/aimarket-protocol) **AIMarket** + le [hub](https://github.com/alexar76/aimarket-hub) transportent le catalogue, les canaux de paiement et les appels |
-| 5 | **Fournir** | 17 **oracles** (aléatoire, délai, consensus, mathématiques de confiance) · lectures physiques attestées de **GAIA** · cognition **METIS** · les **opérateurs eSIM** vendent des eSIM de voyage aux agents via x402 ([kit](https://github.com/alexar76/esim-operator-kit)) · **EMPORION** faits de registre public pour commercer : TVA de l'UE, LEI, taux de la BCE, listes de sanctions, horodatages ([dépôt](https://github.com/alexar76/emporion)) |
+| 5 | **Fournir** | 17 **oracles** (aléatoire, délai, consensus, mathématiques de confiance) · lectures physiques attestées de **GAIA** · cognition **METIS** · les **opérateurs eSIM** vendent des eSIM de voyage aux agents via x402 ([kit](https://github.com/alexar76/esim-operator-kit)) · **EMPORION** faits de registre public pour commercer : TVA de l'UE, LEI, taux de la BCE, listes de sanctions, horodatages, registres des sociétés, EORI, domaines, jours ouvrés, captures web, minuteurs ([dépôt](https://github.com/alexar76/emporion)) |
 | 6 | **Vérifier** | Cognition **METIS** · Solidity dans un pin avec **BASANOS** · exploits EVM LIVE avec **DOLOS** · HTTP/fédération avec **MOMUS** · MCP tiers avec **WARDEN** · **HISTOR** ce que les serveurs MCP tiers ont annoncé, dans le temps · **Attested Memory**, la mémoire vérifiable que les agents gardent |
 | 7 | **Consommer** | **ARGUS** — le client côté demande réellement exécuté par les humains et les agents · il a acheté une eSIM de voyage pour son propriétaire et l'a fait rembourser, sur Base ([cas](https://github.com/alexar76/argus/blob/main/docs/use-case-esim-purchase-refund-fr.md)) |
 | 8 | **Régler** | Séquestre (escrow), canaux de paiement et primes **Treasury**, payés uniquement après vérification indépendante |
@@ -185,7 +185,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | Oracles ×17 | Hub | mathématiques vérifiables signées |
 | GAIA | Hub | lectures attestées du monde physique |
 | Kit d'opérateur eSIM | Hub | offres signées · un nœud de fédération ou le propre hub de l'opérateur · reçus de livraison signés par les acheteurs → `deliveries_30d` |
-| EMPORION | Hub | TVA via VIES · LEI via GLEIF · taux de référence de la BCE · filtrage des listes de sanctions UE / OFAC / ONU · preuves d'horodatage OpenTimestamps — chaque réponse signée avec sa source, son heure de récupération et son SHA-256 ; vendu uniquement via le hub |
+| EMPORION | Hub | TVA via VIES · LEI via GLEIF · taux de référence de la BCE · filtrage des listes de sanctions UE / OFAC / Royaume-Uni (désignations de l'ONU comprises) · preuves d'horodatage OpenTimestamps · registres des sociétés (NO · FR · CZ · FI) · EORI · RDAP · jours ouvrés · captures web ancrées dans Bitcoin · minuteurs avec interrupteur d'homme mort — chaque réponse signée avec sa source, son heure de récupération et son SHA-256 ; vendu uniquement via le hub |
 | ATLAS | GAIA | carte planétaire des capteurs couvrant ces lectures |
 | Cite desks | ATLAS / Hub | produits B2B d’évidence qui achètent `atlas.*` / `gaia.*` |
 | METIS | Hub | vérification de la cognition |
@@ -276,7 +276,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 
 | Dépôt | Ce que c'est |
 | --- | --- |
-| [**emporion**](https://github.com/alexar76/emporion) | **EMPORION** — faits de registre public pour les agents qui commercent : validité du numéro de TVA de l'UE (VIES) avec numéro de consultation, entités juridiques (GLEIF LEI), taux de référence de la BCE, filtrage des listes de sanctions (UE, OFAC SDN avec adresses de portefeuilles, ONU — une recherche, pas une décision) et preuves d'horodatage ancrées dans Bitcoin (OpenTimestamps) ; chaque réponse signée avec sa source, son heure de récupération et son SHA-256 ; 0,001–0,002 $ par appel via le hub · [en ligne](https://emporion.modelmarket.dev/) · [landing](https://alexar76.github.io/emporion/) |
+| [**emporion**](https://github.com/alexar76/emporion) | **EMPORION** — faits de registre public pour les agents qui commercent : validité du numéro de TVA de l'UE (VIES) avec numéro de consultation, entités juridiques (GLEIF LEI), taux de référence de la BCE, filtrage des listes de sanctions (UE, OFAC SDN avec adresses de portefeuilles, Royaume-Uni avec les désignations de l'ONU — une recherche, pas une décision) et preuves d'horodatage ancrées dans Bitcoin (OpenTimestamps) ; chaque réponse signée avec sa source, son heure de récupération et son SHA-256  ; depuis la 0.2 aussi les registres nationaux des sociétés, EORI, l'enregistrement des domaines (RDAP), les jours ouvrés, des pages web capturées comme preuve et des minuteurs avec interrupteur d'homme mort; 0,001–0,003 $ par appel via le hub · [en ligne](https://emporion.modelmarket.dev/) · [landing](https://alexar76.github.io/emporion/) |
 | [**esim-operator-kit**](https://github.com/alexar76/esim-operator-kit) | **Kit d'opérateur eSIM** — une boutique d'eSIM de voyage pour les gens et un nœud vendeur pour les agents IA (x402 en USDC, remboursement des eSIM inutilisées, reçus de livraison signés), sur eSIM Access, Airalo, eSIM Go ou le propre système de l'opérateur ; rejoint la fédération comme nœud ou comme son propre hub en une commande, `./onboard.sh` · [démo](https://esim.modelmarket.dev) · [guides](https://esim.modelmarket.dev/fr/kit) · [cas réels](https://esim.modelmarket.dev/fr/kit/cases) |
 
 ### 🛡 Confiance et sécurité — qui peut entrer et qui paie pour le découvrir
@@ -389,7 +389,7 @@ L’index de référence se trouve dans la [version anglaise](README.md#az) ; si
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | Build & connect | générateur de squelette de fournisseur |
 | [dioscuri](https://github.com/alexar76/dioscuri) | Communauté et diffusion | agents communautaires jumeaux |
 | [dolos](https://github.com/alexar76/dolos) | Confiance et sécurité | équipe rouge EVM dynamique (isolée dans un fork) |
-| [emporion](https://github.com/alexar76/emporion) | Commerce réel | TVA, LEI, change, sanctions et horodatages |
+| [emporion](https://github.com/alexar76/emporion) | Commerce réel | TVA, LEI, registres, change, sanctions, horodatages, captures web et minuteurs |
 | [esim-operator-kit](https://github.com/alexar76/esim-operator-kit) | Commerce réel | eSIM de voyage pour les gens et les agents IA |
 | [gaia](https://github.com/alexar76/gaia) | Monde physique | lectures IoT attestées |
 | [helios](https://github.com/alexar76/helios) | Communauté et diffusion | yaml → vidéo narrée → YouTube |

@@ -129,8 +129,13 @@ components:
     url: https://emporion.modelmarket.dev
     port: 9351
     role: >-
-      Public-record facts for agents that trade: EU VAT validity (VIES) with the consultation
-      number, legal entities (GLEIF LEI), ECB reference rates, sanctions-list lookups (OFAC SDN,
-      EU, UN) and Bitcoin-anchored timestamps (OpenTimestamps). Each answer is signed with its
+      Public-record facts and tools for agents that trade: EU VAT validity (VIES) with the
+      consultation number, legal entities (GLEIF LEI), national company registers (Norway,
+      France, Czech Republic, Finland), EU EORI
+      numbers, domain registrations (RDAP), ECB reference rates, sanctions-list lookups (OFAC
+      SDN, EU, and the UK list with the UN designations), business days in ~250 countries and
+      on markets, Bitcoin-anchored timestamps
+      (OpenTimestamps), web pages captured as evidence, and timers that call an agent back
+      with a signed event — at a time or as a dead man's switch. Each answer is signed with its
       source, fetch time and SHA-256. The hub sells it at
       https://modelmarket.dev/providers/emporion.

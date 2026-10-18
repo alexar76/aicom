@@ -636,6 +636,10 @@ satellites:
       # mirror_satellites.sh copies the live GitHub blob back into the outgoing
       # tree; a sync that deleted it would be rejected or would strip the workflow.
       - .github/workflows/publish-mcp-registry.yml
+      # 2026-10-16 comparison manifest names a private scan host. Keep it in the
+      # monorepo for local scans; do not copy it into the public GitHub mirror.
+      # Judgments and the language pages stay in the mirror.
+      - scripts/scanner-comparison/results/manifest-2026-10-16.json
     registries:
       - npm:@aimarket/warden
       - mcp-registry:io.github.alexar76/warden
@@ -1399,12 +1403,12 @@ satellites:
   - id: emporion
     repo: emporion
     github_published: true
-    description: "EMPORION — public-record facts for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), ECB reference rates, sanctions-list lookups (OFAC SDN with wallet addresses, EU, UN) and Bitcoin-anchored timestamps (OpenTimestamps) — every answer signed with its source, fetch time and SHA-256."
+    description: "EMPORION — public-record facts and tools for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), national company registers (NO, FR, CZ, FI), EU EORI numbers, domain registrations (RDAP), ECB reference rates, sanctions-list lookups (OFAC SDN with wallet addresses, EU, UK with the UN designations), business days, Bitcoin-anchored timestamps (OpenTimestamps), web pages captured as evidence and timers with a dead man's switch — every answer signed with its source, fetch time and SHA-256."
     description_i18n:
-      ru: "EMPORION — публичные факты для агентов, которые торгуют: действительность НДС-номера в ЕС (VIES) с номером консультации, юрлица (GLEIF LEI), справочные курсы ЕЦБ, поиск по санкционным спискам (OFAC SDN с адресами кошельков, ЕС, ООН) и метки времени с привязкой к Биткоину (OpenTimestamps) — каждый ответ подписан вместе с источником, временем получения и SHA-256."
-      es: "EMPORION — hechos de registro público para agentes que comercian: validez del IVA en la UE (VIES) con identificador de consulta, entidades jurídicas (GLEIF LEI), tipos de referencia del BCE, consulta de listas de sanciones (OFAC SDN con direcciones de monederos, UE, ONU) y sellos de tiempo anclados en Bitcoin (OpenTimestamps) — cada respuesta firmada con su fuente, hora de obtención y SHA-256."
-      fr: "EMPORION — faits de registre public pour les agents qui commercent : validité du numéro de TVA de l’UE (VIES) avec numéro de consultation, entités juridiques (GLEIF LEI), taux de référence de la BCE, recherche dans les listes de sanctions (OFAC SDN avec adresses de portefeuilles, UE, ONU) et horodatages ancrés dans Bitcoin (OpenTimestamps) — chaque réponse signée avec sa source, l’heure de récupération et le SHA-256."
-      zh: "EMPORION — 面向交易型智能体的公共记录事实：欧盟增值税号有效性（VIES，含查询编号）、法人实体（GLEIF LEI）、欧洲央行参考汇率、制裁名单查询（含钱包地址的 OFAC SDN、欧盟、联合国）以及锚定比特币的时间戳（OpenTimestamps）——每个答案都连同来源、获取时间和 SHA-256 一起签名。"
+      ru: "EMPORION — публичные факты и инструменты для агентов, которые торгуют: действительность НДС-номера в ЕС (VIES) с номером консультации, юрлица (GLEIF LEI), национальные реестры компаний (NO, FR, CZ, FI), номера EORI, регистрация доменов (RDAP), справочные курсы ЕЦБ, поиск по санкционным спискам (OFAC SDN с адресами кошельков, ЕС, Великобритания с санкциями ООН), рабочие дни, метки времени с привязкой к Биткоину (OpenTimestamps), снимки веб-страниц как доказательство и таймеры с dead man's switch — каждый ответ подписан вместе с источником, временем получения и SHA-256."
+      es: "EMPORION — hechos de registro público y herramientas para agentes que comercian: validez del IVA en la UE (VIES) con identificador de consulta, entidades jurídicas (GLEIF LEI), registros mercantiles nacionales (NO, FR, CZ, FI), números EORI, registro de dominios (RDAP), tipos de referencia del BCE, consulta de listas de sanciones (OFAC SDN con direcciones de monederos, UE, Reino Unido con las designaciones de la ONU), días hábiles, sellos de tiempo anclados en Bitcoin (OpenTimestamps), páginas web capturadas como prueba y temporizadores con interruptor de hombre muerto — cada respuesta firmada con su fuente, hora de obtención y SHA-256."
+      fr: "EMPORION — faits de registre public et outils pour les agents qui commercent : validité du numéro de TVA de l’UE (VIES) avec numéro de consultation, entités juridiques (GLEIF LEI), registres nationaux des sociétés (NO, FR, CZ, FI), numéros EORI, enregistrement des domaines (RDAP), taux de référence de la BCE, recherche dans les listes de sanctions (OFAC SDN avec adresses de portefeuilles, UE, Royaume-Uni avec les désignations de l'ONU), jours ouvrés, horodatages ancrés dans Bitcoin (OpenTimestamps), pages web capturées comme preuve et minuteurs avec interrupteur d’homme mort — chaque réponse signée avec sa source, son heure de récupération et son SHA-256."
+      zh: "EMPORION — 面向交易型智能体的公共记录事实与工具：欧盟增值税号有效性（VIES，含查询编号）、法人实体（GLEIF LEI）、各国公司登记册（挪威、法国、捷克、芬兰）、EORI 号、域名注册信息（RDAP）、欧洲央行参考汇率、制裁名单查询（含钱包地址的 OFAC SDN、欧盟、含联合国认定的英国名单）、工作日、锚定比特币的时间戳（OpenTimestamps）、作为证据的网页快照，以及带死人开关的定时器——每个答案都连同来源、获取时间和 SHA-256 一起签名。"
     homepage: https://emporion.modelmarket.dev/
     console: https://emporion.modelmarket.dev/
     topics:
@@ -1420,6 +1424,10 @@ satellites:
       - bitcoin
       - ecb
       - kyb
+      - eori
+      - rdap
+      - business-days
+      - web-capture
     license: mit
     history: live
     paths:

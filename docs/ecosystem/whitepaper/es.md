@@ -166,7 +166,7 @@ flowchart TB
     argus["ARGUS-3<br/>Agente local · economía opcional"]
     memory["Attested Memory<br/>memoria verificable"]
     esim["Operadores eSIM<br/>tienda · nodo vendedor · x402"]
-    emporion["EMPORION<br/>IVA · LEI · divisas · sanciones · OTS"]
+    emporion["EMPORION<br/>IVA · LEI · registros · divisas · sanciones<br/>OTS · capturas web · temporizadores"]
   end
 
   subgraph external["Externos"]
@@ -304,7 +304,7 @@ flowchart TB
   end
 
   subgraph EMP["EMPORION · hechos de registro público"]
-    E2["IVA por VIES · GLEIF LEI · tipos del BCE<br/>listas de sanciones · OpenTimestamps"]
+    E2["IVA por VIES · GLEIF LEI · tipos del BCE<br/>listas de sanciones · OpenTimestamps<br/>registros mercantiles · EORI · RDAP · días hábiles<br/>capturas web · temporizadores"]
   end
 
   subgraph CLIENTS["Clientes"]
@@ -505,9 +505,11 @@ Biblioteca compartida **`oracle-core`**. Cada oráculo emite artefactos verifica
 
 ### 3.6d EMPORION — hechos de registro público para agentes que comercian
 
-**Rol:** lo que un agente comprueba antes de tratar con una empresa o mover dinero, respondido desde los propios registros públicos: si un número de IVA de la UE es válido (VIES, con el identificador de consulta que la UE emite por la comprobación), quién es una entidad jurídica (GLEIF LEI), el tipo de referencia del BCE en una fecha (de referencia, no un tipo de operación), si un nombre o una dirección de cartera figuran en las listas de sanciones de la UE, OFAC SDN o la ONU, y una prueba de sello de tiempo anclada en Bitcoin para un hash (OpenTimestamps, `.ots` estándar). Seis capacidades de pago a $0.001–0.002 — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — y la gratuita `emporion.sources@v1`.
+**Rol:** lo que un agente comprueba antes de tratar con una empresa o mover dinero, respondido desde los propios registros públicos: si un número de IVA de la UE es válido (VIES, con el identificador de consulta que la UE emite por la comprobación), quién es una entidad jurídica (GLEIF LEI), el tipo de referencia del BCE en una fecha (de referencia, no un tipo de operación), si un nombre o una dirección de cartera figuran en las listas de sanciones de la UE, OFAC SDN o el Reino Unido (la británica incluye las designaciones de la ONU con su número), y una prueba de sello de tiempo anclada en Bitcoin para un hash (OpenTimestamps, `.ots` estándar). Seis capacidades de pago a $0.001–0.002 — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — y la gratuita `emporion.sources@v1`.
 
 **Honesto por diseño:** cada respuesta va firmada con Ed25519 junto con su fuente, la hora en que se obtuvo y el SHA-256 de lo que devolvió la fuente. Una consulta de listas de sanciones es una consulta, no una determinación: una coincidencia es un motivo para mirar más de cerca, y ninguna coincidencia no es una autorización. Las listas se guardan en disco con su hora de obtención y su hash originales, de modo que un reinicio o una caída de la fuente nunca vacía una en silencio, y `/health` nombra las listas realmente cargadas.
+
+**Desde la 0.2 — las preguntas siguientes y dos herramientas:** registros mercantiles nacionales por número o nombre (Noruega, Francia, República Checa, Finlandia), números EORI para la aduana de la UE, quién registró un dominio y cuándo (RDAP, desde el registro del propio TLD mediante el bootstrap de IANA) y días hábiles en ~250 países y en mercados como TARGET2. Dos capacidades van más allá de las consultas: una **captura web** registra lo que respondió una página en un momento — URL final, redirecciones, IP, certificado TLS y SHA-256 del cuerpo — y ancla ese registro en Bitcoin; un **temporizador** llama al callback https de un agente con un evento firmado a una hora, o como interruptor de hombre muerto cuando el agente deja de registrarse. Ambas solo alcanzan direcciones públicas, fijadas a la dirección comprobada.
 
 **Se vende a través del Hub:** EMPORION funciona sobre `oracle-core` con la compuerta de precio activada: una capacidad de pago solo responde a una llamada que firmó un hub de confianza, una llamada directa recibe `402` con el hub que la vende (§4.3), y cada llamada queda en el registro de llamadas del propio proveedor.
 
