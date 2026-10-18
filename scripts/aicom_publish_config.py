@@ -98,6 +98,11 @@ DEFAULT_RSYNC_EXCLUDES = [
     "data/channels.db",
     "data/channels.db-shm",
     "data/channels.db-wal",
+    # Local operator dumps. gitignore does not stop rsync; they are not source.
+    "data/uni_settlements.jsonl",
+    "data/water_quality_history.json",
+    # Workshop launchers keep keys and generated secrets in .runtime/.
+    ".runtime",
     ":memory:",
     ":memory:-wal",
     ":memory:-shm",
@@ -130,6 +135,9 @@ DEFAULT_RSYNC_EXCLUDES = [
     # excludes the whole tree via FACTORY_LOCAL_EXCLUDES.
     "cite-desks",
     "pingblip",
+    # Unfinished local domain-operator kit (package.json "private": true). Not an
+    # alexar76 GitHub repo, so it is not a satellite, and it is not factory content.
+    "domain-kit",
     # Blind receipt verifier. Same rule as pingblip: monorepo only.
     "protocol-v2-receipt-from-spec",
     "protocol-v2-from-spec-rs",
@@ -152,6 +160,9 @@ FACTORY_LOCAL_EXCLUDES = [
     "scripts/scrub_private_hosts.sh",  # contains private-host needles by design; never ship to public factory
     "docs/gitea-publishing.md",  # internal ops memo (references internal Gitea hosts)
     "data/channels.db",  # local SQLite runtime — never mirror to public factory
+    "data/uni_settlements.jsonl",  # local settlement dump — not source
+    "data/water_quality_history.json",  # local sensor history dump — not source
+    ".runtime",  # workshop keys and generated secrets (rsync ignores .gitignore)
     "data/signal-hunt",  # local hunt runtime secrets/DB — never mirror to public factory
     "contracts/zk/.tools",
     "contracts/evm/broadcast",  # Foundry broadcast artifacts (gitignored locally; rsync still sees them)
@@ -205,6 +216,7 @@ FACTORY_LOCAL_EXCLUDES = [
     # wiring, or product-shell trees on the public factory mirror.
     "attested",
     "pingblip",
+    "domain-kit",  # private unfinished kit; not an alexar76 repo and not factory content
     # Local creative/output packs (e.g. Instagram renders) — Gitea only; not factory.
     "output",
     "protocol-v2-receipt-from-spec",
@@ -279,6 +291,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'docs',
     'ecosystem-landing',
     'entrypoint.sh',
+    'examples',  # n8n order-check workshop; runtime secrets stay in .runtime/
     'finance_schemas.py',
     'finance_stats.py',
     'grafana',

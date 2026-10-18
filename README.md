@@ -12,6 +12,12 @@
 > Own a weather station or air-quality sensor? [Sell your readings through your own Hub + GAIA](docs/sensor-operator.md).
 <!-- /sensor-operator-guide -->
 
+<!-- n8n-operator-workshop -->
+> Build with n8n? Run a read-only order-check service on your own hub:
+> [English](docs/n8n-workshop.md) · [Русский](docs/n8n-workshop.ru.md) ·
+> [Español](docs/n8n-workshop.es.md) · [Français](docs/n8n-workshop.fr.md) · [中文](docs/n8n-workshop.zh.md).
+<!-- /n8n-operator-workshop -->
+
 <p align="center">
   <strong>MIT · self-hosted · idea → shippable web product</strong><br/>
   Part of the <a href="https://ecosystem.modelmarket.dev/">AICOM open agent economy</a>.<br/>

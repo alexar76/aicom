@@ -1,0 +1,93 @@
+{
+  "id": "aimarketOrderCheckWorkshop",
+  "name": "Workshop — read-only order check (synthetic catalogue)",
+  "active": false,
+  "nodes": [
+    {
+      "id": "receive",
+      "name": "Receive cart",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "aimarket-order-check",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "aimarket-order-check",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "aimarketWorkshopWebhook",
+          "name": "Workshop webhook secret"
+        }
+      }
+    },
+    {
+      "id": "quote",
+      "name": "Check synthetic catalogue",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// n8n Code node, \"Run Once for All Items\". Fixtures, not live inventory.\nconst input = $input.first().json.body;\nfunction bad(message) {\n  return [{json: {statusCode: 422, body: {error: 'invalid_input', message}}}];\n}\nif (!input || typeof input !== 'object' || Array.isArray(input) ||\n    Object.keys(input).some(k => k !== 'items') || !Array.isArray(input.items) ||\n    input.items.length < 1 || input.items.length > 20) {\n  return bad('Provide items: an array of 1–20 {sku, quantity} objects.');\n}\nconst quantities = new Map();\nfor (const item of input.items) {\n  if (!item || typeof item !== 'object' || Array.isArray(item) ||\n      Object.keys(item).some(k => !['sku', 'quantity'].includes(k)) ||\n      typeof item.sku !== 'string' || !/^[A-Z0-9-]{1,40}$/.test(item.sku) ||\n      !Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 100) {\n    return bad('Each item requires an uppercase SKU and an integer quantity from 1 to 100.');\n  }\n  const quantity = (quantities.get(item.sku) || 0) + item.quantity;\n  if (quantity > 100) return bad('Combined quantity for one SKU must not exceed 100.');\n  quantities.set(item.sku, quantity);\n}\n// Replace ONLY this data-source stage with the operator's authorised catalogue.\nconst catalog = {\n  'BEANS-250': {name: 'Coffee beans, 250 g', unit_price_minor: 1290, available: 12},\n  'MUG-BLUE': {name: 'Blue mug', unit_price_minor: 850, available: 3},\n  'FILTER-100': {name: 'Paper filters, 100 pcs', unit_price_minor: 490, available: 0},\n};\nconst lines = [...quantities].map(([sku, quantity]) => {\n  const product = Object.hasOwn(catalog, sku) ? catalog[sku] : null;\n  if (!product) return {sku, quantity, status: 'unknown_sku', line_total_minor: null};\n  return {sku, quantity, ...product,\n    status: quantity <= product.available ? 'available' : 'insufficient_stock',\n    line_total_minor: quantity * product.unit_price_minor};\n});\nconst unknown = lines.some(l => l.status === 'unknown_sku');\nconst ready = lines.every(l => l.status === 'available');\nreturn [{json: {statusCode: 200, body: {\n  kind: 'order_check', schema_version: 1, demo: true, data_source: 'workshop_fixture_v1',\n  currency: 'USD', evaluated_at: new Date().toISOString(),\n  status: unknown ? 'unknown_items' : ready ? 'ready' : 'insufficient_stock',\n  can_fulfill: ready, lines,\n  subtotal_minor: unknown ? null : lines.reduce((sum, l) => sum + l.line_total_minor, 0),\n  tax_minor: null, shipping_minor: null, grand_total_minor: null,\n  reservation_created: false, order_created: false,\n  notice: 'Synthetic catalogue. Indicative goods subtotal only; tax and shipping are not calculated. No stock reserved and no order placed.'\n}}}];\n"
+      }
+    },
+    {
+      "id": "reply",
+      "name": "Return result",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.body }}",
+        "options": {
+          "responseCode": "={{ $json.statusCode }}"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Receive cart": {
+      "main": [
+        [
+          {
+            "node": "Check synthetic catalogue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check synthetic catalogue": {
+      "main": [
+        [
+          {
+            "node": "Return result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  },
+  "pinData": {}
+}

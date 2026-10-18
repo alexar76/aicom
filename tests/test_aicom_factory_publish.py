@@ -101,6 +101,9 @@ def test_factory_rsync_excludes_cursor_and_github():
     assert ".github" in excludes
     assert "contracts/zk/.tools" in excludes
     assert "data/funnel" in excludes
+    assert ".runtime" in excludes
+    assert "data/uni_settlements.jsonl" in excludes
+    assert "data/water_quality_history.json" in excludes
     assert "independent" in excludes
     assert "cite-desks" in factory_local_exclude_paths()
     assert "cite-desks" in DEFAULT_RSYNC_EXCLUDES
@@ -147,8 +150,9 @@ def test_an_untracked_root_is_classified_too(tmp_path):
 
 
 def test_root_classification_is_exhaustive_and_secrets_are_never_public():
-    for name in ("independent", "pantheon", "cite-desks", "attested", "saas-compose.yml"):
+    for name in ("independent", "pantheon", "cite-desks", "attested", "saas-compose.yml", "domain-kit"):
         assert classify_root(name) != "public", name
+    assert classify_root("domain-kit") == "excluded"
     assert classify_root(".env") == "excluded"
     assert classify_root("aimarket-hub") == "satellite"
     assert "README.md" in PUBLIC_FACTORY_ROOTS
