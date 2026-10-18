@@ -111,7 +111,13 @@ fi
 
 # Extra credential shapes — AWS access keys, Google API keys, PEM private-key blocks.
 # Real Google browser keys are AIzaSy…; bare AIza+35 matches random base64 in HTML assets.
+#
+# warden/test/flow-guard.test.ts is a flow-guard test fixture, not a shipped
+# credential: a placeholder access-key shape and a fake PEM used only to assert
+# the guard. The warden satellite clone is rooted at warden/, so that file's
+# mirror path is test/flow-guard.test.ts. One path — not a *.test.ts ignore.
 if rg_hit \
+  -g '!**/test/flow-guard.test.ts' \
   -e 'AKIA[0-9A-Z]{16}' \
   -e 'AIzaSy[0-9A-Za-z_-]{33}' \
   -e '-----BEGIN (RSA |EC |DSA |OPENSSH |ENCRYPTED )?PRIVATE KEY-----' \

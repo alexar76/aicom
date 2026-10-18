@@ -57,6 +57,23 @@ d=$(mk_tree pem)
 printf -- '-----BEGIN %s-----\nMC4CAQ\n-----END %s-----\n' 'PRIVATE KEY' 'PRIVATE KEY' > "$d/server.pem"
 bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a PEM private key (pre-existing check)"
 
+# The flow-guard unit test plants a placeholder access-key shape and a fake PEM
+# to assert the guard. That one file is excepted. The same shapes anywhere else
+# must still fail. Markers are assembled here so this script does not carry them.
+plant_flow_fixture() {
+  local dest="$1"
+  printf -- '-----BEGIN OPENSSH %s-----\nplaceholder\n-----END OPENSSH %s-----\n' 'PRIVATE KEY' 'PRIVATE KEY' > "$dest"
+  python3 -c 'import pathlib,sys; p=pathlib.Path(sys.argv[1]); p.write_text(p.read_text()+("AKIA"+"ABCDEFGHIJKLMNOP")+"\n")' "$dest"
+}
+d=$(mk_tree flowfix); mkdir -p "$d/test"
+plant_flow_fixture "$d/test/flow-guard.test.ts"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows the flow-guard test fixture path only"
+d=$(mk_tree flowother); mkdir -p "$d/test" "$d/warden/test"
+plant_flow_fixture "$d/test/other.test.ts"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses the same shapes outside the flow-guard fixture"
+plant_flow_fixture "$d/warden/test/flow-guard.test.ts"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses the shapes when another file in the tree carries them"
+
 # The treasury vendor tree ships momus/targets/quality-public-key.pem, a tracked
 # verify pin. The name is *.pem, so the guard must read the header: a public key
 # at that path is allowed, a private key under the same name is not.
