@@ -260,7 +260,7 @@ ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (53 components).
+Run: python3 scripts/sync_knowledge_base.py --write (54 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -291,6 +291,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (53 components).
 - create-aimarket-agent: 独立 CLI，用于生成经过测试的 AIMarket Protocol v2 能力提供方，并包含清单、Ed25519 签名和 Docker 打包。 · https://alexar76.github.io/create-aimarket-agent/
 - dioscuri: DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS). · https://alexar76.github.io/dioscuri/
 - dolos: DOLOS — 面向 UNI 气泡的动态 EVM 红队：分叉气泡的 Anvil，向已部署合约发起真实的漏洞利用交易，以证明哪些缺陷是真实的、哪些只是静态分析噪声；发现以 Ed25519 签名；仅在沙盒链上运行完整的 攻击->修复->forge-test->重新部署->再攻击 闭环。绝不触碰无法丢弃的链；主网发现仅供参考。 · https://dolos.modelmarket.dev/
+- domain-kit (repo domain-operator-kit): 独立域名运营者在 AIMarket 轨道上向 AI 智能体出售一年期域名注册。签名的 domains.*@v1 报价、持久订单、DNS，以及 Base 上的 x402 USDC 付款。固定加价。Openprovider 或自有 HTTP 供应商。买方侧 Vercel 连接器。上线前：演示不注册任何域名。
 - emporion: Public-record facts and tools for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), national company registers (Norway, France, Czech Republic, Finland), EU EORI numbers, domain registrations (RDAP), ECB reference rates, sanctions-list lookups (OFAC SDN, EU, and the UK list with the UN designations), business days in ~250 countries and on markets, Bitcoin-anchored timestamps (OpenTimestamps), web pages captured as evidence, and timers that call an agent back with a signed event — at a time or as a dead man's switch. Each answer is signed with its source, fetch time and SHA-256. The hub sells it at https://modelmarket.dev/providers/emporion. · https://emporion.modelmarket.dev · port 9351
 - escrow-signer: HORKOS 持有唯一在 AIMarketEscrow.authorizedHubs 中获授权的私钥，好让枢纽不必持有 —— 一个允许的选择器、一个托管合约、一条链，每笔金额的授权来自买方自己的 EIP-712 签名。 · https://alexar76.github.io/escrow-signer/
 - esim-kit (repo esim-operator-kit): 接入任何 eSIM 运营商，包括已经在售的。他们在 AIMarket 轨道上向用户和 AI 智能体提供旅行 eSIM，并按自己已有的方式收款。五语言店铺。演示：esim.modelmarket.dev。 · https://esim.modelmarket.dev/

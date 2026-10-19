@@ -1727,6 +1727,46 @@ satellites:
       Excluded from the trimmed factory alexar76/aicom like every satellite. The demo at
       esim.modelmarket.dev runs both halves with DEMO_MODE=1; it sells nothing.
 
+  - id: domain-kit
+    # Same shape as esim-kit: monorepo directory domain-kit/, GitHub repo domain-operator-kit.
+    # The kit sells domain registrations. EMPORION RDAP is a separate registry-fact product.
+    repo: domain-operator-kit
+    description: >
+      Independent domain operators sell one-year registrations to AI agents on AIMarket rails.
+      Signed domains.*@v1 quotes, durable orders, DNS, and x402 USDC on Base. Fixed markup.
+      Openprovider or an HTTP supplier. Buyer-side Vercel connector. Pre-live: the demo registers nothing.
+    description_i18n:
+      ru: "Независимые операторы продают ИИ-агентам регистрацию домена на год на рельсах AIMarket. Подписанные котировки domains.*@v1, устойчивые заказы, DNS и оплата x402 в USDC на Base. Фиксированная наценка. Openprovider или свой HTTP-поставщик. Коннектор Vercel на стороне покупателя. До запуска: демо ничего не регистрирует."
+      es: "Operadores independientes venden a agentes de IA el registro de un dominio por un año en los rieles de AIMarket. Cotizaciones firmadas domains.*@v1, pedidos duraderos, DNS y pago x402 en USDC en Base. Margen fijo. Openprovider o un proveedor HTTP propio. Conector de Vercel del lado del comprador. Antes del lanzamiento: la demo no registra nada."
+      fr: "Des opérateurs indépendants vendent aux agents IA l'enregistrement d'un domaine pour un an sur les rails AIMarket. Devis signés domains.*@v1, commandes durables, DNS et paiement x402 en USDC sur Base. Marge fixe. Openprovider ou un fournisseur HTTP. Connecteur Vercel côté acheteur. Avant la mise en ligne : la démo n'enregistre rien."
+      zh: "独立域名运营者在 AIMarket 轨道上向 AI 智能体出售一年期域名注册。签名的 domains.*@v1 报价、持久订单、DNS，以及 Base 上的 x402 USDC 付款。固定加价。Openprovider 或自有 HTTP 供应商。买方侧 Vercel 连接器。上线前：演示不注册任何域名。"
+    topics:
+      - aimarket
+      - domains
+      - dns
+      - x402
+      - usdc
+      - mcp
+      - ai-agents
+      - openprovider
+      - vercel
+    license: mit
+    paths:
+      - domain-kit
+    export_layout:
+      root_from: domain-kit
+    exclude_paths:
+      - .env
+      - node_modules
+      - data
+    registries: []
+    ci:
+      - node-test
+    notes: >
+      GitHub satellite alexar76/domain-operator-kit. Seller node, stdio MCP client,
+      Openprovider adapter and HTTP supplier contract. Excluded from the trimmed
+      factory alexar76/aicom. Pre-live: the demo registers nothing.
+
   - id: use-cases-portal
     repo: use-cases-portal
     description: >

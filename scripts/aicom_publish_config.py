@@ -135,8 +135,10 @@ DEFAULT_RSYNC_EXCLUDES = [
     # excludes the whole tree via FACTORY_LOCAL_EXCLUDES.
     "cite-desks",
     "pingblip",
-    # Unfinished local domain-operator kit (package.json "private": true). Not an
-    # alexar76 GitHub repo, so it is not a satellite, and it is not factory content.
+    # Domain operator kit is satellite alexar76/domain-operator-kit (map id domain-kit).
+    # Named here so classify_root stays "excluded" and the tree never enters the
+    # trimmed factory. The satellite mirror rsyncs the directory contents; this
+    # pattern matches a path component named domain-kit, not those contents.
     "domain-kit",
     # Blind receipt verifier. Same rule as pingblip: monorepo only.
     "protocol-v2-receipt-from-spec",
@@ -216,7 +218,7 @@ FACTORY_LOCAL_EXCLUDES = [
     # wiring, or product-shell trees on the public factory mirror.
     "attested",
     "pingblip",
-    "domain-kit",  # private unfinished kit; not an alexar76 repo and not factory content
+    "domain-kit",  # satellite alexar76/domain-operator-kit; excluded from the trimmed factory
     # Local creative/output packs (e.g. Instagram renders) — Gitea only; not factory.
     "output",
     "protocol-v2-receipt-from-spec",

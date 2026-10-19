@@ -262,7 +262,7 @@ Analyst учит слои из каталога в момент запроса. 
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (53 components).
+Run: python3 scripts/sync_knowledge_base.py --write (54 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -293,6 +293,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (53 components).
 - create-aimarket-agent: Автономный CLI, создающий протестированных поставщиков возможностей AIMarket Protocol v2 с манифестами, подписью Ed25519 и Docker-упаковкой. · https://alexar76.github.io/create-aimarket-agent/
 - dioscuri: DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS). · https://alexar76.github.io/dioscuri/
 - dolos: DOLOS — динамическая red-team по EVM для пузыря UNI: форкает Anvil пузыря и бросает реальные эксплойт-транзакции в задеплоенные контракты, доказывая, какие изъяны реальны, а какие — шум статики; подписанные Ed25519 находки; только на песочной цепочке гоняет полный цикл атака->фикс->forge-test->редеплой->повторная атака. Никогда не трогает цепь, которую нельзя выбросить; находка mainnet — рекомендательная. · https://dolos.modelmarket.dev/
+- domain-kit (repo domain-operator-kit): Независимые операторы продают ИИ-агентам регистрацию домена на год на рельсах AIMarket. Подписанные котировки domains.*@v1, устойчивые заказы, DNS и оплата x402 в USDC на Base. Фиксированная наценка. Openprovider или свой HTTP-поставщик. Коннектор Vercel на стороне покупателя. До запуска: демо ничего не регистрирует.
 - emporion: Public-record facts and tools for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), national company registers (Norway, France, Czech Republic, Finland), EU EORI numbers, domain registrations (RDAP), ECB reference rates, sanctions-list lookups (OFAC SDN, EU, and the UK list with the UN designations), business days in ~250 countries and on markets, Bitcoin-anchored timestamps (OpenTimestamps), web pages captured as evidence, and timers that call an agent back with a signed event — at a time or as a dead man's switch. Each answer is signed with its source, fetch time and SHA-256. The hub sells it at https://modelmarket.dev/providers/emporion. · https://emporion.modelmarket.dev · port 9351
 - escrow-signer: HORKOS держит единственный ключ, авторизованный в AIMarketEscrow.authorizedHubs, чтобы его не держал Hub — один разрешённый селектор, один эскроу, одна сеть, а полномочие на сумму даёт EIP-712 подпись покупателя. · https://alexar76.github.io/escrow-signer/
 - esim-kit (repo esim-operator-kit): Онбординг любого оператора eSIM, включая тех, кто уже продаёт. Они предлагают travel eSIM людям и ИИ-агентам на рельсах AIMarket и получают оплату так, как уже её принимают. Витрина на 5 языках. Демо: esim.modelmarket.dev. · https://esim.modelmarket.dev/

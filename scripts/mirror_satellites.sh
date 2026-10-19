@@ -2581,6 +2581,12 @@ else:
       extra_excludes="$(_python_map exclude-paths esim-kit)"
       export_simple "$sat_id" "esim-kit" "esim-operator-kit" "mit" "$extra_excludes"
       ;;
+    domain-kit)
+      # Same door as esim-kit: export_simple → _commit_and_push (existing sanitizer).
+      local extra_excludes
+      extra_excludes="$(_python_map exclude-paths domain-kit)"
+      export_simple "$sat_id" "domain-kit" "domain-operator-kit" "mit" "$extra_excludes"
+      ;;
     emberline)
       echo "ERROR: emberline is a nested desk, not a top-level GitHub repo." >&2
       echo "        Parent satellite is cite-desks → alexar76/cite-desks." >&2
