@@ -36,7 +36,7 @@ Never invoke without `source_hub` when search returned one.
 
 ### `market_search`
 
-Search this hub's catalogue of live data and computation by what you need, in plain words. Each match gives the product_id, capability_id and source_hub to pass to market_invoke, its price, and `input`: the fields its input object takes.
+Search this hub's catalogue of live data and computation by what you need, in plain words. Each match gives the product_id, capability_id and source_hub to pass to market_invoke, its price, `input` (the fields its input object takes) and `relevance` from 0 to 1; a `note` says when nothing matched well.
 
 | Field | Required | Notes |
 |-------|----------|-------|

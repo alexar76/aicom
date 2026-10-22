@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import re
+import socket
 import sys
 import time
 from pathlib import Path
@@ -46,6 +47,17 @@ def _neutral_environment(monkeypatch):
                 "AICOM_ALERT_SMTP_PASSWORD", "AICOM_ALERT_SMTP_PORT", "AICOM_ALERT_EMAIL_FROM"):
         monkeypatch.delenv(var, raising=False)
     monkeypatch.setattr(alert, "_post", lambda *a, **k: (0, None, "offline in tests"))
+    # Nor does anything else. collect() runs every probe a test leaves unstubbed, and the
+    # TLS-expiry list defaults to the whole public estate, so one collect() opened some twenty
+    # TLS connections to production and this file took over a minute (2026-10-21).
+    real_getaddrinfo = socket.getaddrinfo
+
+    def _loopback_only(host, *args, **kwargs):
+        if host in ("127.0.0.1", "::1", "localhost"):
+            return real_getaddrinfo(host, *args, **kwargs)
+        raise socket.gaierror(socket.EAI_NONAME, f"no network in tests: {host}")
+
+    monkeypatch.setattr(socket, "getaddrinfo", _loopback_only)
 
 
 # ── flap protection ──────────────────────────────────────────────────────────────────────
@@ -1784,12 +1796,28 @@ def test_a_watcher_that_stopped_reading_its_wallet_pages(monkeypatch):
     assert "60 min ago" in checks["deposit_watch_on[https://hub.x]"].detail
 
 
-def test_deposit_hubs_outside_the_scope_are_not_probed(monkeypatch):
+def test_a_scope_still_filters_the_probe_when_one_is_passed(monkeypatch):
     """Independent and Attested are separate ecosystems (the owner, 2026-09-24 and 2026-10-04)."""
     monkeypatch.setattr(alert, "_get", lambda *a, **k: (_ for _ in ()).throw(AssertionError("probed")))
     scope = alert.Scope(("modelmarket.dev",))
     assert alert.probe_deposit_watch(["https://independentai.network/hub"], scope=scope) == []
     assert "independentai.network" in scope.excluded
+
+
+def test_deposit_hubs_named_by_the_owner_are_watched_outside_the_scope(monkeypatch):
+    """2026-10-08..21 the Independent node's watcher read nothing while the scope kept this probe away
+    from it; on 2026-10-22 the owner named Attested and Independent in AICOM_ALERT_DEPOSIT_HUBS."""
+    seen = []
+    monkeypatch.setattr(alert, "probe_deposit_watch",
+                        lambda hubs, timeout=20.0, scope=None, now=None: seen.append((list(hubs), scope)) or [])
+    for name in ("probe_credit_rail", "probe_dns", "probe_tls_expiry", "probe_hub", "probe_federation",
+                 "probe_status_page", "probe_security_posture", "probe_settlement"):
+        monkeypatch.setattr(alert, name, lambda *a, **k: [])
+    hubs = ["https://hub.attestedmemory.net", "https://independentai.network/hub"]
+    alert.collect("quick", hub="https://modelmarket.dev", signer="", status_url="", settlement_url="",
+                  timeout=5, sellers=[], federation_hubs=[], extra_settlements=[], uptime=[],
+                  scope=alert.Scope(("modelmarket.dev",)), deposit_hubs=hubs)
+    assert seen == [(hubs, None)]
 
 
 def test_no_hub_is_declared_watching_by_default():

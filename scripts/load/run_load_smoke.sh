@@ -88,7 +88,7 @@ case "$MODE" in
       export ARGUS_ASK_PATH="${ARGUS_ASK_PATH:-/argus/ask}"
       if [[ -z "${ARGUS_HTTP_TOKEN:-}" ]]; then
         # Live token lives in the factory argus container, not laptop .env. Do not echo it.
-        ARGUS_HTTP_TOKEN="$(ssh -o BatchMode=yes -o ConnectTimeout=15 my-vps \
+        ARGUS_HTTP_TOKEN="$(ssh -o BatchMode=yes -o ConnectTimeout=15 factory-vps \
           'docker exec argus printenv ARGUS_HTTP_TOKEN' 2>/dev/null || true)"
         ARGUS_HTTP_TOKEN="${ARGUS_HTTP_TOKEN//$'\r'/}"
         ARGUS_HTTP_TOKEN="${ARGUS_HTTP_TOKEN//$'\n'/}"

@@ -75,7 +75,7 @@ cp dioscuri/dioscuri.config.example.json dioscuri/dioscuri.config.json
 |-----|-----|
 | Telegram 机器人（Castor — Q&A） | https://t.me/next_agent_market_bot |
 | Telegram 频道（Castor — 新闻） | https://t.me/just_for_agents |
-| Discord (Pollux) | https://discord.gg/aimarket |
+| Discord (Pollux) | https://discord.gg/JjWxGhW9pP |
 
 自托管者在 `dioscuri.config.json` 中设置邀请链接：
 

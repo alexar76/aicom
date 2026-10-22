@@ -261,6 +261,8 @@ PY
   # Keep documented dotenv templates (.env.example) — the broad .env.* rule would
   # otherwise strip them and break satellite CI / scaffold templates.
   rsync_args+=(--include ".env.example")
+  # The release-quality verify key is public; verify_mirror_secrets.sh checks its header.
+  rsync_args+=(--include "quality-public-key.pem")
   # Read the ONE canonical list rather than keeping a copy. The copy that used to live here
   # had drifted 21 patterns behind scripts/aicom_publish_config.py — missing `*_key`,
   # `conductor_key`, `*_ed25519` and `session_secret` among them — so this path would have
@@ -823,7 +825,7 @@ export_desktop_monorepo() {
   fi
 
   local rsync_base_args=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude .dart_tool --exclude build --exclude dist --exclude .DS_Store \
-    --include '.env.example' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc' --exclude data/secrets --exclude '*_signing_key' --exclude '*_vrf_sk' --exclude dataset_salt)
+    --include '.env.example' --include 'quality-public-key.pem' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc' --exclude data/secrets --exclude '*_signing_key' --exclude '*_vrf_sk' --exclude dataset_salt)
 
   for sku in $skus; do
     # Allowlist sku names — prevents path traversal via rogue manifest entries (SH-1).
@@ -947,7 +949,7 @@ PY
     --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude .mypy_cache
     --exclude build --exclude dist --exclude .DS_Store --exclude site --exclude .github
     --exclude .coverage --exclude coverage.json
-    --include '.env.example' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc'
+    --include '.env.example' --include 'quality-public-key.pem' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc'
     --exclude data/secrets --exclude '*_signing_key' --exclude '*_vrf_sk' --exclude dataset_salt)
 
   for sku in $(_courses_skus); do
@@ -1143,7 +1145,7 @@ export_plugins() {
   find "$clone" -mindepth 1 -not -name '.git' -not -path '*/.git/*' -exec rm -rf {} + 2>/dev/null || true
 
   local rsync_args=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude build --exclude dist --exclude '*.egg-info' --exclude .DS_Store \
-    --include '.env.example' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc' --exclude data/secrets --exclude '*_signing_key' --exclude '*_vrf_sk' --exclude dataset_salt)
+    --include '.env.example' --include 'quality-public-key.pem' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc' --exclude data/secrets --exclude '*_signing_key' --exclude '*_vrf_sk' --exclude dataset_salt)
 
   # Main plugins
   mkdir -p "$clone/plugins"
@@ -1257,6 +1259,8 @@ export_oracles() {
 
   local rsync_args=(-a)
   rsync_args+=(--include ".env.example")
+  # The release-quality verify key is public; verify_mirror_secrets.sh checks its header.
+  rsync_args+=(--include "quality-public-key.pem")
   for pat in .git .gitea .claude .cursor .venv venv node_modules __pycache__ .pytest_cache .mypy_cache .dart_tool build dist .mesh_data "*.egg-info" .DS_Store .github .coverage coverage.json \
              .env ".env.*" "*.key" "*.pem" "*.enc" data/secrets "*_signing_key" "*_vrf_sk" dataset_salt; do
     rsync_args+=(--exclude "$pat")
@@ -1291,6 +1295,10 @@ jobs:
       - name: Install oracle-core + all oracles
         run: |
           python -m pip install --upgrade pip
+          # LUMEN's hub contract test imports aimarket_hub on purpose (no skip), so the hub is installed.
+          git clone --no-checkout https://github.com/alexar76/aimarket-hub.git _deps/aimarket-hub
+          git -C _deps/aimarket-hub checkout 0d03800fae920d1de44dee9c6e6e589b6274c631  # alexar76/aimarket-hub main, 2026-10-21
+          pip install -e _deps/aimarket-hub
           pip install -e "core[dev,pqc]"
           for o in chronos lattice murmuration lumen colony turing; do
             pip install -e "oracles/$o"
@@ -1373,6 +1381,8 @@ export_aicom_products() {
 
   local rsync_args=(-a)
   rsync_args+=(--include ".env.example")
+  # The release-quality verify key is public; verify_mirror_secrets.sh checks its header.
+  rsync_args+=(--include "quality-public-key.pem")
   for pat in .git .claude .cursor .venv venv node_modules __pycache__ .pytest_cache .mypy_cache .DS_Store \
              .env ".env.*" "*.key" "*.pem" data/secrets; do
     rsync_args+=(--exclude "$pat")
@@ -1436,6 +1446,8 @@ export_platon() {
 
   local rsync_args=(-a)
   rsync_args+=(--include ".env.example")
+  # The release-quality verify key is public; verify_mirror_secrets.sh checks its header.
+  rsync_args+=(--include "quality-public-key.pem")
   for pat in .git .gitea .claude .cursor .venv venv node_modules __pycache__ .pytest_cache .mypy_cache .dart_tool build dist .mesh_data "*.egg-info" .DS_Store data gitea ecosystem .github .coverage coverage.json \
              .env ".env.*" "*.key" "*.pem" "*.enc" data/secrets "*_signing_key" "*_vrf_sk" dataset_salt; do
     rsync_args+=(--exclude "$pat")
@@ -1545,6 +1557,8 @@ export_lottery() {
   extra_excludes="$(_python_map exclude-paths lottery)"
   local rsync_args=(-a)
   rsync_args+=(--include ".env.example")
+  # The release-quality verify key is public; verify_mirror_secrets.sh checks its header.
+  rsync_args+=(--include "quality-public-key.pem")
   local -a base_excludes=()
   while IFS= read -r pat; do
     [[ -n "$pat" ]] && base_excludes+=("$pat")

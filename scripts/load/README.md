@@ -9,7 +9,7 @@ Host map (which URL hits which box): [`topology.py`](topology.py).
 
 | Block | Local default | Public URL | Server (SSH) | Endpoints |
 |-------|---------------|------------|--------------|-----------|
-| Factory | `:9081` | `magic-ai-factory.com` | factory `my-vps` | `/api/health`, trust-metrics, `/api/products` |
+| Factory | `:9081` | `magic-ai-factory.com` | factory `factory-vps` | `/api/health`, trust-metrics, `/api/products` |
 | Frontend | `:9080` | same | factory | `/` |
 | Hub | `:9083` | `modelmarket.dev` | factory | well-known, stats/live, search, capital/pricing, health |
 | Mesh | `:8090` | `service-mesh.modelmarket.dev` | factory | `/v1/stats`, activity, agents, optional `POST /v1/tasks` |
@@ -20,7 +20,7 @@ Host map (which URL hits which box): [`topology.py`](topology.py).
 | GAIA / oracles / MOMUS | — | `iot` / `oracles` / `lottery` / `momus` / `logos`.modelmarket.dev | oracles `admin-vps` | fleet GETs |
 | Metis / SKOPOS | — | `metis` / `skopos`.modelmarket.dev | metis (`skopos.modelmarket.dev`) | `/health`, Metis `POST /v1/verify` |
 
-Heavy POSTs hit **the same server as the matching read**. Tokens: ARGUS from `argus` on `my-vps`, Mesh from factory `.env`, Metis verify needs no key (LLM on Metis host). Hub invoke uses the factory Hub (`modelmarket.dev`), not the lab hub on `competing-lab`.
+Heavy POSTs hit **the same server as the matching read**. Tokens: ARGUS from `argus` on `factory-vps`, Mesh from factory `.env`, Metis verify needs no key (LLM on Metis host). Hub invoke uses the factory Hub (`modelmarket.dev`), not the lab hub on `competing-lab`.
 
 ---
 

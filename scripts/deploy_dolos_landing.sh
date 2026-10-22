@@ -3,7 +3,7 @@
 # (same origin as forge.modelmarket.dev / modelmarket.dev).
 #
 # From a laptop:
-#   ./scripts/deploy_dolos_landing.sh --remote root@my-vps \
+#   ./scripts/deploy_dolos_landing.sh --remote root@factory-vps \
 #     --identity ~/.ssh/id_ed25519_factory [--issue-cert]
 #
 # On the Hub:

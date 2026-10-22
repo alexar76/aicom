@@ -110,6 +110,13 @@ def test_factory_rsync_excludes_cursor_and_github():
     assert "cite-desks" in factory_exclude_paths()
     assert "deploy/backup/README.md" in locals_
     assert "deploy/nginx/esim.modelmarket.dev.conf" in locals_
+    assert "artifacts/stripe-reversals-sandbox" in locals_
+    assert "artifacts/stripe-tax-sandbox" in locals_
+    assert "artifacts/histor-zenodo-*" in locals_
+    assert "scripts/delivery-survey/buy.jsonl" in locals_
+    assert "iphone-awg.conf" in locals_
+    assert "data/logos" in locals_
+    assert "artifacts" in PUBLIC_FACTORY_ROOTS
 
 
 def test_satellite_export_includes_provenance():

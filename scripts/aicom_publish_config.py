@@ -153,6 +153,16 @@ DEFAULT_RSYNC_EXCLUDES = [
 # local git only — publish_aicom_factory.sh uses rsync, not git add.
 # Keep aligned with .dockerignore (IDE/CI) and mirror_satellites.sh hygiene.
 FACTORY_LOCAL_EXCLUDES = [
+    # Untracked leftovers in the owner's working tree that rsync shipped to alexar76/aicom:
+    # 2026-09 PyPI build outputs (hub 3.7.0 wheels beside a 3.15 hub), an old fix scratch
+    # directory and two one-off UI probes. Listed by name too: the clone cleanup does not glob.
+    "dist-pypi-*",
+    "dist-pypi-20260926",
+    "dist-pypi-20260926-v370",
+    "relay-scout-fix",
+    "test_ui_check.mjs",
+    "test_ui_deep.mjs",
+    "AGENTS.md",  # this workspace's rules for coding agents — not factory content
     ".cursor",
     ".claude",
     ".gitea",
@@ -235,6 +245,16 @@ FACTORY_LOCAL_EXCLUDES = [
     # Local scratch from import_factory_pr / agent TMPDIR — rsync ignores .gitignore.
     ".tmp-aicom-import",
     ".tmp*",
+    # .gitignore already refuses these; rsync copies the working tree and does not
+    # read it. The Stripe sandbox holds a test hub key (hub-key, not *.key). The
+    # Histor Zenodo dumps and the paid-survey buyer log are local captures.
+    # Narrow: artifacts/kaggle-histor stays. See .gitignore and 9d4e0ef.
+    "artifacts/stripe-reversals-sandbox",
+    "artifacts/stripe-tax-sandbox",
+    "artifacts/histor-zenodo-*",
+    "scripts/delivery-survey/buy.jsonl",
+    "iphone-awg.conf",
+    "data/logos",
 ]
 
 
@@ -267,6 +287,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'agent-skills',  # Cursor/Claude skills: Hub MCP paste-URL + WARDEN firewall
     'agents',
     'apps',
+    'artifacts',  # tracked kaggle-histor notebook (9d4e0ef); sandbox and zenodo dumps are excluded
     'awr',
     'batch-demo.sh',
     'cli',
@@ -317,7 +338,6 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'pyproject.toml',
     'pytest.ini',
     'reference_templates',
-    'relay-scout-fix',
     'requirements-local-image.txt',
     'requirements.txt',
     'run-compose.sh',
@@ -327,8 +347,6 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'services',  # operator diagnosis provider (aicom.diagnosis/1); factory source, not a satellite
     'seo-landings',
     'start.sh',
-    'test_ui_check.mjs',
-    'test_ui_deep.mjs',
     'tests',
     'uni',
     'uv.lock',

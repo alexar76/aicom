@@ -2,10 +2,12 @@
 // Delivery survey: does an x402 seller deliver what it is paid for?
 //
 //   node survey.mjs catalog --out bazaar.json
-//       every listing of the CDP Bazaar, as served today
+//       every listing of the CDP Bazaar, as served today, plus pinned-sellers.json (same listing shape) when
+//       that file is present. A pinned resource replaces a Bazaar row with the same URL.
 //   node survey.mjs sample --catalog bazaar.json --hosts 100 --cap 0.01 --seed <text> --out plan.json
 //       one listing for each of N sellers (a seller = a host), drawn by seeded hash, so anyone holding the
 //       catalogue and the seed draws the same sample; ours and our sibling ecosystems' are never drawn.
+//       Hosts in pinned-sellers.json are always drawn, and the pinned resource is the listing used for that host.
 //       --host your.host[,other.host]: a seller checking itself — every eligible listing of those hosts
 //   node survey.mjs probe --plan plan.json --out probe.jsonl
 //       the dry run: each seller's own declared example, sent exactly as a paid call would send it, minus
@@ -35,6 +37,35 @@ import {
 } from "./lib.mjs";
 
 const BAZAAR = "https://api.cdp.coinbase.com/platform/v2/x402/discovery/resources";
+const PINNED = new URL("./pinned-sellers.json", import.meta.url);
+
+function readPinned() {
+  if (!existsSync(PINNED)) return [];
+  const data = JSON.parse(readFileSync(PINNED, "utf8"));
+  if (!Array.isArray(data)) throw new Error("pinned-sellers.json must be a list of Bazaar listings");
+  return data.filter((item) => item && typeof item.resource === "string");
+}
+
+/** Pinned listings win on resource URL, then any pinned resource the catalogue did not already contain is appended. */
+function mergePinned(items) {
+  const pinned = readPinned();
+  const byRes = new Map(pinned.map((item) => [item.resource, item]));
+  const out = [];
+  const seen = new Set();
+  for (const item of items) {
+    const pinnedItem = byRes.get(item?.resource);
+    if (pinnedItem) {
+      if (!seen.has(item.resource)) out.push(pinnedItem);
+      seen.add(item.resource);
+      continue;
+    }
+    out.push(item);
+  }
+  for (const [resource, item] of byRes) {
+    if (!seen.has(resource)) out.push(item);
+  }
+  return out;
+}
 const PROBE_AGENT = "aimarket-delivery-survey/0.1 (+https://modelmarket.dev; dry run: reads the 402 terms once, pays nothing)";
 const BUY_AGENT = "aimarket-delivery-survey/0.1 (+https://modelmarket.dev; buys one call per seller to check what is delivered)";
 
@@ -75,17 +106,18 @@ async function catalog(opts) {
     if (!batch.length || (total && items.length >= total)) break;
     offset += batch.length;
   }
-  writeFileSync(opts.out, JSON.stringify(items));
-  console.log(JSON.stringify({ saved: items.length, out: opts.out, at: new Date().toISOString() }));
+  const merged = mergePinned(items);
+  writeFileSync(opts.out, JSON.stringify(merged));
+  console.log(JSON.stringify({ saved: merged.length, bazaar: items.length, pinned: readPinned().length, out: opts.out, at: new Date().toISOString() }));
 }
 
 function drawSample(opts) {
   need(opts, "catalog", "seed", "out");
-  const items = JSON.parse(readFileSync(opts.catalog, "utf8"));
+  const items = mergePinned(JSON.parse(readFileSync(opts.catalog, "utf8")));
   const cap = usdToAtomic(opts.cap ?? "0.01");
   const hosts = Number.parseInt(opts.hosts ?? "100", 10);
   const only = typeof opts.host === "string" ? new Set(opts.host.toLowerCase().split(",").map((h) => h.trim()).filter(Boolean)) : null;
-  const plan = sample(items, { hosts, cap, seed: String(opts.seed), only });
+  const plan = sample(items, { hosts, cap, seed: String(opts.seed), only, mustResources: readPinned().map((item) => item.resource) });
   plan.meta.catalogue_file = opts.catalog;
   plan.meta.drawn_at = new Date().toISOString();
   writeFileSync(opts.out, JSON.stringify(plan, null, 1));

@@ -110,10 +110,10 @@ Ces six laboratoires ne sont **pas** des pairs de la fédération LIVE. Platon s
 |------|----------|-----|------|
 | **CASTOR (bot)** | Telegram | [t.me/next_agent_market_bot](https://t.me/next_agent_market_bot) | Poser des questions — Q&R communautaire depuis MNEMOSYNE |
 | **CASTOR (canal)** | Telegram | [t.me/just_for_agents](https://t.me/just_for_agents) | Actualités, versions, digests — lecture seule |
-| **POLLUX** | Discord | [discord.gg/aimarket](https://discord.gg/aimarket) | Serveur structuré, versions, journal de modération (mod log) |
-| **THEOROS** | Discord | [discord.gg/aimarket](https://discord.gg/aimarket) → `#the-canon` | Chronique hebdomadaire **Agent Sovereignty Canon** ; débat dans `#canon-debate` |
+| **POLLUX** | Discord | [discord.gg/JjWxGhW9pP](https://discord.gg/JjWxGhW9pP) | Serveur structuré, versions, journal de modération (mod log) |
+| **THEOROS** | Discord | [discord.gg/JjWxGhW9pP](https://discord.gg/JjWxGhW9pP) → `#the-canon` | Chronique hebdomadaire **Agent Sovereignty Canon** ; débat dans `#canon-debate` |
 
-**Interroger les jumeaux :** [bot Castor](https://t.me/next_agent_market_bot) · [Pollux sur Discord](https://discord.gg/aimarket) — réponses issues des documents GitHub synchronisés (MNEMOSYNE). **Canon :** [landing THEOROS](https://alexar76.github.io/theoros/) · `#the-canon`. **Actualités :** [canal Castor](https://t.me/just_for_agents).
+**Interroger les jumeaux :** [bot Castor](https://t.me/next_agent_market_bot) · [Pollux sur Discord](https://discord.gg/JjWxGhW9pP) — réponses issues des documents GitHub synchronisés (MNEMOSYNE). **Canon :** [landing THEOROS](https://alexar76.github.io/theoros/) · `#the-canon`. **Actualités :** [canal Castor](https://t.me/just_for_agents).
 
 Source : [alexar76/dioscuri](https://github.com/alexar76/dioscuri) · **Landing :** [alexar76.github.io/dioscuri](https://alexar76.github.io/dioscuri/) · **Playbook de contenu :** [docs/growth/content-playbook.md](../growth/content-playbook.md) · Nœud du monitor : cliquez **DIOSCURI** sur [Alien Monitor](https://monitor.modelmarket.dev/).
 
@@ -291,7 +291,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (54 components).
 - create-aimarket-agent: CLI autonome qui génère des fournisseurs de capacités AIMarket Protocol v2 testés, avec manifestes, signature Ed25519 et packaging Docker. · https://alexar76.github.io/create-aimarket-agent/
 - dioscuri: DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS). · https://alexar76.github.io/dioscuri/
 - dolos: DOLOS — red team dynamique EVM pour la bulle UNI : forke l'Anvil de la bulle et lance de vraies transactions d'exploit contre les contrats déployés pour prouver quels défauts sont réels face au bruit de l'analyse statique ; découvertes signées Ed25519 ; uniquement sur la chaîne sandbox il exécute le cycle complet attaque->correction->forge-test->redéploiement->réattaque. Ne touche jamais une chaîne qu'il ne peut jeter ; une découverte mainnet est consultative. · https://dolos.modelmarket.dev/
-- domain-kit (repo domain-operator-kit): Des opérateurs indépendants vendent aux agents IA l'enregistrement d'un domaine pour un an sur les rails AIMarket. Devis signés domains.*@v1, commandes durables, DNS et paiement x402 en USDC sur Base. Marge fixe. Openprovider ou un fournisseur HTTP. Connecteur Vercel côté acheteur. Avant la mise en ligne : la démo n'enregistre rien.
+- domain-kit (repo domain-operator-kit): Opérateurs de domaines indépendants : devis signés domains.*@v1, marge fixe, enregistrement, renouvellement et DNS. Openprovider, Porkbun Sandbox ou fournisseurs HTTP ; x402 USDC sur Base et connecteur Vercel côté acheteur. Les deux pilotes sandbox ont réussi ; paiements réels et Vercel restent à vérifier.
 - emporion: Public-record facts and tools for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), national company registers (Norway, France, Czech Republic, Finland), EU EORI numbers, domain registrations (RDAP), ECB reference rates, sanctions-list lookups (OFAC SDN, EU, and the UK list with the UN designations), business days in ~250 countries and on markets, Bitcoin-anchored timestamps (OpenTimestamps), web pages captured as evidence, and timers that call an agent back with a signed event — at a time or as a dead man's switch. Each answer is signed with its source, fetch time and SHA-256. The hub sells it at https://modelmarket.dev/providers/emporion. · https://emporion.modelmarket.dev · port 9351
 - escrow-signer: HORKOS détient la seule clé autorisée dans AIMarketEscrow.authorizedHubs pour que le Hub ne la détienne pas — un sélecteur autorisé, un séquestre, une chaîne, et la signature EIP-712 de l'acheteur comme autorité sur chaque montant. · https://alexar76.github.io/escrow-signer/
 - esim-kit (repo esim-operator-kit): Intégrez tout opérateur eSIM, y compris ceux qui vendent déjà. Ils proposent des eSIM de voyage aux gens et agents IA sur les rails AIMarket et sont payés comme ils encaissent déjà. Vitrine en 5 langues. Démo : esim.modelmarket.dev. · https://esim.modelmarket.dev/
@@ -305,7 +305,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (54 components).
 - lottery: AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner. · https://lottery.modelmarket.dev/
 - metis: Cognitive verification tier: Understanding Council, fail-closed confidence gate, layered MoA, grounded verifier. Also available to MOMUS as an independent external verifier of a finding. · https://metis.modelmarket.dev
 - momus: Adversarial-audit red team. Runs safe, read-only conformance probes against the ecosystem's own components and emits Ed25519-signed findings. It FINDS and SIGNS but can never pay itself — a separate Treasury key releases bounties, and only on independent verification. Honest outcomes: FINDING / NO_FINDING / INCONCLUSIVE (an unreachable target is neither a finding nor a pass). · https://momus.modelmarket.dev · port 9410
-- oracles: Verifiable AI-economy oracles — Platon, Chronos, Lattice, Murmuration, Lumen, Colony, and Turing on shared oracle-core. · https://oracles.modelmarket.dev/
+- oracles: Verifiable AI-economy oracles — 17 signed capabilities (Platon randomness, Chronos VDF, Lumen reputation, Turing, Fourier and more) on shared oracle-core. · https://oracles.modelmarket.dev/
 - platon: Platon UMBRAL — educational cave app for oracle #1: 32D dynamical shadow oracle with live AIMarket backend and holographic cockpit. · https://oracles.modelmarket.dev/platon/umbral/
 - profile (repo alexar76) (profile README): GitHub profile README — ecosystem map for alexar76. · https://github.com/alexar76
 - pulse-terminal: Pulse Terminal — ACEX capital markets dashboard with live agent pricing. · https://magic-ai-factory.com/pulse/
@@ -317,6 +317,32 @@ Run: python3 scripts/sync_knowledge_base.py --write (54 components).
 - use-cases-portal: AIMarket use-cases portal — public wow, onboarding (See·Buy·Publish·Build·Invest), live rails, and 7 direction boards with 12 idea pages (3D previews). Static site, five languages, honest LIVE vs SIM. Live host use.modelmarket.dev; Pages landing (docs/landing/) at alexar76.github.io/use-cases-portal. · https://use.modelmarket.dev/
 - warden: WARDEN — MCP security firewall: vets an MCP server's tool definitions against static-scan rules, a signed threat feed, origin and tool-def pinning before any tool reaches the model. Zero-dependency TypeScript library. · https://warden.modelmarket.dev
 <!-- END GENERATED ecosystem-components -->
+
+### Domain kit : Porkbun et validation du sandbox
+
+Le code canonique se trouve dans `domain-kit/`, au sein du monorepo `aicom`. L'ancien checkout indépendant a été supprimé. Le kit propose des adaptateurs Openprovider et Porkbun et un contrat HTTP pour les fournisseurs indépendants ; les acheteurs utilisent les mêmes capabilities `domains.*@v1`. Porkbun autorise actuellement **le sandbox uniquement**.
+
+**Vérifié le 2026-10-19 depuis `aicom/` : 57 tests réussis**, ainsi que les contrôles de syntaxe, des schémas, des dépendances et la démo. Les pilotes **Porkbun Sandbox et Openprovider Sandbox** ont également réussi. Ils ont vérifié l'enregistrement, les coordonnées de l'acheteur et l'isolation du propriétaire, la désactivation du renouvellement automatique, les DNS A/TXT en préservant les autres enregistrements, le renouvellement et les lectures MCP stdio. La récupération après perte de réponse et redémarrage a conservé les achats initiaux. Porkbun a aussi récupéré une réponse perdue lors d'une création DNS sans doublon. Ce sont des résultats locaux et d'API sandbox externes, pas une affirmation sur GitHub CI ni sur l'interface interactive d'un agent.
+
+Depuis `aicom/` :
+
+```sh
+npm run check --prefix domain-kit
+npm test --prefix domain-kit
+npm run demo --prefix domain-kit
+
+export DOMAIN_MODE=sandbox
+export DOMAIN_SANDBOX_PILOT=1
+# Exécuter init une seule fois ; ignorer si le dossier des clés existe.
+npm run sandbox:porkbun:init --prefix domain-kit
+export PORKBUN_API_KEY_FILE="$HOME/.config/domain-kit/porkbun/temporary-sandbox/api-key"
+export PORKBUN_SECRET_KEY_FILE="$HOME/.config/domain-kit/porkbun/temporary-sandbox/secret-key"
+npm run sandbox:porkbun --prefix domain-kit
+```
+
+L'initialisation unique crée un compte de test jetable avec 1000 $ de crédit virtuel et sauvegarde les deux identifiants hors de Git. Ignorez-la si le dossier existe déjà ; aucune copie manuelle de clé n'est nécessaire. Réutilisez `domain-kit/data/porkbun-pilot/` et les commandes d'achat initiales ; ne supprimez pas l'état d'une opération incertaine. Le pilote Openprovider séparé utilise `npm run sandbox:pilot --prefix domain-kit` avec ses propres identifiants. Configuration détaillée : `domain-kit/PORKBUN.md` et `domain-kit/PILOT.md` (RU) ; preuves : `domain-kit/VALIDATION.md` (EN).
+
+**La production reste à vérifier :** achat réel d'un domaine, règlement du paiement de l'acheteur, DNS public, connexion Vercel et HTTPS. Le sandbox simule les paiements acheteur et utilise le crédit virtuel du registraire. Un pilote de production contrôlé est nécessaire ; la réussite du sandbox n'active pas le mode live.
 
 ---
 

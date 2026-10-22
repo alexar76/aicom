@@ -401,3 +401,80 @@ def test_a_malformed_set_stops_before_anything_changes(rollout, engine, monkeypa
         run(rollout, monkeypatch, *HUB_ARGS, "--set", bad)
     assert engine.containers == before and {m for m, _ in engine.calls} == {"GET"}
     assert "=x" not in str(refused.value)
+
+
+# ── the kept container leaves Compose's sight ─────────────────────────────────────────────
+
+COMPOSE = {"com.docker.compose.project": "signal-hunt", "com.docker.compose.service": "hub",
+           "com.docker.compose.container-number": "1", "com.docker.compose.config-hash": "abc"}
+
+
+def _composed(engine):
+    engine.find("modelmarket-hub")["Config"]["Labels"].update(COMPOSE)
+
+
+def _prev(engine, name):
+    return [c for c in engine.containers.values() if c["Name"].startswith(f"/{name}-security-prev-")]
+
+
+def test_a_kept_compose_container_loses_the_labels_that_make_compose_start_it(rollout, engine, monkeypatch, capsys):
+    """2026-10-22: `docker compose --dry-run up hub` on two hosts would have started 12 and 14 old
+    hubs beside the live one, because each kept container still said project/service=hub."""
+    _composed(engine)
+    old = rollout.copy.deepcopy(engine.named("modelmarket-hub"))
+    run(rollout, monkeypatch, *HUB_ARGS)
+    live = engine.named("modelmarket-hub")
+    assert live["Config"]["Labels"]["com.docker.compose.service"] == "hub"     # the live one stays Compose's
+    (kept,) = _prev(engine, "modelmarket-hub")
+    assert kept["Id"] != old["Id"] and not kept["State"]["Running"]
+    assert not [k for k in kept["Config"]["Labels"] if k.startswith("com.docker.compose.")]
+    assert kept["Config"]["Labels"]["aicom.rollout.detached-from"] == "signal-hunt/hub"
+    assert kept["Config"]["Labels"]["aicom.role"] == "hub"
+    assert kept["Image"] == old["Image"] and kept["HostConfig"]["Binds"] == ["hub_data:/app/data:rw"]
+    assert kept["HostConfig"]["PortBindings"] == old["HostConfig"]["PortBindings"]
+    assert old["Id"] not in engine.containers
+    # The borrower kept beside it joins the copy, so a manual rollback can start both.
+    (themis_kept,) = _prev(engine, "themis")
+    assert themis_kept["HostConfig"]["NetworkMode"] == "container:" + kept["Id"]
+    assert engine.reachable(), "the live hub and THEMIS are untouched by the clean-up"
+    out = json.loads(capsys.readouterr().out)
+    assert out["previous_kept"][kept["Name"].lstrip("/")].startswith("kept without its 4 Compose label")
+    snapshot = json.loads(Path(out["snapshot"]).read_text())
+    assert snapshot["Config"]["Labels"]["com.docker.compose.service"] == "hub"   # the original, labels and all
+
+
+def test_a_container_compose_never_owned_is_kept_as_it_was(rollout, engine, monkeypatch, capsys):
+    old_hub = engine.named("modelmarket-hub")["Id"]
+    run(rollout, monkeypatch, *HUB_ARGS)
+    assert [c["Id"] for c in _prev(engine, "modelmarket-hub")] == [old_hub]
+    assert "previous_kept" not in json.loads(capsys.readouterr().out)
+
+
+def test_a_failed_copy_leaves_the_kept_container_as_it_was(rollout, engine, monkeypatch, capsys):
+    _composed(engine)
+    old_hub = engine.named("modelmarket-hub")["Id"]
+    original_create = engine._create
+
+    def refuse_the_copy(name, body):
+        if name.endswith("-detached"):
+            raise RuntimeError("HTTP 500 create")
+        return original_create(name, body)
+
+    monkeypatch.setattr(engine, "_create", refuse_the_copy)
+    run(rollout, monkeypatch, *HUB_ARGS)
+    (kept,) = _prev(engine, "modelmarket-hub")
+    assert kept["Id"] == old_hub and kept["Config"]["Labels"]["com.docker.compose.service"] == "hub"
+    assert engine.named("modelmarket-hub")["State"]["Running"]
+    out = json.loads(capsys.readouterr().out)
+    assert out["healthy"] is True and next(iter(out["previous_kept"].values())).startswith("kept as it was")
+
+
+def test_the_dry_run_lists_the_copy_without_compose_labels(rollout, engine, monkeypatch, capsys):
+    _composed(engine)
+    before = copy.deepcopy(engine.containers)
+    run(rollout, monkeypatch, *HUB_ARGS, "--dry-run")
+    assert engine.containers == before
+    commands = json.loads(capsys.readouterr().out)["commands"]
+    assert any(c.startswith("docker create --name modelmarket-hub-security-prev-") and "without Compose labels" in c
+               for c in commands)
+    assert any(c.startswith("docker rm modelmarket-hub-security-prev-") for c in commands)

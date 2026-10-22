@@ -187,7 +187,7 @@ def _preflight() -> str | None:
 
     Learned the hard way (docs/operations-traps.md T-12): ``core.paths.data_root()`` resolves to
     ``/app/data``, which is correct inside the container and does not exist on the factory host at
-    all. Run as ``ssh my-vps 'python3 scripts/enqueue_kleroterion.py'`` this script reached a path
+    all. Run as ``ssh factory-vps 'python3 scripts/enqueue_kleroterion.py'`` this script reached a path
     that was not there, ``append_product_to_pipeline_state`` returned False, and the only signal
     was a generic "append failed" — which reads like a bug in the pipeline rather than "you are
     standing in the wrong filesystem". Nothing was written, but ten minutes went into finding out

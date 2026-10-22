@@ -1,0 +1,13 @@
+[Unit]
+Description=Daily unpaid x402 delivery survey (catalog, sample, probe)
+Documentation=https://github.com/alexar76/aicom
+
+[Timer]
+# Once a day at 07:23 UTC. See the service comment for why daily, and why
+# this timer never runs buy.
+OnCalendar=*-*-* 07:23:00 UTC
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

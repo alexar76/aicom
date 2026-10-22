@@ -75,7 +75,7 @@ cp dioscuri/dioscuri.config.example.json dioscuri/dioscuri.config.json
 |------|-----|
 | Telegram-бот (Castor — Q&A) | https://t.me/next_agent_market_bot |
 | Telegram-канал (Castor — новости) | https://t.me/just_for_agents |
-| Discord (Pollux) | https://discord.gg/aimarket |
+| Discord (Pollux) | https://discord.gg/JjWxGhW9pP |
 
 Те, кто размещает у себя, задают приглашения в `dioscuri.config.json`:
 

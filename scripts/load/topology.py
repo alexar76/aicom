@@ -25,7 +25,7 @@ import sys
 SERVERS = (
     {
         "id": "factory",
-        "ssh": "my-vps",
+        "ssh": "factory-vps",
         "label": "Factory host",
         "repo": "/root/claudecode/aicom",
     },
@@ -80,10 +80,10 @@ MODULES = (
 # Heavy POSTs — same hosts as the matching read module; tokens live on that host.
 HEAVY = (
     ("mesh POST /v1/tasks", "mesh", "factory", "MESH_API_TOKEN on factory .env"),
-    ("argus POST /ask", "argus", "factory", "ARGUS_HTTP_TOKEN in argus container on my-vps"),
+    ("argus POST /ask", "argus", "factory", "ARGUS_HTTP_TOKEN in argus container on factory-vps"),
     ("hub POST /ai-market/v2/invoke", "hub", "factory", "sandbox visitor or payment channel on factory hub"),
     ("metis POST /v1/verify", "metis", "metis", "public fast-route; LLM on Metis host"),
-    ("factory pipeline create", "factory-api", "factory", "aicom-app-1 on my-vps — KI-3 risk"),
+    ("factory pipeline create", "factory-api", "factory", "aicom-app-1 on factory-vps — KI-3 risk"),
 )
 
 

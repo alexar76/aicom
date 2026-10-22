@@ -16,7 +16,7 @@
 # Env:
 #   AICOM_PRODUCTS_CATALOG_REMOTE  default https://github.com/alexar76/aicom-products.git
 #   GH_PAT / GITHUB_TOKEN          alexar76 write access
-#   AICOM_FACTORY_SSH              default my-vps (for --from-factory-host)
+#   AICOM_FACTORY_SSH              default factory-vps (for --from-factory-host)
 #   AICOM_FACTORY_CODE_ROOT        default /root/claudecode/aicom/data/code
 #
 set -euo pipefail
@@ -26,7 +26,7 @@ cd "$ROOT"
 
 REMOTE="${AICOM_PRODUCTS_CATALOG_REMOTE:-https://github.com/alexar76/aicom-products.git}"
 BRANCH="${AICOM_PRODUCTS_CATALOG_BRANCH:-main}"
-FACTORY_SSH="${AICOM_FACTORY_SSH:-my-vps}"
+FACTORY_SSH="${AICOM_FACTORY_SSH:-factory-vps}"
 FACTORY_CODE_ROOT="${AICOM_FACTORY_CODE_ROOT:-/root/claudecode/aicom/data/code}"
 FACTORY_SSH_KEY="${AICOM_FACTORY_SSH_KEY:-$HOME/.ssh/id_ed25519_factory}"
 DRY_RUN=0
@@ -171,6 +171,36 @@ EOF
   fi
 }
 
+# A product whose committed lockfile npm rates high or critical is not published: the catalog's own
+# npm-dependency-audit CI fails on it, and the factory would ship known-vulnerable code under its
+# name (Sentinel and Relay did until 2026-10-21). Same flags as that CI. An audit that cannot run
+# (no npm, no registry) warns and lets the product through. AICOM_CATALOG_ALLOW_NPM_HIGH=1 overrides.
+audit_product_npm() {
+  local dest="$1" lock dir out found=0
+  if ! command -v npm >/dev/null 2>&1; then
+    echo "  warning: npm not installed — product lockfiles not audited" >&2
+    return 0
+  fi
+  while IFS= read -r lock; do
+    dir="$(dirname "$lock")"
+    if out="$(cd "$dir" && npm audit --package-lock-only --include=dev --ignore-scripts --audit-level=high 2>&1)"; then
+      continue
+    fi
+    if grep -q -E "[0-9]+ (high|critical)|Severity: (high|critical)" <<<"$out"; then
+      echo "error: ${dir#"$dest"/}: npm audit reports high/critical advisories:" >&2
+      grep -E "^[a-z@][^ ]* |Severity: (high|critical)|vulnerabilit" <<<"$out" | head -20 >&2
+      found=1
+    else
+      echo "  warning: npm audit could not run in ${dir#"$dest"/} — not audited" >&2
+    fi
+  done < <(find "$dest" -name package-lock.json -not -path "*/node_modules/*")
+  if [[ "$found" -eq 1 && "${AICOM_CATALOG_ALLOW_NPM_HIGH:-}" == "1" ]]; then
+    echo "  AICOM_CATALOG_ALLOW_NPM_HIGH=1: publishing despite the advisories above" >&2
+    return 0
+  fi
+  return "$found"
+}
+
 ensure_readme_badge_markers() {
   local dest="$1"
   local readme="$dest/README.md"
@@ -188,17 +218,14 @@ ensure_readme_badge_markers() {
     mv "$tmp" "$readme"
   fi
   mkdir -p "$dest/docs/badges"
-  if [[ ! -f "$dest/docs/badges/ci.svg" ]]; then
-    cat >"$dest/docs/badges/ci.svg" <<'EOF'
-<svg xmlns="http://www.w3.org/2000/svg" width="90" height="20"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><mask id="a"><rect width="90" height="20" rx="3" fill="#fff"/></mask><g mask="url(#a)"><path fill="#555" d="M0 0h37v20H0z"/><path fill="#4c1" d="M37 0h53v20H37z"/><path fill="url(#b)" d="M0 0h90v20H0z"/></g><g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11"><text x="18.5" y="14">ci</text><text x="62.5" y="14">passing</text></g></svg>
-EOF
-  fi
   if [[ ! -f "$dest/docs/badges/license.svg" ]]; then
     cat >"$dest/docs/badges/license.svg" <<'EOF'
 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><mask id="a"><rect width="100" height="20" rx="3" fill="#fff"/></mask><g mask="url(#a)"><path fill="#555" d="M0 0h55v20H0z"/><path fill="#007ec6" d="M55 0h45v20H55z"/><path fill="url(#b)" d="M0 0h100v20H0z"/></g><g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11"><text x="27.5" y="14">license</text><text x="76.5" y="14">MIT</text></g></svg>
 EOF
   fi
-  # Fill any other README-linked badge SVGs; refuse a catalog push that would 404 a hero.
+  # ci.svg is drawn from the factory's own test run (docs/badges/factory-tests.json), never a
+  # placeholder "passing". Fill any other README-linked badge SVGs; refuse a catalog push that
+  # would 404 a hero.
   python3 - "$ROOT" "$dest" <<'PY' || return 1
 import sys
 from pathlib import Path
@@ -209,9 +236,12 @@ sys.path.insert(0, str(root))
 from web.backend.services.github_house_assets import (
     apply_github_house_asset_autofix,
     missing_readme_assets,
+    refresh_factory_test_badge,
 )
 
 notes = apply_github_house_asset_autofix(dest)
+if not any(n.startswith("docs/badges/ci.svg") for n in notes):
+    notes.append("docs/badges/ci.svg:" + refresh_factory_test_badge(dest))
 if notes:
     print("  github-house assets:", ", ".join(notes[:12]))
 missing = missing_readme_assets(dest)
@@ -455,6 +485,10 @@ for i in "${!PRODUCTS[@]}"; do
   fi
 
   ensure_contributing "$staging"
+  audit_product_npm "$staging" || {
+    echo "error: $pid not published — fix its dependencies in the factory tree first" >&2
+    exit 1
+  }
   ensure_readme_badge_markers "$staging"
   live_url="$(resolve_live_url "$i" "$pid" || true)"
   if [[ -n "$live_url" ]]; then

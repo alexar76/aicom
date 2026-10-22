@@ -171,3 +171,17 @@ def test_the_tools_section_starts_when_it_is_first_known_and_is_not_back_filled(
              "--hub-container", "no-such-container"])
     doc = json.loads(out.read_text())
     assert doc["tools"]["since"] and doc["tools"]["checks"]["mcp-diff"]["answered"] == 1
+
+
+def test_gateway_mcp_counters_are_typed_and_published_under_tools():
+    raw = ex.gateway_mcp_counters({"started": "x", "counters": {
+        "weather:initialize": {"claude": 2, "bad": "7"}, "weather:tools/call:weather_now:ok": {"claude": 1},
+        "junk": "not a dict"}})
+    assert raw == {"weather:initialize": {"claude": 2}, "weather:tools/call:weather_now:ok": {"claude": 1}}
+    state = {"x402": {"salt": "s"}, "mcp": {}, "tools": {"since": "2026-10-20T00:00:00Z"}, "tools_mcp": {}}
+    ex.fold_mcp(state["tools_mcp"], raw)                                   # baseline
+    ex.fold_mcp(state["tools_mcp"], {"weather:initialize": {"claude": 5}, "weather:tools/call:weather_now:ok": {"claude": 1}})
+    ex.fold_mcp(state["tools_mcp"], {"weather:initialize": {"claude": 1}})  # the gateway restarted
+    doc = ex.public(state, [], 0.0, {})
+    assert doc["tools"]["mcp"] == {"weather:initialize": {"claude": 4}}
+    assert ex.gateway_mcp_counters(["nope"]) == {}

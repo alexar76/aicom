@@ -75,7 +75,7 @@ Renseignez les jetons en local — **ne committez jamais**.
 |-----|-----|
 | Bot Telegram (Castor — Q&A) | https://t.me/next_agent_market_bot |
 | Canal Telegram (Castor — actualités) | https://t.me/just_for_agents |
-| Discord (Pollux) | https://discord.gg/aimarket |
+| Discord (Pollux) | https://discord.gg/JjWxGhW9pP |
 
 Les auto-hébergeurs définissent les invitations dans `dioscuri.config.json` :
 

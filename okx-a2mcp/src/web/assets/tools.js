@@ -144,6 +144,16 @@
     "warden-scan": function () {
       return { tools: toolList("tools") };
     },
+    "tool-list-cost": function () {
+      // A pasted list wins; otherwise the server is looked up in HISTOR.
+      if (val("tools").trim()) return { tools: toolList("tools") };
+      var q = val("server").trim();
+      if (!q) throw fail(UI.errEmpty);
+      if (/^http:\/\//i.test(q)) q = q.replace(/^http:/i, "https:");
+      // A host name without a scheme is an endpoint; registry names read the other way round.
+      if (!/^[a-z]+:/i.test(q) && /^[^/@]+\.[a-z]{2,}(\/|$)/i.test(q) && !/^(io|com|dev|ai|net|org|app|co|me|sh|xyz)\./i.test(q)) q = "https://" + q;
+      return { server: q };
+    },
     "histor-check": function () {
       var q = val("query").trim();
       if (!q) throw fail(UI.errEmpty);
@@ -398,7 +408,69 @@
     return out;
   }
 
-  var DRAW = { "x402-check": drawX402, "mcp-diff": drawDiff, "warden-scan": drawWarden, "histor-check": drawHistor };
+  function num(n) { return Number(n).toLocaleString(LOCALE); }
+  function pct(x) { return (Math.round(x * 1000) / 10).toLocaleString(LOCALE) + "%"; }
+  function usd(x) { return "$" + Number(x).toLocaleString(LOCALE, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function costKind(share) { return share <= 0.5 ? "good" : share <= 0.9 ? "info" : share <= 0.99 ? "warn" : "bad"; }
+  function badgeUrl(server) {
+    return "https://img.shields.io/endpoint?url=" + encodeURIComponent(location.origin + "/tools/badge/tool-list-cost?server=" + encodeURIComponent(server));
+  }
+  function drawCost(body) {
+    if (body.found === false) {
+      var miss = [verdictHead("warn", L.notFound, body.known ? L.notObserved : L.notKnown)];
+      var ls = body.server;
+      if (ls) {
+        var lpage = typeof ls.page === "string" && /^https:\/\/histor\.modelmarket\.dev\//.test(ls.page) ? ls.page : null;
+        miss.push(section(L.server, kv([
+          ["name", ls.name, true], ["endpoint", ls.endpoint, true],
+          [L.lastStatus, ls.lastStatus, true],
+          [L.page, lpage ? h("a", { href: lpage, rel: "noopener", target: "_blank", text: lpage }) : null, false],
+        ])));
+      }
+      return miss;
+    }
+    var pk = (body.compared || {}).package || {}, rm = (body.compared || {}).remote || {};
+    var out = [verdictHead(costKind(pk.share_shorter || 0), num(body.tokens) + " " + L.tokens,
+      L.verdictNote.replace("{tools}", num(body.tools)))];
+    var stats = h("div", { class: "stat-row" });
+    [[num(body.tools), L.tools], [num(body.tokens_per_tool), L.perTool], [pct(body.context_share_200k || 0), L.context]].forEach(function (x) {
+      stats.appendChild(h("div", { class: "mini-stat" }, h("b", { text: x[0] }), h("span", { text: x[1] })));
+    });
+    out.push(stats);
+    out.push(section(L.compared, h("ul", { class: "plain" }, [
+      h("li", { text: L.shorterPackages.replace("{share}", pct(pk.share_shorter || 0)).replace("{servers}", num(pk.servers || 0)) }),
+      h("li", { text: L.shorterRemote.replace("{share}", pct(rm.share_shorter || 0)).replace("{servers}", num(rm.servers || 0)) }),
+      h("li", { text: L.timesMedian.replace("{times}", num(pk.times_median || 0)).replace("{median}", num(pk.median || 0)) }),
+    ]), h("p", { class: "muted small", text: L.about })));
+    var c = body.per_1000_requests_usd || {}, p = body.prices_per_million_usd || {};
+    out.push(section(L.money, kv([
+      [L.priceSmall.replace("{p}", usd(p.small)), usd(c.small), true],
+      [L.priceMid.replace("{p}", usd(p.mid)), usd(c.mid), true],
+      [L.priceCached.replace("{p}", usd(p.mid_cached)), usd(c.mid_cached), true],
+    ])));
+    if ((body.heaviest || []).length) {
+      out.push(section(L.heaviest, h("ul", { class: "signal-list" }, body.heaviest.map(function (t) {
+        return h("li", null, code(t.name), h("span", { class: "muted", text: " · " + num(t.tokens) + " " + L.tokens }));
+      }))));
+    }
+    if (body.server) {
+      var sv = body.server;
+      var page = typeof sv.page === "string" && /^https:\/\/histor\.modelmarket\.dev\//.test(sv.page) ? sv.page : null;
+      out.push(section(L.server, kv([
+        ["name", sv.name, true], ["endpoint", sv.endpoint, true],
+        [L.lastObserved, sv.lastObserved ? when(sv.lastObserved) : null, false],
+        [L.page, page ? h("a", { href: page, rel: "noopener", target: "_blank", text: page }) : null, false],
+      ])));
+      var md = "![tool list](" + badgeUrl(sv.endpoint) + ")";
+      var pre = h("pre", null, h("code", { text: md }));
+      out.push(section(L.badge, h("p", { class: "section-note", text: L.badgeNote }),
+        h("div", { class: "pre-wrap" }, pre, copyButton(function () { return md; }, UI))));
+    }
+    out.push(h("p", { class: "muted small", text: L.method.replace("{date}", (body.snapshot || {}).date || "") }));
+    return out;
+  }
+
+  var DRAW = { "tool-list-cost": drawCost, "x402-check": drawX402, "mcp-diff": drawDiff, "warden-scan": drawWarden, "histor-check": drawHistor };
 
   function show(nodes, isError) {
     result.textContent = "";
@@ -461,6 +533,7 @@
     if (TOOL === "x402-check") { fill("payment", ex.payment); fill("requirements", ex.requirements); }
     else if (TOOL === "mcp-diff") { fill("old", ex.old); fill("new", ex.new); }
     else if (TOOL === "warden-scan") { fill("tools", ex.tools); }
+    else if (TOOL === "tool-list-cost") { fill("tools", ""); fill("server", ex.server); }
     else { fill("query", ex.query); }
     note.hidden = false;
     run();

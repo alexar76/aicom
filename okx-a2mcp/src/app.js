@@ -6,6 +6,7 @@ import { hearthServices } from "./hearth.js";
 import { hubServices } from "./hub.js";
 import { openapiDocument, priceOf, wellKnownManifest } from "./x402.js";
 import { mountTools } from "./web/routes.js";
+import { mountMcp } from "./mcp/server.js";
 
 /** The paying wallet named inside an x402 payment header (base64 JSON), lower-cased, or "". */
 export function payerOf(header) {
@@ -63,8 +64,13 @@ export function createApp({
   freeHearthPerMinute = 60,
   // Google Search Console's HTML-tag token for the https://modelmarket.dev/tools/ property (public).
   siteVerification = "",
+  // Our own addresses (AICOM_OWN_IPS on the host): left out of the MCP request counters.
+  ownIps = new Set(),
+  // Start the tool-list counter's worker at boot and keep it (src/toolcost.js); the server does.
+  warmToolCounter = false,
 } = {}) {
-  const services = buildServices({ historUrl: historUrl.replace(/\/+$/, ""), fetchImpl, timeoutMs, freePerMinute: freeHistorPerMinute, now });
+  const services = buildServices({ historUrl: historUrl.replace(/\/+$/, ""), fetchImpl, timeoutMs, freePerMinute: freeHistorPerMinute, now,
+                                   warmCounter: warmToolCounter });
   // Paid-only twins of the hub's capabilities, when the gateway has a hub account (src/hub.js).
   for (const s of hubServices({ hubUrl, apiKey: hubApiKey, fetchImpl })) services.set(s.id, s);
   for (const s of hearthServices({ hearthUrl, apiKey: hearthApiKey, sellerUrl: publicUrl, fetchImpl,
@@ -115,6 +121,16 @@ export function createApp({
     }
   });
 
+  // Free MCP servers by topic (src/mcp): before the pages, whose router answers 404 for the rest of /tools/.
+  mountMcp(app, {
+    services,
+    hub: { base: hubUrl.replace(/\/+$/, ""), apiKey: hubApiKey, fetchImpl, timeoutMs: 30_000 },
+    origin: publicUrl || "https://modelmarket.dev",
+    callerIdOf: (ip) => callerIdFor(ip, callerSecret),
+    ownIps,
+    now,
+  });
+
   // The people's pages and their API. Before the paywall: nothing under /tools/ is ever paid.
   mountTools(app, {
     services,
@@ -135,6 +151,25 @@ export function createApp({
     // /.well-known/x402 by the origin's nginx.
     app.get(["/.well-known/x402", "/x402/well-known.json"], (_req, res) => {
       res.set("Cache-Control", "public, max-age=3600").json(wellKnownManifest({ publicUrl, serviceIds: paidIds() }));
+    });
+    // A paid route is POST-only, but an unpaid GET gets the same 402 a POST gets. Probes send a
+    // GET: our 404 there read as down every day — agenteconomy.report rated us D at 0 % uptime,
+    // Karatum "unreachable" (2026-10-21). A 405 satisfied agenteconomy, which then POSTs, but
+    // Karatum takes only a 402 to the GET. A GET carrying a payment is never verified or
+    // settled: it gets the 405. Unknown names still get the 404.
+    app.all("/x402/:service", (req, res, next) => {
+      if (req.method !== "GET" && req.method !== "HEAD") return next();
+      if (!paidIds().includes(req.params.service)) return next();
+      const service = services.get(req.params.service) || { id: req.params.service };
+      const refuse = () => res.status(405).set("Allow", "POST")
+        .json(failure(service, "method_not_allowed", "use POST with a JSON body; it answers 402 with the price until paid"));
+      if (req.get("payment-signature") || req.get("x-payment")) return refuse();
+      res.set("Allow", "POST");
+      // The paywall matches "POST /x402/<id>": shown as a POST, the unpaid GET gets its challenge
+      // (or its 503 while the facilitator is down). Without a payment it never calls next().
+      const method = req.method;
+      req.method = "POST";
+      return paywall.middleware(req, res, () => { req.method = method; refuse(); });
     });
     // The middleware answers 402 for the configured routes until a valid payment arrives, and
     // settles only when the handler answers below 400 — so a refused request costs nothing.

@@ -16,7 +16,7 @@
 |--------|---------|------|
 | Telegram bot (Castor) | https://t.me/next_agent_market_bot | Q&A — 向孪生提问 |
 | Telegram channel (Castor) | https://t.me/just_for_agents | 新闻、发布、摘要 |
-| Discord (Pollux) | https://discord.gg/aimarket | 讨论、求助、show-and-tell |
+| Discord (Pollux) | https://discord.gg/JjWxGhW9pP | 讨论、求助、show-and-tell |
 | 生态系统 | https://magic-ai-factory.com | 主站 |
 | 镜像 / dev | https://modeldev.modelmarket.dev | 演示、staging |
 | School（短课） | https://edu.modelmarket.dev/ | 13 节免费短课 → 学院 |
@@ -40,7 +40,7 @@
 | 受众 | CTA | Copy (EN) |
 |------|-----|-----------|
 | 观察者 | Telegram | “Release news and digests — Castor on Telegram” → https://t.me/just_for_agents |
-| 开发者 | Discord | “Discuss, ask, show what you built — Pollux on Discord” → https://discord.gg/aimarket |
+| 开发者 | Discord | “Discuss, ask, show what you built — Pollux on Discord” → https://discord.gg/JjWxGhW9pP |
 
 每个 README 与 landing 都包含**两个**链接。顺序取决于仓库类型：
 
@@ -75,7 +75,7 @@
 > Questions? The DIOSCURI twins answer from synced GitHub docs.
 >
 > • Telegram (Castor) — fast news: https://t.me/just_for_agents
-> • Discord (Pollux) — deep threads: https://discord.gg/aimarket
+> • Discord (Pollux) — deep threads: https://discord.gg/JjWxGhW9pP
 
 ### Footer
 
@@ -95,7 +95,7 @@ Repository · Setup/Docs · Alien Monitor · AICOM ecosystem ·（可选）俄�
 
 ```markdown
 Part of the [AICOM open agent economy](https://magic-ai-factory.com).
-**Live demo:** <url> · **Community:** [Telegram](https://t.me/just_for_agents) · [Discord](https://discord.gg/aimarket)
+**Live demo:** <url> · **Community:** [Telegram](https://t.me/just_for_agents) · [Discord](https://discord.gg/JjWxGhW9pP)
 ```
 
 ### What it does
@@ -184,7 +184,7 @@ README 与 docs 是 bot 的饲料。写作时要让 retrieval 返回有用的答
 ```
 ⚒ your-repo v1.2.3 shipped — Short plain title here
 https://github.com/alexar76/your-repo/releases/tag/v1.2.3
-Community: discord.gg/aimarket | t.me/just_for_agents
+Community: discord.gg/JjWxGhW9pP | t.me/just_for_agents
 ```
 
 给作者：
@@ -229,7 +229,7 @@ The [DIOSCURI](https://github.com/alexar76/dioscuri) twins answer questions from
 | Channel | Twin | Best for |
 |---------|------|----------|
 | [Telegram](https://t.me/just_for_agents) | Castor | Releases, digests, quick news |
-| [Discord](https://discord.gg/aimarket) | Pollux | Help, ideas, show-and-tell |
+| [Discord](https://discord.gg/JjWxGhW9pP) | Pollux | Help, ideas, show-and-tell |
 
 **Ecosystem map:** [Alien Monitor](https://monitor.modelmarket.dev/) · [AICOM](https://magic-ai-factory.com)
 ```
@@ -240,7 +240,7 @@ The [DIOSCURI](https://github.com/alexar76/dioscuri) twins answer questions from
 
 ```html
 <a href="https://t.me/just_for_agents">Telegram · Castor</a>
-<a href="https://discord.gg/aimarket">Discord · Pollux</a>
+<a href="https://discord.gg/JjWxGhW9pP">Discord · Pollux</a>
 <a href="https://github.com/alexar76/YOUR_REPO">GitHub</a>
 <a href="YOUR_DEMO_URL">Live demo</a>
 ```
@@ -253,7 +253,7 @@ landing 与 hero rows 上的主 CTA — 链接到 live 频道，而不是 `#` �
 
 ```html
 <a href="https://t.me/next_agent_market_bot">Ask Castor · Telegram</a>
-<a href="https://discord.gg/aimarket">Ask Pollux · Discord</a>
+<a href="https://discord.gg/JjWxGhW9pP">Ask Pollux · Discord</a>
 ```
 
 在 **demo / monitor / landing** 仓库上，Telegram 优先。在 **SDK / client / widget** 仓库上，Discord 优先。

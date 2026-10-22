@@ -16,7 +16,7 @@ Every repo must use the same URLs. DIOSCURI reads them from `dioscuri.config.jso
 |------|----------------|---------|
 | Telegram bot (Castor) | https://t.me/next_agent_market_bot | Q&A — ask the twin |
 | Telegram channel (Castor) | https://t.me/just_for_agents | News, releases, digests |
-| Discord (Pollux) | https://discord.gg/aimarket | Discussions, help, show-and-tell |
+| Discord (Pollux) | https://discord.gg/JjWxGhW9pP | Discussions, help, show-and-tell |
 | Ecosystem | https://magic-ai-factory.com | Main site |
 | Mirror / dev | https://modeldev.modelmarket.dev | Demos, staging |
 | Observatory | https://monitor.modelmarket.dev/ | Live status of the stack |
@@ -40,7 +40,7 @@ Do not use one generic “join community” CTA. Two distinct paths:
 | Audience | CTA | Copy (EN) |
 |----------|-----|-----------|
 | Observer | Telegram | “Release news and digests — Castor on Telegram” → https://t.me/just_for_agents |
-| Builder | Discord | “Discuss, ask, show what you built — Pollux on Discord” → https://discord.gg/aimarket |
+| Builder | Discord | “Discuss, ask, show what you built — Pollux on Discord” → https://discord.gg/JjWxGhW9pP |
 
 Every README and landing includes **both** links. Order depends on repo type:
 
@@ -75,7 +75,7 @@ Facts, not marketing fog: ports, protocols, what actually works today. Link to l
 > Questions? The DIOSCURI twins answer from synced GitHub docs.
 >
 > • Telegram (Castor) — fast news: https://t.me/just_for_agents
-> • Discord (Pollux) — deep threads: https://discord.gg/aimarket
+> • Discord (Pollux) — deep threads: https://discord.gg/JjWxGhW9pP
 
 ### Footer
 
@@ -95,7 +95,7 @@ Repository · Setup/Docs · Alien Monitor · AICOM ecosystem · (optional) Russi
 
 ```markdown
 Part of the [AICOM open agent economy](https://magic-ai-factory.com).
-**Live demo:** <url> · **Community:** [Telegram](https://t.me/just_for_agents) · [Discord](https://discord.gg/aimarket)
+**Live demo:** <url> · **Community:** [Telegram](https://t.me/just_for_agents) · [Discord](https://discord.gg/JjWxGhW9pP)
 ```
 
 ### What it does
@@ -184,7 +184,7 @@ When you tag a release, KERYX posts automatically:
 ```
 ⚒ your-repo v1.2.3 shipped — Short plain title here
 https://github.com/alexar76/your-repo/releases/tag/v1.2.3
-Community: discord.gg/aimarket | t.me/just_for_agents
+Community: discord.gg/JjWxGhW9pP | t.me/just_for_agents
 ```
 
 For authors:
@@ -229,7 +229,7 @@ The [DIOSCURI](https://github.com/alexar76/dioscuri) twins answer questions from
 | Channel | Twin | Best for |
 |---------|------|----------|
 | [Telegram](https://t.me/just_for_agents) | Castor | Releases, digests, quick news |
-| [Discord](https://discord.gg/aimarket) | Pollux | Help, ideas, show-and-tell |
+| [Discord](https://discord.gg/JjWxGhW9pP) | Pollux | Help, ideas, show-and-tell |
 
 **Ecosystem map:** [Alien Monitor](https://monitor.modelmarket.dev/) · [AICOM](https://magic-ai-factory.com)
 ```
@@ -240,7 +240,7 @@ The [DIOSCURI](https://github.com/alexar76/dioscuri) twins answer questions from
 
 ```html
 <a href="https://t.me/just_for_agents">Telegram · Castor</a>
-<a href="https://discord.gg/aimarket">Discord · Pollux</a>
+<a href="https://discord.gg/JjWxGhW9pP">Discord · Pollux</a>
 <a href="https://github.com/alexar76/YOUR_REPO">GitHub</a>
 <a href="YOUR_DEMO_URL">Live demo</a>
 ```
@@ -253,7 +253,7 @@ Primary CTAs on landings and hero rows — link to live channels, not `#` anchor
 
 ```html
 <a href="https://t.me/next_agent_market_bot">Ask Castor · Telegram</a>
-<a href="https://discord.gg/aimarket">Ask Pollux · Discord</a>
+<a href="https://discord.gg/JjWxGhW9pP">Ask Pollux · Discord</a>
 ```
 
 On **demo / monitor / landing** repos, list Telegram first. On **SDK / client / widget** repos, list Discord first.

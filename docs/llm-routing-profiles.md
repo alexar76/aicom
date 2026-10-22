@@ -6,7 +6,7 @@ Quick switching between **DeepSeek native API**, **canonical Metis hybrid** (Dee
 
 | Host | SSH alias | AI assistants |
 |------|-----------|---------------|
-| **Factory** | `my-vps` | Factory pipeline, Alien Monitor, ATLAS Analyst, ARGUS, THEMIS |
+| **Factory** | `factory-vps` | Factory pipeline, Alien Monitor, ATLAS Analyst, ARGUS, THEMIS |
 | **Metis** | `root@skopos.modelmarket.dev` | Metis council/verify, SKOPOS AI agent |
 | **Oracles** | `admin-vps` | MOMUS, HELIOS, DIOSCURI, Platon, LOGOS, ARGUS, Alien Monitor, **HISTOR** (classifier) |
 | **Hub lab** | `competing-lab` | AIMarket Hub (verify via Metis — no local LLM) |

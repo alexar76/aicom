@@ -40,6 +40,8 @@ const app = createApp({
   ...(process.env.FREE_HEARTH_PER_MINUTE ? { freeHearthPerMinute: Number(process.env.FREE_HEARTH_PER_MINUTE) } : {}),
   ...(process.env.GOOGLE_SITE_VERIFICATION ? { siteVerification: process.env.GOOGLE_SITE_VERIFICATION.trim() } : {}),
   paywall,
+  warmToolCounter: true,
+  ownIps: new Set((process.env.AICOM_OWN_IPS || "").split(",").map((v) => v.trim()).filter(Boolean)),
 });
 app.listen(port, host, () =>
   console.log(`okx-a2mcp listening on ${host}:${port}` +

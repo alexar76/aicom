@@ -217,6 +217,16 @@ class TestManifestVector:
             "could rewrite every price and every peer trust score undetected"
         )
 
+    def test_the_hub_refuses_the_bare_string_vector_without_raising(self, key, hub_signer):
+        """negative/manifest-signature-bare-string.json carries the RIGHT bytes as a string.
+        The hub must refuse it by shape (§7.3.1) — before 2026-10-21 it raised instead."""
+        doc = _vector("negative/manifest-signature-bare-string.json")
+        assert isinstance(doc["signature"], str)
+        assert _ed25519_ok(doc["signature"], hub_signer.manifest_canonical(doc), key), (
+            "the vector's bytes must verify, or it is not exercising the shape rule"
+        )
+        assert hub_signer.verify_manifest_signature(doc, key) is False
+
     def test_the_oracle_library_computes_the_same_canonical(self, hub_signer):
         """oracle_core signs its own manifest and the hub verifies it, so a single differing
         byte means no oracle can federate. That happened: `by_hub_hash` was missing."""

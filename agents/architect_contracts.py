@@ -373,7 +373,7 @@ def _ensure_implementation_contract(
         "  frontend/          # SPA when React/Vite implied\n"
         "  tests/             # unit → integration → UI e2e\n"
         "  docs/en.md         # English operator guide\n"
-        "  docs/badges/       # committed CI/coverage/license SVGs\n"
+        "  docs/badges/       # license SVG; ci.svg is written by the factory test run\n"
         "  docs/gallery/      # hero.svg + stills when there is a UI\n"
         "  .github/workflows/ci.yml\n"
         "  .github/workflows/release.yml  # GitHub Release on v* tags\n"

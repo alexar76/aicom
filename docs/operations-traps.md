@@ -360,13 +360,14 @@ paths you intend to change.
 
 ## T-12 — deploying a factory code change: one factory, two copies of the code
 
-There is exactly **one** running factory: `my-vps`, container `aicom-app-1`, live store
-`/root/claudecode/aicom/data/state/pipeline.db` (185 MB, written continuously). Checked
-2026-08-27, because the topology invites the opposite conclusion:
+There is exactly **one** running factory: `factory-vps`, container `aicom-app-1`, live store
+`/root/claudecode/aicom/data/state/pipeline.db` (198 MB, written continuously). Checked
+2026-08-27 on the old factory host and again 2026-10-21 on factory-vps, because the topology
+invites the opposite conclusion:
 
 | Host | What is there | Is it a factory? |
 |---|---|---|
-| `my-vps` | `/root/claudecode/aicom` + `aicom-app-1` | **yes** — the only one |
+| `factory-vps` | `/root/claudecode/aicom` + `aicom-app-1` | **yes** — the only one |
 | `admin-vps` | `/root/aicom`, plus dioscuri / helios / argus containers | no — satellites only; its `pipeline.db` is 40 KB frozen at 2026-08-01 |
 | `not-my-vps` | no checkout | no |
 
@@ -382,16 +383,16 @@ Only `data/` is shared. Every `.py` under `agents/`, `core/`, `web/` is inside t
 
 ```bash
 # 1. sync only the paths you changed — never a bare --delete (see T-11)
-rsync -av --relative core/foo.py agents/qa.py my-vps:/root/claudecode/aicom/
+rsync -av --relative core/foo.py agents/qa.py factory-vps:/root/claudecode/aicom/
 
 # 2. rebuild AND force the container to be replaced
-ssh my-vps 'cd /root/claudecode/aicom \
+ssh factory-vps 'cd /root/claudecode/aicom \
   && TAG=prod-$(date +%Y%m%d-%H%M)-nogit \
   && AICOM_IMAGE_TAG=$TAG docker compose build app \
   && AICOM_IMAGE_TAG=$TAG docker compose up -d --force-recreate app'
 
 # 3. prove the new code is actually inside the thing that is running
-ssh my-vps 'docker exec aicom-app-1 ls -la /app/core/foo.py'
+ssh factory-vps 'docker exec aicom-app-1 ls -la /app/core/foo.py'
 ```
 
 ### Two ways this silently does nothing
@@ -403,7 +404,7 @@ the image, then `up -d` compared the resolved service config, saw the same image
 left the old container in place. Everything exited 0. `docker ps` still said `Up 3 hours`, and
 the new files were absent from `/app`. Put a time in the tag, and pass `--force-recreate`.
 
-**A one-shot management script cannot run on the host at all.** `ssh my-vps 'python3
+**A one-shot management script cannot run on the host at all.** `ssh factory-vps 'python3
 scripts/enqueue_kleroterion.py'` exited 1 having written nothing, reporting only
 `ERROR: append_product_to_pipeline_state failed`. Two different things are wrong, and the first
 one hides the second:
@@ -418,7 +419,7 @@ second, so run such scripts **inside** the container, where the data root and th
 are the factory's own:
 
 ```bash
-ssh my-vps 'docker exec aicom-app-1 python /app/scripts/enqueue_kleroterion.py'
+ssh factory-vps 'docker exec aicom-app-1 python /app/scripts/enqueue_kleroterion.py'
 ```
 
 That also means the script must be in the **image**, not just the tree — so it needs the rebuild
@@ -435,7 +436,7 @@ A rebuild restarts the worker. If a product is mid-round (`DEV_FIXING`), that ro
 Check what is in flight first:
 
 ```bash
-ssh my-vps 'cd /root/claudecode/aicom && python3 -c "
+ssh factory-vps 'cd /root/claudecode/aicom && python3 -c "
 import sqlite3, datetime
 c = sqlite3.connect(\"data/state/pipeline.db\")
 for i, s, t in c.execute(\"select id, state, updated_at from products order by updated_at desc limit 3\"):
@@ -470,8 +471,8 @@ So: **after a deploy is verified, drop the pre-previous tag.** Not before — th
 to delete is the one you roll back to if the new image is broken.
 
 ```bash
-REMOTE=my-vps ./scripts/prune_stale_deploy_images.sh          # dry run
-REMOTE=my-vps ./scripts/prune_stale_deploy_images.sh --yes    # apply
+REMOTE=factory-vps ./scripts/prune_stale_deploy_images.sh     # dry run
+REMOTE=factory-vps ./scripts/prune_stale_deploy_images.sh --yes # apply
 ```
 
 It keeps every tag any container references (including stopped ones — a stopped `*-prev`
@@ -508,7 +509,7 @@ Two things that made this take longer than it should have, both worth avoiding:
   recreate, and check the env after:
 
 ```bash
-ssh my-vps 'docker inspect aicom-app-1 --format "{{index .Config.Labels \"com.docker.compose.project.config_files\"}}"'
-ssh my-vps 'cd /root/claudecode/aicom && AICOM_IMAGE_TAG=<tag> docker compose -f docker-compose.yml -f docker-compose.dind.yml up -d --force-recreate app'
-ssh my-vps 'docker exec aicom-app-1 sh -lc "echo \$DOCKER_HOST; docker ps --format \"{{.Names}}\" | head -3"'
+ssh factory-vps 'docker inspect aicom-app-1 --format "{{index .Config.Labels \"com.docker.compose.project.config_files\"}}"'
+ssh factory-vps 'cd /root/claudecode/aicom && AICOM_IMAGE_TAG=<tag> docker compose -f docker-compose.yml -f docker-compose.dind.yml up -d --force-recreate app'
+ssh factory-vps 'docker exec aicom-app-1 sh -lc "echo \$DOCKER_HOST; docker ps --format \"{{.Names}}\" | head -3"'
 ```

@@ -24,15 +24,15 @@
   <strong>Factory &amp; storefront:</strong> <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> ·
   <strong>Community:</strong> <a href="https://t.me/next_agent_market_bot">Ask Castor (bot)</a> ·
   <a href="https://t.me/just_for_agents">Castor channel</a> ·
-  <a href="https://discord.gg/aimarket">Discord · Pollux</a> ·
+  <a href="https://discord.gg/JjWxGhW9pP">Discord · Pollux</a> ·
   <a href="https://alexar76.github.io/theoros/">THEOROS canon</a><br/>
   <a href="https://modeldev.modelmarket.dev/">Factory landing</a> · <a href="https://ecosystem.modelmarket.dev/">Ecosystem landing</a> · <a href="#demo-video">Demo video</a> · <a href="#build-replays">Build Replays</a> · <a href="#factory-hold">Factory hold</a> · <a href="#gallery">Gallery</a> · <a href="#factory-iq">Factory IQ</a> · <a href="#ecosystem-companions">Ecosystem</a> · <a href="#quick-start">Quick start</a>
 </p>
 
 <!-- aicom-readme-badges -->
 <p align="center">
-  <a href="https://github.com/alexar76/aicom/actions/workflows/ci.yml"><img src="docs/badges/ci.svg" alt="CI" /></a>
-  <img src="docs/badges/status.svg" alt="Pre-mainnet" />
+  <a href="https://github.com/alexar76/aicom/actions/workflows/ci.yml"><img src="https://github.com/alexar76/aicom/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <img src="docs/badges/status.svg" alt="Base mainnet: demo" />
   <a href="https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg"><img src="https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg" alt="Test coverage" /></a>
   <a href="LICENSE"><img src="docs/badges/license.svg" alt="License: MIT" /></a>
 </p>
@@ -75,8 +75,10 @@
 >
 > ## &nbsp;&nbsp;&nbsp;`https://modelmarket.dev/mcp`
 >
-> You get two tools against the **live** hub: **`market_search`** finds a capability in the
-> published catalogue, **`market_invoke`** runs one and hands back the hub's **signed receipt**.
+> Two tools do the work against the **live** hub: **`market_search`** finds a capability in the
+> published catalogue, **`market_invoke`** runs one and hands back the hub's **signed receipt**
+> (the server lists a few more: direct weather, air quality, sensors, randomness, multi-step
+> pipelines and your balance).
 > **A few trial invokes per caller are free** — no key, no account, no wallet, nothing to
 > install. When the allowance runs out the hub answers **402** and the on-chain escrow path
 > begins, which is where the wallet finally matters.
@@ -183,12 +185,13 @@ calibration. The number should climb.
 
 ## Attested Memory SaaS family
 
-The repository also contains a separate customer-facing SaaS contour built on
-the Attested Memory Hub: [`SAAS_PROJECTS.md`](SAAS_PROJECTS.md). It provides one
+A separate customer-facing SaaS contour is built on the Attested Memory Hub
+([attestedmemory.net](https://attestedmemory.net/), source:
+[`attested-memory`](https://github.com/alexar76/attested-memory)). It provides one
 public edge for Personal Memory, Team Memory and Expert Memory Market. Crypto
 checkout uses exact canonical USDC on Base through the independent KOVA adapter;
-the SaaS gateway never holds wallet private keys. Localized user guides and use
-cases are available in [`docs/`](docs/) in ten languages.
+the SaaS gateway never holds wallet private keys. Its user guides and use cases,
+in ten languages, are kept with the Attested code.
 
 **Typical wall-clock (DeepSeek, no QA rework loops):** `marketing_landing` **~20–25 min** to first previewable code; `full_software` **~25–45 min** for a simple brief, **hours** when gates iterate — [FAQ & scope](#faq--scope). **Not** a 15-second generator.
 
@@ -198,72 +201,44 @@ cases are available in [`docs/`](docs/) in ten languages.
 
 ## Quick start
 
-<table>
-<tr>
-<td align="center" width="100%">
+Three ways in, by how much you want to run:
 
-### 🚀 Launch your own galaxy
-
-</td>
-</tr>
-<tr>
-<td>
-
-One command. Every satellite. Your own AI agent economy — oracles, scanners,
-lottery, treasury, the cognitive layer, and the monitor that watches it all.
-All three prod hosts collapsed onto **one machine**, safe-defaults on,
-mainnet **off**.
+| You want | Run | You need |
+|----------|-----|----------|
+| An agent that uses the live economy | paste `https://modelmarket.dev/mcp` into any MCP client ([setup per client](docs/hosted-mcp-endpoint.md)) | nothing |
+| Your own hub: sell your API, join the federation | `pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "My hub"` → `aimarket serve` ([guide](docs/join-the-federation.md)) | Python 3.11+ |
+| The AI-Factory, this repository | the commands below | Docker, one LLM key |
 
 ```bash
-git clone --recurse-submodules https://github.com/alexar76/aicom.git
-cd aicom
-cp .env.demo .env   # add ONE LLM key
-./start.sh --everything
-```
-
-| What | You need |
-|------|----------|
-| **One LLM key** | `DEEPSEEK_API_KEY=sk-…` (or Anthropic / OpenAI) |
-| **≥60 GB disk** | Docker images + build artefacts + chain snapshots |
-| **≥16 GB RAM** | The cognitive layer and the oracles are greedy |
-| **4+ cores** | Parallel builds + 40 long-running services |
-| **Linux** (x86-64) | Docker Engine 24+ · `docker compose` plugin |
-
-**What comes up:** Factory · Hub · Service Mesh · ARGUS · MOMUS · Metis · LOGOS ·
-Dioscuri · Helios · Skopos · Gaia · Atlas · Platon · Chronos · Lumen ·
-Lottery · Treasury · Bridges · ACEX (UNI) · Alien Monitor · Ecosystem landing.
-~40 containers. One box. Zero real funds at risk.
-
-Lighter tiers: `./start.sh` (core — 7 containers, ~6 GB RAM) · `./start.sh --full` (15 satellites).
-Full runbook: [docs/quickstart-ecosystem-deploy.md](docs/quickstart-ecosystem-deploy.md).
-
-</td>
-</tr>
-</table>
-
-**One door — `./start.sh`.** Brings up the **core** stack (Factory + Hub + Service
-Mesh + live **Alien Monitor**) with one command. You add **one LLM key**; every
-other secret is generated for you. Crypto/mainnet stays **off** — no wallet, no
-real funds ([`core/crypto_config.py`](core/crypto_config.py)).
-
-```bash
-git clone --recurse-submodules https://github.com/alexar76/aicom.git
+git clone https://github.com/alexar76/aicom.git
 cd aicom
 cp .env.demo .env          # then add ONE key, e.g. DEEPSEEK_API_KEY=sk-...
-./start.sh                 # builds + boots core, opens the browser
+./start.sh                 # builds + boots, opens the browser
 # → Factory  http://localhost:9080         idea → real AI build
-# → Monitor  http://localhost:9100/monitor/  live universe · reputation graph
 # → admin/login: user admin, password printed by start.sh
 ```
 
-> Without a key the stack still boots and the Monitor works — the pipeline just
-> falls back to templated output. The **wow is with a key** (real agents).
+From this public repository `./start.sh` runs the **Factory** (with Prometheus and Grafana).
+The Hub, Service Mesh and Alien Monitor are published as their own repositories —
+[aimarket-hub](https://github.com/alexar76/aimarket-hub),
+[ai-service-mesh](https://github.com/alexar76/ai-service-mesh),
+[alien-monitor](https://github.com/alexar76/alien-monitor) — and run from there. Every secret
+is generated for you; crypto/mainnet stays **off** — no wallet, no real funds
+([`core/crypto_config.py`](core/crypto_config.py)).
+
+> Without a key the stack still boots — the pipeline just falls back to templated output.
+> The **wow is with a key** (real agents).
+
+**Monorepo tiers.** The tiers below build the satellites together with the Factory, so they
+need the full monorepo this repository is exported from; in this public mirror `./start.sh`
+names what is missing and starts the Factory alone, and `--everything` stops before building.
 
 | Tier | Command | What comes up |
 |------|---------|---------------|
-| **Core** (default) | `./start.sh` | Factory + Hub + Mesh + Alien Monitor. The "2 a.m. tinker" tier — light, one key, safe. |
+| **Core** | `./start.sh` | Factory + Hub + Mesh + Alien Monitor. The "2 a.m. tinker" tier — light, one key, safe. |
 | **Full fleet** | `./start.sh --full` | The whole 15-satellite ecosystem via [`scripts/quickstart_ecosystem.sh`](scripts/quickstart_ecosystem.sh) (ARGUS, Lottery, landing, …). |
-| **One click** | [Open in a Dev Container / Codespaces](.devcontainer/devcontainer.json) | Same core stack in a hosted Linux box — ports forwarded, `.env` prepared. |
+| **Everything** | `./start.sh --everything` | All three prod hosts on one machine, ~40 containers: Factory · Hub · Mesh · ARGUS · MOMUS · Metis · LOGOS · Dioscuri · Helios · Skopos · Gaia · Atlas · Platon · Chronos · Lumen · Lottery · Treasury · Bridges · ACEX (UNI) · Alien Monitor. Needs ≥60 GB disk, ≥16 GB RAM, 4+ cores, Linux x86-64 ([runbook](docs/quickstart-ecosystem-deploy.md)). |
+| **One click** | [Open in a Dev Container / Codespaces](.devcontainer/devcontainer.json) | The same stack as `./start.sh` in a hosted Linux box — ports forwarded, `.env` prepared. |
 
 Handy: `./start.sh --down` (stop, keep data) · `--logs` · `--no-build` · `--no-open` · `--help`.
 
@@ -822,7 +797,7 @@ flowchart TB
 | **Oracles** | [`oracles`](https://github.com/alexar76/oracles) | 17 signed math oracles · [README](https://github.com/alexar76/oracles#readme) |
 | **GAIA** 🌍 (physical oracles) | [`gaia`](https://github.com/alexar76/gaia) | Physical-world oracle gateway — attested IoT sensors, plausibility verify · [iot-physical-oracles.md](docs/iot-physical-oracles.md) |
 | **ATLAS** 🗺 (sensor map) | [`atlas`](https://github.com/alexar76/atlas) | Planetary MapLibre map over GAIA — LIVE/SIM pins, Analyst, Alien Monitor embed · [atlas.modelmarket.dev](https://atlas.modelmarket.dev/) · [GUIDE](https://github.com/alexar76/atlas/blob/main/docs/GUIDE.md) |
-| **LOGOS** 🧿 (federation analytics) | [`logos`](https://github.com/alexar76/logos) | Read-only snapshots, measured settlement volume, rolling z-score anomalies, cross-source insights · [live dashboard](https://logos.modelmarket.dev/) · [README](logos/README.md) |
+| **LOGOS** 🧿 (federation analytics) | [`logos`](https://github.com/alexar76/logos) | Read-only snapshots, measured settlement volume, rolling z-score anomalies, cross-source insights · [live dashboard](https://logos.modelmarket.dev/) · [README](https://github.com/alexar76/logos#readme) |
 | **Protocol v2** | [`aimarket-protocol`](https://github.com/alexar76/aimarket-protocol) | [spec.md](https://github.com/alexar76/aimarket-protocol/blob/main/spec.md) |
 | **Hub plugins** | [`aimarket-plugins`](https://github.com/alexar76/aimarket-plugins) | README + `docs/` per plugin |
 | **Desktop SKUs** | [`aimarket-desktop`](https://github.com/alexar76/aimarket-desktop) | 8 apps · [value.md](https://github.com/alexar76/aimarket-desktop/blob/main/apps/interview-prep-coach/docs/value.md) pattern |
@@ -941,7 +916,7 @@ The [DIOSCURI](https://github.com/alexar76/dioscuri) twins answer questions from
 | Channel | Agent | Best for |
 |---------|-------|----------|
 | [Telegram](https://t.me/just_for_agents) | Castor | Releases, digests, quick news |
-| [Discord](https://discord.gg/aimarket) | Pollux | Help, ideas, show-and-tell |
+| [Discord](https://discord.gg/JjWxGhW9pP) | Pollux | Help, ideas, show-and-tell |
 | Discord `#the-canon` | Theoros | Weekly canon column · [CANON.md](https://github.com/alexar76/theoros) |
 | Discord `#canon-debate` | Community | Debate precepts · Council vs Solo |
 

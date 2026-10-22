@@ -27,10 +27,14 @@ def test_nested_studio_gets_coverage_and_existing_ecosystems_survive(tmp_path):
     assert config.configure(tmp_path)
     assert (gh / 'dependabot.yml').read_bytes() == first
     data = yaml.safe_load(first)
-    assert pip in data['updates']
+    kept = next(e for e in data['updates'] if e['package-ecosystem'] == 'pip')
+    assert {k: kept[k] for k in pip} == pip  # the bespoke entry survives untouched ...
+    assert kept['groups'] == {'pip-all': {'patterns': ['*']}}  # ... and opens one grouped PR
     npm = next(e for e in data['updates'] if e['package-ecosystem'] == 'npm')
     assert npm['directories'] == ['/', '/**/*']
     assert npm['groups']['npm-security']['applies-to'] == 'security-updates'
+    assert npm['groups']['npm-major']['update-types'] == ['major']
+    assert npm['open-pull-requests-limit'] <= 5
     wf = yaml.safe_load((gh / 'workflows/npm-dependency-audit.yml').read_text())
     assert wf['permissions'] == {'contents': 'read'}
     audit = wf['jobs']['audit']

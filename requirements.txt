@@ -35,13 +35,15 @@ sqlalchemy==2.0.35
 # ── LLM Providers ──────────────────────────────────────────────────────────
 openai==1.51.0
 ollama==0.3.3
-# 3.14.0 clears 25 advisories (CVE backlog GHSA-*/PYSEC-* on 3.10.5).
-aiohttp==3.14.3
+# 3.14.0 cleared 25 advisories (CVE backlog GHSA-*/PYSEC-* on 3.10.5); 3.14.4 clears 8 more
+# (GHSA-5wr8-gcqf-gqf3, -2g87-pp6c-29x5, -494j-54xm-rwp3, -pqxq-w44r-73xw, -9xw5-w5jj-pvcg, ...).
+aiohttp==3.14.4
 
 # ── Authentication & Security ──────────────────────────────────────────────
 # PyJWT replaces python-jose (unmaintained; CVE-2024-33663 / CVE-2024-33664 on old jose).
-# 2.13.0 clears PYSEC-2025-183 / PYSEC-2026-{120,175,176,177,178,179}.
-PyJWT[crypto]==2.13.0
+# 2.13.0 cleared PYSEC-2025-183 / PYSEC-2026-{120,175,176,177,178,179}; 2.15.1 clears
+# PYSEC-2026-{4140..4152} (PyJWKClient redirects and kid lookups, JWS base64url, HMAC key checks).
+PyJWT[crypto]==2.15.1
 # passlib-fork: maintained successor to abandoned passlib 1.7.4 (import name stays ``passlib``).
 passlib-fork[bcrypt]==1.7.4.post1
 pyotp==2.9.0

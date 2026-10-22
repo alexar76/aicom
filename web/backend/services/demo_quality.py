@@ -26,6 +26,7 @@ from web.backend.services.visual_quality_heuristics import (
 )
 
 from core.code_discovery import PRODUCT_CODE_SKIP_DIR_NAMES, should_skip_code_path
+from web.backend.services.sandbox_static_rewrite import is_server_side_config
 from core.paths import resolve_data_root
 from core.quality_settings import demo_quality_min_score, strict_demo_gates, visual_quality_strict
 
@@ -429,7 +430,9 @@ def _detect_loopback_artifact_urls(code_dir: Path) -> list[str]:
     ``dist``/``build`` costs a walk, not an unbounded read.
     """
     offenders: list[str] = []
-    for rel, _p, text in _iter_text_artifacts(code_dir, include_built=True) or []:
+    for rel, p, text in _iter_text_artifacts(code_dir, include_built=True) or []:
+        if is_server_side_config(p.name):
+            continue  # the dev proxy and the healthcheck need their loopback URLs
         if _LOOPBACK_URL_RE.search(text):
             offenders.append(rel)
             if len(offenders) >= 5:

@@ -89,6 +89,32 @@ export const HUB_TOOLS = {
 };
 
 /**
+ * Buy one call from the hub with the gateway's credit account. Returns [status, failure-or-null,
+ * body]: the hub's answer, or why there is none. Shared by the paid x402 twins below and the free
+ * MCP profiles (src/mcp.js), which spend the same account under their own daily caps.
+ */
+export async function hubInvoke({ base, apiKey, fetchImpl, timeoutMs }, call, input) {
+  let res;
+  try {
+    res = await fetchImpl(`${base}/ai-market/v2/invoke`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-api-key": apiKey, "user-agent": "okx-a2mcp/0.1 (+https://modelmarket.dev)" },
+      body: JSON.stringify({ product_id: call.product_id, capability_id: call.capability_id, source_hub: call.source_hub, input }),
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+  } catch {
+    return { status: 502, error: "hub_unreachable", message: "the hub did not answer" };
+  }
+  let body = null;
+  try { body = await res.json(); } catch { body = null; }
+  if (!res.ok || !body || body.success === false) {
+    return { status: res.status === 400 || res.status === 422 ? 400 : 502, error: String(body?.error || "hub_error"),
+             message: String(body?.detail || body?.message || "the hub refused the call").slice(0, 300) };
+  }
+  return { status: 200, result: body.result ?? body.output ?? body, receipt: body.receipt ?? body.signed_receipt ?? null };
+}
+
+/**
  * One service per hub tool. ``handle`` refuses unpaid calls: these are bought from the hub, so a
  * free route would spend the gateway's account for anyone.
  */
@@ -103,25 +129,12 @@ export function hubServices({ hubUrl, apiKey, fetchImpl = globalThis.fetch, time
       }
       const input = tool.build(params || {});
       if (!input) return [200, inputRequired(service, tool.need)];
-      let res;
-      try {
-        res = await fetchImpl(`${base}/ai-market/v2/invoke`, {
-          method: "POST",
-          headers: { "content-type": "application/json", "x-api-key": apiKey, "user-agent": "okx-a2mcp/0.1 (+https://modelmarket.dev)" },
-          body: JSON.stringify({ product_id: tool.product_id, capability_id: tool.capability_id, source_hub: tool.source_hub, input }),
-          signal: AbortSignal.timeout(timeoutMs),
-        });
-      } catch {
-        return [502, failure(service, "hub_unreachable", "the hub did not answer; you were not charged")];
-      }
-      let body = null;
-      try { body = await res.json(); } catch { body = null; }
-      if (!res.ok || !body || body.success === false) {
+      const r = await hubInvoke({ base, apiKey, fetchImpl, timeoutMs }, tool, input);
+      if (r.status !== 200) {
         // >= 400 means the x402 middleware does not settle: a failed call costs the buyer nothing.
-        const status = res.status === 400 || res.status === 422 ? 400 : 502;
-        return [status, failure(service, String(body?.error || "hub_error"), String(body?.detail || "the hub refused the call; you were not charged").slice(0, 300))];
+        return [r.status, failure(service, r.error, `${r.message}; you were not charged`)];
       }
-      return [200, ok(service, { capability_id: tool.capability_id, result: body.result ?? body.output ?? body, receipt: body.receipt ?? body.signed_receipt ?? null })];
+      return [200, ok(service, { capability_id: tool.capability_id, result: r.result, receipt: r.receipt })];
     };
     return service;
   });

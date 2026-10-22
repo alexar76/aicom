@@ -127,8 +127,13 @@ data/sales/
 data/hub/
 data/methodology/cases/
 data/*.db
+# `data/*.db` does not match a file inside a subdirectory. Logos sqlite is operator-local.
+data/logos/
 data/users.json
 data/factory_wallet.json
+# Operator-local dumps in root data/ (not atlas/data/).
+data/uni_settlements.jsonl
+data/water_quality_history.json
 # AIMarket Hub signing keypair (Ed25519) — generated per-instance, never commit
 .skopos/aimarket_signing_key
 data/hub_signing_key
@@ -221,8 +226,11 @@ data/signups.json
 web/frontend/test-results/
 web/frontend/tsconfig.tsbuildinfo
 data/landauer_signing_key
-# Oracle/VRF runtime signing secrets — never commit (Ed25519 keys, VRF secret keys)
-data/*_signing_key
+# Oracle/VRF runtime signing secrets — never commit (Ed25519 keys, VRF secret keys).
+# `data/*_signing_key` only matches a name that ends in `_signing_key`, so a suffix
+# such as `data/hub_signing_key_mldsa` stayed addable. Trailing `*` covers that suffix.
+# `*` does not cross `/`, so a key in a subdirectory still needs its own rule.
+data/*_signing_key*
 data/*_vrf_sk
 plugins/aimarket-oracle-gateway/data/
 
@@ -240,7 +248,7 @@ edu-landing/
 data/.treasury_scanner_ref_key
 # SKOPOS remediation runtime: the conductor's Ed25519 SIGNING KEY lives here, plus the A2A observer
 # database and the deploy-order journal. The key signs DeployOrders a node agent acts on, so leaking
-# it means anyone can order a redeploy. `data/*_signing_key` did not match it because of the extra
+# it means anyone can order a redeploy. `data/*_signing_key*` did not match it because of the extra
 # directory level — found by listing every key in the tree and checking each against check-ignore,
 # after a real key reached a public mirror this way once before.
 data/remediation/
@@ -281,3 +289,12 @@ deploy/env/*.env
 
 # Pipeline client release built by scripts/build_pipeline_client.py: a deployment artifact.
 aimarket-hub/aimarket_hub/static/client/
+
+# Paid x402 delivery-survey log. It holds the buyer address. Never stage or publish.
+scripts/delivery-survey/buy.jsonl
+
+# Local Histor Zenodo deposit snapshot and Stripe sandbox captures.
+# Narrow on purpose: other paths under artifacts/ stay visible. Nothing here is tracked.
+artifacts/histor-zenodo-*
+artifacts/stripe-reversals-sandbox/
+artifacts/stripe-tax-sandbox/

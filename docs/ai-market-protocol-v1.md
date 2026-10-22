@@ -242,7 +242,7 @@ Step 2 — Client signs and sends on-chain transaction, then retries:
   {
     "success": true,
     "result": {"translations": {"ru": "...", "en": "..."}},
-    "receipt": {"nonce": "rcpt_...", "signature": "..."},
+    "receipt": {"nonce": "rcpt_...", "signature": {"algorithm": "ed25519", "value": "<base64>"}},
     "price_usd": 0.40,
     "latency_ms": 8100,
     "continuation": {"suggested_next": [...]}
@@ -361,7 +361,7 @@ Response:
       {"capability_id": "legal.review_localized@v1", "price_usd": 1.20, "success": true}
     ],
     "total_usd": 1.60,
-    "signature": "..."
+    "signature": {"algorithm": "ed25519", "public_key": "<base64>", "value": "<base64>"}
   },
   "final_result": {...},
   "protocol_version": "v1"

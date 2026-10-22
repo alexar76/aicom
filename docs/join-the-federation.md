@@ -330,11 +330,16 @@ indexed your manifest. So:
 1. Make your `.well-known` and manifest valid — `aimarket-protocol/schemas/` has the JSON
    Schemas, `test-vectors/` has signed examples to check your signer against.
 2. Sign your manifest. An unsigned manifest is not indexed by anyone, and is not even
-   previewed.
+   previewed. `signature` is an object — `{"algorithm": "ed25519", "public_key": "<base64>",
+   "value": "<base64>"}` (spec §7.3.1) — not a bare base64 string; a string fails the assay
+   even when the bytes are right.
 3. Keep `generated_at` fresh. A stale signed manifest is rejected as a possible replay.
 4. Offer at least one **free capability of your own** (`quickstart` lists `hub.ping@v1` for this),
    or a priced one whose `402` quotes your catalogue price. The sandbox probes your own
    capabilities, not the ones you re-export. Check with `aimarket doctor` before you knock.
+   No invoke route — an x402 service that answers each tool at its own URL? List each tool with
+   its `endpoint` (on your own domain), `method: "POST"` and its price; the sandbox knocks there
+   unpaid and reads your `402`, and buyers routed through a hub are sent there (spec §3.1).
 5. Announce (or crawl them so they see `X-AIMarket-Crawler`). The rest is automatic.
 
 No hub is needed for any of this: `aimarket node` serves these documents and receipts beside an API

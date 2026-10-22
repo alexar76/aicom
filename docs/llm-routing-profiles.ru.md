@@ -6,7 +6,7 @@
 
 | Хост | SSH | AI-ассистенты |
 |------|-----|---------------|
-| **Factory** | `my-vps` | Factory, Alien Monitor, ATLAS, ARGUS, THEMIS |
+| **Factory** | `factory-vps` | Factory, Alien Monitor, ATLAS, ARGUS, THEMIS |
 | **Metis** | `root@skopos.modelmarket.dev` | Metis, SKOPOS |
 | **Oracles** | `admin-vps` | MOMUS, HELIOS, DIOSCURI, Platon, LOGOS, **HISTOR** (классификатор) |
 | **Hub lab** | `competing-lab` | Hub (verify через Metis) |

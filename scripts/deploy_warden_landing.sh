@@ -81,6 +81,11 @@ BOOTSTRAP
 fi
 
 rsync -az -e "$rsync_rsh" "$SOURCE" "$REMOTE:$REMOTE_ROOT/index.html"
+# The social card and the crawler files sit beside the page; without them nginx answered
+# /robots.txt and /sitemap.xml with the page itself (200 text/html).
+for extra in og.png robots.txt sitemap.xml; do
+  rsync -az -e "$rsync_rsh" "$(dirname "$SOURCE")/$extra" "$REMOTE:$REMOTE_ROOT/$extra"
+done
 
 if [[ "$INSTALL_NGINX" -eq 1 ]]; then
   scp "${ssh_args[@]}" "$NGINX_SOURCE" "$REMOTE:/tmp/$HOST.conf.next"

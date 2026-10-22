@@ -41,8 +41,10 @@ Contrats sur Base **MAINNET** (démo) : [onchain-journal.md](onchain-journal.md)
 ## Démarrage rapide
 
 ```bash
-git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everything
+git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && ./start.sh
 ```
+
+Depuis le dépôt public, `./start.sh` lance la Factory (une clé LLM dans `.env`). Votre propre hub s’installe à part : `pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "Mon hub"` → `aimarket serve`. Les niveaux `--full` et `--everything` construisent les satellites avec la Factory et ne fonctionnent que depuis le monorepo complet.
 
 ## Documentation
 

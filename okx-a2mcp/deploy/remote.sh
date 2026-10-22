@@ -1,6 +1,7 @@
 #!/bin/sh
 # Runs ON the apex host (factory-vps), from deploy.sh: build the image from /opt/okx-a2mcp and
 # replace the running container, keeping the previous one until the new one answers /health.
+# 448 MB: about 70 MB at rest, plus the tool-list counter's worker (o200k table, ~140 MB) while warm.
 # Secrets never pass through this script: they are files in /opt/okx-a2mcp-secrets (uid 1000,
 # mode 400), mounted read-only, and nothing here prints them.
 set -eu
@@ -22,6 +23,8 @@ X402=""
 [ -f "$SECRETS/hearth_api_key" ] && X402="$X402 -e HEARTH_API_KEY_FILE=/run/secrets/okx/hearth_api_key"
 # Search Console's HTML-tag token for the /tools/ pages: public, kept beside the secrets so a redeploy keeps it.
 [ -f "$SECRETS/google_site_verification" ] && X402="$X402 -e GOOGLE_SITE_VERIFICATION=$(tr -cd 'A-Za-z0-9_-' < "$SECRETS/google_site_verification")"
+# Our own addresses (the demand exporter's list), so the MCP request counters leave them out.
+[ -f /etc/aicom-demand/own-ips.env ] && X402="$X402 --env-file /etc/aicom-demand/own-ips.env"
 docker rm -f okx-a2mcp-prev >/dev/null 2>&1 || true
 if docker inspect okx-a2mcp >/dev/null 2>&1; then docker stop okx-a2mcp >/dev/null; docker rename okx-a2mcp okx-a2mcp-prev; fi
 # shellcheck disable=SC2086
@@ -29,7 +32,7 @@ docker run -d --name okx-a2mcp --restart unless-stopped --network okx-a2mcp \
   -p 127.0.0.1:9485:9480 -e PUBLIC_URL=https://modelmarket.dev \
   -e CALLER_ID_SECRET_FILE=/run/secrets/okx/caller_id_secret $X402 \
   -v "$SECRETS:/run/secrets/okx:ro" \
-  --read-only --tmpfs /tmp:size=16m --cap-drop ALL --security-opt no-new-privileges --memory 256m \
+  --read-only --tmpfs /tmp:size=16m --cap-drop ALL --security-opt no-new-privileges --memory 448m \
   "okx-a2mcp:$TAG" >/dev/null
 for i in 1 2 3 4 5 6 7 8 9 10; do
   if wget -qO- http://127.0.0.1:9485/health >/dev/null 2>&1 || curl -fsS http://127.0.0.1:9485/health >/dev/null 2>&1; then

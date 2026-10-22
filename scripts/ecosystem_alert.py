@@ -59,7 +59,9 @@ Environment (values never come from argv — argv is world-readable in `ps`):
                                  by the scope, e.g. attested=https://hub.attestedmemory.net/ai-market/v2/health
     AICOM_ALERT_JOURNEY_URL      the UNI stranger-journey canary's uni-journey.json ("" = off)
     AICOM_ALERT_UNI_CHAIN_URL    the UNI monitor's /api/health, for its demo chain ("" = off)
-    AICOM_ALERT_DEPOSIT_HUBS     hubs whose top-up wallet the hub watches, comma-separated ("" = off)
+    AICOM_ALERT_DEPOSIT_HUBS     hubs whose top-up wallet the hub watches, comma-separated ("" = off).
+                                 Named one by one, so NOT filtered by the scope, e.g.
+                                 https://hub.attestedmemory.net,https://independentai.network/hub
     AICOM_ALERT_BACKUP_URL       the backup receiver's status.json ("" = off)
     AICOM_ALERT_BACKUP_HOSTS     backup labels that must be there, comma-separated
                                  (default: whatever the receiver reports)
@@ -661,7 +663,8 @@ def probe_deposit_watch(hubs: list[str], timeout: float = 20.0, scope: Scope | N
     it waited until somebody noticed it on chain. Hubs now credit their top-up wallet themselves
     (aimarket_hub/deposit_watch.py) and publish how many deposits are still unattributed and when
     the wallet was last read — a watcher that stopped scanning is not "on", whatever it says.
-    Only hubs inside the scope are probed, like every other per-target probe."""
+    With a scope, only hubs inside it are probed; collect() passes none, because the owner names
+    these hubs one by one (AICOM_ALERT_DEPOSIT_HUBS), as with the uptime URLs."""
     now = time.time() if now is None else now
     checks: list[Check] = []
     for hub in hubs:
@@ -2169,8 +2172,12 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_journey(journey_url, timeout)
     if uni_chain_url.strip():
         checks += probe_uni_demo_chain(uni_chain_url, timeout)
+    # Named one by one by the owner, like the uptime URLs, so not filtered by the scope: Attested and
+    # Independent stay outside it as ecosystems (2026-09-24, 2026-10-04), yet the Independent node's
+    # watcher read nothing from 2026-10-08 to 10-21 while this probe skipped it. Asked on 2026-10-22
+    # to watch both. Empty by default, so nothing outside the scope is read unless named.
     if deposit_hubs:
-        checks += probe_deposit_watch(deposit_hubs, timeout, scope=scope)
+        checks += probe_deposit_watch(deposit_hubs, timeout)
     if backup_url.strip():
         checks += probe_backups(backup_url, backup_hosts, timeout)
     # Every host we run, not filtered by the scope: a full disk on the PingBlip box stops the

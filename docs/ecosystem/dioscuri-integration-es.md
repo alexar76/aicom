@@ -75,7 +75,7 @@ Rellena los tokens en local — **nunca hagas commit**.
 |-------|-----|
 | Bot Telegram (Castor — Q&A) | https://t.me/next_agent_market_bot |
 | Canal Telegram (Castor — noticias) | https://t.me/just_for_agents |
-| Discord (Pollux) | https://discord.gg/aimarket |
+| Discord (Pollux) | https://discord.gg/JjWxGhW9pP |
 
 Los usuarios autoalojados definen las invitaciones en `dioscuri.config.json`:
 

@@ -140,3 +140,50 @@ def test_vectors_readme_does_not_publish_the_superseded_canonical():
             assert "tools_hash" in line and "by_hub_hash" in line, (
                 f"README publishes a canonical without the content digests:\n  {line[:120]}"
             )
+
+
+def _load_runner():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("aimarket_conformance_run", RUNNER)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_the_live_check_names_a_bare_string_signature(monkeypatch):
+    """mach402.dev, 2026-10-21: the runner's whole answer was "'str' object has no attribute
+    'get'". The implementer must read which shape to publish instead."""
+    import urllib.error
+
+    run = _load_runner()
+    base = "https://peer.example"
+    well_known = {"name": "peer", "protocol_versions": ["v1", "v2"],
+                  "manifest_url": f"{base}/ai-market/v2/manifest",
+                  "signer_public_key": "UGIZ0yVMpsAQBS1sLPq782GBjL5HnJZdI7SVrOQ3Xo4="}
+    manifest = {"protocol_version": "v2", "generated_at": "2026-10-21T00:00:00Z", "tools": [],
+                "signature": "f9bhOPZYAAMm5OUZR+NLyNZ3GSNKVzY8n5F3+04P"}
+
+    def fetch(url, timeout=15.0):
+        if url.endswith("/.well-known/ai-market.json"):
+            return 200, well_known
+        if url == well_known["manifest_url"]:
+            return 200, manifest
+        raise urllib.error.HTTPError(url, 404, "Not Found", None, None)
+
+    monkeypatch.setattr(run, "fetch", fetch)
+    run.results.clear()
+    run.check_live_hub(base)
+    failed = {name: detail for ok, name, detail in run.results if not ok}
+    assert "not an object (§7.3.1)" in failed["live manifest signature is a §7.3.1 object"]
+    assert not any("has no attribute" in detail for detail in failed.values())
+
+
+def test_signature_examples_are_objects():
+    """Two independent implementations copied `"signature": "..."` from the examples and
+    published a bare string. Every signature in the protocol is a §7.3.1 object."""
+    for doc in (PROTO / "spec.md", ROOT / "docs" / "ai-market-protocol-v1.md"):
+        if not doc.exists():
+            continue
+        for number, line in enumerate(doc.read_text(encoding="utf-8").splitlines(), 1):
+            assert '"signature": "' not in line, f"{doc.name}:{number} shows a string signature"

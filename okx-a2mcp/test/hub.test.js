@@ -28,7 +28,7 @@ test("without a hub key there are no hub twins", async () => {
   const { call, close } = await serve({ paywall });
   try {
     const m = await (await call("/a2mcp")).json();
-    assert.deepEqual(m.services.map((s) => s.id).sort(), ["histor-check", "warden-scan"]);
+    assert.deepEqual(m.services.map((s) => s.id).sort(), ["histor-check", "tool-list-cost", "warden-scan"]);
   } finally { await close(); }
 });
 

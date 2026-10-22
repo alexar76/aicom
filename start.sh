@@ -84,6 +84,23 @@ done
 
 if [[ "$TIER" == "everything" ]]; then
   [[ -x "$ROOT/scripts/everything.sh" ]] || die "scripts/everything.sh missing or not executable."
+  # The public mirror ships the compose file but not the satellites it builds (31 of 34
+  # sources were absent, 2026-10-21), so this used to fail minutes into a 60 GB build.
+  # Stopping or reading help needs no sources; building does.
+  case " ${EVERYTHING_ARGS[*]-} " in
+    *" --down "*|*" --logs "*|*" --help "*|*" -h "*) ;;
+    *)
+      absent=()
+      while IFS= read -r ctx; do
+        [[ -d "$ROOT/$ctx" ]] || absent+=("${ctx#./}")
+      done < <(sed -n 's/^[[:space:]]*context:[[:space:]]*\(\.\/[^[:space:]]*\).*/\1/p' \
+                 "$ROOT/docker-compose.everything.yml" | sort -u)
+      if (( ${#absent[@]} )); then
+        die "--everything builds ~40 services from the full monorepo, and ${#absent[@]} of their sources are not in this checkout (${absent[*]:0:5} …).
+   From this public repository, ./start.sh runs the Factory. Your own hub: pip install \"aimarket-hub[pqc]\" && aimarket quickstart (docs/join-the-federation.md)."
+      fi
+      ;;
+  esac
   exec "$ROOT/scripts/everything.sh" "${EVERYTHING_ARGS[@]}"
 fi
 if [[ "${TIER_ONLY:-0}" -eq 1 ]]; then
@@ -130,9 +147,15 @@ missing_ctx=()
 if (( ${#missing_ctx[@]} )); then
   COMPOSE=(docker compose -f docker-compose.yml)
   warn "Not in this checkout: ${missing_ctx[*]} — starting the Factory alone."
-  say "${DIM}  Each is published separately; clone them beside this repo to get the full core tier:${N}"
+  # Cloning them into this tree does not help: their Dockerfiles build from the monorepo root
+  # (hephaestus/, acex/, lottery/ …), so the old "clone them beside this repo" advice led to a
+  # second, more confusing build failure (2026-10-21). Each runs from its own repository.
+  say "${DIM}  Each is published as its own repository and runs from there:${N}"
   for s in "${missing_ctx[@]}"; do
-    say "${DIM}    git clone https://github.com/alexar76/${s}.git${N}"
+    case "$s" in
+      aimarket-hub) say "${DIM}    hub:  pip install \"aimarket-hub[pqc]\" && aimarket quickstart   (docs/join-the-federation.md)${N}" ;;
+      *)            say "${DIM}    $s:  see https://github.com/alexar76/${s}#readme${N}" ;;
+    esac
   done
   say "${DIM}  Or skip installing anything: paste https://modelmarket.dev/mcp into an MCP${N}"
   say "${DIM}  client and call the live hub directly — docs/hosted-mcp-endpoint.md${N}"

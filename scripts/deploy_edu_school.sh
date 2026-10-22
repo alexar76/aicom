@@ -5,7 +5,7 @@
 #   CERTBOT_EMAIL=you@example.com sudo ./scripts/deploy_edu_school.sh
 #
 # Or from a laptop (rsync + remote nginx/certbot):
-#   ./scripts/deploy_edu_school.sh --remote my-vps
+#   ./scripts/deploy_edu_school.sh --remote factory-vps
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -20,7 +20,7 @@ ZONE_SRC="${ROOT}/deploy/nginx/snippets/school-hub-zone.conf"
 REMOTE=""
 
 if [[ "${1:-}" == "--remote" ]]; then
-  REMOTE="${2:-my-vps}"
+  REMOTE="${2:-factory-vps}"
 fi
 
 build_site() {
@@ -105,6 +105,6 @@ if [[ -n "${REMOTE}" ]]; then
 elif [[ -d /var/www ]] && [[ -d /etc/nginx/sites-available ]]; then
   install_local
 else
-  echo "Not the web host — use: $0 --remote my-vps" >&2
+  echo "Not the web host — use: $0 --remote factory-vps" >&2
   exit 1
 fi

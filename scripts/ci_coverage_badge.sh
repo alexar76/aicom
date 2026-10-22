@@ -30,9 +30,18 @@ if [[ -f docs/badges/tests.json ]]; then
 fi
 
 if [[ "${AICOM_CI_ENFORCE_BADGE_SYNC:-}" == "1" ]]; then
+  # The committed badge may lag the measured coverage by a couple of points: CI never pushes,
+  # so every test added between two mirror runs would otherwise turn the build red. A larger
+  # gap means the README states a number that is no longer true, and that still fails.
+  tolerance="${AICOM_CI_BADGE_TOLERANCE:-2}"
   git diff --quiet docs/badges/coverage.svg || {
-    echo "docs/badges/coverage.svg drift — update in monorepo and re-mirror" >&2
-    exit 1
+    committed="$(git show HEAD:docs/badges/coverage.svg 2>/dev/null | grep -o 'coverage: [0-9]*%' | head -1 | grep -o '[0-9]*' || true)"
+    measured="$(grep -o 'coverage: [0-9]*%' docs/badges/coverage.svg | head -1 | grep -o '[0-9]*')"
+    if [[ -z "$committed" ]] || (( committed - measured > tolerance || measured - committed > tolerance )); then
+      echo "docs/badges/coverage.svg drift (committed ${committed:-none}%, measured ${measured}%, tolerance ${tolerance}) — update in monorepo and re-mirror" >&2
+      exit 1
+    fi
+    echo "docs/badges/coverage.svg: committed ${committed}%, measured ${measured}% — within ${tolerance} points"
   }
   if [[ -f docs/badges/tests.json ]]; then
     git diff --quiet docs/badges/tests.json || {

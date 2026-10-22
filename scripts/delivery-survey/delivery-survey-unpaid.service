@@ -1,0 +1,31 @@
+[Unit]
+Description=Unpaid x402 delivery survey (catalog, sample, probe)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Daily, not hourly. The nearest payment job in this tree is
+# deploy/aicom-payment-canary.timer at 06:17 UTC. A Bazaar catalog plus one
+# unpaid probe of the 100-host sample is the same kind of once-a-day pass.
+# 07:23 UTC stays off that tick.
+#
+# This timer does not spend USDC. It does not run buy, chain, tasks, or report.
+# A paid measurement, including the next one for the pinned host, stays a
+# manual `buy`. Recording a past settlement into buy.jsonl is also manual;
+# this unit never writes buy.jsonl.
+#
+# Seed is fixed ("aimarket delivery survey") so the same catalogue draws the
+# same hosts. pinned-sellers.json is always included by survey.mjs.
+#
+# Output stays on the host under /var/lib/aicom-delivery-survey/. survey.mjs
+# has no publish command. Nothing here is copied to docs, DEV.to, or HISTOR.
+#
+# Not installed by being in the repo. Copy this unit and the timer to the
+# host, with the survey tree (and npm ci) at /opt/aicom/scripts/delivery-survey.
+WorkingDirectory=/opt/aicom/scripts/delivery-survey
+StateDirectory=aicom-delivery-survey
+ExecStart=/usr/bin/env node /opt/aicom/scripts/delivery-survey/survey.mjs catalog --out /var/lib/aicom-delivery-survey/bazaar.json
+ExecStart=/usr/bin/env node /opt/aicom/scripts/delivery-survey/survey.mjs sample --catalog /var/lib/aicom-delivery-survey/bazaar.json --hosts 100 --cap 0.01 --seed "aimarket delivery survey" --out /var/lib/aicom-delivery-survey/plan.json
+ExecStart=/usr/bin/env node /opt/aicom/scripts/delivery-survey/survey.mjs probe --plan /var/lib/aicom-delivery-survey/plan.json --out /var/lib/aicom-delivery-survey/probe.jsonl
+TimeoutStartSec=1800

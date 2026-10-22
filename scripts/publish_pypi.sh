@@ -206,6 +206,31 @@ for archive in dist/*.tar.gz dist/*.whl; do
   # `.env.example` is the one dotenv filename that is meant to ship (scaffold templates).
   # Real secrets live in `.env`, `.env.local`, `.env.production`, etc.
   bad="$(printf '%s\n' "$listing" | grep -Ei '(^|/)(data)/|_signing_key|signing_key$|(^|/)\.env$|(^|/)\.env\.(local|prod|production|development|dev|secret|private)($|\.)|\.pem$|\.key$|(^|/)id_rsa|\.sqlite3?$' || true)"
+  # A `.pem` holding nothing but PUBLIC KEY blocks is a verification key, shipped on purpose:
+  # histor's scanner checks the signed WARDEN quality receipt with
+  # scanner/quality/quality-public-key.pem, and an sdist without it cannot build that scanner
+  # (2026-10-21). Judged by CONTENT, like .gitignore below, never by name: a private key renamed
+  # *-public-key.pem still carries PRIVATE and is still refused, and so is anything else in PEM.
+  if [[ -n "$bad" ]]; then
+    kept=""
+    while IFS= read -r member; do
+      [[ -z "$member" ]] && continue
+      if [[ "$member" == *.pem ]]; then
+        if [[ "$archive" == *.tar.gz ]]; then
+          body="$(tar -xOf "$archive" "$member" 2>/dev/null || true)"
+        else
+          body="$(unzip -p "$archive" "$member" 2>/dev/null || true)"
+        fi
+        begins="$(printf '%s\n' "$body" | grep -E '^-----BEGIN ' || true)"
+        if [[ -n "$begins" ]] && ! printf '%s\n' "$begins" | grep -qvx -- '-----BEGIN PUBLIC KEY-----' \
+           && ! printf '%s\n' "$body" | grep -qi 'PRIVATE'; then
+          continue
+        fi
+      fi
+      kept+="$member"$'\n'
+    done <<< "$bad"
+    bad="${kept%$'\n'}"
+  fi
   if [[ -n "$bad" ]]; then
     gate_hits+="  $archive:"$'\n'"$(printf '%s\n' "$bad" | sed 's/^/    /')"$'\n'
   fi

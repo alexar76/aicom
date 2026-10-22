@@ -238,14 +238,18 @@ def test_a_cloned_repo_is_checked_out_at_a_commit(path):
 # The mirror and the course scaffold generate CI for repos that exist only on GitHub, so
 # the rules above would never see them in the tree.
 
+SCAFFOLD = ROOT / "courses" / "_tooling" / "scaffold_course.py"
+
+
 def _generated() -> list[tuple[str, str]]:
     out = []
     mirror = (ROOT / "scripts" / "mirror_satellites.sh").read_text(encoding="utf-8")
     heredoc = re.compile(r"cat > \"[^\"]*/\.github/workflows/([\w.-]+)\" <<'(\w+)'\n(.*?)\n\2\n", re.S)
     for i, m in enumerate(heredoc.finditer(mirror)):
         out.append((f"mirror_satellites.sh:{m.group(1)}#{i}", m.group(3)))
-    spec = importlib.util.spec_from_file_location(
-        "scaffold_course", ROOT / "courses" / "_tooling" / "scaffold_course.py")
+    if not SCAFFOLD.is_file():  # courses/ is its own satellite, not in the factory trimmed tree
+        return out
+    spec = importlib.util.spec_from_file_location("scaffold_course", SCAFFOLD)
     scaffold = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(scaffold)
     for course in scaffold._load_catalog():
@@ -258,7 +262,8 @@ GENERATED = _generated()
 
 def test_the_generators_were_found():
     assert sum(1 for name, _ in GENERATED if name.startswith("mirror_satellites.sh")) >= 5
-    assert any(name.startswith("scaffold_course.py") for name, _ in GENERATED)
+    if SCAFFOLD.is_file():
+        assert any(name.startswith("scaffold_course.py") for name, _ in GENERATED)
 
 
 @pytest.mark.parametrize("name,text", GENERATED, ids=[n for n, _ in GENERATED])

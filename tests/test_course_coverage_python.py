@@ -6,6 +6,8 @@ from pathlib import Path
 import pytest
 
 SCRIPT = Path(__file__).resolve().parents[1] / 'courses/_tooling/update_monorepo_coverage.py'
+if not SCRIPT.is_file():
+    pytest.skip("courses/ is its own satellite, not in the factory trimmed tree", allow_module_level=True)
 spec = importlib.util.spec_from_file_location('course_coverage', SCRIPT)
 coverage = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(coverage)

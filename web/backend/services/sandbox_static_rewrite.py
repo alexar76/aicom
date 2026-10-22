@@ -61,6 +61,22 @@ _JS_OPEN_ROOT_RE = re.compile(
 )
 
 
+# Read by servers and build tools, never by the browser. A loopback URL there is how the dev
+# proxy, CORS and a container healthcheck reach the API; rewritten to ./ it breaks all three
+# (Relay's vite proxy target crashed `vite preview`, 2026-10-21).
+_SERVER_SIDE_CONFIG_RE = re.compile(
+    r"\.(?:ya?ml|toml)$"  # compose, CI workflows, pyproject
+    r"|\.config\.[cm]?[jt]s$"  # vite, webpack, next, tailwind, playwright, vitest
+    r"|^(?:package|package-lock|tsconfig[\w.-]*)\.json$",
+    re.IGNORECASE,
+)
+
+
+def is_server_side_config(name: str) -> bool:
+    """True for a file name only servers and build tools read: its loopback URLs never reach a viewer."""
+    return bool(_SERVER_SIDE_CONFIG_RE.search(name))
+
+
 def _rewrite_localhost_urls(text: str) -> str:
     """Turn absolute localhost URLs into ./path?s#frag so <base href=/api/sandbox/file/.../> applies."""
 

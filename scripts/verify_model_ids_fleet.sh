@@ -26,8 +26,8 @@ QUIET=0
 # host:container — a container because that is where the keys and the effective config are.
 # A bare "-" container means run on the host itself.
 TARGETS=(
-  "my-vps:aicom-app-1"          # the factory: llm/router.py and model_providers.yaml
-  "my-vps:modelmarket-hub"      # apex federation judge (env only)
+  "factory-vps:aicom-app-1"          # the factory: llm/router.py and model_providers.yaml
+  "factory-vps:modelmarket-hub"      # apex federation judge (env only)
   "competing-lab:modelmarket-hub"   # competing lab judge (env only)
   "competing-lab:signal-hunt-hub-1"
   "not-my-vps:metis-skopos"

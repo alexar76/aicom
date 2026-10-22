@@ -1,0 +1,148 @@
+[
+  {
+    "repo": "warden",
+    "kicker": "MCP security firewall",
+    "title": "WARDEN",
+    "line": "Checks every MCP tool definition before it reaches your model.",
+    "cmd": "npx -y @aimarket/warden scan",
+    "url": "github.com/alexar76/warden",
+    "image": "warden/docs/screenshots/readme/hero-3d.png",
+    "accent": "#5fe3ff"
+  },
+  {
+    "repo": "histor",
+    "kicker": "Transparency log for MCP",
+    "title": "HISTOR",
+    "line": "What every MCP server advertised, when it changed. Signed, appended, open data.",
+    "big": "82,000",
+    "big_sub": "MCP servers and packages in the log",
+    "chips": [
+      "RFC 9162 Merkle log",
+      "signed labels",
+      "monthly dataset"
+    ],
+    "url": "histor.modelmarket.dev",
+    "accent": "#ffd58a"
+  },
+  {
+    "repo": "aimarket-mcp",
+    "kicker": "MCP server",
+    "title": "aimarket-mcp",
+    "title_px": 80,
+    "line": "Web fetch, search and Metis verification behind one SSRF-hardened endpoint.",
+    "chips": [
+      "fetch",
+      "search",
+      "verify",
+      "Streamable HTTP",
+      "stdio"
+    ],
+    "cmd": "uvx aimarket-mcp",
+    "url": "github.com/alexar76/aimarket-mcp",
+    "accent": "#56f0a8"
+  },
+  {
+    "repo": "emporion",
+    "kicker": "Facts for agents that trade",
+    "title": "EMPORION",
+    "line": "Public records an agent can buy and check, every source licensed for resale.",
+    "chips": [
+      "EU VAT (VIES)",
+      "GLEIF LEI",
+      "company registers",
+      "ECB rates",
+      "OFAC · EU · UK",
+      "RDAP",
+      "Bitcoin timestamps"
+    ],
+    "url": "emporion.modelmarket.dev",
+    "accent": "#b18cff"
+  },
+  {
+    "repo": "domain-operator-kit",
+    "kicker": "x402 · USDC on Base · pre-live",
+    "title": "Domain Operator Kit",
+    "title_px": 76,
+    "line": "Sell domains to AI agents with your own registrar and a fixed markup.",
+    "url": "github.com/alexar76/domain-operator-kit",
+    "accent": "#ffb547",
+    "chips": [
+      "signed quotes",
+      "fixed markup",
+      "Openprovider",
+      "Porkbun",
+      "HTTP suppliers",
+      "owner-signed DNS"
+    ]
+  },
+  {
+    "repo": "metis",
+    "kicker": "Cognitive layer over any LLM",
+    "title": "Metis",
+    "line": "A council, a fail-closed confidence gate and a verifier behind an OpenAI-compatible API.",
+    "image": "metis/docs/screenshots/hero.png",
+    "url": "github.com/alexar76/metis",
+    "accent": "#8fa8cc"
+  },
+  {
+    "repo": "argus",
+    "kicker": "Personal agent",
+    "title": "ARGUS-3",
+    "line": "A wallet-native, security-hardened agent with the WARDEN MCP firewall built in.",
+    "chips": [
+      "WARDEN inside",
+      "wallet-native",
+      "owner-locked Telegram",
+      "multi-provider",
+      "works offline"
+    ],
+    "url": "github.com/alexar76/argus",
+    "accent": "#5fe3ff"
+  },
+  {
+    "repo": "atlas",
+    "kicker": "Planetary sensor map",
+    "title": "ATLAS",
+    "line": "Fire, flood, lightning, volcano and alerts on one live globe, over GAIA.",
+    "image": "atlas/docs/screenshots/readme/hero-orbit.png",
+    "url": "github.com/alexar76/atlas",
+    "accent": "#ffb547"
+  },
+  {
+    "repo": "oracles",
+    "kicker": "Verifiable oracles",
+    "title": "Oracles",
+    "line": "Randomness, delay functions and reputation an agent can check for itself.",
+    "url": "oracles.modelmarket.dev",
+    "accent": "#b18cff",
+    "chips": [
+      "Platon",
+      "Chronos",
+      "Lattice",
+      "Murmuration",
+      "Lumen",
+      "Colony",
+      "Turing"
+    ]
+  },
+  {
+    "repo": "aicom",
+    "kicker": "AI-Factory",
+    "title": "AI-Factory",
+    "line": "An autonomous pipeline that designs, builds, tests and publishes products.",
+    "image": "scripts/profile-readme/assets/alien-monitor-hero.png",
+    "url": "magic-ai-factory.com",
+    "accent": "#56f0a8"
+  },
+  {
+    "repo": "aimarket-hub",
+    "kicker": "Live agent marketplace",
+    "title": "modelmarket.dev",
+    "line": "Real capabilities agents can find, pay for and verify. Free trial, then a key.",
+    "cmd": "https://modelmarket.dev/mcp",
+    "url": "modelmarket.dev",
+    "image": "aimarket-hub/docs/screenshots/home-terminal.png",
+    "accent": "#38e0ff",
+    "prompt": "MCP"
+  }
+]

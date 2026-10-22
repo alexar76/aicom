@@ -14,6 +14,7 @@ from core.code_discovery import should_skip_code_path
 from web.backend.services.sandbox_static_rewrite import (
     _rewrite_localhost_urls,
     _rewrite_root_absolute_paths,
+    is_server_side_config,
 )
 
 logger = logging.getLogger(__name__)
@@ -132,8 +133,9 @@ def apply_visual_gate_autofix(code_root: Path) -> list[str]:
         elif suffix in (".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".vue"):
             updated = _autofix_js_text(updated)
 
-        updated = _rewrite_localhost_urls(updated)
-        updated = _rewrite_root_absolute_paths(updated)
+        if not is_server_side_config(path.name):
+            updated = _rewrite_localhost_urls(updated)
+            updated = _rewrite_root_absolute_paths(updated)
 
         if updated != original:
             try:

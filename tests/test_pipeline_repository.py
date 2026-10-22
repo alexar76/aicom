@@ -221,12 +221,16 @@ class TestAsyncConnectionLifecycle:
     def test_manager_is_reopened_for_a_new_event_loop(self, tmp_path):
         sm = _machine(tmp_path)
 
-        async def save():
+        async def save(*, close: bool = False):
             await sm.acreate_product("idea")
-            return sm._repo._async_manager
+            manager = sm._repo._async_manager
+            if close:
+                # aiosqlite's thread is non-daemon: a connection left open outlives the suite.
+                await sm.aclose()
+            return manager
 
         first = asyncio.run(save())
-        second = asyncio.run(save())
+        second = asyncio.run(save(close=True))
 
         assert first is not None and second is not None
         assert first is not second, "an aiosqlite connection cannot cross event loops"

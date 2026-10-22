@@ -32,6 +32,13 @@ def _pipeline_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Path:
     return db_path
 
 
+async def _close(*workers: PipelineWorker) -> None:
+    """Close each worker's SQLite connection: aiosqlite runs one non-daemon thread per
+    connection, and one left open keeps the interpreter from exiting after the suite passes."""
+    for worker in workers:
+        await worker._close_resources()
+
+
 class _SequenceAgent:
     """Returns predetermined successful outputs per agent_type."""
 
@@ -76,9 +83,11 @@ async def test_pipeline_cycle_analyst_completes_and_queues_pm(monkeypatch, tmp_p
         "analyst": _SequenceAgent({"analyst": {"market_analysis": "TAM ok"}}),
         "pm": _SequenceAgent({"pm": {"specification": {"product_name": "Dash"}}}),
     }
-    await worker._process_cycle()
-
-    state = await worker._load_state_async()
+    try:
+        await worker._process_cycle()
+        state = await worker._load_state_async()
+    finally:
+        await _close(worker)
     assert state is not None
     product = state["products"]["prod-cycle"]
     assert product["state"] in ("MARKET_RESEARCHED", "SPEC_WRITTEN")
@@ -146,7 +155,10 @@ async def test_pipeline_dirty_save_leaves_untouched_product_timestamp(monkeypatc
     worker = PipelineWorker()
     worker._agents = {"analyst": _SequenceAgent()}
     monkeypatch.setattr(worker, "_enforce_marketplace_readiness", lambda *_a, **_k: False)
-    await worker._process_cycle()
+    try:
+        await worker._process_cycle()
+    finally:
+        await _close(worker)
 
     sm2 = AsyncSQLiteManager(str(db_path))
     await sm2.initialize()
@@ -193,7 +205,10 @@ async def test_pipeline_restart_reads_sqlite_task_queue(monkeypatch, tmp_path: P
 
     w1 = PipelineWorker()
     w2 = PipelineWorker()
-    state = await w2._load_state_async()
+    try:
+        state = await w2._load_state_async()
+    finally:
+        await _close(w1, w2)
     assert state is not None
     assert "prod-restart" in state["products"]
     assert any(t.get("id") == "task-pm" for t in state["task_queue"])

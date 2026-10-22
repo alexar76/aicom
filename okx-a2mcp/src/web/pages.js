@@ -1,4 +1,4 @@
-// The people's pages at /tools/: four free checks, rendered on the server so a search engine
+// The people's pages at /tools/: five free checks, rendered on the server so a search engine
 // reads the whole page, in five languages with hreflang alternates. The page's own script
 // (assets/tools.js) only sends the form and draws the answer; everything else is HTML.
 //
@@ -11,9 +11,11 @@ import { priceOf } from "../x402.js";
 import { EXAMPLES } from "./examples.js";
 import { HTML_LANG, LANGS, OG_LOCALE, STRINGS } from "./i18n/index.js";
 
-export const TOOL_IDS = ["x402-check", "mcp-diff", "warden-scan", "histor-check"];
+export const TOOL_IDS = ["tool-list-cost", "x402-check", "mcp-diff", "warden-scan", "histor-check"];
 /** Services that also have a free A2MCP door for agents (src/services.js). */
-const FREE_FOR_AGENTS = new Set(["warden-scan", "histor-check"]);
+const FREE_FOR_AGENTS = new Set(["warden-scan", "histor-check", "tool-list-cost"]);
+/** Services with no paid x402 twin: the agents' section shows only the free door. */
+const NOT_SOLD = new Set(["tool-list-cost"]);
 
 const asset = (name) => {
   const body = readFileSync(new URL(`./assets/${name}`, import.meta.url));
@@ -22,6 +24,7 @@ const asset = (name) => {
 export const ASSETS = {
   "tools.css": { ...asset("tools.css"), type: "text/css; charset=utf-8" },
   "tools.js": { ...asset("tools.js"), type: "text/javascript; charset=utf-8" },
+  "icon.png": { ...asset("icon.png"), type: "image/png" },
 };
 
 const ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
@@ -36,6 +39,9 @@ export function pathFor(lang, id = "") {
   const prefix = lang === "en" ? "/tools/" : `/tools/${lang}/`;
   return prefix + (id || "");
 }
+
+/** The README line the tool-list-cost page offers; the page's answer fills in the real server. */
+export const BADGE_MD = "![tool list](https://img.shields.io/endpoint?url=https%3A%2F%2Fmodelmarket.dev%2Ftools%2Fbadge%2Ftool-list-cost%3Fserver%3Dnpm%3Ayour-package)";
 
 const CURL_TOOLS_LIST = [
   "curl -s https://mcp.example.com/mcp \\",
@@ -63,6 +69,7 @@ ${links}<link rel="alternate" hreflang="x-default" href="${esc(origin + alternat
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#02030a">${verification ? `
 <meta name="google-site-verification" content="${esc(verification)}">` : ""}
+<link rel="icon" type="image/png" href="/tools/assets/icon.png?v=${ASSETS["icon.png"].version}">
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/tools/assets/tools.css?v=${ASSETS["tools.css"].version}">
@@ -94,7 +101,7 @@ function footer(lang) {
 </footer>`;
 }
 
-function page({ lang, tool = "", title, description, path, origin, verification = "", alternates, jsonLd, body, data }) {
+export function page({ lang, tool = "", title, description, path, origin, verification = "", alternates, jsonLd, body, data }) {
   const t = STRINGS[lang];
   return `<!doctype html>
 <html lang="${HTML_LANG[lang]}">
@@ -181,6 +188,8 @@ function formFor(id, tt) {
       return `<div class="field-pair">${field(id, "old", f.old, { rows: 12 })}${field(id, "new", f.new, { rows: 12 })}</div>`;
     case "warden-scan":
       return field(id, "tools", f.tools, { rows: 12 });
+    case "tool-list-cost":
+      return field(id, "server", f.server, { input: true }) + field(id, "tools", f.tools, { rows: 8 });
     default:
       return field(id, "query", f.query, { input: true });
   }
@@ -190,6 +199,10 @@ function howTo(id, tt) {
   if (id === "mcp-diff") {
     return `<section class="section"><h2 class="section-title">${esc(tt.howToTitle)}</h2>
 <p class="section-note">${esc(tt.howTo)}</p><pre><code>${esc(CURL_TOOLS_LIST)}</code></pre></section>`;
+  }
+  if (id === "tool-list-cost") {
+    return `<section class="section"><h2 class="section-title">${esc(tt.howToTitle)}</h2>
+<p class="section-note">${esc(tt.howTo)}</p><pre><code>${esc(BADGE_MD)}</code></pre></section>`;
   }
   if (id === "warden-scan") {
     return `<section class="section"><h2 class="section-title">${esc(tt.howToTitle)}</h2>
@@ -203,6 +216,12 @@ function agents(lang, id, origin) {
   const price = priceOf(id);
   const free = FREE_FOR_AGENTS.has(id)
     ? `<p class="section-note">${esc(t.ui.agentsFree)}</p><pre><code>POST ${esc(origin)}/a2mcp/${id}</code></pre>` : "";
+  if (NOT_SOLD.has(id)) {
+    return `<section class="section agents" aria-labelledby="agents-h">
+<h2 class="section-title" id="agents-h">${esc(t.ui.agentsFreeTitle)}</h2>
+${free}
+</section>`;
+  }
   return `<section class="section agents" aria-labelledby="agents-h">
 <h2 class="section-title" id="agents-h">${esc(t.ui.agentsTitle)}</h2>
 <p class="section-note">${esc(t.ui.agentsLead.replace("{price}", price))}</p>

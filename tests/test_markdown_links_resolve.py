@@ -47,6 +47,14 @@ IMAGE = re.compile(r'!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)')
 
 EXTERNAL = ("http://", "https://", "mailto:", "tel:", "data:", "#")
 
+# Markdown renders no links inside code: `f_builtins["__import__"]("os")` is Python, not a link.
+CODE = re.compile(r"```.*?```|~~~.*?~~~|`[^`\n]+`", re.S)
+
+
+def _without_code(text: str) -> str:
+    """Blank out fenced and inline code, keeping every newline so line numbers hold."""
+    return CODE.sub(lambda m: re.sub(r"[^\n]", " ", m.group(0)), text)
+
 
 def _markdown_files():
     for dirpath, dirnames, filenames in os.walk(ROOT):
@@ -69,7 +77,7 @@ def test_internal_markdown_links_resolve():
 
     for path, rel in _markdown_files():
         try:
-            text = path.read_text(encoding="utf-8")
+            text = _without_code(path.read_text(encoding="utf-8"))
         except (OSError, UnicodeDecodeError):
             continue
         for pattern in (LINK, IMAGE):

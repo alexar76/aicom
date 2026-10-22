@@ -188,6 +188,30 @@ def test_assess_detects_sandbox_localhost_urls_in_bundled_artifacts(tmp_path):
     assert quality_gates_pass(rep) is False
 
 
+def test_loopback_urls_in_server_side_config_are_not_a_sandbox_leak(tmp_path):
+    """The dev proxy and the container healthcheck need their loopback URLs; flagging them made
+    the autofix rewrite them to ./ and broke both."""
+    pid = "prod-loopback-config"
+    code = tmp_path / "code" / pid
+    (code / "frontend").mkdir(parents=True)
+    (code / "index.html").write_text(
+        """<!doctype html><html><body>
+        <header><nav><a href="#pricing">Pricing</a></nav></header>
+        <section><h1>Relay</h1><button>Start Free Trial</button></section>
+        <section id="pricing"><h2>Pricing</h2></section>
+        </body></html>""",
+        encoding="utf-8",
+    )
+    (code / "frontend" / "vite.config.ts").write_text(
+        "export default { server: { proxy: { '/api': 'http://localhost:8000' } } };\n", encoding="utf-8")
+    (code / "docker-compose.yml").write_text(
+        "services:\n  api:\n    healthcheck:\n      test: [\"CMD\", \"curl\", \"http://localhost:8000/healthz\"]\n",
+        encoding="utf-8",
+    )
+    rep = assess_product_demo(pid, {"description": "Relay pricing"}, data_root=str(tmp_path))
+    assert not any(i.get("code") == "sandbox_localhost_urls" for i in rep["issues"])
+
+
 def test_assess_detects_broken_internal_file_link(tmp_path):
     pid = "prod-broken-link"
     code = tmp_path / "code" / pid

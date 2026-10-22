@@ -7,11 +7,33 @@ rendered «coverage», «tests» and «Sentinel hero» as links, not images.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import logging
 import re
+import time
 from pathlib import Path
+from typing import Any
 
 logger = logging.getLogger(__name__)
+
+#: The factory's own record of running a product's tests. ``docs/badges/ci.svg`` is drawn
+#: from it and from nothing else: an agent-written or placeholder "ci: passing" said a CI
+#: had run when none had (2026-10-21 audit), so the badge is factory-owned and says which run.
+FACTORY_TESTS_RECORD = "docs/badges/factory-tests.json"
+CI_BADGE = "docs/badges/ci.svg"
+_GREY = "#9f9f9f"
+_STATUS_COLORS = {"passed": "#4c1", "failed": "#e05d44", "not run": _GREY, "not re-run": _GREY}
+# What the tests exercise: source and config files, outside the directories the catalog
+# publish drops or rewrites. Docs, READMEs and workflow files are edited after the run (badge
+# markers, CONTRIBUTING.md) and caches, databases and keys never reach the catalog, so none of
+# them may make a published tree look different from the one that was tested.
+_DIGEST_SKIP_DIRS = {"docs", ".github", ".git", "node_modules", "__pycache__", ".venv", "venv",
+                     ".pytest_cache", ".mypy_cache", ".ruff_cache", ".aicom_sandbox", "dist",
+                     "build", ".next", "coverage", "htmlcov"}
+_DIGEST_SUFFIXES = {".py", ".pyi", ".js", ".mjs", ".cjs", ".jsx", ".ts", ".tsx", ".vue", ".svelte",
+                    ".json", ".toml", ".yaml", ".yml", ".cfg", ".ini", ".txt", ".html", ".css",
+                    ".scss", ".sql", ".sh", ".go", ".rs", ".java", ".kt", ".rb", ".php", ".dart"}
 
 _ASSET_RE = re.compile(
     r"""(?:src\s*=\s*['"]|\[[^\]]*\]\()(?P<path>docs/(?:badges|gallery)/[^'")\s]+)""",
@@ -22,10 +44,11 @@ _BARE_GALLERY_CELL = re.compile(
     re.M,
 )
 
+# A missing badge is drawn as what is known, never as a result: nobody measured coverage or
+# counted tests for these, so they say so. ``ci`` is handled by refresh_factory_test_badge.
 _BADGE_MESSAGES = {
-    "ci": ("passing", "#4c1"),
-    "coverage": ("ok", "#4c1"),
-    "tests": ("ok", "#4c1"),
+    "coverage": ("not measured", _GREY),
+    "tests": ("not counted", _GREY),
     "license": ("MIT", "#007ec6"),
     "mesh": ("live", "#4c1"),
 }
@@ -82,6 +105,78 @@ def _shield_svg(label: str, message: str, color: str) -> str:
     )
 
 
+def product_tree_digest(code_root: Path) -> str:
+    """SHA-256 over the source and config files a product's tests exercise (see _DIGEST_*)."""
+    root = Path(code_root)
+    h = hashlib.sha256()
+    for path in sorted(p for p in root.rglob("*") if p.is_file()):
+        rel = path.relative_to(root)
+        if any(part in _DIGEST_SKIP_DIRS for part in rel.parts[:-1]):
+            continue
+        if path.suffix.lower() not in _DIGEST_SUFFIXES or rel.name.lower().startswith(".env"):
+            continue
+        h.update(rel.as_posix().encode("utf-8") + b"\0")
+        h.update(hashlib.sha256(path.read_bytes()).digest())
+    return h.hexdigest()
+
+
+def _status_of(result: dict[str, Any]) -> str:
+    if result.get("skipped") or not result.get("commands"):
+        return "not run"
+    return "passed" if result.get("passed") else "failed"
+
+
+def record_factory_test_run(code_root: Path, result: dict[str, Any], *, now: float | None = None) -> dict:
+    """Write the factory's test run into the product tree and draw ``ci.svg`` from it.
+
+    ``result`` is what the pipeline's runtime-test stage returns: ``passed``, ``skipped``,
+    ``commands`` and per-command ``results`` with ``exit_code``.
+    """
+    root = Path(code_root)
+    record = {
+        "status": _status_of(result),
+        "checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now or time.time())),
+        "commands": [str(c) for c in result.get("commands") or []],
+        "exit_codes": [r.get("exit_code") for r in result.get("results") or [] if isinstance(r, dict)],
+        "tree_sha256": product_tree_digest(root),
+        "what": (
+            "The AI-Factory ran these test commands on this tree before publishing it. "
+            "This is not a GitHub Actions status."
+        ),
+    }
+    dest = root / FACTORY_TESTS_RECORD
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+    refresh_factory_test_badge(root)
+    return record
+
+
+def refresh_factory_test_badge(code_root: Path) -> str:
+    """Redraw ``ci.svg`` from the factory's record; return the status it shows.
+
+    No record → "not run". A record for a different tree (code changed after the run) →
+    "not re-run". Whatever ``ci.svg`` said before is replaced: the file is factory-owned.
+    """
+    root = Path(code_root)
+    status = "not run"
+    when = ""
+    try:
+        record = json.loads((root / FACTORY_TESTS_RECORD).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        record = None
+    if isinstance(record, dict) and record.get("status") in _STATUS_COLORS:
+        if record.get("tree_sha256") == product_tree_digest(root):
+            status = str(record["status"])
+            when = str(record.get("checked_at") or "")[:10]
+        else:
+            status = "not re-run"
+    message = f"{status} {when}".strip() if status in ("passed", "failed") else status
+    dest = root / CI_BADGE
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(_shield_svg("factory tests", message, _STATUS_COLORS[status]), encoding="utf-8")
+    return status
+
+
 def _embed_gallery_table(text: str) -> str:
     def _sub(m: re.Match[str]) -> str:
         path = m.group(2)
@@ -113,6 +208,11 @@ def apply_github_house_asset_autofix(code_root: Path) -> list[str]:
         text = new_text
 
     for rel in extract_readme_local_assets(text):
+        if rel == CI_BADGE:
+            # Always redrawn, present or not: an existing ci.svg may be an agent's "passing".
+            status = refresh_factory_test_badge(root)
+            notes.append(f"{rel}:{status}")
+            continue
         dest = root / rel
         if dest.is_file():
             continue

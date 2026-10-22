@@ -20,7 +20,7 @@ Operational playbooks for ecosystem content, MCP registries, and awesome-list su
 | Audience | Lead URL |
 |----------|----------|
 | Observers (news) | https://t.me/just_for_agents — Castor on Telegram |
-| Builders (help) | https://discord.gg/aimarket — Pollux on Discord |
+| Builders (help) | https://discord.gg/JjWxGhW9pP — Pollux on Discord |
 | Twin agents | https://github.com/alexar76/dioscuri · https://alexar76.github.io/dioscuri/ |
 | AI devs (self-hosted) | https://magic-ai-factory.com |
 | Ecosystem map | https://ecosystem.modelmarket.dev/ |

@@ -62,7 +62,7 @@ Full integration guide: **[dioscuri/docs/theoros.md](https://github.com/alexar76
   "githubRepos": ["theoros", "aicom", "metis", "dioscuri", "argus"],
   "links": {
     "theorosUrl": "https://alexar76.github.io/theoros/",
-    "discordInvite": "https://discord.gg/aimarket"
+    "discordInvite": "https://discord.gg/JjWxGhW9pP"
   },
   "content": {
     "slots": [{ "kind": "canon", "day": "sun", "hourUtc": 16 }]

@@ -1,0 +1,353 @@
+{
+ "source": "https://modelmarket.dev/providers/emporion/ai-market/v2/manifest",
+ "read_at": "2026-10-20T09:32:18Z",
+ "source_hub": "https://modelmarket.dev/providers/emporion",
+ "tools": [
+  {
+   "name": "vat_check",
+   "capability_id": "emporion.vat.check@v1",
+   "product_id": "emporion",
+   "price_usd": 0.002,
+   "description": "Is this EU VAT number valid today? Asks VIES (the member state's registry): valid, registered name and address, check time. Pass requester_vat (your own EU VAT number) to get VIES's consultation number — official proof of the check in your name. A registry that is down costs nothing.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "vat": {
+      "type": "string",
+      "maxLength": 20,
+      "default": "NL004495445B01",
+      "description": "EU VAT number with its country prefix (DE…, FR…, EL… for Greece)"
+     },
+     "country": {
+      "type": "string",
+      "maxLength": 2,
+      "description": "optional prefix, if vat carries only the number"
+     },
+     "requester_vat": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "YOUR OWN EU VAT number: VIES then issues a consultation number proving the check in your name"
+     }
+    },
+    "required": [
+     "vat"
+    ]
+   }
+  },
+  {
+   "name": "sanctions_screen",
+   "capability_id": "emporion.sanctions.screen@v1",
+   "product_id": "emporion",
+   "price_usd": 0.002,
+   "description": "Is this wallet address or name on a public sanctions list? OFAC SDN (incl. ~500 digital-currency addresses), EU and UK lists — UN designations through them, each hit with its UN number — with each list's date and SHA-256. A lookup, not a compliance determination.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "address": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "a wallet address (EVM, Bitcoin, Tron, …)"
+     },
+     "name": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "a person or entity"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "individual",
+       "entity",
+       "vessel",
+       "aircraft"
+      ]
+     },
+     "lists": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "OFAC-SDN",
+        "EU",
+        "UK",
+        "UN"
+       ]
+      },
+      "description": "default all; UN = the UK and EU entries with a UN number"
+     },
+     "threshold": {
+      "type": "number",
+      "minimum": 0.7,
+      "maximum": 1.0,
+      "default": 0.85
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 10
+     }
+    },
+    "anyOf": [
+     {
+      "required": [
+       "address"
+      ]
+     },
+     {
+      "required": [
+       "name"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "company_lookup",
+   "capability_id": "emporion.company.lookup@v1",
+   "product_id": "emporion",
+   "price_usd": 0.001,
+   "description": "Is this company real and alive? Its national register by number or name: Norway (Brønnøysund), France (SIRENE/RNE), Czech Republic (ARES), Finland (PRH). Name, status, legal form, founding date, address, VAT number where published, plus the register's own fields.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "country": {
+      "type": "string",
+      "enum": [
+       "NO",
+       "FR",
+       "CZ",
+       "FI"
+      ],
+      "default": "NO"
+     },
+     "number": {
+      "type": "string",
+      "maxLength": 20,
+      "default": "923609016",
+      "description": "NO organisation number, FR SIREN or SIRET, CZ IČO, FI Business ID, GB company number"
+     },
+     "name": {
+      "type": "string",
+      "maxLength": 120,
+      "description": "or a name to search"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 5
+     }
+    },
+    "required": [
+     "country"
+    ],
+    "anyOf": [
+     {
+      "required": [
+       "number"
+      ]
+     },
+     {
+      "required": [
+       "name"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "lei_lookup",
+   "capability_id": "emporion.lei.lookup@v1",
+   "product_id": "emporion",
+   "price_usd": 0.001,
+   "description": "Who is this legal entity? GLEIF LEI record by LEI (check digits verified locally) or by name (ranked candidates): legal name, jurisdiction, legal form, status, addresses, registration and renewal, direct and ultimate parents. CC0.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "lei": {
+      "type": "string",
+      "maxLength": 24,
+      "description": "20-character LEI"
+     },
+     "name": {
+      "type": "string",
+      "maxLength": 120,
+      "description": "legal name to search"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 5
+     },
+     "parents": {
+      "type": "boolean",
+      "default": true
+     }
+    },
+    "anyOf": [
+     {
+      "required": [
+       "lei"
+      ]
+     },
+     {
+      "required": [
+       "name"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "fx_rate",
+   "capability_id": "emporion.fx.rate@v1",
+   "product_id": "emporion",
+   "price_usd": 0.001,
+   "description": "ECB euro reference rate for any pair on any date since 1999 (the latest ECB day on or before it, named), cross rates through the euro in Decimal, optional amount rounded to the currency's minor units. Reference rate, not a dealing rate.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "base": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 3,
+      "default": "USD"
+     },
+     "quote": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 3,
+      "default": "EUR"
+     },
+     "date": {
+      "type": "string",
+      "description": "YYYY-MM-DD; default the latest ECB day"
+     },
+     "amount": {
+      "type": [
+       "number",
+       "string"
+      ],
+      "description": "optional amount in base to convert"
+     }
+    },
+    "required": [
+     "base",
+     "quote"
+    ]
+   }
+  },
+  {
+   "name": "business_days",
+   "capability_id": "emporion.calendar.check@v1",
+   "product_id": "emporion",
+   "price_usd": 0.001,
+   "description": "Business days: is this date a working day in a country (or region) or on a market (TARGET2, NYSE, LSE…), the holiday's name, next and previous business day, date + N business days, business days between two dates, a year's holidays. Offline, python-holidays.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "country": {
+      "type": "string",
+      "maxLength": 2,
+      "default": "DE",
+      "description": "ISO 3166 alpha-2"
+     },
+     "subdiv": {
+      "type": "string",
+      "maxLength": 10,
+      "description": "region, e.g. BY"
+     },
+     "market": {
+      "type": "string",
+      "maxLength": 6,
+      "description": "instead of country: XECB (TARGET2), XNYS, XLON, …"
+     },
+     "date": {
+      "type": "string",
+      "description": "YYYY-MM-DD; default today (UTC)"
+     },
+     "add_business_days": {
+      "type": "integer",
+      "minimum": -1000,
+      "maximum": 1000
+     },
+     "until": {
+      "type": "string",
+      "description": "YYYY-MM-DD: count business days to it"
+     },
+     "list_year": {
+      "type": "integer",
+      "minimum": 1950,
+      "maximum": 2100
+     },
+     "language": {
+      "type": "string",
+      "maxLength": 8,
+      "description": "holiday names, e.g. en_US"
+     }
+    }
+   }
+  },
+  {
+   "name": "eori_check",
+   "capability_id": "emporion.eori.check@v1",
+   "product_id": "emporion",
+   "price_usd": 0.002,
+   "description": "Is this EORI number valid for EU customs? The European Commission's EOS service, up to 10 numbers per call; name and address where the operator consented to publication. A service that is down costs nothing.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "eori": {
+      "type": "string",
+      "maxLength": 20,
+      "default": "CZ00177041"
+     },
+     "eoris": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "maxLength": 20
+      },
+      "maxItems": 10,
+      "description": "or up to 10 numbers at once"
+     }
+    },
+    "anyOf": [
+     {
+      "required": [
+       "eori"
+      ]
+     },
+     {
+      "required": [
+       "eoris"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "domain_rdap",
+   "capability_id": "emporion.domain.rdap@v1",
+   "product_id": "emporion",
+   "price_usd": 0.001,
+   "description": "Who registered this domain and when? RDAP from the TLD's own registry (found through IANA's bootstrap): created, updated, expires, age in days, registrar, status, nameservers, DNSSEC. Or registered: false. A TLD without RDAP costs nothing.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "domain": {
+      "type": "string",
+      "maxLength": 253,
+      "default": "example.com",
+      "description": "a domain name; a URL or subdomain is reduced to the registered name"
+     }
+    },
+    "required": [
+     "domain"
+    ]
+   }
+  }
+ ]
+}

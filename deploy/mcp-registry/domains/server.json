@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "dev.modelmarket/domains",
+  "title": "Domain availability and quotes (demo)",
+  "description": "Is a .com/.net/.org name free, and a signed one-year quote. Demo seller, orders refused. Free.",
+  "repository": {
+    "url": "https://github.com/alexar76/domain-operator-kit",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "websiteUrl": "https://modelmarket.dev/tools/",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://modelmarket.dev/tools/mcp/domains"
+    }
+  ]
+}

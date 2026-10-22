@@ -269,6 +269,10 @@ greps a log for them.
 | balance | баланс | saldo | solde | 余额 | What is left to spend. Published as `balance_usd`. |
 | top-up (to top up) | пополнение (пополнить) | recarga (recargar) | recharge (recharger) | 充值 | By the operator (`POST /accounts/{id}/credit`) or, on the Hub, bought by the account itself with USDC ([`credits-topup.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/credits-topup.md)); idempotent on `reference` either way. Not «депозит»: nothing is escrowed. |
 | top-up quote | счёт на пополнение | oferta de recarga | offre de recharge | 充值报价 | The `402` a Hub mints for a top-up: amount, `payTo` and a nonce bound to ONE account (table `credit_topup_quotes`). Binding, unlike a *cost estimate* (смета / presupuesto / devis / 成本预估). |
+| card top-up | пополнение картой | recarga con tarjeta | recharge par carte | 银行卡充值 | Credit bought through Stripe Checkout ([`card-topup.md`](https://github.com/alexar76/aimarket-hub/blob/main/docs/card-topup.md)); the same ledger line as a USDC top-up. `checkout_url`, `topup_id` stay Latin. |
+| merchant of record | продавец по закону (merchant of record) | comerciante registrado (merchant of record) | marchand officiel (merchant of record) | 记录商户（merchant of record） | Who sells, legally, and owes the sales tax. Under Stripe Managed Payments it is Stripe; otherwise the operator. Keep the English term in parentheses once. |
+| sales tax mode | налоговый режим | modo de impuesto | mode de taxe | 税务模式 | `AIMARKET_CARD_TOPUP_TAX`: `off`, `stripe_tax`, `managed_payments` — values stay Latin. |
+| tax on top / tax included | налог сверху / налог внутри цены | impuesto encima / impuesto incluido | taxe en sus / taxe incluse | 价外税 / 价内含税 | `tax_behavior` `exclusive` / `inclusive`. |
 | paid credit / granted credit | купленный кредит / подаренный кредит | crédito comprado / crédito concedido | crédit acheté / crédit offert | 购买的额度 / 赠送的额度 | `topped_up_usd` (money came in) vs `granted_usd` (given away: signup grants, operator grants). Kept apart on purpose: the grant budget and the solvency report read them differently. |
 | operator wallet | кошелёк оператора | cartera del operador | portefeuille de l'opérateur | 运营者钱包 | The `payTo` of a top-up. An address, not custody by the Hub: the Hub holds no key. |
 | confirmation (block) | подтверждение | confirmación | confirmation | 确认 | Blocks on top of the one that mined a payment (`AIMARKET_TOPUP_MIN_CONFIRMATIONS`). |
@@ -334,6 +338,13 @@ never translated**.
 | sweep | зачистка | barrido | balayage | 清扫 | The background settlement of stranded allowances (`AIMARKET_SUBCONTRACT_SWEEP_S`). |
 | depth / cycle / fan-out | глубина / цикл / ветвление | profundidad / ciclo / ramificación | profondeur / cycle / ramification | 深度 / 循环 / 扇出 | Tree limits; the `limit` values stay Latin. |
 | A2A Task | задача A2A (Task) | tarea A2A (Task) | Task A2A | A2A 任务（Task） | The A2A 1.0 protocol object a `SendMessage` answers with. **FR keeps `Task`**: «tâche» is already *job*, and one word for both is the confusion this table exists to prevent. |
+| approval threshold (`approvalAbove`) | порог подтверждения | umbral de aprobación | seuil d'approbation | 审批阈值 | A mandate limit (§5.6): above it one call waits for an owner. The field name stays Latin. |
+| owner approval (of a call) | подтверждение владельца | aprobación del propietario | approbation du propriétaire | 所有者批准 | An owner's signed answer to an approval request (`apr_…`). Same RU/ES/FR words as the chat `/yes` row; ZH here is 所有者 (the mandate owner), not 主人. |
+| approval request | запрос на подтверждение | solicitud de aprobación | demande d'approbation | 审批请求 | What a call over the threshold opens; `approval_id`, `max_usd`, `expires_at` stay Latin. |
+| notification channel (owner) | канал уведомлений | canal de avisos | canal de notification | 通知渠道 | Where an account's owners hear about approval requests (`telegram`, `slack`, `jira`, `webhook` stay Latin). It tells, never approves. |
+| lease (A2A task) | аренда (задачи) | concesión | bail | 租约 | How long a running task stays its process's; renewed while it runs, taken over by the sweep once it lapses. Not «блокировка» / «lock». |
+| push notification (A2A) | push-уведомление | notificación push | notification push | 推送通知 | A2A 1.0: the hub POSTs a task's `statusUpdate` to the client's webhook. |
+| webhook | webhook | webhook | webhook | webhook | Keep Latin everywhere. |
 
 ## Signal Hunt terms (federation investigation lab)
 
@@ -625,6 +636,28 @@ Added with [`esim-kit/docs/en/cases.md`](https://github.com/alexar76/esim-operat
 | pinned key (peer) | закреплённый ключ | clave fijada | clé épinglée | 固定的密钥 | The key a hub first saw at a peer's address; another one later is refused as a possible takeover. Same root as `pinned PQ key`. |
 | onboarding wizard (`onboard.sh`) | мастер онбординга | asistente de incorporación | assistant d'intégration | 接入向导 | The kit's one command from a fresh server to a store, a seller node and a place in the federation. |
 
+## Domain Operator Kit (domains.modelmarket.dev)
+
+Added with the kit's landing and example desk (`domain-kit/docs/landing/`, EN · RU · ES · FR · ZH). The roles follow ICANN's own localized glossary, so a registrar reads the same here as in an accreditation agreement. Identifiers stay Latin: `domains.quote@v1` and the other `domains.*@v1` capabilities, `demo_mode`, `owner_auth_required`, `live_missing`, `listing.json`, `/healthz`, `DOMAIN_MODE`, `PAY_TO`, `CDP_KEY_FILE`, `DOMAIN_REFUND_KEY_FILE`, `DOMAIN_TERMS_URL`, `DOMAIN_UPSTREAM_COST_CONFIRMED`, `DOMAIN_REGISTRANT_FILE`, `provider_pubkey`, RDAP.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| domain operator | доменный оператор | operador de dominios | opérateur de domaines | 域名运营者 | Who runs the kit's seller node with their own registrar account, wallet and markup. Not the ICANN-accredited registrar itself. ZH root as `operator wallet` (运营者). |
+| registrar | регистратор | registrador | bureau d'enregistrement | 注册服务机构 | ICANN's terms in each language. FR never «registraire». |
+| registry (of a TLD) | регистратура | registro (operador de registro) | registre (opérateur de registre) | 注册管理机构 | Keeps the master database of one top-level domain; its RDAP answers availability. RU follows ICANN («регистратура»), not «реестр». |
+| registrant | регистрант | registratario | titulaire (du nom de domaine) | 注册人 | The contact the name is registered to. ES follows ICANN («registratario»), not «titular» alone. |
+| reseller | реселлер | revendedor | revendeur | 分销商 | Sells registrations through a registrar. |
+| extension (TLD) | доменная зона | extensión | extension | 域名后缀 | The UI word for `.com`. ICANN's formal term, where precision matters: top-level domain = домен верхнего уровня / dominio de alto nivel / domaine de premier niveau / 顶级域. |
+| available / taken (a name) | свободен / занят | disponible / registrado | disponible / déjà enregistré | 可注册 / 已注册 | RDAP 404 / 200. Availability is not a reservation. |
+| quote (domain price) | котировка | cotización | offre de prix | 报价 | `domains.quote@v1`: a signed price that holds five minutes. Binding for that window, unlike a *cost estimate* (смета / presupuesto / devis / 成本预估); FR therefore not «devis». RU as the kit's README.ru and OPERATIONS. |
+| fixed markup | фиксированная наценка | margen fijo | marge fixe | 固定加价 | Added by the operator per registration or renewal. Same roots as the eSIM kit's margin (margen / marge / 加价). |
+| renewal | продление | renovación | renouvellement | 续费 | A separate purchase at a new quote; registrar autorenew is off. ZH as registrar consoles (Alibaba Cloud 域名续费); ICANN's contract wording is 续约. |
+| transfer code (auth code) | код переноса | código de transferencia (AuthCode) | code de transfert (code AuthInfo) | 转移码（授权码） | `domains.transfer.code@v1`. A secret: never in a hub, a log or a model's context. |
+| owner key | ключ владельца | clave del propietario | clé du propriétaire | 所有者密钥 | The Ed25519 key that signs the order and every later DNS or renewal request. No recovery. ZH 所有者 as `owner (of a plug)`. |
+| seller node | узел продавца | nodo vendedor | nœud vendeur | 卖家节点 | The kit's HTTP seller. Not the federation node (`aimarket node`). Its key is the `provider key` above (ключ продавца). |
+| demo mode / demo seller | демо-режим / демо-продавец | modo demo / vendedor de demostración | mode démo / vendeur de démonstration | 演示模式 / 演示卖家 | Real availability, illustrative prices, orders refused with `demo_mode`. |
+| example desk | пример деска | tienda de ejemplo | boutique d'exemple | 示例店铺 | The kit's storefront at `/desk/`. RU keeps the owner's word «деск»; ES/FR/ZH reuse the eSIM kit's «example shop». Not Cite Desks (RU «столы»). |
+
 ## Places, power prices, imagery, device control and EMPORION (2026-10-16)
 
 Added with GAIA's [`PLACES.md`](https://github.com/alexar76/gaia/blob/main/docs/PLACES.md),
@@ -734,6 +767,9 @@ the outcome values (`ok`, `failed`, `payment_required`, …), the caller kinds (
 - Consumption statistics: [iXBT — «статистика энергопотребления» (Alfawise SOW 016)](https://www.ixbt.com/live/comments/164776), [Obramat — enchufe Nivian, «estadísticas de consumo»](https://www.obramat.es/productos/enchufe-smart-nivian-25031613.html), [Legrand — prise qui calcule la consommation](https://www.legrand.fr/questions-frequentes/prise-qui-calcule-la-consommation-ca-existe), [OKOK 智能 — 电量统计 (App Store)](https://apps.apple.com/us/app/-/id1195522905), [新浪众测 — 米家智能插座 电量统计](https://zhongce.sina.com.cn/article/view/32849/).
 - Pseudonymisation / retention: [AEPD — Anonimización y seudonimización](https://www.aepd.es/prensa-y-comunicacion/blog/anonimizacion-y-seudonimizacion), [AEPD — hash en la seudonimización](https://www.aepd.es/prensa-y-comunicacion/notas-de-prensa/la-aepd-publica-recomendaciones-para-aquellos-que-utilicen), [Legiscope — limitación del plazo de conservación](https://www.legiscope.com/blog/limitacion-conservacion-rgpd.html), [donneespersonnelles.fr — pseudonymisation](https://www.donneespersonnelles.fr/pseudonymisation), [Tableau des durées de conservation RGPD](https://donneespersonnelles.fr/tableau-duree-conservation-donnees), [gdpr-text.com (RU) — псевдонимизация](https://gdpr-text.com/ru/?p=4252).
 - Delegate (wallet delegation): [delegate.xyz docs](https://docs.delegate.xyz/), [Ronin — Delegate](https://docs.roninchain.com/developers/tools/delegation) (ZH press explains it as 委托; the delegate side is rendered 受托方 here).
+
+- Domain roles (ICANN's localized glossary): [ES — registrador](https://www.icann.org/es/icann-acronyms-and-terms/registrar-es), [ES — registratario](https://www.icann.org/es/icann-acronyms-and-terms/registrant-es), [ES — registración de nombre de dominio](https://www.icann.org/es/icann-acronyms-and-terms/domain-name-registration-es); [FR — bureau d'enregistrement](https://www.icann.org/fr/icann-acronyms-and-terms/registrar-fr), [FR — enregistrement de nom de domaine (titulaire, opérateur de registre)](https://www.icann.org/fr/icann-acronyms-and-terms/domain-name-registration-fr); [RU — регистратор](https://www.icann.org/ru/icann-acronyms-and-terms/registrar-ru), [RU — регистрант](https://www.icann.org/ru/icann-acronyms-and-terms/registrant-ru); [ZH — 注册管理运行机构](https://www.icann.org/zh/contracted-parties/registry-operators), [ZH — 认证注册服务机构](https://www.icann.org/zh/contracted-parties/accredited-registrars/resources/agreements-and-policies), [ZH — 域名行业（注册人、分销商）](https://www.icann.org/resources/pages/domain-name-industry-2018-09-12-zh).
+- 续费 / 域名后缀 (ZH): [阿里云 — 续费与赎回](https://help.aliyun.com/zh/dws/support/renewal-and-redemption-issues), [MDN — eTLD](https://developer.mozilla.org/zh-CN/docs/Glossary/eTLD), [Shopify — .com 与 .net 域名后缀](https://www.shopify.com/zh/blog/com-vs-net).
 
 ---
 *Maintainers: extend this table before introducing a new domain term in any language. If a term

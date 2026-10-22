@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "dev.modelmarket/emporion",
+  "title": "EMPORION — business facts from public registers",
+  "description": "EU VAT and EORI checks, sanctions screening, company and LEI lookup, ECB rates. Free, no key.",
+  "repository": {
+    "url": "https://github.com/alexar76/emporion",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "websiteUrl": "https://modelmarket.dev/tools/",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://modelmarket.dev/tools/mcp/emporion"
+    }
+  ]
+}

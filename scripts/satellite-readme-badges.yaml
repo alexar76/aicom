@@ -6,7 +6,6 @@ satellites:
     repo: aimarket-playground
     workflow: ci.yml
     pages_workflow: pages.yml
-    ci_badge: github
     include_coverage: false
     license: MIT
     extra_badges:
@@ -21,7 +20,6 @@ satellites:
     repo: create-aimarket-agent
     workflow: ci.yml
     pages_workflow: pages.yml
-    ci_badge: github
     include_coverage: false
     license: MIT
     extra_badges:
@@ -36,7 +34,6 @@ satellites:
     repo: esim-operator-kit
     workflow: ci.yml
     pages_workflow: pages.yml
-    ci_badge: github
     # Tests are counted by the Pages workflow on every deploy (badges/tests.json); the plan count is
     # read live from the demo seller node's /healthz.
     include_coverage: false
@@ -59,7 +56,6 @@ satellites:
     repo: histor
     workflow: ci.yml
     pages_workflow: pages.yml
-    ci_badge: github
     # Coverage and test counts are LIVE: measured by the Pages workflow on every deploy and read
     # through shields.io/endpoint. The log numbers are read from the running service.
     include_coverage: false
@@ -82,7 +78,6 @@ satellites:
     repo: hestia
     workflow: ci.yml
     pages_workflow: pages.yml
-    ci_badge: github
     include_coverage: false
     license: MIT
     extra_badges:
@@ -97,7 +92,6 @@ satellites:
   themis:
     repo: themis
     workflow: test.yml
-    ci_badge: github
     include_coverage: false
     license: MIT
     extra_badges:
@@ -140,7 +134,6 @@ satellites:
     repo: emporion
     workflow: ci.yml
     pages_workflow: pages.yml
-    ci_badge: github
     coverage_kind: python
     license: MIT
     extra_badges:
@@ -284,7 +277,7 @@ satellites:
     repo: aimarket-plugins
     workflow: ci.yml
     coverage_kind: smoke
-    license: Apache-2.0
+    license: MIT AND Apache-2.0
     extra_badges:
       - '[![aimarket-plugins MCP server](https://glama.ai/mcp/servers/alexar76/aimarket-plugins/badges/score.svg)](https://glama.ai/mcp/servers/alexar76/aimarket-plugins)'
   aimarket-oracle-gateway:
@@ -345,7 +338,7 @@ satellites:
     extra_badges:
       - '<a href="https://warden.modelmarket.dev/"><img src="docs/badges/deps.svg" alt="0 runtime deps" /></a>'
       - '<a href="https://warden.modelmarket.dev/"><img src="https://img.shields.io/npm/v/@aimarket/warden.svg" alt="npm @aimarket/warden" /></a>'
-      - '<img src="docs/badges/tests.svg" alt="96 tests passing" />'
+      - '<img src="docs/badges/tests.svg" alt="tests passing" />'
       - '<img src="docs/badges/node.svg" alt="node >=20" />'
       - '<img src="docs/badges/warden.svg" alt="WARDEN MCP firewall" />'
   dioscuri:
@@ -385,7 +378,6 @@ satellites:
     repo: hephaestus
     workflow: ci.yml
     pages_workflow: pages.yml
-    ci_badge: github
     include_coverage: false
     license: MIT
     extra_badges:
@@ -400,7 +392,6 @@ satellites:
     repo: basanos
     workflow: ci.yml
     pages_workflow: pages.yml
-    ci_badge: github
     include_coverage: false
     license: MIT
     extra_badges:
@@ -411,6 +402,7 @@ satellites:
       - '<img src="https://img.shields.io/badge/layer-assurance%20not%20insurance-c9a46a" alt="Assurance not insurance" />'
   dolos:
     repo: dolos
+    ci_badge: none  # the mirror drops .github/workflows until its token has the workflow scope
     workflow: ci.yml
     pages_workflow: pages.yml
     # Workflows are not on GitHub yet (PAT lacks `workflow` scope) — Actions badge.svg 404s
@@ -431,7 +423,7 @@ satellites:
     coverage_kind: python
     license: MIT
     extra_badges:
-      - '<img src="docs/badges/status.svg" alt="Pre-mainnet" />'
+      - '<img src="docs/badges/status.svg" alt="Base mainnet: demo" />'
   momus:
     repo: momus
     workflow: ci.yml
@@ -506,7 +498,6 @@ satellites:
     repo: attested-memory
     workflow: ci.yml
     pages_workflow: pages.yml
-    ci_badge: github
     include_coverage: false
     license: Apache-2.0
     extra_badges:

@@ -1,0 +1,27 @@
+{
+ "survey": "x402 delivery survey",
+ "date": "2026-10-20",
+ "note": "One pinned purchase, recorded after the settlement had already happened. Not part of the 2026-10-05 sample. No response body, nonce, chain-file row, or jury score was retained. The payer address is only in buy.jsonl, which report reads via --buy.",
+ "rows": [
+  {
+   "host": "tienda.textokit.store",
+   "resource": "https://tienda.textokit.store/api/x402-ping",
+   "method": "POST",
+   "status": 200,
+   "ms": 1881,
+   "paid_atomic": "1000",
+   "paid_usdc": "0.001",
+   "network": "eip155:8453",
+   "tx": "0x62c01526c5beb13cad96634ec80e837e576df496905f1bac8019c6ffa3e358c3",
+   "block": 52841269,
+   "payee": "0x6b5aF9924f4CD35643c11a9fd1C983f77261A6E1",
+   "receipts_path": "/receipts.json",
+   "receipts_at": "2026-10-20T04:51:38Z",
+   "ownWallet": false,
+   "externalPayers": 1,
+   "facilitator": "cdp",
+   "authorization_state": true,
+   "authorization_state_read": "second"
+  }
+ ]
+}

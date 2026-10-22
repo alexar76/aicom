@@ -170,6 +170,23 @@ test("what came back is named: open, rejected example, redirect, gone, error", (
   assert.equal(USDC_BASE, offer().asset.toLowerCase());
 });
 
+test("a pinned resource is drawn even outside the seeded cut, and it is the listing used for that host", () => {
+  const items = [];
+  for (let h = 0; h < 20; h++) items.push(listing(`https://seller${h}.example.com/r`));
+  items.push(listing("https://seller0.example.com/other"));
+  const pin = "https://tienda.example.com/api/x402-ping";
+  items.push(listing(pin));
+  const plan = sample(items, { hosts: 1, cap: CAP, seed: "s", mustResources: [pin] });
+  assert.equal(plan.entries.some((e) => e.resource === pin), true);
+  assert.equal(plan.entries.filter((e) => e.host === "seller0.example.com").length <= 1, true);
+  const pinnedHost = plan.entries.find((e) => e.resource === pin);
+  assert.equal(pinnedHost.host, "tienda.example.com");
+  assert.deepEqual(plan.meta.pinned_resources, [pin]);
+  const onSeller0 = sample(items, { hosts: 20, cap: CAP, seed: "s", mustResources: ["https://seller0.example.com/other"] });
+  assert.deepEqual(onSeller0.entries.filter((e) => e.host === "seller0.example.com").map((e) => e.resource),
+    ["https://seller0.example.com/other"]);
+});
+
 test("a seller can check itself: --host takes every eligible listing of that host, nothing else", () => {
   const items = [listing("https://me.example.com/a"), listing("https://me.example.com/b"), listing("https://other.example.com/a"),
     listing("http://me.example.com/plain")];

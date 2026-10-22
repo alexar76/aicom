@@ -102,6 +102,14 @@ def _extra_badge_html(extra: str, raw_base: str = "") -> str:
     return extra
 
 
+def ci_badge_mode(sat: dict[str, Any]) -> str:
+    """'github' (default: live Actions status), 'none', or the legacy 'static' SVG."""
+    mode = str(sat.get("ci_badge") or "github")
+    if mode not in {"github", "none", "static"}:
+        raise ValueError(f"{sat.get('repo')}: ci_badge must be github, none or static, not {mode!r}")
+    return mode
+
+
 def badge_block(sat: dict[str, Any], *, use_raw_coverage: bool = False) -> str:
     org = sat.get("_org", "alexar76")
     repo = sat["repo"]
@@ -143,15 +151,15 @@ def badge_block(sat: dict[str, Any], *, use_raw_coverage: bool = False) -> str:
     # for alexar76/aicom/main/docs/badges/coverage.svg while the same blob via refs/heads/main
     # (and via commit SHA) serves 200. The README then shows the alt text "Test coverage".
     raw = f"https://raw.githubusercontent.com/{org}/{repo}/refs/heads/main"
-    # New repositories can opt into the authoritative GitHub Actions status.
-    # Existing satellites retain their self-hosted badge until migrated so this
-    # generator does not silently rewrite established README presentation.
-    if sat.get("ci_badge") == "github":
-        ci_img = f"{ci_url}/badge.svg"
-    else:
-        ci_img = f"{raw}/docs/badges/ci.svg"
-    ci = f'<a href="{ci_url}"><img src="{ci_img}" alt="CI" /></a>'
-    html_parts: list[str] = [ci]
+    # The CI badge is the repository's GitHub Actions status. A committed "CI: passing" SVG
+    # stayed green over red builds in nine repositories (2026-10-21 audit), so `static` is
+    # only an explicit legacy choice, and `none` drops the badge where the mirror carries no
+    # workflow at all.
+    mode = ci_badge_mode(sat)
+    html_parts: list[str] = []
+    if mode != "none":
+        ci_img = f"{ci_url}/badge.svg" if mode == "github" else f"{raw}/docs/badges/ci.svg"
+        html_parts.append(f'<a href="{ci_url}"><img src="{ci_img}" alt="CI" /></a>')
     extras = [_extra_badge_html(e, raw) for e in (sat.get("extra_badges") or []) if e and e.strip()]
     html_parts.extend(extras)
     if sat.get("include_coverage", True):
@@ -251,9 +259,7 @@ def inject_file(readme: Path, sat: dict[str, Any], *, dry_run: bool = False) -> 
         # using the GitHub Actions badge must never publish a hard-coded
         # "CI: passing" asset.
         static_badges = [("License", sat.get("license", "MIT"), "license.svg")]
-        if sat.get("ci_badge") != "github":
-            static_badges.insert(0, ("CI", "passing", "ci.svg"))
-        elif sat.get("factory_embedded"):
+        if ci_badge_mode(sat) == "static" or sat.get("factory_embedded"):
             static_badges.insert(0, ("CI", "passing", "ci.svg"))
         for label, value, name in static_badges:
             out = badges_dir / name

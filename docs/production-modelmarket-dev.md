@@ -90,6 +90,20 @@ curl -sI https://verify.modelmarket.dev/ | head -5
 curl -s https://verify.modelmarket.dev/ | grep -o '<title>[^<]*</title>'
 ```
 
+### Delivery survey — `survey.modelmarket.dev`
+
+Static page of the latest settled x402 delivery-survey probe (`scripts/delivery-survey/site/`). Same factory host as `verify.modelmarket.dev`. Not HISTOR.
+
+| Host | Type | Value |
+|------|------|-------|
+| `survey` | A | `<origin-ip>` (the verify / dolos host) |
+
+```bash
+./scripts/deploy_survey_page.sh --remote root@factory-vps --issue-cert
+```
+
+DNS is a Timeweb A record. The script installs an HTTP bootstrap until the certificate exists, then certbot and the HTTPS vhost. It does not install the unpaid survey timer and does not run a purchase.
+
 ### Platon oracle — `oracles.modelmarket.dev`
 
 **Platon Shadow Oracle** runs on **`oracles.modelmarket.dev`**. DNS at **Timeweb** points the subdomain **directly** to that host (no factory nginx proxy).

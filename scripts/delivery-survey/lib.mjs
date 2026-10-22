@@ -101,9 +101,10 @@ export const rank = (seed, key) => createHash("sha256").update(`${seed}\n${key}`
  * One listing for each of `hosts` sellers (a seller = a host), drawn by seeded hash from the eligible ones.
  * Every listing left out is counted under its reason, so the report can say what the sample does not cover.
  */
-export function sample(items, { hosts, cap, seed, only = null }) {
+export function sample(items, { hosts, cap, seed, only = null, mustResources = null }) {
   const reasons = {};
   const byHost = new Map();
+  const must = mustResources instanceof Set ? mustResources : new Set(mustResources || []);
   for (const item of items) {
     // A seller checking itself: only its own host, every eligible listing there instead of one.
     if (only && !only.has(hostOf(item.resource, "https://invalid.invalid") ?? "")) continue;
@@ -119,10 +120,23 @@ export function sample(items, { hosts, cap, seed, only = null }) {
     .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
     .slice(0, hosts)
     .map(([, host]) => host);
+  // Pinned resources are drawn even when the seeded cut leaves their host out, and they are the listing used.
+  if (!only && must.size) {
+    const drawnSet = new Set(drawn);
+    for (const [host, listings] of byHost) {
+      if (listings.some((it) => must.has(it.resource)) && !drawnSet.has(host)) {
+        drawn.push(host);
+        drawnSet.add(host);
+      }
+    }
+  }
   const keyOf = (it) => `${it.resource}\n${declaredInput(it)?.method ?? ""}`;
   const pick = (host) => {
     const listings = byHost.get(host);
-    return only ? listings : [listings.reduce((best, it) => (rank(seed, keyOf(it)) < rank(seed, keyOf(best)) ? it : best))];
+    if (only) return listings;
+    const pinned = listings.filter((it) => must.has(it.resource));
+    if (pinned.length) return [pinned[0]];
+    return [listings.reduce((best, it) => (rank(seed, keyOf(it)) < rank(seed, keyOf(best)) ? it : best))];
   };
   const entries = drawn.flatMap((host) => pick(host).map((item) => {
     const listings = byHost.get(host);
@@ -139,7 +153,8 @@ export function sample(items, { hosts, cap, seed, only = null }) {
   }));
   return {
     meta: { seed, cap_atomic: String(cap), catalogue: items.length, excluded: reasons, eligible_hosts: byHost.size, drawn: entries.length,
-      ...(only ? { only_hosts: [...only] } : {}) },
+      ...(only ? { only_hosts: [...only] } : {}),
+      ...(must.size ? { pinned_resources: [...must] } : {}) },
     entries,
   };
 }

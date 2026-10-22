@@ -68,11 +68,11 @@ Read and implement `scripts/satellite-map.yaml` as the single source of truth.
 | `aimarket-sdks/` (dart, typescript, rust) | `aimarket-sdks` | MIT | pub.dev, npm, crates.io |
 | `apps/pulse-terminal/` | `pulse-terminal` | MIT | ghcr.io pulse-terminal, GitHub Releases |
 | `acex/` | `acex` | Apache-2.0 | GitHub Releases (contracts) |
-| `ai-service-mesh/` | `ai-service-mesh` | MIT | PyPI, ghcr mesh-api + mesh-dashboard |
+| `ai-service-mesh/` | `ai-service-mesh` | Apache-2.0 | PyPI, ghcr mesh-api + mesh-dashboard |
 | `aimarket-hub/` | `aimarket-hub` | Apache-2.0 | PyPI, ghcr |
 | `aimarket-widget/` | `aimarket-widget` | MIT | npm / CDN static |
-| `aimarket-protocol/` | `aimarket-protocol` | MIT | GitHub Release (docs) |
-| `plugins/` + provenance | `aimarket-plugins` | MIT / Apache | PyPI per plugin |
+| `aimarket-protocol/` | `aimarket-protocol` | Apache-2.0 OR MIT | GitHub Release (docs) |
+| `plugins/` + provenance | `aimarket-plugins` | MIT AND Apache-2.0 (Apache-2.0: aimarket-provenance) | PyPI per plugin |
 | *(optional)* factory core | `aicom` | MIT | ghcr factory |
 
 ### Desktop monorepo layout (target `aimarket-desktop`)

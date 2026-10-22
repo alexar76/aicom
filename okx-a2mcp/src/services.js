@@ -4,6 +4,7 @@ import {
   StaticScanGate, ThreatFeed, ThreatGate, Warden, STATIC_SCAN_RULESET_VERSION,
 } from "@aimarket/warden";
 import { failure, inputRequired, ok } from "./a2mcp.js";
+import { toolListCost } from "./toolcost.js";
 
 // The package does not export ./package.json, so read it next to the entry point it resolves to.
 const WARDEN_VERSION = JSON.parse(
@@ -170,7 +171,7 @@ function wardenScan() {
 }
 
 export function buildServices(opts) {
-  const list = [historCheck(opts), wardenScan()];
+  const list = [historCheck(opts), wardenScan(), toolListCost(opts)];
   return new Map(list.map((s) => [s.id, s]));
 }
 

@@ -18,7 +18,7 @@
 |-----|------------------|------------|
 | Telegram bot (Castor) | https://t.me/next_agent_market_bot | Q&A — спросить близнеца |
 | Telegram channel (Castor) | https://t.me/just_for_agents | Новости, релизы, дайджесты |
-| Discord (Pollux) | https://discord.gg/aimarket | обсуждения, help, show-and-tell |
+| Discord (Pollux) | https://discord.gg/JjWxGhW9pP | обсуждения, help, show-and-tell |
 | Экосистема | https://magic-ai-factory.com | главный сайт |
 | Зеркало / dev | https://modeldev.modelmarket.dev | демо, staging |
 | School (клипы) | https://edu.modelmarket.dev/ | 13 бесплатных уроков → академии |
@@ -42,7 +42,7 @@
 | Аудитория | CTA | Copy (EN) |
 |-----------|-----|-----------|
 | Наблюдатель | Telegram | "Release news and digests — Castor on Telegram" → t.me/just_for_agents |
-| Разработчик | Discord | "Discuss, ask, show what you built — Pollux on Discord" → discord.gg/aimarket |
+| Разработчик | Discord | "Discuss, ask, show what you built — Pollux on Discord" → discord.gg/JjWxGhW9pP |
 
 В каждом README/лендинге — оба линка, но **первый зависит от репо**:
 
@@ -77,7 +77,7 @@
 > Questions? The DIOSCURI twins answer from synced GitHub docs.
 >
 > • Telegram (Castor) — fast news: https://t.me/just_for_agents
-> • Discord (Pollux) — deep threads: https://discord.gg/aimarket
+> • Discord (Pollux) — deep threads: https://discord.gg/JjWxGhW9pP
 
 ### Footer
 
@@ -97,7 +97,7 @@ Repository · Setup/Docs · Alien Monitor · AICOM ecosystem · (опциона�
 
 ```markdown
 Part of the [AICOM open agent economy](https://magic-ai-factory.com).
-**Live demo:** <url> · **Community:** [Telegram](https://t.me/just_for_agents) · [Discord](https://discord.gg/aimarket)
+**Live demo:** <url> · **Community:** [Telegram](https://t.me/just_for_agents) · [Discord](https://discord.gg/JjWxGhW9pP)
 ```
 
 ### What it does
@@ -186,7 +186,7 @@ README и docs — корм для ботов. Пишите так, чтобы r
 ```
 ⚒ your-repo v1.2.3 shipped — Short plain title here
 https://github.com/alexar76/your-repo/releases/tag/v1.2.3
-Community: discord.gg/aimarket | t.me/just_for_agents
+Community: discord.gg/JjWxGhW9pP | t.me/just_for_agents
 ```
 
 Для коллег:
@@ -231,7 +231,7 @@ The [DIOSCURI](https://github.com/alexar76/dioscuri) twins answer questions from
 | Channel | Twin | Best for |
 |---------|------|----------|
 | [Telegram](https://t.me/just_for_agents) | Castor | Releases, digests, quick news |
-| [Discord](https://discord.gg/aimarket) | Pollux | Help, ideas, show-and-tell |
+| [Discord](https://discord.gg/JjWxGhW9pP) | Pollux | Help, ideas, show-and-tell |
 
 **Ecosystem map:** [Alien Monitor](https://monitor.modelmarket.dev/) · [AICOM](https://magic-ai-factory.com)
 ```
@@ -242,7 +242,7 @@ The [DIOSCURI](https://github.com/alexar76/dioscuri) twins answer questions from
 
 ```html
 <a href="https://t.me/just_for_agents">Telegram · Castor</a>
-<a href="https://discord.gg/aimarket">Discord · Pollux</a>
+<a href="https://discord.gg/JjWxGhW9pP">Discord · Pollux</a>
 <a href="https://github.com/alexar76/YOUR_REPO">GitHub</a>
 <a href="YOUR_DEMO_URL">Live demo</a>
 ```
@@ -255,7 +255,7 @@ The [DIOSCURI](https://github.com/alexar76/dioscuri) twins answer questions from
 
 ```html
 <a href="https://t.me/next_agent_market_bot">Ask Castor · Telegram</a>
-<a href="https://discord.gg/aimarket">Ask Pollux · Discord</a>
+<a href="https://discord.gg/JjWxGhW9pP">Ask Pollux · Discord</a>
 ```
 
 На **demo / monitor / landing** — Telegram первым. На **SDK / client / widget** — Discord первым.

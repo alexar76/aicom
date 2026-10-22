@@ -18,6 +18,10 @@ number is since the test began, our own traffic left out, callers counted, never
     people (browser User-Agents) apart from crawlers, distinct visitors; and the checks their form
     sent per tool (/tools/api/<tool>): answered, refused, rate-limited, failed, distinct callers.
     Counted from the first run that knew about them (``tools.since``), not back-filled.
+  - ``tools.mcp``: the free MCP servers by topic at /tools/mcp/<profile> (okx-a2mcp/src/mcp) —
+    requests by profile and method, tools/call per tool and outcome (ok, error, capacity), by
+    client family (from the User-Agent), from the gateway's own counters (/tools/mcp/_counters,
+    read on this host, our addresses already left out); a running total across gateway restarts.
   - ``hubs``: the operator funnel — hubs run by someone else that crawled the apex with a public
     address, that wait in its queue, what the admission assay said about them, and how many are
     admitted. Counts only, from the hub's peers / federation_inbound / peer_assays tables.
@@ -231,6 +235,19 @@ def mcp_requests(text: str) -> dict[str, dict[str, int]]:
     return out
 
 
+def gateway_mcp_counters(doc: Any) -> dict[str, dict[str, int]]:
+    """The gateway's {counters: {"<profile>:<method>": {family: n}}}, bounded and typed."""
+    out: dict[str, dict[str, int]] = {}
+    counters = doc.get("counters") if isinstance(doc, dict) else None
+    for key, per_family in (counters or {}).items() if isinstance(counters, dict) else []:
+        if not isinstance(per_family, dict):
+            continue
+        for fam, value in per_family.items():
+            if isinstance(value, int) and value >= 0:
+                out.setdefault(str(key)[:120], {})[str(fam)[:32]] = value
+    return out
+
+
 def fold_mcp(state: dict[str, Any], raw: dict[str, dict[str, int]]) -> None:
     """Running totals since the first look, across hub restarts (a counter that fell restarted)."""
     last = state.setdefault("last", {})
@@ -314,6 +331,7 @@ def public(state: dict[str, Any], calls: list[dict[str, str]], now: float,
     routes = {r: {k: v for k, v in row.items() if k != "callers"} | {"callers": len(row["callers"])}
               for r, row in sorted(state["x402"].get("routes", {}).items())}
     tools = state.get("tools") or {}
+    tools_mcp = (state.get("tools_mcp") or {}).get("total", {})
     pages = {p: {"people": r["people"], "crawlers": r["crawlers"], "visitors": len(r["visitors"]),
                  "langs": r["langs"]} for p, r in sorted(tools.get("pages", {}).items())}
     checks = {t: {k: v for k, v in r.items() if k != "callers"} | {"callers": len(r["callers"])}
@@ -322,7 +340,8 @@ def public(state: dict[str, Any], calls: list[dict[str, str]], now: float,
         "generated_at": datetime.fromtimestamp(now, UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "since": START,
         "x402": {"routes": routes, "discovery": state["x402"].get("discovery", {})},
-        "tools": {"since": tools.get("since", ""), "pages": pages, "checks": checks},
+        "tools": {"since": tools.get("since", ""), "pages": pages, "checks": checks,
+                  "mcp": {k: v for k, v in sorted(tools_mcp.items())}},
         "mcp": state["mcp"].get("total", {}),
         "invocations": calls,
         "hubs": hub_funnel or {},
@@ -339,6 +358,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", required=True)
     parser.add_argument("--log", default=os.environ.get("AICOM_NGINX_LOG", "/var/log/nginx/access.log"))
     parser.add_argument("--metrics", default=os.environ.get("AICOM_HUB_METRICS", "http://127.0.0.1:9083/metrics"))
+    parser.add_argument("--gateway-mcp", default=os.environ.get("AICOM_GATEWAY_MCP_COUNTERS",
+                                                                "http://127.0.0.1:9485/tools/mcp/_counters"))
     parser.add_argument("--hub-container", default=os.environ.get("AICOM_HUB_CONTAINER", "modelmarket-hub"))
     parser.add_argument("--state", default=os.environ.get("AICOM_DEMAND_EXPORT_STATE",
                                                           "/var/lib/aicom-demand/state.json"))
@@ -361,6 +382,12 @@ def main(argv: list[str] | None = None) -> int:
             fold_mcp(state["mcp"], mcp_requests(resp.read(5_000_000).decode("utf-8", "replace")))
     except Exception as exc:
         print(f"metrics unreadable: {type(exc).__name__}", file=sys.stderr)
+    try:
+        req = urllib.request.Request(args.gateway_mcp, headers={"User-Agent": "aicom-demand-export/2"})
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            fold_mcp(state.setdefault("tools_mcp", {}), gateway_mcp_counters(json.loads(resp.read(2_000_000))))
+    except Exception as exc:
+        print(f"gateway MCP counters unreadable: {type(exc).__name__}", file=sys.stderr)
     try:
         calls = invocations(args.hub_container)
     except (subprocess.SubprocessError, OSError, ValueError) as exc:

@@ -6,7 +6,7 @@
 hosts:
   factory:
     label: "Factory + core satellites"
-    ssh: my-vps
+    ssh: factory-vps
     repo: /root/claudecode/aicom
     env_file: /root/claudecode/aicom/.env
     containers:

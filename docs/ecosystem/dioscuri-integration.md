@@ -75,7 +75,7 @@ Fill tokens locally — **never commit**.
 |-----|-----|
 | Telegram bot (Castor — Q&A) | https://t.me/next_agent_market_bot |
 | Telegram channel (Castor — news) | https://t.me/just_for_agents |
-| Discord (Pollux) | https://discord.gg/aimarket |
+| Discord (Pollux) | https://discord.gg/JjWxGhW9pP |
 
 Self-hosters set invites in `dioscuri.config.json`:
 

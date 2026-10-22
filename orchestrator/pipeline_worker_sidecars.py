@@ -65,6 +65,17 @@ def _reject_test_command(argv: list[str]) -> str:
 
 
 
+def _record_test_badge(code_dir: Path, result: dict[str, Any]) -> dict[str, Any]:
+    """The product's ci.svg is drawn from this run, so the README shows what the factory measured."""
+    try:
+        from web.backend.services.github_house_assets import record_factory_test_run
+
+        record_factory_test_run(code_dir, result)
+    except Exception:
+        logger.warning("Could not record the factory test run in %s", code_dir, exc_info=True)
+    return result
+
+
 class PipelineWorkerSidecarMixin:
     """Mixin for ``PipelineWorker`` — marketplace gates + runtime test harness."""
 
@@ -338,7 +349,10 @@ class PipelineWorkerSidecarMixin:
             if not test_commands:
                 # SECURITY: no tests found → mark as skipped (not passed). Previously
                 # returned {"passed": True} which let untested products through QA.
-                return {"passed": False, "skipped": True, "results": [{"command": "no_tests_found", "exit_code": 0}], "commands": []}
+                return _record_test_badge(code_dir, {
+                    "passed": False, "skipped": True,
+                    "results": [{"command": "no_tests_found", "exit_code": 0}], "commands": [],
+                })
             # Scrubbed: the product's own tests run here, and inheriting the worker's
             # environment handed them every publish token and provider key in .env
             # (see core/child_env.py). A relative sqlite URL keeps tests that expect
@@ -389,7 +403,7 @@ class PipelineWorkerSidecarMixin:
                     item = {"command": cmd, "exit_code": -1, "stdout": "", "stderr": str(e)}
                     passed = False
                 results.append(item)
-        return {"passed": passed, "results": results, "commands": test_commands}
+        return _record_test_badge(code_dir, {"passed": passed, "results": results, "commands": test_commands})
 
     def _infer_default_test_commands(self, workdir: Path) -> list[str]:
         from core.code_discovery import iter_product_files

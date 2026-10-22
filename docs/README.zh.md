@@ -41,8 +41,10 @@ Base **MAINNET** 合约（演示）：[onchain-journal.md](onchain-journal.md)�
 ## 快速开始
 
 ```bash
-git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everything
+git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && ./start.sh
 ```
+
+在公开仓库中，`./start.sh` 启动工厂（`.env` 里填一个 LLM 密钥）。自己的 hub 单独安装：`pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "我的 hub"` → `aimarket serve`。`--full` 和 `--everything` 会把卫星服务和工厂一起构建，只能在完整的 monorepo 中使用。
 
 ## 文档
 

@@ -169,3 +169,29 @@ def test_is_test_hygiene_llm_finding():
             "title": "Missing rate limit on login",
         }
     )
+
+
+def test_autofix_leaves_loopback_urls_in_server_side_config(tmp_path: Path):
+    """Relay's vite proxy target, CORS origin and healthcheck were all rewritten to ./ and the
+    dev server crashed on the proxy; config files are not loaded by the browser."""
+    front = tmp_path / "frontend"
+    (front / "src").mkdir(parents=True)
+    vite = "proxy: { '/api': { target: process.env.VITE_API_TARGET || 'http://localhost:8000' } }\n"
+    compose = (
+        "services:\n  api:\n    environment:\n      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}\n"
+        "    healthcheck:\n      test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/healthz\"]\n"
+    )
+    package = '{"scripts": {"e2e": "wait-on http://localhost:5173 && playwright test"}}\n'
+    (front / "vite.config.ts").write_text(vite, encoding="utf-8")
+    (tmp_path / "docker-compose.yml").write_text(compose, encoding="utf-8")
+    (front / "package.json").write_text(package, encoding="utf-8")
+    (front / "src" / "api.ts").write_text("const BASE = 'http://localhost:8000/api';\n", encoding="utf-8")
+    (tmp_path / "index.html").write_text("<html><body></body></html>", encoding="utf-8")
+
+    apply_visual_gate_autofix(tmp_path)
+
+    assert (front / "vite.config.ts").read_text(encoding="utf-8") == vite
+    assert (tmp_path / "docker-compose.yml").read_text(encoding="utf-8") == compose
+    assert (front / "package.json").read_text(encoding="utf-8") == package
+    # Code the browser runs is still rewritten.
+    assert "localhost" not in (front / "src" / "api.ts").read_text(encoding="utf-8")

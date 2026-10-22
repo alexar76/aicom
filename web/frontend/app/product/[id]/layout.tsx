@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { isProductId } from '@/lib/productId';
 import { getProductForMetadata } from '@/lib/server-api';
 
 function siteUrl(): string {
@@ -13,6 +15,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
+  if (!isProductId(id)) return {};
   const product = await getProductForMetadata(id);
   const titleBase =
     product?.name ||
@@ -44,10 +47,16 @@ export async function generateMetadata({
   };
 }
 
-export default function ProductSegmentLayout({
+// A malformed id answers 404, so search engines drop it. A well-formed id whose product the API
+// cannot load right now keeps rendering: a backend hiccup must not unlist a real product.
+export default async function ProductSegmentLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
+  if (!isProductId(id)) notFound();
   return children;
 }

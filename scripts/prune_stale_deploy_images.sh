@@ -27,7 +27,7 @@
 #   ./scripts/prune_stale_deploy_images.sh --yes              # actually remove
 #   ./scripts/prune_stale_deploy_images.sh --keep 3 --yes
 #   ./scripts/prune_stale_deploy_images.sh --repo ai-factory --yes
-#   REMOTE=my-vps ./scripts/prune_stale_deploy_images.sh --yes # run over ssh
+#   REMOTE=factory-vps ./scripts/prune_stale_deploy_images.sh --yes # run over ssh
 #
 # Run it after a deploy is VERIFIED, never before — the tag you are about to
 # delete is the one you would roll back to if the new one is broken.

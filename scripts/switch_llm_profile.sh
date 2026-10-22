@@ -21,7 +21,7 @@ SSH_KEY="${FACTORY_SSH_KEY:-$HOME/.ssh/id_ed25519_factory}"
 SSH=(ssh -i "$SSH_KEY" -o BatchMode=yes)
 SCP=(scp -i "$SSH_KEY" -o BatchMode=yes)
 
-FACTORY="${FACTORY_SSH:-my-vps}"
+FACTORY="${FACTORY_SSH:-factory-vps}"
 METIS="${METIS_SSH:-root@skopos.modelmarket.dev}"
 ORACLES="${ORACLES_SSH:-admin-vps}"
 HUB_LAB="${HUB_LAB_SSH:-competing-lab}"

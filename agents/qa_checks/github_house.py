@@ -240,14 +240,22 @@ class GithubHouseMixin:
                     )
             for badge in ("ci.svg", "license.svg"):
                 if not has_suffix(f"docs/badges/{badge}"):
+                    description = (
+                        "README badge links must resolve to committed SVG files under "
+                        "docs/badges/ (dead badge images fail catalog review)."
+                    )
+                    if badge == "ci.svg":
+                        # The factory's runtime-test stage draws it; an agent must not.
+                        description += (
+                            " ci.svg is written by the factory's own run of test_commands "
+                            "(docs/badges/factory-tests.json) — missing means that run has not "
+                            "happened on this tree. Do not draw a badge by hand."
+                        )
                     issues.append(
                         {
                             "severity": "high",
                             "title": f"GitHub house: missing docs/badges/{badge}",
-                            "description": (
-                                "README badge links must resolve to committed SVG files under "
-                                "docs/badges/ (dead badge images fail catalog review)."
-                            ),
+                            "description": description,
                             "file": f"code/{product_id}/docs/badges/{badge}",
                         }
                     )

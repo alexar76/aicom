@@ -22,11 +22,16 @@ This is **not** marketing fluff. Missing files fail QA.
 1. **Title + one-line tagline** (product name from spec).
 2. **Language switcher** when a second README exists.
 3. **Badge row** between `<!-- aicom-readme-badges -->` and
-   `<!-- /aicom-readme-badges -->`. Commit SVG shields under `docs/badges/`
-   (`ci.svg`, `coverage.svg`, `license.svg`, plus `tests.svg` when you know
-   a count). Do **not** use img.shields.io workflow-status URLs (they 5xx).
-   After a real GitHub remote exists, CI may add a GitHub-native
-   `…/actions/workflows/ci.yml/badge.svg` next to the local SVG.
+   `<!-- /aicom-readme-badges -->`, linking SVGs under `docs/badges/`.
+   **`docs/badges/ci.svg` belongs to the factory:** it is drawn from the
+   factory's own run of your `test_commands` (`factory tests: passed / failed /
+   not run`, recorded in `docs/badges/factory-tests.json`) and replaced on every
+   run. Do **not** write `ci.svg`, and never draw a badge that states a result
+   nobody measured ("passing", a coverage percentage, a test count). Commit
+   `license.svg`; add `coverage.svg` / `tests.svg` only when CI generates them
+   from a real run. Do **not** use img.shields.io workflow-status URLs (they
+   5xx). After a real GitHub remote exists, CI may add a GitHub-native
+   `…/actions/workflows/ci.yml/badge.svg` next to the factory badge.
 4. **Hero** — one visual above the fold:
    - Browser UI / landing: original SVG still at `docs/gallery/hero.svg`
      (same mood as `ui_experience`; not a grey rectangle).
@@ -55,7 +60,8 @@ a stub that says “see English”.
   - `docs/use-cases.md` — who it is for, who it is not, 2–3 concrete journeys.
   - README **Docs** section must link all three (plus `docs/en.md`).
   - Badge files under `docs/badges/*.svg` must **exist on disk** (not only be
-    linked from README). Dead badge links fail QA.
+    linked from README). Dead badge links fail QA. `ci.svg` is written by the
+    factory's test run, not by you.
   - Gallery table must embed images (`![…](docs/gallery/…)`) — bare paths
     without markdown image syntax fail QA.
 - `CHANGELOG.md` — Keep a Changelog, starts with `## [0.1.0] — YYYY-MM-DD`.
@@ -83,8 +89,8 @@ Ship:
 
 - `.github/workflows/ci.yml` — checkout, install, run `test_commands`,
   coverage with **`--cov-fail-under=60`** (or the stack equivalent).
-  Optional lint. Write `docs/badges/coverage.svg` when a generator exists;
-  otherwise keep an honest placeholder SVG (label `#555`, passing `#4c1`).
+  Optional lint. Write `docs/badges/coverage.svg` only from a generator that
+  reads the real coverage report; without one, leave coverage off the badge row.
 - `.github/workflows/release.yml` — `on.push.tags: ['v*']`, then
   **`softprops/action-gh-release@v2`** with `generate_release_notes: true`
   (GitHub Release). Soft for marketing_landing; required for **full_software**.
@@ -106,8 +112,7 @@ DevOps must describe the same lifecycle in `lifecycle_release`
 
 <!-- aicom-readme-badges -->
 <p align="center">
-  <img src="docs/badges/ci.svg" alt="CI" />
-  <img src="docs/badges/coverage.svg" alt="coverage" />
+  <img src="docs/badges/ci.svg" alt="factory tests" />
   <img src="docs/badges/license.svg" alt="License: MIT" />
 </p>
 <!-- /aicom-readme-badges -->
@@ -144,5 +149,5 @@ directories named in `testing_contract`. Add `README.<code>.md` +
 
 - README that is only “run index.html” with no hero, badges, or tests.
 - English-only docs when the product UI is not English.
-- Fake “100% coverage” or shields.io passing badges with no workflow.
+- Fake “100% coverage”, a hand-drawn “CI: passing”, or shields.io passing badges with no workflow.
 - Binary screenshot dumps in the LLM `files` payload — use SVG stills.

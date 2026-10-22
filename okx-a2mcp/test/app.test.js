@@ -26,7 +26,7 @@ const json = (status, body) => new Response(JSON.stringify(body), { status, head
 test("a bare POST, as OKX's self-check sends it, gets 200 input_required from every service", async () => {
   const { call, close } = await serve({ fetchImpl: async () => { throw new Error("must not be called"); } });
   try {
-    for (const id of ["histor-check", "warden-scan"]) {
+    for (const id of ["histor-check", "warden-scan", "tool-list-cost"]) {
       const res = await call(`/a2mcp/${id}`, { method: "POST" });
       assert.equal(res.status, 200, id);
       const body = await res.json();
@@ -150,7 +150,7 @@ test("manifest lists the services; unknown paths and broken JSON get JSON errors
   const { call, close } = await serve({ publicUrl: "https://a2mcp.example" });
   try {
     const m = await (await call("/a2mcp")).json();
-    assert.deepEqual(m.services.map((s) => s.id).sort(), ["histor-check", "warden-scan"]);
+    assert.deepEqual(m.services.map((s) => s.id).sort(), ["histor-check", "tool-list-cost", "warden-scan"]);
     assert.ok(m.services.every((s) => s.price === "free" && s.endpoint.startsWith("https://a2mcp.example/a2mcp/")));
     assert.equal((await call("/a2mcp/nope", { method: "POST" })).status, 404);
     const broken = await call("/a2mcp/warden-scan", { method: "POST", headers: { "content-type": "application/json" }, body: "{" });
@@ -175,6 +175,7 @@ test("without a paywall there are no paid routes", async () => {
   const { call, close } = await serve();
   try {
     assert.equal((await call("/x402/warden-scan", { method: "POST" })).status, 404);
+    assert.equal((await call("/x402/warden-scan")).status, 404, "no paid route, so nothing to send a GET to");
     const m = await (await call("/a2mcp")).json();
     assert.ok(m.services.every((s) => s.x402 === undefined));
   } finally { await close(); }
@@ -197,6 +198,44 @@ test("paid route: 402 until paid, a paid empty request is refused (not settled),
     const w = m.services.find((s) => s.id === "warden-scan");
     assert.equal(w.x402.endpoint, "https://a2mcp.example/x402/warden-scan");
     assert.equal(m.services.find((s) => s.id === "histor-check").x402, undefined);
+  } finally { await close(); }
+});
+
+test("a paid route answers an unpaid GET with the POST's 402, and a paid GET with 405", async () => {
+  // Probes send a GET: agenteconomy.report counts a 402 to it as up, Karatum takes nothing else;
+  // a 404 there read as "down" every day (2026-10-21). This paywall, like the real one, guards
+  // only "POST /x402/<id>" and remembers what it was shown.
+  const shown = [];
+  const postOnly = {
+    ...fakePaywall,
+    middleware: (req, res, next) => {
+      shown.push(req.method);
+      return req.method === "POST" && req.path === "/x402/warden-scan" && !req.headers["payment-signature"]
+        ? res.status(402).json({ x402Version: 2, error: "payment required" })
+        : next();
+    },
+  };
+  const { call, close } = await serve({ paywall: postOnly });
+  try {
+    const get = await call("/x402/warden-scan");
+    assert.equal(get.status, 402);
+    assert.equal(get.headers.get("allow"), "POST");
+    assert.equal((await get.json()).x402Version, 2);
+    const head = await call("/x402/warden-scan", { method: "HEAD" });
+    assert.equal(head.status, 402);
+    assert.equal(head.headers.get("allow"), "POST");
+    // A GET carrying a payment never reaches the paywall, so nothing is verified or settled.
+    const before = shown.length;
+    const paid = await call("/x402/warden-scan", { headers: { "payment-signature": "x" } });
+    assert.equal(paid.status, 405);
+    assert.equal((await paid.json()).error, "method_not_allowed");
+    assert.equal(shown.length, before);
+    // The POST is unchanged: 402 to an empty JSON body.
+    assert.equal((await call("/x402/warden-scan", post({}))).status, 402);
+    // A name that is not a paid route, and the two documents under /x402/, are unchanged.
+    assert.equal((await call("/x402/no-such-service")).status, 404);
+    assert.equal((await call("/x402/openapi.json")).status, 200);
+    assert.equal((await call("/x402/well-known.json")).status, 200);
   } finally { await close(); }
 });
 

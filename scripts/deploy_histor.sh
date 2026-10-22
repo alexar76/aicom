@@ -147,6 +147,35 @@ systemctl daemon-reload
 systemctl enable --now histor-backup.timer >/dev/null
 [[ -n "$(ls -A /var/backups/histor 2>/dev/null)" ]] || /usr/local/sbin/histor-backup
 
+# Monthly open-data snapshot, served at /datasets/ (histor/dataset.py, deploy/export_dataset.sh).
+install -m 0755 "$DEST/deploy/export_dataset.sh" /usr/local/sbin/histor-export-dataset
+install -m 0755 "$DEST/deploy/upload_hf.sh" /usr/local/sbin/histor-upload-hf  # active once /etc/histor-hf holds repo + token
+install -d -m 0755 /usr/local/lib/histor-dataset
+install -m 0644 "$DEST/histor/dataset.py" /usr/local/lib/histor-dataset/dataset.py
+install -m 0644 "$DEST/histor/dataset_index.py" /usr/local/lib/histor-dataset/dataset_index.py
+cat > /etc/systemd/system/histor-export-dataset.service <<UNIT
+[Unit]
+Description=HISTOR monthly open-data snapshot (/datasets/)
+After=docker.service
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/histor-export-dataset
+Nice=10
+IOSchedulingClass=idle
+UNIT
+cat > /etc/systemd/system/histor-export-dataset.timer <<UNIT
+[Unit]
+Description=Try the HISTOR snapshot daily once the crawl is done; it writes one a month
+[Timer]
+# The crawl starts ~20:24 UTC and is done by ~14:00 UTC; a day it is still running is skipped.
+OnCalendar=*-*-* 15:30:00 UTC
+Persistent=true
+[Install]
+WantedBy=timers.target
+UNIT
+systemctl daemon-reload
+systemctl enable --now histor-export-dataset.timer >/dev/null
+
 mkdir -p /var/www/certbot
 AVAIL="/etc/nginx/sites-available/${DOMAIN}"
 ENABLED="/etc/nginx/sites-enabled/${DOMAIN}"

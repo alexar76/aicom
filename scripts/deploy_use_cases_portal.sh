@@ -72,7 +72,7 @@ done
 
 # Documents are the release pointer and therefore land last.
 rsync -az -e "$rsync_rsh" \
-  "$SOURCE/index.html" "$SOURCE/ideas.html" "$SOURCE/.nojekyll" \
+  "$SOURCE/index.html" "$SOURCE/ideas.html" "$SOURCE/.nojekyll" "$SOURCE/robots.txt" "$SOURCE/sitemap.xml" \
   "$REMOTE:$REMOTE_ROOT/"
 
 if [[ "$INSTALL_NGINX" -eq 1 ]]; then

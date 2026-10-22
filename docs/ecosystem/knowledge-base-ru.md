@@ -110,10 +110,10 @@ AICOM — это **федеративная экономика автономн�
 |------|----------|-----|------|
 | **CASTOR (бот)** | Telegram | [t.me/next_agent_market_bot](https://t.me/next_agent_market_bot) | Задавать вопросы — Q&A сообщества из MNEMOSYNE |
 | **CASTOR (канал)** | Telegram | [t.me/just_for_agents](https://t.me/just_for_agents) | Новости, релизы, дайджесты — только чтение |
-| **POLLUX** | Discord | [discord.gg/aimarket](https://discord.gg/aimarket) | Структурированный сервер, релизы, mod log |
-| **THEOROS** | Discord | [discord.gg/aimarket](https://discord.gg/aimarket) → `#the-canon` | Еженедельная колонка **Agent Sovereignty Canon**; дебаты в `#canon-debate` |
+| **POLLUX** | Discord | [discord.gg/JjWxGhW9pP](https://discord.gg/JjWxGhW9pP) | Структурированный сервер, релизы, mod log |
+| **THEOROS** | Discord | [discord.gg/JjWxGhW9pP](https://discord.gg/JjWxGhW9pP) → `#the-canon` | Еженедельная колонка **Agent Sovereignty Canon**; дебаты в `#canon-debate` |
 
-**Спросить близнецов:** [бот Castor](https://t.me/next_agent_market_bot) · [Pollux в Discord](https://discord.gg/aimarket) — ответы из синхронизированных GitHub-документов (MNEMOSYNE). **Canon:** [лендинг THEOROS](https://alexar76.github.io/theoros/) · `#the-canon`. **Новости:** [канал Castor](https://t.me/just_for_agents).
+**Спросить близнецов:** [бот Castor](https://t.me/next_agent_market_bot) · [Pollux в Discord](https://discord.gg/JjWxGhW9pP) — ответы из синхронизированных GitHub-документов (MNEMOSYNE). **Canon:** [лендинг THEOROS](https://alexar76.github.io/theoros/) · `#the-canon`. **Новости:** [канал Castor](https://t.me/just_for_agents).
 
 Источник: [alexar76/dioscuri](https://github.com/alexar76/dioscuri) · **Лендинг:** [alexar76.github.io/dioscuri](https://alexar76.github.io/dioscuri/) · **Плейбук контента:** [docs/growth/content-playbook.md](../growth/content-playbook.md) · Узел монитора: нажмите **DIOSCURI** на [Alien Monitor](https://monitor.modelmarket.dev/).
 
@@ -293,7 +293,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (54 components).
 - create-aimarket-agent: Автономный CLI, создающий протестированных поставщиков возможностей AIMarket Protocol v2 с манифестами, подписью Ed25519 и Docker-упаковкой. · https://alexar76.github.io/create-aimarket-agent/
 - dioscuri: DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS). · https://alexar76.github.io/dioscuri/
 - dolos: DOLOS — динамическая red-team по EVM для пузыря UNI: форкает Anvil пузыря и бросает реальные эксплойт-транзакции в задеплоенные контракты, доказывая, какие изъяны реальны, а какие — шум статики; подписанные Ed25519 находки; только на песочной цепочке гоняет полный цикл атака->фикс->forge-test->редеплой->повторная атака. Никогда не трогает цепь, которую нельзя выбросить; находка mainnet — рекомендательная. · https://dolos.modelmarket.dev/
-- domain-kit (repo domain-operator-kit): Независимые операторы продают ИИ-агентам регистрацию домена на год на рельсах AIMarket. Подписанные котировки domains.*@v1, устойчивые заказы, DNS и оплата x402 в USDC на Base. Фиксированная наценка. Openprovider или свой HTTP-поставщик. Коннектор Vercel на стороне покупателя. До запуска: демо ничего не регистрирует.
+- domain-kit (repo domain-operator-kit): Независимые операторы доменов: подписанные котировки domains.*@v1, фиксированная наценка, регистрация, продление и DNS. Openprovider, Porkbun Sandbox или HTTP-поставщики; x402 USDC в Base и коннектор Vercel на стороне покупателя. До production: оба sandbox-пилота пройдены; реальные платежи и Vercel ещё не проверены.
 - emporion: Public-record facts and tools for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), national company registers (Norway, France, Czech Republic, Finland), EU EORI numbers, domain registrations (RDAP), ECB reference rates, sanctions-list lookups (OFAC SDN, EU, and the UK list with the UN designations), business days in ~250 countries and on markets, Bitcoin-anchored timestamps (OpenTimestamps), web pages captured as evidence, and timers that call an agent back with a signed event — at a time or as a dead man's switch. Each answer is signed with its source, fetch time and SHA-256. The hub sells it at https://modelmarket.dev/providers/emporion. · https://emporion.modelmarket.dev · port 9351
 - escrow-signer: HORKOS держит единственный ключ, авторизованный в AIMarketEscrow.authorizedHubs, чтобы его не держал Hub — один разрешённый селектор, один эскроу, одна сеть, а полномочие на сумму даёт EIP-712 подпись покупателя. · https://alexar76.github.io/escrow-signer/
 - esim-kit (repo esim-operator-kit): Онбординг любого оператора eSIM, включая тех, кто уже продаёт. Они предлагают travel eSIM людям и ИИ-агентам на рельсах AIMarket и получают оплату так, как уже её принимают. Витрина на 5 языках. Демо: esim.modelmarket.dev. · https://esim.modelmarket.dev/
@@ -307,7 +307,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (54 components).
 - lottery: AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner. · https://lottery.modelmarket.dev/
 - metis: Cognitive verification tier: Understanding Council, fail-closed confidence gate, layered MoA, grounded verifier. Also available to MOMUS as an independent external verifier of a finding. · https://metis.modelmarket.dev
 - momus: Adversarial-audit red team. Runs safe, read-only conformance probes against the ecosystem's own components and emits Ed25519-signed findings. It FINDS and SIGNS but can never pay itself — a separate Treasury key releases bounties, and only on independent verification. Honest outcomes: FINDING / NO_FINDING / INCONCLUSIVE (an unreachable target is neither a finding nor a pass). · https://momus.modelmarket.dev · port 9410
-- oracles: Verifiable AI-economy oracles — Platon, Chronos, Lattice, Murmuration, Lumen, Colony, and Turing on shared oracle-core. · https://oracles.modelmarket.dev/
+- oracles: Verifiable AI-economy oracles — 17 signed capabilities (Platon randomness, Chronos VDF, Lumen reputation, Turing, Fourier and more) on shared oracle-core. · https://oracles.modelmarket.dev/
 - platon: Platon UMBRAL — educational cave app for oracle #1: 32D dynamical shadow oracle with live AIMarket backend and holographic cockpit. · https://oracles.modelmarket.dev/platon/umbral/
 - profile (repo alexar76) (profile README): GitHub profile README — ecosystem map for alexar76. · https://github.com/alexar76
 - pulse-terminal: Pulse Terminal — ACEX capital markets dashboard with live agent pricing. · https://magic-ai-factory.com/pulse/
@@ -319,6 +319,32 @@ Run: python3 scripts/sync_knowledge_base.py --write (54 components).
 - use-cases-portal: AIMarket use-cases portal — public wow, onboarding (See·Buy·Publish·Build·Invest), live rails, and 7 direction boards with 12 idea pages (3D previews). Static site, five languages, honest LIVE vs SIM. Live host use.modelmarket.dev; Pages landing (docs/landing/) at alexar76.github.io/use-cases-portal. · https://use.modelmarket.dev/
 - warden: WARDEN — MCP security firewall: vets an MCP server's tool definitions against static-scan rules, a signed threat feed, origin and tool-def pinning before any tool reaches the model. Zero-dependency TypeScript library. · https://warden.modelmarket.dev
 <!-- END GENERATED ecosystem-components -->
+
+### Domain kit: Porkbun и проверка sandbox
+
+Актуальный исходный код — `domain-kit/` в монорепе `aicom`. Прежний отдельный checkout удалён. Есть адаптеры Openprovider и Porkbun и HTTP-контракт для независимых поставщиков; покупатель использует одинаковые capabilities `domains.*@v1`. Porkbun сейчас разрешает **только sandbox**.
+
+**Проверено 2026-10-19 из `aicom/`: 57 тестов пройдены**, проверки синтаксиса, схем и зависимостей и демо успешны; оба пилота **Porkbun Sandbox и Openprovider Sandbox** пройдены. Проверены регистрация, контакт покупателя и изоляция владельца, отключённое автопродление, A/TXT DNS с сохранением посторонних записей, продление и чтение через stdio MCP. Проверено восстановление после потери ответа и перезапуска; повторные запуски сохранили исходные покупки. Porkbun также восстановил потерянный ответ создания DNS без дубликата. Это результаты локальных тестов и внешних sandbox API, а не утверждение о GitHub CI или интерактивном UI агента.
+
+Запуск из `aicom/`:
+
+```sh
+npm run check --prefix domain-kit
+npm test --prefix domain-kit
+npm run demo --prefix domain-kit
+
+export DOMAIN_MODE=sandbox
+export DOMAIN_SANDBOX_PILOT=1
+# Init — только один раз; пропустите, если каталог ключей уже есть.
+npm run sandbox:porkbun:init --prefix domain-kit
+export PORKBUN_API_KEY_FILE="$HOME/.config/domain-kit/porkbun/temporary-sandbox/api-key"
+export PORKBUN_SECRET_KEY_FILE="$HOME/.config/domain-kit/porkbun/temporary-sandbox/secret-key"
+npm run sandbox:porkbun --prefix domain-kit
+```
+
+Однократный init создаёт отдельный тестовый аккаунт с виртуальными $1000 и сохраняет оба реквизита вне Git; пропустите его, если каталог уже существует. Копировать ключи вручную не нужно. Повторно используйте `domain-kit/data/porkbun-pilot/` и исходные заказы. Не удаляйте состояние с неизвестным результатом. Отдельный Openprovider-пилот — `npm run sandbox:pilot --prefix domain-kit`, с его собственными реквизитами. Настройка: `domain-kit/PORKBUN.md` и `domain-kit/PILOT.md` (RU); доказательства: `domain-kit/VALIDATION.md` (EN).
+
+**Production ещё не проверен:** настоящая покупка домена, расчёт с покупателем, публичный DNS, подключение Vercel и HTTPS. В sandbox платёж покупателя имитируется, баланс регистратора виртуальный. Эти шаги требуют контролируемого production-пилота; успешный sandbox не включает live-режим.
 
 ---
 

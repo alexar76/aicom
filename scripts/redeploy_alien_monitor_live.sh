@@ -17,6 +17,7 @@
 #   ./scripts/redeploy_alien_monitor_live.sh                        # build, recreate LIVE
 #   ./scripts/redeploy_alien_monitor_live.sh alien-monitor --image alien-monitor:TAG
 #   ./scripts/redeploy_alien_monitor_live.sh --no-build             # reuse current image
+#   ./scripts/redeploy_alien_monitor_live.sh alien-monitor --image TAG --set NAME=VALUE  # change one variable
 #
 # Both public maps serve at `/`, so one image with VITE_BASE_PATH=/ fits both — pass the tag
 # the first run built with --image rather than building twice. If they ever serve at
@@ -29,10 +30,13 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ENV_FILE="/root/.${NAME}.env"
 TAG="alien-monitor:live-$(date -u +%Y%m%d-%H%M%S)"
 BUILD=1
+SETS=()
 while (( $# )); do
   case "$1" in
     --no-build) BUILD=0 ;;
     --image)    PINNED_IMAGE="${2:-}"; BUILD=0; shift ;;
+    --set)      [[ "${2:-}" == *=* ]] || { echo "--set needs NAME=VALUE" >&2; exit 2; }
+                SETS+=("$2"); shift ;;
     -*)         echo "unknown option: $1" >&2; exit 2 ;;
     *)          NAME="$1" ;;
   esac
@@ -83,6 +87,17 @@ with open(env_path + ".shape", "w", encoding="utf-8") as fh:
     fh.write("WRITABLE_SOURCES=%s\n" % json.dumps(" ".join(writable_sources)))
 print("captured %d env vars (values not shown)" % sum(1 for _ in open(env_path, encoding="utf-8")))
 '
+# --set NAME=VALUE replaces (or adds) one variable in the captured env. Only the name is
+# printed, like everything else that passes through the env file.
+for kv in "${SETS[@]+"${SETS[@]}"}"; do
+  name="${kv%%=*}"
+  [[ "$name" =~ ^[A-Z_][A-Z0-9_]*$ ]] || { echo "--set: bad variable name" >&2; exit 2; }
+  grep -v "^${name}=" "$ENV_FILE" > "$ENV_FILE.next" || true
+  printf '%s\n' "$kv" >> "$ENV_FILE.next"
+  mv "$ENV_FILE.next" "$ENV_FILE"
+  echo "set       : $name (value not shown)"
+done
+
 # shellcheck disable=SC1090
 source "$ENV_FILE.shape"
 

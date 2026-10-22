@@ -188,7 +188,7 @@ satellites:
     repo: ai-service-mesh
     description: "AI Service Mesh — autonomous agent discovery, verification, escrow, and payments."
     homepage: https://service-mesh.modelmarket.dev/
-    license: mit
+    license: apache-2.0
     paths:
       - ai-service-mesh
     export_layout:
@@ -368,7 +368,8 @@ satellites:
     homepage: "https://alexar76.github.io/aicom/"
     repo: aimarket-plugins
     description: "15 AIMarket hub plugins — TEE escrow, channels, reputation, safety, and more."
-    license: mit
+    # 14 plugins under plugins/ are MIT; aimarket-provenance (the second path) is Apache-2.0.
+    license: "MIT AND Apache-2.0"
     paths:
       - plugins:plugins
       - aimarket-hub/plugins/aimarket-provenance
@@ -469,7 +470,7 @@ satellites:
 
   - id: oracles
     repo: oracles
-    description: "Verifiable AI-economy oracles — Platon, Chronos, Lattice, Murmuration, Lumen, Colony, and Turing on shared oracle-core."
+    description: "Verifiable AI-economy oracles — 17 signed capabilities (Platon randomness, Chronos VDF, Lumen reputation, Turing, Fourier and more) on shared oracle-core."
     homepage: https://oracles.modelmarket.dev/
     topics:
       - oracles
@@ -1403,12 +1404,12 @@ satellites:
   - id: emporion
     repo: emporion
     github_published: true
-    description: "EMPORION — public-record facts and tools for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), national company registers (NO, FR, CZ, FI), EU EORI numbers, domain registrations (RDAP), ECB reference rates, sanctions-list lookups (OFAC SDN with wallet addresses, EU, UK with the UN designations), business days, Bitcoin-anchored timestamps (OpenTimestamps), web pages captured as evidence and timers with a dead man's switch — every answer signed with its source, fetch time and SHA-256."
+    description: "EMPORION — public-record facts for agents that trade: EU VAT (VIES), legal entities (GLEIF LEI), company registers, EORI, domains (RDAP), ECB rates, sanctions lists (OFAC with wallets, EU, UK), business days, Bitcoin timestamps, web evidence captures and dead man's switch timers — every answer signed with its source, fetch time and SHA-256."
     description_i18n:
-      ru: "EMPORION — публичные факты и инструменты для агентов, которые торгуют: действительность НДС-номера в ЕС (VIES) с номером консультации, юрлица (GLEIF LEI), национальные реестры компаний (NO, FR, CZ, FI), номера EORI, регистрация доменов (RDAP), справочные курсы ЕЦБ, поиск по санкционным спискам (OFAC SDN с адресами кошельков, ЕС, Великобритания с санкциями ООН), рабочие дни, метки времени с привязкой к Биткоину (OpenTimestamps), снимки веб-страниц как доказательство и таймеры с dead man's switch — каждый ответ подписан вместе с источником, временем получения и SHA-256."
-      es: "EMPORION — hechos de registro público y herramientas para agentes que comercian: validez del IVA en la UE (VIES) con identificador de consulta, entidades jurídicas (GLEIF LEI), registros mercantiles nacionales (NO, FR, CZ, FI), números EORI, registro de dominios (RDAP), tipos de referencia del BCE, consulta de listas de sanciones (OFAC SDN con direcciones de monederos, UE, Reino Unido con las designaciones de la ONU), días hábiles, sellos de tiempo anclados en Bitcoin (OpenTimestamps), páginas web capturadas como prueba y temporizadores con interruptor de hombre muerto — cada respuesta firmada con su fuente, hora de obtención y SHA-256."
-      fr: "EMPORION — faits de registre public et outils pour les agents qui commercent : validité du numéro de TVA de l’UE (VIES) avec numéro de consultation, entités juridiques (GLEIF LEI), registres nationaux des sociétés (NO, FR, CZ, FI), numéros EORI, enregistrement des domaines (RDAP), taux de référence de la BCE, recherche dans les listes de sanctions (OFAC SDN avec adresses de portefeuilles, UE, Royaume-Uni avec les désignations de l'ONU), jours ouvrés, horodatages ancrés dans Bitcoin (OpenTimestamps), pages web capturées comme preuve et minuteurs avec interrupteur d’homme mort — chaque réponse signée avec sa source, son heure de récupération et son SHA-256."
-      zh: "EMPORION — 面向交易型智能体的公共记录事实与工具：欧盟增值税号有效性（VIES，含查询编号）、法人实体（GLEIF LEI）、各国公司登记册（挪威、法国、捷克、芬兰）、EORI 号、域名注册信息（RDAP）、欧洲央行参考汇率、制裁名单查询（含钱包地址的 OFAC SDN、欧盟、含联合国认定的英国名单）、工作日、锚定比特币的时间戳（OpenTimestamps）、作为证据的网页快照，以及带死人开关的定时器——每个答案都连同来源、获取时间和 SHA-256 一起签名。"
+      ru: "EMPORION — публичные факты для агентов, которые торгуют: НДС-номера ЕС (VIES), юрлица (GLEIF LEI), реестры компаний, EORI, домены (RDAP), курсы ЕЦБ, санкционные списки (OFAC с кошельками, ЕС, Великобритания), рабочие дни, метки времени в Биткоине, снимки страниц как доказательство и таймеры dead man's switch — каждый ответ подписан с источником, временем получения и SHA-256."
+      es: "EMPORION — hechos de registro público para agentes que comercian: IVA de la UE (VIES), entidades jurídicas (GLEIF LEI), registros mercantiles, EORI, dominios (RDAP), tipos del BCE, listas de sanciones (OFAC con monederos, UE, Reino Unido), días hábiles, sellos de tiempo en Bitcoin, capturas web como prueba y temporizadores de hombre muerto — cada respuesta firmada con su fuente, hora y SHA-256."
+      fr: "EMPORION — faits de registre public pour les agents qui commercent : TVA de l’UE (VIES), entités juridiques (GLEIF LEI), registres des sociétés, EORI, domaines (RDAP), taux de la BCE, listes de sanctions (OFAC avec portefeuilles, UE, Royaume-Uni), jours ouvrés, horodatages Bitcoin, captures web comme preuve et minuteurs d’homme mort — chaque réponse signée avec sa source, son heure et son SHA-256."
+      zh: "EMPORION — 面向交易型智能体的公共记录事实：欧盟增值税号（VIES）、法人实体（GLEIF LEI）、公司登记册、EORI、域名（RDAP）、欧洲央行汇率、制裁名单（含钱包的 OFAC、欧盟、英国）、工作日、比特币时间戳、作为证据的网页快照和死人开关定时器——每个答案都连同来源、获取时间和 SHA-256 一起签名。"
     homepage: https://emporion.modelmarket.dev/
     console: https://emporion.modelmarket.dev/
     topics:
@@ -1731,15 +1732,12 @@ satellites:
     # Same shape as esim-kit: monorepo directory domain-kit/, GitHub repo domain-operator-kit.
     # The kit sells domain registrations. EMPORION RDAP is a separate registry-fact product.
     repo: domain-operator-kit
-    description: >
-      Independent domain operators sell one-year registrations to AI agents on AIMarket rails.
-      Signed domains.*@v1 quotes, durable orders, DNS, and x402 USDC on Base. Fixed markup.
-      Openprovider or an HTTP supplier. Buyer-side Vercel connector. Pre-live: the demo registers nothing.
+    description: "Independent domain operators: signed domains.*@v1 quotes, fixed markup, registration, renewal and DNS. Openprovider, Porkbun Sandbox or HTTP suppliers; x402 USDC on Base and a buyer-side Vercel connector. Pre-live: both sandbox pilots passed; production payments and Vercel remain unverified."
     description_i18n:
-      ru: "Независимые операторы продают ИИ-агентам регистрацию домена на год на рельсах AIMarket. Подписанные котировки domains.*@v1, устойчивые заказы, DNS и оплата x402 в USDC на Base. Фиксированная наценка. Openprovider или свой HTTP-поставщик. Коннектор Vercel на стороне покупателя. До запуска: демо ничего не регистрирует."
-      es: "Operadores independientes venden a agentes de IA el registro de un dominio por un año en los rieles de AIMarket. Cotizaciones firmadas domains.*@v1, pedidos duraderos, DNS y pago x402 en USDC en Base. Margen fijo. Openprovider o un proveedor HTTP propio. Conector de Vercel del lado del comprador. Antes del lanzamiento: la demo no registra nada."
-      fr: "Des opérateurs indépendants vendent aux agents IA l'enregistrement d'un domaine pour un an sur les rails AIMarket. Devis signés domains.*@v1, commandes durables, DNS et paiement x402 en USDC sur Base. Marge fixe. Openprovider ou un fournisseur HTTP. Connecteur Vercel côté acheteur. Avant la mise en ligne : la démo n'enregistre rien."
-      zh: "独立域名运营者在 AIMarket 轨道上向 AI 智能体出售一年期域名注册。签名的 domains.*@v1 报价、持久订单、DNS，以及 Base 上的 x402 USDC 付款。固定加价。Openprovider 或自有 HTTP 供应商。买方侧 Vercel 连接器。上线前：演示不注册任何域名。"
+      ru: "Независимые операторы доменов: подписанные котировки domains.*@v1, фиксированная наценка, регистрация, продление и DNS. Openprovider, Porkbun Sandbox или HTTP-поставщики; x402 USDC в Base и коннектор Vercel на стороне покупателя. До production: оба sandbox-пилота пройдены; реальные платежи и Vercel ещё не проверены."
+      es: "Operadores de dominios independientes: cotizaciones firmadas domains.*@v1, margen fijo, registro, renovación y DNS. Openprovider, Porkbun Sandbox o proveedores HTTP; x402 USDC en Base y conector de Vercel del lado del comprador. Ambos pilotos sandbox superados; pagos reales y Vercel aún sin verificar."
+      fr: "Opérateurs de domaines indépendants : devis signés domains.*@v1, marge fixe, enregistrement, renouvellement et DNS. Openprovider, Porkbun Sandbox ou fournisseurs HTTP ; x402 USDC sur Base et connecteur Vercel côté acheteur. Les deux pilotes sandbox ont réussi ; paiements réels et Vercel restent à vérifier."
+      zh: "独立域名运营者：签名的 domains.*@v1 报价、固定加价、注册、续费和 DNS。支持 Openprovider、Porkbun Sandbox 或 HTTP 提供方；包含 Base 上的 x402 USDC 支付及买方侧 Vercel 连接器。两个沙箱试点均已通过；真实支付与 Vercel 尚未验证，仍处于正式上线前阶段。"
     topics:
       - aimarket
       - domains
@@ -1749,6 +1747,7 @@ satellites:
       - mcp
       - ai-agents
       - openprovider
+      - porkbun
       - vercel
     license: mit
     paths:
@@ -1764,7 +1763,7 @@ satellites:
       - node-test
     notes: >
       GitHub satellite alexar76/domain-operator-kit. Seller node, stdio MCP client,
-      Openprovider adapter and HTTP supplier contract. Excluded from the trimmed
+      Openprovider and Porkbun Sandbox adapters, plus the HTTP supplier contract. Excluded from the trimmed
       factory alexar76/aicom. Pre-live: the demo registers nothing.
 
   - id: use-cases-portal

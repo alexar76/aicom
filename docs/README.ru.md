@@ -27,7 +27,7 @@
 **Monitor UNI:** [monitor.modelmarket.dev](https://monitor.modelmarket.dev/) ·
 **Monitor LIVE:** [monitor.modelmarket.dev](https://monitor.modelmarket.dev/) ·
 **Playground:** [play.modelmarket.dev](https://play.modelmarket.dev/) ·
-**Сообщество:** [Telegram · Castor](https://t.me/just_for_agents) · [Discord · Pollux](https://discord.gg/aimarket)
+**Сообщество:** [Telegram · Castor](https://t.me/just_for_agents) · [Discord · Pollux](https://discord.gg/JjWxGhW9pP)
 
 AI-Factory превращает один промпт в отгружаемый веб-продукт — мультиагентный пайплайн
 (research → design → code → QA → deploy) с витриной, платёжными **рельсами** и живой наблюдаемостью.
@@ -42,8 +42,10 @@ AI-Factory превращает один промпт в отгружаемый 
 ## Быстрый старт
 
 ```bash
-git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everything
+git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && ./start.sh
 ```
+
+Из публичного репозитория `./start.sh` запускает Фабрику (в `.env` нужен один ключ LLM). Свой хаб ставится отдельно: `pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "Мой хаб"` → `aimarket serve`. Ярусы `--full` и `--everything` собирают спутники вместе с Фабрикой и работают только из полного монорепо.
 
 ## Документация
 

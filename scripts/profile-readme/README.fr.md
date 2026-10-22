@@ -23,10 +23,13 @@
   <a href="https://edu.modelmarket.dev/"><b>🎓 School</b></a>
 </p>
 
-<p align="center"><sub>Aucune installation. Un clic. Le reste de cette page est la carte.</sub></p>
+<p align="center"><sub>Un clic ou une commande. Le reste de cette page est la carte.</sub></p>
 
 | | Ce que vous obtenez | Ouvrir |
 | --- | --- | --- |
+| **WARDEN** | Vérifiez chaque serveur MCP de votre machine avant que ses outils n’atteignent votre modèle — sans compte ni clé | `npx -y @aimarket/warden scan` · [warden.modelmarket.dev](https://warden.modelmarket.dev/) |
+| **Données ouvertes HISTOR** | Ce qu’a annoncé chaque serveur MCP distant du registre officiel, et chaque changement, signé, chaque mois (CC BY 4.0) | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [DOI Zenodo](https://doi.org/10.5281/zenodo.23512759) |
+| **Vérifications gratuites** | Endpoint x402, MCP diff, scan WARDEN, contrôle HISTOR et coût en tokens de la liste d’outils — dans le navigateur | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | Envoyez une lecture GAIA figurant sur l’allowlist via Hub et Metis, puis examinez le reçu signé | [play.modelmarket.dev](https://play.modelmarket.dev/) · [source](https://github.com/alexar76/aimarket-playground) |
 | **Alien Monitor** | Le graphe 3D LIVE de tout l’écosystème — Hub, Factory, ARGUS, oracles, métriques on-chain | [monitor.modelmarket.dev](https://monitor.modelmarket.dev/) |
 | **School** | 13 leçons en clips (Try-it + Colab) qui mènent aux académies | [edu.modelmarket.dev](https://edu.modelmarket.dev/) |
@@ -43,7 +46,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vue d’ensemble de l’écosystème : Factory déploie sur HESTIA ; HESTIA annonce au Hub ; Oracles et METIS alimentent Hub ; ARGUS consomme ; ACEX finance ; SKOPOS observe ; MOMUS cherche ; Treasury paie ; LOGOS analyse la fédération ; Attested Memory garde une mémoire vérifiable pour les agents ; les opérateurs eSIM vendent aux agents via x402 et apportent au Hub des reçus de livraison signés ; EMPORION vend via le Hub des vérifications pour le commerce : TVA de l’UE, LEI, taux de référence de la BCE, filtrage des listes de sanctions et preuves d’horodatage." width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="Vue d’ensemble de l’écosystème : Factory déploie sur HESTIA ; HESTIA annonce au Hub ; Oracles et METIS alimentent Hub ; ARGUS consomme ; ACEX finance ; SKOPOS observe ; MOMUS cherche ; Treasury paie ; LOGOS analyse la fédération ; Attested Memory garde une mémoire vérifiable pour les agents ; les opérateurs eSIM vendent aux agents via x402 et apportent au Hub des reçus de livraison signés ; EMPORION vend via le Hub des vérifications pour le commerce : TVA de l’UE, LEI, taux de référence de la BCE, filtrage des listes de sanctions et preuves d’horodatage ; les opérateurs de domaines enregistrent pour un agent un domaine coté via x402 sur Openprovider ou Porkbun Sandbox." width="900">
   </a>
 </p>
 
@@ -84,11 +87,11 @@ Le catalogue des repos se trouve **ci-dessous**, regroupé selon le rôle de cha
 **MCP dans Cursor / Claude** (récupération et recherche web + vérification Metis) :
 
 ```bash
-pip install aimarket-mcp
+uvx aimarket-mcp                # or: pip install aimarket-mcp  (Python 3.10+)
 ```
 
 ```json
-{ "mcpServers": { "aimarket-mcp": { "command": "aimarket-mcp" } } }
+{ "mcpServers": { "aimarket-mcp": { "command": "uvx", "args": ["aimarket-mcp"] } } }
 ```
 
 Oracles pour agents (35 outils) : [`aimarket-oracle-gateway`](https://github.com/alexar76/aimarket-oracle-gateway) · [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp)
@@ -98,7 +101,8 @@ Oracles pour agents (35 outils) : [`aimarket-oracle-gateway`](https://github.com
 ```python
 from aimarket_agent import AIMarketAgent
 r = AIMarketAgent(base_url="https://modelmarket.dev", budget=1.0).invoke_single(
-    "platon", "platon.random@v1", {"nbytes": 32})
+    "platon", "platon.random@v1", {"nbytes": 32},
+    source_hub="https://oracles.modelmarket.dev/family")  # capacité fédérée : indiquez le hub qui la sert
 print(r.get("receipt") or r)  # reçu d'oracle signé
 ```
 
@@ -160,7 +164,7 @@ Un seul pipeline, dans l’ordre où la confiance et l’argent circulent réell
 | 2 | **Héberger** | **HESTIA** est le runtime hébergé — isolé, sur les machines de l’opérateur ; déploiement signé sur cet hôte. Roster vide ≠ marché vide |
 | 3 | **Admettre** | **THEMIS** décide au moment de la publication — `approve` / `review` / `reject` signés (optionnel) |
 | 4 | **Référencer et invoquer** | Le [protocole](https://github.com/alexar76/aimarket-protocol) **AIMarket** + le [hub](https://github.com/alexar76/aimarket-hub) transportent le catalogue, les canaux de paiement et les appels |
-| 5 | **Fournir** | 17 **oracles** (aléatoire, délai, consensus, mathématiques de confiance) · lectures physiques attestées de **GAIA** · cognition **METIS** · les **opérateurs eSIM** vendent des eSIM de voyage aux agents via x402 ([kit](https://github.com/alexar76/esim-operator-kit)) · **EMPORION** faits de registre public pour commercer : TVA de l'UE, LEI, taux de la BCE, listes de sanctions, horodatages, registres des sociétés, EORI, domaines, jours ouvrés, captures web, minuteurs ([dépôt](https://github.com/alexar76/emporion)) |
+| 5 | **Fournir** | 17 **oracles** (aléatoire, délai, consensus, mathématiques de confiance) · lectures physiques attestées de **GAIA** · cognition **METIS** · les **opérateurs eSIM** vendent des eSIM de voyage aux agents via x402 ([kit](https://github.com/alexar76/esim-operator-kit)) · **EMPORION** faits de registre public pour commercer : TVA de l'UE, LEI, taux de la BCE, listes de sanctions, horodatages, registres des sociétés, EORI, domaines, jours ouvrés, captures web, minuteurs ([dépôt](https://github.com/alexar76/emporion)) · les **opérateurs de domaines** enregistrent pour un agent un `.com` / `.net` / `.org` coté via x402, sur Openprovider ou Porkbun Sandbox ([kit](https://github.com/alexar76/domain-operator-kit)) |
 | 6 | **Vérifier** | Cognition **METIS** · Solidity dans un pin avec **BASANOS** · exploits EVM LIVE avec **DOLOS** · HTTP/fédération avec **MOMUS** · MCP tiers avec **WARDEN** · **HISTOR** ce que les serveurs MCP tiers ont annoncé, dans le temps · **Attested Memory**, la mémoire vérifiable que les agents gardent |
 | 7 | **Consommer** | **ARGUS** — le client côté demande réellement exécuté par les humains et les agents · il a acheté une eSIM de voyage pour son propriétaire et l'a fait rembourser, sur Base ([cas](https://github.com/alexar76/argus/blob/main/docs/use-case-esim-purchase-refund-fr.md)) |
 | 8 | **Régler** | Séquestre (escrow), canaux de paiement et primes **Treasury**, payés uniquement après vérification indépendante |
@@ -191,6 +195,8 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | METIS | Hub | vérification de la cognition |
 | Hub ↔ ARGUS | — | invocation / règlement · découverte / paiement / consommation |
 | ARGUS / agents | Opérateur eSIM | commande x402 directement sur le portefeuille du vendeur · remboursement d'une eSIM inutilisée |
+| Kit d'opérateur de domaines | Hub | devis publics · Openprovider ou Porkbun Sandbox, ou le fournisseur HTTP propre de l'opérateur · la commande et le paiement x402 vont au vendeur |
+| Agents | Opérateur de domaines | x402 en USDC sur Base vers le portefeuille de réception de l'opérateur · marge fixe · le compte registrar reste à l'opérateur |
 | Hub | ACEX | CapShares |
 | SKOPOS | Factory / Hub | observation de la flotte |
 | MOMUS | Factory / Hub | recherche · signature |
@@ -272,10 +278,11 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**cite-desks**](https://github.com/alexar76/cite-desks) | **Cite desks** — cinq desks d’évidence indépendants sur les rails AIMarket (Emberline feu, Tideline crue, Solrecord PV, Seamark AIS nordique, Plinth site) : watches, runs planifiés, cite packs, USDC · [famille](https://desk.modelmarket.dev/) · [Emberline](https://emberlinedesk.com/) · fork [alexar76/cite-desks](https://github.com/alexar76/cite-desks) |
 
 ### 📶 Commerce réel — les agents achètent de vraies choses
-<sub>Étape 5 pour l'économie réelle : un vendeur que l'agent paie directement, avec remboursements et reçus que la fédération peut compter, et les faits de registre public qu'un agent vérifie avant de traiter avec une entreprise.</sub>
+<sub>Étape 5 pour l'économie réelle : un vendeur que l'agent paie directement, avec remboursements et reçus que la fédération peut compter, les faits de registre public qu'un agent vérifie avant de traiter avec une entreprise, et un domaine que l'opérateur enregistre sur le compte registrar qu'il détient déjà.</sub>
 
 | Dépôt | Ce que c'est |
 | --- | --- |
+| [**domain-operator-kit**](https://github.com/alexar76/domain-operator-kit) | **Kit d'opérateur de domaines** — un nœud vendeur pour les opérateurs qui enregistrent déjà des domaines. Un agent obtient un `.com`, `.net` ou `.org` coté pour un an, au nom du titulaire fourni, et un DNS signé par le propriétaire. L'agent paie en x402, USDC sur Base, vers le portefeuille de réception de l'opérateur ; l'opérateur fixe une marge et conserve le compte registrar et la destination du paiement. Registrars intégrés : **Openprovider** et **Porkbun Sandbox** ; tout autre fournisseur parle le contrat HTTP. Porkbun refuse le mode live tant qu'un pilote de production n'est pas passé. Les pilotes sandbox sont passés ; les achats de production, le règlement et le rattachement Vercel restent non vérifiés. Pas de démo hébergée. |
 | [**emporion**](https://github.com/alexar76/emporion) | **EMPORION** — faits de registre public pour les agents qui commercent : validité du numéro de TVA de l'UE (VIES) avec numéro de consultation, entités juridiques (GLEIF LEI), taux de référence de la BCE, filtrage des listes de sanctions (UE, OFAC SDN avec adresses de portefeuilles, Royaume-Uni avec les désignations de l'ONU — une recherche, pas une décision) et preuves d'horodatage ancrées dans Bitcoin (OpenTimestamps) ; chaque réponse signée avec sa source, son heure de récupération et son SHA-256  ; depuis la 0.2 aussi les registres nationaux des sociétés, EORI, l'enregistrement des domaines (RDAP), les jours ouvrés, des pages web capturées comme preuve et des minuteurs avec interrupteur d'homme mort; 0,001–0,003 $ par appel via le hub · [en ligne](https://emporion.modelmarket.dev/) · [landing](https://alexar76.github.io/emporion/) |
 | [**esim-operator-kit**](https://github.com/alexar76/esim-operator-kit) | **Kit d'opérateur eSIM** — une boutique d'eSIM de voyage pour les gens et un nœud vendeur pour les agents IA (x402 en USDC, remboursement des eSIM inutilisées, reçus de livraison signés), sur eSIM Access, Airalo, eSIM Go ou le propre système de l'opérateur ; rejoint la fédération comme nœud ou comme son propre hub en une commande, `./onboard.sh` · [démo](https://esim.modelmarket.dev) · [guides](https://esim.modelmarket.dev/fr/kit) · [cas réels](https://esim.modelmarket.dev/fr/kit/cases) |
 
@@ -289,7 +296,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**dolos**](https://github.com/alexar76/dolos) | **DOLOS** (Δόλος) — **équipe rouge EVM** dynamique : crée un fork de la bulle UNI et lance de véritables transactions d’exploitation pour prouver quelles failles sont réellement LIVE ; constats Ed25519, boucle de correction **sandbox uniquement** · [LIVE](https://dolos.modelmarket.dev/) · [landing](https://alexar76.github.io/dolos/) | sur les contrats déployés |
 | [**momus**](https://github.com/alexar76/momus) | **MOMUS** — équipe rouge HTTP/fédération autonome : sondes sûres en lecture seule → constats signés Ed25519 ; cherche et signe mais **ne peut pas se payer elle-même** · [LIVE](https://momus.modelmarket.dev) · [landing](https://alexar76.github.io/momus/) | en continu, sur les services LIVE |
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury** — payeur de primes distinct pour MOMUS (sa propre clé et son propre conteneur) ; ne paie qu’après vérification indépendante · [LIVE](https://momus.modelmarket.dev/treasury) · [landing](https://alexar76.github.io/treasury/) | après vérification |
-| [**warden**](https://github.com/alexar76/warden) | **WARDEN** — bibliothèque **pare-feu de sécurité MCP** sans dépendance (pas un serveur) : scan statique des définitions d’outils → flux de menaces signé → origine → épinglage · [landing](https://warden.modelmarket.dev/) · [étude de terrain : 1 108 serveurs MCP publics](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.fr.md) | avant qu’un outil tiers n’atteigne un hôte |
+| [**warden**](https://github.com/alexar76/warden) | **WARDEN** — **pare-feu de sécurité MCP** sans dépendance : bibliothèque, CLI et serveur MCP stdio local, pas un service hébergé : scan statique des définitions d’outils → flux de menaces signé → origine → épinglage · [landing](https://warden.modelmarket.dev/) · [étude de terrain : 1 108 serveurs MCP publics](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.fr.md) | avant qu’un outil tiers n’atteigne un hôte |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR** (ἵστωρ) — **journal de transparence public des définitions d’outils MCP** : lit ce qu’annonce chaque point de terminaison distant du registre officiel MCP (n’appelle jamais un outil), le signe en étiquettes MTL/1, les ajoute à un arbre de Merkle RFC 9162 avec des têtes d’arbre signées et date chaque modification avec son diff. Ne déclare jamais un serveur sûr · [live](https://histor.modelmarket.dev) · [landing](https://alexar76.github.io/histor/) | chaque jour, sur chaque point de terminaison distant du registre officiel · et sur `/check` |
 
 ### 🧠 Mémoire vérifiable — ce que les agents gardent
@@ -331,7 +338,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**dioscuri**](https://github.com/alexar76/dioscuri) | **DIOSCURI** — agents communautaires jumeaux (CASTOR/Telegram, POLLUX/Discord), base de connaissances MNEMOSYNE, modération AEGIS · héberge l’emplacement canonique [THEOROS](https://alexar76.github.io/theoros/) · [landing](https://alexar76.github.io/dioscuri/) · [guide d’intégration](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/dioscuri-integration.md) |
 | [**theoros**](https://github.com/alexar76/theoros) | **THEOROS** — Agent Sovereignty Canon : sept préceptes, landing cosmique, chronique hebdomadaire `#the-canon` (une **collaboration** DIOSCURI, pas un troisième jumeau) · [landing](https://alexar76.github.io/theoros/) |
 | [**helios**](https://github.com/alexar76/helios) | **HELIOS** — pipeline de diffusion : yaml → vidéo narrée → YouTube (privée par défaut jusqu’à `helios approve`) · [landing](https://alexar76.github.io/helios/) · [intégration](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/helios-integration.md) · [@My-AI-Factory](https://www.youtube.com/@My-AI-Factory) |
-| **Telegram** | CASTOR — définissez `links.telegramChannel` dans votre `dioscuri.config.json` |
+| **Telegram** | CASTOR — [canal](https://t.me/just_for_agents) · [interroger le bot](https://t.me/next_agent_market_bot) · auto-hébergement : `links.telegramChannel` dans `dioscuri.config.json` |
 | **Discord** | POLLUX — définissez `links.discordInvite` dans votre `dioscuri.config.json` |
 
 ### 🎓 Apprendre et explorer
@@ -389,6 +396,7 @@ L’index de référence se trouve dans la [version anglaise](README.md#az) ; si
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | Build & connect | générateur de squelette de fournisseur |
 | [dioscuri](https://github.com/alexar76/dioscuri) | Communauté et diffusion | agents communautaires jumeaux |
 | [dolos](https://github.com/alexar76/dolos) | Confiance et sécurité | équipe rouge EVM dynamique (isolée dans un fork) |
+| [domain-operator-kit](https://github.com/alexar76/domain-operator-kit) | Commerce réel | domaines sur Openprovider ou Porkbun Sandbox |
 | [emporion](https://github.com/alexar76/emporion) | Commerce réel | TVA, LEI, registres, change, sanctions, horodatages, captures web et minuteurs |
 | [esim-operator-kit](https://github.com/alexar76/esim-operator-kit) | Commerce réel | eSIM de voyage pour les gens et les agents IA |
 | [gaia](https://github.com/alexar76/gaia) | Monde physique | lectures IoT attestées |

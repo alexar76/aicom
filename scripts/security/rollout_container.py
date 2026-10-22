@@ -12,6 +12,10 @@ restarted inside the restored one on rollback: a namespace dies with its owner,
 and a borrower left behind keeps reporting healthy while nothing can reach it.
 Repeat --health for every URL that must answer, e.g. the hub and THEMIS's 9460.
 --dry-run prints the planned docker commands, env values redacted, and stops.
+
+The previous container is kept, stopped, as NAME-security-prev-STAMP. When it was a
+Compose service it is kept without Compose's labels (detach_from_compose), so that a
+later `docker compose up` does not start it beside the new one.
 """
 import argparse
 import copy
@@ -31,6 +35,7 @@ from service_env import filtered
 ROLLBACK_ROOT = Path("/root/security-rollbacks")
 # Settings a container inherits from its image when it leaves them unset.
 IMAGE_DEFAULTS = ("WorkingDir", "User", "Healthcheck", "StopSignal")
+COMPOSE_LABELS = "com.docker.compose."
 
 
 class DockerConnection(http.client.HTTPConnection):
@@ -226,6 +231,63 @@ def forward(run, units, urls):
         run.wait(f"wait for {unit['name']} to run healthy", settled, unit["created"])
 
 
+def detach_from_compose(run, units):
+    """Keep each previous container, stopped, where Compose no longer counts it.
+
+    A kept container still carries its Compose project and service labels, and
+    `docker compose up SERVICE` takes every container with them for one of its own: on
+    2026-10-22 a dry run on the signal-hunt and attested hosts would have started old hubs
+    beside the live one, on the same database (12 and 14 previous containers there).
+    Docker cannot edit a label, so the previous container is created again from its own
+    inspect without them, under its name, and the original goes; the snapshot keeps the
+    original, labels included. A borrower of a re-created owner is re-created too, so its
+    container: networking names the copy. A step that fails leaves the original as it was.
+    Returns {previous name: what happened}.
+    """
+    outcome = {}
+    owner = None
+    for i, unit in enumerate(units):
+        labels = unit["info"]["Config"].get("Labels") or {}
+        dropped = [k for k in labels if k.startswith(COMPOSE_LABELS)]
+        if not dropped and not (i and owner):
+            continue
+        body = create_body(unit["info"])
+        body["Labels"] = {k: v for k, v in labels.items() if k not in dropped}
+        if dropped:
+            body["Labels"]["aicom.rollout.detached-from"] = "{}/{}".format(
+                labels.get(COMPOSE_LABELS + "project", ""), labels.get(COMPOSE_LABELS + "service", ""))
+        if i and owner and body["HostConfig"]["NetworkMode"].startswith("container:"):
+            body["HostConfig"]["NetworkMode"] = "container:" + owner
+        temp = unit["previous"] + "-detached"
+        what = "without Compose labels" if dropped else "in the copy's namespace"
+        try:
+            created = run(f"docker create --name {temp} <{unit['previous']} {what}>", "POST",
+                          "/containers/create?name=" + urllib.parse.quote(temp), body)
+        except Exception as exc:
+            outcome[unit["previous"]] = f"kept as it was: {exc}"
+            continue
+        copy_id = created["Id"] if created else temp
+        try:
+            run(f"docker rm {unit['previous']}", "DELETE", f"/containers/{unit['info']['Id']}")
+        except Exception as exc:
+            try:
+                api("DELETE", f"/containers/{copy_id}?force=true")
+            except Exception:
+                pass
+            outcome[unit["previous"]] = f"kept as it was: {exc}"
+            continue
+        try:
+            run(f"docker rename {temp} {unit['previous']}", "POST",
+                f"/containers/{copy_id}/rename?name={unit['previous']}")
+            outcome[unit["previous"]] = (f"kept without its {len(dropped)} Compose label(s)" if dropped
+                                         else "kept, joined to the kept owner")
+        except Exception as exc:
+            outcome[unit["previous"]] = f"kept as {temp}: {exc}"
+        if i == 0:
+            owner = copy_id
+    return outcome
+
+
 def rollback(units, urls, stamp):
     """Undo whatever forward() got through. Every step is tried even when an earlier
     one fails, so one stuck container cannot keep the old service down."""
@@ -333,6 +395,7 @@ def main():
     run = Run(args.dry_run)
     if args.dry_run:
         forward(run, units, args.health)
+        detach_from_compose(run, units)
         print(json.dumps({"dry_run": True, "container": args.name, "image": config["Image"],
                           "removed_env_names": removed, "image_env_names": inherited,
                           "set_env_names": set_names,
@@ -352,6 +415,8 @@ def main():
         errors = rollback(units, args.health, stamp)
         print(json.dumps({"rolled_back": not errors, "rollback_errors": errors}), file=sys.stderr)
         raise
+    # After the health checks, so a rollback above still starts the original container.
+    detached = detach_from_compose(run, units)
     if args.env_output:
         args.env_output.parent.mkdir(parents=True, exist_ok=True)
         fd = os.open(args.env_output, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
@@ -362,6 +427,7 @@ def main():
                       "previous_container": units[0]["previous"], "removed_env_names": removed,
                       "image_env_names": inherited, "set_env_names": set_names,
                       "borrowers": {u["name"]: u["previous"] for u in units[1:]},
+                      **({"previous_kept": detached} if detached else {}),
                       "snapshot": str(snapshot)}))
 
 

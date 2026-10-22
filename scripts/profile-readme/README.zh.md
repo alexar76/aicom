@@ -23,10 +23,13 @@
   <a href="https://edu.modelmarket.dev/"><b>🎓 School</b></a>
 </p>
 
-<p align="center"><sub>无需安装。一键进入。本页其余内容就是地图。</sub></p>
+<p align="center"><sub>一键或一条命令即可开始。本页其余内容就是地图。</sub></p>
 
 | | 你将获得 | 打开 |
 | --- | --- | --- |
+| **WARDEN** | 在工具到达模型之前，检查你机器上的每个 MCP 服务器——无需账号和密钥 | `npx -y @aimarket/warden scan` · [warden.modelmarket.dev](https://warden.modelmarket.dev/) |
+| **HISTOR 开放数据** | 官方注册表中每个远程 MCP 服务器公布的内容及每次变更，已签名，每月一次（CC BY 4.0） | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [Zenodo DOI](https://doi.org/10.5281/zenodo.23512759) |
+| **免费检查** | x402 端点、MCP diff、WARDEN 扫描、HISTOR 检查和工具列表的 token 成本——在浏览器中完成 | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | 将一条 allowlist 内的 GAIA 读数经由 Hub 和 Metis 发送，然后查看签名收据 | [play.modelmarket.dev](https://play.modelmarket.dev/) · [源码](https://github.com/alexar76/aimarket-playground) |
 | **Alien Monitor** | 整个生态系统的实时 3D 图谱——Hub、Factory、ARGUS、预言机及链上指标 | [monitor.modelmarket.dev](https://monitor.modelmarket.dev/) |
 | **School** | 13 节短视频课程（Try-it + Colab），带你进入各大学院 | [edu.modelmarket.dev](https://edu.modelmarket.dev/) |
@@ -43,7 +46,7 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；ACEX 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦；Attested Memory 保存可验证的智能体记忆；eSIM 运营者通过 x402 向智能体销售，并把签名的交付收据带到 Hub；EMPORION 通过 Hub 出售商业查询：欧盟增值税号、LEI、欧洲央行参考汇率、制裁名单查询和时间戳证明。" width="900">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；ACEX 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦；Attested Memory 保存可验证的智能体记忆；eSIM 运营者通过 x402 向智能体销售，并把签名的交付收据带到 Hub；EMPORION 通过 Hub 出售商业查询：欧盟增值税号、LEI、欧洲央行参考汇率、制裁名单查询和时间戳证明；域名运营者按报价通过 x402 在 Openprovider 或 Porkbun Sandbox 上为智能体注册域名。" width="900">
   </a>
 </p>
 
@@ -84,11 +87,11 @@
 **Cursor / Claude 中的 MCP**（网页抓取 + 搜索 + Metis 验证）：
 
 ```bash
-pip install aimarket-mcp
+uvx aimarket-mcp                # or: pip install aimarket-mcp  (Python 3.10+)
 ```
 
 ```json
-{ "mcpServers": { "aimarket-mcp": { "command": "aimarket-mcp" } } }
+{ "mcpServers": { "aimarket-mcp": { "command": "uvx", "args": ["aimarket-mcp"] } } }
 ```
 
 面向智能体的 Oracles（35 个工具）：[`aimarket-oracle-gateway`](https://github.com/alexar76/aimarket-oracle-gateway) · [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp)
@@ -98,7 +101,8 @@ pip install aimarket-mcp
 ```python
 from aimarket_agent import AIMarketAgent
 r = AIMarketAgent(base_url="https://modelmarket.dev", budget=1.0).invoke_single(
-    "platon", "platon.random@v1", {"nbytes": 32})
+    "platon", "platon.random@v1", {"nbytes": 32},
+    source_hub="https://oracles.modelmarket.dev/family")  # 联邦能力：指明提供它的 hub
 print(r.get("receipt") or r)  # 已签名的预言机收据
 ```
 
@@ -160,7 +164,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | 2 | **托管** | **HESTIA** 是托管运行时——隔离运行在运营者机器上；签名部署到本机。空名册 ≠ 空市场 |
 | 3 | **准入** | **THEMIS** 在发布时做出决定——签名的 `approve` / `review` / `reject`（可选） |
 | 4 | **上架与调用** | **AIMarket** [协议](https://github.com/alexar76/aimarket-protocol) + [Hub](https://github.com/alexar76/aimarket-hub) 承载目录、通道和调用 |
-| 5 | **供给** | 17 个**预言机**（随机性、延迟、共识、信任数学）· **GAIA** 证明（attestation）的物理读数 · **METIS** 认知 · **eSIM 运营者**通过 x402 向智能体出售旅行 eSIM（[套件](https://github.com/alexar76/esim-operator-kit)） · **EMPORION** 面向贸易的公共记录事实：欧盟增值税号、LEI、欧洲央行汇率、制裁名单、时间戳、公司登记册、EORI、域名、工作日、网页快照、定时器（[仓库](https://github.com/alexar76/emporion)） |
+| 5 | **供给** | 17 个**预言机**（随机性、延迟、共识、信任数学）· **GAIA** 证明（attestation）的物理读数 · **METIS** 认知 · **eSIM 运营者**通过 x402 向智能体出售旅行 eSIM（[套件](https://github.com/alexar76/esim-operator-kit)） · **EMPORION** 面向贸易的公共记录事实：欧盟增值税号、LEI、欧洲央行汇率、制裁名单、时间戳、公司登记册、EORI、域名、工作日、网页快照、定时器（[仓库](https://github.com/alexar76/emporion)） · **域名运营者**按报价通过 x402 为智能体注册 `.com` / `.net` / `.org`，注册商为 Openprovider 或 Porkbun Sandbox（[套件](https://github.com/alexar76/domain-operator-kit)） |
 | 6 | **验证** | **METIS** 认知 · **BASANOS** 在固定提交上检查 Solidity · **DOLOS** 实时 EVM 利用 · **MOMUS** HTTP/联邦 · **WARDEN** 第三方 MCP · **HISTOR** 第三方 MCP 服务器随时间公布的内容 · **Attested Memory** 智能体保存的可验证记忆 |
 | 7 | **消费** | **ARGUS**——人类和智能体实际运行的需求侧客户端 · 它为主人购买了旅行 eSIM 并拿回了退款，交易在 Base 上（[案例](https://github.com/alexar76/argus/blob/main/docs/use-case-esim-purchase-refund-zh.md)） |
 | 8 | **结算** | 托管、支付通道和 **Treasury** 赏金，仅在独立验证后支付 |
@@ -192,6 +196,8 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | METIS | Hub | 验证认知 |
 | Hub ↔ ARGUS | — | 调用 / 结算 · 发现 / 付款 / 消费 |
 | ARGUS / 智能体 | eSIM 运营者 | x402 订单直接付到卖家钱包 · 未使用 eSIM 的退款 |
+| 域名运营者套件 | Hub | 公开报价 · Openprovider 或 Porkbun Sandbox，或运营者自己的 HTTP 供应商 · 订单和 x402 付款交给卖家 |
+| 智能体 | 域名运营者 | 以 Base 上的 USDC x402 付到运营者的收款钱包 · 固定加价 · 注册商账户仍属于运营者 |
 | Hub | ACEX | CapShares |
 | SKOPOS | Factory / Hub | 机队监测 |
 | MOMUS | Factory / Hub | 发现 · 签名 |
@@ -273,10 +279,11 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**cite-desks**](https://github.com/alexar76/cite-desks) | **Cite desks**——AIMarket 轨道上的五个独立证据台（Emberline 火情、Tideline 洪水、Solrecord 光伏、Seamark 北欧 AIS、Plinth 场址）：watches、定时运行、cite packs、USDC · [家族](https://desk.modelmarket.dev/) · [Emberline](https://emberlinedesk.com/) · fork [alexar76/cite-desks](https://github.com/alexar76/cite-desks) |
 
 ### 📶 真实商业——智能体购买真实商品
-<sub>面向真实经济的第 5 阶段：智能体直接付款的卖家，支持退款，并有联邦可以统计的收据；以及智能体在与公司打交道之前要核实的公共记录事实。</sub>
+<sub>面向真实经济的第 5 阶段：智能体直接付款的卖家，支持退款，并有联邦可以统计的收据；智能体在与公司打交道之前要核实的公共记录事实；以及运营者在自己已有的注册商账户上注册的域名。</sub>
 
 | 仓库 | 是什么 |
 | --- | --- |
+| [**domain-operator-kit**](https://github.com/alexar76/domain-operator-kit) | **域名运营者套件**——给已经在注册域名的运营者用的卖家节点。智能体按报价获得一个注册一年的 `.com`、`.net` 或 `.org`，登记在提供的注册人名下，并由所有者签名管理 DNS。智能体通过 Base 上的 USDC x402 付到运营者的收款钱包；运营者设定固定加价，并保留注册商账户和收款去向。内置注册商：**Openprovider** 与 **Porkbun Sandbox**；其他供应商走 HTTP 合约。在生产试点通过之前，Porkbun 拒绝 live 模式。Sandbox 试点已通过；生产购买、支付结算和 Vercel 绑定仍未验证。没有托管演示。 |
 | [**emporion**](https://github.com/alexar76/emporion) | **EMPORION**——面向从事贸易的智能体的公共记录事实：欧盟增值税号有效性（VIES，附查询编号）、法人实体（GLEIF LEI）、欧洲央行参考汇率、制裁名单查询（欧盟、含钱包地址的 OFAC SDN、含联合国认定的英国名单——是查询，不是结论）以及锚定比特币的时间戳证明（OpenTimestamps）；每个回答都与来源、获取时间和 SHA-256 一起签名；自 0.2 起还有各国公司登记册、EORI、域名注册信息（RDAP）、工作日、作为证据的网页快照，以及带死人开关的定时器；通过枢纽每次调用 $0.001–0.003 · [在线](https://emporion.modelmarket.dev/) · [落地页](https://alexar76.github.io/emporion/) |
 | [**esim-operator-kit**](https://github.com/alexar76/esim-operator-kit) | **eSIM 运营者套件**——面向用户的旅行 eSIM 店铺，加上面向 AI 智能体的卖家节点（USDC x402 付款、未使用 eSIM 的退款、签名的交付收据），基于 eSIM Access、Airalo、eSIM Go 或运营者自己的系统；用一条命令 `./onboard.sh` 以节点或自己的枢纽加入联邦 · [演示](https://esim.modelmarket.dev) · [指南](https://esim.modelmarket.dev/zh/kit) · [案例](https://esim.modelmarket.dev/zh/kit/cases) |
 
@@ -290,7 +297,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**dolos**](https://github.com/alexar76/dolos) | **DOLOS**（Δόλος）——动态 **EVM 红队**：分叉 UNI 气泡并发起真实利用交易，以证明哪些缺陷确实存在；Ed25519 签名发现，**仅限沙盒**的修复闭环 · [实时](https://dolos.modelmarket.dev/) · [落地页](https://alexar76.github.io/dolos/) | 已部署合约上 |
 | [**momus**](https://github.com/alexar76/momus) | **MOMUS**——自主 HTTP/联邦红队：安全的只读探测 → Ed25519 签名发现；负责发现和签名，但**不能给自己付款** · [实时](https://momus.modelmarket.dev) · [落地页](https://alexar76.github.io/momus/) | 持续运行于实时服务 |
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury**——MOMUS 的独立赏金支付方（自有密钥和容器）；仅在独立验证后付款 · [实时](https://momus.modelmarket.dev/treasury) · [落地页](https://alexar76.github.io/treasury/) | 验证后 |
-| [**warden**](https://github.com/alexar76/warden) | **WARDEN**——零依赖的 **MCP 安全防火墙库**（不是服务器）：静态工具定义扫描 → 签名威胁源 → 来源 → 固定 · [落地页](https://warden.modelmarket.dev/) · [实地调研：1,108 个公开 MCP 服务器](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.zh.md) | 第三方工具到达宿主前 |
+| [**warden**](https://github.com/alexar76/warden) | **WARDEN**——零依赖的 **MCP 安全防火墙**：一个库、一个 CLI 和一个本地 stdio MCP 服务器，而不是托管服务：静态工具定义扫描 → 签名威胁源 → 来源 → 固定 · [落地页](https://warden.modelmarket.dev/) · [实地调研：1,108 个公开 MCP 服务器](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.zh.md) | 第三方工具到达宿主前 |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR**（ἵστωρ）——公开的 **MCP 工具定义透明日志**：读取官方 MCP 注册表中每个远程端点公布的内容（从不调用工具），签名为 MTL/1 标签，追加到带签名树头的 RFC 9162 默克尔树，并为每次变更标注日期和差异。从不宣称任何服务器安全 · [在线](https://histor.modelmarket.dev) · [落地页](https://alexar76.github.io/histor/) | 每日，覆盖官方注册表中的所有远程端点 · 以及 `/check` 时 |
 
 ### 🧠 可验证记忆 — 智能体保存的内容
@@ -332,7 +339,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [**dioscuri**](https://github.com/alexar76/dioscuri) | **DIOSCURI**——双生社区智能体（CASTOR/Telegram、POLLUX/Discord）、MNEMOSYNE KB、AEGIS 审核 · 承载 [THEOROS](https://alexar76.github.io/theoros/) 规范栏目 · [落地页](https://alexar76.github.io/dioscuri/) · [集成指南](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/dioscuri-integration.md) |
 | [**theoros**](https://github.com/alexar76/theoros) | **THEOROS**——Agent Sovereignty Canon：七项准则、宇宙落地页、每周 `#the-canon` 专栏（DIOSCURI 的一次**协作**，而非第三个孪生智能体）· [落地页](https://alexar76.github.io/theoros/) |
 | [**helios**](https://github.com/alexar76/helios) | **HELIOS**——传播流水线：yaml → 配音视频 → YouTube（默认为私密，直至运行 `helios approve`）· [落地页](https://alexar76.github.io/helios/) · [集成](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/helios-integration.md) · [@My-AI-Factory](https://www.youtube.com/@My-AI-Factory) |
-| **Telegram** | CASTOR——在 `dioscuri.config.json` 中设置 `links.telegramChannel` |
+| **Telegram** | CASTOR——[频道](https://t.me/just_for_agents) · [向机器人提问](https://t.me/next_agent_market_bot) · 自托管：在 `dioscuri.config.json` 中设置 `links.telegramChannel` |
 | **Discord** | POLLUX——在 `dioscuri.config.json` 中设置 `links.discordInvite` |
 
 ### 🎓 学习与探索
@@ -390,6 +397,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | [create-aimarket-agent](https://github.com/alexar76/create-aimarket-agent) | 构建与连接 | 提供方脚手架生成器 |
 | [dioscuri](https://github.com/alexar76/dioscuri) | 社区与传播 | 双生社区智能体 |
 | [dolos](https://github.com/alexar76/dolos) | 信任与安全 | 动态 EVM 红队（分叉隔离） |
+| [domain-operator-kit](https://github.com/alexar76/domain-operator-kit) | 真实商业 | Openprovider 或 Porkbun Sandbox 上的域名 |
 | [emporion](https://github.com/alexar76/emporion) | 真实商业 | 增值税、LEI、登记册、汇率、制裁、时间戳、网页快照与定时器 |
 | [esim-operator-kit](https://github.com/alexar76/esim-operator-kit) | 真实商业 | 面向用户和 AI 智能体的旅行 eSIM |
 | [gaia](https://github.com/alexar76/gaia) | 物理世界 | 具有证明（attestation）的 IoT 读数 |

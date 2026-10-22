@@ -2,11 +2,13 @@
 # AUTONOMOUS AI-FACTORY v2.1 — Pytest Configuration & Fixtures
 # ============================================================================
 
+import concurrent.futures.thread
 import os
 import sys
 import json
 import pytest
 import tempfile
+import threading
 import time
 from pathlib import Path
 from typing import Generator, Dict, Any
@@ -55,6 +57,29 @@ def _restore_environ():
     finally:
         os.environ.clear()
         os.environ.update(snapshot)
+
+
+@pytest.fixture(autouse=True)
+def _no_thread_outlives_the_test():
+    """Fail a test that leaves a non-daemon thread running.
+
+    aiosqlite runs every connection in a non-daemon thread, so a test that forgets to close one
+    keeps the interpreter alive after the whole suite has passed and the run looks hung for
+    hours (2026-10-21). Close managers and workers in a ``finally``. Executor workers are
+    joined by the interpreter at exit, so they are not counted.
+    """
+    before = set(threading.enumerate())
+    yield
+    executor_threads = getattr(concurrent.futures.thread, "_threads_queues", {})
+    leaked = []
+    for thread in set(threading.enumerate()) - before:
+        if thread.daemon or thread in executor_threads:
+            continue
+        thread.join(timeout=2)
+        if thread.is_alive():
+            leaked.append(f"{type(thread).__module__}.{type(thread).__name__} {thread.name}")
+    if leaked:
+        pytest.fail("test left non-daemon threads running: " + ", ".join(sorted(leaked)), pytrace=False)
 
 @pytest.fixture
 def temp_data_dir() -> Generator[Path, None, None]:

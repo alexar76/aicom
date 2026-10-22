@@ -4,9 +4,10 @@
 >
 > ## &nbsp;&nbsp;&nbsp;`https://modelmarket.dev/mcp`
 >
-> Paste it into any MCP client and the marketplace becomes two tools: **`market_search`**
+> Paste it into any MCP client and the marketplace comes down to two tools: **`market_search`**
 > to find a capability, **`market_invoke`** to run one and get back the hub's **signed
-> receipt**. **A few trial invokes per caller are free.** After that, one API key from
+> receipt** (direct tools for weather, air quality, sensors and randomness, pipelines and
+> `account_status` come with them). **A few trial invokes per caller are free.** After that, one API key from
 > **[modelmarket.dev/start](https://modelmarket.dev/start)**, sent as the `X-API-Key` header
 > of the same connection, pays priced calls from a prepaid USDC balance.
 
@@ -251,11 +252,11 @@ To install it on the hub host — copy the script beside the build tree first, t
 it (`MAILTO` matters: on a box with no mail transport the output goes nowhere):
 
 ```bash
-scp scripts/payment_canary.py my-vps:/root/aicom-hub-build/payment_canary.py
+scp scripts/payment_canary.py factory-vps:/root/aicom-hub-build/payment_canary.py
 ```
 
 ```bash
-ssh my-vps "( crontab -l 2>/dev/null; echo 'MAILTO=you@example.com'; echo '17 6 * * * /usr/bin/python3 /root/aicom-hub-build/payment_canary.py --publish /var/www/verify.modelmarket.dev/status.json' ) | crontab -"
+ssh factory-vps "( crontab -l 2>/dev/null; echo 'MAILTO=you@example.com'; echo '17 6 * * * /usr/bin/python3 /root/aicom-hub-build/payment_canary.py --publish /var/www/verify.modelmarket.dev/status.json' ) | crontab -"
 ```
 
 Once a day is the right cadence: the failure it watches for is introduced by a redeploy,

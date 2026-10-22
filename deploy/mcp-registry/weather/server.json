@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "dev.modelmarket/weather",
+  "title": "Live weather and air quality (GAIA)",
+  "description": "Weather, air quality and nearest live sensors anywhere, each with a signed receipt. Free, no key.",
+  "repository": {
+    "url": "https://github.com/alexar76/gaia",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "websiteUrl": "https://modelmarket.dev/tools/",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://modelmarket.dev/tools/mcp/weather"
+    }
+  ]
+}

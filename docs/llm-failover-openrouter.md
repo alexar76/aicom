@@ -28,7 +28,7 @@ Models:
 ## Prerequisites
 
 1. A working **`OPENROUTER_API_KEY`** (billing active on [openrouter.ai](https://openrouter.ai)).
-2. SSH to the factory host (`FACTORY_SSH`, default `my-vps`) and Metis host (`METIS_SSH`, default `root@skopos.modelmarket.dev`).
+2. SSH to the factory host (`FACTORY_SSH`, default `factory-vps`) and Metis host (`METIS_SSH`, default `root@skopos.modelmarket.dev`).
 3. Optional: key already in `/opt/metis/.env` — then use `--from-metis-env`.
 
 ## Quick run

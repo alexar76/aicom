@@ -35,4 +35,7 @@ export const EXAMPLES = {
     ],
   },
   "histor-check": { query: "https://modelmarket.dev/mcp" },
+  // This site's own MCP server, as HISTOR last observed it: a lookup, so the example shows the
+  // badge line too. Pasting a list works the same way without HISTOR.
+  "tool-list-cost": { server: "https://modelmarket.dev/mcp" },
 };

@@ -18,7 +18,7 @@ const CSP = [
   "connect-src 'self'", "base-uri 'none'", "form-action 'self'", "frame-ancestors 'none'",
 ].join("; ");
 
-function html(res, status, body) {
+export function html(res, status, body) {
   res.status(status).set({
     "Content-Type": "text/html; charset=utf-8",
     "Content-Security-Policy": CSP,
@@ -71,6 +71,18 @@ export function mountTools(app, { services, allow, callerIdOf, origin, verificat
     } catch {
       return res.status(500).json(failure(service, "internal_error", "the check failed; try again"));
     }
+  });
+
+  // README badges (shields.io endpoint JSON) for a server HISTOR observes. Shields asks from a few
+  // addresses for every README that shows one, so this has no per-address limit: the service
+  // keeps each server's count for an hour and its own budget bounds what reaches HISTOR.
+  r.get("/badge/tool-list-cost", async (req, res) => {
+    const service = services.get("tool-list-cost");
+    const server = typeof req.query.server === "string" ? req.query.server.trim() : "";
+    if (!service || !server) return res.status(400).json({ schemaVersion: 1, label: "tool list", message: "add ?server=", color: "6b7280", isError: true });
+    const { status, body } = await service.badge(server);
+    return res.status(status).set({ "Cache-Control": `public, max-age=${body.cacheSeconds || 300}`,
+                                    "Access-Control-Allow-Origin": "*" }).json(body);
   });
 
   // Mounted at /tools, so "/tools" and "/tools/" both arrive here as "/": the URL tells them apart.

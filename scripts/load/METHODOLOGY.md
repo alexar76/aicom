@@ -58,7 +58,7 @@ pipeline create, sandbox, paid invoke.
 
 | Сервер | SSH | Модули в смеси |
 |---|---|---|
-| **Factory** | `my-vps` | Factory, Hub, Mesh, ARGUS, Monitor, Pulse, ATLAS, THEMIS, verify, forge |
+| **Factory** | `factory-vps` | Factory, Hub, Mesh, ARGUS, Monitor, Pulse, ATLAS, THEMIS, verify, forge |
 | **Oracles** | `admin-vps` | GAIA (`iot`), oracles/Platon, lottery, MOMUS, LOGOS |
 | **Metis + SKOPOS** | `skopos.modelmarket.dev` | Metis `/health` + `/v1/verify`, SKOPOS |
 | Hub lab (не в смеси) | `competing-lab` | hunt / lab hub |
