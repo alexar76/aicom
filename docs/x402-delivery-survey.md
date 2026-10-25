@@ -61,6 +61,8 @@ The figures in this survey come from 95 paid calls, not from the 402.
 
 The Bazaar publishes its own 30-day counters. Of 34,768 listings, 22,559 (65%) had exactly one paying wallet in 30 days, most likely the seller paying once to get indexed. Only 396 (1.1%) had ten or more. In our sample, 23 of the 74 sellers whose answer was accepted had exactly one payer.
 
+An independent reading agrees. Martin Pisacreta's open-source [x402 adoption investigator](https://github.com/martinPisacreta/x402-adoption-investigator), where every number cites a fetched source or a decoded Base transaction, audited his own store from its published `/receipts.json` on 2026-10-22: 56 of 77 settled sales came from the store's own wallets, and the Bazaar's 30-day counters for its listings (60 calls) do not tell those apart. Across the whole Bazaar that day, the top ten hosts took 73% of the 30-day calls. A count of payments is not a count of buyers. One of that store's 21 outside sales was our survey's probe.
+
 The x402 market does not look short of trust. It looks short of buyers.
 
 ## Method

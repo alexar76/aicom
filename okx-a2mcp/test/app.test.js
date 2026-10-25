@@ -201,6 +201,35 @@ test("paid route: 402 until paid, a paid empty request is refused (not settled),
   } finally { await close(); }
 });
 
+test("the 402 body carries the challenge of the PAYMENT-REQUIRED header", async () => {
+  // x402 V2 sends {} with the challenge in the header; Karatum reads the body and rated our
+  // routes "did not answer as x402" (2026-10-23). A body the paywall did fill stays as it is.
+  const challenge = { x402Version: 2, accepts: [{ scheme: "exact", network: "eip155:8453", payTo: fakePaywall.payTo }] };
+  const header = Buffer.from(JSON.stringify(challenge)).toString("base64");
+  const v2 = {
+    ...fakePaywall,
+    middleware: (req, res, next) => {
+      if (req.method !== "POST" || req.headers["payment-signature"]) return next();
+      if (req.path === "/x402/warden-scan") return res.status(402).set("PAYMENT-REQUIRED", header).json({});
+      return next();
+    },
+  };
+  const { call, close } = await serve({ paywall: v2 });
+  try {
+    for (const init of [undefined, post({})]) {
+      const res = await call("/x402/warden-scan", init);
+      assert.equal(res.status, 402);
+      assert.equal(res.headers.get("payment-required"), header);
+      assert.deepEqual(await res.json(), challenge);
+    }
+  } finally { await close(); }
+  // A paywall that already writes a body (V1, or an error text) is left alone.
+  const { call: call1, close: close1 } = await serve({ paywall: fakePaywall });
+  try {
+    assert.deepEqual(await (await call1("/x402/warden-scan", post({}))).json(), { x402Version: 2, error: "payment required" });
+  } finally { await close1(); }
+});
+
 test("a paid route answers an unpaid GET with the POST's 402, and a paid GET with 405", async () => {
   // Probes send a GET: agenteconomy.report counts a 402 to it as up, Karatum takes nothing else;
   // a 404 there read as "down" every day (2026-10-21). This paywall, like the real one, guards

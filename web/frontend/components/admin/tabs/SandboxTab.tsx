@@ -369,7 +369,7 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
                             <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mt-3 mb-1">Recent Commits</p>
                             <div className="space-y-1">
                               {gitStatuses[product.product_id].recent_commits.map((commit: string, ci: number) => (
-                                <div key={ci} className="text-xs text-gray-400 font-mono bg-white/5 rounded px-2 py-1">
+                                <div key={ci} className="text-xs text-gray-400 font-mono bg-white/5 rounded-sm px-2 py-1">
                                   {commit}
                                 </div>
                               ))}
@@ -383,7 +383,7 @@ export function SandboxTab({ locale }: { locale: AdminLocale }) {
                             <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mt-3 mb-1">Pending Changes</p>
                             <div className="space-y-1 max-h-32 overflow-y-auto">
                               {gitStatuses[product.product_id].change_list.map((change: string, ci: number) => (
-                                <div key={ci} className="text-xs text-gray-400 font-mono bg-white/5 rounded px-2 py-1">
+                                <div key={ci} className="text-xs text-gray-400 font-mono bg-white/5 rounded-sm px-2 py-1">
                                   {change}
                                 </div>
                               ))}

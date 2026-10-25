@@ -20,8 +20,8 @@
 // "A1M4rk3tEscrowChanne1Paym3nt5oLProg" — replace with the value printed by
 // `solana program deploy` before running `anchor test`.
 
-import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
+import * as anchor from "@anchor-lang/core";
+import { Program } from "@anchor-lang/core";
 import {
   PublicKey,
   Keypair,
@@ -39,12 +39,7 @@ import {
 import * as nacl from "tweetnacl";
 import { assert } from "chai";
 
-// Anchor auto-generates types under `target/types/aimarket_escrow.ts`. Fall
-// back to `any` so this file type-checks even before the first `anchor
-// build` is run on a clean checkout.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AimarketEscrow = any;
-
+// Use the generic IDL until this legacy escrow program is built separately.
 const CHANNEL_SEED = Buffer.from("channel");
 const VAULT_SEED = Buffer.from("vault");
 const AUTH_SEED = Buffer.from("authorized_hub");
@@ -93,7 +88,7 @@ async function airdrop(provider: anchor.AnchorProvider, kp: Keypair, lamports = 
 describe("aimarket_escrow", () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.AimarketEscrow as Program<AimarketEscrow>;
+  const program = anchor.workspace.AimarketEscrow as Program<anchor.Idl>;
   const programId = program.programId;
 
   let admin: Keypair;

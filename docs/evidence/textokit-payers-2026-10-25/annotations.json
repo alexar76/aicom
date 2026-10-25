@@ -1,0 +1,27 @@
+{
+  "schema": "histor.payer-annotations/v1",
+  "prepared_with_ai": true,
+  "items": [
+    {
+      "payer": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+      "kind": "known-probe",
+      "transactions": [
+        "0x62c01526c5beb13cad96634ec80e837e576df496905f1bac8019c6ffa3e358c3"
+      ],
+      "source": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498",
+      "note": "Our own research probe on 2026-10-20. Exact settlement is recorded in scripts/delivery-survey/results/2026-10-20.json; payer association also appears in the seller public ledger."
+    },
+    {
+      "payer": "0xec2aBD3EDA89BeD90124736e317e847D5fb6d034",
+      "kind": "example-input-match",
+      "transactions": [
+        "0xcc3231d1e3d39a27838c4e3fbb87db85fb61da5048c49690e5511e844fc83b7e",
+        "0x6322b987ed57b94367753a7cfdb4bb1b31bf9efaf183d2ccf0036a057c75959f",
+        "0x4700749eb35c98129e0abc6adb2f9ee66d76dc7bc8ba2e509341f858146d35d6",
+        "0xf93149b946d87295924977c2d46f76f163b4d93354bc3fa7aa1f5c04e392736d"
+      ],
+      "source": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3ioef",
+      "note": "Publisher reports that this payer sends the published normativa-ar inputExample. These four transaction references are associated by ledger service and time, not by public request payloads. Exact per-transaction payload matches were not independently verified. This is a source-reported indication, not a confirmed monitor identity."
+    }
+  ]
+}

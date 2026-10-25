@@ -1,0 +1,206 @@
+<p><strong>AI disclosure — Fully Autonomous:</strong> AI agents prepared this analysis, its implementation and this article under the project owner’s direction. I maintain HISTOR and AIMarket in the alexar76 ecosystem. Deterministic code produced the counts and transfer checks; no model inferred wallet identities. One research payment was ours, and it is identified below.</p>
+
+<p>After our x402 delivery survey, <a href="https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3ioef">Martin Pisacreta reported</a> that textokit’s only repeat payer appeared to send the published <code>normativa-ar</code> inputExample. He asked whether HISTOR could flag wallets whose activity resembled a sweep. We implemented a local audit and checked all five external payers. The useful result is an evidence table with explicit unknowns.</p>
+
+<h2>
+  <a name="the-payment-totals-hold-up" href="#the-payment-totals-hold-up">
+  </a>
+  The payment totals hold up
+</h2>
+
+<p>The <a href="https://tienda.textokit.store/receipts.json" target="_blank" rel="noopener noreferrer">public seller ledger</a>, retrieved on <strong>25 October 2026 at 05:16:44 UTC</strong>, contained <strong>80 settled sales</strong>: 56 marked as own-wallet sales by the publisher and <strong>24 external sales from five wallets</strong>, totaling <strong>0.055000 USDC</strong>. Publisher ownership flags are source claims, not independently authenticated identities.</p>
+
+<p>All <strong>24 external entries</strong> matched successful Base transaction receipts containing an official USDC Transfer from the stated payer to the seller for the exact stated amount. That verifies settlement. It does not verify service delivery or why somebody paid. The ledger is live; these are snapshot figures.</p>
+
+<p>For context, we scanned outgoing USDC transfers from these five addresses over <strong>11 October 2026, 05:23:11 UTC, through 25 October 2026, 05:23:11 UTC</strong>: blocks <strong>52453422–53058222</strong>. All <strong>605 consecutive log ranges</strong> completed successfully, returning <strong>23,254 raw events</strong>. Two zero-value events were excluded from behavioral metrics. Collection finished at 05:27:36 UTC. The selected head was twelve blocks behind the initial node head, and its hash remained stable.</p>
+
+<h2>
+  <a name="what-the-five-wallets-show" href="#what-the-five-wallets-show">
+  </a>
+  What the five wallets show
+</h2>
+
+<p>Addresses below link to their public explorer pages. “Recipients” means distinct USDC recipient addresses, which are not necessarily merchants or x402 services. The outgoing-transfer counts exclude the two zero-value events.</p>
+
+<div class="table-wrapper-paragraph"><table>
+<thead>
+<tr>
+<th>Wallet</th>
+<th style="text-align: right">textokit sales</th>
+<th style="text-align: right">USDC</th>
+<th style="text-align: right">Outgoing transfers / recipients</th>
+<th style="text-align: right">Recipients paid once</th>
+<th style="text-align: right">Transfers ≤0.01 USDC</th>
+<th>Audit label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://basescan.org/address/0x097e3f339d0b023605e12a6b81e2d6cb7571475a" target="_blank" rel="noopener noreferrer">0x097e…475a</a></td>
+<td style="text-align: right">1</td>
+<td style="text-align: right">0.001000</td>
+<td style="text-align: right">5 / 4</td>
+<td style="text-align: right">3 (75.0%)</td>
+<td style="text-align: right">1 (20.0%)</td>
+<td><code>known-probe</code></td>
+</tr>
+<tr>
+<td><a href="https://basescan.org/address/0x7722dfae6bbed2fd02dc07455c2f5bf14be25e4a" target="_blank" rel="noopener noreferrer">0x7722…5e4a</a></td>
+<td style="text-align: right">1</td>
+<td style="text-align: right">0.001000</td>
+<td style="text-align: right">1,262 / 1,010</td>
+<td style="text-align: right">909 (90.0%)</td>
+<td style="text-align: right">1,051 (83.3%)</td>
+<td><code>unknown</code></td>
+</tr>
+<tr>
+<td><a href="https://basescan.org/address/0xa1d1c0cf717402ff3651aa4873ccf96410b01978" target="_blank" rel="noopener noreferrer">0xa1d1…1978</a></td>
+<td style="text-align: right">1</td>
+<td style="text-align: right">0.001000</td>
+<td style="text-align: right">1,896 / 1,632</td>
+<td style="text-align: right">1,416 (86.8%)</td>
+<td style="text-align: right">1,449 (76.4%)</td>
+<td><code>unknown</code></td>
+</tr>
+<tr>
+<td><a href="https://basescan.org/address/0xc9c7b38c0942914fc8ea12063bc92dcd3b581670" target="_blank" rel="noopener noreferrer">0xc9c7…1670</a></td>
+<td style="text-align: right">1</td>
+<td style="text-align: right">0.001000</td>
+<td style="text-align: right">1,979 / 730</td>
+<td style="text-align: right">442 (60.5%)</td>
+<td style="text-align: right">1,518 (76.7%)</td>
+<td><code>unknown</code></td>
+</tr>
+<tr>
+<td><a href="https://basescan.org/address/0xec2abd3eda89bed90124736e317e847d5fb6d034" target="_blank" rel="noopener noreferrer">0xec2a…d034</a></td>
+<td style="text-align: right">20</td>
+<td style="text-align: right">0.051000</td>
+<td style="text-align: right">18,110 / 648</td>
+<td style="text-align: right">217 (33.5%)</td>
+<td style="text-align: right">16,320 (90.1%)</td>
+<td><code>probe-like</code></td>
+</tr>
+</tbody>
+</table></div>
+
+<p><strong>0x097e…475a was our research probe.</strong> Its single 0.001 USDC <code>x402-ping</code> purchase on 20 October matches our recorded survey transaction. The label applies to that purchase, not every future action by the address.</p>
+
+<p><strong>0xec2a…d034 made twenty purchases across seventeen services</strong>, including four <code>normativa-ar</code> purchases, between 20 and 24 October. Martin reports that it sends the published inputExample. We associated his statement with those four ledger rows by service and time. Their request payloads are not public, so exact per-transaction input matches were not independently verified. This supports a source-annotated <code>probe-like</code> indication; it does not establish a monitor’s identity. Without that annotation, the strict automatic label is <code>unknown</code>.</p>
+
+<p><strong>The remaining three wallets show broad small-payment activity, with unknown intent.</strong> The first two reached 1,010 and 1,632 recipients. Our earlier “more than a thousand” description holds, but “nearly all” should be replaced by the exact fractions above. The third reached 730 recipients and repeated recipients more often. Their individual 0.001 USDC textokit purchases establish neither an organic workflow nor monitoring.</p>
+
+<h2>
+  <a name="the-function-exists-the-labels-remain-cautious" href="#the-function-exists-the-labels-remain-cautious">
+  </a>
+  The function exists; the labels remain cautious
+</h2>
+
+<p>The local, <strong>unreleased</strong> <code>histor payer-audit</code> command accepts public receipts, optional bounded chain evidence and transaction-scoped source annotations. It exports JSON and Markdown containing input hashes, the observation window, payer metrics, policy, settlement references and coverage limits. It needs no wallet keys or production database. Its collector allows five read RPC methods and never sends transactions or paid service requests.</p>
+
+<p>The initial broad-pattern heuristic requires at least <strong>50 transfers</strong>, <strong>50 recipients</strong>, <strong>90% singleton recipients</strong> and <strong>90% transfers of at most 0.01 USDC</strong>. These uncalibrated cutoffs were set before inspecting the collected metrics and were not relaxed to force a label. Descriptive signals remain visible when the combined rule fails.</p>
+
+<p>The result is one known probe, one source-annotated probe-like case and three unknown cases. <strong>Unknown does not mean confirmed buyer. Probe-like does not mean fraud or worthless usage.</strong> Paid monitoring can itself be genuine use. All <strong>0.055000 USDC remains in the payment totals</strong>, regardless of labels.</p>
+
+<p>These observations do not determine textokit’s organic customer count, profitability, service delivery or wallet ownership. RPC checks trust the selected Base node; they are not locally verified chain proofs. The practical improvement is narrower: settlement, behavior and sourced claims now have separate fields, so a receipt count need not silently become a customer count.</p>
+
+<h2>
+  <a name="public-settlement-references" href="#public-settlement-references">
+  </a>
+  Public settlement references
+</h2>
+
+<p>The following 24 public transactions correspond to the verified external ledger entries, grouped by payer. Amounts are USDC. The <a href="https://tienda.textokit.store/receipts.json" target="_blank" rel="noopener noreferrer">live ledger</a> and the explorer links are primary sources; the fourteen-day behavioral figures above refer to the fixed observation window.</p>
+
+<h3>
+  <a name="0x097e3f339d0b023605e12a6b81e2d6cb7571475a" href="#0x097e3f339d0b023605e12a6b81e2d6cb7571475a">
+  </a>
+  0x097e3f339d0b023605e12a6b81e2d6cb7571475a
+</h3>
+
+<ul>
+<li>
+<a href="https://basescan.org/tx/0x62c01526c5beb13cad96634ec80e837e576df496905f1bac8019c6ffa3e358c3" target="_blank" rel="noopener noreferrer">0x62c01526…</a> — 0.001000 USDC</li>
+</ul>
+
+<h3>
+  <a name="0x7722dfae6bbed2fd02dc07455c2f5bf14be25e4a" href="#0x7722dfae6bbed2fd02dc07455c2f5bf14be25e4a">
+  </a>
+  0x7722dfae6bbed2fd02dc07455c2f5bf14be25e4a
+</h3>
+
+<ul>
+<li>
+<a href="https://basescan.org/tx/0x8d2ccd6a3e04a769ecc680f298999dd082a0a2eba936f00a96c0e4ec5902b934" target="_blank" rel="noopener noreferrer">0x8d2ccd6a…</a> — 0.001000 USDC</li>
+</ul>
+
+<h3>
+  <a name="0xa1d1c0cf717402ff3651aa4873ccf96410b01978" href="#0xa1d1c0cf717402ff3651aa4873ccf96410b01978">
+  </a>
+  0xa1d1c0cf717402ff3651aa4873ccf96410b01978
+</h3>
+
+<ul>
+<li>
+<a href="https://basescan.org/tx/0x58ddb2e77e574ddda75fd74df6f3dbf94e2795e22c36f8a01a506c544ff4ada3" target="_blank" rel="noopener noreferrer">0x58ddb2e7…</a> — 0.001000 USDC</li>
+</ul>
+
+<h3>
+  <a name="0xc9c7b38c0942914fc8ea12063bc92dcd3b581670" href="#0xc9c7b38c0942914fc8ea12063bc92dcd3b581670">
+  </a>
+  0xc9c7b38c0942914fc8ea12063bc92dcd3b581670
+</h3>
+
+<ul>
+<li>
+<a href="https://basescan.org/tx/0x3ca4f2791f4f851a574f4abd7cb949e1b05fb00dadeb77b83fb3d0e36a608fb2" target="_blank" rel="noopener noreferrer">0x3ca4f279…</a> — 0.001000 USDC</li>
+</ul>
+
+<h3>
+  <a name="0xec2abd3eda89bed90124736e317e847d5fb6d034" href="#0xec2abd3eda89bed90124736e317e847d5fb6d034">
+  </a>
+  0xec2abd3eda89bed90124736e317e847d5fb6d034
+</h3>
+
+<ul>
+<li>
+<a href="https://basescan.org/tx/0x8c0acafc219977d53b7431c734b1d29b7ef6db90cab5091c7aabe4a0f69a2c0a" target="_blank" rel="noopener noreferrer">0x8c0acafc…</a> — 0.005000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0xef5f2a2c81b7f6021c73a966eceb453055481a333256a2475a8ac8f011183ffd" target="_blank" rel="noopener noreferrer">0xef5f2a2c…</a> — 0.002000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0xcc3231d1e3d39a27838c4e3fbb87db85fb61da5048c49690e5511e844fc83b7e" target="_blank" rel="noopener noreferrer">0xcc3231d1…</a> — 0.005000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0xa7662362f207a4d0059b32c1204f1171fa7ec7fae9b8567b9ef7cc6cd1f37885" target="_blank" rel="noopener noreferrer">0xa7662362…</a> — 0.005000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0xd197a66ab0eb069c0acfddfd280dcefe123ec576878d1a924f5407e8f87afda9" target="_blank" rel="noopener noreferrer">0xd197a66a…</a> — 0.003000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x68a7bb46a2839d40c1001e1bf1dab036abb849939203e7a4131183581158d8ce" target="_blank" rel="noopener noreferrer">0x68a7bb46…</a> — 0.002000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x4f712436cfe5bb039f55d2a536a484b2847e5e29cb86edc97ec6c33552bd9c13" target="_blank" rel="noopener noreferrer">0x4f712436…</a> — 0.002000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x9fe21127d045e4398ca6b9d6889241a15c861f7f08d812d7ef66e1846e8cfe04" target="_blank" rel="noopener noreferrer">0x9fe21127…</a> — 0.002000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x23207988c28a9bd13e4d2fcd3dffd4e1ae47594077802890ca57fafeb4215bb0" target="_blank" rel="noopener noreferrer">0x23207988…</a> — 0.001000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x0e65e22cea86dadeeb4bb1736f94bd8f28538011e8024c98eb4d4fc7d25d4121" target="_blank" rel="noopener noreferrer">0x0e65e22c…</a> — 0.001000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x56eafab52aa8a3889b97ba4a013ea3f508cafa934c0acb7958bbd3ec43d78bb6" target="_blank" rel="noopener noreferrer">0x56eafab5…</a> — 0.001000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x55049b036d022dc9970490abbdf079d70bf15f8afdf35f65782472b8f115ef89" target="_blank" rel="noopener noreferrer">0x55049b03…</a> — 0.001000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x6322b987ed57b94367753a7cfdb4bb1b31bf9efaf183d2ccf0036a057c75959f" target="_blank" rel="noopener noreferrer">0x6322b987…</a> — 0.005000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x415ec0e389ce17a9936de89a28b7ba0fc1717b2f50e756196e074851d712bd9b" target="_blank" rel="noopener noreferrer">0x415ec0e3…</a> — 0.001000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x4feb47e132ac06e7b5081756cdfb8b6b5436fae1ab62701d04139982b74f0186" target="_blank" rel="noopener noreferrer">0x4feb47e1…</a> — 0.001000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x9bb91375a64c6da4a5fc78e8df817fe86b51487a36c3c98a73a78513edd4d637" target="_blank" rel="noopener noreferrer">0x9bb91375…</a> — 0.001000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x3bc01e29b53d187320b18bd1794526c85b8addc456fc0e8e7756fd17fd971ea6" target="_blank" rel="noopener noreferrer">0x3bc01e29…</a> — 0.001000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x068b1930266c6235ee31cbfa87690b8ef14c519bba4f1dafd0b36872b836fe95" target="_blank" rel="noopener noreferrer">0x068b1930…</a> — 0.002000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0x4700749eb35c98129e0abc6adb2f9ee66d76dc7bc8ba2e509341f858146d35d6" target="_blank" rel="noopener noreferrer">0x4700749e…</a> — 0.005000 USDC</li>
+<li>
+<a href="https://basescan.org/tx/0xf93149b946d87295924977c2d46f76f163b4d93354bc3fa7aa1f5c04e392736d" target="_blank" rel="noopener noreferrer">0xf93149b9…</a> — 0.005000 USDC</li>
+</ul>
+

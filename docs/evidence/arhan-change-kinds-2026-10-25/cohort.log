@@ -1,0 +1,52 @@
+{
+  "snapshotCreatedAt": "2026-10-20T15:39:49Z",
+  "changesFrom": "2026-09-24T10:53:44Z",
+  "changesUntil": "2026-10-20T00:31:28Z",
+  "baseCutoff": "2026-09-24T23:59:59Z",
+  "baseline": {
+    "allSnapshotEvents": 23821,
+    "baseRemoteServers": 10929,
+    "changedFullRemoteServers": 4926,
+    "descriptionCohortServers": 2036,
+    "descriptionCohortDescriptionEvents": 5482,
+    "descriptionCohortEvents": 7319,
+    "oldDigitsOnlyDescriptionEventsAllUnits": 2719
+  },
+  "cohortDetails": {
+    "detail": {
+      "full": 7307,
+      "names-only": 12
+    },
+    "nullFrom": 9,
+    "nullTo": 6,
+    "bothNull": 3,
+    "emptyStringFrom": 0,
+    "emptyStringTo": 0,
+    "bothDigestsPresent": 7307,
+    "uniqueRequiredToolsetDigests": 9006,
+    "chronologicalOrdering": "observedAt ascending, numeric event id ascending",
+    "chainComparisons": 5283,
+    "chainComparisonsWithNull": 6,
+    "chainComparisonsBothNonNull": 5277,
+    "chainGaps": 0,
+    "chainGapServers": 0,
+    "chainGapExamples": []
+  },
+  "inputFiles": {
+    "servers.jsonl.gz": {
+      "sha256": "7e96f47212faac4a25dcdeb13a2920c20d548ae0f5b2df823f604117cf5b8b0b",
+      "bytes": 16079771,
+      "rows": 83957
+    },
+    "changes.jsonl.gz": {
+      "sha256": "8df3d75824a2505014422c63583f1b2d987c21509e218a662c4ece26e6147a6f",
+      "bytes": 27974437,
+      "rows": 23821
+    },
+    "toolsets.jsonl.gz": {
+      "sha256": "9d5f8493910741c084a4e8315375d6bba918d5a0fad8d7bbc02f1e216773e2a2",
+      "bytes": 377362655,
+      "rows": 57846
+    }
+  }
+}

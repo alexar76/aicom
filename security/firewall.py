@@ -204,12 +204,13 @@ class FirewallManager:
     # Access Control
     # -----------------------------------------------------------------------
 
-    def http_request_allowed(self, ip: str, port: int = 8081) -> tuple[bool, str]:
+    def http_request_allowed(self, ip: str, port: int = 8081, *, metered: bool = True) -> tuple[bool, str]:
         """
         HTTP middleware policy: always enforce rate limits and explicit deny rules.
         Full default-deny ACL applies only when ``AIFACTORY_FIREWALL_ENFORCE=1``.
+        ``metered=False`` (the liveness probe) skips the rate limit only.
         """
-        if self._is_rate_limited(ip):
+        if metered and self._is_rate_limited(ip):
             return False, "rate_limited"
         if self.is_blacklisted(ip):
             return False, "blacklisted"
@@ -219,20 +220,20 @@ class FirewallManager:
             "yes",
         )
         if enforce:
-            return self.is_allowed(ip, port)
+            return self.is_allowed(ip, port, metered=metered)
         # ACL not enforced — allow through (the app usually runs behind a reverse proxy
         # that owns network ACLs). Surface the open default once in production so it is
         # a deliberate operator choice rather than a silent gap.
         _warn_firewall_not_enforced_in_prod()
         return True, "ok"
 
-    def is_allowed(self, ip: str, port: int = 8080) -> tuple[bool, str]:
+    def is_allowed(self, ip: str, port: int = 8080, *, metered: bool = True) -> tuple[bool, str]:
         """
         Check if an IP:port combination is allowed.
         Returns (allowed, reason).
         """
         # Check rate limits first
-        if self._is_rate_limited(ip):
+        if metered and self._is_rate_limited(ip):
             return False, "rate_limited"
 
         # Check port is allowed

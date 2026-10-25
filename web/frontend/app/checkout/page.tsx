@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -173,6 +174,7 @@ const CHAIN_CONFIG_TESTNET: Record<string, ChainConfig> = {
 };
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const [selectedChain, setSelectedChain] = useState('base');
   const [selectedToken, setSelectedToken] = useState('USDT');
   const [amount, setAmount] = useState('10');
@@ -919,7 +921,7 @@ export default function CheckoutPage() {
                   <p className="text-xs text-emerald-300 mb-2">License: {paymentInfo.license_key}</p>
                 )}
                 <div className="flex gap-3 justify-center">
-                  <Button onClick={() => (window.location.href = '/')}>
+                  <Button onClick={() => router.push('/')}>
                     Back to Store
                   </Button>
                   {paymentInfo?.order_id && (
@@ -967,7 +969,7 @@ export default function CheckoutPage() {
                   <Button onClick={() => { setStep('payment'); setErrorMessage(''); setErrorHint(''); }}>
                     Try Again
                   </Button>
-                  <Button variant="secondary" onClick={() => (window.location.href = '/')}>
+                  <Button variant="secondary" onClick={() => router.push('/')}>
                     Back to Store
                   </Button>
                 </div>

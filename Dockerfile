@@ -3,7 +3,7 @@
 # ============================================================================
 # Single-container deployment with all components:
 #   - Python 3.12 backend (FastAPI + Uvicorn)
-#   - Node.js 20 + Next.js frontend
+#   - Node.js 22 + Next.js frontend
 #   - All data persisted in /app/data
 #
 # Sandbox Docker support:
@@ -80,7 +80,8 @@ RUN if [ "$INCLUDE_DOCKER_SANDBOX" = "1" ]; then \
     fi
 ENV AIFACTORY_SANDBOX_DOCKER_AVAILABLE=${INCLUDE_DOCKER_SANDBOX}
 
-# ── Node.js 20 LTS ─────────────────────────────────────────────────────────
+# ── Node.js 22 LTS ─────────────────────────────────────────────────────────
+# Security floor: 22.23.4 (2026-10-21 security release). Refuse older apt results.
 # Install via NodeSource apt repo with explicit GPG keyring (no `curl | bash`),
 # so a compromised deb.nodesource.com setup script can't RCE the image build.
 # npm pinned to a fixed version for reproducible builds.
@@ -88,11 +89,12 @@ RUN install -d -m 0755 /etc/apt/keyrings \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
         | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
     && chmod 0644 /etc/apt/keyrings/nodesource.gpg \
-    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" \
         > /etc/apt/sources.list.d/nodesource.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends nodejs \
-    && npm install -g npm@10.9.0 \
+    && node -e 'const v = process.versions.node.split(".").map(Number); if (v[0] !== 22 || v[1] < 23 || (v[1] === 23 && v[2] < 4)) { console.error("Node.js >=22.23.4 on the 22.x security line is required"); process.exit(1); }' \
+    && npm install -g npm@11.21.1 \
     && npm install -g vercel \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

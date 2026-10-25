@@ -111,6 +111,9 @@ echo "$health" | grep -q '"store":"postgresql"' || { echo "production must run o
 if [[ -x /usr/local/sbin/skopos-warden-quality && -f /var/lib/momus-quality/live-image.json ]]; then
   image="$(docker inspect --format '{{.Image}}' histor-histor-1)"
   if /usr/local/sbin/skopos-warden-quality rebind "$image"; then
+    # The next WARDEN-only build must inherit this HISTOR application and schema, not an older
+    # enrollment image. Advance the base only after the running image passed the signed rebind.
+    docker image tag "$image" histor:warden-remediation-base
     echo "MOMUS quality binding → ${image:7:12} (WARDEN unchanged, nothing re-measured)"
   else
     echo "WARNING: the MOMUS quality binding stays on the previous image; the next daily evaluation" \
@@ -118,8 +121,15 @@ if [[ -x /usr/local/sbin/skopos-warden-quality && -f /var/lib/momus-quality/live
   fi
 fi
 if [[ "$was_crawling" -eq 1 ]]; then
+  include_remote=true
+  # Resume package/discovery work without putting all remotes back behind that cycle.
+  if "${COMPOSE[@]}" exec -T histor python -c \
+    'import sys; from histor.config import load_settings; sys.exit(0 if load_settings().remote_interval_s > 0 else 1)'; then
+    include_remote=false
+  fi
   token="$(grep '^HISTOR_OPERATOR_TOKEN=' "$ENV_FILE" | cut -d= -f2-)"
-  curl -sf --max-time 10 -X POST -H "x-histor-operator: ${token}" http://127.0.0.1:9490/api/v1/admin/crawl >/dev/null \
+  curl -sf --max-time 10 -X POST -H "x-histor-operator: ${token}" \
+    "http://127.0.0.1:9490/api/v1/admin/crawl?include_remote=${include_remote}" >/dev/null \
     && echo "restarted the crawl the redeploy interrupted"
   unset token
 fi
@@ -153,26 +163,9 @@ install -m 0755 "$DEST/deploy/upload_hf.sh" /usr/local/sbin/histor-upload-hf  # 
 install -d -m 0755 /usr/local/lib/histor-dataset
 install -m 0644 "$DEST/histor/dataset.py" /usr/local/lib/histor-dataset/dataset.py
 install -m 0644 "$DEST/histor/dataset_index.py" /usr/local/lib/histor-dataset/dataset_index.py
-cat > /etc/systemd/system/histor-export-dataset.service <<UNIT
-[Unit]
-Description=HISTOR monthly open-data snapshot (/datasets/)
-After=docker.service
-[Service]
-Type=oneshot
-ExecStart=/usr/local/sbin/histor-export-dataset
-Nice=10
-IOSchedulingClass=idle
-UNIT
-cat > /etc/systemd/system/histor-export-dataset.timer <<UNIT
-[Unit]
-Description=Try the HISTOR snapshot daily once the crawl is done; it writes one a month
-[Timer]
-# The crawl starts ~20:24 UTC and is done by ~14:00 UTC; a day it is still running is skipped.
-OnCalendar=*-*-* 15:30:00 UTC
-Persistent=true
-[Install]
-WantedBy=timers.target
-UNIT
+# The units come from deploy/ (the timer tries every 10 minutes; the service leaves a gap after each crawl cycle).
+install -m 0644 "$DEST/deploy/histor-export-dataset.service" /etc/systemd/system/histor-export-dataset.service
+install -m 0644 "$DEST/deploy/histor-export-dataset.timer" /etc/systemd/system/histor-export-dataset.timer
 systemctl daemon-reload
 systemctl enable --now histor-export-dataset.timer >/dev/null
 

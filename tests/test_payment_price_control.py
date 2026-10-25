@@ -78,7 +78,7 @@ def test_create_payment_ignores_client_amount(pay_client, monkeypatch):
     assert r.status_code == 422
 
 
-def test_confirm_payment_revalidates_catalog_price(pay_client, monkeypatch):
+def test_confirm_payment_rejects_tampered_server_quote(pay_client, monkeypatch):
     client, pay_mod = pay_client
     monkeypatch.setenv("AIFACTORY_PAYMENT_VERIFY_STUB", "1")
     monkeypatch.setattr(pay_mod, "checkout_usdt_from_sales_file", lambda pid, **kw: 49.99)
@@ -109,12 +109,11 @@ def test_confirm_payment_revalidates_catalog_price(pay_client, monkeypatch):
         headers=auth,
         json={"tx_hash": tx},
     )
-    # Confirm must revalidate against the catalog price: the tampered-down stored amount
-    # (0.01) no longer matches the catalog (49.99), so the payment is rejected outright
-    # rather than verifying an under-payment.
+    # The issued quote is authenticated independently of later catalog changes.
+    # Tampering with its amount invalidates the seal before chain verification.
     assert r.status_code == 400
     body = str(r.json()).lower()
-    assert "amount" in body and "catalog" in body
+    assert "amount" in body and "quote" in body
 
 
 def test_channel_open_rejects_forged_tx_when_demo_off(tmp_path, monkeypatch):

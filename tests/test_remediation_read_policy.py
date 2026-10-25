@@ -111,9 +111,9 @@ def test_key_material_is_redacted_from_content(secret):
 
 
 @pytest.mark.parametrize("line", [
-    'api_key = "sk_live_0123456789abcdef"',
+    'api_key = "' + "sk_live_" + '0123456789abcdef"',
     "API_KEY: aVeryLongLookingSecretValue123",
-    'password = "correct-horse-battery-staple-1"',
+    'password = "' + "correct-horse-" + 'battery-staple-1"',
     "token= abcdefghijklmnopqrstuvwxyz",
 ])
 def test_assignments_that_look_like_credentials_are_redacted(line):

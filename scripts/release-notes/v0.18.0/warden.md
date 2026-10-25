@@ -17,6 +17,6 @@ Tool definitions: 2 changed, 0 added, 0 removed (1 changed only in numbers: stil
 
 - `warden-mcp pins status|approve|revoke` prints it before the full definitions; `status_mcp_server` returns it as `changes` and `reviewText`; the library exports `diffToolDefinitions`, `formatDefinitionDiff` and `wordDiff`.
 - A change made only of digits, separators or whitespace is marked, never skipped.
-- Why: in HISTOR's public log, 52% of 23,821 changes to MCP tool definitions over four weeks changed description text, and about one in eight changed nothing but numbers or whitespace. A review that shows both the same way trains people to approve without reading. Data: [doi:10.5281/zenodo.23512760](https://doi.org/10.5281/zenodo.23512760).
+- Why: in HISTOR's public log, 59.5% of 23,821 changes to MCP tool definitions over four weeks changed a tool's description, and 13.4% changed nothing but numbers or whitespace. A review that shows both the same way trains people to approve without reading. Data: [doi:10.5281/zenodo.23512760](https://doi.org/10.5281/zenodo.23512760).
 
 Full list: [CHANGELOG.md](https://github.com/alexar76/warden/blob/main/CHANGELOG.md).

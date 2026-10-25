@@ -164,6 +164,7 @@ class SecurityManager:
         username: str,
         is_admin: bool = True,
         role: Optional[str] = None,
+        account: Optional[dict] = None,
     ) -> str:
         """Create a JWT access token. `role` is one of viewer|operator|admin|super_admin."""
         now = datetime.now(timezone.utc)
@@ -180,6 +181,16 @@ class SecurityManager:
             "iat": now,
             "jti": hashlib.sha256(os.urandom(32)).hexdigest()[:16],
         }
+        from web.backend.services import admin_users_store
+
+        # Interactive login passes the exact account snapshot whose password or
+        # identity assertion was checked. A fresh lookup after checking an old
+        # password could otherwise bind it to a concurrent password reset's NEW
+        # session version and defeat revocation.
+        row = account if account is not None else admin_users_store.get_user_by_username(username)
+        if row:
+            payload["uid"] = str(row["id"])
+            payload["auth_version"] = str(row.get("session_version") or "0")
         return encode_hs256(payload, self.secret_key, algorithm=self.jwt_algorithm)
 
     def decode_token(self, token: str) -> Optional[dict]:
@@ -189,7 +200,46 @@ class SecurityManager:
         )
         if payload is None:
             logger.warning("Token validation failed")
+        elif payload.get("admin"):
+            # Revocation is an authorization boundary: an unavailable store must
+            # not turn a logged-out bearer token into a usable session again.
+            try:
+                if self._rl_store is None or not payload.get("jti"):
+                    return None
+                if self._rl_store.admin_token_revoked(str(payload["jti"])):
+                    return None
+            except Exception:
+                logger.error("Admin token revocation check unavailable", exc_info=True)
+                return None
         return payload
+
+    def authenticate_admin_token(self, token: str) -> Optional[dict]:
+        """Authenticate a session against the current account, not JWT role snapshots.
+
+        Pre-migration JWTs lack the immutable account binding and require a new
+        login. Password login seeds legacy admin.json accounts before issuance;
+        OIDC provisions its account before issuance as well.
+        """
+        payload = self.decode_token(token)
+        if not payload or not payload.get("admin"):
+            return None
+        from web.backend.services import admin_users_store
+
+        row = admin_users_store.get_user_by_username(str(payload.get("sub") or ""))
+        if (not row or not row.get("enabled", True)
+                or payload.get("uid") != str(row.get("id") or "")
+                or payload.get("auth_version") != str(row.get("session_version") or "0")):
+            return None
+        return {**payload, "sub": row["username"], "role": row.get("role") or "viewer"}
+
+    def revoke_token(self, token: str) -> None:
+        """Revoke a valid presented admin JWT; invalid/expired tokens need no write."""
+        payload = decode_hs256_optional(token, self.secret_key, algorithms=[self.jwt_algorithm])
+        if not payload or not payload.get("admin") or not payload.get("jti"):
+            return
+        if self._rl_store is None:
+            raise RuntimeError("Admin session revocation unavailable")
+        self._rl_store.revoke_admin_token(str(payload["jti"]), float(payload["exp"]))
 
     def check_login_attempts(self, ip_address: str) -> bool:
         """Check if login attempts are within limits."""
@@ -373,11 +423,17 @@ async def get_current_admin(
     peer_ip = client_ip(request)
     hdr_user = username_from_trusted_header(dict(request.headers), peer_ip)
     if hdr_user:
+        from web.backend.services import admin_users_store
+
+        row = admin_users_store.get_user_by_username(hdr_user)
+        if row and not row.get("enabled", True):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account disabled")
         return {
             "sub": hdr_user,
             "username": hdr_user,
             "admin": True,
-            "role": (os.environ.get("AIFACTORY_SSO_TRUSTED_DEFAULT_ROLE") or "admin"),
+            "role": (row.get("role") or "viewer") if row else (
+                os.environ.get("AIFACTORY_SSO_TRUSTED_DEFAULT_ROLE") or "admin"),
             "sso": "trusted-header",
         }
 
@@ -413,7 +469,10 @@ async def get_current_admin(
         if not payload:
             continue
         if payload.get("admin"):
-            return payload
+            current = security_manager.authenticate_admin_token(token)
+            if current:
+                return current
+            continue
         saw_valid_non_admin = True
 
     if saw_valid_non_admin:

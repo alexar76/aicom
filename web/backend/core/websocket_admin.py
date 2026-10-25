@@ -80,7 +80,7 @@ async def require_admin_websocket(websocket: WebSocket) -> dict:
 
     _enforce_ws_origin(websocket, cookie_auth=cookie_auth)
 
-    payload = security_manager.decode_token(token)
+    payload = security_manager.authenticate_admin_token(token)
     if not payload or not payload.get("admin"):
         raise WebSocketException(code=status.WS_1008_POLICY_VIOLATION, reason="Invalid or expired token")
 

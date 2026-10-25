@@ -331,7 +331,10 @@ def test_offline_mode_makes_no_request(mod, monkeypatch):
 def test_exit_status_gates_on_findings(mod, monkeypatch):
     monkeypatch.setattr(mod, "observe", lambda p: {"served": None, "authority": "unreachable",
                                                    "detail": "x"})
-    # basanos is the one coherent component, so with no observation there is nothing to report.
+    # Control both versions: a release bump in a real satellite must not change
+    # this test's verdict. The file readers have separate contract coverage.
+    monkeypatch.setattr(mod, "packaging_version", lambda _: ("test-dist", "1.0.0"))
+    monkeypatch.setattr(mod, "runtime_version", lambda _: "1.0.0")
     assert mod.main(["--component", "basanos", "--offline"]) == 0
-    # A hub is incoherent in the tree today, which is a finding on its own.
+    monkeypatch.setattr(mod, "runtime_version", lambda _: "0.9.0")
     assert mod.main(["--component", "hub-apex", "--offline"]) == 1

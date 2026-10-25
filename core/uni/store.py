@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS uni_withdrawals (
     wallet_id TEXT NOT NULL,
     amount_uni REAL NOT NULL,
     fee_uni REAL NOT NULL,
+    fee_credited INTEGER NOT NULL DEFAULT 1,
     net_usdt REAL NOT NULL,
     payout_chain TEXT NOT NULL,
     payout_token TEXT NOT NULL,
@@ -188,6 +189,8 @@ def _sqlite_column_names(conn: sqlite3.Connection, table: str) -> set[str]:
 
 def _apply_sqlite_migrations(conn: sqlite3.Connection) -> None:
     conn.executescript(_SCHEMA_V2_SQLITE)
+    if "fee_credited" not in _sqlite_column_names(conn, "uni_withdrawals"):
+        conn.execute("ALTER TABLE uni_withdrawals ADD COLUMN fee_credited INTEGER NOT NULL DEFAULT 1")
     for col, typ in _RECEIPT_V2_COLUMNS:
         if col not in _sqlite_column_names(conn, "uni_receipts"):
             conn.execute(f"ALTER TABLE uni_receipts ADD COLUMN {col} {typ}")
@@ -238,6 +241,7 @@ def _pg_execute_script(conn: Any, script: str) -> None:
 
 def _apply_postgres_migrations(conn: Any) -> None:
     _pg_execute_script(conn, _SCHEMA_V2_SQLITE.replace("REAL", "DOUBLE PRECISION"))
+    conn.execute("ALTER TABLE uni_withdrawals ADD COLUMN IF NOT EXISTS fee_credited INTEGER NOT NULL DEFAULT 1")
     for col, typ in _RECEIPT_V2_COLUMNS:
         with suppress(Exception):
             conn.execute(
@@ -311,12 +315,14 @@ def _get_sqlite() -> sqlite3.Connection:
 def _get_pg_pool() -> Any:
     global _pg_pool
     if _pg_pool is None:
+        from psycopg.rows import dict_row
         from psycopg_pool import ConnectionPool
 
         url = uni_database_url()
         if not url:
             raise RuntimeError("UNI postgres backend requires UNI_DATABASE_URL or DATABASE_URL")
-        _pg_pool = ConnectionPool(url, min_size=1, max_size=8, kwargs={"autocommit": False})
+        _pg_pool = ConnectionPool(url, min_size=1, max_size=8, open=True,
+                                  kwargs={"autocommit": False, "row_factory": dict_row})
         _init_postgres(_pg_pool)
     return _pg_pool
 
@@ -334,9 +340,11 @@ def uni_connection() -> Iterator[Any]:
     with _lock:
         conn = _get_sqlite()
         try:
+            # Serialize the read/modify/write unit across processes too.
+            conn.execute("BEGIN IMMEDIATE")
             yield conn
             conn.commit()
-        except Exception:
+        except BaseException:
             conn.rollback()
             raise
 

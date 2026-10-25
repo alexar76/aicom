@@ -10,6 +10,7 @@ import asyncio
 import fcntl
 import json
 import logging
+import math
 import os
 import threading
 import time
@@ -18,7 +19,7 @@ from datetime import UTC, datetime
 from decimal import Decimal, InvalidOperation
 from typing import TYPE_CHECKING, Any
 
-from core.decimal_json import dumps as _json_dumps
+from core.json_state import write_json_atomic
 from core.paths import state_dir
 from core.throughput_limits import (
     effective_llm_daily_cost_cap_usd,
@@ -54,6 +55,23 @@ class LLMUsageLimitError(RuntimeError):
         self.limit_type = limit_type
         self.spent_usd = spent_usd
         self.cap_usd = cap_usd
+
+
+class LLMUsageStateError(RuntimeError):
+    """Stored spend cannot be trusted; restore the ledger before permitting calls."""
+
+
+def _spend_amount(value: Any) -> Decimal:
+    """Reject invalid spend instead of letting it reset or poison a budget."""
+    if isinstance(value, bool):
+        raise ValueError("spend must be a finite non-negative number")
+    try:
+        amount = Decimal(str(value))
+    except (InvalidOperation, ValueError, TypeError) as exc:
+        raise ValueError("spend must be a finite non-negative number") from exc
+    if not amount.is_finite() or amount < 0:
+        raise ValueError("spend must be a finite non-negative number")
+    return amount
 
 
 def _utc_day_key() -> str:
@@ -95,28 +113,40 @@ class LLMUsageGuard:
         self._thread_lock = threading.Lock()
 
     def _load_shared_state(self) -> dict[str, Any]:
+        """Only an absent ledger starts empty. Unreadable or corrupt ledgers block calls."""
         try:
-            if not self._state_path.is_file():
-                return _empty_state()
             raw = json.loads(self._state_path.read_text(encoding="utf-8"))
             if not isinstance(raw, dict):
-                return _empty_state()
+                raise ValueError("usage state must be an object")
+            # Validate even stale counters: malformed dates must not look like rollover.
+            for key, fmt in (("day", "%Y-%m-%d"), ("month", "%Y-%m")):
+                date = raw[key]
+                if not isinstance(date, str) or datetime.strptime(date, fmt).strftime(fmt) != date:
+                    raise ValueError(f"invalid {key} in usage state")
+            day_spend = _spend_amount(raw["day_spend_usd"])
+            month_spend = _spend_amount(raw["month_spend_usd"])
+            times = raw["request_times"]
+            if not isinstance(times, list) or any(
+                isinstance(t, bool) or not isinstance(t, (int, float)) or not math.isfinite(t) or t < 0
+                for t in times
+            ):
+                raise ValueError("invalid request timestamps in usage state")
             state = _empty_state()
             day = _utc_day_key()
             month = _utc_month_key()
             if str(raw.get("day") or "") == day:
                 state["day"] = day
-                state["day_spend_usd"] = _to_decimal(raw.get("day_spend_usd") or 0)
+                state["day_spend_usd"] = day_spend
             if str(raw.get("month") or "") == month:
                 state["month"] = month
-                state["month_spend_usd"] = _to_decimal(raw.get("month_spend_usd") or 0)
-            times = raw.get("request_times")
-            if isinstance(times, list):
-                state["request_times"] = [float(t) for t in times if isinstance(t, (int, float))]
+                state["month_spend_usd"] = month_spend
+            state["request_times"] = [float(t) for t in times]
             return state
-        except Exception as e:
-            logger.warning("Could not load LLM usage guard state: %s", e)
+        except FileNotFoundError:
             return _empty_state()
+        except (OSError, ValueError, TypeError, KeyError, OverflowError) as exc:
+            logger.error("LLM usage state unavailable at %s; refusing to reset spend", self._state_path)
+            raise LLMUsageStateError("LLM usage state is unreadable or invalid; restore it before retrying") from exc
 
     def _persist_shared_state(self, state: dict[str, Any]) -> None:
         payload = {
@@ -127,10 +157,7 @@ class LLMUsageGuard:
             "request_times": state.get("request_times") or [],
             "updated_at": datetime.now(UTC).isoformat(),
         }
-        self._state_path.parent.mkdir(parents=True, exist_ok=True)
-        tmp = self._state_path.with_suffix(".tmp")
-        tmp.write_text(_json_dumps(payload, indent=2), encoding="utf-8")
-        tmp.replace(self._state_path)
+        write_json_atomic(self._state_path, payload, mode=0o600, allow_nan=False)
 
     @staticmethod
     def _rollover(state: dict[str, Any]) -> None:
@@ -190,31 +217,29 @@ class LLMUsageGuard:
                 await asyncio.sleep(e.wait_seconds)
 
     def record_spend(self, usd: float) -> None:
-        amount = _to_decimal(usd)
-        if amount <= 0:
+        amount = _spend_amount(usd)
+        if amount == 0:
             return
-        with self._thread_lock:
-            with _exclusive_file_lock(self._lock_path):
-                state = self._load_shared_state()
-                self._rollover(state)
-                state["day_spend_usd"] = state.get("day_spend_usd", Decimal("0")) + amount
-                state["month_spend_usd"] = state.get("month_spend_usd", Decimal("0")) + amount
-                self._persist_shared_state(state)
+        with self._thread_lock, _exclusive_file_lock(self._lock_path):
+            state = self._load_shared_state()
+            self._rollover(state)
+            state["day_spend_usd"] = state.get("day_spend_usd", Decimal("0")) + amount
+            state["month_spend_usd"] = state.get("month_spend_usd", Decimal("0")) + amount
+            self._persist_shared_state(state)
 
     def snapshot(self) -> dict[str, Any]:
-        with self._thread_lock:
-            with _exclusive_file_lock(self._lock_path):
-                state = self._load_shared_state()
-                self._rollover(state)
-                return {
-                    "day_spend_usd": float(state["day_spend_usd"]),
-                    "month_spend_usd": float(state["month_spend_usd"]),
-                    "daily_cap_usd": effective_llm_daily_cost_cap_usd(),
-                    "monthly_cap_usd": effective_llm_monthly_cost_cap_usd(),
-                    "pre_call_reserve_usd": effective_llm_pre_call_reserve_usd(),
-                    "requests_per_minute_limit": effective_llm_max_requests_per_minute(),
-                    "requests_last_minute": len(state.get("request_times") or []),
-                }
+        with self._thread_lock, _exclusive_file_lock(self._lock_path):
+            state = self._load_shared_state()
+            self._rollover(state)
+            return {
+                "day_spend_usd": float(state["day_spend_usd"]),
+                "month_spend_usd": float(state["month_spend_usd"]),
+                "daily_cap_usd": effective_llm_daily_cost_cap_usd(),
+                "monthly_cap_usd": effective_llm_monthly_cost_cap_usd(),
+                "pre_call_reserve_usd": effective_llm_pre_call_reserve_usd(),
+                "requests_per_minute_limit": effective_llm_max_requests_per_minute(),
+                "requests_last_minute": len(state.get("request_times") or []),
+            }
 
 
 class _RpmWaitRequired(Exception):

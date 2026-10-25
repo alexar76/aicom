@@ -1,0 +1,77 @@
+[
+  {
+    "check": "delivery_and_refund_receipt_signatures_valid",
+    "ok": true
+  },
+  {
+    "check": "same_order_amount_payer_and_nonce",
+    "ok": true
+  },
+  {
+    "check": "base_mainnet",
+    "ok": true
+  },
+  {
+    "check": "both_transactions_successful",
+    "ok": true
+  },
+  {
+    "check": "both_transactions_canonical_and_confirmed",
+    "ok": true,
+    "refund_confirmations": 2292
+  },
+  {
+    "check": "exactly_one_payment_and_full_refund",
+    "ok": true
+  },
+  {
+    "check": "authorization_nonces_used_once",
+    "ok": true
+  },
+  {
+    "check": "no_extra_buyer_usdc_transfers_during_cycle",
+    "ok": true,
+    "outgoing_count": 1,
+    "incoming_count": 1,
+    "from_block": 52980361,
+    "to_block": 52980371
+  },
+  {
+    "check": "buyer_balances_restored",
+    "ok": true,
+    "usdc_before": "1.043148",
+    "usdc_after": "1.043148",
+    "eth_delta_wei": 0
+  },
+  {
+    "check": "merchant_balances_restored",
+    "ok": true,
+    "usdc_before": "0",
+    "usdc_after": "0",
+    "eth_delta_wei": 0
+  },
+  {
+    "check": "gas_paid_by_other_transaction_senders",
+    "ok": true
+  },
+  {
+    "check": "payment_nonce_consumed_onchain",
+    "ok": true
+  },
+  {
+    "check": "refund_nonce_consumed_onchain",
+    "ok": true
+  },
+  {
+    "check": "one_production_order_one_refund_ledger_entry",
+    "ok": true
+  },
+  {
+    "check": "supplier_profile_cancelled_unused",
+    "ok": true
+  },
+  {
+    "check": "exactly_one_supplier_profile_for_order",
+    "ok": true
+  }
+]

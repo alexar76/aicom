@@ -679,7 +679,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                           type="checkbox"
                           checked={landingFastPath}
                           onChange={(e) => setLandingFastPath(e.target.checked)}
-                          className="mt-1 rounded border-white/20 bg-black/40 text-fuchsia-500 focus:ring-fuchsia-500/40"
+                          className="mt-1 rounded-sm border-white/20 bg-black/40 text-fuchsia-500 focus:ring-fuchsia-500/40"
                         />
                         <span>
                           <span className="font-medium text-white">{t(locale, 'newProduct.landingFastPath')}</span>
@@ -691,7 +691,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                           type="checkbox"
                           checked={agentToWebsite}
                           onChange={(e) => setAgentToWebsite(e.target.checked)}
-                          className="mt-1 rounded border-white/20 bg-black/40 text-fuchsia-500 focus:ring-fuchsia-500/40"
+                          className="mt-1 rounded-sm border-white/20 bg-black/40 text-fuchsia-500 focus:ring-fuchsia-500/40"
                         />
                         <span>
                           <span className="font-medium text-white">{t(locale, 'newProduct.agentToWebsite')}</span>
@@ -707,7 +707,7 @@ export function NewProductTab({ locale }: { locale: AdminLocale }) {
                           type="checkbox"
                           checked={aimarketWidget}
                           onChange={(e) => setAimarketWidget(e.target.checked)}
-                          className="mt-1 rounded border-white/20 bg-black/40 text-cyan-500 focus:ring-cyan-500/40"
+                          className="mt-1 rounded-sm border-white/20 bg-black/40 text-cyan-500 focus:ring-cyan-500/40"
                         />
                         <span>
                           <span className="font-medium text-white">{t(locale, 'newProduct.aimarketWidget')}</span>

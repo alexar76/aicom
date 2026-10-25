@@ -499,7 +499,7 @@ export function SupportWidget() {
         aria-label={tr.openAria(tr.botDefault)}
         aria-expanded={open}
         onClick={() => (open ? setOpen(false) : void handleOpen())}
-        className="fixed bottom-8 right-5 z-[400] flex h-14 w-14 items-center justify-center rounded-full border border-cyan-500/40 bg-gradient-to-br from-slate-900/95 to-indigo-950/95 text-cyan-200 shadow-lg shadow-cyan-900/30 backdrop-blur-md transition hover:border-cyan-400/60 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/80 md:bottom-10 md:right-8"
+        className="fixed bottom-8 right-5 z-[400] flex h-14 w-14 items-center justify-center rounded-full border border-cyan-500/40 bg-gradient-to-br from-slate-900/95 to-indigo-950/95 text-cyan-200 shadow-lg shadow-cyan-900/30 backdrop-blur-md transition hover:border-cyan-400/60 hover:text-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400/80 md:bottom-10 md:right-8"
       >
         {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : <MessageCircle className="h-6 w-6" />}
       </button>
@@ -595,7 +595,7 @@ export function SupportWidget() {
                 onChange={(e) => setInput(e.target.value.slice(0, MAX_LEN))}
                 placeholder={tr.messagePlaceholder}
                 rows={3}
-                className="min-h-[5.5rem] w-full resize-none rounded-xl border border-white/10 bg-black/30 py-2 pl-3 pr-14 text-base text-white placeholder:text-slate-500 focus:border-cyan-500/40 md:text-sm focus:outline-none"
+                className="min-h-[5.5rem] w-full resize-none rounded-xl border border-white/10 bg-black/30 py-2 pl-3 pr-14 text-base text-white placeholder:text-slate-500 focus:border-cyan-500/40 md:text-sm focus:outline-hidden"
                 disabled={sending || !session}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
@@ -611,7 +611,7 @@ export function SupportWidget() {
                 aria-pressed={voiceListening}
                 aria-label={voiceListening ? tr.stopDictation : tr.dictation}
                 title={getSpeechRecognitionCtor() ? (voiceListening ? tr.stopDictation : tr.dictation) : tr.unavailable}
-                className={`absolute bottom-3 right-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 text-white shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/80 disabled:pointer-events-none disabled:opacity-40 ${
+                className={`absolute bottom-3 right-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 text-white shadow-lg transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-300/80 disabled:pointer-events-none disabled:opacity-40 ${
                   voiceListening
                     ? 'border-rose-300/60 bg-rose-600 hover:bg-rose-500 animate-pulse'
                     : 'border-cyan-400/50 bg-cyan-600 hover:bg-cyan-500 hover:scale-105 active:scale-95'

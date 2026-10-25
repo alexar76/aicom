@@ -2,22 +2,21 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from aicom_publish_config import (  # noqa: E402
+from aicom_publish_config import (
     DEFAULT_RSYNC_EXCLUDES,
+    PUBLIC_FACTORY_ROOTS,
+    check_roots,
+    classify_root,
     factory_exclude_paths,
     factory_local_exclude_paths,
     rsync_exclude_args,
     satellite_export_paths,
-    check_roots,
-    classify_root,
-    PUBLIC_FACTORY_ROOTS,
 )
 
 
@@ -85,6 +84,9 @@ def test_factory_rsync_excludes_cursor_and_github():
     """Factory publish uses rsync; .gitignore does not apply."""
     assert "independent" in DEFAULT_RSYNC_EXCLUDES
     assert "unused" in DEFAULT_RSYNC_EXCLUDES
+    assert "build" in DEFAULT_RSYNC_EXCLUDES
+    assert ".build" in DEFAULT_RSYNC_EXCLUDES
+    assert ".venv-quality" in DEFAULT_RSYNC_EXCLUDES
     assert "independent" in factory_exclude_paths()
     locals_ = set(factory_local_exclude_paths())
     assert ".cursor" in locals_
@@ -105,6 +107,11 @@ def test_factory_rsync_excludes_cursor_and_github():
     assert "data/uni_settlements.jsonl" in excludes
     assert "data/water_quality_history.json" in excludes
     assert "independent" in excludes
+    assert ".venv-quality" in excludes
+    assert "docs/evidence/mcp-sdk-recovery-2026-10-24" in excludes
+    assert "docs/evidence/external-presence-2026-10-24" in excludes
+    assert "artifacts/security-audit-2026-10-25" in excludes
+    assert "artifacts/quality-audit-2026-10-24" in excludes
     assert "cite-desks" in factory_local_exclude_paths()
     assert "cite-desks" in DEFAULT_RSYNC_EXCLUDES
     assert "cite-desks" in factory_exclude_paths()
@@ -139,6 +146,21 @@ def test_every_tracked_repo_root_is_classified():
     )
 
 
+def test_root_audit_reads_one_configuration_snapshot(monkeypatch):
+    import aicom_publish_config as config
+
+    reads = []
+
+    def excludes():
+        reads.append(True)
+        return ["satellite-a", "satellite-b"]
+
+    monkeypatch.setattr(config, "factory_exclude_paths", excludes)
+    monkeypatch.setattr(config, "_shipped_roots", lambda _: ["satellite-a", "satellite-b", "README.md", "unknown"])
+    assert config.check_roots(ROOT) == ["unknown"]
+    assert len(reads) == 1
+
+
 def test_an_untracked_root_is_classified_too(tmp_path):
     """The factory export rsyncs the working tree and the clone runs `git add -A`, so an
     untracked root that .gitignore does not cover ships exactly like a tracked one."""
@@ -157,7 +179,7 @@ def test_an_untracked_root_is_classified_too(tmp_path):
 
 
 def test_root_classification_is_exhaustive_and_secrets_are_never_public():
-    for name in ("independent", "pantheon", "cite-desks", "attested", "saas-compose.yml", "domain-kit"):
+    for name in ("independent", "pantheon", "modelmarket-blog", "cite-desks", "attested", "saas-compose.yml", "domain-kit"):
         assert classify_root(name) != "public", name
     assert classify_root("domain-kit") == "excluded"
     assert classify_root(".env") == "excluded"

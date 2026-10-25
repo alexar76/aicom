@@ -78,7 +78,7 @@ async def create_user(request: Request, body: UserCreate, admin: dict = Depends(
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=client_error_detail(e)) from e
-    pub = {k: v for k, v in row.items() if k != "password_hash"}
+    pub = {k: v for k, v in row.items() if k not in {"password_hash", "session_version"}}
     try:
         from web.backend.services.admin_action_log import log_admin_action_from_request
 
@@ -130,7 +130,7 @@ async def patch_user(
         )
     except Exception:
         pass
-    return {k: v for k, v in u.items() if k != "password_hash"}
+    return {k: v for k, v in u.items() if k not in {"password_hash", "session_version"}}
 
 
 @router.post("/{user_id}/password")

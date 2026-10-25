@@ -21,7 +21,6 @@ import pytest
 
 from web.backend.api import sandbox as sandbox_api
 
-
 SLOW_BOOTSTRAP_SECONDS = 3.0
 
 
@@ -31,6 +30,11 @@ def slow_bootstrap(tmp_path, monkeypatch):
     code_dir = tmp_path / "code"
     code_dir.mkdir()
     (code_dir / "index.html").write_text("<html><body>x</body></html>")
+    # This fixture tests request scheduling, independent of host volume capacity.
+    monkeypatch.setattr("web.backend.services.sandbox_guards.host_disk_free_gb", lambda _: 100.0)
+    monkeypatch.setattr("web.backend.services.sandbox_guards.host_mem_available_mb", lambda: 8192)
+    monkeypatch.setattr(sandbox_api, "_active_sandboxes", {})
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path / "data"))
 
     started = threading.Event()
     finished = threading.Event()
@@ -99,11 +103,12 @@ def test_publisher_opts_into_waiting(slow_bootstrap):
     assert result["preview_api"]["status"] == "ok"
 
 
-def test_working_app_publish_asks_to_wait():
+def test_working_app_publish_asks_to_wait(tmp_path, monkeypatch):
     """Guard the call site itself: without the flag the publisher reads empty payloads and
     reports `working_app_not_live` for every full_software product."""
     from web.backend.services import working_app_publish
 
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path / "data"))
     seen: dict[str, object] = {}
 
     def _fake_start(product_id, *, storefront=False, wait_for_bootstrap=False):

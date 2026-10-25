@@ -10,6 +10,7 @@ Routes generation requests to the appropriate provider based on:
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import hashlib
 import logging
 import os
@@ -301,10 +302,8 @@ class LLMRouter:
                 # A hit means no provider runs, so nothing would set this. Say plainly that the
                 # answer came whole from cache rather than leaving the field at "", which a
                 # caller cannot tell apart from "the provider did not say".
-                try:
+                with contextlib.suppress(Exception):
                     config.finish_reason = "cache"
-                except Exception:  # noqa: BLE001 - a caller may pass a frozen config
-                    pass
                 return cached
 
         tried: set[str] = set()

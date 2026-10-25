@@ -1,13 +1,14 @@
 """
 Timeout Manager
 ===============
-Monitors task execution time and triggers timeout handling.
-If an agent is silent for >30 seconds, the task is restarted or failed.
+Monitors task deadlines and invokes the registered timeout callback.
+Deadlines use monotonic time and per-agent budgets (30 seconds for unknown roles).
 """
 
 from __future__ import annotations
 
 import asyncio
+import inspect
 import logging
 import time
 from typing import TYPE_CHECKING
@@ -51,8 +52,11 @@ class TimeoutManager:
 
     def start_task(self, task_id: str, agent_type: str, callback: Callable, custom_timeout: int | None = None):
         """Start tracking a task with timeout."""
-        timeout = custom_timeout or self._agent_timeouts.get(agent_type, self.default_timeout_sec)
-        deadline = time.time() + timeout
+        timeout = (
+            custom_timeout if custom_timeout is not None
+            else self._agent_timeouts.get(agent_type, self.default_timeout_sec)
+        )
+        deadline = time.monotonic() + timeout
         self._timeouts[task_id] = deadline
         self._callbacks[task_id] = callback
         logger.debug(f"Started timeout tracking for {task_id} ({agent_type}, {timeout}s)")
@@ -75,6 +79,8 @@ class TimeoutManager:
 
     async def start_monitoring(self, check_interval: float = 1.0):
         """Start the timeout monitoring loop."""
+        if self._monitor_task is not None and not self._monitor_task.done():
+            return
         self._running = True
         self._monitor_task = asyncio.create_task(self._monitor_loop(check_interval))
         logger.info("Timeout monitoring started")
@@ -88,37 +94,36 @@ class TimeoutManager:
                 await self._monitor_task
             except asyncio.CancelledError as _suppressed_exc:
                 log_suppressed(logger, "non-fatal (orchestrator/timeout_manager.py)", exc_info=_suppressed_exc)
+            finally:
+                self._monitor_task = None
         logger.info("Timeout monitoring stopped")
 
     async def _monitor_loop(self, check_interval: float):
         """Periodically check for timed-out tasks."""
         while self._running:
-            now = time.time()
-            timed_out = [
-                task_id for task_id, deadline in self._timeouts.items()
-                if now >= deadline
-            ]
-
-            for task_id in timed_out:
-                callback = self._callbacks.get(task_id)
+            for task_id in list(self._timeouts):
+                # A previous callback may have completed or extended another task.
+                deadline = self._timeouts.get(task_id)
+                if deadline is None or time.monotonic() < deadline:
+                    continue
+                # Remove the expired registration before yielding. A callback may rearm
+                # this same ID, and its replacement must survive the old timeout.
+                self._timeouts.pop(task_id, None)
+                callback = self._callbacks.pop(task_id, None)
                 if callback:
                     logger.warning(f"Task {task_id} timed out, triggering callback")
                     try:
-                        if asyncio.iscoroutinefunction(callback):
-                            await callback(task_id)
-                        else:
-                            callback(task_id)
+                        result = callback(task_id)
+                        if inspect.isawaitable(result):
+                            await result
                     except Exception as e:
-                        logger.error(f"Timeout callback failed for {task_id}: {e}")
-                
-                self._timeouts.pop(task_id, None)
-                self._callbacks.pop(task_id, None)
+                        logger.exception("Timeout callback failed for %s: %s", task_id, e)
 
             await asyncio.sleep(check_interval)
 
     def get_active_timeouts(self) -> dict[str, float]:
         """Get all active timeouts with remaining time."""
-        now = time.time()
+        now = time.monotonic()
         return {
             task_id: max(0, deadline - now)
             for task_id, deadline in self._timeouts.items()

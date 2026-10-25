@@ -244,7 +244,7 @@ def _literal(node: Any, symbols: dict[str, Any]) -> Any:
         return symbols[node.id]
     if isinstance(node, ast.Dict):
         out: dict[Any, Any] = {}
-        for k, v in zip(node.keys, node.values):
+        for k, v in zip(node.keys, node.values, strict=True):
             if k is None:  # **spread
                 continue
             try:

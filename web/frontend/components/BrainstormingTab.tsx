@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -501,11 +503,11 @@ export default function BrainstormingTab({ locale }: { locale: AdminLocale }) {
         <div className="rounded-xl border border-purple-500/25 bg-purple-500/5 px-4 py-3 text-sm text-gray-300">
           <span className="font-semibold text-purple-300">{t(locale, 'brainstorm.bannerTitle')}</span>{' '}
           {t(locale, 'brainstorm.bannerBody')}
-          <a className="text-cyan-300 hover:underline" href="/admin?tab=corporate-chat">
+          <Link className="text-cyan-300 hover:underline" href="/admin?tab=corporate-chat">
             {t(locale, 'brainstorm.bannerAdminChat')}
-          </a>
+          </Link>
           {t(locale, 'brainstorm.bannerAfterLink')}{' '}
-          <code className="text-xs bg-black/30 px-1 rounded">{t(locale, 'brainstorm.banner.docRef')}</code>.
+          <code className="text-xs bg-black/30 px-1 rounded-sm">{t(locale, 'brainstorm.banner.docRef')}</code>.
         </div>
 
         {/* Stats */}
@@ -534,7 +536,7 @@ export default function BrainstormingTab({ locale }: { locale: AdminLocale }) {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-cyan-500/50"
+            className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-hidden focus:border-cyan-500/50"
           >
             <option value="">{t(locale, 'brainstorm.filter.statusAll')}</option>
             <option value="pending">{t(locale, 'brainstorm.status.pending')}</option>
@@ -546,7 +548,7 @@ export default function BrainstormingTab({ locale }: { locale: AdminLocale }) {
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-cyan-500/50"
+            className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-hidden focus:border-cyan-500/50"
           >
             <option value="">{t(locale, 'brainstorm.filter.typeAll')}</option>
             {SESSION_TYPE_ITEMS.map((item) => (
@@ -618,7 +620,7 @@ export default function BrainstormingTab({ locale }: { locale: AdminLocale }) {
                         {s.participants.map((p) => (
                           <span
                             key={p}
-                            className="text-xs px-1.5 py-0.5 rounded"
+                            className="text-xs px-1.5 py-0.5 rounded-sm"
                             style={{ backgroundColor: `${AGENT_COLORS[p] || '#64748b'}20`, color: AGENT_COLORS[p] || '#64748b' }}
                           >
                             {AGENT_ICONS[p] || '🤖'} {p}
@@ -1012,7 +1014,7 @@ export default function BrainstormingTab({ locale }: { locale: AdminLocale }) {
                         {idea.tags.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-1">
                             {idea.tags.map((tag) => (
-                              <span key={tag} className="text-xs px-1 py-0.5 rounded bg-white/5 text-gray-400">
+                              <span key={tag} className="text-xs px-1 py-0.5 rounded-sm bg-white/5 text-gray-400">
                                 {tag}
                               </span>
                             ))}

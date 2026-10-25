@@ -1,5 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { formatCurrency, truncate } from './utils';
+import { cn, formatCurrency, truncate } from './utils';
+
+describe('Tailwind 4 class conflict resolution', () => {
+  it('replaces migrated shadow and blur scales instead of retaining both', () => {
+    expect(cn('shadow-xs', 'shadow-sm')).toBe('shadow-sm');
+    expect(cn('backdrop-blur-xs', 'backdrop-blur-md')).toBe('backdrop-blur-md');
+  });
+
+  it('preserves independent layout, color and radius classes', () => {
+    expect(cn('p-4 rounded-sm bg-indigo-500', 'p-6'))
+      .toBe('rounded-sm bg-indigo-500 p-6');
+  });
+});
 
 describe('formatCurrency', () => {
   it('formats USDT amounts with two decimals', () => {

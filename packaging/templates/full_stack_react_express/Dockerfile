@@ -1,4 +1,5 @@
-FROM node:20-alpine AS base
+# Node security baseline: 22.23.4 (2026-10-21 security release).
+FROM node:22.23.4-alpine AS base
 WORKDIR /app
 COPY package.json ./
 RUN npm install --omit=dev

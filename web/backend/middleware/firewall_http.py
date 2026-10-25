@@ -24,6 +24,14 @@ def _request_port(request: Request) -> int:
     return int(os.environ.get("AICOM_PORT_API", "9081") or 9081)
 
 
+# Liveness is not metered. entrypoint.sh's supervisor probes /api/health from 127.0.0.1 every
+# 5 s and kills the backend after five failures; when the probe shared the rate-limit bucket
+# with everything else on that address, a busy backend answered it 403 and was killed for being
+# busy — a crash loop made by the app itself (KI-3). The probe is neither counted nor throttled;
+# the deny list and the enforced ACL still apply to it.
+_UNMETERED_PATHS = frozenset({"/api/health"})
+
+
 async def firewall_http_middleware(request: Request, call_next):
     fw = getattr(request.app.state, "firewall", None)
     if fw is None:
@@ -31,12 +39,13 @@ async def firewall_http_middleware(request: Request, call_next):
 
     ip = _client_ip(request)
     port = _request_port(request)
-    allowed, reason = fw.http_request_allowed(ip, port)
+    metered = request.url.path not in _UNMETERED_PATHS
+    allowed, reason = fw.http_request_allowed(ip, port, metered=metered)
     if not allowed:
         logger.warning("Firewall blocked %s %s from %s: %s", request.method, request.url.path, ip, reason)
         return JSONResponse(status_code=403, content={"detail": "Forbidden", "reason": reason})
 
-    if request.method not in ("OPTIONS", "HEAD"):
+    if metered and request.method not in ("OPTIONS", "HEAD"):
         fw.record_request(ip)
 
     return await call_next(request)

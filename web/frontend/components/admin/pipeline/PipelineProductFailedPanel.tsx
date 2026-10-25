@@ -136,7 +136,7 @@ export function PipelineProductFailedPanel({
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Example: Expand acceptance criteria for onboarding; add NFR for API latency; fix methodology section 3…"
-            className="w-full rounded-xl border border-red-500/30 bg-black/30 px-3 py-2 text-sm text-red-50 placeholder:text-red-300/40 focus:outline-none focus:ring-2 focus:ring-red-400/50"
+            className="w-full rounded-xl border border-red-500/30 bg-black/30 px-3 py-2 text-sm text-red-50 placeholder:text-red-300/40 focus:outline-hidden focus:ring-2 focus:ring-red-400/50"
           />
           {report?.operator_hint && (
             <p className="text-[11px] text-red-200/70">{report.operator_hint}</p>

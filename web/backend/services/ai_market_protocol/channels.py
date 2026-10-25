@@ -144,7 +144,7 @@ def _load_json_store(p: Path, label: str) -> dict[str, Any]:
         return {}
     raw = p.read_text(encoding="utf-8")
     if not raw.strip():
-        return {}
+        raise RuntimeError(f"{label} store is empty; refusing to overwrite")
     try:
         data = json.loads(raw)
     except json.JSONDecodeError as e:
@@ -152,7 +152,9 @@ def _load_json_store(p: Path, label: str) -> dict[str, Any]:
         # save would wipe every channel (and every real balance). Abort instead.
         logger.error("%s store at %s is corrupt: %s", label, p, e)
         raise RuntimeError(f"{label} store is corrupt; refusing to overwrite") from e
-    return data if isinstance(data, dict) else {}
+    if not isinstance(data, dict):
+        raise RuntimeError(f"{label} store is not an object; refusing to overwrite")
+    return data
 
 
 def _save_json_store(p: Path, data: dict[str, Any]) -> None:
@@ -234,7 +236,9 @@ def claim_transfer(
     commerce store the caller writes to (defaults to this module's).
 
     The caller MUST NOT deliver anything unless ``ok`` is True, and must
-    :func:`release_transfer` if it then fails to deliver.
+    :func:`release_transfer` only if it can prove nothing was delivered. An
+    ambiguous commit/response failure must retain the claim for the same caller
+    to reconcile and retry; it must not make the transfer spendable elsewhere.
     """
     tx = canonical_tx_hash(tx_hash)
     if not tx:
@@ -369,17 +373,16 @@ def _tx_hash_already_used(tx_clean: str, *, orders: Any = None) -> bool:
 def _credited_as_uni_topup(tx: str) -> bool:
     """Whether UNI already minted credit from this transfer before it took the shared claim.
 
-    UNI verifies against the same platform wallet. Best effort on purpose: a UNI store that
-    cannot be read must not stop checkout, and every UNI top-up since the shared claim is
-    refused by that claim regardless.
+    UNI verifies against the same platform wallet. An unreadable legacy history
+    cannot prove a transfer is unspent; refuse until that history is available.
     """
     try:
         from core.uni.config import uni_enabled
         from core.uni.receipts import find_topup_receipt
 
         return uni_enabled() and find_topup_receipt(tx) is not None
-    except Exception:  # noqa: BLE001
-        return False
+    except Exception as exc:
+        raise RuntimeError("UNI payment history unavailable") from exc
 
 
 def open_channel(

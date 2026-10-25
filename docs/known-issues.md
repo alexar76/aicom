@@ -5,7 +5,8 @@ repo alone**. They require operator action, an external vendor, or production
 telemetry that does not yet exist. Each entry lists what it is, why it can't
 be closed inline, who needs to act, and what the acceptance criteria are.
 
-Last reviewed: 2026-08-27 (security remediation audit; KI-5 dependency exception closed).
+Last reviewed: 2026-10-22 (outside review of SUB/1, the ledger, WARDEN wrap and KI-3/4/9/11; fixes in
+[§ Outside review fixes (2026-10-22)](#outside-review-fixes-2026-10-22-in-repo)). Previous: 2026-08-27.
 
 ---
 
@@ -38,7 +39,8 @@ circomlibjs Poseidon matching the circuit).
 the **public universal** Powers-of-Tau ceremony (Hermez/Perpetual PoT), which
 thousands of projects reuse. That is a far weaker and more standard assumption
 than a bespoke single-operator setup; it is **not** "no trust at all" (that
-would need a STARK). Payments remain **testnet** — see the pre-mainnet banner.
+would need a STARK). Small demo payments run on **Base mainnet**; see the
+[on-chain journal](onchain-journal.md) and the mainnet demo notice in the root README.
 
 **Optional Groth16 path (not required):** smaller proofs / cheaper on-chain
 verify, but it *would* need a per-circuit ceremony. Tooling for that still
@@ -98,8 +100,38 @@ Use Slither + [`docs/pet-project-trust.md`](pet-project-trust.md) + multisig (KI
 
 ## KI-3 — uvicorn supervisor: root cause of worker crash-loops not diagnosed
 
-**Where:** `entrypoint.sh:173-280` — backend supervisor with exponential
+**Where:** `entrypoint.sh` — backend supervisor with exponential
 backoff + circuit breaker.
+
+**What was found on 2026-10-22 (outside review; see the table under "Outside review fixes"):**
+
+- **Production does not show it today.** `aicom-app-1` on factory-vps runs `UVICORN_WORKERS=1`
+  on SQLite; its container log has no supervisor restart since the container started
+  (2026-10-21 13:11 UTC).
+- **One hypothesis below is ruled out.** uvicorn (0.52) starts `--workers` with
+  `multiprocessing` *spawn*, and the master never imports the app, so no SQLite connection can be
+  inherited across a fork.
+- **A self-inflicted restart path, now closed.** The supervisor kills the backend after five
+  failed `/api/health` probes from 127.0.0.1, and the app's own per-address limiter (100 requests
+  a minute) counted and throttled that probe with everything else on the address: under load the
+  backend answered the probe 403 and was killed for being busy. In a local 15-minute soak with 4
+  workers, 13,779 of 17,907 health probes got 403. The probe is now unmetered
+  (`web/backend/middleware/firewall_http.py`), the supervisor reads a 403/429 as alive, and the
+  same soak gives 0 throttled probes. In production the limiter also refused a frontend
+  container's server-side product reads 66 times in the previous run's log — a separate,
+  user-facing effect of one address per frontend container (set `AIFACTORY_TRUSTED_PROXY_IPS` and
+  forward the visitor's address to fix it).
+- **Every worker ran every background loop** (backups, stand-ups, UNI jobs, disk alerts): N
+  backups in one minute writing the same files. One worker, the `flock` holder, runs them now.
+- **The crash telemetry never survived.** It was appended to `uvicorn-last-crash.log` and
+  overwritten by the next start's log rotation; it has its own file now
+  (`uvicorn-crash-telemetry.log`).
+- `scripts/load_test_factory.sh` hit `/api/pipeline/list`, which no longer exists (404), and
+  counted the limiter's 403 as a failure; it now reads a public pipeline route and reports
+  throttled answers apart from failures.
+
+Still open: the one-hour soak against PostgreSQL with real pipeline traffic below, before
+raising `UVICORN_WORKERS` in production.
 
 **Symptom:** Under sustained pipeline load, uvicorn workers crash and
 the supervisor restarts them. With `UVICORN_WORKERS > 1`, the
@@ -189,6 +221,13 @@ must happen between `forge create` and first real-money channel.
 mainnet pilots with < $1k TVL. **Do not run without multisig past
 $10k TVL on a single channel or > $100k cumulative.**
 
+**Measured, not assumed (2026-10-22):** `python3 scripts/check_ki4_ownership.py` reads the
+live deployment from Base and exits 1 when an EOA owns a contract while the escrow holds the
+limit or more (`KI4_TVL_LIMIT_USD`, default 1000). Today: `AIMarketEscrow` (`0xa4cb…B2Eb`) and
+`AIMarketCapabilityNFT` are owned by the EOA `0x1218…Ad0a`, no pending owner, and the escrow
+holds **0 USDC** — inside the line above. The transfer itself stays the operator's
+(`scripts/multisig_transfer_runbook.sh`); the check is what an alerter should run.
+
 ---
 
 ## KI-5 — Python dependency CVE backlog — RESOLVED (2026-08-27)
@@ -277,6 +316,44 @@ follow-up commits (not operator blockers):
 | NEW-8 | MEDIUM | OIDC post-login open redirect | `safe_post_login_url()` validation |
 
 **Still operator/vendor (unchanged):** KI-1 … KI-11 above.
+
+---
+
+## Outside review fixes (2026-10-22, in-repo)
+
+An outside reviewer read the public mirrors (hub, WARDEN, this file) and listed suspected
+defects and the tests that would settle them. Each was reproduced or ruled out; the fixes
+carry tests that fail on the code before them where a test could show it.
+
+| ID | Severity | Finding | Status |
+|----|----------|---------|--------|
+| LEDGER-1 | HIGH | Credits ledger: resolving a hold committed its status before moving the money, and carving a child out of an allowance committed the decrement before the child row. A process killed in between, or another request's failed statement rolling back the shared SQLite connection, lost the money (held but never released). | **Fixed.** Every money move is one transaction under the connection lock (`db_backend.atomic`). `aimarket-hub/tests/test_ledger_crash_consistency.py`: kills a real process at the last statement before each commit and interleaves a foreign rollback — 8 of 11 cases failed before. |
+| SUB-1 | MEDIUM | `JobStore.join()` checked "parent running" and inserted the child in separate transactions: a child could join a call that had just finished (tree and receipt disagree). | **Fixed.** Check and insert in one transaction with a write on the parent row (row lock on PostgreSQL). Deterministic test fails before (`test_subcontract_races.py`). |
+| SUB-2 | HIGH | A child hold left `held` by a crash was released by no sweep (the invoke sweep skips children, the allowance sweep releases only the allowance): the buyer's money stayed frozen. | **Fixed.** `invoke_funding.sweep_orphaned_child_holds` (with the allowance sweep, every 120 s) releases child holds older than an hour and gives the root mandate its budget back. |
+| SUB-3 | MEDIUM | The grant (a bearer credential for the buyer's allowance) was sent to a provider at a plain-`http` public URL. | **Fixed.** Sent only over TLS or to the operator's own hosts; otherwise the provider gets the job token alone. Checked and fine: the grant is stored hashed, never logged, never in a refusal, refused on `/a2a`, dead once the job closes. |
+| CRED-1 | MEDIUM | Signup grant: budget checked and grant minted as two steps. On PostgreSQL 20 concurrent signups minted $0.30–$0.45 against a $0.25 daily budget (3 runs); on SQLite, 4 and 16 processes did not overshoot. | **Fixed.** `CreditsLedger.open_signup_account`: one transaction, serialized by a counter row; exact on both backends (thread and multi-process tests). Per-address and per-subnet signup limits were already in place. |
+| MAND-1 | LOW | A mandate document unreadable mid-chain (deleted between two reads) was dropped, which shifted the revocation check of later links. | **Fixed.** Fails closed. Found by the new ruff gate. |
+| WARDEN-1 | HIGH | `wrap` ignored `sensitiveToolPatterns`. | **Fixed** (see KI-9). |
+| PERF-1 | HIGH (CPU) | The pipeline worker re-parsed the YAML config for every product on every cycle: 92% of its CPU in a py-spy profile of the live process. | **Fixed and deployed 2026-10-23** (`ai-factory:perf-20261023`): parse reused while the files do not change; ~89% of a core → 16%. |
+| PERF-2 | MEDIUM | Storefront grid 3.4-7.3 s (three demo assessments per product, each walking `node_modules`); trust strip 4-5.7 s (all 3,510 tasks loaded to count product states), blocking the event loop and with it `/api/health`. | **Fixed and deployed 2026-10-23**: grid median 7.3 s → 0.22 s, trust strip 4.7 s → 0.18 s, health p95 3.8 s → 0.43 s at 20 users; responses byte-identical before and after (`docs/load-testing.md`). |
+| PERF-3 | MEDIUM | Monitor ran 17 blocking satellite polls on its event loop: `/api/health` p95 1.8-4.3 s, one state read 62 s. | **Fixed (`bd4276c28`), deployed 2026-10-23 09:21 UTC** on monitor.modelmarket.dev: `/api/health` p95 1.8 → 1.1 s, slowest 4.3 → 1.4 s (20 clients, 90 s). UNI monitor still on the previous image. |
+| LOG-1 | LOW | 311 ACEX tracebacks a day on the apex hub, from ledgers that are off by configuration. | **Fixed and deployed 2026-10-23** (`modelmarket-hub:acex-20261023`): one warning per ledger, same 503 answers. |
+| SIGNER-1 | MEDIUM | The escrow signer's forward on the Docker bridge was open to every container on `aicom_aicom_net` (fifteen, product frontends among them). | **Fixed 2026-10-23** on factory-vps: only the hub container's address passes (`escrow-signer/deploy/signer-hub-only.*`). |
+| ARGUS-1 | LOW | ARGUS checked sensitivity by the prefixed name (`fs__delete_file`), its MCP host by the server's (`delete_file`): an anchored pattern blocked the tool instead of asking. | **Fixed** (`needsApproval`). |
+| KI3-1 | HIGH (multi-worker) | With `UVICORN_WORKERS > 1` every worker ran every background loop (backups, stand-ups, UNI jobs, disk alerts). | **Fixed.** One worker, the `flock` holder, runs them; another takes over when it dies (`tests/test_background_leader.py`). |
+| KI3-2 | MEDIUM | KI-3's crash telemetry was appended to `uvicorn-last-crash.log` and overwritten by the next start's log rotation: none ever survived. | **Fixed.** Own bounded file, `uvicorn-crash-telemetry.log`. |
+| KI3-3 | HIGH | The app's per-address limiter counted and throttled the supervisor's `/api/health` probe: a busy backend answered it 403 and was killed (13,779 of 17,907 probes in a 4-worker soak). | **Fixed.** Probe unmetered (deny list and enforced ACL still apply); supervisor reads 403/429 as alive; the same soak gives 0 throttled probes. |
+| IDEMP-1 | MEDIUM | A paid invoke retried after a timeout on the credits rail or a ledger channel was a second purchase. | **Fixed.** `Idempotency-Key` (`aimarket_hub/idempotency.py`, migration 061): replay, 422 on another body, 409 while running or when the outcome is unknown; never re-run. |
+| LOAD-1 | — | No load test touched the money path (the Locust mix is read-only by design). | **Added.** `aimarket-hub/scripts/load_money_path.py`: paid invokes, keyed retries and racing signups on a local hub, then a ledger audit. SQLite and PostgreSQL, 2,300 requests at 64 concurrent: every invariant held, each keyed group charged once, grants stopped at the budget. |
+| CI-1 | MEDIUM | The hub's CI ran tests only. | **Fixed.** Ruff bug rules over the money/auth paths, and a PostgreSQL job for the money races (`aimarket-hub/.github/workflows/ci.yml`). |
+
+**Deployed 2026-10-23** (owner's go-ahead): apex hub `modelmarket.dev` on `modelmarket-hub:review-20261022` (12 files of main `ba1b10b2d` over the running image; migration 061 applied; smoke on a copy of the live DB first: every row kept, held amounts match held holds on all 208 accounts, rollback image starts on the migrated copy); factory `aicom-app-1` on `ai-factory:review-20261022`. Rollback notes: `/root/hub-review-20261022/ROLLBACK.txt` and `/root/factory-deploy/review-20261022/ROLLBACK.txt` on factory-vps. The other five hubs (UNI, lab, hunt, attested, Independent) still run the 2026-10-21/22 package.
+
+Not changed, on purpose: the custodial channel rail (KI-11 — documented, with
+`AIMARKET_ESCROW_REQUIRED` as the switch to the contract rail); factory products not listed as
+hub capabilities (a positioning decision, `docs/ecosystem-architecture.md` §3); an on-chain
+payment that is not refunded when delivery then fails (SUB/1's allowance is refunded; an x402
+transfer cannot be recalled by the hub).
 
 ---
 
@@ -449,6 +526,15 @@ distributed Metis as HA production inference mesh without soak evidence.
 - Red-team report or CI job with adversarial fixtures; regressions tracked.
 - High-security preset documented and tested.
 
+**Where it stands (2026-10-22, WARDEN 0.20.0):** a red-team corpus exists and is re-run per
+release (`warden/scripts/redteam/`: 23 code-aware attacks against the flow guard, 2 still
+delivered and named in `warden/docs/flow-guard.md`; MCPTox held-out half 210 of 218 blocked with 0
+of 45 clean servers; AgentDojo replay 0 of 579 attack actions). The high-security preset is
+`wrap --require-approval` with `{"allowUnknownServers": false}`. An outside review found that
+`warden-mcp wrap` accepted `policy.sensitiveToolPatterns` and passed matching calls straight to
+the server; since 0.20.0 each such call waits for a person through the client's MCP elicitation
+form, or is refused when the client has none (`warden/test/wrap.test.ts`, 7 tests).
+
 **Until done:** WARDEN is **strong default for casual MCP** — not a guarantee against targeted
 attack; combine with egress allowlists, human approval on sensitive tools, encrypted keystore.
 
@@ -510,7 +596,7 @@ KI-11 below is the **channel / deposit** rail only.
 | Payer binding | On-chain sender **plus** an EIP-191 proof-of-control signature, required by default in every mode (`AIMARKET_CHANNEL_ALLOW_UNPROVEN_PAYER=1` opts out; non-EVM payers are refused). |
 | Debit **authorization** | **Live runtime path.** On a paid invoke against an escrow-bound channel the hub captures and verifies the depositor's EIP-712 `DebitAuthorization` *before* the provider runs, and returns **402 on failure** — fail-closed. The buyer's `receiptId` is reused as the ledger receipt so the on-chain and off-chain replay keys cannot drift. |
 | Debit **submission** (`debitChannel`) | **Human-initiated only.** The one submission site (`escrow_bridge/mirror.py`) is reachable from `python -m aimarket_hub.escrow_bridge.cli submit --yes` and from nothing else: `GET /ai-market/v2/escrow/plan` is hardcoded to `PlanOnlySigner`, no route broadcasts, and there is no scheduler or timer. |
-| Prod's actual capability | **Can broadcast, through a separate policy signer — re-verified 2026-09-11 and no longer what this row claimed.** `config.describe()` on the live container now returns `strategy: "external"`, `may_broadcast: true`, `private_key_set: false`, `signer_url_set: true`. The 2026-07-29 wording ("cannot broadcast at all", `strategy: "plan"`) is stale and must not be cited as a mitigation. What still holds is the part that matters: **no hot wallet is keyed into the hub** (`private_key_set: false`). The authorized key lives in `escrow-signer/` on a different machine, reached over `AIMARKET_ESCROW_SIGNER_URL=http://172.18.0.1:9500/sign` — a systemd-managed SSH local forward (`escrow-signer-tunnel.service`, `ExitOnForwardFailure=yes`, dedicated `IdentitiesOnly` key) to the signer host. So the gate moved from "the hub is incapable" to "a separate process with its own policy decides": it re-verifies the buyer's EIP-712 against state read from chain, pins one escrow and one chain, and enforces its own spend windows. Residual, worth knowing: the forward binds the Docker bridge gateway (`-L 172.18.0.1:9500`), so every container on `aicom_aicom_net` can reach `/sign`, not just the hub. Verified 2026-09-11 — `aicom-app-1` and `aicom-grafana-1` both get a response from the endpoint. That is three neighbours today (`aicom-app-1`, `aicom-prometheus-1`, `aicom-grafana-1`), all first-party, and `AIMARKET_ESCROW_SIGNER_TOKEN` plus the signer's own policy are what stand between them and a signature — but the reachability is wider than the one caller that needs it. |
+| Prod's actual capability | **Can broadcast, through a separate policy signer — re-verified 2026-09-11 and no longer what this row claimed.** `config.describe()` on the live container now returns `strategy: "external"`, `may_broadcast: true`, `private_key_set: false`, `signer_url_set: true`. The 2026-07-29 wording ("cannot broadcast at all", `strategy: "plan"`) is stale and must not be cited as a mitigation. What still holds is the part that matters: **no hot wallet is keyed into the hub** (`private_key_set: false`). The authorized key lives in `escrow-signer/` on a different machine, reached over `AIMARKET_ESCROW_SIGNER_URL=http://172.18.0.1:9500/sign` — a systemd-managed SSH local forward (`escrow-signer-tunnel.service`, `ExitOnForwardFailure=yes`, dedicated `IdentitiesOnly` key) to the signer host. So the gate moved from "the hub is incapable" to "a separate process with its own policy decides": it re-verifies the buyer's EIP-712 against state read from chain, pins one escrow and one chain, and enforces its own spend windows. Residual, worth knowing: the forward binds the Docker bridge gateway (`-L 172.18.0.1:9500`), so every container on `aicom_aicom_net` can reach `/sign`, not just the hub. Verified 2026-09-11 — `aicom-app-1` and `aicom-grafana-1` both get a response from the endpoint. That was three neighbours on 2026-09-11 (`aicom-app-1`, `aicom-prometheus-1`, `aicom-grafana-1`); **on 2026-10-22 it is fifteen**, among them product frontends the factory generated (`aicom-frontend-*-20261011`). `AIMARKET_ESCROW_SIGNER_TOKEN` plus the signer's own policy are what stand between them and a signature. `escrow-signer/deploy/signer-hub-only.sh` (+ `.service`/`.timer`) narrows the port to the hub container's current address and rejects everyone when the hub is not running. **Installed on factory-vps 2026-10-23** (`signer-hub-only.timer`, every minute): the hub gets 200 from `/health`, `aicom-grafana-1` and `aicom-app-1` are refused, the host's own `127.0.0.1:9500` is untouched; no other container carries signer settings. The first install failed safe (a `tcp-reset` REJECT needs `-p tcp` in the same rule; nothing reached INPUT), fixed in the script. Undo steps are in the script's header. |
 | `channel/close`, remainder | **Off-chain only.** The unspent remainder is recorded as a payout obligation (`channel_payout_obligations`, migration 017); `refund_executed_usd` is still `0.0` on the ledger rail. |
 
 **The three mainnet settlements in the journal (§3h, §3i, §3j) were made by hand, not by

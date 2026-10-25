@@ -28,6 +28,16 @@ def test_code_requires_postgres_detects_compose_stack(tmp_path: Path) -> None:
 
 def test_sqlite_env_for_simple_fastapi(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.delenv("DATABASE_URL", raising=False)
+    # This test checks environment construction. Package installation is an external
+    # boundary and has its own command/error tests; never hit PyPI in this unit test.
+    monkeypatch.setattr(
+        "web.backend.services.sandbox_preview_env._preview_venv_python",
+        lambda *_: tmp_path / "preview-python",
+    )
+    monkeypatch.setattr(
+        "web.backend.services.sandbox_preview_env._pip_install_requirements",
+        lambda *_: {"ok": True},
+    )
     root = tmp_path / "landing"
     root.mkdir()
     (root / "app").mkdir()

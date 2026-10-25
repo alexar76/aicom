@@ -1,0 +1,344 @@
+{
+ "format": "histor.tool-cost/v1",
+ "tokenizer": "o200k_base",
+ "countedAs": "per tool {name, description, input_schema} as compact JSON: what a client sends a model",
+ "toolCount": 20,
+ "totals": {
+  "sent": 5565,
+  "names": 120,
+  "descriptions": 2158,
+  "inputSchemas": 3165,
+  "structure": 122,
+  "outputSchemas": 0,
+  "listed": 5567
+ },
+ "tools": [
+  {
+   "name": "textokit_bcra_indicadores",
+   "sent": 427,
+   "parts": {
+    "name": 8,
+    "description": 131,
+    "inputSchema": 282,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "resource": 28,
+    "query": 37,
+    "idVariable": 37,
+    "desde": 35,
+    "hasta": 30,
+    "limit": 32,
+    "offset": 32,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_cartas_ar",
+   "sent": 465,
+   "parts": {
+    "name": 6,
+    "description": 99,
+    "inputSchema": 354,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "remitente": 30,
+    "destinatario": 26,
+    "lugarYFecha": 30,
+    "asunto": 31,
+    "hechos": 36,
+    "solicitud": 31,
+    "tipo": 49,
+    "plazoDias": 45,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_catalog",
+   "sent": 44,
+   "parts": {
+    "name": 4,
+    "description": 20,
+    "inputSchema": 14,
+    "structure": 6
+   },
+   "outputSchema": 0
+  },
+  {
+   "name": "textokit_comparar_textos",
+   "sent": 231,
+   "parts": {
+    "name": 8,
+    "description": 88,
+    "inputSchema": 129,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "original": 30,
+    "entrega": 41,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_crypto_prices",
+   "sent": 245,
+   "parts": {
+    "name": 5,
+    "description": 131,
+    "inputSchema": 103,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "coins": 47,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_cuit_ar",
+   "sent": 285,
+   "parts": {
+    "name": 6,
+    "description": 133,
+    "inputSchema": 140,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "identifier": 40,
+    "type": 44,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_dev_utils",
+   "sent": 418,
+   "parts": {
+    "name": 5,
+    "description": 148,
+    "inputSchema": 259,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "op": 46,
+    "value": 31,
+    "algorithm": 42,
+    "secret": 30,
+    "from": 27,
+    "to": 27,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_direcciones_ar",
+   "sent": 283,
+   "parts": {
+    "name": 7,
+    "description": 89,
+    "inputSchema": 181,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "direccion": 40,
+    "provinciaId": 49,
+    "limit": 37,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_dolar_ar",
+   "sent": 152,
+   "parts": {
+    "name": 6,
+    "description": 88,
+    "inputSchema": 52,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_fx_rates",
+   "sent": 285,
+   "parts": {
+    "name": 5,
+    "description": 146,
+    "inputSchema": 128,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "base": 30,
+    "quotes": 47,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_how_to_pay",
+   "sent": 58,
+   "parts": {
+    "name": 7,
+    "description": 31,
+    "inputSchema": 14,
+    "structure": 6
+   },
+   "outputSchema": 0
+  },
+  {
+   "name": "textokit_normativa_ar",
+   "sent": 301,
+   "parts": {
+    "name": 6,
+    "description": 117,
+    "inputSchema": 172,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "query": 36,
+    "date": 47,
+    "limit": 35,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_polymarket_markets",
+   "sent": 532,
+   "parts": {
+    "name": 8,
+    "description": 122,
+    "inputSchema": 396,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "resource": 29,
+    "query": 45,
+    "status": 45,
+    "order": 40,
+    "user": 39,
+    "limit": 41,
+    "offset": 47,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_sample",
+   "sent": 133,
+   "parts": {
+    "name": 4,
+    "description": 24,
+    "inputSchema": 99,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "route": 82
+   }
+  },
+  {
+   "name": "textokit_source_bounded_summary",
+   "sent": 273,
+   "parts": {
+    "name": 7,
+    "description": 136,
+    "inputSchema": 124,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "text": 39,
+    "language": 29,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_translate_es",
+   "sent": 271,
+   "parts": {
+    "name": 5,
+    "description": 134,
+    "inputSchema": 126,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "text": 37,
+    "tone": 33,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_url_text",
+   "sent": 302,
+   "parts": {
+    "name": 5,
+    "description": 122,
+    "inputSchema": 169,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "url": 28,
+    "format": 34,
+    "maxChars": 52,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_web_read",
+   "sent": 314,
+   "parts": {
+    "name": 5,
+    "description": 134,
+    "inputSchema": 169,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "url": 28,
+    "format": 34,
+    "maxChars": 52,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_x402_adoption",
+   "sent": 318,
+   "parts": {
+    "name": 7,
+    "description": 128,
+    "inputSchema": 176,
+    "structure": 7
+   },
+   "outputSchema": 0,
+   "properties": {
+    "section": 125,
+    "payment_signature": 40
+   }
+  },
+  {
+   "name": "textokit_x402_ping",
+   "sent": 228,
+   "parts": {
+    "name": 6,
+    "description": 137,
+    "inputSchema": 78,
+    "structure": 7
+   },
+   "outputSchema": 0,
+   "properties": {
+    "echo": 26,
+    "payment_signature": 40
+   }
+  }
+ ]
+}

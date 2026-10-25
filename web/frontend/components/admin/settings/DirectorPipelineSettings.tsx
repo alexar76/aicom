@@ -128,7 +128,7 @@ export function DirectorPipelineSettings({ api }: { api: SettingsTabApi }) {
                   clampAutoPipelineMinutes(parseInt(e.target.value, 10) || 60),
                 )
               }
-              className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500/50"
+              className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-hidden focus:border-indigo-500/50"
             />
             <p className="text-xs text-gray-500">{t(locale, 'settings.director.intervalHint')}</p>
           </div>
@@ -313,7 +313,7 @@ export function DirectorPipelineSettings({ api }: { api: SettingsTabApi }) {
               onChange={(e) =>
                 setAutoGenIntervalDraft(clampAutoPipelineMinutes(parseInt(e.target.value, 10) || 60))
               }
-              className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-sm text-white mb-4 focus:outline-none focus:border-indigo-500/50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-sm text-white mb-4 focus:outline-hidden focus:border-indigo-500/50 disabled:cursor-not-allowed disabled:opacity-50"
             />
             <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
               <Button

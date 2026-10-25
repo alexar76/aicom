@@ -39,7 +39,7 @@ def test_hold_conditional_rejects_overdraft(uni_svc):
         uni_svc.hold(owner, amount_uni=200, channel_id=f"ch_{uuid.uuid4().hex[:8]}")
 
 
-def test_available_uni_is_balance_minus_hold(uni_svc):
+def test_available_uni_is_unreserved_balance(uni_svc):
     owner = f"cust-{uuid.uuid4().hex[:8]}"
     uni_svc.topup_from_chain(owner, usd_amount=5.0, tx_hash=f"0x{uuid.uuid4().hex}", chain="base", token="USDT")
     ch = f"ch_{uuid.uuid4().hex[:8]}"
@@ -47,7 +47,7 @@ def test_available_uni_is_balance_minus_hold(uni_svc):
     w = uni_svc.get_wallet_by_owner(owner)
     assert w["balance_uni"] == 200
     assert w["hold_uni"] == 300
-    assert w["available_uni"] == 0
+    assert w["available_uni"] == 200
 
 
 def test_spend_hold_duplicate_not_free(uni_svc):

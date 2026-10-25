@@ -227,7 +227,7 @@ function CircuitCard({
           </div>
         </motion.div>
         {row.manual_override && (
-          <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/25">
+          <span className="text-[9px] px-1.5 py-0.5 rounded-sm bg-amber-500/15 text-amber-300 border border-amber-500/25">
             {tVars(locale, 'providers.circuit.manualOverride', { state: row.manual_override })}
           </span>
         )}

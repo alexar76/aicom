@@ -1,0 +1,779 @@
+{
+  "ok": false,
+  "problems": [
+    "sent to the model +1,789 tokens (+47.4%), over the 10% allowed",
+    "descriptions +1,375 tokens (+175.6%), over the 10% allowed",
+    "input schemas +414 tokens (+15.0%), over the 10% allowed"
+  ],
+  "diff": {
+    "format": "histor.tool-cost-diff/v1",
+    "tokenizer": "o200k_base",
+    "countedAs": "per tool {name, description, input_schema} as compact JSON: what a client sends a model",
+    "toolCount": {
+      "before": 20,
+      "after": 20,
+      "delta": 0
+    },
+    "totals": {
+      "sent": {
+        "before": 3776,
+        "after": 5565,
+        "delta": 1789
+      },
+      "names": {
+        "before": 120,
+        "after": 120,
+        "delta": 0
+      },
+      "descriptions": {
+        "before": 783,
+        "after": 2158,
+        "delta": 1375
+      },
+      "inputSchemas": {
+        "before": 2751,
+        "after": 3165,
+        "delta": 414
+      },
+      "structure": {
+        "before": 122,
+        "after": 122,
+        "delta": 0
+      },
+      "outputSchemas": {
+        "before": 0,
+        "after": 0,
+        "delta": 0
+      },
+      "listed": {
+        "before": 3778,
+        "after": 5567,
+        "delta": 1789
+      }
+    },
+    "added": [],
+    "removed": [],
+    "changed": [
+      {
+        "name": "textokit_polymarket_markets",
+        "sent": {
+          "before": 319,
+          "after": 532,
+          "delta": 213
+        },
+        "description": {
+          "before": 40,
+          "after": 122,
+          "delta": 82
+        },
+        "inputSchema": {
+          "before": 265,
+          "after": 396,
+          "delta": 131
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "offset",
+            "before": 32,
+            "after": 47,
+            "delta": 15
+          },
+          {
+            "name": "query",
+            "before": 30,
+            "after": 45,
+            "delta": 15
+          },
+          {
+            "name": "status",
+            "before": 30,
+            "after": 45,
+            "delta": 15
+          },
+          {
+            "name": "order",
+            "before": 29,
+            "after": 40,
+            "delta": 11
+          },
+          {
+            "name": "limit",
+            "before": 33,
+            "after": 41,
+            "delta": 8
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "user",
+            "before": 36,
+            "after": 39,
+            "delta": 3
+          }
+        ]
+      },
+      {
+        "name": "textokit_x402_adoption",
+        "sent": {
+          "before": 151,
+          "after": 318,
+          "delta": 167
+        },
+        "description": {
+          "before": 42,
+          "after": 128,
+          "delta": 86
+        },
+        "inputSchema": {
+          "before": 95,
+          "after": 176,
+          "delta": 81
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "section",
+            "before": 49,
+            "after": 125,
+            "delta": 76
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          }
+        ]
+      },
+      {
+        "name": "textokit_bcra_indicadores",
+        "sent": {
+          "before": 317,
+          "after": 427,
+          "delta": 110
+        },
+        "description": {
+          "before": 38,
+          "after": 131,
+          "delta": 93
+        },
+        "inputSchema": {
+          "before": 265,
+          "after": 282,
+          "delta": 17
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "query",
+            "before": 26,
+            "after": 37,
+            "delta": 11
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "idVariable",
+            "before": 35,
+            "after": 37,
+            "delta": 2
+          },
+          {
+            "name": "desde",
+            "before": 34,
+            "after": 35,
+            "delta": 1
+          },
+          {
+            "name": "resource",
+            "before": 27,
+            "after": 28,
+            "delta": 1
+          }
+        ]
+      },
+      {
+        "name": "textokit_dev_utils",
+        "sent": {
+          "before": 308,
+          "after": 418,
+          "delta": 110
+        },
+        "description": {
+          "before": 47,
+          "after": 148,
+          "delta": 101
+        },
+        "inputSchema": {
+          "before": 250,
+          "after": 259,
+          "delta": 9
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "secret",
+            "before": 28,
+            "after": 30,
+            "delta": 2
+          },
+          {
+            "name": "value",
+            "before": 29,
+            "after": 31,
+            "delta": 2
+          }
+        ]
+      },
+      {
+        "name": "textokit_crypto_prices",
+        "sent": {
+          "before": 136,
+          "after": 245,
+          "delta": 109
+        },
+        "description": {
+          "before": 39,
+          "after": 131,
+          "delta": 92
+        },
+        "inputSchema": {
+          "before": 86,
+          "after": 103,
+          "delta": 17
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "coins",
+            "before": 35,
+            "after": 47,
+            "delta": 12
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          }
+        ]
+      },
+      {
+        "name": "textokit_web_read",
+        "sent": {
+          "before": 206,
+          "after": 314,
+          "delta": 108
+        },
+        "description": {
+          "before": 43,
+          "after": 134,
+          "delta": 91
+        },
+        "inputSchema": {
+          "before": 152,
+          "after": 169,
+          "delta": 17
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "maxChars",
+            "before": 42,
+            "after": 52,
+            "delta": 10
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "url",
+            "before": 25,
+            "after": 28,
+            "delta": 3
+          },
+          {
+            "name": "format",
+            "before": 33,
+            "after": 34,
+            "delta": 1
+          }
+        ]
+      },
+      {
+        "name": "textokit_cuit_ar",
+        "sent": {
+          "before": 183,
+          "after": 285,
+          "delta": 102
+        },
+        "description": {
+          "before": 47,
+          "after": 133,
+          "delta": 86
+        },
+        "inputSchema": {
+          "before": 124,
+          "after": 140,
+          "delta": 16
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "type",
+            "before": 36,
+            "after": 44,
+            "delta": 8
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "identifier",
+            "before": 36,
+            "after": 40,
+            "delta": 4
+          }
+        ]
+      },
+      {
+        "name": "textokit_fx_rates",
+        "sent": {
+          "before": 184,
+          "after": 285,
+          "delta": 101
+        },
+        "description": {
+          "before": 51,
+          "after": 146,
+          "delta": 95
+        },
+        "inputSchema": {
+          "before": 122,
+          "after": 128,
+          "delta": 6
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          }
+        ]
+      },
+      {
+        "name": "textokit_source_bounded_summary",
+        "sent": {
+          "before": 172,
+          "after": 273,
+          "delta": 101
+        },
+        "description": {
+          "before": 43,
+          "after": 136,
+          "delta": 93
+        },
+        "inputSchema": {
+          "before": 116,
+          "after": 124,
+          "delta": 8
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "text",
+            "before": 36,
+            "after": 39,
+            "delta": 3
+          }
+        ]
+      },
+      {
+        "name": "textokit_url_text",
+        "sent": {
+          "before": 201,
+          "after": 302,
+          "delta": 101
+        },
+        "description": {
+          "before": 38,
+          "after": 122,
+          "delta": 84
+        },
+        "inputSchema": {
+          "before": 152,
+          "after": 169,
+          "delta": 17
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "maxChars",
+            "before": 42,
+            "after": 52,
+            "delta": 10
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "url",
+            "before": 25,
+            "after": 28,
+            "delta": 3
+          },
+          {
+            "name": "format",
+            "before": 33,
+            "after": 34,
+            "delta": 1
+          }
+        ]
+      },
+      {
+        "name": "textokit_x402_ping",
+        "sent": {
+          "before": 131,
+          "after": 228,
+          "delta": 97
+        },
+        "description": {
+          "before": 46,
+          "after": 137,
+          "delta": 91
+        },
+        "inputSchema": {
+          "before": 72,
+          "after": 78,
+          "delta": 6
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          }
+        ]
+      },
+      {
+        "name": "textokit_normativa_ar",
+        "sent": {
+          "before": 208,
+          "after": 301,
+          "delta": 93
+        },
+        "description": {
+          "before": 44,
+          "after": 117,
+          "delta": 73
+        },
+        "inputSchema": {
+          "before": 152,
+          "after": 172,
+          "delta": 20
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "date",
+            "before": 32,
+            "after": 47,
+            "delta": 15
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          }
+        ]
+      },
+      {
+        "name": "textokit_translate_es",
+        "sent": {
+          "before": 178,
+          "after": 271,
+          "delta": 93
+        },
+        "description": {
+          "before": 47,
+          "after": 134,
+          "delta": 87
+        },
+        "inputSchema": {
+          "before": 120,
+          "after": 126,
+          "delta": 6
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "text",
+            "before": 36,
+            "after": 37,
+            "delta": 1
+          },
+          {
+            "name": "tone",
+            "before": 32,
+            "after": 33,
+            "delta": 1
+          }
+        ]
+      },
+      {
+        "name": "textokit_cartas_ar",
+        "sent": {
+          "before": 375,
+          "after": 465,
+          "delta": 90
+        },
+        "description": {
+          "before": 36,
+          "after": 99,
+          "delta": 63
+        },
+        "inputSchema": {
+          "before": 327,
+          "after": 354,
+          "delta": 27
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "plazoDias",
+            "before": 34,
+            "after": 45,
+            "delta": 11
+          },
+          {
+            "name": "tipo",
+            "before": 39,
+            "after": 49,
+            "delta": 10
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "hechos",
+            "before": 34,
+            "after": 36,
+            "delta": 2
+          }
+        ]
+      },
+      {
+        "name": "textokit_direcciones_ar",
+        "sent": {
+          "before": 215,
+          "after": 283,
+          "delta": 68
+        },
+        "description": {
+          "before": 38,
+          "after": 89,
+          "delta": 51
+        },
+        "inputSchema": {
+          "before": 164,
+          "after": 181,
+          "delta": 17
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "provinciaId",
+            "before": 41,
+            "after": 49,
+            "delta": 8
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          },
+          {
+            "name": "direccion",
+            "before": 36,
+            "after": 40,
+            "delta": 4
+          }
+        ]
+      },
+      {
+        "name": "textokit_comparar_textos",
+        "sent": {
+          "before": 164,
+          "after": 231,
+          "delta": 67
+        },
+        "description": {
+          "before": 34,
+          "after": 88,
+          "delta": 54
+        },
+        "inputSchema": {
+          "before": 116,
+          "after": 129,
+          "delta": 13
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "entrega",
+            "before": 33,
+            "after": 41,
+            "delta": 8
+          },
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          }
+        ]
+      },
+      {
+        "name": "textokit_dolar_ar",
+        "sent": {
+          "before": 93,
+          "after": 152,
+          "delta": 59
+        },
+        "description": {
+          "before": 35,
+          "after": 88,
+          "delta": 53
+        },
+        "inputSchema": {
+          "before": 46,
+          "after": 52,
+          "delta": 6
+        },
+        "outputSchema": {
+          "before": 0,
+          "after": 0,
+          "delta": 0
+        },
+        "properties": [
+          {
+            "name": "payment_signature",
+            "before": 34,
+            "after": 40,
+            "delta": 6
+          }
+        ]
+      }
+    ],
+    "unchanged": 3
+  }
+}

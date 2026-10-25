@@ -49,7 +49,7 @@ export function FilterControlsPanel({
 }
 
 const FILTER_CONTROL_CLASS =
-  'bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-sm text-gray-300 focus:outline-none focus:border-indigo-500/50';
+  'bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-sm text-gray-300 focus:outline-hidden focus:border-indigo-500/50';
 
 export function FilterSelect({
   className = '',

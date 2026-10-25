@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { useState } from 'react';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { ProductNavLink } from './ProductNavLink';
@@ -23,7 +25,7 @@ export function VisitorStart({ locale }: { locale: SiteLocale }) {
         <a href="#products" className={`${action} border border-white/20 text-gray-200 hover:bg-white/10`}>{c.examples}</a>
       </div>
       <p className="mt-4 text-sm text-cyan-300"><a href={generatorPath(locale)} className="inline-flex min-h-10 items-center hover:underline">{c.assistantGenerator} →</a></p>
-      <div className="mt-8 border-t border-white/10 pt-5 text-sm text-gray-400"><a href="/admin" className="inline-flex items-center gap-1 text-cyan-300 hover:underline">{c.demo}<ArrowUpRight size={16}/></a><p className="mt-2 max-w-2xl leading-relaxed">{c.demoNote}</p><a href="#factory-build" className="mt-2 mr-5 inline-flex min-h-10 items-center text-cyan-300 hover:underline">{c.pipelineBuild} →</a><a href="/docs" className="mt-2 inline-flex min-h-10 items-center text-cyan-300 hover:underline">{getMarketingStrings(locale).navDocs} →</a></div>
+      <div className="mt-8 border-t border-white/10 pt-5 text-sm text-gray-400"><Link href="/admin" className="inline-flex items-center gap-1 text-cyan-300 hover:underline">{c.demo}<ArrowUpRight size={16}/></Link><p className="mt-2 max-w-2xl leading-relaxed">{c.demoNote}</p><a href="#factory-build" className="mt-2 mr-5 inline-flex min-h-10 items-center text-cyan-300 hover:underline">{c.pipelineBuild} →</a><Link href="/docs" className="mt-2 inline-flex min-h-10 items-center text-cyan-300 hover:underline">{getMarketingStrings(locale).navDocs} →</Link></div>
     </div>
   </section>;
 }
@@ -52,7 +54,7 @@ export function VisitorCatalog({ locale }: { locale: SiteLocale }) {
         {[false, true].map(only => <button type="button" key={String(only)} aria-pressed={verifiedOnly === only} onClick={() => setVerifiedOnly(only)} className={`min-h-11 rounded-xl border px-4 text-sm ${verifiedOnly === only ? 'border-cyan-400/50 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-gray-400'}`}>{only ? c.verified : c.all} <span className="ml-1 tabular-nums">({only ? products.filter(p => productReviewState(p) === 'verified').length : products.length})</span></button>)}
       </div>
       <div className="mb-5 flex flex-wrap gap-2" aria-label={c.categories}>{['all', ...categoryIds].map(id => <button key={id} type="button" aria-pressed={category === id} onClick={() => setCategory(id)} className={`min-h-11 rounded-xl border px-3 text-sm ${category === id ? 'border-fuchsia-400/40 bg-fuchsia-400/10 text-fuchsia-200' : 'border-white/10 text-gray-400'}`}>{id === 'all' ? c.allCategories : categories.find(cat => cat.id === id)?.name || id} ({id === 'all' ? products.length : products.filter(p => (p.category || 'uncategorized') === id).length})</button>)}</div>
-      <div className="mb-6 flex flex-wrap gap-5 text-sm text-cyan-300"><a href="/builds" className="min-h-11 py-3 hover:underline">{c.replays} →</a><a href="/explore" className="min-h-11 py-3 hover:underline">{c.explore} →</a><a href="/benchmark" className="min-h-11 py-3 hover:underline">{c.benchmark} →</a></div>
+      <div className="mb-6 flex flex-wrap gap-5 text-sm text-cyan-300"><Link href="/builds" className="min-h-11 py-3 hover:underline">{c.replays} →</Link><Link href="/explore" className="min-h-11 py-3 hover:underline">{c.explore} →</Link><Link href="/benchmark" className="min-h-11 py-3 hover:underline">{c.benchmark} →</Link></div>
       <p role="status" className="mb-3 text-sm text-gray-400">{loading || refreshing ? c.updating : `${c.results}: ${filtered.length} / ${products.length}`}</p>
       {error && products.length === 0 ? <div role="alert" className="py-8 text-gray-300"><p>{c.error}</p><button onClick={revalidate} className="mt-3 text-cyan-300 underline">{c.retry}</button></div> : null}
       {!loading && !error && filtered.length === 0 ? <div className="rounded-xl border border-white/10 p-8 text-gray-300"><p>{c.empty}</p><button className="mt-3 text-cyan-300 underline" onClick={() => { setQuery(''); setVerifiedOnly(false); setCategory('all'); }}>{c.reset}</button></div> : null}
@@ -66,8 +68,8 @@ export function VisitorCatalog({ locale }: { locale: SiteLocale }) {
             <div className="mb-4 flex flex-wrap gap-2 text-xs"><span className="rounded-full bg-white/10 px-3 py-1 text-gray-300">{product.delivery_profile === 'marketing_landing' ? c.landing : c.software}</span><span className={`rounded-full px-3 py-1 ${state === 'verified' ? 'bg-emerald-500/10 text-emerald-300' : 'bg-amber-500/10 text-amber-200'}`}>{c[state]}</span></div>
             <h4 className="line-clamp-2 text-xl font-semibold text-white">{product.name || product.spec?.product_name || product.idea}</h4>
             <p className="my-3 line-clamp-3 text-sm leading-relaxed text-gray-400">{product.selling_description || product.spec?.description || product.idea}</p>
-            <div className="mb-3 flex flex-wrap gap-2 text-xs text-gray-400">{product.is_template && <span className="rounded bg-amber-500/10 px-2 py-1 text-amber-200">{c.template}</span>}{product.category && <span className="rounded bg-white/5 px-2 py-1">{categories.find(cat => cat.id === product.category)?.name || product.category}</span>}{(product.tags || []).slice(0, 3).map(tag => <span key={tag} className="rounded bg-white/5 px-2 py-1">{tag}</span>)}</div>
-            {product.implementation_summary && <div className="mb-4 flex flex-wrap gap-2 text-xs text-gray-400">{Object.entries(product.implementation_summary).slice(0, 4).map(([key, value]) => <span key={key} title={`${key}: ${value}`} className="max-w-full truncate rounded border border-white/10 px-2 py-1">{key}: {value}</span>)}</div>}
+            <div className="mb-3 flex flex-wrap gap-2 text-xs text-gray-400">{product.is_template && <span className="rounded-sm bg-amber-500/10 px-2 py-1 text-amber-200">{c.template}</span>}{product.category && <span className="rounded-sm bg-white/5 px-2 py-1">{categories.find(cat => cat.id === product.category)?.name || product.category}</span>}{(product.tags || []).slice(0, 3).map(tag => <span key={tag} className="rounded-sm bg-white/5 px-2 py-1">{tag}</span>)}</div>
+            {product.implementation_summary && <div className="mb-4 flex flex-wrap gap-2 text-xs text-gray-400">{Object.entries(product.implementation_summary).slice(0, 4).map(([key, value]) => <span key={key} title={`${key}: ${value}`} className="max-w-full truncate rounded-sm border border-white/10 px-2 py-1">{key}: {value}</span>)}</div>}
             {product.price_usdt != null && product.price_usdt > 0 && <p className="text-sm font-semibold text-emerald-300">${product.price_usdt}{c.perMonth}</p>}
             <span className="mt-auto inline-flex items-center gap-2 pt-4 text-sm text-cyan-300">{c.details}<ArrowUpRight size={16}/></span>
           </ProductNavLink>;

@@ -83,7 +83,7 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
               <select
                 value={settings.reference_template_mode}
                 onChange={(e) => handleSettingChange('reference_template_mode', e.target.value)}
-                className="bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-fuchsia-500/50"
+                className="bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-hidden focus:border-fuchsia-500/50"
               >
                 <option value="random">{t(locale, 'settings.neuralUi.mode.random')}</option>
                 <option value="round_robin">{t(locale, 'settings.neuralUi.mode.roundRobin')}</option>
@@ -146,7 +146,7 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
                   onChange={(e) => setRefUploadHtml(e.target.value)}
                   rows={8}
                   placeholder={t(locale, 'settings.neuralUi.indexPlaceholder')}
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-fuchsia-500/50"
+                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-hidden focus:border-fuchsia-500/50"
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -155,7 +155,7 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
                   value={refUploadCss}
                   onChange={(e) => setRefUploadCss(e.target.value)}
                   rows={5}
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-fuchsia-500/50"
+                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-hidden focus:border-fuchsia-500/50"
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -164,7 +164,7 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
                   value={refUploadJs}
                   onChange={(e) => setRefUploadJs(e.target.value)}
                   rows={5}
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-fuchsia-500/50"
+                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-hidden focus:border-fuchsia-500/50"
                 />
               </div>
               <Button
@@ -198,7 +198,7 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
                           : ''
                       }
                       onChange={(e) => handleSettingChange('reference_template_id', e.target.value)}
-                      className="bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-fuchsia-500/50"
+                      className="bg-white/10 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-hidden focus:border-fuchsia-500/50"
                     >
                       <option value="">{t(locale, 'settings.neuralUi.selectTemplate')}</option>
                       {referenceTemplatesCatalog.map((tpl) => (
@@ -239,7 +239,7 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
                 onChange={(e) =>
                   handleSettingChange('reference_prompt_max_chars', parseInt(e.target.value, 10) || 14000)
                 }
-                className="flex-1 bg-white/10 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-fuchsia-500/50"
+                className="flex-1 bg-white/10 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-hidden focus:border-fuchsia-500/50"
               />
             </div>
           </div>
@@ -346,7 +346,7 @@ export function ContentSettings({ api }: { api: SettingsTabApi }) {
                 }
                 void persistAdminSettings();
               }}
-              className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 font-mono text-xs text-white placeholder:text-gray-600 focus:border-emerald-500/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 font-mono text-xs text-white placeholder:text-gray-600 focus:border-emerald-500/40 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-60"
             />
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
               <p className="text-xs text-gray-500 min-w-0">{t(locale, 'settings.headSnippet.footer')}</p>

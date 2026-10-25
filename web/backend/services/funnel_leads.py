@@ -213,11 +213,10 @@ def _mask_email(email: str) -> str:
 
 def _load_product(product_id: str) -> dict[str, Any] | None:
     try:
-        from core.pipeline_state_writer import read_pipeline_state
+        from core.pipeline_state_writer import read_pipeline_products
         from core.paths import pipeline_json_path
 
-        state = read_pipeline_state(json_path=pipeline_json_path())
-        prod = (state.get("products") or {}).get(product_id)
+        prod = read_pipeline_products(json_path=pipeline_json_path()).get(product_id)
         return prod if isinstance(prod, dict) else None
     except Exception:
         logger.debug("funnel status product load failed for %s", product_id, exc_info=True)

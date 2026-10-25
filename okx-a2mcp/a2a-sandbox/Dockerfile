@@ -1,9 +1,10 @@
+# Node security baseline: 22.23.4 (2026-10-21 security release).
 # A disposable home for OKX's A2A daemon. OKX will not publish an ASP until `okx-a2a doctor`
 # sees an AI runtime bound to it, and the daemon runs that runtime on messages arriving from the
 # OKX network — by default with `--permission-mode bypassPermissions`. So it lives here, not on
 # anyone's workstation: no host mounts, no docker socket, no secrets, not root. Claude Code is
 # installed so the runtime is detected, and it is never logged in, so the daemon cannot run it.
-FROM node:22-bookworm-slim
+FROM node:22.23.4-bookworm-slim
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates curl git procps \
  && rm -rf /var/lib/apt/lists/*

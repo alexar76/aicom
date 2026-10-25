@@ -50,7 +50,7 @@ const config: Config = {
         display: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
       },
       backdropBlur: {
-        xs: '2px',
+        '2xs': '2px',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

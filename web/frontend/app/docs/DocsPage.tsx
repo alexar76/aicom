@@ -59,14 +59,14 @@ function DocNavbar({
             <Home className="w-4 h-4" />
             {t.nav.home}
           </Link>
-          <a href="/docs" className="flex items-center gap-1.5 text-sm text-white transition-colors">
+          <Link href="/docs" className="flex items-center gap-1.5 text-sm text-white transition-colors">
             <BookOpen className="w-4 h-4" />
             {t.nav.docs}
-          </a>
-          <a href="/admin" className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors">
+          </Link>
+          <Link href="/admin" className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors">
             <Settings className="w-4 h-4" />
             {t.nav.admin}
-          </a>
+          </Link>
           <div className="relative">
             <button
               type="button"
@@ -118,22 +118,22 @@ function DocNavbar({
               <Home className="w-4 h-4" />
               {t.nav.home}
             </Link>
-            <a
+            <Link
               href="/docs"
               onClick={() => setMenuOpen(false)}
               className="flex items-center gap-2 text-sm text-white py-2 transition-colors"
             >
               <BookOpen className="w-4 h-4" />
               {t.nav.docs}
-            </a>
-            <a
+            </Link>
+            <Link
               href="/admin"
               onClick={() => setMenuOpen(false)}
               className="flex items-center gap-2 text-sm text-gray-400 hover:text-white py-2 transition-colors"
             >
               <Settings className="w-4 h-4" />
               {t.nav.admin}
-            </a>
+            </Link>
             <div className="flex gap-2 pt-2 border-t border-white/5">
               {locales.map((l) => (
                 <button
@@ -165,7 +165,7 @@ function DocSidebar({
   onSectionChange: (id: string) => void;
 }) {
   return (
-    <aside className="w-64 flex-shrink-0 hidden lg:block">
+    <aside className="w-64 shrink-0 hidden lg:block">
       <nav className="sticky top-20 space-y-1">
         {sections.map((section) => {
           const Icon = section.icon;
@@ -180,7 +180,7 @@ function DocSidebar({
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
-              <Icon className="w-4 h-4 flex-shrink-0" />
+              <Icon className="w-4 h-4 shrink-0" />
               <span className="truncate">{section.title}</span>
             </button>
           );
@@ -250,7 +250,7 @@ function InfoBox({
 
   return (
     <div className={`flex gap-3 p-4 rounded-xl border ${colors[variant]} my-4`}>
-      <Icon className="w-5 h-5 flex-shrink-0 mt-0.5 text-indigo-400" />
+      <Icon className="w-5 h-5 shrink-0 mt-0.5 text-indigo-400" />
       <div>
         <p className="text-sm font-medium text-white mb-1">{title}</p>
         <div className="text-sm text-gray-400">{children}</div>
@@ -308,7 +308,7 @@ function List({ items }: { items: React.ReactNode[] }): React.ReactElement {
     <ul className="space-y-2 my-3">
       {items.map((item, i) => (
         <li key={i} className="flex items-start gap-2 text-gray-400">
-          <ChevronRight className="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5" />
+          <ChevronRight className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
           <span>{item}</span>
         </li>
       ))}
@@ -462,9 +462,11 @@ export default function DocsPage({ initialLocale }: { initialLocale: DocLocale }
             <Link href="/" className="hover:text-gray-300 transition-colors">
               {t.footer.home}
             </Link>
-            <a href="/admin" className="hover:text-gray-300 transition-colors">
+            <Link href="/admin" className="hover:text-gray-300 transition-colors">
               {t.footer.admin}
-            </a>
+            </Link>
+            {/* Swagger is served by the backend and requires a full document navigation. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a href="/api/docs" className="hover:text-gray-300 transition-colors">
               {t.footer.apiDocs}
             </a>

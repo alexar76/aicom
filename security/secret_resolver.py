@@ -8,6 +8,7 @@ import os
 from functools import lru_cache
 from typing import Any
 from urllib import error, request
+from urllib.parse import urlsplit
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +44,21 @@ def _read_hashicorp(path: str) -> dict[str, Any] | None:
     mount = (os.environ.get("AIFACTORY_HASHICORP_VAULT_MOUNT") or "secret").strip().strip("/")
     if not addr or not token:
         return None
+    try:
+        parts = urlsplit(addr)
+        if (
+            parts.scheme not in {"http", "https"}
+            or not parts.hostname
+            or parts.username is not None
+            or parts.password is not None
+            or parts.query
+            or parts.fragment
+        ):
+            raise ValueError("invalid Vault origin")
+        origin = (parts.scheme, parts.hostname, parts.port or (443 if parts.scheme == "https" else 80))
+    except ValueError:
+        logger.error("Refusing invalid HashiCorp Vault address")
+        return None
     if addr.startswith("http://") and not _vault_http_allowed(addr):
         logger.error(
             "Refusing HashiCorp Vault over plain HTTP (%s) — set https:// or "
@@ -54,13 +70,36 @@ def _read_hashicorp(path: str) -> dict[str, Any] | None:
         logger.warning("HashiCorp Vault token sent over plain HTTP to %s", addr)
     url = f"{addr}/v1/{mount}/data/{path.lstrip('/')}"
     req = request.Request(url, headers={"X-Vault-Token": token})
+
+    class SameOriginOnly(request.HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            # urllib forwards custom authentication headers on redirects. A Vault
+            # response must never send the token to another authority or downgrade TLS.
+            try:
+                dest = urlsplit(newurl)
+                port = dest.port or (443 if dest.scheme == "https" else 80)
+                if (
+                    (dest.scheme, dest.hostname, port) != origin
+                    or dest.username is not None
+                    or dest.password is not None
+                ):
+                    return None
+            except ValueError:
+                return None
+            return super().redirect_request(req, fp, code, msg, headers, newurl)
+
     try:
-        with request.urlopen(req, timeout=10) as resp:
-            payload = json.loads(resp.read().decode("utf-8"))
-    except (error.URLError, error.HTTPError, json.JSONDecodeError, TimeoutError) as exc:
+        with request.build_opener(SameOriginOnly()).open(req, timeout=10) as resp:
+            raw = resp.read(1_048_577)
+            if len(raw) > 1_048_576:
+                logger.error("HashiCorp Vault response exceeded the size limit")
+                return None
+            payload = json.loads(raw.decode("utf-8"))
+    except (error.URLError, UnicodeDecodeError, json.JSONDecodeError, OSError) as exc:
         logger.debug("HashiCorp Vault read failed for %s: %s", path, exc)
         return None
-    data = payload.get("data", {}).get("data")
+    envelope = payload.get("data") if isinstance(payload, dict) else None
+    data = envelope.get("data") if isinstance(envelope, dict) else None
     return data if isinstance(data, dict) else None
 
 

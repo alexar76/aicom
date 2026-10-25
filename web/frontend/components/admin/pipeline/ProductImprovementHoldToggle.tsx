@@ -105,7 +105,7 @@ export function ProductImprovementHoldToggle({
             } ${busy ? 'opacity-50 cursor-wait' : ''}`}
           >
             <span
-              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform ${
                 onHold ? 'left-0.5' : 'left-[calc(100%-1.375rem)]'
               }`}
             />

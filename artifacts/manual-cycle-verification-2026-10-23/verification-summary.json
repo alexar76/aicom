@@ -1,0 +1,123 @@
+{
+  "checked_at_unix": 1792754676.53234,
+  "profile": "26102310070068",
+  "offer_id": "TR_0.5_7",
+  "amount_usdc": "0.31",
+  "payment_tx": "0x62a173cba0fd4889cec3ab61dec6f005d6706e969cd1bf2aa072fcbd940100b1",
+  "refund_tx": "0x92004d0db85d4687b2912214e43708a0b81b80dba9d0982e98bd42d176460ace",
+  "payment_time_utc": "2026-10-23T10:07:51+00:00",
+  "refund_time_utc": "2026-10-23T10:08:07+00:00",
+  "balances": {
+    "buyer": {
+      "before": {
+        "usdc_units": 1043148,
+        "eth_wei": 344327954094829
+      },
+      "after": {
+        "usdc_units": 1043148,
+        "eth_wei": 344327954094829
+      }
+    },
+    "merchant": {
+      "before": {
+        "usdc_units": 0,
+        "eth_wei": 0
+      },
+      "after": {
+        "usdc_units": 0,
+        "eth_wei": 0
+      }
+    }
+  },
+  "finality": {
+    "both_finalized": true,
+    "finalized_block": 52982196,
+    "payment_block": 52980362,
+    "refund_block": 52980370,
+    "latest_block": 52982661
+  },
+  "supplier_balance_usd": 20,
+  "wholesale_cost_usd": 0.3,
+  "supplier_statement_verified": true,
+  "supplier_financial_limit": null,
+  "checks": [
+    {
+      "check": "delivery_and_refund_receipt_signatures_valid",
+      "ok": true
+    },
+    {
+      "check": "same_order_amount_payer_and_nonce",
+      "ok": true
+    },
+    {
+      "check": "base_mainnet",
+      "ok": true
+    },
+    {
+      "check": "both_transactions_successful",
+      "ok": true
+    },
+    {
+      "check": "both_transactions_canonical_and_confirmed",
+      "ok": true,
+      "refund_confirmations": 2292
+    },
+    {
+      "check": "exactly_one_payment_and_full_refund",
+      "ok": true
+    },
+    {
+      "check": "authorization_nonces_used_once",
+      "ok": true
+    },
+    {
+      "check": "no_extra_buyer_usdc_transfers_during_cycle",
+      "ok": true,
+      "outgoing_count": 1,
+      "incoming_count": 1,
+      "from_block": 52980361,
+      "to_block": 52980371
+    },
+    {
+      "check": "buyer_balances_restored",
+      "ok": true,
+      "usdc_before": "1.043148",
+      "usdc_after": "1.043148",
+      "eth_delta_wei": 0
+    },
+    {
+      "check": "merchant_balances_restored",
+      "ok": true,
+      "usdc_before": "0",
+      "usdc_after": "0",
+      "eth_delta_wei": 0
+    },
+    {
+      "check": "gas_paid_by_other_transaction_senders",
+      "ok": true
+    },
+    {
+      "check": "payment_nonce_consumed_onchain",
+      "ok": true
+    },
+    {
+      "check": "refund_nonce_consumed_onchain",
+      "ok": true
+    },
+    {
+      "check": "one_production_order_one_refund_ledger_entry",
+      "ok": true
+    },
+    {
+      "check": "supplier_profile_cancelled_unused",
+      "ok": true
+    },
+    {
+      "check": "exactly_one_supplier_profile_for_order",
+      "ok": true
+    }
+  ],
+  "all_checks_passed": true,
+  "new_transfers_sent_by_assistant": 0,
+  "github_writes": false
+}

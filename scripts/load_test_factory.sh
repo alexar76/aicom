@@ -40,15 +40,18 @@ done
 
 BASE_URL="${BASE_URL%/}"
 HEALTH_URL="${BASE_URL}/api/health"
-LIST_URL="${BASE_URL}/api/pipeline/list"
+# /api/pipeline/list no longer exists (404); this public read hits the pipeline database.
+LIST_URL="${BASE_URL}/api/public/pipeline-status"
 STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 mkdir -p "$OUT_DIR"
 LOG_FILE="${OUT_DIR}/load-test-${STAMP}.log"
 SUMMARY_FILE="${OUT_DIR}/load-test-${STAMP}-summary.txt"
 OK_FILE="${OUT_DIR}/.ok-${STAMP}"
 FAIL_FILE="${OUT_DIR}/.fail-${STAMP}"
+THROTTLED_FILE="${OUT_DIR}/.throttled-${STAMP}"
 : >"$OK_FILE"
 : >"$FAIL_FILE"
+: >"$THROTTLED_FILE"
 
 echo "Load test: base=${BASE_URL} duration=${DURATION}s concurrency=${CONCURRENCY}" | tee "$LOG_FILE"
 
@@ -67,13 +70,16 @@ worker() {
     if (( id % 3 == 0 )); then
       path="$LIST_URL"
     fi
-    if curl -fsS -m 10 "$path" >/dev/null 2>&1; then
-      echo "ok $(date -u +%H:%M:%S) worker=${id} ${path}" >>"$LOG_FILE"
-      echo 1 >>"$OK_FILE"
-    else
-      echo "fail $(date -u +%H:%M:%S) worker=${id} ${path}" >>"$LOG_FILE"
-      echo 1 >>"$FAIL_FILE"
-    fi
+    # 403/429 is the app's per-address limiter answering (100 requests a minute from one
+    # address by default): the backend is up. KI-3 is about the backend going away, so only no
+    # answer (000) and anything else count as failures.
+    local code
+    code="$(curl -s -o /dev/null -w '%{http_code}' -m 10 "$path" 2>/dev/null)" || code="000"
+    case "$code" in
+      2??) echo "ok $(date -u +%H:%M:%S) worker=${id} ${code} ${path}" >>"$LOG_FILE"; echo 1 >>"$OK_FILE" ;;
+      403|429) echo "throttled $(date -u +%H:%M:%S) worker=${id} ${code} ${path}" >>"$LOG_FILE"; echo 1 >>"$THROTTLED_FILE" ;;
+      *) echo "fail $(date -u +%H:%M:%S) worker=${id} ${code} ${path}" >>"$LOG_FILE"; echo 1 >>"$FAIL_FILE" ;;
+    esac
     sleep "$INTERVAL"
   done
 }
@@ -90,9 +96,10 @@ done
 
 ok=$(wc -l <"$OK_FILE" | tr -d ' ')
 fail=$(wc -l <"$FAIL_FILE" | tr -d ' ')
-rm -f "$OK_FILE" "$FAIL_FILE"
+throttled=$(wc -l <"$THROTTLED_FILE" | tr -d ' ')
+rm -f "$OK_FILE" "$FAIL_FILE" "$THROTTLED_FILE"
 elapsed=$(( $(date +%s) - start_ts ))
-total=$((ok + fail))
+total=$((ok + fail + throttled))
 rate="0"
 if [[ "$elapsed" -gt 0 ]]; then
   rate=$(awk "BEGIN {printf \"%.2f\", $total / $elapsed}")
@@ -103,6 +110,7 @@ fi
   echo "duration_secs=${elapsed}"
   echo "concurrency=${CONCURRENCY}"
   echo "requests_ok=${ok}"
+  echo "requests_throttled=${throttled}"
   echo "requests_fail=${fail}"
   echo "requests_per_sec=${rate}"
   echo "health_url=${HEALTH_URL}"
@@ -111,6 +119,11 @@ fi
 if command -v docker >/dev/null 2>&1 && docker compose ps app &>/dev/null 2>&1; then
   echo "--- docker compose app log (restart hints) ---" >>"$SUMMARY_FILE"
   docker compose logs --tail=50 app 2>/dev/null | grep -E 'restart|crash|FATAL|Backend died' >>"$SUMMARY_FILE" || true
+fi
+
+if [[ -f ./data/logs/uvicorn-crash-telemetry.log ]]; then
+  echo "--- uvicorn-crash-telemetry.log tail ---" >>"$SUMMARY_FILE"
+  tail -n 40 ./data/logs/uvicorn-crash-telemetry.log >>"$SUMMARY_FILE" || true
 fi
 
 if [[ -f ./data/logs/uvicorn-last-crash.log ]]; then

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 from pathlib import Path
 
 from core.delivery_profile import MARKETING_LANDING
@@ -43,10 +44,8 @@ class GithubHouseMixin:
                     rel = str(fpath.relative_to(root)).replace("\\", "/")
                     rels.append(rel.lower())
                     if fpath.name.lower() == "readme.md" and not readme_text:
-                        try:
+                        with contextlib.suppress(OSError):
                             readme_text = fpath.read_text(encoding="utf-8", errors="replace")[:20000]
-                        except OSError:
-                            pass
         except Exception:
             pass
 

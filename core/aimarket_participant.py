@@ -16,6 +16,7 @@ to Dev via ``PARTICIPANT_CONTRACT`` / ``aimarket_native_agent.md``.
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import threading
@@ -106,7 +107,7 @@ def _http_json(
             return exc.code, json.loads(body)
         except json.JSONDecodeError:
             return exc.code, {"error": body.decode("utf-8", "replace")[:800]}
-    except Exception as exc:  # noqa: BLE001 — surface to caller as mesh failure
+    except Exception as exc:
         return 0, {"error": str(exc)}
 
 
@@ -156,7 +157,7 @@ class AimarketParticipant:
         if not self._channel_id:
             return
         path = _cache_path()
-        try:
+        with contextlib.suppress(OSError):
             write_text_atomic(path, json.dumps(
                     {
                         "channel_id": self._channel_id,
@@ -165,8 +166,6 @@ class AimarketParticipant:
                         "saved_at": int(time.time()),
                     }
                 ))
-        except OSError:
-            pass
 
     def ensure_session(self) -> dict[str, Any]:
         """Open a channel when a wallet is configured and no channel id is known yet.
@@ -189,10 +188,8 @@ class AimarketParticipant:
                 ):
                     self._channel_id = ""
                     self._channel_secret = ""
-                    try:
+                    with contextlib.suppress(OSError):
                         _cache_path().unlink(missing_ok=True)
-                    except OSError:
-                        pass
                     return {
                         "mode": "trial",
                         "visitor": visitor_id(),
@@ -273,10 +270,7 @@ class AimarketParticipant:
         pid = (product_id or _env("AIMARKET_PRODUCT_ID") or "").strip()
         if not pid:
             # atlas.situation.brief@v1 → atlas.products (live catalogue product_id)
-            if capability_id.startswith("atlas."):
-                pid = "atlas.products"
-            else:
-                pid = capability_id.split(".", 1)[0]
+            pid = "atlas.products" if capability_id.startswith("atlas.") else capability_id.split(".", 1)[0]
         body: dict[str, Any] = {
             "product_id": pid,
             "capability_id": capability_id,
@@ -397,10 +391,8 @@ class AimarketParticipant:
             nonce = 0
         # Prefer hub-told nonce when a prior attempt already revealed it.
         if amount_usd is not None and hasattr(self, "_last_needed_nonce"):
-            try:
-                nonce = int(getattr(self, "_last_needed_nonce"))
-            except (TypeError, ValueError):
-                pass
+            with contextlib.suppress(TypeError, ValueError):
+                nonce = int(self._last_needed_nonce)
         usd = float(amount_usd if amount_usd is not None else 0.06)
         amount_units = max(1, int(round(usd * 1_000_000)))
         import secrets as _secrets
@@ -503,7 +495,7 @@ def _eth_call(rpc: str, to: str, data: str) -> str:
                 last_err = RuntimeError(str(parsed["error"])[:200])
                 continue
             return str(parsed.get("result") or "0x")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             last_err = exc
             continue
     if last_err:

@@ -52,7 +52,7 @@ class HoldGate:
         self._focus_ids = focus_ids
 
     @classmethod
-    def from_defaults(cls) -> "HoldGate":
+    def from_defaults(cls) -> HoldGate:
         from core.factory_hold import is_factory_hard_stopped, is_factory_on_hold
         from core.pipeline_product_pause import get_factory_focus_product_ids
 

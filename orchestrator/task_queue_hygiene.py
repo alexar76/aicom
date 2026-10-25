@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-import time as _time
-
 import logging
 import os
 import time
+import time as _time
 from typing import TYPE_CHECKING
 
 from core.agent_roles import is_architect_agent, is_developer_agent
@@ -45,9 +44,7 @@ def _is_repair_agent_state(agent: str, state: str) -> bool:
         return True
     if is_developer_agent(agent) and ("developer", state) in _REPAIR_AGENT_STATES:
         return True
-    if is_architect_agent(agent) and ("architect", state) in _REPAIR_AGENT_STATES:
-        return True
-    return False
+    return bool(is_architect_agent(agent) and ("architect", state) in _REPAIR_AGENT_STATES)
 
 
 def state_rank(state: str | None) -> int:
@@ -682,14 +679,9 @@ def requeue_pm_when_spec_absent(
     gate-failure path — a spec that cannot be produced must terminate the product, not
     loop it.
     """
-    import uuid
-
-    from core.pipeline_retry_limits import pm_spec_auto_requeue_max, task_max_retries
-
     pid = str(product_id or "")
     if not pid or pid not in products:
         return None
-    product = products[pid]
 
     try:
         spec = spec_loader(pid)

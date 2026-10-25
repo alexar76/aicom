@@ -193,6 +193,31 @@ def read_pipeline_state(*, json_path: Path | None = None) -> dict[str, Any]:
     return data
 
 
+def read_pipeline_products(*, json_path: Path | None = None) -> dict[str, dict[str, Any]]:
+    """Products only, for readers that never look at the task queue.
+
+    ``read_pipeline_state`` also loads and decodes every task the factory ever ran — 3,510 rows
+    and 4 s on factory-vps on 2026-10-23 — which the public trust strip, a lead's status and
+    the sandbox badge paid on every request to read one product or count states.
+    """
+    if pipeline_uses_sql_store():
+        try:
+            mgr = create_sync_pipeline_manager()
+            try:
+                products = mgr.get_all_products()
+            finally:
+                close = getattr(mgr, "close", None)
+                if callable(close):
+                    close()
+        except Exception:
+            logger.exception("Failed to read pipeline products from SQL store")
+            return {}
+        return {p["id"]: p for p in products if isinstance(p.get("id"), str) and p["id"]}
+    data = _read_json_file(_json_path(json_path)) or {}
+    products = data.get("products") or {}
+    return dict(products) if isinstance(products, dict) else {}
+
+
 def apply_state_to_sql_store(state: dict[str, Any], *, sql_full_save: bool = True) -> bool:
     """Upsert products and tasks from an in-memory pipeline snapshot."""
     products_map: dict[str, dict] = state.get("products") or {}

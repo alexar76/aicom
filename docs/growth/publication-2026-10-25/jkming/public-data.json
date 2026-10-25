@@ -1,0 +1,1648 @@
+{
+  "schema": "warden.threshold-independent-analysis/v1",
+  "pairedInputsPerVariant": 29760,
+  "identicalInputDigestsAcrossBaselineThresholdsAndFinal": true,
+  "uniqueBenignRequests": 7680,
+  "benignProfiles": 2,
+  "attackRequests": 14400,
+  "corpus": {
+    "files": 3575,
+    "excerpts": 39259,
+    "normalizedCharacters": 22056276,
+    "summary": {
+      "6": {
+        "exactWindowHits": 79,
+        "excerptHits": 31,
+        "byFormat": {
+          "pem": 65,
+          "jwt": 8,
+          "aws": 6
+        }
+      },
+      "7": {
+        "exactWindowHits": 0,
+        "excerptHits": 0,
+        "byFormat": {}
+      },
+      "8": {
+        "exactWindowHits": 0,
+        "excerptHits": 0,
+        "byFormat": {}
+      }
+    }
+  },
+  "finalCorpus": {
+    "files": 3575,
+    "excerpts": 39259,
+    "normalizedCharacters": 22056276,
+    "summary": {
+      "8": {
+        "exactWindowHits": 0,
+        "excerptHits": 0,
+        "byFormat": {}
+      }
+    }
+  },
+  "table": {
+    "6": {
+      "strictDefault": {
+        "total": 7680,
+        "pass": 0,
+        "ask": 7680,
+        "deny": 0
+      },
+      "exactReviewedPublic": {
+        "total": 7680,
+        "pass": 7680,
+        "ask": 0,
+        "deny": 0
+      },
+      "attacks": {
+        "total": 14400,
+        "pass": 0,
+        "ask": 7145,
+        "deny": 7255
+      },
+      "detectorOnly": {
+        "total": 14400,
+        "pass": 6193,
+        "ask": 952,
+        "deny": 7255
+      },
+      "partitions": {
+        "calibration": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 3551,
+            "deny": 3649
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 3101,
+            "ask": 450,
+            "deny": 3649
+          }
+        },
+        "holdout": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 3594,
+            "deny": 3606
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 3092,
+            "ask": 502,
+            "deny": 3606
+          }
+        }
+      },
+      "attackByFormat": {
+        "stripe": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1102,
+          "deny": 698
+        },
+        "github": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1180,
+          "deny": 620
+        },
+        "aws": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1102,
+          "deny": 698
+        },
+        "anthropic": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 74,
+          "deny": 1726
+        },
+        "hex": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1523,
+          "deny": 277
+        },
+        "base64": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1038,
+          "deny": 762
+        },
+        "jwt": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1042,
+          "deny": 758
+        },
+        "pem": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 84,
+          "deny": 1716
+        }
+      }
+    },
+    "7": {
+      "strictDefault": {
+        "total": 7680,
+        "pass": 0,
+        "ask": 7680,
+        "deny": 0
+      },
+      "exactReviewedPublic": {
+        "total": 7680,
+        "pass": 7680,
+        "ask": 0,
+        "deny": 0
+      },
+      "attacks": {
+        "total": 14400,
+        "pass": 0,
+        "ask": 10464,
+        "deny": 3936
+      },
+      "detectorOnly": {
+        "total": 14400,
+        "pass": 8690,
+        "ask": 1774,
+        "deny": 3936
+      },
+      "partitions": {
+        "calibration": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 5234,
+            "deny": 1966
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 4361,
+            "ask": 873,
+            "deny": 1966
+          }
+        },
+        "holdout": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 5230,
+            "deny": 1970
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 4329,
+            "ask": 901,
+            "deny": 1970
+          }
+        }
+      },
+      "attackByFormat": {
+        "stripe": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1424,
+          "deny": 376
+        },
+        "github": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1462,
+          "deny": 338
+        },
+        "aws": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1426,
+          "deny": 374
+        },
+        "anthropic": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 912,
+          "deny": 888
+        },
+        "hex": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1523,
+          "deny": 277
+        },
+        "base64": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1402,
+          "deny": 398
+        },
+        "jwt": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1405,
+          "deny": 395
+        },
+        "pem": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 910,
+          "deny": 890
+        }
+      }
+    },
+    "8": {
+      "strictDefault": {
+        "total": 7680,
+        "pass": 0,
+        "ask": 7680,
+        "deny": 0
+      },
+      "exactReviewedPublic": {
+        "total": 7680,
+        "pass": 7680,
+        "ask": 0,
+        "deny": 0
+      },
+      "attacks": {
+        "total": 14400,
+        "pass": 0,
+        "ask": 11555,
+        "deny": 2845
+      },
+      "detectorOnly": {
+        "total": 14400,
+        "pass": 9414,
+        "ask": 2141,
+        "deny": 2845
+      },
+      "partitions": {
+        "calibration": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 5785,
+            "deny": 1415
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 4729,
+            "ask": 1056,
+            "deny": 1415
+          }
+        },
+        "holdout": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 5770,
+            "deny": 1430
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 4685,
+            "ask": 1085,
+            "deny": 1430
+          }
+        }
+      },
+      "attackByFormat": {
+        "stripe": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1534,
+          "deny": 266
+        },
+        "github": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1558,
+          "deny": 242
+        },
+        "aws": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1529,
+          "deny": 271
+        },
+        "anthropic": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1189,
+          "deny": 611
+        },
+        "hex": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1523,
+          "deny": 277
+        },
+        "base64": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1518,
+          "deny": 282
+        },
+        "jwt": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1512,
+          "deny": 288
+        },
+        "pem": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1192,
+          "deny": 608
+        }
+      }
+    },
+    "final8": {
+      "strictDefault": {
+        "total": 7680,
+        "pass": 0,
+        "ask": 7680,
+        "deny": 0
+      },
+      "exactReviewedPublic": {
+        "total": 7680,
+        "pass": 7680,
+        "ask": 0,
+        "deny": 0
+      },
+      "attacks": {
+        "total": 14400,
+        "pass": 0,
+        "ask": 10838,
+        "deny": 3562
+      },
+      "detectorOnly": {
+        "total": 14400,
+        "pass": 8709,
+        "ask": 2129,
+        "deny": 3562
+      },
+      "partitions": {
+        "calibration": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 5432,
+            "deny": 1768
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 4384,
+            "ask": 1048,
+            "deny": 1768
+          }
+        },
+        "holdout": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 5406,
+            "deny": 1794
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 4325,
+            "ask": 1081,
+            "deny": 1794
+          }
+        }
+      },
+      "attackByFormat": {
+        "stripe": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1192,
+          "deny": 608
+        },
+        "github": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1183,
+          "deny": 617
+        },
+        "aws": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1529,
+          "deny": 271
+        },
+        "anthropic": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1189,
+          "deny": 611
+        },
+        "hex": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1523,
+          "deny": 277
+        },
+        "base64": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1518,
+          "deny": 282
+        },
+        "jwt": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1512,
+          "deny": 288
+        },
+        "pem": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1192,
+          "deny": 608
+        }
+      }
+    },
+    "rejectedGeneral8": {
+      "strictDefault": {
+        "total": 7680,
+        "pass": 0,
+        "ask": 7680,
+        "deny": 0
+      },
+      "exactReviewedPublic": {
+        "total": 7680,
+        "pass": 7680,
+        "ask": 0,
+        "deny": 0
+      },
+      "attacks": {
+        "total": 14400,
+        "pass": 0,
+        "ask": 9760,
+        "deny": 4640
+      },
+      "detectorOnly": {
+        "total": 14400,
+        "pass": 7631,
+        "ask": 2129,
+        "deny": 4640
+      },
+      "partitions": {
+        "calibration": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 4877,
+            "deny": 2323
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 3829,
+            "ask": 1048,
+            "deny": 2323
+          }
+        },
+        "holdout": {
+          "attacks": {
+            "total": 7200,
+            "pass": 0,
+            "ask": 4883,
+            "deny": 2317
+          },
+          "detectorOnly": {
+            "total": 7200,
+            "pass": 3802,
+            "ask": 1081,
+            "deny": 2317
+          }
+        }
+      },
+      "attackByFormat": {
+        "stripe": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1192,
+          "deny": 608
+        },
+        "github": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1183,
+          "deny": 617
+        },
+        "aws": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1184,
+          "deny": 616
+        },
+        "anthropic": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1189,
+          "deny": 611
+        },
+        "hex": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1440,
+          "deny": 360
+        },
+        "base64": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1190,
+          "deny": 610
+        },
+        "jwt": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1190,
+          "deny": 610
+        },
+        "pem": {
+          "total": 1800,
+          "pass": 0,
+          "ask": 1192,
+          "deny": 608
+        }
+      }
+    }
+  },
+  "pairedTransitions": {
+    "benign/strictDefault/ask->ask": 7680,
+    "benign/exactReviewedPublic/pass->pass": 7680,
+    "attack/all/ask->ask": 10838,
+    "attack/all/ask->deny": 717,
+    "attack/all/deny->deny": 2845
+  },
+  "detectorOnlyTransitions": {
+    "ask->ask": 2129,
+    "pass->pass": 8709,
+    "pass->deny": 705,
+    "deny->deny": 2845,
+    "ask->deny": 12
+  },
+  "newHardDenialsByFormat": {
+    "stripe": 342,
+    "github": 375
+  },
+  "collisionEnrichedControls": {
+    "6": {
+      "deny": 31
+    },
+    "7": {
+      "pass": 29,
+      "ask": 2
+    },
+    "8": {
+      "pass": 29,
+      "ask": 2
+    },
+    "final8": {
+      "pass": 29,
+      "ask": 2
+    }
+  },
+  "indexCompatibility": {
+    "keys": 960,
+    "lostFingerprints": 0,
+    "keysWithMoreFingerprints": 279,
+    "before": 70466,
+    "after": 71612
+  },
+  "attackByCase": {
+    "isolated-6": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 615,
+          "deny": 345
+        },
+        "detector": {
+          "total": 960,
+          "pass": 337,
+          "ask": 278,
+          "deny": 345
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 946,
+          "deny": 14
+        },
+        "detector": {
+          "total": 960,
+          "pass": 338,
+          "ask": 608,
+          "deny": 14
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 959,
+          "deny": 1
+        },
+        "detector": {
+          "total": 960,
+          "pass": 338,
+          "ask": 621,
+          "deny": 1
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 958,
+          "deny": 2
+        },
+        "detector": {
+          "total": 960,
+          "pass": 338,
+          "ask": 620,
+          "deny": 2
+        }
+      }
+    },
+    "embedded-6": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 613,
+          "deny": 347
+        },
+        "detector": {
+          "total": 960,
+          "pass": 613,
+          "ask": 0,
+          "deny": 347
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 944,
+          "deny": 16
+        },
+        "detector": {
+          "total": 960,
+          "pass": 944,
+          "ask": 0,
+          "deny": 16
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      }
+    },
+    "isolated-7": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 527,
+          "deny": 433
+        },
+        "detector": {
+          "total": 960,
+          "pass": 277,
+          "ask": 250,
+          "deny": 433
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 615,
+          "deny": 345
+        },
+        "detector": {
+          "total": 960,
+          "pass": 337,
+          "ask": 278,
+          "deny": 345
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 948,
+          "deny": 12
+        },
+        "detector": {
+          "total": 960,
+          "pass": 338,
+          "ask": 610,
+          "deny": 12
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 937,
+          "deny": 23
+        },
+        "detector": {
+          "total": 960,
+          "pass": 338,
+          "ask": 599,
+          "deny": 23
+        }
+      }
+    },
+    "embedded-7": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 525,
+          "deny": 435
+        },
+        "detector": {
+          "total": 960,
+          "pass": 525,
+          "ask": 0,
+          "deny": 435
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 612,
+          "deny": 348
+        },
+        "detector": {
+          "total": 960,
+          "pass": 612,
+          "ask": 0,
+          "deny": 348
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 946,
+          "deny": 14
+        },
+        "detector": {
+          "total": 960,
+          "pass": 946,
+          "ask": 0,
+          "deny": 14
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 938,
+          "deny": 22
+        },
+        "detector": {
+          "total": 960,
+          "pass": 938,
+          "ask": 0,
+          "deny": 22
+        }
+      }
+    },
+    "isolated-8": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 458,
+          "deny": 502
+        },
+        "detector": {
+          "total": 960,
+          "pass": 458,
+          "ask": 0,
+          "deny": 502
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 524,
+          "deny": 436
+        },
+        "detector": {
+          "total": 960,
+          "pass": 524,
+          "ask": 0,
+          "deny": 436
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 615,
+          "deny": 345
+        },
+        "detector": {
+          "total": 960,
+          "pass": 615,
+          "ask": 0,
+          "deny": 345
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 415,
+          "deny": 545
+        },
+        "detector": {
+          "total": 960,
+          "pass": 415,
+          "ask": 0,
+          "deny": 545
+        }
+      }
+    },
+    "embedded-8": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 457,
+          "deny": 503
+        },
+        "detector": {
+          "total": 960,
+          "pass": 457,
+          "ask": 0,
+          "deny": 503
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 526,
+          "deny": 434
+        },
+        "detector": {
+          "total": 960,
+          "pass": 526,
+          "ask": 0,
+          "deny": 434
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 611,
+          "deny": 349
+        },
+        "detector": {
+          "total": 960,
+          "pass": 611,
+          "ask": 0,
+          "deny": 349
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 412,
+          "deny": 548
+        },
+        "detector": {
+          "total": 960,
+          "pass": 412,
+          "ask": 0,
+          "deny": 548
+        }
+      }
+    },
+    "embedded-6-reversed": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 613,
+          "deny": 347
+        },
+        "detector": {
+          "total": 960,
+          "pass": 613,
+          "ask": 0,
+          "deny": 347
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 944,
+          "deny": 16
+        },
+        "detector": {
+          "total": 960,
+          "pass": 944,
+          "ask": 0,
+          "deny": 16
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      }
+    },
+    "embedded-6-base64": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 613,
+          "deny": 347
+        },
+        "detector": {
+          "total": 960,
+          "pass": 613,
+          "ask": 0,
+          "deny": 347
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 944,
+          "deny": 16
+        },
+        "detector": {
+          "total": 960,
+          "pass": 944,
+          "ask": 0,
+          "deny": 16
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      }
+    },
+    "embedded-6-hex": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 613,
+          "deny": 347
+        },
+        "detector": {
+          "total": 960,
+          "pass": 613,
+          "ask": 0,
+          "deny": 347
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 944,
+          "deny": 16
+        },
+        "detector": {
+          "total": 960,
+          "pass": 944,
+          "ask": 0,
+          "deny": 16
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      }
+    },
+    "embedded-6-url": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 613,
+          "deny": 347
+        },
+        "detector": {
+          "total": 960,
+          "pass": 613,
+          "ask": 0,
+          "deny": 347
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 944,
+          "deny": 16
+        },
+        "detector": {
+          "total": 960,
+          "pass": 944,
+          "ask": 0,
+          "deny": 16
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 960,
+          "ask": 0,
+          "deny": 0
+        }
+      }
+    },
+    "embedded-6-unrestricted": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 474,
+          "deny": 486
+        },
+        "detector": {
+          "total": 960,
+          "pass": 474,
+          "ask": 0,
+          "deny": 486
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 923,
+          "deny": 37
+        },
+        "detector": {
+          "total": 960,
+          "pass": 923,
+          "ask": 0,
+          "deny": 37
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 956,
+          "deny": 4
+        },
+        "detector": {
+          "total": 960,
+          "pass": 956,
+          "ask": 0,
+          "deny": 4
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 956,
+          "deny": 4
+        },
+        "detector": {
+          "total": 960,
+          "pass": 956,
+          "ask": 0,
+          "deny": 4
+        }
+      }
+    },
+    "isolated-6-unrestricted": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 474,
+          "deny": 486
+        },
+        "detector": {
+          "total": 960,
+          "pass": 50,
+          "ask": 424,
+          "deny": 486
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 938,
+          "deny": 22
+        },
+        "detector": {
+          "total": 960,
+          "pass": 50,
+          "ask": 888,
+          "deny": 22
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 50,
+          "ask": 910,
+          "deny": 0
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 960,
+          "deny": 0
+        },
+        "detector": {
+          "total": 960,
+          "pass": 50,
+          "ask": 910,
+          "deny": 0
+        }
+      }
+    },
+    "isolated-10": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 274,
+          "deny": 686
+        },
+        "detector": {
+          "total": 960,
+          "pass": 274,
+          "ask": 0,
+          "deny": 686
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 330,
+          "deny": 630
+        },
+        "detector": {
+          "total": 960,
+          "pass": 330,
+          "ask": 0,
+          "deny": 630
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 379,
+          "deny": 581
+        },
+        "detector": {
+          "total": 960,
+          "pass": 379,
+          "ask": 0,
+          "deny": 581
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 231,
+          "deny": 729
+        },
+        "detector": {
+          "total": 960,
+          "pass": 231,
+          "ask": 0,
+          "deny": 729
+        }
+      }
+    },
+    "embedded-10": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 276,
+          "deny": 684
+        },
+        "detector": {
+          "total": 960,
+          "pass": 276,
+          "ask": 0,
+          "deny": 684
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 330,
+          "deny": 630
+        },
+        "detector": {
+          "total": 960,
+          "pass": 330,
+          "ask": 0,
+          "deny": 630
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 381,
+          "deny": 579
+        },
+        "detector": {
+          "total": 960,
+          "pass": 381,
+          "ask": 0,
+          "deny": 579
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 231,
+          "deny": 729
+        },
+        "detector": {
+          "total": 960,
+          "pass": 231,
+          "ask": 0,
+          "deny": 729
+        }
+      }
+    },
+    "complete-key-control": {
+      "6": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 0,
+          "deny": 960
+        },
+        "detector": {
+          "total": 960,
+          "pass": 0,
+          "ask": 0,
+          "deny": 960
+        }
+      },
+      "7": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 0,
+          "deny": 960
+        },
+        "detector": {
+          "total": 960,
+          "pass": 0,
+          "ask": 0,
+          "deny": 960
+        }
+      },
+      "8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 0,
+          "deny": 960
+        },
+        "detector": {
+          "total": 960,
+          "pass": 0,
+          "ask": 0,
+          "deny": 960
+        }
+      },
+      "final8": {
+        "guard": {
+          "total": 960,
+          "pass": 0,
+          "ask": 0,
+          "deny": 960
+        },
+        "detector": {
+          "total": 960,
+          "pass": 0,
+          "ask": 0,
+          "deny": 960
+        }
+      }
+    }
+  },
+  "regressions": {
+    "baseline": {
+      "known-benign-7-collision": {
+        "id": "known-benign-7-collision",
+        "key": "legacy/pem/3",
+        "bodySha256": "c609e0adac85a981b1e7a84a7beaed77ba2b989f8f1f5329e9c797a2edb37c13",
+        "decisions": {
+          "6": "deny",
+          "7": "deny",
+          "8": "pass"
+        },
+        "detectorOnly": {
+          "6": "deny",
+          "7": "deny",
+          "8": "pass"
+        }
+      },
+      "late-digit-embedded-8": {
+        "id": "late-digit-embedded-8",
+        "key": "late-digit-ghp",
+        "bodySha256": "e7fe6b92c64f7e95f3ecff9b7f4f119fc82847729c16b4c3bd39e0b4aa9c7b75",
+        "decisions": {
+          "6": "ask",
+          "7": "ask",
+          "8": "ask"
+        },
+        "detectorOnly": {
+          "6": "pass",
+          "7": "pass",
+          "8": "pass"
+        }
+      },
+      "reviewed-public-word-year-config": {
+        "id": "reviewed-public-word-year-config",
+        "key": "public-word-year-config",
+        "bodySha256": "9dfe97b1fe11bd4acdb9e09849f7e22d0cc5530e9f9e3b8c859c3d435d6a5ff8",
+        "decisions": {
+          "6": "pass",
+          "7": "pass",
+          "8": "pass"
+        },
+        "detectorOnly": {
+          "6": "pass",
+          "7": "pass",
+          "8": "pass"
+        }
+      }
+    },
+    "general": {
+      "known-benign-7-collision": {
+        "id": "known-benign-7-collision",
+        "key": "legacy/pem/3",
+        "bodySha256": "c609e0adac85a981b1e7a84a7beaed77ba2b989f8f1f5329e9c797a2edb37c13",
+        "decisions": {
+          "6": "deny",
+          "7": "deny",
+          "8": "pass"
+        },
+        "detectorOnly": {
+          "6": "deny",
+          "7": "deny",
+          "8": "pass"
+        }
+      },
+      "late-digit-embedded-8": {
+        "id": "late-digit-embedded-8",
+        "key": "late-digit-ghp",
+        "bodySha256": "e7fe6b92c64f7e95f3ecff9b7f4f119fc82847729c16b4c3bd39e0b4aa9c7b75",
+        "decisions": {
+          "6": "deny",
+          "7": "deny",
+          "8": "deny"
+        },
+        "detectorOnly": {
+          "6": "deny",
+          "7": "deny",
+          "8": "deny"
+        }
+      },
+      "reviewed-public-word-year-config": {
+        "id": "reviewed-public-word-year-config",
+        "key": "public-word-year-config",
+        "bodySha256": "9dfe97b1fe11bd4acdb9e09849f7e22d0cc5530e9f9e3b8c859c3d435d6a5ff8",
+        "decisions": {
+          "6": "deny",
+          "7": "deny",
+          "8": "deny"
+        },
+        "detectorOnly": {
+          "6": "deny",
+          "7": "deny",
+          "8": "deny"
+        }
+      }
+    },
+    "final": {
+      "known-benign-7-collision": {
+        "id": "known-benign-7-collision",
+        "key": "legacy/pem/3",
+        "bodySha256": "c609e0adac85a981b1e7a84a7beaed77ba2b989f8f1f5329e9c797a2edb37c13",
+        "decisions": {
+          "6": "deny",
+          "7": "deny",
+          "8": "pass"
+        },
+        "detectorOnly": {
+          "6": "deny",
+          "7": "deny",
+          "8": "pass"
+        }
+      },
+      "late-digit-embedded-8": {
+        "id": "late-digit-embedded-8",
+        "key": "late-digit-ghp",
+        "bodySha256": "e7fe6b92c64f7e95f3ecff9b7f4f119fc82847729c16b4c3bd39e0b4aa9c7b75",
+        "decisions": {
+          "6": "deny",
+          "7": "deny",
+          "8": "deny"
+        },
+        "detectorOnly": {
+          "6": "deny",
+          "7": "deny",
+          "8": "deny"
+        }
+      },
+      "reviewed-public-word-year-config": {
+        "id": "reviewed-public-word-year-config",
+        "key": "public-word-year-config",
+        "bodySha256": "9dfe97b1fe11bd4acdb9e09849f7e22d0cc5530e9f9e3b8c859c3d435d6a5ff8",
+        "decisions": {
+          "6": "pass",
+          "7": "pass",
+          "8": "pass"
+        },
+        "detectorOnly": {
+          "6": "pass",
+          "7": "pass",
+          "8": "pass"
+        }
+      }
+    }
+  },
+  "releaseGate": {
+    "scenarios": 28,
+    "answerOnly": 2,
+    "toolAttackDelivered": 0
+  },
+  "notes": [
+    "Counters concern constructed fixtures, not a production false-positive rate.",
+    "Known collision controls are deliberately selected, not an unbiased sample.",
+    "All empirical guard measurements ran in networkless Linux containers; local unit tests are separate."
+  ],
+  "snapshot": "2026-10-25",
+  "implementation_status": "local, unreleased, undeployed; thresholds non-hex 8, hex 10",
+  "disclosure": "AI agents prepared the experiment code and analysis under the project owner’s direction; maintainer of WARDEN/HISTOR."
+}

@@ -1,0 +1,34 @@
+{
+  "server_pipeline": "final/final-pipeline-status.json",
+  "empirical_platform": "Linux x64, networkless Docker on admin-vps",
+  "own_unit_test_platform": "macOS, local fixture tests; not external package/corpus execution",
+  "own_unit_tests": {
+    "files": 48,
+    "passed": 1156,
+    "failed": 0,
+    "log": "final/local-unit-tests.log"
+  },
+  "build": {
+    "command": "npm run build",
+    "exit_code": 0
+  },
+  "typecheck": {
+    "command": "npm run typecheck",
+    "exit_code": 0
+  },
+  "sandbox_attempt": "Local HTTP fixture listeners unavailable in sandbox; interrupted that attempt, reran full unit suite with loopback permitted.",
+  "publishing": {
+    "posted_reply": false,
+    "released": false,
+    "pushed": false,
+    "deployed": false
+  },
+  "final_source_verified_against_upload_manifest": true,
+  "only_changed_payload_files": [
+    "dist/flow-guard-fingerprints.js",
+    "scripts/redteam/threshold-sweep.mjs"
+  ],
+  "local_document_links_verified": true,
+  "git_diff_check_exit_code": 0,
+  "cleanup": "cleanup.json"
+}

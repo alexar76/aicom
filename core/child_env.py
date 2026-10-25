@@ -20,7 +20,10 @@ whoever remembers to edit this file.
 
 from __future__ import annotations
 
-from typing import Iterable, Mapping
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Mapping
 
 #: Exact keys dropped so a caller's own sandbox default applies instead of the
 #: factory's live value. Callers that re-set these (``setdefault``) get the
@@ -73,7 +76,7 @@ def scrub_child_env(
     ``keep`` re-admits specific keys by exact name, for the rare child that needs
     one (pass it explicitly at the call site so the exception is reviewable).
     """
-    keep_set = {k for k in keep}
+    keep_set = set(keep)
     return {
         key: value
         for key, value in source.items()

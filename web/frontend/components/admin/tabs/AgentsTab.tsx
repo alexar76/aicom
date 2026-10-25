@@ -134,7 +134,7 @@ export function AgentsTab({ locale }: { locale: AdminLocale }) {
             <button
               type="button"
               onClick={() => setDetail(agent)}
-              className="w-full text-left rounded-2xl transition-colors hover:ring-1 hover:ring-indigo-500/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+              className="w-full text-left rounded-2xl transition-colors hover:ring-1 hover:ring-indigo-500/40 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-indigo-500/50"
             >
               <GlassCard className="h-full cursor-pointer">
                 <div className="flex items-center gap-4">

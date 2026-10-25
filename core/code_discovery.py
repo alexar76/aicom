@@ -8,9 +8,12 @@ security scans, and runtime test inference stay on product code only.
 from __future__ import annotations
 
 import os
-from collections.abc import Iterator
 from fnmatch import fnmatch
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 PRODUCT_CODE_SKIP_DIR_NAMES = frozenset(
     {

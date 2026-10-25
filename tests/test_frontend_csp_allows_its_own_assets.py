@@ -29,7 +29,7 @@ PUBLIC = ROOT / "web" / "frontend" / "public"
 HEADERS_TS = ROOT / "web" / "frontend" / "lib" / "securityHeaders.ts"
 
 # `@import url("...")`, remote or root-relative, with or without quotes.
-_IMPORT_URL = re.compile(r"@import\s+url\(\s*['\"]?([^'\")\s]+)", re.I)
+_IMPORT_URL = re.compile(r'@import\s+(?:url\(\s*[\"\']?([^\"\')\s]+)|[\"\']([^\"\']+))', re.I)
 
 # Origins that only ever appear here to serve fonts, so their presence in the policy is
 # evidence a page still reaches out to them.
@@ -55,23 +55,25 @@ def _csp_directive(name: str) -> str:
     raise AssertionError(f"{name} not found in DEFAULT_FRONTEND_CSP")
 
 
-def _imports() -> list[str]:
-    return _IMPORT_URL.findall(CSS.read_text())
+def _imports(source: str | None = None) -> list[str]:
+    return [url or quoted for url, quoted in _IMPORT_URL.findall(CSS.read_text() if source is None else source)]
 
 
 def _remote_origins() -> set[str]:
     return {"https://" + u.split("/", 3)[2] for u in _imports() if u.startswith("https://")}
 
 
-@pytest.mark.parametrize("origin", sorted(_remote_origins()) or [None])
-def test_style_src_allows_every_remote_stylesheet_the_css_imports(origin):
-    if origin is None:
-        pytest.skip("globals.css imports nothing remote — nothing to allow")
-    style_src = _csp_directive("style-src")
-    assert origin in style_src, (
-        f"globals.css imports {origin} but style-src is {style_src!r} — the browser blocks the "
-        "import and every page renders in fallback fonts"
-    )
+def test_style_src_allows_every_remote_stylesheet_the_css_imports():
+    style_src = _csp_directive("style-src").split()
+    assert "'self'" in style_src
+    for origin in _remote_origins():
+        assert origin in style_src, f"CSP blocks imported stylesheet {origin}"
+
+
+def test_import_parser_handles_url_and_quoted_forms():
+    assert _imports('@import url("https://fonts.test/a.css"); @import "/fonts/a.css"; @import "tailwindcss";') == [
+        "https://fonts.test/a.css", "/fonts/a.css", "tailwindcss"]
+    assert _imports("/* no imports */") == []
 
 
 @pytest.mark.parametrize("host", THIRD_PARTY_FONT_ORIGINS)
@@ -83,7 +85,8 @@ def test_policy_does_not_allow_font_origins_nothing_loads_from(host):
     start disclosing every visitor's address to Google again without anything failing.
     """
     if any(host in origin for origin in _remote_origins()):
-        pytest.skip(f"globals.css genuinely imports from {host}")
+        assert host in " ".join(_csp_directive(d) for d in ("style-src", "font-src"))
+        return
     policy = " ".join(_csp_directive(d) for d in ("style-src", "font-src"))
     assert host not in policy, (
         f"nothing in globals.css loads from {host}, but the CSP still allows it — drop it, or a "
@@ -91,11 +94,12 @@ def test_policy_does_not_allow_font_origins_nothing_loads_from(host):
     )
 
 
-@pytest.mark.parametrize("href", [u for u in _imports() if u.startswith("/")] or [None])
+@pytest.mark.parametrize("href", sorted({u for u in _imports() if u.startswith("/")} | {"/fonts/fonts.css"}))
 def test_locally_imported_stylesheets_exist_on_disk(href):
     """A self-hosted font that 404s looks exactly like a blocked remote one."""
-    if href is None:
-        pytest.skip("globals.css imports nothing from our own origin")
+    if href == "/fonts/fonts.css":
+        layout = (ROOT / "web/frontend/app/layout.tsx").read_text()
+        assert re.search(r'<link\b[^>]*rel="stylesheet"[^>]*href="/fonts/fonts.css"', layout)
     target = PUBLIC / href.lstrip("/")
     assert target.is_file(), (
         f"globals.css imports {href} but {target.relative_to(ROOT)} does not exist — every page "

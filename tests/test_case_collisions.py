@@ -13,17 +13,32 @@ exist; the grouping and the wiring are tested everywhere.
 
 from __future__ import annotations
 
+import os
+import tempfile
 from pathlib import Path
 
 import pytest
 
-from web.backend.services.duplicate_module_check import find_case_collisions
 from tests.split_source import read_split
+from web.backend.services.duplicate_module_check import find_case_collisions
 
 
 def _fs_is_case_sensitive(tmp_path: Path) -> bool:
     (tmp_path / "probe_a").write_text("x", encoding="utf-8")
     return not (tmp_path / "PROBE_A").exists()
+
+
+@pytest.fixture
+def tmp_path(tmp_path):
+    """Use a real case-sensitive volume when the host's default filesystem folds case."""
+    root = os.environ.get("AIFACTORY_CASE_SENSITIVE_TMPDIR")
+    if not root:
+        yield tmp_path
+        return
+    with tempfile.TemporaryDirectory(prefix="case-collision-", dir=root) as directory:
+        path = Path(directory)
+        assert _fs_is_case_sensitive(path), "AIFACTORY_CASE_SENSITIVE_TMPDIR must preserve filename case"
+        yield path
 
 
 def test_the_live_shape_is_found_where_the_fs_allows_it(tmp_path):
@@ -32,6 +47,9 @@ def test_the_live_shape_is_found_where_the_fs_allows_it(tmp_path):
     code = tmp_path / "code"
     (code / "frontend" / "src" / "components" / "UI").mkdir(parents=True)
     (code / "frontend" / "src" / "components" / "ui").mkdir(parents=True)
+    (code / "frontend" / "src" / "components" / "UI" / "Skeleton.tsx").write_text(
+        "export const Skeleton = 1\n", encoding="utf-8"
+    )
     (code / "frontend" / "src" / "components" / "ui" / "Button.tsx").write_text(
         "export const Button = 1\n", encoding="utf-8"
     )

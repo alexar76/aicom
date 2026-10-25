@@ -119,7 +119,7 @@ pub mod aimarket_lottery {
             let seeds: &[&[u8]] = &[b"vault", rid.as_ref(), &[bump]];
             let signer_seeds = &[seeds];
             let cpi = CpiContext::new(
-                ctx.accounts.system_program.to_account_info(),
+                system_program::ID,
                 system_program::CreateAccount {
                     from: ctx.accounts.authority.to_account_info(),
                     to: vault,
@@ -149,7 +149,7 @@ pub mod aimarket_lottery {
             .ok_or(LotteryError::Overflow)?;
 
         let cpi = CpiContext::new(
-            ctx.accounts.system_program.to_account_info(),
+            system_program::ID,
             system_program::Transfer {
                 from: ctx.accounts.buyer.to_account_info(),
                 to: ctx.accounts.vault.to_account_info(),
@@ -195,7 +195,7 @@ pub mod aimarket_lottery {
         require!(round.status() == RoundStatus::Open, LotteryError::WrongStatus);
 
         let cpi = CpiContext::new(
-            ctx.accounts.system_program.to_account_info(),
+            system_program::ID,
             system_program::Transfer {
                 from: ctx.accounts.benefactor.to_account_info(),
                 to: ctx.accounts.vault.to_account_info(),
@@ -252,7 +252,7 @@ pub mod aimarket_lottery {
         require!(round.total_weight > 0, LotteryError::NoParticipants);
 
         // commit-reveal: the revealed seed must hash to what was committed at close.
-        let reveal = anchor_lang::solana_program::hash::hash(&seed).to_bytes();
+        let reveal = solana_sha256_hasher::hash(&seed).to_bytes();
         require!(reveal == round.seed_commitment, LotteryError::BadReveal);
 
         let now_slot = Clock::get()?.slot;
@@ -329,7 +329,7 @@ pub mod aimarket_lottery {
         let signer = &[&seeds[..]];
 
         let cpi = CpiContext::new_with_signer(
-            ctx.accounts.system_program.to_account_info(),
+            system_program::ID,
             system_program::Transfer {
                 from: ctx.accounts.vault.to_account_info(),
                 to: ctx.accounts.winner.to_account_info(),
@@ -366,7 +366,7 @@ pub mod aimarket_lottery {
         let seeds = &[b"vault", round_id_bytes.as_ref(), &[ctx.bumps.vault]];
         let signer = &[&seeds[..]];
         let cpi = CpiContext::new_with_signer(
-            ctx.accounts.system_program.to_account_info(),
+            system_program::ID,
             system_program::Transfer {
                 from: ctx.accounts.vault.to_account_info(),
                 to: ctx.accounts.treasury.to_account_info(),
@@ -446,7 +446,7 @@ pub mod aimarket_lottery {
             let seeds = &[b"vault", round_id_bytes.as_ref(), &[ctx.bumps.vault]];
             let signer = &[&seeds[..]];
             let cpi = CpiContext::new_with_signer(
-                ctx.accounts.system_program.to_account_info(),
+                system_program::ID,
                 system_program::Transfer {
                     from: ctx.accounts.vault.to_account_info(),
                     to: ctx.accounts.agent.to_account_info(),
@@ -477,7 +477,7 @@ pub mod aimarket_lottery {
             let seeds = &[b"vault", round_id_bytes.as_ref(), &[ctx.bumps.vault]];
             let signer = &[&seeds[..]];
             let cpi = CpiContext::new_with_signer(
-                ctx.accounts.system_program.to_account_info(),
+                system_program::ID,
                 system_program::Transfer {
                     from: ctx.accounts.vault.to_account_info(),
                     to: ctx.accounts.treasury.to_account_info(),
@@ -514,11 +514,24 @@ pub mod aimarket_lottery {
         let bal = vault.lamports();
         // Refuse to close while ticket/prize funds remain — only the rent reserve (or dust).
         require!(bal <= round.rent_reserve, LotteryError::FundsRemain);
-        **vault.try_borrow_mut_lamports()? = 0;
-        **authority.try_borrow_mut_lamports()? = authority
-            .lamports()
-            .checked_add(bal)
-            .ok_or(LotteryError::Overflow)?;
+        // The vault is System-owned: only the System Program may debit it.
+        // Keep the existing fixed account list and instruction wire format; callers
+        // supply the executable System Program as the first remaining account.
+        let system_info = ctx.remaining_accounts.first().ok_or(
+            anchor_lang::error::ErrorCode::AccountNotEnoughKeys
+        )?;
+        let _system = Program::<System>::try_from(system_info)?;
+        let round_id_bytes = round.round_id.to_le_bytes();
+        let seeds = &[b"vault", round_id_bytes.as_ref(), &[ctx.bumps.vault]];
+        let signer = &[&seeds[..]];
+        system_program::transfer(
+            CpiContext::new_with_signer(
+                system_program::ID,
+                system_program::Transfer { from: vault, to: authority },
+                signer,
+            ),
+            bal,
+        )?;
 
         emit!(VaultClosed {
             round_id: round.round_id,
@@ -536,7 +549,7 @@ fn derive_random_word(round_id: u64, seed: &[u8; 32], slot_hash: &[u8; 32]) -> u
     buf[..8].copy_from_slice(&round_id.to_le_bytes());
     buf[8..40].copy_from_slice(seed);
     buf[40..].copy_from_slice(slot_hash);
-    let digest = anchor_lang::solana_program::hash::hash(&buf).to_bytes();
+    let digest = solana_sha256_hasher::hash(&buf).to_bytes();
     u64::from_le_bytes(digest[..8].try_into().unwrap())
 }
 
@@ -578,7 +591,7 @@ fn round_is_abandoned(
 fn slot_hash_at(slot_hashes: &AccountInfo, target_slot: u64) -> Result<[u8; 32]> {
     require_keys_eq!(
         *slot_hashes.key,
-        anchor_lang::solana_program::sysvar::slot_hashes::id(),
+        solana_sdk_ids::sysvar::slot_hashes::id(),
         LotteryError::BadReveal
     );
     let data = slot_hashes.try_borrow_data()?;
@@ -604,7 +617,10 @@ fn slot_hash_at(slot_hashes: &AccountInfo, target_slot: u64) -> Result<[u8; 32]>
 }
 
 fn validate_splits(prize_bps: u16, opex_bps: u16, operator_bps: u16) -> Result<()> {
-    require!(prize_bps + opex_bps + operator_bps == BPS, LotteryError::InvalidSplits);
+    require!(
+        u32::from(prize_bps) + u32::from(opex_bps) + u32::from(operator_bps) == u32::from(BPS),
+        LotteryError::InvalidSplits
+    );
     require!(prize_bps >= MIN_PRIZE_BPS, LotteryError::InvalidSplits);
     require!(opex_bps <= MAX_OPEX_BPS, LotteryError::InvalidSplits);
     require!(operator_bps <= MAX_OPERATOR_BPS, LotteryError::InvalidSplits);
@@ -815,7 +831,7 @@ pub struct FulfillDraw<'info> {
     pub winner_ticket: Account<'info, Ticket>,
     /// CHECK: the SlotHashes sysvar — address-checked in `slot_hash_at`; supplies the
     /// pinned draw_slot hash (unknown at commit) to make the draw unbiasable.
-    pub slot_hashes: AccountInfo<'info>,
+    pub slot_hashes: UncheckedAccount<'info>,
 }
 
 #[derive(Accounts)]
@@ -1040,6 +1056,44 @@ pub enum LotteryError {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn draw_hash_matches_the_legacy_sha256_wire_vector() {
+        assert_eq!(derive_random_word(5, &[7; 32], &[1; 32]), 3248392324603399094);
+        assert_eq!(solana_sha256_hasher::hash(&[7; 32]).to_bytes(),
+            [75, 176, 111, 142, 78, 58, 119, 21, 210, 1, 213, 115, 208, 170, 66, 55, 98, 229, 93, 171, 214, 26, 44, 2, 39, 143, 165, 108, 198, 210, 148, 224]);
+    }
+
+    #[test]
+    fn split_validation_rejects_overflowing_untrusted_inputs() {
+        assert!(validate_splits(7000, 2000, 1000).is_ok());
+        assert!(validate_splits(10000, 0, 0).is_ok());
+        for splits in [(u16::MAX, u16::MAX, u16::MAX), (6000, 3000, 1000),
+                       (7000, 3001, 0), (7000, 1000, 2000), (7000, 2000, 999)] {
+            assert!(validate_splits(splits.0, splits.1, splits.2).is_err());
+        }
+    }
+
+    #[test]
+    fn slot_hash_parser_uses_only_the_pinned_slot_and_authentic_sysvar() {
+        let key = solana_sdk_ids::sysvar::slot_hashes::id();
+        let owner = solana_sdk_ids::sysvar::id();
+        let mut lamports = 1;
+        let mut data = Vec::new();
+        data.extend(3u64.to_le_bytes());
+        for (slot, byte) in [(103u64, 3u8), (102, 2), (101, 1)] {
+            data.extend(slot.to_le_bytes()); data.extend([byte;32]);
+        }
+        let info = AccountInfo::new(&key, false, false, &mut lamports, &mut data, &owner, false);
+        assert_eq!(slot_hash_at(&info, 102).unwrap(), [2; 32]);
+        assert!(slot_hash_at(&info, 104).is_err());
+        assert!(slot_hash_at(&info, 100).is_err());
+        let forged_key = Pubkey::new_from_array([99;32]);
+        let forged = AccountInfo { key: &forged_key, ..info.clone() };
+        assert!(slot_hash_at(&forged, 102).is_err());
+        info.try_borrow_mut_data().unwrap()[..8].copy_from_slice(&4u64.to_le_bytes());
+        assert!(slot_hash_at(&info, 100).is_err());
+    }
 
     #[test]
     fn random_word_is_deterministic_and_slot_hash_sensitive() {

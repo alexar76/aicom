@@ -20,8 +20,11 @@ Addresses are public (on-chain); this is consistency, not secrecy.
 from __future__ import annotations
 
 import json
+import os
 import re
 from pathlib import Path
+
+import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / "config" / "deployments" / "base-mainnet.json"
@@ -90,6 +93,8 @@ _ADDRESS_ALLOWED = (
     # Run records of the Pay-on-Verified demo: evidence of which escrow a past run paid
     # through, like the journal. Rewriting them on a redeploy would falsify the record.
     "pov-demo/runs/",
+    # Captured public responses are dated evidence, not deployment configuration.
+    "artifacts/payment-chain-audit-2026-10-23/public-snapshot.json",
     # Templates, fixtures and course content legitimately carry a literal — their whole
     # purpose is to SHOW an address. They are still worth updating on a redeploy (and were,
     # on 2026-09-04), but a literal there is not the drift this check is about: nothing reads
@@ -123,6 +128,33 @@ _ADDRESS_SKIP_DIRS = {
 }
 
 
+def _source_paths(root: Path):
+    """Apply the existing exclusions before entering dependency directories."""
+    extensions = {".py", ".ts", ".tsx", ".js", ".json", ".sh", ".yml", ".yaml", ".env", ".example"}
+    for directory, dirs, files in os.walk(root):
+        dirs[:] = [name for name in dirs if name not in _ADDRESS_SKIP_DIRS]
+        for name in files:
+            path = Path(directory) / name
+            if path.suffix in extensions and path.is_file():
+                yield path
+
+
+def test_source_scan_prunes_dependencies_without_losing_first_party_files(tmp_path, monkeypatch):
+    dependency = tmp_path / "node_modules"
+    dependency.mkdir()
+    (dependency / "vendored.py").touch()
+    for name in ("runtime.py", "config.json", "notes.md"):
+        (tmp_path / name).touch()
+    original_scandir = os.scandir
+
+    def scan(path):
+        assert Path(path) != dependency, "dependency traversal must be pruned"
+        return original_scandir(path)
+
+    monkeypatch.setattr(os, "scandir", scan)
+    assert {path.name for path in _source_paths(tmp_path)} == {"runtime.py", "config.json"}
+
+
 def test_no_source_file_anywhere_hardcodes_a_live_address():
     """The narrow test above scanned exactly the three files a previous audit had fixed.
 
@@ -144,9 +176,7 @@ def test_no_source_file_anywhere_hardcodes_a_live_address():
     assert reg_addrs, "no deployed addresses parsed out of the registry — the check would pass vacuously"
 
     offenders: list[str] = []
-    for path in ROOT.rglob("*"):
-        if not path.is_file() or path.suffix not in {".py", ".ts", ".tsx", ".js", ".json", ".sh", ".yml", ".yaml", ".env", ".example"}:
-            continue
+    for path in _source_paths(ROOT):
         rel = path.relative_to(ROOT).as_posix()
         if any(part in _ADDRESS_SKIP_DIRS for part in path.relative_to(ROOT).parts):
             continue
@@ -213,7 +243,7 @@ def test_hub_package_data_ships_the_registry():
     )
 
 
-def test_no_source_file_still_points_at_a_SUPERSEDED_address():
+def test_no_source_file_still_points_at_a_superseded_address():
     """The other half, and the half that is already broken rather than fragile.
 
     The check above catches a file pinning a CURRENT address — it will go stale at the next
@@ -227,23 +257,21 @@ def test_no_source_file_still_points_at_a_SUPERSEDED_address():
 
     registry = _json.loads(REGISTRY.read_text(encoding="utf-8"))
     superseded: set[str] = set()
-    for key, block in registry.items():
+    for _key, block in registry.items():
         if not isinstance(block, dict):
             continue
-        for name, addr in (block.get("superseded") or {}).items():
+        for _name, addr in (block.get("superseded") or {}).items():
             if isinstance(addr, str) and addr.startswith("0x"):
                 superseded.add(addr.lower())
     if not superseded:
         pytest.skip("no superseded addresses recorded yet")
 
     offenders: list[str] = []
-    for path in ROOT.rglob("*"):
+    for path in _source_paths(ROOT):
         # CODE AND CONFIG ONLY. Documentation, case studies and landing pages legitimately
         # quote the address that was live when they were written — that is the historical
         # record, and docs/onchain-journal.md is where the current one is kept. Rewriting
         # history on every redeploy would make the prose wrong instead of stale.
-        if not path.is_file() or path.suffix not in {".py", ".ts", ".tsx", ".js", ".json", ".sh", ".yml", ".yaml", ".env", ".example"}:
-            continue
         rel = path.relative_to(ROOT).as_posix()
         if any(part in _ADDRESS_SKIP_DIRS for part in path.relative_to(ROOT).parts):
             continue

@@ -12,8 +12,13 @@ Pipeline integration:
 
 from __future__ import annotations
 
+import copy
+import json
 import os
 import re
+from collections.abc import Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 from pathlib import Path
 from typing import Any, Optional
 
@@ -653,6 +658,24 @@ def _coverage_score(index_lower: str, keywords: list[str]) -> int:
     return int(min(100, round(100 * hits / max(1, len(scored)))))
 
 
+# A storefront request asks for the same product's report three times (marketplace quality
+# and the front-page gate twice), and each report walks the product's tree and runs every
+# check: 57 assessments, 5.1 s of a 5.4 s GET /api/products for 19 products (2026-10-23).
+# Inside ``assessment_memo()`` a report is computed once per (product, spec, data root).
+# Outside it — QA, verification, the refresh job — nothing is remembered: those callers run
+# right after the files change and must see them.
+_ASSESS_MEMO: ContextVar[dict[tuple[str, str, str], dict[str, Any]] | None] = ContextVar("demo_assess_memo", default=None)
+
+
+@contextmanager
+def assessment_memo() -> Iterator[None]:
+    token = _ASSESS_MEMO.set({})
+    try:
+        yield
+    finally:
+        _ASSESS_MEMO.reset(token)
+
+
 def assess_product_demo(
     product_id: str,
     spec: Optional[dict] = None,
@@ -661,6 +684,20 @@ def assess_product_demo(
     """
     Return a small report: score 0–100, human-readable issues, spec coverage heuristic.
     """
+    memo = _ASSESS_MEMO.get()
+    if memo is None:
+        return _assess_product_demo(product_id, spec, data_root)
+    key = (product_id, json.dumps(spec, sort_keys=True, default=str) if spec is not None else "", str(data_root or ""))
+    if key not in memo:
+        memo[key] = _assess_product_demo(product_id, spec, data_root)
+    return copy.deepcopy(memo[key])
+
+
+def _assess_product_demo(
+    product_id: str,
+    spec: Optional[dict] = None,
+    data_root: str | Path | None = None,
+) -> dict[str, Any]:
     from core.delivery_profile import DESKTOP_APP, normalize_delivery_profile
     from web.backend.services.desktop_product import assess_desktop_product_demo
 

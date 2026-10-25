@@ -15,11 +15,11 @@ import time
 from pathlib import Path
 
 from agents.prompt_utils import prompt_json
-from web.backend.services.prompt_safety import wrap_untrusted_for_llm_embedding
 from agents.prompts.load_prompt import load_prompt
 from core.telemetry_signals import extract_evolution_signals_from_jsonl_dir
 from llm import GenerationConfig, LLMRouter
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_DEFAULT_AGENT_SEC
+from web.backend.services.prompt_safety import wrap_untrusted_for_llm_embedding
 
 from .base_agent import AgentInput, AgentOutput, BaseAgent
 

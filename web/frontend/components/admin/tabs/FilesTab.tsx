@@ -252,7 +252,7 @@ function ProductArtifactsPanel({
 
       {sandboxModalOpen && sandboxIframeSrc ? (
         <div
-          className="fixed inset-0 z-[100] flex flex-col bg-zinc-950/95 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex flex-col bg-zinc-950/95 backdrop-blur-xs"
           role="dialog"
           aria-modal="true"
           aria-label="Sandbox full screen"
@@ -369,7 +369,7 @@ function ProductArtifactsPanel({
                     </div>
                   </div>
                   <div className="flex shrink-0 items-center gap-2 sm:ml-2">
-                    <span className="rounded bg-white/5 px-2 py-0.5 text-xs text-gray-500">{file.category}</span>
+                    <span className="rounded-sm bg-white/5 px-2 py-0.5 text-xs text-gray-500">{file.category}</span>
                     <span className="text-xs text-gray-500">{expandedFile === file.path ? '▲' : '▼'}</span>
                   </div>
                 </button>
@@ -905,7 +905,7 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
             <select
               value={productStateFilter}
               onChange={(e) => setProductStateFilter(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none"
+              className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-hidden"
             >
               <option value="all">All states</option>
               {availableProductStates.map((st) => (
@@ -920,7 +920,7 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
                 type="date"
                 value={createdFrom}
                 onChange={(e) => setCreatedFrom(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-hidden"
               />
             </label>
             <label className="flex flex-col gap-0.5 text-[10px] text-gray-500">
@@ -929,7 +929,7 @@ export function FilesTab({ locale }: { locale: AdminLocale }) {
                 type="date"
                 value={createdTo}
                 onChange={(e) => setCreatedTo(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-hidden"
               />
             </label>
             <p className="text-[11px] text-gray-500">

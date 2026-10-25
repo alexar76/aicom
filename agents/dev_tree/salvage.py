@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 from pathlib import Path
 
 from core.json_state import write_text_atomic
-
 
 # Notes the developer leaves for its OWN next round. There is no channel from this agent back
 # onto the product record — it receives `agent_input.data` and returns an AgentOutput — and
@@ -73,7 +73,5 @@ def _load_salvage_notes(data_root, product_id: str) -> list[str]:
 def _clear_salvage_notes(data_root, product_id: str) -> None:
     """Called when a round LANDS: the dead ends are no longer about the current tree."""
     path = Path(data_root) / "bugs" / str(product_id) / _SALVAGE_NOTES
-    try:
+    with contextlib.suppress(OSError):
         path.unlink()
-    except OSError:
-        pass

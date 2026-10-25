@@ -46,10 +46,27 @@ export function shareBelow(kind, n) {
   return 1;
 }
 
-// Input prices per million tokens the cost table uses: a small model, a mid-size model, and the
-// mid-size model's price for a cached read (a twentieth). Same as the HISTOR note.
-const PRICES = [["small", 0.10], ["mid", 2], ["mid_cached", 0.10]];
+// Input prices per million tokens the cost table uses: a small model, a mid-size model, the
+// mid-size model's price for a cached read (a twentieth) and for writing the 5-minute cache
+// (1.25 times the input price). Claude Haiku 5.5 and Sonnet 5.5 list prices, as in the HISTOR note.
+const PRICES = [["small", 0.10], ["mid", 2], ["mid_cached", 0.10], ["mid_cache_write", 2.5]];
+const PRICE = Object.fromEntries(PRICES);
 const CONTEXT = 200_000;
+// The cache keeps a prefix 5 minutes after the start of the last request that wrote or read it.
+// Requests that start less than 5 minutes apart pay one write and then reads; requests further
+// apart find it gone and write it again each time, which costs more than sending it uncached.
+const CACHE_TTL_MINUTES = 5;
+
+/** Dollars for 1,000 requests that each send n tokens, by price row. */
+function per1000(n) {
+  const usd = (perMillion) => Math.round(n * perMillion / 1000 * 100) / 100;
+  return {
+    small: usd(PRICE.small),
+    mid: usd(PRICE.mid),
+    mid_cached: Math.round(n * (PRICE.mid_cache_write + 999 * PRICE.mid_cached) / 1e6 * 100) / 100,
+    mid_cache_missed: usd(PRICE.mid_cache_write),
+  };
+}
 
 /** The answer for one count: totals, the heaviest tools, money, and where it sits in the snapshot. */
 export function report(count) {
@@ -62,9 +79,14 @@ export function report(count) {
     tokens: n,
     tokens_as_listed: count.listedTokens,
     tokens_per_tool: count.tools ? Math.round(n / count.tools) : 0,
+    // names + descriptions + input_schemas + structure (keys and punctuation) = tokens
+    parts: count.parts,
     heaviest,
-    per_1000_requests_usd: Object.fromEntries(PRICES.map(([k, usd]) => [k, Math.round(n * usd / 1000 * 100) / 100])),
-    prices_per_million_usd: Object.fromEntries(PRICES),
+    per_1000_requests_usd: per1000(n),
+    prices_per_million_usd: PRICE,
+    // mid_cached: requests start less than cache_ttl_minutes apart (one write, 999 reads);
+    // mid_cache_missed: further apart, so every request writes the cache again.
+    cache_ttl_minutes: CACHE_TTL_MINUTES,
     context_share_200k: Math.round(n / CONTEXT * 10_000) / 10_000,
     compared: Object.fromEntries(["package", "remote"].map((k) => [k, {
       servers: SNAPSHOT[k].servers,

@@ -168,7 +168,7 @@ def _revert_until_not_worse(
     round rediscovered ``capability_never_invoked``. Prefer rejecting the whole round over
     undoing the product's reason to exist.
     """
-    _MESH_WIRING_NAMES = frozenset(
+    mesh_wiring_names = frozenset(
         {
             "advisory.py",
             "atlas_client.py",
@@ -179,7 +179,7 @@ def _revert_until_not_worse(
 
     def _is_mesh_wiring(rel: str) -> bool:
         name = Path(rel).name.lower()
-        if name in _MESH_WIRING_NAMES:
+        if name in mesh_wiring_names:
             return True
         norm = rel.replace("\\", "/").lower()
         return norm.endswith("/routers/advisory.py") or "/services/atlas_client.py" in norm

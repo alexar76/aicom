@@ -107,27 +107,3 @@ def record_capability_settlement(
     except Exception as exc:
         logger.error("UNI capability settlement failed: %s", exc, exc_info=True)
         return {"error": str(exc)}
-
-
-def credit_payment_confirm(
-    *,
-    customer_id: str,
-    product_id: str,
-    usd_amount: float,
-    tx_hash: str,
-    chain: str,
-    token: str,
-) -> dict[str, Any] | None:
-    if not uni_enabled():
-        return None
-    try:
-        return uni_wallet().topup_from_chain(
-            customer_id,
-            usd_amount=usd_amount,
-            tx_hash=tx_hash,
-            chain=chain,
-            token=token,
-        )
-    except Exception as exc:
-        logger.warning("UNI payment topup failed: %s", exc)
-        return {"error": str(exc)}

@@ -1,0 +1,74 @@
+{
+  "type": "histor.dataset/v1",
+  "log": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+  "createdAt": "2026-10-20T15:39:49Z",
+  "license": "CC-BY-4.0",
+  "source": "https://histor.modelmarket.dev",
+  "code": "https://github.com/alexar76/histor",
+  "treeHead": {
+    "type": "histor.sth/v1",
+    "log": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+    "treeSize": 792295,
+    "rootHash": "d29c3a23d15f9d9aef0c8a65799f7d75e1ccf09d78cf54cf6afcc378b825bb20",
+    "timestamp": "2026-10-20T13:59:42Z",
+    "signature": {
+      "alg": "Ed25519",
+      "verificationMethod": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9#z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+      "value": "NPte_yAIrnMqv8O9ONsRJuAAjU0Nnwy0l3B7-jPE_nwpKKE9if1PdpKoRM0p0BLZbXuSXYT6hEu-fBykoaFtBA"
+    }
+  },
+  "patternSet": "sha256-S3pbKmkkbcN0VikCtdz3Fn3ZZtrEAC/NGMZYpogTEpM=",
+  "recordSet": "sha256-m5ACuh/mswQk/ZcSA0FDoHmjJsOL4SbmSvgpRk9oAmg=",
+  "changesFrom": "2026-09-24T10:53:44Z",
+  "changesUntil": "2026-10-20T00:31:28Z",
+  "counts": {
+    "listed": 81879,
+    "delisted": 2078,
+    "pinned": 38126,
+    "everChanged": 9340,
+    "blockTier": 636,
+    "adviseOnly": 14379,
+    "packages": 50839,
+    "remote": 31040
+  },
+  "files": {
+    "servers.jsonl.gz": {
+      "sha256": "7e96f47212faac4a25dcdeb13a2920c20d548ae0f5b2df823f604117cf5b8b0b",
+      "bytes": 16079771,
+      "rows": 83957
+    },
+    "toolsets.jsonl.gz": {
+      "sha256": "9d5f8493910741c084a4e8315375d6bba918d5a0fad8d7bbc02f1e216773e2a2",
+      "bytes": 377362655,
+      "rows": 57846
+    },
+    "changes.jsonl.gz": {
+      "sha256": "8df3d75824a2505014422c63583f1b2d987c21509e218a662c4ece26e6147a6f",
+      "bytes": 27974437,
+      "rows": 23821
+    },
+    "scans.jsonl.gz": {
+      "sha256": "93dc0b3ff3e21e6555a3c4fa7995893be8ab16271e57e222503d5ff065006072",
+      "bytes": 1211768,
+      "rows": 21060
+    },
+    "classifications.jsonl.gz": {
+      "sha256": "aff254e31a9211577d71e919c240ac9087c77ddcdf4b8ab3a4189d7ccd5975a8",
+      "bytes": 233590,
+      "rows": 4197
+    },
+    "pattern-set.json": {
+      "sha256": "60acb871b98d3ad95f80d6b0704c2ecb406f6c3a68b030aec1c06746c3c44479",
+      "bytes": 14633
+    },
+    "record-set.json": {
+      "sha256": "9e531b7098f7b5086c3327c1d243c023785ac609f0619f7f376fd31dad0515b6",
+      "bytes": 2357
+    }
+  },
+  "signature": {
+    "alg": "Ed25519",
+    "verificationMethod": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9#z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+    "value": "mc2F_g1i4N5rnvfmZAzqH0T1U18tthsp9JN804QG0RAG47IylPfrq-EKYsikk49icbWRkIiLpyOOKLXQ0YeADQ"
+  }
+}

@@ -7,9 +7,12 @@ Endpoints for the storefront product listing and details.
 from __future__ import annotations
 
 import asyncio
+import copy
 import json
 import logging
 import os
+import threading
+import time
 from pathlib import Path
 from typing import Any, Optional
 
@@ -30,7 +33,7 @@ from core.paths import (
     telemetry_dir,
 )
 from web.backend.schemas.products import ProductListQuery
-from web.backend.services.demo_quality import assess_product_demo
+from web.backend.services.demo_quality import assess_product_demo, assessment_memo
 from web.backend.services.marketplace_quality import (
     evaluate_marketplace_quality,
     marketplace_listing_card_fields,
@@ -658,10 +661,66 @@ async def list_products(
     query: ProductListQuery = Depends(),
 ):
     """List all products available on the storefront, optionally filtered by category."""
-    return await asyncio.to_thread(_list_products_sync, query)
+    return await asyncio.to_thread(_list_products_cached, query)
+
+
+# The storefront grid is public and the same for every visitor, and building it reads every
+# product's files: 3-7 s on factory-vps (2026-10-23 load test, 24 products), while a product
+# changes state every few minutes at most. A built answer is reused for a short while, and
+# concurrent requests for the same grid wait for one build instead of each starting their own.
+_LIST_CACHE: dict[str, tuple[float, dict[str, Any]]] = {}
+_LIST_LOCKS: dict[str, threading.Lock] = {}
+_LIST_LOCKS_GUARD = threading.Lock()
+
+
+def _list_ttl_s() -> float:
+    try:
+        return max(0.0, float(os.getenv("AIFACTORY_STOREFRONT_LIST_TTL_S", "30")))
+    except ValueError:
+        return 30.0
+
+
+def _catalog_stamp() -> str:
+    """Changes whenever the pipeline writes its state, so a product that moved is listed at
+    once; the TTL only bounds edits made outside it (marketing or sales files)."""
+    parts = []
+    for path in (pipeline_db_path(), Path(f"{pipeline_db_path()}-wal"), pipeline_json_path()):
+        try:
+            st = path.stat()
+            parts.append(f"{st.st_mtime_ns}:{st.st_size}")
+        except OSError:
+            parts.append("-")
+    return "|".join(parts)
+
+
+def _list_products_cached(query: ProductListQuery) -> dict[str, Any]:
+    ttl = _list_ttl_s()
+    if ttl <= 0:
+        return _list_products_sync(query)
+    wanted = json.dumps(query.model_dump(), sort_keys=True, default=str)
+    key = f"{wanted}|{_catalog_stamp()}"
+    hit = _LIST_CACHE.get(key)
+    if hit and time.monotonic() - hit[0] < ttl:
+        return copy.deepcopy(hit[1])
+    with _LIST_LOCKS_GUARD:
+        lock = _LIST_LOCKS.setdefault(wanted, threading.Lock())
+    with lock:
+        hit = _LIST_CACHE.get(key)
+        if hit and time.monotonic() - hit[0] < ttl:
+            return copy.deepcopy(hit[1])
+        answer = _list_products_sync(query)
+        if len(_LIST_CACHE) > 64:
+            _LIST_CACHE.clear()          # stale stamps pile up as the catalogue changes
+        _LIST_CACHE[key] = (time.monotonic(), answer)
+        return copy.deepcopy(answer)
 
 
 def _list_products_sync(query: ProductListQuery) -> dict[str, Any]:
+    with assessment_memo():
+        return _list_products_build(query)
+
+
+def _list_products_build(query: ProductListQuery) -> dict[str, Any]:
     try:
         category = query.normalized_category()
     except ValueError as e:
@@ -923,11 +982,17 @@ def _build_product_detail_response(product_id: str) -> dict[str, Any]:
     }
 
 
+def _build_product_detail_memo(product_id: str) -> Any:
+    """The detail page asks for the same product's demo report from three gates; once is enough."""
+    with assessment_memo():
+        return _build_product_detail_response(product_id)
+
+
 @router.get("/{product_id}")
 async def get_product(product_id: str):
     """Get detailed information about a specific product."""
     try:
-        return await asyncio.to_thread(_build_product_detail_response, product_id)
+        return await asyncio.to_thread(_build_product_detail_memo, product_id)
     except HTTPException:
         raise
     except Exception as e:

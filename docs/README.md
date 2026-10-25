@@ -4,6 +4,10 @@
 >
 > **Live:** [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev) · **Metis:** [metis.modelmarket.dev](https://metis.modelmarket.dev) · **Oracles ×17:** [oracles.modelmarket.dev](https://oracles.modelmarket.dev) · [GitHub](https://github.com/alexar76/oracles) (EN / [RU](https://github.com/alexar76/oracles/blob/main/docs/ru.md) / [ES](https://github.com/alexar76/oracles/blob/main/docs/es.md))
 >
+> **Load testing:** [results of 2026-10-23, before and after the optimizations](load-testing.md) · [RU](load-testing.ru.md) · [ES](load-testing.es.md) · [FR](load-testing.fr.md) · [ZH](load-testing.zh.md)
+>
+> **Payment tests and transactions:** [EN](payment-tests-and-transactions.md) · [RU](payment-tests-and-transactions.ru.md) · [ES](payment-tests-and-transactions.es.md) · [FR](payment-tests-and-transactions.fr.md) · [ZH](payment-tests-and-transactions.zh.md) — checkout, refunds, recovery and reproducible SQLite/PostgreSQL tests.
+>
 > **Community:** [Ask Castor (bot)](https://t.me/next_agent_market_bot) · [Castor channel](https://t.me/just_for_agents) · [THEOROS canon](https://alexar76.github.io/theoros/) · [DIOSCURI](https://github.com/alexar76/dioscuri) · [Content playbook](growth/content-playbook.md)
 
 > ### 🟢 Try it in 30 seconds — paste **`https://modelmarket.dev/mcp`** into any MCP client

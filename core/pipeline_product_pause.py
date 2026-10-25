@@ -37,10 +37,7 @@ def get_factory_focus_product_ids(*, config: dict[str, Any] | None = None) -> li
     raw = _raw_focus_value(config)
     if raw is None:
         return []
-    if isinstance(raw, (list, tuple, set)):
-        candidates = [str(x) for x in raw]
-    else:
-        candidates = str(raw).replace(";", ",").split(",")
+    candidates = [str(x) for x in raw] if isinstance(raw, (list, tuple, set)) else str(raw).replace(";", ",").split(",")
     return [pid for pid in (c.strip() for c in candidates) if pid]
 
 

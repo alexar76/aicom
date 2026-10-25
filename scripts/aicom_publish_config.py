@@ -22,12 +22,23 @@ DEFAULT_RSYNC_EXCLUDES = [
     ".cursor",
     ".venv",
     "venv",
+    # Local quality-audit venv (Playwright browsers and site-packages). gitignored
+    # via `.venv*/`, but an rsync exclude of `.venv` does not match `.venv-quality`.
+    # The binaries tripped verify_mirror_secrets. Basename only — nothing tracked
+    # lives under it.
+    ".venv-quality",
     "node_modules",
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
     ".dart_tool",
     "build",
+    # Swift PM / Xcode local build trees (warden/native/macos/.build, and the same
+    # basename under desktop-integrations). gitignored; rsync still copies the
+    # working tree, and `build` does not match a directory named `.build`. The
+    # objects inside trip verify_mirror_secrets. Basename only — no tracked source
+    # lives under `.build`.
+    ".build",
     "dist",
     "target",  # Rust/Cargo build trees (e.g. awr/rust/target) — tens of thousands of files
     # Next.js local caches. gitignored, but rsync copies the working tree; turbopack
@@ -129,6 +140,8 @@ DEFAULT_RSYNC_EXCLUDES = [
     "independent",
     # Pantheon art portal (pantheon.modelmarket.dev) — Gitea only; not a GH satellite.
     "pantheon",
+    # The blog at modelmarket.dev/blog (posts, build and deploy scripts) — Gitea only.
+    "modelmarket-blog",
     # Cite-desks family stays out of every *other* satellite and the factory.
     # Do not list "emberline" here: that name is the fire sub-desk inside
     # cite-desks/, and the parent satellite must ship it. Factory trim still
@@ -171,6 +184,9 @@ FACTORY_LOCAL_EXCLUDES = [
     "scripts/gitea-targets.yaml",  # internal Gitea hosts/IPs — must never reach the public mirror
     "scripts/scrub_private_hosts.sh",  # contains private-host needles by design; never ship to public factory
     "docs/gitea-publishing.md",  # internal ops memo (references internal Gitea hosts)
+    # Recovery notes record the private sandbox host on every row. They stay on
+    # Gitea; the public factory must not receive that host.
+    "docs/evidence/mcp-sdk-recovery-2026-10-24",
     "data/channels.db",  # local SQLite runtime — never mirror to public factory
     "data/uni_settlements.jsonl",  # local settlement dump — not source
     "data/water_quality_history.json",  # local sensor history dump — not source
@@ -221,6 +237,7 @@ FACTORY_LOCAL_EXCLUDES = [
     # Tracked on Gitea; stripped from the public GitHub factory/satellite rsync.
     "independent",
     "pantheon",
+    "modelmarket-blog",
     "emberline",
     "cite-desks",
     # Attested Memory family + SaaS deploy contour — Gitea only until
@@ -252,6 +269,13 @@ FACTORY_LOCAL_EXCLUDES = [
     "artifacts/stripe-reversals-sandbox",
     "artifacts/stripe-tax-sandbox",
     "artifacts/histor-zenodo-*",
+    # Dated local scan dump (OSV copies and logs). Not source; rsync would
+    # otherwise publish it because it is not gitignored.
+    "artifacts/security-audit-2026-10-25",
+    # Local quality-audit dump. Push protection rejected a live key inside it.
+    "artifacts/quality-audit-2026-10-24",
+    # Page snapshots left uncommitted. They are not factory docs.
+    "docs/evidence/external-presence-2026-10-24",
     "scripts/delivery-survey/buy.jsonl",
     "iphone-awg.conf",
     "data/logos",
@@ -338,6 +362,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'pyproject.toml',
     'pytest.ini',
     'reference_templates',
+    'research',  # malware-feed study the public docs link; no private host in the tree
     'requirements-local-image.txt',
     'requirements.txt',
     'run-compose.sh',
@@ -354,12 +379,14 @@ PUBLIC_FACTORY_ROOTS = frozenset([
 ])
 
 
-def classify_root(name: str) -> str:
+def classify_root(name: str, *, satellite_paths: set[str] | None = None) -> str:
     """'excluded' | 'satellite' | 'public' | 'unclassified' for one root entry."""
     patterns = [*DEFAULT_RSYNC_EXCLUDES, *FACTORY_LOCAL_EXCLUDES]
     if any(fnmatch.fnmatch(name, pat) or name == pat.rstrip("/") for pat in patterns):
         return "excluded"
-    if name in set(factory_exclude_paths()):
+    if satellite_paths is None:
+        satellite_paths = set(factory_exclude_paths())
+    if name in satellite_paths:
         return "satellite"
     if name in PUBLIC_FACTORY_ROOTS:
         return "public"
@@ -380,7 +407,13 @@ def _shipped_roots(base: Path) -> list[str]:
 def check_roots(base: Path | None = None) -> list[str]:
     """Root entries that would reach the public mirror without anyone deciding so."""
     root = base or MAP_PATH.parent.parent
-    return sorted(name for name in _shipped_roots(root) if classify_root(name) == "unclassified")
+    # One configuration snapshot per audit: parsing YAML for each root made this
+    # read-only check exceed the CI test deadline under coverage.
+    satellite_paths = set(factory_exclude_paths())
+    return sorted(
+        name for name in _shipped_roots(root)
+        if classify_root(name, satellite_paths=satellite_paths) == "unclassified"
+    )
 
 
 def _load_map() -> dict[str, Any]:

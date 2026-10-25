@@ -1,0 +1,609 @@
+{
+  "key": "gh-repos",
+  "url": "https://api.github.com/users/alexar76/repos?per_page=100&sort=updated",
+  "retrieved_at": "2026-10-24T19:14:57.331790+00:00",
+  "status": 200,
+  "sha256": "db3394fe4899b2e47d350ff293eca94da8213cbbc5e588000ca2f7e46e571cf7",
+  "data": [
+    {
+      "name": "aimarket-mcp",
+      "html_url": "https://github.com/alexar76/aimarket-mcp",
+      "description": "Ecosystem MCP gateway — web fetch/search + Metis verify behind one SSRF-hardened MCP endpoint (Streamable-HTTP). Consumed by Metis and ARGUS via the aimarket-web preset.",
+      "stargazers_count": 1,
+      "forks_count": 1,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-24T19:05:59Z",
+      "archived": false
+    },
+    {
+      "name": "use-cases-portal",
+      "html_url": "https://github.com/alexar76/use-cases-portal",
+      "description": "AIMarket use-cases portal — public wow, onboarding (See·Buy·Publish·Build·Invest), live rails, and 7 direction boards with 12 idea pages (3D previews). Static site, five languages, honest LIVE vs SIM. Live host use.modelmarket.dev; Pages landing (docs/landing/) at alexar76.github.io/use-cases-portal.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:53:58Z",
+      "archived": false
+    },
+    {
+      "name": "domain-operator-kit",
+      "html_url": "https://github.com/alexar76/domain-operator-kit",
+      "description": "Independent domain operators: signed domains.*@v1 quotes, fixed markup, registration, renewal and DNS. Openprovider, Porkbun Sandbox or HTTP suppliers; x402 USDC on Base and a buyer-side Vercel connector. Pre-live: both sandbox pilots passed; production payments and Vercel remain unverified.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 1,
+      "pushed_at": "2026-10-22T14:23:47Z",
+      "archived": false
+    },
+    {
+      "name": "esim-operator-kit",
+      "html_url": "https://github.com/alexar76/esim-operator-kit",
+      "description": "Onboard any eSIM operator, including ones already selling. They offer travel eSIMs to people and AI agents on AIMarket rails and get paid however they already take payment. Storefront in 5 languages. Demo: esim.modelmarket.dev.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-23T08:56:59Z",
+      "archived": false
+    },
+    {
+      "name": "attested-memory",
+      "html_url": "https://github.com/alexar76/attested-memory",
+      "description": "Attested Memory — verifiable memory for AI agents: Memory Market (write, search, share), Truth Layer (evidence and contradictions) and Provenance Ledger (lineage, hybrid-signed receipts) around one Memory Unit contract, with an MCP endpoint. Self-hosted, Docker.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:53:14Z",
+      "archived": false
+    },
+    {
+      "name": "cite-desks",
+      "html_url": "https://github.com/alexar76/cite-desks",
+      "description": "Cite desks — independent evidence desks on AIMarket rails. One parent repo: shared kernel plus Emberline (fire), Tideline (flood), Solrecord (PV), Seamark (Nordic AIS), Plinth (site) and Smokeproof (HMS smoke), each a nested project with its own README. Family landing: desk.modelmarket.dev. Not an AIMarket brand surface.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-21T14:03:27Z",
+      "archived": false
+    },
+    {
+      "name": "basanos",
+      "html_url": "https://github.com/alexar76/basanos",
+      "description": "BASANOS checks ecosystem Solidity at a pinned commit — Ed25519-signed PASS/REVIEW/FAIL verdicts with evidence and an operator playbook. (Assurance, not insurance or admission.)",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-16T06:34:03Z",
+      "archived": false
+    },
+    {
+      "name": "dolos",
+      "html_url": "https://github.com/alexar76/dolos",
+      "description": "DOLOS — dynamic EVM red team for the UNI bubble: fork-isolated exploit txs, Ed25519 findings, sandbox fix-loop only.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:53:02Z",
+      "archived": false
+    },
+    {
+      "name": "escrow-signer",
+      "html_url": "https://github.com/alexar76/escrow-signer",
+      "description": "HORKOS holds the only key authorized in AIMarketEscrow.authorizedHubs, so the Hub does not — one allowed selector, one escrow, one chain, and the buyer's own EIP-712 signature as the authority for every amount.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-23T08:56:19Z",
+      "archived": false
+    },
+    {
+      "name": "emporion",
+      "html_url": "https://github.com/alexar76/emporion",
+      "description": "EMPORION — public-record facts for agents that trade: EU VAT (VIES), legal entities (GLEIF LEI), company registers, EORI, domains (RDAP), ECB rates, sanctions lists (OFAC with wallets, EU, UK), business days, Bitcoin timestamps, web evidence captures and dead man's switch timers — every answer signed with its source, fetch time and SHA-256.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-24T18:10:31Z",
+      "archived": false
+    },
+    {
+      "name": "histor",
+      "html_url": "https://github.com/alexar76/histor",
+      "description": "HISTOR — public transparency log of MCP tool definitions: reads what remote MCP endpoints in the official registry advertise (never calls a tool), signs it as MTL/1 labels, appends them to an RFC 9162 Merkle log, and answers /check: is what a client received what was observed? Never calls a server safe.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 1,
+      "pushed_at": "2026-10-24T18:10:19Z",
+      "archived": false
+    },
+    {
+      "name": "themis",
+      "html_url": "https://github.com/alexar76/themis",
+      "description": "THEMIS — publish-time admission gate for AIMarket: signed approve/review/reject for AI-agent supply-chain procurement (not Metis, not WARDEN).",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:51:57Z",
+      "archived": false
+    },
+    {
+      "name": "hestia",
+      "html_url": "https://github.com/alexar76/hestia",
+      "description": "HESTIA — the hosted runtime: isolated, for AIMarket capability providers on the operator’s machines. Not a Hub catalogue, not a job board, not Factory. Agents appear only after a signed deploy onto this host.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-24T18:09:59Z",
+      "archived": false
+    },
+    {
+      "name": "create-aimarket-agent",
+      "html_url": "https://github.com/alexar76/create-aimarket-agent",
+      "description": "Standalone CLI that scaffolds tested AIMarket Protocol v2 capability providers with manifests and Docker packaging.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 1,
+      "pushed_at": "2026-10-21T13:53:11Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-playground",
+      "html_url": "https://github.com/alexar76/aimarket-playground",
+      "description": "Zero-setup guided AIMarket golden path: GAIA invoke, Metis verification, signed Hub receipt, and Alien Monitor handoff.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 1,
+      "pushed_at": "2026-10-21T13:51:35Z",
+      "archived": false
+    },
+    {
+      "name": "signal-hunt",
+      "html_url": "https://github.com/alexar76/signal-hunt",
+      "description": "Signal Hunt — federation-native investigation game and educational laboratory over real AIMarket Hub telemetry. Observe measured symptoms, commit a diagnosis, prove it with a reproducible Brier-score verdict. Each round is a live lab on federation literacy. Live data only; no seeded anomalies.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-24T18:09:25Z",
+      "archived": false
+    },
+    {
+      "name": "logos",
+      "html_url": "https://github.com/alexar76/logos",
+      "description": "LOGOS — federation analytics engine. Cross-hub query, anomaly detection, NL insights via Metis council. The analytical brain of the AIMarket federation. One node, every insight.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-21T13:51:47Z",
+      "archived": false
+    },
+    {
+      "name": "treasury",
+      "html_url": "https://github.com/alexar76/treasury",
+      "description": "MOMUS Treasury — the separate payer role that releases red-team bounties only on independent verification; MOMUS finds and signs, the Treasury (its own key) pays.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-23T18:04:31Z",
+      "archived": false
+    },
+    {
+      "name": "momus",
+      "html_url": "https://github.com/alexar76/momus",
+      "description": "MOMUS — autonomous adversarial-audit (red team) satellite: safe, read-only conformance probes against the ecosystem's own components, emitted as Ed25519-signed findings; a separate Treasury role pays bounties only on independent verification.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-23T18:04:19Z",
+      "archived": false
+    },
+    {
+      "name": "gaia",
+      "html_url": "https://github.com/alexar76/gaia",
+      "description": "GAIA — physical-world oracle gateway: Ed25519-attested gaia.*.read@v1 relays (weather, FIRMS, GLM lightning, NWS flood/alerts, EFFIS, volcano, EONET, SWPC, GNSS jamming) plus window/verify. LIVE only with provenance.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-23T20:59:30Z",
+      "archived": false
+    },
+    {
+      "name": "atlas",
+      "html_url": "https://github.com/alexar76/atlas",
+      "description": "ATLAS — planetary physical-sensor map over GAIA (LIVE/SIM layers including fire, flood, lightning, alerts, EFFIS, volcano) with Hub composites situation.brief / fire.weather / nearest / watchbox, DeepSeek Analyst, and Alien Monitor embed.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:48:21Z",
+      "archived": false
+    },
+    {
+      "name": "metis",
+      "html_url": "https://github.com/alexar76/metis",
+      "description": "Metis (μῆτις) — distributed cognitive layer over any LLM. Understanding Council → confidence gate (fail-closed) → layered MoA → verifier-with-retry, with DGPD depth gating, memory, economy metering, and an OpenAI-compatible API. A loosely-coupled ecosystem peer: runs fully standalone; every ecosystem hook is optional.",
+      "stargazers_count": 3,
+      "forks_count": 0,
+      "open_issues_count": 4,
+      "pushed_at": "2026-10-21T13:47:44Z",
+      "archived": false
+    },
+    {
+      "name": "skopos",
+      "html_url": "https://github.com/alexar76/skopos",
+      "description": "SKOPOS (Σκοπός) — self-hosted nginx analytics and fleet security for the AICOM ecosystem. SSH log collection, Security Center with 3D threat map, scan history, and an AI agent with voice input.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:48:08Z",
+      "archived": false
+    },
+    {
+      "name": "helios",
+      "html_url": "https://github.com/alexar76/helios",
+      "description": "HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:47:24Z",
+      "archived": false
+    },
+    {
+      "name": "hephaestus",
+      "html_url": "https://github.com/alexar76/hephaestus",
+      "description": "HEPHAESTUS — the forge: compose capability chains from the live signed AIMarket catalogue, price the graph before you spend, run it, and keep a signed bill of materials with hop-level blame.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-21T13:47:10Z",
+      "archived": false
+    },
+    {
+      "name": "theoros",
+      "html_url": "https://github.com/alexar76/theoros",
+      "description": "THEOROS — Agent Sovereignty Canon. High-tech theorist persona: seven precepts for verified agent economic actors, cosmic landing, weekly column via DIOSCURI #the-canon.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-22T06:04:29Z",
+      "archived": false
+    },
+    {
+      "name": "dioscuri",
+      "html_url": "https://github.com/alexar76/dioscuri",
+      "description": "DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS).",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-22T14:18:49Z",
+      "archived": false
+    },
+    {
+      "name": "argus",
+      "html_url": "https://github.com/alexar76/argus",
+      "description": "ARGUS-3 — wallet-native, security-hardened personal agent; demand-side reference client and the reference host for the WARDEN MCP firewall (@aimarket/warden, a separate package) plus native AIMarket consumer/provider. Owner-locked Telegram, multi-provider, autonomous offline.",
+      "stargazers_count": 2,
+      "forks_count": 0,
+      "open_issues_count": 1,
+      "pushed_at": "2026-10-23T08:52:42Z",
+      "archived": false
+    },
+    {
+      "name": "warden",
+      "html_url": "https://github.com/alexar76/warden",
+      "description": "WARDEN — MCP security firewall: vets an MCP server's tool definitions against static-scan rules, a signed threat feed, origin and tool-def pinning before any tool reaches the model. Zero-dependency TypeScript library.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-24T11:40:08Z",
+      "archived": false
+    },
+    {
+      "name": "lottery",
+      "html_url": "https://github.com/alexar76/lottery",
+      "description": "AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-22T06:04:02Z",
+      "archived": false
+    },
+    {
+      "name": "aicom-products",
+      "html_url": "https://github.com/alexar76/aicom-products",
+      "description": "Selective catalog of full AI-Factory products (prod-*) — shell from monorepo, trees published on demand.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-21T13:44:45Z",
+      "archived": false
+    },
+    {
+      "name": "oracles",
+      "html_url": "https://github.com/alexar76/oracles",
+      "description": "Verifiable AI-economy oracles — 17 signed capabilities (Platon randomness, Chronos VDF, Lumen reputation, Turing, Fourier and more) on shared oracle-core.",
+      "stargazers_count": 2,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-22T06:03:50Z",
+      "archived": false
+    },
+    {
+      "name": "platon",
+      "html_url": "https://github.com/alexar76/platon",
+      "description": "Platon UMBRAL — educational cave app for oracle #1: 32D dynamical shadow oracle with live AIMarket backend and holographic cockpit.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-21T13:46:07Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-bridges",
+      "html_url": "https://github.com/alexar76/aimarket-bridges",
+      "description": "AIMarket capabilities as native tools for LangChain/LangGraph, CrewAI, and AutoGen — signed receipts, budget caps, free trial.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:42:12Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-oracle-gateway",
+      "html_url": "https://github.com/alexar76/aimarket-oracle-gateway",
+      "description": "MCP server: verifiable oracle services (Platon VRF, Chronos VDF, LUMEN reputation) for AI agents — pay-per-call over the AIMarket protocol, every result independently verifiable.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-23T10:10:55Z",
+      "archived": false
+    },
+    {
+      "name": "linked-in-profile-coach",
+      "html_url": "https://github.com/alexar76/linked-in-profile-coach",
+      "description": "LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:41:10Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-school",
+      "html_url": "https://github.com/alexar76/aimarket-school",
+      "description": "AIMarket School — 13 free clip lessons (Try-it + Colab) that on-ramp into the academies. Live portal: edu.modelmarket.dev",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:38:00Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-courses",
+      "html_url": "https://github.com/alexar76/aimarket-courses",
+      "description": "13 hands-on AIMarket academy courses — orchestration, oracles, MCP security, agent economy, GAIA/ATLAS, federation, PQC (en/ru/es/fr/zh).",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-23T10:09:53Z",
+      "archived": false
+    },
+    {
+      "name": "alien-monitor",
+      "html_url": "https://github.com/alexar76/alien-monitor",
+      "description": "Alien Monitor — real-time 3D ecosystem pulse visualizer with AI assistant.",
+      "stargazers_count": 2,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-23T08:51:47Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-plugins",
+      "html_url": "https://github.com/alexar76/aimarket-plugins",
+      "description": "15 AIMarket hub plugins — TEE escrow, channels, reputation, safety, and more.",
+      "stargazers_count": 3,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-23T10:11:40Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-protocol",
+      "html_url": "https://github.com/alexar76/aimarket-protocol",
+      "description": "AIMarket Protocol v2 — open specs, JSON schemas, and test vectors.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-22T06:02:42Z",
+      "archived": false
+    },
+    {
+      "name": "aicom-landing",
+      "html_url": "https://github.com/alexar76/aicom-landing",
+      "description": "AI landing generator — one prompt → self-contained HTML in ~30-60s (MIT, 20 style presets).",
+      "stargazers_count": 2,
+      "forks_count": 0,
+      "open_issues_count": 1,
+      "pushed_at": "2026-10-21T13:42:41Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-widget",
+      "html_url": "https://github.com/alexar76/aimarket-widget",
+      "description": "Embeddable AIMarket storefront widget — drop-in JS/CSS for any website.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-22T06:02:21Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-hub",
+      "html_url": "https://github.com/alexar76/aimarket-hub",
+      "description": "AIMarket Hub — federated capability catalog, channels, invoke API, and plugins.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 3,
+      "pushed_at": "2026-10-24T18:03:32Z",
+      "archived": false
+    },
+    {
+      "name": "ai-service-mesh",
+      "html_url": "https://github.com/alexar76/ai-service-mesh",
+      "description": "AI Service Mesh — autonomous agent discovery, verification, escrow, and payments.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-22T06:02:00Z",
+      "archived": false
+    },
+    {
+      "name": "acex",
+      "html_url": "https://github.com/alexar76/acex",
+      "description": "ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-22T06:01:53Z",
+      "archived": false
+    },
+    {
+      "name": "pulse-terminal",
+      "html_url": "https://github.com/alexar76/pulse-terminal",
+      "description": "Pulse Terminal — ACEX capital markets dashboard with live agent pricing.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-21T13:41:47Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-sdks",
+      "html_url": "https://github.com/alexar76/aimarket-sdks",
+      "description": "Official AIMarket client SDKs — Dart, TypeScript, and Rust.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 2,
+      "pushed_at": "2026-10-23T08:51:44Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-desktop",
+      "html_url": "https://github.com/alexar76/aimarket-desktop",
+      "description": "10 desktop & IDE apps for AIMarket — Flutter, Tauri, and VS Code in one Melos monorepo.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-21T13:38:37Z",
+      "archived": false
+    },
+    {
+      "name": "aicom",
+      "html_url": "https://github.com/alexar76/aicom",
+      "description": "AI-Factory — autonomous pipeline that designs, builds, tests, and publishes products.",
+      "stargazers_count": 7,
+      "forks_count": 4,
+      "open_issues_count": 3,
+      "pushed_at": "2026-10-22T07:33:02Z",
+      "archived": false
+    },
+    {
+      "name": "aimarket-agent",
+      "html_url": "https://github.com/alexar76/aimarket-agent",
+      "description": "Python client for discovering and invoking AIMarket hub capabilities.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-22T06:02:48Z",
+      "archived": false
+    },
+    {
+      "name": "alexar76",
+      "html_url": "https://github.com/alexar76/alexar76",
+      "description": "GitHub profile README — AI agent economy ecosystem map",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-19T11:59:24Z",
+      "archived": false
+    },
+    {
+      "name": "alexar76.github.io",
+      "html_url": "https://github.com/alexar76/alexar76.github.io",
+      "description": "AICOM ecosystem hub — redirects to modeldev.modelmarket.dev",
+      "stargazers_count": 0,
+      "forks_count": 1,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-11T08:12:35Z",
+      "archived": false
+    },
+    {
+      "name": "x402",
+      "html_url": "https://github.com/alexar76/x402",
+      "description": "A payments protocol for the internet. Built on HTTP.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-04T18:08:04Z",
+      "archived": false
+    },
+    {
+      "name": "mcp-registry",
+      "html_url": "https://github.com/alexar76/mcp-registry",
+      "description": "Official Docker MCP registry ",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-19T17:04:14Z",
+      "archived": false
+    },
+    {
+      "name": "awesome-erc8004",
+      "html_url": "https://github.com/alexar76/awesome-erc8004",
+      "description": "A curated list of awesome resources for ERC-8004: Trustless Agents",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-01T20:23:37Z",
+      "archived": false
+    },
+    {
+      "name": "awesome-x402",
+      "html_url": "https://github.com/alexar76/awesome-x402",
+      "description": "🚀 Curated list of x402 resources: HTTP 402 Payment Required protocol for blockchain payments, crypto micropayments, AI agents, API monetization. Includes SDKs (TypeScript, Python, Rust), examples, facilitators (Coinbase, Cloudflare), MCP integration, tutorials. Accept USDC payments with one line of code. Perfect for AI agent economy.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-01T20:23:10Z",
+      "archived": false
+    },
+    {
+      "name": "awesome-LangGraph",
+      "html_url": "https://github.com/alexar76/awesome-LangGraph",
+      "description": "An index of the LangChain + LangGraph ecosystem: concepts, projects, tools, templates, and guides for LLM & multi-agent apps.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-09-12T10:18:42Z",
+      "archived": false
+    },
+    {
+      "name": "awesome-mcp-servers",
+      "html_url": "https://github.com/alexar76/awesome-mcp-servers",
+      "description": "A collection of MCP servers.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-09-15T12:18:11Z",
+      "archived": false
+    },
+    {
+      "name": "free-programming-books",
+      "html_url": "https://github.com/alexar76/free-programming-books",
+      "description": ":books: Freely available programming books",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "open_issues_count": 0,
+      "pushed_at": "2026-08-06T09:42:28Z",
+      "archived": false
+    }
+  ]
+}

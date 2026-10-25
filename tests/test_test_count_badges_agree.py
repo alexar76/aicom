@@ -20,6 +20,7 @@ one satellite states its count agrees with every other place: the SVG, the optio
 from __future__ import annotations
 
 import json
+import os
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -46,10 +47,14 @@ _PROSE = re.compile(r'\*\*(\d+)\*\*\s+(?:tests?|pytest)\b|\b(\d+)\s+tests?\s+pas
 
 def _badge_dirs() -> list[Path]:
     out = []
-    for svg in ROOT.rglob("docs/badges/tests.svg"):
-        if any(part in SKIP_PARTS for part in svg.parts):
+    for directory, dirs, files in os.walk(ROOT):
+        if "pyvenv.cfg" in files:
+            dirs[:] = []
             continue
-        out.append(svg)
+        dirs[:] = [name for name in dirs if name not in SKIP_PARTS]
+        path = Path(directory)
+        if path.name == "badges" and path.parent.name == "docs" and "tests.svg" in files:
+            out.append(path / "tests.svg")
     return sorted(out)
 
 
@@ -102,8 +107,7 @@ def test_there_are_badges_to_check():
 def test_one_satellite_states_one_test_count(svg: Path):
     claims = _claims(svg)
     numbers = {n for values in claims.values() for n in values}
-    if not numbers:
-        pytest.skip(f"{svg.relative_to(ROOT)} states no number (placeholder badge)")
+    assert numbers, f"{svg.relative_to(ROOT)} must state a verified test count, not a placeholder"
     assert len(numbers) == 1, (
         f"{_satellite_root(svg).name} advertises {sorted(numbers)} in different places:\n  "
         + "\n  ".join(f"{src}: {sorted(v)}" for src, v in sorted(claims.items()))

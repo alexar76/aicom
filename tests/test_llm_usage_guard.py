@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import os
 import subprocess
 import sys
@@ -12,7 +13,7 @@ from pathlib import Path
 import pytest
 
 from llm.router import LLMRouter
-from llm.usage_guard import LLMUsageGuard, LLMUsageLimitError, reset_usage_guard_for_tests
+from llm.usage_guard import LLMUsageGuard, LLMUsageLimitError, LLMUsageStateError, reset_usage_guard_for_tests
 
 
 @pytest.fixture
@@ -51,6 +52,78 @@ def test_record_spend_persists(guard, monkeypatch):
     snap = guard.snapshot()
     assert snap["day_spend_usd"] == pytest.approx(0.42)
     assert guard._state_path.is_file()
+
+
+@pytest.mark.parametrize("content", ["", "{broken", "[]", "null", "{}", "\udcff"])
+def test_corrupt_usage_state_blocks_calls_and_preserves_evidence(guard, content):
+    guard._state_path.parent.mkdir(parents=True)
+    original = content.encode("utf-8", errors="surrogateescape")
+    guard._state_path.write_bytes(original)
+    for operation in (lambda: asyncio.run(guard.acquire()), lambda: guard.record_spend(0.1), guard.snapshot):
+        with pytest.raises(LLMUsageStateError):
+            operation()
+        assert guard._state_path.read_bytes() == original
+
+
+@pytest.mark.parametrize("key,value", [
+    ("day_spend_usd", "NaN"), ("day_spend_usd", -1), ("month_spend_usd", "Infinity"),
+    ("month_spend_usd", True), ("day", "bad-date"), ("month", "2026-13"),
+    ("request_times", [float("nan")]), ("request_times", [True]), ("request_times", "bad"),
+])
+def test_invalid_ledger_values_cannot_reset_or_poison_budget(guard, key, value):
+    guard.record_spend(0.5)
+    raw = json.loads(guard._state_path.read_text())
+    raw[key] = value
+    guard._state_path.write_text(json.dumps(raw))
+    with pytest.raises(LLMUsageStateError):
+        asyncio.run(guard.acquire())
+
+
+@pytest.mark.parametrize("amount", [float("nan"), float("inf"), float("-inf"), -0.1, True, "bad"])
+def test_invalid_new_spend_is_rejected_without_changing_ledger(guard, amount):
+    guard.record_spend(0.5)
+    original = guard._state_path.read_bytes()
+    with pytest.raises(ValueError):
+        guard.record_spend(amount)
+    assert guard._state_path.read_bytes() == original
+
+
+def test_permission_error_does_not_reset_spend(guard, monkeypatch):
+    from pathlib import Path
+
+    def denied(*_, **__):
+        raise PermissionError("test denial")
+
+    monkeypatch.setattr(Path, "read_text", denied)
+    with pytest.raises(LLMUsageStateError) as exc:
+        asyncio.run(guard.acquire())
+    assert isinstance(exc.value.__cause__, PermissionError)
+
+
+def test_failed_persist_keeps_previous_budget_and_cleans_temp(guard, monkeypatch):
+    guard.record_spend(0.5)
+    original = guard._state_path.read_bytes()
+
+    def full_disk(*_):
+        raise OSError("disk full")
+
+    monkeypatch.setattr(os, "replace", full_disk)
+    with pytest.raises(OSError, match="disk full"):
+        guard.record_spend(0.1)
+    assert guard._state_path.read_bytes() == original
+    assert not list(guard._state_path.parent.glob("*.tmp"))
+
+
+def test_old_day_rolls_over_without_erasing_current_month(guard):
+    from datetime import UTC, datetime, timedelta
+
+    guard.record_spend(0.5)
+    raw = json.loads(guard._state_path.read_text())
+    raw["day"] = (datetime.now(UTC) - timedelta(days=1)).strftime("%Y-%m-%d")
+    guard._state_path.write_text(json.dumps(raw))
+    snapshot = guard.snapshot()
+    assert snapshot["day_spend_usd"] == 0
+    assert snapshot["month_spend_usd"] == pytest.approx(0.5)
 
 
 @pytest.mark.asyncio

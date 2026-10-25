@@ -15,10 +15,12 @@ if ! command -v node >/dev/null 2>&1; then
   echo "ERROR: node.js required (snarkjs)" >&2
   exit 1
 fi
-if ! command -v snarkjs >/dev/null 2>&1; then
-  echo "Installing snarkjs globally..."
-  npm install -g snarkjs@0.7.5 circomlibjs@0.1.7
+SNARKJS_BIN="$ZK/node_modules/.bin/snarkjs"
+if [[ ! -x "$SNARKJS_BIN" ]]; then
+  echo "ERROR: locked snarkjs missing; run npm ci --ignore-scripts --prefix contracts/zk" >&2
+  exit 1
 fi
+export PATH="$ZK/node_modules/.bin:$PATH"
 
 PHASE="${1:-compile}"
 case "$PHASE" in
@@ -47,7 +49,7 @@ case "$PHASE" in
     # command crashes, exits early, or is signalled.
     trap 'shred -uf "$ENTROPY_FILE" 2>/dev/null || rm -f "$ENTROPY_FILE"' EXIT
     openssl rand -hex 32 > "$ENTROPY_FILE"
-    snarkjs zkey contribute "$IN_ZKEY" "$OUT_ZKEY" -n "$CONTRIB_NAME" -v < "$ENTROPY_FILE"
+    "$SNARKJS_BIN" zkey contribute "$IN_ZKEY" "$OUT_ZKEY" -n "$CONTRIB_NAME" -v < "$ENTROPY_FILE"
     shred -uf "$ENTROPY_FILE" 2>/dev/null || rm -f "$ENTROPY_FILE"
     trap - EXIT
     unset ENTROPY_FILE
@@ -58,8 +60,8 @@ case "$PHASE" in
   export)
     ZKEY="${2:-$ZK/build/input_validity_0001.zkey}"
     mkdir -p "$ZK/verifier" "$ZK/build"
-    snarkjs zkey export verificationkey "$ZKEY" "$ZK/build/verification_key.json"
-    snarkjs zkey export solidityverifier "$ZKEY" "$ZK/verifier/Verifier.sol"
+    "$SNARKJS_BIN" zkey export verificationkey "$ZKEY" "$ZK/build/verification_key.json"
+    "$SNARKJS_BIN" zkey export solidityverifier "$ZKEY" "$ZK/verifier/Verifier.sol"
     echo "Exported verification_key.json and Verifier.sol"
     ;;
   install-secrets)

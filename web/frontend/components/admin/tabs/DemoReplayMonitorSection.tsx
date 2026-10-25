@@ -190,7 +190,7 @@ export function DemoReplayMonitorSection({
           <span className="flex items-center justify-end gap-2 text-sm text-gray-300 sm:justify-end">
             <input
               type="checkbox"
-              className="rounded border-white/20 bg-white/5"
+              className="rounded-sm border-white/20 bg-white/5"
               checked={!!adminCfg?.enabled}
               disabled={loading || !adminCfg}
               onChange={(e) => savePatch({ enabled: e.target.checked })}

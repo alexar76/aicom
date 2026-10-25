@@ -24,8 +24,10 @@ meanings, and guessing which one was meant is how a fix lands in the wrong place
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def _resolve(code_root: Path, rel: str):
@@ -52,12 +54,12 @@ def _nearest_text(text: str, needle: str, span: int = 6) -> str:
     import difflib
 
     lines = text.splitlines()
-    wanted = [l for l in needle.splitlines() if l.strip()]
+    wanted = [line for line in needle.splitlines() if line.strip()]
     if not lines or not wanted:
         return ""
     width = min(max(len(wanted), 1), span)
     best_at, best_ratio = 0, 0.0
-    for start in range(0, max(1, len(lines) - width + 1)):
+    for start in range(max(1, len(lines) - width + 1)):
         window = "\n".join(lines[start : start + width])
         ratio = difflib.SequenceMatcher(None, window, "\n".join(wanted)).ratio()
         if ratio > best_ratio:

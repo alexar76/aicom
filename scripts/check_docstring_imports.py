@@ -9,6 +9,7 @@ makes the name undefined at runtime while the file still parses.
 
 from __future__ import annotations
 
+import os
 import re
 import sys
 from pathlib import Path
@@ -59,7 +60,7 @@ def _module_docstring_body(source: str) -> tuple[str, int] | None:
     text = source.lstrip("\ufeff")
     triple_d = '"""'
     triple_s = "'''"
-    if not (text.startswith(triple_d) or text.startswith(triple_s)):
+    if not (text.startswith((triple_d, triple_s))):
         return None
     quote = triple_d if text.startswith(triple_d) else triple_s
     end = text.find(quote, 3)
@@ -96,12 +97,18 @@ def find_violations(path: Path) -> list[str]:
 
 
 def iter_python_files(root: Path):
-    for path in root.rglob("*.py"):
-        if any(part in _SKIP_DIRS for part in path.parts):
+    # Prune before descending: rglob followed by filtering still walks every
+    # node_modules and virtualenv entry, which can dominate the entire CI run.
+    if any(part in _SKIP_DIRS for part in root.parts) or _is_inside_venv(root):
+        return
+    for directory, dirs, files in os.walk(root):
+        if any(marker in files for marker in _VENV_MARKERS):
+            dirs[:] = []
             continue
-        if _is_inside_venv(path):
-            continue
-        yield path
+        dirs[:] = [name for name in dirs if name not in _SKIP_DIRS]
+        for name in files:
+            if name.endswith(".py"):
+                yield Path(directory) / name
 
 
 def main(argv: list[str] | None = None) -> int:

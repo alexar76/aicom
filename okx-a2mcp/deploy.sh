@@ -12,7 +12,7 @@ cd "$(dirname "$0")"
 TAG="prod-$(date -u +%Y%m%d)-$(git rev-parse --short HEAD)"
 if [ -n "$(git status --porcelain -- . )" ]; then echo "okx-a2mcp has uncommitted changes; commit first" >&2; exit 1; fi
 rsync -az --delete -e "ssh -i $KEY -o IdentitiesOnly=yes" \
-  Dockerfile package.json package-lock.json src deploy/remote.sh "$TARGET:/opt/okx-a2mcp/"
+  Dockerfile package.json package-lock.json vendor src deploy/remote.sh "$TARGET:/opt/okx-a2mcp/"
 # One short command per ssh: long heredoc scripts have hung on this host before.
 ssh -i "$KEY" -o IdentitiesOnly=yes "$TARGET" "sh /opt/okx-a2mcp/remote.sh $TAG $PAY_TO" < /dev/null
 # Search engines that take IndexNow hear about the /tools/ pages; a refusal does not fail the deploy.

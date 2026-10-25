@@ -66,6 +66,8 @@ test("every page is served in every language with its canonical, alternates and 
         assert.equal(html.match(/<h1[ >]/g).length, 1, `${path} has one h1`);
         const ld = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s);
         assert.ok(JSON.parse(ld[1])["@context"], path);
+        // An Offer makes Google read the page as a product and ask for ratings and reviews no free tool has.
+        assert.ok(!ld[1].includes('"Offer"'), `${path} carries no Offer`);
         // Each data block closes once: nothing inside can end the <script> early.
         assert.equal(html.match(/<script/g).length, html.match(/<\/script>/g).length, path);
         if (id) {

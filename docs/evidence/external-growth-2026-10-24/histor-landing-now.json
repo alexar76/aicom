@@ -1,0 +1,61 @@
+{
+  "key": "histor-landing-now",
+  "url": "https://histor.modelmarket.dev/",
+  "retrieved_at": "2026-10-24T19:20:26.099413+00:00",
+  "status": 200,
+  "final_url": "https://histor.modelmarket.dev/",
+  "sha256": "076a4e3471ee6f8c54ef90b18171a4ec26355bcb6cc1a392c07a55ff0641d7c2",
+  "title": "HISTOR — transparency log for MCP tool definitions",
+  "links": [
+    "/",
+    "https://histor.modelmarket.dev/",
+    "https://histor.modelmarket.dev/?lang=en",
+    "https://histor.modelmarket.dev/?lang=ru",
+    "https://histor.modelmarket.dev/?lang=es",
+    "https://histor.modelmarket.dev/?lang=fr",
+    "https://histor.modelmarket.dev/?lang=zh",
+    "https://histor.modelmarket.dev/feed.xml",
+    "data:image/svg+xml,%3Csvg xmlns=",
+    "assets/fonts/fonts.css",
+    "assets/histor.css",
+    "./",
+    "servers",
+    "changes",
+    "log",
+    "check",
+    "#why",
+    "#how",
+    "https://github.com/alexar76/histor",
+    "stats",
+    "https://github.com/alexar76/histor#readme",
+    "https://github.com/alexar76/histor/blob/main/docs/labels.md",
+    "https://github.com/alexar76/histor/blob/main/docs/log.md",
+    "https://github.com/alexar76/histor/blob/main/docs/api.md",
+    "https://modelmarket.dev",
+    "https://warden.modelmarket.dev",
+    "https://monitor.modelmarket.dev/?node=histor"
+  ],
+  "matches": {
+    "daily": [],
+    "every": [
+      "\n \n \n   \n     \n       Transparency log · MCP tool definitions \n       Every MCP server's tools,  on the record . \n       Your AI client trusts the tool descriptions an MCP server sends it — and a server can change them after ",
+      "m after you approved it. HISTOR keeps a public, signed record of what every remote MCP server in the official registry advertised, and tells you the day it changed. \n       Remote endpoints: it lists tools and never calls one",
+      " ask you again.  \n      What HISTOR does  It keeps the public record  Every day HISTOR reads what each remote (streamable-HTTP) endpoint in the official MCP registry advertises, fingerprints it, signs what it saw and appends "
+    ],
+    "stdio": [],
+    "memory": [
+      "where the placeholder was sent is recorded.  \n      Limits  512 MB of memory, one CPU, 64 MB of /tmp. 360 s to install, 150 s to start and answer; up to 15 tools called once each with canary arguments, 8 s per call.  \n      Co"
+    ],
+    "market": [
+      "log. A second observer on another network is the next step, and any AIMarket hub can run one. Until then, what the key proves is who said it — not that it is true.  \n      Behind a login, unseen  Endpoints that require authent",
+      "es the tree head it was given under. \n   curl -sS https://histor.modelmarket.dev/api/v1/check \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"endpoint\":\"https://example.com/mcp\",\"tools\":[ …tools/list result… ],\"contribute\":t",
+      "\n# README badge for your server\n[![MCP tool defs](https://histor.modelmarket.dev/badge/<id>.svg)](https://histor.modelmarket.dev/s/<id>)\n\n# Atom feed of every observed change\nhttps://histor.modelmarket.dev/feed.xml \n   \n      "
+    ],
+    "6 hours": [],
+    "30 minutes": [],
+    "cost": [
+      "a second, independent observer is the next step.  \n      What does it cost?  Looking things up, the badges, the feed and /check are free. HISTOR also offers histor.check@v1 to the AIMarket Hub, so agents can reach it through"
+    ],
+    "bot": []
+  }
+}

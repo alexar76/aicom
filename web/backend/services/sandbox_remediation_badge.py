@@ -82,10 +82,9 @@ def _badge_copy(locale: BadgeLocale) -> Mapping[str, str]:
 
 
 def _product_state(product_id: str) -> tuple[str, float]:
-    from core.pipeline_state_writer import read_pipeline_state
+    from core.pipeline_state_writer import read_pipeline_products
 
-    state_data = read_pipeline_state()
-    products = state_data.get("products") if isinstance(state_data, dict) else None
+    products = read_pipeline_products()
     product = products.get(product_id) if isinstance(products, dict) else None
     if not isinstance(product, dict):
         return "", time.time()

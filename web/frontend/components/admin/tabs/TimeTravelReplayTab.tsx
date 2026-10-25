@@ -162,7 +162,7 @@ export function TimeTravelReplayTab({ locale }: { locale: AdminLocale }) {
                   key={f.index}
                   type="button"
                   onClick={() => setFrameIdx(i)}
-                  className={`w-full text-left text-[11px] px-2 py-1 rounded ${
+                  className={`w-full text-left text-[11px] px-2 py-1 rounded-sm ${
                     i === frameIdx ? 'bg-indigo-500/30 text-white' : 'text-gray-500 hover:bg-white/5'
                   }`}
                 >
@@ -225,7 +225,7 @@ export function TimeTravelReplayTab({ locale }: { locale: AdminLocale }) {
               {['analyst', 'pm', 'developer', 'qa', 'devops'].map((a) => (
                 <span
                   key={a}
-                  className={`text-[10px] px-2 py-0.5 rounded ${agentHighlight.has(a) ? 'bg-cyan-500/30 text-cyan-100' : 'bg-white/5 text-gray-600'}`}
+                  className={`text-[10px] px-2 py-0.5 rounded-sm ${agentHighlight.has(a) ? 'bg-cyan-500/30 text-cyan-100' : 'bg-white/5 text-gray-600'}`}
                 >
                   {a}
                 </span>

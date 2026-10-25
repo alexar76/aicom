@@ -129,6 +129,8 @@ function AdminPageInner() {
       /* clear local session even if revoke fails */
     }
     localStorage.removeItem('admin_token');
+    // A full reload discards authenticated component state and cached admin routes.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
     window.location.href = '/';
   }, []);
 
@@ -311,7 +313,7 @@ function AdminPageInner() {
           </button>
           <Link
             href="/"
-            className="rounded-lg p-1 transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40"
+            className="rounded-lg p-1 transition-colors hover:bg-white/5 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-indigo-500/40"
             aria-label={t(locale, 'app.backToSite')}
             title={t(locale, 'app.backToSite')}
           >

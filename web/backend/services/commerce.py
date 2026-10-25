@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import contextlib
 import functools
-import hashlib
 import os
 import random
+import re
 import secrets
 import sqlite3
 import string
 import threading
+import tempfile
 import time
 import uuid
 import zipfile
@@ -891,6 +892,11 @@ class CommerceService:
                     if dup is not None:
                         raise TxHashAlreadyUsedError(tx_clean, str(dup.get("payment_id"))) from exc
                 raise
+            except BaseException:
+                # An I/O error or cancellation between INSERTs must not leave a
+                # partial order for this connection's next request to commit.
+                self.conn.rollback()
+                raise
             return order
 
     def get_orders_for_customer(self, customer_id: str) -> list[dict]:
@@ -902,23 +908,37 @@ class CommerceService:
 
     def build_download_archive(self, order: dict) -> Path:
         product_id = order["product_id"]
-        source_dir = self._data_root_for_artifacts() / "code" / product_id
-        if not source_dir.exists():
+        order_id = order["id"]
+        if any(not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}", value)
+               for value in (product_id, order_id)):
+            raise ValueError("Invalid product or order ID")
+        code_root = (self._data_root_for_artifacts() / "code").resolve()
+        source_dir = code_root / product_id
+        if source_dir.is_symlink() or not source_dir.is_dir() or not source_dir.resolve().is_relative_to(code_root):
             raise FileNotFoundError("Generated product files are missing")
-        archive_name = f"{order['id']}-{product_id}.zip"
+        # New namespace: cached ZIPs made before source filtering must never be served.
+        archive_name = f"{order_id}-{product_id}-source-v2.zip"
         archive_path = self.downloads_dir / archive_name
+        if archive_path.is_symlink():
+            raise ValueError("Invalid archive path")
         if archive_path.exists():
             return archive_path
-        with zipfile.ZipFile(archive_path, "w", zipfile.ZIP_DEFLATED) as zf:
-            for path in source_dir.rglob("*"):
-                if path.is_file():
-                    zf.write(path, arcname=path.relative_to(source_dir))
-            readme = (
-                f"Order: {order['id']}\n"
-                f"Product: {product_id}\n"
-                f"License: {order['license_key']}\n"
-            )
-            zf.writestr("LICENSE.txt", readme)
+        from web.backend.services.customer_package import write_product_source
+
+        with tempfile.NamedTemporaryFile(dir=self.downloads_dir, suffix=".zip.tmp", delete=False) as handle:
+            temporary = Path(handle.name)
+        try:
+            with zipfile.ZipFile(temporary, "w", zipfile.ZIP_DEFLATED) as zf:
+                write_product_source(zf, source_dir)
+                readme = (
+                    f"Order: {order_id}\n"
+                    f"Product: {product_id}\n"
+                    f"License: {order['license_key']}\n"
+                )
+                zf.writestr("LICENSE.txt", readme)
+            temporary.replace(archive_path)
+        finally:
+            temporary.unlink(missing_ok=True)
         return archive_path
 
     # --- Demo notes (E2E / teaching CRUD; scoped per customer) -----------------

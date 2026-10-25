@@ -28,9 +28,12 @@ It answers "is the SOURCE vulnerable". It deliberately does NOT answer "is what 
 RUNNING vulnerable" — that is the gap that let the miner stay up, because the repo
 said 15.5.7 while the container ran 15.5.4. See scripts/deployed_versions.py.
 
-Top-level dirs in INDEPENDENT are skipped on a bare run. Pass the subtree to scan one.
+A bare run includes every first-party subtree, including independently released products.
+Pinned upstream checkouts under .upstreams are skipped unless scanned explicitly.
 
-It reads package-lock.json, requirements*.txt, uv.lock, Cargo.lock and pubspec.lock.
+It reads npm lockfiles/exact manifest pins, requirements*.txt, pyproject.toml exact
+pins, uv.lock, Cargo.lock, pubspec.lock and go.mod. Unresolved version ranges need a
+lockfile; this is not a dependency resolver.
 A manifest it cannot read is an incomplete scan (exit 2), never a clean one.
 """
 from __future__ import annotations
@@ -57,28 +60,10 @@ OSV_VULN = "https://api.osv.dev/v1/vulns/"
 SKIP_DIRS = {
     "node_modules", ".git", ".next", ".venv", "venv", "dist", "build",
     "__pycache__", ".mypy_cache", ".pytest_cache", "out", ".turbo",
-    ".claude",
+    ".claude", "target", "artifacts",
 }
-# Top-level dirs skipped on a bare run. Pass the subtree to scan one of them.
-def _unpublished_root_dirs() -> set[str]:
-    map_path = Path(__file__).resolve().parent / "satellite-map.yaml"
-    try:
-        import yaml  # type: ignore
-        data = yaml.safe_load(map_path.read_text()) or {}
-    except Exception:
-        return set()
-    out: set[str] = set()
-    for sat in data.get("satellites") or []:
-        if not isinstance(sat, dict) or sat.get("github_published") is not False:
-            continue
-        for p in sat.get("paths") or []:
-            top = str(p).split("/")[0]
-            if top:
-                out.add(top)
-    return out
-
-
-INDEPENDENT = _unpublished_root_dirs()
+# Kept as a compatibility attribute; publication boundaries never exclude first-party code.
+INDEPENDENT: set[str] = set()
 RANK = {"CRITICAL": 4, "HIGH": 3, "MODERATE": 2, "LOW": 1, "UNKNOWN": 0}
 
 
@@ -91,8 +76,7 @@ def walk(root: Path, respect_independent: bool = True):
         dirs[:] = [
             d for d in dirs
             if d not in SKIP_DIRS
-            and not d.startswith(".cache")
-            and not (respect_independent and Path(base) == root and d in INDEPENDENT)
+            and not d.startswith((".cache", ".venv"))
             # Pinned upstream checkouts are gitignored, so CI never sees them: a bare
             # run skips them to match, and a subtree scanned on purpose includes them.
             and not (respect_independent and d == ".upstreams")
@@ -233,6 +217,79 @@ def pub_packages(lock: Path) -> set[tuple[str, str, str]]:
     return found
 
 
+def pyproject_packages(manifest: Path) -> set[tuple[str, str, str]]:
+    """Scan exact PEP 621 and dependency-group pins even without uv.lock."""
+    data = toml_lock(manifest)
+    project = data.get("project") or {}
+    requirements = list(project.get("dependencies") or [])
+    for group in (project.get("optional-dependencies") or {}).values():
+        requirements.extend(group)
+    for group in (data.get("dependency-groups") or {}).values():
+        requirements.extend(item for item in group if isinstance(item, str))
+    found = set()
+    for requirement in requirements:
+        if not isinstance(requirement, str):
+            raise IncompleteScan(f"cannot parse a dependency in {manifest}")
+        match = PIN.match(requirement)
+        if match and "*" not in requirement.split(";", 1)[0]:
+            found.add(("PyPI", match.group(1), match.group(2)))
+        elif "==" in requirement.split(";", 1)[0] and "*" not in requirement:
+            raise IncompleteScan(f"cannot parse the pin {requirement!r} in {manifest}")
+    return found
+
+
+def npm_manifest_packages(manifest: Path) -> set[tuple[str, str, str]]:
+    try:
+        data = json.loads(manifest.read_text())
+        if not isinstance(data, dict):
+            raise ValueError("manifest must be an object")
+        found = set()
+        for group in ("dependencies", "devDependencies", "optionalDependencies", "peerDependencies"):
+            deps = data.get(group) or {}
+            if not isinstance(deps, dict):
+                raise ValueError("dependencies must be an object")
+            for name, version in deps.items():
+                if not isinstance(version, str):
+                    raise ValueError("dependency version must be a string")
+                if re.fullmatch(r"\d+\.\d+\.\d+(?:[-+][A-Za-z0-9.+-]+)?", version):
+                    found.add(("npm", name, version))
+        return found
+    except (OSError, ValueError) as exc:
+        raise IncompleteScan(f"cannot parse {manifest}") from exc
+
+
+def go_packages(manifest: Path) -> set[tuple[str, str, str]]:
+    """Check the declared stdlib minimum and pinned direct/indirect modules."""
+    try:
+        lines = manifest.read_text().splitlines()
+    except OSError as exc:
+        raise IncompleteScan(f"cannot read {manifest}") from exc
+    found = set()
+    in_require = False
+    for line in lines:
+        line = line.split("//", 1)[0].strip()
+        if line.startswith("go "):
+            version = line.split()[1]
+            if not re.fullmatch(r"\d+\.\d+(?:\.\d+)?", version):
+                raise IncompleteScan(f"cannot parse Go version in {manifest}")
+            found.add(("Go", "stdlib", version))
+        elif line == "require (":
+            in_require = True
+        elif line == ")":
+            in_require = False
+        elif line.startswith("require ") or in_require:
+            parts = line.removeprefix("require ").split()
+            if not parts:
+                continue
+            if len(parts) != 2 or not parts[1].startswith("v"):
+                raise IncompleteScan(f"cannot parse Go requirement in {manifest}")
+            found.add(("Go", parts[0], parts[1]))
+        elif line.startswith("replace "):
+            # Replacement modules may run different code from the declared pin.
+            raise IncompleteScan(f"Go replacements require a resolved module inventory: {manifest}")
+    return found
+
+
 def collect(root: Path, respect_independent: bool = True):
     packages: set[tuple[str, str, str]] = set()
     owners: dict[tuple[str, str, str], set[str]] = {}
@@ -240,6 +297,12 @@ def collect(root: Path, respect_independent: bool = True):
         for name in files:
             if name == "package-lock.json":
                 got = npm_packages(base / name)
+            elif name == "package.json":
+                got = npm_manifest_packages(base / name)
+            elif name == "pyproject.toml":
+                got = pyproject_packages(base / name)
+            elif name == "go.mod":
+                got = go_packages(base / name)
             elif name.startswith("requirements") and name.endswith(".txt"):
                 got = pip_packages(base / name)
             elif name == "uv.lock":
@@ -383,8 +446,8 @@ def main() -> int:
     target = (root / args.subtree).resolve()
     print(f"scanning {target}", file=sys.stderr)
 
-    # Scanning a subtree ON PURPOSE overrides the independence rule — otherwise
-    # `dependency_scan.py <independent-dir>` would silently scan nothing.
+    # Bare runs cover all first-party products; explicit subtrees additionally
+    # include their otherwise ignored .upstreams checkouts.
     try:
         packages, owners = collect(target, respect_independent=target == root)
     except IncompleteScan as exc:

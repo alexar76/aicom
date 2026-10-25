@@ -31,7 +31,7 @@ BATCH = 10_000  # the protocol's limit per request
 # Which sitemap lists each site's pages, pages no sitemap names yet, and the directory the key
 # file sits in. HISTOR's own pages only: sitemap-0.xml names ~39k per-server pages, which Bing can
 # crawl from the sitemap at its own pace; pushing them all at once would look like a flood.
-# modelmarket.dev keeps its key in /blog/ (PromoMaterials/blog/build.py writes it), and IndexNow
+# modelmarket.dev keeps its key in /blog/ (modelmarket-blog/build.py writes it), and IndexNow
 # then takes only URLs under /blog/.
 SITES = {
     "histor.modelmarket.dev": ("/sitemap-site.xml", ("/datasets/",), ""),

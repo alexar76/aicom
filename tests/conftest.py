@@ -60,6 +60,19 @@ def _restore_environ():
 
 
 @pytest.fixture(autouse=True)
+def _isolated_security_store(tmp_path, monkeypatch):
+    """Keep real SQLite rate limits/nonces isolated across tests and repeated runs."""
+    from core.persistent_security_store import reset_persistent_security_store_for_tests
+
+    reset_persistent_security_store_for_tests()
+    monkeypatch.setenv("AIFACTORY_SECURITY_STORE_DB", str(tmp_path / "security.sqlite3"))
+    try:
+        yield
+    finally:
+        reset_persistent_security_store_for_tests()
+
+
+@pytest.fixture(autouse=True)
 def _no_thread_outlives_the_test():
     """Fail a test that leaves a non-daemon thread running.
 

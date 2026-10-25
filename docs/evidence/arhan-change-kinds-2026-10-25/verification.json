@@ -1,0 +1,251 @@
+{
+  "schema": "histor.change-kinds-independent-verification/v1",
+  "verifiedAt": "2026-10-25T08:50:05.296508+00:00",
+  "ok": true,
+  "checks": 175650,
+  "errors": [],
+  "outputSha256": {
+    "transitions.jsonl": "dac3129408e83f67cff42938bad7187277586982546f23f45e8c8553476fb548",
+    "servers.jsonl": "194010733f3318e9547595c97c1435a3ff9b11d1403d8d3999efc317eb3f6036",
+    "summary.json": "933db0d11ec80352d84cb3e26bb0b6a0fca5ce91ef8cefce3adc047cf653ac3f",
+    "execution.json": "38562c0843618976fd9c064b335a591f65c2f75e200a0ea2f592503209f6a641"
+  },
+  "aggregates": {
+    "cohort2036": {
+      "transitions": 7319,
+      "servers": 2036,
+      "primary": {
+        "composition": 2047,
+        "description_numeric": 422,
+        "description_text": 2606,
+        "description_whitespace": 5,
+        "schema_annotation": 2,
+        "schema_contract": 2205,
+        "schema_order": 20,
+        "unknown": 12
+      },
+      "flagsTransitions": {
+        "composition": 2047,
+        "tool_description": 5482,
+        "parameter_description": 2815,
+        "input_schema": 3627,
+        "output_schema": 1378,
+        "schema_contract": 3033,
+        "schema_order": 36,
+        "schema_annotation": 145,
+        "descriptions_only": 3019,
+        "tool_descriptions_only": 2016
+      },
+      "flagsServers": {
+        "composition": 904,
+        "tool_description": 2036,
+        "parameter_description": 1283,
+        "input_schema": 1491,
+        "output_schema": 531,
+        "schema_contract": 1187,
+        "schema_order": 11,
+        "schema_annotation": 93,
+        "descriptions_only": 1446,
+        "tool_descriptions_only": 995
+      },
+      "toolDescriptionKinds": {
+        "text": 5014,
+        "unchanged": 1825,
+        "numeric": 462,
+        "unknown": 12,
+        "whitespace": 6
+      },
+      "descriptionKinds": {
+        "text": 5553,
+        "unchanged": 1286,
+        "numeric": 463,
+        "unknown": 12,
+        "whitespace": 5
+      },
+      "serverToolDescriptionPartition": {
+        "any_text_beyond_digits_whitespace": 1988,
+        "numeric_and_optional_whitespace_only": 39,
+        "incomplete": 6,
+        "whitespace_only": 3
+      }
+    },
+    "toolDescriptionEvents2036": {
+      "transitions": 5482,
+      "servers": 2036,
+      "primary": {
+        "composition": 1179,
+        "description_numeric": 410,
+        "description_text": 2363,
+        "description_whitespace": 5,
+        "schema_contract": 1525
+      },
+      "flagsTransitions": {
+        "composition": 1179,
+        "tool_description": 5482,
+        "parameter_description": 2276,
+        "input_schema": 2842,
+        "output_schema": 946,
+        "schema_contract": 2238,
+        "schema_order": 12,
+        "schema_annotation": 124,
+        "descriptions_only": 2767,
+        "tool_descriptions_only": 2016
+      },
+      "flagsServers": {
+        "composition": 695,
+        "tool_description": 2036,
+        "parameter_description": 1212,
+        "input_schema": 1402,
+        "output_schema": 494,
+        "schema_contract": 1085,
+        "schema_order": 7,
+        "schema_annotation": 87,
+        "descriptions_only": 1398,
+        "tool_descriptions_only": 995
+      },
+      "toolDescriptionKinds": {
+        "text": 5014,
+        "numeric": 462,
+        "whitespace": 6
+      },
+      "descriptionKinds": {
+        "text": 5031,
+        "numeric": 446,
+        "whitespace": 5
+      },
+      "serverToolDescriptionPartition": {
+        "any_text_beyond_digits_whitespace": 1994,
+        "numeric_and_optional_whitespace_only": 39,
+        "whitespace_only": 3
+      }
+    },
+    "baseAllEvents": {
+      "transitions": 10543,
+      "servers": 4932,
+      "primary": {
+        "composition": 2491,
+        "description_numeric": 428,
+        "description_text": 2686,
+        "description_whitespace": 5,
+        "schema_annotation": 29,
+        "schema_contract": 4861,
+        "schema_order": 22,
+        "unknown": 21
+      },
+      "flagsTransitions": {
+        "composition": 2491,
+        "tool_description": 5482,
+        "parameter_description": 3004,
+        "input_schema": 6322,
+        "output_schema": 1549,
+        "schema_contract": 5723,
+        "schema_order": 39,
+        "schema_annotation": 176,
+        "descriptions_only": 3103,
+        "tool_descriptions_only": 2016
+      },
+      "flagsServers": {
+        "composition": 1237,
+        "tool_description": 2036,
+        "parameter_description": 1418,
+        "input_schema": 4043,
+        "output_schema": 663,
+        "schema_contract": 3773,
+        "schema_order": 13,
+        "schema_annotation": 99,
+        "descriptions_only": 1512,
+        "tool_descriptions_only": 995
+      },
+      "toolDescriptionKinds": {
+        "unchanged": 5040,
+        "text": 5014,
+        "numeric": 462,
+        "unknown": 21,
+        "whitespace": 6
+      },
+      "descriptionKinds": {
+        "unchanged": 4312,
+        "text": 5731,
+        "numeric": 474,
+        "unknown": 21,
+        "whitespace": 5
+      },
+      "serverToolDescriptionPartition": {
+        "no_tool_description_change": 2890,
+        "any_text_beyond_digits_whitespace": 1988,
+        "numeric_and_optional_whitespace_only": 39,
+        "incomplete": 12,
+        "whitespace_only": 3
+      }
+    },
+    "firstToLast2036": {
+      "transitions": 2036,
+      "servers": 2036,
+      "primary": {
+        "composition": 900,
+        "description_numeric": 30,
+        "description_text": 608,
+        "description_whitespace": 1,
+        "schema_contract": 489,
+        "unchanged": 5,
+        "unknown": 3
+      },
+      "flagsTransitions": {
+        "composition": 900,
+        "tool_description": 1975,
+        "parameter_description": 1219,
+        "input_schema": 1438,
+        "output_schema": 516,
+        "schema_contract": 1136,
+        "schema_order": 6,
+        "schema_annotation": 87,
+        "descriptions_only": 639,
+        "tool_descriptions_only": 334
+      },
+      "flagsServers": {
+        "composition": 900,
+        "tool_description": 1975,
+        "parameter_description": 1219,
+        "input_schema": 1438,
+        "output_schema": 516,
+        "schema_contract": 1136,
+        "schema_order": 6,
+        "schema_annotation": 87,
+        "descriptions_only": 639,
+        "tool_descriptions_only": 334
+      },
+      "toolDescriptionKinds": {
+        "text": 1932,
+        "numeric": 41,
+        "unchanged": 58,
+        "unknown": 3,
+        "whitespace": 2
+      },
+      "descriptionKinds": {
+        "text": 1945,
+        "numeric": 36,
+        "unchanged": 51,
+        "unknown": 3,
+        "whitespace": 1
+      },
+      "serverToolDescriptionPartition": {
+        "any_text_beyond_digits_whitespace": 1932,
+        "numeric_and_optional_whitespace_only": 41,
+        "no_tool_description_change": 58,
+        "incomplete": 3,
+        "whitespace_only": 2
+      }
+    }
+  },
+  "rawSummaryFlagMismatches": [],
+  "chainCounts": {
+    "known": 5277,
+    "unknown": 6,
+    "gaps": 0
+  },
+  "limits": [
+    "Raw field classification is not rerun without toolset blobs.",
+    "Input-file hashes are checked against pinned manifest claims; input gzip bytes are not read here.",
+    "Null adjacent pairs do not establish continuity of unobserved definitions."
+  ]
+}

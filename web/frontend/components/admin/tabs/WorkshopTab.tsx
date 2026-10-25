@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   LayoutGrid,
@@ -403,13 +405,13 @@ export function WorkshopTab({ locale }: { locale: AdminLocale }) {
                 <p className="text-gray-300">{t(locale, 'workshop.board.empty.title')}</p>
                 <p className="mt-2 text-xs">
                   {t(locale, 'workshop.board.empty.body')}
-                  <a className="text-indigo-300 hover:underline" href="/admin?tab=new-product">
+                  <Link className="text-indigo-300 hover:underline" href="/admin?tab=new-product">
                     {t(locale, 'workshop.board.empty.newProduct')}
-                  </a>
+                  </Link>
                   {t(locale, 'workshop.board.empty.orOpen')}
-                  <a className="text-indigo-300 hover:underline" href="/admin?tab=pipeline">
+                  <Link className="text-indigo-300 hover:underline" href="/admin?tab=pipeline">
                     {t(locale, 'workshop.board.empty.pipeline')}
-                  </a>
+                  </Link>
                   {t(locale, 'workshop.board.empty.tail')}
                 </p>
               </div>
@@ -423,7 +425,7 @@ export function WorkshopTab({ locale }: { locale: AdminLocale }) {
               >
                 <div className="flex items-center justify-between gap-2 border-b border-white/10 px-1 pb-2">
                   <span className="truncate text-xs font-semibold uppercase tracking-wide text-gray-400">{state}</span>
-                  <span className="shrink-0 rounded bg-white/10 px-1.5 py-0.5 text-[10px] text-gray-300">
+                  <span className="shrink-0 rounded-sm bg-white/10 px-1.5 py-0.5 text-[10px] text-gray-300">
                     {cards.length}
                   </span>
                 </div>
@@ -684,7 +686,7 @@ export function WorkshopTab({ locale }: { locale: AdminLocale }) {
           <select
             value={edgeFrom}
             onChange={(e) => setEdgeFrom(e.target.value)}
-            className="rounded border border-white/10 bg-black/40 px-2 py-1 text-gray-200"
+            className="rounded-sm border border-white/10 bg-black/40 px-2 py-1 text-gray-200"
           >
             <option value="">{t(locale, 'workshop.edge.fromNode')}</option>
             {nodes.map((n) => (
@@ -696,7 +698,7 @@ export function WorkshopTab({ locale }: { locale: AdminLocale }) {
           <select
             value={edgeTo}
             onChange={(e) => setEdgeTo(e.target.value)}
-            className="rounded border border-white/10 bg-black/40 px-2 py-1 text-gray-200"
+            className="rounded-sm border border-white/10 bg-black/40 px-2 py-1 text-gray-200"
           >
             <option value="">{t(locale, 'workshop.edge.toNode')}</option>
             {nodes.map((n) => (
@@ -814,7 +816,7 @@ export function WorkshopTab({ locale }: { locale: AdminLocale }) {
           {patterns.map((p) => (
             <li
               key={String(p.id)}
-              className="flex items-center justify-between gap-2 rounded border border-white/5 bg-black/25 px-2 py-1"
+              className="flex items-center justify-between gap-2 rounded-sm border border-white/5 bg-black/25 px-2 py-1"
             >
               <span className="truncate text-gray-200">{String(p.name)}</span>
               <Button type="button" variant="ghost" size="sm" className="text-red-300" onClick={() => void deletePattern(String(p.id))}>

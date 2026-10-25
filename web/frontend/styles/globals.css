@@ -1,8 +1,9 @@
 /* Webfonts are self-hosted in public/fonts/ and linked from app/layout.tsx — see
    scripts/selfhost_google_fonts.py. Not @import: Turbopack cannot resolve a root URL. */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss" source(none);
+@config "../tailwind.config.ts";
+@source "../app";
+@source "../components";
 
 /* ============================================================================
    AUTONOMOUS AI-FACTORY v2.1 — Global Styles
@@ -62,24 +63,39 @@
 }
 
 /* ── Base Styles ───────────────────────────────────────────────────────── */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@layer base {
+  /* Preserve v3 form/border defaults through the v4 Preflight migration. */
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    border-color: #e5e7eb;
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  input::placeholder, textarea::placeholder {
+    color: #9ca3af;
+  }
 
-body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 /* ── Cyber Grid Background ─────────────────────────────────────────────── */
@@ -106,16 +122,16 @@ body {
 /* ── Glassmorphism Components ──────────────────────────────────────────── */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
 .glass-strong {
   background: var(--card-bg-hover);
-  backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border-hover);
   box-shadow: var(--glass-shadow);
 }
@@ -128,8 +144,8 @@ body {
     var(--card-bg) 0%,
     color-mix(in srgb, var(--card-bg) 50%, transparent) 100%
   );
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
   transition: all 0.3s ease;
@@ -325,14 +341,16 @@ body {
 }
 
 /* ── Typography ────────────────────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
 
-code, pre {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  code, pre {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
 }
 
 /* ── Utilities ─────────────────────────────────────────────────────────── */

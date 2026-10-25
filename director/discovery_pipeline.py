@@ -220,6 +220,17 @@ def _safe_json(text: str) -> dict[str, Any]:
     return data
 
 
+def _enrichment_json(text: str, what: str) -> dict[str, Any]:
+    """``_safe_json`` for a per-idea enrichment (interviews, gap analysis): an answer the model
+    garbled leaves that one enrichment empty. Raised, as until 2026-10-23, it threw away every
+    idea the cycle had already extracted ("Discovery cycle failed: Expecting value")."""
+    try:
+        return _safe_json(text)
+    except ValueError as exc:
+        logger.warning("Discovery %s: the model answered no JSON object (%s); left empty", what, exc)
+        return {}
+
+
 def _pick_category(raw: Any, existing_categories: list[str]) -> str:
     mapped = slug_to_marketplace_category(raw)
     if mapped:
@@ -484,7 +495,7 @@ Return strict JSON:
 Use 3-5 interviews. JSON only."""
         cfg = GenerationConfig(temperature=0.25, max_tokens=1200, timeout_sec=90.0)
         text = await self.router.generate(prompt, task_type="market_research", config=cfg)
-        parsed = _safe_json(text)
+        parsed = _enrichment_json(text, "problem interviews")
         interviews = parsed.get("interviews")
         if not isinstance(interviews, list):
             return []
@@ -542,7 +553,7 @@ Return strict JSON:
 JSON only."""
         cfg = GenerationConfig(temperature=0.2, max_tokens=1400, timeout_sec=90.0)
         text = await self.router.generate(prompt, task_type="market_research", config=cfg)
-        parsed = _safe_json(text)
+        parsed = _enrichment_json(text, "competitive gap analysis")
         return {
             "competitors": [str(x) for x in (parsed.get("competitors") or [])][:8],
             "gaps": [x for x in (parsed.get("gaps") or []) if isinstance(x, dict)][:8],

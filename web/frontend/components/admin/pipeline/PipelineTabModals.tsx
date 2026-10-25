@@ -139,7 +139,7 @@ export function PipelineTabModals(props: PipelineTabModalsProps) {
           <div className="space-y-4 max-h-[72vh] overflow-y-auto pr-1">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs text-gray-500">{t(locale, 'pipeline.modals.handoff.product')}</span>
-              <code className="text-[11px] text-cyan-300 bg-black/30 px-2 py-0.5 rounded">{handoffData.product_id}</code>
+              <code className="text-[11px] text-cyan-300 bg-black/30 px-2 py-0.5 rounded-sm">{handoffData.product_id}</code>
               <Badge
                 variant={
                   handoffData.material_summary.quality_band === 'weak'
@@ -283,11 +283,11 @@ export function PipelineTabModals(props: PipelineTabModalsProps) {
                 <>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-xs text-gray-500">{t(locale, 'pipeline.modals.task.taskId')}</span>
-                    <code className="text-[11px] text-cyan-300 bg-black/30 px-2 py-0.5 rounded">
+                    <code className="text-[11px] text-cyan-300 bg-black/30 px-2 py-0.5 rounded-sm">
                       {String(taskRec.id ?? '—')}
                     </code>
                     <span
-                      className={`text-[10px] uppercase tracking-wide px-2 py-0.5 rounded font-medium ${
+                      className={`text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-sm font-medium ${
                         st === 'completed'
                           ? 'bg-emerald-500/15 text-emerald-300'
                           : st === 'running'

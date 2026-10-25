@@ -110,7 +110,7 @@ export function Sidebar({
         >
           <Link
             href="/"
-            className={`flex min-w-0 items-center rounded-lg p-1 -m-1 transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 ${
+            className={`flex min-w-0 items-center rounded-lg p-1 -m-1 transition-colors hover:bg-white/5 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-indigo-500/40 ${
               collapsed ? 'justify-center' : 'gap-3'
             }`}
             title={t(locale, 'app.backToSite')}

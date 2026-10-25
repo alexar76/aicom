@@ -1,0 +1,229 @@
+<p>Fourteen of the 292 PyPI MCP packages we rechecked answered <code>tools/list</code>. Twelve had newer releases. Two worked at the same version after we installed their declared MCP extra. Another 276 failed on imports, APIs or installation dependencies; two needed prerequisites our synthetic environment did not provide.</p>
+
+<p>We did not add our old <code>mcp&lt;2</code> workaround. We installed the versions published by the packages and respected their own dependency constraints.</p>
+
+<p><strong>AI disclosure — Fully Autonomous:</strong> AI agents prepared the investigation code, analysis and this article under the project owner’s direction. I maintain HISTOR and WARDEN in the alexar76/AICOM ecosystem. This is a follow-up to our own measurements, not an independent audit. The version snapshot and runs below are from <strong>24 October 2026</strong>.</p>
+
+<h2>
+  <a name="the-question-was-whether-the-packages-recovered" href="#the-question-was-whether-the-packages-recovered">
+  </a>
+  The question was whether the packages recovered
+</h2>
+
+<p>In <a href="https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh">our earlier package census</a>, we described 292 PyPI packages as broken by MCP SDK 2. <a href="https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i31k">Kartik asked</a> whether we would track how many recovered once maintainers added an upper bound on <code>mcp</code>.</p>
+
+<p>That deserved a follow-up with fresh installations. It also required correcting our original classification: a traceback containing <code>mcp.server.fastmcp</code> does not establish that SDK 2 caused the failure.</p>
+
+<p>We reconstructed the historical 292-package cohort, fetched each package's latest-version metadata on 24 October at 20:02–20:03 UTC, and ran fresh installations between 20:13 and 21:19 UTC. Where a new package version existed, we also installed the old version afresh under matching conditions.</p>
+
+<p>The outcome was:</p>
+
+<div class="table-wrapper-paragraph"><table>
+<thead>
+<tr>
+<th>Result</th>
+<th style="text-align: right">Packages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Newer version lists tools; fresh old-version control fails under matching conditions</td>
+<td style="text-align: right"><strong>11</strong></td>
+</tr>
+<tr>
+<td>Newer version lists tools; old version is no longer available for a control</td>
+<td style="text-align: right"><strong>1</strong></td>
+</tr>
+<tr>
+<td>Same version lists tools with its declared MCP extra</td>
+<td style="text-align: right"><strong>2</strong></td>
+</tr>
+<tr>
+<td>Import/API or installation dependency failure</td>
+<td style="text-align: right"><strong>276</strong></td>
+</tr>
+<tr>
+<td>Authentication or project-index prerequisite not supplied</td>
+<td style="text-align: right"><strong>2</strong></td>
+</tr>
+<tr>
+<td>Total</td>
+<td style="text-align: right"><strong>292</strong></td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Success here means that <code>initialize</code> and <code>tools/list</code> answered. It does not establish safety, successful business operations or a working integration with a real account.</p>
+
+<h2>
+  <a name="twelve-newer-releases-now-answer-with-eleven-confirmed-pairs" href="#twelve-newer-releases-now-answer-with-eleven-confirmed-pairs">
+  </a>
+  Twelve newer releases now answer, with eleven confirmed pairs
+</h2>
+
+<p>Thirty packages had newer releases than their historical version. Twelve answered <code>tools/list</code>, seventeen still failed on imports or APIs, and one reached a request for real authentication.</p>
+
+<p>For eleven of the twelve successes, a fresh installation of the old version failed on the same host, image, runtime, observer and launch configuration. The twelfth old release could not be installed because PyPI no longer had it.</p>
+
+<div class="table-wrapper-paragraph"><table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Historical → checked version</th>
+<th>Observed dependency change or qualification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://pypi.org/project/apillow-mcp/0.1.4/" target="_blank" rel="noopener noreferrer">apillow-mcp</a></td>
+<td>0.1.3 → 0.1.4</td>
+<td>Adds a package-owned <code>mcp&lt;2</code> constraint.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/imperal-mcp/0.6.0/" target="_blank" rel="noopener noreferrer">imperal-mcp</a></td>
+<td>0.5.3 → 0.6.0</td>
+<td>Adds an upper bound on MCP.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/kratos-mcp-server/0.10.0/" target="_blank" rel="noopener noreferrer">kratos-mcp-server</a></td>
+<td>0.9.0 → 0.10.0</td>
+<td>Declares <code>mcp&gt;=1.30.0,&lt;2</code>.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/mcp-server-openfda/0.2.1/" target="_blank" rel="noopener noreferrer">mcp-server-openfda</a></td>
+<td>0.2.0 → 0.2.1</td>
+<td>Declares <code>mcp[cli]&lt;2</code>.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/screaming-frog-mcp/0.4.3/" target="_blank" rel="noopener noreferrer">screaming-frog-mcp</a></td>
+<td>0.4.1 → 0.4.3</td>
+<td>Declares <code>mcp&gt;=1.30.0,&lt;2</code>.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/sprout-social-mcp/0.2.0/" target="_blank" rel="noopener noreferrer">sprout-social-mcp</a></td>
+<td>0.1.3 → 0.2.0</td>
+<td>Declares <code>mcp[cli]&lt;2</code>.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/youtube-studio-mcp/0.3.1/" target="_blank" rel="noopener noreferrer">youtube-studio-mcp</a></td>
+<td>0.3.0 → 0.3.1</td>
+<td>Declares <code>mcp&gt;=1.30.0,&lt;2</code>.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/scrapling-fetch-mcp/0.2.6/" target="_blank" rel="noopener noreferrer">scrapling-fetch-mcp</a></td>
+<td>0.2.4 → 0.2.6</td>
+<td>Moves to <code>mcp&gt;=2.0.0</code>.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/sraverify-mcp/0.1.1/" target="_blank" rel="noopener noreferrer">sraverify-mcp</a></td>
+<td>0.0.2 → 0.1.1</td>
+<td>Moves to <code>mcp[cli]&gt;=2.3,&lt;3</code>.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/stremio-mcp/0.4.1/" target="_blank" rel="noopener noreferrer">stremio-mcp</a></td>
+<td>0.3.0 → 0.4.1</td>
+<td>Moves to <code>mcp&gt;=2,&lt;3</code>.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/gandr-mcp/0.2.0/" target="_blank" rel="noopener noreferrer">gandr-mcp</a></td>
+<td>0.1.8 → 0.2.0</td>
+<td>Changes its bounded MCP 1 range from <code>&gt;=1.2,&lt;1.3</code> to <code>&gt;=1.9,&lt;2</code>; old control fails on a private Pydantic import.</td>
+</tr>
+<tr>
+<td><a href="https://pypi.org/project/aleth-mcp/0.3.1/" target="_blank" rel="noopener noreferrer">aleth-mcp</a></td>
+<td>0.2.0 → 0.3.1</td>
+<td>Current release answers with <code>mcp&gt;=1,&lt;2</code>; old 0.2.0 is unavailable, so no confirmed pair.</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Seven confirmed pairs therefore involve adding an upper bound. Three newer packages support SDK 2. One pair involves an already bounded dependency range and a Pydantic-related old failure. These are package counts, not counts of independent maintainers.</p>
+
+<p>The comparisons show release-associated recovery under current fresh dependency resolution. They do not isolate one changed line as the sole cause or establish that our previous article prompted a fix.</p>
+
+<h2>
+  <a name="two-successes-were-corrections-to-our-installation-profile" href="#two-successes-were-corrections-to-our-installation-profile">
+  </a>
+  Two successes were corrections to our installation profile
+</h2>
+
+<p>At unchanged versions, <code>ifcopenshell-mcp 0.9.0</code> listed 25 tools and <code>webresearcher-mcp-server 0.1.1</code> listed four after installation with their author-declared <code>[mcp]</code> extra.</p>
+
+<p>The plain installations do not install the SDK. We retained a plain-install control on the same host and image for each extra test. Only the declared installation extra changed within those comparisons.</p>
+
+<p>These are useful operational successes, but calling them two new maintainer fixes would be wrong. Our old workaround could both install a missing dependency and restrict its version; a successful retry with <code>mcp&lt;2</code> did not distinguish those effects.</p>
+
+<h2>
+  <a name="what-still-failed" href="#what-still-failed">
+  </a>
+  What still failed
+</h2>
+
+<p>The 276 software or dependency failures break down as follows:</p>
+
+<div class="table-wrapper-paragraph"><table>
+<thead>
+<tr>
+<th>Observed failure</th>
+<th style="text-align: right">Packages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Explicit MCP 2 diagnostic for the removed FastMCP import path</td>
+<td style="text-align: right">230</td>
+</tr>
+<tr>
+<td>Missing low-level <code>Server</code> decorators</td>
+<td style="text-align: right">34</td>
+</tr>
+<tr>
+<td>Missing <code>FastMCP</code> export from <code>mcp.server</code>
+</td>
+<td style="text-align: right">1</td>
+</tr>
+<tr>
+<td>Private Pydantic import <code>eval_type_backport</code>
+</td>
+<td style="text-align: right">10</td>
+</tr>
+<tr>
+<td>Unavailable exact dependency <code>pglast==7.2.0</code>
+</td>
+<td style="text-align: right">1</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>The SDK's <a href="https://github.com/modelcontextprotocol/python-sdk/blob/main/docs/migration.md" target="_blank" rel="noopener noreferrer">official migration guide</a> describes the FastMCP import-path and low-level <code>Server</code> handler changes. The failure categories above come from each saved run's diagnostic, rather than inferring the cause from the presence of a path anywhere in a traceback.</p>
+
+<p>The <code>pglast</code> case deserves a distinction. <code>postgres-mcp 0.3.0</code> could not install its required <code>pglast==7.2.0</code>. We separately checked the exact-version API and complete PyPI release index: neither that version nor its PEP 440 equivalent <code>7.2</code> was present. That is stronger evidence than pip merely failing to find a compatible wheel. It is still an observation at this dated snapshot.</p>
+
+<p>We left two packages outside the software-failure count. <code>d1-mcp-mint 1.0.7</code> initialized but needed a real service access token to list tools. <code>codemap-mcp 0.2.0</code>, after its <code>[server]</code> extra, required a prepared project graph database. We did not provide either prerequisite and cannot classify them as fully working or broken from this test.</p>
+
+<h2>
+  <a name="the-correction-to-our-earlier-claim" href="#the-correction-to-our-earlier-claim">
+  </a>
+  The correction to our earlier claim
+</h2>
+
+<p>Our earlier wording that all 292 were MCP 2 breakages was too broad.</p>
+
+<p>The historical classifier matched <code>mcp.server.fastmcp</code> anywhere in a traceback. It included missing optional SDK installations and MCP 1/Pydantic failures. Some packages already had an upper bound; one pinned <code>mcp==1.14.1</code>.</p>
+
+<p>The 292 remain a useful historical cohort to follow. They are not 292 independently established instances of the same cause. That correction also applies to my earlier reply to Kartik.</p>
+
+<h2>
+  <a name="what-this-rerun-establishes" href="#what-this-rerun-establishes">
+  </a>
+  What this rerun establishes
+</h2>
+
+<p>Installations and package execution ran on <strong>two Linux servers in gVisor</strong>, using Python 3.12. Installations used fresh work directories, wheels only and no pip cache. Every main latest-version and old-version request supplied <code>pins: []</code>; the unavailable old release failed before installation. Author-owned constraints were respected. Both hosts' images were recorded; confirmed old/new pairs used the same image within the pair.</p>
+
+<p>Dependency fetching had registry access. Program execution used an internal trap network with synthetic replies and no internet route. The standard observer can also try canary <code>tools/call</code> requests; those behavioral results are outside this availability count. Extra-installation follow-ups had networking disabled and did not call tools. No real account credentials were supplied. The full exercise contains <strong>342 observation attempts</strong>, not 342 different packages.</p>
+
+<p>There is an important historical limit. We did not find a separate frozen name manifest for the original article. We reconstructed this cohort from persisted observations before 14 October UTC and obtained the same 292 packages at two cutoff points. Reconstructing the broader census produced 12,940 targets / 12,938 endpoints, so this follow-up does <strong>not</strong> claim to reproduce the original full denominator of 12,915 or its complete old retry totals.</p>
+
+<p>The answer to Kartik is now concrete: twelve newer releases list tools, eleven have a matching failing old-version control, and seven of those confirmed pairs add an upper bound. Most of the historical cohort still fails in this environment. Two apparent recoveries also taught us that installation profiles belong in the measurement, alongside version numbers.</p>
+

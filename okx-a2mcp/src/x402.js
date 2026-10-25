@@ -139,7 +139,7 @@ export async function buildPaywall({ keyFile, payTo, price = "$0.001", publicUrl
   if (!keyFile || !payTo) return null;
   const key = JSON.parse(readFileSync(keyFile, "utf8"));
   const [{ createX402Server }, { paymentMiddlewareFromHTTPServer }, { declareDiscoveryExtension }] = await Promise.all([
-    import("@coinbase/cdp-sdk/x402"),
+    import("@aimarket/x402-cdp"),
     import("@x402/express"),
     import("@x402/extensions/bazaar"),
   ]);

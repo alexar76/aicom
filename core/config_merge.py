@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import copy
 import os
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -59,18 +60,60 @@ def deep_merge(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
+# Parsed configs by primary path, with the fingerprint they were parsed from. The pipeline
+# worker asks for the config once per product per cycle (the pause and focus checks): on
+# factory-vps on 2026-10-23 re-parsing the YAML was 92% of the worker's CPU, about one core,
+# for files that change when an operator saves settings. A stat of each file decides now.
+_CACHE: dict[str, tuple[tuple[Any, ...], dict[str, Any]]] = {}
+_CACHE_LOCK = threading.Lock()
+# What _apply_runtime_path_resolution and config_fragments_dir read besides the files.
+_ENV_KEYS = ("AIFACTORY_CONFIG_FRAGMENTS_DIR", "AIFACTORY_DATA_ROOT", "AIFACTORY_GIT_REPOS_DIR", "AIFACTORY_APP_ROOT")
+
+
+def _stat_key(path: Path) -> tuple[Any, ...]:
+    try:
+        st = path.stat()
+    except OSError:
+        return (str(path), None)
+    return (str(path), st.st_mtime_ns, st.st_size, st.st_ino)
+
+
+def _fingerprint(primary_path: Path, fragments: list[Path]) -> tuple[Any, ...]:
+    return (
+        tuple(_stat_key(fp) for fp in fragments),
+        _stat_key(primary_path),
+        tuple(os.environ.get(k, "") for k in _ENV_KEYS),
+    )
+
+
 def load_merged_config(primary: str | Path | None = None) -> dict[str, Any]:
     """
     Load fragments from the resolved fragments directory (see :func:`config_fragments_dir`)
     as ``*.yaml`` in sorted order, then overlay ``primary``.
 
     If the fragments directory is missing (e.g. minimal test fixtures), only ``primary`` is used.
+    The parse is reused while no file changes (mtime, size, inode) and no path variable does;
+    every caller gets its own copy, as before.
     """
     primary_path = Path(primary) if primary is not None else config_yaml_path()
-    merged: dict[str, Any] = {}
     frag_dir = config_fragments_dir(primary_path)
-    if frag_dir.is_dir():
-        for fp in sorted(frag_dir.glob("*.yaml")):
+    fragments = sorted(frag_dir.glob("*.yaml")) if frag_dir.is_dir() else []
+    fingerprint = _fingerprint(primary_path, fragments)
+    key = str(primary_path)
+    with _CACHE_LOCK:
+        hit = _CACHE.get(key)
+    if hit is not None and hit[0] == fingerprint:
+        return copy.deepcopy(hit[1])
+    merged = _load_merged_config(primary_path, fragments)
+    with _CACHE_LOCK:
+        _CACHE[key] = (fingerprint, merged)
+    return copy.deepcopy(merged)
+
+
+def _load_merged_config(primary_path: Path, fragments: list[Path]) -> dict[str, Any]:
+    merged: dict[str, Any] = {}
+    if fragments:
+        for fp in fragments:
             try:
                 chunk = yaml.safe_load(fp.read_text(encoding="utf-8")) or {}
             except (OSError, yaml.YAMLError):

@@ -847,7 +847,7 @@ Tables: `products`, `tasks` — nested fields stored as JSON.
 
 <h2 id="testing-coverage">Testing</h2>
 
-[![coverage](https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg)](https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg) — backend line coverage (`web/`, `agents/`, `orchestrator/`, `director/`, `pipeline_worker/`). CI uploads `coverage.json` + badge artifact; refresh locally with:
+[![coverage](https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg)](https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg) — backend line coverage. The local [.coveragerc](.coveragerc) includes `core/`, `llm/`, `security/`, `web/`, `agents/`, `orchestrator/`, `director/`, and `pipeline_worker.py`. The hosted badge reflects its last published run and may use the older scope. Refresh locally with:
 
 ```bash
 USE_SQLITE=true pytest -q --cov --cov-report=term --cov-report=json:coverage.json
@@ -860,7 +860,9 @@ Full local suite (backend pytest + frontend Vitest):
 ./scripts/run_all_tests.sh
 ```
 
-See also **[docs/pipeline-operations.md](docs/pipeline-operations.md)** (Testing).
+See also **[testing rules](docs/testing-rules.md)**, the **[2026-10-23 quality audit](docs/quality-audit-2026-10-23.md)**, and **[pipeline operations](docs/pipeline-operations.md)** (Testing).
+
+**Payment tests and transactions:** [EN](docs/payment-tests-and-transactions.md) · [RU](docs/payment-tests-and-transactions.ru.md) · [ES](docs/payment-tests-and-transactions.es.md) · [FR](docs/payment-tests-and-transactions.fr.md) · [ZH](docs/payment-tests-and-transactions.zh.md). Covers checkout, refunds, crash recovery and SQLite/PostgreSQL verification.
 
 Quick smoke (Docker):
 
@@ -871,7 +873,7 @@ docker exec ai-factory python -m pytest tests/test_pipeline.py tests/test_pipeli
 ## Tech Stack
 
 - **Backend:** Python FastAPI + Uvicorn
-- **Frontend:** Next.js 14 + TypeScript + Tailwind + Framer Motion
+- **Frontend:** Next.js 16 + TypeScript + Tailwind + Framer Motion
 - **Container:** Docker (Python 3.12 + Node 20)
 - **Security:** JWT, TOTP 2FA, audit logging
 - **LLM:** Pluggable providers (OpenAI-compatible, Ollama)

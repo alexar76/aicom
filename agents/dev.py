@@ -12,12 +12,14 @@ Delivery mode (web vs Python CLI) is inferred from admin_instructions and valida
 
 from __future__ import annotations
 
+import contextlib
 import json
 import logging
 import shutil
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
+
 from agents.prompt_utils import prompt_json
 from agents.prompts.load_prompt import load_prompt
 from core.logging_utils import log_suppressed
@@ -40,8 +42,8 @@ from llm.factory_defaults import (
     FACTORY_TIMEOUT_CODE_GENERATION_SEC,
 )
 from web.backend.services.reference_templates import build_reference_template_prompt_block
+
 from .base_agent import AgentInput, AgentOutput, BaseAgent
-from .dev_edits import apply_edits
 from .dev_delivery import (
     DeliveryMode,
     desktop_app_appendix,
@@ -51,8 +53,14 @@ from .dev_delivery import (
     system_prompt_for_mode,
     validate_saved_files,
 )
-from .product_profile import DESKTOP_APP, FULL_SOFTWARE, normalize_delivery_profile
-
+from .dev_edits import apply_edits
+from .dev_tree.defects import (
+    _breakdown_delta,
+    _identities_appeared,
+    _tree_defect_breakdown,
+    _tree_defect_identities,
+    _tree_defect_score,
+)
 from .dev_tree.paths import (  # noqa: F401 - re-exported
     _apply_requested_deletions,
     _module_is_still_imported,
@@ -60,28 +68,21 @@ from .dev_tree.paths import (  # noqa: F401 - re-exported
     _resolve_safe_code_path,
     _self_check_written_files,
 )
-from .dev_tree.defects import (  # noqa: F401 - re-exported
-    _breakdown_delta,
-    _identities_appeared,
-    _tree_defect_breakdown,
-    _tree_defect_identities,
-    _tree_defect_score,
-)
-from .dev_tree.reverts import (  # noqa: F401 - re-exported
+from .dev_tree.reverts import (
     _revert_files_with_new_undefined_names,
     _revert_out_of_scope_writes,
     _revert_symbol_regressions,
     _revert_until_not_worse,
 )
 from .dev_tree.salvage import (  # noqa: F401 - re-exported
+    _MAX_SALVAGE_NOTES,
+    _SALVAGE_NOTES,
     _clear_salvage_notes,
     _load_salvage_notes,
-    _MAX_SALVAGE_NOTES,
     _record_salvage_notes,
-    _SALVAGE_NOTES,
     _salvage_notes_path,
 )
-
+from .product_profile import DESKTOP_APP, FULL_SOFTWARE, normalize_delivery_profile
 
 logger = logging.getLogger(__name__)
 
@@ -211,7 +212,7 @@ class DeveloperAgent(BaseAgent):
                     agent_input=agent_input,
                     system_prompt=system_prompt,
                 )
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 self._log("WARNING", f"Repair batch {index + 1}/{total} failed to generate: {exc}")
                 continue
             data = self._extract_json(response)
@@ -926,12 +927,10 @@ class DeveloperAgent(BaseAgent):
                     )
                     continue
                 if patch_mode and full_path.is_file():
-                    try:
+                    with contextlib.suppress(OSError):
                         previous_content[file_path] = full_path.read_text(
                             encoding="utf-8", errors="replace"
                         )
-                    except OSError:
-                        pass
                 full_path.parent.mkdir(parents=True, exist_ok=True)
                 with open(full_path, "w", encoding="utf-8") as f:
                     f.write(content)

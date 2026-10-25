@@ -1587,7 +1587,7 @@ services:
 
   lottery-showcase:
     <<: *eco
-    image: node:20-alpine
+    image: node:22.23.4-alpine
     container_name: aicom-lottery-showcase
     working_dir: /app
     command: ["node", "serve.mjs"]

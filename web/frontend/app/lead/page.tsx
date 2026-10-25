@@ -112,7 +112,7 @@ export default function LeadPage() {
                 rows={6}
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
-                className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-sm text-white placeholder:text-gray-600 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/40"
                 placeholder="Problem, audience, must-have features, constraints..."
               />
             </div>

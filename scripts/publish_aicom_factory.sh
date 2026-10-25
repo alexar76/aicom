@@ -364,6 +364,10 @@ if [[ -n "$EXPORT_DIR" ]]; then
     echo "ERROR: pantheon/ reached the GitHub factory tree — refusing to export." >&2
     exit 1
   fi
+  if [[ -e "$TARGET/modelmarket-blog" ]]; then
+    echo "ERROR: modelmarket-blog/ reached the GitHub factory tree — refusing to export." >&2
+    exit 1
+  fi
   if [[ -e "$TARGET/emberline" || -e "$TARGET/cite-desks" ]]; then
     echo "ERROR: emberline/ or cite-desks/ reached the GitHub factory tree — refusing to export." >&2
     exit 1
@@ -454,6 +458,10 @@ if [[ -e "$CLONE/independent" ]]; then
 fi
 if [[ -e "$CLONE/pantheon" ]]; then
   echo "ERROR: pantheon/ reached the GitHub factory clone — refusing to push." >&2
+  exit 1
+fi
+if [[ -e "$CLONE/modelmarket-blog" ]]; then
+  echo "ERROR: modelmarket-blog/ reached the GitHub factory clone — refusing to push." >&2
   exit 1
 fi
 if [[ -e "$CLONE/emberline" || -e "$CLONE/cite-desks" ]]; then

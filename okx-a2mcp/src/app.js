@@ -35,6 +35,28 @@ function rateLimiter(perMinute, now) {
   };
 }
 
+/**
+ * The paywall with its challenge in the 402 body as well as the PAYMENT-REQUIRED header.
+ * x402 V2 answers with an empty body and the challenge in the header only; probes that read the
+ * body saw no x402Version and no accepts — Karatum rated HISTOR and WARDEN "did not answer as
+ * x402" for a 402 that carried a valid challenge (2026-10-23). Only an empty 402 body is filled,
+ * and only from the header the paywall itself set.
+ */
+function challengeInBody(middleware) {
+  return (req, res, next) => {
+    const json = res.json.bind(res);
+    res.json = (body) => {
+      res.json = json;
+      const header = res.statusCode === 402 ? res.getHeader("payment-required") : null;
+      if (header && body && typeof body === "object" && !Array.isArray(body) && !Object.keys(body).length) {
+        try { body = JSON.parse(Buffer.from(String(header), "base64").toString("utf8")); } catch { /* keep {} */ }
+      }
+      return json(body);
+    };
+    return middleware(req, res, next);
+  };
+}
+
 export function createApp({
   historUrl = "https://histor.modelmarket.dev",
   fetchImpl = globalThis.fetch,
@@ -144,6 +166,7 @@ export function createApp({
     // Machine-readable description of the paid routes. The hub folds it into the origin's
     // /openapi.json (AIMARKET_OPENAPI_MERGE_URLS), which is where x402 indexers read it.
     const paidIds = () => paywall.paths.map((p) => p.replace("POST /x402/", ""));
+    const guard = challengeInBody((req, res, next) => paywall.middleware(req, res, next));
     app.get("/x402/openapi.json", (_req, res) => {
       res.json(openapiDocument({ publicUrl, payTo: paywall.payTo, serviceIds: paidIds() }));
     });
@@ -169,7 +192,7 @@ export function createApp({
       // (or its 503 while the facilitator is down). Without a payment it never calls next().
       const method = req.method;
       req.method = "POST";
-      return paywall.middleware(req, res, () => { req.method = method; refuse(); });
+      return guard(req, res, () => { req.method = method; refuse(); });
     });
     // The middleware answers 402 for the configured routes until a valid payment arrives, and
     // settles only when the handler answers below 400 — so a refused request costs nothing.
@@ -208,7 +231,7 @@ export function createApp({
       res.on("close", release);
       return next();
     });
-    app.use(paywall.middleware);
+    app.use(guard);
     app.post("/x402/:service", async (req, res) => {
       const service = services.get(req.params.service);
       if (!service) return res.status(404).json({ status: "error", error: "unknown_service", services: [...services.keys()] });

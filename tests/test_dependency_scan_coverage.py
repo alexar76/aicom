@@ -8,6 +8,7 @@ import ast
 import importlib.util
 import io
 import json
+import os
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -221,6 +222,39 @@ def test_upstream_checkouts_are_skipped_only_on_a_bare_run(scan, tmp_path):
     assert explicit == {("PyPI", "a", "1.0"), ("PyPI", "b", "1.0")}
 
 
+def test_bare_scan_includes_independently_released_products(scan, monkeypatch, tmp_path):
+    """A release/publication boundary must not hide first-party vulnerable pins."""
+    monkeypatch.setattr(scan, "INDEPENDENT", {"cite-desks", "attested"})
+    write(tmp_path, {"cite-desks/kernel/requirements.txt": "PyJWT==2.13.0\n",
+                     "attested/gateway/requirements.txt": "cryptography==46.0.7\n"})
+    packages, _ = scan.collect(tmp_path)
+    assert packages == {("PyPI", "PyJWT", "2.13.0"),
+                        ("PyPI", "cryptography", "46.0.7")}
+
+
+def test_manifest_only_exact_pins_and_go_stdlib_are_scanned(scan, tmp_path):
+    if scan.tomllib is None:
+        pytest.skip("no TOML parser on this interpreter")
+    write(tmp_path, {
+        "pyproject.toml": '[project]\ndependencies = ["certifi==2026.7.22", "httpx>=0.27"]\n'
+                          '[project.optional-dependencies]\ndev = ["pytest==8.4.2"]\n',
+        "package.json": json.dumps({"dependencies": {"zod": "4.4.3", "react": "^19"}}),
+        "go/go.mod": 'module example.invalid/test\n\ngo 1.27.1\n'
+                     'require (\n example.invalid/module v1.2.3 // indirect\n)\n',
+    })
+    packages, _ = scan.collect(tmp_path)
+    assert packages == {("PyPI", "certifi", "2026.7.22"), ("PyPI", "pytest", "8.4.2"),
+                        ("npm", "zod", "4.4.3"), ("Go", "stdlib", "1.27.1"),
+                        ("Go", "example.invalid/module", "v1.2.3")}
+
+
+def test_go_replacement_does_not_silently_audit_the_wrong_module(scan, monkeypatch, tmp_path):
+    calls = osv(monkeypatch, batch={"results": [{}]})
+    tree = write(tmp_path, {"go.mod": "module demo\ngo 1.27.1\nreplace example/a => ../local\n"})
+    assert gate(scan, monkeypatch, tree) == 2
+    assert calls == []
+
+
 def test_every_manifest_the_gates_scan_is_readable():
     """What CI and deploy_pingblip.sh actually scan must parse, or they go red for it."""
     root, pingblip = load("root"), load("pingblip")
@@ -234,8 +268,14 @@ def test_every_manifest_the_gates_scan_is_readable():
 def test_pub_reader_agrees_with_a_yaml_parser():
     yaml = pytest.importorskip("yaml")
     scan = load("root")
-    locks = [p for p in REPO.rglob("pubspec.lock")
-             if not {"node_modules", ".claude"} & set(p.relative_to(REPO).parts)]
+    locks = []
+    for directory, dirs, files in os.walk(REPO):
+        if "pyvenv.cfg" in files:
+            dirs[:] = []
+            continue
+        dirs[:] = [name for name in dirs if name not in {"node_modules", ".claude", ".git"}]
+        if "pubspec.lock" in files:
+            locks.append(Path(directory) / "pubspec.lock")
     assert locks
     for lock in locks:
         data = yaml.safe_load(lock.read_text())

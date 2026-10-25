@@ -239,7 +239,15 @@ def _admin_whoami_request(sm, *, bearer: str | None = None, cookie: str | None =
     return request, creds
 
 
-def test_stale_bearer_falls_back_to_admin_session_cookie(tmp_path):
+@pytest.fixture
+def cookie_admin_account(tmp_path, monkeypatch):
+    from web.backend.services import admin_users_store as store
+
+    monkeypatch.setattr(store, "USERS_PATH", tmp_path / "users.json")
+    store.create_user(username="cookie-admin", password_hash="!", role="admin")
+
+
+def test_stale_bearer_falls_back_to_admin_session_cookie(tmp_path, cookie_admin_account):
     """Leftover localStorage JWT must not hide a valid HttpOnly session cookie."""
     import asyncio
 
@@ -262,7 +270,7 @@ def test_stale_bearer_falls_back_to_admin_session_cookie(tmp_path):
     assert payload["sub"] == "cookie-admin"
 
 
-def test_garbage_bearer_falls_back_to_admin_session_cookie(tmp_path):
+def test_garbage_bearer_falls_back_to_admin_session_cookie(tmp_path, cookie_admin_account):
     import asyncio
 
     from web.backend.core.security import SecurityManager, get_current_admin
@@ -299,7 +307,7 @@ def test_non_admin_bearer_without_cookie_is_forbidden(tmp_path):
     assert ei.value.status_code == 403
 
 
-def test_non_admin_bearer_does_not_mask_admin_session_cookie(tmp_path):
+def test_non_admin_bearer_does_not_mask_admin_session_cookie(tmp_path, cookie_admin_account):
     import asyncio
 
     from web.backend.core.security import SecurityManager, get_current_admin

@@ -10,7 +10,6 @@ import os
 
 from agents.prompts.load_prompt import load_prompt
 
-
 # Logged as agents.qa, where QAAgent lives and where log filters point.
 logger = logging.getLogger(__name__.rsplit(".", 2)[0] + ".qa")
 

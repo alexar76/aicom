@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -95,6 +95,7 @@ const getCategoryColor = (cat: string): string => {
 
 export default function ProductDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -318,7 +319,7 @@ export default function ProductDetailPage() {
           <AlertTriangle className="w-16 h-16 text-red-400 mx-auto mb-4" />
           <p className="text-red-400 text-lg mb-2">Failed to load product</p>
           <p className="text-gray-500 text-sm mb-4">{error}</p>
-          <Button variant="secondary" onClick={() => (window.location.href = '/')}>
+          <Button variant="secondary" onClick={() => router.push('/')}>
             Back to Home
           </Button>
         </div>
@@ -952,7 +953,7 @@ export default function ProductDetailPage() {
             icon={<ShoppingCart className="w-4 h-4" />}
             onClick={() => {
               trackEvent('checkout_click', { placement: 'product_actions' }, product.id);
-              window.location.href = `/checkout?product=${product.id}`;
+              router.push(`/checkout?product=${encodeURIComponent(product.id)}`);
             }}
           >
             Purchase with Crypto
@@ -1053,7 +1054,7 @@ export default function ProductDetailPage() {
               <textarea
                 value={journeyNote}
                 onChange={(e) => setJourneyNote(e.target.value)}
-                className="w-full min-h-[72px] rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm text-gray-200 placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                className="w-full min-h-[72px] rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm text-gray-200 placeholder:text-gray-600 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/40"
                 placeholder="Optional: what blocked you or what should be improved?"
               />
               <div className="mt-3 flex justify-end gap-2">
@@ -1071,7 +1072,7 @@ export default function ProductDetailPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
             onClick={() => setFeedbackOpen(false)}
           >
             <motion.div
@@ -1115,7 +1116,7 @@ export default function ProductDetailPage() {
                   <textarea
                     value={feedbackComment}
                     onChange={(e) => setFeedbackComment(e.target.value)}
-                    className="w-full min-h-[120px] rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm text-gray-200 placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                    className="w-full min-h-[120px] rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm text-gray-200 placeholder:text-gray-600 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/40"
                     placeholder="Tell us what you expected, what happened, and (if it’s a bug) steps to reproduce."
                   />
                 </div>
@@ -1152,7 +1153,7 @@ export default function ProductDetailPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
             onClick={() => setShowReportModal(false)}
           >
             <motion.div

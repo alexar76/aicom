@@ -167,7 +167,7 @@ export function FactoryBackupSettings({ locale }: { locale: AdminLocale }) {
                 type="checkbox"
                 checked={schedule.enabled}
                 onChange={(e) => setSchedule((s) => ({ ...s, enabled: e.target.checked }))}
-                className="rounded border-gray-600"
+                className="rounded-sm border-gray-600"
               />
               {t(locale, 'settings.factoryBackup.scheduleEnable')}
             </label>
@@ -205,7 +205,7 @@ export function FactoryBackupSettings({ locale }: { locale: AdminLocale }) {
                 onChange={(e) =>
                   setSchedule((s) => ({ ...s, include_sandboxes: e.target.checked }))
                 }
-                className="rounded border-gray-600"
+                className="rounded-sm border-gray-600"
               />
               {t(locale, 'settings.factoryBackup.includeSandboxes')}
             </label>
@@ -261,7 +261,7 @@ export function FactoryBackupSettings({ locale }: { locale: AdminLocale }) {
             type="checkbox"
             checked={includeSandboxes}
             onChange={(e) => setIncludeSandboxes(e.target.checked)}
-            className="rounded border-gray-600"
+            className="rounded-sm border-gray-600"
           />
           {t(locale, 'settings.factoryBackup.includeSandboxes')}
         </label>
@@ -356,7 +356,7 @@ export function FactoryBackupSettings({ locale }: { locale: AdminLocale }) {
                 type="checkbox"
                 checked={cReplace}
                 onChange={(e) => setCReplace(e.target.checked)}
-                className="mt-1 rounded border-gray-600"
+                className="mt-1 rounded-sm border-gray-600"
               />
               {t(locale, 'settings.factoryBackup.confirmReplace')}
             </label>
@@ -365,7 +365,7 @@ export function FactoryBackupSettings({ locale }: { locale: AdminLocale }) {
                 type="checkbox"
                 checked={cTrusted}
                 onChange={(e) => setCTrusted(e.target.checked)}
-                className="mt-1 rounded border-gray-600"
+                className="mt-1 rounded-sm border-gray-600"
               />
               {t(locale, 'settings.factoryBackup.confirmTrusted')}
             </label>
@@ -374,7 +374,7 @@ export function FactoryBackupSettings({ locale }: { locale: AdminLocale }) {
                 type="checkbox"
                 checked={cSaved}
                 onChange={(e) => setCSaved(e.target.checked)}
-                className="mt-1 rounded border-gray-600"
+                className="mt-1 rounded-sm border-gray-600"
               />
               {t(locale, 'settings.factoryBackup.confirmSaved')}
             </label>

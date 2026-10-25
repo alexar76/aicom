@@ -22,7 +22,7 @@ from __future__ import annotations
 import json
 import time
 import uuid
-from typing import Any, Optional
+from typing import Any
 
 from agents.product_profile import post_devops_human_gate_required
 from orchestrator.landing_fast_flow import agent_flow_for_product
@@ -87,7 +87,7 @@ class NextTaskPlanner:
     def latest_bug_context(self, product: dict[str, Any]) -> str:
         return latest_bug_context(product)
 
-    def create_next_task(self, product: dict[str, Any]) -> Optional[dict[str, Any]]:
+    def create_next_task(self, product: dict[str, Any]) -> dict[str, Any] | None:
         """Create the next task based on current product state."""
         from core.delivery_profile import MARKETING_LANDING
 

@@ -1,0 +1,344 @@
+{
+ "format": "histor.tool-cost/v1",
+ "tokenizer": "o200k_base",
+ "countedAs": "per tool {name, description, input_schema} as compact JSON: what a client sends a model",
+ "toolCount": 20,
+ "totals": {
+  "sent": 3776,
+  "names": 120,
+  "descriptions": 783,
+  "inputSchemas": 2751,
+  "structure": 122,
+  "outputSchemas": 0,
+  "listed": 3778
+ },
+ "tools": [
+  {
+   "name": "textokit_bcra_indicadores",
+   "sent": 317,
+   "parts": {
+    "name": 8,
+    "description": 38,
+    "inputSchema": 265,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "resource": 27,
+    "query": 26,
+    "idVariable": 35,
+    "desde": 34,
+    "hasta": 30,
+    "limit": 32,
+    "offset": 32,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_cartas_ar",
+   "sent": 375,
+   "parts": {
+    "name": 6,
+    "description": 36,
+    "inputSchema": 327,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "remitente": 30,
+    "destinatario": 26,
+    "lugarYFecha": 30,
+    "asunto": 31,
+    "hechos": 34,
+    "solicitud": 31,
+    "tipo": 39,
+    "plazoDias": 34,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_catalog",
+   "sent": 44,
+   "parts": {
+    "name": 4,
+    "description": 20,
+    "inputSchema": 14,
+    "structure": 6
+   },
+   "outputSchema": 0
+  },
+  {
+   "name": "textokit_comparar_textos",
+   "sent": 164,
+   "parts": {
+    "name": 8,
+    "description": 34,
+    "inputSchema": 116,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "original": 30,
+    "entrega": 33,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_crypto_prices",
+   "sent": 136,
+   "parts": {
+    "name": 5,
+    "description": 39,
+    "inputSchema": 86,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "coins": 35,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_cuit_ar",
+   "sent": 183,
+   "parts": {
+    "name": 6,
+    "description": 47,
+    "inputSchema": 124,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "identifier": 36,
+    "type": 36,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_dev_utils",
+   "sent": 308,
+   "parts": {
+    "name": 5,
+    "description": 47,
+    "inputSchema": 250,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "op": 46,
+    "value": 29,
+    "algorithm": 42,
+    "secret": 28,
+    "from": 27,
+    "to": 27,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_direcciones_ar",
+   "sent": 215,
+   "parts": {
+    "name": 7,
+    "description": 38,
+    "inputSchema": 164,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "direccion": 36,
+    "provinciaId": 41,
+    "limit": 37,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_dolar_ar",
+   "sent": 93,
+   "parts": {
+    "name": 6,
+    "description": 35,
+    "inputSchema": 46,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_fx_rates",
+   "sent": 184,
+   "parts": {
+    "name": 5,
+    "description": 51,
+    "inputSchema": 122,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "base": 30,
+    "quotes": 47,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_how_to_pay",
+   "sent": 58,
+   "parts": {
+    "name": 7,
+    "description": 31,
+    "inputSchema": 14,
+    "structure": 6
+   },
+   "outputSchema": 0
+  },
+  {
+   "name": "textokit_normativa_ar",
+   "sent": 208,
+   "parts": {
+    "name": 6,
+    "description": 44,
+    "inputSchema": 152,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "query": 36,
+    "date": 32,
+    "limit": 35,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_polymarket_markets",
+   "sent": 319,
+   "parts": {
+    "name": 8,
+    "description": 40,
+    "inputSchema": 265,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "resource": 29,
+    "query": 30,
+    "status": 30,
+    "order": 29,
+    "user": 36,
+    "limit": 33,
+    "offset": 32,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_sample",
+   "sent": 133,
+   "parts": {
+    "name": 4,
+    "description": 24,
+    "inputSchema": 99,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "route": 82
+   }
+  },
+  {
+   "name": "textokit_source_bounded_summary",
+   "sent": 172,
+   "parts": {
+    "name": 7,
+    "description": 43,
+    "inputSchema": 116,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "text": 36,
+    "language": 29,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_translate_es",
+   "sent": 178,
+   "parts": {
+    "name": 5,
+    "description": 47,
+    "inputSchema": 120,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "text": 36,
+    "tone": 32,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_url_text",
+   "sent": 201,
+   "parts": {
+    "name": 5,
+    "description": 38,
+    "inputSchema": 152,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "url": 25,
+    "format": 33,
+    "maxChars": 42,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_web_read",
+   "sent": 206,
+   "parts": {
+    "name": 5,
+    "description": 43,
+    "inputSchema": 152,
+    "structure": 6
+   },
+   "outputSchema": 0,
+   "properties": {
+    "url": 25,
+    "format": 33,
+    "maxChars": 42,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_x402_adoption",
+   "sent": 151,
+   "parts": {
+    "name": 7,
+    "description": 42,
+    "inputSchema": 95,
+    "structure": 7
+   },
+   "outputSchema": 0,
+   "properties": {
+    "section": 49,
+    "payment_signature": 34
+   }
+  },
+  {
+   "name": "textokit_x402_ping",
+   "sent": 131,
+   "parts": {
+    "name": 6,
+    "description": 46,
+    "inputSchema": 72,
+    "structure": 7
+   },
+   "outputSchema": 0,
+   "properties": {
+    "echo": 26,
+    "payment_signature": 34
+   }
+  }
+ ]
+}

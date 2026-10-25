@@ -16,12 +16,13 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 import re
 import shutil
 import stat
 import subprocess
 import sys
-from functools import lru_cache
+from functools import cache, lru_cache
 from pathlib import Path
 
 import pytest
@@ -30,7 +31,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SECURITY = ROOT / "scripts" / "security"
 sys.path.insert(0, str(SECURITY))
-import service_env  # noqa: E402
+import service_env
 
 NAME = re.compile(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+")
 PREFIX = re.compile(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*_")
@@ -112,7 +113,7 @@ def _leading_prefix(node):
     return None
 
 
-@lru_cache(maxsize=None)
+@cache
 def _python_file(path: Path):
     """(names read, env-shaped literals, dynamic prefixes read, name tables) for one file."""
     source = path.read_text(encoding="utf-8", errors="replace")
@@ -193,21 +194,36 @@ def _python_file(path: Path):
             elif _leading_prefix(node.slice):
                 prefixes.add(_leading_prefix(node.slice))
         if isinstance(node, ast.Compare) and isinstance(node.left, ast.Constant) \
-                and any(_name_of(c) == "environ" for c in node.comparators):
-            if isinstance(node.left.value, str):
-                names.add(node.left.value)
+                and any(_name_of(c) == "environ" for c in node.comparators) \
+                and isinstance(node.left.value, str):
+            names.add(node.left.value)
     return frozenset(names), frozenset(literals), frozenset(prefixes), frozenset(tables)
 
 
-def _python_files(dirs) -> set[Path]:
+def _source_files(dirs, extensions) -> set[Path]:
+    """Prune dependency trees before descent, retaining the existing source scope."""
     out = set()
     for d in dirs:
         base = ROOT / d
-        candidates = [base] if base.is_file() else base.rglob("*.py")
-        for path in candidates:
-            if not SKIP_DIRS & set(path.relative_to(ROOT).parts):
-                out.add(path)
+        if SKIP_DIRS & set(base.relative_to(ROOT).parts):
+            continue
+        if base.is_file():
+            out.add(base)
+            continue
+        for directory, child_dirs, filenames in os.walk(base):
+            if "pyvenv.cfg" in filenames:
+                child_dirs[:] = []
+                continue
+            child_dirs[:] = [name for name in child_dirs if name not in SKIP_DIRS]
+            out.update(
+                Path(directory) / name for name in filenames
+                if Path(name).suffix in extensions
+            )
     return out
+
+
+def _python_files(dirs) -> set[Path]:
+    return _source_files(dirs, {".py"})
 
 
 def _module_file(module: str):
@@ -279,15 +295,34 @@ TS_READ = re.compile(r"process\.env(?:\.([A-Z_][A-Z0-9_]*)|\[\s*['\"]([A-Z_][A-Z
 
 def _ts_reads(dirs) -> set[str]:
     names = set()
-    for d in dirs:
-        base = ROOT / d
-        files = [base] if base.is_file() else [f for ext in ("ts", "tsx", "js", "mjs") for f in base.rglob("*." + ext)]
-        for path in files:
-            if SKIP_DIRS & set(path.relative_to(ROOT).parts) or ".test." in path.name or ".spec." in path.name:
-                continue
-            for m in TS_READ.finditer(path.read_text(encoding="utf-8", errors="replace")):
-                names.add(m.group(1) or m.group(2))
+    for path in _source_files(dirs, {".ts", ".tsx", ".js", ".mjs"}):
+        if ".test." in path.name or ".spec." in path.name:
+            continue
+        for m in TS_READ.finditer(path.read_text(encoding="utf-8", errors="replace")):
+            names.add(m.group(1) or m.group(2))
     return names
+
+
+def test_source_walk_prunes_dependencies_and_keeps_first_party(tmp_path, monkeypatch):
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    for name in ("src/app.py", "src/app.ts", "src/node_modules/dependency.py",
+                 "src/node_modules/dependency.ts", "src/.venv-test/hidden.py"):
+        path = tmp_path / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("process.env.RUNTIME_SETTING", encoding="utf-8")
+    (tmp_path / "src/.venv-test/pyvenv.cfg").write_text("home = fixture", encoding="utf-8")
+    visited = []
+    real_walk = os.walk
+
+    def walk(*args, **kwargs):
+        for row in real_walk(*args, **kwargs):
+            visited.append(Path(row[0]))
+            yield row
+
+    monkeypatch.setattr(os, "walk", walk)
+    assert _python_files(["src"]) == {tmp_path / "src/app.py"}
+    assert _ts_reads(["src"]) == {"RUNTIME_SETTING"}
+    assert tmp_path / "src/node_modules" not in visited
 
 
 def _shell_reads(path: Path) -> set[str]:
@@ -300,7 +335,7 @@ def _shell_reads(path: Path) -> set[str]:
     return {n for n in with_default | (expanded - assigned) if NAME.fullmatch(n)}
 
 
-@lru_cache(maxsize=None)
+@cache
 def _documented() -> frozenset:
     names = set()
     for template in TEMPLATES:
@@ -336,7 +371,7 @@ def _provider_keys(service: str) -> set[str]:
     return names
 
 
-@lru_cache(maxsize=None)
+@cache
 def service_reads(service: str):
     """(names, dynamic prefixes) the service's own code reads."""
     if service == "factory":
@@ -457,7 +492,8 @@ def test_every_allowed_name_is_one_the_service_reads(service):
     reads, _ = service_reads(service)
     _, names = service_env.SCOPES[service]
     families = service_env.PROVIDER_KEYS | service_env.CHAIN  # read by configured or computed name
-    unread = sorted(n for n in names - families if n not in reads | compose_set_names(service))
+    accepted = reads | compose_set_names(service)
+    unread = sorted(n for n in names - families if n not in accepted)
     assert not unread, f"service_env.py grants {service} names it never reads: {unread}"
 
 

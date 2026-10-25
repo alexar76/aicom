@@ -51,6 +51,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && 
 
 | Документ | Ссылка |
 | --- | --- |
+| Платёжные тесты и транзакции: покупка, возвраты, восстановление, SQLite/PostgreSQL | [payment-tests-and-transactions.ru.md](payment-tests-and-transactions.ru.md) |
 | Внешняя диагностика AICOM: алгоритм, настройка, бюджет и восстановление | [factory-subcontracting.ru.md](factory-subcontracting.ru.md) |
 | База знаний | [knowledge-base-ru.md](ecosystem/knowledge-base-ru.md) |
 | Белая книга | [whitepaper/ru.md](ecosystem/whitepaper/ru.md) |

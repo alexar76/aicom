@@ -24,7 +24,7 @@ export function DirectorStandupSettings({ api }: { api: SettingsTabApi }) {
             onChange={(e) =>
               setCorpChatSettings((prev) => ({ ...prev, director_standup_enabled: e.target.checked }))
             }
-            className="rounded border-white/20"
+            className="rounded-sm border-white/20"
           />
           <span className="text-sm text-gray-300">{t(locale, 'settings.standup.enableDaily')}</span>
         </label>

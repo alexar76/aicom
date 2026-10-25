@@ -2,7 +2,7 @@
 Payment API
 ===========
 Endpoints for real crypto payment processing with on-chain transaction verification.
-Supports USDT/USDC/ETH on Base, Arbitrum, and Ethereum.
+Checkout accepts USDT/USDC on configured EVM networks and USDC on Solana.
 
 Recipient addresses are loaded from runtime config.
 """
@@ -10,12 +10,13 @@ Recipient addresses are loaded from runtime config.
 from __future__ import annotations
 
 import asyncio
+import hmac
 import json
 import logging
+import math
 import os
 import time
 import uuid
-from pathlib import Path
 from typing import Optional
 
 from core.paths import config_path, pending_payments_path
@@ -34,11 +35,12 @@ from eth_abi import encode as abi_encode
 # Unified multi-chain network registry + health-checked RPC failover (EVM + Solana).
 from aimarket_hub import chain_net
 from web.backend.services.commerce import CommerceService, TxHashAlreadyUsedError
-from web.backend.services.ai_market_protocol.channels import claim_transfer, release_transfer
+from web.backend.services.ai_market_protocol.channels import claim_transfer
 from web.backend.services.payment_claim import (
     DOOR_CHECKOUT, checkout_tx_hash, claim_message, verify_claim)
 from core.public_site_url import resolve_public_site_url
 from web.backend.services.storefront_pricing import checkout_usdt_from_sales_file
+from web.backend.services.checkout_quote import seal_quote
 
 logger = logging.getLogger(__name__)
 
@@ -184,11 +186,70 @@ commerce = CommerceService()
 
 
 def _persist_pending_payments() -> None:
-    write_json_atomic(PENDING_PAYMENTS_FILE, _pending_payments)
+    try:
+        # A corrupt-but-present history is unknown state, not an empty ledger.
+        # Do not erase the only evidence of an unpaid/paid quote on the next write.
+        try:
+            with PENDING_PAYMENTS_FILE.open(encoding="utf-8") as handle:
+                previous = json.load(handle)
+        except FileNotFoundError:
+            previous = {}
+        if not isinstance(previous, dict) or any(not isinstance(row, dict) for row in previous.values()):
+            raise ValueError("Invalid pending payment history")
+        write_json_atomic(PENDING_PAYMENTS_FILE, _pending_payments)
+    except (OSError, ValueError, TypeError) as exc:
+        logger.exception("Could not persist pending payments")
+        raise HTTPException(status_code=503, detail=(
+            "Payment storage is temporarily unavailable; keep this payment and transaction ID and retry."
+        )) from exc
+
+
+def _quote_seal(payment: dict, *, create_key: bool = True) -> str:
+    """Authenticate the issued price, independently of later catalog changes."""
+    try:
+        return seal_quote(payment, PENDING_PAYMENTS_FILE, create_key=create_key)
+    except (OSError, RuntimeError) as exc:
+        logger.exception("Checkout quote key is unavailable")
+        raise HTTPException(status_code=503, detail=(
+            "Payment quote verification is temporarily unavailable; contact support with this payment ID."
+        )) from exc
+
+
+def _complete_checkout(payment: dict, order: dict, tx_hash: str) -> None:
+    """Publish success only for a committed order; retain retries on cleanup failure."""
+    payment.update(status="confirmed", tx_hash=tx_hash,
+                   order_id=order["id"], license_key=order["license_key"])
+    payment_id = payment["payment_id"]
+    _pending_payments.pop(payment_id, None)
+    try:
+        _persist_pending_payments()
+    except BaseException:
+        _pending_payments[payment_id] = payment
+        raise
+
+
+def _payment_block_time(chain: str, verified: dict) -> float | None:
+    """Read inclusion time only when an expired quote needs reconciliation."""
+    try:
+        if verified.get("block_time") is not None:
+            value = float(verified["block_time"])
+        else:
+            pool = _pool_for_chain(chain)
+            if pool is None:
+                return None
+            height = int(verified["block_number"])
+            if chain == "solana":
+                value = float(pool.call("getBlockTime", [height]))
+            else:
+                block = pool.call("eth_getBlockByNumber", [hex(height), False])
+                value = float(int(block["timestamp"], 16))
+        return value if math.isfinite(value) and value > 0 else None
+    except Exception:
+        return None  # Keep the quote and transfer for operator review, never guess.
 
 
 def _load_pending_payments_from_disk() -> None:
-    """Hydrate pending map after API restart; drop expired pending rows."""
+    """Recover retryable quotes after restart, including expired paid claims."""
     global _pending_payments
     if not PENDING_PAYMENTS_FILE.is_file():
         return
@@ -200,16 +261,16 @@ def _load_pending_payments_from_disk() -> None:
         return
     if not isinstance(data, dict):
         return
-    now = time.time()
     cleaned: dict[str, dict] = {}
     for pid, pay in data.items():
         if not isinstance(pay, dict):
             continue
         # A quote held for operator review (the buyer paid but could not sign) is the
         # only record of what they are owed, so it outlives the quote's expiry.
-        if (pay.get("status") == "pending" and not pay.get("claim_review")
-                and float(pay.get("expires_at") or 0) <= now):
-            continue
+        # A quote can expire while a transfer is mining or the API is down.
+        # Preserve it so the actual payer can still recover their purchase.
+        if pay.get("status") == "confirming":
+            pay["status"] = "pending_confirmation" if pay.get("tx_hash") else "pending"
         cleaned[str(pid)] = pay
     _pending_payments = cleaned
     _persist_pending_payments()
@@ -428,9 +489,10 @@ def _verify_evm_transaction(
     try:
         fetched = pool.run(_fetch)
     except chain_net.AllEndpointsDown as exc:
-        # Don't leak endpoint URLs (which may carry API keys) to the client; log server-side.
-        logger.warning("EVM RPC unavailable for %s: %s", chain, exc)
-        return {"verified": False, "error": "Could not reach the blockchain RPC (all endpoints unavailable)"}
+        # Endpoint exceptions can contain credentials; record their type, not their text.
+        logger.warning("EVM RPC unavailable for %s (%s)", chain, type(exc).__name__)
+        return {"verified": False, "unavailable": True,
+                "error": "Could not reach the blockchain RPC (all endpoints unavailable)"}
     if fetched is _NOT_FOUND:
         return {"verified": False, "error": "Transaction not found on chain"}
     tx, receipt, current_block = fetched
@@ -607,7 +669,7 @@ def _contract_wallet_accepts(chain: str, wallet: str, digest: bytes, signature: 
     try:
         return bool(pool.run(_ask))
     except chain_net.AllEndpointsDown as exc:
-        logger.warning("EVM RPC unavailable for contract-wallet check on %s: %s", chain, exc)
+        logger.warning("EVM RPC unavailable for contract-wallet check on %s (%s)", chain, type(exc).__name__)
         return False
 
 
@@ -639,10 +701,18 @@ def _solana_token_balance_delta(meta: dict, owner: str, mint: str) -> Optional[f
             if entry.get("owner") != owner or entry.get("mint") != mint:
                 continue
             ui = entry.get("uiTokenAmount") or {}
-            try:
-                amount = float(ui.get("uiAmount") or 0)
-            except (TypeError, ValueError):
-                amount = 0.0
+            if "amount" in ui:
+                # The RPC's raw u64 amount remains available when uiAmount is null.
+                raw, decimals = ui["amount"], ui.get("decimals")
+                if (not isinstance(raw, str) or not raw.isascii() or not raw.isdecimal()
+                        or len(raw) > 20 or int(raw) > 2**64 - 1
+                        or type(decimals) is not int or not 0 <= decimals <= 255):
+                    raise ValueError("Malformed SPL token amount")
+                amount = int(raw) / (10 ** decimals)
+            else:
+                amount = float(ui["uiAmount"])
+            if not math.isfinite(amount) or amount < 0:
+                raise ValueError("Invalid SPL token balance")
             # An owner can hold several token accounts for one mint; assigning here
             # kept only the last entry, so the delta measured one arbitrary account
             # instead of everything the recipient received.
@@ -818,9 +888,8 @@ def _verify_solana_transaction(
         }
 
     except Exception as exc:
-        # Generic client-facing message; the exception (which may carry RPC URLs) is logged only.
-        logger.warning("Solana verification error: %s", exc)
-        return {"verified": False, "error": "Solana verification failed (RPC error)"}
+        logger.warning("Solana verification error (%s)", type(exc).__name__)
+        return {"verified": False, "unavailable": True, "error": "Solana verification failed (RPC error)"}
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -893,13 +962,16 @@ async def create_payment(body: CreatePaymentRequest, authorization: Optional[str
         "created_at": time.time(),
         "expires_at": time.time() + 3600,  # 1 hour
         "referral_source": ref,
+        "site": resolve_public_site_url(),
+        "quote_version": 1,
     }
+    payment["quote_seal"] = _quote_seal(payment)
 
     _pending_payments[payment_id] = payment
     _persist_pending_payments()
     logger.info(f"Created payment {payment_id}: {price} {payment['currency']} on {body.chain}")
 
-    return payment
+    return {key: value for key, value in payment.items() if key not in ("quote_seal", "quote_version")}
 
 
 @router.get("/status/{payment_id}")
@@ -1035,25 +1107,15 @@ async def _confirm_payment(
         if not payment:
             raise HTTPException(status_code=404, detail="Payment not found")
 
-        if payment["status"] == "confirmed":
-            return {
-                "status": "confirmed",
-                "payment_id": payment_id,
-                "tx_hash": payment.get("tx_hash", tx_hash),
-                "message": "Payment was already confirmed.",
-                "order_id": payment.get("order_id"),
-                "license_key": payment.get("license_key"),
-            }
-        if payment["status"] == "confirming":
-            raise HTTPException(status_code=409, detail="Payment confirmation already in progress")
-
-        # Remember what the payment was before the transition: the mismatched-hash
-        # checks below need it, and reading payment["status"] there only ever saw
-        # "confirming", so the pending_confirmation branch could never be taken.
+        # The request lock owns the in-flight attempt. Do not persist an
+        # unleased "confirming" state: a process exit must leave a retryable quote.
+        if payment["status"] in ("confirming", "confirmed"):
+            payment["status"] = "pending_confirmation" if payment.get("tx_hash") else "pending"
         prior_status = payment["status"]
-        payment["status"] = "confirming"
-        _pending_payments[payment_id] = payment
-        _persist_pending_payments()
+        if "quote_version" in payment or "quote_seal" in payment:
+            if payment.get("quote_version") != 1 or not hmac.compare_digest(
+                    str(payment.get("quote_seal") or ""), _quote_seal(payment, create_key=False)):
+                raise HTTPException(status_code=400, detail="Stored payment amount or quote is invalid")
 
         chain = payment["chain"]
         token = payment["currency"]
@@ -1065,54 +1127,24 @@ async def _confirm_payment(
         if amount is None:
             amount = _catalog_checkout_usdt(payment["product_id"])
             payment["amount"] = amount
-        amount = float(amount)
-        # Defense-in-depth (F6 hardening): the on-chain verification threshold must reflect
-        # the authoritative catalog price, not a stored value that could have drifted (a
-        # tampered pending record, or a mid-flight catalog price change). We never silently
-        # charge a *different* amount than was quoted — on mismatch we reject and the customer
-        # re-creates the payment at the current price. A catalog lookup error is non-fatal
-        # (fall back to the quoted amount) so confirmation never breaks on a transient read.
         try:
-            catalog_amount = float(_catalog_checkout_usdt(payment["product_id"]))
-        except Exception:
-            catalog_amount = None
-        if catalog_amount is not None and abs(catalog_amount - amount) > 0.01:
-            payment["status"] = "pending"
-            _pending_payments[payment_id] = payment
-            _persist_pending_payments()
-            logger.warning(
-                "Payment %s amount mismatch at confirm: stored %.4f vs catalog %.4f — rejecting",
-                payment_id,
-                amount,
-                catalog_amount,
-            )
-            raise HTTPException(
-                status_code=400,
-                detail=(
-                    "Payment amount no longer matches the catalog price; "
-                    "please create a new payment at the current price."
-                ),
-            )
+            amount = float(amount)
+        except (TypeError, ValueError) as exc:
+            raise HTTPException(status_code=400, detail="Stored payment amount is invalid") from exc
+        if not math.isfinite(amount) or amount <= 0:
+            raise HTTPException(status_code=400, detail="Stored payment amount is invalid")
         # The recipient must be a real, configured wallet even on the verify path (F1).
         expected_recipient = _ensure_recipient_configured(
             chain, payment.get("wallet_address") or _get_address_for_chain(chain))
         payment.setdefault("wallet_address", expected_recipient)
 
-        # Normalise tx hash (EVM chains use 0x prefix, Solana uses base58)
-        if chain == "solana":
-            tx_hash_clean = tx_hash
-        else:
-            tx_hash_clean = tx_hash
+        # Already canonicalised by checkout_tx_hash above (base58 is case-sensitive).
+        tx_hash_clean = tx_hash
 
         existing_order = commerce.get_order_by_tx_hash(tx_hash_clean)
         if existing_order:
             if existing_order.get("payment_id") == payment_id:
-                payment["status"] = "confirmed"
-                payment["tx_hash"] = tx_hash_clean
-                payment["order_id"] = existing_order["id"]
-                payment["license_key"] = existing_order["license_key"]
-                _pending_payments.pop(payment_id, None)
-                _persist_pending_payments()
+                _complete_checkout(payment, existing_order, tx_hash_clean)
                 return {
                     "status": "confirmed",
                     "payment_id": payment_id,
@@ -1152,30 +1184,42 @@ async def _confirm_payment(
                 )
 
         # ── On-chain verification ────────────────────────────────────────────
-        if use_stub:
-            result = _stub_verify_result(test_confirmations)
-        elif chain == "solana":
-            result = _verify_solana_transaction(
-                tx_hash=tx_hash_clean,
-                expected_recipient=expected_recipient,
-                expected_amount=amount,
-                expected_token=token,
-            )
-        elif chain in RPC_ENDPOINTS:
-            result = _verify_evm_transaction(
-                chain=chain,
-                tx_hash=tx_hash_clean,
-                expected_recipient=expected_recipient,
-                expected_amount=amount,
-                expected_token=token,
-            )
-        else:
-            result = {
-                "verified": False,
-                "error": f"Chain '{chain}' does not support on-chain verification yet",
-            }
+        try:
+            if use_stub:
+                result = _stub_verify_result(test_confirmations)
+            elif chain == "solana":
+                result = _verify_solana_transaction(
+                    tx_hash=tx_hash_clean,
+                    expected_recipient=expected_recipient,
+                    expected_amount=amount,
+                    expected_token=token,
+                )
+            elif chain in RPC_ENDPOINTS:
+                result = _verify_evm_transaction(
+                    chain=chain,
+                    tx_hash=tx_hash_clean,
+                    expected_recipient=expected_recipient,
+                    expected_amount=amount,
+                    expected_token=token,
+                )
+            else:
+                result = {
+                    "verified": False,
+                    "error": f"Chain '{chain}' does not support on-chain verification yet",
+                }
+            if not isinstance(result, dict):
+                raise ValueError("Invalid payment verifier response")
+        except Exception as exc:
+            logger.warning("Blockchain verification failed for payment %s (%s)", payment_id, type(exc).__name__)
+            raise HTTPException(status_code=503, detail=(
+                "Blockchain verification is temporarily unavailable; retry this payment with the same transaction ID."
+            )) from exc
 
         if not result.get("verified"):
+            if result.get("unavailable"):
+                raise HTTPException(status_code=503, detail=(
+                    "Blockchain verification is temporarily unavailable; retry this payment with the same transaction ID."
+                ))
             if result.get("pending"):
                 payment["status"] = "pending_confirmation"
                 payment["tx_hash"] = tx_hash_clean
@@ -1219,6 +1263,17 @@ async def _confirm_payment(
                 "message": "Payer signature does not authorize this checkout",
             })
 
+        # An API outage may outlast the quote. Honor an on-time transfer at the
+        # issued price; a late or unprovable payment stays visible for review.
+        expiry = float(payment.get("expires_at") or 0)
+        if operator is None and not use_stub and expiry and time.time() > expiry:
+            paid_at = _payment_block_time(chain, result)
+            if paid_at is None or paid_at > expiry:
+                reason = "quote_payment_time_unknown" if paid_at is None else "quote_paid_after_expiry"
+                detail = _hold_for_review(payment, tx_hash_clean, payer, reason)
+                detail["message"] = "Expired quote requires payment-time review; contact support with this payment id"
+                raise HTTPException(status_code=409, detail=detail)
+
         # One transfer, one purchase, across every door: a transfer that already funded
         # a channel or paid an invoke verifies here just as well, so claim it in the
         # registry those doors use before creating anything.
@@ -1243,15 +1298,16 @@ async def _confirm_payment(
                 "used_at": (transfer.get("claim") or {}).get("stack"),
             })
 
-        # ── Mark confirmed ───────────────────────────────────────────────────
-        payment["status"] = "confirmed"
+        # Keep the transfer pinned while fulfilling. The claim is retained on an
+        # ambiguous write failure: the same checkout can retry it, other doors cannot.
+        payment["status"] = "pending_confirmation"
         payment["tx_hash"] = tx_hash_clean
-        payment["confirmed_at"] = time.time()
         payment["verification"] = {
             "confirmations": result.get("confirmations", 0),
             "from": result.get("from", ""),
             "block_number": result.get("block_number", 0),
         }
+        _persist_pending_payments()
 
         try:
             order = commerce.create_order_and_license(
@@ -1265,10 +1321,6 @@ async def _confirm_payment(
                 referral_source=payment.get("referral_source"),
             )
         except TxHashAlreadyUsedError as exc:
-            release_transfer(chain=chain, tx_hash=tx_hash_clean, door=DOOR_CHECKOUT, claim_id=payment_id)
-            payment["status"] = "pending"
-            _pending_payments[payment_id] = payment
-            _persist_pending_payments()
             raise HTTPException(
                 status_code=409,
                 detail={
@@ -1276,32 +1328,20 @@ async def _confirm_payment(
                     "existing_payment_id": exc.existing_payment_id,
                 },
             ) from exc
-        except Exception:
-            # Status was already flipped to "confirmed" above. Any failure to create
-            # the order must put it back, or the payment is stranded: confirmed with
-            # no order and no licence, and no retry path that reaches this branch.
-            # Nothing was delivered, so the transfer is given back as well.
-            release_transfer(chain=chain, tx_hash=tx_hash_clean, door=DOOR_CHECKOUT, claim_id=payment_id)
-            payment["status"] = "pending"
-            _pending_payments[payment_id] = payment
-            _persist_pending_payments()
-            raise
+        except Exception as exc:
+            # A response can be lost after commit. Releasing the claim here would
+            # permit another door to spend a transfer whose outcome is unknown.
+            logger.exception("Order fulfilment failed for payment %s", payment_id)
+            raise HTTPException(status_code=503, detail=(
+                "Payment fulfilment is temporarily unavailable; retry with the same transaction ID."
+            )) from exc
 
-        from web.backend.services.uni_bridge import credit_payment_confirm
+        # This transfer paid for the license above. Crediting it as spendable
+        # UNI as well would sell two purchases for one deposit. Wallet funding
+        # has its own single-use /api/uni/topup/confirm door.
 
-        credit_payment_confirm(
-            customer_id=payment["customer_id"],
-            product_id=payment["product_id"],
-            usd_amount=amount,
-            tx_hash=tx_hash_clean,
-            chain=chain,
-            token=token,
-        )
-
-        payment["order_id"] = order["id"]
-        payment["license_key"] = order["license_key"]
-        _pending_payments.pop(payment_id, None)
-        _persist_pending_payments()
+        payment["confirmed_at"] = time.time()
+        _complete_checkout(payment, order, tx_hash_clean)
 
         logger.info(
             f"Payment {payment_id} confirmed via on-chain: "

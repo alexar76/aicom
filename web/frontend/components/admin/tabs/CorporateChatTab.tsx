@@ -280,7 +280,7 @@ export function CorporateChatTab({ locale }: { locale: AdminLocale }) {
           standups, and agent-style updates.{' '}
           <strong className="text-purple-300">Brainstorming &amp; Discussions</strong> are separate session-based workshops
           with rounds and outcomes. Full comparison:{' '}
-          <code className="rounded bg-black/30 px-1 text-xs">docs/corporate-chat-vs-discussions.md</code>.
+          <code className="rounded-sm bg-black/30 px-1 text-xs">docs/corporate-chat-vs-discussions.md</code>.
         </div>
       </details>
 
@@ -289,7 +289,7 @@ export function CorporateChatTab({ locale }: { locale: AdminLocale }) {
         <strong className="text-cyan-300">Corporate Chat</strong> is the ongoing company channel: Owner, scheduled Director standups,
         and agent-style updates.{' '}
         <strong className="text-purple-300">Brainstorming &amp; Discussions</strong> are separate session-based workshops with rounds and outcomes.
-        Full comparison: <code className="text-xs bg-black/30 px-1 rounded">docs/corporate-chat-vs-discussions.md</code>.
+        Full comparison: <code className="text-xs bg-black/30 px-1 rounded-sm">docs/corporate-chat-vs-discussions.md</code>.
       </div>
 
       {/* Settings panel */}
@@ -347,7 +347,7 @@ export function CorporateChatTab({ locale }: { locale: AdminLocale }) {
               className="group flex items-start gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/[0.07] transition-colors"
             >
               {/* Avatar */}
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
                 {msg.username.charAt(0).toUpperCase()}
               </div>
               {/* Message content */}
@@ -387,7 +387,7 @@ export function CorporateChatTab({ locale }: { locale: AdminLocale }) {
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={`Message as Owner (${chatUsername})...`}
-            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 resize-none text-sm"
+            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-hidden focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 resize-none text-sm"
             rows={2}
           />
           <Button

@@ -1,0 +1,97 @@
+{
+  "strictEventCounts": {
+    "all_cohort_events": {
+      "descriptions_only": {
+        "text": 2595,
+        "numeric": 419,
+        "whitespace": 5
+      },
+      "tool_descriptions_only": {
+        "text": 1639,
+        "numeric": 372,
+        "whitespace": 5
+      }
+    },
+    "tool_description_events": {
+      "descriptions_only": {
+        "text": 2355,
+        "numeric": 407,
+        "whitespace": 5
+      },
+      "tool_descriptions_only": {
+        "text": 1639,
+        "numeric": 372,
+        "whitespace": 5
+      }
+    }
+  },
+  "strictWholeHistoryServerCounts": {
+    "descriptions_only": {
+      "servers": 639,
+      "events": 1090,
+      "maxKind": {
+        "text": 608,
+        "numeric": 29,
+        "whitespace": 2
+      }
+    },
+    "tool_descriptions_only": {
+      "servers": 335,
+      "events": 656,
+      "maxKind": {
+        "text": 306,
+        "numeric": 27,
+        "whitespace": 2
+      }
+    }
+  },
+  "descriptionEventMatrix": {
+    "text": {
+      "events": 5014,
+      "primary": {
+        "schema_contract": 1508,
+        "description_text": 2354,
+        "composition": 1152
+      },
+      "strictTopOnly": 1639,
+      "inputSchema": 2772,
+      "outputSchema": 939,
+      "composition": 1152
+    },
+    "numeric": {
+      "events": 462,
+      "primary": {
+        "description_numeric": 410,
+        "composition": 26,
+        "schema_contract": 17,
+        "description_text": 9
+      },
+      "strictTopOnly": 372,
+      "inputSchema": 69,
+      "outputSchema": 6,
+      "composition": 26
+    },
+    "whitespace": {
+      "events": 6,
+      "primary": {
+        "description_whitespace": 5,
+        "composition": 1
+      },
+      "strictTopOnly": 5,
+      "inputSchema": 1,
+      "outputSchema": 1,
+      "composition": 1
+    }
+  },
+  "incompleteHistories": {
+    "servers": 6,
+    "allHaveKnownText": true
+  },
+  "compositionNamesIncludingNamesOnly": {
+    "events": 2053,
+    "servers": 906,
+    "fullRawEvents": 2047,
+    "fullRawServers": 904,
+    "namesOnlyEvents": 6
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "vulnetix-openvex",
+  "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/openvex/PYPI/2026/20xxx/GCVE-110-PYPI-2026-020949.openvex.json",
+  "retrieved_at": "2026-10-24T19:24:00.517698+00:00",
+  "status": 200,
+  "sha256": "fc5f80e101d2137145bb8aa4c23f4b7119ae24de0b8bf9ad8cf2d6b49806ab98",
+  "data": {
+    "@context": "https://openvex.dev/ns/v0.2.0",
+    "@id": "https://github.com/Vulnetix/advisory-database/blob/main/openvex/PYPI/2026/20xxx/GCVE-110-PYPI-2026-020949.openvex.json",
+    "author": "Vulnetix (GCVE GNA 110)",
+    "role": "Document Creator",
+    "statements": [
+      {
+        "impact_statement": "Matched lines are documentation, test or detection content; no malicious or vulnerable code present.",
+        "justification": "vulnerable_code_not_present",
+        "products": [
+          {
+            "@id": "pkg:pypi/aimarket-hestia-agents@0.1.1"
+          }
+        ],
+        "status": "not_affected",
+        "vulnerability": {
+          "name": "GCVE-110-PYPI-2026-020949"
+        }
+      }
+    ],
+    "timestamp": "2026-10-24T15:16:08Z",
+    "version": 1
+  }
+}

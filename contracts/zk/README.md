@@ -58,14 +58,12 @@ PLONK uses a **universal** SRS (the public Hermez powers-of-tau), so there is
 **no per-circuit ceremony and no per-circuit toxic waste**.
 
 ```bash
-# 1. Install tools
-curl -L https://docs.circom.io/install/ | sh        # circom
-npm install -g snarkjs                              # snarkjs CLI
-pip install poseidon-py                             # Python Poseidon for witness gen
+# 1. Install circom following https://docs.circom.io/getting-started/installation/
 
-# 2. Install circomlib (Poseidon, Num2Bits, etc.)
+# 2. Install the locked circuit, snarkjs and Poseidon WASM dependencies
 cd contracts/zk
-npm install
+npm ci --ignore-scripts
+npm test
 
 # 3. PLONK setup (default)
 npm run setup            # = bash scripts/setup_plonk.sh
@@ -136,9 +134,13 @@ simulated prover — opt-in to real proving by setting the backend.)
   (`package.json` is committed) and verify checksums.
 - **The Solidity verifier is auto-generated.** Audit it (the math is
   fixed; what matters is the verification-key values are correct).
-- **poseidon-py is a Python re-implementation of Poseidon.** Cross-check
-  outputs against a reference implementation (e.g., snarkjs poseidon)
-  before trusting it in production.
+- **Poseidon uses the unchanged circomlibjs WASM implementation and constants.**
+  The private source package in `vendor/circomlibjs-poseidon` excludes unused
+  EVM generators and their vulnerable elliptic dependency. Frozen pre-migration
+  vectors and real proof tests protect commitment and nullifier compatibility.
+  The hub passes private witness fields through bounded stdin (`--stdin`) so
+  they are absent from process arguments. Custom `AIMARKET_ZK_POSEIDON_SCRIPT`
+  helpers must support that mode; the original two-argument CLI remains available.
 
 ## Testing the pipeline end-to-end
 

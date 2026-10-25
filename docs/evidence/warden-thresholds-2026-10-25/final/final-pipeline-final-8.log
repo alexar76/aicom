@@ -1,0 +1,32 @@
+corpus 250/3575; 2363194 normalized characters
+corpus 500/3575; 4208478 normalized characters
+corpus 750/3575; 6963803 normalized characters
+corpus 1000/3575; 8058015 normalized characters
+corpus 1250/3575; 8719305 normalized characters
+corpus 1500/3575; 9503171 normalized characters
+corpus 1750/3575; 11063745 normalized characters
+corpus 2000/3575; 11615898 normalized characters
+corpus 2250/3575; 12525561 normalized characters
+corpus 2500/3575; 14229970 normalized characters
+corpus 2750/3575; 15445272 normalized characters
+corpus 3000/3575; 17420537 normalized characters
+corpus 3250/3575; 19471514 normalized characters
+corpus 3500/3575; 21641766 normalized characters
+corpus result {"schema":"warden.threshold-corpus/v1","at":"2026-10-25T07:06:23.379Z","syntheticKeys":480,"files":3575,"excerpts":39259,"normalizedCharacters":22056276,"summary":{"8":{"exactWindowHits":0,"excerptHits":0,"byFormat":{}}},"collisions":0,"note":"Exact normalized substring scan; not a request-level false-positive rate, and not a hash-collision scan."}
+replay w8 calibration: 60/480 keys
+replay w8 calibration: 120/480 keys
+replay w8 calibration: 180/480 keys
+replay w8 calibration: 240/480 keys
+replay w8 calibration: 300/480 keys
+replay w8 calibration: 360/480 keys
+replay w8 calibration: 420/480 keys
+replay w8 calibration: 480/480 keys
+replay w8 holdout: 60/480 keys
+replay w8 holdout: 120/480 keys
+replay w8 holdout: 180/480 keys
+replay w8 holdout: 240/480 keys
+replay w8 holdout: 300/480 keys
+replay w8 holdout: 360/480 keys
+replay w8 holdout: 420/480 keys
+replay w8 holdout: 480/480 keys
+replay complete {"8":{"calibration":{"strictDefault":{"total":3840,"pass":0,"ask":3840,"deny":0},"exactReviewedPublic":{"total":3840,"pass":3840,"ask":0,"deny":0},"attacks":{"total":7200,"pass":0,"ask":5432,"deny":1768},"detectorOnly":{"total":7200,"pass":4384,"ask":1048,"deny":1768}},"holdout":{"strictDefault":{"total":3840,"pass":0,"ask":3840,"deny":0},"exactReviewedPublic":{"total":3840,"pass":3840,"ask":0,"deny":0},"attacks":{"total":7200,"pass":0,"ask":5406,"deny":1794},"detectorOnly":{"total":7200,"pass":4325,"ask":1081,"deny":1794}}}}

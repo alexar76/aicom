@@ -250,7 +250,7 @@ function EscalationToggle({
           <Network className="h-3.5 w-3.5 text-indigo-400" />
           {t(locale, 'providers.limits.escalation.title')}
           {envLocked ? (
-            <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">
+            <span className="rounded-sm bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">
               {t(locale, 'providers.limits.envBadge')}
             </span>
           ) : null}
@@ -316,7 +316,7 @@ function LimitField({
         <Gauge className="h-3 w-3 text-gray-500" />
         {label}
         {envLocked ? (
-          <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">
+          <span className="rounded-sm bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-300">
             {t(locale, 'providers.limits.envBadge')}
           </span>
         ) : null}

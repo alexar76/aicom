@@ -385,7 +385,7 @@ export function PipelineProductList({
                                   task ? { ...task } : null,
                                 )
                               }
-                              className="flex flex-col items-center gap-1 rounded-xl p-0.5 -m-0.5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 transition-colors cursor-pointer group"
+                              className="flex flex-col items-center gap-1 rounded-xl p-0.5 -m-0.5 hover:bg-white/10 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/40 transition-colors cursor-pointer group"
                             >
                               <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs border-2 transition-all group-hover:scale-105 ${stageColors[status] || 'bg-white/5 border-white/10 text-gray-500'}`}>
                                 {stageIcons[agentType] || '⚙️'}
@@ -526,7 +526,7 @@ export function PipelineProductList({
                           )}
 
                           {/* Status dot — click opens same detail modal as the stage bar */}
-                          <div className="flex-shrink-0 mt-1.5">
+                          <div className="shrink-0 mt-1.5">
                             <button
                               type="button"
                               title={t(locale, 'pipeline.task.openDetailsTitle')}
@@ -538,7 +538,7 @@ export function PipelineProductList({
                                   task as Record<string, unknown>
                                 )
                               }
-                              className={`w-[30px] h-[30px] rounded-full flex items-center justify-center border transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${statusColors[taskStatus] || 'border-gray-600 bg-gray-600/20'}`}
+                              className={`w-[30px] h-[30px] rounded-full flex items-center justify-center border transition-transform hover:scale-105 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/50 ${statusColors[taskStatus] || 'border-gray-600 bg-gray-600/20'}`}
                             >
                               <span className="text-xs">{pipelineAgentEmoji(task.agent_type)}</span>
                             </button>
@@ -551,7 +551,7 @@ export function PipelineProductList({
                                 {task.agent_type?.replace(/_/g, ' ') || t(locale, 'pipeline.task.unknownAgent')}
                               </span>
                               <div className="flex items-center gap-2">
-                                <span className={`text-[10px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded ${
+                                <span className={`text-[10px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded-sm ${
                                   taskStatus === 'completed' ? 'text-emerald-400 bg-emerald-500/10' :
                                   taskStatus === 'running' ? 'text-amber-400 bg-amber-500/10' :
                                   taskStatus === 'failed' ? 'text-red-400 bg-red-500/10' :
@@ -595,7 +595,7 @@ export function PipelineProductList({
 
                             {/* Error message for failed tasks */}
                             {task.error && (
-                              <div className="mt-1 text-[11px] text-red-400 bg-red-500/5 rounded px-2 py-1 border border-red-500/10">
+                              <div className="mt-1 text-[11px] text-red-400 bg-red-500/5 rounded-sm px-2 py-1 border border-red-500/10">
                                 {task.error}
                               </div>
                             )}

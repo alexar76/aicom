@@ -90,7 +90,7 @@ export function HeroVisualShowcase({ eyebrow, title, caption, watchLabel }: Prop
               href={YOUTUBE_WATCH_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm border border-white/15 hover:bg-black/85 transition"
+              className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-xs border border-white/15 hover:bg-black/85 transition"
             >
               <ExternalLink className="h-3.5 w-3.5" aria-hidden />
               YouTube

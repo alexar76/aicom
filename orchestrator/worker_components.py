@@ -140,7 +140,7 @@ class TaskOrchestrator:
 
                 if pid and is_product_pipeline_work_paused(pid):
                     continue
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 logger.warning("pause check failed for %s: %s", pid, exc)
             attempts = int(task.get("retry_count") or 0) + 1
             task["retry_count"] = attempts

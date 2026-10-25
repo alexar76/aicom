@@ -50,6 +50,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && 
 
 | 文档 | 链接 |
 | --- | --- |
+| 支付测试与交易：购买、退款、恢复及 SQLite/PostgreSQL 测试 | [payment-tests-and-transactions.zh.md](payment-tests-and-transactions.zh.md) |
 | AICOM 外部诊断：算法、配置、预算与恢复 | [factory-subcontracting.zh.md](factory-subcontracting.zh.md) |
 | 知识库 | [knowledge-base-zh.md](ecosystem/knowledge-base-zh.md) |
 | 白皮书 | [whitepaper/zh.md](ecosystem/whitepaper/zh.md) |

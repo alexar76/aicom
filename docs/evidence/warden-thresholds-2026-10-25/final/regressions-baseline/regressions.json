@@ -1,0 +1,50 @@
+{
+  "results": [
+    {
+      "id": "known-benign-7-collision",
+      "key": "legacy/pem/3",
+      "bodySha256": "c609e0adac85a981b1e7a84a7beaed77ba2b989f8f1f5329e9c797a2edb37c13",
+      "decisions": {
+        "6": "deny",
+        "7": "deny",
+        "8": "pass"
+      },
+      "detectorOnly": {
+        "6": "deny",
+        "7": "deny",
+        "8": "pass"
+      }
+    },
+    {
+      "id": "late-digit-embedded-8",
+      "key": "late-digit-ghp",
+      "bodySha256": "e7fe6b92c64f7e95f3ecff9b7f4f119fc82847729c16b4c3bd39e0b4aa9c7b75",
+      "decisions": {
+        "6": "ask",
+        "7": "ask",
+        "8": "ask"
+      },
+      "detectorOnly": {
+        "6": "pass",
+        "7": "pass",
+        "8": "pass"
+      }
+    },
+    {
+      "id": "reviewed-public-word-year-config",
+      "key": "public-word-year-config",
+      "bodySha256": "9dfe97b1fe11bd4acdb9e09849f7e22d0cc5530e9f9e3b8c859c3d435d6a5ff8",
+      "decisions": {
+        "6": "pass",
+        "7": "pass",
+        "8": "pass"
+      },
+      "detectorOnly": {
+        "6": "pass",
+        "7": "pass",
+        "8": "pass"
+      }
+    }
+  ],
+  "note": "Known collision controls are deliberately enriched; no population false-positive rate is inferred."
+}

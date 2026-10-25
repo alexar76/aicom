@@ -7,6 +7,10 @@ operator-only: they need the server's `.env` and a wallet the repo must never se
 Related: [`docs/known-issues.md`](known-issues.md) KI-11, [`contracts/DEPLOY.md`](../contracts/DEPLOY.md),
 [`security/prod_startup_guard.py`](../security/prod_startup_guard.py).
 
+For transaction states, refunds, reconciliation and reproducible local tests, see
+[payment tests and transactions](payment-tests-and-transactions.md)
+([RU](payment-tests-and-transactions.ru.md) · [ES](payment-tests-and-transactions.es.md) · [FR](payment-tests-and-transactions.fr.md) · [ZH](payment-tests-and-transactions.zh.md)).
+
 ## ✅ Re-applied on modelmarket.dev, 2026-08-04
 
 Payment env had been unset on the host; re-enabled via `deploy/hub-payment.env` (loaded

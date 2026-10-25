@@ -9,13 +9,17 @@ export AIFACTORY_DATA_ROOT="${AIFACTORY_DATA_ROOT:-/tmp/aicom-data}"
 mkdir -p "$AIFACTORY_DATA_ROOT/logs"
 
 PYTEST="${ROOT}/.venv/bin/pytest"
+PYTHON="${ROOT}/.venv/bin/python"
 if [ ! -x "$PYTEST" ]; then
   PYTEST=pytest
 fi
+if [ ! -x "$PYTHON" ]; then
+  PYTHON=python3
+fi
 
-# CI runner kills hung pytest teardown once .coverage exists (see run_factory_pytest_ci.py).
+# A timeout is an incomplete run, even when coverage has already been saved.
 if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
-  exec python3 scripts/run_factory_pytest_ci.py "$@"
+  exec "$PYTHON" scripts/run_factory_pytest_ci.py "$@"
 fi
 
 # Local dev: plain pytest + pytest-cov.
@@ -31,7 +35,9 @@ fi
   --ignore=tests/test_visual_standards_playwright.py \
   --ignore=tests/test_diagram_golden_visual.py \
   -k "not test_full_software_browser_e2e" \
-  --cov=web --cov=agents --cov=orchestrator --cov=director --cov=pipeline_worker \
+  --cov \
   --cov-report=term-missing:skip-covered \
   --cov-report=json:coverage.json \
   "$@"
+
+"$PYTHON" scripts/check_payment_coverage.py coverage.json

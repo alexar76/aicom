@@ -72,6 +72,43 @@ def test_existing_mode_is_kept(tmp_path: Path):
     assert oct(target.stat().st_mode)[-3:] == "600"
 
 
+@pytest.mark.parametrize("existing", [False, True])
+def test_secret_temp_is_private_before_the_content_is_flushed(tmp_path, monkeypatch, existing):
+    import os
+    import stat
+
+    target = tmp_path / "secret.json"
+    if existing:
+        target.write_text("{}")
+        target.chmod(0o600)
+    original_fsync = os.fsync
+    observed = []
+
+    def check_permissions(fd):
+        observed.append(stat.S_IMODE(os.fstat(fd).st_mode))
+        original_fsync(fd)
+
+    monkeypatch.setattr(os, "fsync", check_permissions)
+    write_json_atomic(target, {"secret": "test-only"}, **({} if existing else {"mode": 0o600}))
+    assert observed == [0o600]
+
+
+def test_replace_failure_preserves_original_and_removes_temp(tmp_path, monkeypatch):
+    import os
+
+    target = tmp_path / "state.json"
+    target.write_text('{"original": true}')
+
+    def full_disk(*_):
+        raise OSError("disk full")
+
+    monkeypatch.setattr(os, "replace", full_disk)
+    with pytest.raises(OSError, match="disk full"):
+        write_json_atomic(target, {"replacement": True})
+    assert json.loads(target.read_text()) == {"original": True}
+    assert list(tmp_path.iterdir()) == [target]
+
+
 def test_writes_through_a_symlink(tmp_path: Path):
     real = tmp_path / "real.json"
     real.write_text("{}", encoding="utf-8")
@@ -82,7 +119,8 @@ def test_writes_through_a_symlink(tmp_path: Path):
     assert json.loads(real.read_text(encoding="utf-8")) == {"via": "link"}
 
 
-def test_bind_mounted_file_falls_back_to_an_in_place_write(tmp_path: Path, monkeypatch):
+@pytest.mark.parametrize("mode", [None, 0o600])
+def test_bind_mounted_file_falls_back_to_an_in_place_write(tmp_path: Path, monkeypatch, mode):
     import errno
     import os
 
@@ -93,9 +131,11 @@ def test_bind_mounted_file_falls_back_to_an_in_place_write(tmp_path: Path, monke
         raise OSError(errno.EBUSY, "Device or resource busy")
 
     monkeypatch.setattr(os, "replace", busy)
-    write_json_atomic(target, {"ok": True})
+    write_json_atomic(target, {"ok": True}, mode=mode)
     assert json.loads(target.read_text(encoding="utf-8")) == {"ok": True}
     assert list(tmp_path.iterdir()) == [target]
+    if mode is not None:
+        assert target.stat().st_mode & 0o777 == mode
 
 
 def test_concurrent_threads_do_not_share_a_temp_file(tmp_path: Path):

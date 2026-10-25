@@ -119,7 +119,7 @@ def _factory_get(client: httpx.Client, path: str, eco: dict[str, str]) -> dict[s
             check=False,
         )
         if proc.returncode != 0:
-            raise RuntimeError(f"factory {path} unreachable via host and container")
+            raise RuntimeError(f"factory {path} unreachable via host and container") from None
         data = json.loads(proc.stdout)
         assert isinstance(data, dict), data
         return data
@@ -134,8 +134,8 @@ def test_lottery_relayer_monitor_metric_key_contract():
     monitor_backend = ROOT / "alien-monitor" / "backend"
     sys.path.insert(0, str(relayer_root))
     sys.path.insert(0, str(monitor_backend))
-    from ailottery_relayer.monitor import MONITOR_METRIC_KEYS  # noqa: E402
-    from live_lottery_feed import _LIVE_METRIC_KEYS  # noqa: E402
+    from ailottery_relayer.monitor import MONITOR_METRIC_KEYS
+    from live_lottery_feed import _LIVE_METRIC_KEYS
 
     assert tuple(MONITOR_METRIC_KEYS) == tuple(_LIVE_METRIC_KEYS)
 
@@ -152,7 +152,7 @@ def test_argus_health_vs_status_schema_contract():
 def test_monitor_argus_status_merge_contract():
     """Monitor must overlay wallet from /status without exposing it on public /health."""
     _monitor_backend_path()
-    from argus_status import merge_argus_runtime  # noqa: E402
+    from argus_status import merge_argus_runtime
 
     health = {"status": "ok", "economy": "on", "model": "deepseek/deepseek-chat", "uptimeSec": 10}
     status = {
@@ -182,7 +182,7 @@ def test_skopos_healthz_producer_consumer_contract():
     servers and security score 0, and the node never left "idle".
     """
     _skopos_path()
-    from skopos.public_status import build_fleet_status, build_status  # noqa: E402
+    from skopos.public_status import build_fleet_status, build_status
 
     public = build_status()
     assert public.get("service") == "skopos"
@@ -198,7 +198,7 @@ def test_skopos_healthz_producer_consumer_contract():
     # security_score is optional until the first security snapshot exists
 
     _monitor_backend_path()
-    from skopos_status import apply_skopos_to_nodes  # noqa: E402
+    from skopos_status import apply_skopos_to_nodes
 
     nodes = [{"id": "skopos", "metrics": {}}]
     apply_skopos_to_nodes(nodes, {"ok": True, "service": "skopos", "database": "postgresql"})
@@ -221,10 +221,10 @@ def test_skopos_healthz_producer_consumer_contract():
 def test_skopos_capabilities_handlers_manifest_contract():
     """Every billable capability must have a handler and appear in v2 manifest."""
     _skopos_path()
-    from skopos.economy.capabilities import CAPABILITY_BY_ID  # noqa: E402
-    from skopos.economy.config import EconomyConfig  # noqa: E402
-    from skopos.economy.handlers import HANDLERS  # noqa: E402
-    from skopos.economy.manifest import build_prices, build_supply_manifest, build_v2_manifest  # noqa: E402
+    from skopos.economy.capabilities import CAPABILITY_BY_ID
+    from skopos.economy.config import EconomyConfig
+    from skopos.economy.handlers import HANDLERS
+    from skopos.economy.manifest import build_prices, build_supply_manifest, build_v2_manifest
 
     assert set(HANDLERS) == set(CAPABILITY_BY_ID)
     cfg = EconomyConfig(
@@ -253,7 +253,7 @@ def test_skopos_capabilities_handlers_manifest_contract():
 def test_skopos_ecosystem_segment_contract():
     """Traffic segment tags must classify hub/factory/oracle/monitor paths."""
     _skopos_path()
-    from skopos.ecosystem import ecosystem_segment  # noqa: E402
+    from skopos.ecosystem import ecosystem_segment
 
     assert ecosystem_segment("/.well-known/ai-market.json") == "hub-federation"
     assert ecosystem_segment("/api/products") == "api"
@@ -267,8 +267,8 @@ def test_skopos_ecosystem_segment_contract():
 def test_monitor_skopos_topology_contract():
     """Monitor graph must include SKOPOS node wired to factory, metis, and hub."""
     _monitor_backend_path()
-    from skopos_layers import skopos_node_spec, skopos_topology_links  # noqa: E402
-    from skopos_status import apply_skopos_to_nodes  # noqa: E402
+    from skopos_layers import skopos_node_spec, skopos_topology_links
+    from skopos_status import apply_skopos_to_nodes
 
     spec = skopos_node_spec()
     assert spec["id"] == "skopos"
@@ -310,7 +310,7 @@ def test_skopos_agent_portal_fab_overlay_contract():
     Streamlit, which the factory does not install.
     """
     _skopos_path()
-    from skopos.agent_portal import _portal_script  # noqa: E402
+    from skopos.agent_portal import _portal_script
 
     teardown = _portal_script()
     assert "skopos-agent-fab-overlay" in teardown
@@ -402,7 +402,7 @@ class TestMonitorBlock:
         assert argus is not None, [n.get("id") for n in nodes[:20]]
         assert argus.get("group") == "argus"
         links = state.get("links") or []
-        assert any(l.get("source") == "argus" for l in links)
+        assert any(link.get("source") == "argus" for link in links)
         # argus_run appears only after Argus pushes a completed run (not the TEST demo).
         if argus.get("argus_run"):
             assert (argus["argus_run"].get("beats") or []) != []
@@ -448,16 +448,14 @@ class TestSkoposBlock:
         health = _get_json_retry(live_client, f"{eco['skopos']}/healthz")
         assert health.get("ok") is True
         assert health.get("service") == "skopos"
-        assert "servers_monitored" in health
-        assert "requests_total" in health
-        assert "economy_enabled" in health
+        assert "database" in health
+        for private in ("servers_monitored", "requests_total", "security_score", "log_parsers"):
+            assert private not in health, f"public health exposes fleet telemetry: {private}"
 
     def test_economy_manifest_when_enabled(self, live_client: httpx.Client, eco: dict[str, str]) -> None:
-        health = _get_json(live_client, f"{eco['skopos']}/healthz")
-        if not health.get("economy_enabled"):
-            pytest.skip("SKOPOS AIMarket economy disabled on target")
         wk = _get_json(live_client, f"{eco['skopos']}/.well-known/ai-market.json")
-        assert wk.get("service") == "skopos"
+        assert wk.get("hub_name") == "SKOPOS"
+        assert wk.get("ecosystem", {}).get("product") == "skopos.fleet"
         assert "v2" in (wk.get("protocol_versions") or [])
         manifest = _get_json(live_client, f"{eco['skopos']}/ai-market/v2/manifest")
         tools = manifest.get("tools") or []
@@ -466,28 +464,37 @@ class TestSkoposBlock:
         assert "skopos.fleet.status@v1" in cap_ids
         assert "skopos.security.posture@v1" in cap_ids
 
-    def test_invoke_fleet_status_when_key_configured(
+    def test_invoke_refuses_an_unpaid_fleet_request(
         self, live_client: httpx.Client, eco: dict[str, str]
     ) -> None:
-        health = _get_json(live_client, f"{eco['skopos']}/healthz")
-        if not health.get("economy_enabled"):
-            pytest.skip("SKOPOS AIMarket economy disabled on target")
-        api_key = (os.environ.get("SKOPOS_AIMARKET_API_KEY") or "").strip()
-        headers: dict[str, str] = {}
-        if api_key:
-            headers["Authorization"] = f"Bearer {api_key}"
+        # Exercise the payment boundary without credentials or a funded hub channel.
         r = live_client.post(
             f"{eco['skopos']}/aimarket/invoke",
             json={"capability_id": "skopos.fleet.status@v1", "input": {}},
-            headers=headers,
         )
-        if r.status_code == 401 and not api_key:
-            pytest.skip("SKOPOS invoke requires SKOPOS_AIMARKET_API_KEY")
-        r.raise_for_status()
+        assert r.status_code == 402, r.status_code
         payload = r.json()
+        assert payload.get("error") == "payment_required"
         assert payload.get("capability_id") == "skopos.fleet.status@v1"
-        assert payload.get("provider") == "skopos"
-        assert isinstance(payload.get("result"), dict)
+        assert float(payload["needed"]) > 0
+        assert "result" not in payload
+
+    def test_invoke_fleet_status_when_key_configured(
+        self, live_client: httpx.Client, eco: dict[str, str]
+    ) -> None:
+        # This direct operator-key capability only reads fleet status; no hub channel,
+        # payment authorization, provider charge or LLM invocation is involved.
+        key = os.environ.get("SKOPOS_AIMARKET_API_KEY", "").strip()
+        assert key, "Live fleet status requires the operator-issued SKOPOS key"
+        response = live_client.post(f"{eco['skopos']}/aimarket/invoke",
+            json={"capability_id": "skopos.fleet.status@v1", "input": {}},
+            headers={"X-API-Key": key})
+        response.raise_for_status()
+        payload = response.json()
+        assert payload["capability_id"] == "skopos.fleet.status@v1"
+        assert payload["provider"] == "skopos"
+        assert isinstance(payload["result"]["servers_monitored"], int)
+        assert isinstance(payload["result"]["requests_total"], int)
 
 
 class TestCrossBlockConnectivity:
@@ -525,8 +532,8 @@ class TestCrossBlockConnectivity:
         assert skopos is not None, [n.get("id") for n in nodes[:25]]
         assert skopos.get("group") == "observability"
         links = state.get("links") or []
-        assert any(l.get("source") == "factory" and l.get("target") == "skopos" for l in links)
-        assert any(l.get("source") == "skopos" and l.get("target") == "metis" for l in links)
+        assert any(link.get("source") == "factory" and link.get("target") == "skopos" for link in links)
+        assert any(link.get("source") == "skopos" and link.get("target") == "metis" for link in links)
 
     def test_skopos_healthz_matches_monitor_skopos_live(
         self, live_client: httpx.Client, eco: dict[str, str]
@@ -541,7 +548,7 @@ class TestCrossBlockConnectivity:
         live = skopos.get("skopos_live") or {}
         if health.get("servers_monitored", 0) > 0 or health.get("requests_total", 0) > 0:
             assert skopos.get("status") == "active"
-        assert live.get("servers_monitored") == health.get("servers_monitored")
-        assert live.get("requests_total") == health.get("requests_total")
-        if health.get("security_score") is not None:
-            assert live.get("security_score") == health.get("security_score")
+        assert live.get("database") == health["database"]
+        for key in ("servers_monitored", "requests_total", "security_score"):
+            assert key not in health, f"public health must not publish {key}"
+        assert skopos.get("status") == "active"

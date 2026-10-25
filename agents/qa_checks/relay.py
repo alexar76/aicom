@@ -118,7 +118,7 @@ class RelayChecksMixin:
             needle = rel.replace("\\", "/")
             for info in code_files:
                 path = str(info.get("path") or "").replace("\\", "/")
-                if path.endswith(needle) or path.endswith("/" + needle):
+                if path.endswith((needle, "/" + needle)):
                     return info
             return None
 

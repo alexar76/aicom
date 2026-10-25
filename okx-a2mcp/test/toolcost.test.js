@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createApp } from "../src/app.js";
-import { shareBelow, SNAPSHOT, toolListCost, workerCounter } from "../src/toolcost.js";
+import { report, shareBelow, SNAPSHOT, toolListCost, workerCounter } from "../src/toolcost.js";
 import { countTools } from "../src/toolcount.js";
 import { renderTool } from "../src/web/pages.js";
 
@@ -59,6 +59,14 @@ test("the count is tiktoken's: per tool {name, description, input_schema}, speci
   assert.equal(c.tools, 3);
 });
 
+test("the split is HISTOR's (histor/toolcost.py on the same three tools) and adds up", () => {
+  const c = countTools(FIXTURE);
+  assert.deepEqual(c.parts, { names: 10, descriptions: 35, input_schemas: 61, structure: 15 });
+  assert.equal(c.parts.names + c.parts.descriptions + c.parts.input_schemas + c.parts.structure, c.tokens);
+  assert.deepEqual(c.per.map((t) => [t.name, t.description, t.input_schema, t.structure]),
+    [["search_notes", 12, 26, 5], ["translate", 22, 30, 5], ["ping", 1, 5, 5]]);
+});
+
 test("placement follows the snapshot: its own percentiles come back, and it only grows", () => {
   assert.equal(Math.round(shareBelow("package", SNAPSHOT.package.median) * 100), 50);
   assert.equal(Math.round(shareBelow("package", SNAPSHOT.package.p90) * 100), 90);
@@ -84,7 +92,11 @@ test("a pasted list is counted on the page and for agents, with money and the he
       assert.equal(b.source, "pasted");
       assert.equal(b.tokens, 121);
       assert.deepEqual(b.heaviest.map((t) => t.name), ["translate", "search_notes", "ping"]);
+      assert.deepEqual(b.parts, { names: 10, descriptions: 35, input_schemas: 61, structure: 15 });
+      assert.equal(b.heaviest[0].input_schema, 30);
       assert.equal(b.per_1000_requests_usd.mid, 0.24);
+      assert.equal(b.per_1000_requests_usd.mid_cache_missed, 0.3);
+      assert.equal(b.cache_ttl_minutes, 5);
       assert.ok(b.compared.package.share_shorter < 0.2);
       assert.equal(b.compared.package.servers, 18_204);
     }
@@ -168,4 +180,15 @@ test("a count that runs too long stops the worker, and the next count starts a f
   await assert.rejects(counter(huge), (e) => e.timeout === true);
   assert.equal((await counter([{ name: "ping" }])).tokens, 14);
   await assert.rejects(counter([{ description: "no name" }]), (e) => e === "tools[0] needs a string name");
+});
+
+test("the cached price counts the one cache write, and requests further apart than the TTL pay a write each time", () => {
+  // The median package list. 1,000 requests under 5 minutes apart: one write at $2.50 per million, 999 reads at $0.10.
+  const r = report({ tokens: 1272, tools: 8, listedTokens: 1390, per: [], parts: {} });
+  assert.deepEqual(r.per_1000_requests_usd, { small: 0.13, mid: 2.54, mid_cached: 0.13, mid_cache_missed: 3.18 });
+  assert.equal(r.prices_per_million_usd.mid_cache_write, 2.5);
+  // A list the size of the 99th percentile: the write shows in the cached figure, and a miss costs more than no cache.
+  const big = report({ tokens: 39612, tools: 300, listedTokens: 39612, per: [], parts: {} });
+  assert.equal(big.per_1000_requests_usd.mid_cached, 4.06);
+  assert.ok(big.per_1000_requests_usd.mid_cache_missed > big.per_1000_requests_usd.mid);
 });

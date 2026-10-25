@@ -6,16 +6,19 @@ Stored in JSON alongside legacy admin.json for backward compatibility.
 from __future__ import annotations
 
 import json
+import fcntl
+import functools
 import logging
 import os
 import re
 import time
+import threading
 import uuid
 from pathlib import Path
 from typing import Any, Optional
 
 from core.paths import admin_users_path, legacy_admin_path
-from core.logging_utils import log_suppressed
+from core.json_state import write_json_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +26,27 @@ USERS_PATH = admin_users_path()
 LEGACY_ADMIN_PATH = legacy_admin_path()
 
 USERNAME_RE = re.compile(r"^[a-zA-Z0-9_.-]{3,64}$")
+_mutation_lock = threading.RLock()
+
+
+def _serialized_mutation(function):
+    """Serialize the complete read/change/replace across threads and workers.
+
+    Atomic rename protects readers from partial JSON, but alone still lets a
+    concurrent account update overwrite a committed disable/password/session change.
+    """
+    @functools.wraps(function)
+    def locked(*args, **kwargs):
+        with _mutation_lock:
+            USERS_PATH.parent.mkdir(parents=True, exist_ok=True)
+            descriptor = os.open(str(USERS_PATH) + ".lock", os.O_CREAT | os.O_RDWR, 0o600)
+            try:
+                fcntl.flock(descriptor, fcntl.LOCK_EX)
+                return function(*args, **kwargs)
+            finally:
+                fcntl.flock(descriptor, fcntl.LOCK_UN)
+                os.close(descriptor)
+    return locked
 
 
 def _now() -> float:
@@ -50,16 +74,10 @@ def _load_raw() -> dict[str, Any]:
 
 
 def _save_raw(data: dict[str, Any]) -> None:
-    USERS_PATH.parent.mkdir(parents=True, exist_ok=True)
-    tmp = USERS_PATH.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-    tmp.replace(USERS_PATH)
-    try:
-        os.chmod(USERS_PATH, 0o600)
-    except OSError as _suppressed_exc:
-        log_suppressed(logger, "non-fatal (web/backend/services/admin_users_store.py)", exc_info=_suppressed_exc)
+    write_json_atomic(USERS_PATH, data, mode=0o600)
 
 
+@_serialized_mutation
 def ensure_legacy_admin_users_file() -> None:
     """Seed admin_users.json from legacy admin.json when the user list is empty."""
     raw = _load_raw()
@@ -85,6 +103,7 @@ def ensure_legacy_admin_users_file() -> None:
                 "role": "super_admin",
                 "enabled": True,
                 "created_at": _now(),
+                "session_version": uuid.uuid4().hex,
             }
         ],
     }
@@ -139,6 +158,7 @@ def get_user_by_id(user_id: str) -> Optional[dict[str, Any]]:
     return None
 
 
+@_serialized_mutation
 def create_user(
     *,
     username: str,
@@ -159,6 +179,7 @@ def create_user(
         "role": role,
         "enabled": True,
         "created_at": _now(),
+        "session_version": uuid.uuid4().hex,
     }
     users.append(row)
     _save_raw(raw)
@@ -166,6 +187,7 @@ def create_user(
     return row
 
 
+@_serialized_mutation
 def update_user(
     user_id: str,
     *,
@@ -210,10 +232,16 @@ def update_user(
     if password_hash is not None:
         found["password_hash"] = password_hash
 
+    # Rotating on each security mutation also prevents an old session reviving
+    # when an account is re-enabled or its former role/password is restored.
+    if role is not None or enabled is not None or password_hash is not None:
+        found["session_version"] = uuid.uuid4().hex
+
     _save_raw(raw)
     return found
 
 
+@_serialized_mutation
 def delete_user(user_id: str) -> None:
     raw = _load_raw()
     users_list = raw.setdefault("users", [])

@@ -61,6 +61,8 @@ Las cifras de esta encuesta salen de 95 llamadas pagadas, no del 402.
 
 El Bazaar publica sus propios contadores de 30 días. De 34,768 listados, 22,559 (65%) tuvieron exactamente un monedero pagador en 30 días, casi seguro el propio vendedor pagando una vez para quedar indexado. Solo 396 (1.1%) tuvieron diez o más. En nuestra muestra, 23 de los 74 vendedores con respuesta aceptada tuvieron exactamente un pagador.
 
+Una medición independiente coincide. El [x402 adoption investigator](https://github.com/martinPisacreta/x402-adoption-investigator) de código abierto de Martin Pisacreta, donde cada cifra cita una fuente descargada o una transacción de Base decodificada, auditó el 2026-10-22 la tienda de su propio autor a partir de su `/receipts.json` publicado: 56 de 77 ventas liquidadas salieron de los propios monederos de la tienda, y los contadores de 30 días del Bazaar para sus listados (60 llamadas) no las distinguen. En todo el Bazaar ese mismo día, los diez hosts principales se llevaron el 73% de las llamadas de 30 días. Contar pagos no es contar compradores. Una de las 21 ventas externas de esa tienda fue la sonda de nuestra encuesta.
+
 Al mercado x402 no parece faltarle confianza. Parece faltarle compradores.
 
 ## Método

@@ -10,7 +10,10 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import Callable, Optional
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +34,7 @@ def _default_on_hold(product_id: str) -> bool:
         return bool(is_product_improvement_on_hold(product_id)) or bool(
             is_product_pipeline_work_paused(product_id)
         )
-    except Exception:  # noqa: BLE001 - a failed hold lookup must not wedge the pipeline
+    except Exception:
         logger.debug("hold probe failed for %s", product_id, exc_info=True)
         return False
 
@@ -58,7 +61,7 @@ class IdleProductHealer:
     def __init__(
         self,
         *,
-        create_next_task: Callable[[dict], Optional[dict]],
+        create_next_task: Callable[[dict], dict | None],
         get_priority: Callable[[str], int],
         on_hold: Callable[[str], bool] | None = None,
         append_task=None,

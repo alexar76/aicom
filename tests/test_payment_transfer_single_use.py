@@ -53,7 +53,6 @@ def env(tmp_path, monkeypatch):
     from web.backend.services import customer_auth
     from web.backend.services.ai_market_protocol import channels
     from web.backend.services.commerce import CommerceService
-    import web.backend.services.uni_bridge as bridge
 
     store = CommerceService(base_dir=str(tmp_path / "store"))
     for mod, attr in ((payment, "commerce"), (ai_market, "commerce"),
@@ -66,7 +65,6 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setattr(payment, "RECIPIENT_ADDRESS_EVM", PLATFORM)
     monkeypatch.setattr(payment, "_catalog_checkout_usdt", lambda p: 5.0)
     monkeypatch.setattr(ai_market, "pilot_settlement_price_usdt", lambda p: 5.0)
-    monkeypatch.setattr(bridge, "credit_payment_confirm", lambda **kw: None)
 
     async def _no_fanout(event):
         return []

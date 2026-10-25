@@ -508,7 +508,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                       <input
                         type="text"
                         inputMode="decimal"
-                        className="w-24 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
+                        className="w-24 bg-white/5 border border-white/10 rounded-sm px-2 py-1 text-xs text-white focus:outline-hidden focus:border-indigo-500"
                         value={pricingDraft[provider.name] ?? ''}
                         onChange={(e) =>
                           setPricingDraft((prev) => ({ ...prev, [provider.name]: e.target.value }))
@@ -558,7 +558,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                   <div className="flex items-center gap-2">
                     <span className="text-gray-500 text-xs w-14 shrink-0">{t(locale, 'providers.card.heavy')}</span>
                     <select
-                      className="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
+                      className="flex-1 bg-white/5 border border-white/10 rounded-sm px-2 py-1 text-xs text-white focus:outline-hidden focus:border-indigo-500"
                       value={provider.models?.heavy || provider.model || ''}
                       onChange={(e) => handleModelChange(provider.name, 'heavy', e.target.value)}
                       disabled={saving?.startsWith(provider.name)}
@@ -578,7 +578,7 @@ export function ProvidersTab({ locale }: { locale: AdminLocale }) {
                   <div className="flex items-center gap-2">
                     <span className="text-gray-500 text-xs w-14 shrink-0">{t(locale, 'providers.card.light')}</span>
                     <select
-                      className="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
+                      className="flex-1 bg-white/5 border border-white/10 rounded-sm px-2 py-1 text-xs text-white focus:outline-hidden focus:border-indigo-500"
                       value={provider.models?.light || provider.model || ''}
                       onChange={(e) => handleModelChange(provider.name, 'light', e.target.value)}
                       disabled={saving?.startsWith(provider.name)}

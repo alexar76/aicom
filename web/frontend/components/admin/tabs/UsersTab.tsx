@@ -197,7 +197,7 @@ export function UsersTab({ locale }: { locale: AdminLocale }) {
   }, [rolesMeta, locale, users]);
 
   const selectClass =
-    'rounded-lg border border-white/15 bg-slate-900 px-2 py-1.5 text-sm text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 disabled:opacity-50 disabled:cursor-not-allowed';
+    'rounded-lg border border-white/15 bg-slate-900 px-2 py-1.5 text-sm text-white shadow-xs focus:outline-hidden focus:ring-2 focus:ring-indigo-500/40 disabled:opacity-50 disabled:cursor-not-allowed';
 
   const remove = async (u: AdminPanelUser) => {
     if (u.role === 'super_admin') {

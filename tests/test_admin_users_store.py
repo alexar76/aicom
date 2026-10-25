@@ -25,3 +25,33 @@ def test_can_delete_non_super_admin(monkeypatch, tmp_path):
     store.delete_user(str(op["id"]))
     assert store.get_user_by_id(str(op["id"])) is None
     assert store.get_user_by_id(str(sa["id"])) is not None
+
+
+def test_concurrent_password_reset_and_disable_are_both_retained(monkeypatch, tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    import threading
+    import time
+
+    monkeypatch.setattr(store, "USERS_PATH", tmp_path / "admin_users.json")
+    row = store.create_user(username="operator", password_hash="old-hash", role="operator")
+    save = store._save_raw
+
+    def slow_disk(data):
+        time.sleep(0.02)
+        save(data)
+
+    monkeypatch.setattr(store, "_save_raw", slow_disk)
+    start = threading.Barrier(2)
+
+    def change(fields):
+        start.wait(timeout=5)
+        store.update_user(row["id"], **fields)
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = [pool.submit(change, fields) for fields in ({"enabled": False}, {"password_hash": "new-hash"})]
+        for result in results:
+            result.result(timeout=5)
+    current = store.get_user_by_id(row["id"])
+    assert current["enabled"] is False
+    assert current["password_hash"] == "new-hash"
+    assert current["session_version"] != row["session_version"]

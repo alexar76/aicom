@@ -67,11 +67,10 @@ def _count_orders_since(since: float) -> int:
 
 def _pipeline_counts() -> dict[str, int]:
     try:
-        from core.pipeline_state_writer import read_pipeline_state
+        from core.pipeline_state_writer import read_pipeline_products
         from core.paths import pipeline_json_path
 
-        state = read_pipeline_state(json_path=pipeline_json_path())
-        products = state.get("products") or {}
+        products = read_pipeline_products(json_path=pipeline_json_path())
         completed = sum(
             1
             for p in products.values()
@@ -142,8 +141,23 @@ def build_funnel_metrics(*, window_hours: int = 168) -> dict[str, Any]:
     }
 
 
+_TRUST_CACHE: tuple[float, dict[str, Any]] | None = None
+_TRUST_TTL_S = 60.0
+
+
 def public_trust_metrics() -> dict[str, Any]:
-    """Homepage trust strip — safe to expose publicly."""
+    """Homepage trust strip — safe to expose publicly. Week-long counts, so a minute-old
+    answer is the same answer; every page view used to rebuild it."""
+    global _TRUST_CACHE
+    hit = _TRUST_CACHE
+    if hit is not None and time.monotonic() - hit[0] < _TRUST_TTL_S:
+        return dict(hit[1])
+    out = _build_public_trust_metrics()
+    _TRUST_CACHE = (time.monotonic(), out)
+    return dict(out)
+
+
+def _build_public_trust_metrics() -> dict[str, Any]:
     metrics = build_funnel_metrics(window_hours=24 * 7)
     stages = metrics.get("stages") or {}
     pipeline = metrics.get("pipeline") or {}

@@ -6,11 +6,14 @@ from __future__ import annotations
 
 import json
 import re
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from core.logging_utils import log_suppressed
 
 from .helpers import logger
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 class TreeReadingMixin:
@@ -112,10 +115,7 @@ class TreeReadingMixin:
         was ux_low_contrast_cta — a static CSS ratio — and the round still edited the shell.
         Contrast and empty/toast live in styles + PublicWidget.
         """
-        if isinstance(issue, dict):
-            blob = f"{issue.get('code') or ''} {issue.get('detail') or ''}"
-        else:
-            blob = str(issue)
+        blob = f"{issue.get('code') or ''} {issue.get('detail') or ''}" if isinstance(issue, dict) else str(issue)
         low = blob.lower()
         visual = (
             "ux_low_contrast" in low

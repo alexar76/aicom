@@ -20,10 +20,15 @@ critical for three lows.
 
 from __future__ import annotations
 
+import io
 import tarfile
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
 
 def _product_extras():
     """Load `orchestrator/product_extras.py` without importing the `orchestrator` PACKAGE.
@@ -240,6 +245,67 @@ def test_snapshot_overwrites_rather_than_accumulating(tmp_path):
     assert (code / "backend" / "app" / "main.py").read_text(encoding="utf-8") == "# second\n"
 
 
+@pytest.mark.parametrize("kind", ["parent", "absolute", "symlink", "hardlink", "fifo", "excluded"])
+def test_restore_rejects_unsafe_archives_before_changing_code(tmp_path, kind):
+    code = _tree(tmp_path, "keep")
+    outside = tmp_path / "outside.py"
+    outside.write_text("keep outside\n", encoding="utf-8")
+    archive = tmp_path / "backups" / "round-guard" / "prod-x.tar.gz"
+    archive.parent.mkdir(parents=True)
+    names = {
+        "parent": "../outside.py",
+        "absolute": str(outside),
+        "excluded": "node_modules/injected.js",
+    }
+    with tarfile.open(archive, "w:gz") as tar:
+        safe = tarfile.TarInfo("backend/app/main.py")
+        safe.size = 7
+        tar.addfile(safe, io.BytesIO(b"changed"))
+        unsafe = tarfile.TarInfo(names.get(kind, "unsafe"))
+        if kind in {"symlink", "hardlink"}:
+            unsafe.type = tarfile.SYMTYPE if kind == "symlink" else tarfile.LNKTYPE
+            unsafe.linkname = str(outside)
+        elif kind == "fifo":
+            unsafe.type = tarfile.FIFOTYPE
+        tar.addfile(unsafe)
+
+    assert restore_snapshot("prod-x", code, tmp_path) is False
+    assert (code / "backend" / "app" / "main.py").read_text() == "# keep\n"
+    assert outside.read_text() == "keep outside\n"
+    assert not code.with_name("prod-x.restoring").exists()
+
+
+def test_restore_refuses_a_live_directory_replaced_by_a_symlink(tmp_path):
+    code = _tree(tmp_path, "snapshot")
+    assert save_snapshot("prod-x", code, tmp_path)
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "App.tsx").write_text("keep outside\n", encoding="utf-8")
+    (code / "frontend" / "App.tsx").unlink()
+    (code / "frontend").rmdir()
+    (code / "frontend").symlink_to(outside, target_is_directory=True)
+    (code / "backend" / "app" / "main.py").write_text("keep live\n", encoding="utf-8")
+
+    assert restore_snapshot("prod-x", code, tmp_path) is False
+    assert (outside / "App.tsx").read_text() == "keep outside\n"
+    assert (code / "backend" / "app" / "main.py").read_text() == "keep live\n"
+
+
+def test_failed_snapshot_cleans_partial_and_preserves_previous_archive(tmp_path, monkeypatch):
+    code = _tree(tmp_path, "snapshot")
+    assert save_snapshot("prod-x", code, tmp_path)
+    archive = tmp_path / "backups" / "round-guard" / "prod-x.tar.gz"
+    original = archive.read_bytes()
+
+    def fail_add(*_args, **_kwargs):
+        raise OSError("disk full")
+
+    monkeypatch.setattr(tarfile.TarFile, "add", fail_add)
+    assert save_snapshot("prod-x", code, tmp_path) is False
+    assert archive.read_bytes() == original
+    assert not list(archive.parent.glob("*.partial"))
+
+
 # --- what the next round is told ------------------------------------------------------
 
 
@@ -266,13 +332,13 @@ def test_the_baseline_survives_a_sqlite_round_trip():
     in the allow-list, and a JSON-backend test would not catch it.
     """
     _pe = _product_extras()
-    PRODUCT_EXTRA_KEYS = _pe.PRODUCT_EXTRA_KEYS
+    product_extra_keys = _pe.PRODUCT_EXTRA_KEYS
     extract_product_extras = _pe.extract_product_extras
     extras_from_json = _pe.extras_from_json
     extras_to_json = _pe.extras_to_json
 
-    assert "last_qa_defect_score" in PRODUCT_EXTRA_KEYS
-    assert "reverted_round_count" in PRODUCT_EXTRA_KEYS
+    assert "last_qa_defect_score" in product_extra_keys
+    assert "reverted_round_count" in product_extra_keys
 
     product = {"id": "prod-x", "last_qa_defect_score": 14, "reverted_round_count": 2}
     restored = extras_from_json(extras_to_json(extract_product_extras(product)))
@@ -410,12 +476,12 @@ def test_the_hint_does_not_present_discarded_findings_as_work():
 def test_the_accepted_diagnosis_is_in_the_persistence_allowlist():
     """It must survive a cycle, or a revert restores code with someone else's findings."""
     _pe = _product_extras()
-    PRODUCT_EXTRA_KEYS = _pe.PRODUCT_EXTRA_KEYS
+    product_extra_keys = _pe.PRODUCT_EXTRA_KEYS
     extract_product_extras = _pe.extract_product_extras
     extras_from_json = _pe.extras_from_json
     extras_to_json = _pe.extras_to_json
 
-    assert "last_accepted_bug_context" in PRODUCT_EXTRA_KEYS
+    assert "last_accepted_bug_context" in product_extra_keys
     ctx = {"source": "qa", "qa_findings": [{"severity": "high", "title": "x"}]}
     product = {"id": "prod-x", "last_accepted_bug_context": ctx}
     restored = extras_from_json(extras_to_json(extract_product_extras(product)))
@@ -799,7 +865,6 @@ def test_the_repair_park_guard_is_not_vacuous(monkeypatch):
     test that never sets an approved gate proves nothing about the park kinds.
     """
     import web.backend.services.product_followup as followup
-
     from orchestrator.worker_task_planner import NextTaskPlanner
 
     monkeypatch.setattr(followup, "post_devops_human_review_approved", lambda pid: True)

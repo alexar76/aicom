@@ -27,7 +27,7 @@ export function SandboxLaunchOverlay({
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-xs"
       role="status"
       aria-live="polite"
       aria-busy="true"

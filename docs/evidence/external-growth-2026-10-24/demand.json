@@ -1,0 +1,522 @@
+{
+  "key": "demand",
+  "url": "https://verify.modelmarket.dev/demand.json",
+  "retrieved_at": "2026-10-24T19:14:58.788937+00:00",
+  "status": 200,
+  "sha256": "abe3f641aa005ba826041368e5dc462f80ebf58f93ff629753f733bd48d25fcb",
+  "data": {
+    "generated_at": "2026-10-24T19:06:07Z",
+    "hubs": {
+      "admitted": 1,
+      "assay_verdicts": {
+        "fail": 2,
+        "pass": 1
+      },
+      "crawled_us": 3,
+      "pending": 2
+    },
+    "mcp": {
+      "initialize": {
+        "claude-ai": 1,
+        "claude-code": 8,
+        "copilot": 2,
+        "glama": 101,
+        "mcp-inspector": 4,
+        "mcpbeat": 3198,
+        "other": 16678,
+        "pulsemcp": 13,
+        "roo-code": 62,
+        "smithery": 65,
+        "unnamed": 2
+      },
+      "notifications": {
+        "claude-code": 8,
+        "glama": 101,
+        "mcp-inspector": 2,
+        "mcpbeat": 3192,
+        "no-session": 102,
+        "other": 14271,
+        "pulsemcp": 12,
+        "roo-code": 61,
+        "smithery": 1,
+        "unknown": 2
+      },
+      "other": {
+        "no-session": 2243,
+        "other": 10
+      },
+      "parse_error": {
+        "unknown": 66
+      },
+      "ping": {
+        "no-session": 1,
+        "other": 6
+      },
+      "prompts/list": {
+        "no-session": 16,
+        "other": 293,
+        "unnamed": 1
+      },
+      "resources/list": {
+        "no-session": 15,
+        "other": 285,
+        "unnamed": 1
+      },
+      "resources/templates/list": {
+        "other": 5
+      },
+      "tools/call:account_status": {
+        "no-session": 3
+      },
+      "tools/call:air_quality_now": {
+        "other": 5
+      },
+      "tools/call:market_invoke": {
+        "no-session": 1,
+        "other": 7
+      },
+      "tools/call:market_search": {
+        "no-session": 21,
+        "other": 16
+      },
+      "tools/call:other": {
+        "no-session": 1,
+        "other": 39
+      },
+      "tools/call:weather_now": {
+        "no-session": 57,
+        "other": 17
+      },
+      "tools/call:x402_check": {
+        "other": 13,
+        "smithery": 1
+      },
+      "tools/list": {
+        "claude-code": 8,
+        "glama": 101,
+        "mcp-inspector": 6,
+        "mcpbeat": 3193,
+        "no-session": 2452,
+        "other": 7567,
+        "pulsemcp": 12,
+        "roo-code": 61,
+        "smithery": 65,
+        "unknown": 1,
+        "unnamed": 1
+      }
+    },
+    "notes": "ours left out (fleet and owner addresses; credit accounts are hashed, the reader drops ours); mcp counts include scanners' empty probes; invocations reached the agent",
+    "since": "2026-10-05T14:00:00Z",
+    "tools": {
+      "checks": {
+        "warden-scan": {
+          "answered": 2,
+          "callers": 1,
+          "failed": 0,
+          "limited": 0,
+          "refused": 0
+        },
+        "x402-check": {
+          "answered": 1,
+          "callers": 1,
+          "failed": 0,
+          "limited": 0,
+          "refused": 0
+        }
+      },
+      "mcp": {
+        "domains:initialize": {
+          "bot": 535,
+          "node": 284,
+          "none": 46,
+          "other": 502,
+          "python": 19,
+          "vscode": 2
+        },
+        "domains:message/send": {
+          "other": 6
+        },
+        "domains:prompts/list": {
+          "node": 1,
+          "other": 13
+        },
+        "domains:resources/list": {
+          "node": 1,
+          "other": 13
+        },
+        "domains:resources/templates/list": {
+          "node": 1
+        },
+        "domains:server/discover": {
+          "bot": 134,
+          "node": 2,
+          "none": 1,
+          "other": 118,
+          "python": 4,
+          "vscode": 1
+        },
+        "domains:tools/call:domain_quote:error": {
+          "node": 1
+        },
+        "domains:tools/call:domain_quote:ok": {
+          "bot": 3,
+          "other": 1
+        },
+        "domains:tools/list": {
+          "bot": 471,
+          "node": 256,
+          "none": 46,
+          "other": 372,
+          "python": 15
+        },
+        "emporion:initialize": {
+          "bot": 538,
+          "node": 277,
+          "none": 46,
+          "other": 518,
+          "python": 17,
+          "vscode": 2
+        },
+        "emporion:message/send": {
+          "other": 23
+        },
+        "emporion:ping": {
+          "python": 1
+        },
+        "emporion:prompts/list": {
+          "node": 1,
+          "other": 13,
+          "python": 1
+        },
+        "emporion:resources/list": {
+          "node": 1,
+          "other": 13
+        },
+        "emporion:resources/read": {
+          "python": 1
+        },
+        "emporion:resources/templates/list": {
+          "node": 1
+        },
+        "emporion:server/discover": {
+          "bot": 135,
+          "node": 2,
+          "none": 1,
+          "other": 116,
+          "python": 4,
+          "vscode": 1
+        },
+        "emporion:tools/call:business_days:error": {
+          "other": 1
+        },
+        "emporion:tools/call:company_lookup:error": {
+          "node": 1
+        },
+        "emporion:tools/call:lei_lookup:error": {
+          "bot": 5
+        },
+        "emporion:tools/call:vat_check:ok": {
+          "other": 1
+        },
+        "emporion:tools/list": {
+          "bot": 472,
+          "node": 238,
+          "none": 46,
+          "other": 372,
+          "python": 15
+        },
+        "security:initialize": {
+          "bot": 542,
+          "node": 252,
+          "none": 46,
+          "other": 475,
+          "python": 18,
+          "vscode": 2
+        },
+        "security:message/send": {
+          "other": 7
+        },
+        "security:prompts/list": {
+          "node": 1,
+          "other": 13
+        },
+        "security:resources/list": {
+          "node": 1,
+          "other": 13
+        },
+        "security:resources/read": {
+          "python": 1
+        },
+        "security:resources/templates/list": {
+          "node": 1
+        },
+        "security:server/discover": {
+          "bot": 134,
+          "node": 2,
+          "none": 1,
+          "other": 97,
+          "python": 6,
+          "vscode": 1
+        },
+        "security:tools/call:histor_check:error": {
+          "bot": 4,
+          "other": 1
+        },
+        "security:tools/call:tool_list_cost:error": {
+          "bot": 6
+        },
+        "security:tools/call:x402_check:error": {
+          "bot": 1
+        },
+        "security:tools/list": {
+          "bot": 477,
+          "node": 222,
+          "none": 46,
+          "other": 344,
+          "python": 15
+        },
+        "weather:initialize": {
+          "bot": 559,
+          "node": 254,
+          "none": 50,
+          "other": 485,
+          "python": 120,
+          "vscode": 2
+        },
+        "weather:mcpscore/unknown-method-c9c5aadffae1": {
+          "python": 1
+        },
+        "weather:message/send": {
+          "other": 10
+        },
+        "weather:ping": {
+          "python": 1
+        },
+        "weather:prompts/get": {
+          "python": 1
+        },
+        "weather:prompts/list": {
+          "node": 1,
+          "other": 13
+        },
+        "weather:resources/list": {
+          "node": 1,
+          "other": 13
+        },
+        "weather:resources/read": {
+          "python": 1
+        },
+        "weather:resources/templates/list": {
+          "node": 1
+        },
+        "weather:server/discover": {
+          "bot": 134,
+          "node": 2,
+          "none": 1,
+          "other": 117,
+          "python": 77,
+          "vscode": 1
+        },
+        "weather:tools/call:air_quality_now:error": {
+          "bot": 6,
+          "other": 1
+        },
+        "weather:tools/call:air_quality_now:ok": {
+          "python": 20
+        },
+        "weather:tools/call:nearby_sensors:error": {
+          "bot": 1
+        },
+        "weather:tools/call:weather_now:error": {
+          "bot": 4,
+          "other": 1,
+          "python": 2
+        },
+        "weather:tools/call:weather_now:ok": {
+          "node": 1,
+          "other": 7,
+          "python": 85
+        },
+        "weather:tools/list": {
+          "bot": 482,
+          "node": 219,
+          "none": 47,
+          "other": 362,
+          "python": 115
+        }
+      },
+      "pages": {
+        "histor-check": {
+          "crawlers": 136,
+          "langs": {
+            "en": 76,
+            "es": 23,
+            "fr": 23,
+            "ru": 20,
+            "zh": 20
+          },
+          "people": 162,
+          "visitors": 75
+        },
+        "index": {
+          "crawlers": 268,
+          "langs": {
+            "en": 143,
+            "es": 38,
+            "fr": 38,
+            "ru": 43,
+            "zh": 39
+          },
+          "people": 301,
+          "visitors": 176
+        },
+        "mcp-diff": {
+          "crawlers": 149,
+          "langs": {
+            "en": 41,
+            "es": 23,
+            "fr": 22,
+            "ru": 26,
+            "zh": 21
+          },
+          "people": 133,
+          "visitors": 58
+        },
+        "tool-list-cost": {
+          "crawlers": 125,
+          "langs": {
+            "en": 46,
+            "es": 19,
+            "fr": 22,
+            "ru": 22,
+            "zh": 18
+          },
+          "people": 127,
+          "visitors": 40
+        },
+        "warden-scan": {
+          "crawlers": 159,
+          "langs": {
+            "en": 69,
+            "es": 21,
+            "fr": 23,
+            "ru": 24,
+            "zh": 23
+          },
+          "people": 160,
+          "visitors": 63
+        },
+        "x402-check": {
+          "crawlers": 176,
+          "langs": {
+            "en": 52,
+            "es": 26,
+            "fr": 27,
+            "ru": 27,
+            "zh": 27
+          },
+          "people": 159,
+          "visitors": 58
+        }
+      },
+      "since": "2026-10-14T07:53:22Z"
+    },
+    "tools_call": {
+      "account_status": {
+        "no-session": 3
+      },
+      "air_quality_now": {
+        "other": 5
+      },
+      "market_invoke": {
+        "no-session": 1,
+        "other": 7
+      },
+      "market_search": {
+        "no-session": 21,
+        "other": 16
+      },
+      "other": {
+        "no-session": 1,
+        "other": 39
+      },
+      "weather_now": {
+        "no-session": 57,
+        "other": 17
+      },
+      "x402_check": {
+        "other": 13,
+        "smithery": 1
+      }
+    },
+    "x402": {
+      "discovery": {
+        "browser": 4031,
+        "curl": 5,
+        "node": 421,
+        "none": 2,
+        "other": 285,
+        "other-bot": 62,
+        "python-httpx": 2779
+      },
+      "routes": {
+        "air-quality-now": {
+          "callers": 432,
+          "failed": 1,
+          "paid": 5,
+          "quoted": 8412,
+          "refused": 0
+        },
+        "fair-random": {
+          "callers": 439,
+          "failed": 0,
+          "paid": 4,
+          "quoted": 8304,
+          "refused": 0
+        },
+        "histor-check": {
+          "callers": 490,
+          "failed": 0,
+          "paid": 6,
+          "quoted": 9090,
+          "refused": 1
+        },
+        "mcp-diff": {
+          "callers": 440,
+          "failed": 0,
+          "paid": 3,
+          "quoted": 4378,
+          "refused": 0
+        },
+        "nearby-sensors": {
+          "callers": 440,
+          "failed": 0,
+          "paid": 1,
+          "quoted": 6149,
+          "refused": 0
+        },
+        "warden-scan": {
+          "callers": 417,
+          "failed": 0,
+          "paid": 3,
+          "quoted": 6242,
+          "refused": 0
+        },
+        "weather-now": {
+          "callers": 446,
+          "failed": 0,
+          "paid": 3,
+          "quoted": 6350,
+          "refused": 0
+        },
+        "x402-check": {
+          "callers": 409,
+          "failed": 0,
+          "paid": 1,
+          "quoted": 4218,
+          "refused": 1
+        }
+      }
+    }
+  }
+}

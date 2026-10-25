@@ -1,0 +1,41 @@
+[
+  {
+    "url": "https://tienda.textokit.store/receipts.json",
+    "retrieved_at": "2026-10-25T05:16:44.230432+00:00",
+    "status": 200,
+    "sha256": "4750ec74be000e1ad4f7e4d4d3c9b8f3733f5ad2c3d8b17cb53159e0929f02a8",
+    "bytes": 26832,
+    "path": "docs/evidence/textokit-payers-2026-10-25/receipts.json"
+  },
+  {
+    "url": "https://tienda.textokit.store/llms.txt",
+    "retrieved_at": "2026-10-25T05:16:45.274629+00:00",
+    "status": 200,
+    "sha256": "c4265cec802168a885d9e3e22ee5163cea00fa3f691835e74150a180fcfc8202",
+    "bytes": 63631,
+    "raw_retained": false,
+    "derived_extract": "source-extracts.json"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/martinPisacreta/x402-adoption-investigator/main/README.md",
+    "retrieved_at": "2026-10-25T05:16:45.886810+00:00",
+    "status": 200,
+    "sha256": "f06ba7fe45acb53303d7b9df06f0273c9a7fde7e68d83db35de10d00bd799809",
+    "bytes": 99869,
+    "raw_retained": false,
+    "derived_extract": "source-extracts.json"
+  },
+  {
+    "name": "dev-comments",
+    "url": "https://dev.to/api/comments?a_id=4804987",
+    "retrieved_at": "2026-10-25T05:17:50.215409+00:00",
+    "status": 200,
+    "sha256": "8d91412b2e077f690aaf854aa4c32842416e05200761199c48378b65b4a98c8e",
+    "bytes": 41613
+  },
+  {
+    "name": "example-transfers",
+    "url": "https://base.blockscout.com/api/v2/addresses/0x7722dfae6bbed2fd02dc07455c2f5bf14be25e4a/token-transfers?type=ERC-20&filter=from&token=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "error": "HTTP Error 403: Forbidden"
+  }
+]

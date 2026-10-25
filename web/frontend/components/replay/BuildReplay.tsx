@@ -235,12 +235,12 @@ export function BuildReplayView({ replay }: { replay: BuildReplay }) {
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-semibold text-white">{stage.label}</span>
                           {stage.is_gate && (
-                            <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-indigo-500/15 border border-indigo-400/30 text-indigo-300">
+                            <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded-sm bg-indigo-500/15 border border-indigo-400/30 text-indigo-300">
                               <ShieldCheck className="w-3 h-3" /> gate
                             </span>
                           )}
                           {stage.retry_count > 0 && (
-                            <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 border border-amber-400/30 text-amber-300">
+                            <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-sm bg-amber-500/15 border border-amber-400/30 text-amber-300">
                               <RefreshCw className="w-3 h-3" /> retry ×{stage.retry_count}
                             </span>
                           )}

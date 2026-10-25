@@ -548,7 +548,7 @@ export function MonitorTab({ locale }: { locale: AdminLocale }) {
                   <button
                     type="button"
                     onClick={() => setExpandedFleetAgent(expanded ? null : type)}
-                    className="w-full text-left rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                    className="w-full text-left rounded-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500/40"
                     title="Show metrics from logs"
                   >
                     <div className="flex items-center gap-2 mb-2">

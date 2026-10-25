@@ -1,0 +1,102 @@
+[
+  {
+    "name": "padding",
+    "className": "p-4",
+    "expected": {
+      "paddingTop": "16px",
+      "paddingRight": "16px",
+      "paddingBottom": "16px",
+      "paddingLeft": "16px"
+    }
+  },
+  {
+    "name": "card-padding",
+    "className": "p-6",
+    "expected": {
+      "paddingTop": "24px",
+      "paddingLeft": "24px"
+    }
+  },
+  {
+    "name": "flex",
+    "className": "flex items-center justify-between",
+    "expected": {
+      "display": "flex",
+      "alignItems": "center",
+      "justifyContent": "space-between"
+    }
+  },
+  {
+    "name": "grid",
+    "className": "grid grid-cols-2 gap-6",
+    "expected": {
+      "display": "grid",
+      "gridTemplateColumns": "388px 388px",
+      "gap": "24px"
+    }
+  },
+  {
+    "name": "card-radius",
+    "className": "rounded-xl",
+    "expected": {
+      "borderTopLeftRadius": "12px",
+      "borderBottomRightRadius": "12px"
+    }
+  },
+  {
+    "name": "small-shadow",
+    "className": "shadow-xs",
+    "expected": {
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+    }
+  },
+  {
+    "name": "large-shadow",
+    "className": "shadow-lg",
+    "expected": {
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px"
+    }
+  },
+  {
+    "name": "blur",
+    "className": "backdrop-blur-xs",
+    "expected": {
+      "backdropFilter": "blur(4px)"
+    }
+  },
+  {
+    "name": "text",
+    "className": "text-sm font-semibold",
+    "expected": {
+      "fontSize": "14px",
+      "lineHeight": "20px",
+      "fontWeight": "600"
+    }
+  },
+  {
+    "name": "border",
+    "className": "border",
+    "expected": {
+      "borderTopWidth": "1px",
+      "borderTopStyle": "solid"
+    }
+  },
+  {
+    "name": "size",
+    "className": "w-16 h-16",
+    "expected": {
+      "width": "64px",
+      "height": "64px"
+    }
+  },
+  {
+    "name": "glass",
+    "className": "glass-card p-4",
+    "expected": {
+      "paddingTop": "16px",
+      "borderTopLeftRadius": "16px",
+      "backdropFilter": "blur(20px)",
+      "borderTopWidth": "1px"
+    }
+  }
+]

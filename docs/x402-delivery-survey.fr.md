@@ -61,6 +61,8 @@ Les chiffres de cette enquête viennent de 95 appels payés, pas du 402.
 
 Le Bazaar publie ses propres compteurs sur 30 jours. Sur 34 768 annonces, 22 559 (65 %) ont eu exactement un portefeuille payeur en 30 jours — très probablement le vendeur lui-même, qui paie une fois pour être indexé. Seules 396 (1,1 %) en ont eu dix ou plus. Dans notre échantillon, 23 des 74 vendeurs dont la réponse a été acceptée avaient exactement un payeur.
 
+Une mesure indépendante va dans le même sens. Le [x402 adoption investigator](https://github.com/martinPisacreta/x402-adoption-investigator) open source de Martin Pisacreta, où chaque chiffre cite une source téléchargée ou une transaction Base décodée, a audité le 2026-10-22 la boutique de son propre auteur à partir de son `/receipts.json` publié : 56 des 77 ventes réglées venaient des propres portefeuilles de la boutique, et les compteurs sur 30 jours du Bazaar pour ses annonces (60 appels) ne les distinguent pas. Sur tout le Bazaar ce jour-là, les dix premiers hôtes totalisaient 73 % des appels sur 30 jours. Compter des paiements n'est pas compter des acheteurs. L'une des 21 ventes extérieures de cette boutique était la sonde de notre enquête.
+
 Le marché x402 ne semble pas manquer de confiance. Il semble manquer d'acheteurs.
 
 ## Méthode

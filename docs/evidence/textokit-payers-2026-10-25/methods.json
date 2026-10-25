@@ -1,0 +1,51 @@
+{
+  "schema": "textokit-payer-audit-methods/v1",
+  "prepared_with_ai": true,
+  "maintainer_affiliation": [
+    "HISTOR",
+    "AIMarket"
+  ],
+  "network": "eip155:8453",
+  "asset": "USDC",
+  "ledger_source": "https://tienda.textokit.store/receipts.json",
+  "chain_rpc": "https://base.gateway.tenderly.co",
+  "read_methods": [
+    "eth_chainId",
+    "eth_blockNumber",
+    "eth_getBlockByNumber",
+    "eth_getLogs",
+    "eth_getTransactionReceipt"
+  ],
+  "rpc_requests": 634,
+  "successful_rpc_requests": 634,
+  "log_ranges": 605,
+  "range_size_max": 1000,
+  "confirmation_buffer": 12,
+  "payer_filter": "Five seller-reported external payer addresses, outgoing indexed USDC Transfer events.",
+  "settlement_check": "successful transaction receipt + exact official USDC token/from/to/atomic amount; a transfer event is consumed once",
+  "labels": "One known-probe annotation for our exact research purchase; one probe-like based on publisher-reported service-associated example-input matches; three unknown with descriptive activity signals.",
+  "rule_calibrated": false,
+  "rule_note": "Initial 90-percent cutoffs were not relaxed after reading this captured chain history.",
+  "annotation_limit": "The normativa-ar statement is service-level; the four transaction references are associated by ledger service/time, not independently checked payloads.",
+  "side_effects": {
+    "transactions_sent": 0,
+    "payments": 0,
+    "production_database_writes": 0,
+    "messages_sent": 0,
+    "deployments": 0
+  },
+  "verification": {
+    "targeted_tests_passed": 47,
+    "existing_tests_skipped": 10,
+    "lint": "passed",
+    "independent_snapshot_reducer": "verification.json"
+  },
+  "final_source_sha256": {
+    "histor/histor/payer_audit.py": "97c594edb64a7c882dc8025bb7f759f579137a975b1ce33a34883f0a4b0a032f",
+    "histor/histor/payer_audit_cli.py": "cc5cc8c934bd816b20d820d30eebb64f8ec0bfc86a2b6f414b521a9cf67da7d1",
+    "histor/histor/payer_collect.py": "6c0e3ccf8b913fddef26e8a1156f784343b8d5a6c33ed0793723c416c3beb16e",
+    "histor/histor/__main__.py": "e45b95934a55a3ea2ec02e682af0d09fe29dc9b4dbbd3f3e77540b13a29f95d2",
+    "histor/tests/test_payer_audit.py": "4976d98ff90c3e7c4b1ba70e5bdcf2c907d967fdda365ffb68a6db3f2c32e79f"
+  },
+  "collector_revision_note": "The additional total retained-evidence budget was added after the live capture. The captured raw logs and receipts fit inside it. Final source hashes describe the reviewed implementation, not a claim of byte-identical collector source at launch."
+}

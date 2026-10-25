@@ -1,0 +1,40 @@
+{
+  "observed_at_utc": "2026-10-23T11:23:49.403240+00:00",
+  "source": "Authenticated eSIM Access Billing / Transactions, observed via native Chrome accessibility tree",
+  "source_url": "https://console.esimaccess.com/partner-bill/index",
+  "currency": "USD",
+  "current_balance": "20.00",
+  "total_transactions_in_account": 15,
+  "visible_rows": 10,
+  "visible_latest_transactions": [
+    {
+      "transaction_id": "26102310070068",
+      "amount": "+0.30",
+      "transaction_type": "Incoming",
+      "balance_after": "20.00",
+      "time_displayed": "2026-10-23 13:08",
+      "activity": "Base Plan Refund",
+      "plan_name": "Turkey 500MB 7Days",
+      "remark": "processed by API"
+    },
+    {
+      "transaction_id": "B26102310070058",
+      "amount": "-0.30",
+      "transaction_type": "Outgoing",
+      "balance_after": "19.70",
+      "time_displayed": "2026-10-23 13:07",
+      "activity": "Base Plan Purchase",
+      "plan_name": "Turkey 500MB 7Days",
+      "remark": "-"
+    }
+  ],
+  "preceding_transaction": {
+    "transaction_id": "26101509440019",
+    "amount": "+0.30",
+    "balance_after": "20.00",
+    "time_displayed": "2026-10-15 12:44",
+    "activity": "Base Plan Refund"
+  },
+  "no_intervening_or_later_transaction": true,
+  "credentials_captured": false
+}

@@ -24,6 +24,8 @@ Heavy POSTs hit **the same server as the matching read**. Tokens: ARGUS from `ar
 
 ---
 
+Results before and after the 2026-10-23 optimizations, in five languages: [`docs/load-testing.md`](../../docs/load-testing.md).
+
 Полная методика (смесь запросов, три режима, критерии, preflight 2026-09-14):
 [`METHODOLOGY.md`](METHODOLOGY.md).
 

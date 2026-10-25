@@ -1,7 +1,11 @@
 # Testing rules — read before you say "tests are green"
 
-Hard-won rules for this codebase. Every one of these comes from a real bug that **passed unit
-tests and still broke production**. Green pytest is necessary, not sufficient.
+Hard-won rules for this codebase. Green pytest is necessary, not sufficient.
+See the [2026-10-23 quality audit](quality-audit-2026-10-23.md) for the latest checked scope,
+results, and remaining gaps.
+For payment lifecycle, transaction reconciliation and the SQLite/PostgreSQL recovery matrix,
+see [payment tests and transactions](payment-tests-and-transactions.md)
+([RU](payment-tests-and-transactions.ru.md) · [ES](payment-tests-and-transactions.es.md) · [FR](payment-tests-and-transactions.fr.md) · [ZH](payment-tests-and-transactions.zh.md)).
 
 ---
 
@@ -63,7 +67,7 @@ don't claim the capability ships.
 
 ## R5 — The ruff gate is part of "passing"
 
-CI fails on the lint gate, not only pytest. Reproduce it exactly before pushing:
+CI fails on the lint gate, not only pytest. Reproduce it before reporting a clean result:
 
 ```bash
 ruff check core/ llm/ orchestrator/ security/ agents/ --ignore E402
@@ -96,13 +100,94 @@ neutral priors (not noise), no division by zero, no `KeyError`. The discovery sc
 `KeyError: 'outcome_fit'` when called without `data_root` — only an empty-input test would have caught
 it. Add a `test_*_empty`/`test_*_cold_start` for every new aggregator.
 
-## R9 — Respect the concurrent writers
+## R9 — Respect the concurrent writers and workspace publication policy
 
-The working tree has other writers (factory/Cursor) that can revert edits. Stage **only your own
-files** (`git add <paths>`, never `git add -A`), and on push to Gitea fetch+merge+retry on a race.
-See [[repo-concurrent-writers-gitea]].
+The working tree has other writers (factory/Cursor). Preserve their changes. If staging is
+requested, stage **only your own files** (`git add <paths>`, never `git add -A`). Keep audit
+changes local. The workspace [AGENTS.md](../AGENTS.md) prohibits GitHub publication.
+
+## R10 — A coverage file does not prove tests passed
+
+Only a completed pytest process with exit code 0 establishes a passing test run. Coverage can
+be written after a failure or before interpreter teardown hangs. The CI runner
+[`scripts/run_factory_pytest_ci.py`](../scripts/run_factory_pytest_ci.py) preserves pytest's exit
+status, clears stale reports, and returns **124** when the run exceeds
+`AIFACTORY_PYTEST_HARD_CAP_SEC` (default **600**, a positive integer). It terminates the test process
+group so browser/server children do not survive a cancelled run. The former
+`AIFACTORY_PYTEST_HANG_GRACE_SEC` shortcut is no longer used.
+
+`scripts/run_factory_pytest.sh` uses `.venv/bin/python` in CI when available. Both runners use
+[.coveragerc](../.coveragerc), including `core`, `llm`, and `security`. The regular factory runner
+excludes the browser-heavy files listed in that script; those require their separate jobs.
+Skipped, excluded, and deselected tests are not evidence of passing those scenarios.
+
+## R11 — Corrupt budget state must block paid calls
+
+The LLM usage guard starts at zero only when its state file is absent. Invalid JSON, unreadable
+files, invalid dates, negative/non-finite counters, and invalid request timestamps raise
+`LLMUsageStateError`. A rejected read leaves the original file unchanged. Writes use atomic
+replacement and mode 0600; an I/O failure propagates to the caller.
+
+Recovery: stop paid workers, preserve the damaged file for investigation, restore the last
+valid ledger, and reconcile spend since that backup with provider billing before resuming.
+Deleting the ledger resets recorded spend; do not use deletion as a recovery procedure.
+
+## R12 — Test production error boundaries using every deployment alias
+
+Public unexpected failures return a generic response while server logs retain diagnostics.
+`AIFACTORY_EXPOSE_ERROR_DETAILS` is a development-only opt-in. The main API uses
+`security.prod_startup_guard.is_production_mode()` to suppress details under `AIFACTORY_PROD`,
+`AIFACTORY_PRODUCTION`, and production `AIFACTORY_ENV` values. Boundary regression tests must
+assert that internal paths and exception text never appear in those production responses.
+
+## R13 — Exercise contracts between real components
+
+Mocks can reproduce the same incorrect assumptions on both sides of a boundary. The
+`CostGuard` unit tests supplied `daily_cost_cap_usd`/`monthly_cost_cap_usd`, while the actual
+`LLMUsageGuard` returns `daily_cap_usd`/`monthly_cap_usd`. As a result, unit tests passed while
+real budget-aware model selection always saw the normal tier. Component integration tests
+reproduced the mismatch before the consumer and its unit fixtures were corrected.
+
+Run the deterministic component selection with:
+
+```bash
+USE_SQLITE=true .venv/bin/python -m pytest -q -m component_integration \
+  tests/test_llm_accounting_integration.py tests/test_pipeline_recovery_integration.py
+```
+
+The LLM tests use the actual router, HTTP provider, pricing, file-backed ledger, and circuit
+breaker. Only external HTTP is simulated using `httpx.MockTransport`; no paid provider calls
+are made. They cover daily/monthly budget tiers, model selection, persisted spend, streaming,
+failover/recovery, and corrupt-ledger rejection.
+
+The pipeline tests connect the watchdog callback, state machine, real temporary SQLite,
+event bus, and production build-replay router mounted in an in-process FastAPI app. They
+check restart/retry ownership, terminal failure, next-agent handoff, response sanitization,
+and database-corruption recovery. Managers, HTTP clients, and event-bus workers are closed
+in fixture teardown.
+
+`component_integration` is distinct from the existing `integration` marker for live fleet
+probes. These new tests run in the normal local/CI suite and do not require an external stack.
 
 ---
+
+## R14 — Financial coverage and recovery are explicit gates
+
+The standard Factory runners measure branches and run
+[`check_payment_coverage.py`](../scripts/check_payment_coverage.py) after a successful suite/export.
+All 13 named financial functions require 100% measured lines and branches; missing data, an export failure or a rounded
+percentage just below a floor must fail. The global percentage remains a separate, honest metric.
+See the [latest audit](quality-audit-2026-10-23.md#skip-resolution) for floors, actual results and scope.
+
+A failed/ambiguous order commit must retain the single-use transfer claim for the original checkout.
+Test failure before and after commit, rollback between order/license inserts, persistence cleanup,
+key backup restoration and retry with the same hash. A flag saying `confirmed` is not a committed order.
+An unreadable financial history is unknown state: preserve it, refuse settlement and test recovery.
+Never replace a missing quote key while signed quotes exist or put RPC credentials in error logs.
+Balance/ledger/withdrawal changes and their signed receipt must share one transaction. Exercise signing
+and SQL failures plus hard process exits after receipt insertion. A retry must return the persisted
+receipt; missing legacy financial history requires reconciliation. The branch gate needs real SQLite
+and disposable PostgreSQL tests. Live production probes run separately with explicit opt-in.
 
 ### Pre-merge checklist
 
@@ -115,3 +200,8 @@ See [[repo-concurrent-writers-gitea]].
 - [ ] Public surfaces have a leak test (R7)
 - [ ] Empty/cold-start test for new aggregators (R8)
 - [ ] Staged only your files (R9)
+- [ ] Completed test exit status checked; no success inferred from coverage (R10)
+- [ ] Budget corruption and failed writes tested where spend tracking changes (R11)
+- [ ] Production error responses tested for all deployment aliases (R12)
+- [ ] Changed component contracts exercised with real producers and consumers (R13)
+- [ ] Financial changes pass the full coverage gate and real-store failure/retry scenarios (R14)

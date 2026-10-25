@@ -11,6 +11,20 @@ jobs:
   backend-tests:
     name: backend-tests
     runs-on: ubuntu-latest
+    services:
+      payment-postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: aicom_test
+          POSTGRES_DB: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - "127.0.0.1:5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U aicom_test -d postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PAYMENT_FIX_TEST_PG_URL: postgresql://aicom_test@127.0.0.1:5432/postgres
     permissions:
       contents: write
     steps:

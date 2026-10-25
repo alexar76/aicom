@@ -5,12 +5,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
 from web.backend.services.domain_methodology import get_domain_pack, select_domain_pack
 from web.backend.services.methodology_review import (
     review_implementation as _methodology_review_implementation,
 )
-from core.json_state import write_text_atomic
 
 from .helpers import logger
 

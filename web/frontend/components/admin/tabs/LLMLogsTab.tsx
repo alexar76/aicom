@@ -514,7 +514,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
           <select
             value={filterProvider}
             onChange={(e) => setFilterProvider(e.target.value)}
-            className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none sm:w-auto sm:py-1.5"
+            className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-hidden sm:w-auto sm:py-1.5"
           >
             <option value="">All Providers</option>
             {providers.map((p) => (
@@ -524,7 +524,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as 'all' | 'ok' | 'error')}
-            className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none sm:w-auto sm:py-1.5"
+            className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-hidden sm:w-auto sm:py-1.5"
           >
             <option value="all">Status: all</option>
             <option value="ok">Status: success</option>
@@ -533,7 +533,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
           <select
             value={agentTypeFilter}
             onChange={(e) => setAgentTypeFilter(e.target.value)}
-            className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-none sm:w-auto sm:py-1.5"
+            className="glass-input w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-300 focus:border-indigo-500/50 focus:outline-hidden sm:w-auto sm:py-1.5"
           >
             <option value="all">All agents</option>
             {agentTypesInSelect.map((a) => (
@@ -620,12 +620,12 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
                 key={`${String(log.timestamp)}-${log.provider}-${i}`}
                 className="flex items-start gap-3 py-2.5 px-3 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors rounded-lg"
               >
-                <div className="flex-shrink-0 mt-0.5">
+                <div className="shrink-0 mt-0.5">
                   <div
                     className={`w-2 h-2 rounded-full ${
                       log.success
-                        ? 'bg-emerald-500 shadow-sm shadow-emerald-500/50'
-                        : 'bg-red-500 shadow-sm shadow-red-500/50'
+                        ? 'bg-emerald-500 shadow-xs shadow-emerald-500/50'
+                        : 'bg-red-500 shadow-xs shadow-red-500/50'
                     }`}
                   />
                 </div>
@@ -659,7 +659,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
                       <>
                         <span className="text-xs text-gray-500">•</span>
                         <span
-                          className="text-[10px] uppercase px-1.5 py-0 rounded border border-violet-500/30 text-violet-200/90"
+                          className="text-[10px] uppercase px-1.5 py-0 rounded-sm border border-violet-500/30 text-violet-200/90"
                           title="Heavy vs light model tier (from routing / provider config)"
                         >
                           {log.model_role}
@@ -705,7 +705,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
                         <summary className="text-gray-500 cursor-pointer hover:text-gray-300">
                           Prompt preview
                         </summary>
-                        <pre className="mt-1 p-2 bg-black/30 rounded text-gray-400 whitespace-pre-wrap break-words max-h-24 overflow-y-auto">
+                        <pre className="mt-1 p-2 bg-black/30 rounded-sm text-gray-400 whitespace-pre-wrap break-words max-h-24 overflow-y-auto">
                           {log.prompt_preview}
                         </pre>
                       </details>
@@ -715,7 +715,7 @@ export function LLMLogsTab({ locale }: { locale: AdminLocale }) {
                         <summary className="text-gray-500 cursor-pointer hover:text-gray-300">
                           Response preview
                         </summary>
-                        <pre className="mt-1 p-2 bg-black/30 rounded text-gray-400 whitespace-pre-wrap break-words max-h-24 overflow-y-auto">
+                        <pre className="mt-1 p-2 bg-black/30 rounded-sm text-gray-400 whitespace-pre-wrap break-words max-h-24 overflow-y-auto">
                           {log.response_preview}
                         </pre>
                       </details>

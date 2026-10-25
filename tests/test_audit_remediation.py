@@ -93,13 +93,16 @@ def test_spend_hold_ledger_balance_unchanged_hold_decreased(tmp_path, monkeypatc
     with uni_connection() as conn:
         if uni_db_backend() == "postgres":
             row = conn.execute(
-                "SELECT balance_after, hold_after FROM uni_ledger WHERE entry_type = 'charge' ORDER BY id DESC LIMIT 1",
+                "SELECT balance_after, hold_after FROM uni_ledger WHERE entry_type = 'hold_charge' ORDER BY id DESC LIMIT 1",
             ).fetchone()
         else:
             row = conn.execute(
-                "SELECT balance_after, hold_after FROM uni_ledger WHERE entry_type = 'charge' ORDER BY id DESC LIMIT 1",
+                "SELECT balance_after, hold_after FROM uni_ledger WHERE entry_type = 'hold_charge' ORDER BY id DESC LIMIT 1",
             ).fetchone()
+    assert row is not None, "spend_hold must append the reservation settlement to the ledger"
     assert int(round(float(row[0]))) == int(round(bal_before))
+    assert int(round(float(row[1]))) == 250
+    assert float(after["hold_uni"]) == 250
 
 
 def test_otel_disabled_when_standard_kill_switch(monkeypatch):

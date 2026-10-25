@@ -39,7 +39,7 @@ async def test_ws_cookie_auth_rejects_foreign_origin(monkeypatch):
     monkeypatch.setenv("NEXT_PUBLIC_SITE_URL", "https://magic-ai-factory.com")
     ws = MagicMock()
     ws.app.state.security_manager = MagicMock()
-    ws.app.state.security_manager.decode_token.return_value = {"admin": True}
+    ws.app.state.security_manager.authenticate_admin_token.return_value = {"admin": True}
     ws.headers = {"origin": "https://evil.example"}
     ws.cookies = {"access_token": "tok"}
     with pytest.raises(WebSocketException) as exc:
@@ -52,7 +52,7 @@ async def test_ws_cookie_auth_allows_configured_origin(monkeypatch):
     monkeypatch.setenv("NEXT_PUBLIC_SITE_URL", "https://magic-ai-factory.com")
     ws = MagicMock()
     ws.app.state.security_manager = MagicMock()
-    ws.app.state.security_manager.decode_token.return_value = {"admin": True, "sub": "admin"}
+    ws.app.state.security_manager.authenticate_admin_token.return_value = {"admin": True, "sub": "admin"}
     ws.headers = {"origin": "https://magic-ai-factory.com"}
     ws.cookies = {"access_token": "tok"}
     ws.scope = {}

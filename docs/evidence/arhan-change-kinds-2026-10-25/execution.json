@@ -1,0 +1,62 @@
+{
+  "startedAt": "2026-10-25T08:29:12.985404+00:00",
+  "host": "admin-vps",
+  "remoteTemp": "/tmp/arhan-change-kinds-20261025.rJkItw",
+  "image": "sha256:79bc0c21f402e16b32ce00a2ac73782b9985ef9a8595adb936080db2c7b0cc13",
+  "sources": {
+    "analyze.py": "5e6bd0176c859cc7f324d2e83bc6312f4785934424a101da8c7223a98e351927",
+    "test_analyze.py": "5919120a7ac27b42fec788bd0bf8547128f82d080d3da7dcc40ab5c47d2d9bf6",
+    "cohort_readonly.py": "bffe253cc160354d99f143e7e297a9cc9b9443cbf97b0c79f29b66714ab5bf66",
+    "protocol.md": "ffcdced43590e3e802dc47ca3f50320ed5bc7842350f6c10f1f393d8f3931b51"
+  },
+  "state": "cleaned",
+  "imageMetadata": [
+    "sha256:79bc0c21f402e16b32ce00a2ac73782b9985ef9a8595adb936080db2c7b0cc13",
+    "linux",
+    "amd64"
+  ],
+  "containerArguments": [
+    "docker",
+    "run",
+    "--rm",
+    "--runtime",
+    "runc",
+    "--network",
+    "none",
+    "--read-only",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--memory",
+    "1536m",
+    "--cpus",
+    "1",
+    "--pids-limit",
+    "64",
+    "--tmpfs",
+    "/tmp:rw,nosuid,noexec,size=64m",
+    "--user",
+    "65532:65532",
+    "-v",
+    "/tmp/arhan-change-kinds-20261025.rJkItw/source:/work:ro",
+    "-v",
+    "/var/lib/histor-datasets/2026-10-20:/data:ro",
+    "-v",
+    "/tmp/arhan-change-kinds-20261025.rJkItw/out:/out:rw",
+    "--workdir",
+    "/work",
+    "--entrypoint",
+    "python",
+    "sha256:79bc0c21f402e16b32ce00a2ac73782b9985ef9a8595adb936080db2c7b0cc13",
+    "-B",
+    "-u"
+  ],
+  "initialAttempt": {
+    "runtime": "runsc",
+    "exitCode": 125,
+    "reason": "Runtime not registered; no research code executed"
+  },
+  "finishedAt": "2026-10-25T08:34:36.223592+00:00",
+  "cleanedAt": "2026-10-25T08:48:55.731782+00:00"
+}

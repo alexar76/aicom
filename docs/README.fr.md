@@ -50,6 +50,7 @@ Depuis le dépôt public, `./start.sh` lance la Factory (une clé LLM dans `.env
 
 | Document | Lien |
 | --- | --- |
+| Tests de paiement et transactions : achats, remboursements, reprise, SQLite/PostgreSQL | [payment-tests-and-transactions.fr.md](payment-tests-and-transactions.fr.md) |
 | Diagnostics externes AICOM : algorithme, configuration, budget et reprise | [factory-subcontracting.fr.md](factory-subcontracting.fr.md) |
 | Base de connaissances | [knowledge-base-fr.md](ecosystem/knowledge-base-fr.md) |
 | Livre blanc | [whitepaper/fr.md](ecosystem/whitepaper/fr.md) |

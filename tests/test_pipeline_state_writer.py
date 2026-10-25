@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
 import time
-from pathlib import Path
-
-import pytest
+from typing import TYPE_CHECKING
 
 from core.pipeline_state_writer import (
     append_product_to_pipeline_state,
@@ -18,6 +17,11 @@ from core.pipeline_state_writer import (
 )
 from orchestrator.pipeline_worker_persistence import PipelineStatePersistence
 from orchestrator.sqlite_manager import SQLiteManager
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    import pytest
 
 
 def test_sql_mode_skips_json_write_without_mirror(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
@@ -80,27 +84,26 @@ def test_recovery_requires_flag_or_newer_sqlite(monkeypatch: pytest.MonkeyPatch,
     mgr.close()
 
     pj.write_text("{bad", encoding="utf-8")
-    time.sleep(0.02)
-    Path(db).touch()
+    stamp = int(time.time()) - 100
+    os.utime(pj, (stamp, stamp))
+    os.utime(db, (stamp + 10, stamp + 10))
 
     assert sqlite_state_newer_than_json(pj) is True
     assert should_recover_json_from_sqlite(pj) is True
 
     monkeypatch.setenv("AIFACTORY_PIPELINE_JSON_RECOVER_FROM_SQLITE", "0")
-    time.sleep(0.02)
     pj.write_text('{"products":{},"task_queue":[]}', encoding="utf-8")
-    Path(db).touch()  # still - we need json older; reset
-    old_mtime = pj.stat().st_mtime
-    import os
-
-    os.utime(db, (time.time() + 10, time.time() + 10))
-    os.utime(pj, (old_mtime, old_mtime))
+    os.utime(db, (stamp + 10, stamp + 10))
+    os.utime(pj, (stamp, stamp))
     assert should_recover_json_from_sqlite(pj) is True
 
-    os.utime(pj, (time.time() + 20, time.time() + 20))
-    os.utime(db, (time.time() + 5, time.time() + 5))
+    os.utime(pj, (stamp + 20, stamp + 20))
+    os.utime(db, (stamp + 5, stamp + 5))
     assert sqlite_state_newer_than_json(pj) is False
     assert should_recover_json_from_sqlite(pj) is False
+
+    os.utime(db, (stamp + 20, stamp + 20))
+    assert sqlite_state_newer_than_json(pj) is False, "equal timestamps are not newer SQL state"
 
     monkeypatch.setenv("AIFACTORY_PIPELINE_JSON_RECOVER_FROM_SQLITE", "1")
     assert should_recover_json_from_sqlite(pj) is True

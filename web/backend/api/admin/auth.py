@@ -184,9 +184,11 @@ def _public_demo_passwordless_login(username: str, password: str) -> bool:
     return True
 
 
-def _verify_password_for_login(security: SecurityManager, username: str, password: str) -> bool:
+def _verify_password_for_login(
+    security: SecurityManager, username: str, password: str, *, account: Optional[dict] = None,
+) -> bool:
     """Match password against admin_users row or legacy admin.json-only install."""
-    su = aus.get_user_by_username(username)
+    su = account if account is not None else aus.get_user_by_username(username)
     if su:
         if not su.get("enabled", True):
             return False
@@ -198,13 +200,6 @@ def _verify_password_for_login(security: SecurityManager, username: str, passwor
     if legacy_name != aus.normalize_username(username):
         return False
     return security.verify_password(password, cfg["password_hash"])
-
-
-def _resolve_role_for_login(username: str) -> str:
-    su = aus.get_user_by_username(username)
-    if su and su.get("enabled", True):
-        return str(su.get("role") or "viewer")
-    return "super_admin"
 
 
 def _admin_twofa_flags() -> tuple[bool, bool, bool, str]:
@@ -253,10 +248,12 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
             detail="Too many login attempts. Please try again later.",
         )
 
+    account = aus.get_user_by_username(login_data.username)
     passwordless = _public_demo_passwordless_login(login_data.username, login_data.password)
-    if not passwordless and not _verify_password_for_login(
-        security, login_data.username, login_data.password
-    ):
+    if (not account or not account.get("enabled", True)
+            or (not passwordless and not _verify_password_for_login(
+                security, login_data.username, login_data.password, account=account,
+            ))):
         security.record_login_attempt(peer_ip, False, login_data.username)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -300,12 +297,15 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
                 detail="Invalid 2FA code",
             )
 
-    role_str = _resolve_role_for_login(login_data.username)
+    role_str = str(account.get("role") or "viewer")
     norm_user = aus.normalize_username(login_data.username)
     token = security.create_access_token(
         norm_user,
         role=normalize_role(role_str).value,
+        account=account,
     )
+    if not security.authenticate_admin_token(token):
+        raise HTTPException(status_code=401, detail="Account changed during sign-in; retry.")
     security.record_login_attempt(peer_ip, True, login_data.username)
 
     try:
@@ -360,25 +360,36 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
 @router.post("/logout")
 async def admin_logout(request: Request, response: Response):
     """Logout admin user."""
+    security: SecurityManager = request.app.state.security_manager
+    tokens: list[str] = []
+    auth = (request.headers.get("authorization") or "").strip()
+    if auth.lower().startswith("bearer "):
+        tokens.append(auth[7:].strip())
+    for name in ("access_token", ADMIN_SESSION_COOKIE):
+        token = request.cookies.get(name)
+        if token and token not in tokens:
+            tokens.append(token)
+    audit_admin = None
     try:
-        security: SecurityManager = request.app.state.security_manager
-        token = request.cookies.get("access_token")
-        if not token:
-            auth = (request.headers.get("authorization") or "").strip()
-            if auth.lower().startswith("bearer "):
-                token = auth[7:].strip()
-        if token:
+        for token in tokens:
             payload = security.decode_token(token)
-            if payload and payload.get("admin"):
-                from web.backend.services.admin_action_log import log_admin_action_from_request
+            if audit_admin is None and payload and payload.get("admin"):
+                audit_admin = payload
+            security.revoke_token(token)
+    except Exception as exc:
+        logger.error("Admin session revocation unavailable", exc_info=True)
+        raise HTTPException(status_code=503, detail="Sign-out temporarily unavailable; retry.") from exc
+    try:
+        if audit_admin:
+            from web.backend.services.admin_action_log import log_admin_action_from_request
 
-                log_admin_action_from_request(
-                    request,
-                    payload,
-                    action="logout",
-                    resource="admin/auth",
-                    details={},
-                )
+            log_admin_action_from_request(
+                request,
+                audit_admin,
+                action="logout",
+                resource="admin/auth",
+                details={},
+            )
     except Exception:
         pass
     cookie_secure = _access_token_cookie_secure(request)

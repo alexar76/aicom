@@ -287,7 +287,7 @@ export function SetupWizardTab({
           </h3>
           <p className="text-sm text-gray-300">
             {t(locale, 'setup.openedFrom')}{' '}
-            <code className="rounded bg-black/40 px-2 py-0.5 text-indigo-200">{origin || '—'}</code>
+            <code className="rounded-sm bg-black/40 px-2 py-0.5 text-indigo-200">{origin || '—'}</code>
           </p>
           <ul className="list-disc space-y-2 pl-5 text-sm text-gray-400 leading-relaxed">
             <li>{t(locale, 'setup.urls.li1')}</li>
@@ -374,7 +374,7 @@ export function SetupWizardTab({
               type="checkbox"
               checked={makeDefault}
               onChange={(e) => setMakeDefault(e.target.checked)}
-              className="rounded border-white/20 bg-white/5"
+              className="rounded-sm border-white/20 bg-white/5"
             />
             {t(locale, 'setup.makeDefault')}
           </label>

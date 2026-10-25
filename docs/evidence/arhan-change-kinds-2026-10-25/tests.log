@@ -1,0 +1,25 @@
+test_absent_and_empty_output_schema_are_different_contracts (test_analyze.CompareToolsetsTest.test_absent_and_empty_output_schema_are_different_contracts) ... ok
+test_actual_schema_annotations_are_reported_without_contract_claim (test_analyze.CompareToolsetsTest.test_actual_schema_annotations_are_reported_without_contract_claim) ... ok
+test_boolean_and_integer_are_not_equal_json_values (test_analyze.CompareToolsetsTest.test_boolean_and_integer_are_not_equal_json_values) ... ok
+test_composition_retains_other_flags_and_rename_is_add_remove (test_analyze.CompareToolsetsTest.test_composition_retains_other_flags_and_rename_is_add_remove) ... ok
+test_description_inside_default_is_literal_data (test_analyze.CompareToolsetsTest.test_description_inside_default_is_literal_data) ... ok
+test_description_inside_enum_is_literal_data (test_analyze.CompareToolsetsTest.test_description_inside_enum_is_literal_data) ... ok
+test_description_visitor_recognizes_actual_nested_schema_nodes (test_analyze.CompareToolsetsTest.test_description_visitor_recognizes_actual_nested_schema_nodes) ... ok
+test_description_whitespace_has_its_own_category (test_analyze.CompareToolsetsTest.test_description_whitespace_has_its_own_category) ... ok
+test_dialect_and_reference_base_are_contract_changes (test_analyze.CompareToolsetsTest.test_dialect_and_reference_base_are_contract_changes) ... ok
+test_duplicate_array_members_do_not_qualify_for_unique_permutation (test_analyze.CompareToolsetsTest.test_duplicate_array_members_do_not_qualify_for_unique_permutation) ... ok
+test_literal_fields_named_title_or_examples_remain_contract_changes (test_analyze.CompareToolsetsTest.test_literal_fields_named_title_or_examples_remain_contract_changes) ... ok
+test_long_description_tail_is_not_lost_to_summary_truncation (test_analyze.CompareToolsetsTest.test_long_description_tail_is_not_lost_to_summary_truncation) ... ok
+test_numeric_only_is_consistent_for_tool_and_parameter_descriptions (test_analyze.CompareToolsetsTest.test_numeric_only_is_consistent_for_tool_and_parameter_descriptions) ... ok
+test_prefix_items_order_is_part_of_the_contract (test_analyze.CompareToolsetsTest.test_prefix_items_order_is_part_of_the_contract) ... ok
+test_property_named_description_is_not_a_description_annotation (test_analyze.CompareToolsetsTest.test_property_named_description_is_not_a_description_annotation) ... ok
+test_schema_contract_priority_does_not_hide_description_changes (test_analyze.CompareToolsetsTest.test_schema_contract_priority_does_not_hide_description_changes) ... ok
+test_tool_order_and_object_key_order_are_not_recorded_changes (test_analyze.CompareToolsetsTest.test_tool_order_and_object_key_order_are_not_recorded_changes) ... ok
+test_type_array_order_is_not_folded_into_required_enum_order (test_analyze.CompareToolsetsTest.test_type_array_order_is_not_folded_into_required_enum_order) ... ok
+test_unique_enum_permutation_preserves_typed_json_values (test_analyze.CompareToolsetsTest.test_unique_enum_permutation_preserves_typed_json_values) ... ok
+test_unique_required_permutation_has_separate_order_category (test_analyze.CompareToolsetsTest.test_unique_required_permutation_has_separate_order_category) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.013s
+
+OK

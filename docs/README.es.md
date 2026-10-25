@@ -50,6 +50,7 @@ Desde el repositorio público, `./start.sh` arranca la Fábrica (una clave de LL
 
 | Documento | Enlace |
 | --- | --- |
+| Pruebas de pago y transacciones: compras, reembolsos, recuperación, SQLite/PostgreSQL | [payment-tests-and-transactions.es.md](payment-tests-and-transactions.es.md) |
 | Diagnóstico externo de AICOM: algoritmo, configuración, presupuesto y recuperación | [factory-subcontracting.es.md](factory-subcontracting.es.md) |
 | Base de conocimiento | [knowledge-base-es.md](ecosystem/knowledge-base-es.md) |
 | Libro blanco | [whitepaper/es.md](ecosystem/whitepaper/es.md) |

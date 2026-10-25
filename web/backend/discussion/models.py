@@ -13,7 +13,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # ── Enums ──────────────────────────────────────────────────────────────────────
@@ -55,6 +55,8 @@ class AgentType(str, Enum):
 
 class SessionConfig(BaseModel):
     """Configuration for a discussion session."""
+
+    model_config = ConfigDict(protected_namespaces=("model_validate", "model_dump"))
 
     max_rounds: int = Field(default=5, ge=1, le=20, description="Maximum discussion rounds")
     max_tokens_per_agent: int = Field(default=4000, ge=500, le=16000)

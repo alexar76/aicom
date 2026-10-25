@@ -740,6 +740,11 @@ _copy_badge_tooling() {
     if [[ -f "$script_src/ci_coverage_badge.sh" && -f "$script_src/generate_coverage_badge.py" ]]; then
       cp "$script_src/ci_coverage_badge.sh" "$script_src/generate_coverage_badge.py" "$clone/scripts/"
       chmod +x "$clone/scripts/ci_coverage_badge.sh"
+      # ci_coverage_badge.sh also runs generate_tests_badge.py; without it every synced
+      # satellite's CI failed, and on 2026-10-20 it was added to aimarket-mcp by hand on GitHub.
+      if [[ -f "$script_src/generate_tests_badge.py" ]]; then
+        cp "$script_src/generate_tests_badge.py" "$clone/scripts/"
+      fi
     fi
     echo "  ✓ scripts/ (coverage badge CI at repo root)"
   fi
@@ -824,7 +829,7 @@ export_desktop_monorepo() {
     done
   fi
 
-  local rsync_base_args=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude .dart_tool --exclude build --exclude dist --exclude .DS_Store \
+  local rsync_base_args=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude .dart_tool --exclude build --exclude .build --exclude dist --exclude .DS_Store \
     --include '.env.example' --include 'quality-public-key.pem' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc' --exclude data/secrets --exclude '*_signing_key' --exclude '*_vrf_sk' --exclude dataset_salt)
 
   for sku in $skus; do
@@ -947,7 +952,7 @@ PY
 
   local rsync_base=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv
     --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude .mypy_cache
-    --exclude build --exclude dist --exclude .DS_Store --exclude site --exclude .github
+    --exclude build --exclude .build --exclude dist --exclude .DS_Store --exclude site --exclude .github
     --exclude .coverage --exclude coverage.json
     --include '.env.example' --include 'quality-public-key.pem' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc'
     --exclude data/secrets --exclude '*_signing_key' --exclude '*_vrf_sk' --exclude dataset_salt)
@@ -1144,7 +1149,7 @@ export_plugins() {
 
   find "$clone" -mindepth 1 -not -name '.git' -not -path '*/.git/*' -exec rm -rf {} + 2>/dev/null || true
 
-  local rsync_args=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude build --exclude dist --exclude '*.egg-info' --exclude .DS_Store \
+  local rsync_args=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude build --exclude .build --exclude dist --exclude '*.egg-info' --exclude .DS_Store \
     --include '.env.example' --include 'quality-public-key.pem' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc' --exclude data/secrets --exclude '*_signing_key' --exclude '*_vrf_sk' --exclude dataset_salt)
 
   # Main plugins

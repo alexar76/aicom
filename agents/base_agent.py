@@ -7,6 +7,7 @@ Each agent has a strict role and must validate input/output.
 
 from __future__ import annotations
 
+import contextlib
 import html as _html
 import json
 import logging
@@ -261,10 +262,8 @@ class BaseAgent(ABC):
             # cut off at the output limit — which `_extract_json` then repairs into a
             # half-populated object that looks exactly like a complete one.
             if config is not None:
-                try:
+                with contextlib.suppress(Exception):
                     config.finish_reason = getattr(cfg, "finish_reason", "")
-                except Exception:  # noqa: BLE001 - a caller may pass a frozen config
-                    pass
             self._last_finish_reason = getattr(cfg, "finish_reason", "")
             return reply
         except Exception as e:

@@ -78,7 +78,8 @@ type Props = { initial: FactoryAgentsRoster };
 
 export function FactoryAgentsRosterClient({ initial }: Props) {
   const [roster, setRoster] = useState(initial);
-  const [updatedAt, setUpdatedAt] = useState<number>(() => Date.now());
+  const [updatedAt, setUpdatedAt] = useState<number | null>(null);
+  const [ageSeconds, setAgeSeconds] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
@@ -90,6 +91,7 @@ export function FactoryAgentsRosterClient({ initial }: Props) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setRoster(normalize(await res.json()));
       setUpdatedAt(Date.now());
+      setAgeSeconds(0);
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'refresh failed');
@@ -107,6 +109,12 @@ export function FactoryAgentsRosterClient({ initial }: Props) {
       document.removeEventListener('visibilitychange', onVis);
     };
   }, [refresh]);
+
+  useEffect(() => {
+    const since = updatedAt ?? Date.now();
+    const id = window.setInterval(() => setAgeSeconds((Date.now() - since) / 1000), 1000);
+    return () => window.clearInterval(id);
+  }, [updatedAt]);
 
   const sorted = [...roster.agents].sort((a, b) => {
     const rank = (s: string) => (s === 'live' ? 0 : s === 'stale' ? 1 : 2);
@@ -157,7 +165,7 @@ export function FactoryAgentsRosterClient({ initial }: Props) {
         <RefreshCw className={`w-3.5 h-3.5 ${error ? 'text-rose-400' : 'text-emerald-400'}`} />
         {error
           ? `refresh failed · ${error}`
-          : `auto-refresh · updated ${fmtAge((Date.now() - updatedAt) / 1000)} ago`}
+          : `auto-refresh · updated ${fmtAge(ageSeconds)} ago`}
       </div>
 
       {sorted.length === 0 ? (
@@ -211,7 +219,7 @@ export function FactoryAgentsRosterClient({ initial }: Props) {
                   {a.capabilities_used.map((cap) => (
                     <span
                       key={cap}
-                      className="text-[10px] font-mono px-2 py-0.5 rounded bg-black/30 border border-gray-700/50 text-gray-400"
+                      className="text-[10px] font-mono px-2 py-0.5 rounded-sm bg-black/30 border border-gray-700/50 text-gray-400"
                     >
                       {cap}
                     </span>

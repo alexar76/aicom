@@ -524,7 +524,7 @@ export function StorefrontFollowupPanel({
         <label className="flex items-start gap-2 text-sm text-gray-300 cursor-pointer">
           <input
             type="checkbox"
-            className="mt-1 rounded border-white/20"
+            className="mt-1 rounded-sm border-white/20"
             checked={hideFromStorefront}
             onChange={(e) => setHideFromStorefront(e.target.checked)}
           />
@@ -588,7 +588,7 @@ export function StorefrontFollowupPanel({
         <label className="flex items-start gap-2 text-sm text-gray-300 cursor-pointer">
           <input
             type="checkbox"
-            className="mt-1 rounded border-white/20"
+            className="mt-1 rounded-sm border-white/20"
             checked={forceList}
             disabled={Boolean(sf.admin_hide_from_storefront || hideFromStorefront)}
             onChange={(e) => setForceList(e.target.checked)}

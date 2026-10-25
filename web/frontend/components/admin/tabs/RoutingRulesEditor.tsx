@@ -185,7 +185,7 @@ export function RoutingRulesEditor({
                 </td>
                 <td className="py-2 pr-2">
                   <select
-                    className="w-full bg-white/5 border border-white/10 rounded px-1 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-white/5 border border-white/10 rounded-sm px-1 py-1 text-xs text-white focus:outline-hidden focus:border-indigo-500"
                     value={rule.preferred_provider || 'auto'}
                     onChange={(e) => updateRule(i, 'preferred_provider', e.target.value)}
                   >
@@ -197,7 +197,7 @@ export function RoutingRulesEditor({
                 </td>
                 <td className="py-2 pr-2">
                   <select
-                    className="bg-white/5 border border-white/10 rounded px-1 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="bg-white/5 border border-white/10 rounded-sm px-1 py-1 text-xs text-white focus:outline-hidden focus:border-indigo-500"
                     value={rule.model_role || 'light'}
                     onChange={(e) => updateRule(i, 'model_role', e.target.value)}
                   >
@@ -210,14 +210,14 @@ export function RoutingRulesEditor({
                     type="number"
                     min={10}
                     max={600}
-                    className="w-20 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-20 bg-white/5 border border-white/10 rounded-sm px-2 py-1 text-xs text-white focus:outline-hidden focus:border-indigo-500"
                     value={rule.timeout_sec}
                     onChange={(e) => updateRule(i, 'timeout_sec', parseInt(e.target.value) || 60)}
                   />
                 </td>
                 <td className="py-2 pr-2">
                   <select
-                    className="w-full bg-white/5 border border-white/10 rounded px-1 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-white/5 border border-white/10 rounded-sm px-1 py-1 text-xs text-white focus:outline-hidden focus:border-indigo-500"
                     value={rule.fallback_provider || ''}
                     onChange={(e) => updateRule(i, 'fallback_provider', e.target.value || null)}
                   >

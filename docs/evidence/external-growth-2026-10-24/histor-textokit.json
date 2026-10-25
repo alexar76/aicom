@@ -1,0 +1,38 @@
+{
+  "key": "histor-textokit",
+  "url": "https://histor.modelmarket.dev/api/v1/servers?q=textokit&limit=30",
+  "retrieved_at": "2026-10-24T19:24:00.517115+00:00",
+  "status": 200,
+  "sha256": "a6ff98321d30b7df0e8b861195d533b256bb4d405b8899b2e865597bed28d59d",
+  "data": {
+    "total": 2,
+    "offset": 0,
+    "limit": 30,
+    "servers": [
+      {
+        "id": "d720cc39b58ce419",
+        "name": "io.github.martinPisacreta/textokit-mcp",
+        "endpoint": "https://tienda.textokit.store/mcp",
+        "version": "0.1.3",
+        "lastAttempt": "2026-10-23T18:55:22Z",
+        "lastObserved": "2026-10-23T18:55:22Z",
+        "toolCount": 20,
+        "packageVersion": null,
+        "changes": 0,
+        "toolSetDigest": "sha256-IP5W+kYoXogt7RDDPbG0FmUE97uEAqyIdxDoPjuocUA="
+      },
+      {
+        "id": "275072b8fc0b1c1a",
+        "name": "io.github.martinPisacreta/textokit-mcp",
+        "endpoint": "npm:textokit-mcp",
+        "version": "0.1.2",
+        "lastAttempt": "2026-10-24T07:38:23Z",
+        "lastObserved": "2026-10-24T07:38:23Z",
+        "toolCount": 2,
+        "packageVersion": "0.1.1",
+        "changes": 0,
+        "toolSetDigest": "sha256-2yYWqBmICdp0/+6i+hXMgWRAtZG4CsQBXzE7r/Tcpgg="
+      }
+    ]
+  }
+}

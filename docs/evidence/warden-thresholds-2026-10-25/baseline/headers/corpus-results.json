@@ -1,0 +1,39 @@
+{
+  "schema": "warden.threshold-corpus/v1",
+  "at": "2026-10-25T06:37:17.450Z",
+  "syntheticKeys": 480,
+  "files": 373,
+  "excerpts": 3735,
+  "normalizedCharacters": 2481278,
+  "summary": {
+    "6": {
+      "exactWindowHits": 1,
+      "excerptHits": 1,
+      "byFormat": {
+        "pem": 1
+      }
+    },
+    "7": {
+      "exactWindowHits": 0,
+      "excerptHits": 0,
+      "byFormat": {}
+    },
+    "8": {
+      "exactWindowHits": 0,
+      "excerptHits": 0,
+      "byFormat": {}
+    }
+  },
+  "collisions": [
+    {
+      "id": "cc8665fda6d6684a4f729f82c4a4cd135177a994af8ad71af0a8f0d99d832ac5:15360:445",
+      "fileIndex": 57,
+      "offset": 15360,
+      "keyIndex": 445,
+      "sizes": [
+        6
+      ]
+    }
+  ],
+  "note": "Exact normalized substring scan; not a request-level false-positive rate, and not a hash-collision scan."
+}

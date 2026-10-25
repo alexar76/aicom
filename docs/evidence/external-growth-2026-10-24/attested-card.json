@@ -1,0 +1,108 @@
+{
+  "key": "attested-card",
+  "url": "https://hub.attestedmemory.net/.well-known/agent-card.json",
+  "retrieved_at": "2026-10-24T19:20:26.115962+00:00",
+  "status": 200,
+  "final_url": "https://hub.attestedmemory.net/.well-known/agent-card.json",
+  "sha256": "f6491b7a8a23d22448302e37ec9ab0eeac4b99b22beb2145366af7beedaa1a98",
+  "data": {
+    "name": "Attested Memory Hub",
+    "description": "Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt.",
+    "supportedInterfaces": [
+      {
+        "url": "https://hub.attestedmemory.net/a2a",
+        "protocolBinding": "JSONRPC",
+        "protocolVersion": "1.0"
+      }
+    ],
+    "provider": {
+      "organization": "Attested Memory Hub",
+      "url": "https://hub.attestedmemory.net"
+    },
+    "version": "3.16.0",
+    "documentationUrl": "https://hub.attestedmemory.net/developers",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": true,
+      "extendedAgentCard": false,
+      "extensions": [
+        {
+          "uri": "https://github.com/google-agentic-commerce/a2a-x402/blob/main/spec/v0.2",
+          "description": "x402 payments on marketplace-invoke (standalone flow). Profile deviation: this hub verifies the transfer on chain and never settles, so x402.payment.payload must carry the settle txHash of a USDC transfer to the payTo it quoted.",
+          "required": false
+        }
+      ]
+    },
+    "defaultInputModes": [
+      "text/plain",
+      "application/json"
+    ],
+    "defaultOutputModes": [
+      "text/plain",
+      "application/json"
+    ],
+    "skills": [
+      {
+        "id": "marketplace-search",
+        "name": "Search the AI capability market",
+        "description": "Find executable offers by natural-language intent and optional budget, latency, trust, hub and category filters.",
+        "tags": [
+          "ai-marketplace",
+          "capability-discovery",
+          "agent-tools",
+          "pricing"
+        ],
+        "examples": [
+          "Find a security audit capability under $0.10",
+          "Найди проверяемый сервис памяти для AI-агента"
+        ],
+        "inputModes": [
+          "text/plain",
+          "application/json"
+        ],
+        "outputModes": [
+          "text/plain",
+          "application/json"
+        ]
+      },
+      {
+        "id": "marketplace-invoke",
+        "name": "Buy and run a market capability",
+        "description": "Run one offer found by marketplace-search and return its result with a signed receipt, as a Task. Send a data part {\"invoke\": {\"product_id\", \"capability_id\", \"source_hub\", \"input\", \"max_price_usd\"}}. Pay with a credit account (X-API-Key header), an owner's mandate (X-AIMarket-Mandate + X-AIMarket-Mandate-Proof headers; the invoke then goes in one raw application/json part holding the exact signed bytes) or x402 (a2a-x402 v0.2; the payload must include the settle txHash). The first few priced calls per caller are a free trial. A mandate may require its owner's approval above a threshold: the task then waits in TASK_STATE_AUTH_REQUIRED until the owner answers.",
+        "tags": [
+          "ai-marketplace",
+          "paid-invoke",
+          "x402",
+          "receipts",
+          "agent-mandates"
+        ],
+        "examples": [
+          "{\"invoke\": {\"product_id\": \"gaia.gateway\", \"capability_id\": \"gaia.weather.read@v1\", \"source_hub\": \"local\", \"input\": {\"device_id\": \"om-wx-01\"}, \"max_price_usd\": 0.01}}"
+        ],
+        "inputModes": [
+          "application/json"
+        ],
+        "outputModes": [
+          "application/json",
+          "text/plain"
+        ]
+      }
+    ],
+    "securitySchemes": {
+      "aimarketApiKey": {
+        "apiKeySecurityScheme": {
+          "location": "header",
+          "name": "X-API-Key",
+          "description": "A credit account on this hub. Optional: the free trial and x402 need none."
+        }
+      },
+      "aimarketMandate": {
+        "apiKeySecurityScheme": {
+          "location": "header",
+          "name": "X-AIMarket-Mandate",
+          "description": "An owner's signed mandate (aimarket-protocol/mandates.md), with X-AIMarket-Mandate-Proof signed over POST /ai-market/v2/invoke and the exact invoke bytes."
+        }
+      }
+    }
+  }
+}

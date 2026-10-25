@@ -229,6 +229,8 @@ export default function AdminLoginPage() {
                   size="lg"
                   variant="secondary"
                   onClick={() => {
+                    // OIDC begins on the backend and must replace the browser document.
+                    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
                     window.location.href = '/api/admin/auth/oidc/login';
                   }}
                   disabled={loading}

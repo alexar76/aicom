@@ -15,57 +15,46 @@ from __future__ import annotations
 
 import asyncio
 import json
-import logging
 import os
 import re
-import subprocess
-import sys
-import tempfile
 import time
 import traceback
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from agents.product_profile import infer_delivery_profile
-from agents.prompt_utils import prompt_json
-from agents.prompts.load_prompt import load_prompt
-from core.child_env import scrub_child_env
 from core.delivery_profile import MARKETING_LANDING, normalize_delivery_profile
+from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
-from core.spec_presence import spec_has_substance as _spec_has_substance
-from llm import GenerationConfig, LLMRouter
-from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_QA_SEC
-from web.backend.services.e2e_isolate import run_e2e_in_subprocess
-from web.backend.services.api_contract_check import run_api_contract_check
-from web.backend.services.product_demo_journey import run_demo_journey
-from web.backend.services.demo_quality import assess_product_demo, quality_gates_pass
-from web.backend.services.duplicate_module_check import run_duplicate_module_check
 from core.repair_batches import _files_in
-from web.backend.services.frontend_build_check import run_frontend_build_check
-from web.backend.services.requirements_manifest import run_requirements_manifest_check
+from web.backend.services.api_contract_check import run_api_contract_check
+from web.backend.services.demo_quality import assess_product_demo, quality_gates_pass
 from web.backend.services.domain_acceptance_pack import build_domain_acceptance_pack
-from web.backend.services.domain_methodology import get_domain_pack, select_domain_pack
-from web.backend.services.methodology_review import review_implementation as _methodology_review_implementation
+from web.backend.services.duplicate_module_check import run_duplicate_module_check
+from web.backend.services.e2e_isolate import run_e2e_in_subprocess
+from web.backend.services.frontend_build_check import run_frontend_build_check
 from web.backend.services.perf_slo import evaluate_perf_slo
+from web.backend.services.product_demo_journey import run_demo_journey
+from web.backend.services.requirements_manifest import run_requirements_manifest_check
 from web.backend.services.traceability_matrix import build_traceability_matrix
 
 from .base_agent import AgentInput, AgentOutput, BaseAgent
-from core.json_state import write_text_atomic
-from .qa_checks.tree import TreeReadingMixin
 from .qa_checks.findings import FindingsMixin
-from .qa_checks.relay import RelayChecksMixin
 from .qa_checks.github_house import GithubHouseMixin
-from .qa_checks.realism import RealismMixin
-from .qa_checks.tooling import ToolingMixin
-from .qa_checks.scoring import ScoringMixin
 from .qa_checks.helpers import (  # noqa: F401 - re-exported
-    logger,
-    _qa_extract_json_object,
     QA_SYSTEM_PROMPT,
     _env_float,
+    _qa_extract_json_object,
+    logger,
 )
+from .qa_checks.realism import RealismMixin
+from .qa_checks.relay import RelayChecksMixin
+from .qa_checks.scoring import ScoringMixin
+from .qa_checks.tooling import ToolingMixin
+from .qa_checks.tree import TreeReadingMixin
 
+if TYPE_CHECKING:
+    from llm import LLMRouter
 
 # Markup belongs in the repair scope once compile/auth are green. Restricting this to
 # scripts is how Sentinel round 56 spent itself on operator TSX while every edit to
@@ -360,8 +349,8 @@ class QAAgent(
         """Mechanical gate fixes, applied to the tree before anything is assessed."""
         try:
             from core.paths import code_dir as product_code_dir
-            from web.backend.services.visual_gate_autofix import apply_visual_gate_autofix
             from web.backend.services.vercel_fullstack_adapter import apply_live_auth_autofix
+            from web.backend.services.visual_gate_autofix import apply_visual_gate_autofix
 
             code_root = product_code_dir(product_id)
             apply_visual_gate_autofix(code_root)
@@ -1283,7 +1272,6 @@ class QAAgent(
         # Live soft mesh (UNKNOWN / payment_authorization / escrow) outranks
         # undeclared_dep noise — otherwise developer thrash never opens atlas_client.
         try:
-            from pathlib import Path as _Path
             import json as _json
             import urllib.request as _urlreq
 

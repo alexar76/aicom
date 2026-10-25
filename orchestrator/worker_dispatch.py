@@ -14,7 +14,10 @@ from __future__ import annotations
 import asyncio
 import logging
 from dataclasses import dataclass, field
-from typing import Awaitable, Callable, Iterable
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Awaitable, Callable, Iterable
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +28,7 @@ def _default_is_paused(product_id: str) -> bool:
         from core.pipeline_product_pause import is_product_pipeline_work_paused
 
         return bool(is_product_pipeline_work_paused(product_id))
-    except Exception:  # noqa: BLE001 - a pause lookup that fails must not stop the pipeline
+    except Exception:
         logger.debug("pipeline pause probe failed for %s", product_id, exc_info=True)
         return False
 
@@ -36,7 +39,7 @@ def _default_before_task(product_id: str) -> None:
         from core.code_tree_ownership import warn_if_product_code_unwritable
 
         warn_if_product_code_unwritable(product_id)
-    except Exception:  # noqa: BLE001
+    except Exception:
         logger.debug("code tree ownership probe failed", exc_info=True)
 
 
@@ -112,7 +115,7 @@ class TaskDispatcher:
         results = await asyncio.gather(
             *(_run_one(task) for task in running), return_exceptions=True
         )
-        for task, result in zip(running, results):
+        for task, result in zip(running, results, strict=True):
             if isinstance(result, BaseException):
                 outcome.errors.append(result)
                 logger.error(

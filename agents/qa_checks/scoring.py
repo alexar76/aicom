@@ -5,6 +5,7 @@ alignment.
 from __future__ import annotations
 
 import os
+from typing import TYPE_CHECKING
 
 from agents.prompt_utils import prompt_json
 from core.logging_utils import log_suppressed
@@ -12,9 +13,10 @@ from core.spec_presence import spec_has_substance as _spec_has_substance
 from llm import GenerationConfig
 from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_QA_SEC
 
-from ..base_agent import AgentInput
-
 from .helpers import QA_SYSTEM_PROMPT, _env_float, _qa_extract_json_object, logger
+
+if TYPE_CHECKING:
+    from ..base_agent import AgentInput
 
 
 class ScoringMixin:

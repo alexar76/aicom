@@ -1,0 +1,136 @@
+diff --git a/warden/claude-plugin/scripts/flow-guard-fingerprints.mjs b/warden/claude-plugin/scripts/flow-guard-fingerprints.mjs
+index f2a12cf84..2e6f9435e 100644
+--- a/warden/claude-plugin/scripts/flow-guard-fingerprints.mjs
++++ b/warden/claude-plugin/scripts/flow-guard-fingerprints.mjs
+@@ -12,6 +12,7 @@ const STRIDE = 4;
+ const TOKEN_WINDOW = 8;
+ const HEX_TOKEN_WINDOW = 10;
+ export const TOKEN_WINDOWS = [TOKEN_WINDOW, HEX_TOKEN_WINDOW];
++const NORMALIZED_CREDENTIAL_PREFIX = /^(?:[rs]k(?:live|test)|skantapi[0-9]+|skant|skproj|sk|gh[pousr]|githubpat|glpat|npm|xox[abprs]|akia|asia|aiza)/;
+ // Text every key of a kind shares, so it is no piece of any one key: the RSA, EC and signature algorithm
+ // identifiers of DER keys and certificates, in letters and digits.
+ export const KEY_STRUCTURE = ['anbgkqhkig9w0baqefaa', 'a0gcsqgsib3dqebcwua', 'a0gcsqgsib3dqebbquaa', 'byqgsm49ageg', 'ccqgsm49aweh', 'bsubbaaiq', 'mcowbqydk2vw', 'mcowbqydk2vu'];
+@@ -126,14 +127,23 @@ export function secretValues(text, credentialFile) {
+ export function secretTokens(text, credentialFile) {
+     return [...new Set(secretValues(text, credentialFile).map(alnum))];
+ }
+-/** Windows that hold both a letter and a digit, so an ordinary word is never a piece of a key. A window never
+- * starts in the key's leading letters ("sk-ant-api03" or "rk_live" is a format every such key shares), never in the
+- * first 48 characters of a DER key or certificate (its header and algorithm), and never lies inside KEY_STRUCTURE. */
++/** Known providers' alphabetic payload prefixes are still secret: do not skip them merely because the first
++ * digit comes late. Keep every previously indexed window. Generic values retain the old conservative start:
++ * public word-based environment values ending in a year must not gain new hard-denial substrings. */
++export function tokenFingerprintStart(a) {
++    const leading = /^[a-z]*/.exec(a)[0].length;
++    if (/^(mii|mig|mhc|mc4|mco)/.test(a))
++        return Math.max(48, leading);
++    const prefix = NORMALIZED_CREDENTIAL_PREFIX.exec(a)?.[0];
++    return prefix ? Math.min(leading, prefix.length) : leading;
++}
++/** Windows hold both a letter and a digit; alphabetic-only words are not strong credential evidence.
++ * Public format/DER structure is excluded. The 8/10-character thresholds and stored hash format are unchanged. */
+ export function tokenFingerprints(tokens) {
+     const out = new Set();
+     for (const a of tokens) {
+         const size = /^[0-9a-f]+$/.test(a) ? HEX_TOKEN_WINDOW : TOKEN_WINDOW;
+-        const start = /^(mii|mig|mhc|mc4|mco)/.test(a) ? Math.max(48, /^[a-z]*/.exec(a)[0].length) : /^[a-z]*/.exec(a)[0].length;
++        const start = tokenFingerprintStart(a);
+         for (let i = start; i + size <= a.length; i++) {
+             const w = a.slice(i, i + size);
+             if (/\d/.test(w) && /[a-z]/.test(w) && !KEY_STRUCTURE.some(k => k.includes(w)))
+diff --git a/warden/src/flow-guard-fingerprints.ts b/warden/src/flow-guard-fingerprints.ts
+index 202abb473..9688b02a2 100644
+--- a/warden/src/flow-guard-fingerprints.ts
++++ b/warden/src/flow-guard-fingerprints.ts
+@@ -12,6 +12,7 @@ const STRIDE = 4;
+ const TOKEN_WINDOW = 8;
+ const HEX_TOKEN_WINDOW = 10;
+ export const TOKEN_WINDOWS = [TOKEN_WINDOW, HEX_TOKEN_WINDOW] as const;
++const NORMALIZED_CREDENTIAL_PREFIX = /^(?:[rs]k(?:live|test)|skantapi[0-9]+|skant|skproj|sk|gh[pousr]|githubpat|glpat|npm|xox[abprs]|akia|asia|aiza)/;
+ // Text every key of a kind shares, so it is no piece of any one key: the RSA, EC and signature algorithm
+ // identifiers of DER keys and certificates, in letters and digits.
+ export const KEY_STRUCTURE = ['anbgkqhkig9w0baqefaa', 'a0gcsqgsib3dqebcwua', 'a0gcsqgsib3dqebbquaa', 'byqgsm49ageg', 'ccqgsm49aweh', 'bsubbaaiq', 'mcowbqydk2vw', 'mcowbqydk2vu'];
+@@ -116,14 +117,23 @@ export function secretTokens(text: string, credentialFile: boolean): string[] {
+   return [...new Set(secretValues(text, credentialFile).map(alnum))];
+ }
+ 
+-/** Windows that hold both a letter and a digit, so an ordinary word is never a piece of a key. A window never
+- * starts in the key's leading letters ("sk-ant-api03" or "rk_live" is a format every such key shares), never in the
+- * first 48 characters of a DER key or certificate (its header and algorithm), and never lies inside KEY_STRUCTURE. */
++/** Known providers' alphabetic payload prefixes are still secret: do not skip them merely because the first
++ * digit comes late. Keep every previously indexed window. Generic values retain the old conservative start:
++ * public word-based environment values ending in a year must not gain new hard-denial substrings. */
++export function tokenFingerprintStart(a: string): number {
++  const leading = /^[a-z]*/.exec(a)![0].length;
++  if (/^(mii|mig|mhc|mc4|mco)/.test(a)) return Math.max(48, leading);
++  const prefix = NORMALIZED_CREDENTIAL_PREFIX.exec(a)?.[0];
++  return prefix ? Math.min(leading, prefix.length) : leading;
++}
++
++/** Windows hold both a letter and a digit; alphabetic-only words are not strong credential evidence.
++ * Public format/DER structure is excluded. The 8/10-character thresholds and stored hash format are unchanged. */
+ export function tokenFingerprints(tokens: readonly string[]): string[] {
+   const out = new Set<string>();
+   for (const a of tokens) {
+     const size = /^[0-9a-f]+$/.test(a) ? HEX_TOKEN_WINDOW : TOKEN_WINDOW;
+-    const start = /^(mii|mig|mhc|mc4|mco)/.test(a) ? Math.max(48, /^[a-z]*/.exec(a)![0].length) : /^[a-z]*/.exec(a)![0].length;
++    const start = tokenFingerprintStart(a);
+     for (let i = start; i + size <= a.length; i++) {
+       const w = a.slice(i, i + size);
+       if (/\d/.test(w) && /[a-z]/.test(w) && !KEY_STRUCTURE.some(k => k.includes(w))) out.add(fpHash(w));
+diff --git a/warden/test/flow-guard-secret-regression.test.ts b/warden/test/flow-guard-secret-regression.test.ts
+index c49ac40ca..36983caef 100644
+--- a/warden/test/flow-guard-secret-regression.test.ts
++++ b/warden/test/flow-guard-secret-regression.test.ts
+@@ -4,7 +4,8 @@ import { join } from 'node:path';
+ import { tmpdir } from 'node:os';
+ import { fileURLToPath } from 'node:url';
+ import { execFileSync } from 'node:child_process';
+-import { candidates, publicRequestDigest, flowPaths, flowPre, fragmentFingerprints, readFlowState, runFlowHook, secretTokens, spelledCandidates } from '../src/flow-guard.js';
++import { candidates, publicRequestDigest, flowPaths, flowPre, fragmentFingerprints, readFlowState, runFlowHook, secretTokens, spelledCandidates, tokenFingerprints } from '../src/flow-guard.js';
++import { fpHash, tokenFingerprintStart } from '../src/flow-guard-fingerprints.js';
+ 
+ const root = fileURLToPath(new URL('..', import.meta.url));
+ const dirs: string[] = [];
+@@ -36,6 +37,41 @@ function setup(policy: unknown = {}, secret = token, taint = true, sourcePath =
+ }
+ 
+ describe('short-secret fragment correlation', () => {
++  it('denies an embedded eight-character payload when the key has a long alphabetic beginning', () => {
++    const value = 'AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGh1234';
++    const key = ['ghp', value].join('_');
++    const s = setup({}, key);
++    const piece = value.slice(-8);
++    expect(tokenFingerprints(secretTokens(key, true))).toContain(fpHash(piece.toLowerCase()));
++    expect(s.pre(`helloworld${piece}kindregards`)?.permissionDecision).toBe('deny');
++  });
++
++  it('keeps existing eight-character on-disk stores valid for a known provider', () => {
++    const value = 'AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGh1234';
++    const s = setup({}, ['ghp', value].join('_'));
++    const piece = value.slice(-8).toLowerCase();
++    expect(s.pre(`helloworld${piece}kindregards`)?.permissionDecision).toBe('deny');
++    // Same old on-disk 12-hex fingerprint format and the same eight-character matcher.
++    writeFileSync(s.paths.tok, fpHash(piece) + '\n');
++    expect(s.pre(`helloworld${piece}kindregards`)?.permissionDecision).toBe('deny');
++  });
++
++  it('does not expand generic word-based configuration into a false hard denial of a reviewed public request', () => {
++    const value = 'AcmeIntegrationToken2026', body = 'Public build Token2026';
++    const tool = 'mcp__mail__send_email', input = { to: 'bob@corp.com', body };
++    const s = setup({ credentialEgress: { allow: [{ tool, requestSha256: publicRequestDigest(tool, input) }] } }, value);
++    expect(tokenFingerprintStart(value.toLowerCase())).toBe(value.length - 4);
++    expect(s.pre(body)).toBeUndefined();
++  });
++
++  it('keeps old windows from numeric provider prefixes and leaves DER boundaries unchanged', () => {
++    const value = ['sk', 'ant', 'api03', '7Qm2ZpX9vLw4Kt8RbN3cYs6HdJ1fGa5E'].join('-');
++    const normalized = secretTokens(value, true)[0]!;
++    expect(tokenFingerprintStart(normalized)).toBe(8);
++    expect(tokenFingerprints([normalized])).toContain(fpHash(normalized.slice(8, 16)));
++    expect(tokenFingerprintStart('miievqibadanbgkqhki9w0baqefaa' + 'a'.repeat(50))).toBe(48);
++  });
++
+   it.each([1, 2, 3, 4])('requires review before even a %i-character first fragment can leave', size => {
+     const s = setup();
+     expect(s.pre(`note: ${payload.slice(0, size)} done`)?.permissionDecision).toBe('ask');

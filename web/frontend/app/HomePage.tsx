@@ -433,7 +433,7 @@ function PipelineBuildSection({ copy }: { copy: MarketingStrings }) {
     } catch {
       /* ignore */
     }
-    window.location.href = '/admin?tab=new-product';
+    router.push('/admin?tab=new-product');
   };
 
   const guestBuildLanding = async () => {
@@ -514,7 +514,7 @@ function PipelineBuildSection({ copy }: { copy: MarketingStrings }) {
                     void guestBuildLanding();
                   }
                 }}
-                className="relative flex-1 min-w-0 rounded-xl bg-black/50 border border-fuchsia-500/25 px-4 py-3.5 text-base text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50 shadow-inner"
+                className="relative flex-1 min-w-0 rounded-xl bg-black/50 border border-fuchsia-500/25 px-4 py-3.5 text-base text-white placeholder:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-fuchsia-500/50 shadow-inner"
                 placeholder={copy.heroSloganLinePlaceholder}
                 autoComplete="off"
                 aria-invalid={!!guestError}
@@ -536,7 +536,7 @@ function PipelineBuildSection({ copy }: { copy: MarketingStrings }) {
               label={copy.heroStylePresetLabel}
               hint={copy.heroStylePresetHint}
               className="relative mt-4"
-              selectClassName="relative w-full rounded-xl bg-black/50 border border-fuchsia-500/20 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40"
+              selectClassName="relative w-full rounded-xl bg-black/50 border border-fuchsia-500/20 px-4 py-3 text-sm text-white focus:outline-hidden focus:ring-2 focus:ring-fuchsia-500/40"
             />
             <p className="relative text-xs text-gray-400 mt-3 leading-relaxed">{copy.heroGuestHelp}</p>
             <p className="relative text-xs text-gray-400 mt-2 mb-4 leading-relaxed">{copy.heroPricingLine}</p>
@@ -557,7 +557,7 @@ function PipelineBuildSection({ copy }: { copy: MarketingStrings }) {
               <span className="hidden sm:inline text-gray-600">·</span>
               <button
                 type="button"
-                onClick={() => (window.location.href = '/admin')}
+                onClick={() => router.push('/admin')}
                 className="text-sm text-gray-400 hover:text-white text-left underline-offset-4 hover:underline"
               >
                 {copy.heroCtaAdminOnly}

@@ -136,13 +136,32 @@ def audit_watermark_in_html(
     return None
 
 
+def _product_html_files(code_dir: Path) -> list[Path]:
+    """The product's own HTML, built output included, sorted.
+
+    ``rglob("*.html")`` walked every ``node_modules``, ``.venv`` and ``.aicom_sandbox`` too:
+    about 30,000 directories for 24 products on 2026-10-23, 2.5 s of every storefront
+    ``GET /api/products``, for pages no visitor is served and that never carry the badge.
+    """
+    from pathlib import Path
+
+    from core.code_discovery import PRODUCT_CODE_SKIP_DIR_NAMES
+
+    skip = PRODUCT_CODE_SKIP_DIR_NAMES - {"dist", "build", ".next"}
+    found: list[Path] = []
+    for dirpath, dirnames, filenames in os.walk(code_dir, topdown=True, followlinks=False):
+        dirnames[:] = [d for d in dirnames if d not in skip]
+        found.extend(Path(dirpath) / name for name in filenames if name.endswith(".html"))
+    return sorted(found)
+
+
 def audit_watermark_links_in_tree(code_dir: Path) -> list[dict[str, str]]:
     """Scan all generated HTML for misaligned pipeline watermarks."""
     issues: list[dict[str, str]] = []
     if not code_dir.is_dir():
         return issues
     expected = resolve_public_site_url()
-    for html_file in sorted(code_dir.rglob("*.html")):
+    for html_file in _product_html_files(code_dir):
         try:
             content = html_file.read_text(encoding="utf-8", errors="replace")
         except OSError:

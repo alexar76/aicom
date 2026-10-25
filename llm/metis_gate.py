@@ -53,7 +53,7 @@ import time
 import urllib.error
 import urllib.request
 from dataclasses import asdict, dataclass, field
-from typing import Any, List, Optional
+from typing import Any
 
 logger = logging.getLogger("aifactory.metis_gate")
 
@@ -131,7 +131,7 @@ def reset_probe_cache() -> None:
     _PROBE["ts"] = 0.0
 
 
-def _metis_available(timeout: Optional[float] = None) -> bool:
+def _metis_available(timeout: float | None = None) -> bool:
     """Cheap, cached ``GET /health`` probe. Never raises."""
     now = time.monotonic()
     cached = _PROBE["ok"]
@@ -167,7 +167,7 @@ class GateVerdict:
     status: str  # success | needs_clarification | error | disabled | unavailable
     verify_score: float
     answer: str = ""
-    clarifications: List[str] = field(default_factory=list)
+    clarifications: list[str] = field(default_factory=list)
     route: str = ""
     reason: str = ""
 
@@ -181,7 +181,7 @@ def _proceed(status: str, reason: str) -> GateVerdict:
     )
 
 
-def build_understanding_query(idea: str, spec: Optional[str] = None) -> str:
+def build_understanding_query(idea: str, spec: str | None = None) -> str:
     """Compose a build-readiness prompt so Metis's confidence gate can fire.
 
     Metis will return ``needs_clarification`` (→ ``ok=False``) when the idea/spec
@@ -203,9 +203,9 @@ def build_understanding_query(idea: str, spec: Optional[str] = None) -> str:
 def verify(
     query: str,
     *,
-    route: Optional[str] = None,
-    min_score: Optional[float] = None,
-    timeout: Optional[float] = None,
+    route: str | None = None,
+    min_score: float | None = None,
+    timeout: float | None = None,
 ) -> GateVerdict:
     """Run one auto-detecting, fail-open gate check. Never raises."""
     mode = metis_gate_mode()
@@ -277,7 +277,7 @@ def verify(
 
 
 def verify_product_understanding(
-    idea: str, spec: Optional[str] = None, **kwargs: Any
+    idea: str, spec: str | None = None, **kwargs: Any
 ) -> GateVerdict:
     """Convenience: gate a product's build-readiness from its idea/spec."""
     return verify(build_understanding_query(idea, spec), **kwargs)

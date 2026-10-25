@@ -38,7 +38,7 @@ export function FactoryIqBrainScene({ copy, iq, modelCount }: Props) {
           className="relative w-40 h-40 sm:w-48 sm:h-48"
           style={{ transformStyle: 'preserve-3d' }}
         >
-          <div className="absolute inset-0 rounded-[42%] bg-gradient-to-br from-cyan-400/30 via-violet-500/25 to-indigo-600/30 border border-cyan-300/30 shadow-[0_0_60px_rgba(34,211,238,0.35)] backdrop-blur-sm" />
+          <div className="absolute inset-0 rounded-[42%] bg-gradient-to-br from-cyan-400/30 via-violet-500/25 to-indigo-600/30 border border-cyan-300/30 shadow-[0_0_60px_rgba(34,211,238,0.35)] backdrop-blur-xs" />
           <div className="absolute inset-2 rounded-[40%] bg-gradient-to-tr from-violet-600/20 to-transparent border border-white/10" />
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
             <Brain className="w-14 h-14 sm:w-16 sm:h-16 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.8)]" />

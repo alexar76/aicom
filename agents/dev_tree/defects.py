@@ -4,7 +4,10 @@ added.
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def _tree_defect_breakdown(code_root: Path) -> dict[str, int]:
@@ -236,28 +239,28 @@ def _tree_defect_score(code_root: Path) -> int | None:
 
     try:
         from web.backend.services.duplicate_module_check import (
+            find_api_routes_shadowing_spa,
+            find_capabilities_never_invoked,
+            find_case_collisions,
             find_class_body_forward_refs,
+            find_dead_path_rewrites,
+            find_duplicate_tablenames,
             find_duplicated_router_prefix,
             find_frontend_missing_exports,
-            find_api_routes_shadowing_spa,
-            find_case_collisions,
-            find_dead_path_rewrites,
-            find_mismatched_back_populates,
-            find_missing_instance_attributes,
-            find_unexpected_keyword_arguments,
-            find_missing_modules,
-            find_missing_symbols,
-            find_undefined_names,
             find_hallucinated_imports,
-            find_duplicate_tablenames,
-            find_orm_schema_never_created,
-            find_undeclared_dependencies,
-            find_capabilities_never_invoked,
-            find_sync_wrapper_over_async_handler,
             find_mesh_contract_violations,
             find_mesh_participant_violations,
+            find_mismatched_back_populates,
+            find_missing_instance_attributes,
+            find_missing_modules,
+            find_missing_symbols,
+            find_orm_schema_never_created,
             find_route_handlers_with_broken_injection,
+            find_sync_wrapper_over_async_handler,
+            find_undeclared_dependencies,
             find_undeclared_frontend_deps,
+            find_undefined_names,
+            find_unexpected_keyword_arguments,
             find_unregistered_models,
             find_unresolved_frontend_imports,
         )

@@ -272,7 +272,12 @@ write_crash_telemetry() {
     echo "--- log tail ---"
     tail -n 30 "$BACKEND_LOG_FILE" 2>/dev/null || true
     echo ""
-  } >>"$BACKEND_DIAG_FILE" 2>/dev/null || true
+  } >>"$BACKEND_TELEMETRY_FILE" 2>/dev/null || true
+  # Bounded: the last 2000 lines (dozens of crashes) are what an operator reads.
+  if [ -s "$BACKEND_TELEMETRY_FILE" ]; then
+    tail -n 2000 "$BACKEND_TELEMETRY_FILE" >"${BACKEND_TELEMETRY_FILE}.tmp" 2>/dev/null \
+      && mv -f "${BACKEND_TELEMETRY_FILE}.tmp" "$BACKEND_TELEMETRY_FILE"
+  fi
 }
 
 BACKEND_LOG_DIR="/app/data/logs"
@@ -280,6 +285,10 @@ mkdir -p "$BACKEND_LOG_DIR"
 BACKEND_PID_FILE="/tmp/aicom-backend.pid"
 BACKEND_LOG_FILE="$BACKEND_LOG_DIR/uvicorn.log"
 BACKEND_DIAG_FILE="$BACKEND_LOG_DIR/uvicorn-last-crash.log"
+# Its own file: start_backend rotates the log INTO uvicorn-last-crash.log, and until
+# 2026-10-22 the telemetry was appended there first and then overwritten by that rotation a
+# few seconds later — no crash record ever survived a restart.
+BACKEND_TELEMETRY_FILE="$BACKEND_LOG_DIR/uvicorn-crash-telemetry.log"
 
 start_backend() {
   cd /app
@@ -322,6 +331,13 @@ echo "Backend started (PID: $(cat $BACKEND_PID_FILE))"
   WINDOW_SECS="${BACKEND_RESTART_WINDOW_SECS:-1800}"
   HEALTH_PATH="${BACKEND_HEALTH_PATH:-/api/health}"
   HEALTH_FAILS_BEFORE_KILL="${BACKEND_HEALTH_FAILS_BEFORE_KILL:-5}"
+  # Down = no answer, or not a 2xx. A 403/429 is the app's own limiter answering — alive and
+  # busy; counted as down, it let the supervisor kill a backend for being busy (KI-3).
+  health_down() {
+    local code
+    code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 "http://127.0.0.1:8081${HEALTH_PATH}" 2>/dev/null)" || code="000"
+    case "$code" in 2??|403|429) return 1 ;; *) return 0 ;; esac
+  }
   backoff=5
   consecutive_health_fails=0
   restart_count=0
@@ -341,7 +357,7 @@ echo "Backend started (PID: $(cat $BACKEND_PID_FILE))"
     elif [ -r "/proc/${pid}/status" ] && grep -qE '^State:[[:space:]]*Z' "/proc/${pid}/status" 2>/dev/null; then
       needs_restart=1
       crash_reason="zombie process"
-    elif ! curl -sf --max-time 8 "http://127.0.0.1:8081${HEALTH_PATH}" >/dev/null 2>&1; then
+    elif health_down; then
       consecutive_health_fails=$((consecutive_health_fails + 1))
       if [ "$consecutive_health_fails" -ge "$HEALTH_FAILS_BEFORE_KILL" ]; then
         needs_restart=1

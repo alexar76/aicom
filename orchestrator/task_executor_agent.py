@@ -14,13 +14,13 @@ from typing import Any
 
 from core.agent_roles import is_architect_agent, is_developer_agent
 from core.charter_fidelity import charter_fidelity_report, feedback_for_pm
-from core.spec_presence import spec_has_substance as _spec_has_substance
 from core.quality_settings import (
     gate_failing_model,
     max_pipeline_repair_rounds_for_delivery_profile,
     max_pipeline_repair_rounds_for_product,
     monitoring_dev_refresh_enabled,
 )
+from core.spec_presence import spec_has_substance as _spec_has_substance
 from orchestrator.task_executor_helpers import (
     PipelineTaskExecutorHost,
     build_task_context,
@@ -71,6 +71,7 @@ def _guard_round_regression(product: dict, pid: str, qa_result: object, host) ->
     (restore the tree AND tell the next round why, or it repeats the same edit), or
     unmeasurable (do nothing at all — a guard that cannot measure must not discard work).
     """
+    from core.paths import code_dir as resolve_code_dir
     from core.round_regression_guard import (
         SCORING_RULES_VERSION,
         backend_boots,
@@ -88,7 +89,6 @@ def _guard_round_regression(product: dict, pid: str, qa_result: object, host) ->
         tree_fingerprint,
         verdict,
     )
-    from core.paths import code_dir as resolve_code_dir
 
     score = qa_defect_score(qa_result)
     if score is None:
@@ -648,12 +648,12 @@ def _refresh_static_findings(accepted_ctx: dict, code_root, pid: str) -> dict:
     """
     try:
         from web.backend.services.duplicate_module_check import (
-            find_duplicate_tablenames,
-            find_mesh_contract_violations,
-            find_frontend_missing_exports,
             find_api_routes_shadowing_spa,
             find_case_collisions,
             find_dead_path_rewrites,
+            find_duplicate_tablenames,
+            find_frontend_missing_exports,
+            find_mesh_contract_violations,
             find_mismatched_back_populates,
             find_missing_instance_attributes,
             find_missing_modules,
@@ -1369,9 +1369,9 @@ async def _heal_live_auth(run: _AgentTaskRun) -> None:
         try:
             from core.paths import code_dir as resolve_code_dir
             from web.backend.services.vercel_fullstack_adapter import (
+                relay_source_pinned_mismatch,
                 relay_source_session_mismatch,
                 relay_source_uuid_pk_mismatch,
-                relay_source_pinned_mismatch,
             )
 
             _code = resolve_code_dir(pid, data_root=host.data_root)
@@ -2215,7 +2215,7 @@ def _queue_live_gate_repair(run: _AgentTaskRun) -> None:
     live_gate_payload = run.live_gate_payload
     from web.backend.services.live_deployment_gate import live_gate_dev_fixing_task
 
-    dev_task = live_gate_dev_fixing_task(pid, products[pid] if pid in products else product, live_gate_payload)
+    dev_task = live_gate_dev_fixing_task(pid, products.get(pid, product), live_gate_payload)
     dev_task["priority"] = host._get_priority("developer")
     exists = any(
         t.get("product_id") == pid

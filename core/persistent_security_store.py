@@ -1,4 +1,4 @@
-"""SQLite-backed persistence for login rate limits and OIDC nonce replay protection."""
+"""SQLite-backed login rate limits, OIDC nonce protection and admin session revocation."""
 
 from __future__ import annotations
 
@@ -25,6 +25,12 @@ CREATE TABLE IF NOT EXISTS used_nonces (
     expires_at REAL NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_used_nonces_expires ON used_nonces (expires_at);
+
+CREATE TABLE IF NOT EXISTS revoked_admin_tokens (
+    jti TEXT PRIMARY KEY,
+    expires_at REAL NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_revoked_admin_tokens_expires ON revoked_admin_tokens (expires_at);
 """
 
 
@@ -92,6 +98,23 @@ class PersistentSecurityStore:
             )
             self.conn.commit()
             return cur.rowcount == 1
+
+    def revoke_admin_token(self, jti: str, expires_at: float) -> None:
+        """Persist logout across workers and restarts until the JWT expires."""
+        with _lock:
+            self.conn.execute("DELETE FROM revoked_admin_tokens WHERE expires_at < ?", (time.time(),))
+            self.conn.execute(
+                "INSERT OR IGNORE INTO revoked_admin_tokens (jti, expires_at) VALUES (?, ?)",
+                (jti, expires_at),
+            )
+            self.conn.commit()
+
+    def admin_token_revoked(self, jti: str) -> bool:
+        with _lock:
+            return self.conn.execute(
+                "SELECT 1 FROM revoked_admin_tokens WHERE jti = ? AND expires_at >= ?",
+                (jti, time.time()),
+            ).fetchone() is not None
 
     def close(self) -> None:
         if self._conn is not None:

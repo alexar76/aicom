@@ -76,6 +76,21 @@ def test_nonce_survives_restart(tmp_path):
     assert s2.claim_nonce("restart-nonce", ttl_seconds=300) is False
 
 
+def test_admin_token_revocation_survives_restart_and_expires(tmp_path):
+    db = tmp_path / "security_store.db"
+    first = PersistentSecurityStore(str(db))
+    first.revoke_admin_token("ended-session", time.time() + 300)
+    first.revoke_admin_token("expired-session", time.time() - 1)
+    first.close()
+    second = PersistentSecurityStore(str(db))
+    try:
+        assert second.admin_token_revoked("ended-session") is True
+        assert second.admin_token_revoked("another-session") is False
+        assert second.admin_token_revoked("expired-session") is False
+    finally:
+        second.close()
+
+
 def test_singleton_cache(tmp_path, monkeypatch):
     db = tmp_path / "security_store.db"
     monkeypatch.setenv("AIFACTORY_SECURITY_STORE_DB", str(db))

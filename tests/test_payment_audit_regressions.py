@@ -108,7 +108,6 @@ def test_evm_case_alias_rejected_even_by_database(pay):
 @pytest.mark.parametrize("signer_kind,expected", [("payer", 200), ("attacker", 403), ("missing", 400)])
 def test_checkout_requires_actual_payer_signature(pay, monkeypatch, signer_kind, expected):
     from web.backend.schemas.api_requests import ConfirmPaymentRequest
-    import web.backend.services.uni_bridge as bridge
     buyer = pay.commerce.register_customer("buyer@example.test", "synthetic-password")
     payer, attacker = Account.create(), Account.create()
     tx = "0x" + "ab" * 32
@@ -120,7 +119,6 @@ def test_checkout_requires_actual_payer_signature(pay, monkeypatch, signer_kind,
     monkeypatch.setattr(pay, "_catalog_checkout_usdt", lambda p: 5.0)
     monkeypatch.setattr(pay, "_verify_evm_transaction", lambda **kw: {
         "verified": True, "confirmations": 100, "from": payer.address, "block_number": 100})
-    monkeypatch.setattr(bridge, "credit_payment_confirm", lambda **kw: None)
     wallet = payer if signer_kind == "payer" else attacker
     sig = wallet.sign_message(encode_defunct(text=claim_message(payment, tx))).signature.hex()
     if signer_kind == "missing":

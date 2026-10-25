@@ -22,7 +22,9 @@ class InsufficientFundsError(UniWalletError):
     pass
 
 
-def _iuni(value: float | int) -> int:
+def _iuni(value: float | int | None) -> int:
+    if value is None:
+        raise UniWalletError("wallet_amount_unavailable")
     return int(round(float(value)))
 
 
@@ -119,6 +121,8 @@ class UniWalletService:
                 from core.uni.receipts import get_receipt_by_idempotency_key
 
                 prior = get_receipt_by_idempotency_key(idempotency_key, conn=conn)
+                if not prior:
+                    raise UniWalletError("settlement_receipt_unavailable")
                 return {
                     "duplicate": True,
                     "idempotency_key": idempotency_key,
@@ -132,22 +136,23 @@ class UniWalletService:
             self._credit_balance(conn, seller["wallet_id"], net, ts, lifetime_in=True)
             if fee > 0:
                 self._credit_balance(conn, platform["wallet_id"], fee, ts, lifetime_in=True)
-        from core.uni.receipts import issue_receipt
+            from core.uni.receipts import issue_receipt
 
-        receipt = issue_receipt(
-            wallet_id=buyer["wallet_id"],
-            kind=receipt_kind,
-            amount_uni=gross,
-            meta={**meta, "buyer_owner_id": buyer_owner_id, "seller_owner_id": seller_owner_id},
-            idempotency_key=idempotency_key,
-            buyer_wallet_id=buyer["wallet_id"],
-            seller_wallet_id=seller["wallet_id"],
-            platform_fee_uni=fee,
-            net_to_seller_uni=net,
-            product_id=meta.get("product_id"),
-            capability_id=meta.get("capability_id"),
-            hub_id=meta.get("hub_id"),
-        )
+            receipt = issue_receipt(
+                conn=conn,
+                wallet_id=buyer["wallet_id"],
+                kind=receipt_kind,
+                amount_uni=gross,
+                meta={**meta, "buyer_owner_id": buyer_owner_id, "seller_owner_id": seller_owner_id},
+                idempotency_key=idempotency_key,
+                buyer_wallet_id=buyer["wallet_id"],
+                seller_wallet_id=seller["wallet_id"],
+                platform_fee_uni=fee,
+                net_to_seller_uni=net,
+                product_id=meta.get("product_id"),
+                capability_id=meta.get("capability_id"),
+                hub_id=meta.get("hub_id"),
+            )
         return {
             "receipt": receipt,
             "amount_uni": gross,
@@ -190,16 +195,15 @@ class UniWalletService:
                 raise UniWalletError("duplicate_withdraw")
             if not self._debit_available(conn, wallet["wallet_id"], gross, ts):
                 raise InsufficientFundsError("insufficient_balance")
-            platform = self.get_or_create_platform_wallet()
-            if fee > 0:
-                self._credit_balance(conn, platform["wallet_id"], fee, ts, lifetime_in=True)
+            # The fee is a pending part of this withdrawal, not earned income.
+            # A payout adapter must recognize it only after chain confirmation.
             if uni_db_backend() == "postgres":
                 conn.execute(
                     """
                     INSERT INTO uni_withdrawals (
-                        withdrawal_id, wallet_id, amount_uni, fee_uni, net_usdt,
+                        withdrawal_id, wallet_id, amount_uni, fee_uni, net_usdt, fee_credited,
                         payout_chain, payout_token, payout_address, status, requested_at
-                    ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,'queued',%s)
+                    ) VALUES (%s,%s,%s,%s,%s,0,%s,%s,%s,'queued',%s)
                     """,
                     (withdrawal_id, wallet["wallet_id"], gross, fee, net_usdt, chain, token, payout_address, ts),
                 )
@@ -207,23 +211,24 @@ class UniWalletService:
                 conn.execute(
                     """
                     INSERT INTO uni_withdrawals (
-                        withdrawal_id, wallet_id, amount_uni, fee_uni, net_usdt,
+                        withdrawal_id, wallet_id, amount_uni, fee_uni, net_usdt, fee_credited,
                         payout_chain, payout_token, payout_address, status, requested_at
-                    ) VALUES (?,?,?,?,?,?,?,?,'queued',?)
+                    ) VALUES (?,?,?,?,?,0,?,?,?,'queued',?)
                     """,
                     (withdrawal_id, wallet["wallet_id"], gross, fee, net_usdt, chain, token, payout_address, ts),
                 )
-        from core.uni.receipts import issue_receipt
+            from core.uni.receipts import issue_receipt
 
-        issue_receipt(
-            wallet_id=wallet["wallet_id"],
-            kind="withdraw",
-            amount_uni=gross,
-            meta={"fee_uni": fee, "net_usdt": net_usdt, "payout_address": payout_address, "chain": chain},
-            idempotency_key=f"withdraw:{withdrawal_id}",
-            tx_hash=None,
-            chain=chain,
-        )
+            issue_receipt(
+                conn=conn,
+                wallet_id=wallet["wallet_id"],
+                kind="withdraw",
+                amount_uni=gross,
+                meta={"fee_uni": fee, "net_usdt": net_usdt, "payout_address": payout_address, "chain": chain},
+                idempotency_key=f"withdraw:{withdrawal_id}",
+                tx_hash=None,
+                chain=chain,
+            )
         return {
             "withdrawal_id": withdrawal_id,
             "amount_uni": gross,
@@ -231,6 +236,53 @@ class UniWalletService:
             "net_usdt": net_usdt,
             "status": "queued",
         }
+
+    def refund_withdrawal(self, withdrawal_id: str) -> dict[str, Any]:
+        """Atomically return an unsent withdrawal, including legacy fee reversal.
+
+        A durable ledger entry and the final status share one commit. Interrupted
+        work stays refund_due; old failed rows missing a refund can be recovered.
+        A recorded chain transaction always requires explicit reconciliation.
+        """
+        platform = self.get_or_create_platform_wallet()
+        pg = uni_db_backend() == "postgres"
+        def sql(query: str) -> str:
+            return query.replace("?", "%s") if pg else query
+        ts = now_ts()
+        with uni_connection() as conn:
+            raw = conn.execute(sql("SELECT * FROM uni_withdrawals WHERE withdrawal_id=?")
+                               + (" FOR UPDATE" if pg else ""), (withdrawal_id,)).fetchone()
+            row = row_to_dict(raw)
+            if not row or row.get("status") not in ("refund_due", "failed"):
+                raise UniWalletError("withdrawal_not_refundable")
+            if row.get("tx_hash"):
+                raise UniWalletError("withdrawal_requires_chain_reconciliation")
+            wallet_id = row["wallet_id"]
+            gross, fee = _iuni(row["amount_uni"]), _iuni(row["fee_uni"])
+            if gross <= 0 or fee < 0 or fee > gross:
+                raise UniWalletError("invalid_withdrawal_amount")
+            keys = (f"grant:withdraw-refund:{withdrawal_id}", f"grant:withdraw-reap:{withdrawal_id}")
+            refunded = any(self._ledger_idempotency(conn, key) for key in keys)
+            if not refunded:
+                if not self._claim_ledger_entry(conn, wallet_id=wallet_id, entry_type="refund",
+                        amount_uni=gross, ref=withdrawal_id, meta={"withdrawal_id": withdrawal_id},
+                        idempotency_key=keys[0]):
+                    raise UniWalletError("refund_ledger_unavailable")
+                self._credit_balance(conn, wallet_id, gross, ts, lifetime_in=True)
+            if row.get("fee_credited") and fee and self._claim_ledger_entry(
+                    conn, wallet_id=platform["wallet_id"],
+                    entry_type="fee_reversal", amount_uni=-fee, ref=withdrawal_id,
+                    meta={"withdrawal_id": withdrawal_id},
+                    idempotency_key=f"withdraw-fee-reversal:{withdrawal_id}"):
+                # A spent legacy fee may make the platform's balance negative:
+                # that exposes its real deficit instead of creating new money.
+                conn.execute(sql("UPDATE uni_wallets SET balance_uni=balance_uni-?, "
+                                 "lifetime_in=lifetime_in-?, updated_at=? WHERE wallet_id=?"),
+                             (fee, fee, ts, platform["wallet_id"]))
+            conn.execute(sql("UPDATE uni_withdrawals SET status='failed', fee_credited=0, "
+                             "error='withdrawal not sent; UNI refunded', completed_at=? WHERE withdrawal_id=?"),
+                         (ts, withdrawal_id))
+        return {"ok": True, "refund_uni": 0 if refunded else gross, "duplicate": refunded}
 
     def topup_from_chain(
         self,
@@ -307,8 +359,10 @@ class UniWalletService:
             ):
                 row = self._fetch_wallet(conn, wallet_id)
                 hold = self._fetch_hold_by_channel(conn, channel_id)
+                if not hold:
+                    raise UniWalletError("hold_state_unavailable")
                 return {
-                    "hold_id": hold.get("hold_id") if hold else hold_id,
+                    "hold_id": hold["hold_id"],
                     "channel_id": channel_id,
                     "amount_uni": gross,
                     "wallet": self._wallet_view(row or {}),
@@ -319,7 +373,7 @@ class UniWalletService:
                     """
                     UPDATE uni_wallets
                     SET balance_uni = balance_uni - %s, hold_uni = hold_uni + %s, updated_at = %s
-                    WHERE wallet_id = %s AND balance_uni - hold_uni >= %s
+                    WHERE wallet_id = %s AND balance_uni >= %s
                     """,
                     (gross, gross, ts, wallet_id, gross),
                 )
@@ -337,7 +391,7 @@ class UniWalletService:
                     """
                     UPDATE uni_wallets
                     SET balance_uni = balance_uni - ?, hold_uni = hold_uni + ?, updated_at = ?
-                    WHERE wallet_id = ? AND balance_uni - hold_uni >= ?
+                    WHERE wallet_id = ? AND balance_uni >= ?
                     """,
                     (gross, gross, ts, wallet_id, gross),
                 )
@@ -363,8 +417,15 @@ class UniWalletService:
         idem = f"spend:{channel_id}:{ref}:{gross}"
         with uni_connection() as conn:
             hold = self._fetch_hold_by_channel(conn, channel_id)
-        if not hold or hold.get("status") != "open":
-            raise UniWalletError("hold_not_open")
+            if self._ledger_idempotency(conn, idem):
+                from core.uni.receipts import get_receipt_by_idempotency_key
+
+                prior = get_receipt_by_idempotency_key(idem, conn=conn)
+                if not prior:
+                    raise UniWalletError("settlement_receipt_unavailable")
+                return {"ok": False, "duplicate": True, "error": "duplicate_spend", "receipt": prior}
+            if not hold or hold.get("status") != "open":
+                raise UniWalletError("hold_not_open")
         seller_ref = str(hold.get("seller_ref") or "ai_market")
         seller = self.get_or_create_wallet(seller_ref)
         platform = self.get_or_create_platform_wallet()
@@ -380,7 +441,7 @@ class UniWalletService:
             if not self._claim_ledger_entry(
                 conn,
                 wallet_id=wallet_id,
-                entry_type="charge",
+                entry_type="hold_charge",
                 amount_uni=-gross,
                 ref=ref or channel_id,
                 meta={"hold_id": hold_id, "channel_id": channel_id, "fee_uni": fee, "net_uni": net},
@@ -389,6 +450,8 @@ class UniWalletService:
                 from core.uni.receipts import get_receipt_by_idempotency_key
 
                 prior = get_receipt_by_idempotency_key(idem, conn=conn)
+                if not prior:
+                    raise UniWalletError("settlement_receipt_unavailable")
                 return {
                     "ok": False,
                     "duplicate": True,
@@ -425,19 +488,20 @@ class UniWalletService:
             if fee > 0:
                 self._credit_balance(conn, platform["wallet_id"], fee, ts, lifetime_in=True)
             self._fetch_wallet(conn, wallet_id)
-        from core.uni.receipts import issue_receipt
+            from core.uni.receipts import issue_receipt
 
-        receipt = issue_receipt(
-            wallet_id=wallet_id,
-            kind="hold_charge",
-            amount_uni=gross,
-            meta={"channel_id": channel_id, "ref": ref, "seller_ref": seller_ref},
-            idempotency_key=idem,
-            buyer_wallet_id=wallet_id,
-            seller_wallet_id=seller["wallet_id"],
-            platform_fee_uni=fee,
-            net_to_seller_uni=net,
-        )
+            receipt = issue_receipt(
+                conn=conn,
+                wallet_id=wallet_id,
+                kind="hold_charge",
+                amount_uni=gross,
+                meta={"channel_id": channel_id, "ref": ref, "seller_ref": seller_ref},
+                idempotency_key=idem,
+                buyer_wallet_id=wallet_id,
+                seller_wallet_id=seller["wallet_id"],
+                platform_fee_uni=fee,
+                net_to_seller_uni=net,
+            )
         return {
             "ok": True,
             "amount_uni": gross,
@@ -568,6 +632,8 @@ class UniWalletService:
                 from core.uni.receipts import get_receipt_by_idempotency_key
 
                 prior = get_receipt_by_idempotency_key(idempotency_key, conn=conn)
+                if not prior:
+                    raise UniWalletError("settlement_receipt_unavailable")
                 return {
                     "wallet": self._wallet_view(row or {}),
                     "duplicate": True,
@@ -592,21 +658,22 @@ class UniWalletService:
                     (delta, delta, ts, wallet_id),
                 )
             row = self._fetch_wallet(conn, wallet_id)
-        from core.uni.receipts import issue_receipt
+            from core.uni.receipts import issue_receipt
 
-        receipt = issue_receipt(
-            wallet_id=wallet_id,
-            kind=receipt_kind,
-            amount_uni=amount_uni,
-            meta={**meta, "ref": ref, "entry_type": entry_type},
-            idempotency_key=idempotency_key,
-        )
+            receipt = issue_receipt(
+                conn=conn,
+                wallet_id=wallet_id,
+                kind=receipt_kind,
+                amount_uni=amount_uni,
+                meta={**meta, "ref": ref, "entry_type": entry_type},
+                idempotency_key=idempotency_key,
+            )
         return {"wallet": self._wallet_view(row or {}), "receipt": receipt}
 
-    def _fetch_wallet(self, conn: Any, wallet_id: str) -> dict[str, Any] | None:
+    def _fetch_wallet(self, conn: Any, wallet_id: str, *, for_update: bool = False) -> dict[str, Any] | None:
         if uni_db_backend() == "postgres":
             row = conn.execute(
-                "SELECT * FROM uni_wallets WHERE wallet_id = %s",
+                "SELECT * FROM uni_wallets WHERE wallet_id = %s" + (" FOR UPDATE" if for_update else ""),
                 (wallet_id,),
             ).fetchone()
         else:
@@ -616,7 +683,7 @@ class UniWalletService:
     def _fetch_hold_by_channel(self, conn: Any, channel_id: str) -> dict[str, Any] | None:
         if uni_db_backend() == "postgres":
             row = conn.execute(
-                "SELECT * FROM uni_holds WHERE channel_id = %s ORDER BY created_at DESC LIMIT 1",
+                "SELECT * FROM uni_holds WHERE channel_id = %s ORDER BY created_at DESC LIMIT 1 FOR UPDATE",
                 (channel_id,),
             ).fetchone()
         else:
@@ -640,7 +707,7 @@ class UniWalletService:
         """INSERT-first idempotency claim; returns False when key already used."""
         if not idempotency_key:
             return True
-        row = self._fetch_wallet(conn, wallet_id)
+        row = self._fetch_wallet(conn, wallet_id, for_update=True)
         if not row:
             return False
         bal = _iuni(row.get("balance_uni"))
@@ -651,7 +718,7 @@ class UniWalletService:
         elif entry_type == "release":
             balance_after = bal + amount_uni
             hold_after = max(0, held - amount_uni)
-        elif entry_type == "charge":
+        elif entry_type == "hold_charge":
             balance_after = bal
             hold_after = max(0, held + amount_uni)
         elif entry_type == "withdraw":
@@ -731,22 +798,22 @@ class UniWalletService:
                 SET balance_uni = balance_uni - %s,
                     lifetime_out = lifetime_out + %s,
                     updated_at = %s
-                WHERE wallet_id = %s AND balance_uni - hold_uni >= %s
+                WHERE wallet_id = %s AND balance_uni >= %s
                 """,
                 (amount_uni, amount_uni, ts, wallet_id, amount_uni),
             )
-            return cur.rowcount == 1
+            return bool(cur.rowcount == 1)
         cur = conn.execute(
             """
             UPDATE uni_wallets
             SET balance_uni = balance_uni - ?,
                 lifetime_out = lifetime_out + ?,
                 updated_at = ?
-            WHERE wallet_id = ? AND balance_uni - hold_uni >= ?
+            WHERE wallet_id = ? AND balance_uni >= ?
             """,
             (amount_uni, amount_uni, ts, wallet_id, amount_uni),
         )
-        return cur.rowcount == 1
+        return bool(cur.rowcount == 1)
 
     def _credit_balance(self, conn: Any, wallet_id: str, amount_uni: int, ts: float, *, lifetime_in: bool) -> None:
         if amount_uni <= 0:
@@ -791,7 +858,7 @@ class UniWalletService:
             "owner_type": row.get("owner_type") or "customer",
             "balance_uni": bal,
             "hold_uni": held,
-            "available_uni": max(0, bal - held),
+            "available_uni": max(0, bal),
             "lifetime_in": _iuni(row.get("lifetime_in")),
             "lifetime_out": _iuni(row.get("lifetime_out")),
             "status": row.get("status") or "active",

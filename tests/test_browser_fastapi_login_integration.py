@@ -8,6 +8,7 @@ CI runs this file in a dedicated workflow job after browser install.
 from __future__ import annotations
 
 import shutil
+import sys
 from pathlib import Path
 
 import pytest
@@ -38,7 +39,19 @@ def test_fastapi_preview_login_scenario(tmp_path: Path, monkeypatch: pytest.Monk
     monkeypatch.setenv("AIFACTORY_BROWSER_DEEP_CRAWL", "0")
     monkeypatch.setenv("AIFACTORY_VISUAL_DOM_AUDIT", "0")
     monkeypatch.setenv("AIFACTORY_E2E_EMAIL", "ci-user@fixture.local")
-    monkeypatch.setenv("AIFACTORY_E2E_PASSWORD", "ci-pass-integration-9")
+    # The preview deliberately scrubs factory passwords. Use the fixture's public,
+    # synthetic default so this test exercises that boundary without leaking a key.
+    monkeypatch.setenv("AIFACTORY_E2E_PASSWORD", "e2e-password-change-me")
+    # All fixture dependencies are declared in the test environment. Keep browser,
+    # HTTP, sessions and scenarios real; package downloads are a separate boundary.
+    monkeypatch.setattr(
+        "web.backend.services.sandbox_preview_env._preview_venv_python",
+        lambda *_: Path(sys.executable),
+    )
+    monkeypatch.setattr(
+        "web.backend.services.sandbox_preview_env._pip_install_requirements",
+        lambda *_: {"ok": True},
+    )
 
     pid = "fixture-fastapi-login"
     dest = tmp_path / "code" / pid

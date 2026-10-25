@@ -151,7 +151,7 @@ function NumberRow(props: {
           if (!Number.isFinite(n)) return;
           onChange(Math.min(max, Math.max(min, n)));
         }}
-        className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-white/10 px-3 py-1.5 text-sm text-white focus:border-indigo-500/50 focus:outline-none disabled:opacity-50"
+        className="mt-2 w-full max-w-xs rounded-lg border border-white/10 bg-white/10 px-3 py-1.5 text-sm text-white focus:border-indigo-500/50 focus:outline-hidden disabled:opacity-50"
       />
     </div>
   );

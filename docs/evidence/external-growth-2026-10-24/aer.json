@@ -1,0 +1,176 @@
+{
+  "key": "aer",
+  "url": "https://agenteconomy.report/s/modelmarket.dev.json",
+  "retrieved_at": "2026-10-24T19:14:58.724841+00:00",
+  "status": 200,
+  "sha256": "07e95ff3a458b916069f923cd8143eaa8189d6363b3b96b016796ec6fd288292",
+  "data": {
+    "host": "modelmarket.dev",
+    "as_of": "2026-10-24",
+    "tier": "D",
+    "tier_raw": "D",
+    "above_trust_line": false,
+    "trust_line": "BBB",
+    "outlook": "stable",
+    "trend": "stable",
+    "outlook_basis": {
+      "compares": "organic paying agents, last 7 days vs previous 7 days",
+      "organic_paying_agents_last_7d": 0,
+      "organic_paying_agents_previous_7d": 0,
+      "text": "0 organic paying agents in the last 7 days vs 0 in the 7 before"
+    },
+    "flag": null,
+    "score": 1.7,
+    "uptime": 0.214,
+    "retired_resources": 0,
+    "resources": {
+      "count": 8,
+      "shown": 8,
+      "source": "x402 discovery catalogs (CDP Bazaar, PayAI), as listed today",
+      "operator_supplied": [
+        "items[].path",
+        "items[].url",
+        "items[].description",
+        "items[].network"
+      ],
+      "untrusted": true,
+      "items": [
+        {
+          "path": "/x402/histor-check",
+          "url": "https://modelmarket.dev/x402/histor-check",
+          "description": "HISTOR pre-flight for an MCP server: its signed record in the HISTOR transparency log: when the tool set was first seen, whether it changed, what the pattern scan found. Never contacts the server asked about.",
+          "withheld": false,
+          "price_usd": 0.001,
+          "price_is_max": false,
+          "network": "Base",
+          "paid_calls_30d": 6
+        },
+        {
+          "path": "/x402/mcp-diff",
+          "url": "https://modelmarket.dev/x402/mcp-diff",
+          "description": "MCP security: catch a rug pull or tool poisoning between two tools/list results of the same MCP server: the version you approved and the one it serves now. Flags instructions aimed at the model, override and concealment wording, credential and wallet paths, covert actions, hidden Unicode, new URLs…",
+          "withheld": false,
+          "price_usd": 0.003,
+          "price_is_max": false,
+          "network": "Base",
+          "paid_calls_30d": 5
+        },
+        {
+          "path": "/x402/air-quality-now",
+          "url": "https://modelmarket.dev/x402/air-quality-now",
+          "description": "Current air quality at a place: PM2.5 and PM10 (µg/m³), US and European AQI, from Copernicus CAMS via Open-Meteo, with a signed receipt. Send latitude and longitude, or a city.",
+          "withheld": false,
+          "price_usd": 0.001,
+          "price_is_max": false,
+          "network": "Base",
+          "paid_calls_30d": 4
+        },
+        {
+          "path": "/x402/fair-random",
+          "url": "https://modelmarket.dev/x402/fair-random",
+          "description": "Verifiable random bytes for a draw, raffle or tie-break: an ECVRF output over your seed plus a proof anyone can check offline. The same seed always gives the same output, so publish the seed first.",
+          "withheld": false,
+          "price_usd": 0.006,
+          "price_is_max": false,
+          "network": "Base",
+          "paid_calls_30d": 4
+        },
+        {
+          "path": "/x402/warden-scan",
+          "url": "https://modelmarket.dev/x402/warden-scan",
+          "description": "WARDEN verdict on an MCP server's tools/list: allow or block, a 0-1 score and every finding with the matched text (prompt injection, secret requests, exfiltration, hidden Unicode). Deterministic published rules, no network.",
+          "withheld": false,
+          "price_usd": 0.001,
+          "price_is_max": false,
+          "network": "Base",
+          "paid_calls_30d": 4
+        },
+        {
+          "path": "/x402/weather-now",
+          "url": "https://modelmarket.dev/x402/weather-now",
+          "description": "Current weather at a place: temperature (°C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Meteo relay within 75 km, with a signed receipt. Send latitude and longitude, or a city.",
+          "withheld": false,
+          "price_usd": 0.001,
+          "price_is_max": false,
+          "network": "Base",
+          "paid_calls_30d": 4
+        },
+        {
+          "path": "/x402/x402-check",
+          "url": "https://modelmarket.dev/x402/x402-check",
+          "description": "Debug an x402 payment before you submit it: why does USDC answer invalid signature? Verifies the EIP-3009 transferWithAuthorization (EIP-712 signer, v, low s, validity window) and the seller's terms (payTo, amount, asset, network, bound nonce), and names the domain a failing signature was really ma…",
+          "withheld": false,
+          "price_usd": 0.003,
+          "price_is_max": false,
+          "network": "Base",
+          "paid_calls_30d": 3
+        },
+        {
+          "path": "/x402/nearby-sensors",
+          "url": "https://modelmarket.dev/x402/nearby-sensors",
+          "description": "The nearest live public sensors to a point, one per layer asked for (weather, air, radiation, quake …), each with its reading, distance and source, and a signed receipt.",
+          "withheld": false,
+          "price_usd": 0.03,
+          "price_is_max": false,
+          "network": "Base",
+          "paid_calls_30d": 2
+        }
+      ]
+    },
+    "organic_paying_agents": 0,
+    "paying_wallets_raw": 5,
+    "settled_usd_14d": 0.34,
+    "centrality": 0.0,
+    "scale": [
+      "AAA",
+      "AA",
+      "A",
+      "BBB",
+      "BB",
+      "B",
+      "CCC",
+      "CC",
+      "C",
+      "D"
+    ],
+    "url": "https://agenteconomy.report/s/modelmarket.dev",
+    "badge": "https://agenteconomy.report/s/modelmarket.dev.svg",
+    "embed": "<a href=\"https://agenteconomy.report/s/modelmarket.dev\"><img src=\"https://agenteconomy.report/s/modelmarket.dev.svg\" alt=\"modelmarket.dev trust rating: D\"></a>",
+    "method": "https://agenteconomy.report/s/",
+    "api": {
+      "protocol": "x402",
+      "rating": {
+        "url": "https://agenteconomy.report/api/rating/modelmarket.dev",
+        "price_usd": 0.005
+      },
+      "history": {
+        "url": "https://agenteconomy.report/api/rating/modelmarket.dev/history",
+        "price_usd": 0.02,
+        "note": "full daily series since first observation; the same series is free in the open dataset at https://agenteconomy.report/s/data/"
+      }
+    },
+    "disclaimer": "Operational trust rating of a software service: not a credit rating, not investment advice.",
+    "owner": {
+      "verified": true,
+      "name": "AIMarket",
+      "url": "https://modelmarket.dev/",
+      "contact": null,
+      "method": "wallet_signature",
+      "network": "evm",
+      "verified_at": "2026-10-21T11:22:23.875185+00:00",
+      "pro": false,
+      "pro_until": null,
+      "operator_supplied": [
+        "name",
+        "url",
+        "contact"
+      ],
+      "untrusted": true
+    },
+    "badges": {
+      "rating": "https://agenteconomy.report/s/modelmarket.dev.svg",
+      "verified_owner": "https://agenteconomy.report/s/modelmarket.dev.verified.svg",
+      "rising": null
+    }
+  }
+}

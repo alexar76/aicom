@@ -27,9 +27,12 @@ def _module_has_log_suppressed_import(rel_path: str) -> bool:
     path = _REPO_ROOT / rel_path
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     for node in tree.body:
-        if isinstance(node, ast.ImportFrom) and node.module == "core.logging_utils":
-            if any(alias.name == "log_suppressed" for alias in node.names):
-                return True
+        if (
+            isinstance(node, ast.ImportFrom)
+            and node.module == "core.logging_utils"
+            and any(alias.name == "log_suppressed" for alias in node.names)
+        ):
+            return True
     return False
 
 
@@ -104,3 +107,21 @@ def test_a_virtualenv_under_the_repo_is_not_first_party_source(tmp_path):
         check=False,
     )
     assert proc.returncode == 0, proc.stderr + proc.stdout
+
+
+def test_the_scanner_prunes_dependency_directories_before_descending(tmp_path, monkeypatch):
+    import os
+
+    guard = importlib.import_module("scripts.check_docstring_imports")
+    dependencies = tmp_path / "node_modules"
+    dependencies.mkdir()
+    (dependencies / "vendored.py").touch()
+    (tmp_path / "first_party.py").touch()
+    original_scandir = os.scandir
+
+    def scan(path):
+        assert Path(path) != dependencies, "the guard must not enumerate dependencies"
+        return original_scandir(path)
+
+    monkeypatch.setattr(os, "scandir", scan)
+    assert list(guard.iter_python_files(tmp_path)) == [tmp_path / "first_party.py"]

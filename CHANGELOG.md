@@ -12,6 +12,8 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 ## [Unreleased]
 
 ### Added
+- **HISTOR 0.3.0: a restart no longer costs the crawl.** A redeploy continues the interrupted cycle however long it has run, as long as it was making progress (only a process down for a whole interval starts afresh); until now a cycle was dropped once its start was a day old, and on 2026-10-22 one 42 hours and six restarts in was dialled again from the first server. A cycle plans its packages once and keeps the plan (migration 012, `crawl_plans`), so a continued run skips the hour of npm/PyPI version lookups and the sandbox budget and the classifier budget are the cycle's, not each run's. A run saves its counts every 30 s; an interrupted run is marked with its cycle's totals read back from the database; `/api/v1/stats` reports the cycle (`lastRun.cycle`) and counts progress over it (`crawl.progress.thisRun` beside it). `docs/operations.md` § A restart mid-crawl, five languages.
+- **HISTOR 0.3.0: what a tool list costs, part by part, per change and in a package's CI.** Every count is split into the tool names, the descriptions, the input schemas and the keys and punctuation around them (they add up to the total; output schemas and the list as listed beside it), counted as `histor/docs/tool-list-cost.md` counts (`o200k_base`), and each top-level input property is counted too, so a diff names the field that grew. The service gives each change its cost diff (`/api/v1/changes/<id>/cost`), a server its current cost and the totals of its last changes (`/api/v1/servers/<id>/cost`) and any stored set its cost (`/api/v1/cost/toolsets/<digest>`); the image bakes the tokenizer table in, and a deployment without the new `cost` extra answers 503. `histor tool-cost snapshot | check | diff` counts a server started over stdio, a streamable HTTP endpoint or a saved tools/list, compares it with a committed baseline and exits 1 when the total, the descriptions or the input schemas grow past a limit, with a Markdown table for the job summary. The public counter at modelmarket.dev/tools/tool-list-cost shows the same split (`parts`, and description and input schema per heavy tool); the split is identical in both, checked on the same tools. Asked for by a reader of the tool-list-cost post (Raju Dandigam).
 - **Hub 3.16.0: owner approval above a threshold.** A mandate's `limits.approvalAbove` makes any single call that costs more wait for a signed approval from an owner of the funding account, bound to that call's exact bytes and ceiling and used once with its reservation (`aimarket-protocol/mandates.md` §5.6, migration 054). The API key alone can deny, never approve. SDK `aimarket-agent` 2.6.0: `issue_mandate(approval_above_usd=…)`, `approval_payload()`.
 - **Hub 3.16.0: A2A push notifications and `returnImmediately`.** Clients register webhooks per task (`taskPushNotificationConfig` and the four config methods) and hear every state change as a `statusUpdate`, including the ones no request of theirs causes: a detached run finishing, an owner answering an approval, the sweep expiring a task. Webhooks get the outbound SSRF rules; pushes never carry artifacts (migration 055, `docs/a2a.md`).
 - **Hub 3.16.0: owners hear about approval requests in Telegram, Slack, Jira or a webhook.** The funding account registers channels (`/ai-market/v2/mandates/notify`, up to 8; migration 058) and each new request — and the answer to it — is sent there: a Telegram message from the hub's bot (`AIMARKET_NOTIFY_TELEGRAM_BOT_TOKEN`) or the owner's own, a Slack incoming webhook, a Jira Cloud issue per request with the answer as a comment, or a signed JSON webhook. A notification never approves; channel secrets are never returned; addresses get the outbound SSRF rules; a test route shows what the channel answered (`aimarket-hub/docs/mandates*.md`, five languages).
@@ -27,6 +29,96 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 - **Hub: a call that arrived without coordinates is incomplete input, not a refusal and not a miss.** `outcome=incomplete` stays on the live tape with its own counter; `refused` is a policy decision; only `ok`/`fail` move `success_rate` (API, SSR ticker, trust, i18n). Historical `fail` rows can be re-marked with `aimarket-hub/scripts/reclassify_incomplete_input.py` (dry-run default; `--apply` requires a live `--probe-url`).
 
 ### Fixed
+- **Local security closure (2026-10-25).** Rechecked all eight Vulnetix findings and
+  closed additional paths found across the ecosystem: administrative sessions now
+  track the live account and are revoked on logout or security changes, including
+  concurrent password resets; customer source ZIPs exclude secrets, runtime state
+  and filesystem links; WARDEN/ARGUS reject alternate IPv6 spellings of private
+  destinations; HESTIA uses the same canonical tenant route for payment and dispatch;
+  MCP/ARGUS/DIOSCURI bound remote response reads, and development service ports bind
+  loopback. Updated affected Python, npm, Rust and Go dependencies and the Node image
+  security baseline, and expanded dependency scanning to previously omitted products.
+  Regression checks use local fixtures. Changes remain local; released packages and
+  running services require their normal release/deployment process.
+- **Our own audit for the classes Vulnetix found (2026-10-25).** The same mistakes elsewhere in the
+  monorepo, found by searching for each class and fixed with tests:
+  - Open without a key (CWE-306, as in aimarket-mcp): metis 0.2.2 (`metis-serve`, `metis-coordinator`,
+    `metis-node`), aimarket-platon 0.1.4 (steer/project writes, both copies) and aimarket-treasury 0.1.2
+    (payout routes) answered every caller when no key or token was set outside production, on ports
+    bound to 0.0.0.0. Without one they now answer only callers on the machine itself (loopback peer
+    and `Host`, no forwarding headers, no cross-site `Origin`).
+  - Check, then connect by name again (CWE-918, as in signal-hunt): ATLAS 0.3.2 watchbox webhooks
+    (checked once, then up to five posts by name over ~3 minutes), aimarket-mcp 0.6.2 `web_fetch`
+    and alien-monitor peer discovery (HTTPS was never pinned), Emberline's alert webhooks and HESTIA
+    0.1.3's domain-proof fetch. Each request now goes to the address that passed, with the name in
+    `Host` and TLS SNI. NAT64 and 6to4 forms of private IPv4 addresses are refused by aimarket-mcp,
+    EMPORION 0.4.2's page capture, HISTOR's crawler guard and HESTIA.
+  - Caller headers believed from anyone (CWE-307/CWE-770, as in skopos-fleet): rate-limit and lockout
+    keys in aimarket-oracle-core 0.6.1 (which also decides the paid tier), PLATON, logos 0.2.1, the
+    three attested services, BASANOS, KOVA, the verified-execution hub and cite-desks took
+    `X-Real-IP` / `X-Forwarded-For` from any peer. They now do so only when the peer is the local
+    proxy (loopback, private or link-local), and read the right-most forwarded hop.
+  - SSH host keys (CWE-295, as in skopos-fleet): SKOPOS remediation `git push` ran with
+    `StrictHostKeyChecking=no`; it now pins the first key in `~/.skopos/known_hosts`.
+  - No new cases of rights taken from a producer's data (CWE-863), of incomplete external lists
+    (EMPORION serves OFAC 19,471 / EU 6,269 / UK 6,408 entries) or of sandbox-trace gaps beyond HISTOR.
+- **Three more findings Vulnetix reported on 2026-10-24 (advisory-database issue #5), fixed.**
+  - helios-broadcast 0.2.1 (GCVE-110-PYPI-2026-021897, CWE-863): a job's `youtube.privacy` from the
+    shared queue decided the upload's visibility, so a queue producer could publish without
+    `helios approve`. Uploads are always private; ingest drops a requested privacy and audits it.
+  - skopos-fleet 0.2.1 (GCVE-110-PYPI-2026-021896, CWE-307): the login lockout keyed on a header any
+    direct caller could set. Keyed on the websocket peer now, headers trusted only from the local
+    proxy, plus an all-addresses failed-login budget. Host keys were already verified since 0.2.0.
+  - aimarket-histor 0.4.1 (GCVE-110-PYPI-2026-022091, CWE-693): the sandbox trace did not record or
+    parse rename/link/symlink/creat and never reported writes under /work. Recorded, parsed and judged
+    now; .pth/sitecustomize and post-install code writes are persistence; a trace runtime missing those
+    calls counts as no trace.
+- **Hub home page: a dictionary that does not arrive no longer turns the page into its keys.**
+  When `hub-ui-i18n.json` failed or took over 4 s, the page installed an empty dictionary and
+  wrote every key over the English the server had rendered: the tab read `page_title`, the page
+  NAV_WIDGET, SEARCH_BTN, S_CAPS (seen on modelmarket.dev, 2026-10-24). The server now inlines
+  `ui.en` into the page, each element keeps its served text as the fallback, the fetch gets 10 s
+  and the HTTP cache, and a failed load is retried three times.
+- **Five findings Vulnetix reported on 2026-10-24 (advisory-database issue #5), fixed.**
+  - EMPORION 0.4.1 (GCVE-110-PYPI-2026-021807, CWE-693): OFAC continues long SDN remarks in
+    `SDN_COMMENTS.CSV`, sometimes mid-address; only `SDN.CSV` was read, so 538 of 1,050 listed
+    wallet addresses screened as not listed and 17 cut halves were kept as addresses. Both
+    files are fetched and joined before addresses are read; a load fails without the second, an
+    OFAC snapshot cached before the fix is not served, and a byte-order mark is ignored.
+  - aimarket-mcp 0.6.1 (GCVE-110-PYPI-2026-018883, CWE-306): with no `AIMARKET_MCP_KEY` the
+    HTTP server answered any peer on `0.0.0.0`. It now binds `127.0.0.1` by default (the HTTP
+    image sets `0.0.0.0`). Without a key, and unless `AIMARKET_MCP_PUBLIC=1`, it answers only
+    callers on the machine: a loopback packet with a loopback `Host`, no forwarding headers (a
+    proxy on the same host) and no cross-site browser `Origin` (a web page, DNS rebinding).
+  - aimarket-signal-hunt 0.1.2 (GCVE-110-PYPI-2026-021946, CWE-918): the peer probe checked the
+    resolved addresses, then connected by name and resolved again (DNS rebinding). It now
+    connects to the checked address, with the name in `Host` and in TLS SNI so the certificate
+    is still verified against it, and keeps no connection alive between probes. It keeps the
+    resolver's address order (dual-stack peers), sends IDN names in ASCII, ignores proxy
+    settings for probes, and refuses IPv6 forms that carry a private IPv4 (NAT64, 6to4, mapped).
+  - aimarket-hestia 0.1.2 (GCVE-110-PYPI-2026-020712, CWE-863): an open-signup key's code right
+    was stored while `HESTIA_OPEN_OWNER_CODE` was on and outlived a switch to the stub runtime,
+    where a restart also brought that key's handlers back as plain child processes; an
+    operator's routine update of such a key (quota, suspension) wrote the right again. One rule
+    (`hestia.owners.code_right`) now decides an owner's deploy, the operator's deploy for an
+    owner, a restart and an owner update: an open-signup key runs code only in the wasm
+    sandbox, a suspended owner runs none, otherwise the operator's grant. Owner updates change
+    only the fields they name, taking the right away stops the owner's running stub handlers at
+    once, and migration 010 clears the rights self-admission had stored.
+  - Hub (GCVE-110-PYPI-2026-004375, CWE-918): already fixed, but later than the record says. Every
+    release from 3.0.0 to 3.2.1 POSTed to a peer's `mcp_endpoint` as advertised (3.0.0 and 3.1.0
+    for oracle-like peers, 3.2.x for all). The same-origin check (2026-09-04) first shipped in
+    3.7.0; the record's range should be 3.0.0–3.2.1, fixed in 3.7.0.
+- **From an outside review of 2026-10-22** (SUB/1, the credits ledger, WARDEN `wrap`, KI-3/4/9/11; full table in `docs/known-issues.md` § Outside review fixes):
+  - hub credits ledger: resolving a hold and carving a child out of an allowance each committed in two steps, so a process killed in between — or another request's failed statement on the shared SQLite connection — lost the money; every money move is now one transaction (`tests/test_ledger_crash_consistency.py`, 8 of 11 failed before);
+  - SUB/1: a child could join a call that was finishing (check and insert were two transactions); a child hold left by a crash was never released; the grant was sent to plain-`http` public providers — all fixed, with races also run on PostgreSQL (`tests/test_money_races_postgres.py`, CI job `money-postgres`);
+  - signup grants: budget check and grant are one serialized transaction; on PostgreSQL the two-step version minted $0.30–$0.45 against a $0.25 daily budget;
+  - a mandate document unreadable mid-chain now refuses the chain instead of shifting the revocation check (found by the new ruff gate over the hub's money paths);
+  - WARDEN `wrap` enforces `policy.sensitiveToolPatterns` (it accepted and ignored them): each call asks a person through MCP elicitation or is refused; ARGUS matches patterns against the MCP server's tool name too;
+  - factory backend: with `UVICORN_WORKERS > 1` only one worker (a `flock` holder) runs the background loops; KI-3 crash telemetry gets its own file instead of being overwritten by the next start's log rotation; the supervisor's `/api/health` probe is no longer counted or throttled by the per-address limiter, which answered it 403 under load and got a busy backend killed, and a 403/429 reads as alive;
+  - hub: `Idempotency-Key` on paid invokes (credits rail and ledger channels) — a retry after a timeout replays the first answer instead of paying again (migration 061); `aimarket-hub/scripts/load_money_path.py` puts the money path under load and audits the ledger afterwards;
+  - `scripts/check_ki4_ownership.py` measures KI-4 (owner, pending owner, escrow USDC) on Base; `escrow-signer/deploy/signer-hub-only.sh` narrows the signer forward to the hub container (installed on factory-vps 2026-10-23).
+- **Performance, from the 2026-10-23 public load test** (tables before and after in `docs/load-testing.md`, five languages): the pipeline worker no longer re-parses the YAML config for every product on every cycle (92% of its CPU in a live profile; ~89% of a core → 16%); the storefront grid assesses each product once per request, prunes `node_modules` from its HTML walk and reuses a built grid for 30 s (median 7.3 s → 0.22 s at 20 users); the trust strip reads products only instead of all 3,510 tasks and is cached a minute off the event loop (4.7 s → 0.18 s), which also brings factory `/api/health` p95 from 3.8 s to 0.43 s; the hub logs one warning per ACEX ledger that is off by configuration instead of 311 tracebacks a day; the director keeps a discovery cycle when one enrichment gets an empty model answer; the monitor runs its blocking satellite polls in a worker thread (written and tested, not yet deployed).
 - **Hub 3.16.0, from an independent review of the approvals, push and card top-up work** (each pinned by a test that fails without its fix):
   - one owner approval paid for any number of routed calls: a peer answering below its catalogue price made the hub release the fee hold and debit the smaller fee, and the release handed the approval back although the call was charged — it now stays spent with the debit;
   - an owner was asked to approve calls the mandate's own `perCall`, `perDay`, `total` or product limit would refuse — those are now `402 mandate_limit` before any request is opened;

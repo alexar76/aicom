@@ -42,9 +42,12 @@ def _issue_session(
     response: Response,
     username: str,
     role: str,
+    account: dict,
 ) -> None:
     security: SecurityManager = request.app.state.security_manager
-    token = security.create_access_token(username, role=normalize_role(role).value)
+    token = security.create_access_token(username, role=normalize_role(role).value, account=account)
+    if not security.authenticate_admin_token(token):
+        raise HTTPException(status_code=401, detail="Account changed during sign-in; retry.")
     cookie_secure = _access_token_cookie_secure(request)
     max_age = _session_token_max_age(request)
     csrf = new_csrf_token()
@@ -79,7 +82,7 @@ def _sync_oidc_user(username: str, role: str) -> dict:
         if existing.get("enabled", True) is False:
             return existing
         if str(existing.get("role")) != normalized:
-            aus.update_user(str(existing["id"]), role=normalized)
+            return aus.update_user(str(existing["id"]), role=normalized)
         return existing
     created = aus.create_user(
         username=username,
@@ -146,7 +149,7 @@ async def oidc_callback(request: Request, code: str = "", state: str = ""):
 
     session_role = str(row.get("role") or role)
     resp = RedirectResponse(url=safe_post_login_url(os.environ.get("AIFACTORY_OIDC_POST_LOGIN_URL")), status_code=302)
-    _issue_session(request, resp, username, session_role)
+    _issue_session(request, resp, username, session_role, row)
     resp.delete_cookie(OIDC_STATE_COOKIE, path="/")
     resp.delete_cookie(OIDC_NONCE_COOKIE, path="/")
     security: SecurityManager = request.app.state.security_manager

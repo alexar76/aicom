@@ -2,7 +2,7 @@
   "name": "ai-factory-frontend",
   "version": "2.1.0",
   "private": true,
-  "description": "AUTONOMOUS AI-FACTORY v2.1 \u2014 Premium Storefront & Admin Panel",
+  "description": "AUTONOMOUS AI-FACTORY v2.1 — Premium Storefront & Admin Panel",
   "scripts": {
     "prebuild": "python3 scripts/gen_pwa_icons.py && python3 scripts/copy_factory_docs.py",
     "dev": "next dev",
@@ -22,14 +22,14 @@
     "ethers": "^6.16.0",
     "framer-motion": "^11.5.0",
     "lucide-react": "^0.441.0",
-    "next": "^16.3.4",
+    "next": "16.4.2",
     "qrcode.react": "^4.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.4.1",
     "recharts": "^2.15.4",
     "sharp": "^0.35.4",
-    "tailwind-merge": "^2.5.0",
+    "tailwind-merge": "3.7.0",
     "zustand": "^5.0.13"
   },
   "devDependencies": {
@@ -37,17 +37,22 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "autoprefixer": "^10.4.0",
     "eslint": "^9.39.0",
-    "eslint-config-next": "^16.3.4",
+    "eslint-config-next": "16.4.2",
     "postcss": "^8.5.22",
-    "tailwindcss": "^3.4.0",
+    "tailwindcss": "4.3.3",
     "typescript": "^5.5.0",
-    "vitest": "^4.1.11"
+    "vitest": "4.1.12",
+    "@tailwindcss/postcss": "4.3.3"
   },
   "overrides": {
     "ws": "^8.21.0",
     "postcss": "^8.5.22",
-    "baseline-browser-mapping": "^2.11.0"
+    "postcss-selector-parser": "^7.1.7",
+    "baseline-browser-mapping": "^2.11.0",
+    "@next/eslint-plugin-next": {
+      "fast-glob": "npm:tinyglobby@0.2.17"
+    },
+    "zod@^4": "^4.6.6"
   }
 }

@@ -96,7 +96,7 @@ export function PromptImprovementTab({ locale }: { locale: AdminLocale }) {
               </div>
               <p className="text-xs text-gray-400">{p.hypothesis}</p>
               {p.patch_preview ? (
-                <pre className="text-[11px] text-indigo-200/80 bg-black/30 rounded p-2 whitespace-pre-wrap">{p.patch_preview}</pre>
+                <pre className="text-[11px] text-indigo-200/80 bg-black/30 rounded-sm p-2 whitespace-pre-wrap">{p.patch_preview}</pre>
               ) : null}
               {p.status === 'proposed' ? (
                 <Button size="sm" onClick={() => void apply(p.id)} disabled={applying === p.id}>

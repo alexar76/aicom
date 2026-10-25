@@ -1,0 +1,696 @@
+[
+  {
+    "name": "textokit_bcra_indicadores",
+    "description": "Indicadores monetarios del BCRA. 0.002 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resource"
+      ],
+      "properties": {
+        "resource": {
+          "type": "string",
+          "enum": [
+            "lista",
+            "serie"
+          ],
+          "description": "lista returns variables; serie returns observations for one…"
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Optional lista-only text filter within the received page;…"
+        },
+        "idVariable": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991,
+          "description": "Required for serie; forbidden for lista. Positive BCRA…"
+        },
+        "desde": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "description": "Optional serie-only start date, YYYY-MM-DD; must not exceed…"
+        },
+        "hasta": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "description": "Optional serie-only end date, YYYY-MM-DD."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Requested page size, 1–20; defaults to 5."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Requested page offset; defaults to 0."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_cartas_ar",
+    "description": "Formal letter in Argentine Spanish. 0.005 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "remitente",
+        "destinatario",
+        "lugarYFecha",
+        "asunto",
+        "hechos",
+        "solicitud"
+      ],
+      "properties": {
+        "remitente": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Name or identification to include in the signature"
+        },
+        "destinatario": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Recipient person or organization"
+        },
+        "lugarYFecha": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "description": "Place and date supplied by the buyer"
+        },
+        "asunto": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Subject to include in the reference line of the letter"
+        },
+        "hechos": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 6000,
+          "description": "Supplied facts for the body, ordered chronologically when…"
+        },
+        "solicitud": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 3000,
+          "description": "Requested action and conditions supplied by the buyer"
+        },
+        "tipo": {
+          "type": "string",
+          "enum": [
+            "reclamo",
+            "intimacion",
+            "solicitud"
+          ],
+          "description": "Letter type: reclamo, intimacion or solicitud. Defaults to…"
+        },
+        "plazoDias": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60,
+          "description": "Optional requested response period in days, from 1 to 60.…"
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_catalog",
+    "description": "List all store routes with price in USDC, network, summary and HTTP URL. Free.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_comparar_textos",
+    "description": "Compare texts literally. 0.001 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "original",
+        "entrega"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "original": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "Original string; at most 20000 UTF-16 code units."
+        },
+        "entrega": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "String to compare against the original; at most 20000 UTF-16…"
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_crypto_prices",
+    "description": "Precios de criptomonedas en USD. 0.001 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coins"
+      ],
+      "properties": {
+        "coins": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1619,
+          "description": "Comma-separated list of 1–20 distinct lowercase CoinGecko…"
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_cuit_ar",
+    "description": "Validate Argentine CUIT or CUIL tax id (check digit, KYC onboarding). 0.001 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifier"
+      ],
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "description": "Eleven digits or XX-XXXXXXXX-X format, supplied as text; up…"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "CUIT",
+            "CUIL"
+          ],
+          "description": "Optional caller-declared type: auto, CUIT or CUIL. Defaults…"
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_dev_utils",
+    "description": "Hash, HMAC, JWT decode, UUID, base64 and time zone utilities. 0.001 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "op"
+      ],
+      "properties": {
+        "op": {
+          "type": "string",
+          "enum": [
+            "hash",
+            "hmac",
+            "jwt_decode",
+            "uuid4",
+            "base64_encode",
+            "base64_decode",
+            "url_parse",
+            "tz_convert",
+            "unix_to_iso"
+          ],
+          "description": "Operation to run."
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "Input text, token, URL, timestamp or local datetime (depends…"
+        },
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "md5",
+            "sha1",
+            "sha256",
+            "sha512",
+            "sha3-256"
+          ],
+          "description": "Hash algorithm for hash and hmac (default sha256)."
+        },
+        "secret": {
+          "type": "string",
+          "maxLength": 4096,
+          "description": "Secret for hmac or for optional HS256 verification in…"
+        },
+        "from": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "IANA source time zone for tz_convert (default UTC)."
+        },
+        "to": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "IANA target time zone for tz_convert (default UTC)."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_direcciones_ar",
+    "description": "Argentine address candidates from Georef. 0.002 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "direccion"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "direccion": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200,
+          "description": "Address text, from 3 to 200 characters. Locality text alone…"
+        },
+        "provinciaId": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2,
+          "description": "Optional two-digit province identifier, preserving leading…",
+          "pattern": "^[0-9]{2}$"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum returned candidates, from 1 to 10; defaults to 5.",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 5
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_dolar_ar",
+    "description": "Argentina dollar exchange rates. 0.002 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_fx_rates",
+    "description": "FX rates: daily exchange rates for USD, EUR, ARS, BRL and 160 currencies. 0.001 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "base": {
+          "type": "string",
+          "maxLength": 3,
+          "default": "USD",
+          "description": "Base currency, ISO 4217 (default USD)."
+        },
+        "quotes": {
+          "type": "string",
+          "maxLength": 120,
+          "default": "EUR,GBP,BRL,ARS,MXN,JPY",
+          "description": "Comma-separated quote currencies, 1 to 20 ISO 4217 codes."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_how_to_pay",
+    "description": "How to pay a tool with x402 (HTTP 402) from your own wallet, and the local npm alternative that signs for you. Free.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_normativa_ar",
+    "description": "Argentina Boletin Oficial search: official gazette notices with excerpts. 0.005 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query"
+      ],
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Nonempty keyword or search text, up to 200 UTF-16 units."
+        },
+        "date": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "description": "Optional publication date, YYYY-MM-DD, selecting daily mode.…"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Maximum notices to read, from 1 to 10; default: 3."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_polymarket_markets",
+    "description": "Mercados y datos públicos de Polymarket. 0.002 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "resource": {
+          "type": "string",
+          "enum": [
+            "markets",
+            "positions",
+            "activity"
+          ],
+          "description": "Defaults to markets. Positions and activity require user."
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Case-insensitive substring search in question and slug…"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "all",
+            "active",
+            "closed"
+          ],
+          "description": "Filter the received market page. Active requires active=true…"
+        },
+        "order": {
+          "type": "string",
+          "enum": [
+            "volume",
+            "liquidity"
+          ],
+          "description": "Descending ordering within the received market page; missing…"
+        },
+        "user": {
+          "type": "string",
+          "pattern": "^0x[0-9a-fA-F]{40}$",
+          "description": "Public wallet address required for positions and activity;…"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Upstream page size before local filtering; defaults to 5. A…"
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Offset passed to the upstream endpoint before local…"
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_sample",
+    "description": "Free sample of one route (same schema as the paid output) plus an inputExample. Use it before paying.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "route"
+      ],
+      "properties": {
+        "route": {
+          "type": "string",
+          "enum": [
+            "translate-es",
+            "bcra-indicadores",
+            "cartas-ar",
+            "comparar-textos",
+            "crypto-prices",
+            "cuit-ar",
+            "dev-utils",
+            "direcciones-ar",
+            "dolar-ar",
+            "fx-rates",
+            "normativa-ar",
+            "polymarket-markets",
+            "source-bounded-summary",
+            "url-text",
+            "web-read",
+            "x402-adoption",
+            "x402-ping"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_source_bounded_summary",
+    "description": "Summarize text with verified quotes (evidence-bound summary). 0.002 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Text to summarize; 1–4000 characters. Do not submit secrets…"
+        },
+        "language": {
+          "type": "string",
+          "enum": [
+            "es",
+            "en"
+          ],
+          "description": "Optional summary language: es or en. Defaults to es."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_translate_es",
+    "description": "Translate to Spanish (Argentina): rioplatense voseo, any source language. 0.003 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 6000,
+          "description": "Text to translate into Rioplatense Spanish; 1–6000…"
+        },
+        "tone": {
+          "type": "string",
+          "enum": [
+            "formal",
+            "neutral",
+            "casual"
+          ],
+          "description": "Optional tone: formal, neutral or casual. Defaults to…"
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_url_text",
+    "description": "Texto legible de una página pública. 0.001 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 9,
+          "description": "Public HTTPS page URL. Private addresses and pages requiring…"
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "text",
+            "markdown"
+          ],
+          "default": "text",
+          "description": "Output format: plain text or simple Markdown. Defaults to…"
+        },
+        "maxChars": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 20000,
+          "default": 10000,
+          "description": "Maximum returned text length in UTF-16 code units, from 1000…"
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_web_read",
+    "description": "Web page to Markdown: read any public URL as clean text. 0.001 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 9,
+          "description": "Public HTTPS page URL. Private addresses and pages requiring…"
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "text",
+            "markdown"
+          ],
+          "default": "text",
+          "description": "Output format: plain text or simple Markdown. Defaults to…"
+        },
+        "maxChars": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 20000,
+          "default": 10000,
+          "description": "Maximum returned text length in UTF-16 code units, from 1000…"
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_x402_adoption",
+    "description": "x402 Bazaar stats: what agents actually buy, with sources. 0.005 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "section": {
+          "type": "string",
+          "enum": [
+            "overview",
+            "bazaar",
+            "sellers",
+            "payers",
+            "prices",
+            "categories",
+            "demand",
+            "all"
+          ],
+          "default": "overview",
+          "description": "Which part of the report to return. overview: headline…"
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_x402_ping",
+    "description": "x402 ping: cheapest end-to-end test of an x402 payment on Base. 0.001 USDC per call (x402, Base); an unpaid call returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "echo": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Optional text echoed back (up to 200 characters)."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional base64 x402 v2 payment payload for the requirements of a prior unpaid call. Never a private key."
+        }
+      }
+    }
+  }
+]

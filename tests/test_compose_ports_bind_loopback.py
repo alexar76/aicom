@@ -26,13 +26,14 @@ COMBINATIONS = {
 
 
 def _rendered_ports(files: list[str]) -> list[tuple[str, str, str]]:
-    cmd = ["docker", "compose"]
+    cmd = ["docker", "compose", "--env-file", "/dev/null"]
     for f in files:
         cmd += ["-f", str(ROOT / f)]
-    cmd += ["config", "--format", "json"]
-    proc = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT, env={"PATH": "/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin"})
+    cmd += ["config", "--no-env-resolution", "--format", "json"]
+    proc = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT, env={"PATH": "/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin",
+             "POSTGRES_PASSWORD": "compose-render-only", "REDIS_PASSWORD": "compose-render-only", "GRAFANA_ADMIN_PASSWORD": "compose-render-only"})
     if proc.returncode != 0:
-        pytest.skip(f"docker compose config failed here: {proc.stderr.strip()[:200]}")
+        pytest.fail(f"docker compose config failed: {proc.stderr.strip()[:1000]}")
     # compose may print warnings before the JSON document
     text = proc.stdout[proc.stdout.find("{"):]
     data = json.loads(text)
@@ -46,9 +47,9 @@ def _rendered_ports(files: list[str]) -> list[tuple[str, str, str]]:
     return out
 
 
-@pytest.mark.skipif(shutil.which("docker") is None, reason="docker not installed")
 @pytest.mark.parametrize("label,files", sorted(COMBINATIONS.items()))
 def test_every_published_port_is_loopback_and_unique(label: str, files: list[str]):
+    assert shutil.which("docker"), "Install Docker Compose v2 to validate the real merged port configuration"
     ports = _rendered_ports(files)
     assert ports, f"{label}: no published ports rendered — is the compose file empty?"
     exposed = [(svc, ip, pub) for svc, ip, pub in ports if ip != "127.0.0.1"]

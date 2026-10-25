@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import sys
 from pathlib import Path
 
 import pytest
@@ -90,6 +91,16 @@ def test_full_software_browser_e2e_includes_mobile_viewport_gate(
     monkeypatch.setenv("AIFACTORY_BROWSER_MAX_DEPTH", "3")
     monkeypatch.setenv("AIFACTORY_BROWSER_FS_MOBILE_GATE", "1")
     monkeypatch.setenv("AIFACTORY_BROWSER_FS_MOBILE_ROUTES", "/,/login,/tasks,/settings")
+    # The checked-in template is trusted and its runtime is already installed.
+    # Exercise the real preview/browser/mobile gate without downloading packages.
+    monkeypatch.setattr(
+        "web.backend.services.sandbox_preview_env._preview_venv_python",
+        lambda *_: Path(sys.executable),
+    )
+    monkeypatch.setattr(
+        "web.backend.services.sandbox_preview_env._pip_install_requirements",
+        lambda *_: {"ok": True},
+    )
 
     root, pid = full_software_product_tree
     r = run_browser_preview_e2e(pid, root)

@@ -1,0 +1,1594 @@
+{
+  "schema": "histor.change-kinds-study/v1",
+  "startedAt": "2026-10-25T08:31:08.491763+00:00",
+  "finishedAt": "2026-10-25T08:33:58.407917+00:00",
+  "manifestSha256": "a7bfc9e09ab9782157ad6c7a4bb136477609746a7e7e6f9c6695ea2012e926fc",
+  "inputSha256": {
+    "servers.jsonl.gz": "7e96f47212faac4a25dcdeb13a2920c20d548ae0f5b2df823f604117cf5b8b0b",
+    "changes.jsonl.gz": "8df3d75824a2505014422c63583f1b2d987c21509e218a662c4ece26e6147a6f",
+    "toolsets.jsonl.gz": "9d5f8493910741c084a4e8315375d6bba918d5a0fad8d7bbc02f1e216773e2a2"
+  },
+  "snapshotCreatedAt": "2026-10-20T15:39:49Z",
+  "changesFrom": "2026-09-24T10:53:44Z",
+  "changesUntil": "2026-10-20T00:31:28Z",
+  "baseCutoff": "2026-09-24T23:59:59Z",
+  "baseServers": 10929,
+  "baseFullChangedServers": 4926,
+  "baseFullTransitions": 10522,
+  "cohort2036": {
+    "transitions": 7319,
+    "servers": 2036,
+    "primary": {
+      "composition": 2047,
+      "description_numeric": 422,
+      "description_text": 2606,
+      "description_whitespace": 5,
+      "schema_annotation": 2,
+      "schema_contract": 2205,
+      "schema_order": 20,
+      "unknown": 12
+    },
+    "flagsTransitions": {
+      "composition": 2047,
+      "tool_description": 5482,
+      "parameter_description": 2815,
+      "input_schema": 3627,
+      "output_schema": 1378,
+      "schema_contract": 3033,
+      "schema_order": 36,
+      "schema_annotation": 145,
+      "descriptions_only": 3019,
+      "tool_descriptions_only": 2016
+    },
+    "flagsServers": {
+      "composition": 904,
+      "tool_description": 2036,
+      "parameter_description": 1283,
+      "input_schema": 1491,
+      "output_schema": 531,
+      "schema_contract": 1187,
+      "schema_order": 11,
+      "schema_annotation": 93,
+      "descriptions_only": 1446,
+      "tool_descriptions_only": 995
+    },
+    "toolDescriptionKinds": {
+      "text": 5014,
+      "unchanged": 1825,
+      "numeric": 462,
+      "unknown": 12,
+      "whitespace": 6
+    },
+    "descriptionKinds": {
+      "text": 5553,
+      "unchanged": 1286,
+      "numeric": 463,
+      "unknown": 12,
+      "whitespace": 5
+    },
+    "serverToolDescriptionPartition": {
+      "any_text_beyond_digits_whitespace": 1988,
+      "numeric_and_optional_whitespace_only": 39,
+      "incomplete": 6,
+      "whitespace_only": 3
+    }
+  },
+  "toolDescriptionEvents2036": {
+    "transitions": 5482,
+    "servers": 2036,
+    "primary": {
+      "composition": 1179,
+      "description_numeric": 410,
+      "description_text": 2363,
+      "description_whitespace": 5,
+      "schema_contract": 1525
+    },
+    "flagsTransitions": {
+      "composition": 1179,
+      "tool_description": 5482,
+      "parameter_description": 2276,
+      "input_schema": 2842,
+      "output_schema": 946,
+      "schema_contract": 2238,
+      "schema_order": 12,
+      "schema_annotation": 124,
+      "descriptions_only": 2767,
+      "tool_descriptions_only": 2016
+    },
+    "flagsServers": {
+      "composition": 695,
+      "tool_description": 2036,
+      "parameter_description": 1212,
+      "input_schema": 1402,
+      "output_schema": 494,
+      "schema_contract": 1085,
+      "schema_order": 7,
+      "schema_annotation": 87,
+      "descriptions_only": 1398,
+      "tool_descriptions_only": 995
+    },
+    "toolDescriptionKinds": {
+      "text": 5014,
+      "numeric": 462,
+      "whitespace": 6
+    },
+    "descriptionKinds": {
+      "text": 5031,
+      "numeric": 446,
+      "whitespace": 5
+    },
+    "serverToolDescriptionPartition": {
+      "any_text_beyond_digits_whitespace": 1994,
+      "numeric_and_optional_whitespace_only": 39,
+      "whitespace_only": 3
+    }
+  },
+  "baseAllEvents": {
+    "transitions": 10543,
+    "servers": 4932,
+    "primary": {
+      "composition": 2491,
+      "description_numeric": 428,
+      "description_text": 2686,
+      "description_whitespace": 5,
+      "schema_annotation": 29,
+      "schema_contract": 4861,
+      "schema_order": 22,
+      "unknown": 21
+    },
+    "flagsTransitions": {
+      "composition": 2491,
+      "tool_description": 5482,
+      "parameter_description": 3004,
+      "input_schema": 6322,
+      "output_schema": 1549,
+      "schema_contract": 5723,
+      "schema_order": 39,
+      "schema_annotation": 176,
+      "descriptions_only": 3103,
+      "tool_descriptions_only": 2016
+    },
+    "flagsServers": {
+      "composition": 1237,
+      "tool_description": 2036,
+      "parameter_description": 1418,
+      "input_schema": 4043,
+      "output_schema": 663,
+      "schema_contract": 3773,
+      "schema_order": 13,
+      "schema_annotation": 99,
+      "descriptions_only": 1512,
+      "tool_descriptions_only": 995
+    },
+    "toolDescriptionKinds": {
+      "unchanged": 5040,
+      "text": 5014,
+      "numeric": 462,
+      "unknown": 21,
+      "whitespace": 6
+    },
+    "descriptionKinds": {
+      "unchanged": 4312,
+      "text": 5731,
+      "numeric": 474,
+      "unknown": 21,
+      "whitespace": 5
+    },
+    "serverToolDescriptionPartition": {
+      "no_tool_description_change": 2890,
+      "any_text_beyond_digits_whitespace": 1988,
+      "numeric_and_optional_whitespace_only": 39,
+      "incomplete": 12,
+      "whitespace_only": 3
+    }
+  },
+  "firstToLast2036": {
+    "transitions": 2036,
+    "servers": 2036,
+    "primary": {
+      "composition": 900,
+      "description_numeric": 30,
+      "description_text": 608,
+      "description_whitespace": 1,
+      "schema_contract": 489,
+      "unchanged": 5,
+      "unknown": 3
+    },
+    "flagsTransitions": {
+      "composition": 900,
+      "tool_description": 1975,
+      "parameter_description": 1219,
+      "input_schema": 1438,
+      "output_schema": 516,
+      "schema_contract": 1136,
+      "schema_order": 6,
+      "schema_annotation": 87,
+      "descriptions_only": 639,
+      "tool_descriptions_only": 334
+    },
+    "flagsServers": {
+      "composition": 900,
+      "tool_description": 1975,
+      "parameter_description": 1219,
+      "input_schema": 1438,
+      "output_schema": 516,
+      "schema_contract": 1136,
+      "schema_order": 6,
+      "schema_annotation": 87,
+      "descriptions_only": 639,
+      "tool_descriptions_only": 334
+    },
+    "toolDescriptionKinds": {
+      "text": 1932,
+      "numeric": 41,
+      "unchanged": 58,
+      "unknown": 3,
+      "whitespace": 2
+    },
+    "descriptionKinds": {
+      "text": 1945,
+      "numeric": 36,
+      "unchanged": 51,
+      "unknown": 3,
+      "whitespace": 1
+    },
+    "serverToolDescriptionPartition": {
+      "any_text_beyond_digits_whitespace": 1932,
+      "numeric_and_optional_whitespace_only": 41,
+      "no_tool_description_change": 58,
+      "incomplete": 3,
+      "whitespace_only": 2
+    }
+  },
+  "serverChainsWithGaps": 0,
+  "knownAdjacentPairs": 5277,
+  "unknownAdjacentPairs": 6,
+  "legacyWholeSnapshotNumericEvents": 2719,
+  "legacyWhitespaceEventIds": [
+    7251,
+    7920,
+    11487,
+    15424,
+    17749,
+    21561
+  ],
+  "requiredToolsets": 14869,
+  "verifiedToolsets": 14869,
+  "missingToolsets": [],
+  "rawSummaryFlagMismatches": [],
+  "transitionFileSha256": "dac3129408e83f67cff42938bad7187277586982546f23f45e8c8553476fb548",
+  "canonicalizerModuleSha256": "5d8a1c35502925d3c00a57e0bd72547976ee46e17288f3712de873c2ffad9747",
+  "scriptSha256": "5e6bd0176c859cc7f324d2e83bc6312f4785934424a101da8c7223a98e351927",
+  "python": "3.11.2 (main, Oct  7 2026, 12:35:07) [GCC 12.2.0]",
+  "examples": {
+    "schema_contract": [
+      {
+        "id": 3336,
+        "serverId": "00157511ac66eaec",
+        "observedAt": "2026-09-25T11:31:44Z",
+        "fromToolSetDigest": "sha256-nnXJL+PWxuyR+PEB1ayDfSSrnxon4fmvEatCd2lxX+8=",
+        "toToolSetDigest": "sha256-71pqav7T80pwwFx6X8UBBNLpzVkW28oAAGGw25qe5Ng=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "schema_contract",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": true,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "text",
+        "description_kind": "text",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "schema_contract",
+            "tool": "create_starter",
+            "path": "/inputSchema/properties/existingRepo",
+            "old": "<absent>",
+            "new": "{\"description\":\"HTTPS URL of an existing GitHub repository to continue instead of starting a new website.\",\"maxLength\":200,\"type\":\"string\"}"
+          },
+          {
+            "kind": "description_text",
+            "tool": "start_website",
+            "path": "/description",
+            "old": "Start the guided Website Starter workflow. Use this first to interview the person, create the instruction-only ZIP, and continue in that folder.",
+            "new": "Start the guided Website Starter workflow. Use this first: it asks whether a project already exists (then clone it), otherwise interviews the person, creates the instruction-only ZIP, and continues in that folder.",
+            "offset": 0
+          }
+        ],
+        "cohort2036": true,
+        "name": "org.websitestarter/website-starter",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/3336"
+      },
+      {
+        "id": 15827,
+        "serverId": "002cd1f552e81500",
+        "observedAt": "2026-10-12T16:43:00Z",
+        "fromToolSetDigest": "sha256-I5r+A8fmvz0kjNzWJQtfF7Bhf+LQErrE4Ezc6T+VsZg=",
+        "toToolSetDigest": "sha256-BZj3jU55DGoYG+U/C1NyWvEMD70bDYWr5bNywzvvzAA=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "schema_contract",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": true,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": true,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "text",
+        "description_kind": "text",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "schema_contract",
+            "tool": "brc_batch_cash_receipts",
+            "path": "/inputSchema/properties/items/items/properties/item/oneOf/0/properties/detailCollection",
+            "old": "<absent>",
+            "new": "{\"description\":\"Cash Receipt detail lines, including audit or bank-reference text. An empty array clears the lines.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"}"
+          },
+          {
+            "kind": "description_text",
+            "tool": "brc_batch_cash_receipts",
+            "path": "/inputSchema/properties/items/items/properties/item/oneOf/0/properties/reference/description",
+            "old": "<absent>",
+            "new": "\"Cash receipts do not support reference in the documented BRC API. Use detailCollection for audit or bank-reference text.\""
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "brc_batch_cash_receipts",
+            "path": "/inputSchema/properties/items/items/properties/item/oneOf/1/oneOf/0/properties/detailCollection",
+            "old": "<absent>",
+            "new": "{\"description\":\"Cash Receipt detail lines, including audit or bank-reference text. An empty array clears the lines.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"}"
+          },
+          {
+            "kind": "description_text",
+            "tool": "brc_batch_cash_receipts",
+            "path": "/inputSchema/properties/items/items/properties/item/oneOf/1/oneOf/0/properties/reference/description",
+            "old": "<absent>",
+            "new": "\"Cash receipts do not support reference in the documented BRC API. Use detailCollection for audit or bank-reference text.\""
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "brc_batch_cash_receipts",
+            "path": "/inputSchema/properties/items/items/properties/item/oneOf/1/oneOf/1/properties/detailCollection",
+            "old": "<absent>",
+            "new": "{\"description\":\"Cash Receipt detail lines, including audit or bank-reference text. An empty array clears the lines.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"}"
+          },
+          {
+            "kind": "description_text",
+            "tool": "brc_batch_cash_receipts",
+            "path": "/inputSchema/properties/items/items/properties/item/oneOf/1/oneOf/1/properties/reference/description",
+            "old": "<absent>",
+            "new": "\"Cash receipts do not support reference in the documented BRC API. Use detailCollection for audit or bank-reference text.\""
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "brc_batch_cash_receipts",
+            "path": "/inputSchema/properties/items/items/properties/item/oneOf/2/properties/detailCollection",
+            "old": "<absent>",
+            "new": "{\"description\":\"Cash Receipt detail lines, including audit or bank-reference text. An empty array clears the lines.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"}"
+          },
+          {
+            "kind": "description_text",
+            "tool": "brc_batch_cash_receipts",
+            "path": "/inputSchema/properties/items/items/properties/item/oneOf/2/properties/reference/description",
+            "old": "<absent>",
+            "new": "\"Cash receipts do not support reference in the documented BRC API. Use detailCollection for audit or bank-reference text.\""
+          },
+          {
+            "kind": "description_text",
+            "tool": "brc_create_cash_receipt",
+            "path": "/description",
+            "old": "h receipt. Accepts either a raw payload object or common flat fields. entryDate/procDate default to today. VAT rate fields are only sent when the company's VAT on Cash Receipt setting is enabled. Requires a valid routeToken issued for the m",
+            "new": "h receipt. Accepts either a raw payload object or common flat fields. Customer-ledger receipts require both customerId and acCode resolved for the same customer; neither field alone is sufficient. Analysed receipts may instead supply an ana",
+            "offset": 17
+          },
+          {
+            "kind": "description_text",
+            "tool": "brc_create_cash_receipt",
+            "path": "/inputSchema/properties/acCode/description",
+            "old": "<absent>",
+            "new": "\"Resolved customer account code. Customer-ledger receipts also require customerId for the same customer; analysed receipts can omit both.\""
+          },
+          {
+            "kind": "description_text",
+            "tool": "brc_create_cash_receipt",
+            "path": "/inputSchema/properties/customerId/description",
+            "old": "<absent>",
+            "new": "\"Resolved customer id. Customer-ledger receipts also require acCode for the same customer; analysed receipts can omit both.\""
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "brc_create_cash_receipt",
+            "path": "/inputSchema/properties/detailCollection/items/type",
+            "old": "<absent>",
+            "new": "\"string\""
+          }
+        ],
+        "cohort2036": true,
+        "name": "io.github.BigRedCloud/red-mcp-server",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/15827"
+      },
+      {
+        "id": 3318,
+        "serverId": "0056a390b6b0b5aa",
+        "observedAt": "2026-09-25T11:30:18Z",
+        "fromToolSetDigest": "sha256-eldpAqsijaR7+swM0iFOgt3Z0jWqkkDJ/ycbnqDBzZU=",
+        "toToolSetDigest": "sha256-8TU+G6xowr8DMs+PkVyRpZtn5Yc1+Cg+qL9kCtEEVRY=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "schema_contract",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": true,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "text",
+        "description_kind": "text",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "schema_contract",
+            "tool": "get_dart_document",
+            "path": "/inputSchema/properties/fresh",
+            "old": "<absent>",
+            "new": "{\"default\":false,\"description\":\"false (default): read FinBridge's preserved copy of this filing when we hold one, and DART otherwise. true: fetch the current version from DART now — use only when the user asks for the latest text or suspect"
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "get_dart_filings",
+            "path": "/inputSchema/properties/fresh",
+            "old": "<absent>",
+            "new": "{\"default\":false,\"description\":\"false (default): answer from FinBridge's DART filings index (refreshed every 5 minutes) when it covers the window, DART otherwise. true: ask DART directly.\",\"type\":\"boolean\"}"
+          },
+          {
+            "kind": "description_text",
+            "tool": "get_dart_major_events",
+            "path": "/description",
+            "old": "capital increase | merger | CB) or '자기주식' (treasury stock). Filtering is applied client-side over the most recent 100 events in range.\n  - limit: max results, 1-100 (default 20)\n\nReturns: {total, page, filings: [{rcept_no, corp_name, report",
+            "new": "capital increase | merger | CB) or '자기주식' (treasury stock). Filtering runs over every event in range when FinBridge's index covers the window, otherwise over the most recent 100 events DART returns.\n  - limit: max results, 1-100 (default 20",
+            "offset": 1032
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "get_dart_major_events",
+            "path": "/inputSchema/properties/fresh",
+            "old": "<absent>",
+            "new": "{\"default\":false,\"description\":\"false (default): answer from FinBridge's DART filings index (refreshed every 5 minutes) when it covers the window, DART otherwise. true: ask DART directly.\",\"type\":\"boolean\"}"
+          }
+        ],
+        "cohort2036": true,
+        "name": "kr.gronox/finbridge",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/3318"
+      }
+    ],
+    "description_text": [
+      {
+        "id": 17656,
+        "serverId": "00157511ac66eaec",
+        "observedAt": "2026-10-13T23:55:32Z",
+        "fromToolSetDigest": "sha256-71pqav7T80pwwFx6X8UBBNLpzVkW28oAAGGw25qe5Ng=",
+        "toToolSetDigest": "sha256-QAwfH58ijYAoUNXMl+g95jENR7KqoFXE2eSM+5n6vUg=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "description_text",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": true,
+          "tool_descriptions_only": true
+        },
+        "tool_description_kind": "text",
+        "description_kind": "text",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_text",
+            "tool": "start_website",
+            "path": "/description",
+            "old": "Start the guided Website Starter workflow. Use this first: it asks whether a project already exists (then clone it), otherwise interviews the person, creates the instruction-only ZIP, and continues in that folder.",
+            "new": "Start the guided Website Starter workflow. Use this first: continue an existing code repository or interview the person for a new build or migration, then create the instruction-only ZIP.",
+            "offset": 0
+          }
+        ],
+        "cohort2036": true,
+        "name": "org.websitestarter/website-starter",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/17656"
+      },
+      {
+        "id": 20,
+        "serverId": "00371df68e3172d9",
+        "observedAt": "2026-09-24T10:59:36Z",
+        "fromToolSetDigest": "sha256-xu9OroT61gqa2lGf1uuvrDchTTpBvOcrlVmHs29TldE=",
+        "toToolSetDigest": "sha256-/+jrEnjaRi5G+iiNnTvFo0c5VsQ2AV/BDUR5kg4bASA=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "description_text",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": true,
+          "tool_descriptions_only": true
+        },
+        "tool_description_kind": "text",
+        "description_kind": "text",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_text",
+            "tool": "rayana_ai_start_checkout",
+            "path": "/description",
+            "old": "ry: they sign in, accept the Terms and authenticate the payment.\n\n    Afterwards they will see a short pairing code on their account page. Read\n    it back into ``rayana_ai_complete_setup`` to get your API key without them\n    pasting a sec",
+            "new": "ry: they sign in, accept the Terms and authenticate the payment.\n\n    If the tier includes API access, their account page then shows a short\n    pairing code; read it back into ``rayana_ai_complete_setup`` to get your\n    API key without th",
+            "offset": 157
+          }
+        ],
+        "cohort2036": true,
+        "name": "ai.rayana/rayana-ai",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/20"
+      },
+      {
+        "id": 6516,
+        "serverId": "0056a390b6b0b5aa",
+        "observedAt": "2026-09-30T12:46:10Z",
+        "fromToolSetDigest": "sha256-JR1AsbDcf5E3NHDItw03xe3fFSHe+hqv8l6amjf14yY=",
+        "toToolSetDigest": "sha256-JCPTXAtQWa5WdWXgx6RQCnNvWR59l83/7QHE9exEm/c=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "description_text",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": true,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": true,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "text",
+        "description_kind": "text",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_text",
+            "tool": "compare_financials_kr_us",
+            "path": "/description",
+            "old": "PL', 'Apple')\n  - years: number of recent fiscal years, 1-5 (default 3)\n  - metrics: subset of [revenue, gross_profit, operating_income, net_income, eps_diluted, assets, liabilities, equity, cash_and_equivalents, operating_cash_flow]\n  - re",
+            "new": "PL', 'Apple')\n  - years: number of recent fiscal years, 1-5 (default 3; free plan up to 4)\n  - metrics: subset of [revenue, gross_profit, operating_income, net_income, eps_diluted, assets, liabilities, equity, cash_and_equivalents, operatin",
+            "offset": 401
+          },
+          {
+            "kind": "description_text",
+            "tool": "compare_financials_kr_us",
+            "path": "/inputSchema/properties/years/description",
+            "old": "How many recent fiscal years to compare (default 3)",
+            "new": "How many recent fiscal years to compare (default 3; the free plan covers up to 4)",
+            "offset": 0
+          }
+        ],
+        "cohort2036": true,
+        "name": "kr.gronox/finbridge",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/6516"
+      }
+    ],
+    "composition": [
+      {
+        "id": 124,
+        "serverId": "00c5290a1280c96f",
+        "observedAt": "2026-09-24T11:09:11Z",
+        "fromToolSetDigest": "sha256-49azcTHFbN6SClIj+nZLGkSpcmVhLa2CLg6VG6u8CEk=",
+        "toToolSetDigest": "sha256-1+xB0JvrVgLAevDLZCNWwgv5IzOvSFVWq2emu3nXv3c=",
+        "summaryFull": true,
+        "summaryToolDescription": false,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": true,
+        "primary": "composition",
+        "flags": {
+          "composition": true,
+          "tool_description": false,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "unchanged",
+        "description_kind": "unchanged",
+        "added": [
+          "company_audit_log",
+          "company_channels",
+          "company_context",
+          "company_manage_channels",
+          "company_manage_team",
+          "company_media",
+          "company_post_action",
+          "company_post_approval",
+          "company_posts",
+          "company_save_post",
+          "company_team",
+          "company_workspaces"
+        ],
+        "removed": [],
+        "details": [],
+        "cohort2036": true,
+        "name": "com.publora/mcp-server",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/124"
+      },
+      {
+        "id": 5329,
+        "serverId": "00c5290a1280c96f",
+        "observedAt": "2026-09-28T11:41:55Z",
+        "fromToolSetDigest": "sha256-FmWw4MJFTagtwxPoMJJA92o6xfeu2SqDWgMJprBVQf4=",
+        "toToolSetDigest": "sha256-Y0m9R7l8/CI9fGbQy7pMkFAJixgRj5XcKViHpM9WjIk=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": true,
+        "primary": "composition",
+        "flags": {
+          "composition": true,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": true,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "text",
+        "description_kind": "text",
+        "added": [
+          "attach_media"
+        ],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_text",
+            "tool": "create_post",
+            "path": "/description",
+            "old": "orms like Instagram, TikTok, YouTube require media before scheduling. Manual alternative for local files: omit scheduledTime to create a draft, upload media with get_upload_url + HTTP PUT + complete_media (once per file), then call update_p",
+            "new": "orms like Instagram, TikTok, YouTube require media before scheduling. For a ChatGPT file, omit scheduledTime to create a draft, then use attach_media. Manual alternative for local files: omit scheduledTime to create a draft, upload media wi",
+            "offset": 181
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "create_post",
+            "path": "/inputSchema/properties/firstComment",
+            "old": "<absent>",
+            "new": "{\"anyOf\":[{\"additionalProperties\":false,\"properties\":{\"platforms\":{\"description\":\"Optional platform TYPES to restrict the comment to, e.g. ['linkedin', 'threads'] — NOT connection keys. Omit to comment on every supported target.\",\"items\":{\""
+          },
+          {
+            "kind": "description_text",
+            "tool": "get_post",
+            "path": "/description",
+            "old": "Get post group details, media inventory and platform-specific posts. Each post includes isThread and threadParts (content, index, status, publishedId) and any post-level error to inspect publication progress. After partial publication or an",
+            "new": "Each post also carries firstCommentResult: null when no first comment applies (or the post is not published yet), otherwise { status: pending|posted|failed|skipped, commentId, skipReason, error: { code, message, platformStatusCode, outcomeU",
+            "offset": 0
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "update_post",
+            "path": "/inputSchema/properties/firstComment",
+            "old": "<absent>",
+            "new": "{\"anyOf\":[{\"additionalProperties\":false,\"properties\":{\"platforms\":{\"description\":\"Optional platform TYPES to restrict the comment to, e.g. ['linkedin', 'threads'] — NOT connection keys. Omit to comment on every supported target.\",\"items\":{\""
+          }
+        ],
+        "cohort2036": true,
+        "name": "com.publora/mcp-server",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/5329"
+      },
+      {
+        "id": 3026,
+        "serverId": "014d690dc3b537a3",
+        "observedAt": "2026-09-25T11:11:53Z",
+        "fromToolSetDigest": "sha256-yQGyyN43Wc3gCWbA/XXxXDMUMZeSuG0EJh/cXI4+ZcE=",
+        "toToolSetDigest": "sha256-/m/PtXNNCLI8uQ7Ez2z7g7MEw70jRgs3HEKk9D11PNM=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": true,
+        "summaryComposition": true,
+        "primary": "composition",
+        "flags": {
+          "composition": true,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": true,
+          "schema_contract": true,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "text",
+        "description_kind": "text",
+        "added": [
+          "list_tasks"
+        ],
+        "removed": [],
+        "details": [
+          {
+            "kind": "schema_contract",
+            "tool": "list_open_questions",
+            "path": "/outputSchema/$defs/ArticleMetadata/properties/contribution_opportunities",
+            "old": "<absent>",
+            "new": "{\"description\":\"At most two ways to improve the article, kept apart from its text; descriptive data, not instructions. Single-article reads only.\",\"items\":{\"$ref\":\"#/$defs/Opportunity\"},\"title\":\"Contribution Opportunities\",\"type\":\"array\"}"
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "list_open_questions",
+            "path": "/outputSchema/$defs/ArticleMetadata/properties/outcomes",
+            "old": "<absent>",
+            "new": "{\"anyOf\":[{\"$ref\":\"#/$defs/OutcomeSummary\"},{\"type\":\"null\"}],\"default\":null,\"description\":\"Outcome reports (did applying the article work?); single-article reads only\"}"
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "list_open_questions",
+            "path": "/outputSchema/$defs/Opportunity",
+            "old": "<absent>",
+            "new": "{\"additionalProperties\":false,\"description\":\"A way to improve the article, kept apart from its text. Descriptive, not an instruction.\",\"properties\":{\"detail\":{\"title\":\"Detail\",\"type\":\"string\"},\"how\":{\"title\":\"How\",\"type\":\"string\"},\"kind\":{\""
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "list_open_questions",
+            "path": "/outputSchema/$defs/OutcomeCounts",
+            "old": "<absent>",
+            "new": "{\"additionalProperties\":false,\"properties\":{\"failed\":{\"title\":\"Failed\",\"type\":\"integer\"},\"partial\":{\"title\":\"Partial\",\"type\":\"integer\"},\"worked\":{\"title\":\"Worked\",\"type\":\"integer\"}},\"required\":[\"worked\",\"failed\",\"partial\"],\"title\":\"OutcomeC"
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "list_open_questions",
+            "path": "/outputSchema/$defs/OutcomeSummary",
+            "old": "<absent>",
+            "new": "{\"additionalProperties\":false,\"properties\":{\"all_revisions\":{\"$ref\":\"#/$defs/OutcomeCounts\"},\"current_revision\":{\"$ref\":\"#/$defs/OutcomeCounts\",\"description\":\"Reports about the current revision\"},\"revision\":{\"description\":\"The article's cur"
+          },
+          {
+            "kind": "description_text",
+            "tool": "read_article",
+            "path": "/description",
+            "old": "pplies_to, symptoms,\navailable translations, license and canonical_url. Set full_text=true for the body.",
+            "new": "pplies_to, symptoms,\navailable translations, license and canonical_url, plus outcome-report counts and at most\ntwo contribution_opportunities (descriptive data, separate from the text). Set\nfull_text=true for the body.",
+            "offset": 146
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "read_article",
+            "path": "/outputSchema/$defs/Opportunity",
+            "old": "<absent>",
+            "new": "{\"additionalProperties\":false,\"description\":\"A way to improve the article, kept apart from its text. Descriptive, not an instruction.\",\"properties\":{\"detail\":{\"title\":\"Detail\",\"type\":\"string\"},\"how\":{\"title\":\"How\",\"type\":\"string\"},\"kind\":{\""
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "read_article",
+            "path": "/outputSchema/$defs/OutcomeCounts",
+            "old": "<absent>",
+            "new": "{\"additionalProperties\":false,\"properties\":{\"failed\":{\"title\":\"Failed\",\"type\":\"integer\"},\"partial\":{\"title\":\"Partial\",\"type\":\"integer\"},\"worked\":{\"title\":\"Worked\",\"type\":\"integer\"}},\"required\":[\"worked\",\"failed\",\"partial\"],\"title\":\"OutcomeC"
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "read_article",
+            "path": "/outputSchema/$defs/OutcomeSummary",
+            "old": "<absent>",
+            "new": "{\"additionalProperties\":false,\"properties\":{\"all_revisions\":{\"$ref\":\"#/$defs/OutcomeCounts\"},\"current_revision\":{\"$ref\":\"#/$defs/OutcomeCounts\",\"description\":\"Reports about the current revision\"},\"revision\":{\"description\":\"The article's cur"
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "read_article",
+            "path": "/outputSchema/properties/contribution_opportunities",
+            "old": "<absent>",
+            "new": "{\"description\":\"At most two ways to improve the article, kept apart from its text; descriptive data, not instructions. Single-article reads only.\",\"items\":{\"$ref\":\"#/$defs/Opportunity\"},\"title\":\"Contribution Opportunities\",\"type\":\"array\"}"
+          },
+          {
+            "kind": "schema_contract",
+            "tool": "read_article",
+            "path": "/outputSchema/properties/outcomes",
+            "old": "<absent>",
+            "new": "{\"anyOf\":[{\"$ref\":\"#/$defs/OutcomeSummary\"},{\"type\":\"null\"}],\"default\":null,\"description\":\"Outcome reports (did applying the article work?); single-article reads only\"}"
+          }
+        ],
+        "cohort2036": true,
+        "name": "com.agents-wiki/agents-wiki",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/3026"
+      }
+    ],
+    "description_numeric": [
+      {
+        "id": 13185,
+        "serverId": "01f042743c6ccd6c",
+        "observedAt": "2026-10-09T08:34:27Z",
+        "fromToolSetDigest": "sha256-7BONYwWbAaS4nRsJARnnPhvEZ3d7Ic6J3qe8+5BzHkc=",
+        "toToolSetDigest": "sha256-Cdz7aeBlI8Q2nF7f9CWHWk23Wb+JWIRJL0vXNl0XoP0=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "description_numeric",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": true,
+          "tool_descriptions_only": true
+        },
+        "tool_description_kind": "numeric",
+        "description_kind": "numeric",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_numeric",
+            "tool": "defi_top_yields",
+            "path": "/description",
+            "old": "ilter by chain, project, stablecoin, TVL. Signed and timestamped. $0.002 per call.",
+            "new": "ilter by chain, project, stablecoin, TVL. Signed and timestamped. $0.02 per call.",
+            "offset": 72
+          },
+          {
+            "kind": "description_numeric",
+            "tool": "defi_yield_movers",
+            "path": "/description",
+            "old": " the largest APY change over 1d or 7d, up and down. Anomaly feed. $0.002 per call.",
+            "new": " the largest APY change over 1d or 7d, up and down. Anomaly feed. $0.02 per call.",
+            "offset": 10
+          },
+          {
+            "kind": "description_numeric",
+            "tool": "stablecoin_peg_monitor",
+            "path": "/description",
+            "old": " largest by supply, with price deviation and 1d/7d supply change. $0.002 per call.",
+            "new": " largest by supply, with price deviation and 1d/7d supply change. $0.02 per call.",
+            "offset": 38
+          },
+          {
+            "kind": "description_numeric",
+            "tool": "token_security_check",
+            "path": "/description",
+            "old": "y, owner powers and holder concentration with a 0-100 risk score. $0.003 per call.",
+            "new": "y, owner powers and holder concentration with a 0-100 risk score. $0.02 per call.",
+            "offset": 31
+          }
+        ],
+        "cohort2036": true,
+        "name": "com.yieldprobe/defi-intel",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/13185"
+      },
+      {
+        "id": 3375,
+        "serverId": "02c4d803e2b55b84",
+        "observedAt": "2026-09-25T11:33:43Z",
+        "fromToolSetDigest": "sha256-PfupoJSk7nLbyq6Dto/TeivnYHNMD44ACdLYBKrPbVM=",
+        "toToolSetDigest": "sha256-ev+DVqMGetQlWf4smsXo3LOCNcNupbigN6I5IMMLLgw=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "description_numeric",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": true,
+          "tool_descriptions_only": true
+        },
+        "tool_description_kind": "numeric",
+        "description_kind": "numeric",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_numeric",
+            "tool": "ebook_check",
+            "path": "/description",
+            "old": ") against the EPUB 2/3 specification using a pinned local EPUBCheck 5.3.0 engine run in a no-network sandbox. Each call takes exactly one source: the url parameter or the file attachment, never both. Returns the automated verdict: pass bool",
+            "new": ") against the EPUB 2/3 specification using a pinned local EPUBCheck 5.4.0 engine run in a no-network sandbox. Each call takes exactly one source: the url parameter or the file attachment, never both. Returns the automated verdict: pass bool",
+            "offset": 75
+          },
+          {
+            "kind": "description_numeric",
+            "tool": "ebook_compare",
+            "path": "/description",
+            "old": "Runs the identical pinned EPUBCheck 5.3.0 validation over exactly two EPUB builds (directly hosted public URLs or files attached in chat, baseline first, revised second) sequentially under one shared 110-second deadline, then reports which ",
+            "new": "Runs the identical pinned EPUBCheck 5.4.0 validation over exactly two EPUB builds (directly hosted public URLs or files attached in chat, baseline first, revised second) sequentially under one shared 110-second deadline, then reports which ",
+            "offset": 0
+          }
+        ],
+        "cohort2036": true,
+        "name": "com.powmcp/epub-check",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/3375"
+      },
+      {
+        "id": 15587,
+        "serverId": "06681b7947a4a11f",
+        "observedAt": "2026-10-12T16:32:50Z",
+        "fromToolSetDigest": "sha256-AWJxXNDMQPK9kICWCEh5YOyGjqxs9ckKac+txDnxIEA=",
+        "toToolSetDigest": "sha256-bUpETioaIp5mebSFxcOPim4rVJW73EfvDjFi6U1Hm28=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "description_numeric",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": true,
+          "tool_descriptions_only": true
+        },
+        "tool_description_kind": "numeric",
+        "description_kind": "numeric",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_numeric",
+            "tool": "create_trial_tenant",
+            "path": "/description",
+            "old": "or follow-up calls (get_embed_snippet, get_upgrade_link). Trial lasts 14 days. One live trial per owner_email — provisioning multiple sites (e.g. for an agency's clients) isn't supported by these tools yet; each site needs its own contact e",
+            "new": "or follow-up calls (get_embed_snippet, get_upgrade_link). Trial lasts 30 days. One live trial per owner_email — provisioning multiple sites (e.g. for an agency's clients) isn't supported by these tools yet; each site needs its own contact e",
+            "offset": 159
+          }
+        ],
+        "cohort2036": true,
+        "name": "com.claraconverts/clara",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/15587"
+      }
+    ],
+    "unknown": [
+      {
+        "id": 6370,
+        "serverId": "15f3b482aac3462c",
+        "observedAt": "2026-09-30T12:36:39Z",
+        "fromToolSetDigest": "sha256-quE77MvOczuLajMylS393HBVZTOuKlOLzY9NtMLKH10=",
+        "toToolSetDigest": null,
+        "summaryFull": false,
+        "summaryToolDescription": false,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "unknown",
+        "flags": {},
+        "tool_description_kind": "unknown",
+        "description_kind": "unknown",
+        "added": [],
+        "removed": [],
+        "details": [],
+        "cohort2036": true,
+        "name": "io.github.Clipform/mcp-server",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/6370"
+      },
+      {
+        "id": 7192,
+        "serverId": "15f3b482aac3462c",
+        "observedAt": "2026-10-01T12:29:32Z",
+        "fromToolSetDigest": null,
+        "toToolSetDigest": "sha256-WXbkSfiD2TyWOy7PFAk2tiGc7bDt4E8UINnhlV5o+18=",
+        "summaryFull": false,
+        "summaryToolDescription": false,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": true,
+        "primary": "unknown",
+        "flags": {},
+        "tool_description_kind": "unknown",
+        "description_kind": "unknown",
+        "added": [],
+        "removed": [],
+        "details": [],
+        "cohort2036": true,
+        "name": "io.github.Clipform/mcp-server",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/7192"
+      },
+      {
+        "id": 146,
+        "serverId": "19044d8aa75227e0",
+        "observedAt": "2026-09-24T11:10:36Z",
+        "fromToolSetDigest": null,
+        "toToolSetDigest": null,
+        "summaryFull": false,
+        "summaryToolDescription": false,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": true,
+        "primary": "unknown",
+        "flags": {},
+        "tool_description_kind": "unknown",
+        "description_kind": "unknown",
+        "added": [],
+        "removed": [],
+        "details": [],
+        "cohort2036": true,
+        "name": "com.temsor/api",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/146"
+      }
+    ],
+    "schema_order": [
+      {
+        "id": 15340,
+        "serverId": "52e76328b9575b58",
+        "observedAt": "2026-10-11T09:27:56Z",
+        "fromToolSetDigest": "sha256-RFot3wVX55Mqpysu0r26Cmh7/l3yK0AcGGbmLVBvsSw=",
+        "toToolSetDigest": "sha256-E5FTd2iqOl/mexZI+4DtzxZrJHlNpYEEHWH1bzFXwgk=",
+        "summaryFull": true,
+        "summaryToolDescription": false,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "schema_order",
+        "flags": {
+          "composition": false,
+          "tool_description": false,
+          "parameter_description": false,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": true,
+          "schema_annotation": false,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "unchanged",
+        "description_kind": "unchanged",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "schema_order",
+            "tool": "host.tool_publish",
+            "path": "/inputSchema/properties/kind/enum",
+            "old": "[\"chain\",\"echo\",\"http\",\"python\",\"wasm\",\"event\",\"events\",\"webhook\",\"webhooks\",\"inbound\",\"trigger\",\"cron\",\"schedule\",\"scheduled\",\"doc\",\"docs\",\"document\",\"documents\",\"message\",\"messages\",\"inbox\",\"msg\",\"database\",\"db\",\"table\",\"tables\",\"csv\",\"sq",
+            "new": "[\"chain\",\"echo\",\"http\",\"python\",\"wasm\",\"event\",\"events\",\"webhook\",\"webhooks\",\"inbound\",\"trigger\",\"inbox\",\"cron\",\"schedule\",\"scheduled\",\"doc\",\"docs\",\"document\",\"documents\",\"message\",\"messages\",\"msg\",\"database\",\"db\",\"table\",\"tables\",\"csv\",\"sq"
+          }
+        ],
+        "cohort2036": true,
+        "name": "dev.mcphost/mcphost",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/15340"
+      },
+      {
+        "id": 369,
+        "serverId": "f71313a538726bd3",
+        "observedAt": "2026-09-24T11:26:29Z",
+        "fromToolSetDigest": "sha256-1M/I7RTx5k32Aga6jhXk4uvQoFTAt8SN88sbBnhjjtI=",
+        "toToolSetDigest": "sha256-2ReBEch8R9TUw3RPTAdPt2d4QWzAmp0ZYr+kkbCRPz0=",
+        "summaryFull": true,
+        "summaryToolDescription": false,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "schema_order",
+        "flags": {
+          "composition": false,
+          "tool_description": false,
+          "parameter_description": false,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": true,
+          "schema_annotation": false,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "unchanged",
+        "description_kind": "unchanged",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "schema_order",
+            "tool": "posts_schedule",
+            "path": "/inputSchema/properties/platform_options/properties/instagram/properties/trialReel/enum",
+            "old": "[\"MANUAL\",\"SS_PERFORMANCE\"]",
+            "new": "[\"SS_PERFORMANCE\",\"MANUAL\"]"
+          }
+        ],
+        "cohort2036": true,
+        "name": "tech.viewprinter/viewprinter",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/369"
+      },
+      {
+        "id": 3159,
+        "serverId": "ffe4eb1360ce193b",
+        "observedAt": "2026-09-25T11:19:10Z",
+        "fromToolSetDigest": "sha256-S0jOL4rY1X8EbqhdvaZ4MiYKLmEtjS5LAKVWShfTXMw=",
+        "toToolSetDigest": "sha256-7s+OdH1CEDudzXmSl4WOfSHpaw7D1c4pnPqbDAGiaZM=",
+        "summaryFull": true,
+        "summaryToolDescription": false,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "schema_order",
+        "flags": {
+          "composition": false,
+          "tool_description": false,
+          "parameter_description": false,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": true,
+          "schema_annotation": false,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "unchanged",
+        "description_kind": "unchanged",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "schema_order",
+            "tool": "find_paid_service",
+            "path": "/inputSchema/properties/category/enum",
+            "old": "[\"data.other\",\"data.crypto\",\"data.misc\",\"data.markets\",\"data.web\",\"data.weather\",\"compute.llm\",\"compute.media\",\"data.geo\",\"data.fx\",\"data.stocks\",\"compute.tools\",\"data.search\",\"data.defi\",\"data.news\",\"data.intelligence\",\"infra.utility\",\"dat",
+            "new": "[\"data.other\",\"data.crypto\",\"data.misc\",\"data.markets\",\"data.web\",\"data.weather\",\"compute.llm\",\"compute.media\",\"data.geo\",\"data.fx\",\"compute.tools\",\"data.stocks\",\"data.search\",\"data.news\",\"data.defi\",\"data.intelligence\",\"infra.utility\",\"dat"
+          }
+        ],
+        "cohort2036": true,
+        "name": "directory.nohumans/registry",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/3159"
+      }
+    ],
+    "schema_annotation": [
+      {
+        "id": 15514,
+        "serverId": "5e98648289d76892",
+        "observedAt": "2026-10-12T16:30:03Z",
+        "fromToolSetDigest": "sha256-KiXeF9DcQ/9jOXacOvbVJl9RUurmHqDo/vVY7LqUE1I=",
+        "toToolSetDigest": "sha256-TWGN3WcvkwVWxUsW8GlVysoYw/1spfZ7r1tzy92cz0I=",
+        "summaryFull": true,
+        "summaryToolDescription": false,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "schema_annotation",
+        "flags": {
+          "composition": false,
+          "tool_description": false,
+          "parameter_description": false,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": true,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "unchanged",
+        "description_kind": "unchanged",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "schema_annotation",
+            "tool": "create_meal_plan",
+            "path": "/inputSchema/examples",
+            "old": "[{\"date\":\"2026-10-17\",\"mealType\":\"dinner\",\"recipeId\":\"8f14e45f-ceea-467e-8a2f-1a2b3c4d5e6f\",\"servings\":4}]",
+            "new": "[{\"date\":\"2026-10-19\",\"mealType\":\"dinner\",\"recipeId\":\"8f14e45f-ceea-467e-8a2f-1a2b3c4d5e6f\",\"servings\":4}]"
+          }
+        ],
+        "cohort2036": true,
+        "name": "app.onehaus/haus",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/15514"
+      },
+      {
+        "id": 21444,
+        "serverId": "5e98648289d76892",
+        "observedAt": "2026-10-18T12:00:02Z",
+        "fromToolSetDigest": "sha256-TWGN3WcvkwVWxUsW8GlVysoYw/1spfZ7r1tzy92cz0I=",
+        "toToolSetDigest": "sha256-6U43+WoE9NeZtWGhmooTaY4MPVAo2xgJtCbw5LH+0Oo=",
+        "summaryFull": true,
+        "summaryToolDescription": false,
+        "summaryInputSchema": true,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "schema_annotation",
+        "flags": {
+          "composition": false,
+          "tool_description": false,
+          "parameter_description": false,
+          "input_schema": true,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": true,
+          "descriptions_only": false,
+          "tool_descriptions_only": false
+        },
+        "tool_description_kind": "unchanged",
+        "description_kind": "unchanged",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "schema_annotation",
+            "tool": "create_meal_plan",
+            "path": "/inputSchema/examples",
+            "old": "[{\"date\":\"2026-10-19\",\"mealType\":\"dinner\",\"recipeId\":\"8f14e45f-ceea-467e-8a2f-1a2b3c4d5e6f\",\"servings\":4}]",
+            "new": "[{\"date\":\"2026-10-24\",\"mealType\":\"dinner\",\"recipeId\":\"8f14e45f-ceea-467e-8a2f-1a2b3c4d5e6f\",\"servings\":4}]"
+          }
+        ],
+        "cohort2036": true,
+        "name": "app.onehaus/haus",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/21444"
+      }
+    ],
+    "description_whitespace": [
+      {
+        "id": 8738,
+        "serverId": "6056ac21f4199beb",
+        "observedAt": "2026-10-03T08:47:33Z",
+        "fromToolSetDigest": "sha256-PtWox/eLXKlNHQ5q/Trxh2sZAuaqVzQT6P1EK5GT/1k=",
+        "toToolSetDigest": "sha256-F6NYYLMVlPO39er32oGcPLYbiTcSNrulopAmSYF+EaA=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "description_whitespace",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": true,
+          "tool_descriptions_only": true
+        },
+        "tool_description_kind": "whitespace",
+        "description_kind": "whitespace",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_whitespace",
+            "tool": "compare_tokens",
+            "path": "/description",
+            "old": "\n\n    Statistics for up to 100 tokens in a single request. Use for shortlists, or to\n\n    follow up on the most-traded analytics view.\n\n\n\n    blockchain: solana, bnb, base, eth or rh\n\n    mints: up to 100 token addresses\n\n    wallet_type: k",
+            "new": "\n    Statistics for up to 100 tokens in a single request. Use for shortlists, or to\n    follow up on the most-traded analytics view.\n\n    blockchain: solana, bnb, base, eth or rh\n    mints: up to 100 token addresses\n    wallet_type: kol, sm",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "compare_wallets",
+            "path": "/description",
+            "old": "\n\n    Statistics for up to 100 wallets in a single request. Much cheaper than calling\n\n    get_wallet_tracker repeatedly. Use when the user names several wallets, or to\n\n    follow up on a leaderboard.\n\n\n\n    blockchain: solana, bnb, base, ",
+            "new": "\n    Statistics for up to 100 wallets in a single request. Much cheaper than calling\n    get_wallet_tracker repeatedly. Use when the user names several wallets, or to\n    follow up on a leaderboard.\n\n    blockchain: solana, bnb, base, eth o",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "detect_bundles",
+            "path": "/description",
+            "old": "\n\n    Check whether KOL wallets bought a Solana token through Jito bundles together\n\n    with side wallets they control, which hides the real size of their position.\n\n\n\n    Returns each detected bundle with a confidence score and the eviden",
+            "new": "\n    Check whether KOL wallets bought a Solana token through Jito bundles together\n    with side wallets they control, which hides the real size of their position.\n\n    Returns each detected bundle with a confidence score and the evidence b",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "get_activity_metrics",
+            "path": "/description",
+            "old": "\n\n    How many trades happened and how much value moved over a window of up to 24\n\n    hours, plus how many distinct wallets were involved. Use for how busy the\n\n    market or a single token is, rather than for the individual trades.\n\n\n\n   ",
+            "new": "\n    How many trades happened and how much value moved over a window of up to 24\n    hours, plus how many distinct wallets were involved. Use for how busy the\n    market or a single token is, rather than for the individual trades.\n\n    bloc",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "get_analytics",
+            "path": "/description",
+            "old": "\n\n    Four aggregate views over the tracked wallets.\n\n\n\n    volume_trend shows activity over time. most_traded lists the tokens getting the\n\n    most attention. win_rate gives the distribution of outcomes. top_performers\n\n    ranks wallets ",
+            "new": "\n    Four aggregate views over the tracked wallets.\n\n    volume_trend shows activity over time. most_traded lists the tokens getting the\n    most attention. win_rate gives the distribution of outcomes. top_performers\n    ranks wallets by pr",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "get_api_status",
+            "path": "/description",
+            "old": "\n\n    Service health and current coverage: chains, wallet types, periods, limits and\n\n    how many wallets are tracked per chain. Useful when a query returns nothing and\n\n    it is unclear whether the data exists at all.\n\n    ",
+            "new": "\n    Service health and current coverage: chains, wallet types, periods, limits and\n    how many wallets are tracked per chain. Useful when a query returns nothing and\n    it is unclear whether the data exists at all.\n    ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "get_leaderboard",
+            "path": "/description",
+            "old": "\n\n    Top tracked wallets ranked by performance for a chain, wallet type and period.\n\n    Use for \"best Solana KOLs today\", \"top whales this week\", and similar.\n\n\n\n    blockchain: solana, bnb, base, eth or rh\n\n    wallet_type: kol, smart or",
+            "new": "\n    Top tracked wallets ranked by performance for a chain, wallet type and period.\n    Use for \"best Solana KOLs today\", \"top whales this week\", and similar.\n\n    blockchain: solana, bnb, base, eth or rh\n    wallet_type: kol, smart or whal",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "get_pnl_calendar",
+            "path": "/description",
+            "old": "\n\n    Daily and monthly realized profit and loss for a wallet across its tracked\n\n    history. Use for when a wallet made or lost money, and for spotting streaks.\n\n\n\n    blockchain: solana, bnb, base, eth or rh\n\n    address: the wallet addr",
+            "new": "\n    Daily and monthly realized profit and loss for a wallet across its tracked\n    history. Use for when a wallet made or lost money, and for spotting streaks.\n\n    blockchain: solana, bnb, base, eth or rh\n    address: the wallet address\n ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "get_recent_trades",
+            "path": "/description",
+            "old": "\n\n    The live feed: what tracked wallets are buying and selling right now, across\n\n    every token or filtered to one. Use for \"what are KOLs buying at the moment\".\n\n\n\n    blockchain: solana, bnb, base, eth or rh\n\n    wallet_type: kol, sma",
+            "new": "\n    The live feed: what tracked wallets are buying and selling right now, across\n    every token or filtered to one. Use for \"what are KOLs buying at the moment\".\n\n    blockchain: solana, bnb, base, eth or rh\n    wallet_type: kol, smart or",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "get_signal_history",
+            "path": "/description",
+            "old": "\n\n    Past signals, for checking whether a kind of signal has worked historically\n\n    before acting on a live one.\n\n\n\n    blockchain: solana, bnb, base, eth or rh\n\n    wallet_type: kol, smart or whale (default kol)\n\n    days: 7, 30, 90 or ",
+            "new": "\n    Past signals, for checking whether a kind of signal has worked historically\n    before acting on a live one.\n\n    blockchain: solana, bnb, base, eth or rh\n    wallet_type: kol, smart or whale (default kol)\n    days: 7, 30, 90 or \"all\" ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "get_signals",
+            "path": "/description",
+            "old": "\n\n    Tokens where several tracked wallets acted within the same window.\n\n\n\n    'cluster' means multiple wallets bought the same token, which is the strongest\n\n    signal. 'entry' marks fresh positions, 'exit' marks wallets selling out. Use",
+            "new": "\n    Tokens where several tracked wallets acted within the same window.\n\n    'cluster' means multiple wallets bought the same token, which is the strongest\n    signal. 'entry' marks fresh positions, 'exit' marks wallets selling out. Use\n   ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "get_started",
+            "path": "/description",
+            "old": "\n\n    How to use CabalSpy: where to get a free API key (1000 requests, no cost),\n\n    pricing, documentation, and what the data covers. Call this first if you do\n\n    not have a key yet, or if another tool returned an auth error.\n\n    ",
+            "new": "\n    How to use CabalSpy: where to get a free API key (1000 requests, no cost),\n    pricing, documentation, and what the data covers. Call this first if you do\n    not have a key yet, or if another tool returned an auth error.\n    ",
+            "offset": 0
+          }
+        ],
+        "cohort2036": true,
+        "name": "xyz.cabalspy/wallet-tracker",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/8738"
+      },
+      {
+        "id": 7920,
+        "serverId": "a1a097c5a1248c72",
+        "observedAt": "2026-10-01T19:01:52Z",
+        "fromToolSetDigest": "sha256-9Nf3VAg2/UyWufn2hu6oKaNNjCnlr/fyK0aJRWeIf40=",
+        "toToolSetDigest": "sha256-483Qrg2WTH7Yuz+2DdxLX5dFmEnFRVuwZeCiMBzCA64=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "description_whitespace",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": true,
+          "tool_descriptions_only": true
+        },
+        "tool_description_kind": "whitespace",
+        "description_kind": "whitespace",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_get_company_details",
+            "path": "/description",
+            "old": "Fetch officers, agent, and filing history for a known company.\n\nArgs:\n    company_id: OpenCorporates company number.\n    jurisdiction: Jurisdiction code (e.g. 'us_de', 'us_ca').\n",
+            "new": "Fetch officers, agent, and filing history for a known company.\n\n        Args:\n            company_id: OpenCorporates company number.\n            jurisdiction: Jurisdiction code (e.g. 'us_de', 'us_ca').\n        ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_get_sec_filing",
+            "path": "/description",
+            "old": "Fetch metadata + index URL for one SEC filing by accession number.\n\nArgs:\n    accession_number: EDGAR accession number (e.g. '0001193125-21-000001').\n",
+            "new": "Fetch metadata + index URL for one SEC filing by accession number.\n\n        Args:\n            accession_number: EDGAR accession number (e.g. '0001193125-21-000001').\n        ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_get_ucc_filings",
+            "path": "/description",
+            "old": "UCC lien lookup. (Roadmap; returns not_implemented per state.)\n\nArgs:\n    debtor_name: Name of the debtor.\n    state: 2-letter state code.\n",
+            "new": "UCC lien lookup. (Roadmap; returns not_implemented per state.)\n\n        Args:\n            debtor_name: Name of the debtor.\n            state: 2-letter state code.\n        ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_lookup_federal_spending",
+            "path": "/description",
+            "old": "Search USASpending.gov for awards (contracts + grants).\n\nArgs:\n    recipient_name: Award recipient name.\n    agency: Awarding agency name (e.g. 'Department of Defense').\n    year: Fiscal year (e.g. 2024).\n    limit: Max results (1-100, defa",
+            "new": "Search USASpending.gov for awards (contracts + grants).\n\n        Args:\n            recipient_name: Award recipient name.\n            agency: Awarding agency name (e.g. 'Department of Defense').\n            year: Fiscal year (e.g. 2024).\n   ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_lookup_npi",
+            "path": "/description",
+            "old": "Look up healthcare providers in the NPPES NPI registry.\n\nArgs:\n    name: Provider individual or organization name.\n    specialty: Taxonomy description (e.g. 'Internal Medicine').\n    state: 2-letter state code.\n    limit: Max results (1-200",
+            "new": "Look up healthcare providers in the NPPES NPI registry.\n\n        Args:\n            name: Provider individual or organization name.\n            specialty: Taxonomy description (e.g. 'Internal Medicine').\n            state: 2-letter state cod",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_search_companies",
+            "path": "/description",
+            "old": "Search US business entities by name (OpenCorporates).\n\nArgs:\n    name: Company or trade name to search for.\n    state: 2-letter US state code (e.g. 'CA') to narrow jurisdiction.\n    status: Filter by current status (e.g. 'active', 'dissolve",
+            "new": "Search US business entities by name (OpenCorporates).\n\n        Args:\n            name: Company or trade name to search for.\n            state: 2-letter US state code (e.g. 'CA') to narrow jurisdiction.\n            status: Filter by current ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_search_court_cases",
+            "path": "/description",
+            "old": "Search federal court cases via CourtListener (RECAP).\n\nArgs:\n    party_name: Plaintiff or defendant name.\n    court: CourtListener court id (e.g. 'nyed', 'txsd').\n    date_from: Earliest filing date (YYYY-MM-DD).\n    limit: Max results (1-5",
+            "new": "Search federal court cases via CourtListener (RECAP).\n\n        Args:\n            party_name: Plaintiff or defendant name.\n            court: CourtListener court id (e.g. 'nyed', 'txsd').\n            date_from: Earliest filing date (YYYY-MM-",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_search_licenses",
+            "path": "/description",
+            "old": " professional / business licenses (NPI + FCC, more sources roadmap).\n\nArgs:\n    entity_name: Licensee name.\n    license_type: 'npi' | 'medical' | 'fcc' | 'radio' | 'all'.\n    state: 2-letter state code.\n",
+            "new": " professional / business licenses (NPI + FCC, more sources roadmap).\n\n        Args:\n            entity_name: Licensee name.\n            license_type: 'npi' | 'medical' | 'fcc' | 'radio' | 'all'.\n            state: 2-letter state code.\n     ",
+            "offset": 6
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_search_sec_filings",
+            "path": "/description",
+            "old": "Search SEC EDGAR full-text for filings.\n\nArgs:\n    company_name: Issuer name or keyword.\n    form_type: Filing form (e.g. '10-K', '10-Q', '8-K').\n    date_from: Earliest filing date (YYYY-MM-DD).\n    limit: Max results (1-100, default 25).\n",
+            "new": "Search SEC EDGAR full-text for filings.\n\n        Args:\n            company_name: Issuer name or keyword.\n            form_type: Filing form (e.g. '10-K', '10-Q', '8-K').\n            date_from: Earliest filing date (YYYY-MM-DD).\n            ",
+            "offset": 0
+          },
+          {
+            "kind": "description_whitespace",
+            "tool": "mcp_verify_entity",
+            "path": "/description",
+            "old": "ss-reference an entity across multiple sources and score confidence.\n\nArgs:\n    name: Entity name to verify.\n    state: Optional 2-letter state code for jurisdiction filtering.\n",
+            "new": "ss-reference an entity across multiple sources and score confidence.\n\n        Args:\n            name: Entity name to verify.\n            state: Optional 2-letter state code for jurisdiction filtering.\n        ",
+            "offset": 3
+          }
+        ],
+        "cohort2036": true,
+        "name": "io.github.bch1212/pubrecords",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/7920"
+      },
+      {
+        "id": 15424,
+        "serverId": "a7c2bda595ff1b32",
+        "observedAt": "2026-10-11T11:08:51Z",
+        "fromToolSetDigest": "sha256-nhmrPoRjFrjDzccNt7vfps1BUY9XwcZxmyIz3gMXmWg=",
+        "toToolSetDigest": "sha256-1n6HJeQNU4W17GJfrDfeFswj08fEuF83J+2+0HsBwmk=",
+        "summaryFull": true,
+        "summaryToolDescription": true,
+        "summaryInputSchema": false,
+        "summaryOutputSchema": false,
+        "summaryComposition": false,
+        "primary": "description_whitespace",
+        "flags": {
+          "composition": false,
+          "tool_description": true,
+          "parameter_description": false,
+          "input_schema": false,
+          "output_schema": false,
+          "schema_contract": false,
+          "schema_order": false,
+          "schema_annotation": false,
+          "descriptions_only": true,
+          "tool_descriptions_only": true
+        },
+        "tool_description_kind": "whitespace",
+        "description_kind": "whitespace",
+        "added": [],
+        "removed": [],
+        "details": [
+          {
+            "kind": "description_whitespace",
+            "tool": "get_stock_financials",
+            "path": "/description",
+            "old": "are in the company's reporting currency (financial_currency).\n\nTiers:\n  - Free and guest: the LATEST fiscal year only. Every line item's\n    {period_end: value} map has one entry and `periods` lists one date.\n    All three statements and th",
+            "new": "are in the company's reporting currency (financial_currency).\n\nTiers:\n- Free and guest: the LATEST fiscal year only. Every line item's\n  {period_end: value} map has one entry and `periods` lists one date.\n  All three statements and the `sta",
+            "offset": 530
+          }
+        ],
+        "cohort2036": true,
+        "name": "dev.stocklake/stocklake",
+        "publicChangeUrl": "https://histor.modelmarket.dev/api/v1/changes/15424"
+      }
+    ]
+  },
+  "notes": [
+    "Categories are lexical/field changes, not safety or semantic-equivalence verdicts.",
+    "Independent field flags overlap; primary bins do not.",
+    "Formatting in serialized JSON and tool/object key order is already excluded by the core digest.",
+    "Only core name/description/inputSchema/outputSchema fields are measured.",
+    "First/last compares the earliest recorded prechange and latest recorded postchange in this snapshot."
+  ]
+}

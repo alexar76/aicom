@@ -450,6 +450,7 @@ def save_snapshot(product_id: str, code_dir: Path, data_root: Path) -> bool:
     if not src.is_dir():
         return False
     dest = _snapshot_path(product_id, data_root)
+    tmp_path: Path | None = None
     try:
         dest.parent.mkdir(parents=True, exist_ok=True)
         # Write to a temp file in the same directory and replace, so an interrupted snapshot
@@ -471,6 +472,9 @@ def save_snapshot(product_id: str, code_dir: Path, data_root: Path) -> bool:
     except (OSError, tarfile.TarError) as exc:
         logger.warning("round guard: snapshot of %s failed: %s", product_id, exc)
         return False
+    finally:
+        if tmp_path is not None:
+            tmp_path.unlink(missing_ok=True)
 
 
 def has_snapshot(product_id: str, data_root: Path) -> bool:
@@ -493,18 +497,32 @@ def restore_snapshot(product_id: str, code_dir: Path, data_root: Path) -> bool:
     target = Path(code_dir)
     staging = target.with_name(f"{target.name}.restoring")
     try:
+        if staging.is_symlink():
+            logger.warning("round guard: refusing symlink staging directory %s", staging)
+            return False
         if staging.exists():
             shutil.rmtree(staging, ignore_errors=True)
         staging.mkdir(parents=True, exist_ok=True)
         with tarfile.open(archive, "r:gz") as tar:
             for member in tar.getmembers():
-                name = member.name.lstrip("./")
+                name = Path(member.name)
                 # The archive is ours, but an extract that can escape its directory is a
                 # foot-gun waiting for the day it is not.
-                if name.startswith("/") or ".." in Path(name).parts:
+                if (
+                    name.is_absolute()
+                    or ".." in name.parts
+                    or _is_excluded(name.parts)
+                    or not (member.isfile() or member.isdir())
+                ):
                     logger.warning("round guard: refusing archive member %r", member.name)
                     return False
-            tar.extractall(staging)  # noqa: S202 - members validated above
+                # A generated round can replace a live directory with a symlink.
+                # Validate the whole merge before copying anything into that tree.
+                dest = target / name
+                if any(path.is_symlink() for path in (dest, *dest.parents)):
+                    logger.warning("round guard: refusing symlink restore destination %s", dest)
+                    return False
+            tar.extractall(staging, filter="data")
 
         kept: set[Path] = set()
         for path in sorted(staging.rglob("*")):

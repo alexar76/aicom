@@ -11,6 +11,8 @@ one-place fix leaves the class alive.
 """
 from __future__ import annotations
 
+import fnmatch
+import os
 import re
 from pathlib import Path
 
@@ -27,10 +29,14 @@ _DECL = re.compile(r'\bmcp\s*((?:[><=!~]=?\s*[0-9][^,"\'\s\]]*)(?:\s*,\s*[><=!~]
 
 
 def _first_party(pattern: str) -> list[Path]:
-    return sorted(
-        p for p in ROOT.rglob(pattern)
-        if not any(part in SKIP_PARTS for part in p.parts)
-    )
+    paths = []
+    for directory, dirs, files in os.walk(ROOT):
+        if "pyvenv.cfg" in files:
+            dirs[:] = []
+            continue
+        dirs[:] = [name for name in dirs if name not in SKIP_PARTS]
+        paths.extend(Path(directory) / name for name in files if fnmatch.fnmatch(name, pattern))
+    return sorted(paths)
 
 
 def _owning_project(py: Path, projects: list[Path]) -> Path | None:
@@ -43,9 +49,10 @@ def _owning_project(py: Path, projects: list[Path]) -> Path | None:
     best = None
     for proj in projects:
         root = proj.parent
-        if root == py.parent or root in py.parents:
-            if best is None or len(root.parts) > len(best.parent.parts):
-                best = proj
+        if (root == py.parent or root in py.parents) and (
+            best is None or len(root.parts) > len(best.parent.parts)
+        ):
+            best = proj
     return best
 
 

@@ -5,6 +5,8 @@ Writes append-only JSONL under /app/data/logs/marketing/
 
 from __future__ import annotations
 
+import asyncio
+
 import json
 import logging
 import os
@@ -216,7 +218,8 @@ async def post_waitlist(body: WaitlistBody, request: Request):
 async def get_trust_metrics():
     from web.backend.services.funnel_analytics import public_trust_metrics
 
-    return public_trust_metrics()
+    # Off the event loop: a cold build reads the pipeline store and the event log.
+    return await asyncio.to_thread(public_trust_metrics)
 
 
 @router.get("/funnel")

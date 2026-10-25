@@ -19,7 +19,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Optional
 
-from fastapi import Depends, FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
+from fastapi import Depends, FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect, WebSocketException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from prometheus_client import make_asgi_app
@@ -244,12 +244,16 @@ async def lifespan(app: FastAPI):
     except asyncio.TimeoutError:
         logger.warning("Storefront count warm-up exceeded 30s — serving pending/stale until ready")
 
-    standup_task = asyncio.create_task(standup_scheduler_loop(app))
-    backup_schedule_task = asyncio.create_task(factory_backup_scheduler_loop(app))
-    uni_jobs_task = asyncio.create_task(uni_scheduler_loop(app))
+    # With UVICORN_WORKERS > 1 every worker runs this lifespan; these loops act on shared
+    # files and send things out, so one worker (the flock holder) runs them (KI-3).
+    from web.backend.services.background_leader import leader_only
+
+    standup_task = asyncio.create_task(leader_only("standup", lambda: standup_scheduler_loop(app)))
+    backup_schedule_task = asyncio.create_task(leader_only("backup", lambda: factory_backup_scheduler_loop(app)))
+    uni_jobs_task = asyncio.create_task(leader_only("uni-jobs", lambda: uni_scheduler_loop(app)))
     from web.backend.services.host_disk_monitor import host_disk_monitor_loop
 
-    disk_monitor_task = asyncio.create_task(host_disk_monitor_loop())
+    disk_monitor_task = asyncio.create_task(leader_only("disk-monitor", host_disk_monitor_loop))
     from web.backend.services.pipeline_prometheus_sync import (
         pipeline_prometheus_sync_loop,
         sync_pipeline_prometheus_gauges,
@@ -411,11 +415,13 @@ app.middleware("http")(client_disconnect_middleware)
 
 def _expose_error_details() -> bool:
     """Only echo raw exception text to clients when explicitly opted in (never in prod)."""
+    from security.prod_startup_guard import is_production_mode
+
     if os.environ.get("AIFACTORY_EXPOSE_ERROR_DETAILS", "").lower() not in ("1", "true", "yes"):
         return False
-    # AIFACTORY_PROD always wins — refuse to leak internals in production even if the
-    # expose flag is left on by mistake.
-    return (os.environ.get("AIFACTORY_PROD") or "").strip() != "1"
+    # Use the same production detection as the startup guard, including ENV and
+    # PRODUCTION aliases, so a debug flag cannot bypass the deployment policy.
+    return not is_production_mode()
 
 
 def safe_error(
@@ -525,6 +531,7 @@ async def admin_metrics_ws(websocket: WebSocket):
     try:
         tick = 0
         while True:
+            await require_admin_websocket(websocket)
             payload = await admin_dashboard.get_live_metrics_stream_payload()
             await websocket.send_json(payload)
             tick += 1
@@ -534,6 +541,8 @@ async def admin_metrics_ws(websocket: WebSocket):
             await asyncio.sleep(3.0)
     except WebSocketDisconnect:
         logger.debug("Admin metrics websocket disconnected")
+    except WebSocketException:
+        await websocket.close(code=1008, reason="Session ended")
     except Exception as e:
         logger.warning("Admin metrics websocket error: %s", e)
 

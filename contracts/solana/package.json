@@ -5,18 +5,35 @@
   "description": "Anchor integration tests for the AIMarketEscrow Solana program.",
   "license": "Apache-2.0",
   "scripts": {
-    "test": "ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+    "test": "ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts",
+    "test:amount-codec": "node --test support/bigint-buffer-safe/test.cjs",
+    "test:client": "node --test support/client-compatibility.test.cjs support/bigint-buffer-safe/test.cjs",
+    "test:localnet": "node support/lottery-localnet.cjs",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@coral-xyz/anchor": "^0.30.1",
-    "@solana/spl-token": "^0.4.6",
-    "@solana/web3.js": "^1.95.0",
+    "@solana/spl-token": "0.4.15",
+    "@solana/web3.js": "1.99.0",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^10.0.0",
     "@types/node": "^20.0.0",
     "chai": "^4.3.4",
-    "mocha": "^10.0.0",
-    "ts-mocha": "^10.0.0",
-    "typescript": "^5.4.0"
+    "mocha": "11.7.5",
+    "ts-mocha": "11.1.0",
+    "typescript": "^5.4.0",
+    "@anchor-lang/core": "1.2.1",
+    "tweetnacl": "1.0.3",
+    "bigint-buffer": "file:./support/bigint-buffer-safe"
+  },
+  "engines": {
+    "node": ">=22.20.0"
+  },
+  "overrides": {
+    "@solana/web3.js": "$@solana/web3.js",
+    "bigint-buffer": "$bigint-buffer",
+    "toml": "5.0.1",
+    "serialize-javascript": "^7.0.5",
+    "diff": "^8.0.3",
+    "jayson": "5.0.0"
   }
 }

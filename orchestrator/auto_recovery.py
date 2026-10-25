@@ -31,9 +31,7 @@ def _eligible_for_auto_recovery(product: dict[str, Any], *, repair_round: int) -
     state = str(product.get("state") or "").upper()
     if state in ("COMPLETED", "DEPLOYED_PRODUCTION", "FAILED", "CANCELLED"):
         return False
-    if repair_round < auto_recovery_min_repair_round():
-        return False
-    return True
+    return repair_round >= auto_recovery_min_repair_round()
 
 
 def _probe_live_demo_login(url: str) -> int | None:

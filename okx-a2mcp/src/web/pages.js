@@ -272,7 +272,6 @@ ${agents(lang, id, origin)}
       { "@type": "WebApplication", name: tt.name, headline: tt.h1, description: tt.description,
         url: origin + pathFor(lang, id), inLanguage: HTML_LANG[lang], applicationCategory: "DeveloperApplication",
         operatingSystem: "Any", isAccessibleForFree: true, browserRequirements: "Requires JavaScript",
-        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         publisher: { "@type": "Organization", name: "modelmarket.dev", url: origin + "/" } },
       { "@type": "FAQPage", mainEntity: tt.faq.map(([q, a]) => ({
           "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },

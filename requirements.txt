@@ -53,6 +53,10 @@ webauthn==2.7.1
 qrcode[pil]==7.4.2
 # 48.0.1 clears GHSA-537c-gmf6-5ccf on statically linked OpenSSL wheels.
 cryptography==50.0.0
+# Remove compromised emSign trust roots in every factory runtime.
+certifi==2026.10.19
+# Pillow 13 clears native image decoder/security fixes from October 2026.
+pillow==13.0.0
 # Hybrid manifest signatures (ML-DSA-65) — see services/ai_market_protocol/signing.py.
 dilithium-py==1.4.0
 python-multipart>=0.0.18
@@ -65,13 +69,10 @@ psycopg[binary,pool]==3.3.4
 qdrant-client==1.11.2
 
 # ── Crypto ─────────────────────────────────────────────────────────────────
-# web3 7.3.0 / eth-account 0.13.3 are behind current releases. Do NOT bump
-# blindly — newer web3/eth-account have churned eth-* transitive pins and the
-# on-chain payment + escrow paths (web3 / eth-account / solders) need a
-# controlled upgrade with contract-integration tests. Tracked as a followup:
-# review advisories and bump in a dedicated PR (see docs/CVE-ACCEPTANCE-MATRIX.md).
-web3==7.3.0
-eth-account==0.13.3
+# 7.15.0 fixes CCIP Read SSRF (GHSA-5hr4-253g-cpx2). Keep the tested
+# eth-account 0.13 line; payment, EIP-712, relayer and escrow regressions gate upgrades.
+web3==7.15.0
+eth-account==0.13.7
 solana==0.34.0
 solders==0.21.0
 
@@ -95,9 +96,11 @@ playwright==1.47.0
 # ── Monitoring ─────────────────────────────────────────────────────────────
 prometheus-client==0.20.0
 psutil==6.0.0
-opentelemetry-api==1.28.0
-opentelemetry-sdk==1.28.0
-opentelemetry-exporter-otlp-proto-http==1.28.0
+# 1.45.1 fixes quadratic parsing of untrusted tracestate headers
+# (GHSA-xcq7-p3pf-p88h). Keep the API, SDK and exporter on the same release.
+opentelemetry-api==1.45.1
+opentelemetry-sdk==1.45.1
+opentelemetry-exporter-otlp-proto-http==1.45.1
 
 # ── Market Research ──────────────────────────────────────────────────────────
 duckduckgo_search==7.5.1

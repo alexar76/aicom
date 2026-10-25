@@ -396,7 +396,7 @@ export function PipelineTab({ locale }: { locale: AdminLocale }) {
             type="date"
             value={createdFrom}
             onChange={(e) => setCreatedFrom(e.target.value)}
-            className="rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:outline-none focus:border-indigo-500/50"
+            className="rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:outline-hidden focus:border-indigo-500/50"
           />
         </label>
         <label className="flex flex-col gap-0.5 text-[10px] text-gray-500">
@@ -405,7 +405,7 @@ export function PipelineTab({ locale }: { locale: AdminLocale }) {
             type="date"
             value={createdTo}
             onChange={(e) => setCreatedTo(e.target.value)}
-            className="rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:outline-none focus:border-indigo-500/50"
+            className="rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-sm text-gray-300 focus:outline-hidden focus:border-indigo-500/50"
           />
         </label>
       </FilterControlsPanel>

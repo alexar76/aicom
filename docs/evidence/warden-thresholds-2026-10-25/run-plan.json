@@ -1,0 +1,93 @@
+{
+  "schema": "warden-threshold-study-plan/v1",
+  "platform": "Linux x86_64, admin-vps, own existing HISTOR image",
+  "image": "sha256:e1b65057659c168cb8510100daeca2f95d6e3f7ec081ed1b98f217591359b7a3",
+  "node": "v22.23.3",
+  "actual_tool_servers": 0,
+  "actual_outbound_messages": 0,
+  "real_credentials": 0,
+  "network_during_measurement": "none",
+  "source_mount": "read-only",
+  "constraints": {
+    "cpu": 1,
+    "memory": "768 MiB",
+    "tmpfs": "256 MiB",
+    "pids": 128,
+    "uid": 65532
+  },
+  "variants": {
+    "non_hex": [
+      6,
+      7,
+      8
+    ],
+    "hex_fixed": 10,
+    "only_variant_change": "TOKEN_WINDOW constant in compiled flow-guard-fingerprints.js"
+  },
+  "fixture": {
+    "formats": [
+      "stripe",
+      "github",
+      "aws",
+      "anthropic",
+      "hex",
+      "base64",
+      "jwt",
+      "pem"
+    ],
+    "synthetic_keys_per_format_per_seed": 60,
+    "seeds": [
+      "calibration",
+      "holdout"
+    ],
+    "benign_calls_per_key": 8,
+    "benign_body_max_chars": 256,
+    "attack_cases_per_key": 15,
+    "credential_count_per_session": 1,
+    "positive_controls": [
+      "complete key"
+    ],
+    "coverage_controls": [
+      "isolated 10 chars",
+      "embedded 10 chars"
+    ],
+    "payload_selection": "Per-length interior window beyond known format prefix, preferably mixed letters/digits; no key is discarded for having a late first digit."
+  },
+  "measures": [
+    "normalized exact-window corpus hits (not request FP rate)",
+    "full hook decisions on bounded public-source excerpt fixtures",
+    "detector-only attack recognition separate from credential-boundary decisions",
+    "collision-enriched counterexamples paired with matching synthetic key",
+    "existing 28-scenario red-team gate"
+  ],
+  "limitations": [
+    "Not production traffic or a human-approval rate.",
+    "Synthetic format strings, not working provider credentials.",
+    "Corpus/hash partition and independent second key seed do not establish population representativeness.",
+    "Fresh-session threshold ablations do not test a production fingerprint-store migration."
+  ],
+  "transfer": {
+    "initial_large_archive": "rejected by automatic review; not transferred",
+    "minimal_archive": "21 files explicitly authorized by user and transferred"
+  },
+  "corpus_roots": [
+    "/usr/lib/python3.11",
+    "/usr/local/lib/node_modules",
+    "/opt/venv/lib/python3.11/site-packages"
+  ],
+  "final_decision": {
+    "non_hex": 8,
+    "hex": 10,
+    "change": "Add windows before the first digit after recognized normalized provider prefixes; retain generic/DER start rules and all old hashes.",
+    "rejected": "Expand generic alphabetic prefixes: false hard denial of public word/year control."
+  },
+  "completed_server_utc": "2026-10-25T07:08:49.896Z",
+  "final_replay": {
+    "keys": 960,
+    "unique_benign_requests": 7680,
+    "profiles": 2,
+    "attacks": 14400,
+    "known_collision_replays": 31,
+    "paired_inputs_verified": 29760
+  }
+}

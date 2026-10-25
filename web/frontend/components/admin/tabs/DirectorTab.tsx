@@ -470,7 +470,7 @@ export function DirectorTab({ locale }: { locale: AdminLocale }) {
         {Array.isArray(cockpit?.issues) && cockpit.issues.length > 0 && (
           <div className="space-y-1">
             {cockpit.issues.map((x: string, i: number) => (
-              <div key={i} className="text-xs p-2 rounded bg-red-500/10 border border-red-500/30 text-red-200">
+              <div key={i} className="text-xs p-2 rounded-sm bg-red-500/10 border border-red-500/30 text-red-200">
                 {x}
               </div>
             ))}

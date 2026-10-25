@@ -12,11 +12,14 @@ See core/child_env.py and docs/sandbox-trust-model.md.
 from __future__ import annotations
 
 import subprocess
-from pathlib import Path
 from types import SimpleNamespace
+from typing import TYPE_CHECKING
 from unittest.mock import MagicMock
 
 from core.child_env import is_sensitive, scrub_child_env
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 FACTORY_SECRETS = [
     "JWT_SECRET_KEY",
@@ -46,7 +49,7 @@ def test_every_known_factory_secret_is_classified_sensitive() -> None:
 
 
 def test_scrub_keeps_what_a_child_actually_needs() -> None:
-    src = {k: "x" for k in INNOCENT} | {k: "secret" for k in FACTORY_SECRETS}
+    src = dict.fromkeys(INNOCENT, "x") | dict.fromkeys(FACTORY_SECRETS, "secret")
     out = scrub_child_env(src)
     assert set(out) == set(INNOCENT)
 
@@ -76,7 +79,7 @@ def test_preview_env_carries_no_factory_secret(tmp_path: Path, monkeypatch) -> N
         lambda *a, **k: {"status": "skipped"},
     )
 
-    base = {k: "leaked" for k in FACTORY_SECRETS} | {"PATH": "/usr/bin"}
+    base = dict.fromkeys(FACTORY_SECRETS, "leaked") | {"PATH": "/usr/bin"}
     env, _meta = build_fastapi_preview_env(
         sandbox_id="sbx-child-env",
         code_dir=code_dir,
@@ -126,7 +129,7 @@ def test_qa_pytest_env_carries_no_factory_secret(monkeypatch, tmp_path: Path) ->
         captured.update(kwargs.get("env") or {})
         return SimpleNamespace(returncode=0, stdout="1 passed", stderr="")
 
-    monkeypatch.setattr("agents.qa.subprocess.run", fake_run)
+    monkeypatch.setattr("agents.qa_checks.tooling.subprocess.run", fake_run)
     agent = QAAgent(llm_router=MagicMock(), data_root=str(tmp_path / "factory-data"))
     result = agent._run_tests([{"path": str(test_file), "content": test_file.read_text()}])
 

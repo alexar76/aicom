@@ -3,6 +3,7 @@ name = "aimarket-lottery"
 version = "0.1.0"
 description = "AI Agent Oracle Lottery on Solana — UNI / localnet"
 edition = "2021"
+rust-version = "1.89"
 
 [lib]
 crate-type = ["cdylib", "lib"]
@@ -14,6 +15,18 @@ no-idl = []
 no-log-ix-name = []
 cpi = ["no-entrypoint"]
 default = []
+idl-build = ["anchor-lang/idl-build"]
+anchor-debug = ["anchor-lang/anchor-debug"]
+custom-heap = []
+custom-panic = []
 
 [dependencies]
-anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
+anchor-lang = { version = "=1.2.1", features = ["init-if-needed"] }
+solana-sdk-ids = "=3.1.0"
+solana-sha256-hasher = { version = "=3.1.0", features = ["sha2"] }
+
+[dev-dependencies]
+solana-sysvar = "=3.1.1"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }

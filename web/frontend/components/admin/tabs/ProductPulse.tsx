@@ -58,7 +58,7 @@ export function ProductPulse({ pulse }: { pulse: ProductPulsePayload }) {
         <span className="inline-flex items-center gap-1.5 font-medium text-gray-100">
           <span aria-hidden>{icon}</span>
           <span>{pulse.current_agent_label}</span>
-          <span className="rounded bg-indigo-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-200">
+          <span className="rounded-sm bg-indigo-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-200">
             {pulse.completed_stages}/{pulse.total_stages}
           </span>
         </span>
@@ -92,7 +92,7 @@ export function ProductPulse({ pulse }: { pulse: ProductPulsePayload }) {
           {pulse.tech_stack.map((t) => (
             <span
               key={t}
-              className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] text-gray-400"
+              className="rounded-sm border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] text-gray-400"
             >
               {t}
             </span>

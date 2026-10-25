@@ -1,0 +1,24 @@
+{
+  "source": "https://verify.modelmarket.dev/demand.json",
+  "earlier": {
+    "generated_at": "2026-10-24T10:41:22Z",
+    "quotes": 52098,
+    "paid": 26,
+    "initialize": 19600,
+    "tools_call": 176
+  },
+  "later": {
+    "generated_at": "2026-10-24T19:06:07Z",
+    "quotes": 53143,
+    "paid": 26,
+    "initialize": 20134,
+    "tools_call": 181
+  },
+  "note": "Own operator counters, excludes own clients according to source. Counts describe requests; they do not measure people or one matched funnel. Comparing same route keys and start timestamp only.",
+  "delta": {
+    "quotes": 1045,
+    "paid": 0,
+    "initialize": 534,
+    "tools_call": 5
+  }
+}

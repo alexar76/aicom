@@ -1,0 +1,744 @@
+[
+  {
+    "name": "textokit_bcra_indicadores",
+    "description": "Indicadores monetarios del BCRA. Consulta una página de variables u observaciones por fecha de la API pública de estadísticas v4.0 del BCRA. El filtro de texto se aplica solo a la página recibida. La serie admite un identificador de variable y fechas opcionales. Incluye URL de fuente, hora de lectura y paginación informada por BCRA. Hace una lectura sin reintentos y rechaza respuestas incompletas. No ofrece búsqueda global ni his Price: 0.002 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resource"
+      ],
+      "properties": {
+        "resource": {
+          "type": "string",
+          "enum": [
+            "lista",
+            "serie"
+          ],
+          "description": "lista returns variables; serie returns observations for one variable."
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Optional lista-only text filter within the received page; matches ID, description and category without case or accent distinctions."
+        },
+        "idVariable": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991,
+          "description": "Required for serie; forbidden for lista. Positive BCRA variable ID."
+        },
+        "desde": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "description": "Optional serie-only start date, YYYY-MM-DD; must not exceed hasta."
+        },
+        "hasta": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "description": "Optional serie-only end date, YYYY-MM-DD."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Requested page size, 1–20; defaults to 5."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Requested page offset; defaults to 0."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_cartas_ar",
+    "description": "Formal letter in Argentine Spanish. Drafts a firm, courteous formal letter in Argentine Spanish using the supplied information. Supports reclamo, intimacion or solicitud and an optional requested response period. Does not verify facts or determine legal effects. If drafting fails, returns the existing template and explains its scope. Examples preserve the supplied Spanish text. Price: 0.005 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "remitente",
+        "destinatario",
+        "lugarYFecha",
+        "asunto",
+        "hechos",
+        "solicitud"
+      ],
+      "properties": {
+        "remitente": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Name or identification to include in the signature"
+        },
+        "destinatario": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Recipient person or organization"
+        },
+        "lugarYFecha": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "description": "Place and date supplied by the buyer"
+        },
+        "asunto": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Subject to include in the reference line of the letter"
+        },
+        "hechos": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 6000,
+          "description": "Supplied facts for the body, ordered chronologically when the information permits"
+        },
+        "solicitud": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 3000,
+          "description": "Requested action and conditions supplied by the buyer"
+        },
+        "tipo": {
+          "type": "string",
+          "enum": [
+            "reclamo",
+            "intimacion",
+            "solicitud"
+          ],
+          "description": "Letter type: reclamo, intimacion or solicitud. Defaults to reclamo when omitted. Does not determine legal effects."
+        },
+        "plazoDias": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60,
+          "description": "Optional requested response period in days, from 1 to 60. Does not determine a legal deadline or a due date."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_catalog",
+    "description": "List all store routes with price in USDC, network, summary and HTTP URL. Free.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_comparar_textos",
+    "description": "Compare texts literally. Compare two strings literally without normalization or inference. Returns equality, lengths and the first difference with Unicode code point and UTF-16 positions. Each input supports up to 20000 UTF-16 units. Does not verify file bytes, facts or delivery acceptance. Price: 0.001 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "original",
+        "entrega"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "original": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "Original string; at most 20000 UTF-16 code units."
+        },
+        "entrega": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "String to compare against the original; at most 20000 UTF-16 code units. Keep the JSON key entrega."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_crypto_prices",
+    "description": "Precios de criptomonedas en USD. Consulta precio spot USD, capitalización y variación porcentual de 24 horas para 1 a 20 IDs de CoinGecko. Incluye fuente y hora de lectura; actualización del proveedor cuando existe. Las métricas opcionales ausentes son null; un precio ausente produce error. Una lectura por ejecución, sin reintentos automáticos. La fuente puede usar caché; sus fallos y HTTP 429 generan errores claros. Price: 0.001 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coins"
+      ],
+      "properties": {
+        "coins": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1619,
+          "description": "Comma-separated list of 1–20 distinct lowercase CoinGecko IDs, such as bitcoin,ethereum. Symbols are not supported."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_cuit_ar",
+    "description": "Validate Argentine CUIT or CUIL tax id (check digit, KYC onboarding). Validate an Argentine CUIT or CUIL tax id: format and check-digit verification, normalized and formatted forms, declared type (CUIT or CUIL). Use this when an agent collects Argentine customer or supplier ids and must reject typos before invoicing, KYC or onboarding. Mathematical validation only: it does not confirm registration or ownership. JSON, no model inference. Free sample at /api/cuit-ar/s Price: 0.001 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifier"
+      ],
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "description": "Eleven digits or XX-XXXXXXXX-X format, supplied as text; up to 32 characters."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "CUIT",
+            "CUIL"
+          ],
+          "description": "Optional caller-declared type: auto, CUIT or CUIL. Defaults to auto; does not confirm the type."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_dev_utils",
+    "description": "Hash, HMAC, JWT decode, UUID, base64 and time zone utilities. Hash sha256, sha512, sha1 or md5, HMAC, JWT decode (header, payload, expiry, optional HS256 check), UUID v4, base64 encode and decode, URL parse, time zone convert and unix to ISO: one deterministic op per call. Use this when an agent needs a verifiable transform without shipping its own library. Pure Node, no upstream, no model inference, nothing stored, JSON out. Free sample at /api/dev-utils/sa Price: 0.001 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "op"
+      ],
+      "properties": {
+        "op": {
+          "type": "string",
+          "enum": [
+            "hash",
+            "hmac",
+            "jwt_decode",
+            "uuid4",
+            "base64_encode",
+            "base64_decode",
+            "url_parse",
+            "tz_convert",
+            "unix_to_iso"
+          ],
+          "description": "Operation to run."
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "Input text, token, URL, timestamp or local datetime (depends on op)."
+        },
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "md5",
+            "sha1",
+            "sha256",
+            "sha512",
+            "sha3-256"
+          ],
+          "description": "Hash algorithm for hash and hmac (default sha256)."
+        },
+        "secret": {
+          "type": "string",
+          "maxLength": 4096,
+          "description": "Secret for hmac or for optional HS256 verification in jwt_decode."
+        },
+        "from": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "IANA source time zone for tz_convert (default UTC)."
+        },
+        "to": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "IANA target time zone for tz_convert (default UTC)."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_direcciones_ar",
+    "description": "Argentine address candidates from Georef. Returns possible Argentine address matches from Georef, preserving source records, URL and reading time. An optional province identifier restricts the request; records outside that province cause rejection. Results do not guarantee a unique or correct match or an exhaustive search. Price: 0.002 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "direccion"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "direccion": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200,
+          "description": "Address text, from 3 to 200 characters. Locality text alone may not restrict results."
+        },
+        "provinciaId": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2,
+          "description": "Optional two-digit province identifier, preserving leading zeros. Example: 02 for CABA.",
+          "pattern": "^[0-9]{2}$"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum returned candidates, from 1 to 10; defaults to 5.",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 5
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_dolar_ar",
+    "description": "Argentina dollar exchange rates. Return official, blue, MEP (bolsa) and CCL rates published by DolarAPI, with buy and sell prices, source URL, reading time, source update timestamps and evidence references. Does not guarantee real-time prices or independent confirmation. Price: 0.002 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_fx_rates",
+    "description": "FX rates: daily exchange rates for USD, EUR, ARS, BRL and 160 currencies. FX rates and currency conversion reference: daily exchange rates for up to 20 currencies against one base (USD, EUR, GBP, JPY, BRL, MXN, ARS and about 160 more) with rate, reference date and source URL from Frankfurter (central-bank data, MIT licence). Use this when an agent needs an official-style exchange rate to price, invoice or convert amounts and must cite where it came from. Daily rates, no Price: 0.001 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "base": {
+          "type": "string",
+          "maxLength": 3,
+          "default": "USD",
+          "description": "Base currency, ISO 4217 (default USD)."
+        },
+        "quotes": {
+          "type": "string",
+          "maxLength": 120,
+          "default": "EUR,GBP,BRL,ARS,MXN,JPY",
+          "description": "Comma-separated quote currencies, 1 to 20 ISO 4217 codes."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_how_to_pay",
+    "description": "How to pay a tool with x402 (HTTP 402) from your own wallet, and the local npm alternative that signs for you. Free.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_normativa_ar",
+    "description": "Argentina Boletin Oficial search: official gazette notices with excerpts. Argentina official gazette (Boletin Oficial) keyword search returning literal excerpts of matching notices with dates and source URLs; an optional date limits the search to that day's notices. Use this when an agent needs primary-source evidence of an Argentine regulation, decree, resolution or notice. No completeness guarantee and no legal interpretation; if the official search cannot be verified Price: 0.005 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query"
+      ],
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Nonempty keyword or search text, up to 200 UTF-16 units."
+        },
+        "date": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "description": "Optional publication date, YYYY-MM-DD, selecting daily mode. Omit for keyword search without a date; supplied dates must be valid."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Maximum notices to read, from 1 to 10; default: 3."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_polymarket_markets",
+    "description": "Mercados y datos públicos de Polymarket. Consulta una página de mercados públicos de Gamma o posiciones y actividad de una billetera en Data API. Los filtros y el orden de mercados se aplican solo a la página recibida. Devuelve campos originales compactos, fuente y hora de lectura. No acredita coincidencias globales, rankings ni cobertura completa de la billetera. Si la fuente falla, devuelve un error sin inventar resultados. Price: 0.002 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "resource": {
+          "type": "string",
+          "enum": [
+            "markets",
+            "positions",
+            "activity"
+          ],
+          "description": "Defaults to markets. Positions and activity require user."
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Case-insensitive substring search in question and slug within the received market page. Whitespace-only values are rejected. Markets only."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "all",
+            "active",
+            "closed"
+          ],
+          "description": "Filter the received market page. Active requires active=true and closed=false; closed requires closed=true. Defaults to all. Markets only."
+        },
+        "order": {
+          "type": "string",
+          "enum": [
+            "volume",
+            "liquidity"
+          ],
+          "description": "Descending ordering within the received market page; missing numeric values sort last. Defaults to volume. Markets only."
+        },
+        "user": {
+          "type": "string",
+          "pattern": "^0x[0-9a-fA-F]{40}$",
+          "description": "Public wallet address required for positions and activity; rejected for markets."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Upstream page size before local filtering; defaults to 5. A filtered page may return fewer records or none."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Offset passed to the upstream endpoint before local filtering; defaults to 0. Endpoint-specific restrictions may cause an upstream error."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "resource"
+            ],
+            "properties": {
+              "resource": {
+                "enum": [
+                  "positions",
+                  "activity"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "user"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "query"
+                  ]
+                },
+                {
+                  "required": [
+                    "status"
+                  ]
+                },
+                {
+                  "required": [
+                    "order"
+                  ]
+                }
+              ]
+            }
+          },
+          "else": {
+            "not": {
+              "required": [
+                "user"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "textokit_sample",
+    "description": "Free sample of one route (same schema as the paid output) plus an inputExample. Use it before paying.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "route"
+      ],
+      "properties": {
+        "route": {
+          "type": "string",
+          "enum": [
+            "translate-es",
+            "bcra-indicadores",
+            "cartas-ar",
+            "comparar-textos",
+            "crypto-prices",
+            "cuit-ar",
+            "dev-utils",
+            "direcciones-ar",
+            "dolar-ar",
+            "fx-rates",
+            "normativa-ar",
+            "polymarket-markets",
+            "source-bounded-summary",
+            "url-text",
+            "web-read",
+            "x402-adoption",
+            "x402-ping"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_source_bounded_summary",
+    "description": "Summarize text with verified quotes (evidence-bound summary). Summarize text with evidence: send 1 to 4,000 characters in English or Spanish and get a short summary plus 1 to 3 supporting quotes verified as exact substrings of your text, with a limitations note. Use this when an agent must condense an article, email or document and needs citations it can check before putting them in a report. Works only on the supplied text, no web retrieval, JSON out. Free  Price: 0.002 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Text to summarize; 1–4000 characters. Do not submit secrets or sensitive data."
+        },
+        "language": {
+          "type": "string",
+          "enum": [
+            "es",
+            "en"
+          ],
+          "description": "Optional summary language: es or en. Defaults to es."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_translate_es",
+    "description": "Translate to Spanish (Argentina): rioplatense voseo, any source language. Translate text to Spanish as spoken in Argentina and Uruguay (rioplatense, voseo): up to 6,000 characters from any language, keeping names, numbers, links and formatting. Use this when an agent needs Spanish copy for Argentine or Uruguayan users, such as support replies, product listings, notifications or marketing, instead of neutral or European Spanish. Optional tone: formal, neutral or casual.  Price: 0.003 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 6000,
+          "description": "Text to translate into Rioplatense Spanish; 1–6000 characters."
+        },
+        "tone": {
+          "type": "string",
+          "enum": [
+            "formal",
+            "neutral",
+            "casual"
+          ],
+          "description": "Optional tone: formal, neutral or casual. Defaults to neutral."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "textokit_url_text",
+    "description": "Texto legible de una página pública. Extrae contenido legible y título de una página HTML pública HTTPS, como texto o Markdown simple. Una lectura sin reintentos. Elimina scripts, estilos y navegación reconocida mediante reglas heurísticas. No ejecuta JavaScript ni accede a páginas con login. El lector limita el contenido a 20.000 caracteres y se informa el recorte. La extracción del contenido principal es aproximada. Price: 0.001 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 9,
+          "description": "Public HTTPS page URL. Private addresses and pages requiring authentication are unsupported."
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "text",
+            "markdown"
+          ],
+          "default": "text",
+          "description": "Output format: plain text or simple Markdown. Defaults to text."
+        },
+        "maxChars": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 20000,
+          "default": 10000,
+          "description": "Maximum returned text length in UTF-16 code units, from 1000 to 20000. Defaults to 10000."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_web_read",
+    "description": "Web page to Markdown: read any public URL as clean text. Web page to Markdown or plain text: fetch one public URL and get its title and main content with scripts, styles, navigation and ads stripped, plus character count and truncation flags. Use this when an agent needs to read a URL for research, RAG, monitoring or summarization without an API key or a browser. One HTTPS fetch of static HTML (no JavaScript rendering, no login pages), up to 20,000 char Price: 0.001 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 9,
+          "description": "Public HTTPS page URL. Private addresses and pages requiring authentication are unsupported."
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "text",
+            "markdown"
+          ],
+          "default": "text",
+          "description": "Output format: plain text or simple Markdown. Defaults to text."
+        },
+        "maxChars": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 20000,
+          "default": 10000,
+          "description": "Maximum returned text length in UTF-16 code units, from 1000 to 20000. Defaults to 10000."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_x402_adoption",
+    "description": "x402 Bazaar stats: what agents actually buy, with sources. x402 adoption and Bazaar stats with sources: seller and host concentration, how many listings have real unique payers in 30 days, USDC price percentiles, keyword categories, the paid demand radar, from a full crawl of the Coinbase x402 Bazaar. Use this when an agent or builder needs current x402 market numbers with source URLs before deciding what to sell or buy. Sections: overview, sellers, payer Price: 0.005 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "section": {
+          "type": "string",
+          "enum": [
+            "overview",
+            "bazaar",
+            "sellers",
+            "payers",
+            "prices",
+            "categories",
+            "demand",
+            "all"
+          ],
+          "default": "overview",
+          "description": "Which part of the report to return. overview: headline counts and conclusions; bazaar: network, asset and version shares; sellers: host and wallet concentration plus the Agent402 leaderboard; payers: how many resources have 1, 2, 5 or 10+ unique payers in 30 days; prices: USDC price percentiles; categories: keyword categories; demand: the paid demand radar; all: everything."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  },
+  {
+    "name": "textokit_x402_ping",
+    "description": "x402 ping: cheapest end-to-end test of an x402 payment on Base. x402 payment test and ping: one call with no required parameters returns server time (ISO 8601 and Unix ms), a request id, the seller payTo, chain id and an echo of your optional text, only after a real settlement. Use this when an agent needs to prove its payment flow works, measure round-trip latency or run a cheap scheduled canary against a live seller. No upstream, no model inference; paid rou Price: 0.001 USDC per call (x402 on Base). Without payment_signature it returns the payment requirements. Free sample: textokit_sample.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "echo": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Optional text echoed back (up to 200 characters)."
+        },
+        "payment_signature": {
+          "type": "string",
+          "description": "Optional. Base64 x402 v2 payment payload signed by YOUR wallet for the requirements returned by a previous unpaid call. Never a private key."
+        }
+      }
+    }
+  }
+]

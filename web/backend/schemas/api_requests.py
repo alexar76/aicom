@@ -448,6 +448,8 @@ class DemoReplayPatchRequest(BaseModel):
 
 
 class PipelineReplayForkRequest(BaseModel):
+    model_config = ConfigDict(protected_namespaces=("model_validate", "model_dump"))
+
     frame_index: int = Field(..., ge=0)
     operator_notes: Optional[str] = Field(None, max_length=2000)
     model_override: Optional[str] = Field(None, max_length=120)

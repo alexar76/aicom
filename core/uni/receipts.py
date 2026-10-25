@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import time
 import uuid
+from contextlib import nullcontext
 from typing import Any
 
 from core.uni.config import uni_db_backend
@@ -61,7 +62,9 @@ def issue_receipt(
     chain: str | None = None,
     hub_id: str | None = None,
     trace_id: str | None = None,
+    conn: Any = None,
 ) -> dict[str, Any]:
+    """Persist the signed payload, optionally inside the caller's money transaction."""
     receipt_id = f"rcpt_{uuid.uuid4().hex[:16]}"
     ts = time.time()
     from core.uni.signing import public_key_b64, sign_payload
@@ -102,7 +105,9 @@ def issue_receipt(
         "value": signature,
     }
     stored_json = json.dumps(payload, sort_keys=True, separators=(",", ":"))
-    idem = (idempotency_key or receipt_id).strip()[:128]
+    # The ledger and both receipt schemas store full TEXT keys; truncation aliases
+    # unrelated settlements that happen to share their first 128 characters.
+    idem = (idempotency_key or receipt_id).strip()
     cols = [
         "receipt_id", "wallet_id", "kind", "amount_uni", "payload_json", "signature", "ts", "idempotency_key",
         "buyer_wallet_id", "seller_wallet_id", "platform_fee_uni", "net_to_seller_uni",
@@ -115,26 +120,17 @@ def issue_receipt(
     ]
     placeholders = ", ".join(["%s"] * len(cols)) if uni_db_backend() == "postgres" else ", ".join(["?"] * len(cols))
     col_sql = ", ".join(cols)
-    with uni_connection() as conn:
-        if uni_db_backend() == "postgres":
-            conn.execute(
-                f"""
-                INSERT INTO uni_receipts ({col_sql})
-                VALUES ({placeholders})
-                ON CONFLICT (idempotency_key) DO NOTHING
-                """,
-                tuple(vals),
-            )
-        else:
-            try:
-                conn.execute(
-                    f"INSERT INTO uni_receipts ({col_sql}) VALUES ({placeholders})",
-                    tuple(vals),
-                )
-            except Exception as exc:
-                if "UNIQUE" not in str(exc).upper():
-                    raise
-    return payload
+    context = nullcontext(conn) if conn is not None else uni_connection()
+    with context as active:
+        active.execute(
+            f"INSERT INTO uni_receipts ({col_sql}) VALUES ({placeholders}) "
+            "ON CONFLICT (idempotency_key) DO NOTHING",
+            tuple(vals),
+        )
+        stored = get_receipt_by_idempotency_key(idem, conn=active)
+        if not stored:
+            raise RuntimeError("settlement_receipt_unavailable")
+        return stored
 
 
 def get_receipt(receipt_id: str) -> dict[str, Any] | None:
@@ -161,6 +157,8 @@ def get_receipt(receipt_id: str) -> dict[str, Any] | None:
     try:
         payload = json.loads(data.get("payload_json") or "{}")
     except json.JSONDecodeError:
+        return None
+    if not isinstance(payload, dict):
         return None
     payload["_wallet_id"] = data.get("wallet_id")
     return payload
@@ -196,7 +194,8 @@ def get_receipt_by_idempotency_key(idempotency_key: str, *, conn: Any = None) ->
         if not row:
             return None
         try:
-            return json.loads(row_to_dict(row).get("payload_json") or "{}")
+            payload = json.loads(row_to_dict(row).get("payload_json") or "{}")
+            return payload if isinstance(payload, dict) else None
         except json.JSONDecodeError:
             return None
 
@@ -227,7 +226,8 @@ def find_topup_receipt(tx_hash: str) -> dict[str, Any] | None:
     if not row:
         return None
     try:
-        return json.loads(row_to_dict(row).get("payload_json") or "{}")
+        payload = json.loads(row_to_dict(row).get("payload_json") or "{}")
+        return payload if isinstance(payload, dict) else {}
     except json.JSONDecodeError:
         return {}
 

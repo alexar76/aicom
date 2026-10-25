@@ -88,10 +88,10 @@ class CostGuard:
         snap = self._usage_guard.snapshot()
 
         fraction = 0.0
-        daily_cap = snap.get("daily_cost_cap_usd", 0.0)
+        daily_cap = snap.get("daily_cap_usd", 0.0)
         if daily_cap > 0:
             fraction = max(fraction, snap.get("day_spend_usd", 0.0) / daily_cap)
-        monthly_cap = snap.get("monthly_cost_cap_usd", 0.0)
+        monthly_cap = snap.get("monthly_cap_usd", 0.0)
         if monthly_cap > 0:
             fraction = max(fraction, snap.get("month_spend_usd", 0.0) / monthly_cap)
 
@@ -133,7 +133,7 @@ class CostGuard:
 
         # Check if any caps are actually active (snapshot, not env).
         snap = self._usage_guard.snapshot()
-        if snap.get("daily_cost_cap_usd", 0.0) <= 0 and snap.get("monthly_cost_cap_usd", 0.0) <= 0:
+        if snap.get("daily_cap_usd", 0.0) <= 0 and snap.get("monthly_cap_usd", 0.0) <= 0:
             return requested_model
 
         tier = self.budget_tier()
@@ -180,8 +180,8 @@ class CostGuard:
             "critical_threshold": _env_float("AIFACTORY_COST_GUARD_CRITICAL_THRESHOLD", 0.95),
             "day_spend_usd": usage.get("day_spend_usd", 0.0),
             "month_spend_usd": usage.get("month_spend_usd", 0.0),
-            "daily_cost_cap_usd": usage.get("daily_cost_cap_usd", 0.0),
-            "monthly_cost_cap_usd": usage.get("monthly_cost_cap_usd", 0.0),
+            "daily_cost_cap_usd": usage.get("daily_cap_usd", 0.0),
+            "monthly_cost_cap_usd": usage.get("monthly_cap_usd", 0.0),
         }
 
 

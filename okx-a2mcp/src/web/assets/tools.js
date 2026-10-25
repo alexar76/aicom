@@ -443,14 +443,28 @@
       h("li", { text: L.timesMedian.replace("{times}", num(pk.times_median || 0)).replace("{median}", num(pk.median || 0)) }),
     ]), h("p", { class: "muted small", text: L.about })));
     var c = body.per_1000_requests_usd || {}, p = body.prices_per_million_usd || {};
-    out.push(section(L.money, kv([
+    var rows = [
       [L.priceSmall.replace("{p}", usd(p.small)), usd(c.small), true],
       [L.priceMid.replace("{p}", usd(p.mid)), usd(c.mid), true],
-      [L.priceCached.replace("{p}", usd(p.mid_cached)), usd(c.mid_cached), true],
-    ])));
+      [L.priceCached.replace("{w}", usd(p.mid_cache_write)).replace("{p}", usd(p.mid_cached)), usd(c.mid_cached), true],
+    ];
+    if (typeof c.mid_cache_missed === "number") rows.push([L.priceMissed.replace("{w}", usd(p.mid_cache_write)), usd(c.mid_cache_missed), true]);
+    out.push(section(L.money, kv(rows), h("p", { class: "muted small", text: L.cacheNote })));
+    var parts = body.parts;
+    if (parts && body.tokens) {
+      var share = function (k) { return num(parts[k]) + " (" + pct(parts[k] / body.tokens) + ")"; };
+      out.push(section(L.split, kv([
+        [L.descriptions, share("descriptions"), true],
+        [L.schemas, share("input_schemas"), true],
+        [L.names, share("names"), true],
+        [L.structure, share("structure"), true],
+      ])));
+    }
     if ((body.heaviest || []).length) {
       out.push(section(L.heaviest, h("ul", { class: "signal-list" }, body.heaviest.map(function (t) {
-        return h("li", null, code(t.name), h("span", { class: "muted", text: " · " + num(t.tokens) + " " + L.tokens }));
+        var detail = typeof t.description === "number"
+          ? " · " + L.heaviestParts.replace("{d}", num(t.description)).replace("{s}", num(t.input_schema)) : "";
+        return h("li", null, code(t.name), h("span", { class: "muted", text: " · " + num(t.tokens) + " " + L.tokens + detail }));
       }))));
     }
     if (body.server) {

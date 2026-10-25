@@ -13,6 +13,7 @@ atomic, so a reader sees either the old file or the new one, never a truncated o
 
 from __future__ import annotations
 
+import contextlib
 import errno
 import json
 import os
@@ -29,6 +30,8 @@ def write_text_atomic(path: str | Path, text: str, *, mode: int | None = None, e
 
     Without ``mode`` a file that already exists keeps its permission bits — ``open(p, "w")``
     never changed them, and a 0600 secrets file must not come back 0644 from a rename.
+    A single-file bind mount uses an in-place fallback because it cannot be replaced;
+    that fallback does not provide the atomicity of a normal directory-backed file.
     """
     target = Path(path)
     if target.is_symlink():
@@ -36,33 +39,35 @@ def write_text_atomic(path: str | Path, text: str, *, mode: int | None = None, e
         target = Path(os.path.realpath(target))
     target.parent.mkdir(parents=True, exist_ok=True)
     if mode is None:
-        try:
+        with contextlib.suppress(FileNotFoundError):
             mode = stat.S_IMODE(target.stat().st_mode)
-        except FileNotFoundError:
-            pass
     # A sibling, so the replace stays on one filesystem; unique per call ("x" refuses an
     # existing name), so two writers — processes or threads — never share a half-written file.
     tmp = target.with_name(f".{target.name}.{os.getpid()}.{threading.get_ident()}.{uuid.uuid4().hex[:8]}.tmp")
     try:
-        with open(tmp, "x", encoding=encoding) as f:
+        # Set permissions at creation, before any secret bytes reach the temp file.
+        def opener(name: str, flags: int) -> int:
+            return os.open(name, flags, mode if mode is not None else 0o666)
+
+        with open(tmp, "x", encoding=encoding, opener=opener) as f:
+            if mode is not None:
+                os.fchmod(f.fileno(), mode)
             f.write(text)
             f.flush()
             os.fsync(f.fileno())  # the rename is atomic; the bytes still have to reach the disk
-        if mode is not None:
-            os.chmod(tmp, mode)
         try:
             os.replace(tmp, target)
         except OSError as exc:
             if exc.errno != errno.EBUSY:
                 raise
             # A single-file bind mount cannot be renamed over. Write in place, as before.
+            if mode is not None:
+                os.chmod(target, mode)
             shutil.copyfile(tmp, target)
             tmp.unlink()
     except BaseException:
-        try:
+        with contextlib.suppress(OSError):
             tmp.unlink()
-        except OSError:
-            pass
         raise
 
 

@@ -1,0 +1,38 @@
+{
+  "checked_at_unix": 1792754553.411407,
+  "from_block": 52980361,
+  "through_block": 52982550,
+  "from_test_to_head_seconds": 4376,
+  "outgoing_usdc_events": [
+    {
+      "from": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "to": "0xf47161fbb56d0d910a17e503c8292903f41bbae2",
+      "units": 310000,
+      "transaction": "0x62a173cba0fd4889cec3ab61dec6f005d6706e969cd1bf2aa072fcbd940100b1",
+      "block": 52980362
+    },
+    {
+      "from": "0xf47161fbb56d0d910a17e503c8292903f41bbae2",
+      "to": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "units": 310000,
+      "transaction": "0x92004d0db85d4687b2912214e43708a0b81b80dba9d0982e98bd42d176460ace",
+      "block": 52980370
+    }
+  ],
+  "current_balances": {
+    "buyer": {
+      "usdc_units": 1043148,
+      "eth_wei": 344327954094829
+    },
+    "merchant": {
+      "usdc_units": 0,
+      "eth_wei": 0
+    }
+  },
+  "only_original_payment_and_refund": true,
+  "no_late_debits": true,
+  "balances_still_restored": true,
+  "both_transactions_finalized": true,
+  "finalized_block": 52981993,
+  "new_transfers_sent": 0
+}

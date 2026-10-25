@@ -25,8 +25,14 @@ export function countTools(raw) {
     if (!t || typeof t !== "object" || Array.isArray(t)) throw `tools[${i}] must be an object`;
     if (typeof t.name !== "string" || !t.name) throw `tools[${i}] needs a string name`;
     const sent = { name: t.name, description: t.description || "", input_schema: t.inputSchema || { type: "object" } };
-    return { name: t.name.slice(0, 200), tokens: tokens(sent) };
+    // The same split as HISTOR's histor/toolcost.py: each part as it is written in that JSON; the
+    // keys and punctuation around them are the rest, so the parts add up to the tool's tokens.
+    const n = tokens(sent);
+    const name = tokens(sent.name), description = tokens(sent.description), input_schema = tokens(sent.input_schema);
+    return { name: t.name.slice(0, 200), tokens: n, description, input_schema, structure: n - name - description - input_schema, nameTokens: name };
   });
-  const sent = per.reduce((a, t) => a + t.tokens, 0);
-  return { tools: per.length, tokens: sent, listedTokens: tokens(raw), per };
+  const sum = (k) => per.reduce((a, t) => a + t[k], 0);
+  const parts = { names: sum("nameTokens"), descriptions: sum("description"), input_schemas: sum("input_schema"), structure: sum("structure") };
+  for (const t of per) delete t.nameTokens;
+  return { tools: per.length, tokens: sum("tokens"), listedTokens: tokens(raw), parts, per };
 }

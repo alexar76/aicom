@@ -190,6 +190,10 @@ DENY = {
         "PIPELINE_WALLET_KEY",
     },
     "hub": {
+        # Shared STRIPE_* credentials belong to the Factory merchant. Card top-ups
+        # must use the hub's own AIMARKET_STRIPE_* credentials, never inherit these.
+        "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET",
+        "STRIPE_SECRET_KEY_FILE", "STRIPE_WEBHOOK_SECRET_FILE",
         # Read only by acex/scripts/pulse_amm_create_pool_plan.py, an offline operator tool
         # that ships in the image because the Dockerfile copies acex/ whole.
         "ACEX_DEPLOYER_KEY",

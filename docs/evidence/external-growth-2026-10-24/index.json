@@ -1,0 +1,163 @@
+{
+  "method": "Read-only public HTTP GET, no authentication, writes, paid invocations or active security tests. Response metadata, hashes and compact factual extracts only. Comment excerpts <=22 words per comment; no full third-party article archived.",
+  "results": [
+    {
+      "key": "gh-repos",
+      "url": "https://api.github.com/users/alexar76/repos?per_page=100&sort=updated",
+      "retrieved_at": "2026-10-24T19:14:57.331790+00:00",
+      "status": 200,
+      "sha256": "db3394fe4899b2e47d350ff293eca94da8213cbbc5e588000ca2f7e46e571cf7"
+    },
+    {
+      "key": "gh-issues",
+      "url": "https://api.github.com/search/issues?q=user%3Aalexar76&sort=updated&order=desc&per_page=100",
+      "retrieved_at": "2026-10-24T19:14:57.335372+00:00",
+      "status": 200,
+      "sha256": "8043cec2e6719a805649ed3f7bb65cdbfb05860229cbb7a6b0099a0a183decfd",
+      "total_count": 405
+    },
+    {
+      "key": "dev-articles",
+      "url": "https://dev.to/api/articles?username=alexar76&per_page=100",
+      "retrieved_at": "2026-10-24T19:14:57.336111+00:00",
+      "status": 200,
+      "sha256": "591840b4e352a78a42e1315124d432c40eaa055b3e0e99c43e7fb3abe457d569"
+    },
+    {
+      "key": "dev-firewall",
+      "url": "https://dev.to/api/comments?a_id=4904350",
+      "retrieved_at": "2026-10-24T19:14:57.336745+00:00",
+      "status": 200,
+      "sha256": "a90692edc884bd28d8b5762a5ef0d269d2defa2bd2e3d2cb780c8201e6222c65"
+    },
+    {
+      "key": "dev-comparison",
+      "url": "https://dev.to/api/comments?a_id=4868973",
+      "retrieved_at": "2026-10-24T19:14:57.337140+00:00",
+      "status": 200,
+      "sha256": "485a077b02382d0b0c5966c22cd8bff9826a833cb2d59e983e50049fac313018"
+    },
+    {
+      "key": "dev-survey",
+      "url": "https://dev.to/api/comments?a_id=4804987",
+      "retrieved_at": "2026-10-24T19:14:57.337589+00:00",
+      "status": 200,
+      "sha256": "c2c8afbaed71900d8fd6a7191f1de0e5852928c270803a46e7b212270e4b7914"
+    },
+    {
+      "key": "dev-sellers",
+      "url": "https://dev.to/api/comments?a_id=4881999",
+      "retrieved_at": "2026-10-24T19:14:57.338070+00:00",
+      "status": 200,
+      "sha256": "b7cd0ddee47f5d43fea95e47b0674a5e839149f825754b5465babd10a0f72c2c"
+    },
+    {
+      "key": "dev-census",
+      "url": "https://dev.to/api/comments?a_id=4847905",
+      "retrieved_at": "2026-10-24T19:14:57.338502+00:00",
+      "status": 200,
+      "sha256": "5a884030b405d275ff0b3d301274583bfa1446bdef27ea04c35e4d7c549da410"
+    },
+    {
+      "key": "hn-story",
+      "url": "https://hacker-news.firebaseio.com/v0/item/50193565.json",
+      "retrieved_at": "2026-10-24T19:14:57.874083+00:00",
+      "status": 200,
+      "sha256": "27b1305579191df39363cb054f1a88436f759627cd7edcf873be11a83a1bcb99"
+    },
+    {
+      "key": "hn-question",
+      "url": "https://hacker-news.firebaseio.com/v0/item/50205750.json",
+      "retrieved_at": "2026-10-24T19:14:58.120895+00:00",
+      "status": 200,
+      "sha256": "57fd53a12139233a9b74be09b5852aa2befb69e9b6e03a66a456124edfd76784"
+    },
+    {
+      "key": "hn-reply",
+      "url": "https://hacker-news.firebaseio.com/v0/item/50223414.json",
+      "retrieved_at": "2026-10-24T19:14:58.139457+00:00",
+      "status": 200,
+      "sha256": "cbd14330ae56f83924a4505521af0a630b762614149864ccc357b9574dbd2591"
+    },
+    {
+      "key": "hf",
+      "url": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+      "retrieved_at": "2026-10-24T19:14:58.405128+00:00",
+      "status": 200,
+      "sha256": "fe75fa93ec219f422111a71cd9206dccf6d56336ef7d5a1404d3cec70a371a35"
+    },
+    {
+      "key": "zenodo",
+      "url": "https://zenodo.org/api/records/23512760",
+      "retrieved_at": "2026-10-24T19:14:58.460097+00:00",
+      "status": 200,
+      "sha256": "d4489a95272e22001ce7c745e6f44b53980ddc3f58cbb4f9a66d6cd1ed362230"
+    },
+    {
+      "key": "npm-month-warden",
+      "url": "https://api.npmjs.org/downloads/range/last-month/@aimarket/warden",
+      "retrieved_at": "2026-10-24T19:14:58.591885+00:00",
+      "status": 200,
+      "sha256": "34a23859668a6a2dcb22e54f355c7eed20d5ca7bfe654273f596faf4af9b019e"
+    },
+    {
+      "key": "npm-month-argus",
+      "url": "https://api.npmjs.org/downloads/range/last-month/@alexar76/argus3",
+      "retrieved_at": "2026-10-24T19:14:58.606516+00:00",
+      "status": 200,
+      "sha256": "2fa51bf8b05483f36b3ef6db9058e732612c295cfe598537592d012f0b18d7c7"
+    },
+    {
+      "key": "npm-month-agent",
+      "url": "https://api.npmjs.org/downloads/range/last-month/@aimarket/agent",
+      "retrieved_at": "2026-10-24T19:14:58.710776+00:00",
+      "status": 200,
+      "sha256": "26bab430e9416d0c9ec3b970237ce6943730d8d86286e9c6bac4933e86c1cb95"
+    },
+    {
+      "key": "aer",
+      "url": "https://agenteconomy.report/s/modelmarket.dev.json",
+      "retrieved_at": "2026-10-24T19:14:58.724841+00:00",
+      "status": 200,
+      "sha256": "07e95ff3a458b916069f923cd8143eaa8189d6363b3b96b016796ec6fd288292"
+    },
+    {
+      "key": "demand",
+      "url": "https://verify.modelmarket.dev/demand.json",
+      "retrieved_at": "2026-10-24T19:14:58.788937+00:00",
+      "status": 200,
+      "sha256": "abe3f641aa005ba826041368e5dc462f80ebf58f93ff629753f733bd48d25fcb"
+    },
+    {
+      "key": "bsky",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=alexar76.bsky.social&limit=30",
+      "retrieved_at": "2026-10-24T19:14:58.871061+00:00",
+      "status": 200,
+      "sha256": "afa8802c7cad8c2a7f05a48427e157496f0a813357c5bd356c876420ba9be2ec"
+    },
+    {
+      "key": "findmcp",
+      "url": "https://findmcp.dev/servers/warden",
+      "retrieved_at": "2026-10-24T19:14:58.981564+00:00",
+      "status": 200,
+      "sha256": "a1b3a8e8a5807d5d483c2da2abd47d0ce34d6c80757f58f11c13fe90eb13c2c0",
+      "title": "FindMCP — The MCP Server Directory | Find MCP Servers for AI Agents"
+    },
+    {
+      "key": "histor-pages",
+      "url": "https://alexar76.github.io/histor/",
+      "retrieved_at": "2026-10-24T19:14:59.191422+00:00",
+      "status": 200,
+      "sha256": "49fa2d73df542e1aef28a225c90f5747aac200f4d3e0aeeebefe581948b69741",
+      "title": "HISTOR — transparency log for MCP tool definitions"
+    },
+    {
+      "key": "attested-directory",
+      "url": "https://odel.app/modules/alexar76/attested-memory",
+      "retrieved_at": "2026-10-24T19:14:59.244626+00:00",
+      "status": 200,
+      "sha256": "2caab835cdfd932e447c401867025496226b1b5396c7da75da5c19fd08ddd5de",
+      "title": "Attested Memory Market - Odel Module Marketplace"
+    }
+  ]
+}

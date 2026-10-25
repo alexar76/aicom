@@ -12,7 +12,6 @@ from __future__ import annotations
 
 from typing import Any
 
-
 #: How a public submission's brief begins: the guest landing generator's charter and the
 #: funnel lead form. Products created before ``visitor_submission`` existed carry only this.
 _VISITOR_BRIEF_PREFIXES = ("PRIMARY DELIVERABLE (guest)", "Funnel lead from ")

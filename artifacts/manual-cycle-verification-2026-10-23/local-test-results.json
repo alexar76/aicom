@@ -1,0 +1,18 @@
+{
+  "command": ".venv/bin/python -m unittest discover -s artifacts/manual-cycle-verification-2026-10-23 -p 'test_verify_*.py' -v",
+  "passed": 10,
+  "failed": 0,
+  "checks": [
+    "finalized success",
+    "confirmed but not finalized rejected",
+    "noncanonical receipt rejected",
+    "reverted transaction rejected",
+    "actual supplier statement reconciles",
+    "missing refund rejected",
+    "duplicate supplier debit rejected",
+    "refund shortfall rejected",
+    "other order rejected",
+    "unrestored supplier balance rejected"
+  ],
+  "production_financial_checks_passed": 16
+}

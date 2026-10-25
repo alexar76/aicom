@@ -15,8 +15,11 @@ import logging
 import os
 import threading
 import time
-from typing import Callable
+from typing import TYPE_CHECKING
 from urllib.parse import quote
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 

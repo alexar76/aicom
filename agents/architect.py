@@ -14,15 +14,6 @@ import json
 import logging
 import time
 
-from llm import GenerationConfig, LLMRouter
-from llm.agent_prompt_split import (
-    build_architect_system_prompt,
-    build_architect_user_data,
-    format_user_data_message,
-)
-from llm.content_languages import ensure_architecture_content_language
-from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ARCHITECTURE_SEC
-
 from agents.architect_contracts import _ensure_implementation_contract
 from agents.architect_ui import (
     _build_design_pipeline,
@@ -36,6 +27,14 @@ from agents.architect_ui import (
 from agents.prompt_utils import prompt_json
 from agents.prompts.architect_role import ARCHITECT_SYSTEM_PROMPT
 from agents.prompts.load_prompt import load_prompt
+from llm import GenerationConfig, LLMRouter
+from llm.agent_prompt_split import (
+    build_architect_system_prompt,
+    build_architect_user_data,
+    format_user_data_message,
+)
+from llm.content_languages import ensure_architecture_content_language
+from llm.factory_defaults import FACTORY_MAX_OUTPUT_TOKENS_HEAVY, FACTORY_TIMEOUT_ARCHITECTURE_SEC
 
 from .base_agent import AgentInput, AgentOutput, BaseAgent
 

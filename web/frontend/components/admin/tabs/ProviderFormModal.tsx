@@ -205,7 +205,7 @@ export function ProviderFormModal({
       size="xl"
     >
       <div className="space-y-4">
-        {error && <div className="text-red-400 text-sm bg-red-500/10 rounded p-2">{error}</div>}
+        {error && <div className="text-red-400 text-sm bg-red-500/10 rounded-sm p-2">{error}</div>}
 
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -220,7 +220,7 @@ export function ProviderFormModal({
           <div>
             <label className="block text-gray-400 text-xs mb-1">{t(locale, 'providers.form.field.type')}</label>
             <select
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-hidden focus:border-indigo-500"
               value={form.provider_type || 'openai_compatible'}
               onChange={(e) => updateField('provider_type', e.target.value)}
             >
@@ -354,7 +354,7 @@ export function ProviderFormModal({
               type="checkbox"
               checked={form.enabled ?? true}
               onChange={(e) => updateField('enabled', e.target.checked)}
-              className="rounded bg-white/5 border-white/10"
+              className="rounded-sm bg-white/5 border-white/10"
             />
             {t(locale, 'providers.form.enabled')}
           </label>
@@ -363,7 +363,7 @@ export function ProviderFormModal({
               type="checkbox"
               checked={form.capabilities?.supports_streaming ?? true}
               onChange={(e) => updateField('capabilities', { ...form.capabilities, supports_streaming: e.target.checked })}
-              className="rounded bg-white/5 border-white/10"
+              className="rounded-sm bg-white/5 border-white/10"
             />
             {t(locale, 'providers.form.streaming')}
           </label>
