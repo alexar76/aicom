@@ -1,0 +1,83 @@
+{
+  "inspectedAt": "2026-10-25T09:39:21.164976+00:00",
+  "cases": [
+    {
+      "changeId": 17172,
+      "side": "from",
+      "package": "@mapled/mcp",
+      "version": "0.21.5",
+      "integrityVerified": "sha512-vZhjMka6Zvk243ewraytiZx3iX1R48wl8C3FUeKk8HXoofGf83Zo5VVuf52OyLcrjFf9EtrIA58RyAB+9JRn8Q==",
+      "packageBin": {
+        "mapled-mcp": "dist/index.js"
+      },
+      "matchedToolCount": 29,
+      "snapshotToolCount": 33
+    },
+    {
+      "changeId": 17172,
+      "side": "to",
+      "package": "@mapled/mcp",
+      "version": "0.21.6",
+      "integrityVerified": "sha512-EQKxpEaKjTyBAWDYbuYD5RhnW6ZO9DVeuD6bupyfA/BLB+Xi3Tl4ZxRrWssv7DxphktdySnQDp0ILOaAxWsDUQ==",
+      "packageBin": {
+        "mapled-mcp": "dist/index.js"
+      },
+      "matchedToolCount": 29,
+      "snapshotToolCount": 33
+    },
+    {
+      "changeId": 20433,
+      "side": "from",
+      "package": "@browserbridge/bbx",
+      "version": "1.12.2",
+      "integrityVerified": "sha512-SuqfKM8TT/FoLj5wPCwvvZKZxvG2OkmW/1EZynYSwMUvOEtHcpoNXpc/YGDRwwMB2EJ5GuoDWX1fmW3Cs1+vlg==",
+      "packageBin": {
+        "bbx": "packages/agent-client/src/cli.js",
+        "bbx-daemon": "packages/native-host/bin/bridge-daemon.js",
+        "bbx-install": "packages/native-host/bin/install-manifest.js",
+        "bbx-mcp": "packages/mcp-server/src/bin.js"
+      },
+      "matchedToolCount": 6,
+      "snapshotToolCount": 6
+    },
+    {
+      "changeId": 20433,
+      "side": "to",
+      "package": "@browserbridge/bbx",
+      "version": "1.12.5",
+      "integrityVerified": "sha512-j+LHhupQ2vub8eIw8/Cs5LoVLIxoawdwOlEwx5Mw9ZaIVT1vAPA6CDk8u2D2ubTS8pYJlUL9vswzuD60buwV0Q==",
+      "packageBin": {
+        "bbx": "packages/agent-client/src/cli.js",
+        "bbx-daemon": "packages/native-host/bin/bridge-daemon.js",
+        "bbx-install": "packages/native-host/bin/install-manifest.js",
+        "bbx-mcp": "packages/mcp-server/src/bin.js"
+      },
+      "matchedToolCount": 6,
+      "snapshotToolCount": 6
+    },
+    {
+      "changeId": 23671,
+      "side": "from",
+      "package": "@suparse/mcp",
+      "version": "1.4.0",
+      "integrityVerified": "sha512-tlGJnDXGYA5xz61yIdaHjO/q3z59HjBf0v339uDCOzsvF9L98yXzjMjiLITbWug5uV6vINO4z93m+sNm9NJWzQ==",
+      "packageBin": {
+        "suparse-mcp": "dist/index.mjs"
+      },
+      "matchedToolCount": 10,
+      "snapshotToolCount": 10
+    },
+    {
+      "changeId": 23671,
+      "side": "to",
+      "package": "@suparse/mcp",
+      "version": "1.5.0",
+      "integrityVerified": "sha512-JGtJ1Y0Z38j/SjVGq9hXV7V7yaKcMG+25bKj/W9OlxDBFWRjuZX6YXObo4nS/OoS8vQ3CTwy25XM2F9afEa3rw==",
+      "packageBin": {
+        "suparse-mcp": "dist/index.mjs"
+      },
+      "matchedToolCount": 17,
+      "snapshotToolCount": 17
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "case": "required-mode-refuses-empty",
+  "repeat": 1,
+  "runId": "required-mode-refuses-empty-1",
+  "expectation": {
+    "name": "required-mode-refuses-empty",
+    "config": {
+      "REQUIRE_MODE": "true"
+    },
+    "calls": [
+      {}
+    ],
+    "charges": 0,
+    "tool_error": true
+  },
+  "command": [
+    "/usr/local/bin/node",
+    "/study/fake-billing-server.mjs"
+  ],
+  "replies": [
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "synthetic-record-store",
+          "version": "1.0.0"
+        },
+        "capabilities": {
+          "tools": {}
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "tools": [
+          {
+            "name": "lookup_record",
+            "description": "Look up a record.",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "preview",
+                    "purchase"
+                  ],
+                  "default": "purchase"
+                },
+                "idempotencyKey": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "required": [
+                "mode"
+              ],
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Missing required mode."
+          }
+        ],
+        "isError": true
+      }
+    }
+  ],
+  "timedOut": false,
+  "charges": 0,
+  "mockCredits": 0,
+  "prompts": 0,
+  "toolHandlersStarted": 1,
+  "passed": true,
+  "errors": []
+}

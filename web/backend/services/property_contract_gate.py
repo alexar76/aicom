@@ -61,6 +61,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from core.generated_code_execution import require_host_execution_opt_in
+
 logger = logging.getLogger(__name__)
 
 DEFAULT_TIMEOUT_SEC = 120.0
@@ -494,6 +496,7 @@ def run_properties(
 
     payload = json.dumps({"properties": properties})
     try:
+        require_host_execution_opt_in()
         proc = subprocess.Popen(
             [sys.executable, "-c", _RUNNER, payload],
             cwd=str(code_dir),

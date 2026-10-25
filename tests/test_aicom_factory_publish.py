@@ -111,6 +111,8 @@ def test_factory_rsync_excludes_cursor_and_github():
     assert "docs/evidence/mcp-sdk-recovery-2026-10-24" in excludes
     assert "docs/evidence/external-presence-2026-10-24" in excludes
     assert "artifacts/security-audit-2026-10-25" in excludes
+    assert "artifacts/security-bincode-2026-10-25" in excludes
+    assert "artifacts/security-migration-2026-10-25" in excludes
     assert "artifacts/quality-audit-2026-10-24" in excludes
     assert "cite-desks" in factory_local_exclude_paths()
     assert "cite-desks" in DEFAULT_RSYNC_EXCLUDES

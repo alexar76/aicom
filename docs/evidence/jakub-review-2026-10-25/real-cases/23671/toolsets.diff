@@ -1,0 +1,2500 @@
+--- from-toolsets.json
++++ to-toolsets.json
+@@ -1,14 +1,12 @@
+ [
+   {
+-    "description": "Delete one or more documents from Suparse by document ID.",
++    "description": "Delete documents from Suparse remotely using document IDs, not task IDs, export job IDs, or local paths. Use only when deletion or cleanup is requested, after confirming any required results are safely saved. Deleted IDs cannot be used for later result retrieval or exports. Does not delete local input or exported files. Repeating deletion does not create new work, though its returned boolean may change.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
++          "not": {}
+         },
+         "document_ids": {
+           "description": "Suparse document IDs to delete.",
+@@ -48,15 +46,74 @@
+     }
+   },
+   {
+-    "description": "Fetch an export for one or more Suparse document IDs and write it directly to local disk. Use this for CSV, XLSX, Google Sheets, and saved JSON files. Do not call fetch_json_results unless you intentionally need full JSON in the MCP response. If output_path is a directory, the API-provided filename is used inside that directory. If cleanup is needed, call delete_documents after this tool succeeds.",
++    "description": "Save the artifact of an existing completed export_job_id to local disk, including after reconnecting. Preserves original bytes, including ZIP; does not parse JSON, unpack ZIP, wait for completion, or submit another export. Use get_export_job or wait_for_export_job first if needed. Verifies artifact size and SHA-256 before atomic publication. Returns output_path. overwrite defaults false; enable only when replacing a local file is intended. An expired artifact cannot be recovered by retrying this download.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
++          "not": {}
++        },
++        "export_job_id": {
++          "description": "Remote Suparse export job ID.",
++          "minLength": 1,
++          "type": "string"
++        },
++        "output_path": {
++          "description": "Optional local file path or existing directory on the server's machine. Prefer an absolute path; ~ is not expanded. Omit to save in the server's working directory using the artifact filename. Original bytes may be ZIP regardless of the requested export format.",
++          "minLength": 1,
++          "type": "string"
++        },
++        "overwrite": {
++          "default": false,
++          "description": "Allow replacing an existing local file. Defaults to false.",
++          "type": "boolean"
++        }
++      },
++      "required": [
++        "export_job_id"
++      ],
++      "type": "object"
++    },
++    "name": "download_export_job",
++    "outputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "artifact_format": {
++          "type": "string"
++        },
++        "content_type": {
++          "type": "string"
++        },
++        "export_job_id": {
++          "type": "string"
++        },
++        "output_path": {
++          "type": "string"
++        },
++        "requested_format": {
++          "type": "string"
++        }
++      },
++      "required": [
++        "export_job_id",
++        "output_path",
++        "requested_format",
++        "artifact_format",
++        "content_type"
++      ],
++      "type": "object"
++    }
++  },
++  {
++    "description": "Export existing Suparse document IDs as JSON, CSV, XLSX, or Google Sheets to local disk. Returns output_path plus requested_format, artifact_format and content_type. Existing output files are overwritten: choose a new path unless replacement is intended. CSV/XLSX may return ZIP; its extension is corrected to .zip. Set unpack:true to also extract the separate files into a fresh folder and return output_paths. JSON is saved as parsed task groups. Google Sheets requires an immediate API response and saves metadata as JSON. For a known export_job_id use download_export_job to recover the original artifact. Does not delete remote documents.",
++    "inputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "api_url": {
++          "not": {}
+         },
+         "document_ids": {
+           "description": "Suparse document IDs to export.",
+@@ -68,7 +125,7 @@
+           "type": "array"
+         },
+         "export_type": {
+-          "description": "Export mode for csv, xlsx, and google_sheets. Defaults to unified.",
++          "description": "Export mode for CSV, XLSX, and Google Sheets. Defaults to unified. Accepted for JSON, which currently has the same task-group shape for either value.",
+           "enum": [
+             "original",
+             "unified"
+@@ -76,7 +133,7 @@
+           "type": "string"
+         },
+         "format": {
+-          "description": "Export format to write to local disk. Use this tool for csv and xlsx.",
++          "description": "Export format to save locally. Use this tool for JSON, CSV, XLSX, or Google Sheets; google_sheets requires a working Google integration and saves response metadata and sheet URLs as JSON, not a spreadsheet binary.",
+           "enum": [
+             "json",
+             "csv",
+@@ -85,10 +142,25 @@
+           ],
+           "type": "string"
+         },
++        "idempotency_key": {
++          "description": "Optional UUID idempotency key. Retain this key and replay the identical document IDs, format, export type, and layout if submission confirmation is lost.",
++          "format": "uuid",
++          "type": "string"
++        },
+         "output_path": {
+-          "description": "Optional local output file path or existing directory. When omitted, writes to the current working directory using the API-provided or generated filename.",
++          "description": "Optional local file path or existing directory on the server's machine. Existing files are overwritten. Prefer an absolute path; ~ is not expanded. Omit to use the server's working directory with an API-provided or generated filename; check the returned output_path for the actual artifact, which may be ZIP.",
+           "minLength": 1,
+           "type": "string"
++        },
++        "unpack": {
++          "default": false,
++          "description": "For CSV/XLSX only: extract a returned ZIP into a new folder next to the saved archive and return output_paths. Keeps the ZIP. A single workbook or CSV is returned directly. Defaults false.",
++          "type": "boolean"
++        },
++        "wait_timeout_ms": {
++          "description": "Maximum time in milliseconds to wait for an accepted export job to complete; defaults to 60000. This bounds completion waiting, including polling retries, not submission or transfer. Allow enough total time in the MCP client for all phases.",
++          "exclusiveMinimum": 0,
++          "type": "integer"
+         },
+         "xlsx_layout": {
+           "description": "XLSX layout. Applies only to xlsx exports and defaults to standard.",
+@@ -110,11 +182,20 @@
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
++        "artifact_format": {
++          "type": "string"
++        },
++        "content_type": {
++          "type": "string"
++        },
+         "document_ids": {
+           "items": {
+             "type": "string"
+           },
+           "type": "array"
++        },
++        "export_job_id": {
++          "type": "string"
+         },
+         "export_type": {
+           "enum": [
+@@ -132,7 +213,71 @@
+           ],
+           "type": "string"
+         },
++        "google_sheets_metadata": {
++          "additionalProperties": false,
++          "properties": {
++            "created_at": {
++              "type": "string"
++            },
++            "folder_url": {
++              "type": "string"
++            },
++            "message": {
++              "type": "string"
++            },
++            "spreadsheet_id": {
++              "type": "string"
++            },
++            "spreadsheet_url": {
++              "type": "string"
++            },
++            "spreadsheets": {
++              "items": {
++                "additionalProperties": false,
++                "properties": {
++                  "spreadsheet_id": {
++                    "type": "string"
++                  },
++                  "spreadsheet_url": {
++                    "type": "string"
++                  },
++                  "template_group_id": {
++                    "type": [
++                      "string",
++                      "null"
++                    ]
++                  },
++                  "template_name": {
++                    "type": [
++                      "string",
++                      "null"
++                    ]
++                  }
++                },
++                "required": [
++                  "spreadsheet_id",
++                  "spreadsheet_url"
++                ],
++                "type": "object"
++              },
++              "type": "array"
++            }
++          },
++          "type": "object"
++        },
++        "idempotency_key": {
++          "type": "string"
++        },
+         "output_path": {
++          "type": "string"
++        },
++        "output_paths": {
++          "items": {
++            "type": "string"
++          },
++          "type": "array"
++        },
++        "requested_format": {
+           "type": "string"
+         },
+         "xlsx_layout": {
+@@ -145,6 +290,9 @@
+       },
+       "required": [
+         "format",
++        "requested_format",
++        "artifact_format",
++        "content_type",
+         "export_type",
+         "output_path",
+         "document_ids"
+@@ -153,22 +301,24 @@
+     }
+   },
+   {
+-    "description": "Process one local document through Suparse. Defaults to result_mode defer, which uploads and polls only, then returns compact task_id/document_ids for later download_results. Use result_mode return_json only when you need the full JSON extraction in the MCP response. cleanup is only valid with return_json.",
++    "description": "Process one local file through Suparse. Defaults to result_mode defer: upload, wait for terminal processing, and return task_id/document_ids for later export. A partially_completed task retains its status. For an immediate task ID, use start_file_extraction, then wait_for_task_extraction and get_task_results. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending. return_json preserves per-input task status and document IDs, reports partial tasks and empty exports as incomplete, and preserves exported data. cleanup is best-effort, allowed only with return_json, and requires a completed task and an export covering every requested document.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
++          "not": {}
++        },
++        "auto_approve": {
++          "description": "Automatically approve extracted documents. Defaults to true. Set false only when human review is requested; use a start-only extraction tool to retain the task ID. MCP cannot approve documents, and combined extraction may time out while review is pending.",
++          "type": "boolean"
+         },
+         "cleanup": {
+-          "description": "Only valid with result_mode return_json. Deletes processed Suparse documents after JSON results are returned, so later exports cannot be fetched from those document IDs.",
++          "description": "Defaults to false. Set true only when remote deletion is requested. Only valid with result_mode return_json. Deletes Suparse documents only for fully completed tasks with JSON exports covering every requested document, after all workers settle. Cleanup is skipped after cancellation. Later exports cannot use deleted document IDs.",
+           "type": "boolean"
+         },
+         "file_path": {
+-          "description": "Local path to a supported document file.",
++          "description": "Path to a local document on the machine running this MCP server, not a URL or chat attachment. Supported extensions: .pdf, .jpg, .jpeg, .png, .heic, .heif. Prefer an absolute path; relative paths use the server's working directory and ~ is not expanded.",
+           "minLength": 1,
+           "type": "string"
+         },
+@@ -185,7 +335,7 @@
+         },
+         "result_mode": {
+           "default": "defer",
+-          "description": "Controls whether extraction results in json format are returned directly. Use return_json only when you need the full JSON extraction in the MCP response. In all other cases you can retrieve the results in format of choice using download_results",
++          "description": "Defaults to defer: upload and wait for processing, then return task status and document IDs without exporting. Defer does not mean background processing; use a start-only tool for that. return_json additionally exports full JSON into the MCP response and can consume substantial context. Use download_results to save large results or other export formats.",
+           "enum": [
+             "defer",
+             "return_json"
+@@ -197,8 +347,13 @@
+           "type": "boolean"
+         },
+         "template_id": {
+-          "description": "Optional extraction template ID. Use only a non-system team template ID from list_templates. Do not pass system template IDs directly; ask the user to add the matching system template to their templates first. Omit to let Suparse auto-detect.",
+-          "type": "string"
++          "description": "Optional extraction template ID. Use only a non-system team template ID from list_templates. System template IDs are discovery-only and cannot be passed directly. Omit to let Suparse auto-detect, or use an authorized quick-schema workflow to create a team template.",
++          "type": "string"
++        },
++        "wait_timeout_ms": {
++          "description": "For return_json, milliseconds to wait for each export to complete; defaults to 60000. Submission and transfer are separate phases. Ignored in defer mode.",
++          "exclusiveMinimum": 0,
++          "type": "integer"
+         }
+       },
+       "required": [
+@@ -211,23 +366,358 @@
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
++        "cancelled": {
++          "type": "boolean"
++        },
++        "cleanup": {
++          "additionalProperties": false,
++          "properties": {
++            "deleted_document_ids": {
++              "items": {
++                "type": "string"
++              },
++              "type": "array"
++            },
++            "retained_document_ids": {
++              "items": {
++                "type": "string"
++              },
++              "type": "array"
++            },
++            "status": {
++              "enum": [
++                "succeeded",
++                "failed",
++                "skipped"
++              ],
++              "type": "string"
++            }
++          },
++          "required": [
++            "status",
++            "deleted_document_ids",
++            "retained_document_ids"
++          ],
++          "type": "object"
++        },
++        "exports": {
++          "items": {
++            "additionalProperties": false,
++            "properties": {
++              "export_job_id": {
++                "type": "string"
++              },
++              "file_path": {
++                "type": "string"
++              },
++              "idempotency_key": {
++                "type": "string"
++              }
++            },
++            "required": [
++              "file_path"
++            ],
++            "type": "object"
++          },
++          "type": "array"
++        },
+         "failed": {
+           "items": {
+             "anyOf": [
+               {
+                 "additionalProperties": false,
+                 "properties": {
++                  "cancelled": {
++                    "type": "boolean"
++                  },
++                  "code": {
++                    "type": "string"
++                  },
+                   "error": {
+                     "type": "string"
+                   },
++                  "error_type": {
++                    "type": "string"
++                  },
+                   "file_path": {
+                     "type": "string"
++                  },
++                  "meta": {
++                    "additionalProperties": {},
++                    "type": "object"
++                  },
++                  "next_action": {
++                    "type": "string"
++                  },
++                  "partial_result": {},
++                  "reason": {
++                    "type": "string"
++                  },
++                  "recovery": {
++                    "additionalProperties": false,
++                    "properties": {
++                      "export_job_id": {
++                        "type": "string"
++                      },
++                      "export_request": {
++                        "additionalProperties": false,
++                        "properties": {
++                          "document_ids": {
++                            "items": {
++                              "type": "string"
++                            },
++                            "type": "array"
++                          },
++                          "export_type": {
++                            "enum": [
++                              "original",
++                              "unified"
++                            ],
++                            "type": "string"
++                          },
++                          "format": {
++                            "enum": [
++                              "json",
++                              "csv",
++                              "xlsx",
++                              "google_sheets"
++                            ],
++                            "type": "string"
++                          },
++                          "xlsx_layout": {
++                            "enum": [
++                              "standard",
++                              "flat"
++                            ],
++                            "type": "string"
++                          }
++                        },
++                        "required": [
++                          "document_ids",
++                          "format",
++                          "export_type"
++                        ],
++                        "type": "object"
++                      },
++                      "idempotency_key": {
++                        "type": "string"
++                      },
++                      "job": {
++                        "additionalProperties": false,
++                        "properties": {
++                          "artifact": {
++                            "anyOf": [
++                              {
++                                "additionalProperties": false,
++                                "properties": {
++                                  "checksum_sha256": {
++                                    "type": "string"
++                                  },
++                                  "content_type": {
++                                    "type": "string"
++                                  },
++                                  "filename": {
++                                    "type": "string"
++                                  },
++                                  "size_bytes": {
++                                    "type": "number"
++                                  }
++                                },
++                                "required": [
++                                  "filename",
++                                  "content_type",
++                                  "size_bytes",
++                                  "checksum_sha256"
++                                ],
++                                "type": "object"
++                              },
++                              {
++                                "type": "null"
++                              }
++                            ]
++                          },
++                          "attempt_count": {
++                            "type": "number"
++                          },
++                          "created_at": {
++                            "type": "string"
++                          },
++                          "effective_artifact_format": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "error": {
++                            "anyOf": [
++                              {
++                                "additionalProperties": false,
++                                "properties": {
++                                  "code": {
++                                    "type": "string"
++                                  },
++                                  "message": {
++                                    "type": "string"
++                                  },
++                                  "meta": {
++                                    "additionalProperties": {},
++                                    "type": "object"
++                                  },
++                                  "retry_after_seconds": {
++                                    "type": [
++                                      "number",
++                                      "null"
++                                    ]
++                                  }
++                                },
++                                "required": [
++                                  "code",
++                                  "message"
++                                ],
++                                "type": "object"
++                              },
++                              {
++                                "type": "null"
++                              }
++                            ]
++                          },
++                          "expired_at": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "expires_at": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "export_job_id": {
++                            "type": "string"
++                          },
++                          "export_type": {
++                            "type": "string"
++                          },
++                          "generated_count": {
++                            "type": "number"
++                          },
++                          "initial_excluded_count": {
++                            "type": "number"
++                          },
++                          "initial_exportable_count": {
++                            "type": "number"
++                          },
++                          "replayed": {
++                            "type": "boolean"
++                          },
++                          "requested_by_user_email": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "requested_by_user_id": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "requested_by_user_name": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "requested_count": {
++                            "type": "number"
++                          },
++                          "requested_format": {
++                            "type": "string"
++                          },
++                          "runtime_excluded_count": {
++                            "type": "number"
++                          },
++                          "status": {
++                            "type": "string"
++                          },
++                          "total_matching_count": {
++                            "type": "number"
++                          },
++                          "xlsx_layout": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          }
++                        },
++                        "required": [
++                          "export_job_id",
++                          "status",
++                          "requested_format",
++                          "effective_artifact_format",
++                          "export_type",
++                          "xlsx_layout",
++                          "created_at",
++                          "expired_at",
++                          "requested_by_user_id",
++                          "requested_by_user_name",
++                          "requested_by_user_email",
++                          "requested_count",
++                          "total_matching_count",
++                          "initial_exportable_count",
++                          "initial_excluded_count",
++                          "generated_count",
++                          "runtime_excluded_count",
++                          "attempt_count",
++                          "expires_at",
++                          "artifact",
++                          "error",
++                          "replayed"
++                        ],
++                        "type": "object"
++                      },
++                      "last_status": {
++                        "type": "string"
++                      },
++                      "operation_may_be_running": {
++                        "type": "boolean"
++                      },
++                      "source_upload_id": {
++                        "type": "string"
++                      },
++                      "storage_status_code": {
++                        "type": "number"
++                      },
++                      "task_id": {
++                        "type": "string"
++                      },
++                      "upload_batch_id": {
++                        "type": "string"
++                      },
++                      "upload_reference_id": {
++                        "type": "string"
++                      }
++                    },
++                    "type": "object"
++                  },
++                  "retry_after_seconds": {
++                    "type": [
++                      "number",
++                      "null"
++                    ]
++                  },
++                  "status_code": {
++                    "type": "number"
+                   },
+                   "task_id": {
+                     "type": [
+                       "string",
+                       "null"
+                     ]
++                  },
++                  "unstarted": {
++                    "type": "boolean"
+                   }
+                 },
+                 "required": [
+@@ -240,11 +730,44 @@
+               {
+                 "additionalProperties": false,
+                 "properties": {
++                  "cancelled": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/cancelled"
++                  },
++                  "code": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/code"
++                  },
+                   "error": {
+                     "type": "string"
+                   },
++                  "error_type": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/error_type"
++                  },
+                   "file": {
+                     "type": "string"
++                  },
++                  "meta": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/meta"
++                  },
++                  "next_action": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/next_action"
++                  },
++                  "partial_result": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/partial_result"
++                  },
++                  "reason": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/reason"
++                  },
++                  "recovery": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/recovery"
++                  },
++                  "retry_after_seconds": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/retry_after_seconds"
++                  },
++                  "status_code": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/status_code"
++                  },
++                  "unstarted": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/unstarted"
+                   }
+                 },
+                 "required": [
+@@ -256,6 +779,12 @@
+             ]
+           },
+           "type": "array"
++        },
++        "failed_count": {
++          "type": "number"
++        },
++        "guidance": {
++          "type": "string"
+         },
+         "result_mode": {
+           "enum": [
+@@ -279,6 +808,9 @@
+                   "file_path": {
+                     "type": "string"
+                   },
++                  "status": {
++                    "type": "string"
++                  },
+                   "task_id": {
+                     "type": "string"
+                   }
+@@ -319,6 +851,12 @@
+           },
+           "type": "array"
+         },
++        "tasks": {
++          "items": {
++            "$ref": "#/properties/succeeded/items/anyOf/0"
++          },
++          "type": "array"
++        },
+         "total": {
+           "type": "number"
+         }
+@@ -327,24 +865,27 @@
+         "result_mode",
+         "total",
+         "succeeded",
+-        "failed"
++        "failed",
++        "failed_count"
+       ],
+       "type": "object"
+     }
+   },
+   {
+-    "description": "Process all supported files in an immediate local folder through Suparse. Defaults to result_mode defer, which uploads and polls only, then returns compact task_id/document_ids for later download_results. Use result_mode return_json only when you need full JSON extractions in the MCP response. cleanup is only valid with return_json.",
++    "description": "Process sorted, immediate supported files in a local folder through Suparse (nonrecursive; directories are skipped). Defaults to result_mode defer: upload and wait for each task, retaining task status and document IDs. For task IDs before processing finishes, use start_folder_extraction. At most 10 files run concurrently. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending. return_json preserves per-input task status and document IDs, reports partial tasks and empty exports as incomplete, and preserves exported data. cleanup is best-effort, allowed only with return_json, and requires a completed task and an export covering every requested document.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
++          "not": {}
++        },
++        "auto_approve": {
++          "description": "Automatically approve extracted documents. Defaults to true. Set false only when human review is requested; use a start-only extraction tool to retain the task ID. MCP cannot approve documents, and combined extraction may time out while review is pending.",
++          "type": "boolean"
+         },
+         "cleanup": {
+-          "description": "Only valid with result_mode return_json. Deletes processed Suparse documents after JSON results are returned, so later exports cannot be fetched from those document IDs.",
++          "description": "Defaults to false. Set true only when remote deletion is requested. Only valid with result_mode return_json. Deletes Suparse documents only for fully completed tasks with JSON exports covering every requested document, after all workers settle. Cleanup is skipped after cancellation. Later exports cannot use deleted document IDs.",
+           "type": "boolean"
+         },
+         "folder_id": {
+@@ -353,7 +894,7 @@
+           "type": "string"
+         },
+         "folder_path": {
+-          "description": "Local folder containing supported document files.",
++          "description": "Path to a local folder on the machine running this MCP server, not a remote Suparse folder ID. Scans supported files directly inside it, nonrecursively. Prefer an absolute path; relative paths use the server's working directory and ~ is not expanded.",
+           "minLength": 1,
+           "type": "string"
+         },
+@@ -365,7 +906,7 @@
+         },
+         "result_mode": {
+           "default": "defer",
+-          "description": "Controls whether extraction results in json format are returned directly. Use return_json only when you need the full JSON extraction in the MCP response. In all other cases you can retrieve the results in format of choice using download_results",
++          "description": "Defaults to defer: upload and wait for processing, then return task status and document IDs without exporting. Defer does not mean background processing; use a start-only tool for that. return_json additionally exports full JSON into the MCP response and can consume substantial context. Use download_results to save large results or other export formats.",
+           "enum": [
+             "defer",
+             "return_json"
+@@ -377,8 +918,13 @@
+           "type": "boolean"
+         },
+         "template_id": {
+-          "description": "Optional extraction template ID. Use only a non-system team template ID from list_templates. Do not pass system template IDs directly; ask the user to add the matching system template to their templates first. Omit to let Suparse auto-detect.",
+-          "type": "string"
++          "description": "Optional extraction template ID. Use only a non-system team template ID from list_templates. System template IDs are discovery-only and cannot be passed directly. Omit to let Suparse auto-detect, or use an authorized quick-schema workflow to create a team template.",
++          "type": "string"
++        },
++        "wait_timeout_ms": {
++          "description": "For return_json, milliseconds to wait for each export to complete; defaults to 60000. Submission and transfer are separate phases. Ignored in defer mode.",
++          "exclusiveMinimum": 0,
++          "type": "integer"
+         }
+       },
+       "required": [
+@@ -391,23 +937,358 @@
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
++        "cancelled": {
++          "type": "boolean"
++        },
++        "cleanup": {
++          "additionalProperties": false,
++          "properties": {
++            "deleted_document_ids": {
++              "items": {
++                "type": "string"
++              },
++              "type": "array"
++            },
++            "retained_document_ids": {
++              "items": {
++                "type": "string"
++              },
++              "type": "array"
++            },
++            "status": {
++              "enum": [
++                "succeeded",
++                "failed",
++                "skipped"
++              ],
++              "type": "string"
++            }
++          },
++          "required": [
++            "status",
++            "deleted_document_ids",
++            "retained_document_ids"
++          ],
++          "type": "object"
++        },
++        "exports": {
++          "items": {
++            "additionalProperties": false,
++            "properties": {
++              "export_job_id": {
++                "type": "string"
++              },
++              "file_path": {
++                "type": "string"
++              },
++              "idempotency_key": {
++                "type": "string"
++              }
++            },
++            "required": [
++              "file_path"
++            ],
++            "type": "object"
++          },
++          "type": "array"
++        },
+         "failed": {
+           "items": {
+             "anyOf": [
+               {
+                 "additionalProperties": false,
+                 "properties": {
++                  "cancelled": {
++                    "type": "boolean"
++                  },
++                  "code": {
++                    "type": "string"
++                  },
+                   "error": {
+                     "type": "string"
+                   },
++                  "error_type": {
++                    "type": "string"
++                  },
+                   "file_path": {
+                     "type": "string"
++                  },
++                  "meta": {
++                    "additionalProperties": {},
++                    "type": "object"
++                  },
++                  "next_action": {
++                    "type": "string"
++                  },
++                  "partial_result": {},
++                  "reason": {
++                    "type": "string"
++                  },
++                  "recovery": {
++                    "additionalProperties": false,
++                    "properties": {
++                      "export_job_id": {
++                        "type": "string"
++                      },
++                      "export_request": {
++                        "additionalProperties": false,
++                        "properties": {
++                          "document_ids": {
++                            "items": {
++                              "type": "string"
++                            },
++                            "type": "array"
++                          },
++                          "export_type": {
++                            "enum": [
++                              "original",
++                              "unified"
++                            ],
++                            "type": "string"
++                          },
++                          "format": {
++                            "enum": [
++                              "json",
++                              "csv",
++                              "xlsx",
++                              "google_sheets"
++                            ],
++                            "type": "string"
++                          },
++                          "xlsx_layout": {
++                            "enum": [
++                              "standard",
++                              "flat"
++                            ],
++                            "type": "string"
++                          }
++                        },
++                        "required": [
++                          "document_ids",
++                          "format",
++                          "export_type"
++                        ],
++                        "type": "object"
++                      },
++                      "idempotency_key": {
++                        "type": "string"
++                      },
++                      "job": {
++                        "additionalProperties": false,
++                        "properties": {
++                          "artifact": {
++                            "anyOf": [
++                              {
++                                "additionalProperties": false,
++                                "properties": {
++                                  "checksum_sha256": {
++                                    "type": "string"
++                                  },
++                                  "content_type": {
++                                    "type": "string"
++                                  },
++                                  "filename": {
++                                    "type": "string"
++                                  },
++                                  "size_bytes": {
++                                    "type": "number"
++                                  }
++                                },
++                                "required": [
++                                  "filename",
++                                  "content_type",
++                                  "size_bytes",
++                                  "checksum_sha256"
++                                ],
++                                "type": "object"
++                              },
++                              {
++                                "type": "null"
++                              }
++                            ]
++                          },
++                          "attempt_count": {
++                            "type": "number"
++                          },
++                          "created_at": {
++                            "type": "string"
++                          },
++                          "effective_artifact_format": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "error": {
++                            "anyOf": [
++                              {
++                                "additionalProperties": false,
++                                "properties": {
++                                  "code": {
++                                    "type": "string"
++                                  },
++                                  "message": {
++                                    "type": "string"
++                                  },
++                                  "meta": {
++                                    "additionalProperties": {},
++                                    "type": "object"
++                                  },
++                                  "retry_after_seconds": {
++                                    "type": [
++                                      "number",
++                                      "null"
++                                    ]
++                                  }
++                                },
++                                "required": [
++                                  "code",
++                                  "message"
++                                ],
++                                "type": "object"
++                              },
++                              {
++                                "type": "null"
++                              }
++                            ]
++                          },
++                          "expired_at": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "expires_at": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "export_job_id": {
++                            "type": "string"
++                          },
++                          "export_type": {
++                            "type": "string"
++                          },
++                          "generated_count": {
++                            "type": "number"
++                          },
++                          "initial_excluded_count": {
++                            "type": "number"
++                          },
++                          "initial_exportable_count": {
++                            "type": "number"
++                          },
++                          "replayed": {
++                            "type": "boolean"
++                          },
++                          "requested_by_user_email": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "requested_by_user_id": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "requested_by_user_name": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          },
++                          "requested_count": {
++                            "type": "number"
++                          },
++                          "requested_format": {
++                            "type": "string"
++                          },
++                          "runtime_excluded_count": {
++                            "type": "number"
++                          },
++                          "status": {
++                            "type": "string"
++                          },
++                          "total_matching_count": {
++                            "type": "number"
++                          },
++                          "xlsx_layout": {
++                            "type": [
++                              "string",
++                              "null"
++                            ]
++                          }
++                        },
++                        "required": [
++                          "export_job_id",
++                          "status",
++                          "requested_format",
++                          "effective_artifact_format",
++                          "export_type",
++                          "xlsx_layout",
++                          "created_at",
++                          "expired_at",
++                          "requested_by_user_id",
++                          "requested_by_user_name",
++                          "requested_by_user_email",
++                          "requested_count",
++                          "total_matching_count",
++                          "initial_exportable_count",
++                          "initial_excluded_count",
++                          "generated_count",
++                          "runtime_excluded_count",
++                          "attempt_count",
++                          "expires_at",
++                          "artifact",
++                          "error",
++                          "replayed"
++                        ],
++                        "type": "object"
++                      },
++                      "last_status": {
++                        "type": "string"
++                      },
++                      "operation_may_be_running": {
++                        "type": "boolean"
++                      },
++                      "source_upload_id": {
++                        "type": "string"
++                      },
++                      "storage_status_code": {
++                        "type": "number"
++                      },
++                      "task_id": {
++                        "type": "string"
++                      },
++                      "upload_batch_id": {
++                        "type": "string"
++                      },
++                      "upload_reference_id": {
++                        "type": "string"
++                      }
++                    },
++                    "type": "object"
++                  },
++                  "retry_after_seconds": {
++                    "type": [
++                      "number",
++                      "null"
++                    ]
++                  },
++                  "status_code": {
++                    "type": "number"
+                   },
+                   "task_id": {
+                     "type": [
+                       "string",
+                       "null"
+                     ]
++                  },
++                  "unstarted": {
++                    "type": "boolean"
+                   }
+                 },
+                 "required": [
+@@ -420,11 +1301,44 @@
+               {
+                 "additionalProperties": false,
+                 "properties": {
++                  "cancelled": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/cancelled"
++                  },
++                  "code": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/code"
++                  },
+                   "error": {
+                     "type": "string"
+                   },
++                  "error_type": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/error_type"
++                  },
+                   "file": {
+                     "type": "string"
++                  },
++                  "meta": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/meta"
++                  },
++                  "next_action": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/next_action"
++                  },
++                  "partial_result": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/partial_result"
++                  },
++                  "reason": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/reason"
++                  },
++                  "recovery": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/recovery"
++                  },
++                  "retry_after_seconds": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/retry_after_seconds"
++                  },
++                  "status_code": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/status_code"
++                  },
++                  "unstarted": {
++                    "$ref": "#/properties/failed/items/anyOf/0/properties/unstarted"
+                   }
+                 },
+                 "required": [
+@@ -436,6 +1350,12 @@
+             ]
+           },
+           "type": "array"
++        },
++        "failed_count": {
++          "type": "number"
++        },
++        "guidance": {
++          "type": "string"
+         },
+         "result_mode": {
+           "enum": [
+@@ -459,6 +1379,9 @@
+                   "file_path": {
+                     "type": "string"
+                   },
++                  "status": {
++                    "type": "string"
++                  },
+                   "task_id": {
+                     "type": "string"
+                   }
+@@ -499,6 +1422,12 @@
+           },
+           "type": "array"
+         },
++        "tasks": {
++          "items": {
++            "$ref": "#/properties/succeeded/items/anyOf/0"
++          },
++          "type": "array"
++        },
+         "total": {
+           "type": "number"
+         }
+@@ -507,21 +1436,20 @@
+         "result_mode",
+         "total",
+         "succeeded",
+-        "failed"
++        "failed",
++        "failed_count"
+       ],
+       "type": "object"
+     }
+   },
+   {
+-    "description": "Fetch the structured JSON result for one processed Suparse document using the direct single-document result endpoint. Use fetch_json_results when fetching multiple document IDs or an export selection.",
++    "description": "Read structured JSON for one processed Suparse document_id directly, without submitting an export job or saving a local file. Returns task_id, original_file, total_documents_extracted, and documents containing extracted_data. Get document IDs from extraction results or get_task_results (documents[].id); do not substitute a task_id. Use fetch_json_results for a multi-document JSON export or download_results to save an export. Does not wait for extraction to finish.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
++          "not": {}
+         },
+         "document_id": {
+           "description": "Suparse document ID to fetch.",
+@@ -602,15 +1530,13 @@
+     }
+   },
+   {
+-    "description": "Fetch JSON extraction results for one or more Suparse document IDs directly in the MCP response. This can be large; use only when you need the full JSON in context. For CSV, XLSX, Google Sheets, or saved JSON files, use download_results. If you need cleanup after fetching, call delete_documents after this tool succeeds.",
++    "description": "Export one or more existing Suparse document IDs as JSON into the MCP response, grouped by task in results (task_id, original_file, total_documents_extracted, documents). Use fetch_document_result for a direct single-document read without submitting an export; use download_results for large results, local files, CSV, XLSX, or Google Sheets. This tool only exports JSON and does not unpack ZIP artifacts. On export timeout, retain export_job_id for the export-job tools or replay the identical export with its retained idempotency_key. Does not delete documents; cleanup is explicit through delete_documents.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
++          "not": {}
+         },
+         "document_ids": {
+           "description": "Suparse document IDs to export.",
+@@ -622,12 +1548,22 @@
+           "type": "array"
+         },
+         "export_type": {
+-          "description": "Export mode for JSON results. Defaults to unified.",
++          "description": "Defaults to unified. JSON currently has the same task-group shape for original and unified.",
+           "enum": [
+             "original",
+             "unified"
+           ],
+           "type": "string"
++        },
++        "idempotency_key": {
++          "description": "Optional UUID idempotency key. Retain this key and replay the identical document IDs, format, export type, and layout if submission confirmation is lost.",
++          "format": "uuid",
++          "type": "string"
++        },
++        "wait_timeout_ms": {
++          "description": "Maximum time in milliseconds to wait for an accepted export job to complete; defaults to 60000. This bounds completion waiting, including polling retries, not submission or transfer. Allow enough total time in the MCP client for all phases.",
++          "exclusiveMinimum": 0,
++          "type": "integer"
+         }
+       },
+       "required": [
+@@ -640,6 +1576,9 @@
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
++        "export_job_id": {
++          "type": "string"
++        },
+         "export_type": {
+           "enum": [
+             "original",
+@@ -649,6 +1588,9 @@
+         },
+         "format": {
+           "const": "json",
++          "type": "string"
++        },
++        "idempotency_key": {
+           "type": "string"
+         },
+         "results": {
+@@ -689,18 +1631,227 @@
+     }
+   },
+   {
+-    "description": "Fetch the current automatic schema creation status for a run ID. Returns the raw typed SDK result together with the requested run_id.",
++    "description": "Check one existing export_job_id from an export response or error recovery; this is not an extraction task_id or document_id. Returns job status, generated/excluded counts, error details, expiry, and artifact metadata without waiting or downloading. Use wait_for_export_job if still running, then download_export_job for a completed artifact. Inspect exclusions and errors before claiming all requested documents were exported. Status and format strings may include values unknown to this client.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
++          "not": {}
++        },
++        "export_job_id": {
++          "description": "Remote Suparse export job ID.",
++          "minLength": 1,
++          "type": "string"
++        }
++      },
++      "required": [
++        "export_job_id"
++      ],
++      "type": "object"
++    },
++    "name": "get_export_job",
++    "outputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "export_job_id": {
++          "type": "string"
++        },
++        "job": {
++          "additionalProperties": false,
++          "properties": {
++            "artifact": {
++              "anyOf": [
++                {
++                  "additionalProperties": false,
++                  "properties": {
++                    "checksum_sha256": {
++                      "type": "string"
++                    },
++                    "content_type": {
++                      "type": "string"
++                    },
++                    "filename": {
++                      "type": "string"
++                    },
++                    "size_bytes": {
++                      "type": "number"
++                    }
++                  },
++                  "required": [
++                    "filename",
++                    "content_type",
++                    "size_bytes",
++                    "checksum_sha256"
++                  ],
++                  "type": "object"
++                },
++                {
++                  "type": "null"
++                }
++              ]
++            },
++            "attempt_count": {
++              "type": "number"
++            },
++            "created_at": {
++              "type": "string"
++            },
++            "effective_artifact_format": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "error": {
++              "anyOf": [
++                {
++                  "additionalProperties": false,
++                  "properties": {
++                    "code": {
++                      "type": "string"
++                    },
++                    "message": {
++                      "type": "string"
++                    },
++                    "meta": {
++                      "additionalProperties": {},
++                      "type": "object"
++                    },
++                    "retry_after_seconds": {
++                      "type": [
++                        "number",
++                        "null"
++                      ]
++                    }
++                  },
++                  "required": [
++                    "code",
++                    "message"
++                  ],
++                  "type": "object"
++                },
++                {
++                  "type": "null"
++                }
++              ]
++            },
++            "expired_at": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "expires_at": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "export_job_id": {
++              "type": "string"
++            },
++            "export_type": {
++              "type": "string"
++            },
++            "generated_count": {
++              "type": "number"
++            },
++            "initial_excluded_count": {
++              "type": "number"
++            },
++            "initial_exportable_count": {
++              "type": "number"
++            },
++            "replayed": {
++              "type": "boolean"
++            },
++            "requested_by_user_email": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "requested_by_user_id": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "requested_by_user_name": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "requested_count": {
++              "type": "number"
++            },
++            "requested_format": {
++              "type": "string"
++            },
++            "runtime_excluded_count": {
++              "type": "number"
++            },
++            "status": {
++              "type": "string"
++            },
++            "total_matching_count": {
++              "type": "number"
++            },
++            "xlsx_layout": {
++              "type": [
++                "string",
++                "null"
++              ]
++            }
++          },
++          "required": [
++            "export_job_id",
++            "status",
++            "requested_format",
++            "effective_artifact_format",
++            "export_type",
++            "xlsx_layout",
++            "created_at",
++            "expired_at",
++            "requested_by_user_id",
++            "requested_by_user_name",
++            "requested_by_user_email",
++            "requested_count",
++            "total_matching_count",
++            "initial_exportable_count",
++            "initial_excluded_count",
++            "generated_count",
++            "runtime_excluded_count",
++            "attempt_count",
++            "expires_at",
++            "artifact",
++            "error",
++            "replayed"
++          ],
++          "type": "object"
++        }
++      },
++      "required": [
++        "export_job_id",
++        "job"
++      ],
++      "type": "object"
++    }
++  },
++  {
++    "description": "Check an existing quick-schema run_id once without waiting. Returns result.status and available progress, template IDs, saved document IDs, or failure details. If processing, call again later or use wait_for_quick_schema_creation. For completed results, use template_id for future extraction and saved_document_id or saved_documents[].document_id to fetch/download existing results. Do not start another schema-creation run just to check status.",
++    "inputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "api_url": {
++          "not": {}
+         },
+         "run_id": {
+-          "description": "Quick schema creation run ID.",
++          "description": "run_id returned by start_quick_schema_creation; not an extraction task ID, document ID, or export job ID.",
+           "minLength": 1,
+           "type": "string"
+         }
+@@ -973,18 +2124,125 @@
+     }
+   },
+   {
+-    "description": "List extraction templates for choosing an extraction template. Summary view is the default; use full view only when schema, prompt, or validation details are needed. Agents must use team_templates for processing. System templates are discovery-only in MCP: if a matching system template exists but no matching team template exists, ask the user to add that system template to their templates in the Suparse UI before processing. If no matching team or system template exists, ask the user to create a custom extraction schema for that document type in the Suparse UI.",
++    "description": "Inspect one page of documents already available for an extraction task_id, including while processing. Each documents[].id is a document ID usable by fetch_document_result, fetch_json_results, or download_results; extraction_data contains that document's current data. Pass next_cursor as cursor with the same task_id to get the next page. next_cursor null ends this snapshot, not task processing; use wait_for_task_extraction to determine completion. To refresh later, omit cursor and deduplicate by document ID. This returns a page, not a complete export.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
++          "not": {}
++        },
++        "cursor": {
++          "description": "Opaque next_cursor from a previous page of this task. Omit or pass null to start a fresh snapshot; never construct a cursor.",
++          "type": [
++            "string",
++            "null"
++          ]
++        },
++        "limit": {
++          "default": 25,
++          "description": "Maximum documents in this page: 1 to 100, default 25.",
++          "maximum": 100,
++          "minimum": 1,
++          "type": "integer"
++        },
++        "task_id": {
++          "description": "Remote Suparse task ID.",
++          "minLength": 1,
++          "type": "string"
++        }
++      },
++      "required": [
++        "task_id"
++      ],
++      "type": "object"
++    },
++    "name": "get_task_results",
++    "outputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "documents": {
++          "items": {
++            "additionalProperties": false,
++            "properties": {
++              "extraction_data": {
++                "additionalProperties": {},
++                "type": "object"
++              },
++              "file_name": {
++                "type": "string"
++              },
++              "id": {
++                "type": "string"
++              },
++              "page_count": {
++                "type": [
++                  "number",
++                  "null"
++                ]
++              },
++              "page_end": {
++                "type": [
++                  "number",
++                  "null"
++                ]
++              },
++              "page_start": {
++                "type": [
++                  "number",
++                  "null"
++                ]
++              },
++              "template_id": {
++                "type": [
++                  "string",
++                  "null"
++                ]
++              }
++            },
++            "required": [
++              "id",
++              "file_name",
++              "extraction_data",
++              "page_start",
++              "page_end",
++              "page_count",
++              "template_id"
++            ],
++            "type": "object"
++          },
++          "type": "array"
++        },
++        "next_cursor": {
++          "type": [
++            "string",
++            "null"
++          ]
++        },
++        "task_id": {
++          "type": "string"
++        }
++      },
++      "required": [
++        "task_id",
++        "documents",
++        "next_cursor"
++      ],
++      "type": "object"
++    }
++  },
++  {
++    "description": "Discover extraction templates; defaults to compact summary view with team templates only. Prefer a matching active team template and pass its id as template_id to extraction tools. Use view full to inspect schema and prompts. include_system true adds discovery-only system templates; MCP cannot add them to the team or use their IDs directly. If no template matches, omit template_id for auto-detection or use start_quick_schema_creation when schema creation is authorized. This tool does not create or modify templates.",
++    "inputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "api_url": {
++          "not": {}
+         },
+         "include_system": {
+-          "description": "Include discovery-only system templates in addition to team templates. System templates returned here are not directly usable for extraction through MCP until the user adds them to their templates in the Suparse UI.",
++          "description": "Defaults to false. Include discovery-only system templates in addition to team templates. Do not pass system template IDs to extraction tools. MCP cannot add system templates to the team; omit template_id for auto-detection or use an authorized quick-schema workflow instead.",
+           "type": "boolean"
+         },
+         "view": {
+@@ -1183,18 +2441,478 @@
+     }
+   },
+   {
+-    "description": "Start automatic schema creation for one local document. Returns a normalized run_id and the SDK result. Use get_quick_schema_creation or wait_for_quick_schema_creation to follow the run. Supply upload_batch_id and source_upload_id only when an external batched-upload workflow provides them.",
++    "description": "Start background extraction of one local file; return task_id after upload confirmation without waiting for processing or exporting results. This confirms submission, not successful extraction. Use wait_for_task_extraction, then fetch_document_result for a returned document ID or download_results to save an export; get_task_results can inspect partial documents. Uploads may consume credits. On timeout, use any returned recovery task_id rather than uploading again. auto_approve defaults true; false requests human review, which MCP cannot perform or approve. The returned auto_approve echoes the requested option, not backend approval status.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
++          "not": {}
++        },
++        "auto_approve": {
++          "description": "Automatically approve extracted documents. Defaults to true. Set false only when human review is requested; use a start-only extraction tool to retain the task ID. MCP cannot approve documents, and combined extraction may time out while review is pending.",
++          "type": "boolean"
+         },
+         "file_path": {
+-          "description": "Local path to a supported document file.",
++          "description": "Path to a local document on the machine running this MCP server, not a URL or chat attachment. Supported extensions: .pdf, .jpg, .jpeg, .png, .heic, .heif. Prefer an absolute path; relative paths use the server's working directory and ~ is not expanded.",
++          "minLength": 1,
++          "type": "string"
++        },
++        "folder_id": {
++          "description": "Optional remote Suparse folder ID to assign to uploaded documents.",
++          "minLength": 1,
++          "type": "string"
++        },
++        "pdf_password": {
++          "description": "Optional password for an encrypted PDF. Treat this as a secret; it is used only for the upload and is not returned in results.",
++          "maxLength": 256,
++          "minLength": 1,
++          "type": "string"
++        },
++        "split": {
++          "description": "Enable auto-splitting of multi-page documents with mixed document types.",
++          "type": "boolean"
++        },
++        "template_id": {
++          "description": "Optional extraction template ID. Use only a non-system team template ID from list_templates. System template IDs are discovery-only and cannot be passed directly. Omit to let Suparse auto-detect, or use an authorized quick-schema workflow to create a team template.",
++          "type": "string"
++        }
++      },
++      "required": [
++        "file_path"
++      ],
++      "type": "object"
++    },
++    "name": "start_file_extraction",
++    "outputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "auto_approve": {
++          "type": "boolean"
++        },
++        "file_path": {
++          "type": "string"
++        },
++        "task_id": {
++          "type": "string"
++        }
++      },
++      "required": [
++        "file_path",
++        "task_id",
++        "auto_approve"
++      ],
++      "type": "object"
++    }
++  },
++  {
++    "description": "Start background extraction of sorted supported files directly inside a local folder, skipping directories and subfolders. Returns one task_id per confirmed upload without waiting for processing or exporting. At most 10 uploads run concurrently. Use wait_for_task_extraction for each task, then fetch or download results using its document IDs. Uploads may consume credits. Inspect failed entries and recovery IDs before retrying; cancellation prevents new uploads, but submitted tasks may still run. Entries marked unstarted were not uploaded. auto_approve defaults true; false requests human review, which MCP cannot perform or approve.",
++    "inputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "api_url": {
++          "not": {}
++        },
++        "auto_approve": {
++          "description": "Automatically approve extracted documents. Defaults to true. Set false only when human review is requested; use a start-only extraction tool to retain the task ID. MCP cannot approve documents, and combined extraction may time out while review is pending.",
++          "type": "boolean"
++        },
++        "folder_id": {
++          "description": "Optional remote Suparse folder ID to assign to uploaded documents.",
++          "minLength": 1,
++          "type": "string"
++        },
++        "folder_path": {
++          "description": "Path to a local folder on the machine running this MCP server, not a remote Suparse folder ID. Scans supported files directly inside it, nonrecursively. Prefer an absolute path; relative paths use the server's working directory and ~ is not expanded.",
++          "minLength": 1,
++          "type": "string"
++        },
++        "pdf_password": {
++          "description": "Optional password for an encrypted PDF. Treat this as a secret; it is used only for the upload and is not returned in results.",
++          "maxLength": 256,
++          "minLength": 1,
++          "type": "string"
++        },
++        "split": {
++          "description": "Enable auto-splitting of multi-page documents with mixed document types.",
++          "type": "boolean"
++        },
++        "template_id": {
++          "description": "Optional extraction template ID. Use only a non-system team template ID from list_templates. System template IDs are discovery-only and cannot be passed directly. Omit to let Suparse auto-detect, or use an authorized quick-schema workflow to create a team template.",
++          "type": "string"
++        }
++      },
++      "required": [
++        "folder_path"
++      ],
++      "type": "object"
++    },
++    "name": "start_folder_extraction",
++    "outputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "cancelled": {
++          "type": "boolean"
++        },
++        "failed": {
++          "items": {
++            "additionalProperties": false,
++            "properties": {
++              "cancelled": {
++                "type": "boolean"
++              },
++              "code": {
++                "type": "string"
++              },
++              "error": {
++                "type": "string"
++              },
++              "error_type": {
++                "type": "string"
++              },
++              "file_path": {
++                "type": "string"
++              },
++              "meta": {
++                "additionalProperties": {},
++                "type": "object"
++              },
++              "next_action": {
++                "type": "string"
++              },
++              "partial_result": {},
++              "reason": {
++                "type": "string"
++              },
++              "recovery": {
++                "additionalProperties": false,
++                "properties": {
++                  "export_job_id": {
++                    "type": "string"
++                  },
++                  "export_request": {
++                    "additionalProperties": false,
++                    "properties": {
++                      "document_ids": {
++                        "items": {
++                          "type": "string"
++                        },
++                        "type": "array"
++                      },
++                      "export_type": {
++                        "enum": [
++                          "original",
++                          "unified"
++                        ],
++                        "type": "string"
++                      },
++                      "format": {
++                        "enum": [
++                          "json",
++                          "csv",
++                          "xlsx",
++                          "google_sheets"
++                        ],
++                        "type": "string"
++                      },
++                      "xlsx_layout": {
++                        "enum": [
++                          "standard",
++                          "flat"
++                        ],
++                        "type": "string"
++                      }
++                    },
++                    "required": [
++                      "document_ids",
++                      "format",
++                      "export_type"
++                    ],
++                    "type": "object"
++                  },
++                  "idempotency_key": {
++                    "type": "string"
++                  },
++                  "job": {
++                    "additionalProperties": false,
++                    "properties": {
++                      "artifact": {
++                        "anyOf": [
++                          {
++                            "additionalProperties": false,
++                            "properties": {
++                              "checksum_sha256": {
++                                "type": "string"
++                              },
++                              "content_type": {
++                                "type": "string"
++                              },
++                              "filename": {
++                                "type": "string"
++                              },
++                              "size_bytes": {
++                                "type": "number"
++                              }
++                            },
++                            "required": [
++                              "filename",
++                              "content_type",
++                              "size_bytes",
++                              "checksum_sha256"
++                            ],
++                            "type": "object"
++                          },
++                          {
++                            "type": "null"
++                          }
++                        ]
++                      },
++                      "attempt_count": {
++                        "type": "number"
++                      },
++                      "created_at": {
++                        "type": "string"
++                      },
++                      "effective_artifact_format": {
++                        "type": [
++                          "string",
++                          "null"
++                        ]
++                      },
++                      "error": {
++                        "anyOf": [
++                          {
++                            "additionalProperties": false,
++                            "properties": {
++                              "code": {
++                                "type": "string"
++                              },
++                              "message": {
++                                "type": "string"
++                              },
++                              "meta": {
++                                "additionalProperties": {},
++                                "type": "object"
++                              },
++                              "retry_after_seconds": {
++                                "type": [
++                                  "number",
++                                  "null"
++                                ]
++                              }
++                            },
++                            "required": [
++                              "code",
++                              "message"
++                            ],
++                            "type": "object"
++                          },
++                          {
++                            "type": "null"
++                          }
++                        ]
++                      },
++                      "expired_at": {
++                        "type": [
++                          "string",
++                          "null"
++                        ]
++                      },
++                      "expires_at": {
++                        "type": [
++                          "string",
++                          "null"
++                        ]
++                      },
++                      "export_job_id": {
++                        "type": "string"
++                      },
++                      "export_type": {
++                        "type": "string"
++                      },
++                      "generated_count": {
++                        "type": "number"
++                      },
++                      "initial_excluded_count": {
++                        "type": "number"
++                      },
++                      "initial_exportable_count": {
++                        "type": "number"
++                      },
++                      "replayed": {
++                        "type": "boolean"
++                      },
++                      "requested_by_user_email": {
++                        "type": [
++                          "string",
++                          "null"
++                        ]
++                      },
++                      "requested_by_user_id": {
++                        "type": [
++                          "string",
++                          "null"
++                        ]
++                      },
++                      "requested_by_user_name": {
++                        "type": [
++                          "string",
++                          "null"
++                        ]
++                      },
++                      "requested_count": {
++                        "type": "number"
++                      },
++                      "requested_format": {
++                        "type": "string"
++                      },
++                      "runtime_excluded_count": {
++                        "type": "number"
++                      },
++                      "status": {
++                        "type": "string"
++                      },
++                      "total_matching_count": {
++                        "type": "number"
++                      },
++                      "xlsx_layout": {
++                        "type": [
++                          "string",
++                          "null"
++                        ]
++                      }
++                    },
++                    "required": [
++                      "export_job_id",
++                      "status",
++                      "requested_format",
++                      "effective_artifact_format",
++                      "export_type",
++                      "xlsx_layout",
++                      "created_at",
++                      "expired_at",
++                      "requested_by_user_id",
++                      "requested_by_user_name",
++                      "requested_by_user_email",
++                      "requested_count",
++                      "total_matching_count",
++                      "initial_exportable_count",
++                      "initial_excluded_count",
++                      "generated_count",
++                      "runtime_excluded_count",
++                      "attempt_count",
++                      "expires_at",
++                      "artifact",
++                      "error",
++                      "replayed"
++                    ],
++                    "type": "object"
++                  },
++                  "last_status": {
++                    "type": "string"
++                  },
++                  "operation_may_be_running": {
++                    "type": "boolean"
++                  },
++                  "source_upload_id": {
++                    "type": "string"
++                  },
++                  "storage_status_code": {
++                    "type": "number"
++                  },
++                  "task_id": {
++                    "type": "string"
++                  },
++                  "upload_batch_id": {
++                    "type": "string"
++                  },
++                  "upload_reference_id": {
++                    "type": "string"
++                  }
++                },
++                "type": "object"
++              },
++              "retry_after_seconds": {
++                "type": [
++                  "number",
++                  "null"
++                ]
++              },
++              "status_code": {
++                "type": "number"
++              },
++              "task_id": {
++                "type": [
++                  "string",
++                  "null"
++                ]
++              },
++              "unstarted": {
++                "type": "boolean"
++              }
++            },
++            "required": [
++              "file_path",
++              "task_id",
++              "error"
++            ],
++            "type": "object"
++          },
++          "type": "array"
++        },
++        "failed_count": {
++          "type": "number"
++        },
++        "succeeded": {
++          "items": {
++            "additionalProperties": false,
++            "properties": {
++              "auto_approve": {
++                "type": "boolean"
++              },
++              "file_path": {
++                "type": "string"
++              },
++              "task_id": {
++                "type": "string"
++              }
++            },
++            "required": [
++              "file_path",
++              "task_id",
++              "auto_approve"
++            ],
++            "type": "object"
++          },
++          "type": "array"
++        },
++        "total": {
++          "type": "number"
++        }
++      },
++      "required": [
++        "total",
++        "succeeded",
++        "failed",
++        "failed_count"
++      ],
++      "type": "object"
++    }
++  },
++  {
++    "description": "Upload one local file to automatically create extraction schemas/templates; use when the user authorized schema creation, which may consume credits. Returns run_id for get_quick_schema_creation or wait_for_quick_schema_creation, not an extraction task_id or export_job_id. Completed runs return generated template IDs and saved document IDs; inspect those before submitting another extraction. Supply upload_batch_id and source_upload_id only when provided by an external batched-upload workflow; MCP does not create upload batches. Starting again can create duplicate work.",
++    "inputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "api_url": {
++          "not": {}
++        },
++        "file_path": {
++          "description": "Path to a local document on the machine running this MCP server, not a URL or chat attachment. Supported extensions: .pdf, .jpg, .jpeg, .png, .heic, .heif. Prefer an absolute path; relative paths use the server's working directory and ~ is not expanded.",
+           "minLength": 1,
+           "type": "string"
+         },
+@@ -1328,28 +3046,242 @@
+     }
+   },
+   {
+-    "description": "Poll an automatic schema creation run until it reaches completed, completed_with_errors, or failed. The terminal result preserves generated template IDs, saved documents, failed-document details, and retryability.",
++    "description": "Wait for an existing export_job_id; does not submit an export or download its file. On completion, use download_export_job to save the artifact. Defaults to a 60000-millisecond completion wait including polling retries, not the full MCP call. On polling timeout, keep the export_job_id and call get_export_job or wait_for_export_job again instead of submitting another export. Failed, expired, or unsupported jobs may produce errors; inspect recovery details.",
+     "inputSchema": {
+       "$schema": "http://json-schema.org/draft-07/schema#",
+       "additionalProperties": false,
+       "properties": {
+         "api_url": {
+-          "description": "Optional API base URL. Defaults to SUPARSE_API_URL or Suparse production API.",
+-          "format": "uri",
+-          "type": "string"
+-        },
+-        "max_poll_attempts": {
+-          "description": "Maximum status requests before timing out. Defaults to the SDK client setting.",
++          "not": {}
++        },
++        "export_job_id": {
++          "description": "Remote Suparse export job ID.",
++          "minLength": 1,
++          "type": "string"
++        },
++        "wait_timeout_ms": {
++          "description": "Milliseconds to wait for completion; defaults to 60000.",
+           "exclusiveMinimum": 0,
+           "type": "integer"
++        }
++      },
++      "required": [
++        "export_job_id"
++      ],
++      "type": "object"
++    },
++    "name": "wait_for_export_job",
++    "outputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "export_job_id": {
++          "type": "string"
++        },
++        "job": {
++          "additionalProperties": false,
++          "properties": {
++            "artifact": {
++              "anyOf": [
++                {
++                  "additionalProperties": false,
++                  "properties": {
++                    "checksum_sha256": {
++                      "type": "string"
++                    },
++                    "content_type": {
++                      "type": "string"
++                    },
++                    "filename": {
++                      "type": "string"
++                    },
++                    "size_bytes": {
++                      "type": "number"
++                    }
++                  },
++                  "required": [
++                    "filename",
++                    "content_type",
++                    "size_bytes",
++                    "checksum_sha256"
++                  ],
++                  "type": "object"
++                },
++                {
++                  "type": "null"
++                }
++              ]
++            },
++            "attempt_count": {
++              "type": "number"
++            },
++            "created_at": {
++              "type": "string"
++            },
++            "effective_artifact_format": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "error": {
++              "anyOf": [
++                {
++                  "additionalProperties": false,
++                  "properties": {
++                    "code": {
++                      "type": "string"
++                    },
++                    "message": {
++                      "type": "string"
++                    },
++                    "meta": {
++                      "additionalProperties": {},
++                      "type": "object"
++                    },
++                    "retry_after_seconds": {
++                      "type": [
++                        "number",
++                        "null"
++                      ]
++                    }
++                  },
++                  "required": [
++                    "code",
++                    "message"
++                  ],
++                  "type": "object"
++                },
++                {
++                  "type": "null"
++                }
++              ]
++            },
++            "expired_at": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "expires_at": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "export_job_id": {
++              "type": "string"
++            },
++            "export_type": {
++              "type": "string"
++            },
++            "generated_count": {
++              "type": "number"
++            },
++            "initial_excluded_count": {
++              "type": "number"
++            },
++            "initial_exportable_count": {
++              "type": "number"
++            },
++            "replayed": {
++              "type": "boolean"
++            },
++            "requested_by_user_email": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "requested_by_user_id": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "requested_by_user_name": {
++              "type": [
++                "string",
++                "null"
++              ]
++            },
++            "requested_count": {
++              "type": "number"
++            },
++            "requested_format": {
++              "type": "string"
++            },
++            "runtime_excluded_count": {
++              "type": "number"
++            },
++            "status": {
++              "type": "string"
++            },
++            "total_matching_count": {
++              "type": "number"
++            },
++            "xlsx_layout": {
++              "type": [
++                "string",
++                "null"
++              ]
++            }
++          },
++          "required": [
++            "export_job_id",
++            "status",
++            "requested_format",
++            "effective_artifact_format",
++            "export_type",
++            "xlsx_layout",
++            "created_at",
++            "expired_at",
++            "requested_by_user_id",
++            "requested_by_user_name",
++            "requested_by_user_email",
++            "requested_count",
++            "total_matching_count",
++            "initial_exportable_count",
++            "initial_excluded_count",
++            "generated_count",
++            "runtime_excluded_count",
++            "attempt_count",
++            "expires_at",
++            "artifact",
++            "error",
++            "replayed"
++          ],
++          "type": "object"
++        }
++      },
++      "required": [
++        "export_job_id",
++        "job"
++      ],
++      "type": "object"
++    }
++  },
++  {
++    "description": "Wait for an existing quick-schema run_id until result.status is completed, completed_with_errors, or failed. Terminal failure is returned in result, so inspect status and failed_documents rather than assuming a successful tool call means full success. Returns generated template IDs and saved document IDs for future extraction or result retrieval. SDK defaults are 5 seconds between polls and 300 attempts; choose a smaller max_poll_attempts for short client timeouts. On polling timeout, check or wait on the same run_id rather than starting another run.",
++    "inputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "api_url": {
++          "not": {}
++        },
++        "max_poll_attempts": {
++          "description": "Maximum status requests before polling timeout. SDK default: 300. Set lower to fit the MCP client's tool timeout; resume with the same run_id.",
++          "exclusiveMinimum": 0,
++          "type": "integer"
+         },
+         "poll_interval": {
+-          "description": "Seconds between status requests. Defaults to the SDK client setting.",
++          "description": "Seconds between status requests. SDK default: 5.",
+           "minimum": 0,
+           "type": "number"
+         },
+         "run_id": {
+-          "description": "Quick schema creation run ID.",
++          "description": "run_id returned by start_quick_schema_creation; not an extraction task ID, document ID, or export job ID.",
+           "minLength": 1,
+           "type": "string"
+         }
+@@ -1575,5 +3507,61 @@
+       ],
+       "type": "object"
+     }
++  },
++  {
++    "description": "Wait for an existing extraction task_id; returns status and document_ids, not extracted data. completed and partially_completed return successfully; failed and insufficient_credits produce errors. Partial completion is not success for every document. Use fetch_document_result or download_results with the returned document IDs. Defaults to poll_interval 2 seconds and max_poll_attempts 3; SDK backoff and retries mean this is not a strict wall-clock deadline. On polling timeout, call again with the same task_id rather than uploading again. This does not approve documents awaiting human review.",
++    "inputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "api_url": {
++          "not": {}
++        },
++        "max_poll_attempts": {
++          "description": "Maximum task polling attempts; defaults to 3.",
++          "exclusiveMinimum": 0,
++          "type": "integer"
++        },
++        "poll_interval": {
++          "description": "Initial polling interval in seconds; defaults to 2. SDK backoff can increase the actual delay.",
++          "minimum": 0,
++          "type": "number"
++        },
++        "task_id": {
++          "description": "Remote Suparse task ID, not a local path or document ID.",
++          "minLength": 1,
++          "type": "string"
++        }
++      },
++      "required": [
++        "task_id"
++      ],
++      "type": "object"
++    },
++    "name": "wait_for_task_extraction",
++    "outputSchema": {
++      "$schema": "http://json-schema.org/draft-07/schema#",
++      "additionalProperties": false,
++      "properties": {
++        "document_ids": {
++          "items": {
++            "type": "string"
++          },
++          "type": "array"
++        },
++        "status": {
++          "type": "string"
++        },
++        "task_id": {
++          "type": "string"
++        }
++      },
++      "required": [
++        "task_id",
++        "status",
++        "document_ids"
++      ],
++      "type": "object"
++    }
+   }
+ ]

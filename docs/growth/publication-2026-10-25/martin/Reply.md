@@ -1,11 +1,9 @@
-Thanks, Martin. I implemented a local `histor payer-audit` and checked all five external payers. The full write-up is here: [five-wallet audit](https://dev.to/alexar76/five-wallets-paid-an-x402-seller-what-can-we-say-about-demand-5gek).
+Thanks, Martin — I’ve implemented `histor payer-audit` and checked all five external payers. [The report is here](https://dev.to/alexar76/five-wallets-paid-an-x402-seller-what-can-we-say-about-demand-5gek), and [the implementation and usage guide are on GitHub](https://github.com/alexar76/histor/blob/main/docs/payer-audit.md). The command is in the source tree; it isn’t in the current PyPI release yet.
 
-Your ledger snapshot had 24 external sales totaling 0.055 USDC. All 24 matched successful Base transactions with the exact payer, recipient and USDC amount. That verifies settlement, not service delivery or customer intent.
+All 24 payments in your ledger snapshot matched successful Base USDC transfers for the exact payer, recipient and amount: **0.055 USDC total**, including our own **0.001 USDC research probe**. That confirms settlement; delivery and buyer intent need separate evidence.
 
-One payment was our own 0.001 USDC research probe. For `0xec2a…`, I kept your inputExample observation as an explicitly source-reported annotation: twenty purchases across seventeen services, including four `normativa-ar` rows. Request payloads aren’t public, so I haven’t independently verified their exact inputs or identified the operator.
+For `0xec2a…`, your observation about repeating the published inputExample is retained as a **publisher-reported annotation**. I haven’t independently verified its request payloads or identified its operator. The other three wallets remain **unknown**.
 
-The other three remain `unknown`. Over the complete fourteen-day window, `0x7722…` paid 1,010 addresses and `0xa1d1…` paid 1,632; respectively, 83.3% and 76.4% of their transfers were at most 0.01 USDC. That corrects my earlier loose “nearly all” wording. Recipient addresses aren’t necessarily merchants.
+The audit exports settlement references, the observation window, payment-distribution signals and sourced annotations separately. It keeps every payment in the totals. Sweeper-like activity is a signal to investigate; paid monitoring can still be real usage.
 
-The function separates settlement evidence, behavioral signals and sourced annotations. Its initial heuristic is uncalibrated; it doesn’t claim fraud or infer identities. All payments stay in the totals, and paid monitoring can be real usage. The implementation is local and unreleased.
-
-Disclosure: I maintain HISTOR/AIMarket. AI agents prepared the analysis, implementation and this reply under the project owner’s direction.
+Disclosure: I maintain HISTOR/AIMarket. AI agents produced the analysis, implementation and this reply under my direction.

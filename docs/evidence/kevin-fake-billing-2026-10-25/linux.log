@@ -1,0 +1,101 @@
+PASS discovery-only repeat=1 charges=0 prompts=0
+PASS histor-current-canary repeat=1 charges=0 prompts=0
+PASS empty-default-purchase repeat=1 charges=1 prompts=0
+PASS omitted-arguments repeat=1 charges=1 prompts=0
+PASS explicit-preview repeat=1 charges=0 prompts=0
+PASS explicit-purchase repeat=1 charges=1 prompts=0
+PASS invalid-placeholder repeat=1 charges=0 prompts=0
+PASS hidden-schema-default repeat=1 charges=1 prompts=0
+PASS required-mode-refuses-empty repeat=1 charges=0 prompts=0
+PASS charge-before-tool-error repeat=1 charges=1 prompts=0
+PASS charge-before-timeout repeat=1 charges=1 prompts=0
+PASS uncharged-matched-control repeat=1 charges=0 prompts=0
+PASS readonly-hint-is-not-billing-proof repeat=1 charges=1 prompts=0
+PASS idempotent-purchase-retry repeat=1 charges=1 prompts=0
+PASS initialize-side-effect repeat=1 charges=1 prompts=0
+PASS list-side-effect repeat=1 charges=1 prompts=0
+PASS warden-default-empty repeat=1 charges=1 prompts=0
+PASS warden-sensitive-no-ui repeat=1 charges=0 prompts=0
+PASS warden-sensitive-decline repeat=1 charges=0 prompts=1
+PASS warden-sensitive-unchecked repeat=1 charges=0 prompts=1
+PASS warden-sensitive-accept repeat=1 charges=1 prompts=1
+PASS warden-sensitive-one-approval repeat=1 charges=1 prompts=2
+PASS warden-sensitive-refuse repeat=1 charges=0 prompts=0
+PASS warden-sensitive-initialize-side-effect repeat=1 charges=1 prompts=0
+PASS warden-sensitive-list-side-effect repeat=1 charges=1 prompts=0
+PASS explicit-price-description-default-wrap repeat=1 charges=1 prompts=0
+PASS discovery-only repeat=2 charges=0 prompts=0
+PASS histor-current-canary repeat=2 charges=0 prompts=0
+PASS empty-default-purchase repeat=2 charges=1 prompts=0
+PASS omitted-arguments repeat=2 charges=1 prompts=0
+PASS explicit-preview repeat=2 charges=0 prompts=0
+PASS explicit-purchase repeat=2 charges=1 prompts=0
+PASS invalid-placeholder repeat=2 charges=0 prompts=0
+PASS hidden-schema-default repeat=2 charges=1 prompts=0
+PASS required-mode-refuses-empty repeat=2 charges=0 prompts=0
+PASS charge-before-tool-error repeat=2 charges=1 prompts=0
+PASS charge-before-timeout repeat=2 charges=1 prompts=0
+PASS uncharged-matched-control repeat=2 charges=0 prompts=0
+PASS readonly-hint-is-not-billing-proof repeat=2 charges=1 prompts=0
+PASS idempotent-purchase-retry repeat=2 charges=1 prompts=0
+PASS initialize-side-effect repeat=2 charges=1 prompts=0
+PASS list-side-effect repeat=2 charges=1 prompts=0
+PASS warden-default-empty repeat=2 charges=1 prompts=0
+PASS warden-sensitive-no-ui repeat=2 charges=0 prompts=0
+PASS warden-sensitive-decline repeat=2 charges=0 prompts=1
+PASS warden-sensitive-unchecked repeat=2 charges=0 prompts=1
+PASS warden-sensitive-accept repeat=2 charges=1 prompts=1
+PASS warden-sensitive-one-approval repeat=2 charges=1 prompts=2
+PASS warden-sensitive-refuse repeat=2 charges=0 prompts=0
+PASS warden-sensitive-initialize-side-effect repeat=2 charges=1 prompts=0
+PASS warden-sensitive-list-side-effect repeat=2 charges=1 prompts=0
+PASS explicit-price-description-default-wrap repeat=2 charges=1 prompts=0
+PASS discovery-only repeat=3 charges=0 prompts=0
+PASS histor-current-canary repeat=3 charges=0 prompts=0
+PASS empty-default-purchase repeat=3 charges=1 prompts=0
+PASS omitted-arguments repeat=3 charges=1 prompts=0
+PASS explicit-preview repeat=3 charges=0 prompts=0
+PASS explicit-purchase repeat=3 charges=1 prompts=0
+PASS invalid-placeholder repeat=3 charges=0 prompts=0
+PASS hidden-schema-default repeat=3 charges=1 prompts=0
+PASS required-mode-refuses-empty repeat=3 charges=0 prompts=0
+PASS charge-before-tool-error repeat=3 charges=1 prompts=0
+PASS charge-before-timeout repeat=3 charges=1 prompts=0
+PASS uncharged-matched-control repeat=3 charges=0 prompts=0
+PASS readonly-hint-is-not-billing-proof repeat=3 charges=1 prompts=0
+PASS idempotent-purchase-retry repeat=3 charges=1 prompts=0
+PASS initialize-side-effect repeat=3 charges=1 prompts=0
+PASS list-side-effect repeat=3 charges=1 prompts=0
+PASS warden-default-empty repeat=3 charges=1 prompts=0
+PASS warden-sensitive-no-ui repeat=3 charges=0 prompts=0
+PASS warden-sensitive-decline repeat=3 charges=0 prompts=1
+PASS warden-sensitive-unchecked repeat=3 charges=0 prompts=1
+PASS warden-sensitive-accept repeat=3 charges=1 prompts=1
+PASS warden-sensitive-one-approval repeat=3 charges=1 prompts=2
+PASS warden-sensitive-refuse repeat=3 charges=0 prompts=0
+PASS warden-sensitive-initialize-side-effect repeat=3 charges=1 prompts=0
+PASS warden-sensitive-list-side-effect repeat=3 charges=1 prompts=0
+PASS explicit-price-description-default-wrap repeat=3 charges=1 prompts=0
+{
+  "scenarios": 26,
+  "runs": 78,
+  "passedRuns": 78,
+  "failedRuns": 0,
+  "matchedTranscriptControls": [
+    {
+      "name": "Same complete MCP exchange, different billing ledger",
+      "repeat": 1,
+      "passed": true
+    },
+    {
+      "name": "Same complete MCP exchange, different billing ledger",
+      "repeat": 2,
+      "passed": true
+    },
+    {
+      "name": "Same complete MCP exchange, different billing ledger",
+      "repeat": 3,
+      "passed": true
+    }
+  ]
+}

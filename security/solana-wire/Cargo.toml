@@ -1,0 +1,17 @@
+[package]
+name = "aimarket-legacy-wire"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85.1"
+publish = false
+license = "Apache-2.0"
+description = "Solana legacy Serde wire compatibility using a maintained codec"
+
+[dependencies]
+bincode-next = { version = "=2.1.0", default-features = false, features = ["std", "serde"] }
+serde = { version = "1.0.228", default-features = false, features = ["std"] }
+
+[dev-dependencies]
+serde = { version = "1.0.228", features = ["derive"] }
+
+[workspace]

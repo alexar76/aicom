@@ -1,0 +1,141 @@
+{
+  "changeId": 23671,
+  "package": "@suparse/mcp",
+  "fromVersion": "1.4.0",
+  "toVersion": "1.5.0",
+  "fromBin": {
+    "suparse-mcp": "dist/index.mjs"
+  },
+  "toBin": {
+    "suparse-mcp": "dist/index.mjs"
+  },
+  "added": [
+    "download_export_job",
+    "get_export_job",
+    "get_task_results",
+    "start_file_extraction",
+    "start_folder_extraction",
+    "wait_for_export_job",
+    "wait_for_task_extraction"
+  ],
+  "removed": [],
+  "modified": [
+    {
+      "tool": "delete_documents",
+      "fields": [
+        "description",
+        "inputSchema"
+      ],
+      "oldDescription": "Delete one or more documents from Suparse by document ID.",
+      "newDescription": "Delete documents from Suparse remotely using document IDs, not task IDs, export job IDs, or local paths. Use only when deletion or cleanup is requested, after confirming any required results are safely saved. Deleted IDs cannot be used for later result retrieval or exports. Does not delete local input or exported files. Repeating deletion does not create new work, though its returned boolean may change.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "download_results",
+      "fields": [
+        "description",
+        "inputSchema",
+        "outputSchema"
+      ],
+      "oldDescription": "Fetch an export for one or more Suparse document IDs and write it directly to local disk. Use this for CSV, XLSX, Google Sheets, and saved JSON files. Do not call fetch_json_results unless you intentionally need full JSON in the MCP response. If output_path is a directory, the API-provided filename is used inside that directory. If cleanup is needed, call delete_documents after this tool succeeds.",
+      "newDescription": "Export existing Suparse document IDs as JSON, CSV, XLSX, or Google Sheets to local disk. Returns output_path plus requested_format, artifact_format and content_type. Existing output files are overwritten: choose a new path unless replacement is intended. CSV/XLSX may return ZIP; its extension is corrected to .zip. Set unpack:true to also extract the separate files into a fresh folder and return output_paths. JSON is saved as parsed task groups. Google Sheets requires an immediate API response and saves metadata as JSON. For a known export_job_id use download_export_job to recover the original artifact. Does not delete remote documents.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "extract_file",
+      "fields": [
+        "description",
+        "inputSchema",
+        "outputSchema"
+      ],
+      "oldDescription": "Process one local document through Suparse. Defaults to result_mode defer, which uploads and polls only, then returns compact task_id/document_ids for later download_results. Use result_mode return_json only when you need the full JSON extraction in the MCP response. cleanup is only valid with return_json.",
+      "newDescription": "Process one local file through Suparse. Defaults to result_mode defer: upload, wait for terminal processing, and return task_id/document_ids for later export. A partially_completed task retains its status. For an immediate task ID, use start_file_extraction, then wait_for_task_extraction and get_task_results. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending. return_json preserves per-input task status and document IDs, reports partial tasks and empty exports as incomplete, and preserves exported data. cleanup is best-effort, allowed only with return_json, and requires a completed task and an export covering every requested document.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "extract_folder",
+      "fields": [
+        "description",
+        "inputSchema",
+        "outputSchema"
+      ],
+      "oldDescription": "Process all supported files in an immediate local folder through Suparse. Defaults to result_mode defer, which uploads and polls only, then returns compact task_id/document_ids for later download_results. Use result_mode return_json only when you need full JSON extractions in the MCP response. cleanup is only valid with return_json.",
+      "newDescription": "Process sorted, immediate supported files in a local folder through Suparse (nonrecursive; directories are skipped). Defaults to result_mode defer: upload and wait for each task, retaining task status and document IDs. For task IDs before processing finishes, use start_folder_extraction. At most 10 files run concurrently. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending. return_json preserves per-input task status and document IDs, reports partial tasks and empty exports as incomplete, and preserves exported data. cleanup is best-effort, allowed only with return_json, and requires a completed task and an export covering every requested document.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "fetch_document_result",
+      "fields": [
+        "description",
+        "inputSchema"
+      ],
+      "oldDescription": "Fetch the structured JSON result for one processed Suparse document using the direct single-document result endpoint. Use fetch_json_results when fetching multiple document IDs or an export selection.",
+      "newDescription": "Read structured JSON for one processed Suparse document_id directly, without submitting an export job or saving a local file. Returns task_id, original_file, total_documents_extracted, and documents containing extracted_data. Get document IDs from extraction results or get_task_results (documents[].id); do not substitute a task_id. Use fetch_json_results for a multi-document JSON export or download_results to save an export. Does not wait for extraction to finish.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "fetch_json_results",
+      "fields": [
+        "description",
+        "inputSchema",
+        "outputSchema"
+      ],
+      "oldDescription": "Fetch JSON extraction results for one or more Suparse document IDs directly in the MCP response. This can be large; use only when you need the full JSON in context. For CSV, XLSX, Google Sheets, or saved JSON files, use download_results. If you need cleanup after fetching, call delete_documents after this tool succeeds.",
+      "newDescription": "Export one or more existing Suparse document IDs as JSON into the MCP response, grouped by task in results (task_id, original_file, total_documents_extracted, documents). Use fetch_document_result for a direct single-document read without submitting an export; use download_results for large results, local files, CSV, XLSX, or Google Sheets. This tool only exports JSON and does not unpack ZIP artifacts. On export timeout, retain export_job_id for the export-job tools or replay the identical export with its retained idempotency_key. Does not delete documents; cleanup is explicit through delete_documents.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "get_quick_schema_creation",
+      "fields": [
+        "description",
+        "inputSchema"
+      ],
+      "oldDescription": "Fetch the current automatic schema creation status for a run ID. Returns the raw typed SDK result together with the requested run_id.",
+      "newDescription": "Check an existing quick-schema run_id once without waiting. Returns result.status and available progress, template IDs, saved document IDs, or failure details. If processing, call again later or use wait_for_quick_schema_creation. For completed results, use template_id for future extraction and saved_document_id or saved_documents[].document_id to fetch/download existing results. Do not start another schema-creation run just to check status.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "list_templates",
+      "fields": [
+        "description",
+        "inputSchema"
+      ],
+      "oldDescription": "List extraction templates for choosing an extraction template. Summary view is the default; use full view only when schema, prompt, or validation details are needed. Agents must use team_templates for processing. System templates are discovery-only in MCP: if a matching system template exists but no matching team template exists, ask the user to add that system template to their templates in the Suparse UI before processing. If no matching team or system template exists, ask the user to create a custom extraction schema for that document type in the Suparse UI.",
+      "newDescription": "Discover extraction templates; defaults to compact summary view with team templates only. Prefer a matching active team template and pass its id as template_id to extraction tools. Use view full to inspect schema and prompts. include_system true adds discovery-only system templates; MCP cannot add them to the team or use their IDs directly. If no template matches, omit template_id for auto-detection or use start_quick_schema_creation when schema creation is authorized. This tool does not create or modify templates.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "start_quick_schema_creation",
+      "fields": [
+        "description",
+        "inputSchema"
+      ],
+      "oldDescription": "Start automatic schema creation for one local document. Returns a normalized run_id and the SDK result. Use get_quick_schema_creation or wait_for_quick_schema_creation to follow the run. Supply upload_batch_id and source_upload_id only when an external batched-upload workflow provides them.",
+      "newDescription": "Upload one local file to automatically create extraction schemas/templates; use when the user authorized schema creation, which may consume credits. Returns run_id for get_quick_schema_creation or wait_for_quick_schema_creation, not an extraction task_id or export_job_id. Completed runs return generated template IDs and saved document IDs; inspect those before submitting another extraction. Supply upload_batch_id and source_upload_id only when provided by an external batched-upload workflow; MCP does not create upload batches. Starting again can create duplicate work.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "wait_for_quick_schema_creation",
+      "fields": [
+        "description",
+        "inputSchema"
+      ],
+      "oldDescription": "Poll an automatic schema creation run until it reaches completed, completed_with_errors, or failed. The terminal result preserves generated template IDs, saved documents, failed-document details, and retryability.",
+      "newDescription": "Wait for an existing quick-schema run_id until result.status is completed, completed_with_errors, or failed. Terminal failure is returned in result, so inspect status and failed_documents rather than assuming a successful tool call means full success. Returns generated template IDs and saved document IDs for future extraction or result retrieval. SDK defaults are 5 seconds between polls and 300 attempts; choose a smaller max_poll_attempts for short client timeouts. On polling timeout, check or wait on the same run_id rather than starting another run.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    }
+  ],
+  "fromToolCount": 10,
+  "toToolCount": 17,
+  "scope": "Versions supported by npm archive metadata, integrity checks and static exact full description matches. No new MCP execution."
+}

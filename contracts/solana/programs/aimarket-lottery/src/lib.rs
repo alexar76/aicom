@@ -61,6 +61,7 @@ pub mod aimarket_lottery {
         opex_bps: u16,
         operator_bps: u16,
     ) -> Result<()> {
+        validate_bootstrap_authority(&ctx.accounts.program_data, ctx.accounts.authority.key())?;
         require!(ticket_price_lamports > 0, LotteryError::BadPayment);
         validate_splits(prize_bps, opex_bps, operator_bps)?;
         let cfg = &mut ctx.accounts.config;
@@ -730,6 +731,8 @@ pub struct Initialize<'info> {
     )]
     pub config: Account<'info, LotteryConfig>,
     pub system_program: Program<'info, System>,
+    /// CHECK: canonical loader-owned ProgramData and upgrade authority checked in initialize.
+    pub program_data: UncheckedAccount<'info>,
 }
 
 #[derive(Accounts)]
@@ -1158,5 +1161,48 @@ mod tests {
         assert!(range_contains(4, 3, 5));
         assert!(!range_contains(5, 3, 5)); // end is exclusive
         assert!(!range_contains(2, 3, 5));
+    }
+}
+
+
+/// The singleton config belongs to the deployer's upgrade authority. Merely
+/// arriving first is not authority to choose the program's admin and treasury.
+fn validate_bootstrap_authority(program_data: &AccountInfo, authority: Pubkey) -> Result<()> {
+    let loader = anchor_lang::solana_program::bpf_loader_upgradeable::ID;
+    let expected = Pubkey::find_program_address(&[crate::ID.as_ref()], &loader).0;
+    require_keys_eq!(*program_data.key, expected, LotteryError::Unauthorized);
+    require_keys_eq!(*program_data.owner, loader, LotteryError::Unauthorized);
+    let data = program_data.try_borrow_data()?;
+    let state = ProgramData::try_deserialize(&mut &data[..])?;
+    require!(state.upgrade_authority_address == Some(authority), LotteryError::Unauthorized);
+    Ok(())
+}
+
+#[cfg(test)]
+mod bootstrap_security {
+    use super::*;
+
+    fn check(key: Pubkey, owner: Pubkey, authority: Option<Pubkey>, signer: Pubkey) -> Result<()> {
+        let mut lamports = 1;
+        // Native UpgradeableLoaderState::ProgramData: enum u32, slot u64, Option<u8>, pubkey.
+        let mut data = 3u32.to_le_bytes().to_vec();
+        data.extend_from_slice(&0u64.to_le_bytes());
+        data.push(u8::from(authority.is_some()));
+        if let Some(authority) = authority { data.extend_from_slice(authority.as_ref()); }
+        let account = AccountInfo::new(&key, false, false, &mut lamports, &mut data, &owner, false);
+        validate_bootstrap_authority(&account, signer)
+    }
+
+    #[test]
+    fn only_the_real_program_upgrade_authority_can_initialize() {
+        let loader = anchor_lang::solana_program::bpf_loader_upgradeable::ID;
+        let expected = Pubkey::find_program_address(&[crate::ID.as_ref()], &loader).0;
+        let deployer = Pubkey::new_unique();
+        let attacker = Pubkey::new_unique();
+        assert!(check(expected, loader, Some(deployer), deployer).is_ok());
+        assert!(check(expected, loader, Some(deployer), attacker).is_err());
+        assert!(check(expected, loader, None, attacker).is_err());
+        assert!(check(Pubkey::new_unique(), loader, Some(attacker), attacker).is_err());
+        assert!(check(expected, crate::ID, Some(attacker), attacker).is_err());
     }
 }

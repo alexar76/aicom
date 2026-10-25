@@ -12,6 +12,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "aimarket-legacy-wire"
+version = "0.1.0"
+dependencies = [
+ "bincode-next",
+ "serde",
+]
+
+[[package]]
 name = "aimarket-lottery"
 version = "0.1.0"
 dependencies = [
@@ -131,9 +139,8 @@ dependencies = [
 [[package]]
 name = "anchor-lang"
 version = "1.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "19d595e09daa737c57e9a0ab807e5c0b9278e5aefc463063438768ece09f614b"
 dependencies = [
+ "aimarket-legacy-wire",
  "anchor-attribute-access-control",
  "anchor-attribute-account",
  "anchor-attribute-constant",
@@ -146,7 +153,6 @@ dependencies = [
  "anchor-lang-error",
  "anchor-lang-idl",
  "base64 0.21.7",
- "bincode",
  "borsh",
  "bytemuck",
  "const-crypto",
@@ -255,12 +261,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
 
 [[package]]
-name = "bincode"
-version = "1.3.3"
+name = "bincode-next"
+version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1f45e9417d87227c7a56d22e471c6206462cba514c7590c09aff4cf6d1ddcad"
+checksum = "dbe9e7e6d14aeb39557f226bff158a30e367fac279d0e69b8b42fb41999f9a86"
 dependencies = [
  "serde",
+ "unty-next",
 ]
 
 [[package]]
@@ -1079,10 +1086,8 @@ dependencies = [
 [[package]]
 name = "solana-instruction"
 version = "4.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ea8442b67a58dd54d5497bfc6cd3106b00f9fe6f6877d33c271c3ec4672eedc"
 dependencies = [
- "bincode",
+ "aimarket-legacy-wire",
  "serde",
  "serde_derive",
  "solana-define-syscall 5.3.0",
@@ -1383,11 +1388,9 @@ dependencies = [
 [[package]]
 name = "solana-sysvar"
 version = "3.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6690d3dd88f15c21edff68eb391ef8800df7a1f5cec84ee3e8d1abf05affdf74"
 dependencies = [
+ "aimarket-legacy-wire",
  "base64 0.22.1",
- "bincode",
  "lazy_static",
  "serde",
  "serde_derive",
@@ -1579,6 +1582,12 @@ name = "unicode-segmentation"
 version = "1.13.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c6f5d3c3b1bf09027a88a6bc961fc00497d651009560b5463668dc81b0fa87a8"
+
+[[package]]
+name = "unty-next"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "16062d030850f35054e37746427b9febb74a2f24c9c6dd6fa2d0c13c5f53221e"
 
 [[package]]
 name = "version_check"

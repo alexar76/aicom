@@ -28,6 +28,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from core.generated_code_execution import GeneratedCodeIsolationRequired, require_host_execution_opt_in
 from core.paths import data_root
 
 logger = logging.getLogger(__name__)
@@ -55,6 +56,7 @@ def npm_env() -> dict[str, str]:
     core/child_env.py. A private-registry auth token is scrubbed too; if you need one, add
     it to the explicit `keep` list here and accept that untrusted build scripts will see it.
     """
+    require_host_execution_opt_in()
     from core.child_env import scrub_child_env
 
     env = scrub_child_env(os.environ)
@@ -374,6 +376,11 @@ def run_frontend_build_check(
     base = find_frontend_dir(product_code)
     if base is None:
         return {"passed": True, "skipped": True, "reason": "no_frontend_package_json"}
+
+    try:
+        require_host_execution_opt_in()
+    except GeneratedCodeIsolationRequired as exc:
+        return {"passed": False, "skipped": False, "issues": [str(exc)]}
 
     npm = shutil.which("npm")
     if not npm:

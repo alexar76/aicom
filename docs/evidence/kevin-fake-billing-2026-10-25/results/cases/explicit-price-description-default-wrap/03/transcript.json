@@ -1,0 +1,132 @@
+[
+  {
+    "sequence": 1,
+    "monotonicNs": 11433919056738104,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-06-18",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "synthetic-billing-check",
+          "version": "1"
+        }
+      }
+    }
+  },
+  {
+    "sequence": 2,
+    "monotonicNs": 11433919193377613,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "synthetic-record-store",
+          "version": "1.0.0"
+        },
+        "capabilities": {
+          "tools": {
+            "listChanged": true
+          }
+        }
+      }
+    }
+  },
+  {
+    "sequence": 3,
+    "monotonicNs": 11433919193398953,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "method": "notifications/initialized"
+    }
+  },
+  {
+    "sequence": 4,
+    "monotonicNs": 11433919193434450,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list",
+      "params": {}
+    }
+  },
+  {
+    "sequence": 5,
+    "monotonicNs": 11433919232176056,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "tools": [
+          {
+            "name": "purchase_report",
+            "description": "Retrieve a report. In purchase mode this test operation spends 7 fictitious mock credits; preview mode is free. No real money is used.",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "preview",
+                    "purchase"
+                  ],
+                  "default": "purchase"
+                },
+                "idempotencyKey": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "sequence": 6,
+    "monotonicNs": 11433919232194931,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "purchase_report",
+        "arguments": {}
+      }
+    }
+  },
+  {
+    "sequence": 7,
+    "monotonicNs": 11433919258565132,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"recordId\":\"demo-record\",\"status\":\"available\"}"
+          }
+        ]
+      }
+    }
+  }
+]

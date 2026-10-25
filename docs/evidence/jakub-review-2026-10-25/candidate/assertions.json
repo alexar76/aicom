@@ -1,0 +1,78 @@
+[
+  {
+    "name": "Both frozen full toolsets have 33 definitions",
+    "passed": true
+  },
+  {
+    "name": "Only two existing descriptions changed; no tools added or removed",
+    "passed": true
+  },
+  {
+    "name": "New approval phrasing is tagged on propose_setup_plan",
+    "passed": true
+  },
+  {
+    "name": "Readable review retains removed and added words and attention cue",
+    "passed": true
+  },
+  {
+    "name": "Removing only the newly added without-asking phrase removes approval tag",
+    "passed": true
+  },
+  {
+    "name": "Identical original snapshot has an empty diff",
+    "passed": true
+  },
+  {
+    "name": "Local candidate retains package version 0.21.0; not proof of published artifact",
+    "passed": true
+  },
+  {
+    "name": "Disposable store starts without approval",
+    "passed": true
+  },
+  {
+    "name": "Only original snapshot is explicitly approved in disposable state",
+    "passed": true
+  },
+  {
+    "name": "Approved original snapshot is unchanged",
+    "passed": true
+  },
+  {
+    "name": "Changed full tools require review with same declared server version",
+    "passed": true
+  },
+  {
+    "name": "Read-only changed status does not automatically replace stored approval",
+    "passed": true
+  },
+  {
+    "name": "Status review tags actual approval phrase and warns about unpinned launcher",
+    "passed": true
+  },
+  {
+    "name": "Candidate does not recommend a package pin from self-reported MCP version",
+    "passed": true
+  },
+  {
+    "name": "Candidate does not claim each unpinned start necessarily fetches latest",
+    "passed": true
+  },
+  {
+    "name": "Candidate explicitly separates reported MCP version from verified package version",
+    "passed": true
+  },
+  {
+    "name": "Candidate describes cache reuse and checking resolved version and package-manager lock",
+    "passed": true
+  },
+  {
+    "name": "Repeating status retains old approval and continues reporting drift",
+    "passed": true
+  },
+  {
+    "name": "Returning to original snapshot remains unchanged after changed-status reads",
+    "passed": true
+  }
+]

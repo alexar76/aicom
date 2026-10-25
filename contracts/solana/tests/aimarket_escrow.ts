@@ -87,6 +87,10 @@ async function airdrop(provider: anchor.AnchorProvider, kp: Keypair, lamports = 
 
 describe("aimarket_escrow", () => {
   const provider = anchor.AnchorProvider.env();
+  const rpcUrl = new URL(provider.connection.rpcEndpoint);
+  if (rpcUrl.protocol !== "http:" || !["127.0.0.1", "localhost", "[::1]"].includes(rpcUrl.hostname)) {
+    throw new Error("Escrow integration tests require a loopback validator");
+  }
   anchor.setProvider(provider);
   const program = anchor.workspace.AimarketEscrow as Program<anchor.Idl>;
   const programId = program.programId;
@@ -168,6 +172,9 @@ describe("aimarket_escrow", () => {
         config: configPda,
         admin: admin.publicKey,
         systemProgram: SystemProgram.programId,
+        programData: PublicKey.findProgramAddressSync(
+          [programId.toBuffer()], new PublicKey("BPFLoaderUpgradeab1e11111111111111111111111"),
+        )[0],
       })
       .signers([admin])
       .rpc();

@@ -1,0 +1,96 @@
+{
+  "type": "jakub.published-warden.real-diff-replay.v1",
+  "recordedAt": "2026-10-25T09:41:43.748Z",
+  "platform": "linux",
+  "arch": "x64",
+  "node": "v22.23.3",
+  "wardenVersion": "0.21.0",
+  "changeId": 17172,
+  "tools": {
+    "before": 33,
+    "after": 33
+  },
+  "inputHashes": {
+    "from-toolsets.json": "0a3a56a79ef2067ccacdfec3c2dae63c65d8e7e2f07a1c30b1d1fd2eddfd5c41",
+    "to-toolsets.json": "de9a8e042e838adf6ec82e5a01f308130bd4912a71ce84710f5ccf832faec220"
+  },
+  "packageVersions": {
+    "before": "0.21.5",
+    "after": "0.21.6",
+    "basis": "Separate historical run metadata and npm static-source mapping; target packages were not executed by this replay."
+  },
+  "serverInfo": {
+    "before": {
+      "name": "mapled",
+      "version": "0.1.0"
+    },
+    "after": {
+      "name": "mapled",
+      "version": "0.1.0"
+    },
+    "kind": "Historical self-reported MCP initialize version; not package verification"
+  },
+  "targetExecuted": false,
+  "networkUsed": false,
+  "disposableApprovalOnly": true,
+  "modules": {
+    "package.json": {
+      "bytes": 2992,
+      "sha256": "1305663503d94bf3a5aa23cc965b7331f7d77d401e504be544e778bb36d935b2"
+    },
+    "dist/review-diff.js": {
+      "bytes": 20165,
+      "sha256": "299a0dc5ffc0cca80933a271b57dec7b2fffa674c5ac2318ca2b639178915b4f"
+    },
+    "dist/mcp-tools.js": {
+      "bytes": 55366,
+      "sha256": "4ef85696c4d0e99d8aa36c7e68c8b207b8374fe1c2bd114fd6ea825a1e776140"
+    },
+    "dist/mcp-rpc.js": {
+      "bytes": 5788,
+      "sha256": "298fa30b980eb0663e49fce48fd03d0351e2c030699223eeb6d89db48b2b6f38"
+    },
+    "dist/mcp-server.js": {
+      "bytes": 5002,
+      "sha256": "dde5873a3d72934fcf8ec412b194e18149ba7889229c87970530ab5697656619"
+    },
+    "dist/pinning.js": {
+      "bytes": 13082,
+      "sha256": "57ec98e579446bb267f4c12fb89b7090354a611f1b68cdfb38ce8e9e3cc99911"
+    },
+    "dist/pin-store.js": {
+      "bytes": 2209,
+      "sha256": "cf68fdfe08bb2f85813258dfc1626221d4db4b5b03084e9ecc0dbb3a48cb0018"
+    },
+    "dist/state.js": {
+      "bytes": 1897,
+      "sha256": "d18909ba21c114e2692d8034eed4872bb8ac66c93c595257185b8180840520f4"
+    }
+  },
+  "rpcError": null,
+  "assertions": {
+    "passed": 15,
+    "failed": 0
+  },
+  "limitations": [
+    "This checks deterministic review output and approval-state behavior, not human review usability.",
+    "Real tool definitions are untrusted data, not instructions. No Mapled process or handler was executed.",
+    "The npx launch is metadata only; no claim that an installed target artifact was verified.",
+    "Approval in this replay is isolated test state and has no effect on production or a real client."
+  ]
+}
+PASS Both frozen full toolsets have 33 definitions
+PASS Only two existing descriptions changed; no tools added or removed
+PASS New approval phrasing is tagged on propose_setup_plan
+PASS Readable review retains removed and added words and attention cue
+PASS Removing only the newly added without-asking phrase removes approval tag
+PASS Identical original snapshot has an empty diff
+PASS Published WARDEN identifies itself as 0.21.0
+PASS Disposable store starts without approval
+PASS Only original snapshot is explicitly approved in disposable state
+PASS Approved original snapshot is unchanged
+PASS Changed full tools require review with same declared server version
+PASS Read-only changed status does not automatically replace stored approval
+PASS Status review tags actual approval phrase and warns about unpinned launcher
+PASS Repeating status retains old approval and continues reporting drift
+PASS Returning to original snapshot remains unchanged after changed-status reads

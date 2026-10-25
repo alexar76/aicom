@@ -1,0 +1,68 @@
+{
+  "type": "auten.launcher.baseline.v1",
+  "extractedAt": "2026-10-25T09:00:59.906465+00:00",
+  "snapshotCreatedAt": "2026-10-20T15:39:49Z",
+  "source": "https://histor.modelmarket.dev",
+  "license": "CC-BY-4.0",
+  "manifest": {
+    "path": "manifest.json",
+    "sha256": "a7bfc9e09ab9782157ad6c7a4bb136477609746a7e7e6f9c6695ea2012e926fc",
+    "signatureVerifiedInThisExtraction": false
+  },
+  "inputs": {
+    "servers.jsonl.gz": {
+      "sha256": "7e96f47212faac4a25dcdeb13a2920c20d548ae0f5b2df823f604117cf5b8b0b",
+      "bytes": 16079771,
+      "matchedManifest": true,
+      "line": 13336,
+      "extractedRowSha256IncludingNewline": "8f4c8c537f6bea9c2096ea0bbb85f1747a9b3a158f03de427a7891769fca196f"
+    },
+    "toolsets.jsonl.gz": {
+      "sha256": "9d5f8493910741c084a4e8315375d6bba918d5a0fad8d7bbc02f1e216773e2a2",
+      "bytes": 377362655,
+      "matchedManifest": true,
+      "line": 26404,
+      "extractedRowSha256IncludingNewline": "ce2a208b4f9e45a347ef8bb16c03f365afa98e0d7df21ff945c0cb1d6c022423"
+    }
+  },
+  "serverId": "28f2c83985927b54",
+  "serverName": "ai.auten/mcp",
+  "endpoint": "npm:@autenai/mcp",
+  "packageVersion": "0.1.5",
+  "lastObserved": "2026-10-15T10:44:17Z",
+  "recordedToolSetDigest": "sha256-RJI2t8t/kw6xQmfVdmlgh27WOXP3pefHMRPvzLkC6Ws=",
+  "toolCount": 1,
+  "artifacts": {
+    "server.json": {
+      "sha256": "1f4646c39881f8f88e8d5eaa12305fa744aa07c273a7e61e17098d4715ac7c21",
+      "bytes": 1274
+    },
+    "tools.json": {
+      "sha256": "b9107c749124be083657f56b31e3d42a392f9e088689f8eb67de23f5b8027d01",
+      "bytes": 275,
+      "encoding": "UTF-8; the exact toolsJson string from the dataset row plus a trailing newline"
+    }
+  },
+  "limitations": [
+    "This is a frozen HISTOR sandbox observation, not a fresh run on 2026-10-25.",
+    "No second snapshot from Auten's own runner environment is available in this extraction.",
+    "Dataset input file hashes were checked against the frozen manifest. The manifest signature was preserved in the source dataset but not verified in this extraction.",
+    "The tools array is the dataset toolset representation; initialize metadata and an execution command were not present in this row."
+  ],
+  "digestVerification": {
+    "method": "Local WARDEN dist/mtl.js mtlToolSetDigest over extracted public JSON only",
+    "matchesRecorded": true,
+    "computedToolSetDigest": "sha256-RJI2t8t/kw6xQmfVdmlgh27WOXP3pefHMRPvzLkC6Ws=",
+    "node": "v22.22.1",
+    "code": {
+      "warden/dist/mtl.js": {
+        "sha256": "34f32f626beb7ee2b6964072d4748d2737a31d7bb06995fb6969e18b2c47c925",
+        "bytes": 3731
+      },
+      "warden/dist/jcs.js": {
+        "sha256": "f73e16a66848ea07d3297f8311b4e856fa241831ec84419124d84af2a47a4790",
+        "bytes": 13364
+      }
+    }
+  }
+}

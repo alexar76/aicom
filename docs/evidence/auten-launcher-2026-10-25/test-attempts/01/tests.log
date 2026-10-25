@@ -1,0 +1,161 @@
+TAP version 13
+# Subtest: CLI requires an explicit command, label and reported runner version
+ok 1 - CLI requires an explicit command, label and reported runner version
+  ---
+  duration_ms: 6.045264
+  type: 'test'
+  ...
+# Subtest: CLI rejects repeated options and non-integral, zero or excessive timeouts
+ok 2 - CLI rejects repeated options and non-integral, zero or excessive timeouts
+  ---
+  duration_ms: 0.581373
+  type: 'test'
+  ...
+# Subtest: common credential switches, env assignments and credential URLs are refused
+ok 3 - common credential switches, env assignments and credential URLs are refused
+  ---
+  duration_ms: 1.271501
+  type: 'test'
+  ...
+# Subtest: end-to-end capture initializes, follows pages, declines sampling and makes no tool calls
+not ok 4 - end-to-end capture initializes, follows pages, declines sampling and makes no tool calls
+  ---
+  duration_ms: 68.332056
+  type: 'test'
+  location: '/work/test-collector.mjs:103:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    launcher-evidence: CollectorError kind=warden-files
+    
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///work/test-collector.mjs:108:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: MTL digest ignores tool order but changes with description; file hashes cover full snapshots
+not ok 5 - MTL digest ignores tool order but changes with description; file hashes cover full snapshots
+  ---
+  duration_ms: 48.21658
+  type: 'test'
+  location: '/work/test-collector.mjs:138:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    launcher-evidence: CollectorError kind=warden-files
+    
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///work/test-collector.mjs:142:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: verification rejects modified files
+not ok 6 - verification rejects modified files
+  ---
+  duration_ms: 48.575806
+  type: 'test'
+  location: '/work/test-collector.mjs:150:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    launcher-evidence: CollectorError kind=warden-files
+    
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///work/test-collector.mjs:152:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: server stderr and exception messages never appear in failure output
+not ok 7 - server stderr and exception messages never appear in failure output
+  ---
+  duration_ms: 48.052251
+  type: 'test'
+  location: '/work/test-collector.mjs:158:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /^launcher-evidence: CollectorError kind=mcp-fetch clientKind=spawn\n$/. Input:
+    
+    'launcher-evidence: CollectorError kind=warden-files\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    launcher-evidence: CollectorError kind=warden-files
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///work/test-collector.mjs:161:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: existing output directories are never overwritten and command does not start
+not ok 8 - existing output directories are never overwritten and command does not start
+  ---
+  duration_ms: 44.693108
+  type: 'test'
+  location: '/work/test-collector.mjs:166:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /kind=output-exists/. Input:
+    
+    'launcher-evidence: CollectorError kind=warden-files\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    launcher-evidence: CollectorError kind=warden-files
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///work/test-collector.mjs:172:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: credential argument refusal occurs before command execution
+ok 9 - credential argument refusal occurs before command execution
+  ---
+  duration_ms: 39.839543
+  type: 'test'
+  ...
+# Subtest: an unexpected WARDEN package version is refused before importing modules or spawning
+ok 10 - an unexpected WARDEN package version is refused before importing modules or spawning
+  ---
+  duration_ms: 44.94417
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 5
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 417.39442

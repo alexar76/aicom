@@ -1,0 +1,102 @@
+{
+  "case": "warden-sensitive-refuse",
+  "repeat": 2,
+  "runId": "warden-sensitive-refuse-2",
+  "expectation": {
+    "name": "warden-sensitive-refuse",
+    "wrap": true,
+    "sensitive": true,
+    "ui": true,
+    "refuse": true,
+    "calls": [
+      {}
+    ],
+    "charges": 0,
+    "prompts": 0,
+    "rpc_error": true
+  },
+  "command": [
+    "/usr/local/bin/node",
+    "/warden/package/dist/mcp-server.js",
+    "wrap",
+    "--id",
+    "fake-records",
+    "--state-dir",
+    "/out/cases/warden-sensitive-refuse/02/pins",
+    "--policy",
+    "/out/cases/warden-sensitive-refuse/02/policy.json",
+    "--ask",
+    "refuse",
+    "--",
+    "/usr/local/bin/node",
+    "/study/fake-billing-server.mjs"
+  ],
+  "replies": [
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "synthetic-record-store",
+          "version": "1.0.0"
+        },
+        "capabilities": {
+          "tools": {
+            "listChanged": true
+          }
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "tools": [
+          {
+            "name": "lookup_record",
+            "description": "Look up a record.",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "preview",
+                    "purchase"
+                  ],
+                  "default": "purchase"
+                },
+                "idempotencyKey": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "error": {
+        "code": -32602,
+        "message": "tool blocked by WARDEN: lookup_record matches policy.sensitiveToolPatterns, so every call needs a person's approval, and wrap cannot ask you (--ask refuse); it was not run"
+      }
+    }
+  ],
+  "timedOut": false,
+  "charges": 0,
+  "mockCredits": 0,
+  "prompts": 0,
+  "toolHandlersStarted": 0,
+  "passed": true,
+  "errors": []
+}

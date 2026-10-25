@@ -1,0 +1,100 @@
+{
+  "type": "auten.launcher.collector-tests.v1",
+  "startedAt": "2026-10-25T09:12:37.325898+00:00",
+  "finishedAt": "2026-10-25T09:12:38.463719+00:00",
+  "durationSeconds": 1.138,
+  "host": "admin-vps",
+  "hostSystem": "Linux",
+  "image": {
+    "id": "sha256:e1b65057659c168cb8510100daeca2f95d6e3f7ec081ed1b98f217591359b7a3",
+    "os": "linux",
+    "architecture": "amd64"
+  },
+  "runtime": "runc",
+  "isolation": {
+    "network": "none",
+    "readOnlyRoot": true,
+    "uid": 65532,
+    "gid": 65532,
+    "capabilitiesDropped": "ALL",
+    "noNewPrivileges": true,
+    "memoryBytes": 268435456,
+    "cpus": 1,
+    "pidsLimit": 64,
+    "tmpfsTmp": "rw,nosuid,noexec,size=64m",
+    "sourceMount": "read-only",
+    "wardenMount": "read-only"
+  },
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--runtime",
+    "runc",
+    "--network",
+    "none",
+    "--read-only",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--user",
+    "65532:65532",
+    "--memory",
+    "256m",
+    "--cpus",
+    "1",
+    "--pids-limit",
+    "64",
+    "--tmpfs",
+    "/tmp:rw,nosuid,noexec,size=64m",
+    "--mount",
+    "type=bind,src=/tmp/auten-launcher-tests-20261025.g6zh6vol/work,dst=/work,readonly",
+    "--mount",
+    "type=bind,src=/tmp/auten-launcher-tests-20261025.g6zh6vol/warden,dst=/warden,readonly",
+    "-e",
+    "WARDEN_TEST_ROOT=/warden/package",
+    "--entrypoint",
+    "node",
+    "sha256:e1b65057659c168cb8510100daeca2f95d6e3f7ec081ed1b98f217591359b7a3",
+    "--test",
+    "/work/test-collector.mjs"
+  ],
+  "exitCode": 1,
+  "syntheticFixturesOnly": true,
+  "autentPackageOrRunnerExecuted": false,
+  "preparation": {
+    "preparedAt": "2026-10-25T09:11:33.181797+00:00",
+    "source": {
+      "collect.mjs": {
+        "sha256": "95b90a3dc78163d38ea15428d7e6cb62e96f72774d2579d17b629aaffc202af6",
+        "bytes": 11834
+      },
+      "test-collector.mjs": {
+        "sha256": "5c0d586758953758d9c4869000b2fdb03f08639ffdcd5521ae548f6507e41cee",
+        "bytes": 10850
+      }
+    },
+    "package": {
+      "name": "@aimarket/warden",
+      "version": "0.21.0",
+      "url": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.21.0.tgz",
+      "status": 200,
+      "sha256": "5cc9aec04fc753adeb2ab97264c571e625b65bb57b43de2541dd4cf6260bc1f1",
+      "integrity": "sha512-mahzo72wcLhz0yNRC+IAi1jLVfa7i9amu40Gw/HVGTTJ5y46rQPS5/euAhrCKYH2E1VG7NNNVXYNxDjzi9QYHQ==",
+      "bytes": 752249,
+      "regularFiles": 210,
+      "safeExtraction": "Only package/ prefixed relative regular files/directories; no symlinks, hardlinks or special files."
+    }
+  },
+  "log": {
+    "file": "tests.log",
+    "bytes": 5356,
+    "sha256": "ea30a462236e3dddf91b647cd455fd204da0510e1a81a43543be7a8d35006ae4"
+  },
+  "notes": [
+    "Docker runtime runc; this is not a gVisor execution.",
+    "Only the two new collector scripts were transferred from the workspace. The published own WARDEN package was downloaded directly on the server and its SHA-256 and SHA-512 checked.",
+    "No external Auten package, runner or real account was executed."
+  ]
+}

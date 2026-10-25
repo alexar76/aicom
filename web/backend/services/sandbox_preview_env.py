@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from core.child_env import scrub_child_env
+from core.generated_code_execution import require_host_execution_opt_in
 from core.paths import data_root
 
 logger = logging.getLogger(__name__)
@@ -118,6 +119,7 @@ def _ensure_relative_sqlite_dirs(cwd: Path, code_dir: Path) -> None:
 
 def _preview_venv_python(code_dir: Path, sandbox_id: str) -> Path:
     """Isolated venv per sandbox — never pip-install into the factory /app/venv."""
+    require_host_execution_opt_in()
     sid = re.sub(r"[^\w-]", "_", (sandbox_id or "sandbox")[:48])
     venv_dir = code_dir / ".aicom_sandbox" / sid / "preview-venv"
     python_bin = venv_dir / "bin" / "python"
@@ -167,6 +169,7 @@ def pip_env() -> dict[str, str]:
     A private-index credential is scrubbed too: add it to an explicit ``keep`` here if you
     need one, and accept that untrusted build hooks will then see it.
     """
+    require_host_execution_opt_in()
     env = scrub_child_env(os.environ)
     root = Path(data_root())
     cache = root / ".pip"
@@ -182,6 +185,7 @@ def pip_env() -> dict[str, str]:
 
 
 def _pip_install_one(python_bin: Path, spec: str) -> None:
+    require_host_execution_opt_in()
     spec = spec.strip()
     if not spec or spec.startswith("#"):
         return
@@ -204,6 +208,7 @@ def _pip_install_requirements(cwd: Path, code_dir: Path, python_bin: Path) -> di
     A line-by-line fallback used to hide ``bcrypt==3.2.2==0.110.0``: pip -r failed,
     extras still installed bcrypt, the sandbox QA'd green, and Vercel --prod died.
     """
+    require_host_execution_opt_in()
     req_paths: list[Path] = []
     for p in (cwd / "requirements.txt", code_dir / "requirements.txt", cwd.parent / "requirements.txt"):
         if p.is_file() and p not in req_paths:
@@ -287,6 +292,7 @@ def _pip_install_requirements(cwd: Path, code_dir: Path, python_bin: Path) -> di
 
 
 def _run_alembic_if_present(cwd: Path, env: dict[str, str], python_bin: Path) -> None:
+    require_host_execution_opt_in()
     ini = cwd / "alembic.ini"
     if not ini.is_file() and not (cwd / "app" / "alembic").is_dir():
         return
@@ -305,6 +311,7 @@ def _run_alembic_if_present(cwd: Path, env: dict[str, str], python_bin: Path) ->
 
 
 def _run_seed_script(cwd: Path, env: dict[str, str], python_bin: Path) -> None:
+    require_host_execution_opt_in()
     for rel in ("scripts/seed_demo.py", "scripts/seed.py", "app/seed.py"):
         sp = cwd / rel
         if not sp.is_file():
@@ -339,6 +346,7 @@ def build_fastapi_preview_env(
     When ``skip_heavy_setup`` is True (postgres required but Docker unavailable), returns
     early without pip/alembic/seed so storefront starts do not exhaust host RAM.
     """
+    require_host_execution_opt_in()
     # Generated product code is UNTRUSTED (docs/sandbox-trust-model.md) and this module
     # RUNS it: pip installs its requirements (build hooks execute) and uvicorn imports
     # its modules (module-level code executes). So the child gets a SCRUBBED copy of the

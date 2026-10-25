@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import base64
+import binascii
+import hmac
 import json
 import time
 import uuid
@@ -36,13 +39,24 @@ def verify_receipt(payload: dict[str, Any]) -> bool:
     signature = str(sig_block.get("value") or "")
     if not signature:
         return False
-    from core.uni.signing import public_key_b64, sign_payload
+    from core.uni.signing import public_key_b64
 
-    if str(sig_block.get("public_key") or "") != public_key_b64():
+    if sig_block.get("algorithm") != "ed25519":
         return False
-    body = canonical_receipt_payload(payload)
-    expected = sign_payload(body)
-    return expected == signature
+    try:
+        from cryptography.exceptions import InvalidSignature
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+
+        public = str(sig_block.get("public_key") or "")
+        if not hmac.compare_digest(public, public_key_b64()):
+            return False
+        raw_public = base64.b64decode(public + "=" * (-len(public) % 4), altchars=b"-_", validate=True)
+        raw_signature = base64.b64decode(signature + "=" * (-len(signature) % 4), altchars=b"-_", validate=True)
+        canonical = json.dumps(canonical_receipt_payload(payload), sort_keys=True, separators=(",", ":")).encode("utf-8")
+        Ed25519PublicKey.from_public_bytes(raw_public).verify(raw_signature, canonical)
+    except (InvalidSignature, ValueError, TypeError, OverflowError, binascii.Error):
+        return False
+    return True
 
 
 def issue_receipt(

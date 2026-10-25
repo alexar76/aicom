@@ -9,6 +9,7 @@ import tempfile
 from pathlib import Path
 
 from core.child_env import scrub_child_env
+from core.generated_code_execution import GeneratedCodeIsolationRequired, require_host_execution_opt_in
 from core.logging_utils import log_suppressed
 
 from .helpers import logger
@@ -47,6 +48,7 @@ class ToolingMixin:
 
             # 2. Try pylint if available
             try:
+                require_host_execution_opt_in()
                 result = subprocess.run(
                     [sys.executable, "-m", "pylint", "--score=n", fpath],
                     capture_output=True, text=True, timeout=15, env=child_env,
@@ -67,6 +69,7 @@ class ToolingMixin:
 
             # 3. Try flake8 if available
             try:
+                require_host_execution_opt_in()
                 result = subprocess.run(
                     [sys.executable, "-m", "flake8", fpath],
                     capture_output=True, text=True, timeout=15, env=child_env,
@@ -110,6 +113,13 @@ class ToolingMixin:
             test_files = self._generate_tests(code_files)
             if not test_files:
                 return results
+
+        try:
+            require_host_execution_opt_in()
+        except GeneratedCodeIsolationRequired as exc:
+            return {"passed": 0, "failed": 1, "total": 1, "failures": [{
+                "name": "generated_code_isolation_required", "file": "", "error": str(exc),
+            }]}
 
         # Run each test file
         child_env = scrub_child_env(os.environ)
@@ -198,21 +208,14 @@ class ToolingMixin:
         return generated_tests
 
     def _check_imports(self, code_files: list[dict]) -> list[dict]:
-        """Try to import and verify Python modules.
-        
-        This actually executes code to check for import/runtime errors.
-        """
+        """Check syntax without importing products or changing factory import paths."""
         errors = []
 
         for file_info in code_files[:5]:  # Limit to 5 files
             fpath = file_info["path"]
             try:
-                # Add parent dir to sys.path
-                parent = str(Path(fpath).parent)
-                if parent not in sys.path:
-                    sys.path.insert(0, parent)
-
-                # Try to compile and check the AST
+                # A generated directory on sys.path would let a later, trusted
+                # lazy import load product-controlled modules inside the worker.
                 compile(file_info["content"], fpath, "exec")
             except SyntaxError as e:
                 errors.append({

@@ -1,0 +1,19 @@
+{
+  "type": "jakub.published-warden.review-observations.v1",
+  "status": "Known defect alongside 15 passing behavioral assertions",
+  "behavioralAssertions": {
+    "passed": 15,
+    "failed": 0
+  },
+  "finding": {
+    "id": "reported-version-used-as-package-pin",
+    "evidence": "rpc-review.txt",
+    "actual": "to pin it: @mapled/mcp@0.1.0",
+    "serverReportedVersion": "0.1.0",
+    "packageVersionAfter": "0.21.6",
+    "reason": "MCP serverInfo.version is self-reported server metadata and may differ from the npm package version. It is not sufficient evidence for constructing an exact npm pin.",
+    "notIncludedIn15PassingAssertions": true
+  },
+  "metadataCaveat": "The replay supplies serverInfo.version=0.1.0 from the historical evidence under review. serverInfo.name=mapled is test metadata; its spelling is not claimed to be an independently verified historical initialize.name.",
+  "targetNotExecuted": true
+}

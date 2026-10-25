@@ -1,0 +1,64 @@
+{
+  "kind": "local-unreleased-candidate-real-diff-replay",
+  "startedAt": "2026-10-25T09:53:33.687575+00:00",
+  "remoteTemp": "/tmp/jakub-candidate-20261025.xB0Wdi",
+  "inputs": {
+    "replay.mjs": {
+      "sha256": "d38946ab140f41b27e52ac587cefe3d62fc2082a8fc398642e7e86b1d1d70345",
+      "bytes": 10952
+    },
+    "from-toolsets.json": {
+      "sha256": "0a3a56a79ef2067ccacdfec3c2dae63c65d8e7e2f07a1c30b1d1fd2eddfd5c41",
+      "bytes": 52555
+    },
+    "to-toolsets.json": {
+      "sha256": "de9a8e042e838adf6ec82e5a01f308130bd4912a71ce84710f5ccf832faec220",
+      "bytes": 52771
+    },
+    "change.json": {
+      "sha256": "b5050e00b12650a1653b164ce26c0b3ef6250bb3536dffce6e9161f7cbe86d8b",
+      "bytes": 2676
+    }
+  },
+  "inputArchiveSha256": "5cdc9aa243ff4b0e42a955ff3e3fd482a3f769bb5307eb2678a45ab0074ffca2",
+  "sourceManifestSha256": "8b04e6394aaf7a0d20e4bc4c1f2d14a4cd61f0c7a68b7e3263c970ccaca3c7af",
+  "targetExecuted": false,
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--runtime",
+    "runc",
+    "--read-only",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--memory",
+    "768m",
+    "--cpus",
+    "1",
+    "--pids-limit",
+    "128",
+    "--tmpfs",
+    "/tmp:rw,nosuid,noexec,size=128m",
+    "--user",
+    "65532:65532",
+    "--network",
+    "none",
+    "-v",
+    "/tmp/jakub-candidate-20261025.xB0Wdi/project:/work:ro",
+    "-v",
+    "/tmp/jakub-candidate-20261025.xB0Wdi/study:/study:ro",
+    "-v",
+    "/tmp/jakub-candidate-20261025.xB0Wdi/results:/out:rw",
+    "--workdir",
+    "/work",
+    "--entrypoint",
+    "node",
+    "sha256:e1b65057659c168cb8510100daeca2f95d6e3f7ec081ed1b98f217591359b7a3",
+    "/study/replay.mjs"
+  ],
+  "exitCode": 0,
+  "finishedAt": "2026-10-25T09:53:39.433642+00:00"
+}

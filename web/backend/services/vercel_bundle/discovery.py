@@ -14,7 +14,6 @@ from typing import Any
 from core.code_discovery import iter_product_files
 from web.backend.services.frontend_build_check import npm_env
 
-
 _APP_ASSIGN_RE = re.compile(r"""^\s*(\w+)\s*=\s*FastAPI\(""", re.M)
 
 # Directories that are build output / vendored deps, never source of truth.
@@ -137,6 +136,12 @@ def find_backend_app(code_dir: Path) -> tuple[Path, str, str] | None:
 
 def _try_build_frontend(code_dir: Path, *, extra_env: dict[str, str] | None = None) -> dict[str, Any]:
     """Best-effort ``npm run build`` when the product ships sources but no dist."""
+    from core.generated_code_execution import GeneratedCodeIsolationRequired, require_host_execution_opt_in
+
+    try:
+        require_host_execution_opt_in()
+    except GeneratedCodeIsolationRequired as exc:
+        return {"ok": False, "error": "generated_code_isolation_required", "detail": str(exc)}
     build_env = npm_env()
     if extra_env:
         build_env.update(extra_env)

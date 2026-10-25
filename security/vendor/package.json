@@ -1,0 +1,18 @@
+{
+  "name": "@aimarket/security-vendor-validation",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test x402-cdp/test/*.test.mjs && npm run test:types",
+    "test:types": "node x402-core/node_modules/typescript/bin/tsc --noEmit --skipLibCheck false --strict --module NodeNext --moduleResolution NodeNext --target ES2022 --esModuleInterop --types node --typeRoots x402-core/node_modules/@types x402-cdp/test/types.mts"
+  },
+  "dependencies": {
+    "@x402/core": "2.28.0+aimarket.zod4.1",
+    "@x402/evm": "2.28.0+aimarket.zod4.1",
+    "@x402/extensions": "2.28.0+aimarket.zod4.1",
+    "jose": "6.2.3",
+    "viem": "2.57.6",
+    "zod": "4.6.7"
+  }
+}

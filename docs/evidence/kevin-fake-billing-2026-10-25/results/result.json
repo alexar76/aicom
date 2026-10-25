@@ -1,0 +1,822 @@
+{
+  "type": "kevin.synthetic-default-billing.v1",
+  "recordedAt": 1792922791.2068365,
+  "platform": "linux",
+  "node": "v22.23.3",
+  "python": "3.11.2",
+  "wardenVersion": "0.21.0",
+  "scenarios": 26,
+  "repeats": 3,
+  "runs": 78,
+  "passedRuns": 78,
+  "failedRuns": 0,
+  "matchedTranscriptControls": [
+    {
+      "name": "Same complete MCP exchange, different billing ledger",
+      "repeat": 1,
+      "passed": true
+    },
+    {
+      "name": "Same complete MCP exchange, different billing ledger",
+      "repeat": 2,
+      "passed": true
+    },
+    {
+      "name": "Same complete MCP exchange, different billing ledger",
+      "repeat": 3,
+      "passed": true
+    }
+  ],
+  "realMoneyUsed": false,
+  "externalNetworkUsed": false,
+  "observerTalkExecuted": true,
+  "gvisorTraceCollected": false,
+  "limitations": [
+    "Controlled synthetic fixtures do not estimate prevalence in the original census.",
+    "No real user awareness or real provider settlement was measured.",
+    "Approval answers are scripted protocol controls, not responses from human participants.",
+    "Ledger belongs to the separate mock billing process; provider-side charges cannot be inferred from MCP response alone."
+  ],
+  "results": [
+    {
+      "case": "discovery-only",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "histor-current-canary",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "empty-default-purchase",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "omitted-arguments",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "explicit-preview",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "explicit-purchase",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "invalid-placeholder",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "hidden-schema-default",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "required-mode-refuses-empty",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "charge-before-tool-error",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "charge-before-timeout",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": true,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "uncharged-matched-control",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "readonly-hint-is-not-billing-proof",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "idempotent-purchase-retry",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "initialize-side-effect",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "list-side-effect",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-default-empty",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-no-ui",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-decline",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 1,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-unchecked",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 1,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-accept",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 1,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-one-approval",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 2,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-refuse",
+      "repeat": 1,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-initialize-side-effect",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-list-side-effect",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "explicit-price-description-default-wrap",
+      "repeat": 1,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "discovery-only",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "histor-current-canary",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "empty-default-purchase",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "omitted-arguments",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "explicit-preview",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "explicit-purchase",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "invalid-placeholder",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "hidden-schema-default",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "required-mode-refuses-empty",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "charge-before-tool-error",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "charge-before-timeout",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": true,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "uncharged-matched-control",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "readonly-hint-is-not-billing-proof",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "idempotent-purchase-retry",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "initialize-side-effect",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "list-side-effect",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-default-empty",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-no-ui",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-decline",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 1,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-unchecked",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 1,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-accept",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 1,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-one-approval",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 2,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-refuse",
+      "repeat": 2,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-initialize-side-effect",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-list-side-effect",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "explicit-price-description-default-wrap",
+      "repeat": 2,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "discovery-only",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "histor-current-canary",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "empty-default-purchase",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "omitted-arguments",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "explicit-preview",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "explicit-purchase",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "invalid-placeholder",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "hidden-schema-default",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "required-mode-refuses-empty",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "charge-before-tool-error",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "charge-before-timeout",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": true,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "uncharged-matched-control",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "readonly-hint-is-not-billing-proof",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "idempotent-purchase-retry",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "initialize-side-effect",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "list-side-effect",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-default-empty",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-no-ui",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-decline",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 1,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-unchecked",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 1,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-accept",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 1,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-one-approval",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 2,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-refuse",
+      "repeat": 3,
+      "charges": 0,
+      "mockCredits": 0,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-initialize-side-effect",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "warden-sensitive-list-side-effect",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "case": "explicit-price-description-default-wrap",
+      "repeat": 3,
+      "charges": 1,
+      "mockCredits": 7,
+      "prompts": 0,
+      "timedOut": false,
+      "passed": true,
+      "errors": []
+    }
+  ]
+}

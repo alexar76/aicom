@@ -1,0 +1,44 @@
+{
+  "name": "@autenai/mcp",
+  "version": "0.1.5",
+  "description": "Computer-use MCP server: give Claude Code, Codex, Cursor or any MCP client hands on a real screen: your computer (Mac/Windows/Linux) and your Android phone (beta). Clicks, types and reads the screen, even in apps with no API.",
+  "mcpName": "ai.auten/mcp",
+  "type": "module",
+  "bin": {
+    "auten-mcp": "bin/auten-mcp.js"
+  },
+  "files": [
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "computer-use",
+    "claude-code",
+    "codex",
+    "cursor",
+    "desktop-automation",
+    "ai-agent",
+    "macos",
+    "windows",
+    "linux",
+    "android"
+  ],
+  "homepage": "https://auten.ai/mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/auten-ai/auten-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/auten-ai/auten-mcp/issues",
+    "email": "hello@auten.ai"
+  },
+  "author": "MB Icecode <hello@auten.ai> (https://auten.ai)",
+  "license": "MIT"
+}

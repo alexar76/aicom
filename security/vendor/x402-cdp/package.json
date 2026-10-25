@@ -1,0 +1,26 @@
+{
+  "name": "@aimarket/x402-cdp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "CDP authenticated x402 transport for AIMarket's address-configured EVM sellers",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": "./index.js",
+  "files": [
+    "index.js",
+    "LICENSE",
+    "UPSTREAM.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "jose": "6.2.3",
+    "@x402/core": "2.28.0",
+    "@x402/evm": "2.28.0",
+    "@x402/extensions": "2.28.0"
+  }
+}

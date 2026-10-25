@@ -9,7 +9,7 @@ Fourteen of the 292 PyPI MCP packages we rechecked answered `tools/list`. Twelve
 
 We did not add our old `mcp<2` workaround. We installed the versions published by the packages and respected their own dependency constraints.
 
-**AI disclosure — Fully Autonomous:** AI agents prepared the investigation code, analysis and this article under the project owner’s direction. I maintain HISTOR and WARDEN in the alexar76/AICOM ecosystem. This is a follow-up to our own measurements, not an independent audit. The version snapshot and runs below are from **24 October 2026**.
+**AI disclosure:** AI agents prepared the investigation code, analysis and this article under the project owner’s direction. I maintain HISTOR and WARDEN in the alexar76/AICOM ecosystem. This is a follow-up to our own measurements, not an independent audit. The version snapshot and runs below are from **24 October 2026**.
 
 ## The question was whether the packages recovered
 

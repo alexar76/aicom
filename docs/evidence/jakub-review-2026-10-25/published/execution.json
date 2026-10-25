@@ -1,0 +1,75 @@
+{
+  "startedAt": "2026-10-25T09:41:42.932699+00:00",
+  "finishedAt": "2026-10-25T09:41:44.072088+00:00",
+  "durationSeconds": 1.139389,
+  "host": "admin-vps",
+  "hostSystem": "Linux",
+  "runtime": "runc",
+  "image": "sha256:e1b65057659c168cb8510100daeca2f95d6e3f7ec081ed1b98f217591359b7a3",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--runtime",
+    "runc",
+    "--network",
+    "none",
+    "--read-only",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--user",
+    "65532:65532",
+    "--memory",
+    "512m",
+    "--cpus",
+    "1",
+    "--pids-limit",
+    "64",
+    "--tmpfs",
+    "/tmp:rw,nosuid,noexec,size=64m",
+    "--mount",
+    "type=bind,src=/tmp/jakub-published-replay-20261025.y04z81w4/work,dst=/work,readonly",
+    "--mount",
+    "type=bind,src=/tmp/jakub-published-replay-20261025.y04z81w4/warden,dst=/warden,readonly",
+    "--mount",
+    "type=bind,src=/tmp/jakub-published-replay-20261025.y04z81w4/out,dst=/out",
+    "--entrypoint",
+    "node",
+    "sha256:e1b65057659c168cb8510100daeca2f95d6e3f7ec081ed1b98f217591359b7a3",
+    "/work/replay.mjs"
+  ],
+  "exitCode": 0,
+  "transferredFiles": {
+    "change.json": {
+      "bytes": 2676,
+      "sha256": "b5050e00b12650a1653b164ce26c0b3ef6250bb3536dffce6e9161f7cbe86d8b"
+    },
+    "to-toolsets.json": {
+      "bytes": 52771,
+      "sha256": "de9a8e042e838adf6ec82e5a01f308130bd4912a71ce84710f5ccf832faec220"
+    },
+    "from-toolsets.json": {
+      "bytes": 52555,
+      "sha256": "0a3a56a79ef2067ccacdfec3c2dae63c65d8e7e2f07a1c30b1d1fd2eddfd5c41"
+    },
+    "replay.mjs": {
+      "bytes": 9499,
+      "sha256": "e667957588d02c2520f8fdcfe904562d48304ff47d7865043d32a9efc9695818"
+    }
+  },
+  "archive": {
+    "preparedAt": "2026-10-25T09:41:09.592368+00:00",
+    "url": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.21.0.tgz",
+    "httpStatus": 200,
+    "sha256": "5cc9aec04fc753adeb2ab97264c571e625b65bb57b43de2541dd4cf6260bc1f1",
+    "integrity": "sha512-mahzo72wcLhz0yNRC+IAi1jLVfa7i9amu40Gw/HVGTTJ5y46rQPS5/euAhrCKYH2E1VG7NNNVXYNxDjzi9QYHQ==",
+    "bytes": 752249,
+    "safeExtraction": true,
+    "remoteTemporaryRoot": "/tmp/jakub-published-replay-20261025.y04z81w4"
+  },
+  "productionStateTouched": false,
+  "targetPackageExecuted": false,
+  "network": "none"
+}

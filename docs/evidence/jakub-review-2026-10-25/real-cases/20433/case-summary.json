@@ -1,0 +1,45 @@
+{
+  "changeId": 20433,
+  "package": "@browserbridge/bbx",
+  "fromVersion": "1.12.2",
+  "toVersion": "1.12.5",
+  "fromBin": {
+    "bbx": "packages/agent-client/src/cli.js",
+    "bbx-daemon": "packages/native-host/bin/bridge-daemon.js",
+    "bbx-install": "packages/native-host/bin/install-manifest.js",
+    "bbx-mcp": "packages/mcp-server/src/bin.js"
+  },
+  "toBin": {
+    "bbx": "packages/agent-client/src/cli.js",
+    "bbx-daemon": "packages/native-host/bin/bridge-daemon.js",
+    "bbx-install": "packages/native-host/bin/install-manifest.js",
+    "bbx-mcp": "packages/mcp-server/src/bin.js"
+  },
+  "added": [],
+  "removed": [],
+  "modified": [
+    {
+      "tool": "browser_batch",
+      "fields": [
+        "description"
+      ],
+      "oldDescription": "Execute independent read-only bridge calls in parallel to reduce round-trips. Mutations and destructive reads are rejected; run them sequentially with specialized tools or browser_call. Preserves call order in the response.",
+      "newDescription": "Execute independent read-only bridge calls in parallel to reduce round-trips. Mutations and destructive reads are rejected; for known ordered actions use browser_call method input.perform instead. Preserves call order in the response.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "browser_call",
+      "fields": [
+        "description"
+      ],
+      "oldDescription": "Primary Browser Bridge tool for permission-ask hosts: call any bridge method directly by name so the user can approve one BBX MCP tool instead of each specialized tool separately.",
+      "newDescription": "Call any bridge method by name through one approvable MCP tool. For known authorized multi-step flows, use input.perform with returnLastResult: true to run input, waits, and a final bounded read in one call. Stop for decisions requiring new evidence or approval; never blindly replay a partial flow.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    }
+  ],
+  "fromToolCount": 6,
+  "toToolCount": 6,
+  "scope": "Versions supported by npm archive metadata, integrity checks and static exact full description matches. No new MCP execution."
+}

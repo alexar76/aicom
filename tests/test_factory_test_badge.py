@@ -117,8 +117,9 @@ def test_unmeasured_coverage_and_tests_badges_say_so(tmp_path):
     assert ">ok<" not in coverage + tests
 
 
-def test_the_runtime_test_stage_records_its_own_run(tmp_path):
+def test_the_runtime_test_stage_records_its_own_run(tmp_path, monkeypatch):
     """The pipeline stage itself writes the record into the product tree it tested."""
+    monkeypatch.setenv("AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE", "1")
     pid = "prod-badge"
     code = _product(tmp_path / "code" / pid)
     (code / "tests").mkdir()

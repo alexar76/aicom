@@ -38,6 +38,13 @@ def _run_pytest_if_present(product_root: Path) -> dict[str, Any]:
     if not has_tests:
         return {"passed": True, "skipped": True, "exit_code": 0, "total": 0, "failed": 0}
 
+    from core.generated_code_execution import GeneratedCodeIsolationRequired, require_host_execution_opt_in
+    try:
+        require_host_execution_opt_in()
+    except GeneratedCodeIsolationRequired as exc:
+        return {"passed": False, "skipped": False, "exit_code": 126, "total": 1, "failed": 1,
+                "reason": "generated_code_isolation_required", "stdout_tail": str(exc)}
+
     # The tests belong to a generated product. Pytest imports them and every
     # conftest.py it finds, so package isolation alone is not a privilege boundary.
     env = scrub_child_env(os.environ)

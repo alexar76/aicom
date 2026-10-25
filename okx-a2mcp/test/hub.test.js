@@ -21,7 +21,7 @@ const paid = { "payment-signature": "test", "content-type": "application/json" }
 
 function fakeHub(respond) {
   const calls = [];
-  return { calls, fetchImpl: async (url, init) => { calls.push({ url, headers: init.headers, body: JSON.parse(init.body) }); return respond(); } };
+  return { calls, fetchImpl: async (url, init) => { calls.push({ url, headers: init.headers, redirect: init.redirect, body: JSON.parse(init.body) }); return respond(); } };
 }
 
 test("without a hub key there are no hub twins", async () => {
@@ -59,6 +59,7 @@ test("a paid call buys the capability from the hub with the gateway's key and re
     assert.deepEqual(body.receipt, { sig: "r" });
     assert.equal(hub.calls[0].url, "https://hub.example/ai-market/v2/invoke");
     assert.equal(hub.calls[0].headers["x-api-key"], "secret-key");
+    assert.equal(hub.calls[0].redirect, "error");
     assert.deepEqual(hub.calls[0].body, { product_id: "gaia.gateway", capability_id: "gaia.weather.read@v1",
       source_hub: "https://iot.modelmarket.dev", input: { latitude: 52.5, longitude: 13.4 } });
   } finally { await close(); }

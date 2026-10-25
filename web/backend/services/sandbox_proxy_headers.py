@@ -4,6 +4,38 @@ from __future__ import annotations
 
 from fastapi import Request
 
+
+def _is_factory_bearer(request: Request, token: str) -> bool:
+    """Keep both factory issuers' credentials out of generated applications.
+
+    Signature identification deliberately ignores expiry/revocation: even an
+    expired session's claims belong to the factory. If either issuer cannot be
+    checked, refusing forwarding is safer than handing it to an untrusted app.
+    """
+    import jwt
+    from jwt.exceptions import PyJWTError
+
+    from web.backend.services.commerce import _resolve_customer_jwt_secret
+
+    try:
+        security = request.app.state.security_manager
+        issuers = (
+            (security.secret_key, security.jwt_algorithm),
+            (_resolve_customer_jwt_secret(), "HS256"),
+        )
+    except (AttributeError, KeyError, RuntimeError, OSError):
+        return True
+    for secret, algorithm in issuers:
+        try:
+            jwt.decode(token, secret, algorithms=[algorithm], options={
+                "verify_exp": False, "verify_nbf": False, "verify_iat": False,
+                "verify_aud": False, "verify_sub": False, "verify_jti": False,
+            })
+        except PyJWTError:
+            continue
+        return True
+    return False
+
 # Never forward session/auth from the operator browser into LLM-generated sandboxes.
 _BLOCKED_PREFIXES = (
     "authorization",
@@ -66,8 +98,9 @@ def sandbox_proxy_forward_headers(request: Request) -> dict[str, str]:
         if any(lk == p or lk.startswith(f"{p}-") for p in _BLOCKED_PREFIXES):
             continue
         out[key] = value
-    # Product JWTs must reach the generated API; factory cookies/CSRF stay blocked.
+    # Only an independent product token may reach generated code. The factory
+    # admin Bearer used to authorize this proxy is not a product credential.
     auth = (request.headers.get("authorization") or "").strip()
-    if auth.lower().startswith("bearer "):
+    if auth.lower().startswith("bearer ") and not _is_factory_bearer(request, auth[7:].strip()):
         out["Authorization"] = auth
     return out

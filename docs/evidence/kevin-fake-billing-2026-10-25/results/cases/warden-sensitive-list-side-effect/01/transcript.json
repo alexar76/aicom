@@ -1,0 +1,101 @@
+[
+  {
+    "sequence": 1,
+    "monotonicNs": 11433901122252757,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-06-18",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "synthetic-billing-check",
+          "version": "1"
+        }
+      }
+    }
+  },
+  {
+    "sequence": 2,
+    "monotonicNs": 11433901249623777,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "synthetic-record-store",
+          "version": "1.0.0"
+        },
+        "capabilities": {
+          "tools": {
+            "listChanged": true
+          }
+        }
+      }
+    }
+  },
+  {
+    "sequence": 3,
+    "monotonicNs": 11433901249641691,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "method": "notifications/initialized"
+    }
+  },
+  {
+    "sequence": 4,
+    "monotonicNs": 11433901249678700,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list",
+      "params": {}
+    }
+  },
+  {
+    "sequence": 5,
+    "monotonicNs": 11433901309245490,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "tools": [
+          {
+            "name": "lookup_record",
+            "description": "Look up a record.",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "preview",
+                    "purchase"
+                  ],
+                  "default": "purchase"
+                },
+                "idempotencyKey": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    }
+  }
+]

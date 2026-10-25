@@ -1,0 +1,48 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/work[39m
+
+ [32m✓[39m test/wrap.test.ts [2m([22m[2m123 tests[22m[2m)[22m[33m 48777[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=false and 5 MiB response [33m 884[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=true and 5 MiB response [33m 654[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission withholds unreviewed tools in any language and never creates a TOFU pin [33m 849[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission does not mistake an old automatic pin for operator approval [33m 432[2mms[22m[39m
+     [33m[2m✓[22m[39m persists drift across sessions; TTY reapproval allows the new snapshot [33m 804[2mms[22m[39m
+     [33m[2m✓[22m[39m captures initialize versions through real wrap and TTY approval, without treating metadata as identity or tools [33m 1681[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps a TOFU-reported version while flagging actual tool drift at the same version [33m 554[2mms[22m[39m
+     [33m[2m✓[22m[39m does not overwrite an approval when only the observed version changes during TTY review [33m 370[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins status without TTY, without changing the pin [33m 305[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins approve without TTY, without changing the pin [33m 318[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins revoke without TTY, without changing the pin [33m 379[2mms[22m[39m
+     [33m[2m✓[22m[39m human approval refuses a candidate that changes during review [33m 351[2mms[22m[39m
+     [33m[2m✓[22m[39m revoke persists denial, without silently starting a fresh TOFU [33m 864[2mms[22m[39m
+     [33m[2m✓[22m[39m identity drift blocks before spawning and returns initialize error with exit 3 [33m 716[2mms[22m[39m
+       [33m[2m✓[22m[39m off: the result passes untouched; a clean result always passes byte for byte [33m 460[2mms[22m[39m
+     [33m[2m✓[22m[39m EOF terminates a stubborn child within 10 seconds and reaps it [33m 10099[2mms[22m[39m
+     [33m[2m✓[22m[39m five proxies sharing one state directory establish one intact pin [33m 1101[2mms[22m[39m
+       [33m[2m✓[22m[39m a client that offers only URL elicitation, or --ask refuse, is never asked [33m 436[2mms[22m[39m
+         [33m[2m✓[22m[39m refuses the exact race after the final proxy read but before server comparison, with no raw-click fallback [33m 332[2mms[22m[39m
+         [33m[2m✓[22m[39m cancellation while approving discards the preparation; a late yes never commits [33m 312[2mms[22m[39m
+         [33m[2m✓[22m[39m blocks a second proxy GUI action while the first approval is pending, even without revalidation configured on the second [33m 486[2mms[22m[39m
+         [33m[2m✓[22m[39m honors cancellation during the final observation and releases the unused screen lease [33m 1517[2mms[22m[39m
+         [33m[2m✓[22m[39m retains an uncertain screen lease across proxy restart when the action has no result [33m 461[2mms[22m[39m
+       [33m[2m✓[22m[39m mode strict requires actual approval even for listed navigation [33m 333[2mms[22m[39m
+       [33m[2m✓[22m[39m mode policy requires actual approval even for listed navigation [33m 306[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses unapproved GUI requests across separate proxy processes sharing the session [33m 512[2mms[22m[39m
+       [33m[2m✓[22m[39m withholds clipboard paste and Send even when a large image precedes screen text [33m 499[2mms[22m[39m
+       [33m[2m✓[22m[39m withholds opaque GUI actions after pixels, unknown layouts and non-English labels before forwarding [33m 341[2mms[22m[39m
+       [33m[2m✓[22m[39m stops every first short-secret fragment across concurrent proxies before server delivery [33m 471[2mms[22m[39m
+       [33m[2m✓[22m[39m reserves an exact public request once across real concurrent proxies [33m 510[2mms[22m[39m
+       [33m[2m✓[22m[39m never forwards tiny or custom-encoded data through send or read-only MCP arguments [33m 316[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses a send after outside text came through, and the refused call never reaches the server [33m 462[2mms[22m[39m
+       [33m[2m✓[22m[39m audit-only logs what the guard would do and forwards the call; without --flow nothing changes [33m 531[2mms[22m[39m
+ [32m✓[39m test/persistent-pins.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1029[2mms[22m[39m
+   [33m[2m✓[22m[39m requires operator opt-in and exact reviewed payload, persists approval across real process restarts, then revokes [33m 1018[2mms[22m[39m
+ [32m✓[39m test/pin-review-origin.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 512[2mms[22m[39m
+   [33m[2m✓[22m[39m shows the reported versions, the unpinned launch and the added routing hint in one review [33m 510[2mms[22m[39m
+ [32m✓[39m test/review-diff.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 86[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m142 passed[39m[22m[90m (142)[39m
+[2m   Start at [22m 09:51:59
+[2m   Duration [22m 61.38s[2m (transform 1.28s, setup 49ms, import 1.72s, tests 50.40s, environment 0ms)[22m
+

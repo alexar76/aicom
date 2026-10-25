@@ -167,3 +167,12 @@ def test_start_fastapi_preview_skips_overlay_without_dist(tmp_path: Path, monkey
     assert status == "ok"
     assert "main:app" in seen["cmd"]
     assert "aicom_spa_preview:app" not in seen["cmd"]
+
+# These tests exercise private temporary fixtures or mocked process boundaries.
+# Production/public execution refusal is covered by test_generated_code_execution_security.
+import pytest as _execution_pytest
+
+
+@_execution_pytest.fixture(autouse=True)
+def _explicit_private_host_execution(monkeypatch):
+    monkeypatch.setenv("AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE", "1")

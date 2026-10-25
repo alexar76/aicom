@@ -98,6 +98,7 @@ export async function hubInvoke({ base, apiKey, fetchImpl, timeoutMs }, call, in
   try {
     res = await fetchImpl(`${base}/ai-market/v2/invoke`, {
       method: "POST",
+      redirect: "error",
       headers: { "content-type": "application/json", "x-api-key": apiKey, "user-agent": "okx-a2mcp/0.1 (+https://modelmarket.dev)" },
       body: JSON.stringify({ product_id: call.product_id, capability_id: call.capability_id, source_hub: call.source_hub, input }),
       signal: AbortSignal.timeout(timeoutMs),

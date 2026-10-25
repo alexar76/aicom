@@ -24,9 +24,10 @@ import time
 from pathlib import Path
 from typing import Any, Optional
 
+from core.generated_code_execution import GeneratedCodeIsolationRequired, require_host_execution_opt_in
+from core.logging_utils import log_suppressed
 from web.backend.services.sandbox_docker import pick_loopback_port, stop_ephemeral_services
 from web.backend.services.sandbox_preview_env import build_fastapi_preview_env
-from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
 
@@ -332,6 +333,11 @@ def start_fastapi_preview(
     info = detect_fastapi_backend(code_dir)
     if not info:
         return None, None, "no_fastapi_entry"
+
+    try:
+        require_host_execution_opt_in()
+    except GeneratedCodeIsolationRequired as exc:
+        return None, None, str(exc)
 
     dist_index = ensure_frontend_dist(code_dir)
 

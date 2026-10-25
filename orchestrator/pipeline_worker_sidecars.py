@@ -321,6 +321,16 @@ class PipelineWorkerSidecarMixin:
         code_dir = self.data_root / "code" / product_id
         if not code_dir.exists():
             return {"passed": False, "error": "code directory missing", "results": []}
+        from core.generated_code_execution import GeneratedCodeIsolationRequired, require_host_execution_opt_in
+
+        try:
+            require_host_execution_opt_in()
+        except GeneratedCodeIsolationRequired as exc:
+            return _record_test_badge(code_dir, {
+                "passed": False, "skipped": False, "error": "generated_code_isolation_required",
+                "results": [{"command": "isolation_required", "exit_code": 126, "stderr": str(exc)}],
+                "commands": [],
+            })
         manifest: dict[str, Any] = {}
         manifest_path = code_dir / "code_manifest.json"
         if manifest_path.exists():

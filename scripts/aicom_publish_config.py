@@ -272,6 +272,13 @@ FACTORY_LOCAL_EXCLUDES = [
     # Dated local scan dump (OSV copies and logs). Not source; rsync would
     # otherwise publish it because it is not gitignored.
     "artifacts/security-audit-2026-10-25",
+    # Same day's local codec and migration scan dumps. Not source; rsync would
+    # otherwise publish them because they are not gitignored.
+    "artifacts/security-bincode-2026-10-25",
+    "artifacts/security-migration-2026-10-25",
+    # Local source-security evidence can describe unfixed deployments and must
+    # never leave this workspace through the factory rsync export.
+    "artifacts/code-security-*",
     # Local quality-audit dump. Push protection rejected a live key inside it.
     "artifacts/quality-audit-2026-10-24",
     # Page snapshots left uncommitted. They are not factory docs.

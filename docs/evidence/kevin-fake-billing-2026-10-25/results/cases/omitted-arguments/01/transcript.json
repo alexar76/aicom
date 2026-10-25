@@ -1,0 +1,129 @@
+[
+  {
+    "sequence": 1,
+    "monotonicNs": 11433893550541745,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-06-18",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "synthetic-billing-check",
+          "version": "1"
+        }
+      }
+    }
+  },
+  {
+    "sequence": 2,
+    "monotonicNs": 11433893581809016,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "synthetic-record-store",
+          "version": "1.0.0"
+        },
+        "capabilities": {
+          "tools": {}
+        }
+      }
+    }
+  },
+  {
+    "sequence": 3,
+    "monotonicNs": 11433893581823052,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "method": "notifications/initialized"
+    }
+  },
+  {
+    "sequence": 4,
+    "monotonicNs": 11433893581842589,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list",
+      "params": {}
+    }
+  },
+  {
+    "sequence": 5,
+    "monotonicNs": 11433893582169363,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "tools": [
+          {
+            "name": "lookup_record",
+            "description": "Look up a record.",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "preview",
+                    "purchase"
+                  ],
+                  "default": "purchase"
+                },
+                "idempotencyKey": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "sequence": 6,
+    "monotonicNs": 11433893582183240,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "lookup_record"
+      }
+    }
+  },
+  {
+    "sequence": 7,
+    "monotonicNs": 11433893593156796,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"recordId\":\"demo-record\",\"status\":\"available\"}"
+          }
+        ]
+      }
+    }
+  }
+]

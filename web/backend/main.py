@@ -1600,6 +1600,10 @@ async def public_generate_landing(request: Request, body: GuestLandingRequest):
     Guest: enqueue exactly one business marketing landing from the given phrase.
     Rate-limited by IP; no authentication.
     """
+    from core.generated_code_execution import unsafe_host_execution_requested
+
+    if unsafe_host_execution_requested():
+        raise HTTPException(status_code=503, detail="Public product creation requires an isolated worker")
     ip = _client_ip(request)
     from web.backend.services.shared_rate_limit import enforce_shared_rate_limit
 

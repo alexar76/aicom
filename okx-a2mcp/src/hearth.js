@@ -123,6 +123,7 @@ export function hearthServices({
       try {
         res = await fetchImpl(`${base}/ai-market/v2/invoke`, {
           method: "POST",
+          redirect: "error",
           headers: {
             "content-type": "application/json",
             "x-api-key": apiKey,

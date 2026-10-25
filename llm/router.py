@@ -100,9 +100,8 @@ class LLMRouter:
                 if pconf.get("enabled", False):
                     api_key_val = pconf.get("api_key")
                     has_env = pconf.get("api_key_env")
-                    key_preview = f"{api_key_val[:8]}..." if api_key_val and len(api_key_val) > 8 else ("<SET>" if api_key_val else "<NOT SET>")
                     logger.debug(
-                        f"Provider '{name}': api_key={key_preview}, api_key_env={has_env!r}"
+                        f"Provider '{name}': api_key_configured={bool(api_key_val)}, api_key_env={has_env!r}"
                     )
 
             for name, pconf in providers_config.items():

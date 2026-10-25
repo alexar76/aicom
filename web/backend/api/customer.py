@@ -342,6 +342,13 @@ async def my_referral_dashboard(payload: dict = Depends(_get_token_payload)):
 
 @router.post("/pipeline/run")
 async def customer_pipeline_run(body: CustomerCreateRunRequest, payload: dict = Depends(_get_token_payload)):
+    from core.generated_code_execution import unsafe_host_execution_requested
+
+    if unsafe_host_execution_requested():
+        # This is public, untrusted input even when the deployment forgot its
+        # production marker. A local host-execution opt-in cannot authorize a
+        # stranger to submit code to that host.
+        raise HTTPException(status_code=503, detail="Customer product creation requires an isolated worker")
     customer_id = payload["sub"]
     profile = commerce.get_customer(customer_id)
     if not profile:

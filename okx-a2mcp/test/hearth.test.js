@@ -22,7 +22,7 @@ const paid = { "payment-signature": "test", "content-type": "application/json" }
 
 function fakeHearth(respond) {
   const calls = [];
-  return { calls, fetchImpl: async (url, init) => { calls.push({ url, headers: init.headers, body: JSON.parse(init.body) }); return respond(); } };
+  return { calls, fetchImpl: async (url, init) => { calls.push({ url, headers: init.headers, redirect: init.redirect, body: JSON.parse(init.body) }); return respond(); } };
 }
 
 test("without a hearth key the HESTIA agents are not sold", async () => {
@@ -60,6 +60,7 @@ test("a paid call buys from the hearth directly, says what the buyer paid, and r
     const sent = hearth.calls[0];
     assert.equal(sent.url, "https://hearth.example/ai-market/v2/invoke");
     assert.equal(sent.headers["x-api-key"], "seller-key");
+    assert.equal(sent.redirect, "error");
     assert.equal(sent.headers["x-aimarket-hub-charged"], "0.003");
     assert.deepEqual(sent.body, { capability_id: "x402.authorization.check@v1", input: example });
   } finally { await close(); }

@@ -144,3 +144,12 @@ def test_preview_api_disabled_by_default(monkeypatch):
     assert spa.preview_api_enabled() is False
     monkeypatch.setenv("AIFACTORY_SANDBOX_PREVIEW_API", "1")
     assert spa.preview_api_enabled() is True
+
+# These tests exercise private temporary fixtures or mocked process boundaries.
+# Production/public execution refusal is covered by test_generated_code_execution_security.
+import pytest as _execution_pytest
+
+
+@_execution_pytest.fixture(autouse=True)
+def _explicit_private_host_execution(monkeypatch):
+    monkeypatch.setenv("AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE", "1")

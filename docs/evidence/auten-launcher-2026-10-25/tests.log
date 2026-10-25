@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: CLI requires an explicit command, label and reported runner version
+ok 1 - CLI requires an explicit command, label and reported runner version
+  ---
+  duration_ms: 4.612401
+  type: 'test'
+  ...
+# Subtest: CLI rejects repeated options and non-integral, zero or excessive timeouts
+ok 2 - CLI rejects repeated options and non-integral, zero or excessive timeouts
+  ---
+  duration_ms: 0.352502
+  type: 'test'
+  ...
+# Subtest: common credential switches, env assignments and credential URLs are refused
+ok 3 - common credential switches, env assignments and credential URLs are refused
+  ---
+  duration_ms: 0.855497
+  type: 'test'
+  ...
+# Subtest: end-to-end capture initializes, follows pages, declines sampling and makes no tool calls
+ok 4 - end-to-end capture initializes, follows pages, declines sampling and makes no tool calls
+  ---
+  duration_ms: 183.065659
+  type: 'test'
+  ...
+# Subtest: MTL digest ignores tool order but changes with description; file hashes cover full snapshots
+ok 5 - MTL digest ignores tool order but changes with description; file hashes cover full snapshots
+  ---
+  duration_ms: 358.52461
+  type: 'test'
+  ...
+# Subtest: verification rejects modified files
+ok 6 - verification rejects modified files
+  ---
+  duration_ms: 149.366428
+  type: 'test'
+  ...
+# Subtest: server stderr and exception messages never appear in failure output
+ok 7 - server stderr and exception messages never appear in failure output
+  ---
+  duration_ms: 124.397159
+  type: 'test'
+  ...
+# Subtest: existing output directories are never overwritten and command does not start
+ok 8 - existing output directories are never overwritten and command does not start
+  ---
+  duration_ms: 75.332339
+  type: 'test'
+  ...
+# Subtest: credential argument refusal occurs before command execution
+ok 9 - credential argument refusal occurs before command execution
+  ---
+  duration_ms: 41.967556
+  type: 'test'
+  ...
+# Subtest: an unexpected WARDEN package version is refused before importing modules or spawning
+ok 10 - an unexpected WARDEN package version is refused before importing modules or spawning
+  ---
+  duration_ms: 59.611234
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1060.924883

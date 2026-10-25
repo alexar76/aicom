@@ -1,0 +1,168 @@
+[
+  {
+    "crate": "anchor-lang",
+    "version": "1.2.1",
+    "archive_sha256": "19d595e09daa737c57e9a0ab807e5c0b9278e5aefc463063438768ece09f614b",
+    "source": "https://static.crates.io/crates/anchor-lang/anchor-lang-1.2.1.crate",
+    "vcs": {
+      "git": {
+        "sha1": "f1d20a94e8857d66e39810039aa5b5eee9ff733e"
+      },
+      "path_in_vcs": "lang"
+    },
+    "omitted": [
+      ".cargo-ok",
+      "Cargo.lock",
+      "Cargo.toml.orig"
+    ],
+    "changes": [
+      {
+        "path": "Cargo.toml",
+        "upstream_sha256": "14070adbfae22e434696fe2ff066c43e66a56a35d8791695947e46e5801731d4",
+        "patched_sha256": "55e9b9f0d649f8f3d65398ceb8e0ce3ec54c4d58737b035db63b295760f85b39"
+      },
+      {
+        "path": "src/accounts/sysvar.rs",
+        "upstream_sha256": "b728377d7604373f338745cd8f7c2635077ef73de1c3b170ad43662069aed4f8",
+        "patched_sha256": "4ea7545963905709b880c955632acc1b17e26aa9c5227db45c49431a0467117f"
+      },
+      {
+        "path": "src/bpf_upgradeable_state.rs",
+        "upstream_sha256": "5be257d2f80b601190a8549c6029bc9d4eea65579ce94a1c7faa2c752a91f0f5",
+        "patched_sha256": "4ea8d3fd3ccb199de19d665e60c19a5452f0994404e4437a7802c196a709feb7"
+      }
+    ]
+  },
+  {
+    "crate": "solana-instruction",
+    "version": "4.0.0",
+    "archive_sha256": "1ea8442b67a58dd54d5497bfc6cd3106b00f9fe6f6877d33c271c3ec4672eedc",
+    "source": "https://static.crates.io/crates/solana-instruction/solana-instruction-4.0.0.crate",
+    "vcs": {
+      "git": {
+        "sha1": "57327aa7761549c7851c736a80dd9cb4562c27ed"
+      },
+      "path_in_vcs": "instruction"
+    },
+    "omitted": [
+      ".cargo-ok",
+      "Cargo.lock",
+      "Cargo.toml.orig"
+    ],
+    "changes": [
+      {
+        "path": "Cargo.toml",
+        "upstream_sha256": "d0f037d8e0a991ec73629fa0951b67ca3be48b94522293e3096e016d03e84884",
+        "patched_sha256": "c91466f883ce3d3e9cb5e7afcac703395edc67524410dd65d52ef8cddfc88e6f"
+      },
+      {
+        "path": "src/lib.rs",
+        "upstream_sha256": "6d25c3e7505e5bf4daf64d69013c0b78ab4ed0d865754832ffd0850c2906dd8a",
+        "patched_sha256": "1d044a024edafe73429ee8322efb8f44959c0f874a0439b19cc1506ed3a6ff30"
+      }
+    ]
+  },
+  {
+    "crate": "solana-sysvar",
+    "version": "3.1.1",
+    "archive_sha256": "6690d3dd88f15c21edff68eb391ef8800df7a1f5cec84ee3e8d1abf05affdf74",
+    "source": "https://static.crates.io/crates/solana-sysvar/solana-sysvar-3.1.1.crate",
+    "vcs": {
+      "git": {
+        "sha1": "a5ecbeb813096b11c63cca476acf9b4d49e27475"
+      },
+      "path_in_vcs": "sysvar"
+    },
+    "omitted": [
+      ".cargo-ok",
+      "Cargo.lock",
+      "Cargo.toml.orig"
+    ],
+    "changes": [
+      {
+        "path": "Cargo.toml",
+        "upstream_sha256": "75420c47eec32cb4a7c1cd952eacc14f7c821e3ff0b2e117eaba254babbf1a30",
+        "patched_sha256": "f20915a13a4330bc18faa976f7176994830f63ea4ba0759e3030634a408e0c42"
+      },
+      {
+        "path": "src/clock.rs",
+        "upstream_sha256": "599d737e41bfa37f0d3221bf6b237b6869e740678525ac5a0cea5549020c0ab1",
+        "patched_sha256": "f3e2453c0573797cdeba833d827e5a54903acaaa85ab3362afa83c394251840c"
+      },
+      {
+        "path": "src/epoch_rewards.rs",
+        "upstream_sha256": "634f311d35d28296be7b896633896ace44809a54818fea5daae54222c7d50b7d",
+        "patched_sha256": "075fb7611b63adec3bdac8674181fd10cdebb7b74535620e4b6d379fb19019f6"
+      },
+      {
+        "path": "src/epoch_schedule.rs",
+        "upstream_sha256": "9dbb711425c6f75eccdc656f97f6c144e8844720a8674eb131342c4885ec0b43",
+        "patched_sha256": "8581cd92ae6d0feeb54b65498c4719a78a2e278326d198b327eceb46d3de4357"
+      },
+      {
+        "path": "src/lib.rs",
+        "upstream_sha256": "0560913c4824362ce6048fb47391cb7ed1306960275c491bca856591f9e448f9",
+        "patched_sha256": "17b6c7e7590a3eba9bca946df6eed094f411323ea2ce7e46469aea9a311cf977"
+      },
+      {
+        "path": "src/recent_blockhashes.rs",
+        "upstream_sha256": "0ee0566d137ee7e272d7d168f69c189db4596ebd6de537292282c3850eff2206",
+        "patched_sha256": "3e2dab72f9cd5bc4ded34c44a7973c9963786e82bc23b1589ace7cad241dc15c"
+      },
+      {
+        "path": "src/rent.rs",
+        "upstream_sha256": "4e9df99a55f23938633c5ff777b41a2ccce3035b047290bd30aee112dc4ccd72",
+        "patched_sha256": "21e5801d11efad0ccf4b6b401171927d17a00cda7a7012c1141fd778f984956d"
+      },
+      {
+        "path": "src/slot_hashes.rs",
+        "upstream_sha256": "73faf32dee76d8f875c9e15fd5800d588ffef8d7a4d44514b889e7aa5e5369f9",
+        "patched_sha256": "3186b1ae7e476bb29eef94e5403b495863c39bcd53fb48ebc9b7eebb62bb0a6d"
+      },
+      {
+        "path": "src/slot_history.rs",
+        "upstream_sha256": "449cb0b56d95f6f86f49f86d23ecdc656cbfd2c26e762e71b681e0a67e459718",
+        "patched_sha256": "13e31a54ecb106c4973f9bd6327c94ef04c11f6c0bf631fd2a2b243bdb3c40dd"
+      }
+    ]
+  },
+  {
+    "crate": "solana-zk-sdk",
+    "version": "4.0.0",
+    "archive_sha256": "9602bcb1f7af15caef92b91132ec2347e1c51a72ecdbefdaefa3eac4b8711475",
+    "source": "https://static.crates.io/crates/solana-zk-sdk/solana-zk-sdk-4.0.0.crate",
+    "vcs": {
+      "git": {
+        "sha1": "2c67dc5a5dca674ed8fb04b578542e59b1b2f99c"
+      },
+      "path_in_vcs": "zk-sdk"
+    },
+    "omitted": [
+      ".cargo-ok",
+      "Cargo.lock",
+      "Cargo.toml.orig"
+    ],
+    "changes": [
+      {
+        "path": "Cargo.toml",
+        "upstream_sha256": "420f2609c2b49f124598231779aefe088e427c87a32a36cc4e9c9c5e620f56f1",
+        "patched_sha256": "13c2840683ff5c8950f9790f72ab58c8483413d9de6741ee1be4aec14d9a2749"
+      },
+      {
+        "path": "src/encryption/discrete_log.rs",
+        "upstream_sha256": "9da40571a0aec93e9500c310d5dbf7335fe30c7ccb0e183f00c75cfc429ec56d",
+        "patched_sha256": "3d9c89943eeb2c4706f3765e6abbd39558a88d2bb55ae4df70146cf97690d6d8"
+      },
+      {
+        "path": "src/encryption/elgamal.rs",
+        "upstream_sha256": "298a7c85e416bc1bd794ba72fdf41ca0ead7f3ff40c3414ca77a977f4507c3b4",
+        "patched_sha256": "e55d82106e095d3d45bfcb560c952cc6ce1501ce5d6585911e1a8cf8eb1f4455"
+      },
+      {
+        "path": "src/encryption/pedersen.rs",
+        "upstream_sha256": "37be5624de7e6927c1388b794c57c7782d80538661f0267c3049d7519c1cbfb3",
+        "patched_sha256": "6c06f33769fd6ab505f776b5f3939e6e858c09eeea36b04bcc1f675ad05de46f"
+      }
+    ]
+  }
+]

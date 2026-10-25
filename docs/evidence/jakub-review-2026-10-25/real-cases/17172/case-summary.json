@@ -1,0 +1,39 @@
+{
+  "changeId": 17172,
+  "package": "@mapled/mcp",
+  "fromVersion": "0.21.5",
+  "toVersion": "0.21.6",
+  "fromBin": {
+    "mapled-mcp": "dist/index.js"
+  },
+  "toBin": {
+    "mapled-mcp": "dist/index.js"
+  },
+  "added": [],
+  "removed": [],
+  "modified": [
+    {
+      "tool": "get_setup_run",
+      "fields": [
+        "description"
+      ],
+      "oldDescription": "Check a setup run: status is awaiting_approval, approved, rejected, applying, completed, completed_with_warnings or failed. Poll it after propose_setup_plan; apply once it is approved.",
+      "newDescription": "Check a setup run: status is awaiting_approval, approved, rejected, applying, completed, completed_with_warnings or failed. Poll it every few seconds after propose_setup_plan, without ending your turn: the person approves on the Mapled screen and won't tell you here. Apply as soon as it is approved.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    },
+    {
+      "tool": "propose_setup_plan",
+      "fields": [
+        "description"
+      ],
+      "oldDescription": "Propose the whole setup of a site in one plan: the collections and singles to create (with fields and the records to import), the files you will change and the packages you will install. The plan waits for the project's builder to approve it on a trusted Mapled screen — nothing changes until then. Use this for the initial integration instead of creating collections one by one. Write the summary, notes, display names and help texts in English (records stay in the site's language). Record keys are the field keys: the lowercase, hyphenated display name (\"Show badge\" → \"show-badge\"). Relation fields name their target collection (one of this plan by its display name, or an existing one by key); give a record a \"$ref\" (a short name) and other records of the plan link to it by that name — links to existing collections use record ids. Group fields carry their sub-fields; their values are objects keyed by the sub-field keys. Returns the run id and reviewUrl: ask the user to open it and approve, then poll get_setup_run until the status is \"approved\" and call apply_setup_plan.",
+      "newDescription": "Propose the whole setup of a site in one plan: the collections and singles to create (with fields and the records to import), the files you will change and the packages you will install. The plan waits for the project's builder to approve it on a trusted Mapled screen — nothing changes until then. Use this for the initial integration instead of creating collections one by one. Write the summary, notes, display names and help texts in English (records stay in the site's language). Record keys are the field keys: the lowercase, hyphenated display name (\"Show badge\" → \"show-badge\"). Relation fields name their target collection (one of this plan by its display name, or an existing one by key); give a record a \"$ref\" (a short name) and other records of the plan link to it by that name — links to existing collections use record ids. Group fields carry their sub-fields; their values are objects keyed by the sub-field keys. Returns the run id and reviewUrl: give the user the link — they approve on that screen, not in this conversation — then, without ending your turn, poll get_setup_run until the status is \"approved\", call apply_setup_plan and carry on without asking.",
+      "oldDescriptionPresentInPinnedArtifact": true,
+      "newDescriptionPresentInPinnedArtifact": true
+    }
+  ],
+  "fromToolCount": 33,
+  "toToolCount": 33,
+  "scope": "Versions supported by npm archive metadata, integrity checks and static exact full description matches. No new MCP execution."
+}

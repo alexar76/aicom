@@ -14,4 +14,4 @@ I also need to correct my earlier reply: not all 292 were proven MCP 2 failures.
 
 The follow-up explains the controls and limitations: https://dev.to/alexar76/we-rechecked-292-failing-mcp-packages-12-newer-releases-now-list-tools-p72
 
-Disclosure: I maintain HISTOR and WARDEN. AI agents prepared the investigation, analysis and this reply under the project owner’s direction. Listing tools does not establish safety or authenticated functionality.
+Success here means answering initialize and listing tools; safety and authenticated functionality were not established.

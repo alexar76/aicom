@@ -286,3 +286,12 @@ def test_pip_env_carries_no_factory_secret(monkeypatch, tmp_path) -> None:
     # pip still has to be able to run: it needs a PATH and a writable HOME for its cache.
     assert env.get("PATH")
     assert env.get("HOME")
+
+# These tests exercise private temporary fixtures or mocked process boundaries.
+# Production/public execution refusal is covered by test_generated_code_execution_security.
+import pytest as _execution_pytest
+
+
+@_execution_pytest.fixture(autouse=True)
+def _explicit_private_host_execution(monkeypatch):
+    monkeypatch.setenv("AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE", "1")

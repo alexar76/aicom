@@ -1,0 +1,632 @@
+{
+  "change": {
+    "id": 23671,
+    "serverId": "6b24f5a15f856108",
+    "observedAt": "2026-10-19T22:23:48Z",
+    "fromToolSetDigest": "sha256-3+3dXPiYbapL9UYopF9cM7dCSWfzg/QdbCYTNNgAOLo=",
+    "toToolSetDigest": "sha256-DL+ipewCw6P+Xb8pnxfJa1W9LMR76ofd58iiq00miOg=",
+    "fromSubjectDigest": "sha256-C5VGe1j57N1mo++iDmXFsIKvLHaoYqaeElBDhApjAqQ=",
+    "toSubjectDigest": "sha256-QFZfGhIABi446xaTBRwC77NH4LNVTjUMXfixoIlR/ew="
+  },
+  "server": {
+    "id": "6b24f5a15f856108",
+    "name": "io.github.suparse/suparse-mcp",
+    "title": "Suparse Document Processing",
+    "description": "Extract data, create schemas, and export results from PDFs and documents with Suparse AI OCR.",
+    "endpoint": "npm:@suparse/mcp",
+    "transport": "stdio",
+    "registry": "urn:awr:mtl:1:registry:registry.modelcontextprotocol.io",
+    "version": "1.5.0",
+    "repository": "https://github.com/suparse/suparse-mcp",
+    "website": "https://www.suparse.com",
+    "firstListed": "2026-10-10T11:32:59Z",
+    "lastListed": "2026-10-19T20:24:16Z",
+    "delisted": false,
+    "skipReason": null,
+    "lastAttempt": "2026-10-19T22:23:48Z",
+    "lastStatus": "ok",
+    "lastDetail": "",
+    "lastObserved": "2026-10-19T22:23:48Z",
+    "toolCount": 17,
+    "toolSetDigest": "sha256-DL+ipewCw6P+Xb8pnxfJa1W9LMR76ofd58iiq00miOg=",
+    "subjectDigest": "sha256-QFZfGhIABi446xaTBRwC77NH4LNVTjUMXfixoIlR/ew=",
+    "firstPinned": "2026-10-12T13:47:08Z",
+    "unchangedSince": "2026-10-19T22:23:48Z",
+    "attempts": 2,
+    "observations": 2,
+    "changes": 1,
+    "blockMatches": 0,
+    "adviseMatches": 11,
+    "recordMatches": 0,
+    "classifierModel": null,
+    "classifierFlags": null,
+    "packageVersion": "1.5.0",
+    "chainLabel": "urn:uuid:06f79e14-eb82-4f7b-a58a-95bf1c6b7f04",
+    "page": "https://histor.modelmarket.dev/s/6b24f5a15f856108"
+  },
+  "summaryDetail": "full",
+  "matches": [
+    {
+      "tool": "extract_file",
+      "modifiedRecordKeys": [
+        "tool",
+        "fields"
+      ],
+      "descriptionOps": [
+        [
+          "=",
+          "Process one local "
+        ],
+        [
+          "-",
+          "document"
+        ],
+        [
+          "+",
+          "file"
+        ],
+        [
+          "=",
+          " through Suparse. Defaults to result_mode "
+        ],
+        [
+          "-",
+          "defer,"
+        ],
+        [
+          "+",
+          "defer:"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "which"
+        ],
+        [
+          "+",
+          "upload,"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "uploads"
+        ],
+        [
+          "+",
+          "wait for terminal processing,"
+        ],
+        [
+          "=",
+          " and "
+        ],
+        [
+          "-",
+          "polls only, then returns compact"
+        ],
+        [
+          "+",
+          "return"
+        ],
+        [
+          "=",
+          " task_id/document_ids for later "
+        ],
+        [
+          "-",
+          "download_results."
+        ],
+        [
+          "+",
+          "export."
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "Use"
+        ],
+        [
+          "+",
+          "A"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "result_mode"
+        ],
+        [
+          "+",
+          "partially_completed task retains its status. For an immediate task ID, use start_file_extraction, then wait_for_task_extraction and get_task_results. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending."
+        ],
+        [
+          "=",
+          " return_json "
+        ],
+        [
+          "-",
+          "only"
+        ],
+        [
+          "+",
+          "preserves"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "when"
+        ],
+        [
+          "+",
+          "per-input"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "you"
+        ],
+        [
+          "+",
+          "task"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "need"
+        ],
+        [
+          "+",
+          "status"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "the"
+        ],
+        [
+          "+",
+          "and"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "full"
+        ],
+        [
+          "+",
+          "document"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "JSON"
+        ],
+        [
+          "+",
+          "IDs,"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "extraction"
+        ],
+        [
+          "+",
+          "reports"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "in"
+        ],
+        [
+          "+",
+          "partial"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "the"
+        ],
+        [
+          "+",
+          "tasks"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "MCP"
+        ],
+        [
+          "+",
+          "and"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "response."
+        ],
+        [
+          "+",
+          "empty exports as incomplete, and preserves exported data."
+        ],
+        [
+          "=",
+          " cleanup is "
+        ],
+        [
+          "+",
+          "best-effort, allowed "
+        ],
+        [
+          "=",
+          "only"
+        ],
+        [
+          "-",
+          " valid"
+        ],
+        [
+          "=",
+          " with "
+        ],
+        [
+          "-",
+          "return_json."
+        ],
+        [
+          "+",
+          "return_json, and requires a completed task and an export covering every requested document."
+        ]
+      ],
+      "pattern": "auto.?approve",
+      "addedExcerpt": "inal processing,returnexport.Apartially_completed task retains its status. For an immediate task ID, use start_file_extraction, then wait_for_task_extraction and get_task_results. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending.preservesper-inputtaskstatusanddocumentIDs,reportspartialtasksandempty exports as incomplete, and preserve",
+      "newDescriptionFromSummary": "Process one local file through Suparse. Defaults to result_mode defer: upload, wait for terminal processing, and return task_id/document_ids for later export. A partially_completed task retains its status. For an immediate task ID, use start_file_extraction, then wait_for_task_extraction and get_task_results. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending. return_json preserves per-input task status and document IDs, reports partial tasks and empty exports as incomplete, and preserves exported data. cleanup is best-effort, allowed only with return_json, and requires a completed task and an export covering every requested document."
+    },
+    {
+      "tool": "extract_folder",
+      "modifiedRecordKeys": [
+        "tool",
+        "fields"
+      ],
+      "descriptionOps": [
+        [
+          "=",
+          "Process "
+        ],
+        [
+          "-",
+          "all"
+        ],
+        [
+          "+",
+          "sorted, immediate"
+        ],
+        [
+          "=",
+          " supported files in "
+        ],
+        [
+          "-",
+          "an immediate"
+        ],
+        [
+          "+",
+          "a"
+        ],
+        [
+          "=",
+          " local folder through "
+        ],
+        [
+          "-",
+          "Suparse."
+        ],
+        [
+          "+",
+          "Suparse (nonrecursive; directories are skipped)."
+        ],
+        [
+          "=",
+          " Defaults to result_mode "
+        ],
+        [
+          "-",
+          "defer,"
+        ],
+        [
+          "+",
+          "defer:"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "which uploads"
+        ],
+        [
+          "+",
+          "upload"
+        ],
+        [
+          "=",
+          " and "
+        ],
+        [
+          "-",
+          "polls only, then returns compact task_id/document_ids"
+        ],
+        [
+          "+",
+          "wait"
+        ],
+        [
+          "=",
+          " for "
+        ],
+        [
+          "-",
+          "later"
+        ],
+        [
+          "+",
+          "each"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "download_results."
+        ],
+        [
+          "+",
+          "task,"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "Use"
+        ],
+        [
+          "+",
+          "retaining"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "result_mode"
+        ],
+        [
+          "+",
+          "task status and document IDs. For task IDs before processing finishes, use start_folder_extraction. At most 10 files run concurrently. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending."
+        ],
+        [
+          "=",
+          " return_json "
+        ],
+        [
+          "-",
+          "only"
+        ],
+        [
+          "+",
+          "preserves"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "when"
+        ],
+        [
+          "+",
+          "per-input"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "you"
+        ],
+        [
+          "+",
+          "task"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "need"
+        ],
+        [
+          "+",
+          "status"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "full"
+        ],
+        [
+          "+",
+          "and"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "JSON"
+        ],
+        [
+          "+",
+          "document"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "extractions"
+        ],
+        [
+          "+",
+          "IDs,"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "in"
+        ],
+        [
+          "+",
+          "reports"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "the"
+        ],
+        [
+          "+",
+          "partial"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "MCP"
+        ],
+        [
+          "+",
+          "tasks"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "response."
+        ],
+        [
+          "+",
+          "and empty exports as incomplete, and preserves exported data."
+        ],
+        [
+          "=",
+          " cleanup is "
+        ],
+        [
+          "+",
+          "best-effort, allowed "
+        ],
+        [
+          "=",
+          "only"
+        ],
+        [
+          "-",
+          " valid"
+        ],
+        [
+          "=",
+          " with "
+        ],
+        [
+          "-",
+          "return_json."
+        ],
+        [
+          "+",
+          "return_json, and requires a completed task and an export covering every requested document."
+        ]
+      ],
+      "pattern": "auto.?approve",
+      "addedExcerpt": "e skipped).defer:uploadwaiteachtask,retainingtask status and document IDs. For task IDs before processing finishes, use start_folder_extraction. At most 10 files run concurrently. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending.preservesper-inputtaskstatusanddocumentIDs,reportspartialtasksand empty exports as incomplete, and preserv",
+      "newDescriptionFromSummary": "Process sorted, immediate supported files in a local folder through Suparse (nonrecursive; directories are skipped). Defaults to result_mode defer: upload and wait for each task, retaining task status and document IDs. For task IDs before processing finishes, use start_folder_extraction. At most 10 files run concurrently. auto_approve defaults true; false requests human review, and this combined tool may wait and time out while review is pending. return_json preserves per-input task status and document IDs, reports partial tasks and empty exports as incomplete, and preserves exported data. cleanup is best-effort, allowed only with return_json, and requires a completed task and an export covering every requested document."
+    }
+  ],
+  "added": [
+    "download_export_job",
+    "get_export_job",
+    "get_task_results",
+    "start_file_extraction",
+    "start_folder_extraction",
+    "wait_for_export_job",
+    "wait_for_task_extraction"
+  ],
+  "removed": []
+}

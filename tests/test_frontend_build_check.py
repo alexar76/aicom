@@ -273,3 +273,11 @@ def test_the_hint_puts_the_declaring_file_in_the_repair_scope(tmp_path):
     assert "frontend/src/pages/PublicWidget.tsx" in named
     assert "frontend/src/api/advisory.ts" in named
 
+# These tests exercise private temporary fixtures or mocked process boundaries.
+# Production/public execution refusal is covered by test_generated_code_execution_security.
+import pytest as _execution_pytest
+
+
+@_execution_pytest.fixture(autouse=True)
+def _explicit_private_host_execution(monkeypatch):
+    monkeypatch.setenv("AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE", "1")

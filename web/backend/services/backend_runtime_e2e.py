@@ -21,7 +21,9 @@ from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+
 from core.child_env import scrub_child_env
+from core.generated_code_execution import GeneratedCodeIsolationRequired, require_host_execution_opt_in
 from core.logging_utils import log_suppressed
 
 logger = logging.getLogger(__name__)
@@ -266,9 +268,8 @@ def run_backend_runtime_e2e(product_id: str, data_root: str | Path | None = None
     if not _truthy("AIFACTORY_BACKEND_RUNTIME_E2E", "1"):
         return {"passed": True, "skipped": True, "reason": "AIFACTORY_BACKEND_RUNTIME_E2E disabled"}
 
-    from core.paths import resolve_data_root
-
     from core.code_discovery import iter_product_files
+    from core.paths import resolve_data_root
     from web.backend.services.sandbox_preview_api import (
         detect_fastapi_backend,
         start_fastapi_preview,
@@ -285,6 +286,11 @@ def run_backend_runtime_e2e(product_id: str, data_root: str | Path | None = None
 
     if not _is_backend_like(py_files):
         return {"passed": True, "skipped": True, "reason": "not_backend_like"}
+
+    try:
+        require_host_execution_opt_in()
+    except GeneratedCodeIsolationRequired as exc:
+        return {"passed": False, "skipped": False, "issues": [str(exc)]}
 
     host = "127.0.0.1"
     issues: list[str] = []

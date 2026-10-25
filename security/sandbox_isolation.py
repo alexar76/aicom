@@ -19,6 +19,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
+from core.child_env import scrub_child_env
+from core.generated_code_execution import require_host_execution_opt_in, unsafe_host_execution_requested
 from core.json_state import write_text_atomic
 from core.logging_utils import log_suppressed
 from security.docker_sandbox import append_image_and_command, hardened_docker_run_args
@@ -145,7 +147,9 @@ class SandboxIsolation:
         # AIFACTORY_SANDBOX_REQUIRE_CONTAINER defaults ON, so prod gets container mode.
         if _env_truthy("AIFACTORY_SANDBOX_REQUIRE_CONTAINER", default=_is_production()):
             return "container"
-        return "process"
+        # Public deployments sometimes omit the production marker. Their
+        # default still needs a real isolation boundary, with no host fallback.
+        return "process" if unsafe_host_execution_requested() else "container"
 
     # -----------------------------------------------------------------------
     # Sandbox Lifecycle
@@ -263,6 +267,7 @@ class SandboxIsolation:
                 self._save_state()
                 return sandbox
 
+            require_host_execution_opt_in()
             logger.warning(
                 "Sandbox %s starting in PROCESS mode — no kernel isolation, generated "
                 "code runs with factory privileges. Use container mode "
@@ -271,7 +276,7 @@ class SandboxIsolation:
             )
 
             # Build environment
-            env = os.environ.copy()
+            env = scrub_child_env(os.environ)
             env["SANDBOX_ID"] = sandbox_id
             env["SANDBOX_PORT"] = str(sandbox.port)
             env["SANDBOX_PRODUCT_ID"] = sandbox.product_id

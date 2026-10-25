@@ -1,0 +1,134 @@
+[
+  {
+    "sequence": 1,
+    "monotonicNs": 11433893101724529,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-06-18",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "histor-sandbox",
+          "version": "4"
+        }
+      }
+    }
+  },
+  {
+    "sequence": 2,
+    "monotonicNs": 11433893134941387,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "synthetic-record-store",
+          "version": "1.0.0"
+        },
+        "capabilities": {
+          "tools": {}
+        }
+      }
+    }
+  },
+  {
+    "sequence": 3,
+    "monotonicNs": 11433893134965722,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "method": "notifications/initialized"
+    }
+  },
+  {
+    "sequence": 4,
+    "monotonicNs": 11433893135014704,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list",
+      "params": {}
+    }
+  },
+  {
+    "sequence": 5,
+    "monotonicNs": 11433893135264073,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "tools": [
+          {
+            "name": "lookup_record",
+            "description": "Look up a record.",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "preview",
+                    "purchase"
+                  ],
+                  "default": "purchase"
+                },
+                "idempotencyKey": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "sequence": 6,
+    "monotonicNs": 11433893135333113,
+    "direction": "client_to_server",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 10000,
+      "method": "tools/call",
+      "params": {
+        "name": "lookup_record",
+        "arguments": {
+          "recordId": "histor canary kevin-fixed",
+          "mode": "preview",
+          "idempotencyKey": "histor canary kevin-fixed"
+        }
+      }
+    }
+  },
+  {
+    "sequence": 7,
+    "monotonicNs": 11433893135726303,
+    "direction": "server_to_client",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 10000,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"recordId\":\"histor canary kevin-fixed\",\"status\":\"available\"}"
+          }
+        ]
+      }
+    }
+  }
+]

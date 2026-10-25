@@ -555,3 +555,12 @@ def test_a_non_callable_target_is_named_as_such(tmp_path):
     })
     assert result["ok"] is False
     assert "not a callable" in result["detail"]
+
+# These tests exercise private temporary fixtures or mocked process boundaries.
+# Production/public execution refusal is covered by test_generated_code_execution_security.
+import pytest as _execution_pytest
+
+
+@_execution_pytest.fixture(autouse=True)
+def _explicit_private_host_execution(monkeypatch):
+    monkeypatch.setenv("AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE", "1")

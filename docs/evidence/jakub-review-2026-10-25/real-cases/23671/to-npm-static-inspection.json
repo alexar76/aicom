@@ -1,0 +1,264 @@
+{
+  "changeId": 23671,
+  "side": "to",
+  "package": "@suparse/mcp",
+  "version": "1.5.0",
+  "metadataRequest": {
+    "url": "https://registry.npmjs.org/%40suparse%2Fmcp/1.5.0",
+    "finalURL": "https://registry.npmjs.org/%40suparse%2Fmcp/1.5.0",
+    "status": 200,
+    "bytes": 2609,
+    "sha256": "cc0ed16be469f65e47a9cbe5c3446d103e3a513f332029edc045d5bde32ec863"
+  },
+  "archiveRequest": {
+    "url": "https://registry.npmjs.org/@suparse/mcp/-/mcp-1.5.0.tgz",
+    "finalURL": "https://registry.npmjs.org/@suparse/mcp/-/mcp-1.5.0.tgz",
+    "status": 200,
+    "bytes": 85921,
+    "sha256": "8db71ad0fb7c432c7e584ae1fcc33544335b5f7902289966d1de502a5df21583"
+  },
+  "integrityVerified": "sha512-JGtJ1Y0Z38j/SjVGq9hXV7V7yaKcMG+25bKj/W9OlxDBFWRjuZX6YXObo4nS/OoS8vQ3CTwy25XM2F9afEa3rw==",
+  "sha1Verified": "1d59eda8b099b30c0fbc73a75abbf142076c3025",
+  "packageBin": {
+    "suparse-mcp": "dist/index.mjs"
+  },
+  "packageEngines": {
+    "node": ">=20.0.0"
+  },
+  "packageScripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "validate:manifest": "node scripts/validate-manifest.mjs",
+    "test": "vitest run",
+    "lint": "eslint src/ test/",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywordContexts": [],
+  "textFilesScanned": [
+    {
+      "name": "package/package.json",
+      "bytes": 1826
+    },
+    {
+      "name": "package/dist/index.mjs",
+      "bytes": 86646
+    },
+    {
+      "name": "package/src/export-files.ts",
+      "bytes": 5257
+    },
+    {
+      "name": "package/src/index.ts",
+      "bytes": 101886
+    }
+  ],
+  "fullDescriptionMatches": [
+    {
+      "tool": "delete_documents",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 406
+    },
+    {
+      "tool": "download_export_job",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 510
+    },
+    {
+      "tool": "download_results",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 643
+    },
+    {
+      "tool": "extract_file",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 717
+    },
+    {
+      "tool": "extract_folder",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 730
+    },
+    {
+      "tool": "fetch_document_result",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 468
+    },
+    {
+      "tool": "fetch_json_results",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 609
+    },
+    {
+      "tool": "get_export_job",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 496
+    },
+    {
+      "tool": "get_quick_schema_creation",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 445
+    },
+    {
+      "tool": "get_task_results",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 557
+    },
+    {
+      "tool": "list_templates",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 520
+    },
+    {
+      "tool": "start_file_extraction",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 646
+    },
+    {
+      "tool": "start_folder_extraction",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 638
+    },
+    {
+      "tool": "start_quick_schema_creation",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 574
+    },
+    {
+      "tool": "wait_for_export_job",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 459
+    },
+    {
+      "tool": "wait_for_quick_schema_creation",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 556
+    },
+    {
+      "tool": "wait_for_task_extraction",
+      "file": "package/dist/index.mjs",
+      "match": "verbatim",
+      "fullDescriptionLength": 597
+    },
+    {
+      "tool": "delete_documents",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 406
+    },
+    {
+      "tool": "download_export_job",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 510
+    },
+    {
+      "tool": "download_results",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 643
+    },
+    {
+      "tool": "extract_file",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 717
+    },
+    {
+      "tool": "extract_folder",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 730
+    },
+    {
+      "tool": "fetch_document_result",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 468
+    },
+    {
+      "tool": "fetch_json_results",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 609
+    },
+    {
+      "tool": "get_export_job",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 496
+    },
+    {
+      "tool": "get_quick_schema_creation",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 445
+    },
+    {
+      "tool": "get_task_results",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 557
+    },
+    {
+      "tool": "list_templates",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 520
+    },
+    {
+      "tool": "start_file_extraction",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 646
+    },
+    {
+      "tool": "start_folder_extraction",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 638
+    },
+    {
+      "tool": "start_quick_schema_creation",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 574
+    },
+    {
+      "tool": "wait_for_export_job",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 459
+    },
+    {
+      "tool": "wait_for_quick_schema_creation",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 556
+    },
+    {
+      "tool": "wait_for_task_extraction",
+      "file": "package/src/index.ts",
+      "match": "verbatim",
+      "fullDescriptionLength": 597
+    }
+  ],
+  "matchedToolCount": 17,
+  "snapshotToolCount": 17,
+  "scope": "Archive read in memory, no extraction, npm install, lifecycle scripts or package code execution."
+}

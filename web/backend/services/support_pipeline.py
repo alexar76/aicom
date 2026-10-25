@@ -76,7 +76,10 @@ def support_auto_repair_enabled() -> bool:
     (data/support/user_bug_reports.jsonl); with AIFACTORY_SUPPORT_AUTO_REPAIR=1 it queues a
     developer round directly, as before, minus the parts a stranger could abuse.
     """
-    return _truthy("AIFACTORY_SUPPORT_AUTO_REPAIR", "0")
+    from core.generated_code_execution import unsafe_host_execution_requested
+
+    # Anonymous support text must not feed a private host-execution worker.
+    return not unsafe_host_execution_requested() and _truthy("AIFACTORY_SUPPORT_AUTO_REPAIR", "0")
 
 
 def user_bug_reports_path() -> Path:

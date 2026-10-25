@@ -27,6 +27,10 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
 
+#[path = "../../../support/ed25519-instruction.rs"]
+mod ed25519_instruction;
+use ed25519_instruction::verify_ed25519_ix_data;
+
 declare_id!("9BcJEAQCeFrPunKQ16itbaAzpw9A4zMHYPQxNxEAZUXR");
 
 // ── Constants ────────────────────────────────────────────────────
@@ -231,6 +235,7 @@ pub mod aimarket_escrow {
     /// Initialize the global program config with an admin key.
     /// Can only be called once. The admin can then authorize hubs.
     pub fn initialize_config(ctx: Context<InitConfig>) -> Result<()> {
+        validate_bootstrap_authority(&ctx.accounts.program_data, ctx.accounts.admin.key())?;
         require!(!ctx.accounts.config.initialized, AimarketError::AlreadyInitialized);
         ctx.accounts.config.admin = ctx.accounts.admin.key();
         ctx.accounts.config.initialized = true;
@@ -629,6 +634,8 @@ pub struct InitConfig<'info> {
     pub config: Account<'info, ProgramConfig>,
 
     pub system_program: Program<'info, System>,
+    /// CHECK: canonical loader-owned ProgramData and upgrade authority checked in initialize_config.
+    pub program_data: UncheckedAccount<'info>,
 }
 
 #[derive(Accounts)]
@@ -779,121 +786,40 @@ fn verify_ed25519(
     signature: &[u8; 64],
     instructions_sysvar: &AccountInfo,
 ) -> Result<bool> {
-    #[cfg(test)]
-    {
-        let _ = (pubkey, message, signature, instructions_sysvar);
-        // Accept all signatures in `cargo test` only. `anchor build` builds
-        // without the `test` cfg, so the on-chain binary always runs the
-        // real check below.
-        return Ok(true);
-    }
+    use anchor_lang::solana_program::sysvar::instructions::{
+        load_current_index_checked, load_instruction_at_checked,
+    };
 
-    #[cfg(not(test))]
-    {
-        use anchor_lang::solana_program::sysvar::instructions::{
-            load_current_index_checked, load_instruction_at_checked,
+    let ed25519_program_id =
+        anchor_lang::solana_program::pubkey!("Ed25519SigVerify111111111111111111111111111");
+
+    let current_idx = load_current_index_checked(instructions_sysvar)
+        .map_err(|_| error!(AimarketError::InvalidSignature))?;
+
+    for i in 0..current_idx {
+        let ix = match load_instruction_at_checked(i as usize, instructions_sysvar) {
+            Ok(ix) => ix,
+            Err(_) => continue,
         };
-
-        let ed25519_program_id =
-            anchor_lang::solana_program::pubkey!("Ed25519SigVerify111111111111111111111111111");
-
-        let current_idx = load_current_index_checked(instructions_sysvar)
-            .map_err(|_| error!(AimarketError::InvalidSignature))?;
-
-        for i in 0..current_idx {
-            let ix = match load_instruction_at_checked(i as usize, instructions_sysvar) {
-                Ok(ix) => ix,
-                Err(_) => continue,
-            };
-            if ix.program_id != ed25519_program_id {
-                continue;
-            }
-            if verify_ed25519_ix_data(&ix.data, pubkey, message, signature) {
-                return Ok(true);
-            }
+        if ix.program_id != ed25519_program_id {
+            continue;
         }
-        Ok(false)
+        if verify_ed25519_ix_data(&ix.data, pubkey, message, signature) {
+            return Ok(true);
+        }
     }
+    Ok(false)
 }
 
-/// Parse Ed25519 program instruction data and check if our (pubkey, message, signature)
-/// triple is among the verified entries.
-#[cfg(not(test))]
-fn verify_ed25519_ix_data(
-    data: &[u8],
-    expected_pubkey: &[u8; 32],
-    expected_message: &[u8],
-    expected_signature: &[u8; 64],
-) -> bool {
-    const OFFSETS_SIZE: usize = 14;
 
-    if data.len() < 2 {
-        return false;
-    }
-    let num_sigs = data[0] as usize;
-    if num_sigs == 0 {
-        return false;
-    }
-    let header_size = 2 + num_sigs * OFFSETS_SIZE;
-    if data.len() < header_size {
-        return false;
-    }
-
-    for i in 0..num_sigs {
-        let off = 2 + i * OFFSETS_SIZE;
-        let sig_offset = u16::from_le_bytes([data[off], data[off + 1]]) as usize;
-        let pubkey_offset = u16::from_le_bytes([data[off + 4], data[off + 5]]) as usize;
-        let msg_offset = u16::from_le_bytes([data[off + 8], data[off + 9]]) as usize;
-        let msg_size = u16::from_le_bytes([data[off + 10], data[off + 11]]) as usize;
-
-        if sig_offset.saturating_add(64) > data.len() {
-            continue;
-        }
-        if pubkey_offset.saturating_add(32) > data.len() {
-            continue;
-        }
-        if msg_offset.saturating_add(msg_size) > data.len() {
-            continue;
-        }
-
-        let sig_slice = &data[sig_offset..sig_offset + 64];
-        let pk_slice = &data[pubkey_offset..pubkey_offset + 32];
-        let msg_slice = &data[msg_offset..msg_offset + msg_size];
-
-        // Constant-time comparison of the authenticated triple. A timing-variable
-        // `==` short-circuits on the first mismatching byte, which can leak the
-        // signature/pubkey/message a byte at a time to an on-chain observer who
-        // can measure compute-unit consumption. `ct_eq_bytes` always inspects
-        // every byte. The message length is non-secret framing, so an early
-        // length check is fine; equal-length content is compared in constant time.
-        if msg_slice.len() == expected_message.len()
-            && ct_eq_bytes(sig_slice, expected_signature.as_ref())
-            && ct_eq_bytes(pk_slice, expected_pubkey.as_ref())
-            && ct_eq_bytes(msg_slice, expected_message)
-        {
-            return true;
-        }
-    }
-    false
-}
-
-/// Constant-time byte-slice equality.
-///
-/// Returns `false` immediately on a length mismatch (lengths are not secret),
-/// otherwise OR-accumulates the per-byte XOR difference across the *entire*
-/// slice so the running time does not depend on the position of the first
-/// differing byte. Avoids pulling in an extra crypto dependency for the two
-/// fixed-length (signature, pubkey) and one variable-length (message)
-/// comparisons performed during debit authorization.
-#[cfg(not(test))]
-#[inline(never)]
-fn ct_eq_bytes(a: &[u8], b: &[u8]) -> bool {
-    if a.len() != b.len() {
-        return false;
-    }
-    let mut diff: u8 = 0;
-    for (x, y) in a.iter().zip(b.iter()) {
-        diff |= x ^ y;
-    }
-    diff == 0
+/// A first caller cannot take over the singleton config after program deployment.
+fn validate_bootstrap_authority(program_data: &AccountInfo, authority: Pubkey) -> Result<()> {
+    let loader = anchor_lang::solana_program::bpf_loader_upgradeable::ID;
+    let expected = Pubkey::find_program_address(&[crate::ID.as_ref()], &loader).0;
+    require_keys_eq!(*program_data.key, expected, AimarketError::Unauthorized);
+    require_keys_eq!(*program_data.owner, loader, AimarketError::Unauthorized);
+    let data = program_data.try_borrow_data()?;
+    let state = ProgramData::try_deserialize(&mut &data[..])?;
+    require!(state.upgrade_authority_address == Some(authority), AimarketError::Unauthorized);
+    Ok(())
 }

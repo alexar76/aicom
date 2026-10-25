@@ -21,6 +21,7 @@ and [unsent reply](../../growth/arhan-reply-2026-10-25.en.md).
 | verify_results.py / verification.json | Independent aggregate/chain/hash recount, without importing classifier |
 | check_public.py / public-links.json / public-examples/ | Unauthenticated GET verification of five example links against frozen digests/timestamps |
 | cleanup_remote.py / cleanup.json | Remote/local output SHA comparison and removal of only this study's temporary directory |
+| workspace-recovery.json | Selected study files restored after concurrent workspace stashing; unrelated stash entries were untouched |
 | manifest.json | Original public snapshot manifest, preserved without claiming signature verification |
 
 ## Frozen input

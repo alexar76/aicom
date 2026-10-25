@@ -1,0 +1,188 @@
+{
+  "change": {
+    "id": 20433,
+    "serverId": "658b80ca8b629284",
+    "observedAt": "2026-10-16T13:40:24Z",
+    "fromToolSetDigest": "sha256-Kw6loN/fi14vwf4+miMQUE3WPoN3dYyydmMZsokJ3O4=",
+    "toToolSetDigest": "sha256-XGq99qq5vTsvbZs2DqFRkl/MrXj1q7cuD48vtF/qM8Q=",
+    "fromSubjectDigest": "sha256-zMiToEvmuVt5SQT/SVXzBR12Y5ZSgXZ91SO0iEYkUvQ=",
+    "toSubjectDigest": "sha256-FfO8pFQAAv4oDYUwiAZm2wH8D/GYTi3PyQWNL0Mxrgw="
+  },
+  "server": {
+    "id": "658b80ca8b629284",
+    "name": "npm/@browserbridge/bbx",
+    "title": "@browserbridge/bbx",
+    "description": null,
+    "endpoint": "npm:@browserbridge/bbx",
+    "transport": "stdio",
+    "registry": "urn:awr:mtl:1:registry:histor.modelmarket.dev/curated",
+    "version": null,
+    "repository": null,
+    "website": null,
+    "firstListed": "2026-10-10T11:32:59Z",
+    "lastListed": "2026-10-19T20:24:16Z",
+    "delisted": false,
+    "skipReason": null,
+    "lastAttempt": "2026-10-16T13:40:24Z",
+    "lastStatus": "ok",
+    "lastDetail": "",
+    "lastObserved": "2026-10-16T13:40:24Z",
+    "toolCount": 6,
+    "toolSetDigest": "sha256-XGq99qq5vTsvbZs2DqFRkl/MrXj1q7cuD48vtF/qM8Q=",
+    "subjectDigest": "sha256-FfO8pFQAAv4oDYUwiAZm2wH8D/GYTi3PyQWNL0Mxrgw=",
+    "firstPinned": "2026-10-13T08:07:54Z",
+    "unchangedSince": "2026-10-16T13:40:24Z",
+    "attempts": 4,
+    "observations": 3,
+    "changes": 1,
+    "blockMatches": 0,
+    "adviseMatches": 2,
+    "recordMatches": 0,
+    "classifierModel": null,
+    "classifierFlags": null,
+    "packageVersion": "1.12.5",
+    "chainLabel": "urn:uuid:ef95e3a1-229a-40a6-b72c-013e5fd65f8b",
+    "page": "https://histor.modelmarket.dev/s/658b80ca8b629284"
+  },
+  "summaryDetail": "full",
+  "matches": [
+    {
+      "tool": "browser_call",
+      "modifiedRecordKeys": [
+        "tool",
+        "fields"
+      ],
+      "descriptionOps": [
+        [
+          "-",
+          "Primary Browser Bridge tool for permission-ask hosts: call"
+        ],
+        [
+          "+",
+          "Call"
+        ],
+        [
+          "=",
+          " any bridge method "
+        ],
+        [
+          "-",
+          "directly "
+        ],
+        [
+          "=",
+          "by name "
+        ],
+        [
+          "-",
+          "so the user can approve"
+        ],
+        [
+          "+",
+          "through"
+        ],
+        [
+          "=",
+          " one "
+        ],
+        [
+          "-",
+          "BBX"
+        ],
+        [
+          "+",
+          "approvable"
+        ],
+        [
+          "=",
+          " MCP "
+        ],
+        [
+          "-",
+          "tool"
+        ],
+        [
+          "+",
+          "tool."
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "instead"
+        ],
+        [
+          "+",
+          "For"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "of"
+        ],
+        [
+          "+",
+          "known"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "each"
+        ],
+        [
+          "+",
+          "authorized"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "specialized"
+        ],
+        [
+          "+",
+          "multi-step"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "tool"
+        ],
+        [
+          "+",
+          "flows,"
+        ],
+        [
+          "=",
+          " "
+        ],
+        [
+          "-",
+          "separately."
+        ],
+        [
+          "+",
+          "use input.perform with returnLastResult: true to run input, waits, and a final bounded read in one call. Stop for decisions requiring new evidence or approval; never blindly replay a partial flow."
+        ]
+      ],
+      "pattern": "approval",
+      "addedExcerpt": "nownauthorizedmulti-stepflows,use input.perform with returnLastResult: true to run input, waits, and a final bounded read in one call. Stop for decisions requiring new evidence or approval; never blindly replay a partial flow.",
+      "newDescriptionFromSummary": "Call any bridge method by name through one approvable MCP tool. For known authorized multi-step flows, use input.perform with returnLastResult: true to run input, waits, and a final bounded read in one call. Stop for decisions requiring new evidence or approval; never blindly replay a partial flow."
+    }
+  ],
+  "added": [],
+  "removed": []
+}

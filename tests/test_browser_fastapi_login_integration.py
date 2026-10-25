@@ -68,3 +68,12 @@ def test_fastapi_preview_login_scenario(tmp_path: Path, monkeypatch: pytest.Monk
     assert len(scenarios) == 1
     assert scenarios[0].get("name") == "login"
     assert scenarios[0].get("ok") is True
+
+# These tests exercise private temporary fixtures or mocked process boundaries.
+# Production/public execution refusal is covered by test_generated_code_execution_security.
+import pytest as _execution_pytest
+
+
+@_execution_pytest.fixture(autouse=True)
+def _explicit_private_host_execution(monkeypatch):
+    monkeypatch.setenv("AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE", "1")

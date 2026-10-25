@@ -1,0 +1,346 @@
+<p>A tool's description can shrink while its schema grows. A single token total can hide that regression. Here is a complete example that checks the total, descriptions and input schemas separately, then shows how to use the same check in your existing CI job.</p>
+
+<p><strong>AI disclosure:</strong> AI agents prepared this example, its verification and this article under the project owner's direction. I maintain HISTOR in the alexar76 ecosystem. This is our own reproducibility check; it is not evidence that an external team has adopted the CI check.</p>
+
+<p><a href="https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011#comment-3ij29">Raju asked for a CI check</a> after our tool-definition cost survey. This page includes every command and the complete fetch script, so it can be used without a repository checkout.</p>
+
+<h2>
+  <a name="the-real-change-used-in-the-example" href="#the-real-change-used-in-the-example">
+  </a>
+  The real change used in the example
+</h2>
+
+<p><a href="https://histor.modelmarket.dev/api/v1/changes/28848/cost" target="_blank" rel="noopener noreferrer">HISTOR change 28848</a> records a change to textokit's remote MCP endpoint observed on 24 October 2026 at 19:52 UTC. Its before and after lists both have 20 tools; 17 definitions changed. We count compact <code>{name, description, input_schema}</code> definitions with <code>o200k_base</code>.</p>
+
+<div class="table-wrapper-paragraph"><table>
+<thead>
+<tr>
+<th>Tokens</th>
+<th style="text-align: right">Before</th>
+<th style="text-align: right">After</th>
+<th style="text-align: right">Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full definitions in the counted model-input form</td>
+<td style="text-align: right">5,565</td>
+<td style="text-align: right">3,776</td>
+<td style="text-align: right">-1,789 / -32.1%</td>
+</tr>
+<tr>
+<td>Descriptions</td>
+<td style="text-align: right">2,158</td>
+<td style="text-align: right">783</td>
+<td style="text-align: right">-1,375</td>
+</tr>
+<tr>
+<td>Input schemas</td>
+<td style="text-align: right">3,165</td>
+<td style="text-align: right">2,751</td>
+<td style="text-align: right">-414</td>
+</tr>
+<tr>
+<td>Names</td>
+<td style="text-align: right">120</td>
+<td style="text-align: right">120</td>
+<td style="text-align: right">0</td>
+</tr>
+<tr>
+<td>Keys and punctuation</td>
+<td style="text-align: right">122</td>
+<td style="text-align: right">122</td>
+<td style="text-align: right">0</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>This is an observed remote definition change. It does not establish which npm release deployed it or imply an endorsement. The reproduction below downloads stored definition data. It does not run textokit code, call its tools or buy a service.</p>
+
+<h2>
+  <a name="1-create-an-isolated-working-directory" href="#1-create-an-isolated-working-directory">
+  </a>
+  1. Create an isolated working directory
+</h2>
+
+<p>Use Python 3.11. The example pins the published CLI and tokenizer versions rather than depending on the current latest release.<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight shell"><code><span class="nb">mkdir</span> <span class="nt">-p</span> /tmp/histor-tool-cost-demo
+<span class="nb">cd</span> /tmp/histor-tool-cost-demo
+python3.11 <span class="nt">-m</span> venv .venv
+<span class="nb">.</span> .venv/bin/activate
+python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="s1">'aimarket-histor[cost]==0.3.1'</span> <span class="s1">'tiktoken==0.14.0'</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>Installation, fetching the public lists and initially populating the tokenizer cache require network access. The recorded token-count validation itself ran without network access on a Linux server with Python 3.11.2 and tiktoken 0.14.0.</p>
+
+<p>For precise provenance: those CLI checks ran in a HISTOR 0.4.0 container. We separately verified that its <code>histor/toolcost.py</code> and <code>histor/toolcost_cli.py</code> bytes are identical to the published 0.3.1 wheel used in the command above. This is not a claim of a separate fresh end-to-end installation test of that entire published wheel.</p>
+
+<h2>
+  <a name="2-save-and-run-the-complete-fetch-script" href="#2-save-and-run-the-complete-fetch-script">
+  </a>
+  2. Save and run the complete fetch script
+</h2>
+
+<p>Copy this shell block into the same directory. It writes <code>fetch_textokit.py</code> in full:<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight shell"><code><span class="nb">cat</span> <span class="o">&gt;</span> fetch_textokit.py <span class="o">&lt;&lt;</span><span class="sh">'</span><span class="no">PY</span><span class="sh">'
+"""Fetch the immutable public tool lists of HISTOR change 28848; execute no server tools."""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+import urllib.parse
+import urllib.request
+
+from histor.subject import tool_set_digest
+
+SNAPSHOTS = {
+    "before": "sha256-IP5W+kYoXogt7RDDPbG0FmUE97uEAqyIdxDoPjuocUA=",
+    "after": "sha256-zIV5QNaJd0IQp+5yFiYc4gtjQVAtMjfSc3Kq2tcE5uc=",
+}
+
+
+def main():
+    parser = argparse.ArgumentParser(__doc__)
+    parser.add_argument("--out", type=Path, required=True)
+    args = parser.parse_args()
+    args.out.mkdir(parents=True, exist_ok=True)
+    for name, digest in SNAPSHOTS.items():
+        url = "https://histor.modelmarket.dev/api/v1/toolsets/" + urllib.parse.quote(digest, safe="")
+        request = urllib.request.Request(url, headers={"User-Agent": "HISTOR-cost-example/1.0"})
+        with urllib.request.urlopen(request, timeout=30) as response:
+            raw = response.read(4 * 1024 * 1024 + 1)
+        if len(raw) &gt; 4 * 1024 * 1024:
+            raise ValueError("tool list exceeds the example's size limit")
+        tools = json.loads(raw)
+        if not isinstance(tools, list):
+            raise ValueError("expected a tool array")
+        actual, _ = tool_set_digest(tools)
+        if actual != digest:
+            raise ValueError(f"digest mismatch for {name}: {actual}")
+        (args.out / f"{name}-tools.json").write_text(json.dumps(tools, ensure_ascii=False, indent=2) + "</span><span class="se">\n</span><span class="sh">")
+        print(f"{name}: {len(tools)} tools, {actual}")
+
+
+if __name__ == "__main__":
+    main()
+</span><span class="no">PY
+</span></code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>Then fetch the pair:<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight shell"><code>python fetch_textokit.py <span class="nt">--out</span> /tmp/textokit-cost
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>The script checks HISTOR's canonical tool-set digest for each list, not the SHA-256 of a particular JSON serialization. It refuses a changed digest or an oversized response. Both lists should contain 20 tools. No API key is required.</p>
+
+<h2>
+  <a name="3-run-the-passing-check" href="#3-run-the-passing-check">
+  </a>
+  3. Run the passing check
+</h2>
+
+
+
+<div class="highlight js-code-highlight">
+<pre class="highlight shell"><code>histor tool-cost snapshot <span class="se">\</span>
+  <span class="nt">--tools</span> /tmp/textokit-cost/before-tools.json <span class="se">\</span>
+  <span class="nt">-o</span> /tmp/textokit-cost/baseline.json
+
+histor tool-cost check <span class="se">\</span>
+  <span class="nt">--baseline</span> /tmp/textokit-cost/baseline.json <span class="se">\</span>
+  <span class="nt">--tools</span> /tmp/textokit-cost/after-tools.json <span class="se">\</span>
+  <span class="nt">--max-increase</span> 10%
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>Expected exit code: <strong>0</strong>. The total, descriptions and input schemas all became smaller. They are gated separately: shorter descriptions cannot conceal a large schema increase in the aggregate.</p>
+
+<h2>
+  <a name="4-prove-the-gate-can-fail" href="#4-prove-the-gate-can-fail">
+  </a>
+  4. Prove the gate can fail
+</h2>
+
+<p>Deliberately compare the same lists in the opposite direction:<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight shell"><code>histor tool-cost snapshot <span class="se">\</span>
+  <span class="nt">--tools</span> /tmp/textokit-cost/after-tools.json <span class="se">\</span>
+  <span class="nt">-o</span> /tmp/textokit-cost/reduced-baseline.json
+
+histor tool-cost check <span class="se">\</span>
+  <span class="nt">--baseline</span> /tmp/textokit-cost/reduced-baseline.json <span class="se">\</span>
+  <span class="nt">--tools</span> /tmp/textokit-cost/before-tools.json <span class="se">\</span>
+  <span class="nt">--max-increase</span> 10%
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>Expected exit code: <strong>1</strong>, with three reported problems:</p>
+
+<ul>
+<li>Full definitions: +1,789 tokens / +47.4%.</li>
+<li>Descriptions: +1,375 / +175.6%.</li>
+<li>Input schemas: +414 / +15.0%.</li>
+</ul>
+
+<p>This simulates returning to the older, larger definitions. It does not claim that a later textokit release regressed. Exit <strong>2</strong> means the input could not be obtained or counted, rather than a successful comparison. Growth below the default 50-token noise floor does not fail the gate; <code>--noise</code> can change that policy.</p>
+
+<h2>
+  <a name="5-add-the-check-to-your-own-servers-ci" href="#5-add-the-check-to-your-own-servers-ci">
+  </a>
+  5. Add the check to your own server's CI
+</h2>
+
+<p>After building your own server, create a baseline once and commit the JSON file:<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight shell"><code>histor tool-cost snapshot <span class="nt">--stdio</span> <span class="s1">'node dist/index.js'</span> <span class="nt">-o</span> tool-cost.json
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>Use your actual launch command. Unlike the stored-list example, <code>--stdio</code> launches your server and requests <code>initialize</code> and <code>tools/list</code>.</p>
+
+<p>In a CI job that already installs dependencies and builds your project, add these steps:<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight yaml"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install the pinned tool-cost checker</span>
+  <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">python3.11 -m venv .venv-tool-cost</span>
+    <span class="s">.venv-tool-cost/bin/python -m pip install 'aimarket-histor[cost]==0.3.1' 'tiktoken==0.14.0'</span>
+
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check tool-definition growth</span>
+  <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">.venv-tool-cost/bin/histor tool-cost check \</span>
+      <span class="s">--baseline tool-cost.json \</span>
+      <span class="s">--stdio 'node dist/index.js' \</span>
+      <span class="s">--max-increase 10%</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>The runner needs Python 3.11 and the runtime your server uses. If your build already exports <code>tools/list</code>, replace <code>--stdio 'node dist/index.js'</code> with <code>--tools current-tools.json</code>. The command also writes its Markdown table to the job summary when <code>GITHUB_STEP_SUMMARY</code> is present.</p>
+
+<p>Review changes to the committed baseline when accepting growth. Do not regenerate it immediately before every CI check: that would compare the new list with itself. Keep tokenizer and CLI versions fixed on both sides of a baseline comparison; review and regenerate the baseline explicitly when changing them.</p>
+
+<h2>
+  <a name="what-the-number-means" href="#what-the-number-means">
+  </a>
+  What the number means
+</h2>
+
+<p>The check counts complete definitions in one documented input form. Clients that load tools on demand may send only a subset. Provider wrappers add tokens, and prompt-cache writes and reads have different billing rules. Actual invoices require the client's usage records.</p>
+
+<p>The useful CI signal is bounded: a reviewed definition baseline changed enough to exceed your chosen limits. It does not judge tool quality, security or whether a larger schema is justified.</p>
+

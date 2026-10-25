@@ -1,0 +1,7 @@
+# CDP transport compatibility
+
+This small adapter replaces only the `@coinbase/cdp-sdk/x402` factories used by our sellers. They all configure existing EVM addresses and explicit exact routes; they never provision a CDP wallet. The unused wallet/policy/Solana SDK is removed from these services.
+
+The JWT claims, 120 second lifetime, ES256 PKCS8/Ed25519 base64 key formats, per-operation URI binding, HTTP facilitator requests, discovery declarations, extension precedence, initialization retry and verification/settlement hooks follow Coinbase CDP SDK 1.57.1. JOSE performs every cryptographic operation. Correlation telemetry identifies this adapter. Unsupported wallet provisioning or route schemes fail explicitly. No real keys, payments or purchases are used in tests.
+
+Reference implementation at the official 1.57.1 release revision `d40fb3975395033409643654faacfb3d4e4349ee`: [x402 factories](https://github.com/coinbase/cdp-sdk/tree/d40fb3975395033409643654faacfb3d4e4349ee/typescript/packages/cdp-sdk/src/x402) and [JWT authentication](https://github.com/coinbase/cdp-sdk/blob/d40fb3975395033409643654faacfb3d4e4349ee/typescript/packages/cdp-sdk/src/auth/utils/jwt.ts). Coinbase's MIT license is retained. Local differential tests compare against the original installed SDK using generated disposable keys and intercepted HTTP requests. Literal escaped PEM newlines and malformed key formats are rejected by both implementations; URL trailing-slash/query/fragment handling is checked for parity.

@@ -1,0 +1,362 @@
+{
+  "changeId": 20433,
+  "side": "from",
+  "package": "@browserbridge/bbx",
+  "version": "1.12.2",
+  "metadataRequest": {
+    "url": "https://registry.npmjs.org/%40browserbridge%2Fbbx/1.12.2",
+    "finalURL": "https://registry.npmjs.org/%40browserbridge%2Fbbx/1.12.2",
+    "status": 200,
+    "bytes": 4052,
+    "sha256": "0d7d9867f140eb56cec451aaa42ee8642c70eb5422c3e51a7fe7996e09f1dbfd"
+  },
+  "archiveRequest": {
+    "url": "https://registry.npmjs.org/@browserbridge/bbx/-/bbx-1.12.2.tgz",
+    "finalURL": "https://registry.npmjs.org/@browserbridge/bbx/-/bbx-1.12.2.tgz",
+    "status": 200,
+    "bytes": 254949,
+    "sha256": "7c36375bd359e6bdcf59d935005a157be685b50bf778cca3de05155781f02c5a"
+  },
+  "integrityVerified": "sha512-SuqfKM8TT/FoLj5wPCwvvZKZxvG2OkmW/1EZynYSwMUvOEtHcpoNXpc/YGDRwwMB2EJ5GuoDWX1fmW3Cs1+vlg==",
+  "sha1Verified": "79aeffafbf77424ab31842169eae853d51eac081",
+  "packageBin": {
+    "bbx": "packages/agent-client/src/cli.js",
+    "bbx-daemon": "packages/native-host/bin/bridge-daemon.js",
+    "bbx-install": "packages/native-host/bin/install-manifest.js",
+    "bbx-mcp": "packages/mcp-server/src/bin.js"
+  },
+  "packageEngines": {
+    "node": ">=20"
+  },
+  "packageScripts": {
+    "lint": "oxlint . && oxfmt --check .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "fixture:browser": "node tests/fixtures/browser-reliability/server.mjs",
+    "fixture:interaction": "node tests/fixtures/agent-interaction/server.mjs",
+    "bench:interaction": "node tests/fixtures/agent-interaction/bench.mjs",
+    "test:runtime": "node --import tsx --test packages/*/test/*.test.ts packages/integration-tests/*.test.ts tests/fixtures/*/*.test.ts",
+    "test": "c8 node --import tsx --test packages/*/test/*.test.ts packages/integration-tests/*.test.ts tests/fixtures/*/*.test.ts",
+    "coverage": "c8 report --reporter=text --reporter=text-summary",
+    "coverage:review": "c8 report --reporter=json-summary && node scripts/review-coverage.mjs",
+    "coverage:check": "c8 check-coverage --lines 92 --branches 83",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "node packages/native-host/bin/postinstall.js",
+    "package:extension": "node scripts/package-extension.mjs",
+    "check:extension-zip": "node scripts/check-extension-zip.mjs",
+    "check:release-version": "node scripts/check-release-version.mjs",
+    "release:check": "npm run check:release-version && npm run lint && npm run typecheck && npm test && npm run coverage:check && npm run package:extension && npm run check:extension-zip && npm pack --dry-run",
+    "prepublishOnly": "npm run check:release-version && npm run lint && npm run typecheck && npm test && npm run coverage:check",
+    "status": "node packages/agent-client/src/cli.js status",
+    "daemon": "node packages/native-host/bin/bridge-daemon.js",
+    "install-manifest": "node packages/native-host/bin/install-manifest.js"
+  },
+  "keywordContexts": [],
+  "textFilesScanned": [
+    {
+      "name": "package/packages/native-host/src/artifact-store.js",
+      "bytes": 12777
+    },
+    {
+      "name": "package/packages/agent-client/src/atomic-write.js",
+      "bytes": 2949
+    },
+    {
+      "name": "package/packages/native-host/src/auth-token.js",
+      "bytes": 10347
+    },
+    {
+      "name": "package/packages/mcp-server/src/bin.js",
+      "bytes": 1757
+    },
+    {
+      "name": "package/packages/native-host/bin/bridge-daemon.js",
+      "bytes": 2423
+    },
+    {
+      "name": "package/packages/protocol/src/budget-presets.js",
+      "bytes": 5051
+    },
+    {
+      "name": "package/packages/protocol/src/budget.js",
+      "bytes": 2208
+    },
+    {
+      "name": "package/packages/protocol/src/capabilities.js",
+      "bytes": 1902
+    },
+    {
+      "name": "package/packages/protocol/src/capability-values.js",
+      "bytes": 1396
+    },
+    {
+      "name": "package/packages/agent-client/src/cli-args.js",
+      "bytes": 8708
+    },
+    {
+      "name": "package/packages/agent-client/src/cli-batch.js",
+      "bytes": 6907
+    },
+    {
+      "name": "package/packages/agent-client/src/cli-helpers.js",
+      "bytes": 8042
+    },
+    {
+      "name": "package/packages/agent-client/src/cli-output.js",
+      "bytes": 1832
+    },
+    {
+      "name": "package/packages/agent-client/src/cli-proxy-remote.js",
+      "bytes": 10693
+    },
+    {
+      "name": "package/packages/agent-client/src/cli-setup-commands.js",
+      "bytes": 12371
+    },
+    {
+      "name": "package/packages/agent-client/src/cli.js",
+      "bytes": 25695
+    },
+    {
+      "name": "package/packages/agent-client/src/client.js",
+      "bytes": 28545
+    },
+    {
+      "name": "package/packages/agent-client/src/command-registry.js",
+      "bytes": 16022
+    },
+    {
+      "name": "package/packages/agent-client/src/config.js",
+      "bytes": 5726
+    },
+    {
+      "name": "package/packages/native-host/src/config.js",
+      "bytes": 13784
+    },
+    {
+      "name": "package/packages/agent-client/src/content-extract.js",
+      "bytes": 7561
+    },
+    {
+      "name": "package/packages/native-host/src/daemon-logger.js",
+      "bytes": 4065
+    },
+    {
+      "name": "package/packages/native-host/src/daemon-process.js",
+      "bytes": 23683
+    },
+    {
+      "name": "package/packages/native-host/src/daemon.js",
+      "bytes": 78448
+    },
+    {
+      "name": "package/packages/protocol/src/defaults.js",
+      "bytes": 7193
+    },
+    {
+      "name": "package/packages/agent-client/src/detect.js",
+      "bytes": 7429
+    },
+    {
+      "name": "package/packages/native-host/src/dom-baseline-owners.js",
+      "bytes": 6789
+    },
+    {
+      "name": "package/packages/protocol/src/errors.js",
+      "bytes": 8116
+    },
+    {
+      "name": "package/packages/native-host/src/framing.js",
+      "bytes": 8452
+    },
+    {
+      "name": "package/packages/mcp-server/src/guidance.js",
+      "bytes": 4449
+    },
+    {
+      "name": "package/packages/mcp-server/src/handlers-capture.js",
+      "bytes": 21726
+    },
+    {
+      "name": "package/packages/mcp-server/src/handlers-dom.js",
+      "bytes": 9862
+    },
+    {
+      "name": "package/packages/mcp-server/src/handlers-navigation.js",
+      "bytes": 6159
+    },
+    {
+      "name": "package/packages/mcp-server/src/handlers-page.js",
+      "bytes": 27769
+    },
+    {
+      "name": "package/packages/mcp-server/src/handlers-utils.js",
+      "bytes": 36825
+    },
+    {
+      "name": "package/packages/mcp-server/src/handlers.js",
+      "bytes": 8315
+    },
+    {
+      "name": "package/packages/protocol/src/har.js",
+      "bytes": 826
+    },
+    {
+      "name": "package/packages/protocol/src/incidental-sanitizer.js",
+      "bytes": 6408
+    },
+    {
+      "name": "package/packages/protocol/src/index.js",
+      "bytes": 577
+    },
+    {
+      "name": "package/packages/native-host/bin/install-manifest.js",
+      "bytes": 2467
+    },
+    {
+      "name": "package/packages/native-host/src/install-manifest.js",
+      "bytes": 15137
+    },
+    {
+      "name": "package/packages/agent-client/src/install.js",
+      "bytes": 17206
+    },
+    {
+      "name": "package/packages/protocol/src/json-lines.js",
+      "bytes": 1848
+    },
+    {
+      "name": "package/packages/mcp-server/src/lifecycle.js",
+      "bytes": 11174
+    },
+    {
+      "name": "package/packages/agent-client/src/mcp-config.js",
+      "bytes": 18743
+    },
+    {
+      "name": "package/packages/native-host/bin/native-host.js",
+      "bytes": 246
+    },
+    {
+      "name": "package/packages/native-host/src/native-host.js",
+      "bytes": 12443
+    },
+    {
+      "name": "package/packages/agent-client/src/npm-self-update.js",
+      "bytes": 10628
+    },
+    {
+      "name": "package/packages/protocol/src/payload-cost.js",
+      "bytes": 1634
+    },
+    {
+      "name": "package/packages/native-host/bin/postinstall.js",
+      "bytes": 2947
+    },
+    {
+      "name": "package/packages/protocol/src/protocol.js",
+      "bytes": 78335
+    },
+    {
+      "name": "package/packages/protocol/src/recovery-telemetry.js",
+      "bytes": 10140
+    },
+    {
+      "name": "package/packages/protocol/src/registry.js",
+      "bytes": 30882
+    },
+    {
+      "name": "package/packages/agent-client/src/remotes.js",
+      "bytes": 9593
+    },
+    {
+      "name": "package/packages/agent-client/src/runtime.js",
+      "bytes": 47156
+    },
+    {
+      "name": "package/packages/mcp-server/src/server.js",
+      "bytes": 46162
+    },
+    {
+      "name": "package/packages/agent-client/src/setup-status.js",
+      "bytes": 9168
+    },
+    {
+      "name": "package/packages/agent-client/src/subagent.js",
+      "bytes": 299
+    },
+    {
+      "name": "package/packages/protocol/src/summary.js",
+      "bytes": 42631
+    },
+    {
+      "name": "package/packages/mcp-server/src/toolset.js",
+      "bytes": 2091
+    },
+    {
+      "name": "package/packages/native-host/src/window-actions.js",
+      "bytes": 4144
+    },
+    {
+      "name": "package/packages/protocol/src/window-actions.js",
+      "bytes": 1375
+    },
+    {
+      "name": "package/package.json",
+      "bytes": 3602
+    },
+    {
+      "name": "package/packages/agent-client/src/types.ts",
+      "bytes": 8721
+    },
+    {
+      "name": "package/packages/protocol/src/types.ts",
+      "bytes": 35176
+    },
+    {
+      "name": "package/packages/protocol/src/window-access.ts",
+      "bytes": 855
+    }
+  ],
+  "fullDescriptionMatches": [
+    {
+      "tool": "browser_access",
+      "file": "package/packages/mcp-server/src/server.js",
+      "match": "verbatim",
+      "fullDescriptionLength": 220
+    },
+    {
+      "tool": "browser_batch",
+      "file": "package/packages/mcp-server/src/server.js",
+      "match": "verbatim",
+      "fullDescriptionLength": 223
+    },
+    {
+      "tool": "browser_call",
+      "file": "package/packages/mcp-server/src/server.js",
+      "match": "verbatim",
+      "fullDescriptionLength": 179
+    },
+    {
+      "tool": "browser_health",
+      "file": "package/packages/mcp-server/src/server.js",
+      "match": "verbatim",
+      "fullDescriptionLength": 60
+    },
+    {
+      "tool": "browser_status",
+      "file": "package/packages/mcp-server/src/server.js",
+      "match": "verbatim",
+      "fullDescriptionLength": 257
+    },
+    {
+      "tool": "browser_toolset",
+      "file": "package/packages/mcp-server/src/server.js",
+      "match": "verbatim",
+      "fullDescriptionLength": 158
+    }
+  ],
+  "matchedToolCount": 6,
+  "snapshotToolCount": 6,
+  "scope": "Archive read in memory, no extraction, npm install, lifecycle scripts or package code execution."
+}

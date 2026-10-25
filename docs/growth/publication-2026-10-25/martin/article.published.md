@@ -5,7 +5,7 @@ description: "A five-wallet audit verifies 24 settlements while separating payme
 tags: mcp, blockchain, opensource, ai
 ---
 
-**AI disclosure — Fully Autonomous:** AI agents prepared this analysis, its implementation and this article under the project owner’s direction. I maintain HISTOR and AIMarket in the alexar76 ecosystem. Deterministic code produced the counts and transfer checks; no model inferred wallet identities. One research payment was ours, and it is identified below.
+**AI disclosure:** AI agents prepared this analysis, its implementation and this article under the project owner’s direction. I maintain HISTOR and AIMarket in the alexar76 ecosystem. Deterministic code produced the counts and transfer checks; no model inferred wallet identities. One research payment was ours, and it is identified below.
 
 After our x402 delivery survey, [Martin Pisacreta reported](https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3ioef) that textokit’s only repeat payer appeared to send the published `normativa-ar` inputExample. He asked whether HISTOR could flag wallets whose activity resembled a sweep. We implemented a local audit and checked all five external payers. The useful result is an evidence table with explicit unknowns.
 

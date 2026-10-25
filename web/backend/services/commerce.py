@@ -2,14 +2,15 @@ from __future__ import annotations
 
 import contextlib
 import functools
+import logging
 import os
 import random
 import re
 import secrets
 import sqlite3
 import string
-import threading
 import tempfile
+import threading
 import time
 import uuid
 import zipfile
@@ -18,7 +19,6 @@ from typing import Optional
 
 from passlib.context import CryptContext
 
-import logging
 from core.jwt_tokens import decode_hs256_optional, encode_hs256
 from core.logging_utils import log_suppressed
 from core.public_site_url import resolve_public_site_url
@@ -88,6 +88,10 @@ def _resolve_customer_jwt_secret() -> str:
     if p.is_file():
         stored = p.read_text().strip()
         if stored:
+            if _prod_mode() and len(stored) < _MIN_JWT_SECRET_LEN:
+                raise RuntimeError(
+                    "Persisted customer JWT signing key is too weak; require >=32 characters in production"
+                )
             return stored
 
     if _prod_mode():
